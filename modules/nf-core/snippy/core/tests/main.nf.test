@@ -19,11 +19,11 @@ nextflow_process {
 
                 process {
                     """
-                    input[0] = [[id:'test',single_end:false],// meta map
+                    input[0] = [[id:'test',single_end:false], // meta map
                         [file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/illumina/fastq/test_1.fastq.gz', checkIfExists:true),
-                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/illumina/fastq/test_2.fastq.gz',checkIfExists:true)]
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/illumina/fastq/test_2.fastq.gz', checkIfExists:true)]
                         ]
-                    input[1] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta',checkIfExists:true)
+                    input[1] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists:true)
                     """
                 }
             }
@@ -35,7 +35,7 @@ nextflow_process {
             process {
                 """
                 input[0] = SNIPPY_RUN.out.vcf.join(SNIPPY_RUN.out.aligned_fa)
-                input[1] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta',checkIfExists:true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists:true)
                 """
             }
         }
@@ -48,18 +48,21 @@ nextflow_process {
     }
 
     test("test_snippy_core_stub") {
+
+        tag "stub"
         options '-stub'
+
         setup {
             run("SNIPPY_RUN") {
                 script "../../run/main.nf"
 
                 process {
                     """
-                    input[0] = [[id:'test',single_end:false],// meta map
-                        [file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/illumina/fastq/test_1.fastq.gz',checkIfExists:true),
-                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/illumina/fastq/test_2.fastq.gz',checkIfExists:true)]
+                    input[0] = [[id:'test',single_end:false], // meta map
+                        [file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/illumina/fastq/test_1.fastq.gz', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/illumina/fastq/test_2.fastq.gz', checkIfExists:true)]
                         ]
-                    input[1] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta',checkIfExists:true)
+                    input[1] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists:true)
                     """
                 }
             }
@@ -71,10 +74,11 @@ nextflow_process {
             process {
                 """
                 input[0] = SNIPPY_RUN.out.vcf.join(SNIPPY_RUN.out.aligned_fa)
-                input[1] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta',checkIfExists:true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists:true)
                 """
             }
         }
+
         then {
             assertAll(
                 { assert process.success },

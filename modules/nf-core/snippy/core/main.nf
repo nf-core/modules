@@ -52,13 +52,14 @@ process SNIPPY_CORE {
     """
 
     stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p samples/
-    touch samples/test.aln
-    touch samples/test.full.aln
-    touch samples/test.tab
-    touch samples/test.vcf
-    touch samples/test.txt
+    mkdir samples/
+    touch ${prefix}.aln
+    touch ${prefix}.full.aln
+    touch ${prefix}.tab
+    touch ${prefix}.vcf
+    touch ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
