@@ -30,6 +30,8 @@ input:
         type: file
         description: ARG annotation output
         pattern: "*.tsv"
+        ontologies: 
+          - edam: "http://edamontology.org/format_3475" # TSV
   - - tool:
         type: string
         description: ARG annotation tool used
@@ -49,11 +51,15 @@ output:
           type: file
           description: Normalized argNorm output
           pattern: "*.tsv"
+          ontologies: 
+            - edam: "http://edamontology.org/format_3475" # TSV
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies: 
+            - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@Vedanth-Ramji"
 maintainers:

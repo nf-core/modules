@@ -25,14 +25,21 @@ input:
         type: file
         description: A VCF or BED file containing the structural variants to be annotated
         pattern: "*.{bed,vcf,vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+          - edam: "http://edamontology.org/format_3016" # VCF
     - sv_vcf_index:
         type: file
         description: OPTIONAL - The index for gzipped VCF files
         pattern: "*.tbi"
+        ontologies: 
+          - edam: "http://edamontology.org/format_3475" # Tabix index
     - candidate_small_variants:
         type: file
         description: OPTIONAL - A file containing candidate small variants
         pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
   - - meta2:
         type: map
         description: |
@@ -51,6 +58,8 @@ input:
         description: OPTIONAL - A file containing genes (either space-separated, tab-separated
           or line-break-separated)
         pattern: "*.txt"
+        ontologies: 
+          - edam: "http://edamontology.org/format_2330" # Text file
   - - meta4:
         type: map
         description: |
@@ -59,6 +68,8 @@ input:
         type: file
         description: OPTIONAL - A VCF file containing small variant candidates
         pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
   - - meta5:
         type: map
         description: |
@@ -68,6 +79,8 @@ input:
         description: OPTIONAL - A file containing the preferred gene transcripts to
           be used in priority during annotation (either space-separated or tab-separated)
         pattern: "*.txt"
+        ontologies: 
+          - edam: "http://edamontology.org/format_2330" # Text file
 output:
   - tsv:
       - meta:
@@ -79,6 +92,8 @@ output:
           type: file
           description: A TSV file containing the annotated variants
           pattern: "*.tsv"
+          ontologies: 
+            - edam: "http://edamontology.org/format_3475" # TSV
   - unannotated_tsv:
       - meta:
           type: map
@@ -89,6 +104,8 @@ output:
           type: file
           description: OPTIONAL - TSV file containing the unannotated variants
           pattern: "*.unannotated.tsv"
+          ontologies: 
+            - edam: "http://edamontology.org/format_3475" # TSV
   - vcf:
       - meta:
           type: map
@@ -100,11 +117,15 @@ output:
           description: |
             OPTIONAL - A VCF file containing the annotated variants (created when `-vcf 1` is specified in the args)
           pattern: "*.vcf"
+          ontologies: 
+            - edam: "http://edamontology.org/format_3016" # VCF
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies: 
+            - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

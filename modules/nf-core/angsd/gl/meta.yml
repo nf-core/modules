@@ -24,6 +24,9 @@ input:
         type: file
         description: A list of BAM or CRAM files
         pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_3462" # CRAM
   - - meta2:
         type: map
         description: |
@@ -33,6 +36,8 @@ input:
         type: file
         description: A reference genome in FASTA format
         pattern: "*.fasta"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
   - - meta3:
         type: map
         description: |
@@ -42,6 +47,7 @@ input:
         type: file
         description: A file containing information about type specific errors.
         pattern: "*.error.chunkunordered"
+        ontologies: []
 output:
   - genotype_likelihood:
       - meta:
@@ -53,11 +59,15 @@ output:
           type: file
           description: File containing genotype likelihoods per sample
           pattern: "*.{glf,beagle}.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3750" # Tabular data
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@apeltzer"
   - "@TCLamnidis"
