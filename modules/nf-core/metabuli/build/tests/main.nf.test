@@ -10,26 +10,7 @@ nextflow_process {
     tag "metabuli/build"
     
     
-    // setup {
-    //     run("GUNZIP") {
-    //         script "modules/nf-core/gunzip/main.nf"
-    //         process {
-    //             """
-    //             input[0] = Channel.of([
-    //                 [],
-    //                 file(
-    //                     params.modules_testdata_base_path + "genomics/sarscov2/metagenome/prot.accession2taxid.gz",
-    //                     checkIfExists: true
-    //                 )
-    //             ])
-    //             """
-    //         }
-    //     }
-    // }
-
-
-    test("sarscov2 - sarscov2 DNA and AA") {
-
+    test("sarscov2 - sarscov2 DNA") {
 
 
         when {
@@ -44,7 +25,7 @@ nextflow_process {
                     ]
                 input[1] = file(params.modules_testdata_base_path +'genomics/sarscov2/metagenome/prot_names.dmp', checkIfExists: true)
                 input[2] = file(params.modules_testdata_base_path +'genomics/sarscov2/metagenome/prot_nodes.dmp', checkIfExists: true)
-                input[3] = [] // needs a merged.dmp
+                input[3] = [] 
                 input[4] = file(params.modules_testdata_base_path + 'delete_me/metabuli/acc2taxid', checkIfExists: true)
                 """
             }
