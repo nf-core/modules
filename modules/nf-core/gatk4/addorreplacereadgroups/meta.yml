@@ -54,7 +54,7 @@ output:
             e.g. [ id:'test', single_end:false ]
           pattern: "*.{bam}"
       - ${prefix}.bam:
-          type: map
+          type: file
           description: Output BAM file
           pattern: "*.{bam}"
   - bai:
@@ -65,8 +65,8 @@ output:
             e.g. [ id:'test', single_end:false ]
           pattern: "*.{bai}"
       - "*.bai":
-          type: map
-          description: Output BAI file
+          type: file
+          description: An optional bam index file
           pattern: "*.{bai}"
   - cram:
       - meta:
@@ -76,7 +76,7 @@ output:
             e.g. [ id:'test', single_end:false ]
           pattern: "*.{cram}"
       - "*.cram":
-          type: map
+          type: file
           description: Output CRAM file
           pattern: "*.{cram}"
   - versions:
