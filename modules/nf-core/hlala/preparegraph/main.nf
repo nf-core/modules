@@ -1,6 +1,7 @@
 process HLALA_PREPAREGRAPH {
     tag "$meta.id"
     label 'process_high'
+    stageInMode 'copy'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hla-la:1.0.3--hd03093a_0':
