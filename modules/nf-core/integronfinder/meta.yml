@@ -1,4 +1,4 @@
-name: "IntegronFinder"
+name: integronfinder
 description: Detect integrons in DNA sequences
 keywords:
   - bacteria
@@ -6,14 +6,15 @@ keywords:
   - mobile genetic elements
   - integron
 tools:
-  - "IntegronFinder":
-      description: "Integron Finder aims at detecting independently integron integrase and attC recombination sites in DNA sequences"
+  - integronfinder:
+      description: "Integron Finder aims at detecting independently integron integrase
+        and attC recombination sites in DNA sequences"
       homepage: "https://integronfinder.readthedocs.io/en/latest/"
       documentation: "https://integronfinder.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/gem-pasteur/Integron_Finder/"
       doi: "10.3390/microorganisms10040700"
-      licence: ['GPL v3-or-later']
-      identifier: 
+      licence: ["GPL v3-or-later"]
+      identifier: biotools:integron_finder
 input:
   - - meta:
         type: map
@@ -26,46 +27,55 @@ input:
         pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
 output:
   - gbk:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - "*.gbk":
-        type: file
-        description: Create a Genbank files with all the annotations found (present in the .integrons file)
-        pattern: "*.gbk"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+          pattern: "*.gbk"
+      - "*/*.gbk":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+          pattern: "*.gbk"
   - integrons:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - "*.integrons":
-        type: file
-        description: A file with all integrons and their elements detected in all sequences in the input file
-        pattern: "*.integrons"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+          pattern: "*.integrons"
+      - "*/*.integrons":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+          pattern: "*.integrons"
   - summary:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - "*.summary":
-        type: file
-        description: A summary file with the number and type of integrons per sequence
-        pattern: "*.summary"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+          pattern: "*.summary"
+      - "*/*.summary":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+          pattern: "*.summary"
   - out:
-    - "integron_finder.out":
-        type: file
-        description: A copy standard output. The stdout can be silenced with the argument --mute
-        pattern: "integron_finder.out"
+      - "*/integron_finder.out":
+          type: file
+          description: A copy standard output. The stdout can be silenced with the argument
+            --mute
+          pattern: "integron_finder.out"
   - versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nguyent-son"
   - "@juke34"
