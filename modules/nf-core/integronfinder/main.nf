@@ -22,9 +22,8 @@ process INTEGRONFINDER {
 
     script:
     def args                = task.ext.args ?: ''
-    def prefix              = task.ext.prefix ?: "${meta.id}"
     def is_compressed_fasta = fasta.getName().endsWith(".gz") ? true : false
-    fasta_name              = fasta.getName().replace(".gz", "")
+    def fasta_name          = fasta.getName().replace(".gz", "")
     
     """
     if [ "$is_compressed_fasta" == "true" ]; then
@@ -42,22 +41,24 @@ process INTEGRONFINDER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        integronfinder: \$(integron_finder --version |& sed '1!d ; s/integronfinder //')
+        integronfinder: \$(integron_finder --version)
     END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p "${prefix}"
-    touch "${prefix}/test.gbk"
-    touch "${prefix}/test.integrons"
-    touch "${prefix}/test.summary"
-    touch "${prefix}/integron_finder.out"
+    mkdir -p Results_Integron_Finder_${prefix}
+    touch "Results_Integron_Finder_${prefix}/test.gbk"
+    touch "Results_Integron_Finder_${prefix}/test.integrons"
+    touch "Results_Integron_Finder_${prefix}/test.summary"
+    touch "Results_Integron_Finder_${prefix}/integron_finder.out"
+
+    VER=\$(integron_finder --version)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        integronfinder: \$(integron_finder --version |& sed '1!d ; s/integronfinder //')
+        integronfinder: \$(integron_finder --version)
     END_VERSIONS
     """
 }

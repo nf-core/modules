@@ -1,62 +1,65 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "integronfinder"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+name: "IntegronFinder"
+description: Detect integrons in DNA sequences
 keywords:
-  - sort
-  - example
-  - genomics
+  - bacteria
+  - fasta
+  - mobile genetic elements
+  - integron
 tools:
-  - "integronfinder":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: "Integron Finder aims at detecting integrons in DNA sequences"
+  - "IntegronFinder":
+      description: "Integron Finder aims at detecting independently integron integrase and attC recombination sites in DNA sequences"
       homepage: "https://integronfinder.readthedocs.io/en/latest/"
       documentation: "https://integronfinder.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/gem-pasteur/Integron_Finder/"
-      doi: ""
+      doi: "10.3390/microorganisms10040700"
       licence: ['GPL v3-or-later']
       identifier: 
-
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-  
-  ## TODO nf-core: Delete / customise this example input
-    - bam:
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
-        ontologies:
-          - edam: "http://edamontology.org/format_25722"
-          - edam: "http://edamontology.org/format_2573"
-          - edam: "http://edamontology.org/format_3462"
-          
-
-## TODO nf-core: Add a description of all of the variables used as output
+        description: Nucleotide sequences in FASTA format
+        pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
 output:
-  - bam:
-  #Only when we have meta
+  - gbk:
     - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-  ## TODO nf-core: Delete / customise this example output
-    - "*.bam":
+    - "*.gbk":
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
-        ontologies:
-          - edam: "http://edamontology.org/format_25722"
-          - edam: "http://edamontology.org/format_2573"
-          - edam: "http://edamontology.org/format_3462"
-          
+        description: Create a Genbank files with all the annotations found (present in the .integrons file)
+        pattern: "*.gbk"
+  - integrons:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - "*.integrons":
+        type: file
+        description: A file with all integrons and their elements detected in all sequences in the input file
+        pattern: "*.integrons"
+  - summary:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - "*.summary":
+        type: file
+        description: A summary file with the number and type of integrons per sequence
+        pattern: "*.summary"
+  - out:
+    - "integron_finder.out":
+        type: file
+        description: A copy standard output. The stdout can be silenced with the argument --mute
+        pattern: "integron_finder.out"
   - versions:
     - "versions.yml":
         type: file
@@ -65,5 +68,9 @@ output:
 
 authors:
   - "@nguyent-son"
+  - "@juke34"
+  - "@jhayer"
 maintainers:
   - "@nguyent-son"
+  - "@juke34"
+  - "@jhayer"
