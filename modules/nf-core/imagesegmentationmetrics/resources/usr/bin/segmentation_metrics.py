@@ -128,6 +128,7 @@ class monai_metrics(Enum):
     MAEMetric = mmetrics.MAEMetric()
     RMSEMetric = mmetrics.RMSEMetric()
     PSNRMetric = mmetrics.PSNRMetric(max_val = 1)
+    SSIMMetric = mmetrics.SSIMMetric(spatial_dims = 2)
     
 
 def main(path_ref, path_list_seg, str_metrics) -> None:
@@ -137,7 +138,7 @@ def main(path_ref, path_list_seg, str_metrics) -> None:
     path_ref: path to the ground truth segmentation (as TIFF file)
     path_list_seg: space separated list of paths to the segmentations to compare
     list_metrics: space separated list of metrics to compute
-    current metrics: monai_DiceMetric monai_MeanIoU monai_GeneralizedDiceScore monai_HausdorffDistanceMetric monai_SurfaceDistanceMetric monai_SurfaceDiceMetric monai_MSEMetric monai_RMSEMetric monai_PSNRMetric sgm_dice sgm_jaccard sgm_precision sgm_recall sgm_fpr sgm_fnr sgm_hd sgm_msd sgm_stdsd
+    current metrics: monai_DiceMetric monai_MeanIoU monai_GeneralizedDiceScore monai_HausdorffDistanceMetric monai_SurfaceDistanceMetric monai_SurfaceDiceMetric monai_MSEMetric monai_RMSEMetric monai_PSNRMetric monai_SSIMMetric sgm_dice sgm_jaccard sgm_precision sgm_recall sgm_fpr sgm_fnr sgm_hd sgm_msd sgm_stdsd
     """
     ref_tor, seg_tor, ref_np, seg_np = load_dataset(path_ref, path_list_seg)
     list_metrics = parse_metrics(str_metrics)
