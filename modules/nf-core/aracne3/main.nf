@@ -15,7 +15,7 @@ process ARACNE3 {
     tuple val(meta), path("subnets"),           emit: subnets
 
     when:
-    task.ext.when == null || task.ext.whe
+    task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''

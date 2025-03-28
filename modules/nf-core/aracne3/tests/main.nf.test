@@ -30,8 +30,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.consensus_network).match("tsv") },
-                { assert snapshot(process.out.subnets).match(".tsv") },
+                { assert snapshot(process.out.consensus_network.get(0).get(1)).match("tsv") },
+                { assert snapshot(process.out.subnets.get(0).get(1)).match(".tsv") },
                 { assert snapshot(process.out.versions).match("versions") },
             )
         }
