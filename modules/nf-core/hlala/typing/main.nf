@@ -34,6 +34,12 @@ process HLALA_TYPING {
     mkdir -p PRG_MHC_GRCh38_withIMGT
     mv $graph/* PRG_MHC_GRCh38_withIMGT/
 
+    # Create reference file
+    # Add the header
+    echo -e "contigID\tcontigLength\tExtractCompleteContig\tPartialExtraction_Start\tPartialExtraction_Stop" > PRG_MHC_GRCh38_withIMGT/knownReferences/test.txt
+    # Add empty columns for PartialExtraction_Start and PartialExtraction_Stop
+    samtools idxstats example_hla_pe.sorted.bam | awk -v OFS='\t' '{if (\$1 == "*") \$3 = 0; else \$3 = 1; print \$1, \$2, \$3, "", ""}' >> PRG_MHC_GRCh38_withIMGT/knownReferences/test.txt
+
     HLA-LA.pl \\
         --BAM $bam \\
         --graph PRG_MHC_GRCh38_withIMGT \\
