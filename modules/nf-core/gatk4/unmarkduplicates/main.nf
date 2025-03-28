@@ -11,8 +11,8 @@ process GATK4_UNMARKDUPLICATES {
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path("${prefix}.bam"),     emit: bam,   optional: true
-    tuple val(meta), path("${prefix}.bai"),     emit: bai,   optional: true
+    tuple val(meta), path("${prefix}.bam"),     emit: bam
+    tuple val(meta), path("${prefix}.bai"),     emit: bai
     path "versions.yml",                emit: versions
 
     when:

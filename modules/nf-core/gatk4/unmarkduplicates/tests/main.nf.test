@@ -32,7 +32,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = GATK4_MARKDUPLICATES.out.bam.collect{ meta, bam -> bam }.map{ bam -> [[ id: 'test'], bam]}
+                input[0] = GATK4_MARKDUPLICATES.out.bam.groupTuple(by:[0])
                 """
             }
         }
@@ -71,7 +71,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = GATK4_MARKDUPLICATES.out.bam.collect{ meta, bam -> bam }.map{ bam -> [[ id: 'test'], bam]}
+                input[0] = GATK4_MARKDUPLICATES.out.bam.groupTuple(by:[0])
                 """
             }
         }
@@ -110,7 +110,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = GATK4_MARKDUPLICATES.out.bam.collect{ meta, bam -> bam }.map{ bam -> [[ id: 'test'], bam]}
+                input[0] = GATK4_MARKDUPLICATES.out.bam.groupTuple(by:[0])
                 """
             }
         }
