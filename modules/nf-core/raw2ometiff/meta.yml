@@ -1,0 +1,54 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "raw2ometiff"
+description: write your description here
+keywords:
+  - ome
+  - tiff
+  - imaging
+tools:
+  - "raw2ometiff":
+      description: "Java application to convert a directory of tiles to an OME-TIFF pyramid."
+      homepage: "https://github.com/glencoesoftware/raw2ometiff"
+      documentation: "https://github.com/glencoesoftware/raw2ometiff"
+      tool_dev_url: "https://github.com/glencoesoftware/raw2ometiff"
+      licence: ["GPL-2.0"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1']`
+  
+    - zarr:
+        type: directory
+        description: Tile directory must contain a full pyramid in a Zarr container.
+        pattern: "*.{zarr}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3915"
+          
+output:
+  - tiff:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1']`
+    - "*.tiff":
+        type: file
+        description: OME-TIFF pyramid
+        pattern: "*.{tiff}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3727"
+
+  - versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@CaroAMN"
+maintainers:
+  - "@CaroAMN"
