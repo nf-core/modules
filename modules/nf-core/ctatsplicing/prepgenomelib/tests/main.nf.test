@@ -1,0 +1,50 @@
+nextflow_process {
+
+    name "Test Process CTATSPLICING_PREPGENOMELIB"
+    script "../main.nf"
+    process "CTATSPLICING_PREPGENOMELIB"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ctatsplicing"
+    tag "ctatsplicing/prepgenomelib"
+
+    test("homo_sapiens - reference - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+		new File('ctat_genome_lib_build_dir').mkdirs()
+                //input[0] = UNTAR.out.untar
+		input[0] = [[id:"ctat_genome_lib_build_dir"],file("ctat_genome_lib_build_dir/")]
+                input[1] = [
+                    file("https://data.broadinstitute.org/Trinity/CTAT_RESOURCE_LIB/CANCER_SPLICING_LIB_SUPPLEMENT/cancer_introns.GRCh38.Jun232020.tsv.gz", checkIfExists:true)
+                ]
+                """
+            }
+        }
+
+        then {
+	    def stable_name    = getAllFilesFromDir(process.out.reference.get(0).get(1), relative:true, includeDir: true)
+	    def stable_content = getAllFilesFromDir(process.out.reference.get(0).get(1), ignore: ['refGene.bed','cancer_splicing.idx'])
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+		        stable_name,
+			stable_content,
+                        //stableFiles,
+                        //stableNames,
+                        process.out.versions
+                    ).match()
+                }
+            )
+
+        }
+
+    }
+    
+
+}

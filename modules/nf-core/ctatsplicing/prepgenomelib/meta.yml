@@ -1,0 +1,53 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "ctatsplicing_prepgenomelib"
+description: write your description here
+keywords:
+  - splicing
+  - cancer
+  - rna
+  - rnaseq
+tools:
+  - "ctatsplicing":
+      description: "Detection and annotation of cancer splicing abberations"
+      homepage: "https://github.com/TrinityCTAT/CTAT-SPLICING"
+      documentation: "https://github.com/TrinityCTAT/CTAT-SPLICING"
+      tool_dev_url: "https://github.com/TrinityCTAT/CTAT-SPLICING"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+  
+    - genome_lib:
+        type: file
+        description: CTAT genome library reference
+        pattern: "*"
+  - - cancer_intron_tsv:
+        type: file
+        description: CTAT-splicing data resource supplement
+
+output:
+  - reference:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - "genome_lib, includeInputs:true":
+        type: file
+        description: Modified CTAT genome library reference
+        pattern: "*"
+          
+  - versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@anoronh4"
+maintainers:
+  - "@anoronh4"
