@@ -54,7 +54,6 @@ process INTEGRONFINDER {
     touch "Results_Integron_Finder_${prefix}/test.summary"
     touch "Results_Integron_Finder_${prefix}/integron_finder.out"
 
-    VER=\$(integron_finder --version)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
