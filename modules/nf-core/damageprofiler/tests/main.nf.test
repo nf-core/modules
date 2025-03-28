@@ -27,16 +27,22 @@ nextflow_process {
             }
         }
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    process.out.results.collect{ it[1].collect{
-                        def fileName = file(it).name
-                        (fileName.endsWith("svg") || fileName.endsWith("pdf")) ? fileName : file(it)
-                    }}
-               ).match() }
-            )
+            {
+   assertAll(
+        { assert process.success },
+        {
+            def results = process.out.results.collect { meta, files ->
+                files.collect { file ->
+                    def fileName = new File(file).name
+                    return (fileName.endsWith("svg") || fileName.endsWith("pdf")) ? fileName : file
+                }
+            }
+            assert snapshot(results).match()
+        }
+    )
+}
+
+
         }
     }
     test("test_damageprofiler_reference") {
@@ -58,19 +64,21 @@ nextflow_process {
         }
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    process.out.results.collect{ it[1].collect{
-                        def fileName = file(it).name
-                        (fileName.endsWith("svg") || fileName.endsWith("pdf")) ? fileName : file(it)
-                    }}
-               ).match() }
-            )
+        { assert process.success },
+        {
+            def results = process.out.results.collect { meta, files ->
+                files.collect { file ->
+                    def fileName = new File(file).name
+                    return (fileName.endsWith("svg") || fileName.endsWith("pdf")) ? fileName : file
+                }
+            }
+            assert snapshot(results).match()
+        }
+    )
         }
     }
     test("test_damageprofiler_specieslist") {
-
+        tag "test"
 
         when {
             params {
@@ -88,15 +96,17 @@ nextflow_process {
         }
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    process.out.results.collect{ it[1].collect{
-                        def fileName = file(it).name
-                        (fileName.endsWith("svg") || fileName.endsWith("pdf")) ? fileName : file(it)
-                    }}
-               ).match() }
-            )
+        { assert process.success },
+        {
+            def results = process.out.results.collect { meta, files ->
+                files.collect { file ->
+                    def fileName = new File(file).name
+                    return (fileName.endsWith("svg") || fileName.endsWith("pdf")) ? fileName : file
+                }
+            }
+            assert snapshot(results).match()
+        }
+    )
         }
     }
 }
