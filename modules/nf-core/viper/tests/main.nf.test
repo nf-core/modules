@@ -1,0 +1,45 @@
+nextflow_process {
+
+    name "Test Process VIPER"
+    script "../main.nf"
+    process "VIPER"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "viper"
+
+    test("test_viper") {
+
+        setup {
+            run("ARACNE3") {
+                script "../../run/main.nf"
+                process {
+                """
+                input[0] = [ [id:"testexp"], file(params.modules_testdata_base_path + 'delete_me/aracne3/expression_matrix.tsv', checkIfExists: true) ]
+                input[1] = file(params.modules_testdata_base_path + 'delete_me/aracne3/regulators.txt', checkIfExists: true)
+                """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [ [id:"testnet"], file(params.modules_testdata_base_path + 'delete_me/aracne3/expression_matrix.tsv', checkIfExists: true) ]
+                input[1] = [ [id:"testexp"], file(ARACNE3.out.consensus_network) ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.viper_matrix,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+}
