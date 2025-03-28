@@ -33,6 +33,11 @@ input:
         description: fasta file containing the alignment to be evaluated. May be gzipped
           or uncompressed.
         pattern: "*.{aln,fa,fasta,fas}{.gz,}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
+          - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
+          - edam: http://edamontology.org/format_1984 # FASTA-ALN
   - - meta2:
         type: map
         description: |
@@ -42,6 +47,7 @@ input:
         type: file
         description: lib file containing the alignment library of the given msa.
         pattern: "*{.tc_lib,*_lib}"
+        ontologies: []
 output:
   - tcs:
       - meta:
@@ -53,6 +59,7 @@ output:
           type: file
           description: The msa represented in tcs format, prepended with TCS scores
           pattern: "*.tcs"
+          ontologies: []
   - scores:
       - meta:
           type: map
@@ -63,10 +70,13 @@ output:
           type: file
           description: a file containing the score of the alignment in csv format
           pattern: "*.scores"
+          ontologies: []
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@alessiovignoli"
