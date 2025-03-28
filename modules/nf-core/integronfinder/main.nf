@@ -32,11 +32,7 @@ process INTEGRONFINDER {
 
     integron_finder \\
         $args \\
-        --local-max \\
         --cpu $task.cpus \\
-        --promoter-attI \\
-        --eagle-eyes \\
-        --gbk \\
         $fasta_name
 
     cat <<-END_VERSIONS > versions.yml
