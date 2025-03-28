@@ -67,58 +67,68 @@ read_delim_flexible <- function(file, header = TRUE, row.names = 1, check.names 
 #'      the theta the closer to 1 full connectivity. One can also interpret this as the accumulated
 #'      between group variance of the gene (as the theta values reflects the between group variance
 #'      vs within group variance).
-get_genewise_information <- function(results) {
+get_genewise_information=function(res,cut=0.01){
 
-    message("Alert: Genewise information is computed based on pairwise ratios.")
 
-    # get unique genes
+    D=ncol(res@counts)
+    M=matrix(0,D,4)
+    colnames(M)=c("rcDdis","Nsig","lrmD","LFC")
+    rownames(M)=colnames(res@counts)
+    print("preparing matrices")
+    pset=which(res@results[,"FDR"]<cut) #only significant pairs
+    re1=prepmat(pset,D, res) #transform pairwise table to DxD matrix #TODO: Ask Ionas if its ok to pass res as an argument
 
-    genes <- unique(c(results\$Pair, results\$Partner))
-    n_genes <- length(genes)
+    aset=c(1:nrow(res@results)) #for LFC we need all pairs
+    re2=prepmat(aset,D, res)
 
-    # create empty matrix
+    print("calculating")
+    all=c(1:D)
+    for (g in 1:D){
+        M[g,"Nsig"]=length(which(res@results[pset,1]==g | res@results[pset,2]==g))
 
-    mat <- data.frame(
-        'features_id_col' = character(n_genes),
-        lfc = numeric(n_genes),
-        lfc_error = numeric(n_genes),
-        connectivity = numeric(n_genes),
-        weighted_connectivity = numeric(n_genes)
-    )
-   colnames(mat) <- c(opt\$features_id_col, 'lfc', 'lfc_error', 'connectivity', 'weighted_connectivity')
-   mat[, 1] <- genes
+        set1=which(all<g)
+        set2=which(all>g)
+        M[g,"LFC"]=mean(c(re2[set1,g],-re2[set2,g]))/log(2) #numerator and denominator of lrm swap for genes > g, so lrm2-lrm1
 
-    i <- 0
-    for (gene in genes){
-        i <- i + 1
+        set=which(re1[all,g]!=0)
+        M[g,"lrmD"]=median(c(re1[intersect(set1,set),g],-re1[intersect(set2,set),g]))/log(2) #divide by log2 to get base 2 log
 
-        # get rows with this gene involved
-        # NOTE that gene can be a partner or a pair and we have to consider both cases.
-        # NOTE that reference set is the set of genes that are partners or pairs of the gene.
-        # In other words, the set of genes that are significantly proportional to the gene,
-        # hence connected to the gene in the network.
-
-        idx1 <- which(results[,1] == gene)
-        idx2 <- which(results[,2] == gene)
-        reference_idx <- union(idx1, idx2)
-
-        # calculate logfold changes of the gene with respect to the reference set
-        # Differently to the approach usually implemented in methods like DESeq2,
-        # here we have a dynamic reference defined by all the genes significantly proportional to the target gene.
-
-        logfoldchange1 <- results[idx1, 'lrm1'] - results[idx1, 'lrm2']
-        logfoldchange2 <- results[idx2, 'lrm2'] - results[idx2, 'lrm1']
-        logfoldchanges <- union(logfoldchange1, logfoldchange2)
-
-        # fill in matrix values
-
-        mat[i, 'lfc'] <- median(logfoldchanges)
-        mat[i, 'lfc_error'] <- mad(logfoldchanges)
-        mat[i, 'connectivity'] <- length(reference_idx)
-        mat[i, 'weighted_connectivity'] <- sum(1 - results[reference_idx, 'theta'])
     }
 
-    return(mat)
+    deg=sort(unique(M[,"Nsig"]),decreasing=TRUE)
+    cl=0
+    for (i in 1:length(deg)){
+        dset=which(M[,"Nsig"]==deg[i])
+        cl=cl+length(dset)
+        M[dset,"rcDdis"]=cl/D
+    }
+
+    ind=order(M[,"rcDdis"])
+    M=M[ind,]
+    return(M)
+
+}
+
+#this function takes a set of pairs and returns a DxD matrix of lrm1-lrm2:
+prepmat=function(subs,D, res){
+
+    pset=subs
+
+    mat1=matrix(0,D,D)
+    rownames(mat1)=colnames(res@counts)
+    colnames(mat1)=colnames(res@counts)
+    mat2=matrix(0,D,D)
+    rownames(mat2)=colnames(res@counts)
+    colnames(mat2)=colnames(res@counts)
+    pa=matrix("",length(pset),2)
+    pa[,1]=colnames(res@counts)[res@results[pset,1]]
+    pa[,2]=colnames(res@counts)[res@results[pset,2]]
+
+    mat1[pa]=res@results[pset,"lrm1"] #this puts values below the diagonal because of index ordering pa[,1]>pa[,2] in propr
+    mat2[pa]=res@results[pset,"lrm2"]
+    re=mat1-mat2
+    re[upper.tri(re)]=t(re)[upper.tri(re)] #make matrix symmetric
+    return(re)
 }
 
 #' Plot genewise information
@@ -133,31 +143,62 @@ get_genewise_information <- function(results) {
 #' @param output Output png file name
 plot_genewise_information <- function(results, output) {
 
-    # create figure
-    png(output, width=1200, height=600)  # Adjust width to accommodate two plots side by side
-    par(mfrow = c(1, 2))
+    # Define significant genes
+    meanset <- which(results[,"Nsig"] > mean(results[,"Nsig"]))  # Genes above avg significance
+    downset <- which(results[,"LFC"] < 0)  # Downregulated genes
+    upset <- which(results[,"LFC"] > 0)  # Upregulated genes
+    exprob <- max(results[meanset, "rcDdis"])  # Threshold for significance
 
-    # plot scatter plot with normal y-axis
+    # Define tick marks for right-side axis
+    Nticks <- rep(0, 4)
+    for (t in 0:3) {
+        Nticks[t+1] <- max(results[which(-log10(results[,"rcDdis"]) <= t), "Nsig"])
+    }
+
+    # Create PNG file
+    png(output, height = 12, width = 12, units = "cm", res = 300)
+
+    # Plot empty volcano plot
     plot(
-        results\$lfc,
-        results\$weighted_connectivity,
-        xlab = 'Logfold change',
-        ylab = 'Accumulated between group variance',
-        main = 'Normal Y-axis'
+        results[,"LFC"], -log10(results[,"rcDdis"]),
+        ylab = "-log10(Probability of Hub)",
+        xlab = "Log2 Fold Change",
+        type = "n",
+        main = "Volcano of Hub Genes"
     )
 
-    # plot scatter plot with log10 y-axis
-    plot(
-        results\$lfc,
-        results\$weighted_connectivity,
-        xlab = 'Logfold change',
-        ylab = 'Accumulated between group variance',
-        log = 'y',
-        main = 'Log10 Y-axis'
+    # Add reference lines
+    abline(v = 0, col = "lightgrey")  # Vertical line at LFC = 0
+    abline(h = -log10(exprob), col = "lightgrey")  # Horizontal threshold line
+
+    # Plot all genes in light grey
+    points(results[,"LFC"], -log10(results[,"rcDdis"]), pch = 20, cex = 0.5, col = "lightgrey")
+
+    # Highlight significantly downregulated genes (red)
+    points(results[intersect(meanset, downset), "LFC"],
+           -log10(results[intersect(meanset, downset), "rcDdis"]),
+           pch = 20, cex = 0.5, col = "red")
+
+    # Highlight significantly upregulated genes (blue)
+    points(results[intersect(meanset, upset), "LFC"],
+           -log10(results[intersect(meanset, upset), "rcDdis"]),
+           pch = 20, cex = 0.5, col = "blue")
+
+    # Add legend
+    legend(
+        "bottomright",
+        legend = c("Upregulated", "Downregulated", "Below Avg Degree", "Center Gene"),
+        col = c("blue", "red", "lightgrey", "black"),
+        pch = c(20, 20, 20, 4),
+        cex = 0.5
     )
+
+    # Add right-side axis with Nsig values
+    axis(side = 4, labels = Nticks, at = c(0:3))
 
     dev.off()
 }
+
 
 ################################################
 ################################################
@@ -411,7 +452,7 @@ if (opt\$permutation == 0) {
 
         # parse genewise information from pairwise results
 
-        results_genewise <- get_genewise_information(results_pairwise)
+        results_genewise <- get_genewise_information(pd, cut=0.01) # TODO: Ask Ionas if the value should be provided by the user
     }
 
 } else {
@@ -503,7 +544,7 @@ if (opt\$permutation == 0) {
 
         # parse genewise information from pairwise results
 
-        results_genewise <- get_genewise_information(results_pairwise)
+        results_genewise <- get_genewise_information(pd, cut=0.01) # TODO: Ask Ionas if the value should be provided by the user
     }
 }
 
@@ -538,13 +579,12 @@ if (!theta_cutoff) {
 
     results_genewise <- data.frame(
         'features_id_col' = character(0),
-        lfc = numeric(0),
-        lfc_error = numeric(0),
-        connectivity = numeric(0),
-        weighted_connectivity = numeric(0)
+        recDdis = numeric(0),
+        Nsig = numeric(0),
+        lrmD = numeric(0),
+        LFC = numeric(0)
     )
-    colnames(results_genewise) <- c(opt\$features_id_col, 'lfc', 'lfc_error', 'connectivity', 'weighted_connectivity')
-
+    colnames(results_genewise) <- c(opt\$features_id_col, 'recDdis', 'Nsig', 'lrmD', 'LFC')
 }
 
 ################################################
@@ -569,10 +609,10 @@ if (nrow(results_genewise) > 0) {
 }
 
 # save main results - genewise
-
+results_genewise <- as.data.frame(results_genewise)
 results_genewise <- results_genewise[order(
-    results_genewise\$weighted_connectivity,
-    abs(results_genewise\$lfc),
+    results_genewise\$rcDdis,
+    abs(results_genewise\$LFC),
     decreasing = TRUE
 ),]
 
