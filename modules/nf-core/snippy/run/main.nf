@@ -72,7 +72,7 @@ process SNIPPY_RUN {
     touch ${prefix}/${prefix}.consensus.subs.fa
     touch ${prefix}/${prefix}.raw.vcf
     touch ${prefix}/${prefix}.filt.vcf
-    touch ${prefix}/${prefix}.vcf.gz
+    gzip -c ${prefix}/${prefix}.vcf > ${prefix}/${prefix}.vcf.gz
     touch ${prefix}/${prefix}.vcf.gz.csi
     touch ${prefix}/${prefix}.txt
 
