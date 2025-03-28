@@ -4,8 +4,8 @@ process BLAST_BLASTN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/blast:2.15.0--pl5321h6f7f691_1':
-        'biocontainers/blast:2.15.0--pl5321h6f7f691_1' }"
+        'https://depot.galaxyproject.org/singularity/blast:2.16.0--h66d330f_4':
+        'biocontainers/blast:2.16.0--h66d330f_4' }"
 
     input:
     tuple val(meta) , path(fasta)
