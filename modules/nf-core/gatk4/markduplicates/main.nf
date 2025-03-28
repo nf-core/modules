@@ -13,19 +13,19 @@ process GATK4_MARKDUPLICATES {
     path  fasta_fai
 
     output:
-    tuple val(meta), path("${prefix}.cram"),     emit: cram,  optional: true
-    tuple val(meta), path("${prefix}.md.bam"),      emit: bam,   optional: true
+    tuple val(meta), path("${prefix}.cram"),    emit: cram,  optional: true
+    tuple val(meta), path("${prefix}.bam"),     emit: bam,   optional: true
     tuple val(meta), path("${prefix}*crai"),    emit: crai,  optional: true
     tuple val(meta), path("${prefix}*bai"),     emit: bai,   optional: true
-    tuple val(meta), path("*.metrics"), emit: metrics
-    path "versions.yml",                emit: versions
+    tuple val(meta), path("*.metrics"),         emit: metrics
+    path "versions.yml",                        emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}.md"
     suffix = task.ext.suffix ?: "bam"
 
     def input_list = bam.collect{"--INPUT $it"}.join(' ')
@@ -45,7 +45,7 @@ process GATK4_MARKDUPLICATES {
     gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         MarkDuplicates \\
         $input_list \\
-        --OUTPUT ${prefix}.md.bam \\
+        --OUTPUT ${prefix}.bam \\
         --METRICS_FILE ${prefix}.metrics \\
         --TMP_DIR . \\
         ${reference} \\
