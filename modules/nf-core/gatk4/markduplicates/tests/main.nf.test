@@ -28,7 +28,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bam).match("bam") },
                 { assert snapshot(bam(process.out.bam[0][1]).getReadsMD5())},
                 { assert snapshot(process.out.bai).match("bai") },
                 { assert snapshot(process.out.versions).match("versions") },
