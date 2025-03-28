@@ -3,6 +3,7 @@ process HLALA_PREPAREGRAPH {
     label 'process_high'
     stageInMode 'copy'
 
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hla-la:1.0.3--hd03093a_0':
         'biocontainers/hla-la:1.0.3--hd03093a_0' }"
@@ -18,14 +19,16 @@ process HLALA_PREPAREGRAPH {
     task.ext.when == null || task.ext.when
 
     script:
-    // Exit if running this module with -profile conda / -profile mamba
+    def bin = ""
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "HLALA_PREPAREGRAPH module does not support Conda. Please use Docker or Singularity."
+        bin="\$CONDA_PREFIX/opt/hla-la/bin/HLA-LA"
+    } else {
+        bin="/usr/local/opt/hla-la/bin/HLA-LA"
     }
     def args = task.ext.args ?: ''
 
     """
-    /usr/local/opt/hla-la/bin/HLA-LA \\
+    ${bin} \\
         --action prepareGraph \\
         --PRG_graph_dir $graph
 
