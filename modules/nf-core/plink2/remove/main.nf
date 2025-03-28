@@ -12,13 +12,13 @@ process PLINK2_REMOVE {
     path(sample_exclude_list)
 
     output:
-    tuple val(meta), path("*.bim")  , emit: remove_bim, optional: true
-    tuple val(meta), path("*.bed")  , emit: remove_bed, optional: true
-    tuple val(meta), path("*.fam")  , emit: remove_fam, optional: true
-    tuple val(meta), path("*.pgen") , emit: remove_pgen, optional: true
-    tuple val(meta), path("*.psam") , emit: remove_psam, optional: true
-    tuple val(meta), path("*.pvar") , emit: remove_pvar, optional: true
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path("*.bim"),  emit: remove_bim,  optional: true
+    tuple val(meta), path("*.bed"),  emit: remove_bed,  optional: true
+    tuple val(meta), path("*.fam"),  emit: remove_fam,  optional: true
+    tuple val(meta), path("*.pgen"), emit: remove_pgen, optional: true
+    tuple val(meta), path("*.psam"), emit: remove_psam, optional: true
+    tuple val(meta), path("*.pvar"), emit: remove_pvar, optional: true
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -45,12 +45,10 @@ process PLINK2_REMOVE {
         plink2: \$(plink2 --version 2>&1 | sed 's/^PLINK v//; s/ 64.*\$//' )
     END_VERSIONS
     """
-    
+
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def mode = plink_genotype_file.extension == "pgen" ? '--pfile' : '--bfile'
-    def outtype = plink_genotype_file.extension == "pgen" ? '--make-pgen' : '--make-bed'
     def input = "${plink_genotype_file.getBaseName()}"
     def trio = plink_genotype_file.extension == 'pgen' ? "${prefix}.pfam ${prefix}.psam ${prefix}.pvar" : "${prefix}.bed ${prefix}.bim ${prefix}.fam"
     if( "${input}" == "${prefix}" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
