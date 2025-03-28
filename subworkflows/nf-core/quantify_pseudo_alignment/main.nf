@@ -8,8 +8,6 @@ include { CUSTOM_TX2GENE   } from '../../../modules/nf-core/custom/tx2gene'
 include { TXIMETA_TXIMPORT } from '../../../modules/nf-core/tximeta/tximport'
 
 include { SUMMARIZEDEXPERIMENT_SUMMARIZEDEXPERIMENT as SE_GENE               } from '../../../modules/nf-core/summarizedexperiment/summarizedexperiment'
-include { SUMMARIZEDEXPERIMENT_SUMMARIZEDEXPERIMENT as SE_GENE_LENGTH_SCALED } from '../../../modules/nf-core/summarizedexperiment/summarizedexperiment'
-include { SUMMARIZEDEXPERIMENT_SUMMARIZEDEXPERIMENT as SE_GENE_SCALED        } from '../../../modules/nf-core/summarizedexperiment/summarizedexperiment'
 include { SUMMARIZEDEXPERIMENT_SUMMARIZEDEXPERIMENT as SE_TRANSCRIPT         } from '../../../modules/nf-core/summarizedexperiment/summarizedexperiment'
 
 workflow QUANTIFY_PSEUDO_ALIGNMENT {
@@ -77,26 +75,14 @@ workflow QUANTIFY_PSEUDO_ALIGNMENT {
     ch_versions = ch_versions.mix(TXIMETA_TXIMPORT.out.versions)
 
     SE_GENE (
-        TXIMETA_TXIMPORT.out.counts_gene.concat(TXIMETA_TXIMPORT.out.tpm_gene).groupTuple(),
+        TXIMETA_TXIMPORT.out.gene,
         CUSTOM_TX2GENE.out.tx2gene,
         samplesheet
     )
     ch_versions = ch_versions.mix(SE_GENE.out.versions)
 
-    SE_GENE_LENGTH_SCALED (
-        TXIMETA_TXIMPORT.out.counts_gene_length_scaled.concat(TXIMETA_TXIMPORT.out.tpm_gene).groupTuple(),
-        CUSTOM_TX2GENE.out.tx2gene,
-        samplesheet
-    )
-
-    SE_GENE_SCALED (
-        TXIMETA_TXIMPORT.out.counts_gene_scaled.concat(TXIMETA_TXIMPORT.out.tpm_gene).groupTuple(),
-        CUSTOM_TX2GENE.out.tx2gene,
-        samplesheet
-    )
-
     SE_TRANSCRIPT (
-        TXIMETA_TXIMPORT.out.counts_transcript.concat(TXIMETA_TXIMPORT.out.tpm_transcript).groupTuple(),
+        TXIMETA_TXIMPORT.out.transcript,
         CUSTOM_TX2GENE.out.tx2gene,
         samplesheet
     )
@@ -115,8 +101,6 @@ workflow QUANTIFY_PSEUDO_ALIGNMENT {
     lengths_transcript            = TXIMETA_TXIMPORT.out.lengths_transcript        //    path: *transcript_lengths.tsv
 
     merged_gene_rds               = SE_GENE.out.rds                                //    path: *.rds
-    merged_gene_rds_length_scaled = SE_GENE_LENGTH_SCALED.out.rds                  //    path: *.rds
-    merged_gene_rds_scaled        = SE_GENE_SCALED.out.rds                         //    path: *.rds
     merged_transcript_rds         = SE_TRANSCRIPT.out.rds                          //    path: *.rds
 
     versions                      = ch_versions                                    // channel: [ versions.yml ]

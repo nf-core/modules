@@ -155,16 +155,35 @@ if ('assay_names' %in% names(args_opt)){
 
 # Build and verify the main assays list for the summarisedexperiment
 
-assay_list <- lapply(matrix_files, function(m){
-    mat <- read_delim_flexible(m, row.names = 1, stringsAsFactors = FALSE)
-    mat[,sapply(mat, is.numeric), drop = FALSE]
-})
+assays_list <- list()
+for(file in matrix_files) {
+    mat <- read_delim_flexible(file, row.names = 1, stringsAsFactors = FALSE)
+    mat <- mat[, sapply(mat, is.numeric), drop = FALSE]
 
-checkRowColNames(assay_list)
+    if(grepl("gene_tpm", file)) {
+        assays_list[["tpm"]] <- as.matrix(mat)
+    } else if(grepl("gene_counts_length_scaled", file)) {
+        assays_list[["counts_length_scaled"]] <- as.matrix(mat)
+    } else if(grepl("gene_counts_scaled", file)) {
+        assays_list[["counts_scaled"]] <- as.matrix(mat)
+    } else if(grepl("gene_counts", file)) {
+        assays_list[["counts"]] <- as.matrix(mat)
+    } else if(grepl("gene_lengths", file)) {
+        assays_list[["gene_lengths"]] <- as.matrix(mat)
+    } else if(grepl("transcript_tpm", file)) {
+        assays_list[["tpm"]] <- as.matrix(mat)
+    } else if(grepl("transcript_counts", file)) {
+        assays_list[["counts"]] <- as.matrix(mat)
+    } else if(grepl("transcript_lengths", file)) {
+        assays_list[["lengths"]] <- as.matrix(mat)
+    }
+}
+
+checkRowColNames(assays_list)
 
 # Construct SummarizedExperiment
 se <- SummarizedExperiment(
-    assays = assay_list
+    assays = assays_list
 )
 
 # Add column (sample) metadata if provided
@@ -172,7 +191,7 @@ se <- SummarizedExperiment(
 if ('$coldata' != ''){
     coldata <- parse_metadata(
         metadata_path = '$coldata',
-        ids = colnames(assay_list[[1]]),
+        ids = colnames(assays_list[[1]]),
         metadata_id_col = args_opt\$coldata_id_col
     )
 
@@ -184,7 +203,7 @@ if ('$coldata' != ''){
 if ('$rowdata' != ''){
     rowdata <- parse_metadata(
         metadata_path = '$rowdata',
-        ids = rownames(assay_list[[1]]),
+        ids = rownames(assays_list[[1]]),
         metadata_id_col = args_opt\$rowdata_id_col
     )
 
