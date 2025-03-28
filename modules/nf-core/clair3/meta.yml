@@ -39,9 +39,12 @@ input:
       type: file
       description: BAM index file
       pattern: "*.bai"
-  - model:
+  - packaged_model:
+      type: string
+      description: string containing the name of a prepackaged Clair3 model
+  - user_model:
       type: directory
-      description: collection of files used in a trained Clair3 model
+      description: directory containing Clair3 model files
   - platform:
       type: string
       description: val in ['hifi','ont', 'ilmn'] to indicate pacbio, ONT, or illumina
