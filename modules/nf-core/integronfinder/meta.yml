@@ -34,10 +34,8 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
           pattern: "*.gbk"
       - "*/*.gbk":
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+          type: file
+          description: Creates a Genbank files with all the annotations found (present in the .integrons file)
           pattern: "*.gbk"
   - integrons:
       - meta:
@@ -47,10 +45,8 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
           pattern: "*.integrons"
       - "*/*.integrons":
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+          type: file
+          description: A file with all integrons and their elements detected in all sequences in the input file
           pattern: "*.integrons"
   - summary:
       - meta:
@@ -60,16 +56,13 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
           pattern: "*.summary"
       - "*/*.summary":
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+          type: file
+          description: A summary file with the number and type of integrons per sequence
           pattern: "*.summary"
   - out:
       - "*/integron_finder.out":
           type: file
-          description: A copy standard output. The stdout can be silenced with the argument
-            --mute
+          description: A copy standard output. The stdout can be silenced with the argument --mute
           pattern: "integron_finder.out"
   - versions:
       - versions.yml:

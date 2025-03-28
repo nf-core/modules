@@ -41,7 +41,7 @@ process INTEGRONFINDER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        integronfinder: \$(integron_finder --version)
+        integronfinder: \$(integron_finder --version | sed -n 's/.*version \\(.*\\).*/\\1/p')
     END_VERSIONS
     """
 
@@ -49,16 +49,14 @@ process INTEGRONFINDER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p Results_Integron_Finder_${prefix}
-    touch "Results_Integron_Finder_${prefix}/test.gbk"
-    touch "Results_Integron_Finder_${prefix}/test.integrons"
-    touch "Results_Integron_Finder_${prefix}/test.summary"
+    touch "Results_Integron_Finder_${prefix}/${prefix}.gbk"
+    touch "Results_Integron_Finder_${prefix}/${prefix}.integrons"
+    touch "Results_Integron_Finder_${prefix}/${prefix}.summary"
     touch "Results_Integron_Finder_${prefix}/integron_finder.out"
-
-    VER=\$(integron_finder --version)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        integronfinder: \$(integron_finder --version)
+        integronfinder: \$(integron_finder --version | sed -n 's/.*version \\(.*\\).*/\\1/p')
     END_VERSIONS
     """
 }
