@@ -32,9 +32,10 @@ nextflow_process {
                 { assert snapshot(
                     process.out.versions,
                     process.out.results.collect{ it[1].collect{
-                        file(it).name.endsWith("svg|pdf") ? file(it).name : file(it)
+                        def fileName = file(it).name
+                        (fileName.endsWith("svg") || fileName.endsWith("pdf")) ? fileName : file(it)
                     }}
-                ).match() }
+               ).match() }
             )
         }
     }
@@ -61,9 +62,10 @@ nextflow_process {
                 { assert snapshot(
                     process.out.versions,
                     process.out.results.collect{ it[1].collect{
-                        file(it).name.endsWith("svg|pdf") ? file(it).name : file(it)
+                        def fileName = file(it).name
+                        (fileName.endsWith("svg") || fileName.endsWith("pdf")) ? fileName : file(it)
                     }}
-                ).match() }
+               ).match() }
             )
         }
     }
@@ -90,9 +92,10 @@ nextflow_process {
                 { assert snapshot(
                     process.out.versions,
                     process.out.results.collect{ it[1].collect{
-                        file(it).name.endsWith("svg|pdf") ? file(it).name : file(it)
+                        def fileName = file(it).name
+                        (fileName.endsWith("svg") || fileName.endsWith("pdf")) ? fileName : file(it)
                     }}
-                ).match() }
+               ).match() }
             )
         }
     }
