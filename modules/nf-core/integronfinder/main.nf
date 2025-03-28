@@ -37,7 +37,7 @@ process INTEGRONFINDER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        integronfinder: \$(integron_finder --version | sed -n 's/.*version \\(.*\\).*/\\1/p')
+        integronfinder: \$(integron_finder --version 2>&1 | head -n1 | sed -n 's/.*version \\([^\\s]*\\).*/\\1/p')
     END_VERSIONS
     """
 
@@ -52,7 +52,6 @@ process INTEGRONFINDER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        integronfinder: \$(integron_finder --version | sed -n 's/.*version \\(.*\\).*/\\1/p')
-    END_VERSIONS
+        integronfinder: \$(integron_finder --version 2>&1 | head -n1 | sed -n 's/.*version \\([^\\s]*\\).*/\\1/p')
     """
 }
