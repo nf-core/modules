@@ -30,15 +30,14 @@ process HLALA_TYPING {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    mkdir graphs
-    mv $graph graphs
-    mv graphs /usr/local/opt/hla-la/
-
     mkdir $prefix
+    mkdir -p PRG_MHC_GRCh38_withIMGT
+    mv $graph/* PRG_MHC_GRCh38_withIMGT/
 
-    /usr/local/opt/hla-la/src/HLA-LA.pl \\
+    HLA-LA.pl \\
         --BAM $bam \\
-        --graph ../graphs/$graph \\
+        --graph PRG_MHC_GRCh38_withIMGT \\
+        --customGraphDir \$(pwd) \\
         --sampleID $prefix \\
         --workingDir . \\
         --maxThreads $task.cpus \\
