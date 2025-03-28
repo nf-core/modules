@@ -20,13 +20,14 @@ process MCSTAGING_MACSIMA2MC {
         error "macsima2mc module in conda does not exist. Please use Docker / Singularity / Podman instead."
     }
 
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.2.13'
 
     """
     python /staging/macsima2mc/macsima2mc.py \
         -i ${input_dir} \
-        -o ${output_dir} \
+        -o ${prefix} \
         ${args}
 
     cat <<-END_VERSIONS > versions.yml
