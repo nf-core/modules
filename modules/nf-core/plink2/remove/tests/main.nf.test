@@ -10,7 +10,7 @@ nextflow_process {
     tag "plink2/remove"
     tag "gawk"
 
-    test("plink2 - plink1_input - remove") {
+    test("human - bed/bim/fam - remove") {
 
         when {
             process {
@@ -35,7 +35,7 @@ nextflow_process {
 
     }
 
-    test("plink2 - plink2_input - remove") {
+    test("human - pgen/pvar/psam - remove") {
 
         when {
             process {
@@ -60,7 +60,9 @@ nextflow_process {
 
     }
     
-     test("plink2 - plink1_input - remove - stub") {
+     test("human - bed/bim/fam - remove - stub") {
+
+        options "-stub"
 
         when {
             process {
@@ -85,7 +87,9 @@ nextflow_process {
 
     }
 
-    test("plink2 - plink2_input - remove - stub") {
+    test("human - pgen/pvar/psam - remove - stub") {
+
+        options "-stub"
 
         when {
             process {
