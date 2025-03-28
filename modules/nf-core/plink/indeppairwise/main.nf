@@ -46,6 +46,7 @@ process PLINK_INDEPPAIRWISE {
 
     """
     touch ${meta.id}.prune.in
+    touch ${meta.id}.prune.out
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

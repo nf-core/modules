@@ -10,27 +10,30 @@ nextflow_process {
     tag "plink/indeppairwise"
     tag "plink/vcf"
 
-    test("test_plink_indeppairwise") {
+    setup {
 
         config "./nextflow.config"
 
-        setup {
+        params {
+            module_args = '--make-bed --biallelic-only strict --vcf-half-call haploid --allow-extra-chr'
+        }
 
-            params.module_args = '--make-bed --biallelic-only strict --vcf-half-call haploid --allow-extra-chr'
+        run("PLINK_VCF") {
 
-            run("PLINK_VCF") {
-                script "../../vcf/main.nf"
+            script "../../vcf/main.nf"
 
-                process {
-                    """
-                    input[0] = [
-                        [id:'test',single_end:false],// meta map
-                        file("https://github.com/nf-core/test-datasets/raw/modules/data/genomics/homo_sapiens/genome/vcf/ped/justhusky_minimal.vcf.gz", checkIfExists:true)
-                        ]
-                    """
-                }
+            process {
+                """
+                input[0] = [
+                    [id:'test',single_end:false],// meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/vcf/ped/justhusky_minimal.vcf.gz", checkIfExists:true)
+                    ]
+                """
             }
         }
+    }
+
+    test("test_plink_indeppairwise") {
         when {
             process {
                 """
@@ -56,12 +59,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file("test.bed"),
-                    file("test.bim"),
-                    file("test.fam")
-                    ]
+                input[0] = PLINK_VCF.out.bed.join(PLINK_VCF.out.bim).join(PLINK_VCF.out.fam)
                 input[1] = Channel.value(50)
                 input[2] = Channel.value(5)
                 input[3] = Channel.value(0.2)
