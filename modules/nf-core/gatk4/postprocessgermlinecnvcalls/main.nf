@@ -55,9 +55,9 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_genotyped_intervals.vcf.gz
-    touch ${prefix}_genotyped_segments.vcf.gz
-    touch ${prefix}_denoised.vcf.gz
+    echo "" | gzip > ${prefix}_genotyped_intervals.vcf.gz
+    echo "" | gzip > ${prefix}_genotyped_segments.vcf.gz
+    echo "" | gzip > ${prefix}_denoised.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

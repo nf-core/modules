@@ -68,7 +68,7 @@ process SVABA {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.bps.txt.gz
+    echo "" | gzip > ${prefix}.bps.txt.gz
     touch ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml

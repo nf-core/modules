@@ -51,11 +51,11 @@ process GLIMPSE_CONCORDANCE {
     def prefix  = task.ext.prefix ?: "${meta.id}"
     def args    = task.ext.args   ?: ""
     """
-    touch ${prefix}.error.cal.txt.gz
-    touch ${prefix}.error.grp.txt.gz
-    touch ${prefix}.error.spl.txt.gz
-    touch ${prefix}.rsquare.grp.txt.gz
-    touch ${prefix}.rsquare.spl.txt.gz
+    echo "" | gzip > ${prefix}.error.cal.txt.gz
+    echo "" | gzip > ${prefix}.error.grp.txt.gz
+    echo "" | gzip > ${prefix}.error.spl.txt.gz
+    echo "" | gzip > ${prefix}.rsquare.grp.txt.gz
+    echo "" | gzip > ${prefix}.rsquare.spl.txt.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
