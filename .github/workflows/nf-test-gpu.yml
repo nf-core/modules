@@ -108,6 +108,9 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           fetch-depth: 0
+      - name: test cuda
+        run: |
+          nvidia-smi -L
       - name: Run nf-test Action
         uses: ./.github/actions/nf-test-action
         env:
