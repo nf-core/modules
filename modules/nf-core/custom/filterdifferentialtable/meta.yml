@@ -4,6 +4,7 @@ keywords:
   - filter
   - differential expression
   - logFC
+  - significance statistic
   - p-value
 tools:
   - "pandas":
@@ -26,18 +27,30 @@ input:
         type: file
         description: Input differential expression table (CSV, TSV, or TXT format)
         pattern: "*.{csv,tsv,txt}"
-  - - logFC_column:
+  - - logfc_column:
         type: string
         description: Name of the column containing log fold change values
-  - - FC_threshold:
+    - fc_threshold:
         type: float
         description: Fold change threshold for filtering
-  - - padj_column:
+    - fc_cardinality:
         type: string
-        description: Name of the column containing adjusted p-values
-  - - padj_threshold:
+        description: |
+          Operator to compare the fold change values with the threshold.
+          Valid values are: ">=", "<=", ">", "<".
+  - - stat_column:
+        type: string
+        description: |
+          Name of the column containing the significance statistic values
+          (eg. adjusted p-values).
+    - stat_threshold:
         type: float
-        description: Adjusted p-value threshold for filtering
+        description: Statistic threshold for filtering
+    - stat_cardinality:
+        type: string
+        description: |
+          Operator to compare the column values with the threshold.
+          Valid values are: ">=", "<=", ">", "<".
 output:
   - filtered:
       - meta:

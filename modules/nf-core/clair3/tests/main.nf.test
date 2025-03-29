@@ -1,0 +1,104 @@
+nextflow_process {
+
+    name "Test Process CLAIR3"
+    script "../main.nf"
+    process "CLAIR3"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "clair3"
+    tag "untar"
+
+    setup {
+        run("UNTAR") {
+            script "../../../../modules/nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'generic/models/clair3.hifi.tar.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+       }
+    test("sarscov2 - bam") {
+
+        when {
+            process {
+                """
+                def model_path = UNTAR.out.untar
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                ])
+                .join(UNTAR.out.untar).combine(Channel.of(['hifi']))
+                input[1] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                ]
+                input[2] = [
+                    [ id: 'test'],
+                    file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                                process.out.vcf.collect { file(it[1]).getName() },
+                                process.out.tbi.collect { file(it[1]).getName() },
+                                process.out.versions,
+                                process.out.phased_vcf.collect { file(it[1]).getName() },
+                                process.out.phased_tbi.collect { file(it[1]).getName() }).match()}
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                def model_path = UNTAR.out.untar
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                ])
+                .join(UNTAR.out.untar).combine(Channel.of(['hifi']))
+                input[1] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                ]
+                input[2] = [
+                    [ id: 'test'],
+                    file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                                process.out.vcf,
+                                process.out.tbi,
+                                process.out.phased_vcf,
+                                process.out.phased_tbi,
+                                process.out.versions,
+                                ).match()}
+            )
+        }
+
+    }
+
+}

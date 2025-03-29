@@ -31,6 +31,8 @@ input:
         description: Input protein structures in PDB format. Files may be gzipped or
           uncompressed. They should contain exactly one chain!
         pattern: "*.{pdb}"
+        ontologies:
+          - edam: http://edamontology.org/format_1747 # PDB atom record format
   - - compress:
         type: boolean
         description: Flag representing whether the output MSA should be compressed.
@@ -47,6 +49,10 @@ output:
           type: file
           description: Alignment in FASTA format. May be gzipped or uncompressed.
           pattern: "*.aln{.gz,}"
+          ontologies:
+            - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
+            - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
+            - edam: http://edamontology.org/format_1984 # FASTA-ALN
   - structure:
       - meta:
           type: map
@@ -57,11 +63,15 @@ output:
           type: file
           description: Overlaid structures in PDB format. May be gzipped or uncompressed.
           pattern: "${prefix}.pdb{.gz,}"
+          ontologies:
+            - edam: http://edamontology.org/format_1747 # PDB atom record format
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@lrauschning"
 maintainers:

@@ -1,0 +1,95 @@
+nextflow_process {
+
+    name "Test Process MMSEQS_SEARCH"
+    script "../main.nf"
+    process "MMSEQS_SEARCH"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mmseqs"
+    tag "mmseqs/search"
+    tag "mmseqs/createdb"
+
+    config "./nextflow.config"
+
+    setup {
+        run("MMSEQS_CREATEDB", alias: "MMSEQS_CREATEDB_QUERY") {
+            script "../../../mmseqs/createdb/main.nf"
+            process {
+                """
+                input[0] = [ [ id:'test_query', single_end:true ], // meta map
+                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        run("MMSEQS_CREATEDB", alias: "MMSEQS_CREATEDB_TARGET") {
+            script "../../../mmseqs/createdb/main.nf"
+            process {
+                """
+                input[0] = [ [ id:'test_target', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/scaffolds.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - test-search") {
+
+        when {
+            params {
+                module_args   = '--remove-tmp-files 1 --search-type 2'
+                module_prefix = 'test_output_search'
+            }
+            process {
+                """
+                input[0] = MMSEQS_CREATEDB_QUERY.out.db
+                input[1] = MMSEQS_CREATEDB_TARGET.out.db
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.db_search.get(0).get(1)).list().sort(), //second file is empty so fails linting
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - test-search - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args   = '--remove-tmp-files 1 --search-type 2'
+                module_prefix = 'test_output_search'
+            }
+            process {
+                """
+                input[0] = MMSEQS_CREATEDB_QUERY.out.db
+                input[1] = MMSEQS_CREATEDB_TARGET.out.db
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+
+    }
+
+}

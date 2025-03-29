@@ -22,7 +22,7 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - maf:
         type: file
-        description: Multiple Aligment Format (MAF) file, optionally compressed with
+        description: Multiple Alignment Format (MAF) file, optionally compressed with
           gzip
         pattern: "*.{maf.gz,maf}"
 output:
@@ -34,7 +34,7 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.maf.gz":
           type: file
-          description: Multiple Aligment Format (MAF) file, compressed with gzip
+          description: Multiple Alignment Format (MAF) file, compressed with gzip
           pattern: "*.{maf.gz}"
   - versions:
       - versions.yml:

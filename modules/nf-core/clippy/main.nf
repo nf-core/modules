@@ -37,4 +37,18 @@ process CLIPPY {
         clippy: \$(clippy -v)
     END_VERSIONS
     """
+
+    stub:
+    prefix   = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}_Peaks.bed
+    touch ${prefix}_Summits.bed
+    touch ${prefix}_intergenic_regions.gtf
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        clippy: \$(clippy -v)
+    END_VERSIONS
+    """
+
 }

@@ -3,21 +3,20 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
     label 'process_medium'
 
     //Conda is not supported at the moment
-    container "nf-core/deepvariant:1.6.1"
+    container "docker.io/google/deepvariant:1.8.0"
 
     input:
-    tuple val(meta), path(variant_calls_tfrecord_files), path(gvcf_tfrecords)
+    tuple val(meta), path(variant_calls_tfrecord_files), path(gvcf_tfrecords), path(small_model_calls), path(intervals)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(gzi)
 
     output:
-    tuple val(meta), path("${prefix}.vcf.gz")      ,  emit: vcf
-    tuple val(meta), path("${prefix}.vcf.gz.tbi")  ,  emit: vcf_tbi
-    tuple val(meta), path("${prefix}.g.vcf.gz")    ,  emit: gvcf
-    tuple val(meta), path("${prefix}.g.vcf.gz.tbi"),  emit: gvcf_tbi
-
-    path "versions.yml",  emit: versions
+    tuple val(meta), path("${prefix}.vcf.gz")             , emit: vcf
+    tuple val(meta), path("${prefix}.vcf.gz.{tbi,csi}")   , emit: vcf_index
+    tuple val(meta), path("${prefix}.g.vcf.gz")           , emit: gvcf
+    tuple val(meta), path("${prefix}.g.vcf.gz.{tbi,csi}") , emit: gvcf_index
+    path "versions.yml"                                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,6 +29,7 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
+    def regions = intervals ? "--regions ${intervals}" : ""
     def variant_calls_tfrecord_name = variant_calls_tfrecord_files[0].name.replaceFirst(/-\d{5}-of-\d{5}/, "")
 
     def gvcf_matcher = gvcf_tfrecords[0].baseName =~ /^(.+)-\d{5}-of-(\d{5})$/
@@ -41,6 +41,21 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
     // Reconstruct the logical name - ${tfrecord_name}.examples.tfrecord@${task.cpus}.gz
     def gvcf_tfrecords_logical_name = "${gvcf_tfrecord_name}@${gvcf_shardCount}.gz"
 
+    // The following block determines whether the small model was used, and if so, adds the variant calls from it
+    // to the argument --small_model_cvo_records.
+    def small_model_arg = ""
+    if (small_model_calls) {
+        small_model_matcher = (small_model_calls[0].baseName =~ /^(.+)-\d{5}-of-(\d{5})$/)
+        if (!small_model_matcher.matches()) {
+            throw new IllegalArgumentException("tfrecord baseName '" + small_model_calls[0].baseName + "' doesn't match the expected pattern")
+        }
+        small_model_tfrecord_name = small_model_matcher[0][1]
+        small_model_shardCount = small_model_matcher[0][2]
+        // Reconstruct the logical name. Example: test_call_variant_outputs.examples.tfrecord@12.gz
+        small_model_tfrecords_logical_name = "${small_model_tfrecord_name}@${small_model_shardCount}.gz"
+        small_model_arg = "--small_model_cvo_records ${small_model_tfrecords_logical_name}"
+    }
+
     """
     /opt/deepvariant/bin/postprocess_variants \\
         ${args} \\
@@ -49,6 +64,8 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
         --outfile "${prefix}.vcf.gz" \\
         --nonvariant_site_tfrecord_path "${gvcf_tfrecords_logical_name}" \\
         --gvcf_outfile "${prefix}.g.vcf.gz" \\
+        ${regions} \\
+        ${small_model_arg} \\
         --cpus $task.cpus
 
     cat <<-END_VERSIONS > versions.yml

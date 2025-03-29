@@ -27,6 +27,8 @@ input:
         description: The input sequence database. Supported formats are FASTA and DIAMOND
           (.dmnd) format.
         pattern: "*.{dmnd,fa,faa,fasta}(.gz)"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
 output:
   - tsv:
       - meta:
@@ -39,11 +41,14 @@ output:
           description: a 2-column tabular file with the representative accession as the
             first column and the member sequence accession as the second column
           pattern: "*.tsv"
+          ontologies: []
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies: 
+              - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@itrujnara"
 maintainers:

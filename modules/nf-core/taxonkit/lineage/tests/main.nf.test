@@ -1,0 +1,101 @@
+nextflow_process {
+
+    name "Test Process TAXONKIT_LINEAGE"
+    script "../main.nf"
+    process "TAXONKIT_LINEAGE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "untar"
+    tag "taxonkit"
+    tag "taxonkit/lineage"
+
+    setup {
+        run("UNTAR"){
+            script "modules/nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file("ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - taxonid") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    "2697049",
+                    []
+                ]
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - taxid list") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of( [
+                    [ id:'test', single_end:false ], // meta map
+                    ''
+                ] ).combine( Channel.of("2697049").collectFile( name:'taxids.txt', newLine: true ) )
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - taxid - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    "2697049",
+                    []
+                ]
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+
+}

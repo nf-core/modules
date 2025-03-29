@@ -29,7 +29,7 @@ fastq_all.mkdir(exist_ok=True)
 # do not match "SRR12345", "file_INFIXR12", etc
 filename_pattern = r"([^a-zA-Z0-9])R1([^a-zA-Z0-9])"
 
-for modality in ["gex", "vdj", "ab", "beam", "cmo", "cirspr"]:
+for modality in ["gex", "vdj", "ab", "beam", "cmo", "crispr"]:
     # get fastqs, ordered by path. Files are staged into
     #   - "fastq_001/{original_name.fastq.gz}"
     #   - "fastq_002/{original_name.fastq.gz}"

@@ -2,17 +2,54 @@ nextflow_process {
 
     name "Test Process DECOUPLER"
     script "../main.nf"
-    config "./nextflow.config"
     process "DECOUPLER"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "decoupler"
     tag "decoupler/decoupler"
 
+    test("differential abundance data - normalized counts - mouse") {
+
+        when {
+            params {
+                module_args = "--min_n 2 --transpose TRUE --ensembl_ids TRUE"
+            }
+            process {
+                """
+                input[0] = [
+                    ['id':'SRP254919', 'method_differential':'deseq2', 'contrast':'treatment_mCherry_hND6_'],
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/treatment_mCherry_hND6_.deseq2.results.tsv", checkIfExists: true)
+                ]
+                input[1] = [
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/progeny/mouse_network.tsv", checkIfExists: true)
+                ]
+                input[2] = [file("https://ftp.ensembl.org/pub/release-81/gtf/mus_musculus/Mus_musculus.GRCm38.81.gtf.gz", checkIfExists: true)]
+                """
+            }
+        }
+
+    then {
+    def estimateFiles = process.out.dc_estimate[0][1].collect { path(it) }
+    def pvalsFiles = process.out.dc_pvals[0][1].collect { path(it) }
+
+        assertAll(
+            { assert process.success },
+            { estimateFiles.each { f -> assert f.exists() } },
+            { pvalsFiles.each { f -> assert f.exists() } },
+            { estimateFiles.each { f -> assert f.getText().contains("Androgen") } }
+        )
+    }
+    }
+
     test("decoupler_test") {
 
         when {
+            params {
+                module_args = "--min_n 1"
+            }
+
             process {
                 """
                 input[0] = [
@@ -22,6 +59,41 @@ nextflow_process {
                 input[1] = [
                     file(params.test_data['generic']['tsv']['network'], checkIfExists: true)
                 ]
+                input[2] = [file("https://ftp.ensembl.org/pub/release-81/gtf/mus_musculus/Mus_musculus.GRCm38.81.gtf.gz", checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+        def estimateFiles = process.out.dc_estimate[0][1].collect { path(it) }
+        def pvalsFiles = process.out.dc_pvals[0][1].collect { path(it) }
+
+        assertAll(
+            { assert process.success },
+            { estimateFiles.each { f -> assert f.exists() } },
+            { pvalsFiles.each { f -> assert f.exists() } }
+        )
+
+        }
+    }
+
+    test("decoupler stub") {
+        options "-stub"
+
+        when {
+            params {
+                module_args = "--min_n 1"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.test_data['generic']['tsv']['expression'], checkIfExists: true)
+                ]
+                input[1] = [
+                    file(params.test_data['generic']['tsv']['network'], checkIfExists: true)
+                ]
+                input[2] = [file("https://ftp.ensembl.org/pub/release-81/gtf/mus_musculus/Mus_musculus.GRCm38.81.gtf.gz", checkIfExists: true)]
                 """
             }
         }
@@ -32,7 +104,6 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
 
 }

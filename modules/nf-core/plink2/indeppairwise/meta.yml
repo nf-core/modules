@@ -1,0 +1,87 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "plink2_indeppairwise"
+description: Produce pruned set of variants in approximatelinkage equilibrium
+keywords:
+  - plink2
+  - linkage equilibrium
+  - pruning
+tools:
+  - plink2:
+      description: |
+        Whole genome association analysis toolset, designed to perform a range
+        of basic, large-scale analyses in a computationally efficient manner
+      homepage: http://www.cog-genomics.org/plink/2.0/
+      documentation: http://www.cog-genomics.org/plink/2.0/general_usage
+      doi: "10.1186/s13742-015-0047-8"
+      licence: ["GPL v3"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - plink_genotype_file:
+        type: file
+        description: PLINK binary genotype table file or PLINK 2 binary genotype table file
+        pattern: "*.{bed,pgen}"
+        ontologies:
+          - edam: http://edamontology.org/format_3003 # BED
+    - plink_variant_file:
+        type: file
+        description: PLINK extended MAP file or PLINK 2 variant information file
+        pattern: "*.{bim,pvar}"
+        ontologies: []
+    - plink_sample_file:
+        type: file
+        description: PLINK sample information file or PLINK 2 sample information file
+        pattern: "*.{fam,psam}"
+        ontologies: []
+  - - win:
+        type: integer
+        description: Window size in variant count or kilobase (if the 'kb' modifier
+          is present) units, a variant count to shift the window at the end of each
+          step, and a variance inflation factor (VIF) threshold.
+        pattern: "*.{}"
+  - - step:
+        type: integer
+        description: Variant count to shift the window at the end of each step.
+        pattern: "*.{}"
+  - - r2:
+        type: float
+        description: R squared threshold
+        pattern: "*.{}"
+output:
+  - prune_in:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.prune.in":
+          type: file
+          description: Variants in linkage equilibrium
+          pattern: "*.prune.in"
+          ontologies: []
+  - prune_out:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.prune.out":
+          type: file
+          description: Excluded variants
+          pattern: "*.prune.out"
+          ontologies: []
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+          ontologies: []
+authors:
+  - "@tdkaliki"
+maintainers:
+  - "@tdkaliki"

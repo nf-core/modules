@@ -34,4 +34,18 @@ process EPANG_SPLIT {
         epang: \$(echo \$(epa-ng --version 2>&1) | sed 's/^EPA-ng v//')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}_query.fasta
+    gzip ${prefix}_query.fasta
+    touch ${prefix}_reference.fasta
+    gzip ${prefix}_reference.fasta
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        epang: \$(echo \$(epa-ng --version 2>&1) | sed 's/^EPA-ng v//')
+    END_VERSIONS
+    """
 }

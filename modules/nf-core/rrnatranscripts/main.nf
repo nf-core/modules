@@ -1,5 +1,5 @@
 process RRNATRANSCRIPTS {
-    tag '$rrna'
+    tag "$gtf"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -20,7 +20,7 @@ process RRNATRANSCRIPTS {
     script:
     def prefix = task.ext.prefix ?: "${gtf.baseName}"
     """
-    grep -E '^#|rRNA' genome.gtf > ${prefix}_rrna_intervals.gtf || true
+    grep -E '^#|rRNA' ${gtf} > ${prefix}_rrna_intervals.gtf || true
     if [ !  -s ${prefix}_rrna_intervals.gtf ]; then
         rm ${prefix}_rrna_intervals.gtf
     fi

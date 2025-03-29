@@ -54,7 +54,7 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL){
 #' Install the right CDF for a given cel file
 #'
 #' @param celfile A valid path to a CEL file
-#' @param annotation Boolean indication wheter to install the annotation
+#' @param annotation Boolean indication whether to install the annotation
 #'        package
 #'
 #' @return output The CDF environment or a list detailing the failed locations.

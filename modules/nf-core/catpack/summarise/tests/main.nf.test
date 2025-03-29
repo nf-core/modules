@@ -1,0 +1,158 @@
+nextflow_process {
+
+    name "Test Process CATPACK_SUMMARISE"
+    script "../main.nf"
+    process "CATPACK_SUMMARISE"
+    config './nextflow.config'
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "catpack"
+    tag "catpack/summarise"
+    tag "catpack/prepare"
+    tag "catpack/contigs"
+    tag "catpack/bins"
+    tag "catpack/addnames"
+
+    setup {
+        run('CATPACK_PREPARE') {
+            script '../../prepare/main.nf'
+            process {
+            """
+            input[0] = [ [id:'test'], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)  ] ]
+            input[1] = [ file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/prot_nodes.dmp', checkIfExists: true) ]
+            input[2] = [ file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/prot_names.dmp', checkIfExists: true) ]
+            input[3] = [ file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/prot.accession2taxid.gz', checkIfExists: true) ]
+            """
+            }
+        }
+    }
+
+    test("sarscov2 - contigs - with names") {
+
+        setup {
+            run('CATPACK_CONTIGS') {
+                script '../../contigs/main.nf'
+                process {
+                """
+                    input[0] = [ [id:'test'], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)  ] ]
+                    input[1] = CATPACK_PREPARE.out.db
+                    input[2] = CATPACK_PREPARE.out.taxonomy
+                    input[3] = [[:], []]
+                    input[4] = [[:], []]
+                """
+                }
+            }
+
+            run('CATPACK_ADDNAMES') {
+                    script '../../addnames/main.nf'
+                    process {
+                    """
+                    input[0] = CATPACK_CONTIGS.out.contig2classification
+                    input[1] = CATPACK_PREPARE.out.taxonomy
+                    """
+                    }
+                }
+        }
+
+        when {
+            process {
+                """
+                input[0] = CATPACK_ADDNAMES.out.txt
+                input[1] = [ [id:'test'], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)  ] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bins - raw") {
+
+        setup {
+            run('CATPACK_BINS') {
+                    script '../../bins/main.nf'
+                    process {
+                    """
+                    input[0] = [ [id:'test'], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)  ] ]
+                    input[1] = CATPACK_PREPARE.out.db
+                    input[2] = CATPACK_PREPARE.out.taxonomy
+                    input[3] = [[:], []]
+                    input[4] = [[:], []]
+                    """
+                    }
+                }
+
+            run('CATPACK_ADDNAMES') {
+                    script '../../addnames/main.nf'
+                    process {
+                    """
+                    input[0] = CATPACK_BINS.out.bin2classification
+                    input[1] = CATPACK_PREPARE.out.taxonomy
+                    """
+                    }
+                }
+        }
+
+        when {
+            process {
+                """
+                input[0] = CATPACK_ADDNAMES.out.txt
+                input[1] = [[:],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - contigs - stub") {
+
+        options "-stub"
+
+        setup {
+            run('CATPACK_CONTIGS') {
+                script '../../contigs/main.nf'
+                process {
+                """
+                    input[0] = [ [id:'test'], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)  ] ]
+                    input[1] = CATPACK_PREPARE.out.db
+                    input[2] = CATPACK_PREPARE.out.taxonomy
+                    input[3] = [[:], []]
+                    input[4] = [[:], []]
+                """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = CATPACK_CONTIGS.out.contig2classification
+                input[1] = [ [id:'test'], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)  ] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

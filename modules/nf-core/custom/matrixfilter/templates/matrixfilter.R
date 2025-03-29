@@ -143,7 +143,7 @@ if (opt\$sample_file != ''){
 
     # If we're not using a sample sheet to select columns, then at least make
     # sure the ones we have are numeric (some upstream things like the RNA-seq
-    # workflow have annotation colummns as well)
+    # workflow have annotation columns as well)
 
     numeric_columns <- unlist(lapply(1:ncol(abundance_matrix), function(x) is.numeric(abundance_matrix[,x])))
     abundance_matrix <- abundance_matrix[,numeric_columns]
@@ -207,7 +207,7 @@ keep <- apply(boolean_matrix, 1, all)
 # Write out the matrix retaining the specified rows and re-prepending the
 # column with the feature identifiers
 
-prefix = ifelse('$task.ext.prefix' == 'null', '', '$task.ext.prefix')
+prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix')
 
 write.table(
     data.frame(rownames(abundance_matrix)[keep], abundance_matrix[keep,,drop = FALSE]),

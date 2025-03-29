@@ -14,12 +14,12 @@ process SHAPEIT5_PHASERARE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/shapeit5:1.0.0--h0c8ee15_0':
-        'biocontainers/shapeit5:1.0.0--h0c8ee15_0' }"
+        'https://depot.galaxyproject.org/singularity/shapeit5:5.1.1--hb60d31d_0':
+        'biocontainers/shapeit5:5.1.1--hb60d31d_0' }"
 
     input:
-        tuple val(meta) , path(input_plain), path(input_plain_index), path(pedigree), val(input_region)
-        tuple val(meta2), path(scaffold)   , path(scaffold_index)   , val(scaffold_region)
+        tuple val(meta) , path(input)    , path(input_index)    , path(pedigree), val(input_region)
+        tuple val(meta2), path(scaffold) , path(scaffold_index) , val(scaffold_region)
         tuple val(meta3), path(map)
 
     output:
@@ -34,7 +34,8 @@ process SHAPEIT5_PHASERARE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "vcf.gz"
 
-    if ("$input_plain" == "${prefix}.${suffix}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("$input" == "${prefix}.${suffix}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("$scaffold" == "${prefix}.${suffix}") error "Scaffold and output names are the same, set prefix in module configuration to disambiguate!"
 
     def map_command       = map       ? "--map $map"             : ""
     def pedigree_command  = pedigree  ? "--pedigree $pedigree"   : ""
@@ -42,7 +43,7 @@ process SHAPEIT5_PHASERARE {
     """
     SHAPEIT5_phase_rare \\
         $args \\
-        --input-plain $input_plain \\
+        --input $input \\
         --scaffold $scaffold \\
         $map_command \\
         $pedigree_command \\
@@ -58,11 +59,11 @@ process SHAPEIT5_PHASERARE {
     """
 
     stub:
-    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "vcf.gz"
+    def create_cmd = suffix.endsWith(".gz") ? "echo '' | gzip >" : "touch"
     """
-    touch ${prefix}.${suffix}
+    ${create_cmd} ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

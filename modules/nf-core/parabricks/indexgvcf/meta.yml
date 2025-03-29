@@ -11,7 +11,7 @@ tools:
   - "parabricks":
       description: "NVIDIA Clara Parabricks GPU-accelerated genomics tools"
       homepage: "https://www.nvidia.com/en-us/clara/genomics/"
-      documentation: "https://docs.nvidia.com/clara/parabricks/"
+      documentation: "https://docs.nvidia.com/clara/parabricks/latest/index.html"
       licence: ["custom"]
       identifier: ""
 
@@ -30,9 +30,11 @@ output:
           type: map
           description: |
             Groovy Map containing output information
-      - "*.g.vcf*":
-          type: file
-          description: Indexed gvcf file
+          pattern: "*.g.vcf"
+      - "*.{idx,tbi}":
+          type: map
+          description: |
+            Groovy Map containing output information
           pattern: "*.g.vcf"
   - versions:
       - versions.yml:
@@ -42,3 +44,5 @@ output:
 authors:
   - "@Furentsu"
   - "@bsiranosian"
+maintainers:
+  - "@famosab"

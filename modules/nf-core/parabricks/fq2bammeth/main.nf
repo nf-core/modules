@@ -27,14 +27,15 @@ process PARABRICKS_FQ2BAMMETH {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def in_fq_command = meta.single_end ? "--in-se-fq $reads" : "--in-fq $reads"
+    def args                = task.ext.args ?: ''
+    def prefix              = task.ext.prefix ?: "${meta.id}"
+    def in_fq_command       = meta.single_end ? "--in-se-fq $reads" : "--in-fq $reads"
     def known_sites_command = known_sites ? known_sites.collect{"--knownSites $it"}.join(' ') : ""
-    def known_sites_output = known_sites ? "--out-recal-file ${prefix}.table" : ""
-    def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
+    def known_sites_output  = known_sites ? "--out-recal-file ${prefix}.table" : ""
+    def num_gpus            = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
     """
     ln -sf \$(readlink $fasta) $index/$fasta
+
     pbrun \\
         fq2bam_meth \\
         --ref $index/$fasta \\
@@ -44,6 +45,7 @@ process PARABRICKS_FQ2BAMMETH {
         $known_sites_output \\
         $num_gpus \\
         $args
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
@@ -55,11 +57,11 @@ process PARABRICKS_FQ2BAMMETH {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bam
     touch ${prefix}.bam.bai
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )

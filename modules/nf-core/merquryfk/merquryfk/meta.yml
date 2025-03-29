@@ -33,12 +33,22 @@ input:
         type: file
         description: Assembly haplotigs (fasta format)
         pattern: ".fasta"
-  - - matktab:
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing maternal sample information
+          e.g. [ id:'test', single_end:false ]
+    - mathaptab:
         type: file
         description: trio maternal histogram ktab files from the program FastK (option
           -t)
         pattern: "*.ktab*"
-  - - patktab:
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing paternal sample information
+          e.g. [ id:'test', single_end:false ]
+    - pathaptab:
         type: file
         description: trio paternal histogram ktab files from the program FastK (option
           -t)
@@ -152,7 +162,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - ${prefix}.phased_block.bed:
           type: file
-          description: Assembly kmer positions seperated by block in bed format
+          description: Assembly kmer positions separated by block in bed format
           pattern: "*.phased.block.bed"
   - phased_block_stats:
       - meta:

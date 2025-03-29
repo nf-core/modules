@@ -1,0 +1,37 @@
+nextflow_process {
+
+    name "Test Process CATPACK_DOWNLOAD"
+    script "../main.nf"
+    process "CATPACK_DOWNLOAD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "catpack"
+    tag "catpack/download"
+
+    // Only stub because module downloads extremely large
+    test("nr - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'nr', single_end:false ], // meta map
+                    'nr',
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

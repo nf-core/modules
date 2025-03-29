@@ -1,9 +1,0 @@
-- name: "epang split"
-  command: nextflow run ./tests/modules/nf-core/epang/split -entry test_epang_split -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/epang/split/nextflow.config
-  tags:
-    - "epang"
-    - "epang/split"
-  files:
-    - path: "output/epang/test.query.fasta.gz"
-    - path: "output/epang/test.reference.fasta.gz"
-    - path: "output/epang/versions.yml"

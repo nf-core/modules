@@ -1,0 +1,59 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "ripgrep"
+description: ripgrep recursively searches directories for a regex pattern
+keywords:
+  - search
+  - regex
+  - patterns
+tools:
+  - "ripgrep":
+      description: "ripgrep recursively searches directories for a regex pattern"
+      homepage: "https://github.com/BurntSushi/ripgrep"
+      documentation: "https://github.com/BurntSushi/ripgrep"
+      tool_dev_url: "https://github.com/BurntSushi/ripgrep"
+      licence: ["MIT", "UNLICENSE"]
+      identifier: ""
+  - "pigz":
+      description: "Parallel implementation of the gzip algorithm."
+      homepage: "https://zlib.net/pigz/"
+      documentation: "https://zlib.net/pigz/pigz.pdf"
+
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+
+    - files:
+        type: file
+        description: File(s) to be searched
+
+  - - pattern:
+        type: string
+        description: Regex pattern to search for
+
+  - - compress:
+        type: boolean
+        description: Compress the output file using pigz
+        default: false
+
+output:
+  - txt:
+      - meta:
+          type: map
+          description: Groovy map containing sample information
+      - "*.txt{.gz,}":
+          type: file
+          description: Output file containing the search results
+          pattern: "*.txt{.gz,}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@itrujnara"
+maintainers:
+  - "@itrujnara"

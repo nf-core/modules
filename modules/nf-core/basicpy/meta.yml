@@ -29,16 +29,20 @@ input:
         description: Tiff file to be used for dark and flat field illumination correction
         pattern: "*.{tiff,tif}"
 output:
-  - fields:
+  - profiles:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*.tiff":
+      - "*-dfp.tiff":
           type: file
-          description: Tiff fields for dark and flat field illumination correction
-          pattern: "*.{tiff,tif}"
+          description: Tiff fields for dark field illumination correction
+          pattern: "*.{tiff}"
+      - "*-ffp.tiff":
+          type: file
+          description: Tiff fields for flat field illumination correction
+          pattern: "*.{tiff}"
   - versions:
       - versions.yml:
           type: file

@@ -50,7 +50,7 @@ nextflow_process {
 
     }
 
-    test("demultiplexing - auxilary - files") {
+    test("demultiplexing - auxiliary - files") {
         config "./nextflow.config"
         setup { 
             run("POPSCLE_DSCPILEUP") {
@@ -135,7 +135,7 @@ nextflow_process {
 
     }
 
-    test("demultiplexing - auxilary - files - stub") {
+    test("demultiplexing - auxiliary - files - stub") {
 
         options "-stub"
         config "./nextflow.config"

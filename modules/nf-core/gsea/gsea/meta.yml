@@ -40,7 +40,10 @@ input:
         description: |
           String indicating which of the classes in the cls file should be used
           as the target level of the comparison.
-  - - chip:
+  - - meta2:
+        type: map
+        description: Groovy map
+    - chip:
         type: file
         description: |
           optional Broad-style chip file mapping identifiers in gct to
@@ -182,31 +185,31 @@ output:
           type: map
           description: |
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
-      - "*[!gene_set_size|gsea_report|ranked_gene_list]*.tsv":
+      - "gene_sets_*.tsv":
           type: list
           description: Where -make_sets is not set to false, TSV files, one file for each
             gene set, with detail on enrichment for each gene
-          pattern: "[!gene_set_size|gsea_report|ranked_gene_list]*.tsv"
+          pattern: "gene_sets_*.tsv"
   - gene_set_html:
       - meta:
           type: map
           description: |
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
-      - "*[!gsea_report|heat_map_corr_plot|index|pos_snapshot|neg_snapshot]*.html":
+      - "gene_sets_*.html":
           type: list
           description: Where -make_sets is not set to false, HTML files, one file for
             each gene set, with detail on enrichment for each gene
-          pattern: "[!gsea_report|heat_map_corr_plot|index|pos_snapshot|neg_snapshot]*.html"
+          pattern: "gene_sets_*.html"
   - gene_set_heatmap:
       - meta:
           type: map
           description: |
             Groovy Map containing metadata, at a minimum an id e.g. [ id:'test' ]
-      - "*[!butterfly|enplot|global_es_histogram|gset_rnd_es_dist|heat_map|pvalues_vs_nes_plot|ranked_list_corr]*.png":
+      - "gene_sets_*.png":
           type: list
           description: Where -make_sets is not set to false, PNG-format heatmaps, one
             file for each gene set, showing expression for each gene
-          pattern: "[!butterfly|enplot|global_es_histogram|gset_rnd_es_dist|heat_map|pvalues_vs_nes_plot|ranked_list_corr]*.png"
+          pattern: "gene_sets_*.png"
   - snapshot:
       - meta:
           type: map
@@ -255,3 +258,4 @@ authors:
   - "@pinin4fjords"
 maintainers:
   - "@pinin4fjords"
+  - "@nschcolnicov"

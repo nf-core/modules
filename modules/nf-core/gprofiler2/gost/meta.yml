@@ -27,12 +27,18 @@ input:
         pattern: "*.{csv,tsv}"
         description: |
           CSV or TSV-format tabular file with differential analysis outputs
-  - - gmt_file:
+  - - meta2:
+        type: map
+        description: Groovy map
+    - gmt_file:
         type: file
         pattern: "*.gmt"
         description: |
           Path to a GMT file downloaded from g:profiler that should be queried instead of the online databases
-  - - background_file:
+  - - meta3:
+        type: map
+        description: Groovy map
+    - background_file:
         type: file
         pattern: "*.{csv,tsv,txt}"
         description: |

@@ -35,8 +35,8 @@ nextflow_process {
                     file(process.out.log.get(0).get(1)).readLines().last().contains("Writing VCF"),
                     process.out.read_qual,
                     process.out.breakpoints_double,
-                    file(process.out.all_vcf.get(0).get(1)).readLines()[0..2], // Line 3 contains date
-                    file(process.out.all_vcf.get(0).get(1)).readLines()[4..39],
+                    path(process.out.all_vcf.get(0).get(1)).vcf.summary,
+                    //path(process.out.all_vcf.get(0).get(1)).vcf.variantsMD5, - lint fails because of emtpy md5sum
                     process.out.all_breakpoints_clusters_list,
                     process.out.all_breakpoints_clusters,
                     process.out.versions
@@ -74,8 +74,8 @@ nextflow_process {
                     file(process.out.log.get(0).get(1)).readLines().last().contains("Writing VCF"),
                     process.out.read_qual,
                     process.out.breakpoints_double,
-                    file(process.out.all_vcf.get(0).get(1)).readLines()[0..2], // Line 3 contains date
-                    file(process.out.all_vcf.get(0).get(1)).readLines()[4..39],
+                    path(process.out.all_vcf.get(0).get(1)).vcf.summary,
+                    path(process.out.all_vcf.get(0).get(1)).vcf.variantsMD5,
                     process.out.all_breakpoints_clusters_list,
                     process.out.all_breakpoints_clusters,
                     process.out.somatic_vcf,
@@ -116,8 +116,8 @@ nextflow_process {
                     file(process.out.log.get(0).get(1)).readLines().last().contains("Writing VCF"),
                     process.out.read_qual,
                     process.out.breakpoints_double,
-                    file(process.out.all_vcf.get(0).get(1)).readLines()[0..2], // Line 3 contains date
-                    file(process.out.all_vcf.get(0).get(1)).readLines()[4..39],
+                    path(process.out.all_vcf.get(0).get(1)).vcf.summary,
+                    path(process.out.all_vcf.get(0).get(1)).vcf.variantsMD5,
                     process.out.all_breakpoints_clusters_list,
                     process.out.all_breakpoints_clusters,
                     process.out.somatic_vcf,
@@ -161,8 +161,8 @@ nextflow_process {
                     file(process.out.log.get(0).get(1)).readLines().last().contains("Writing VCF"),
                     process.out.read_qual,
                     process.out.breakpoints_double,
-                    file(process.out.all_vcf.get(0).get(1)).readLines()[0..2], // Line 3 contains date
-                    file(process.out.all_vcf.get(0).get(1)).readLines()[4..39],
+                    path(process.out.all_vcf.get(0).get(1)).vcf.summary,
+                    path(process.out.all_vcf.get(0).get(1)).vcf.variantsMD5,
                     process.out.all_breakpoints_clusters_list,
                     process.out.all_breakpoints_clusters,
                     process.out.somatic_vcf,

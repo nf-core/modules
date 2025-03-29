@@ -53,10 +53,26 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.vcf":
-          type: file
-          description: Annotated VCF file
-          pattern: "*.vcf"
+          pattern: "*.vcf.gz"
+      - "*.vcf.gz":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.vcf.gz"
+  - tbi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.vcf.gz.tbi"
+      - "*.vcf.gz.tbi":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.vcf.gz.tbi"
   - versions:
       - versions.yml:
           type: file
@@ -65,6 +81,8 @@ output:
 authors:
   - "@projectoriented"
   - "@matthdsm"
+  - "@nvnieuwk"
 maintainers:
   - "@projectoriented"
   - "@matthdsm"
+  - "@nvnieuwk"

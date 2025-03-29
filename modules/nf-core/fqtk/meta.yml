@@ -21,10 +21,13 @@ input:
         type: file
         description: Tsv file, with two columns sample_id and barcode
         pattern: "*.{tsv}"
+    - fastq_folder:
+        type: file
+        description: Directory containing fastq files that will be staged as 'input' folder
+        pattern: "*"
     - fastq_readstructure_pairs:
         type: map
-        description: List of lists i.e. [[<fastq file name>, <read structure>, <absolute
-          path to fastq directory>],...]
+        description: List of lists i.e. [[<fastq file name>, <read structure>],...]
 output:
   - sample_fastq:
       - meta:

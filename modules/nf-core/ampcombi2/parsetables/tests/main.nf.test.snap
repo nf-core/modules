@@ -3,21 +3,24 @@
         "content": [
             [
                 "sample_1",
-                "amp_ref_database",
                 "contig_gbks",
+                null,
+                "sample_id\tCDS_id\tprob_ampir\tprob_amplify\taa_sequence\tmolecular_weight\thelix_fraction\tturn_fraction\tsheet_fraction\tisoelectric_point\thydrophobicity\ttransporter_protein\tcontig_id\tCDS_start\tCDS_end\tCDS_dir\tCDS_stop_codon_found",
+                ">BAONEE_00005",
                 false,
                 true,
-                "contig_id\ttarget_id\tpident\tevalue\tnident\tfull_qseq\tfull_sseq\tqseq\tsseq\tqcovhsp\tscovhsp",
-                "sample_id\tCDS_id\tprob_ampir\tprob_amplify\taa_sequence\ttarget_id\tpident\tevalue\tSequence\tFamily\tSource\tPDB_ID\tLinear/Cyclic/Branched\tOther_Modifications\tPubmed_ID\tReference\tmolecular_weight\thelix_fraction\tturn_fraction\tsheet_fraction\tisoelectric_point\thydrophobicity\ttransporter_protein\tcontig_id\tCDS_start\tCDS_end\tCDS_dir\tCDS_stop_codon_found",
-                ">BAONEE_00005",
-                "versions.yml:md5,f32ab4ba79e66feba755b78d7d7a1f36"
+                "amp_DRAMP_database",
+                "DRAMP_ID\tSequence\tSequence_Length\tName\tSwiss_Prot_Entry\tFamily\tGene\tSource\tActivity\tProtein_existence\tStructure\tStructure_Description\tPDB_ID\tComments\tTarget_Organism\tHemolytic_activity\tLinear/Cyclic/Branched\tN-terminal_Modification\tC-terminal_Modification\tOther_Modifications\tStereochemistry\tCytotoxicity\tBinding_Traget\tPubmed_ID\tReference\tAuthor\tTitle",
+                ">DRAMP00005",
+                "mmseqs2",
+                "versions.yml:md5,09f086e07825d96816d792d73eee90ca"
             ]
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.2"
         },
-        "timestamp": "2024-04-24T12:05:11.848363584"
+        "timestamp": "2024-12-11T13:58:57.988191067"
     },
     "ampcombi2_parsetables - metagenome - stub": {
         "content": [
@@ -34,7 +37,7 @@
                             "sample_1_amp.faa:md5,d41d8cd98f00b204e9800998ecf8427e",
                             "sample_1_ampcombi.log:md5,d41d8cd98f00b204e9800998ecf8427e",
                             "sample_1_ampcombi.tsv:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "sample_1_diamond_matches.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            "sample_1_mmseqs_matches.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                         ]
                     ]
                 ],
@@ -53,18 +56,27 @@
                         {
                             "id": "sample_1"
                         },
-                        "*.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        [
+                            "ref_DB:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "ref_DB.dbtype:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "ref_DB.index:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "ref_DB.lookup:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "ref_DB.source:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "ref_DB_h:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "ref_DB_h.dbtype:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "ref_DB_h.index:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
                     ]
                 ],
                 "11": [
-                    "versions.yml:md5,f32ab4ba79e66feba755b78d7d7a1f36"
+                    "versions.yml:md5,09f086e07825d96816d792d73eee90ca"
                 ],
                 "2": [
                     [
                         {
                             "id": "sample_1"
                         },
-                        "sample_1_diamond_matches.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "sample_1_mmseqs_matches.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "3": [
@@ -105,9 +117,18 @@
                             "id": "sample_1"
                         },
                         [
-                            "*.clean.fasta:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "*.dmnd:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "*.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            "*.fasta:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "*.txt:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            [
+                                "ref_DB:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "ref_DB.dbtype:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "ref_DB.index:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "ref_DB.lookup:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "ref_DB.source:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "ref_DB_h:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "ref_DB_h.dbtype:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "ref_DB_h.index:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            ]
                         ]
                     ]
                 ],
@@ -116,7 +137,7 @@
                         {
                             "id": "sample_1"
                         },
-                        "*.dmnd:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "*.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "9": [
@@ -124,7 +145,7 @@
                         {
                             "id": "sample_1"
                         },
-                        "*.clean.fasta:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "*.fasta:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "contig_gbks": [
@@ -135,6 +156,68 @@
                         [
                             
                         ]
+                    ]
+                ],
+                "db": [
+                    [
+                        {
+                            "id": "sample_1"
+                        },
+                        [
+                            "*.fasta:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "*.txt:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            [
+                                "ref_DB:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "ref_DB.dbtype:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "ref_DB.index:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "ref_DB.lookup:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "ref_DB.source:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "ref_DB_h:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "ref_DB_h.dbtype:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "ref_DB_h.index:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            ]
+                        ]
+                    ]
+                ],
+                "db_fasta": [
+                    [
+                        {
+                            "id": "sample_1"
+                        },
+                        "*.fasta:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "db_mmseqs": [
+                    [
+                        {
+                            "id": "sample_1"
+                        },
+                        [
+                            "ref_DB:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "ref_DB.dbtype:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "ref_DB.index:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "ref_DB.lookup:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "ref_DB.source:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "ref_DB_h:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "ref_DB_h.dbtype:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "ref_DB_h.index:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "db_tsv": [
+                    [
+                        {
+                            "id": "sample_1"
+                        },
+                        "sample_1_mmseqs_matches.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "db_txt": [
+                    [
+                        {
+                            "id": "sample_1"
+                        },
+                        "*.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "faa": [
@@ -153,42 +236,6 @@
                         "Ampcombi_parse_tables.log:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "results_db": [
-                    [
-                        {
-                            "id": "sample_1"
-                        },
-                        [
-                            "*.clean.fasta:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "*.dmnd:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "*.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
-                        ]
-                    ]
-                ],
-                "results_db_dmnd": [
-                    [
-                        {
-                            "id": "sample_1"
-                        },
-                        "*.dmnd:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "results_db_fasta": [
-                    [
-                        {
-                            "id": "sample_1"
-                        },
-                        "*.clean.fasta:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "results_db_tsv": [
-                    [
-                        {
-                            "id": "sample_1"
-                        },
-                        "*.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
                 "sample_dir": [
                     [
                         {
@@ -201,7 +248,7 @@
                             "sample_1_amp.faa:md5,d41d8cd98f00b204e9800998ecf8427e",
                             "sample_1_ampcombi.log:md5,d41d8cd98f00b204e9800998ecf8427e",
                             "sample_1_ampcombi.tsv:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "sample_1_diamond_matches.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            "sample_1_mmseqs_matches.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                         ]
                     ]
                 ],
@@ -221,23 +268,15 @@
                         "sample_1_ampcombi.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "txt": [
-                    [
-                        {
-                            "id": "sample_1"
-                        },
-                        "sample_1_diamond_matches.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
                 "versions": [
-                    "versions.yml:md5,f32ab4ba79e66feba755b78d7d7a1f36"
+                    "versions.yml:md5,09f086e07825d96816d792d73eee90ca"
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.2"
         },
-        "timestamp": "2024-04-24T12:05:34.675308615"
+        "timestamp": "2024-12-05T13:03:22.741430379"
     }
 }

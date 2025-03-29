@@ -1,0 +1,53 @@
+name: "custom_tabulartogseachip"
+description: Make a GSEA class file (.chip) from tabular inputs
+keywords:
+  - gsea
+  - chip
+  - convert
+  - tabular
+tools:
+  - custom:
+      description: "Make a GSEA annotation file (.chip) from tabular inputs"
+      tool_dev_url: "https://github.com/nf-core/modules/blob/master/modules/nf-core/custom/tabulartogseachip/main.nf"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing data information.
+          This can be used at the workflow level to pass optional parameters to the module.
+          [id: 'test', ...]
+    - tabular:
+        type: file
+        description: |
+          Tabular (NOTE that for the moment it only works for TSV file) containing a column with the
+          features ids, and another column with the features symbols.
+        pattern: "*.{tsv}"
+  - - id:
+        type: string
+        description: The name of the column containing feature ids
+    - symbol:
+        type: string
+        description: The name of the column containing feature symbols
+output:
+  - chip:
+      - meta:
+          type: map
+          description: Groovy Map containing metadata e.g. [ id:'test', ... ]
+      - "*.chip":
+          type: file
+          description: |
+            A categorical class format file (.chip) as defined by the Broad
+            documentation at
+            https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats
+          pattern: "*.chip"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@pinin4fjords"
+  - "@suzannejin"
+maintainers:
+  - "@pinin4fjords"

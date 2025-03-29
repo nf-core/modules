@@ -1,12 +1,16 @@
 {
     "sarscov2 - [vcf(gz), tbi, vcf], [], toml, [vcf, tbi] - stub": {
         "content": [
-            "test_compressed.vcf",
+            "test_compressed.vcf.gz",
             [
                 "versions.yml:md5,5ff0991b612706ce15d82eb1564513b0"
             ]
         ],
-        "timestamp": "2023-12-06T12:18:25.69588598"
+        "meta": {
+            "nf-test": "0.9.1",
+            "nextflow": "24.10.3"
+        },
+        "timestamp": "2025-01-23T14:03:21.974046858"
     },
     "sarscov2 - [vcf(gz), tbi, vcf], [], toml, [vcf, tbi]": {
         "content": [
@@ -17,11 +21,29 @@
                             "id": "test_compressed",
                             "single_end": false
                         },
-                        "test_compressed.vcf:md5,d3cf5a6eaf6cca5b957833a313c5fbf4"
+                        "test_compressed.vcf.gz:md5,d3cf5a6eaf6cca5b957833a313c5fbf4"
                     ]
                 ],
                 "1": [
+                    [
+                        {
+                            "id": "test_compressed",
+                            "single_end": false
+                        },
+                        "test_compressed.vcf.gz.tbi:md5,67a4272d5897fea5cc395dc87afc3629"
+                    ]
+                ],
+                "2": [
                     "versions.yml:md5,5ff0991b612706ce15d82eb1564513b0"
+                ],
+                "tbi": [
+                    [
+                        {
+                            "id": "test_compressed",
+                            "single_end": false
+                        },
+                        "test_compressed.vcf.gz.tbi:md5,67a4272d5897fea5cc395dc87afc3629"
+                    ]
                 ],
                 "vcf": [
                     [
@@ -29,7 +51,7 @@
                             "id": "test_compressed",
                             "single_end": false
                         },
-                        "test_compressed.vcf:md5,d3cf5a6eaf6cca5b957833a313c5fbf4"
+                        "test_compressed.vcf.gz:md5,d3cf5a6eaf6cca5b957833a313c5fbf4"
                     ]
                 ],
                 "versions": [
@@ -37,7 +59,11 @@
                 ]
             }
         ],
-        "timestamp": "2023-12-06T12:21:13.209704154"
+        "meta": {
+            "nf-test": "0.9.1",
+            "nextflow": "24.10.3"
+        },
+        "timestamp": "2025-01-23T14:04:38.599392384"
     },
     "sarscov2 - [vcf, [], vcf], [], toml, [vcf, tbi]": {
         "content": [
@@ -48,11 +74,29 @@
                             "id": "test_uncompressed",
                             "single_end": false
                         },
-                        "test_uncompressed.vcf:md5,d3cf5a6eaf6cca5b957833a313c5fbf4"
+                        "test_uncompressed.vcf.gz:md5,d3cf5a6eaf6cca5b957833a313c5fbf4"
                     ]
                 ],
                 "1": [
+                    [
+                        {
+                            "id": "test_uncompressed",
+                            "single_end": false
+                        },
+                        "test_uncompressed.vcf.gz.tbi:md5,67a4272d5897fea5cc395dc87afc3629"
+                    ]
+                ],
+                "2": [
                     "versions.yml:md5,5ff0991b612706ce15d82eb1564513b0"
+                ],
+                "tbi": [
+                    [
+                        {
+                            "id": "test_uncompressed",
+                            "single_end": false
+                        },
+                        "test_uncompressed.vcf.gz.tbi:md5,67a4272d5897fea5cc395dc87afc3629"
+                    ]
                 ],
                 "vcf": [
                     [
@@ -60,7 +104,7 @@
                             "id": "test_uncompressed",
                             "single_end": false
                         },
-                        "test_uncompressed.vcf:md5,d3cf5a6eaf6cca5b957833a313c5fbf4"
+                        "test_uncompressed.vcf.gz:md5,d3cf5a6eaf6cca5b957833a313c5fbf4"
                     ]
                 ],
                 "versions": [
@@ -68,6 +112,10 @@
                 ]
             }
         ],
-        "timestamp": "2023-12-06T12:21:19.255212216"
+        "meta": {
+            "nf-test": "0.9.1",
+            "nextflow": "24.10.3"
+        },
+        "timestamp": "2025-01-23T14:04:48.104846161"
     }
 }

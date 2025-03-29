@@ -4,8 +4,8 @@ process SHAPEIT5_PHASECOMMON {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/shapeit5:1.0.0--h0c8ee15_0':
-        'biocontainers/shapeit5:1.0.0--h0c8ee15_0'}"
+        'https://depot.galaxyproject.org/singularity/shapeit5:5.1.1--hb60d31d_0':
+        'biocontainers/shapeit5:5.1.1--hb60d31d_0'}"
 
     input:
         tuple val(meta) , path(input), path(input_index), path(pedigree), val(region)
@@ -23,7 +23,7 @@ process SHAPEIT5_PHASECOMMON {
     script:
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "vcf.gz"
+    def suffix = task.ext.suffix ?: "bcf"
 
     if ("$input" == "${prefix}.${suffix}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
@@ -51,11 +51,11 @@ process SHAPEIT5_PHASECOMMON {
     """
 
     stub:
-    def args   = task.ext.args   ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "vcf.gz"
+    def prefix     = task.ext.prefix        ?: "${meta.id}"
+    def suffix     = task.ext.suffix        ?: "bcf"
+    def create_cmd = suffix.endsWith(".gz") ? "echo '' | gzip >" : "touch"
     """
-    touch ${prefix}.${suffix}
+    ${create_cmd} ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

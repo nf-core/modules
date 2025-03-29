@@ -10,7 +10,7 @@ nextflow_process {
     tag "parabricks/applybqsr"
     tag "gpu"
 
-    test("sarscov2 - bam - pe") {
+    test("sarscov2 | paired-end | [bam]") {
 
         when {
             process {
@@ -50,7 +50,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - bam - pe - intervals") {
+    test("sarscov2 | paired-end | [bam] | intervals") {
 
         when {
             process {
@@ -91,7 +91,7 @@ nextflow_process {
         }
     }
 
-    test("human - cram - pe") {
+    test("homo_sapiens | paired-end | [cram]") {
 
         when {
             process {
@@ -131,7 +131,7 @@ nextflow_process {
 
     }
 
-    test("human - cram - pe - intervals - stub") {
+    test("homo_sapiens | paired-end | [cram] | intervals - stub") {
 
         options "-stub"
 
@@ -171,7 +171,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - bam - pe - intervals - stub") {
+    test("sarscov2 | paired-end | [bam] | intervals - stub") {
 
         options "-stub"
 

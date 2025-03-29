@@ -11,7 +11,7 @@ tools:
   - "parabricks":
       description: "NVIDIA Clara Parabricks GPU-accelerated genomics tools"
       homepage: https://www.nvidia.com/en-us/clara/genomics/
-      documentation: https://docs.nvidia.com/clara/parabricks/4.0.1/documentation/
+      documentation: https://docs.nvidia.com/clara/parabricks/latest/index.html
       licence: ["custom"]
       identifier: ""
 
@@ -53,8 +53,18 @@ output:
             e.g. [ id:'test' ]
       - "*.vcf":
           type: file
-          description: Variant file.
+          description: vcf file created with deepvariant (does not support .gz for normal vcf), optional
           pattern: "*.vcf"
+  - gvcf:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+            e.g. [ id:'test' ]
+      - "*.g.vcf.gz":
+          type: file
+          description: bgzipped gvcf created with deepvariant, optional
+          pattern: "*.g.vcf.gz"
   - versions:
       - versions.yml:
           type: file
@@ -62,3 +72,5 @@ output:
           pattern: "versions.yml"
 authors:
   - "@bsiranosian"
+maintainers:
+  - "@famosab"

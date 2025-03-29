@@ -41,4 +41,16 @@ process BIOHANSEL {
         biohansel: \$(echo \$(hansel --version 2>&1) | sed 's/^.*hansel //' )
     END_VERSIONS
     """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}-summary.txt
+    touch ${prefix}-kmer-results.txt
+    touch ${prefix}-simple-summary.txt
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        biohansel: \$(echo \$(hansel --version 2>&1) | sed 's/^.*hansel //' )
+    END_VERSIONS
+    """
 }

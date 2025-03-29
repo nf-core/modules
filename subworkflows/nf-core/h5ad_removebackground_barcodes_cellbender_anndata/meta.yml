@@ -1,0 +1,35 @@
+name: "h5ad_removebackground_barcodes_cellbender_anndata"
+description: Use features of Cellbender to remove background noise and empty droplet
+keywords:
+  - scdownstream
+  - cellbender
+  - anndata
+components:
+  - cellbender/removebackground
+  - anndata/barcodes
+input:
+  - ch_unfiltered:
+      type: file
+      description: |
+        The input channel containing the unfiltered AnnData file to process
+        and remove background noise and empty droplets
+        Structure: [ val(meta), path(h5ad) ]
+      pattern: "*.h5ad"
+output:
+  - h5ad:
+      description: |
+        Background and empty droplet removed AnnData file containing cells with
+        barcodes exceeding 0.5 posterior cell probability determined by the
+        cellbender's remove-background
+        Structure: [ val(meta), path(h5ad) ]
+      pattern: "*.h5ad"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@nictru"
+  - "@chaochaowong"
+maintainers:
+  - "@nictru"

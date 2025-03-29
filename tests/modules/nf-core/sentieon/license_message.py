@@ -99,7 +99,7 @@ def parse_args(argv=None):
     encrypt_parser.add_argument("--message", required=True, help="Message to encrypt")
     encrypt_parser.set_defaults(func=handle_encrypt_message)
 
-    decrypt_parser = subparsers.add_parser("decrypt", help="Decyrpt a message")
+    decrypt_parser = subparsers.add_parser("decrypt", help="Decrypt a message")
     decrypt_parser.add_argument("--key", required=True, help="The encryption key")
     decrypt_parser.add_argument("--message", required=True, help="Message to decrypt")
     decrypt_parser.add_argument(

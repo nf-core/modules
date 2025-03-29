@@ -1,0 +1,137 @@
+nextflow_process {
+
+    name "Test Process DUPHOLD"
+    
+    script "../main.nf"
+    process "DUPHOLD"
+   
+    tag "modules"
+    tag "modules_nfcore"
+    tag "duphold"
+   
+    test("homo_sapiens - bam gvcf - fasta") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test'],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz',checkIfExists:true),
+                    [],
+                    []
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',checkIfExists:true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai',checkIfExists:true)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.vcf.collect{ [
+                        path(it[1]).vcf.summary,
+                        path(it[1]).vcf.variantsMD5
+                    ] }
+                ).match() }
+            )
+        }
+    }
+    test("homo_sapiens - cram gvcf - fasta") {
+        
+        
+        when {
+            
+            process {
+                """
+                input[0] = [
+                    [id:'test'],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz',checkIfExists:true),
+                    [],
+                    []
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',checkIfExists:true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai',checkIfExists:true)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.vcf.collect{ [
+                        path(it[1]).vcf.summary,
+                        path(it[1]).vcf.variantsMD5
+                    ] }
+                ).match() }
+            )
+        }
+    }
+    test("homo_sapiens - bam gvcf snp - fasta") {
+        when {
+            
+            process {
+                """
+                input[0] = [
+                    [id:'test'],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz.tbi',checkIfExists:true)
+                    ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',checkIfExists:true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai',checkIfExists:true)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.vcf.collect{ [
+                        path(it[1]).vcf.summary,
+                        path(it[1]).vcf.variantsMD5
+                    ] }
+                ).match() }
+            )
+        }
+    }
+    test("homo_sapiens - bam gvcf - fasta -- stub") {
+
+        options '-stub'
+
+        when {
+            
+            process {
+                """
+                input[0] = [
+                    [id:'test'],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz',checkIfExists:true),
+                    [],
+                    []
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',checkIfExists:true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai',checkIfExists:true)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+}

@@ -724,4 +724,150 @@ nextflow_process {
 
     }
 
+    test("cellranger - multi - 5k - a549 - sc3 v3 - gex + crispr") {
+
+        setup {
+
+            run("CELLRANGER_MKGTF", alias: "CELLRANGER_MKGTF_CRISPR") {
+                script "modules/nf-core/cellranger/mkgtf/main.nf"
+                process {
+                    """
+                    input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/reference/genes_chr1_32292083_32686211.gtf', checkIfExists: true)
+                    """
+                }
+            }
+
+            run("CELLRANGER_MKREF", alias: "CELLRANGER_MKREF_CRISPR") {
+                script "modules/nf-core/cellranger/mkref/main.nf"
+                process {
+                    """
+                    input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/reference/genome_chr1_32292083_32686211.fa', checkIfExists: true)
+                    input[1] = CELLRANGER_MKGTF_CRISPR.out.gtf
+                    input[2] = 'homo_sapiens_chr1_32292083_32686211_reference'
+                    """
+                }
+            }
+
+        }
+
+        when {
+            process {
+                """
+                //
+                // preparation
+                //
+
+                /***************************/
+                /*** stage 5k A549 data ***/
+                /***************************/
+
+                // stage A549 cell FASTQ test data
+
+                // stage gene expression FASTQ test data
+                test_10x_sc3_v3_5k_a549_gex = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/fastqs/gex/subsampled_SC3_v3_NextGem_DI_CRISPR_A549_5K_gex_S5_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/fastqs/gex/subsampled_SC3_v3_NextGem_DI_CRISPR_A549_5K_gex_S5_L001_R2_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/fastqs/gex/subsampled_SC3_v3_NextGem_DI_CRISPR_A549_5K_gex_S5_L002_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/fastqs/gex/subsampled_SC3_v3_NextGem_DI_CRISPR_A549_5K_gex_S5_L002_R2_001.fastq.gz', checkIfExists: true)
+                ]
+                def test_10x_sc3_v3_5k_a549_gex_samplename = "subsampled_SC3_v3_NextGem_DI_CRISPR_A549_5K"
+
+                // stage CRISPR FASTQ test data
+                test_10x_sc3_v3_5k_a549_crispr = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/fastqs/crispr/subsampled_SC3_v3_NextGem_DI_CRISPR_A549_5K_crispr_S4_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/fastqs/crispr/subsampled_SC3_v3_NextGem_DI_CRISPR_A549_5K_crispr_S4_L001_R2_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/fastqs/crispr/subsampled_SC3_v3_NextGem_DI_CRISPR_A549_5K_crispr_S4_L002_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/fastqs/crispr/subsampled_SC3_v3_NextGem_DI_CRISPR_A549_5K_crispr_S4_L002_R2_001.fastq.gz', checkIfExists: true)
+                ]
+                def test_10x_sc3_v3_5k_a549_crispr_samplename = "subsampled_SC3_v3_NextGem_DI_CRISPR_A549_5K"
+
+                // stage feature barcode reference for antibody capture
+                test_10x_sc3_v3_5k_a549_crispr_fb_reference = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/SC3_v3_NextGem_DI_CRISPR_A549_5K_Multiplex_count_feature_reference_chr1_32292083_32686211.csv', checkIfExists: true)
+
+                /*******************************/
+                /*** end stage 5k A549 data ***/
+                /*******************************/
+
+                // make an empty dummy file, for FASTQs
+                empty_file = file("$workDir/EMPTY")
+                empty_file.append("")
+
+                // create empty channels to fill unused cellranger multi arguments
+                // fastqs need a [ meta, ref ] structure
+                // references just need a path
+                ch_gex_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_vdj_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_ab_fastqs             = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_beam_fastqs           = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_cmo_fastqs            = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_crispr_fastqs         = Channel.value( [ [ id:"EMPTY", options:[] ], empty_file ] )
+                ch_gex_frna_probeset     = []
+                ch_gex_targetpanel       = []
+                ch_vdj_reference         = []
+                ch_vdj_primer_index      = []
+                ch_fb_reference          = []
+                ch_beam_antigen_panel    = []
+                ch_beam_control_panel    = []
+                ch_cmo_reference         = []
+                ch_cmo_barcodes          = []
+                ch_cmo_sample_assignment = []
+                ch_frna_sampleinfo       = []
+
+                // collect references and fastq files for staging
+
+                ch_gex_fastqs_sc3_v3_5k_a549 = Channel.of( test_10x_sc3_v3_5k_a549_gex )
+                    .collect()
+                    .map { reads -> [ [ id:test_10x_sc3_v3_5k_a549_gex_samplename , options:[ "expect-cells":"5000", chemistry:"SC3Pv3", "create-bam":false, "no-secondary":true ] ], reads ] }
+
+                ch_crispr_fastqs_sc3_v3_5k_a549 = Channel.of( test_10x_sc3_v3_5k_a549_crispr )
+                    .collect()
+                    .map { reads -> [ [ id:test_10x_sc3_v3_5k_a549_crispr_samplename , options:[ "expect-cells":"5000" ] ], reads ] }
+
+                ch_crispr_reference_sc3_v3_5k_a549 = Channel.of( test_10x_sc3_v3_5k_a549_crispr_fb_reference )
+
+                //
+                // execution
+                //
+                input[0]  = [ id:'subsampled_SC3_v3_NextGem_DI_CRISPR_A549_5K', single_end:false ]
+                input[1]  = ch_gex_fastqs_sc3_v3_5k_a549
+                input[2]  = ch_vdj_fastqs
+                input[3]  = ch_ab_fastqs
+                input[4]  = ch_beam_fastqs
+                input[5]  = ch_cmo_fastqs
+                input[6]  = ch_crispr_fastqs_sc3_v3_5k_a549
+                input[7]  = CELLRANGER_MKREF_CRISPR.out.reference
+                input[8]  = ch_gex_frna_probeset
+                input[9]  = ch_gex_targetpanel
+                input[10] = ch_vdj_reference
+                input[11] = ch_vdj_primer_index
+                input[12] = ch_crispr_reference_sc3_v3_5k_a549
+                input[13] = ch_beam_antigen_panel
+                input[14] = ch_beam_control_panel
+                input[15] = ch_cmo_reference
+                input[16] = ch_cmo_barcodes
+                input[17] = ch_cmo_sample_assignment
+                input[18] = ch_frna_sampleinfo
+                input[19] = false // default to false to guarantee renaming during test
+                """
+            }
+        }
+
+        then {
+
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.outs[0][1].findAll { file(it).name == 'metrics_summary.csv' },
+                    process.out.outs[0][1].findAll { file(it).name == 'raw_feature_bc_matrix.h5' },
+                    process.out.outs[0][1].findAll { file(it).name == 'sample_filtered_feature_bc_matrix.h5' },
+                    process.out.outs[0][1].findAll { file(it).name == 'protospacer_calls_per_cell.csv' },
+                    process.out.outs[0][1].findAll { file(it).name == 'perturbation_efficiencies_by_feature.csv' }
+                ).match() },
+                { assert snapshot(process.out.versions).match("versions-a549-crispr") }
+            )
+
+        }
+
+    }
+
 }

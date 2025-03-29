@@ -1,0 +1,133 @@
+nextflow_process {
+
+    name "Test Process MINIMAC4_IMPUTE"
+    script "../main.nf"
+    process "MINIMAC4_IMPUTE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "minimac4"
+    tag "minimac4/impute"
+    tag "minimac4/compressref"
+
+    config "./nextflow.config"
+
+    setup {
+        run("MINIMAC4_COMPRESSREF") {
+            script "../../compressref/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'input' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists: true),
+                ])
+                """
+            }
+        }
+    }
+
+    test("homo sapiens - vcf, ref, sites, map") {
+        when {
+            params {
+                minimac4_args = "--chunk 1000000"
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                    [id: "NA12878", chr: "chr22"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz.csi", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.GRCh38.chr22.map.gz", checkIfExists:true)
+                ])
+                .combine(MINIMAC4_COMPRESSREF.out.msav)
+                .map{
+                    meta, target_vcf, target_index, sites_vcf, sites_index, map, metaRef, ref -> [
+                        meta, target_vcf, target_index, ref, sites_vcf, sites_index, map
+                    ]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.vcf.collect{ [file(it[1]).name, path(it[1]).vcf.summary, path(it[1]).vcf.variantsMD5] },
+                    ["versions.yml": path(process.out.versions.get(0)).yaml]
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo sapiens - vcf, ref, [], []") {
+        when {
+            params {
+                minimac4_args = "--output-format vcf"
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                    [id: "NA12878", chr: "chr22"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi",checkIfExists:true)
+                ])
+                .combine(MINIMAC4_COMPRESSREF.out.msav)
+                .map{
+                    meta, target_vcf, target_index, metaRef, ref -> [
+                        meta, target_vcf, target_index, ref, [], [], []
+                    ]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.vcf.collect{ [file(it[1]).name, path(it[1]).vcf.summary, path(it[1]).vcf.variantsMD5] },
+                    ["versions.yml": path(process.out.versions.get(0)).yaml]
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo sapiens - vcf, ref, sites, map - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                minimac4_args = "-O usav"
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                    [id: "NA12878", chr: "chr22"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi",checkIfExists:true),
+                    [], [], [], []
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.vcf,
+                    ["versions.yml": path(process.out.versions.get(0)).yaml]
+                ).match() }
+            )
+        }
+
+    }
+
+}

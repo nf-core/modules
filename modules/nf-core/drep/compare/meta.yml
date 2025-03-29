@@ -1,0 +1,62 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "drep_compare"
+description: Performs rapid genome comparisons for a group of genomes and visualize
+  their relatedness
+keywords:
+  - drep
+  - genome
+  - fasta
+  - compare
+  - comparison
+  - visualisation
+  - metagenomics
+  - assembly
+  - microbial genomics
+  - dereplication
+
+tools:
+  - "drep":
+      description: "De-replication of microbial genomes assembled from multiple samples"
+      homepage: "https://drep.readthedocs.io/en/latest/"
+      documentation: "https://drep.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/MrOlm/drep"
+      doi: "10.1038/ismej.2017.126"
+      licence: ["MIT"]
+      identifier: biotools:drep
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - '"fastas/*"':
+        type: file
+        description: List of fasta files to compare
+        pattern: "*.{fasta,fa,fna,.fas}"
+        ontologies:
+          - edam: "http://edamontology.org/data_1929"
+
+output:
+  - directory:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}:
+          type: directory
+          description: Directory containing output files, such as PDF figures and intermediate
+            tables for use in dRep dereplicate
+          pattern: "${prefix}/"
+          ontologies:
+            - edam: "http://edamontology.org/data_1049"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@jfy133"
+maintainers:
+  - "@jfy133"

@@ -4,8 +4,8 @@ process TRGT_MERGE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/trgt:1.2.0--h9ee0642_0':
-        'biocontainers/trgt:1.2.0--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/trgt:1.5.0--h9ee0642_0':
+        'biocontainers/trgt:1.5.0--h9ee0642_0' }"
 
     input:
     tuple val(meta) , path(vcfs), path(tbis)

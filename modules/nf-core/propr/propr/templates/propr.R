@@ -96,7 +96,7 @@ set_reference <- function(ivar, mat){
     return(ivar)
 }
 
-#' Set the appropiate range for the sequence of cutoffs used in updateCutoffs.
+#' Set the appropriate range for the sequence of cutoffs used in updateCutoffs.
 #' Adjusts the interval to the different metrics.
 #'
 #' @param object propr object. Output from propr function.
@@ -140,7 +140,7 @@ valCutoff  <- function(object, metric, fdrVal = 0.05){
             cutoff <- fdr_df\$cutoff[which(fdr_df\$FDR == fdr_threshold)] #select the corresponding cutoff value for the FDR
             print(cutoff)
         }else{
-            stop("FDR not defined. This metric is not appropiate for the given dataset")
+            stop("FDR not defined. This metric is not appropriate for the given dataset")
         }
     return(cutoff)
     }
@@ -279,7 +279,7 @@ mat <- t(mat)
 # check zeros
 # log transformation should be applied on non-zero data
 # otherwise Inf values are generated
-if (any(mat == 0)) print("Warning: Zeros will be replaced by minimun value before logratio analysis")
+if (any(mat == 0)) print("Warning: Zeros will be replaced by minimum value before logratio analysis")
 
 # set logratio transformation parameter -> ivar
 # if alr, set the index of the reference gene as ivar

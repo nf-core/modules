@@ -28,7 +28,9 @@ nextflow_process {
                 input[0] = amp_input
                 input[1] = faa_input
                 input[2] = gbk_input
-                input[3] = []
+                input[3] = 'DRAMP'
+                input[4] = []
+                input[5] = []
                 """
             }
         }
@@ -37,15 +39,17 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.sample_dir.collect { file(it[1]).getName() } +
-                                  process.out.results_db.collect { file(it[1]).getName() } +
-                                  process.out.contig_gbks.collect { file(it[1]).getName() } +
-                                  process.out.full_log.collect { file(it[1]).readLines().contains("<--AMP_database>") } +
-                                  process.out.sample_log.collect { file(it[1]).readLines().contains("found ampir file") } +
-                                  process.out.txt.collect { file(it[1]).readLines()[0] } +
-                                  process.out.tsv.collect { file(it[1]).readLines()[0] } +
-                                  process.out.faa.collect { file(it[1]).readLines()[0] } +
-                                  process.out.summary_csv.collect { file(it[1]).readLines().contains("Structure_Description") } +
-                                  process.out.versions ).match() }
+                                    process.out.contig_gbks.collect { file(it[1]).getName() } +
+                                    process.out.db_tsv.collect { file(it[1]).readLines()[0] } +
+                                    process.out.tsv.collect { file(it[1]).readLines()[0] } +
+                                    process.out.faa.collect { file(it[1]).readLines()[0] } +
+                                    process.out.full_log.collect { file(it[1]).readLines().contains("File downloaded successfully") } +
+                                    process.out.sample_log.collect { file(it[1]).readLines().contains("found ampir file") } +
+                                    process.out.db.collect { file(it[1]).getName() } +
+                                    process.out.db_txt.collect { file(it[1]).readLines()[0] } +
+                                    process.out.db_fasta.collect { file(it[1]).readLines()[0] } +
+                                    process.out.db_mmseqs.collect { file(it[1]).getName() } +
+                                    process.out.versions ).match() }
             )
         }
     }
@@ -67,7 +71,9 @@ nextflow_process {
                 input[0] = amp_input
                 input[1] = faa_input
                 input[2] = gbk_input
-                input[3] = []
+                input[3] = 'DRAMP'
+                input[4] = []
+                input[5] = []
                 """
             }
         }

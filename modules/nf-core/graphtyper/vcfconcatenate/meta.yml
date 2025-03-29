@@ -8,7 +8,7 @@ keywords:
 tools:
   - "graphtyper":
       description: A graph-based variant caller capable of genotyping population-scale
-        short read data sets while incoperating previously discovered variants.
+        short read data sets while incorporating previously discovered variants.
       homepage: "https://github.com/DecodeGenetics/graphtyper"
       documentation: "https://github.com/DecodeGenetics/graphtyper/wiki/User-guide"
       tool_dev_url: "https://github.com/DecodeGenetics/graphtyper"
@@ -32,7 +32,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*.vcf.gz":
+      - ${prefix}.vcf.gz:
           type: file
           description: Concatenated VCF file
           pattern: "*.{vcf.gz}"
@@ -42,7 +42,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*.tbi":
+      - ${prefix}.vcf.gz.tbi:
           type: file
           description: Concatenated VCF file index
           pattern: "*.{tbi}"

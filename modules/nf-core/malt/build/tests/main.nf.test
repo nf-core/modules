@@ -3,7 +3,6 @@ nextflow_process {
     name "Test Process MALT_BUILD"
     script "../main.nf"
     process "MALT_BUILD"
-    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -11,25 +10,87 @@ nextflow_process {
     tag "malt/build"
     tag "unzip"
 
-    setup {
-        run("UNZIP") {
-            script "../../../unzip/main.nf"
+    test("sarscov2 - fastq - mdb") {
+        config "./nextflow.config"
+
+        setup {
+            run("UNZIP", alias: "UNZIP_MDB") {
+                script "../../../unzip/main.nf"
+                process {
+                    """
+                    input[0] = [[], file("https://ngi-igenomes.s3.eu-west-1.amazonaws.com/test-data/createtaxdb/taxonomy/megan-nucl-Feb2022.db.zip", checkIfExists: true)]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = '-J-Xmx6G --sequenceType DNA'
+            }
             process {
                 """
-                input[0] = [[], file("s3://ngi-igenomes/test-data/createtaxdb/taxonomy/megan-nucl-Feb2022.db.zip", checkIfExists: true)]
+                def genome_1 = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/fasta/sarscov2.fasta', checkIfExists: true )
+                def genome_2 = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true )
+
+                input[0] = [genome_1,genome_2]
+                input[1] = []
+                input[2] = UNZIP_MDB.out.unzipped_archive.map { it[1] }
+                input[3] = 'mdb'
                 """
             }
         }
+
+        then {
+
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        path("${process.out.index[0]}/index0.idx"),
+                        path("${process.out.index[0]}/ref.db"),
+                        path("${process.out.index[0]}/ref.idx"),
+                        path("${process.out.index[0]}/ref.inf"),
+                        path("${process.out.index[0]}/taxonomy.idx"),
+                        path("${process.out.index[0]}/taxonomy.map"),
+                        path("${process.out.index[0]}/taxonomy.tre"),
+                        process.out.versions
+                        )
+                    .match()
+                },
+                { assert path(process.out.log[0]).readLines().last().contains("Peak memory") },
+                { assert path("${process.out.index[0]}/table0.db").exists() },
+                { assert path("${process.out.index[0]}/table0.idx").exists() },
+            )
+        }
     }
 
-    test("sarscov2 - fastq") {
+    test("sarscov2 - fastq - abin") {
+        config "./nextflow.config"
+
+        setup {
+            run("UNZIP", alias: "UNZIP_ABIN") {
+                script "../../../unzip/main.nf"
+                process {
+                    """
+                    input[0] = [[], file("https://software-ab.cs.uni-tuebingen.de/download/megan6/nucl_acc2tax-Jul2019.abin.zip", checkIfExists: true)]
+                    """
+                }
+            }
+        }
 
         when {
+            params {
+                module_args = '-J-Xmx6G --sequenceType DNA'
+            }
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+                def genome_1 = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/fasta/sarscov2.fasta', checkIfExists: true )
+                def genome_2 = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true )
+
+                input[0] = [genome_1,genome_2]
                 input[1] = []
-                input[2] = UNZIP.out.unzipped_archive.map { it[1] }
+                input[2] = UNZIP_ABIN.out.unzipped_archive.map { it[1] }
+                input[3] = 'a2t'
                 """
             }
         }
@@ -59,15 +120,18 @@ nextflow_process {
     }
 
     test("sarscov2 - fastq - stub") {
-
         options "-stub"
 
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+                def genome_1 = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/fasta/sarscov2.fasta', checkIfExists: true )
+                def genome_2 = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true )
+
+                input[0] = [genome_1,genome_2]
                 input[1] = []
-                input[2] = UNZIP.out.unzipped_archive.map { it[1] }
+                input[2] = []
+                input[3] = 'mdb'
                 """
             }
         }

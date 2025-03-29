@@ -1,0 +1,66 @@
+name: "skani_sketch"
+description: Storing skani sketches/indices on disk.
+keywords:
+  - skani
+  - metagenomics
+  - genome
+  - alignment
+  - sketch
+tools:
+  - "skani":
+      description: "skani is a fast and robust tool for calculating ANI between metagenome assembled genomes and contigs."
+      homepage: "https://github.com/bluenote-1577/skani"
+      documentation: "https://github.com/bluenote-1577/skani/wiki"
+      tool_dev_url: "https://github.com/bluenote-1577/skani"
+      doi: "10.1038/s41592-023-02018-3"
+      licence: ["MIT"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Input FASTA file to be sketched
+        pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
+
+output:
+  - sketch_dir:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}":
+          type: directory
+          description: Directory containing the genome sketches and markers.
+  - sketch:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}/${fasta}.sketch":
+          type: file
+          description: File containing the genome sketch that will be used downstream.
+  - markers:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}/markers.bin":
+          type: file
+          description: Sparse set of markers to filter distant genomes.
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@CarsonJM"
+maintainers:
+  - "@CarsonJM"

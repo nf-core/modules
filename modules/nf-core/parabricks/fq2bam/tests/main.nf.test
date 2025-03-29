@@ -3,7 +3,6 @@ nextflow_process {
     name "Test Process PARABRICKS_FQ2BAM"
     script "../main.nf"
     process "PARABRICKS_FQ2BAM"
-    config "./nextflow.config"
 
     tag "bwa/index"
     tag "modules"
@@ -11,6 +10,8 @@ nextflow_process {
     tag "modules_nfcore"
     tag "parabricks"
     tag "gpu"
+
+    config './nextflow.config'
 
     setup {
         run("BWA_INDEX") {
@@ -36,11 +37,31 @@ nextflow_process {
                 """
             }
         }
+
+        run("BWA_INDEX", alias: 'BWA_INDEX_CRAM') {
+            script "../../../bwa/index/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
     }
 
     test("SRR389222 - fastq - se") {
 
+        config './nextflow.config'
+
         when {
+            params {
+                module_args = '--low-memory'
+                // Ref: https://forums.developer.nvidia.com/t/problem-with-gpu/256825/6
+                // Parabricks’s fq2bam requires 24GB of memory.
+                // Using --low-memory for testing
+            }
             process {
                 """
                 input[0] = Channel.of([
@@ -55,7 +76,8 @@ nextflow_process {
                 ])
 				input[2] = BWA_INDEX.out.index
                 input[3] = [ [], [] ]
-                input[4] = []
+                input[4] = [ [], [] ]
+                input[5] = 'bam'
                 """
             }
         }
@@ -66,16 +88,21 @@ nextflow_process {
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
                     file(process.out.bai[0][1]).name,
-                    process.out.versions
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
                 ).match() }
             )
         }
     }
 
     test("SRR389222 - fastq - se - stub") {
+        
         options '-stub'
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = Channel.of([
@@ -90,7 +117,8 @@ nextflow_process {
                 ])
 				input[2] = BWA_INDEX.out.index
                 input[3] = [ [], [] ]
-                input[4] = []
+                input[4] = [ [], [] ]
+                input[5] = 'bam'
                 """
             }
         }
@@ -98,7 +126,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
             )
         }
     }
@@ -106,6 +137,12 @@ nextflow_process {
     test("sarscov2 - fastq - pe") {
 
         when {
+            params {
+                module_args = '--low-memory'
+                // Ref: https://forums.developer.nvidia.com/t/problem-with-gpu/256825/6
+                // Parabricks’s fq2bam requires 24GB of memory.
+                // Using --low-memory for testing
+            }
             process {
                 """
                 input[0] = [
@@ -121,7 +158,8 @@ nextflow_process {
                 ])
                 input[2] = BWA_INDEX_PE.out.index
                 input[3] = [ [], [] ]
-                input[4] = []
+                input[4] = [ [], [] ]
+                input[5] = 'bam'
                 """
             }
         }
@@ -132,7 +170,8 @@ nextflow_process {
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
                     file(process.out.bai[0][1]).name,
-                    process.out.versions
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
                 ).match() }
             )
         }
@@ -140,9 +179,13 @@ nextflow_process {
     }
 
     test("sarscov2 - fastq - pe - stub") {
+
         options '-stub'
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
@@ -158,7 +201,8 @@ nextflow_process {
                 ])
                 input[2] = BWA_INDEX_PE.out.index
                 input[3] = [ [], [] ]
-                input[4] = []
+                input[4] = [ [], [] ]
+                input[5] = 'bam'
                 """
             }
         }
@@ -166,7 +210,96 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fastq - se - cram") {
+
+        when {
+            params {
+                module_args = '--low-memory'
+                // Ref: https://forums.developer.nvidia.com/t/problem-with-gpu/256825/6
+                // Parabricks’s fq2bam requires 24GB of memory.
+                // Using --low-memory for testing
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                input[2] = BWA_INDEX_CRAM.out.index
+                input[3] = [ [], [] ]
+                input[4] = [ [], [] ]
+                input[5] = 'cram'
+                """
+            }
+        }
+
+        then {
+            def fasta = "https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/sarscov2/genome/genome.fasta"
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    cram(
+                        process.out.cram[0][1],
+                        fasta,
+                        ).getReadsMD5(),
+                    file(process.out.crai[0][1]).name,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fastq - pe - cram - stub") {
+
+        options '-stub'
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = BWA_INDEX_PE.out.index
+                input[3] = [ [], [] ]
+                input[4] = [ [], [] ]
+                input[5] = 'cram'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match() 
+                }
             )
         }
 

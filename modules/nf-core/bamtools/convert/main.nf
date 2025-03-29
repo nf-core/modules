@@ -18,20 +18,35 @@ process BAMTOOLS_CONVERT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def test = args ==~ /-format (bed|fasta|fastq|json|pileup|sam|yaml)/
-    if ( test == false ) error "-format option must be provided in args. Possible values: bed fasta fastq json pileup sam yaml"
-    m = args =~ /-format ([a-z]+)/
-    ext = m[0][1]
+    def args       = task.ext.args   ?: ''
+    def prefix     = task.ext.prefix ?: "${meta.id}"
+    format_cmd     = args ==~ /-format (bed|fasta|fastq|json|pileup|sam|yaml)/
+    matched_format = args =~  /-format ([a-z]+)/
+    extension      = matched_format[0][1]
+    if ( format_cmd == false ) error "-format option must be provided in args. Possible values: bed fasta fastq json pileup sam yaml"
 
     """
     bamtools \\
         convert \\
         $args \\
         -in $bam \\
-        -out ${prefix}.${ext}
+        -out ${prefix}.${extension}
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bamtools: \$( bamtools --version | grep -e 'bamtools' | sed 's/^.*bamtools //' )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix     = task.ext.prefix ?: "${meta.id}"
+    format_cmd     = args ==~ /-format (bed|fasta|fastq|json|pileup|sam|yaml)/
+    matched_format = args =~  /-format ([a-z]+)/
+    extension      = matched_format[0][1]
+    if ( format_cmd == false ) error "-format option must be provided in args. Possible values: bed fasta fastq json pileup sam yaml"
+
+    """
+    touch ${prefix}.${extension}
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         bamtools: \$( bamtools --version | grep -e 'bamtools' | sed 's/^.*bamtools //' )

@@ -18,17 +18,17 @@ tools:
       licence: ["GPL v3"]
       identifier: biotools:mmseqs
 input:
-  - - db:
+  - - database:
         type: directory
         description: |
-          Directory containing the DB to be indexed
+          Directory containing the database to be indexed
         pattern: "*"
 output:
   - db_exprofile:
-      - db:
+      - database:
           type: directory
           description: |
-            Directory containing the expandable profile DB
+            Directory containing the expandable profile database
           pattern: "*"
   - versions:
       - versions.yml:
@@ -40,3 +40,4 @@ authors:
   - "@JoseEspinosa"
 maintainers:
   - "@JoseEspinosa"
+  - "@sateeshperi"

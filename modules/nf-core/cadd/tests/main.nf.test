@@ -1,0 +1,36 @@
+nextflow_process {
+
+    name "Test Process CADD"
+    
+    script "../main.nf"
+    process "CADD"
+   
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cadd"    
+    
+    test("test_cadd - stub") {
+        options '-stub'
+        when {
+            
+            process {
+                """
+                input[0] = [
+                    [id:'test',single_end:false],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf',checkIfExists:true)
+                    ]
+                input[1] = file("\$PWD")
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+}

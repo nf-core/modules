@@ -1,0 +1,72 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "catpack_summarise"
+description: Summarises results from CAT/BAT/RAT classification steps
+keywords:
+  - taxonomic classification
+  - classification
+  - long reads
+  - mags
+  - assembly
+tools:
+  - "catpack":
+      description: "CAT/BAT: tool for taxonomic classification of contigs and metagenome-assembled
+        genomes (MAGs)"
+      homepage: "https://github.com/MGXlab/CAT_pack"
+      documentation: "https://github.com/MGXlab/CAT_pack"
+      tool_dev_url: "https://github.com/MGXlab/CAT_pack"
+      doi: "10.1186/s13059-019-1817-x"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+
+    - classification:
+        type: file
+        description: CAT/BAT/RAT classification table annotated with official names (from CAT_pack addnames)
+        pattern: "*.txt"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+
+    - contigs:
+        type: file
+        description: Optional nucleotide FASTA file containing long DNA sequences such as contigs that were classified (only if classification table is from CAT_pack contigs)
+        pattern: "*.{fasta,fna,fa,fas}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+
+output:
+  - txt:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.txt":
+          type: file
+          description: |
+            Summary statistics table of CAT/BAT/RAT results
+          pattern: "*.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@jfy133"
+maintainers:
+  - "@jfy133"

@@ -17,8 +17,7 @@ nextflow_workflow {
     test("sarscov2 paired-end [fastq]") {
 
         when {
-            workflow {
-                """
+            params {
                 skip_fastqc       = false
                 with_umi          = false
                 skip_umi_extract  = false
@@ -28,7 +27,10 @@ nextflow_workflow {
                 save_trimmed_fail = false
                 save_merged       = false
                 min_trimmed_reads = 1
-
+                fastp_args        = ""
+            }
+            workflow {
+                """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     [
@@ -36,15 +38,15 @@ nextflow_workflow {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ])
-                input[1] = skip_fastqc
-                input[2] = with_umi
-                input[3] = skip_umi_extract
-                input[4] = umi_discard_read
-                input[5] = skip_trimming
-                input[6] = adapter_fasta
-                input[7] = save_trimmed_fail
-                input[8] = save_merged
-                input[9] = min_trimmed_reads
+                input[1] = params.skip_fastqc
+                input[2] = params.with_umi
+                input[3] = params.skip_umi_extract
+                input[4] = params.umi_discard_read
+                input[5] = params.skip_trimming
+                input[6] = params.adapter_fasta
+                input[7] = params.save_trimmed_fail
+                input[8] = params.save_merged
+                input[9] = params.min_trimmed_reads
                 """
             }
         }
@@ -73,11 +75,10 @@ nextflow_workflow {
         }
     }
 
-    test("skip_fastqc") {
+    test("sarscov2 paired-end [fastq] | skip_fastqc") {
 
         when {
-            workflow {
-                """
+            params {
                 skip_fastqc       = true
                 with_umi          = false
                 skip_umi_extract  = false
@@ -87,7 +88,10 @@ nextflow_workflow {
                 save_trimmed_fail = false
                 save_merged       = false
                 min_trimmed_reads = 1
-
+                fastp_args        = ""
+            }
+            workflow {
+                """
                 input[0] = Channel.of([
                     [ id:'test', single_end: false ], // meta map
                     [
@@ -95,15 +99,15 @@ nextflow_workflow {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ])
-                input[1] = skip_fastqc
-                input[2] = with_umi
-                input[3] = skip_umi_extract
-                input[4] = umi_discard_read
-                input[5] = skip_trimming
-                input[6] = adapter_fasta
-                input[7] = save_trimmed_fail
-                input[8] = save_merged
-                input[9] = min_trimmed_reads
+                input[1] = params.skip_fastqc
+                input[2] = params.with_umi
+                input[3] = params.skip_umi_extract
+                input[4] = params.umi_discard_read
+                input[5] = params.skip_trimming
+                input[6] = params.adapter_fasta
+                input[7] = params.save_trimmed_fail
+                input[8] = params.save_merged
+                input[9] = params.min_trimmed_reads
                 """
             }
         }
@@ -132,11 +136,10 @@ nextflow_workflow {
         }
     }
 
-    test("with_umi") {
+    test("sarscov2 paired-end [fastq] | with_umi") {
 
         when {
-            workflow {
-                """
+            params {
                 skip_fastqc       = false
                 with_umi          = true
                 skip_umi_extract  = false
@@ -146,7 +149,10 @@ nextflow_workflow {
                 save_trimmed_fail = false
                 save_merged       = false
                 min_trimmed_reads = 1
-
+                fastp_args        = ""
+            }
+            workflow {
+                """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     [
@@ -154,15 +160,15 @@ nextflow_workflow {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ])
-                input[1] = skip_fastqc
-                input[2] = with_umi
-                input[3] = skip_umi_extract
-                input[4] = umi_discard_read
-                input[5] = skip_trimming
-                input[6] = adapter_fasta
-                input[7] = save_trimmed_fail
-                input[8] = save_merged
-                input[9] = min_trimmed_reads
+                input[1] = params.skip_fastqc
+                input[2] = params.with_umi
+                input[3] = params.skip_umi_extract
+                input[4] = params.umi_discard_read
+                input[5] = params.skip_trimming
+                input[6] = params.adapter_fasta
+                input[7] = params.save_trimmed_fail
+                input[8] = params.save_merged
+                input[9] = params.min_trimmed_reads
                 """
             }
         }
@@ -191,11 +197,10 @@ nextflow_workflow {
     }
 
 
-    test("skip_umi_extract") {
+    test("sarscov2 paired-end [fastq] | skip_umi_extract") {
 
         when {
-            workflow {
-                """
+            params {
                 skip_fastqc       = false
                 with_umi          = true
                 skip_umi_extract  = true
@@ -205,7 +210,10 @@ nextflow_workflow {
                 save_trimmed_fail = false
                 save_merged       = false
                 min_trimmed_reads = 1
-
+                fastp_args        = ""
+            }
+            workflow {
+                """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     [
@@ -213,15 +221,15 @@ nextflow_workflow {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ])
-                input[1] = skip_fastqc
-                input[2] = with_umi
-                input[3] = skip_umi_extract
-                input[4] = umi_discard_read
-                input[5] = skip_trimming
-                input[6] = adapter_fasta
-                input[7] = save_trimmed_fail
-                input[8] = save_merged
-                input[9] = min_trimmed_reads
+                input[1] = params.skip_fastqc
+                input[2] = params.with_umi
+                input[3] = params.skip_umi_extract
+                input[4] = params.umi_discard_read
+                input[5] = params.skip_trimming
+                input[6] = params.adapter_fasta
+                input[7] = params.save_trimmed_fail
+                input[8] = params.save_merged
+                input[9] = params.min_trimmed_reads
                 """
             }
         }
@@ -250,11 +258,10 @@ nextflow_workflow {
         }
     }
 
-    test("umi_discard_read = 2") {
+    test("sarscov2 paired-end [fastq] | umi_discard_read = 2") {
 
         when {
-            workflow {
-                """
+            params {
                 skip_fastqc       = false
                 with_umi          = true
                 skip_umi_extract  = true
@@ -264,7 +271,10 @@ nextflow_workflow {
                 save_trimmed_fail = false
                 save_merged       = false
                 min_trimmed_reads = 1
-
+                fastp_args        = ""
+            }
+            workflow {
+                """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     [
@@ -272,15 +282,15 @@ nextflow_workflow {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ])
-                input[1] = skip_fastqc
-                input[2] = with_umi
-                input[3] = skip_umi_extract
-                input[4] = umi_discard_read
-                input[5] = skip_trimming
-                input[6] = adapter_fasta
-                input[7] = save_trimmed_fail
-                input[8] = save_merged
-                input[9] = min_trimmed_reads
+                input[1] = params.skip_fastqc
+                input[2] = params.with_umi
+                input[3] = params.skip_umi_extract
+                input[4] = params.umi_discard_read
+                input[5] = params.skip_trimming
+                input[6] = params.adapter_fasta
+                input[7] = params.save_trimmed_fail
+                input[8] = params.save_merged
+                input[9] = params.min_trimmed_reads
                 """
             }
         }
@@ -309,11 +319,10 @@ nextflow_workflow {
         }
     }
 
-    test("skip_trimming") {
+    test("sarscov2 paired-end [fastq] | skip_trimming") {
 
         when {
-            workflow {
-                """
+            params {
                 skip_fastqc       = false
                 with_umi          = false
                 skip_umi_extract  = false
@@ -323,7 +332,10 @@ nextflow_workflow {
                 save_trimmed_fail = false
                 save_merged       = false
                 min_trimmed_reads = 1
-
+                fastp_args        = ""
+            }
+            workflow {
+                """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     [
@@ -331,15 +343,15 @@ nextflow_workflow {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ])
-                input[1] = skip_fastqc
-                input[2] = with_umi
-                input[3] = skip_umi_extract
-                input[4] = umi_discard_read
-                input[5] = skip_trimming
-                input[6] = adapter_fasta
-                input[7] = save_trimmed_fail
-                input[8] = save_merged
-                input[9] = min_trimmed_reads
+                input[1] = params.skip_fastqc
+                input[2] = params.with_umi
+                input[3] = params.skip_umi_extract
+                input[4] = params.umi_discard_read
+                input[5] = params.skip_trimming
+                input[6] = params.adapter_fasta
+                input[7] = params.save_trimmed_fail
+                input[8] = params.save_merged
+                input[9] = params.min_trimmed_reads
                 """
             }
         }
@@ -369,13 +381,10 @@ nextflow_workflow {
         }
     }
 
-    test("save_trimmed_fail") {
-
-        config './nextflow.save_trimmed.config'
+    test("sarscov2 paired-end [fastq] | save_trimmed_fail") {
 
         when {
-            workflow {
-                """
+            params {
                 skip_fastqc       = false
                 with_umi          = false
                 skip_umi_extract  = false
@@ -385,7 +394,10 @@ nextflow_workflow {
                 save_trimmed_fail = true
                 save_merged       = false
                 min_trimmed_reads = 1
-
+                fastp_args        = "-e 30"
+            }
+            workflow {
+                """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     [
@@ -393,15 +405,15 @@ nextflow_workflow {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ])
-                input[1] = skip_fastqc
-                input[2] = with_umi
-                input[3] = skip_umi_extract
-                input[4] = umi_discard_read
-                input[5] = skip_trimming
-                input[6] = adapter_fasta
-                input[7] = save_trimmed_fail
-                input[8] = save_merged
-                input[9] = min_trimmed_reads
+                input[1] = params.skip_fastqc
+                input[2] = params.with_umi
+                input[3] = params.skip_umi_extract
+                input[4] = params.umi_discard_read
+                input[5] = params.skip_trimming
+                input[6] = params.adapter_fasta
+                input[7] = params.save_trimmed_fail
+                input[8] = params.save_merged
+                input[9] = params.min_trimmed_reads
                 """
             }
         }
@@ -430,11 +442,10 @@ nextflow_workflow {
         }
     }
 
-    test("save_merged") {
+    test("sarscov2 paired-end [fastq] | save_merged") {
 
         when {
-            workflow {
-                """
+            params {
                 skip_fastqc       = false
                 with_umi          = false
                 skip_umi_extract  = false
@@ -444,7 +455,10 @@ nextflow_workflow {
                 save_trimmed_fail = false
                 save_merged       = true
                 min_trimmed_reads = 1
-
+                fastp_args        = ""
+            }
+            workflow {
+                """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     [
@@ -452,15 +466,15 @@ nextflow_workflow {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ])
-                input[1] = skip_fastqc
-                input[2] = with_umi
-                input[3] = skip_umi_extract
-                input[4] = umi_discard_read
-                input[5] = skip_trimming
-                input[6] = adapter_fasta
-                input[7] = save_trimmed_fail
-                input[8] = save_merged
-                input[9] = min_trimmed_reads
+                input[1] = params.skip_fastqc
+                input[2] = params.with_umi
+                input[3] = params.skip_umi_extract
+                input[4] = params.umi_discard_read
+                input[5] = params.skip_trimming
+                input[6] = params.adapter_fasta
+                input[7] = params.save_trimmed_fail
+                input[8] = params.save_merged
+                input[9] = params.min_trimmed_reads
                 """
             }
         }
@@ -489,12 +503,11 @@ nextflow_workflow {
         }
     }
 
-    test("min_trimmed_reads = 26") {
+    test("sarscov2 paired-end [fastq] | min_trimmed_reads = 26") {
         // Subworkflow should stop after FASTP which trims down to 25 reads
 
         when {
-            workflow {
-                """
+            params {
                 skip_fastqc       = false
                 with_umi          = false
                 skip_umi_extract  = false
@@ -504,7 +517,10 @@ nextflow_workflow {
                 save_trimmed_fail = false
                 save_merged       = true
                 min_trimmed_reads = 26
-
+                fastp_args        = ""
+            }
+            workflow {
+                """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     [
@@ -512,15 +528,15 @@ nextflow_workflow {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ])
-                input[1] = skip_fastqc
-                input[2] = with_umi
-                input[3] = skip_umi_extract
-                input[4] = umi_discard_read
-                input[5] = skip_trimming
-                input[6] = adapter_fasta
-                input[7] = save_trimmed_fail
-                input[8] = save_merged
-                input[9] = min_trimmed_reads
+                input[1] = params.skip_fastqc
+                input[2] = params.with_umi
+                input[3] = params.skip_umi_extract
+                input[4] = params.umi_discard_read
+                input[5] = params.skip_trimming
+                input[6] = params.adapter_fasta
+                input[7] = params.save_trimmed_fail
+                input[8] = params.save_merged
+                input[9] = params.min_trimmed_reads
                 """
             }
         }
@@ -550,12 +566,10 @@ nextflow_workflow {
     }
 
     test("sarscov2 paired-end [fastq] - stub") {
-
-        options '-stub'
+        options '-stub-run'
 
         when {
-            workflow {
-                """
+            params {
                 skip_fastqc       = false
                 with_umi          = false
                 skip_umi_extract  = false
@@ -565,7 +579,10 @@ nextflow_workflow {
                 save_trimmed_fail = false
                 save_merged       = false
                 min_trimmed_reads = 1
-
+                fastp_args        = ""
+            }
+            workflow {
+                """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     [
@@ -573,15 +590,15 @@ nextflow_workflow {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ])
-                input[1] = skip_fastqc
-                input[2] = with_umi
-                input[3] = skip_umi_extract
-                input[4] = umi_discard_read
-                input[5] = skip_trimming
-                input[6] = adapter_fasta
-                input[7] = save_trimmed_fail
-                input[8] = save_merged
-                input[9] = min_trimmed_reads
+                input[1] = params.skip_fastqc
+                input[2] = params.with_umi
+                input[3] = params.skip_umi_extract
+                input[4] = params.umi_discard_read
+                input[5] = params.skip_trimming
+                input[6] = params.adapter_fasta
+                input[7] = params.save_trimmed_fail
+                input[8] = params.save_merged
+                input[9] = params.min_trimmed_reads
                 """
             }
         }
@@ -594,13 +611,11 @@ nextflow_workflow {
         }
     }
 
-    test("skip_fastqc - stub") {
-
-        options "-stub"
+    test("sarscov2 paired-end [fastq] | skip_fastqc - stub") {
+        options "-stub-run"
 
         when {
-            workflow {
-                """
+            params {
                 skip_fastqc       = true
                 with_umi          = false
                 skip_umi_extract  = false
@@ -610,7 +625,10 @@ nextflow_workflow {
                 save_trimmed_fail = false
                 save_merged       = false
                 min_trimmed_reads = 1
-
+                fastp_args        = ""
+            }
+            workflow {
+                """
                 input[0] = Channel.of([
                     [ id:'test', single_end: false ], // meta map
                     [
@@ -618,15 +636,15 @@ nextflow_workflow {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ])
-                input[1] = skip_fastqc
-                input[2] = with_umi
-                input[3] = skip_umi_extract
-                input[4] = umi_discard_read
-                input[5] = skip_trimming
-                input[6] = adapter_fasta
-                input[7] = save_trimmed_fail
-                input[8] = save_merged
-                input[9] = min_trimmed_reads
+                input[1] = params.skip_fastqc
+                input[2] = params.with_umi
+                input[3] = params.skip_umi_extract
+                input[4] = params.umi_discard_read
+                input[5] = params.skip_trimming
+                input[6] = params.adapter_fasta
+                input[7] = params.save_trimmed_fail
+                input[8] = params.save_merged
+                input[9] = params.min_trimmed_reads
                 """
             }
         }
@@ -639,13 +657,11 @@ nextflow_workflow {
         }
     }
 
-    test("with_umi - stub") {
-
-        options "-stub"
+    test("sarscov2 paired-end [fastq] | with_umi - stub") {
+        options "-stub-run"
 
         when {
-            workflow {
-                """
+            params {
                 skip_fastqc       = false
                 with_umi          = true
                 skip_umi_extract  = false
@@ -655,7 +671,10 @@ nextflow_workflow {
                 save_trimmed_fail = false
                 save_merged       = false
                 min_trimmed_reads = 1
-
+                fastp_args        = ""
+            }
+            workflow {
+                """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     [
@@ -663,15 +682,15 @@ nextflow_workflow {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ])
-                input[1] = skip_fastqc
-                input[2] = with_umi
-                input[3] = skip_umi_extract
-                input[4] = umi_discard_read
-                input[5] = skip_trimming
-                input[6] = adapter_fasta
-                input[7] = save_trimmed_fail
-                input[8] = save_merged
-                input[9] = min_trimmed_reads
+                input[1] = params.skip_fastqc
+                input[2] = params.with_umi
+                input[3] = params.skip_umi_extract
+                input[4] = params.umi_discard_read
+                input[5] = params.skip_trimming
+                input[6] = params.adapter_fasta
+                input[7] = params.save_trimmed_fail
+                input[8] = params.save_merged
+                input[9] = params.min_trimmed_reads
                 """
             }
         }
@@ -685,13 +704,11 @@ nextflow_workflow {
     }
 
 
-    test("skip_umi_extract - stub") {
-
-        options "-stub"
+    test("sarscov2 paired-end [fastq] | skip_umi_extract - stub") {
+        options "-stub-run"
 
         when {
-            workflow {
-                """
+            params {
                 skip_fastqc       = false
                 with_umi          = true
                 skip_umi_extract  = true
@@ -701,7 +718,10 @@ nextflow_workflow {
                 save_trimmed_fail = false
                 save_merged       = false
                 min_trimmed_reads = 1
-
+                fastp_args        = ""
+            }
+            workflow {
+                """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     [
@@ -709,15 +729,15 @@ nextflow_workflow {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ])
-                input[1] = skip_fastqc
-                input[2] = with_umi
-                input[3] = skip_umi_extract
-                input[4] = umi_discard_read
-                input[5] = skip_trimming
-                input[6] = adapter_fasta
-                input[7] = save_trimmed_fail
-                input[8] = save_merged
-                input[9] = min_trimmed_reads
+                input[1] = params.skip_fastqc
+                input[2] = params.with_umi
+                input[3] = params.skip_umi_extract
+                input[4] = params.umi_discard_read
+                input[5] = params.skip_trimming
+                input[6] = params.adapter_fasta
+                input[7] = params.save_trimmed_fail
+                input[8] = params.save_merged
+                input[9] = params.min_trimmed_reads
                 """
             }
         }
@@ -730,13 +750,11 @@ nextflow_workflow {
         }
     }
 
-    test("umi_discard_read = 2 - stub") {
-
-        options "-stub"
+    test("sarscov2 paired-end [fastq] | umi_discard_read = 2 - stub") {
+        options "-stub-run"
 
         when {
-            workflow {
-                """
+            params {
                 skip_fastqc       = false
                 with_umi          = true
                 skip_umi_extract  = true
@@ -746,7 +764,10 @@ nextflow_workflow {
                 save_trimmed_fail = false
                 save_merged       = false
                 min_trimmed_reads = 1
-
+                fastp_args        = ""
+            }
+            workflow {
+                """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     [
@@ -754,15 +775,15 @@ nextflow_workflow {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ])
-                input[1] = skip_fastqc
-                input[2] = with_umi
-                input[3] = skip_umi_extract
-                input[4] = umi_discard_read
-                input[5] = skip_trimming
-                input[6] = adapter_fasta
-                input[7] = save_trimmed_fail
-                input[8] = save_merged
-                input[9] = min_trimmed_reads
+                input[1] = params.skip_fastqc
+                input[2] = params.with_umi
+                input[3] = params.skip_umi_extract
+                input[4] = params.umi_discard_read
+                input[5] = params.skip_trimming
+                input[6] = params.adapter_fasta
+                input[7] = params.save_trimmed_fail
+                input[8] = params.save_merged
+                input[9] = params.min_trimmed_reads
                 """
             }
         }
@@ -775,13 +796,11 @@ nextflow_workflow {
         }
     }
 
-    test("skip_trimming - stub") {
-
-        options "-stub"
+    test("sarscov2 paired-end [fastq] | skip_trimming - stub") {
+        options "-stub-run"
 
         when {
-            workflow {
-                """
+            params {
                 skip_fastqc       = false
                 with_umi          = false
                 skip_umi_extract  = false
@@ -791,7 +810,10 @@ nextflow_workflow {
                 save_trimmed_fail = false
                 save_merged       = false
                 min_trimmed_reads = 1
-
+                fastp_args        = ""
+            }
+            workflow {
+                """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     [
@@ -799,15 +821,15 @@ nextflow_workflow {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ])
-                input[1] = skip_fastqc
-                input[2] = with_umi
-                input[3] = skip_umi_extract
-                input[4] = umi_discard_read
-                input[5] = skip_trimming
-                input[6] = adapter_fasta
-                input[7] = save_trimmed_fail
-                input[8] = save_merged
-                input[9] = min_trimmed_reads
+                input[1] = params.skip_fastqc
+                input[2] = params.with_umi
+                input[3] = params.skip_umi_extract
+                input[4] = params.umi_discard_read
+                input[5] = params.skip_trimming
+                input[6] = params.adapter_fasta
+                input[7] = params.save_trimmed_fail
+                input[8] = params.save_merged
+                input[9] = params.min_trimmed_reads
                 """
             }
         }
@@ -833,15 +855,11 @@ nextflow_workflow {
         }
     }
 
-    test("save_trimmed_fail - stub") {
-
-        options "-stub"
-
-        config './nextflow.save_trimmed.config'
+    test("sarscov2 paired-end [fastq] | save_trimmed_fail - stub") {
+        options "-stub-run"
 
         when {
-            workflow {
-                """
+            params {
                 skip_fastqc       = false
                 with_umi          = false
                 skip_umi_extract  = false
@@ -851,7 +869,10 @@ nextflow_workflow {
                 save_trimmed_fail = true
                 save_merged       = false
                 min_trimmed_reads = 1
-
+                fastp_args        = "-e 30"
+            }
+            workflow {
+                """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     [
@@ -859,15 +880,15 @@ nextflow_workflow {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ])
-                input[1] = skip_fastqc
-                input[2] = with_umi
-                input[3] = skip_umi_extract
-                input[4] = umi_discard_read
-                input[5] = skip_trimming
-                input[6] = adapter_fasta
-                input[7] = save_trimmed_fail
-                input[8] = save_merged
-                input[9] = min_trimmed_reads
+                input[1] = params.skip_fastqc
+                input[2] = params.with_umi
+                input[3] = params.skip_umi_extract
+                input[4] = params.umi_discard_read
+                input[5] = params.skip_trimming
+                input[6] = params.adapter_fasta
+                input[7] = params.save_trimmed_fail
+                input[8] = params.save_merged
+                input[9] = params.min_trimmed_reads
                 """
             }
         }
@@ -880,13 +901,11 @@ nextflow_workflow {
         }
     }
 
-    test("save_merged - stub") {
-
-        options "-stub"
+    test("sarscov2 paired-end [fastq] | save_merged - stub") {
+        options "-stub-run"
 
         when {
-            workflow {
-                """
+            params {
                 skip_fastqc       = false
                 with_umi          = false
                 skip_umi_extract  = false
@@ -896,7 +915,10 @@ nextflow_workflow {
                 save_trimmed_fail = false
                 save_merged       = true
                 min_trimmed_reads = 1
-
+                fastp_args        = ""
+            }
+            workflow {
+                """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     [
@@ -904,15 +926,15 @@ nextflow_workflow {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ])
-                input[1] = skip_fastqc
-                input[2] = with_umi
-                input[3] = skip_umi_extract
-                input[4] = umi_discard_read
-                input[5] = skip_trimming
-                input[6] = adapter_fasta
-                input[7] = save_trimmed_fail
-                input[8] = save_merged
-                input[9] = min_trimmed_reads
+                input[1] = params.skip_fastqc
+                input[2] = params.with_umi
+                input[3] = params.skip_umi_extract
+                input[4] = params.umi_discard_read
+                input[5] = params.skip_trimming
+                input[6] = params.adapter_fasta
+                input[7] = params.save_trimmed_fail
+                input[8] = params.save_merged
+                input[9] = params.min_trimmed_reads
                 """
             }
         }
@@ -925,14 +947,12 @@ nextflow_workflow {
         }
     }
 
-    test("min_trimmed_reads = 26 - stub") {
+    test("sarscov2 paired-end [fastq] | min_trimmed_reads = 26 - stub") {
         // Subworkflow should stop after FASTP which trims down to 25 reads
-
-        options "-stub"
+        options "-stub-run"
 
         when {
-            workflow {
-                """
+            params {
                 skip_fastqc       = false
                 with_umi          = false
                 skip_umi_extract  = false
@@ -942,7 +962,10 @@ nextflow_workflow {
                 save_trimmed_fail = false
                 save_merged       = true
                 min_trimmed_reads = 26
-
+                fastp_args        = ""
+            }
+            workflow {
+                """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     [
@@ -950,15 +973,15 @@ nextflow_workflow {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ])
-                input[1] = skip_fastqc
-                input[2] = with_umi
-                input[3] = skip_umi_extract
-                input[4] = umi_discard_read
-                input[5] = skip_trimming
-                input[6] = adapter_fasta
-                input[7] = save_trimmed_fail
-                input[8] = save_merged
-                input[9] = min_trimmed_reads
+                input[1] = params.skip_fastqc
+                input[2] = params.with_umi
+                input[3] = params.skip_umi_extract
+                input[4] = params.umi_discard_read
+                input[5] = params.skip_trimming
+                input[6] = params.adapter_fasta
+                input[7] = params.save_trimmed_fail
+                input[8] = params.save_merged
+                input[9] = params.min_trimmed_reads
                 """
             }
         }

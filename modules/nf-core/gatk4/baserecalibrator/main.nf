@@ -9,11 +9,11 @@ process GATK4_BASERECALIBRATOR {
 
     input:
     tuple val(meta), path(input), path(input_index), path(intervals)
-    path  fasta
-    path  fai
-    path  dict
-    path  known_sites
-    path  known_sites_tbi
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
+    tuple val(meta4), path(dict)
+    tuple val(meta5), path(known_sites)
+    tuple val(meta6), path(known_sites_tbi)
 
     output:
     tuple val(meta), path("*.table"), emit: table

@@ -30,12 +30,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-					bam(process.out.bam[0][1]).getHeaderMD5(),
-					file(process.out.log[0][1]).name,
-					process.out.versions,
-                    file(process.out.versions[0]).readLines().collect { it.trim() } // Versions trap to detect conda version mismatches
-					).match()
-				}
+                        process.out.bam,
+                        process.out.versions,
+                        file(process.out.log.get(0).get(1)).exists()
+                    ).match()
+                }
             )
         }
     }

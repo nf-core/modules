@@ -40,4 +40,15 @@ process SNAPALIGNER_ALIGN {
         snapaligner: \$(snap-aligner 2>&1| head -n 1 | sed 's/^.*version //;s/.\$//')
     END_VERSIONS
     """
+
+    stub:
+    """
+    touch test.bam
+    touch test.bam.bai
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        snapaligner: \$(snap-aligner 2>&1| head -n 1 | sed 's/^.*version //;s/.\$//')
+    END_VERSIONS
+    """
 }

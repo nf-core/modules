@@ -1,0 +1,76 @@
+nextflow_process {
+
+    name "Test Process TCOFFEE_EXTRACTFROMPDB"
+    script "../main.nf"
+    process "TCOFFEE_EXTRACTFROMPDB"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "tcoffee"
+    tag "tcoffee/extractfrompdb"
+    tag "untar"
+
+    test("seatoxin") {
+
+        setup {
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id:'test' ],
+                                    file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/structures/seatoxin-ref.tar.gz", checkIfExists: true)
+                                ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.collect{ meta, dir -> file(dir).listFiles().collect().first() }.map{ pdb -> [[ id: 'test'], pdb]}
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("seatoxin - stub") {
+
+        options "-stub"
+
+        setup {
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id:'test' ],
+                                    file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/structures/seatoxin-ref.tar.gz", checkIfExists: true)
+                                ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = Channel.fromPath('empty_file.pdb').map{ pdb -> [[ id: 'test'], pdb]}
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

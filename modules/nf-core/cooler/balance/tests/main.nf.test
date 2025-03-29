@@ -1,0 +1,63 @@
+nextflow_process {
+
+    name "Test Process COOLER_BALANCE"
+    
+    script "../main.nf"
+    process "COOLER_BALANCE"
+   
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cooler"
+    tag "cooler/balance"
+   
+    test("test_cooler_balance") {
+        when {
+            
+            process {
+                """
+                input[0] = [
+                    [id:'test'],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/merge/toy/toy.symm.upper.2.cool', checkIfExists:true),
+                    ''
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.cool.collect{ file(it[1]).name }
+                ).match() }
+            )
+        }
+    }
+
+    test("test_cooler_balance - stub") {
+
+        options "-stub"
+
+        when {
+            
+            process {
+                """
+                input[0] = input[0] = [
+                    [id:'test'],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/merge/toy/toy.symm.upper.2.cool', checkIfExists:true),
+                    ''
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+}

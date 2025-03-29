@@ -1,0 +1,45 @@
+name: "haplogrep3_classify"
+description: classification into haplogroups
+keywords:
+  - haplogroups
+  - classify
+  - mtDNA
+tools:
+  - "haplogrep3":
+      description: "A tool for mtDNA haplogroup classification."
+      homepage: "https://github.com/genepi/haplogrep3"
+      documentation: "https://github.com/genepi/haplogrep3"
+      tool_dev_url: "https://github.com/genepi/haplogrep3"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - inputfile:
+        type: file
+        description: valid options are hsd, vcf, or fasta files
+        pattern: "*.{vcf,vcf.gz,fasta,hsd}"
+output:
+  - txt:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt":
+          type: file
+          description: text file with classification information
+          pattern: "*.{txt}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@lucpen"
+maintainers:
+  - "@lucpen"
+  - "@ramprasadn"

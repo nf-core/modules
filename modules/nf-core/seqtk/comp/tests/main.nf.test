@@ -1,0 +1,60 @@
+nextflow_process {
+
+    name "Test Process SEQTK_COMP"
+    script "../main.nf"
+    process "SEQTK_COMP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "seqtk"
+    tag "seqtk/comp"
+
+    test("bacteroides_fragilis - fasta") {
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    file( params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+            with(process.out.seqtk_stats[0]) {
+                assert path(get(1)).text.contains("NZ_CP069563.1")
+            }
+        }
+
+    }
+
+    test("bacteroides_fragilis - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    file( params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
+

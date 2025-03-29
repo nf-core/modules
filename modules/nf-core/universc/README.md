@@ -27,7 +27,7 @@ To comply with licensing and respect 10X Genomics Trademarks, the 10X Genomics l
 has been removed from HTML reports, the tool has been renamed, and proprietary
 closed-source tools to build Cloupe files are disabled.
 
-It is still suffient to generate summary reports and count matrices compatible with
+It is still sufficient to generate summary reports and count matrices compatible with
 single-cell analysis tools available for 10X Genomics and Cell Ranger output format
 in Python and R packages.
 

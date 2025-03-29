@@ -1,0 +1,68 @@
+nextflow_workflow {
+
+    name "Test Subworkflow BAM_SPLIT_BY_REGION"
+    script "../main.nf"
+    workflow "BAM_SPLIT_BY_REGION"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/bam_split_by_region"
+    tag "samtools"
+    tag "samtools/sort"
+    tag "samtools/index"
+
+    config "./nextflow.config"
+
+    test("homo_sapiens - test_paired_end_markduplicates_sorted_bam") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id: 'test', single_end: false ],
+                    file(params.modules_testdata_base_path +'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path +'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path +'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true),
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.bam_bai.toSorted { a, b -> file(a.get(1)).name <=> file(b.get(1)).name }.collect { file(it.get(1)).name },
+                    workflow.out.bam_bai.toSorted { a, b -> file(a.get(1)).name <=> file(b.get(1)).name }.collect { bam(it.get(1)).getReadsMD5() },
+                    workflow.out.bam_bai.toSorted { a, b -> file(a.get(1)).name <=> file(b.get(1)).name }.collect { file(it.get(2)).name },
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - test_paired_end_markduplicates_sorted_bam - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id: 'test', single_end: false ],
+                    file(params.modules_testdata_base_path +'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path +'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path +'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true),
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+}
