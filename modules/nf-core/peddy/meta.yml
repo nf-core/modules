@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: peddy
 description: Manipulation, validation and exploration of pedigrees
 keywords:
@@ -23,36 +24,52 @@ input:
     - vcf:
         type: file
         description: VCF file
-        pattern: "*.{vcf.gz}"
+        pattern: "*.vcf.gz"
     - vcf_tbi:
         type: file
         description: TBI file
-        pattern: "*.{vcf.gz.tbi}"
-  - - ped:
+        pattern: "*.vcf.gz.tbi"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - ped:
         type: file
         description: PED/FAM file
         pattern: "*.{ped,fam}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - sites:
+        type: file
+        description: sites file. By defaults peddy uses hg19/GRCh37, "--sites hg38"
+          can be specified in the process argument or a custom file following syntax
+          https://github.com/brentp/peddy/blob/master/peddy/GRCH37.sites can be provided
+        pattern: "*.sites"
 output:
+  - vs_html:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "${prefix}.vs.html":
+          type: file
+          description: HTML file comparison between reported and inferred sex
+          pattern: "*.vs.html"
   - html:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.html":
+      - "${prefix}.html":
           type: file
-          description: HTML file
-          pattern: "*.{html}"
-  - csv:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.csv":
-          type: file
-          description: CSV file
-          pattern: "*.{csv}"
+          description: HTML report
+          pattern: "*.html"
   - ped:
       - meta:
           type: map
@@ -61,18 +78,99 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.peddy.ped":
           type: file
-          description: PED/FAM file
-          pattern: "*.peddy.{ped}"
-  - png:
+          description: Inferred PED file
+          pattern: "*.peddy.ped"
+  - het_check_png:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.png":
+      - "*.het_check.png":
           type: file
-          description: PNG file
-          pattern: "*.{png}"
+          description: |
+            PNG file containing heterozygosity check.
+            Rate of het calls, allele-balance at het calls,
+            mean and median depth, and a PCA projection onto thousand
+            genomes.
+          pattern: "*.het_check.png"
+  - ped_check_png:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.ped_check.png":
+          type: file
+          description: |
+            PNG file containing pedigree check between reported
+            and inferred  sex
+          pattern: "*.het_check.png"
+  - sex_check_png:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.sex_check.png":
+          type: file
+          description: |
+            PNG file with sex check performs a comparison
+            between the sex reported in the ped file and that
+            inferred from the genotypes on the non-PAR regions
+            of the X chromosome.
+          pattern: "*.sex_check.png"
+  - het_check_csv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.het_check.csv":
+          type: file
+          description: |
+            CSV file containing heterozygosity check.
+            Rate of het calls, allele-balance at het calls,
+            mean and median depth, and a PCA projection onto thousand
+            genomes.
+          pattern: "*.het_check.csv"
+  - ped_check_csv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.ped_check.csv":
+          type: file
+          description: |
+            CSV file containing pedigree check between reported
+            and inferred  sex
+          pattern: "*.het_check.csv"
+  - sex_check_csv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.sex_check.csv":
+          type: file
+          description: |
+            CSV file with sex check performs a comparison
+            between the sex reported in the ped file and that
+            inferred from the genotypes on the non-PAR regions
+            of the X chromosome.
+          pattern: "*.sex_check.csv"
+  - ped_check_rel_difference_csv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.ped_check.rel-difference.csv":
+          type: file
+          description: |
+            CSV file with the comparison between inferred and given relatedness
+          pattern: "*.ped_check.rel-difference.csv"
   - versions:
       - versions.yml:
           type: file
