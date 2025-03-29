@@ -10,10 +10,11 @@ include { FASTP                 } from '../../../modules/nf-core/fastp/main'
 // Function that parses fastp json output file to get total number of reads after trimming
 //
 
-import groovy.json.JsonSlurper
+def getFastpReadsAfterFiltering(json_file ) {
 
-def getFastpReadsAfterFiltering(json_file) {
-    def Map json = (Map) new JsonSlurper().parseText(json_file.text).get('summary')
+    if ( workflow.stubRun ) { return 1 }
+
+    def json = new groovy.json.JsonSlurper().parseText(json_file.text).get('summary')
     return json['after_filtering']['total_reads'].toLong()
 }
 
