@@ -1,0 +1,63 @@
+// nf-core modules test metaspace/download
+nextflow_process {
+
+    name "Test Process METASPACE_DOWNLOAD"
+    script "../main.nf"
+    process "METASPACE_DOWNLOAD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "metaspace"
+    tag "metaspace/download"
+
+    test("METASPACE_DOWNLOAD - datasets") {
+        when {
+            process {
+                """
+                input[0] = Channel.from([
+                    ['2022-08-05_17h28m56s', 'KEGG', null],
+                    ['2022-08-05_17h28m56s', null, null]
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("METASPACE_DOWNLOAD - wrong_format") {
+        when {
+            process {
+                """
+                input[0] = Channel.from([
+                    ['2022-08-05_17h28m56s', 'KEGG', null],
+                    ['2022-08-05_17h28m56s', null, null],
+                    [null, 'KEGG', null] // Missing dataset_id
+                ])
+                """
+            }
+        }
+        then {
+            assert process.failed
+            assert process.exitStatus == 1
+
+            def errorMessage = process.stderr.find { it.contains("ValueError") } ?:
+                            process.stdout.find { it.contains("ValueError") }
+
+            println "Error message: ${errorMessage}"
+
+            assertAll(
+                { assert process.failed },
+                { assert process.exitStatus == 1 },
+                { assert errorMessage != null },
+                { assert errorMessage.contains("Error: input csv or datasets contains an entry with missing dataset_id") },
+                { assert snapshot(errorMessage).match("error_message") }
+            )
+        }
+    }
+}
