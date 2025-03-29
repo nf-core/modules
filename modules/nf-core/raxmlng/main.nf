@@ -19,12 +19,24 @@ process RAXMLNG {
 
     script:
     def args = task.ext.args ?: ''
+    def model = task.ext.model ?: 'GTR+G'
     """
     raxml-ng \\
         $args \\
         --msa $alignment \\
+        --model $model \\
         --threads $task.cpus \\
         --prefix output
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        raxmlng: \$(echo \$(raxml-ng --version 2>&1) | sed 's/^.*RAxML-NG v. //; s/released.*\$//')
+    END_VERSIONS
+    """
+    stub:
+    def prefix = task.ext.prefix ?: "output"
+    """
+    touch ${prefix}.raxml.bestTree
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -1,0 +1,53 @@
+nextflow_process {
+  name "Test Process RAXMLNG"
+  script "../main.nf"
+  process "RAXMLNG"
+  tag "modules"
+  tag "modules_nfcore"
+  tag "raxmlng"
+
+  test("raxmlng - main") {
+    when {
+      process {
+        """
+        // alignment fasta file is required
+        input[0] = [ // alignment fasta
+          file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true)
+        ]
+        """
+      }
+
+    }
+
+    then {
+      assertAll (
+        { assert process.success },
+        { assert process.out.phylogeny.size() > 0 },
+        { assert process.out.phylogeny[0].toString().contains(".raxml.bestTree") },
+        { assert process.out.versions.size() > 0 },
+        { assert snapshot(process.out.versions).match("versions") }
+      )
+    }
+  }
+
+  test("raxmlng - stub") {
+    options "-stub"
+    when {
+      process {
+        """
+        // alignment fasta file is required
+        input[0] = [ // alignment fasta
+          file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true)
+        ]
+        """
+      }
+    }
+
+    then {
+      assertAll (
+        { assert process.success },
+        { assert snapshot(process.out).match() }
+      )
+    }
+  }
+}
