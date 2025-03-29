@@ -4,8 +4,8 @@ process GGET_GGET {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gget:0.27.2--pyh4a94de4_2':
-        'biocontainers/gget:0.27.2--pyh4a94de4_2' }"
+        'https://depot.galaxyproject.org/singularity/gget:0.29.0--pyhdfd78af_0':
+        'biocontainers/gget:0.29.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(files)
