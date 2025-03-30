@@ -9,23 +9,24 @@ process VRHYME_EXTRACTUNBINNED {
 
     input:
     tuple val(meta), path(membership)
-    tuple val(meta), path(fasta)
+    tuple val(meta2), path(fasta)
 
     output:
-    tuple val(meta), path("*_unbinned_sequences.fasta") , emit: unbinned_sequences
-    path "versions.yml"                                 , emit: versions
+    tuple val(meta), path("${prefix}.fasta") , emit: unbinned_sequences
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}_unbinned_sequences"
+    if( "$fasta" == "${prefix}.fasta" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     extract_unbinned_sequences.py \\
         -i $membership \\
         -f $fasta \\
-        -o ${prefix}_unbinned_sequences.fasta \\
+        -o ${prefix}.fasta \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
@@ -35,10 +36,10 @@ process VRHYME_EXTRACTUNBINNED {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}_unbinned_sequences"
+    if( "$fasta" == "${prefix}.fasta" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
-    touch ${prefix}_unbinned_sequences.fasta
+    touch ${prefix}.fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
