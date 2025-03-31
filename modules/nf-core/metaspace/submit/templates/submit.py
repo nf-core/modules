@@ -9,8 +9,12 @@ with open("${config}") as f:
     config = yaml.safe_load(f)
 
 api_key_path = os.getenv('API_KEY')
-with open(api_key_path, "r") as f:
-    API_key = f.read()
+
+if api_key_path and os.path.isfile(api_key_path):
+    with open(api_key_path, "r") as f:
+        API_key = f.read()
+else:
+    API_key = api_key_path
 
 sm = metaspace.SMInstance(api_key=API_key)
 
