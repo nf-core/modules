@@ -4,8 +4,8 @@ process GGET_GGET {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gget:0.29.0--pyhdfd78af_0':
-        'biocontainers/gget:0.29.0--pyhdfd78af_0' }"
+        'oras://community.wave.seqera.io/library/gget_mysql-server:4038f03fd83c2a08':
+        'community.wave.seqera.io/library/gget_mysql-server:514acfd07ace9ce4' }"
 
     input:
     tuple val(meta), path(files)
