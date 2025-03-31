@@ -45,8 +45,8 @@ process PLINK_INDEPPAIRWISE {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    touch ${meta.id}.prune.in
-    touch ${meta.id}.prune.out
+    touch ${prefix}.prune.in
+    touch ${prefix}.prune.out
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
