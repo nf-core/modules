@@ -35,10 +35,12 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bed,
-                    process.out.tab,
+                    process.out.pass_junctions_bed,
+                    process.out.pass_junctions_tab,
                     process.out.intron_gff,
                     process.out.exon_gff,
+                    process.out.spliced_bam,
+                    process.out.spliced_bai,
                     process.out.versions
                     ).match()
                 }
@@ -74,9 +76,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.pass_junctions_bed,
-                    process.out.bed,
                     process.out.pass_junctions_tab,
-                    process.out.tab,
                     process.out.intron_gff,
                     process.out.exon_gff,
                     process.out.versions
