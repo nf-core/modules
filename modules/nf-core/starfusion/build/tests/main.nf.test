@@ -13,11 +13,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'minigenome fasta' ],
+                    [ id:'minigenome_fasta' ],
                     file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/master/minigenome.fa")
                 ]
                 input[1] = [
-                    [ id:'minigenome gtf' ],
+                    [ id:'minigenome_gtf' ],
                     file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/master/minigenome.gtf")
                 ]
 
@@ -28,61 +28,62 @@ nextflow_process {
         }
 
         then {
+            def outputDir = file(process.out.reference[0][1])
             assert snapshot(
                 path(process.out.reference[0][1]).resolve("AnnotFilterRule.pm"),
-                path(process.out.reference[0][1]).resolve("blast_pairs.dat.gz").exists(),
-                path(process.out.reference[0][1]).resolve("blast_pairs.idx").exists(),
-                path(process.out.reference[0][1]).resolve("__chkpts/annotfiltrule_cp.ok").exists(),
-                path(process.out.reference[0][1]).resolve("__chkpts/blast_pairs.idx.ok").exists(),
-                path(process.out.reference[0][1]).resolve("__chkpts/cp_gene_blast_pairs.ok").exists(),
-                path(process.out.reference[0][1]).resolve("__chkpts/cp_pfam_dat.ok").exists(),
-                path(process.out.reference[0][1]).resolve("__chkpts/cp_ref_annot_cdna.ok").exists(),
-                path(process.out.reference[0][1]).resolve("__chkpts/fusion_annot_lib.cp.ok").exists(),
-                path(process.out.reference[0][1]).resolve("__chkpts/_fusion_annot_lib.idx.ok").exists(),
-                path(process.out.reference[0][1]).resolve("__chkpts/index_pfam_hits.ok").exists(),
-                path(process.out.reference[0][1]).resolve("__chkpts/index_ref_annot_cdna.ok").exists(),
-                path(process.out.reference[0][1]).resolve("__chkpts/makeblastdb.ok").exists(),
-                path(process.out.reference[0][1]).resolve("__chkpts/mm2_genome_idx.ok").exists(),
-                path(process.out.reference[0][1]).resolve("__chkpts/mm2.splice_bed.ok").exists(),
-                path(process.out.reference[0][1]).resolve("__chkpts/_prot_info_db.ok").exists(),
-                path(process.out.reference[0][1]).resolve("__chkpts/ref_annot.cdsplus.dfam_masked.fa.cp.ok").exists(),
-                path(process.out.reference[0][1]).resolve("__chkpts/ref_annot.cdsplus.dfam_masked.fa.idx.ok").exists(),
-                path(process.out.reference[0][1]).resolve("__chkpts/ref_annot.gtf.gene_spans.ok").exists(),
-                path(process.out.reference[0][1]).resolve("__chkpts/ref_annot.gtf.mini.sortu.ok").exists(),
-                path(process.out.reference[0][1]).resolve("__chkpts/ref_annot.gtf.ok").exists(),
-                path(process.out.reference[0][1]).resolve("__chkpts/ref_genome_fai.ok").exists(),
-                path(process.out.reference[0][1]).resolve("__chkpts/ref_genome.fa.ok").exists(),
-                path(process.out.reference[0][1]).resolve("__chkpts/trans.blast.dat.cp.ok").exists(),
-                path(process.out.reference[0][1]).resolve("__chkpts/trans.blast.dat.index.ok").exists(),
-                path(process.out.reference[0][1]).resolve("__chkpts/validate_ctat_genome_lib.ok").exists(),
+                file("$outputDir/blast_pairs.dat.gz").name,
+                file("$outputDir/blast_pairs.idx").name,
+                file("$outputDir/__chkpts/annotfiltrule_cp.ok").name,
+                file("$outputDir/__chkpts/blast_pairs.idx.ok").name,
+                file("$outputDir/__chkpts/cp_gene_blast_pairs.ok").name,
+                file("$outputDir/__chkpts/cp_pfam_dat.ok").name,
+                file("$outputDir/__chkpts/cp_ref_annot_cdna.ok").name,
+                file("$outputDir/__chkpts/fusion_annot_lib.cp.ok").name,
+                file("$outputDir/__chkpts/_fusion_annot_lib.idx.ok").name,
+                file("$outputDir/__chkpts/index_pfam_hits.ok").name,
+                file("$outputDir/__chkpts/index_ref_annot_cdna.ok").name,
+                file("$outputDir/__chkpts/makeblastdb.ok").name,
+                file("$outputDir/__chkpts/mm2_genome_idx.ok").name,
+                file("$outputDir/__chkpts/mm2.splice_bed.ok").name,
+                file("$outputDir/__chkpts/_prot_info_db.ok").name,
+                file("$outputDir/__chkpts/ref_annot.cdsplus.dfam_masked.fa.cp.ok").name,
+                file("$outputDir/__chkpts/ref_annot.cdsplus.dfam_masked.fa.idx.ok").name,
+                file("$outputDir/__chkpts/ref_annot.gtf.gene_spans.ok").name,
+                file("$outputDir/__chkpts/ref_annot.gtf.mini.sortu.ok").name,
+                file("$outputDir/__chkpts/ref_annot.gtf.ok").name,
+                file("$outputDir/__chkpts/ref_genome_fai.ok").name,
+                file("$outputDir/__chkpts/ref_genome.fa.ok").name,
+                file("$outputDir/__chkpts/trans.blast.dat.cp.ok").name,
+                file("$outputDir/__chkpts/trans.blast.dat.index.ok").name,
+                file("$outputDir/__chkpts/validate_ctat_genome_lib.ok").name,
                 path(process.out.reference[0][1]).resolve("fusion_annot_lib.gz"),
-                path(process.out.reference[0][1]).resolve("fusion_annot_lib.idx").exists(),
-                path(process.out.reference[0][1]).resolve("pfam_domains.dbm").exists(),
-                path(process.out.reference[0][1]).resolve("PFAM.domtblout.dat.gz").exists(),
-                path(process.out.reference[0][1]).resolve("ref_annot.cdna.fa").exists(),
-                path(process.out.reference[0][1]).resolve("ref_annot.cdna.fa.idx").exists(),
-                path(process.out.reference[0][1]).resolve("ref_annot.cds").exists(),
-                path(process.out.reference[0][1]).resolve("ref_annot.cdsplus.fa").exists(),
-                path(process.out.reference[0][1]).resolve("ref_annot.cdsplus.fa.idx").exists(),
+                file("$outputDir/fusion_annot_lib.idx").name,
+                file("$outputDir/pfam_domains.dbm").name,
+                file("$outputDir/PFAM.domtblout.dat.gz").name,
+                file("$outputDir/ref_annot.cdna.fa").name,
+                file("$outputDir/ref_annot.cdna.fa.idx").name,
+                file("$outputDir/ref_annot.cds").name,
+                file("$outputDir/ref_annot.cdsplus.fa").name,
+                file("$outputDir/ref_annot.cdsplus.fa.idx").name,
                 path(process.out.reference[0][1]).resolve("ref_annot.gtf"),
-                path(process.out.reference[0][1]).resolve("ref_annot.gtf.gene_spans").exists(),
+                file("$outputDir/ref_annot.gtf.gene_spans").name,
                 path(process.out.reference[0][1]).resolve("ref_annot.gtf.mini.sortu"),
                 path(process.out.reference[0][1]).resolve("ref_annot.gtf.mm2.splice.bed"),
-                path(process.out.reference[0][1]).resolve("ref_annot.pep").exists(),
-                path(process.out.reference[0][1]).resolve("ref_annot.prot_info.dbm").exists(),
+                file("$outputDir/ref_annot.pep").name,
+                file("$outputDir/ref_annot.prot_info.dbm").name,
                 path(process.out.reference[0][1]).resolve("ref_genome.fa"),
                 path(process.out.reference[0][1]).resolve("ref_genome.fa.fai"),
                 path(process.out.reference[0][1]).resolve("ref_genome.fa.mm2"),
                 path(process.out.reference[0][1]).resolve("ref_genome.fa.ndb"),
                 path(process.out.reference[0][1]).resolve("ref_genome.fa.nhr"),
-                path(process.out.reference[0][1]).resolve("ref_genome.fa.nin").exists(),
-                path(process.out.reference[0][1]).resolve("ref_genome.fa.njs").exists(),
+                file("$outputDir/ref_genome.fa.nin").name,
+                file("$outputDir/ref_genome.fa.njs").name,
                 path(process.out.reference[0][1]).resolve("ref_genome.fa.not"),
                 path(process.out.reference[0][1]).resolve("ref_genome.fa.nsq"),
                 path(process.out.reference[0][1]).resolve("ref_genome.fa.ntf"),
                 path(process.out.reference[0][1]).resolve("ref_genome.fa.nto"),
-                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx").exists(),
-                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/build.ok").exists(),
+                file("$outputDir/ref_genome.fa.star.idx").name,
+                file("$outputDir/ref_genome.fa.star.idx/build.ok").name,
                 path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/chrLength.txt"),
                 path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/chrNameLength.txt"),
                 path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/chrName.txt"),
@@ -91,8 +92,8 @@ nextflow_process {
                 path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/exonInfo.tab"),
                 path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/geneInfo.tab"),
                 path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/Genome"),
-                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/genomeParameters.txt").exists(),
-                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/Log.out").exists(),
+                file("$outputDir/ref_genome.fa.star.idx/genomeParameters.txt").name,
+                file("$outputDir/ref_genome.fa.star.idx/Log.out").name,
                 path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/SA"),
                 path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/SAindex"),
                 path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/sjdbInfo.txt"),
@@ -100,7 +101,7 @@ nextflow_process {
                 path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/sjdbList.out.tab"),
                 path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/transcriptInfo.tab"),
                 path(process.out.reference[0][1]).resolve("trans.blast.align_coords.align_coords.dat"),
-                path(process.out.reference[0][1]).resolve("trans.blast.align_coords.align_coords.dbm").exists(),
+                file("$outputDir/trans.blast.align_coords.align_coords.dbm").name,
                 path(process.out.reference[0][1]).resolve("trans.blast.dat.gz"),
                 process.out.versions
             ).match()
@@ -114,11 +115,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'minigenome fasta' ],
+                    [ id:'minigenome_fasta' ],
                     file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/master/minigenome.fa")
                 ]
                 input[1] = [
-                    [ id:'minigenome gtf' ],
+                    [ id:'minigenome_gtf' ],
                     file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/master/minigenome.gtf")
                 ]
 
