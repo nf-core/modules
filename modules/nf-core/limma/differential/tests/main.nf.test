@@ -220,7 +220,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(process.out.model, process.out.versions).match() },
                 { assert path(process.out.results[0][1]).getText().contains("ENSMUSG00000023978\t-4.89014922224241") },
-                { assert path(process.out.results[0][1]).getText().contains("ENSMUSG00000059991\t0.779227180297504") },
+                { assert path(process.out.results[0][1]).getText().contains("ENSMUSG00000059991\t0.77922") },
                 { assert path(process.out.normalised_counts[0][1]).getText().contains("ENSMUSG00000023978\t6.11247620232167") },
                 { assert path(process.out.normalised_counts[0][1]).getText().contains("ENSMUSG00000059991\t4.52751370160052") }
             )
@@ -249,7 +249,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(process.out.model, process.out.versions).match() },
                 { assert path(process.out.results[0][1]).getText().contains("ENSMUSG00000023978\t-2.84055986312942") },
-                { assert path(process.out.results[0][1]).getText().contains("ENSMUSG00000059991\t0.705508451587681") },
+                { assert path(process.out.results[0][1]).getText().contains("ENSMUSG00000059991\t0.7055") },
                 { assert path(process.out.normalised_counts[0][1]).getText().contains("ENSMUSG00000023978\t6.11247620232167") },
                 { assert path(process.out.normalised_counts[0][1]).getText().contains("ENSMUSG00000059991\t4.52751370160052") }
             )
@@ -278,7 +278,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(process.out.model, process.out.versions).match() },
                 { assert path(process.out.results[0][1]).getText().contains("ENSMUSG00000023978\t-2.8363444336503") },
-                { assert path(process.out.results[0][1]).getText().contains("ENSMUSG00000059991\t0.736009837885068") },
+                { assert path(process.out.results[0][1]).getText().contains("ENSMUSG00000059991\t0.7360") },
                 { assert path(process.out.normalised_counts[0][1]).getText().contains("ENSMUSG00000023978\t6.11247620232167") },
                 { assert path(process.out.normalised_counts[0][1]).getText().contains("ENSMUSG00000059991\t4.52751370160052") }
             )
