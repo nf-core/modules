@@ -9,8 +9,8 @@ tools:
   - "portcullis":
       description: "Portcullis is a tool that filters out invalid splice junctions from
         RNA-seq alignment data. It accepts BAM files from various RNA-seq mappers, analyzes
-        splice junctions and removes likely false positives, outputting filtered
-        results in multiple formats for downstream analysis."
+        splice junctions and removes likely false positives, outputting filtered results
+        in multiple formats for downstream analysis."
       homepage: "https://portcullis.readthedocs.io/en/latest/index.html"
       documentation: "https://portcullis.readthedocs.io/en/latest/using.html"
       doi: "10.1101/217620"
@@ -60,13 +60,31 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.log"
-      - "*.log":
-          type: file
-          description: Log file containing Portcullis execution details, processing steps,
-            and filtering statistics
-          pattern: "*.log"
-          ontologies:
+          ontologies: &id001
             - edam: "http://edamontology.org/format_2330"
+      - "*.log":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.log"
+          ontologies: *id001
+  - pass_junctions_bed:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.pass.junctions.bed"
+          ontologies: &id002
+            - edam: "http://edamontology.org/format_3003"
+      - "*.pass.junctions.bed":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.pass.junctions.bed"
+          ontologies: *id002
   - bed:
       - meta:
           type: map
@@ -74,13 +92,31 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.bed"
-      - "*.bed":
-          type: file
-          description: |
-            Filtered splice junction coordinates in BED format, containing genomic coordinates of valid splice junctions after filtering out false positives
-          pattern: "*.bed"
-          ontologies:
+          ontologies: &id003
             - edam: "http://edamontology.org/format_3003"
+      - "*.bed":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.bed"
+          ontologies: *id003
+  - pass_junctions_tab:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.pass.junctions.tab"
+          ontologies: &id004
+            - edam: "http://edamontology.org/format_3475"
+      - "*.pass.junctions.tab":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.pass.junctions.tab"
+          ontologies: *id004
   - tab:
       - meta:
           type: map
@@ -88,13 +124,80 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.tab"
+          ontologies: &id005
+            - edam: "http://edamontology.org/format_3475"
       - "*.tab":
           type: map
           description: |
-            Tabular representation of filtered splice junctions with additional metrics including junction scores, read support, and filtering decision data
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*.tab"
-          ontologies:
-            - eadam: "http://edamontology.org/format_3475"
+          ontologies: *id005
+  - intron_gff:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.intron.gff3"
+          ontologies: &id006
+            - edam: "http://edamontology.org/format_1975"
+      - "*.intron.gff3":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.intron.gff3"
+          ontologies: *id006
+  - exon_gff:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.exon.gff3"
+          ontologies: &id007
+            - edam: "http://edamontology.org/format_1975"
+      - "*.exon.gff3":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.exon.gff3"
+          ontologies: *id007
+  - spliced_bam:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.bam"
+          ontologies: &id008
+            - edam: "http://edamontology.org/format_2572"
+      - "*.bam":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.bam"
+          ontologies: *id008
+  - spliced_bai:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.bai"
+          ontologies: &id009
+            - edam: "http://edamontology.org/format_3327"
+
+      - "*.bai":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.bai"
+          ontologies: *id009
   - versions:
       - versions.yml:
           type: file
@@ -106,3 +209,4 @@ authors:
   - "@jblancoheredia"
 maintainer:
   - "@jblancoheredia"
+  - "@anoronh4"
