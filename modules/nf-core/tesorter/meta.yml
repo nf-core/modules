@@ -42,7 +42,7 @@ output:
       - "*.domtbl":
           type: file
           description: HMMScan raw output
-          pattern: "*.domtbl"
+          pattern: "*.{domtbl}"
   - dom_faa:
       - meta:
           type: map
@@ -53,7 +53,7 @@ output:
           type: file
           description: Protein sequences of domain, which can be used for phylogenetic
             analysis
-          pattern: "*.dom.faa"
+          pattern: "*.dom.{faa}"
   - dom_tsv:
       - meta:
           type: map
@@ -64,7 +64,7 @@ output:
           type: file
           description: Inner domains of TEs/LTR-RTs, which might be used to filter domains
             based on their scores and coverages
-          pattern: "*.dom.tsv"
+          pattern: "*.dom.{tsv}"
   - dom_gff3:
       - meta:
           type: map
@@ -74,7 +74,7 @@ output:
       - "*.dom.gff3":
           type: file
           description: Domain annotations in 'gff3' format
-          pattern: "*.dom.gff3"
+          pattern: "*.dom.{gff3}"
   - cls_tsv:
       - meta:
           type: map
@@ -84,7 +84,7 @@ output:
       - "*.cls.tsv":
           type: file
           description: TEs/LTR-RTs classifications
-          pattern: "*.cls.tsv"
+          pattern: "*.cls.{tsv}"
   - cls_lib:
       - meta:
           type: map
@@ -94,7 +94,7 @@ output:
       - "*.cls.lib":
           type: file
           description: Fasta library for RepeatMasker
-          pattern: "*.cls.lib"
+          pattern: "*.cls.{lib}"
   - cls_pep:
       - meta:
           type: map
@@ -104,7 +104,7 @@ output:
       - "*.cls.pep":
           type: file
           description: The same sequences as '*.dom.faa', but id is changed with classifications
-          pattern: "*.cls.pep"
+          pattern: "*.cls.{pep}"
   - versions:
       - versions.yml:
           type: file
