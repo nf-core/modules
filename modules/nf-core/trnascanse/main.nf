@@ -23,11 +23,11 @@ process TRNASCANSE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args      = task.ext.args   ?: ''
-    def prefix    = task.ext.prefix ?: "${meta.id}"
-    def input     = fasta.toString() - ~/\.gz$/
-    def unzip     = fasta.getExtension() == "gz" ? "gunzip -c ${fasta} > ${input}" : ""
-    def cleanup   = fasta.getExtension() == "gz" ? "rm ${input}" : ""
+    def args    = task.ext.args   ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}"
+    def input   = fasta.toString() - ~/\.gz$/
+    def unzip   = fasta.getExtension() == "gz" ? "gunzip -c ${fasta} > ${input}" : ""
+    def cleanup = fasta.getExtension() == "gz" ? "rm ${input}" : ""
     """
     ${unzip}
 
