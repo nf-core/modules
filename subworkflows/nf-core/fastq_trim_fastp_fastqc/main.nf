@@ -9,21 +9,26 @@ include { FASTP                 } from '../../../modules/nf-core/fastp/main'
 //
 // Function that parses fastp json output file to get total number of reads after trimming
 //
-import groovy.json.JsonSlurper
 
-def getFastpReadsAfterFiltering(json_file) {
-    def Map json = (Map) new JsonSlurper().parseText(json_file.text).get('summary')
+def getFastpReadsAfterFiltering(json_file ) {
+
+    if ( workflow.stubRun ) { return 1 }
+
+    def json = new groovy.json.JsonSlurper().parseText(json_file.text).get('summary')
     return json['after_filtering']['total_reads'].toLong()
 }
 
 workflow FASTQ_TRIM_FASTP_FASTQC {
+
     take:
-    ch_reads              // channel: [ val(meta), path(reads)  ]
-    ch_adapter_fasta      // channel: [ path(fasta) ]
-    val_save_trimmed_fail // value: boolean
-    val_save_merged       // value: boolean
-    val_skip_fastp        // value: boolean
-    val_skip_fastqc       // value: boolean
+    ch_reads                 // channel: [ val(meta), path(reads)  ]
+    ch_adapter_fasta         // channel: [ path(fasta) ]
+    val_save_trimmed_fail    // value: boolean
+    val_discard_trimmed_pass // value: boolean
+    val_save_merged          // value: boolean
+    val_skip_fastp           // value: boolean
+    val_skip_fastqc          // value: boolean
+
 
     main:
 
@@ -52,6 +57,7 @@ workflow FASTQ_TRIM_FASTP_FASTQC {
         FASTP (
             ch_reads,
             ch_adapter_fasta,
+            val_discard_trimmed_pass,
             val_save_trimmed_fail,
             val_save_merged
         )
