@@ -28,10 +28,13 @@ input:
         type: file
         description: Input sequence
         pattern: "*.{fa,fasta,fsa,faa}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - db_hmm:
         type: file
         optional: true
         description: The database HMM file used
+        ontologies: []
 output:
   - domtbl:
       - meta:
@@ -43,6 +46,7 @@ output:
           type: file
           description: HMMScan raw output
           pattern: "*.{domtbl}"
+          ontologies: []
   - dom_faa:
       - meta:
           type: map
@@ -54,6 +58,7 @@ output:
           description: Protein sequences of domain, which can be used for phylogenetic
             analysis
           pattern: "*.dom.{faa}"
+          ontologies: []
   - dom_tsv:
       - meta:
           type: map
@@ -65,6 +70,8 @@ output:
           description: Inner domains of TEs/LTR-RTs, which might be used to filter domains
             based on their scores and coverages
           pattern: "*.dom.{tsv}"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   - dom_gff3:
       - meta:
           type: map
@@ -75,6 +82,8 @@ output:
           type: file
           description: Domain annotations in 'gff3' format
           pattern: "*.dom.{gff3}"
+          ontologies:
+            - edam: http://edamontology.org/format_1975 # GFF3
   - cls_tsv:
       - meta:
           type: map
@@ -85,6 +94,8 @@ output:
           type: file
           description: TEs/LTR-RTs classifications
           pattern: "*.cls.{tsv}"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   - cls_lib:
       - meta:
           type: map
@@ -95,6 +106,7 @@ output:
           type: file
           description: Fasta library for RepeatMasker
           pattern: "*.cls.{lib}"
+          ontologies: []
   - cls_pep:
       - meta:
           type: map
@@ -105,11 +117,13 @@ output:
           type: file
           description: The same sequences as '*.dom.faa', but id is changed with classifications
           pattern: "*.cls.{pep}"
+          ontologies: []
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies: []
 authors:
   - "@GallVp"
 maintainers:
