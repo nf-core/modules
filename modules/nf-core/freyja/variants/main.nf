@@ -5,8 +5,8 @@ process FREYJA_VARIANTS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/freyja:1.5.0--pyhdfd78af_0':
-        'biocontainers/freyja:1.5.0--pyhdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e0/e02db57d7bca8a8240a52b1c5e1d8dc4e1ab13e8106ff31d812be86db2be1850/data':
+        'community.wave.seqera.io/library/freyja:1.5.3--3b69f13ac540c40e' }"
 
     input:
     tuple val(meta), path(bam)
