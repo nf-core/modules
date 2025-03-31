@@ -38,6 +38,9 @@ input:
         description: |
           The value within the contrast_variable column of the sample sheet that
           should be used to derive the target samples
+    - formula:
+        type: string
+        description: (Optional) R formula string used for modeling, e.g. '~ treatment + (1 | sample_number)'.
   - - meta2:
         type: map
         description: |
