@@ -20,7 +20,7 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-  
+
     - genome_lib:
         type: file
         description: CTAT genome library reference
@@ -31,21 +31,21 @@ input:
 
 output:
   - reference:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - "genome_lib, includeInputs:true":
-        type: file
-        description: Modified CTAT genome library reference
-        pattern: "*"
-          
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - genome_lib:
+          type: file
+          description: Modified CTAT genome library reference
+          pattern: "*"
+
   - versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 
 authors:
   - "@anoronh4"

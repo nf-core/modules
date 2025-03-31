@@ -1,6 +1,7 @@
 process CTATSPLICING_PREPGENOMELIB {
     tag "$meta.id"
     label 'process_single'
+    stageInMode 'copy'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://data.broadinstitute.org/Trinity/CTAT_SINGULARITY/CTAT-SPLICING/ctat_splicing.v0.0.2.simg' :
@@ -11,8 +12,8 @@ process CTATSPLICING_PREPGENOMELIB {
     path(cancer_intron_tsv)
 
     output:
-    tuple val(meta), path(genome_lib, includeInputs:true), emit: reference
-    path "versions.yml"                                  , emit: versions
+    tuple val(meta), path(genome_lib), emit: reference
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
