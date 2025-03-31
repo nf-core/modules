@@ -21,13 +21,20 @@ process VRHYME_EXTRACTUNBINNED {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}_unbinned_sequences"
-    if( "$fasta" == "${prefix}.fasta" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    def fasta_input = fasta.toString().replaceAll(/\.gz$/, '')
+    def gunzip      = fasta.getExtension() == "gz" ? "gunzip -c ${fasta} > ${fasta_input}" : ""
+    def cleanup     = fasta.getExtension() == "gz" ? "rm ${fasta_input}" : ""
+    if( "$fasta_input" == "${prefix}.fasta" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
+    ${gunzip}
+
     extract_unbinned_sequences.py \\
         -i $membership \\
-        -f $fasta \\
+        -f $fasta_input \\
         -o ${prefix}.fasta \\
         $args
+
+    ${cleanup}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -37,7 +44,8 @@ process VRHYME_EXTRACTUNBINNED {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}_unbinned_sequences"
-    if( "$fasta" == "${prefix}.fasta" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    def fasta_input = fasta.toString() - ~/\.gz$/
+    if( "$fasta_input" == "${prefix}.fasta" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     touch ${prefix}.fasta
 

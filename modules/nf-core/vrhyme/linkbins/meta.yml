@@ -22,7 +22,7 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test' ]
     - bins:
         type: directory
         description: Directory file containing bin FASTA files output by vRhyme (each
@@ -38,11 +38,14 @@ output:
           type: file
           description: FASTA file containing all bins that have been linked by N's
           pattern: "*_linked_bins.fasta"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies: []
 authors:
   - "@CarsonJM"
 maintainers:
