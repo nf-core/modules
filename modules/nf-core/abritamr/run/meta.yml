@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
-name: "abritamr_run"
+name: abritamr_run
 description: A NATA accredited tool for reporting the presence of antimicrobial resistance
   genes in bacterial genomes
 keywords:
@@ -33,7 +33,7 @@ output:
           description: Tab-delimited file, with a row per sequence, and columns representing
             functional drug classes
           pattern: "*.summary_matches.txt"
-      - ${prefix}.summary_matches.txt:
+      - "*.summary_matches.txt":
           type: file
           description: Tab-delimited file, with a row per sequence, and columns representing
             functional drug classes
@@ -44,7 +44,7 @@ output:
           description: Tab-delimited file, with a row per sequence, and columns representing
             partial hits to functional drug classes
           pattern: "*.summary_partials.txt"
-      - ${prefix}.summary_partials.txt:
+      - "*.summary_partials.txt":
           type: file
           description: Tab-delimited file, with a row per sequence, and columns representing
             partial hits to functional drug classes
@@ -55,7 +55,7 @@ output:
           description: Tab-delimited file, with a row per sequence, and columns representing
             AMRFinderPlus virulence gene classification
           pattern: "*.summary_virulence.txt"
-      - ${prefix}.summary_virulence.txt:
+      - "*.summary_virulence.txt":
           type: string
           description: Tab-delimited file, with a row per sequence, and columns representing
             AMRFinderPlus virulence gene classification
@@ -65,7 +65,7 @@ output:
           type: string
           description: raw output from AMRFinder plus (per sequence)
           pattern: "*.amrfinder.txt"
-      - ${prefix}.amrfinder.out:
+      - "*.amrfinder.out":
           type: string
           description: raw output from AMRFinder plus (per sequence)
           pattern: "*.amrfinder.txt"
@@ -74,7 +74,7 @@ output:
           type: string
           description: Tab-delimited file, combining non-empty summary files
           pattern: "*.abritamr.txt"
-      - ${prefix}.abritamr.txt:
+      - "*.abritamr.txt":
           type: string
           description: Tab-delimited file, combining non-empty summary files
           pattern: "*.abritamr.txt"
@@ -87,3 +87,4 @@ authors:
   - "@rpetit3"
 maintainers:
   - "@rpetit3"
+  - "@sateeshperi"
