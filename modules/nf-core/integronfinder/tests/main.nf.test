@@ -29,7 +29,8 @@ nextflow_process {
                         process.out.integrons,
                         process.out.summary,
                         path(process.out.out[0]).readLines().get(56).contains("command used: integron_finder"),
-                        process.out.versions
+                        process.out.versions,
+                        path(process.out.versions[0]).text
                         ).match() }
             )
         }
