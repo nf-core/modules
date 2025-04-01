@@ -36,7 +36,7 @@ process INTEGRONFINDER {
 
     # Patch integron_finder to remove commit hash
     PY_FILE=\$(python -c "import integron_finder; print(integron_finder.__file__)" 2>/dev/null)
-    if [ -n "\$CONDA_PREFIX" ] && [ -w "\$PY_FILE" ]; then
+    if [ -n "\${CONDA_PREFIX:-}" ] && [ -w "\$PY_FILE" ]; then
         sed -i "s/__commit__ = f'{get_git_revision_short_hash()}'/__commit__ = ''/g" \$PY_FILE 2>/dev/null || true
     fi
 
