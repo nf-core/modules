@@ -22,7 +22,7 @@ nextflow_process {
                 ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula)
+                        tuple(it, it.variable, it.reference, it.target)
                     }
                     .first()
                 ch_matrix = [
@@ -62,7 +62,7 @@ nextflow_process {
                 ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula)
+                        tuple(it, it.variable, it.reference, it.target)
                     }
                     .first()
                 ch_matrix = [
@@ -106,7 +106,7 @@ nextflow_process {
                 ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula)
+                        tuple(it, it.variable, it.reference, it.target)
                     }
                     .first()
                 ch_matrix = [
@@ -146,7 +146,7 @@ nextflow_process {
                 ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula)
+                        tuple(it, it.variable, it.reference, it.target)
                     }
                     .first()
                 ch_matrix = [

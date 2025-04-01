@@ -8,7 +8,7 @@ process LIMMA_DIFFERENTIAL {
         'community.wave.seqera.io/library/bioconductor-edger_bioconductor-limma:176c202c82450990' }"
 
     input:
-    tuple val(meta), val(contrast_variable), val(reference), val(target), val(formula)
+    tuple val(meta), val(contrast_variable), val(reference), val(target)
     tuple val(meta2), path(samplesheet), path(intensities)
 
     output:

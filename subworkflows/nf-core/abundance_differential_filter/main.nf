@@ -138,7 +138,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
 
     // DREAM only runs with formula
     dream_inputs = inputs.contrasts_for_diff_with_formula
-        .filter { meta_for_diff, variable, reference, target, formula ->
+        .filter { meta, variable, reference, target, formula ->
             meta.method_differential == 'dream' && formula != null
         }
 

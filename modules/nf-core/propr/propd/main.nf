@@ -8,7 +8,7 @@ process PROPR_PROPD {
         'community.wave.seqera.io/library/bioconductor-limma_r-propr:8d299a2da993327c' }"
 
     input:
-    tuple val(meta), val(contrast_variable), val(reference), val(target), val(formula)
+    tuple val(meta), val(contrast_variable), val(reference), val(target)
     tuple val(meta2), path(samplesheet), path(counts)
 
     output:
