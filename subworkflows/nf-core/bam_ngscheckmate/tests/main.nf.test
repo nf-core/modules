@@ -10,6 +10,9 @@ nextflow_workflow {
     tag "samtools"
     tag "samtools/sort"
     tag "samtools/index"
+    tag "ngscheckmate/ncm"
+    tag "bcftools/mpileup"
+
     config "./nextflow.config"
 
     test("sarscov2 - bam") {
