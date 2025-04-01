@@ -9,12 +9,6 @@ env:
   # renovate: datasource=github-releases depName=askimed/nf-test versioning=semver
   NFT_VER: "0.9.2"
   NXF_ANSI_LOG: false
-  NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
-  NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
-  SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
-  SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
-  SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
-  SENTIEON_AUTH_MECH: "GitHub Actions - token"
   # renovate: datasource=github-releases depName=nextflow/nextflow versioning=semver
   NXF_VER: "24.10.2"
 
@@ -29,6 +23,12 @@ jobs:
       - runs-on=${{ github.run_id }}-update-gpu-snapshot
       - runner=4cpu-linux-x64
     steps:
+      # indication that the snapshot is being updated
+      - name: React on comment
+        uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043 # v4
+        with:
+          comment-id: ${{ github.event.comment.id }}
+          reactions: eyes
       # Use the @nf-core-bot token to check out so we can push later
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
@@ -39,12 +39,16 @@ jobs:
         run: |
           echo "test_path=$(echo ${{ github.event.comment.body }} | grep -oP 'path:\s*\K[^ ]+')" >> $GITHUB_OUTPUT
 
-      # indication that the snapshot is being updated
-      - name: React on comment
+      - name: if test path is empty, exit
         uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043 # v4
+        if: steps.get-test-path.outputs.test_path == ''
         with:
           comment-id: ${{ github.event.comment.id }}
-          reactions: eyes
+          reactions: "-1"
+
+      - name: if test path is empty, exit
+        if: steps.get-test-path.outputs.test_path == ''
+        run: exit 0
 
       # Action runs on the issue comment, so we don't get the PR by default
       # Use the gh cli to check out the PR
@@ -73,14 +77,6 @@ jobs:
         with:
           version: "${{ env.NFT_VER }}"
           install-pdiff: true
-
-      # Set up secrets
-      - name: Set up Nextflow secrets
-        if: env.SENTIEON_ENCRYPTION_KEY != '' && env.SENTIEON_LICENSE_MESSAGE != ''
-        shell: bash
-        run: |
-          python -m pip install cryptography
-          nextflow secrets set SENTIEON_AUTH_DATA $(python3 tests/modules/nf-core/sentieon/license_message.py encrypt --key "$SENTIEON_ENCRYPTION_KEY" --message "$SENTIEON_LICENSE_MESSAGE")
 
       - name: Update gpu snapshot
         id: update-gpu-snapshot
