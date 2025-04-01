@@ -39,11 +39,13 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         samples_and_matrix:
             [ meta_input_new, samplesheet, abundance ]
         contrasts_for_diff:
+            [ meta_for_diff, variable, reference, target ]
+        contrasts_for_diff_with_formula:
             [ meta_for_diff, variable, reference, target, formula ]
         filter_params:
             [ meta_for_diff, [ 'fc_threshold': fc_threshold, 'stat_threshold': stat_threshold ]]
         contrasts_for_norm:
-            [ meta_input_new, variable, reference, target, formula ]
+            [ meta_input_new, variable, reference, target ]
     }
 
     // For DIFFERENTIAL modules we need to cross the things we're iterating so we
@@ -135,16 +137,13 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // ----------------------------------------------------
 
     // DREAM only runs with formula
-    ch_contrasts_with_formula = inputs.contrasts_for_diff
-        .filter{ it[0].method_differential == 'dream' }
-        .branch {
-            valid: it[0].formula != null
-            invalid: it[0].formula == null
+    dream_inputs = inputs.contrasts_for_diff_with_formula
+        .filter { meta_for_diff, variable, reference, target, formula ->
+            meta.method_differential == 'dream' && formula != null
         }
-        .valid
 
     VARIANCEPARTITION_DREAM(
-        ch_contrasts_with_formula,
+        dream_inputs,
         inputs.samples_and_matrix.filter{ it[0].method_differential == 'dream' }
     )
 
