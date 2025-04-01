@@ -29,7 +29,7 @@ process PLINK2_FILTER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def mode = plink_genotype_file.extension == 'pgen' ? '--pfile' : '--bfile'
-    //def outmode = plink_genotype_file.extension == 'pgen' ? '--make-pgen' : '--make-bed'
+    def outtype = plink_genotype_file.extension == "pgen" ? '--make-pgen' : '--make-bed'
     def input = "${plink_genotype_file.getBaseName()}"
     if( "${input}" == "${prefix}" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
 
@@ -38,6 +38,7 @@ process PLINK2_FILTER {
         $mode $input \\
         $args \\
         --threads $task.cpus \\
+        $outtype \\
         --out $prefix
 
     cat <<-END_VERSIONS > versions.yml
@@ -60,17 +61,4 @@ process PLINK2_FILTER {
     END_VERSIONS
     """
 
-}
-
-workflow {
-    bed = channel.fromPath("/lustre/scratch126/humgen/teams/hgi/jd41/work/44/b0c648f507b7cc2caaaa0346e95f5b/plink_from_vcf.bed")
-    bim = channel.fromPath("/lustre/scratch126/humgen/teams/hgi/jd41/work/44/b0c648f507b7cc2caaaa0346e95f5b/plink_from_vcf.bim")
-    fam = channel.fromPath("/lustre/scratch126/humgen/teams/hgi/jd41/work/44/b0c648f507b7cc2caaaa0346e95f5b/plink_from_vcf.fam")
-
-    plink_prune_input_ch = bed.combine(bim).combine(fam).map { bed, bim, fam ->
-        [ [id: 'plink2_filter_test'], bed, bim, fam ]
-    }
-
-    plink_prune_input_ch.view()
-    PLINK2_FILTER(plink_prune_input_ch)
 }
