@@ -20,9 +20,9 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test'], // meta map
-                    file("/data1/papaemme/isabl/home/liosisk/repos/nf-core-modules/modules/nf-core/aracne3/exp_mat_short.txt", checkIfExists: true)
+                    file("https://raw.githubusercontent.com/juanesarango/nf-core-test-datasets/339ccf09482508244df06afd5ae6f4e1d29f805a/data/delete_me/aracne3/expression_matrix.tsv", checkIfExists: true),
                 ]
-                input[1] = file("/data1/papaemme/isabl/home/liosisk/repos/nf-core-modules/modules/nf-core/aracne3/regulators_short.txt", checkIfExists: true)
+                input[1] = file("https://raw.githubusercontent.com/juanesarango/nf-core-test-datasets/339ccf09482508244df06afd5ae6f4e1d29f805a/data/delete_me/aracne3/regulators.txt", checkIfExists: true)
                 """
             }
         }
