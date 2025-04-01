@@ -2,9 +2,7 @@ process ARACNE3 {
     tag "$meta.id"
     label 'process_medium'
 
-    publishDir params.outdir, mode: 'copy'
-
-    container "docker.io/papaemmelab/aracne3:v1.0.0"
+    container "docker.io/papaemmelab/aracne3:v1.0.1"
 
     input:
     tuple val(meta), path(expression_matrix)
