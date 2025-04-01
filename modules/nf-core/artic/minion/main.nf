@@ -5,7 +5,7 @@ process ARTIC_MINION {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/artic:1.6.1--pyhdfd78af_0' :
-        'biocontainers/artic:1.6.1--pyhdfd78af_0' }"
+        'biocontainers/artic:1.6.2--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fastq)
