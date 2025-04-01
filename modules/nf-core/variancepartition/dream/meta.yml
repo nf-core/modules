@@ -18,16 +18,7 @@ input:
   - - meta:
         type: map
         description: |
-          Groovy Map containing run and contrast information. This can be used at the
-          workflow level to pass optional parameters to the module, e.g.
-          [
-            id: 'treatment_mCherry_hND6',
-            contrast_variable: 'treatment',
-            reference: 'mCherry',
-            target: 'hND6',
-            formula: '~ treatment + (1 | sample_number)'
-          ]
-          Plus mandatory `id` and other fields created along the run.
+          Groovy Map containing run and contrast information.
     - contrast_variable:
         type: string
         description: |
