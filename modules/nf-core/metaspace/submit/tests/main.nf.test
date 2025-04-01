@@ -15,9 +15,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialmetabo/test_metaspace_submit/test.imzML', checkIfExists: true)
-                input[1] = file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialmetabo/test_metaspace_submit/test.ibd', checkIfExists: true)
-                input[2] = file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialmetabo/test_metaspace_submit/ds_config.yml')
+                input[0] = file(params.test_data_base_path + 'test_metaspace_submit/test.imzML', checkIfExists: true)
+                input[1] = file(params.test_data_base_path + 'test_metaspace_submit/test.ibd', checkIfExists: true)
+                input[2] = file(params.test_data_base_path + 'test_metaspace_submit/ds_config.yml')
                 """
             }
         }
@@ -29,14 +29,15 @@ nextflow_process {
         }
     }
     test("metaspace_submit - stub") {
+        tag "versions_test"
 
         options '-stub'
         when {
             process {
                 """
-                input[0] = file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialmetabo/test_metaspace_submit/test.imzML', checkIfExists: true)
-                input[1] = file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialmetabo/test_metaspace_submit/test.ibd', checkIfExists: true)
-                input[2] = file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialmetabo/test_metaspace_submit/ds_config.yml')
+                input[0] = file(params.test_data_base_path + 'test_metaspace_submit/test.imzML', checkIfExists: true)
+                input[1] = file(params.test_data_base_path + 'test_metaspace_submit/test.ibd', checkIfExists: true)
+                input[2] = file(params.test_data_base_path + 'test_metaspace_submit/ds_config.yml')
                 """
             }
         }
