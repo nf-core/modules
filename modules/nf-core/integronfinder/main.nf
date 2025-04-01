@@ -48,6 +48,7 @@ process INTEGRONFINDER {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         integronfinder: \$(integron_finder --version 2>&1 | head -n1 | sed 's/^integron_finder version //' | xargs)
+        
     END_VERSIONS
     """
 

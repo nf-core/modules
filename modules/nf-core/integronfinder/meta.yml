@@ -25,6 +25,9 @@ input:
         type: file
         description: Nucleotide sequences in FASTA format
         pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
+        ontologies:
+        - edam: "http://edamontology.org/data_2977" # Nucleic acid sequence
+        - edam: "http://edamontology.org/format_1929" #FASTA
 output:
   - gbk:
       - meta:
@@ -37,6 +40,8 @@ output:
           type: file
           description: Creates a Genbank files with all the annotations found (present in the .integrons file)
           pattern: "*.gbk"
+          ontologies:
+          - edam: "http://edamontology.org/format_1936" # GenBank
   - integrons:
       - meta:
           type: map
