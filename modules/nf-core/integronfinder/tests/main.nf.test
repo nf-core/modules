@@ -27,7 +27,7 @@ nextflow_process {
                 { assert path(process.out.out[0][1]).readLines().get(56).contains("command used: integron_finder") },
                 { assert snapshot(
                         process.out.gbk ? path(process.out.gbk[0][1]).text : "no_gbk",
-                        path(process.out.summary[0][1]).readLines()[1..-1],
+                        path(process.out.summary[0][1]).readLines()[1..-1], // Remove first line due to hash presence in conda
                         path(process.out.integrons[0][1]).readLines()[1..-1],
                         process.out.versions,
                         path(process.out.versions[0]).yaml
