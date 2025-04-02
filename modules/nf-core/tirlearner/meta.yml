@@ -26,6 +26,7 @@ input:
         type: file
         description: Genome sequences in fasta format
         pattern: "*.{fsa,fa,fasta}"
+        ontologies: []
   - - species:
         type: string
         description: |
@@ -40,7 +41,8 @@ output:
       - ${prefix}.log:
           type: file
           description: Log from TIR-Learner
-          pattern: "*.log"
+          pattern: "*.{log}"
+          ontologies: []
   - fasta:
       - meta:
           type: map
@@ -50,7 +52,8 @@ output:
       - ${prefix}.fa:
           type: file
           description: Putative TIRs in fasta format
-          pattern: "*.fa"
+          pattern: "*.{fa}"
+          ontologies: []
   - gff:
       - meta:
           type: map
@@ -60,7 +63,8 @@ output:
       - ${prefix}.gff3:
           type: file
           description: Putative TIRs in GFF3 format
-          pattern: "*.gff3"
+          pattern: "*.{gff3}"
+          ontologies: []
   - filtered_fasta:
       - meta:
           type: map
@@ -70,7 +74,8 @@ output:
       - ${prefix}.filtered.fa:
           type: file
           description: Filtered TIRs in fasta format
-          pattern: "*.fa"
+          pattern: "*.{fa}"
+          ontologies: []
   - filtered_gff:
       - meta:
           type: map
@@ -80,12 +85,15 @@ output:
       - ${prefix}.filtered.gff3:
           type: file
           description: Filtered TIRs in GFF3 format
-          pattern: "*.gff3"
+          pattern: "*.{gff3}"
+          ontologies: []
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jguhlin"
   - "@GallVp"
