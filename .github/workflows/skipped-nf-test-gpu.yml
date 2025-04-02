@@ -1,0 +1,22 @@
+name: Run when nf-test-gpu tests are skipped
+on:
+  push:
+    branches:
+      # https://docs.renovatebot.com/key-concepts/automerge/#branch-vs-pr-automerging
+      - "renovate/**" # branches Renovate creates
+    paths:
+      - "**/meta.yml"
+  pull_request:
+    branches: [master]
+    paths:
+      - "**/meta.yml"
+  merge_group:
+    types: [checks_requested]
+    branches: [master]
+    paths:
+      - "**/meta.yml"
+jobs:
+  confirm-pass-gpu:
+    runs-on: ubuntu-latest
+    steps:
+      - run: 'echo "nf-test-gpu tests were skipped"'

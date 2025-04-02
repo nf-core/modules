@@ -1,3 +1,18 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: abundance_differential_filter
+description: A subworkflow for filtering differential abundance results
+keywords:
+  - differential
+  - abundance
+  - expression
+  - count matrix
+  - fold-change
+components:
+  - limma/differential
+  - deseq2/differential
+  - propr/propd
+  - custom/filterdifferentialtable
+  - variancepartition/dream
 input:
   - ch_input:
       description: Channel with input data for differential analysis
@@ -136,6 +151,8 @@ authors:
   - "@bjlang"
   - "@caraiz2001"
   - "@suzannejin"
+  - "@delfiterradas"
+  - "@sofiromano"
 maintainers:
   - "@pinin4fjords"
   - "@suzannejin"
