@@ -87,7 +87,7 @@ jobs:
             return [...new Set(${{ steps.filter.outputs.modules_files }}
               .filter(x => x.endsWith('main.nf'))
               .map(path => path
-                .replace('subworkflows/nf-core/', '')
+                .replace('modules/nf-core/', '')
                 .replace(/\/main\.nf$/, '')
               )
             )];
