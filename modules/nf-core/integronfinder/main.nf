@@ -15,11 +15,11 @@ process INTEGRONFINDER {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*/*.gbk")      , optional: true, emit: gbk
-    tuple val(meta), path("*/*.integrons")                , emit: integrons
-    tuple val(meta), path("*/*.summary")                  , emit: summary
-    path("*/integron_finder.out")                         , emit: out
-    path "versions.yml"                                   , emit: versions
+    tuple val(meta), path("*/*.gbk")              , emit: gbk, optional: true
+    tuple val(meta), path("*/*.integrons")        , emit: integrons
+    tuple val(meta), path("*/*.summary")          , emit: summary
+    tuple val(meta), path("*/integron_finder.out"), emit: out
+    path "versions.yml"                           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,12 +34,6 @@ process INTEGRONFINDER {
         gzip -c -d $fasta > $fasta_name
     fi
 
-    # Patch integron_finder to remove commit hash
-    PY_FILE=\$(python -c "import integron_finder; print(integron_finder.__file__)" 2>/dev/null)
-    if [ -n "\${CONDA_PREFIX:-}" ] && [ -w "\$PY_FILE" ]; then
-        sed -i "s/__commit__ = f'{get_git_revision_short_hash()}'/__commit__ = ''/g" \$PY_FILE 2>/dev/null || true
-    fi
-
     integron_finder \\
         $args \\
         --cpu $task.cpus \\
@@ -47,8 +41,7 @@ process INTEGRONFINDER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        integronfinder: \$(integron_finder --version 2>&1 | head -n1 | sed 's/^integron_finder version //')
-        
+        integronfinder: \$(integron_finder --version 2>&1 | head -n1 | sed 's/^integron_finder version //' | cut -d ' ' -f1)
     END_VERSIONS
     """
 
@@ -61,11 +54,6 @@ process INTEGRONFINDER {
         }
 
     """
-    PY_FILE=\$(python -c "import integron_finder; print(integron_finder.__file__)" 2>/dev/null)
-    if [ -n "\${CONDA_PREFIX:-}" ] && [ -w "\$PY_FILE" ]; then
-        sed -i "s/__commit__ = f'{get_git_revision_short_hash()}'/__commit__ = ''/g" \$PY_FILE 2>/dev/null || true
-    fi
-    
     mkdir -p Results_Integron_Finder_${prefix}
     touch "Results_Integron_Finder_${prefix}/${prefix}.${extension}"
     touch "Results_Integron_Finder_${prefix}/${prefix}.integrons"
@@ -74,7 +62,7 @@ process INTEGRONFINDER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        integronfinder: \$(integron_finder --version 2>&1 | head -n1 | sed 's/^integron_finder version //')
+        integronfinder: \$(integron_finder --version 2>&1 | head -n1 | sed 's/^integron_finder version //' | cut -d ' ' -f1)
     END_VERSIONS
     """
 }

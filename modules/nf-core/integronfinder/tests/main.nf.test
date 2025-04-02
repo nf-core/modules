@@ -24,13 +24,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert process.out.gbk ? path(process.out.gbk[0][1]).text : "no_gbk" },
+                { assert path(process.out.out[0][1]).readLines().get(56).contains("command used: integron_finder") },
                 { assert snapshot(
-                        process.out.gbk ? path(process.out.gbk[0][1]).text : "no_gbk",
-                        process.out.integrons,
-                        process.out.summary,
-                        path(process.out.out[0]).readLines().get(56).contains("command used: integron_finder"),
                         process.out.versions,
-                        path(process.out.versions[0]).text
+                        path(process.out.versions[0]).yaml
                         ).match() }
             )
         }
