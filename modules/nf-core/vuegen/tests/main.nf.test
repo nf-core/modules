@@ -1,0 +1,89 @@
+nextflow_process {
+
+    name "Test Process VUEGEN"
+    script "../main.nf"
+    process "VUEGEN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "vuegen"
+    tag "untar"
+
+    setup {
+        run("UNTAR") {
+            script "../../untar/main.nf"
+            process {
+                """
+                archive = file(params.modules_testdata_base_path + 'delete_me/vuegen/Basic_example_vuegen.tar.gz', checkIfExists: true)
+                input[0] = Channel.of(tuple([id:'vuegen_test'], archive))
+                """
+            }
+        }
+    }
+
+    // Test VueGen with a directory (Streamlit report)
+    test("vuegen - directory (Streamlit report)") {
+        when {
+            process {
+                """
+                input[0] = Channel.of("directory")                     // input_type
+                input[1] = UNTAR.out.untar.map { meta, dir -> file(dir) }  // input_path
+                input[2] = Channel.of("streamlit")                          // report_type
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.output_folder[0] ==~ ".*/streamlit_report" },
+                { assert new File(process.out.output_folder[0] + "/sections").listFiles().any { it.name.endsWith(".py") } },
+                { assert process.out.versions }
+            )
+        }
+    }
+
+    // Test VueGen with a directory (HTML report)
+    test("vuegen - directory (HTML report)") {
+        when {
+            process {
+                """
+                input[0] = Channel.of("directory")                     // input_type
+                input[1] = UNTAR.out.untar.map { meta, dir -> file(dir) }  // input_path
+                input[2] = Channel.of("html")                          // report_type
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.output_folder[0] ==~ ".*/quarto_report" },
+                { assert new File(process.out.output_folder[0]).listFiles().any { it.name.endsWith(".html") } },
+                { assert process.out.versions }
+            )
+        }
+    }
+
+    // Test VueGen with a directory (PDF report)
+    test("vuegen - directory (PDF report)") {
+        when {
+            process {
+                """
+                input[0] = Channel.of("directory")                     // input_type
+                input[1] = UNTAR.out.untar.map { meta, dir -> file(dir) }  // input_path
+                input[2] = Channel.of("pdf")                          // report_type
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.output_folder[0] ==~ ".*/quarto_report" },
+                { assert new File(process.out.output_folder[0]).listFiles().any { it.name.endsWith(".pdf") } },
+                { assert process.out.versions }
+            )
+        }
+    }
+}
