@@ -15,4 +15,4 @@ Space Ranger is a commercial tool by 10X Genomics. The container provided for th
 + ARG SPACERANGER_SHA256="<Manual SHA256 of tar.gz>"
 ```
 
-3. Push the changes and the Dockerfile should be built and uploaded to `quay.io/nf-core/modules/spaceranger`!
+3. Push the changes and the Dockerfile should be built and uploaded to `quay.io/nf-core/spaceranger`!
