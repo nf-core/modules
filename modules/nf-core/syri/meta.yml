@@ -26,14 +26,17 @@ input:
         type: file
         description: File containing alignment coordinates
         pattern: "*.{table, sam, bam, paf}"
+        ontologies: []
   - - query_fasta:
         type: file
         description: Query genome for the alignments
-        pattern: "*.fasta"
+        pattern: "*.{fasta}"
+        ontologies: []
   - - reference_fasta:
         type: file
         description: Reference genome for the alignments
-        pattern: "*.fasta"
+        pattern: "*.{fasta}"
+        ontologies: []
   - - file_type:
         type: string
         description: |
@@ -48,7 +51,8 @@ output:
       - "*syri.out":
           type: file
           description: Syri output file
-          pattern: "*syri.out"
+          pattern: "*syri.{out}"
+          ontologies: []
   - error:
       - meta:
           type: map
@@ -60,12 +64,15 @@ output:
           description: |
             Error log if syri fails. This error log enables the pipeline to detect if syri has failed due to one of its
             known limitations and pass the information to the user in a user-friendly manner such as a HTML report
-          pattern: "*.error.log"
+          pattern: "*.error.{log}"
+          ontologies: []
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@GallVp"
 maintainers:
