@@ -7,6 +7,8 @@ process BANDAGE_IMAGE {
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3e/3eabbd074e3bc45e2643783450330cae3afc6697fefc635755ab964dc43665a1/data' :
         'community.wave.seqera.io/library/bandage:0.9.0--4f0567049a14ea6d' }"
 
+    containerOptions "--env QT_QPA_PLATFORM=offscreen --env XDG_RUNTIME_DIR=/tmp/runtime-${task.uid}"
+
     input:
     tuple val(meta), path(gfa)
 
