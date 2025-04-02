@@ -26,7 +26,8 @@ input:
     - out:
         type: file
         description: RepeatMasker out file
-        pattern: "*.out"
+        pattern: "*.{out}"
+        ontologies: []
 output:
   - gff3:
       - meta:
@@ -37,12 +38,15 @@ output:
       - "*.gff3":
           type: file
           description: Sorted BAM/CRAM/SAM file
-          pattern: "*.gff3"
+          pattern: "*.{gff3}"
+          ontologies: []
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@GallVp"
 maintainers:
