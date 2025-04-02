@@ -85,14 +85,12 @@ jobs:
         with:
           script: |
             return [...new Set(${{ steps.filter.outputs.modules_files }}
+              .filter(x => x.endsWith('main.nf'))
               .map(path => path
-                .replace('modules/nf-core/', '')
-                .split('/')
-                .slice(0, 2)
-                .filter(x => !x.startsWith('main.nf') && x !== 'tests' && x !== 'templates' && x !== 'meta.yml' && x !== 'environment.yml' && !x.endsWith('.md'))
-                .join('/'))
+                .replace('subworkflows/nf-core/', '')
+                .replace(/\/main\.nf$/, '')
               )
-            ];
+            )];
       - name: Get subworkflow name
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
         id: subworkflow_names
@@ -104,7 +102,7 @@ jobs:
                 .replace('subworkflows/nf-core/', '')
                 .replace(/\/main\.nf$/, '')
               )
-            ];
+            )];
 
       - name: debug
         run: |
