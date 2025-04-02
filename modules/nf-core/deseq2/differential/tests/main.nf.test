@@ -12,7 +12,7 @@ nextflow_process {
     test("mouse - contrasts - matrix") {
 
         config './contrasts_matrix.config'
-        
+
         when {
             process {
                 """
@@ -24,13 +24,13 @@ nextflow_process {
                         tuple(it, it.variable, it.reference, it.target)
                     }
                 ch_matrix = [
-                    [id: 'test'], 
+                    [id: 'test'],
                     file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
                     file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
                 ]
                 ch_spikes = [[],[]]
                 ch_lengths = [[],[]]
-                
+
                 input[0] = ch_contrasts
                 input[1] = ch_matrix
                 input[2] = ch_spikes
@@ -52,7 +52,7 @@ nextflow_process {
                     file(process.out.dispersion_plot[0][1]).name,
                     file(process.out.rdata[0][1]).name
                 ).match() },
-                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }                
+                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }
             )
         }
     }
@@ -72,15 +72,15 @@ nextflow_process {
                         tuple(it, it.variable, it.reference, it.target)
                     }
                 ch_matrix = [
-                    [id: 'test'], 
+                    [id: 'test'],
                     file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
                     file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
                 ]
                 ch_lengths = [
-                    [id: 'test'], 
+                    [id: 'test'],
                     file(expression_test_data_dir + 'SRP254919.spoofed_lengths.tsv', checkIfExists: true)
                 ]
-                
+
                 ch_spikes = [[],[]]
 
                 input[0] = ch_contrasts
@@ -105,7 +105,7 @@ nextflow_process {
                     file(process.out.dispersion_plot[0][1]).name,
                     file(process.out.rdata[0][1]).name
                 ).match() },
-                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }                
+                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }
             )
         }
 
@@ -114,7 +114,7 @@ nextflow_process {
     test("mouse - contrasts - matrix - no blocking") {
 
         config './contrasts_matrix_noblocking.config'
-        
+
         when {
             process {
                 """
@@ -126,13 +126,13 @@ nextflow_process {
                         tuple(it, it.variable, it.reference, it.target)
                     }
                 ch_matrix = [
-                    [id: 'test'], 
+                    [id: 'test'],
                     file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
                     file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
                 ]
                 ch_spikes = [[],[]]
                 ch_lengths = [[],[]]
-                
+
                 input[0] = ch_contrasts
                 input[1] = ch_matrix
                 input[2] = ch_spikes
@@ -154,7 +154,7 @@ nextflow_process {
                     file(process.out.dispersion_plot[0][1]).name,
                     file(process.out.rdata[0][1]).name
                 ).match() },
-                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }                
+                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }
             )
         }
     }
@@ -162,7 +162,7 @@ nextflow_process {
     test("mouse - contrasts - matrix - spikes") {
 
         config './contrasts_matrix_spikes.config'
- 
+
         when {
             process {
                 """
@@ -174,16 +174,16 @@ nextflow_process {
                         tuple(it, it.variable, it.reference, it.target)
                     }
                 ch_matrix = [
-                    [id: 'test'], 
+                    [id: 'test'],
                     file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
                     file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
                 ]
                 ch_spikes = [
-                    ['id':'ERCC'], 
+                    ['id':'ERCC'],
                     file(expression_test_data_dir + 'SRP254919.spikes.tsv', checkIfExists: true)
                 ]
                 ch_lengths = [[],[]]
-                
+
                 input[0] = ch_contrasts
                 input[1] = ch_matrix
                 input[2] = ch_spikes
@@ -205,15 +205,15 @@ nextflow_process {
                     file(process.out.dispersion_plot[0][1]).name,
                     file(process.out.rdata[0][1]).name
                 ).match() },
-                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }                
+                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }
             )
         }
     }
-    
+
     test("mouse - contrasts - matrix - strip spikes") {
 
         config './contrasts_matrix.config'
- 
+
         when {
             process {
                 """
@@ -225,16 +225,16 @@ nextflow_process {
                         tuple(it, it.variable, it.reference, it.target)
                     }
                 ch_matrix = [
-                    [id: 'test'], 
+                    [id: 'test'],
                     file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
                     file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
                 ]
                 ch_spikes = [
-                    ['id':'ERCC'], 
+                    ['id':'ERCC'],
                     file(expression_test_data_dir + 'SRP254919.spikes.tsv', checkIfExists: true)
                 ]
                 ch_lengths = [[],[]]
-                
+
                 input[0] = ch_contrasts
                 input[1] = ch_matrix
                 input[2] = ch_spikes
@@ -256,15 +256,15 @@ nextflow_process {
                     file(process.out.dispersion_plot[0][1]).name,
                     file(process.out.rdata[0][1]).name
                 ).match() },
-                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }                
+                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }
             )
         }
     }
-    
+
     test("mouse - contrasts - matrix - csv") {
 
         config './contrasts_matrix.config'
-        
+
         when {
             process {
                 """
@@ -288,7 +288,7 @@ nextflow_process {
                 }
                 ch_spikes = [[],[]]
                 ch_lengths = [[],[]]
-                
+
                 input[0] = ch_contrasts
                 input[1] = ch_matrix
                 input[2] = ch_spikes
@@ -310,15 +310,15 @@ nextflow_process {
                     file(process.out.dispersion_plot[0][1]).name,
                     file(process.out.rdata[0][1]).name
                 ).match() },
-                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }                
+                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }
             )
         }
     }
-    
+
     test("mouse - contrasts - matrix - vst nsub") {
 
         config './contrasts_matrix_vst_nsub.config'
-        
+
         when {
             process {
                 """
@@ -330,13 +330,13 @@ nextflow_process {
                         tuple(it, it.variable, it.reference, it.target)
                     }
                 ch_matrix = [
-                    [id: 'test'], 
+                    [id: 'test'],
                     file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
                     file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
                 ]
                 ch_spikes = [[],[]]
                 ch_lengths = [[],[]]
-                
+
                 input[0] = ch_contrasts
                 input[1] = ch_matrix
                 input[2] = ch_spikes
@@ -358,15 +358,15 @@ nextflow_process {
                     file(process.out.dispersion_plot[0][1]).name,
                     file(process.out.rdata[0][1]).name
                 ).match() },
-                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }                
+                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }
             )
         }
     }
-    
+
     test("mouse - contrasts - matrix - subset to contrast") {
 
         config './contrasts_matrix_subset_to_contrast.config'
-        
+
         when {
             process {
                 """
@@ -378,13 +378,13 @@ nextflow_process {
                         tuple(it, it.variable, it.reference, it.target)
                     }
                 ch_matrix = [
-                    [id: 'test'], 
+                    [id: 'test'],
                     file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
                     file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
                 ]
                 ch_spikes = [[],[]]
                 ch_lengths = [[],[]]
-                
+
                 input[0] = ch_contrasts
                 input[1] = ch_matrix
                 input[2] = ch_spikes
@@ -406,7 +406,7 @@ nextflow_process {
                     file(process.out.dispersion_plot[0][1]).name,
                     file(process.out.rdata[0][1]).name
                 ).match() },
-                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }                
+                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }
             )
         }
     }
@@ -414,7 +414,7 @@ nextflow_process {
     test("mouse - contrasts - matrix - exclude samples") {
 
         config './contrasts_matrix_exclude_samples.config'
-        
+
         when {
             process {
                 """
@@ -426,13 +426,13 @@ nextflow_process {
                         tuple(it, it.variable, it.reference, it.target)
                     }
                 ch_matrix = [
-                    [id: 'test'], 
+                    [id: 'test'],
                     file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
                     file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
                 ]
                 ch_spikes = [[],[]]
                 ch_lengths = [[],[]]
-                
+
                 input[0] = ch_contrasts
                 input[1] = ch_matrix
                 input[2] = ch_spikes
@@ -454,16 +454,16 @@ nextflow_process {
                     file(process.out.dispersion_plot[0][1]).name,
                     file(process.out.rdata[0][1]).name
                 ).match() },
-                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }                
+                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }
             )
         }
     }
     test("mouse - contrasts - matrix - stub") {
 
         config './contrasts_matrix.config'
-        
+
         options "-stub"
-        
+
         when {
             process {
                 """
@@ -475,13 +475,13 @@ nextflow_process {
                         tuple(it, it.variable, it.reference, it.target)
                     }
                 ch_matrix = [
-                    [id: 'test'], 
+                    [id: 'test'],
                     file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
                     file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
                 ]
                 ch_spikes = [[],[]]
                 ch_lengths = [[],[]]
-                
+
                 input[0] = ch_contrasts
                 input[1] = ch_matrix
                 input[2] = ch_spikes
