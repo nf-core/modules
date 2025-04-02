@@ -31,7 +31,7 @@ nextflow_process {
                         path(process.out.integrons[0][1]).readLines()[1..-1],
                         process.out.versions,
                         path(process.out.versions[0]).yaml
-                        ).match() }
+                    ).match() }
             )
         }
 
