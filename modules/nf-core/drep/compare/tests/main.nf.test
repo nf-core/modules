@@ -37,6 +37,7 @@ then {
                 { assert snapshot(
                     stablefiles.sort(),
                     unstablefiles.sort(),
+                    process.out.pdf.collect{ it[1].collect{ file(it).name } }
                     process.out.versions
                     ).match() }
             )

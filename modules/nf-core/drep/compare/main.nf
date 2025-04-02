@@ -12,6 +12,7 @@ process DREP_COMPARE {
 
     output:
     tuple val(meta), path("${prefix}"), emit: directory
+    tuple val(meta), path("${prefix}/figures/*.pdf"), emit: pdf
     path "versions.yml", emit: versions
 
     when:
