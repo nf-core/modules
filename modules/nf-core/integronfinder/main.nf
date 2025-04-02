@@ -48,14 +48,11 @@ process INTEGRONFINDER {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def extension = null
-        if (args.contains("--gbk")) {
-            extension = "gbk"
-        }
+    def gbk_create = args.contains("--gbk") ? "Results_Integron_Finder_${prefix}/${prefix}.gbk" : ""
 
     """
     mkdir -p Results_Integron_Finder_${prefix}
-    touch "Results_Integron_Finder_${prefix}/${prefix}.${extension}"
+    ${gbk_create}
     touch "Results_Integron_Finder_${prefix}/${prefix}.integrons"
     touch "Results_Integron_Finder_${prefix}/${prefix}.summary"
     touch "Results_Integron_Finder_${prefix}/integron_finder.out"

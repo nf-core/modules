@@ -26,8 +26,8 @@ input:
         description: Nucleotide sequences in FASTA format
         pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
         ontologies:
-        - edam: "http://edamontology.org/data_2977" # Nucleic acid sequence
-        - edam: "http://edamontology.org/format_1929" #FASTA
+          - edam: "http://edamontology.org/data_2977" # Nucleic acid sequence
+          - edam: "http://edamontology.org/format_1929" #FASTA
 output:
   - gbk:
       - meta:
@@ -35,20 +35,18 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-          pattern: "*.gbk"
       - "*/*.gbk":
           type: file
           description: Creates a Genbank files with all the annotations found (present in the .integrons file)
           pattern: "*.gbk"
-          ontologies:
-          - edam: "http://edamontology.org/format_1936" # GenBank
+          ontologies: &id001
+            - edam: "http://edamontology.org/format_1936" # GenBank
   - integrons:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-          pattern: "*.integrons"
       - "*/*.integrons":
           type: file
           description: A file with all integrons and their elements detected in all sequences in the input file
@@ -59,12 +57,16 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-          pattern: "*.summary"
       - "*/*.summary":
           type: file
           description: A summary file with the number and type of integrons per sequence
           pattern: "*.summary"
   - out:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
       - "*/integron_finder.out":
           type: file
           description: A copy standard output. The stdout can be silenced with the argument --mute
