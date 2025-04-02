@@ -20,9 +20,6 @@ process RAXMLNG {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if (!meta.id) {
-        error "Input meta map does not contain 'id'. Received: ${meta}"
-    }
 
     """
     raxml-ng \\
