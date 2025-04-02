@@ -42,8 +42,7 @@ process RAXMLNG {
         error "Input meta map does not contain 'id'. Received: ${meta}"
     }
     // Use a dedicated param for stub testing the bootstrap output scenario
-    def bootstrapping = args.contains('--bootstrap') || args.contains('--bs-trees') || params.test_stub_bootstrap == true
-    def touch_support = bootstrapping ? "touch ${prefix}.raxml.support" : ""
+    def touch_support = args.contains('--bootstrap') || args.contains('--bs-trees') ? "touch ${prefix}.raxml.support" : ""
     """
     # Create stub output files
     touch ${prefix}.raxml.bestTree
