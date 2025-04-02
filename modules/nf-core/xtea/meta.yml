@@ -1,0 +1,84 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "xtea"
+## TODO nf-core: Add a description of the module and list keywords
+description: MEI calling tool for short and long reads
+keywords:
+  - xtea
+  - mei
+  - long reads
+  - short reads
+  - genomics
+  - bioinformatics
+  - variant calling
+  - structural variant calling
+  - insertion calling
+  - genomics tools
+  - genomics analysis
+  - genomics software
+tools:
+  - "xtea":
+      description: "TE insertion caller for both short and long reads"
+      homepage: "https://github.com/parklab/xTea"
+      documentation: "https://github.com/parklab/xTea"
+      tool_dev_url: "https://github.com/parklab/xTea"
+      doi: "10.1038/s41467-021-24041-8"
+      licence: ['Academic and Non-Commercial Research Use']
+      identifier: biotools:xtea
+
+input:
+  # Only when we have meta
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', bam:false ]`
+  
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_25722"
+          - edam: "http://edamontology.org/format_2573"
+          - edam: "http://edamontology.org/format_3462"
+
+    - bai:
+        type: file
+        description: Sorted BAI/CRAI file
+        pattern: "*.{bai,crai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_25722"
+          - edam: "http://edamontology.org/format_2573"
+          - edam: "http://edamontology.org/format_3462"
+
+
+## TODO nf-core: Add a description of all of the variables used as output
+output:
+  - bam:
+  #Only when we have meta
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', bam:false ]`
+
+    - "*.vcf":
+        type: file
+        description: Sorted vcf file
+        pattern: "*.{vcf,vcf.gz,bcf}"
+        ontologies:
+          - edam: "http://edamontology.org/format_25722"
+          - edam: "http://edamontology.org/format_2573"
+          - edam: "http://edamontology.org/format_3462"
+          
+  - versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@solyris83"
+maintainers:
+  - "@solyris83"
