@@ -97,12 +97,10 @@ jobs:
         with:
           script: |
             return [...new Set(${{ steps.filter.outputs.subworkflows_files }}
+              .filter(x => x.endsWith('main.nf'))
               .map(path => path
                 .replace('subworkflows/nf-core/', '')
-                .split('/')
-                .slice(0, 2)
-                .filter(x => !x.startsWith('main.nf') && x !== 'tests' && x !== 'templates' && x !== 'meta.yml' && x !== 'environment.yml' && !x.endsWith('.md'))
-                .join('/'))
+                .replace(/\/main\.nf$/, '')
               )
             )];
 
