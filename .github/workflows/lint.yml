@@ -97,10 +97,12 @@ jobs:
         with:
           script: |
             return [...new Set(${{ steps.filter.outputs.subworkflows_files }}
-              .filter(x => x.endsWith('main.nf'))
               .map(path => path
                 .replace('subworkflows/nf-core/', '')
-                .replace(/\/main\.nf$/, '')
+                .split('/')
+                .slice(0, 2)
+                .filter(x => !x.startsWith('main.nf') && x !== 'tests' && x !== 'templates' && x !== 'meta.yml' && x !== 'environment.yml' && !x.endsWith('.md'))
+                .join('/'))
               )
             )];
 
@@ -129,10 +131,21 @@ jobs:
           sudo rm -rf ./* || true
           sudo rm -rf ./.* || true
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - name: Install the latest version of uv
-        uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182 #v5
+      - name: Set up Python
+        uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55 # v5
         with:
-          version: "latest"
+          python-version: "3.13"
+
+      - uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
+        id: cache-pip
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip
+          restore-keys: |
+            ${{ runner.os }}-pip
+
+      - name: Install pip
+        run: python -m pip install --upgrade pip
 
       - uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4
         with:
@@ -142,8 +155,11 @@ jobs:
       - name: Set up Nextflow
         uses: nf-core/setup-nextflow@v2
 
+      - name: Install nf-core tools development version
+        run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
+
       - name: Lint module ${{ matrix.module }}
-        run: uvx --from git+https://github.com/nf-core/tools.git@dev nf-core modules lint ${{ matrix.module }}
+        run: nf-core modules lint ${{ matrix.module }}
 
   nf-core-lint-subworkflows:
     runs-on:
@@ -163,16 +179,19 @@ jobs:
           sudo rm -rf ./* || true
           sudo rm -rf ./.* || true
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - name: Install the latest version of uv
-        uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182 #v5
+      - name: Set up Python
+        uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55 # v5
         with:
-          version: "latest"
+          python-version: "3.13"
 
       - name: Set up Nextflow
         uses: nf-core/setup-nextflow@v2
 
+      - name: Install nf-core tools development version
+        run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
+
       - name: Lint subworkflow ${{ matrix.subworkflow }}
-        run: uvx --from git+https://github.com/nf-core/tools.git@dev nf-core subworkflows lint ${{ matrix.subworkflow }}
+        run: nf-core subworkflows lint ${{ matrix.subworkflow }}
 
   confirm-pass-lint:
     runs-on:
