@@ -13,11 +13,11 @@ process GCTA_GSMR {
     path(reference)
 
     output:
-    path "${meta.id}_${meta2.id}.log"         , emit: log
-    path "${meta.id}_${meta2.id}.gsmr"        , emit: gsmr
-    path "${meta.id}_${meta2.id}.eff_plot.gz" , emit: eff_plot, optional: true
-    path "${meta.id}_${meta2.id}.mono.badsnps", emit: mono_badsnps, optional: true
-    path "versions.yml"                       , emit: versions
+    tuple val(meta), val(meta2), path("*.log")          , emit: log
+    tuple val(meta), val(meta2), path("*.gsmr")         , emit: gsmr
+    tuple val(meta), val(meta2), path("*.eff_plot.gz")  , emit: eff_plot, optional: true
+    tuple val(meta), val(meta2), path("*.mono.badsnsps"), emit: mono_badsnps, optional: true
+    path "versions.yml"                                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

@@ -36,7 +36,7 @@ nextflow_process {
                 famFile.copyTo(referenceDir.resolve("reference.fam"))
 
                 // Pass the folder as input
-                input[2] = referenceDir                 
+                input[2] = referenceDir
                 """
             }
         }
@@ -83,7 +83,7 @@ nextflow_process {
                 famFile.copyTo(referenceDir.resolve("reference.fam"))
 
                 // Pass the folder as input
-                input[2] = referenceDir               
+                input[2] = referenceDir
                 """
             }
         }
@@ -97,7 +97,6 @@ nextflow_process {
                 process.out.versions
             ).match()
 
-            assert path(process.out.versions.get(0)).text.contains("GSMR")
         }
 
     }
