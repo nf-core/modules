@@ -23,7 +23,7 @@ process SEVERUS {
     tuple val(meta), path("${prefix}/all_SVs/breakpoints_clusters_list.tsv")    , emit: all_breakpoints_clusters_list    , optional: true
     tuple val(meta), path("${prefix}/all_SVs/breakpoints_clusters.tsv")         , emit: all_breakpoints_clusters         , optional: true
     tuple val(meta), path("${prefix}/all_SVs/plots/severus_*.html")             , emit: all_plots                        , optional: true
-    tuple val(meta), path("${prefix}/somatic_SVs/severus_all.vcf")              , emit: somatic_vcf                      , optional: true
+    tuple val(meta), path("${prefix}/somatic_SVs/severus_somatic.vcf")          , emit: somatic_vcf                      , optional: true
     tuple val(meta), path("${prefix}/somatic_SVs/breakpoints_clusters_list.tsv"), emit: somatic_breakpoints_clusters_list, optional: true
     tuple val(meta), path("${prefix}/somatic_SVs/breakpoints_clusters.tsv")     , emit: somatic_breakpoints_clusters     , optional: true
     tuple val(meta), path("${prefix}/somatic_SVs/plots/severus_*.html")         , emit: somatic_plots                    , optional: true

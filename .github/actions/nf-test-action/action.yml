@@ -28,9 +28,9 @@ runs:
         version: "${{ env.NXF_VERSION }}"
 
     - name: Set up Python
-      uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5
+      uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55 # v5
       with:
-        python-version: "3.11"
+        python-version: "3.13"
 
     - name: Set up nf-test
       uses: nf-core/setup-nf-test@v1
@@ -40,7 +40,7 @@ runs:
 
     - name: Setup apptainer
       if: contains(inputs.profile, 'singularity')
-      uses: eWaterCycle/setup-apptainer@main
+      uses: eWaterCycle/setup-apptainer@3f706d898c9db585b1d741b4692e66755f3a1b40 #v2
 
     - name: Set up Singularity
       if: contains(inputs.profile, 'singularity')

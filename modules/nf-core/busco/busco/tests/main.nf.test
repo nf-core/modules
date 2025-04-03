@@ -14,6 +14,9 @@ nextflow_process {
         config './nextflow.config'
 
         when {
+            params {
+                busco_args = '--tar'
+            }
             process {
                 """
                 input[0] = [
@@ -76,6 +79,9 @@ nextflow_process {
         config './nextflow.config'
 
         when {
+            params {
+                busco_args = '--tar'
+            }
             process {
                 """
                 input[0] = [
@@ -159,9 +165,12 @@ nextflow_process {
 
     test("test_busco_eukaryote_metaeuk") {
 
-        config './nextflow.metaeuk.config'
+        config './nextflow.config'
 
         when {
+            params {
+                busco_args = '--tar --metaeuk'
+            }
             process {
                 """
                 input[0] = [
@@ -223,9 +232,12 @@ nextflow_process {
 
     test("test_busco_eukaryote_augustus") {
 
-        config './nextflow.augustus.config'
+        config './nextflow.config'
 
         when {
+            params {
+                busco_args = '--tar --augustus'
+            }
             process {
                 """
                 input[0] = [
@@ -270,6 +282,9 @@ nextflow_process {
         config './nextflow.config'
 
         when {
+            params {
+                busco_args = '--tar'
+            }
             process {
                 """
                 input[0] = [
@@ -333,6 +348,9 @@ nextflow_process {
         config './nextflow.config'
 
         when {
+            params {
+                busco_args = '--tar'
+            }
             process {
                 """
                 input[0] = [
@@ -395,6 +413,9 @@ nextflow_process {
         config './nextflow.config'
 
         when {
+            params {
+                busco_args = '--tar'
+            }
             process {
                 """
                 input[0] = [
@@ -425,7 +446,7 @@ nextflow_process {
                 assert contains('Results from dataset')
                 assert contains('how to cite BUSCO')
             }
-            
+
             assert path("${process.out.busco_dir[0][1]}/*/auto_lineage").exists() == false
             assert path("${process.out.busco_dir[0][1]}/*/**/{miniprot,hmmer,.bbtools}_output").exists() == false
 
