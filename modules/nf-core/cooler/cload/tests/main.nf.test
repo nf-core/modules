@@ -1,0 +1,127 @@
+nextflow_process {
+
+    name "Test Process COOLER_CLOAD"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "COOLER_CLOAD"
+   
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cooler"
+    tag "cooler/cload"
+    tag "cooler/dump"    
+    
+    test("test_cooler_cload_pairix") {
+        when {
+            params {
+                module_args = 'pairix'
+            }
+            process {
+                """
+                input[0] = [[id:'test_pairix', single_end:false],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/cload/hg19/hg19.GM12878-MboI.pairs.subsample.blksrt.txt.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/cload/hg19/hg19.GM12878-MboI.pairs.subsample.blksrt.txt.gz.px2', checkIfExists:true),
+                    2000000
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/cload/hg19/hg19.chrom.sizes', checkIfExists:true)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.cool.collect{file(it[1]).name}
+                ).match() }
+            )
+        }
+    }
+    
+    
+    test("test_cooler_cload_pairs") {
+        
+        when {
+            params {
+                module_args = 'pairs --chrom1 1 --pos1 2 --chrom2 4 --pos2 5 -N'
+            }
+            process {
+                """
+                input[0] = [[id:'test_pairs', single_end:false],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/cload/hg19/hg19.sample1.pairs', checkIfExists:true),
+                    [],
+                    2000000
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/cload/hg19/hg19.chrom.sizes', checkIfExists:true)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.cool.collect{file(it[1]).name}
+                ).match() }
+            )
+        }
+    }
+    
+    
+    test("test_cooler_cload_tabix") {
+        when {
+            params {
+                module_args = 'tabix'
+            }
+            process {
+                """
+                input[0] = [[id:'test_tabix', single_end:false],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/cload/hg19/hg19.GM12878-MboI.pairs.subsample.sorted.possrt.txt.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/cload/hg19/hg19.GM12878-MboI.pairs.subsample.sorted.possrt.txt.gz.tbi', checkIfExists:true),
+                    2000000
+                    ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/cload/hg19/hg19.chrom.sizes',checkIfExists:true)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.cool.collect{file(it[1]).name}
+                ).match() }
+            )
+        }
+    }
+    
+    
+    test("test_cooler_cload_pairix - stub") {
+        options '-stub'
+        when {
+            params {
+                module_args = 'pairix'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test_pairix', single_end:false],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/cload/hg19/hg19.GM12878-MboI.pairs.subsample.blksrt.txt.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/cload/hg19/hg19.GM12878-MboI.pairs.subsample.blksrt.txt.gz.px2', checkIfExists:true),
+                    2000000
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/cload/hg19/hg19.chrom.sizes', checkIfExists:true)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{path(it).yaml}
+                ).match() }
+            )
+        }
+    }
+}
