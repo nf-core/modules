@@ -45,25 +45,25 @@ input:
         ontologies: []
 output:
   - log:
-      - "*.log":
+      - ${meta.id}_${meta2.id}.log:
           type: file
           description: Log file from GSMR analysis
           pattern: "*.log"
           ontologies: []
   - gsmr:
-      - "*.gsmr":
+      - ${meta.id}_${meta2.id}.gsmr:
           type: file
           description: Results file from GSMR analysis
           pattern: "*.gsmr"
           ontologies: []
   - eff_plot:
-      - "*.eff_plot.gz":
+      - ${meta.id}_${meta2.id}.eff_plot.gz:
           type: file
           description: Effect plot from GSMR analysis (optional)
           pattern: "*.eff_plot.gz"
           ontologies: []
   - mono_badsnps:
-      - "*.mono.badsnps":
+      - ${meta.id}_${meta2.id}.mono.badsnps:
           type: file
           description: File containing bad SNPs identified in GSMR analysis (optional)
           pattern: "*.mono.badsnps"
