@@ -82,7 +82,7 @@ jobs:
           nf-test test \
           --profile=docker,gpu \
           --verbose \
-          -- ci \
+          --ci \
           --update-snapshot \
           --filter process,workflow \
           --tags gpu \
