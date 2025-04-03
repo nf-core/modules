@@ -30,7 +30,6 @@ process PLINK2_MAF {
     def mode = plink_genotype_file.extension == 'pgen' ? '--pfile' : '--bfile'
     def outtype = plink_genotype_file.extension == "pgen" ? '--make-pgen' : '--make-bed'
     def input = "${plink_genotype_file.getBaseName()}"
-    def maf = 0.001
     if( "${input}" == "${prefix}" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
 
     """
@@ -62,4 +61,19 @@ process PLINK2_MAF {
     END_VERSIONS
     """
 
+}
+
+workflow {
+    maf = 0.001
+    bed = channel.fromPath("/lustre/scratch126/humgen/teams/hgi/jd41/work/44/b0c648f507b7cc2caaaa0346e95f5b/plink_from_vcf.bed")
+    bim = channel.fromPath("/lustre/scratch126/humgen/teams/hgi/jd41/work/44/b0c648f507b7cc2caaaa0346e95f5b/plink_from_vcf.bim")
+    fam = channel.fromPath("/lustre/scratch126/humgen/teams/hgi/jd41/work/44/b0c648f507b7cc2caaaa0346e95f5b/plink_from_vcf.fam")
+
+    plink_prune_input_ch = bed.combine(bim).combine(fam).map { bed, bim, fam ->
+        [ [id: 'plink2_maf_test'], bed, bim, fam ]
+    }
+    maf_ch = maf
+
+    plink_prune_input_ch.view()
+    PLINK2_MAF(plink_prune_input_ch, maf_ch)
 }
