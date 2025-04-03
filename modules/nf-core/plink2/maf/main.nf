@@ -1,4 +1,4 @@
-process PLINK2_FILTER {
+process PLINK2_MAF {
     tag "$meta.id"
     label 'process_medium'
 
@@ -24,17 +24,17 @@ process PLINK2_FILTER {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def mode = plink_genotype_file.extension == 'pgen' ? '--pfile' : '--bfile'
     def outtype = plink_genotype_file.extension == "pgen" ? '--make-pgen' : '--make-bed'
     def input = "${plink_genotype_file.getBaseName()}"
+    def maf = task.ext.args ?: ''
     if( "${input}" == "${prefix}" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
 
     """
     plink2 \\
         $mode $input \\
-        $args \\
+        --maf $maf \\
         --threads $task.cpus \\
         $outtype \\
         --out $prefix
@@ -46,7 +46,6 @@ process PLINK2_FILTER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def trio = plink_genotype_file.extension == 'pgen' ? "${prefix}.pfam ${prefix}.psam ${prefix}.pvar" : "${prefix}.bed ${prefix}.bim ${prefix}.fam"
     if( "${plink_genotype_file.getBaseName()}" == "${prefix}" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
