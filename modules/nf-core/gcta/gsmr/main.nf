@@ -8,7 +8,6 @@ process GCTA_GSMR {
         'biocontainers/gcta:1.94.1--h9ee0642_0' }"
 
     input:
-
     tuple val(meta) , path(exposure)
     tuple val(meta2), path(outcome)
     path(reference)
@@ -33,10 +32,11 @@ process GCTA_GSMR {
     file=\$(ls $reference | sed 's/\\.[^.]*\$//')
     echo "${reference}/\$file" | head -n1 > reference.txt
 
-    gcta  \
-    --mbfile reference.txt  \
-    --gsmr-file ${meta.id}.input.txt outcome.txt \
-    --out "${prefix}"
+    gcta  \\
+        $args \\
+        --mbfile reference.txt  \\
+        --gsmr-file ${meta.id}.input.txt outcome.txt \\
+        --out "${prefix}"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
