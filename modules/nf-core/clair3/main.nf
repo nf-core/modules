@@ -36,7 +36,7 @@ process CLAIR3 {
         model = "$user_model"
     }
     if (packaged_model && user_model) {
-        log.error "Two models specified $user_model and $packaged_model, defaulting to $user_model"
+        error "Two models specified $user_model and $packaged_model, specify one of them."
         model = "$user_model"
     }
     def args = task.ext.args ?: ''
