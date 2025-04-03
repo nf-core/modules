@@ -155,31 +155,31 @@ nextflow_process {
         }
     }
     
-    // test("test_cellrangerarc_count -- stub") {
-    //     options '-stub'
-    //     when {
-    //         params {
-    //             module_args = ''
-    //         }
-    //         process {
-    //             """
-    //             input[0] = [[id:'test'],['gex','atac'],['SRR18907480_chr19_sub','SRR18907481_chr19_sub'],
-    //                 [file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907480_chr19_sub_S1_L001_R1_001.fastq.gz',checkIfExists:true),
-    //                 file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907480_chr19_sub_S1_L001_R2_001.fastq.gz',checkIfExists:true),
-    //                 file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907481_chr19_sub_S1_L001_R1_001.fastq.gz',checkIfExists:true),
-    //                 file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907481_chr19_sub_S1_L001_R2_001.fastq.gz',checkIfExists:true),
-    //                 file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907481_chr19_sub_S1_L001_I2_001.fastq.gz',checkIfExists:true)
-    //                 ]
-    //                 ]
-    //             input[1] = CELLRANGERARC_MKREF.out.reference
-    //             """
-    //         }
-    //     }
-    //     then {
-    //         assertAll(
-    //             { assert process.success },
-    //             { assert snapshot(process.out).match() }
-    //         )
-    //     }
-    // }
+    test("test_cellrangerarc_count -- stub") {
+        options '-stub'
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [[id:'test'],['gex','atac'],['SRR18907480_chr19_sub','SRR18907481_chr19_sub'],
+                    [file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907480_chr19_sub_S1_L001_R1_001.fastq.gz',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907480_chr19_sub_S1_L001_R2_001.fastq.gz',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907481_chr19_sub_S1_L001_R1_001.fastq.gz',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907481_chr19_sub_S1_L001_R2_001.fastq.gz',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907481_chr19_sub_S1_L001_I2_001.fastq.gz',checkIfExists:true)
+                    ]
+                    ]
+                input[1] = CELLRANGERARC_MKREF.out.reference
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
 }
