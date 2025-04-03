@@ -12,8 +12,6 @@ process TXIMETA_TXIMPORT {
     val quant_type
 
     output:
-    tuple val(meta), path("*gene*.tsv")                    , emit: gene
-    tuple val(meta), path("*transcript*.tsv")              , emit: transcript
     tuple val(meta), path("*gene_tpm.tsv")                 , emit: tpm_gene
     tuple val(meta), path("*gene_counts.tsv")              , emit: counts_gene
     tuple val(meta), path("*gene_counts_length_scaled.tsv"), emit: counts_gene_length_scaled
