@@ -13,10 +13,10 @@ process GCTA_GSMR {
     path(reference)
 
     output:
-    path "*.log"         , emit: log
-    path "*.gsmr"        , emit: gsmr
-    path "*.eff_plot.gz" , emit: eff_plot, optional: true
-    path "*.mono.badsnps", emit: mono_badsnps, optional: true
+    path "${meta.id}_${meta2.id}.log"         , emit: log
+    path "${meta.id}_${meta2.id}.gsmr"        , emit: gsmr
+    path "${meta.id}_${meta2.id}.eff_plot.gz" , emit: eff_plot, optional: true
+    path "${meta.id}_${meta2.id}.mono.badsnps", emit: mono_badsnps, optional: true
     path "versions.yml"                       , emit: versions
 
     when:
