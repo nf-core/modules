@@ -13,10 +13,10 @@ process GCTA_GSMR {
     path(reference)
 
     output:
-    path "${meta.id}_${meta2.id}.log"         , emit: log
-    path "${meta.id}_${meta2.id}.gsmr"        , emit: gsmr
-    path "${meta.id}_${meta2.id}.eff_plot.gz" , emit: eff_plot, optional: true
-    path "${meta.id}_${meta2.id}.mono.badsnps", emit: mono_badsnps, optional: true
+    path "*.log"         , emit: log
+    path "*.gsmr"        , emit: gsmr
+    path "*.eff_plot.gz" , emit: eff_plot, optional: true
+    path "*.mono.badsnps", emit: mono_badsnps, optional: true
     path "versions.yml"                       , emit: versions
 
     when:
@@ -25,7 +25,6 @@ process GCTA_GSMR {
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_${meta2.id}"
-
     """
     echo "${meta.id} ${exposure}" > ${meta.id}.input.txt
     echo "${meta2.id} ${outcome}" > outcome.txt
@@ -47,13 +46,11 @@ process GCTA_GSMR {
     stub:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_${meta2.id}"
-
     """
     touch ${prefix}.log
     touch ${prefix}.gsmr
     touch ${prefix}.mono.badsnps
     echo "" | gzip > ${prefix}.eff_plot.gz
-
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
