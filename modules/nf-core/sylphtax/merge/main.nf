@@ -28,7 +28,7 @@ process SYLPHTAX_MERGE {
         merge \\
         ${sylphtax_reports} \\
         --column $data_type \\
-        -o ${prefix}.tsv
+        --output ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
