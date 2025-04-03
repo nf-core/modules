@@ -116,7 +116,7 @@ nextflow_process {
                 .combine(Channel.of(['hifi']))
                 input[1] = [
                     [ id:'test'],
-                    file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                 ]
                 input[2] = [
                     [ id: 'test'],
