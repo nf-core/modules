@@ -1,7 +1,12 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "ctatsplicing_prepgenomelib"
-description: write your description here
+description: Reference preparation for CTAT-splicing
+long_description: |
+  This module prepares the CTAT genome library reference for splicing analysis by integrating cancer intron annotations.
+  It takes a CTAT genome library and a cancer intron TSV file as input, and outputs a modified genome library reference.
+  The output can be used in subsequent CTAT-splicing analyses to detect and annotate cancer splicing aberrations.
+  Make sure to provide the correct genome library and cancer intron data resource.
 keywords:
   - splicing
   - cancer
@@ -9,7 +14,7 @@ keywords:
   - rnaseq
 tools:
   - "ctatsplicing":
-      description: "Detection and annotation of cancer splicing abberations"
+      description: "Detection and annotation of cancer splicing aberrations"
       homepage: "https://github.com/TrinityCTAT/CTAT-SPLICING"
       documentation: "https://github.com/TrinityCTAT/CTAT-SPLICING"
       tool_dev_url: "https://github.com/TrinityCTAT/CTAT-SPLICING"
