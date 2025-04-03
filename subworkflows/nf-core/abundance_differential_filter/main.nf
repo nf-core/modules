@@ -8,6 +8,7 @@ include { DESEQ2_DIFFERENTIAL                 } from '../../../modules/nf-core/d
 include { DESEQ2_DIFFERENTIAL as DESEQ2_NORM  } from '../../../modules/nf-core/deseq2/differential/main'
 include { PROPR_PROPD                         } from '../../../modules/nf-core/propr/propd/main'
 include { CUSTOM_FILTERDIFFERENTIALTABLE      } from '../../../modules/nf-core/custom/filterdifferentialtable/main'
+include { VARIANCEPARTITION_DREAM             } from '../../../modules/nf-core/variancepartition/dream/main'
 
 // Combine meta maps, including merging non-identical values of shared keys (e.g. 'id')
 def mergeMaps(meta, meta2){
@@ -25,18 +26,22 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     ch_samplesheet           // [ meta_exp, samplesheet ]
     ch_transcript_lengths    // [ meta_exp, transcript_lengths]
     ch_control_features      // [meta_exp, control_features]
-    ch_contrasts             // [[ meta_contrast, contrast_variable, reference, target ]]
+    ch_contrasts             // [[ meta_contrast, contrast_variable, reference, target, formula ]]
 
     main:
 
+    ch_versions = Channel.empty()
+
     // Set up how the channels crossed below will be used to generate channels for processing
-    def criteria = multiMapCriteria { meta_input, abundance, analysis_method, fc_threshold, stat_threshold, meta_exp, samplesheet, meta_contrasts, variable, reference, target ->
+    def criteria = multiMapCriteria { meta_input, abundance, analysis_method, fc_threshold, stat_threshold, meta_exp, samplesheet, meta_contrasts, variable, reference, target, formula ->
         def meta_for_diff = mergeMaps(meta_contrasts, meta_input) + [ 'method_differential': analysis_method ]
         def meta_input_new = meta_input + [ 'method_differential': analysis_method ]
         samples_and_matrix:
             [ meta_input_new, samplesheet, abundance ]
         contrasts_for_diff:
             [ meta_for_diff, variable, reference, target ]
+        contrasts_for_diff_with_formula:
+            [ meta_for_diff, variable, reference, target, formula ]
         filter_params:
             [ meta_for_diff, [ 'fc_threshold': fc_threshold, 'stat_threshold': stat_threshold ]]
         contrasts_for_norm:
@@ -75,10 +80,14 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         norm_inputs.samples_and_matrix.filter{it[0].method_differential == 'limma'}
     )
 
+    ch_versions = ch_versions.mix(LIMMA_NORM.out.versions.first())
+
     LIMMA_DIFFERENTIAL(
         inputs.contrasts_for_diff.filter{ it[0].method_differential == 'limma' },
         inputs.samples_and_matrix.filter{ it[0].method_differential == 'limma' }
     )
+
+    ch_versions = ch_versions.mix(LIMMA_DIFFERENTIAL.out.versions.first())
 
     // ----------------------------------------------------
     // Run DESeq2
@@ -98,12 +107,16 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         ch_transcript_lengths.first()
     )
 
+    ch_versions = ch_versions.mix(DESEQ2_NORM.out.versions.first())
+
     DESEQ2_DIFFERENTIAL(
         inputs.contrasts_for_diff.filter{it[0].method_differential == 'deseq2'},
         inputs.samples_and_matrix.filter{it[0].method_differential == 'deseq2'},
         ch_control_features.first(),
         ch_transcript_lengths.first()
     )
+
+    ch_versions = ch_versions.mix(DESEQ2_DIFFERENTIAL.out.versions.first())
 
     // ----------------------------------------------------
     // Run propd
@@ -117,6 +130,25 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         inputs.samples_and_matrix.filter { it[0].method_differential == 'propd' }
     )
 
+    ch_versions = ch_versions.mix(PROPR_PROPD.out.versions.first())
+
+    // ----------------------------------------------------
+    // Run DREAM
+    // ----------------------------------------------------
+
+    // DREAM only runs with formula
+    dream_inputs = inputs.contrasts_for_diff_with_formula
+        .filter { meta, variable, reference, target, formula ->
+            meta.method_differential == 'dream' && formula != null
+        }
+
+    VARIANCEPARTITION_DREAM(
+        dream_inputs,
+        inputs.samples_and_matrix.filter{ it[0].method_differential == 'dream' }
+    )
+
+    ch_versions = ch_versions.mix( VARIANCEPARTITION_DREAM.out.versions.first() )
+
     // ----------------------------------------------------
     // Collect results
     // ----------------------------------------------------
@@ -124,20 +156,18 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     ch_results = DESEQ2_DIFFERENTIAL.out.results
         .mix(LIMMA_DIFFERENTIAL.out.results)
         .mix(PROPR_PROPD.out.results_genewise)
+        .mix(VARIANCEPARTITION_DREAM.out.results)
 
     ch_normalised_matrix = DESEQ2_NORM.out.normalised_counts
         .mix(LIMMA_NORM.out.normalised_counts)
 
     ch_model = DESEQ2_DIFFERENTIAL.out.model
         .mix(LIMMA_DIFFERENTIAL.out.model)
+        .mix(VARIANCEPARTITION_DREAM.out.model)
 
     ch_variance_stabilised_matrix = DESEQ2_NORM.out.rlog_counts
         .mix(DESEQ2_NORM.out.vst_counts)
         .groupTuple()
-
-    ch_versions = DESEQ2_DIFFERENTIAL.out.versions
-        .mix(LIMMA_DIFFERENTIAL.out.versions)
-        .mix(PROPR_PROPD.out.versions)
 
     // ----------------------------------------------------
     // Filter DE results
@@ -158,6 +188,10 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
                 'propd' : [
                     fc_column: 'lfc', fc_cardinality: '>=',
                     stat_column: 'weighted_connectivity', stat_cardinality: '>='
+                ],
+                'dream' : [
+                    fc_column: 'logFC', fc_cardinality: '>=',
+                    stat_column: 'adj.P.Val', stat_cardinality: '<='
                 ]
             ]
             filter_input: [meta + filter_meta, results]
@@ -179,6 +213,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         ch_diff_filter_params.fc_input,
         ch_diff_filter_params.stat_input
     )
+    ch_versions = ch_versions.mix(CUSTOM_FILTERDIFFERENTIALTABLE.out.versions.first())
 
     emit:
     // main results

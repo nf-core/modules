@@ -41,4 +41,16 @@ process AUTHENTICT_DEAM2CONT {
         samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
+
+    stub :
+    prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${prefix}.txt
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        authentict: \$(echo \$(AuthentiCT --version 2>&1) )
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+    END_VERSIONS
+    """
 }
