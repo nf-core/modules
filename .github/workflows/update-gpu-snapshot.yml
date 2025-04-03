@@ -85,7 +85,7 @@ jobs:
           --ci \
           --update-snapshot \
           --filter process,workflow \
-          --tags gpu \
+          --tag gpu \
           ${{ steps.get-test-path.outputs.test_path }}
 
       - name: Commit & push changes
