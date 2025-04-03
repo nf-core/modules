@@ -52,11 +52,12 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                                process.out.vcf.collect { file(it[1]).getName() },
-                                process.out.tbi.collect { file(it[1]).getName() },
-                                process.out.versions,
-                                process.out.phased_vcf.collect { file(it[1]).getName() },
-                                process.out.phased_tbi.collect { file(it[1]).getName() }).match()}
+                    process.out.vcf.collect { file(it[1]).getName() },
+                    process.out.tbi.collect { file(it[1]).getName() },
+                    process.out.versions,
+                    process.out.phased_vcf.collect { file(it[1]).getName() },
+                    process.out.phased_tbi.collect { file(it[1]).getName() })
+                    .match()}
             )
         }
 
@@ -91,11 +92,12 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                                process.out.vcf.collect { file(it[1]).getName() },
-                                process.out.tbi.collect { file(it[1]).getName() },
-                                process.out.versions,
-                                process.out.phased_vcf.collect { file(it[1]).getName() },
-                                process.out.phased_tbi.collect { file(it[1]).getName() }).match()}
+                    process.out.vcf.collect { file(it[1]).getName() },
+                    process.out.tbi.collect { file(it[1]).getName() },
+                    process.out.versions,
+                    process.out.phased_vcf.collect { file(it[1]).getName() },
+                    process.out.phased_tbi.collect { file(it[1]).getName() })
+                    .match()}
             )
         }
 
@@ -130,11 +132,12 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                                process.out.vcf.collect { file(it[1]).getName() },
-                                process.out.tbi.collect { file(it[1]).getName() },
-                                process.out.versions,
-                                process.out.phased_vcf.collect { file(it[1]).getName() },
-                                process.out.phased_tbi.collect { file(it[1]).getName() }).match()}
+                        process.out.vcf.collect { file(it[1]).getName() },
+                        process.out.tbi.collect { file(it[1]).getName() },
+                        process.out.versions,
+                        process.out.phased_vcf.collect { file(it[1]).getName() },
+                        process.out.phased_tbi.collect { file(it[1]).getName() })
+                        .match()}
             )
         }
 
@@ -173,12 +176,12 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                                process.out.vcf,
-                                process.out.tbi,
-                                process.out.phased_vcf,
-                                process.out.phased_tbi,
-                                process.out.versions,
-                                ).match()}
+                        process.out.vcf,
+                        process.out.tbi,
+                        process.out.phased_vcf,
+                        process.out.phased_tbi,
+                        process.out.versions)
+                        .match()}
             )
         }
 
