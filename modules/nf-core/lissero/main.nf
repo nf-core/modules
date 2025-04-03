@@ -31,4 +31,15 @@ process LISSERO {
         lissero: \$( echo \$(lissero --version 2>&1) | sed 's/^.*LisSero //' )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        lissero: \$( echo \$(lissero --version 2>&1) | sed 's/^.*LisSero //' )
+    END_VERSIONS
+    """
 }

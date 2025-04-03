@@ -38,9 +38,9 @@ process BEDTOOLS_SPLIT {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    create_beds = (1..count).collect {
-        number = "0".multiply(4 - it.toString().size()) + "${it}"
-        "    touch ${prefix}.${number}.bed"
+    def create_beds = (1..count).collect { number ->
+        def numberString = "0".multiply(4 - number.toString().size()) + "${number}"
+        "    touch ${prefix}.${numberString}.bed"
     }.join("\n")
 
     """

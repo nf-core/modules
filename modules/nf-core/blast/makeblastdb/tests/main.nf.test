@@ -12,12 +12,9 @@ nextflow_process {
     test("Should build a blast db folder from a fasta file") {
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
-                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
                 """
             }
         }
@@ -25,25 +22,28 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.db
-                    with(process.out.db) {
-                        assert size() == 1
-                        with(get(0).get(1)) {
-                            File folder = new File(get(0).get(1))
-                            File[] listOfFiles = folder.listFiles()
-                            listOfFiles = listOfFiles.sort { it.name }
-                            assert listOfFiles.length == 9
-                            assert snapshot("${get(0).get(1)}/${listOfFiles[0].name}").match("genome.fasta")
-                            assert snapshot("${get(0).get(1)}/${listOfFiles[1].name}").match("genome.fasta.ndb")
-                            assert snapshot("${get(0).get(1)}/${listOfFiles[2].name}").match("genome.fasta.nhr")
-                            assert snapshot("${get(0).get(1)}/${listOfFiles[5].name}").match("genome.fasta.not")
-                            assert snapshot("${get(0).get(1)}/${listOfFiles[6].name}").match("genome.fasta.nsq")
-                            assert snapshot("${get(0).get(1)}/${listOfFiles[7].name}").match("genome.fasta.ntf")
-                            assert snapshot("${get(0).get(1)}/${listOfFiles[8].name}").match("genome.fasta.nto")
-                        }
-                    }
-                },
-                { assert process.out.versions }
+                {
+                    assert process.out.db.size() == 1
+
+                    def all_files = ( new File(process.out.db[0][1]) ).listFiles()
+                    def stable_file_names = [
+                        'genome.fasta',
+                        'genome.fasta.ndb',
+                        'genome.fasta.nhr',
+                        'genome.fasta.not',
+                        'genome.fasta.nsq',
+                        'genome.fasta.ntf',
+                        'genome.fasta.nto'
+                    ]
+
+                    def stable_files = all_files.findAll { it.name in stable_file_names }.toSorted()
+
+                    assert snapshot(
+                        all_files.collect { it.name }.toSorted(),
+                        stable_files,
+                        process.out.versions[0]
+                    ).match()
+                }
             )
         }
 
@@ -52,12 +52,9 @@ nextflow_process {
     test("Should build a blast db folder from a zipped fasta file") {
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
-                input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['genome_fasta_gz'], checkIfExists: true) ]
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true) ]
                 """
             }
         }
@@ -65,25 +62,28 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.db
-                    with(process.out.db) {
-                        assert size() == 1
-                        with(get(0).get(1)) {
-                            File folder = new File(get(0).get(1))
-                            File[] listOfFiles = folder.listFiles()
-                            listOfFiles = listOfFiles.sort { it.name }
-                            assert listOfFiles.length == 10
-                            assert snapshot("${get(0).get(1)}/${listOfFiles[0].name}").match("gz_genome.fasta")
-                            assert snapshot("${get(0).get(1)}/${listOfFiles[2].name}").match("gz_genome.fasta.ndb")
-                            assert snapshot("${get(0).get(1)}/${listOfFiles[3].name}").match("gz_genome.fasta.nhr")
-                            assert snapshot("${get(0).get(1)}/${listOfFiles[6].name}").match("gz_genome.fasta.not")
-                            assert snapshot("${get(0).get(1)}/${listOfFiles[7].name}").match("gz_genome.fasta.nsq")
-                            assert snapshot("${get(0).get(1)}/${listOfFiles[8].name}").match("gz_genome.fasta.ntf")
-                            assert snapshot("${get(0).get(1)}/${listOfFiles[9].name}").match("gz_genome.fasta.nto")
-                        }
-                    }
-                },
-                { assert process.out.versions }
+                {
+                    assert process.out.db.size() == 1
+
+                    def all_files = ( new File(process.out.db[0][1]) ).listFiles()
+                    def stable_file_names = [
+                        'genome.fasta',
+                        'genome.fasta.ndb',
+                        'genome.fasta.nhr',
+                        'genome.fasta.not',
+                        'genome.fasta.nsq',
+                        'genome.fasta.ntf',
+                        'genome.fasta.nto'
+                    ]
+
+                    def stable_files = all_files.findAll { it.name in stable_file_names }.toSorted()
+
+                    assert snapshot(
+                        all_files.collect { it.name }.toSorted(),
+                        stable_files,
+                        process.out.versions[0]
+                    ).match()
+                }
             )
         }
 

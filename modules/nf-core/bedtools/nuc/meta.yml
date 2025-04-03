@@ -1,0 +1,57 @@
+name: bedtools_nuc
+description: Profiles the nucleotide content of intervals in a fasta file.
+keywords:
+  - bed
+  - nucBed
+  - bedtools
+  - GC content
+  - AT content
+  - nucleotide content
+  - intervals
+tools:
+  - bedtools:
+      description: A set of tools for genomic analysis tasks, specifically enabling
+        genome arithmetic (merge, count, complement) on various file types.
+      homepage: https://bedtools.readthedocs.io
+      documentation: https://bedtools.readthedocs.io/en/latest/content/tools/nuc.html
+      doi: "10.1093/bioinformatics/btq033"
+      licence: ["MIT"]
+      identifier: biotools:bedtools
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Genome reference
+        pattern: "*.{fa,fasta}"
+    - intervals:
+        type: file
+        description: BED/GFF/VCF file of ranges to extract from -fi
+        pattern: "*.{bed,gff,vcf}"
+output:
+  - bed:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bed":
+          type: file
+          description: "The following information will be reported after each BED entry: %AT content, %GC content,
+            Number of As observed, Number of Cs observed, Number of Gs observed, Number of Ts observed,
+            Number of Ns observed, Number of other bases observed, The length of the explored sequence/interval,
+            The seq. extracted from the FASTA file. (opt., if -seq is used),
+            The number of times a user's pattern was observed. (opt., if -pattern is used.)"
+          pattern: "*.bed"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@lmfaber"
+maintainers:
+  - "@lmfaber"

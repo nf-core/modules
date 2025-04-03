@@ -1,0 +1,57 @@
+
+nextflow_process {
+
+    name "Test Process UPD"
+    script "../main.nf"
+    process "UPD"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "upd"
+
+    test("test-upd") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky_minimal.vcf.gz', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-upd-stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky_minimal.vcf.gz', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

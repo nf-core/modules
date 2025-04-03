@@ -16,9 +16,9 @@ nextflow_process {
             process {
                 """
                 input[0] =  [
-                                [ id:'test' ],
-                                file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                            ]
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -26,11 +26,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() },
-                { assert snapshot(
-                            file(process.out.fastx[0][1]).name
-                                ).match("seq_fa")
-                }
+                { assert snapshot(process.out).match() }
             )
         }
 
@@ -42,9 +38,9 @@ nextflow_process {
             process {
                 """
                 input[0] =  [
-                                [ id:'test' ],
-                                file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
-                            ]
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -52,11 +48,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() },
-                { assert snapshot(
-                            file(process.out.fastx[0][1]).name
-                                ).match("seq_fq")
-                }
+                { assert snapshot(process.out).match() }
             )
         }
 
@@ -69,9 +61,9 @@ nextflow_process {
             process {
                 """
                 input[0] =  [
-                                [ id:'test' ],
-                                file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                            ]
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
                 """
             }
         }

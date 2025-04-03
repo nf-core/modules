@@ -1,89 +1,150 @@
 name: "pindel_pindel"
-description: Pindel can detect breakpoints of large deletions, medium sized insertions, inversions, tandem duplications and other structural variants at single-based resolution from next-gen sequence data
+description: Pindel can detect breakpoints of large deletions, medium sized insertions,
+  inversions, tandem duplications and other structural variants at single-based resolution
+  from next-gen sequence data
 keywords:
   - deletions
   - insertions
   - tandem duplications
 tools:
   - "pindel":
-      description: "Pindel can detect breakpoints of large deletions, medium sized insertions, inversions, tandem duplications and other structural variants at single-based resolution from next-gen sequence data"
+      description: "Pindel can detect breakpoints of large deletions, medium sized insertions,
+        inversions, tandem duplications and other structural variants at single-based
+        resolution from next-gen sequence data"
       homepage: "https://gmt.genome.wustl.edu/packages/pindel/"
       documentation: https://gmt.genome.wustl.edu/packages/pindel/user-manual.html
-      licence: "['GPL v3']"
+      licence: ["GPL v3"]
+      identifier: biotools:pindel
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information, insert_size is either determined using Picard/CollectInsertSizeMetrics
-        or a sensible default - setting ext.args2 to either in modules.conf
-        e.g. [ id:'test', single_end:false, insert_size:500 ]
-  - bam:
-      type: file
-      description: BAM file
-      pattern: "*.bam"
-  - bai:
-      type: file
-      description: BAM index file
-      pattern: "*.bai"
-  - bed:
-      type: file
-      description: BED file containing regions of interest
-  - fasta:
-      type: file
-      description: Input reference genome fasta file
-  - fai:
-      type: file
-      description: Input reference genome fasta index file
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information, insert_size is either determined using Picard/CollectInsertSizeMetrics
+          or a sensible default - setting ext.args2 to either in modules.conf
+          e.g. [ id:'test', single_end:false, insert_size:500 ]
+    - bam:
+        type: file
+        description: BAM file
+        pattern: "*.bam"
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.bai"
+  - - fasta:
+        type: file
+        description: Input reference genome fasta file
+  - - fai:
+        type: file
+        description: Input reference genome fasta index file
+  - - bed:
+        type: file
+        description: BED file containing regions of interest
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - bp:
-      type: file
-      description: File containing breakpoints
-      pattern: "*_{BP}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_BP":
+          type: file
+          description: File containing breakpoints
+          pattern: "*_{BP}"
   - cem:
-      type: file
-      description: File containing close end reads
-      pattern: "*_{CloseEndMapped}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_CloseEndMapped":
+          type: file
+          description: File containing close end reads
+          pattern: "*_{CloseEndMapped}"
   - del:
-      type: file
-      description: File containing deletions
-      pattern: "*_{D}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_D":
+          type: file
+          description: File containing deletions
+          pattern: "*_{D}"
   - dd:
-      type: file
-      description: File containing dispersed duplications
-      pattern: "*_{DD}"
-  - int_{final:
-      type: file
-      description: File containing interchromosomal events
-      pattern: "*_{INT_final}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_DD":
+          type: file
+          description: File containing dispersed duplications
+          pattern: "*_{DD}"
+  - int_final:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_INT_final":
+          type: file
+          description: int file
+          pattern: "*_INT_final"
   - inv:
-      type: file
-      description: File containing inversions
-      pattern: "*_{INV}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_INV":
+          type: file
+          description: File containing inversions
+          pattern: "*_{INV}"
   - li:
-      type: file
-      description: File containing long insertions
-      pattern: "*_{LI}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_LI":
+          type: file
+          description: File containing long insertions
+          pattern: "*_{LI}"
   - rp:
-      type: file
-      description: File containing read-pair evidence
-      pattern: "*_{RP}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_RP":
+          type: file
+          description: File containing read-pair evidence
+          pattern: "*_{RP}"
   - si:
-      type: file
-      description: File containing short insertions
-      pattern: "*_{SI}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_SI":
+          type: file
+          description: File containing short insertions
+          pattern: "*_{SI}"
   - td:
-      type: file
-      description: File containing tandem duplications
-      pattern: "*_{TD}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_TD":
+          type: file
+          description: File containing tandem duplications
+          pattern: "*_{TD}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@marrip"
 maintainers:

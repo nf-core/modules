@@ -96,6 +96,72 @@ set_reference <- function(ivar, mat){
     return(ivar)
 }
 
+#' Set the appropriate range for the sequence of cutoffs used in updateCutoffs.
+#' Adjusts the interval to the different metrics.
+#'
+#' @param object propr object. Output from propr function.
+#'
+#' @return sequence of cutoff values.
+seqCutoff <- function(object){
+    matrix <- getMatrix(object)
+    matrix[matrix <= 0] <- NA
+    diag(matrix) <- NA
+    min_cutoff <- round(min(matrix, na.rm = TRUE),3)
+    max_cutoff <- round(max(matrix, na.rm = TRUE),3)
+    step_cutoff <- (max_cutoff - min_cutoff)/ 20
+    seq_cutoff <- seq(min_cutoff, max_cutoff, step_cutoff)
+    return(seq_cutoff)
+}
+
+#' Extract the proportionality cutoff for a specified FDR value.
+#' Gene pairs with a proportionality value higher than the extracted cutoff will be considered significantly proportional.
+#'
+#' @param object propr object. Output from propr function. updateCutoffs function should be applied to the object previous to valCutoff.
+#' @param fdrVal FDR value to extract the cutoff for. Per default 0.05
+#' @param metric Metric used to calculate the proportionality values. Options are 'cor', 'rho', 'phi', 'phs', 'vlr', 'pcor', 'pcor.shrink', 'pcor.bshrink'
+#'
+#' @return cutoff value. Proportionality values higher than this cutoff are considered significant.
+valCutoff  <- function(object, metric, fdrVal = 0.05){
+    fdr_df <- object@fdr
+    print(fdr_df)
+    # metric_up <- c("rho", "cor", "pcor", "pcor.shrink", "pcor.bshrink")
+
+    if (prod(dim(fdr_df) == 0)){
+        warning("Please run updateCutoff on propr first")
+    }else{
+        fdr_vals <- fdr_df\$FDR
+        if(any(!is.na(fdr_vals))){ # if there is some defined value, continue, else out of range
+            if(any(fdr_vals <= fdrVal)){ # if there is some value that is belowe the FDR threshold,
+                fdr_threshold <- fdr_vals[which.max(fdr_vals <= fdrVal)] #choose the highest FDR that is lower than the threshold, else choose the lowest
+            }else{
+                warning("FDR is higher than the specified threshold for all proportionality values. Using the lowest fdr instead")
+                fdr_threshold <- min(fdr_vals, na.rm = TRUE)
+            }
+            cutoff <- fdr_df\$cutoff[which(fdr_df\$FDR == fdr_threshold)] #select the corresponding cutoff value for the FDR
+            print(cutoff)
+        }else{
+            stop("FDR not defined. This metric is not appropriate for the given dataset")
+        }
+    return(cutoff)
+    }
+}
+
+
+#' Convert a proportionality matrix to an adjacency matrix based on a threshold.
+#'
+#' @param matrix proportionality matrix. Can be extracted from propr object with getMatrix().
+#' @param cutoff Significant proportionality value extracted from valCutoff function.
+#'
+#' @return Adjacency matrix. Gene pairs with a proportionality value higher than the threshold will have 1, otherwise 0.
+convert_to_adjacency <- function(matrix, cutoff, metric) {
+    if (metric == 'cor' || metric == 'rho' || metric == 'pcor' || metric == 'pcor.shrink' || metric == 'pcor.bshrink'){
+        adjacency <- ifelse(matrix > cutoff, 1, 0)
+    } else {
+        adjacency <- ifelse(matrix < cutoff, 1, 0)
+    }
+    return(adjacency)
+}
+
 ################################################
 ################################################
 ## Parse arguments                            ##
@@ -115,7 +181,9 @@ opt <- list(
     cutoff_interval  = NA,
     ncores           = as.integer('$task.cpus'),
     features_id_col  = 'gene_id',
-    fixseed          = FALSE
+    fixseed          = FALSE,
+    adjacency        = FALSE,
+    fdrVal           = 0.05
 )
 opt_types <- list(
     count            = 'character',
@@ -130,11 +198,14 @@ opt_types <- list(
     cutoff_interval  = 'numeric',
     ncores           = 'numeric',
     features_id_col  = 'character',
-    fixseed          = 'logical'
+    fixseed          = 'logical',
+    adjacency        = 'logical',
+    fdrVal           = 'numeric'
 )
 
 # Apply parameter overrides
 args_opt <- parse_args('$task.ext.args')
+
 for ( ao in names(args_opt)){
     if (! ao %in% names(opt)){
         stop(paste("Invalid option:", ao))
@@ -208,7 +279,7 @@ mat <- t(mat)
 # check zeros
 # log transformation should be applied on non-zero data
 # otherwise Inf values are generated
-if (any(mat == 0)) print("Warning: Zeros will be replaced by minimun value before logratio analysis")
+if (any(mat == 0)) print("Warning: Zeros will be replaced by minimum value before logratio analysis")
 
 # set logratio transformation parameter -> ivar
 # if alr, set the index of the reference gene as ivar
@@ -235,13 +306,34 @@ pro <- propr(
 )
 
 # update FDR by permutation, if required
+
 if (opt\$permutation > 0) {
     cutoff <- seq(
         opt\$cutoff_min,
         opt\$cutoff_max,
         opt\$cutoff_interval
         )
+    if (is.na(opt\$cutoff_min) ||  is.na(opt\$cutoff_max) || is.na(opt\$cutoff_interval)) {
+        warning("cutoff values were not provided. Using the default cutoff values.")
+        cutoff <- seqCutoff(pro)
+    }
+    m <- getMatrix(pro)
+    diag(m) <- NA
+    print((opt\$cutoff_max - opt\$cutoff_min)/2 + opt\$cutoff_min)
+    print(max(m, na.rm = TRUE))
+    if ((opt\$cutoff_max - opt\$cutoff_min)/2 + opt\$cutoff_min > max(m, na.rm = TRUE)) {
+        warning("The provided cutoff values are out of range. Using the default cutoff values.")
+        cutoff <- seqCutoff(pro)
+    }
     pro <- updateCutoffs(pro, cutoff=cutoff, ncores=opt\$ncores)
+}
+
+# calculate cutoff and adjacency matrix, if required
+
+if (opt\$adjacency == TRUE) {
+    cutoff <- valCutoff(pro, opt\$metric, opt\$fdrVal)
+    matrix <- getMatrix(pro)
+    adj <- convert_to_adjacency(matrix, cutoff, opt\$metric)
 }
 
 ################################################
@@ -275,6 +367,27 @@ if (opt\$permutation > 0) {
     )
 }
 
+if (opt\$adjacency == TRUE) {
+    write.table(
+        adj,
+        file      = paste0(opt\$prefix, '.adj.csv'),
+        col.names = TRUE,
+        row.names = TRUE,
+        sep       = ',',
+        quote     = FALSE
+    )
+}
+
+################################################
+################################################
+## WARNINGS                                   ##
+################################################
+################################################
+
+sink(paste0(opt\$prefix, ".warnings.log"))
+print(warnings())
+sink()
+
 ################################################
 ################################################
 ## R SESSION INFO                             ##
@@ -291,13 +404,11 @@ sink()
 ################################################
 ################################################
 
-r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
 propr.version <- as.character(packageVersion('propr'))
 
 writeLines(
     c(
         '"${task.process}":',
-        paste('    r-base:', r.version),
         paste('    r-propr:', propr.version)
     ),
 'versions.yml')

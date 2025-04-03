@@ -1,5 +1,6 @@
 name: gtdbtk_classifywf
-description: GTDB-Tk is a software toolkit for assigning objective taxonomic classifications to bacterial and archaeal genomes based on the Genome Database Taxonomy GTDB.
+description: GTDB-Tk is a software toolkit for assigning objective taxonomic classifications
+  to bacterial and archaeal genomes based on the Genome Database Taxonomy GTDB.
 keywords:
   - GTDB taxonomy
   - taxonomic classification
@@ -10,76 +11,135 @@ keywords:
   - archaea
 tools:
   - gtdbtk:
-      description: GTDB-Tk is a software toolkit for assigning objective taxonomic classifications to bacterial and archaeal genomes based on the Genome Database Taxonomy GTDB.
+      description: GTDB-Tk is a software toolkit for assigning objective taxonomic classifications
+        to bacterial and archaeal genomes based on the Genome Database Taxonomy GTDB.
       homepage: https://ecogenomics.github.io/GTDBTk/
       documentation: https://ecogenomics.github.io/GTDBTk/
       tool_dev_url: https://github.com/Ecogenomics/GTDBTk
       doi: "10.1093/bioinformatics/btz848"
       licence: ["GNU General Public v3 (GPL v3)"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false,  assembler:'spades' ]
-  - bins:
-      type: file
-      description: The binned fasta files from the assembler
-      pattern: "*.{fasta,fa}"
-  - database:
-      type: file
-      description: The local copy of the taxonomic database used by GTDB-tk (unzipped copy)
-      pattern: "*"
-  - mash_db:
-      type: file
-      description: The local copy of the Mash sketch database used by GTDB-tk if `ani_screen` mode is used (optional)
-      pattern: "*.msh"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false,  assembler:'spades' ]
+    - '"bins/*"':
+        type: file
+        description: bins
+  - - db_name:
+        type: string
+        description: The name of the GTDB database to use.
+    - '"database/*"':
+        type: file
+        description: GTDB database
+  - - use_pplacer_scratch_dir:
+        type: boolean
+        description: Set to true to reduce pplacer memory usage by writing to disk (slower)
+  - - mash_db:
+        type: file
+        description: The local copy of the Mash sketch database used by GTDB-tk if `ani_screen`
+          mode is used (optional)
+        pattern: "*.msh"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - summary:
-      type: file
-      description: A TSV summary file for the classification
-      pattern: "*.{summary.tsv}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - gtdbtk.${prefix}.*.summary.tsv:
+          type: file
+          description: A TSV summary file for the classification
+          pattern: "*.{summary.tsv}"
   - tree:
-      type: file
-      description: NJ or UPGMA tree in Newick format produced from a multiple sequence alignment
-      pattern: "*.{classify.tree.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - gtdbtk.${prefix}.*.classify.tree.gz:
+          type: file
+          description: NJ or UPGMA tree in Newick format produced from a multiple sequence
+            alignment
+          pattern: "*.{classify.tree.gz}"
   - markers:
-      type: file
-      description: A TSV summary file lineage markers used for the classification.
-      pattern: "*.{markers_summary.tsv}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - gtdbtk.${prefix}.*.markers_summary.tsv:
+          type: file
+          description: A TSV summary file lineage markers used for the classification.
+          pattern: "*.{markers_summary.tsv}"
   - msa:
-      type: file
-      description: Multiple sequence alignments file.
-      pattern: "*.{msa.fasta.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - gtdbtk.${prefix}.*.msa.fasta.gz:
+          type: file
+          description: Multiple sequence alignments file.
+          pattern: "*.{msa.fasta.gz}"
   - user_msa:
-      type: file
-      description: Multiple sequence alignments file for the user-provided files.
-      pattern: "*.{user_msa.fasta.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - gtdbtk.${prefix}.*.user_msa.fasta.gz:
+          type: file
+          description: Multiple sequence alignments file for the user-provided files.
+          pattern: "*.{user_msa.fasta.gz}"
   - filtered:
-      type: file
-      description: A list of genomes with an insufficient number of amino acids in MSA..
-      pattern: "*.{filtered.tsv}"
-  - log:
-      type: file
-      description: GTDB-tk log file
-      pattern: "*.{log}"
-  - warnings:
-      type: file
-      description: GTDB-tk warnings log file
-      pattern: "*.{warnings.log}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - gtdbtk.${prefix}.*.filtered.tsv:
+          type: file
+          description: A list of genomes with an insufficient number of amino acids in
+            MSA..
+          pattern: "*.{filtered.tsv}"
   - failed:
-      type: file
-      description: A TSV summary of the genomes which GTDB-tk failed to classify.
-      pattern: "*.{failed_genomes.tsv}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - gtdbtk.${prefix}.failed_genomes.tsv:
+          type: file
+          description: A TSV summary of the genomes which GTDB-tk failed to classify.
+          pattern: "*.{failed_genomes.tsv}"
+  - log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - gtdbtk.${prefix}.log:
+          type: file
+          description: GTDB-tk log file
+          pattern: "*.{log}"
+  - warnings:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - gtdbtk.${prefix}.warnings.log:
+          type: file
+          description: GTDB-tk warnings log file
+          pattern: "*.{warnings.log}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@skrakau"
   - "@abhi18av"

@@ -1,0 +1,58 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "ampcombi2_cluster"
+description: A submodule that clusters the merged AMP hits generated from ampcombi2/parsetables
+  and ampcombi2/complete using MMseqs2 cluster.
+keywords:
+  - antimicrobial peptides
+  - amps
+  - parsing
+  - reporting
+  - align
+  - clustering
+  - mmseqs2
+tools:
+  - ampcombi2/cluster:
+      description: "A tool for clustering all AMP hits found across many samples and
+        supporting many AMP prediction tools."
+      homepage: "https://github.com/Darcy220606/AMPcombi"
+      documentation: "https://github.com/Darcy220606/AMPcombi"
+      tool_dev_url: "https://github.com/Darcy220606/AMPcombi/tree/dev"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - summary_file:
+        type: file
+        description: A file corresponding to the Ampcombi_summary.tsv that is generated
+          by running 'ampcombi complete'. It is a file containing all the merged AMP
+          results from all samples and all tools.
+        pattern: "*.tsv"
+output:
+  - cluster_tsv:
+      - Ampcombi_summary_cluster.tsv:
+          type: file
+          description: A file containing all the results from the merged input table 'Ampcombi_summary.tsv',
+            but also including the cluster id number. The clustering is done using MMseqs2
+            cluster.
+          pattern: "*.tsv"
+  - rep_cluster_tsv:
+      - Ampcombi_summary_cluster_representative_seq.tsv:
+          type: file
+          description: A file containing the representative sequences of the clusters
+            estimated by the tool. The clustering is done using MMseqs2 cluster.
+          pattern: "*.tsv"
+  - log:
+      - Ampcombi_cluster.log:
+          type: file
+          description: A log file that captures the standard output for the entire process
+            in a log file. Can be activated by `--log`.
+          pattern: "*.log"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@darcy220606"
+maintainers:
+  - "@darcy220606"

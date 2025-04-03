@@ -15,15 +15,18 @@ tools:
       tool_dev_url: https://github.com/oschwengers/bakta
       doi: "10.1099/mgen.0.000685"
       licence: ["GPL v3"]
+      identifier: biotools:bakta
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - db:
-      type: directory
-      description: BAKTA database directory
-      pattern: "db*/"
+      - db*:
+          type: directory
+          description: BAKTA database directory
+          pattern: "db*/"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jfy133"
   - "@jasmezz"

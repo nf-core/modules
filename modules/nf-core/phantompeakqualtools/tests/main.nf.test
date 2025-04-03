@@ -1,0 +1,90 @@
+// nf-core modules test phantompeakqualtools
+nextflow_process {
+
+    name "Test Process PHANTOMPEAKQUALTOOLS"
+    script "../main.nf"
+    process "PHANTOMPEAKQUALTOOLS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "phantompeakqualtools"
+
+    test("sarscov2 - bam - single_end") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.spp,
+                                  file(process.out.pdf.get(0).get(1)).name,
+                                  file(process.out.rdata.get(0).get(1)).name,
+                                  process.out.versions)
+                                  .match()
+                }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - paired_end") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.spp,
+                                  file(process.out.pdf.get(0).get(1)).name,
+                                  file(process.out.rdata.get(0).get(1)).name,
+                                  process.out.versions)
+                                  .match()
+                }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

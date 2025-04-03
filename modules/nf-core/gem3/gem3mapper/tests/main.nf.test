@@ -1,0 +1,110 @@
+nextflow_process {
+
+    name "Test Process GEM3_GEM3MAPPER"
+    script "../main.nf"
+    process "GEM3_GEM3MAPPER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gem3"
+    tag "gem3/gem3mapper"
+    tag "gem3/gem3indexer"
+
+    setup {
+        run("GEM3_GEM3INDEXER") {
+            script "../../gem3indexer/main.nf"
+            process {
+                """
+                input[0] = [ [:], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - fastq, index, false") {
+
+        when {
+            process {
+                """
+                input[0] = GEM3_GEM3INDEXER.out.index
+                input[1] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.bam[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fastq, index, true") {
+
+        when {
+            process {
+                """
+                input[0] = GEM3_GEM3INDEXER.out.index
+                input[1] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+
+                input[2] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.bam[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - [fastq1, fastq2], index, false") {
+
+        when {
+            process {
+                """
+                input[0] = GEM3_GEM3INDEXER.out.index
+                input[1] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+
+                input[2] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.bam[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+}

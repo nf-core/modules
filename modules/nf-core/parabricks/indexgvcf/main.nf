@@ -1,23 +1,17 @@
 process PARABRICKS_INDEXGVCF {
     tag "$meta.id"
     label 'process_high'
+    label 'process_gpu'
+    stageInMode 'copy' // needed by the module to work properly - might be removed when this is fixed upstream
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.2.0-1"
-
-    /*
-    NOTE: Parabricks requires the files to be non-symlinked
-    Do not change the stageInMode to soft linked! This is default on Nextflow.
-    If you change this setting be careful.
-    */
-    stageInMode "copy"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.4.0-1"
 
     input:
-    tuple val(meta), path(gvcf, stageAs:'')
+    tuple val(meta), path(gvcf)
 
     output:
-    // This tool outputs g.vcf.idx if input is uncompressed, g.vcf.gz.tbi if input is compressed
-    tuple val(meta), path("*.g.vcf*") , emit: gvcf_index
-    path "versions.yml"               , emit: versions
+    tuple val(meta), path("*.{idx,tbi}") , emit: gvcf_index
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,12 +22,12 @@ process PARABRICKS_INDEXGVCF {
         error "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-
+    def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
     """
     pbrun \\
         indexgvcf \\
         --input $gvcf \\
+        $num_gpus \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
@@ -46,19 +40,10 @@ process PARABRICKS_INDEXGVCF {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
+    def output_cmd = gvcf.any{ it.name.endsWith(".gz") } ? "touch ${prefix}.g.vcf.gz.tbi" : "touch ${prefix}.g.vcf.idx"
     """
-    # Different outputs generated depending if file is gzipped
-    case $gvcf in
-    *.gz )
-        touch ${prefix}.g.vcf.gz.tbi
-        ;;
-    * )
-        touch ${prefix}.g.vcf.idx
-        ;;
-    esac
+    $output_cmd
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

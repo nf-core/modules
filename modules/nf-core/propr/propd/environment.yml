@@ -1,7 +1,9 @@
-name: propr_propd
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
-  - defaults
+
 dependencies:
-  - conda-forge::r-propr=4.2.6
+  - bioconda::bioconductor-limma=3.58.1
+  - conda-forge::r-propr=5.1.6

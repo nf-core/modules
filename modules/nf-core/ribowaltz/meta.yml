@@ -1,0 +1,154 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "ribowaltz"
+description: Calculation of optimal P-site offsets, diagnostic analysis and visual
+  inspection of ribosome profiling data
+keywords:
+  - sort
+  - example
+  - genomics
+tools:
+  - "ribowaltz":
+      description: "Calculation of optimal P-site offsets, diagnostic analysis and visual
+        inspection of ribosome profiling data."
+      homepage: "https://github.com/LabTranslationalArchitectomics/riboWaltz"
+      documentation: "https://github.com/LabTranslationalArchitectomics/riboWaltz"
+      tool_dev_url: "https://github.com/LabTranslationalArchitectomics/riboWaltz"
+      doi: "10.1371/journal.pcbi.1006169"
+      licence: ["MIT"]
+      identifier: biotools:ribowaltz
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: Transcriptome BAM file
+        pattern: "*.{bam}"
+  - - meta2:
+        type: map
+        description: |
+          Map containing reference information for the reference genome GTF file
+          e.g. `[ id:'Ensembl human v.111' ]`
+    - gtf:
+        type: file
+        description: GTF file of reference genome
+        pattern: "*.{gtf.gz,gtf}"
+  - - meta3:
+        type: map
+        description: |
+          Map containing reference information for the reference genome FASTA file
+          e.g. `[ id:'Ensembl human v.111' ]`
+    - fasta:
+        type: file
+        description: FASTA file of reference genome
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+output:
+  - best_offset:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.best_offset.txt":
+          type: file
+          description: Text file with the extremity used for the offset correction step
+            and the best offset for each sample (optional, in case no offsets could be
+            determined, usually because no reads pass filtering criteria)
+          pattern: "*.best_offset.txt"
+  - offset:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.psite_offset.tsv{,.gz}":
+          type: file
+          description: TSV file containing P-site offsets for each read length (optional,
+            in case no offsets could be determined, usually because no reads pass filtering
+            criteria)
+          pattern: "*.psite_offset.tsv.gz"
+  - offset_plot:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - offset_plot/*:
+          type: file
+          description: P-site offset plots for each read length (optional)
+          pattern: "offset_plot/*"
+  - psites:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.psite.tsv{,.gz}":
+          type: file
+          description: TSV file containing P-site transcriptomic coordinates and information
+            for each alignment (optional)
+          pattern: "*.psite.tsv.gz"
+  - codon_coverage_rpf:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.codon_coverage_rpf.tsv{,.gz}":
+          type: file
+          description: TSV file with codon-level RPF coverage for each transcript (optional)
+          pattern: "*.codon_coverage_rpf.tsv.gz"
+  - codon_coverage_psite:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.codon_coverage_psite.tsv{,.gz}":
+          type: file
+          description: TSV file with codon-level P-site coverage for each transcript (optional)
+          pattern: "*.codon_coverage_psite.tsv.gz"
+  - cds_coverage:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.cds_coverage_psite.tsv{,.gz}":
+          type: file
+          description: TSV file with CDS P-site in-frame counts for each transcript (optional)
+          pattern: "*.cds_coverage_psite.tsv.gz"
+  - cds_window_coverage:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*nt_coverage_psite.tsv{,.gz}":
+          type: file
+          description: TSV file with CDS P-site in-frame counts for each transcript, excluding
+            P-sites within defined distances to start and stop codons (defined by passing
+            --exclude_start and --exclude_stop with the number of nucleotides) (optional)
+          pattern: "*nt_coverage_psite.tsv.gz"
+  - ribowaltz_qc:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ribowaltz_qc/*.pdf:
+          type: file
+          description: riboWaltz diagnostic plots (optional)
+          pattern: "ribowaltz_qc/*"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@iraiosub"
+maintainers:
+  - "@iraiosub"

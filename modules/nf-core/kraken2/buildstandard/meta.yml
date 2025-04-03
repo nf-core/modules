@@ -1,0 +1,42 @@
+name: "kraken2_buildstandard"
+description: Downloads and builds Kraken2 standard database
+keywords:
+  - metagenomics
+  - db
+  - classification
+  - build
+  - kraken2
+  - standard
+  - download
+tools:
+  - kraken2:
+      description: "Kraken2 is a system for assigning taxonomic labels to short DNA
+        sequences, usually obtained through metagenomic studies."
+      homepage: https://ccb.jhu.edu/software/kraken2/
+      documentation: https://github.com/DerrickWood/kraken2/wiki/Manual
+      tool_dev_url: "https://github.com/DerrickWood/kraken2"
+      doi: 10.1186/s13059-019-1891-0
+      licence: ["MIT"]
+      args_id: "$args"
+      identifier: biotools:kraken2
+input:
+  - - cleaning:
+        type: boolean
+        description: activate or deactivate (true or false) cleaning of intermediate
+          files
+output:
+  - db:
+      - $prefix:
+          type: directory
+          description: Directory containing the Kraken2 'standard' database that can be
+            used to perform taxonomic classification
+          pattern: "*/"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@egreenberg7"
+maintainers:
+  - "@egreenberg7"

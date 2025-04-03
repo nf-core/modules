@@ -1,0 +1,122 @@
+nextflow_process {
+
+    name "Test Process METAMAPS_CLASSIFY"
+    script "../main.nf"
+    process "METAMAPS_CLASSIFY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "metamaps"
+    tag "metamaps/mapdirectly"
+    tag "metamaps/classify"
+    tag "untar"
+
+    test("sarscov2_nanopore_classify") {
+        setup {
+            run("UNTAR") {
+                config "./nextflow.config"
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/metamaps_db.tar.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+            run("METAMAPS_MAPDIRECTLY") {
+                script "../../../metamaps/mapdirectly/main.nf"
+                process {
+                    """
+                    input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                    input[1] = UNTAR.out.untar.map{ it[1] }
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                classification_folder = METAMAPS_MAPDIRECTLY.out.classification_res
+                                                            .join(METAMAPS_MAPDIRECTLY.out.meta_file)
+                                                            .join(METAMAPS_MAPDIRECTLY.out.meta_unmappedreadsLengths)
+                                                            .join(METAMAPS_MAPDIRECTLY.out.para_file)
+                input[0] = classification_folder
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+
+
+        then {
+        assertAll(
+                { assert process.success },
+                { assert snapshot ( process.out ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2_nanopore_classify - stub") {
+
+        options "-stub"
+
+        setup {
+            run("UNTAR") {
+                config "./nextflow.config"
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/metamaps_db.tar.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+            run("METAMAPS_MAPDIRECTLY") {
+                script "../../../metamaps/mapdirectly/main.nf"
+                process {
+                    """
+                    input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                    input[1] = UNTAR.out.untar.map{ it[1] }
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                classification_folder = METAMAPS_MAPDIRECTLY.out.classification_res
+                                                            .join(METAMAPS_MAPDIRECTLY.out.meta_file)
+                                                            .join(METAMAPS_MAPDIRECTLY.out.meta_unmappedreadsLengths)
+                                                            .join(METAMAPS_MAPDIRECTLY.out.para_file)
+                input[0] = classification_folder
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+
+
+        then {
+        assertAll(
+                { assert process.success },
+                { assert snapshot ( process.out ).match() }
+            )
+        }
+
+    }
+
+
+}
+
+

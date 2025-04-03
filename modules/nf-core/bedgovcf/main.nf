@@ -4,8 +4,8 @@ process BEDGOVCF {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bedgovcf:0.1.0--h9ee0642_0':
-        'biocontainers/bedgovcf:0.1.0--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/bedgovcf:0.1.1--h9ee0642_1':
+        'biocontainers/bedgovcf:0.1.1--h9ee0642_1' }"
 
     input:
     tuple val(meta), path(bed), path(config)
@@ -39,7 +39,7 @@ process BEDGOVCF {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

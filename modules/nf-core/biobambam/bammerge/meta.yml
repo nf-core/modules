@@ -3,6 +3,7 @@ description: Merge a list of sorted bam files
 keywords:
   - merge
   - bam
+  - sorted
 tools:
   - biobambam:
       description: |
@@ -11,37 +12,52 @@ tools:
       documentation: https://gitlab.com/german.tischler/biobambam2/-/blob/master/README.md
       doi: 10.1186/1751-0473-9-13
       licence: ["GPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: List containing 1 or more bam files
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: List containing 1 or more bam files
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - bam:
-      type: file
-      description: Merged BAM file
-      pattern: "*.bam"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.bam:
+          type: file
+          description: Merged BAM file
+          pattern: "*.bam"
   - bam_index:
-      type: file
-      description: BAM index file
-      pattern: "*"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bai":
+          type: file
+          description: BAM index file
+          pattern: "*"
   - checksum:
-      type: file
-      description: Checksum file
-      pattern: "*"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.md5":
+          type: file
+          description: Checksum file
+          pattern: "*"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@matthdsm"
 maintainers:

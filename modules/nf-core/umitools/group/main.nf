@@ -23,7 +23,7 @@ process UMITOOLS_GROUP {
 
     script:
     def args    = task.ext.args   ?: ''
-    prefix      = task.ext.prefix ?: "${meta.id}"
+    prefix      = task.ext.prefix ?: "${meta.id}_grouped"
     def paired  = meta.single_end ? "" : "--paired"
     output_bam  = create_bam      ? "--output-bam -S ${prefix}.bam" : ""
     group_info  = get_group_info  ? "--group-out ${prefix}.tsv"     : ""
@@ -48,11 +48,12 @@ process UMITOOLS_GROUP {
     """
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}_grouped"
+    output_bam  = create_bam ? "touch ${prefix}.bam" : ""
     """
-    touch ${prefix}.bam
     touch ${prefix}.log
     touch ${prefix}.tsv
+    $output_bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

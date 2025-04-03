@@ -15,85 +15,193 @@ tools:
       tool_dev_url: https://github.com/chhylp123/hifiasm
       doi: "10.1038/s41592-020-01056-5"
       licence: ["MIT"]
+      identifier: biotools:hifiasm
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: FASTQ file with PacBio HiFi reads
-      pattern: "*.{fastq}"
-  - paternal_kmer_dump:
-      type: file
-      description: Yak kmer dump file for paternal reads (can be used for haplotype resolution). It can have an arbitrary extension.
-  - maternal_kmer_dump:
-      type: file
-      description: Yak kmer dump file for maternal reads (can be used for haplotype resolution). It can have an arbitrary extension.
-  - use_parental_kmers:
-      type: boolean
-      description: A flag (true or false) signalling if the module should use the paternal and maternal kmer dumps.
-  - hic_read1:
-      type: file
-      description: Hi-C data Forward reads.
-  - hic_read2:
-      type: file
-      description: Hi-C data Reverse reads.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - long_reads:
+        type: file
+        description: Long reads PacBio HiFi reads or ONT reads (requires ext.arg '--ont').
+        ontologies: []
+    - ul_reads:
+        type: file
+        description: ONT long reads to use with --ul.
+        ontologies: []
+  - - meta1:
+        type: map
+        description: |
+          Groovy Map containing information about parental kmers.
+    - paternal_kmer_dump:
+        type: file
+        description: Yak kmer dump file for paternal reads (can be used for haplotype
+          resolution). It can have an arbitrary extension.
+        ontologies: []
+    - maternal_kmer_dump:
+        type: file
+        description: Yak kmer dump file for maternal reads (can be used for haplotype
+          resolution). It can have an arbitrary extension.
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing information about Hi-C reads
+    - hic_read1:
+        type: file
+        description: Hi-C data Forward reads.
+        ontologies: []
+    - hic_read2:
+        type: file
+        description: Hi-C data Reverse reads.
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing information about the input bin files
+    - bin_files:
+        type: file
+        description: bin files produced during a previous Hifiasm run
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - raw_unitigs:
-      type: file
-      description: Raw unitigs
-      pattern: "*.r_utg.gfa"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.r_utg.gfa":
+          type: file
+          description: Raw unitigs
+          pattern: "*.r_utg.gfa"
+  - bin_files:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bin":
+          type: file
+          description: |
+            Binary files containing processed data for hifiasm, including
+            error-corrected reads, read overlaps, and Hi-C alignments. Can
+            be re-used as an input for subsequent re-runs of hifiasm with new
+            inputs or modified parameters in order to save recomputation of
+            initial results, which are the most computationally-expensive
+            steps.
+          pattern: "*.bin"
   - processed_unitigs:
-      type: file
-      description: Processed unitigs
-      pattern: "*.p_utg.gfa"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.p_utg.gfa":
+          type: file
+          description: Processed unitigs
+          pattern: "*.p_utg.gfa"
   - primary_contigs:
-      type: file
-      description: Primary contigs
-      pattern: "*.asm.p_ctg.gfa"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.{p_ctg,bp.p_ctg,hic.p_ctg}.gfa:
+          type: file
+          description: Contigs representing the primary assembly
+          pattern: "${prefix}.{p_ctg,bp.p_ctg,hic.p_ctg}.gfa"
   - alternate_contigs:
-      type: file
-      description: Alternative contigs
-      pattern: "*.asm.a_ctg.gfa"
-  - paternal_contigs:
-      type: file
-      description: Paternal contigs
-      pattern: "*.hap1.p_ctg.gfa"
-  - maternal_contigs:
-      type: file
-      description: Maternal contigs
-      pattern: "*.hap2.p_ctg.gfa"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.{a_ctg,hic.a_ctg}.gfa:
+          type: file
+          description: Contigs representing the alternative assembly
+          pattern: "${prefix}.{a_ctg,hic.a_ctg}.gfa"
+  - hap1_contigs:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "${prefix}.*.hap1.p_ctg.gfa"
+      - ${prefix}.*.hap1.p_ctg.gfa:
+          type: file
+          description: |
+            Contigs for the first haplotype. How the haplotypes are represented
+            depends on the input mode; in standard HiFi-only mode, these
+            are partially-phased parental contigs. In Hi-C mode, they
+            are fully phased parental contigs, but the phasing is not maintained
+            between contigs. In trio mode, they are fully phased paternal contigs
+            all originating from a single parental haplotype.
+          pattern: "${prefix}.*.hap1.p_ctg.gfa"
+  - hap2_contigs:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "${prefix}.*.hap2.p_ctg.gfa"
+      - ${prefix}.*.hap2.p_ctg.gfa:
+          type: file
+          description: |
+            Contigs for the second haplotype. How the haplotypes are represented
+            depends on the input mode; in standard HiFi-only mode, these
+            are partially-phased parental contigs. In Hi-C mode, they
+            are fully phased parental contigs, but the phasing is not maintained
+            between contigs. In trio mode, they are fully phased paternal contigs
+            all originating from a single parental haplotype.
+          pattern: "${prefix}.*.hap2.p_ctg.gfa"
   - corrected_reads:
-      type: file
-      description: Corrected reads
-      pattern: "*.ec.bin"
-  - source_overlaps:
-      type: file
-      description: Source overlaps
-      pattern: "*.ovlp.source.bin"
-  - reverse_overlaps:
-      type: file
-      description: Reverse overlaps
-      pattern: "*.ovlp.reverse.bin"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.ec.fa.gz":
+          type: file
+          description: |
+            If option --write-ec specified, a gzipped fasta file containing the error corrected
+            reads produced by the hifiasm error correction module
+          pattern: "*.ec.fa.gz"
+  - read_overlaps:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.ovlp.paf.gz":
+          type: file
+          description: |
+            If option --write-paf specified, a gzipped paf file describing the overlaps
+            among all error-corrected reads
+          pattern: "*.ovlp.paf.gz"
   - log:
-      type: file
-      description: Stderr log
-      pattern: "*.log"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.stderr.log"
+      - ${prefix}.stderr.log:
+          type: file
+          description: Stderr log
+          pattern: "*.stderr.log"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+          ontologies: []
 authors:
   - "@sidorov-si"
   - "@scorreard"
   - "@mbeavitt"
+  - "@schmytzi"
+  - "@prototaxites"
 maintainers:
   - "@sidorov-si"
   - "@scorreard"

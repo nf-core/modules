@@ -15,7 +15,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
                 ]
                 """
             }
@@ -24,8 +24,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.db).match("contig_db") },
-                { assert process.out.versions }
+                { assert snapshot(
+                    process.out.db,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
 
@@ -39,7 +42,7 @@ nextflow_process {
 
                 input[0] = [
                     [ id:'test' ],
-                    file(params.test_data['sarscov2']['genome']['proteome_fasta_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta.gz', checkIfExists: true)
                 ]
                 """
             }
@@ -48,8 +51,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.db).match("protein_gz_db") },
-                { assert process.out.versions }
+                { assert snapshot(
+                    process.out.db,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
 

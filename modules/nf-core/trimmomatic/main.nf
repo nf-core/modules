@@ -12,8 +12,9 @@ process TRIMMOMATIC {
 
     output:
     tuple val(meta), path("*.paired.trim*.fastq.gz")   , emit: trimmed_reads
-    tuple val(meta), path("*.unpaired.trim_*.fastq.gz"), optional:true, emit: unpaired_reads
-    tuple val(meta), path("*.log")                     , emit: log
+    tuple val(meta), path("*.unpaired.trim_*.fastq.gz"), emit: unpaired_reads, optional:true
+    tuple val(meta), path("*_trim.log")                , emit: trim_log
+    tuple val(meta), path("*_out.log")                 , emit: out_log
     tuple val(meta), path("*.summary")                 , emit: summary
     path "versions.yml"                                , emit: versions
 
@@ -27,22 +28,46 @@ process TRIMMOMATIC {
     def output = meta.single_end ?
         "${prefix}.SE.paired.trim.fastq.gz" // HACK to avoid unpaired and paired in the trimmed_reads output
         : "${prefix}.paired.trim_1.fastq.gz ${prefix}.unpaired.trim_1.fastq.gz ${prefix}.paired.trim_2.fastq.gz ${prefix}.unpaired.trim_2.fastq.gz"
-    // TODO Give better error output
     def qual_trim = task.ext.args2 ?: ''
     """
     trimmomatic \\
         $trimmed \\
         -threads $task.cpus \\
-        -trimlog ${prefix}.log \\
+        -trimlog ${prefix}_trim.log \\
         -summary ${prefix}.summary \\
         $reads \\
         $output \\
         $qual_trim \\
-        $args
+        $args 2> >(tee ${prefix}_out.log >&2)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         trimmomatic: \$(trimmomatic -version)
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    if (meta.single_end) {
+        output_command = "echo '' | gzip > ${prefix}.SE.paired.trim.fastq.gz"
+    } else {
+        output_command  = "echo '' | gzip > ${prefix}.paired.trim_1.fastq.gz\n"
+        output_command += "echo '' | gzip > ${prefix}.paired.trim_2.fastq.gz\n"
+        output_command += "echo '' | gzip > ${prefix}.unpaired.trim_1.fastq.gz\n"
+        output_command += "echo '' | gzip > ${prefix}.unpaired.trim_2.fastq.gz"
+    }
+
+    """
+    $output_command
+    touch ${prefix}.summary
+    touch ${prefix}_trim.log
+    touch ${prefix}_out.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        trimmomatic: \$(trimmomatic -version)
+    END_VERSIONS
+    """
+
 }

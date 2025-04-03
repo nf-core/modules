@@ -1,0 +1,72 @@
+nextflow_process {
+
+    name "Test Process GATK4_INTERVALLISTTOOLS"
+    script "../main.nf"
+    process "GATK4_INTERVALLISTTOOLS"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gatk4"
+    tag "gatk4/bedtointervallist"
+    tag "gatk4/intervallisttools"
+
+    setup {
+        run("GATK4_BEDTOINTERVALLIST") {
+            script "../../bedtointervallist/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)]
+                ]
+                input[1] = [
+                    [ id:'dict' ], // meta map
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)]
+                ]
+                """
+            }
+        }
+    }
+
+    test("test_gatk4_intervallisttools") {
+
+        when {
+            process {
+                """
+                input[0] = GATK4_BEDTOINTERVALLIST.out.interval_list
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+
+    }
+
+    test("test_gatk4_intervallisttools -stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = GATK4_BEDTOINTERVALLIST.out.interval_list
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+
+    }
+
+}

@@ -34,4 +34,3 @@ workflow BAM_VARIANT_CALLING_SORT_FREEBAYES_BCFTOOLS {
 
     versions = ch_versions                     // channel: [ path(versions.yml) ]
 }
-

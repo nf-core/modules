@@ -1,0 +1,66 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "angsd_gl"
+description: Calculated genotype likelihoods from BAM files.
+keywords:
+  - angsd
+  - genotype likelihood
+  - genomics
+tools:
+  - "angsd":
+      description: "ANGSD: Analysis of next generation Sequencing Data"
+      homepage: "http://www.popgen.dk/angsd/"
+      documentation: "http://www.popgen.dk/angsd/"
+      tool_dev_url: "https://github.com/ANGSD/angsd"
+      doi: "10.1186/s12859-014-0356-4"
+      licence: ["GPL v3", "MIT"]
+      identifier: biotools:angsd
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: A list of BAM or CRAM files
+        pattern: "*.{bam,cram}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: A reference genome in FASTA format
+        pattern: "*.fasta"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - error_file:
+        type: file
+        description: A file containing information about type specific errors.
+        pattern: "*.error.chunkunordered"
+output:
+  - genotype_likelihood:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.{glf,beagle}.gz":
+          type: file
+          description: File containing genotype likelihoods per sample
+          pattern: "*.{glf,beagle}.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@apeltzer"
+  - "@TCLamnidis"
+maintainers:
+  - "@apeltzer"
+  - "@TCLamnidis"

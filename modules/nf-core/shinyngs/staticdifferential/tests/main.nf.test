@@ -1,0 +1,127 @@
+nextflow_process {
+
+    name "Test Process SHINYNGS_STATICDIFFERENTIAL"
+    script "../main.nf"
+    process "SHINYNGS_STATICDIFFERENTIAL"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "shinyngs"
+    tag "shinyngs/staticdifferential"
+
+    test("test") {
+
+        when {
+            params{
+                features_id_col                 = "gene_id"
+                reference                       = "mCherry"
+                target                          = "hND6"
+                differential_fc_column          = "log2FoldChange"
+                differential_qval_column        = "padj"
+                differential_feature_id_column  = "gene_id"
+                differential_min_fold_change    = 2.0
+                differential_max_qval           = 0.05
+                differential_foldchanges_logged = true
+                differential_palette_name       = "Set1"
+                module_args = [
+                    "--feature_id_col \"${params.features_id_col}\"",
+                    "--reference_level \"${params.reference}\"",
+                    "--treatment_level \"${params.target}\"",
+                    "--fold_change_col \"${params.differential_fc_column}\"",
+                    "--p_value_column \"${params.differential_qval_column}\"",
+                    "--diff_feature_id_col \"${params.differential_feature_id_column}\"",
+                    "--fold_change_threshold \"${params.differential_min_fold_change}\"",
+                    "--p_value_threshold \"${params.differential_max_qval}\"",
+                    "--unlog_foldchanges \"${params.differential_foldchanges_logged}\"",
+                    "--palette_name \"${params.differential_palette_name}\""
+                ].join(' ').trim()
+            }
+            process {
+                """
+                input[0] = [
+                    ['id':'treatment_mCherry_hND6_', 'variable':'treatment', 'reference':'mCherry', 'target':'hND6', 'blocking':''],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/treatment_mCherry_hND6_.deseq2.results.tsv", checkIfExists:true)
+                ]
+                input[1] = [['id':'SRP254919'],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.sample_metadata.tsv", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/Mus_musculus.anno.tsv", checkIfExists:true),
+                    [
+                        file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/all.normalised_counts.tsv", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/all.vst.tsv", checkIfExists:true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.volcanos_png[0][1]).name, //assert unstable file
+                    process.out.volcanos_html,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("stub") {
+
+        options "-stub"
+
+        when {
+            params{
+                features_id_col                 = "gene_id"
+                reference                       = "mCherry"
+                target                          = "hND6"
+                differential_fc_column          = "log2FoldChange"
+                differential_qval_column        = "padj"
+                differential_feature_id_column  = "gene_id"
+                differential_min_fold_change    = 2.0
+                differential_max_qval           = 0.05
+                differential_foldchanges_logged = true
+                differential_palette_name       = "Set1"
+                module_args = [
+                    "--feature_id_col \"${params.features_id_col}\"",
+                    "--reference_level \"${params.reference}\"",
+                    "--treatment_level \"${params.target}\"",
+                    "--fold_change_col \"${params.differential_fc_column}\"",
+                    "--p_value_column \"${params.differential_qval_column}\"",
+                    "--diff_feature_id_col \"${params.differential_feature_id_column}\"",
+                    "--fold_change_threshold \"${params.differential_min_fold_change}\"",
+                    "--p_value_threshold \"${params.differential_max_qval}\"",
+                    "--unlog_foldchanges \"${params.differential_foldchanges_logged}\"",
+                    "--palette_name \"${params.differential_palette_name}\""
+                ].join(' ').trim()
+            }
+            process {
+                """
+                input[0] = [
+                    ['id':'treatment_mCherry_hND6_', 'variable':'treatment', 'reference':'mCherry', 'target':'hND6', 'blocking':''],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/treatment_mCherry_hND6_.deseq2.results.tsv", checkIfExists:true)
+                ]
+                input[1] = [['id':'SRP254919'],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.sample_metadata.tsv", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/Mus_musculus.anno.tsv", checkIfExists:true),
+                    [
+                        file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/all.normalised_counts.tsv", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/all.vst.tsv", checkIfExists:true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

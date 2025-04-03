@@ -10,44 +10,75 @@ tools:
       homepage: "http://www.usadellab.org/cms/?page=trimmomatic"
       documentation: "https://github.com/usadellab/Trimmomatic"
       doi: "10.1093/bioinformatics/btu170"
-      licence: "['GPL v3']"
+      licence: ["GPL v3"]
+      identifier: biotools:trimmomatic
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: |
-        Input FastQ files of size 1 or 2 for single-end and paired-end data, respectively.
-      pattern: "*.fastq.gz"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          Input FastQ files of size 1 or 2 for single-end and paired-end data, respectively.
+        pattern: "*.fastq.gz"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - trimmed_reads:
-      type: file
-      description: The trimmed/modified paired end fastq reads
-      pattern: "*.paired.trim*.fastq.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.paired.trim*.fastq.gz":
+          type: file
+          description: The trimmed/modified paired end fastq reads
+          pattern: "*.paired.trim*.fastq.gz"
   - unpaired_reads:
-      type: file
-      description: The trimmed/modified unpaired end fastq reads
-      pattern: "*.unpaired.trim_*.fastq.gz"
-  - log:
-      type: file
-      description: trimmomatic log file
-      pattern: "*.log"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.unpaired.trim_*.fastq.gz":
+          type: file
+          description: The trimmed/modified unpaired end fastq reads
+          pattern: "*.unpaired.trim_*.fastq.gz"
+  - trim_log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_trim.log":
+          type: file
+          description: trimmomatic log file, from the trim_log parameter
+          pattern: "*.log"
+  - out_log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_out.log":
+          type: file
+          description: log of output from the standard out
+          pattern: "*.log"
   - summary:
-      type: file
-      description: trimmomatic summary file of surviving and dropped reads
-      pattern: "*.summary"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.summary":
+          type: file
+          description: trimmomatic summary file of surviving and dropped reads
+          pattern: "*.summary"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@alyssa-ab"
 maintainers:

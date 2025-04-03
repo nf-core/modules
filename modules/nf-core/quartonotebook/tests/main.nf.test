@@ -17,7 +17,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.test_data['generic']['notebooks']['quarto_r'], checkIfExists: true) // Notebook
+                    file(params.modules_testdata_base_path + 'generic/notebooks/quarto/quarto_r.qmd', checkIfExists: true) // Notebook
                 ]
                 input[1] = [:] // Parameters
                 input[2] = [] // Input files
@@ -44,7 +44,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.test_data['generic']['notebooks']['quarto_python'], checkIfExists: true) // Notebook
+                    file(params.modules_testdata_base_path + 'generic/notebooks/quarto/quarto_python.qmd', checkIfExists: true) // Notebook
                 ]
                 input[1] = [] // Parameters
                 input[2] = [] // Input files
@@ -57,11 +57,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
                     process.out.artifacts,
                     process.out.params_yaml,
+                    path(process.out.versions.get(0)).yaml,
                 ).match() },
-                { assert path(process.out.html[0][1]).readLines().any { it.contains('Hello world') } }
+                { assert path(process.out.html[0][1]).readLines().any { it.contains('Hello world') } },
             )
         }
 
@@ -76,10 +76,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.test_data['generic']['notebooks']['quarto_r'], checkIfExists: true) // Notebook
+                    file(params.modules_testdata_base_path + 'generic/notebooks/quarto/quarto_r.qmd', checkIfExists: true) // Notebook
                 ]
                 input[1] = [input_filename: "hello.txt", n_iter: 12] // parameters
-                input[2] = file(params.test_data['generic']['txt']['hello'], checkIfExists: true) // Input files
+                input[2] = file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true) // Input files
                 input[3] = [] // Extensions
                 """
             }
@@ -103,10 +103,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.test_data['generic']['notebooks']['quarto_python'], checkIfExists: true) // Notebook
+                    file(params.modules_testdata_base_path + 'generic/notebooks/quarto/quarto_python.qmd', checkIfExists: true) // Notebook
                 ]
                 input[1] = [input_filename: "hello.txt", n_iter: 12] // parameters
-                input[2] = file(params.test_data['generic']['txt']['hello'], checkIfExists: true) // Input files
+                input[2] = file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true) // Input files
                 input[3] = [] // Extensions
                 """
             }
@@ -116,11 +116,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
                     process.out.artifacts,
                     process.out.params_yaml,
+                    path(process.out.versions.get(0)).yaml,
                 ).match() },
-                { assert path(process.out.html[0][1]).readLines().any { it.contains('Hello world') } }
+                { assert path(process.out.html[0][1]).readLines().any { it.contains('Hello world') } },
             )
         }
 
@@ -135,10 +135,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.test_data['generic']['notebooks']['rmarkdown'], checkIfExists: true) // notebook
+                    file(params.modules_testdata_base_path + 'generic/notebooks/rmarkdown/rmarkdown_notebook.Rmd', checkIfExists: true) // notebook
                 ]
                 input[1] = [input_filename: "hello.txt", n_iter: 12] // parameters
-                input[2] = file(params.test_data['generic']['txt']['hello'], checkIfExists: true) // Input files
+                input[2] = file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true) // Input files
                 input[3] = [] // Extensions
                 """
             }
@@ -162,10 +162,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.test_data['generic']['notebooks']['ipython_ipynb'], checkIfExists: true) // notebook
+                    file(params.modules_testdata_base_path + 'generic/notebooks/jupyter/ipython_notebook.ipynb', checkIfExists: true) // notebook
                 ]
                 input[1] = [input_filename: "hello.txt", n_iter: 12] // parameters
-                input[2] = file(params.test_data['generic']['txt']['hello'], checkIfExists: true) // Input files
+                input[2] = file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true) // Input files
                 input[3] = [] // Extensions
                 """
             }
@@ -191,7 +191,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.test_data['generic']['notebooks']['quarto_r'], checkIfExists: true) // Notebook
+                    file(params.modules_testdata_base_path + 'generic/notebooks/quarto/quarto_r.qmd', checkIfExists: true) // Notebook
                 ]
                 input[1] = [:] // Parameters
                 input[2] = [] // Input files

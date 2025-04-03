@@ -7,36 +7,40 @@ keywords:
   - structural variants
 tools:
   - "svtk":
-      description: "Utilities for consolidating, filtering, resolving, and annotating structural variants."
+      description: "Utilities for consolidating, filtering, resolving, and annotating
+        structural variants."
       homepage: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
       documentation: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
       tool_dev_url: "https://github.com/broadinstitute/gatk-sv/tree/master/src/svtk"
       doi: "10.1038/s41586-020-2287-8"
-      licence: "['MIT']"
+      licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: The VCF file containing structural variants
-      pattern: "*.vcf.gz"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: The VCF file containing structural variants
+        pattern: "*.vcf.gz"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - counts:
-      type: file
-      description: A tab-delimited file containing the counts of the SV types
-      pattern: "*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: A tab-delimited file containing the counts of the SV types
+          pattern: "*.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

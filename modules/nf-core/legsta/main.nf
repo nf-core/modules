@@ -30,4 +30,15 @@ process LEGSTA {
         legsta: \$(echo \$(legsta --version 2>&1) | sed 's/^.*legsta //; s/ .*\$//;')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        legsta: \$(echo \$(legsta --version 2>&1) | sed 's/^.*legsta //; s/ .*\$//;')
+    END_VERSIONS
+    """
 }

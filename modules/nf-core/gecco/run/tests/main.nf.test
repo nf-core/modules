@@ -1,0 +1,68 @@
+nextflow_process {
+
+    name "Test Process GECCO_RUN"
+    script "../main.nf"
+    process "GECCO_RUN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gecco"
+    tag "gecco/run"
+
+    test("gecco/run - candidatus_portiera_aleyrodidarum - genome_fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists: true),
+                    []
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.genes +
+                    process.out.features +
+                    process.out.clusters +
+                    process.out.versions
+                ).match() },
+                { assert path(process.out.gbk.get(0).get(1)).text.contains("MVKNDIDILILGGGCTGLSLAYYLSFLPNTVRIFLIENKFIYNND") }
+            )
+        }
+
+    }
+
+    test("gecco/run - candidatus_portiera_aleyrodidarum - genome_fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists: true),
+                    []
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

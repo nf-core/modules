@@ -1,0 +1,36 @@
+name: "gtfsort"
+description: Sort GTF files in chr/pos/feature order
+keywords:
+  - sort
+  - example
+  - genomics
+tools:
+  - "gtfsort":
+      description: "A chr/pos/feature GTF sorter that uses a lexicographically-based
+        index ordering algorithm."
+      homepage: "https://github.com/alejandrogzi/gtfsort"
+      documentation: "https://github.com/alejandrogzi/gtfsort"
+      tool_dev_url: "https://github.com/alejandrogzi/gtfsort"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - gtf:
+        type: file
+        description: Unsorted GTF/GFF file.
+        pattern: "*.gtf"
+output:
+  - gtf:
+      - "*.sorted.gtf":
+          type: file
+          description: Sorted GTF file
+          pattern: "*.gtf"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@georgiakes"
+maintainers:
+  - "@georgiakes"

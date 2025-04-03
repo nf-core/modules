@@ -4,8 +4,8 @@ process MACS2_CALLPEAK {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/macs2:2.2.7.1--py38h4a8c8d9_3' :
-        'biocontainers/macs2:2.2.7.1--py38h4a8c8d9_3' }"
+        'https://depot.galaxyproject.org/singularity/macs2:2.2.9.1--py39hff71179_1':
+        'biocontainers/macs2:2.2.9.1--py39hff71179_1' }"
 
     input:
     tuple val(meta), path(ipbam), path(controlbam)
@@ -48,6 +48,22 @@ process MACS2_CALLPEAK {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         macs2: \$(macs2 --version | sed -e "s/macs2 //g")
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.gappedPeak
+    touch ${prefix}.bed
+    touch ${prefix}.bdg
+    touch ${prefix}.narrowPeak
+    touch ${prefix}.xls
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        macs3: \$(macs3 --version | sed -e "s/macs3 //g")
     END_VERSIONS
     """
 }

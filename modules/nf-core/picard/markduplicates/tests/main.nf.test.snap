@@ -1,74 +1,251 @@
 {
-    "sorted_bam_versions": {
+    "sarscov2 [sorted bam] - stub": {
         "content": [
-            [
-                "versions.yml:md5,b699af51b1956f3810f8a7c066e0ab17"
-            ]
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.marked.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    
+                ],
+                "2": [
+                    
+                ],
+                "3": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.marked.MarkDuplicates.metrics.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "4": [
+                    "versions.yml:md5,88717faa02b215b99eef3d05214a6fea"
+                ],
+                "bai": [
+                    
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.marked.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "cram": [
+                    
+                ],
+                "metrics": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.marked.MarkDuplicates.metrics.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,88717faa02b215b99eef3d05214a6fea"
+                ]
+            }
         ],
-        "timestamp": "2024-01-19T10:26:45.092349"
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-10-18T10:58:50.046420643"
     },
-    "unsorted_bam_name": {
+    "sarscov2 [unsorted bam] - stub": {
         "content": [
-            "test.marked.bam"
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.marked.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    
+                ],
+                "2": [
+                    
+                ],
+                "3": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.marked.MarkDuplicates.metrics.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "4": [
+                    "versions.yml:md5,88717faa02b215b99eef3d05214a6fea"
+                ],
+                "bai": [
+                    
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.marked.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "cram": [
+                    
+                ],
+                "metrics": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.marked.MarkDuplicates.metrics.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,88717faa02b215b99eef3d05214a6fea"
+                ]
+            }
         ],
-        "timestamp": "2024-01-19T10:26:28.100755"
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-10-18T10:58:36.738907079"
     },
-    "cram_metrics": {
+    "sarscov2 [unsorted bam]": {
         "content": [
+            "test.marked.bam",
             [
                 "## htsjdk.samtools.metrics.StringHeader",
-                "# MarkDuplicates --INPUT test.paired_end.sorted.cram --OUTPUT test.marked.bam --METRICS_FILE test.marked.MarkDuplicates.metrics.txt --ASSUME_SORT_ORDER queryname --REFERENCE_SEQUENCE genome.fasta --MAX_SEQUENCES_FOR_DISK_READ_ENDS_MAP 50000 --MAX_FILE_HANDLES_FOR_READ_ENDS_MAP 8000 --SORTING_COLLECTION_SIZE_RATIO 0.25 --TAG_DUPLICATE_SET_MEMBERS false --REMOVE_SEQUENCING_DUPLICATES false --TAGGING_POLICY DontTag --CLEAR_DT true --DUPLEX_UMI false --FLOW_MODE false --FLOW_QUALITY_SUM_STRATEGY false --USE_END_IN_UNPAIRED_READS false --USE_UNPAIRED_CLIPPED_END false --UNPAIRED_END_UNCERTAINTY 0 --FLOW_SKIP_FIRST_N_FLOWS 0 --FLOW_Q_IS_KNOWN_END false --FLOW_EFFECTIVE_QUALITY_THRESHOLD 15 --ADD_PG_TAG_TO_READS true --REMOVE_DUPLICATES false --ASSUME_SORTED false --DUPLICATE_SCORING_STRATEGY SUM_OF_BASE_QUALITIES --PROGRAM_RECORD_ID MarkDuplicates --PROGRAM_GROUP_NAME MarkDuplicates --READ_NAME_REGEX <optimized capture of last three ':' separated fields as numeric values> --OPTICAL_DUPLICATE_PIXEL_DISTANCE 100 --MAX_OPTICAL_DUPLICATE_SET_SIZE 300000 --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
+                "# MarkDuplicates --INPUT test.paired_end.bam --OUTPUT test.marked.bam --METRICS_FILE test.marked.MarkDuplicates.metrics.txt --ASSUME_SORT_ORDER queryname --MAX_SEQUENCES_FOR_DISK_READ_ENDS_MAP 50000 --MAX_FILE_HANDLES_FOR_READ_ENDS_MAP 8000 --SORTING_COLLECTION_SIZE_RATIO 0.25 --TAG_DUPLICATE_SET_MEMBERS false --REMOVE_SEQUENCING_DUPLICATES false --TAGGING_POLICY DontTag --CLEAR_DT true --DUPLEX_UMI false --FLOW_MODE false --FLOW_DUP_STRATEGY FLOW_QUALITY_SUM_STRATEGY --FLOW_USE_END_IN_UNPAIRED_READS false --FLOW_USE_UNPAIRED_CLIPPED_END false --FLOW_UNPAIRED_END_UNCERTAINTY 0 --FLOW_UNPAIRED_START_UNCERTAINTY 0 --FLOW_SKIP_FIRST_N_FLOWS 0 --FLOW_Q_IS_KNOWN_END false --FLOW_EFFECTIVE_QUALITY_THRESHOLD 15 --ADD_PG_TAG_TO_READS true --REMOVE_DUPLICATES false --ASSUME_SORTED false --DUPLICATE_SCORING_STRATEGY SUM_OF_BASE_QUALITIES --PROGRAM_RECORD_ID MarkDuplicates --PROGRAM_GROUP_NAME MarkDuplicates --READ_NAME_REGEX <optimized capture of last three ':' separated fields as numeric values> --OPTICAL_DUPLICATE_PIXEL_DISTANCE 100 --MAX_OPTICAL_DUPLICATE_SET_SIZE 300000 --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
                 "## htsjdk.samtools.metrics.StringHeader"
+            ],
+            [
+                "versions.yml:md5,88717faa02b215b99eef3d05214a6fea"
             ]
         ],
-        "timestamp": "2024-01-19T10:27:03.253071"
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-10-18T10:57:16.683233382"
     },
-    "sorted_bam_metrics": {
+    "sarscov2 [sorted bam]": {
         "content": [
+            "test.marked.bam",
             [
                 "## htsjdk.samtools.metrics.StringHeader",
-                "# MarkDuplicates --INPUT test.paired_end.sorted.bam --OUTPUT test.marked.bam --METRICS_FILE test.marked.MarkDuplicates.metrics.txt --ASSUME_SORT_ORDER queryname --REFERENCE_SEQUENCE genome.fasta --MAX_SEQUENCES_FOR_DISK_READ_ENDS_MAP 50000 --MAX_FILE_HANDLES_FOR_READ_ENDS_MAP 8000 --SORTING_COLLECTION_SIZE_RATIO 0.25 --TAG_DUPLICATE_SET_MEMBERS false --REMOVE_SEQUENCING_DUPLICATES false --TAGGING_POLICY DontTag --CLEAR_DT true --DUPLEX_UMI false --FLOW_MODE false --FLOW_QUALITY_SUM_STRATEGY false --USE_END_IN_UNPAIRED_READS false --USE_UNPAIRED_CLIPPED_END false --UNPAIRED_END_UNCERTAINTY 0 --FLOW_SKIP_FIRST_N_FLOWS 0 --FLOW_Q_IS_KNOWN_END false --FLOW_EFFECTIVE_QUALITY_THRESHOLD 15 --ADD_PG_TAG_TO_READS true --REMOVE_DUPLICATES false --ASSUME_SORTED false --DUPLICATE_SCORING_STRATEGY SUM_OF_BASE_QUALITIES --PROGRAM_RECORD_ID MarkDuplicates --PROGRAM_GROUP_NAME MarkDuplicates --READ_NAME_REGEX <optimized capture of last three ':' separated fields as numeric values> --OPTICAL_DUPLICATE_PIXEL_DISTANCE 100 --MAX_OPTICAL_DUPLICATE_SET_SIZE 300000 --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
+                "# MarkDuplicates --INPUT test.paired_end.sorted.bam --OUTPUT test.marked.bam --METRICS_FILE test.marked.MarkDuplicates.metrics.txt --ASSUME_SORT_ORDER queryname --MAX_SEQUENCES_FOR_DISK_READ_ENDS_MAP 50000 --MAX_FILE_HANDLES_FOR_READ_ENDS_MAP 8000 --SORTING_COLLECTION_SIZE_RATIO 0.25 --TAG_DUPLICATE_SET_MEMBERS false --REMOVE_SEQUENCING_DUPLICATES false --TAGGING_POLICY DontTag --CLEAR_DT true --DUPLEX_UMI false --FLOW_MODE false --FLOW_DUP_STRATEGY FLOW_QUALITY_SUM_STRATEGY --FLOW_USE_END_IN_UNPAIRED_READS false --FLOW_USE_UNPAIRED_CLIPPED_END false --FLOW_UNPAIRED_END_UNCERTAINTY 0 --FLOW_UNPAIRED_START_UNCERTAINTY 0 --FLOW_SKIP_FIRST_N_FLOWS 0 --FLOW_Q_IS_KNOWN_END false --FLOW_EFFECTIVE_QUALITY_THRESHOLD 15 --ADD_PG_TAG_TO_READS true --REMOVE_DUPLICATES false --ASSUME_SORTED false --DUPLICATE_SCORING_STRATEGY SUM_OF_BASE_QUALITIES --PROGRAM_RECORD_ID MarkDuplicates --PROGRAM_GROUP_NAME MarkDuplicates --READ_NAME_REGEX <optimized capture of last three ':' separated fields as numeric values> --OPTICAL_DUPLICATE_PIXEL_DISTANCE 100 --MAX_OPTICAL_DUPLICATE_SET_SIZE 300000 --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
                 "## htsjdk.samtools.metrics.StringHeader"
-            ]
-        ],
-        "timestamp": "2024-01-19T10:26:45.086503"
-    },
-    "cram_name": {
-        "content": [
-            "test.marked.bam"
-        ],
-        "timestamp": "2024-01-19T10:27:03.241617"
-    },
-    "cram_versions": {
-        "content": [
+            ],
             [
-                "versions.yml:md5,b699af51b1956f3810f8a7c066e0ab17"
+                "versions.yml:md5,88717faa02b215b99eef3d05214a6fea"
             ]
         ],
-        "timestamp": "2024-01-19T10:27:03.26989"
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-10-18T10:57:47.416956759"
     },
-    "unsorted_bam_versions": {
+    "homo_sapiens [cram]": {
         "content": [
-            [
-                "versions.yml:md5,b699af51b1956f3810f8a7c066e0ab17"
-            ]
-        ],
-        "timestamp": "2024-01-19T10:26:28.159071"
-    },
-    "unsorted_bam_metrics": {
-        "content": [
+            "test.marked.cram",
             [
                 "## htsjdk.samtools.metrics.StringHeader",
-                "# MarkDuplicates --INPUT test.paired_end.bam --OUTPUT test.marked.bam --METRICS_FILE test.marked.MarkDuplicates.metrics.txt --ASSUME_SORT_ORDER queryname --REFERENCE_SEQUENCE genome.fasta --MAX_SEQUENCES_FOR_DISK_READ_ENDS_MAP 50000 --MAX_FILE_HANDLES_FOR_READ_ENDS_MAP 8000 --SORTING_COLLECTION_SIZE_RATIO 0.25 --TAG_DUPLICATE_SET_MEMBERS false --REMOVE_SEQUENCING_DUPLICATES false --TAGGING_POLICY DontTag --CLEAR_DT true --DUPLEX_UMI false --FLOW_MODE false --FLOW_QUALITY_SUM_STRATEGY false --USE_END_IN_UNPAIRED_READS false --USE_UNPAIRED_CLIPPED_END false --UNPAIRED_END_UNCERTAINTY 0 --FLOW_SKIP_FIRST_N_FLOWS 0 --FLOW_Q_IS_KNOWN_END false --FLOW_EFFECTIVE_QUALITY_THRESHOLD 15 --ADD_PG_TAG_TO_READS true --REMOVE_DUPLICATES false --ASSUME_SORTED false --DUPLICATE_SCORING_STRATEGY SUM_OF_BASE_QUALITIES --PROGRAM_RECORD_ID MarkDuplicates --PROGRAM_GROUP_NAME MarkDuplicates --READ_NAME_REGEX <optimized capture of last three ':' separated fields as numeric values> --OPTICAL_DUPLICATE_PIXEL_DISTANCE 100 --MAX_OPTICAL_DUPLICATE_SET_SIZE 300000 --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
+                "# MarkDuplicates --INPUT test.paired_end.sorted.cram --OUTPUT test.marked.cram --METRICS_FILE test.marked.MarkDuplicates.metrics.txt --ASSUME_SORT_ORDER queryname --REFERENCE_SEQUENCE genome.fasta --MAX_SEQUENCES_FOR_DISK_READ_ENDS_MAP 50000 --MAX_FILE_HANDLES_FOR_READ_ENDS_MAP 8000 --SORTING_COLLECTION_SIZE_RATIO 0.25 --TAG_DUPLICATE_SET_MEMBERS false --REMOVE_SEQUENCING_DUPLICATES false --TAGGING_POLICY DontTag --CLEAR_DT true --DUPLEX_UMI false --FLOW_MODE false --FLOW_DUP_STRATEGY FLOW_QUALITY_SUM_STRATEGY --FLOW_USE_END_IN_UNPAIRED_READS false --FLOW_USE_UNPAIRED_CLIPPED_END false --FLOW_UNPAIRED_END_UNCERTAINTY 0 --FLOW_UNPAIRED_START_UNCERTAINTY 0 --FLOW_SKIP_FIRST_N_FLOWS 0 --FLOW_Q_IS_KNOWN_END false --FLOW_EFFECTIVE_QUALITY_THRESHOLD 15 --ADD_PG_TAG_TO_READS true --REMOVE_DUPLICATES false --ASSUME_SORTED false --DUPLICATE_SCORING_STRATEGY SUM_OF_BASE_QUALITIES --PROGRAM_RECORD_ID MarkDuplicates --PROGRAM_GROUP_NAME MarkDuplicates --READ_NAME_REGEX <optimized capture of last three ':' separated fields as numeric values> --OPTICAL_DUPLICATE_PIXEL_DISTANCE 100 --MAX_OPTICAL_DUPLICATE_SET_SIZE 300000 --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
                 "## htsjdk.samtools.metrics.StringHeader"
+            ],
+            [
+                "versions.yml:md5,88717faa02b215b99eef3d05214a6fea"
             ]
         ],
-        "timestamp": "2024-01-19T10:26:28.143979"
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-10-18T10:58:15.143314223"
     },
-    "sorted_bam_name": {
+    "homo_sapiens [cram] - stub": {
         "content": [
-            "test.marked.bam"
+            {
+                "0": [
+                    
+                ],
+                "1": [
+                    
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.marked.cram:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "3": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.marked.MarkDuplicates.metrics.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "4": [
+                    "versions.yml:md5,88717faa02b215b99eef3d05214a6fea"
+                ],
+                "bai": [
+                    
+                ],
+                "bam": [
+                    
+                ],
+                "cram": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.marked.cram:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "metrics": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.marked.MarkDuplicates.metrics.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,88717faa02b215b99eef3d05214a6fea"
+                ]
+            }
         ],
-        "timestamp": "2024-01-19T10:26:45.080116"
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-10-18T10:59:03.402916523"
     }
 }

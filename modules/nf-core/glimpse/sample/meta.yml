@@ -6,42 +6,40 @@ keywords:
   - Imputation
 tools:
   - "glimpse":
-      description: "GLIMPSE is a phasing and imputation method for large-scale low-coverage sequencing studies."
+      description: "GLIMPSE is a phasing and imputation method for large-scale low-coverage
+        sequencing studies."
       homepage: "https://odelaneau.github.io/GLIMPSE"
       documentation: "https://odelaneau.github.io/GLIMPSE/commands.html"
       tool_dev_url: "https://github.com/odelaneau/GLIMPSE"
       doi: "10.1038/s41588-020-00756-0"
-      licence: "['MIT']"
+      licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - input:
-      type: file
-      description: VCF/BCF file generated using GLIMPSE ligate
-      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-  - sample:
-      type: parameter
-      description: Samples a likely haplotype pair for each sample, use it in combination with --seed. Option not recommended for general usage, use --solve instead
-  - solve:
-      type: parameter
-      description: Get the most likely haplotype pair for each sample (the random number generator is not used)
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input:
+        type: file
+        description: VCF/BCF file generated using GLIMPSE ligate
+        pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - haplo_sampled:
-      type: file
-      description: Output VCF/BCF file containing phased genotypes.
-      pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.{vcf,bcf,vcf.gz,bcf.gz}":
+          type: file
+          description: Output VCF/BCF file containing phased genotypes.
+          pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@louislenezet"
 maintainers:

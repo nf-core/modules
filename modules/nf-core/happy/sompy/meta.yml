@@ -1,5 +1,6 @@
 name: "happy_sompy"
-description: Hap.py is a tool to compare diploid genotypes at haplotype level. som.py is a part of hap.py compares somatic variations.
+description: Hap.py is a tool to compare diploid genotypes at haplotype level. som.py
+  is a part of hap.py compares somatic variations.
 keywords:
   - happy
   - sompy
@@ -13,74 +14,114 @@ tools:
       homepage: "https://www.illumina.com/products/by-type/informatics-products/basespace-sequence-hub/apps/hap-py-benchmarking.html"
       documentation: "https://github.com/Illumina/hap.py/blob/master/doc/sompy.md"
       tool_dev_url: "https://github.com/Illumina/hap.py"
-
-      licence: "['BSD-2-clause']"
+      licence: ["BSD-2-clause"]
+      identifier: biotools:happy
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - query_vcf:
-      type: file
-      description: VCF/GVCF file to query
-      pattern: "*.{gvcf,vcf}.gz"
-  - truth_vcf:
-      type: file
-      description: gold standard VCF file
-      pattern: "*.{gvcf,vcf}.gz"
-  - regions_bed:
-      type: file
-      description: Sparse regions to restrict the analysis to
-      pattern: "*.bed"
-  - targets_bed:
-      type: file
-      description: Dense regions to restrict the analysis to
-      pattern: "*.bed"
-  - fasta:
-      type: file
-      description: FASTA file of the reference genome
-      pattern: "*.{fa,fasta}"
-  - fasta_fai:
-      type: file
-      description: The index of the reference FASTA
-      pattern: "*.fai"
-  - false_positives_bed:
-      type: file
-      description: False positive / confident call regions. Calls outside these regions will be labelled as UNK.
-      pattern: "*.{bed,bed.gz}"
-  - stratification_tsv:
-      type: file
-      description: Ambiguous region bed file(s)
-      pattern: "*.bed"
-  - bams:
-      type: file
-      description: one or more BAM files for feature table extraction
-      pattern: "*.bam"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - query_vcf:
+        type: file
+        description: VCF/GVCF file to query
+        pattern: "*.{gvcf,vcf}.gz"
+    - truth_vcf:
+        type: file
+        description: gold standard VCF file
+        pattern: "*.{gvcf,vcf}.gz"
+    - regions_bed:
+        type: file
+        description: Sparse regions to restrict the analysis to
+        pattern: "*.bed"
+    - targets_bed:
+        type: file
+        description: Dense regions to restrict the analysis to
+        pattern: "*.bed"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing fasta file information
+          e.g. [ id:'test2']
+    - fasta:
+        type: file
+        description: FASTA file of the reference genome
+        pattern: "*.{fa,fasta}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing fai file information
+          e.g. [ id:'test3']
+    - fasta_fai:
+        type: file
+        description: The index of the reference FASTA
+        pattern: "*.fai"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing false_positives_bed file information
+          e.g. [ id:'test4']
+    - false_positives_bed:
+        type: file
+        description: False positive / confident call regions. Calls outside these regions
+          will be labelled as UNK.
+        pattern: "*.{bed,bed.gz}"
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing ambiguous_beds file information
+          e.g. [ id:'test5']
+    - ambiguous_beds:
+        type: file
+        description: Ambiguous regions
+        pattern: "*.{bed,bed.gz}"
+  - - meta6:
+        type: map
+        description: |
+          Groovy Map containing bam file information
+          e.g. [ id:'test6']
+    - bams:
+        type: file
+        description: one or more BAM files for feature table extraction
+        pattern: "*.bam"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - features:
-      type: file
-      description: One or more than one (if AF count is on ) CSV file containing feature information
-      pattern: "*.features.csv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.features.csv":
+          type: file
+          description: One or more than one (if AF count is on ) CSV file containing feature
+            information
+          pattern: "*.features.csv"
   - metrics:
-      type: file
-      description: One or more than one (if AF count is on ) JSON file with metrics
-      pattern: "*.metrics.json"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.metrics.json":
+          type: file
+          description: One or more than one (if AF count is on ) JSON file with metrics
+          pattern: "*.metrics.json"
   - stats:
-      type: file
-      description: One or more than one (if AF count is on ) CSV file with benchmark stats
-      pattern: "*.stats.csv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.stats.csv":
+          type: file
+          description: One or more than one (if AF count is on ) CSV file with benchmark
+            stats
+          pattern: "*.stats.csv"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@kubranarci"

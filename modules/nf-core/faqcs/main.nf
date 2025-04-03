@@ -11,13 +11,13 @@ process FAQCS {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path('*.trimmed.fastq.gz')           , emit: reads
-    tuple val(meta), path('*.stats.txt')                  , emit: stats
-    tuple val(meta), path('*.txt')                        , optional:true, emit: txt
-    tuple val(meta), path('*_qc_report.pdf')              , optional:true, emit: statspdf
+    tuple val(meta), path('*.trimmed.fastq.gz')           , emit: reads         , optional: true
+    tuple val(meta), path('*.stats.txt')                  , emit: stats         , optional: true
+    tuple val(meta), path('./debug')                      , emit: debug         , optional: true
+    tuple val(meta), path('*_qc_report.pdf')              , emit: statspdf      , optional: true
+    tuple val(meta), path('*.discard.fastq.gz')           , emit: reads_fail    , optional: true
+    tuple val(meta), path('*.trimmed.unpaired.fastq.gz')  , emit: reads_unpaired, optional: true
     tuple val(meta), path('*.log')                        , emit: log
-    tuple val(meta), path('*.discard.fastq.gz')           , optional:true, emit: reads_fail
-    tuple val(meta), path('*.trimmed.unpaired.fastq.gz')  , optional:true, emit: reads_unpaired
     path "versions.yml"                                   , emit: versions
 
     when:
@@ -36,7 +36,7 @@ process FAQCS {
             --prefix ${prefix} \\
             -t $task.cpus \\
             $args \\
-            2> >(tee ${prefix}.fastp.log >&2)
+            2> >(tee ${prefix}.log >&2)
 
 
         if [[ -f ${prefix}.unpaired.trimmed.fastq ]]; then
@@ -47,6 +47,13 @@ process FAQCS {
             mv ${prefix}.discard.trimmed.fastq ${prefix}.trimmed.discard.fastq
             gzip ${prefix}.trimmed.discard.fastq
         fi
+
+        # Debug: collect all debug files in one directory (--debug)
+        if [[ -f ${prefix}.base.matrix ]]; then
+            mkdir debug
+            mv *.{base,for_qual_histogram,length_count,quality}*.* debug
+        fi
+
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
             faqcs: \$(echo \$(FaQCs --version 2>&1) | sed 's/^.*Version: //;' )
@@ -63,7 +70,7 @@ process FAQCS {
             --prefix ${meta.id} \\
             -t $task.cpus \\
             $args \\
-            2> >(tee ${prefix}.fastp.log >&2)
+            2> >(tee ${prefix}.log >&2)
 
         # Unpaired
         if [[ -f ${prefix}.unpaired.trimmed.fastq ]]; then
@@ -94,11 +101,34 @@ process FAQCS {
             gzip ${prefix}.trimmed.discard.fastq
         fi
 
+        # Debug: collect all debug files in one directory (--debug)
+        if [[ -f ${prefix}.base.matrix ]]; then
+            mkdir debug
+            mv *.{base,for_qual_histogram,length_count,quality}*.* debug
+        fi
+
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
             faqcs: \$(echo \$(FaQCs --version 2>&1) | sed 's/^.*Version: //;' )
         END_VERSIONS
         """
     }
-}
 
+    stub:
+    def prefix = task.ext.prefix ?: meta.id
+    """
+    echo "" | gzip > "${prefix}.trimmed.fastq.gz"
+    touch "${prefix}.stats.txt"
+    touch "${prefix}_qc_report.pdf"
+    touch "${prefix}.log"
+    echo "" | gzip > "${prefix}.discard.fastq.gz"
+    echo "" | gzip > "${prefix}.trimmed.unpaired.fastq.gz"
+    mkdir debug
+    touch "debug/${prefix}.for_qual_histogram.txt"
+
+    cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            faqcs: \$(echo \$(FaQCs --version 2>&1) | sed 's/^.*Version: //;' )
+        END_VERSIONS
+    """
+}

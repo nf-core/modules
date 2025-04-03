@@ -1,0 +1,77 @@
+nextflow_process {
+
+    name "Test Process TRYCYCLER_CLUSTER"
+    script "../main.nf"
+    process "TRYCYCLER_CLUSTER"
+    config './nextflow.config'
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "trycycler"
+    tag "trycycler/cluster"
+
+    test("custom test data") {
+
+        when {
+            process {
+                """
+                def contigs1 = file("contigs1.fasta")
+                contigs1.text = '>contig_1a\\nATCCCCTTGGACTCCTAGCTAGGCTCTAGAGCCTTCTCTCGACTACGAGCTAGCAGCTACGATCACGACTACAGCACAGCACTACAGCATCAGCACAGCAGTCAGCGA\\n>contig_2a\\nGCTAGGCTCTAACGCGCCATCAGCCGCTCAGCTACGACTATCGCAGCTACGATCAGCATCGATCTAGCAGAGCCTTCTGGTAACGCGACTCAGTCTCTACAGCACGGTAACCAGCACTACAGGGGTTAAGCCCATCA\\n'
+
+                def contigs2 = file("contigs2.fasta")
+                contigs2.text = '>contig_1b\\nATCCCCTTGGACTCCTAGCTAGGCTCTAGAGCCTTCTCTCGACTACCCAGCTAGCAGCTACGATCACGTCTACAGCACAGCACTACAGCATCAGCACAGCAGTA\\n>contig_2b\\nGCTAGGCTCTAACGCGCCATCAGCCGCTCAGCTACGACTAGCGCAGCTACGATCAGCATCCATCTAGCAGAGCCAACTGGTAACGCGACTCAGTCTCTACAGCACGGTAACCAGCACTACAGGGGTTAAGCCCATCA\\n'
+
+                def reads = file("reads.fastq")
+                reads.text = '@NC-000913.3_646515_unaligned_0_F_0_1238_0\\nCTCTAGAGCCTTCTCTCGACTACGAGCTAGCAGCTACGA\\n+\\nIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII\\n@NC-000913.3_646518_unaligned_0_F_0_1238_0\\nTAGGCTCTAACGCGCCATCAGCCGCTCAGCTACGACTAGCGC\\n+\\nIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII\\n'
+
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [ file('contigs1.fasta', checkIfExists: true), file('contigs2.fasta', checkIfExists: true) ], // contigs
+                    file('reads.fastq', checkIfExists: true) // reads
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("custom test data - stub") {
+
+        when {
+            process {
+                options "-stub-run"
+                """
+                def contigs1 = file("contigs1.fasta")
+                contigs1.text = '>contig_1a\\nATCCCCTTGGACTCCTAGCTAGGCTCTAGAGCCTTCTCTCGACTACGAGCTAGCAGCTACGATCACGACTACAGCACAGCACTACAGCATCAGCACAGCAGTCAGCGA\\n>contig_2a\\nGCTAGGCTCTAACGCGCCATCAGCCGCTCAGCTACGACTATCGCAGCTACGATCAGCATCGATCTAGCAGAGCCTTCTGGTAACGCGACTCAGTCTCTACAGCACGGTAACCAGCACTACAGGGGTTAAGCCCATCA\\n'
+
+                def contigs2 = file("contigs2.fasta")
+                contigs2.text = '>contig_1b\\nATCCCCTTGGACTCCTAGCTAGGCTCTAGAGCCTTCTCTCGACTACCCAGCTAGCAGCTACGATCACGTCTACAGCACAGCACTACAGCATCAGCACAGCAGTA\\n>contig_2b\\nGCTAGGCTCTAACGCGCCATCAGCCGCTCAGCTACGACTAGCGCAGCTACGATCAGCATCCATCTAGCAGAGCCAACTGGTAACGCGACTCAGTCTCTACAGCACGGTAACCAGCACTACAGGGGTTAAGCCCATCA\\n'
+
+                def reads = file("reads.fastq")
+                reads.text = '@NC-000913.3_646515_unaligned_0_F_0_1238_0\\nCTCTAGAGCCTTCTCTCGACTACGAGCTAGCAGCTACGA\\n+\\nIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII\\n@NC-000913.3_646518_unaligned_0_F_0_1238_0\\nTAGGCTCTAACGCGCCATCAGCCGCTCAGCTACGACTAGCGC\\n+\\nIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII\\n'
+
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [ file('contigs1.fasta', checkIfExists: true), file('contigs2.fasta', checkIfExists: true) ], // contigs
+                    file('reads.fastq', checkIfExists: true) // reads
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+}

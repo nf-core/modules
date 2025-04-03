@@ -5,8 +5,8 @@ process WISECONDORX_NEWREF {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/wisecondorx:1.2.5--pyh5e36f6f_0':
-        'biocontainers/wisecondorx:1.2.5--pyh5e36f6f_0' }"
+        'https://depot.galaxyproject.org/singularity/wisecondorx:1.2.9--pyhdfd78af_0':
+        'biocontainers/wisecondorx:1.2.9--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(inputs)
@@ -21,7 +21,7 @@ process WISECONDORX_NEWREF {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.2.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '1.2.9' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     inputs.each { if("${it}" == "${prefix}.npz") error "${it} has the same name as the output file, set prefix in module configuration to disambiguate!"}
 
@@ -41,7 +41,7 @@ process WISECONDORX_NEWREF {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.2.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '1.2.9' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     inputs.each { if("${it}" == "${prefix}.npz") error "${it} has the same name as the output file, set prefix in module configuration to disambiguate!"}
 

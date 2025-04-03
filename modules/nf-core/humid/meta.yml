@@ -1,0 +1,87 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "humid"
+description: HUMID is a tool to quickly and easily remove duplicate reads from FastQ
+  files, with or without UMIs.
+keywords:
+  - umi
+  - fastq
+  - deduplication
+  - hamming-distance
+  - clustering
+tools:
+  - "humid":
+      description: "HUMID -- High-performance UMI Deduplicator"
+      homepage: "https://github.com/jfjlaros/HUMID"
+      documentation: "https://humid.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/jfjlaros/HUMID"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - reads:
+        type: file
+        description: Fastq file(s) to deduplicate
+        pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - umi_file:
+        type: file
+        description: UMI file
+output:
+  - log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}.log:
+          type: file
+          description: Log file of humid, containing progress and errors
+          pattern: "*.log"
+  - dedup:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_dedup*.fastq.gz":
+          type: file
+          description: Deduplicated Fastq file(s)
+          pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
+  - annotated:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_annotated*.fastq.gz":
+          type: file
+          description: Annotated Fastq file(s)
+          pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
+  - stats:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}:
+          type: directory
+          description: Directory containing statistics file, use for multiqc.
+          pattern: "${prefix}/"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@Joon-Klaps"
+maintainers:
+  - "@Joon-Klaps"

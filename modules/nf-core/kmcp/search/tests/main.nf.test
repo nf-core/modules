@@ -1,0 +1,88 @@
+nextflow_process {
+
+    name "Test Process KMCP_SEARCH"
+    script "../main.nf"
+    process "KMCP_SEARCH"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "kmcp"
+    tag "kmcp/search"
+    tag "kmcp/compute"
+    tag "kmcp/index"
+
+    setup {
+        run("KMCP_COMPUTE") {
+            script "../../../kmcp/compute/main.nf"
+            process {
+                """
+                input[0] = [
+                                [id: 'test'],
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        run("KMCP_INDEX") {
+            script "../../../kmcp/index/main.nf"
+            process {
+                """
+                input[0] = KMCP_COMPUTE.out.outdir
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - fasta") {
+        when {
+            process {
+                """
+                input[0] = [
+                                [id:'test', single_end:true ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                            ]
+                input[1] = KMCP_INDEX.out.kmcp.map{it[1]}
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out,
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                                [id:'test', single_end:true ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                            ]
+                input[1] =  KMCP_INDEX.out.kmcp.map{it[1]}
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

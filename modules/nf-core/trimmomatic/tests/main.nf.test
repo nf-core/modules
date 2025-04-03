@@ -10,15 +10,12 @@ nextflow_process {
     test("Single-Read") {
         config "./nextflow_SE.config"
         when {
-            params {
-                outdir   = "$outputDir"
-            }
             process {
                 """
                 input[0] = [
                     [ id: 'test', single_end:true ],
                     [
-                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                     ]
                 ]
                 """
@@ -30,8 +27,12 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.trimmed_reads != null },
                 { assert process.out.trimmed_reads.get(0).get(1) ==~ ".*.SE.paired.trim.fastq.gz" },
-                { assert snapshot(process.out.versions).match("versions") },
-                { assert snapshot(process.out).match() }
+                { assert process.out.out_log.get(0).get(1) ==~ ".*.log" },
+                { assert snapshot(process.out.trimmed_reads,
+                                  process.out.trim_log,
+                                  process.out.summary,
+                                  process.out.versions
+                                  ).match() }
             )
         }
     }
@@ -39,16 +40,13 @@ nextflow_process {
     test("Paired-Reads") {
         config "./nextflow_PE.config"
         when {
-            params {
-                outdir   = "$outputDir"
-            }
             process {
                 """
                 input[0] = [
                     [ id: 'test', single_end:false ],
                     [
-                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                        file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ]
                 """
@@ -61,8 +59,12 @@ nextflow_process {
                 { assert process.out.trimmed_reads != null },
                 { assert process.out.trimmed_reads.get(0).get(1).get(0) ==~ ".*.paired.trim_1.fastq.gz" },
                 { assert process.out.trimmed_reads.get(0).get(1).get(1) ==~ ".*.paired.trim_2.fastq.gz" },
-                { assert snapshot(process.out).match() },
-                { assert snapshot(process.out.versions).match("versions") },
+                { assert process.out.out_log.get(0).get(1) ==~ ".*.log" },
+                { assert snapshot(process.out.trimmed_reads,
+                                  process.out.trim_log,
+                                  process.out.summary,
+                                  process.out.versions
+                                  ).match() }
             )
         }
     }
@@ -70,16 +72,13 @@ nextflow_process {
     test("No Adaptors") {
 
         when {
-            params {
-                outdir   = "$outputDir"
-            }
             process {
                 """
                 input[0] = [
                     [ id: 'test', single_end:false ],
                     [
-                        file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                        file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ]
                 """
@@ -92,4 +91,28 @@ nextflow_process {
             )
         }
     }
+
+    test("Single-Read - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test', single_end:true ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
 }

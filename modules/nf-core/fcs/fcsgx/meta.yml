@@ -1,5 +1,6 @@
 name: "fcs_fcsgx"
-description: Run FCS-GX on assembled genomes. The contigs of the assembly are searched against a reference database excluding the given taxid.
+description: Run FCS-GX on assembled genomes. The contigs of the assembly are searched
+  against a reference database excluding the given taxid.
 keywords:
   - assembly
   - genomics
@@ -17,37 +18,48 @@ tools:
       homepage: "https://www.ncbi.nlm.nih.gov/data-hub/cgr/data-quality-tools/"
       documentation: "https://github.com/ncbi/fcs/wiki/FCS-GX"
       tool_dev_url: "https://github.com/ncbi/fcs"
-      licence: "United States Government Work"
+      license: ["United States Government Work"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', taxid:'6973' ]
-  - assembly:
-      type: file
-      description: assembly fasta file
-  - database:
-      type: file
-      description: Files of the database downloaded from the ncbi server, https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/database/. All files of one db should be downloaded and given to the process as channel.collect(). The link contains 2 databases, test-only and all. Use all for pipeline usage and test-only for tests.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', taxid:'6973' ]
+    - assembly:
+        type: file
+        description: assembly fasta file
+  - - gxdb:
+        type: file
+        description: The NCBI GenBank database to search against.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', taxid:'9606' ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - fcs_gx_report:
-      type: file
-      description: Report containing the contig identifier and recommended action (EXCLUDE, TRIM, FIX, REVIEW)
-      pattern: "*.fcs_gx_report.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', taxid:'9606' ]
+      - out/*.fcs_gx_report.txt:
+          type: file
+          description: Report containing the contig identifier and recommended action
+            (EXCLUDE, TRIM, FIX, REVIEW)
+          pattern: "*.fcs_gx_report.txt"
   - taxonomy_report:
-      type: file
-      description: Report containing the contig identifier and mapped contaminant species
-      pattern: "*.taxonomy.rpt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', taxid:'9606' ]
+      - out/*.taxonomy.rpt:
+          type: file
+          description: Report containing the contig identifier and mapped contaminant
+            species
+          pattern: "*.taxonomy.rpt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@tillenglert"
 maintainers:

@@ -1,0 +1,56 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "proovframe_map"
+description: frame-shift correction for long read (meta)genomics - maps proteins to reads
+keywords:
+  - frame-shift correction
+  - long-read sequencing
+  - sequence analysis
+tools:
+  - "proovframe":
+      description: "frame-shift correction for long read (meta)genomics"
+      homepage: "https://github.com/thackl/proovframe"
+      documentation: "https://github.com/thackl/proovframe"
+      tool_dev_url: "https://github.com/thackl/proovframe"
+      doi: "10.1101/2021.08.23.457338"
+      licence: ["MIT"]
+      identifier: biotools:proovframe
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - faa:
+        type: file
+        description: A FASTA file containing a database of guide protein sequences
+        pattern: "*.{faa,fasta,fa}"
+    - fasta:
+        type: file
+        description: A FASTA file containing raw read nucleotide sequences
+        pattern: "*.{fasta,fa}"
+
+output:
+  - tsv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.tsv":
+          type: file
+          description: Output TSV file with the frameshift-aware protein to read alignments
+          pattern: "*.tsv"
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@manuelcarbajo"
+  - "@MGS-sails"
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"

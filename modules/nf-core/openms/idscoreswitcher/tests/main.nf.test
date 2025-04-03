@@ -17,7 +17,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [id:'test'],
-                    file(params.test_data['proteomics']['openms']['idxml1'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'proteomics/openms/HepG2_rep1_small.idXML', checkIfExists: true)
                 ]
                 """
             }
@@ -41,7 +41,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [id:'test'],
-                    file(params.test_data['proteomics']['openms']['idxml1'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'proteomics/openms/HepG2_rep1_small.idXML', checkIfExists: true)
                 ]
                 """
             }

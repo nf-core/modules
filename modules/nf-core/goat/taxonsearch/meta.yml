@@ -13,36 +13,39 @@ tools:
       documentation: https://github.com/genomehubs/goat-cli/wiki
       tool_dev_url: https://genomehubs.github.io/goat-cli/goat_cli/
       licence: ["MIT"]
+      identifier: biotools:goat
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test']
-  - taxon:
-      type: string
-      description: |
-        The taxon to search. An NCBI taxon ID, or the name of a taxon at any rank.
-  - taxa_file:
-      type: file
-      description: |
-        A file of NCBI taxonomy ID's (tips) and/or binomial names. Each line
-        should contain a single entry.File size is limited to 500 entries.
-      pattern: "*.txt"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test']
+    - taxon:
+        type: string
+        description: |
+          The taxon to search. An NCBI taxon ID, or the name of a taxon at any rank.
+    - taxa_file:
+        type: file
+        description: |
+          A file of NCBI taxonomy ID's (tips) and/or binomial names. Each line
+          should contain a single entry.File size is limited to 500 entries.
+        pattern: "*.txt"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - taxonsearch:
-      type: file
-      description: TSV file containing search results.
-      pattern: "*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: TSV file containing search results.
+          pattern: "*.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@alxndrdiaz"
 maintainers:

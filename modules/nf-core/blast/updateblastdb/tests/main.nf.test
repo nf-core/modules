@@ -1,0 +1,78 @@
+nextflow_process {
+
+    name "Test Process BLAST_UPDATEBLASTDB"
+    script "../main.nf"
+    process "BLAST_UPDATEBLASTDB"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "blast"
+    tag "blast/updateblastdb"
+
+    test("Should download a blast db folder from a db name - keep compressed") {
+
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], 'mito' ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.db[0][1]).isDirectory() && file(process.out.db[0][1]).name.matches('test') },
+                { assert file(process.out.db[0][1]).listFiles().find{it.getName().contains('mito')} },
+                { assert snapshot(process.out.versions).match("versions_compressed") }
+            )
+        }
+
+    }
+
+    test("Should download a blast db folder from a db name - decompress") {
+
+        config "./nextflow.decompress.config"
+
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], 'mito' ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.db[0][1]).isDirectory() && file(process.out.db[0][1]).name.matches('test') },
+                { assert file(process.out.db[0][1]).listFiles().find{it.getName() == 'mito.ndb'}!= null },
+                { assert snapshot(process.out.versions).match("versions_decompressed") }
+            )
+        }
+
+    }
+
+    test("Should download a blast db folder from a db name - stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], 'mito' ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.db[0][1]).isDirectory() && file(process.out.db[0][1]).name.matches('test') },
+                { assert file(process.out.db[0][1]).listFiles().find{it.getName() == 'mito.ndb'}!= null },
+                { assert snapshot(process.out.versions).match("versions_stub") }
+            )
+        }
+
+    }
+
+}

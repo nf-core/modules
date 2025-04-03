@@ -6,57 +6,91 @@ keywords:
   - count
 tools:
   - "kat":
-      description: "KAT is a suite of tools that analyse jellyfish hashes or sequence files (fasta or fastq) using kmer counts"
+      description: "KAT is a suite of tools that analyse jellyfish hashes or sequence
+        files (fasta or fastq) using kmer counts"
       homepage: https://www.earlham.ac.uk/kat-tools
       documentation: https://kat.readthedocs.io/en/latest/index.html
       tool_dev_url: https://github.com/TGAC/KAT
       doi: 10.1093/bioinformatics/btw663
-      licence: "['GPL v3']"
+      licence: ["GPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: |
-        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-        respectively.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - hist:
-      type: file
-      description: KAT histogram of k-mer counts
-      pattern: "*.hist"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.hist":
+          type: file
+          description: KAT histogram of k-mer counts
+          pattern: "*.hist"
   - json:
-      type: file
-      description: KAT histogram summary of distance analysis
-      pattern: "*.hist.dist_analysis.json"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.hist.dist_analysis.json":
+          type: file
+          description: KAT histogram summary of distance analysis
+          pattern: "*.hist.dist_analysis.json"
   - png:
-      type: file
-      description: KAT plot of k-mer histogram in PNG format
-      pattern: "*.png"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.png":
+          type: file
+          description: KAT plot of k-mer histogram in PNG format
+          pattern: "*.png"
   - ps:
-      type: file
-      description: KAT plot of k-mer histogram in PS format
-      pattern: "*.ps"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.ps":
+          type: file
+          description: KAT plot of k-mer histogram in PS format
+          pattern: "*.ps"
   - pdf:
-      type: file
-      description: KAT plot of k-mer histogram in PDF format
-      pattern: "*.pdf"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.pdf":
+          type: file
+          description: KAT plot of k-mer histogram in PDF format
+          pattern: "*.pdf"
   - jellyfish_hash:
-      type: file
-      description: Jellyfish hash file
-      pattern: "*-hist.jf*"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*-hash.jf*":
+          type: file
+          description: Jellyfish hash file
+          pattern: "*-hist.jf*"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@mahesh-panchal"
 maintainers:

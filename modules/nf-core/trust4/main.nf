@@ -11,15 +11,19 @@ process TRUST4 {
     tuple val(meta), path(bam), path(reads)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(vdj_reference)
+    tuple val(meta4), val(barcode_read)
+    tuple val(meta5), val(umi_read)
 
     output:
-    tuple val(meta), path("*.tsv")          , emit: tsv
-    tuple val(meta), path("*_airr.tsv")     , emit: airr_tsv
-    tuple val(meta), path("*_report.tsv")   , emit: report_tsv
-    tuple val(meta), path("*.fa")           , emit: fasta
-    tuple val(meta), path("*.out")          , emit: out
-    tuple val(meta), path("*.fq")           , emit: fq
-    path "versions.yml"                     , emit: versions
+    tuple val(meta), path("*.tsv")                  , emit: tsv
+    tuple val(meta), path("*_airr.tsv")             , emit: airr_files
+    tuple val(meta), path("${meta.id}_airr.tsv")    , emit: airr_tsv
+    tuple val(meta), path("*_report.tsv")           , emit: report_tsv
+    tuple val(meta), path("*.fa")                   , emit: fasta
+    tuple val(meta), path("*.out")                  , emit: out
+    tuple val(meta), path("*.fq")                   , emit: fq
+    tuple val(meta), path("**")                     , emit: outs
+    path "versions.yml"                             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,12 +38,39 @@ process TRUST4 {
     // separate forward from reverse pairs
     def (forward, reverse) = reads.collate(2).transpose()
     def paired_end_mode = reads && (meta.single_end == false) ? "-1 ${forward[0]} -2 ${reverse[0]}" : ''
+    // read format is optional
+    def readFormat = params.read_format ? "--readFormat ${params.read_format}" : ''
+    // add barcode information if present
+    if (barcode_read) {
+        if (barcode_read == "R1") {
+            barcode = "--barcode ${forward[0]}"
+        } else if (barcode_read == "R2") {
+            barcode = "--barcode ${reverse[0]}"
+        }
+    }
+    else {
+        barcode = ''
+    }
+    // add umi information if present
+    if (umi_read) {
+        if (umi_read == "R1") {
+            umi = "--UMI ${forward[0]}"
+        } else if (umi_read == "R2") {
+            umi = "--UMI ${reverse[0]}"
+        }
+    }
+    else {
+        umi = ''
+    }
+
     """
-    echo $reference
     run-trust4 \\
         ${bam_mode} \\
         ${single_end_mode} \\
         ${paired_end_mode} \\
+        ${barcode} \\
+        ${readFormat} \\
+        ${umi} \\
         -t $task.cpus \\
         -f ${fasta} \\
         -o ${prefix} \\

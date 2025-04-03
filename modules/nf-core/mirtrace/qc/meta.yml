@@ -1,0 +1,109 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "mirtrace_qc"
+description: "A tool for quality control and tracing taxonomic origins of microRNA
+  sequencing data"
+keywords:
+  - microRNA
+  - smrnaseq
+  - QC
+tools:
+  - "mirtrace":
+      description: "miRTrace is a new quality control and taxonomic tracing tool developed
+        specifically for small RNA sequencing data (sRNA-Seq). Each sample is characterized
+        by profiling sequencing quality, read length, sequencing depth and miRNA complexity
+        and also the amounts of miRNAs versus undesirable sequences (derived from tRNAs,
+        rRNAs and sequencing artifacts). In addition to these routine quality control
+        (QC) analyses, miRTrace can accurately and sensitively resolve taxonomic origins
+        of small RNA-Seq data based on the composition of clade-specific miRNAs. This
+        feature can be used to detect cross-clade contaminations in typical lab settings.
+        It can also be applied for more specific applications in forensics, food quality
+        control and clinical diagnosis, for instance tracing the origins of meat products
+        or detecting parasitic microRNAs in host serum."
+      homepage: "https://github.com/friedlanderlab/mirtrace/tree/master"
+      documentation: "https://github.com/friedlanderlab/mirtrace/blob/master/release-bundle-includes/doc/manual/mirtrace_manual.pdf"
+      tool_dev_url: "https://github.com/friedlanderlab/mirtrace/tree/master"
+      doi: "10.1186/s13059-018-1588-9"
+      licence: ["GPL v2"]
+      identifier: biotools:miRTrace
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - reads:
+        type: file
+        description: microRNA sequencing data
+        pattern: "*.{fastq,fastq.gz}"
+    - mirtrace_config:
+        type: file
+        description: (Optional) CSV with list of FASTQ files to process with one entry
+          per row. No headers. Each row consists of the following columns "FASTQ file
+          path, id, adapter, PHRED-ASCII-offset".
+  - - mirtrace_species:
+        type: string
+        description: Target species in microRNA sequencing data (miRbase encoding, e.g.
+          “hsa” for Homo sapiens)
+output:
+  - html:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.html":
+          type: file
+          description: HTML file
+          pattern: "*.{html}"
+  - json:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.json":
+          type: file
+          description: JSON file
+          pattern: "*.{json}"
+  - tsv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.tsv":
+          type: file
+          description: TSV file
+          pattern: "*.{tsv}"
+  - all_fa:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - qc_passed_reads.all.collapsed/*.{fa,fasta}:
+          type: file
+          description: QC-passed reads in FASTA file. Identical reads are collapsed. Entries
+            are sorted by abundance.
+          pattern: "*.{fa,fasta}"
+  - rnatype_unknown_fa:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - qc_passed_reads.rnatype_unknown.collapsed/*.{fa,fasta}:
+          type: file
+          description: Unknown RNA type QC-passed reads in FASTA file. Identical reads
+            are collapsed. Entries are sorted by abundance.
+          pattern: "*.{fa,fasta}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@atrigila"
+maintainers:
+  - "@atrigila"

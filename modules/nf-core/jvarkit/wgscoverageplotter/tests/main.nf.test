@@ -1,0 +1,71 @@
+// nf-core modules test jvarkit/wgscoverageplotter
+nextflow_process {
+
+    name "Test Process JVARKIT_WGSCOVERAGEPLOTTER"
+    script "../main.nf"
+    process "JVARKIT_WGSCOVERAGEPLOTTER"
+    config "./nextflow.config"
+
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "jvarkit"
+    tag "jvarkit/wgscoverageplotter"
+
+    test("sarscov2 - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[1] = [ [:] , file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+                input[2] = [ [:] , file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true) ]
+                input[3] = [ [:] , file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.output[0][1]).exists() },
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+
+    }
+
+
+
+    test("sarscov2 - bam - stub") {
+
+        options  "-stub"
+
+        when {
+            process {
+                """
+                input[0] =[
+                    [id:"test"],
+                    [],
+                    []
+                ]
+                input[1] = [ [] , [] ]
+                input[2] = [ [] , [] ]
+                input[3] = [ [] , [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.output[0][1]).exists() },
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+    }
+}

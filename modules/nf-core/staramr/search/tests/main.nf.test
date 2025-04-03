@@ -1,0 +1,39 @@
+nextflow_process {
+
+    name "Test Process STARAMR_SEARCH"
+    script "../main.nf"
+    process "STARAMR_SEARCH"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "staramr"
+    tag "staramr/search"
+
+    test("staramr_search - bacteroides_fragilis - genome_fna_gz") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match("versions") },
+                // md5 for these outputs change on each run (they contain dates) and so I can only compare filename
+                { assert snapshot(file(process.out.results_xlsx.get(0).get(1)).name).match("test_results_xlsx") },
+                { assert snapshot(file(process.out.settings_txt.get(0).get(1)).name).match("test_settings_txt") },
+                { assert snapshot(path(process.out.summary_tsv.get(0).get(1))).match("test_summary_tsv") },
+                { assert snapshot(path(process.out.detailed_summary_tsv.get(0).get(1))).match("test_detailed_summary_tsv") },
+                { assert snapshot(path(process.out.resfinder_tsv.get(0).get(1))).match("test_resfinder_tsv") },
+                { assert snapshot(path(process.out.plasmidfinder_tsv.get(0).get(1))).match("test_plasmidfinder_tsv") },
+                { assert snapshot(path(process.out.mlst_tsv.get(0).get(1))).match("test_mlst_tsv") }
+            )
+        }
+    }
+}

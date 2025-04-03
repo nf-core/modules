@@ -1,5 +1,6 @@
 name: vcflib_vcfuniq
-description: List unique genotypes. Like GNU uniq, but for VCF records. Remove records which have the same position, ref, and alt as the previous record.
+description: List unique genotypes. Like GNU uniq, but for VCF records. Remove records
+  which have the same position, ref, and alt as the previous record.
 keywords:
   - vcf
   - uniq
@@ -11,34 +12,40 @@ tools:
       documentation: https://github.com/vcflib/vcflib#USAGE
       doi: "10.1101/2021.05.21.445151"
       licence: ["MIT"]
+      identifier: biotools:vcflib
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: Compressed VCF file
-      pattern: "*.vcf.gz"
-  - tbi:
-      type: file
-      description: Index of VCF file
-      pattern: "*.vcf.gz.tbi"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: Compressed VCF file
+        pattern: "*.vcf.gz"
+    - tbi:
+        type: file
+        description: Index of VCF file
+        pattern: "*.vcf.gz.tbi"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - vcf:
-      type: file
-      description: Compressed VCF file
-      pattern: "*.vcf.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.vcf.gz"
+      - "*.vcf.gz":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.vcf.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@drpatelh"
 maintainers:

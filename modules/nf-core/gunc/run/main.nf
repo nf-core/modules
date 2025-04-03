@@ -4,11 +4,11 @@ process GUNC_RUN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gunc:1.0.5--pyhdfd78af_0' :
-        'biocontainers/gunc:1.0.5--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gunc:1.0.6--pyhdfd78af_0' :
+        'biocontainers/gunc:1.0.6--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(fasta)
+    tuple val(meta), path(fasta_files, stageAs: 'input_files/*')
     path(db)
 
     output:
@@ -23,13 +23,24 @@ process GUNC_RUN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    ls input_files/* > input_files.txt
     gunc \\
         run \\
-        --input_fasta $fasta \\
+        --input_file input_files.txt \\
         --db_file $db \\
         --threads $task.cpus \\
         $args
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gunc: \$( gunc --version )
+    END_VERSIONS
+    """
+
+    stub:
+    """
+    touch maxCSS_level.tsv all_levels.tsv
+    
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         gunc: \$( gunc --version )

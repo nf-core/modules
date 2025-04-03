@@ -1,0 +1,78 @@
+name: "viennarna_rnacofold"
+description: calculate secondary structures of two RNAs with dimerization
+keywords:
+  - RNA
+  - fasta
+  - rna_structure
+tools:
+  - "viennarna":
+      description: |
+        calculate secondary structures of two RNAs with dimerization
+
+        The program works much like RNAfold, but allows one to specify two RNA
+        sequences which are then allowed to form a dimer structure. RNA sequences
+        are read from stdin in the usual format, i.e. each line of input
+        corresponds to one sequence, except for lines starting with > which
+        contain the name of the next sequence. To compute the hybrid structure
+        of two molecules, the two sequences must be concatenated using the &
+        character as separator. RNAcofold can compute minimum free energy (mfe)
+        structures, as well as partition function (pf) and base pairing
+        probability matrix (using the -p switch) Since dimer formation is
+        concentration dependent, RNAcofold can be used to compute equilibrium
+        concentrations for all five monomer and (homo/hetero)-dimer species,
+        given input concentrations for the monomers. Output consists of the
+        mfe structure in bracket notation as well as PostScript structure
+        plots and “dot plot” files containing the pair probabilities, see
+        the RNAfold man page for details. In the dot plots a cross marks
+        the chain break between the two concatenated sequences. The program
+        will continue to read new sequences until a line consisting of the
+        single character @ or an end of file condition is encountered.
+      homepage: "https://www.tbi.univie.ac.at/RNA/"
+      documentation: "https://viennarna.readthedocs.io/en/latest/"
+      doi: 10.1186/1748-7188-6-26
+      licence: ["custom"]
+      identifier: biotools:viennarna
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - rnacofold_fasta:
+        type: file
+        description: |
+          A fasta file containing RNA or transcript sequences
+        pattern: "*.{fasta,fa}"
+output:
+  - rnacofold_csv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.csv":
+          type: file
+          description: The CSV Output of RNAcofold that has the predicted structure and
+            energies
+          pattern: "*.{csv}"
+  - rnacofold_ps:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.ps":
+          type: file
+          description: The text Output of RNAfold that contains the predicted secondary
+            structure in postscript format
+          pattern: "*.{ps}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@kokul-atx"
+maintainers:
+  - "@kokul-atx"

@@ -16,34 +16,64 @@ tools:
       documentation: http://bowtie-bio.sourceforge.net/manual.shtml
       arxiv: arXiv:1303.3997
       licence: ["Artistic-2.0"]
+      identifier: biotools:bowtie
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: |
-        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-        respectively.
-  - index:
-      type: file
-      description: Bowtie genome index files
-      pattern: "*.ebwt"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively.
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing genome information
+          e.g. [ id:'sarscov2' ]
+    - index:
+        type: file
+        description: Bowtie genome index files
+        pattern: "*.ebwt"
+  - - save_unaligned:
+        type: boolean
+        description: Whether to save fastq files containing the reads which did not
+          align.
 output:
   - bam:
-      type: file
-      description: Output BAM file containing read alignments
-      pattern: "*.{bam}"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - meta:
+          type: file
+          description: Output BAM file containing read alignments
+          pattern: "*.{bam}"
+      - "*.bam":
+          type: file
+          description: Output BAM file containing read alignments
+          pattern: "*.{bam}"
+  - log:
+      - meta:
+          type: file
+          description: Log file
+          pattern: "*.log"
+      - "*.out":
+          type: file
+          description: Log file
+          pattern: "*.log"
   - fastq:
-      type: file
-      description: Unaligned FastQ files
-      pattern: "*.fastq.gz"
+      - meta:
+          type: file
+          description: Unaligned FastQ files
+          pattern: "*.fastq.gz"
+      - "*fastq.gz":
+          type: file
+          description: Unaligned FastQ files
+          pattern: "*.fastq.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@kevinmenden"
 maintainers:

@@ -1,0 +1,60 @@
+
+nextflow_process {
+
+    name "Test Process COOLER_DUMP"
+    script "../main.nf"
+    process "COOLER_DUMP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cooler"
+    tag "cooler/dump"
+
+    test("test-cooler-dump") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+				    file("https://raw.githubusercontent.com/open2c/cooler/master/tests/data/toy.asymm.16.cool", checkIfExists: true),
+				    [:] // resolution if any
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-cooler-dump-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+				    file("https://raw.githubusercontent.com/open2c/cooler/master/tests/data/toy.asymm.16.cool", checkIfExists: true),
+				    [:] // resolution if any
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

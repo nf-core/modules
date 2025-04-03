@@ -1,0 +1,112 @@
+
+nextflow_process {
+
+    name "Test Process PICARD_COLLECTMULTIPLEMETRICS"
+    script "../main.nf"
+    process "PICARD_COLLECTMULTIPLEMETRICS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "picard"
+    tag "picard/collectmultiplemetrics"
+
+    test("test-picard-collectmultiplemetrics") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+				]
+				input[1] = [
+				    [id:'genome'],
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+				]
+				input[2] = [[id:'genome'],[]]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.metrics[0][1].collect { file(it).name }.toSorted(),
+                    process.out.pdf[0][1].collect { file(it).name }.toSorted(),
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-picard-collectmultiplemetrics-nofasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+				]
+				input[1] = [[id:'genome'],[]]
+                input[2] = [[id:'genome'],[]]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.metrics[0][1].collect { file(it).name }.toSorted(),
+                    process.out.pdf[0][1].collect { file(it).name }.toSorted(),
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-picard-collectmultiplemetrics-cram") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				[ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+				]
+				input[1] = [
+				    [id:'genome'],
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+				]
+				input[2] = [
+				    [id:'genome'],
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.metrics[0][1].collect { file(it).name }.toSorted(),
+                    process.out.pdf[0][1].collect { file(it).name }.toSorted(),
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+}

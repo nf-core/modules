@@ -1,0 +1,122 @@
+nextflow_process {
+
+    name "Test Process NANOQ"
+    script "../main.nf"
+    process "NANOQ"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "nanoq"
+
+    test("sarscov2 - nanopore_uncompressed") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true)
+                ]
+
+                input[1] = 'fastq'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - nanopore_compressed_gz") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = 'fastq.gz'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    test("sarscov2 - nanopore_compressed_bz2") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = 'fastq.bz2'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    test("sarscov2 - nanopore_compressed_lzma") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = 'fastq.lzma'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - nanopore_compressed_gz - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true)
+                    ]
+                    input[1] = 'fastq.gz'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+}

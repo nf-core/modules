@@ -38,7 +38,7 @@ process GENMAP_MAP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        genmap: \$(genmap --version 2>&1 | sed 's/GenMap version: //; s/SeqAn.*\$//')
+        genmap: \$(genmap --version | sed 's/GenMap version: //; s/SeqAn.*\$//')
     END_VERSIONS
     """
 
@@ -60,7 +60,7 @@ process GENMAP_MAP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        genmap: \$(genmap --version 2>&1 | sed 's/GenMap version: //; s/SeqAn.*\$//')
+        genmap: \$(genmap --version | sed 's/GenMap version: //; s/SeqAn.*\$//')
     END_VERSIONS
     """
 }

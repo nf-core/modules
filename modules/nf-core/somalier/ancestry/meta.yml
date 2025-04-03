@@ -1,5 +1,6 @@
 name: "somalier_ancestry"
-description: Somalier can extract informative sites, evaluate relatedness, and perform quality-control on BAM/CRAM/BCF/VCF/GVCF or from jointly-called VCFs
+description: Somalier can extract informative sites, evaluate relatedness, and perform
+  quality-control on BAM/CRAM/BCF/VCF/GVCF or from jointly-called VCFs
 keywords:
   - relatedness
   - QC
@@ -14,53 +15,66 @@ keywords:
   - family
 tools:
   - "somalier":
-      description: "Somalier can extract informative sites, evaluate relatedness, and perform quality-control on BAM/CRAM/BCF/VCF/GVCF or from jointly-called VCFs"
+      description: "Somalier can extract informative sites, evaluate relatedness, and
+        perform quality-control on BAM/CRAM/BCF/VCF/GVCF or from jointly-called VCFs"
       homepage: "https://github.com/brentp/somalier"
       documentation: "https://github.com/brentp/somalier"
       tool_dev_url: "https://github.com/brentp/somalier"
       doi: "10.1186/s13073-020-00761-2"
-      licence: "['MIT']"
+      licence: ["MIT"]
+      identifier: biotools:somalier
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - query_somalier_files:
-      type: file
-      description: Set of somalier files for query samples. Obtained via somalier extract.
-      pattern: "*.{somalier}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing labelled samples information
-        e.g. [ id:'test', single_end:false ]
-  - labelled_somalier_files:
-      type: file
-      description: Set of somalier files for labelled samples. e.g. Somalier files for 1kg https://zenodo.org/record/3479773/files/1kg.somalier.tar.gz?download=1
-      pattern: "*.{somalier}"
-  - labels_tsv:
-      type: file
-      description: TSV for labelled samples. e.g. Somalier labels for 1kg https://raw.githubusercontent.com/brentp/somalier/master/scripts/ancestry-labels-1kg.tsv
-      pattern: "*.{tsv}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - query_somalier_files:
+        type: file
+        description: Set of somalier files for query samples. Obtained via somalier
+          extract.
+        pattern: "*.{somalier}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing labelled samples information
+          e.g. [ id:'test', single_end:false ]
+    - labels_tsv:
+        type: file
+        description: TSV for labelled samples. e.g. Somalier labels for 1kg
+          https://raw.githubusercontent.com/brentp/somalier/master/scripts/ancestry-labels-1kg.tsv
+        pattern: "*.{tsv}"
+    - labelled_somalier_files:
+        type: file
+        description: Set of somalier files for labelled samples. e.g. Somalier files
+          for 1kg https://zenodo.org/record/3479773/files/1kg.somalier.tar.gz?download=1
+        pattern: "*.{somalier}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - tsv:
-      type: file
-      description: TSV with ancestry information for query and labelled samples.
-      pattern: "*.{-ancestry.tsv}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*-ancestry.tsv":
+          type: file
+          description: TSV with ancestry information for query and labelled samples.
+          pattern: "*.{-ancestry.tsv}"
   - html:
-      type: file
-      description: html file with ancestry information for query and labelled samples.
-      pattern: "*.{-ancestry.html}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*-ancestry.html":
+          type: file
+          description: html file with ancestry information for query and labelled samples.
+          pattern: "*.{-ancestry.html}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@atrigila"
 maintainers:

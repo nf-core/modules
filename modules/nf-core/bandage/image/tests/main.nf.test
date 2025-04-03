@@ -1,0 +1,40 @@
+
+nextflow_process {
+
+    name "Test Process BANDAGE_IMAGE"
+    script "../main.nf"
+    process "BANDAGE_IMAGE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bandage"
+    tag "bandage/image"
+
+    test("test-bandage-image") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'B-3106' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gfa/assembly.gfa', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					file(process.out.png[0][1]).name,
+					file(process.out.svg[0][1]).readLines()[3..7],
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

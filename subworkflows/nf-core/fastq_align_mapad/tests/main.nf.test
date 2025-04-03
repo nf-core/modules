@@ -1,0 +1,67 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTQ_ALIGN_MAPAD"
+    script "../main.nf"
+    config "./nextflow.config"
+    workflow "FASTQ_ALIGN_MAPAD"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fastq_align_mapad"
+    tag "subworkflows/bam_sort_stats_samtools"
+    tag "mapad"
+    tag "mapad/map"
+    tag "mapad/index"
+
+
+    test("sarscov2 - bam - single_end") {
+        setup {
+            run("MAPAD_INDEX") {
+                script "../../../../modules/nf-core/mapad/index/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                    """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([ [ id:'test', single_end:true ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists: true)
+                        ])
+                input[1] = MAPAD_INDEX.out.index
+                input[2] = [ [ id:'genome' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                        ]
+                input[3] = 0.03
+                input[4] = false
+                input[5] = 0.5
+                input[6] = 0.5
+                input[7] = 0.02
+                input[8] = 1.0
+                input[9] = 0.001
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                        workflow.out.bai,
+                        workflow.out.csi,
+                        workflow.out.stats,
+                        workflow.out.flagstat,
+                        workflow.out.idxstats,
+                        workflow.out.versions,
+                    ).match()
+                },
+                { assert file(workflow.out.bam_unsorted.get(0).get(1)).exists() },
+                { assert file(workflow.out.bam.get(0).get(1)).exists() },
+            )
+        }
+    }
+}

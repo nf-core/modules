@@ -1,0 +1,45 @@
+name: trycycler_subsample
+description: Subsample a long-read sequencing fastq file for multiple assemblies
+keywords:
+  - subsample
+  - fastq
+  - genomics
+tools:
+  - "trycycler":
+      description: Trycycler is a tool for generating consensus long-read assemblies
+        for bacterial genomes
+      homepage: https://github.com/rrwick/Trycycler
+      documentation: https://github.com/rrwick/Trycycler/wiki
+      doi: 10.1186/s13059-021-02483-z
+      licence: ["GPL v3"]
+      identifier: biotools:trycycler
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - reads:
+        type: file
+        description: Long-read FASTQ file, optionally gzip compressed
+output:
+  - subreads:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*/*.fastq.gz":
+          type: file
+          description: Subsampled read sets
+          pattern: "*.{fastq.gz}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@watsonar"
+maintainers:
+  - "@watsonar"

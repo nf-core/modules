@@ -1,0 +1,63 @@
+
+nextflow_process {
+
+    name "Test Process ELPREP_SPLIT"
+    script "../main.nf"
+    process "ELPREP_SPLIT"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "elprep"
+    tag "elprep/split"
+
+    test("test-elprep-split") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					process.out.bam[0][1].collect { file(it).name }, // bam -> htsjdk.samtools.SAMFormatException: Error parsing SAM header. Unrecognized header record type.
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-elprep-split-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

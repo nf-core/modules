@@ -6,34 +6,51 @@ keywords:
   - map
 tools:
   - "pretextmap":
-      description: "Paired REad TEXTure Mapper. Converts SAM formatted read pairs into genome contact maps."
+      description: "Paired REad TEXTure Mapper. Converts SAM formatted read pairs into
+        genome contact maps."
       homepage: "https://github.com/wtsi-hpag/PretextMap"
       documentation: "https://github.com/wtsi-hpag/PretextMap/blob/master/README.md"
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - input:
-      type: file
-      description: BAM/CRAM/SAM file or pairs formatted reads file
-      pattern: "*.{bam,cram,sam,pairs.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input:
+        type: file
+        description: BAM/CRAM/SAM file or pairs formatted reads file
+        pattern: "*.{bam,cram,sam,pairs.gz}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Reference sequence file
+        pattern: "*.{fasta,fna,fa}"
+    - fai:
+        type: file
+        description: Reference sequence index file
+        pattern: "*.{fai}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - pretext:
-      type: file
-      description: pretext map
-      pattern: "*.pretext"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.pretext":
+          type: file
+          description: pretext map
+          pattern: "*.pretext"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@marrip"
   - "@getrudeln"

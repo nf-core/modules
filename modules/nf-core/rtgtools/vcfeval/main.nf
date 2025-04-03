@@ -8,7 +8,7 @@ process RTGTOOLS_VCFEVAL {
         'biocontainers/rtg-tools:3.12.1--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(query_vcf), path(query_vcf_tbi), path(truth_vcf), path(truth_vcf_tbi), path(truth_bed), path(evaluation_bed)
+    tuple val(meta), path(query_vcf), path(query_vcf_tbi), path(truth_vcf), path(truth_vcf_tbi), path(truth_bed), path(regions_bed)
     tuple val(meta2), path(sdf)
 
     output:
@@ -33,8 +33,8 @@ process RTGTOOLS_VCFEVAL {
     script:
     def args = task.ext.args ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def bed_regions = truth_bed ? "--bed-regions=${truth_bed}" : ""
-    def eval_regions = evaluation_bed ? "--evaluation-regions=${evaluation_bed}" : ""
+    def bed_regions = regions_bed ? "--bed-regions=${regions_bed}" : ""
+    def eval_regions = truth_bed ? "--evaluation-regions=${truth_bed}" : ""
     def truth_index = truth_vcf_tbi ? "" : "rtg index ${truth_vcf}"
     def query_index = query_vcf_tbi ? "" : "rtg index ${query_vcf}"
     def avail_mem = task.memory.toGiga() + "G"
@@ -68,17 +68,17 @@ process RTGTOOLS_VCFEVAL {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    touch ${prefix}.tp.vcf.gz
+    echo | gzip > ${prefix}.tp.vcf.gz
     touch ${prefix}.tp.vcf.gz.tbi
-    touch ${prefix}.fn.vcf.gz
+    echo | gzip > ${prefix}.fn.vcf.gz
     touch ${prefix}.fn.vcf.gz.tbi
-    touch ${prefix}.fp.vcf.gz
+    echo | gzip > ${prefix}.fp.vcf.gz
     touch ${prefix}.fp.vcf.gz.tbi
-    touch ${prefix}.tp-baseline.vcf.gz
+    echo | gzip > ${prefix}.tp-baseline.vcf.gz
     touch ${prefix}.tp-baseline.vcf.gz.tbi
-    touch ${prefix}.snp_roc.tsv.gz
-    touch ${prefix}.non_snp_roc.tsv.gz
-    touch ${prefix}.weighted_roc.tsv.gz
+    echo | gzip > ${prefix}.snp_roc.tsv.gz
+    echo | gzip > ${prefix}.non_snp_roc.tsv.gz
+    echo | gzip > ${prefix}.weighted_roc.tsv.gz
     touch ${prefix}.summary.txt
     touch ${prefix}.phasing.txt
 

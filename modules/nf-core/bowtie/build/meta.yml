@@ -14,19 +14,32 @@ tools:
       documentation: http://bowtie-bio.sourceforge.net/manual.shtml
       arxiv: arXiv:1303.3997
       licence: ["Artistic-2.0"]
+      identifier: biotools:bowtie
 input:
-  - fasta:
-      type: file
-      description: Input genome fasta file
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing information about the genome fasta
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: Input genome fasta file
 output:
   - index:
-      type: file
-      description: Bowtie genome index files
-      pattern: "*.ebwt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing information about the genome fasta
+            e.g. [ id:'test' ]
+      - bowtie:
+          type: file
+          description: Folder containing bowtie genome index files
+          pattern: "*.ebwt"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@kevinmenden"
   - "@drpatelh"

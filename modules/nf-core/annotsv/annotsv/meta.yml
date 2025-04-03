@@ -12,81 +12,99 @@ tools:
       homepage: "https://lbgi.fr/AnnotSV/"
       documentation: "https://lbgi.fr/AnnotSV/"
       tool_dev_url: "https://github.com/lgmgeo/AnnotSV"
-      licence: "GPL-3.0"
+      doi: 10.1093/bioinformatics/bty304
+      licence: ["GPL-3.0"]
+      identifier: biotools:AnnotSV
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - sv_vcf:
-      type: file
-      description: A VCF or BED file containing the structural variants to be annotated
-      pattern: "*.{bed,vcf,vcf.gz}"
-  - sv_vcf_index:
-      type: file
-      description: OPTIONAL - The index for gzipped VCF files
-      pattern: "*.tbi"
-  - candidate_small_variants:
-      type: file
-      description: OPTIONAL - A file containing candidate small variants
-      pattern: "*.{vcf,vcf.gz}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing annotations information
-  - annotations:
-      type: directory
-      description: |
-        The directory containing the annotations (URL to download this will be made available soon)
-        For now this can be downloaded in the way defined in the repo (https://github.com/lgmgeo/AnnotSV#quick-installation)
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing candidate genes information
-  - candidate_genes:
-      type: file
-      description: OPTIONAL - A file containing genes (either space-separated, tab-separated or line-break-separated)
-      pattern: "*.txt"
-  - meta4:
-      type: map
-      description: |
-        Groovy Map containing candidate false positive SNV information
-  - false_positive_snv:
-      type: file
-      description: OPTIONAL - A VCF file containing small variant candidates
-      pattern: "*.{vcf,vcf.gz}"
-  - meta5:
-      type: map
-      description: |
-        Groovy Map containing candidate gene transcripts information
-  - gene_transcripts:
-      type: file
-      description: OPTIONAL - A file containing the preferred gene transcripts to be used in priority during annotation (either space-separated or tab-separated)
-      pattern: "*.txt"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - sv_vcf:
+        type: file
+        description: A VCF or BED file containing the structural variants to be annotated
+        pattern: "*.{bed,vcf,vcf.gz}"
+    - sv_vcf_index:
+        type: file
+        description: OPTIONAL - The index for gzipped VCF files
+        pattern: "*.tbi"
+    - candidate_small_variants:
+        type: file
+        description: OPTIONAL - A file containing candidate small variants
+        pattern: "*.{vcf,vcf.gz}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing annotations information
+    - annotations:
+        type: directory
+        description: |
+          The directory containing the annotations (URL to download this will be made available soon)
+          For now this can be downloaded in the way defined in the repo (https://github.com/lgmgeo/AnnotSV#quick-installation)
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing candidate genes information
+    - candidate_genes:
+        type: file
+        description: OPTIONAL - A file containing genes (either space-separated, tab-separated
+          or line-break-separated)
+        pattern: "*.txt"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing candidate false positive SNV information
+    - false_positive_snv:
+        type: file
+        description: OPTIONAL - A VCF file containing small variant candidates
+        pattern: "*.{vcf,vcf.gz}"
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing candidate gene transcripts information
+    - gene_transcripts:
+        type: file
+        description: OPTIONAL - A file containing the preferred gene transcripts to
+          be used in priority during annotation (either space-separated or tab-separated)
+        pattern: "*.txt"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - tsv:
-      type: file
-      description: A TSV file containing the annotated variants
-      pattern: "*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: A TSV file containing the annotated variants
+          pattern: "*.tsv"
   - unannotated_tsv:
-      type: file
-      description: OPTIONAL - TSV file containing the unannotated variants
-      pattern: "*.unannotated.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.unannotated.tsv":
+          type: file
+          description: OPTIONAL - TSV file containing the unannotated variants
+          pattern: "*.unannotated.tsv"
   - vcf:
-      type: file
-      description: |
-        OPTIONAL - A VCF file containing the annotated variants (created when `-vcf 1` is specified in the args)
-      pattern: "*.vcf"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf":
+          type: file
+          description: |
+            OPTIONAL - A VCF file containing the annotated variants (created when `-vcf 1` is specified in the args)
+          pattern: "*.vcf"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

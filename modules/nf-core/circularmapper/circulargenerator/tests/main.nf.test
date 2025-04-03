@@ -1,0 +1,61 @@
+nextflow_process {
+
+    name "Test Process CIRCULARMAPPER_CIRCULARGENERATOR"
+    script "../main.nf"
+    process "CIRCULARMAPPER_CIRCULARGENERATOR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "circularmapper"
+    tag "circularmapper/circulargenerator"
+
+    test("sarscov2 - genome_fasta") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                input[1] = [ [ id:'test' ], 500 ]
+                input[2] = [ [ id:'test' ],  "MT192765.1" ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - genome_fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                input[1] = [ [ id:'test' ], 500 ]
+                input[2] = [ [ id:'test' ],  "MT192765.1" ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

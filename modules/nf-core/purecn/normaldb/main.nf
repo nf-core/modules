@@ -2,11 +2,10 @@ process PURECN_NORMALDB {
     tag "$meta.id"
     label 'process_medium'
 
-    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-582ac26068889091d5e798347c637f8208d77a71:a29c64a63498b1ee8b192521fdf6ed3c65506994-0':
-        'biocontainers/mulled-v2-582ac26068889091d5e798347c637f8208d77a71:a29c64a63498b1ee8b192521fdf6ed3c65506994-0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/31/31bad5bbf2277cc9ea746c3c4fd440d1689dd7c8d32d0697b5077f08c084a03e/data':
+        'community.wave.seqera.io/library/bioconductor-org.hs.eg.db_bioconductor-purecn_bioconductor-txdb.hsapiens.ucsc.hg19.knowngene_bioconductor-txdb.hsapiens.ucsc.hg38.knowngene_pruned:bc942848b4c78040' }"
 
     input:
     tuple val(meta), path(coverage_files), path(normal_vcf), path(normal_vcf_tbi)
@@ -25,11 +24,9 @@ process PURECN_NORMALDB {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def normal_panel = normal_vcf ? "--normal-panel ${normal_vcf}" : ""
-    def VERSION = '2.4.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
+    def args            = task.ext.args     ?: ''
+    def prefix          = task.ext.prefix   ?: "${meta.id}"
+    def normal_panel    = normal_vcf        ? "--normal-panel ${normal_vcf}" : ""
     """
     echo $coverage_files | tr ' ' '\\n' > coverages.list
     library_path=\$(Rscript -e 'cat(.libPaths(), sep = "\\n")')
@@ -42,18 +39,16 @@ process PURECN_NORMALDB {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        purecn: ${VERSION}
+        purecn: \$(Rscript -e 'packageVersion("PureCN")' | sed -n 's|\\[1\\] ‘\\(.*\\)’|\\1|p')
     END_VERSIONS
     """
 
     stub:
 
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def mapping_bias = args.contains("--normal-panel") ? "" : "touch mapping_bias_${prefix}_${genome}.rds"
-    def mapping_bias_hq_sites = args.contains("--normal-panel") ? "" : "touch mapping_bias_hq_sites_${prefix}_${genome}.bed"
-    def VERSION = '2.4.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
+    def args                    = task.ext.args                     ?: ''
+    def prefix                  = task.ext.prefix                   ?: "${meta.id}"
+    def mapping_bias            = args.contains("--normal-panel")   ? "" : "touch mapping_bias_${prefix}_${genome}.rds"
+    def mapping_bias_hq_sites   = args.contains("--normal-panel")   ? "" : "touch mapping_bias_hq_sites_${prefix}_${genome}.bed"
     """
     touch normalDB_${prefix}_${genome}.rds
     ${mapping_bias}
@@ -63,7 +58,7 @@ process PURECN_NORMALDB {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        purecn: ${VERSION}
+        purecn: \$(Rscript -e 'packageVersion("PureCN")' | sed -n 's|\\[1\\] ‘\\(.*\\)’|\\1|p')
     END_VERSIONS
     """
 }

@@ -1,0 +1,57 @@
+
+nextflow_process {
+
+    name "Test Process LISSERO"
+    script "../main.nf"
+    process "LISSERO"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "lissero"
+
+    test("test-lissero") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+				file("https://github.com/MDU-PHL/LisSero/raw/master/tests/test_seq/NC_002973.fna", checkIfExists: true) ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.tsv[0][1]).readLines()[0], // Two line file. Line 2 contains a path.
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-lissero-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+				file("https://github.com/MDU-PHL/LisSero/raw/master/tests/test_seq/NC_002973.fna", checkIfExists: true) ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

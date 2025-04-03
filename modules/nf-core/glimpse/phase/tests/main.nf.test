@@ -22,15 +22,15 @@ nextflow_process {
                 ])
                 input_vcf     = Channel.of([
                     [ id:'input'], // meta map
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz", checkIfExists: true),
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz.csi", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz.csi", checkIfExists: true)
                 ])
                 ref_panel     = Channel.of([
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true)
                 ])
                 ch_map        = Channel.of([
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/chr21.b38.gmap.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/chr21.b38.gmap.gz", checkIfExists: true),
                 ])
 
                 input[0]      = input_vcf
@@ -47,7 +47,7 @@ nextflow_process {
 
         then {
             String targetFileName = "input_present_chr21_16650000-16800000.vcf.gz"
-            File selectedFile = process.out.phased_variant.stream()
+            File selectedFile = process.out.phased_variants.stream()
                 .filter(vector -> vector.size() > 1)
                 .map(vector -> new File(vector.get(1).toString()))
                 .filter(file -> file.getName().equals(targetFileName))
@@ -58,7 +58,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions).match("versions") },
-                { assert process.out.phased_variant.size() == 4},
+                { assert process.out.phased_variants.size() == 4},
                 { assert snapshot(lines).match("imputed") }
             )
         }

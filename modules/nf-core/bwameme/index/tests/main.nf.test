@@ -1,0 +1,59 @@
+nextflow_process {
+
+    name "Test Process BWAMEME_INDEX"
+    script "../main.nf"
+    process "BWAMEME_INDEX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bwameme"
+    tag "bwameme/index"
+
+    config "./nextflow.config"
+
+    test("BWAMEME index") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("BWAMEME index - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

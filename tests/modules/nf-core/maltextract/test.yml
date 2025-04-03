@@ -1,9 +1,0 @@
-- name: maltextract
-  command: nextflow run ./tests/modules/nf-core/maltextract -entry test_maltextract -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/maltextract/nextflow.config
-  tags:
-    - maltextract
-  files:
-    - path: output/maltextract/results/error.txt
-    - path: output/maltextract/results/log.txt
-      contains:
-        - "INFO: Peak memory"

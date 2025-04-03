@@ -11,31 +11,34 @@ tools:
       homepage: "https://github.com/mpieva/mapAD"
       documentation: "https://github.com/mpieva/mapAD"
       tool_dev_url: "https://github.com/mpieva/mapAD"
-      licence: "['MIT']"
+      licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: FASTA file
-      pattern: "*.{fasta,fa,fna}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: FASTA file
+        pattern: "*.{fasta,fa,fna}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - index:
-      type: directory
-      description: mapAD genome index files
-      pattern: "*.{tbw,tle,toc,tos,tpi,trt,tsa}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - mapad/:
+          type: directory
+          description: mapAD genome index files
+          pattern: "*.{tbw,tle,toc,tos,tpi,trt,tsa}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jch-13"
 maintainers:

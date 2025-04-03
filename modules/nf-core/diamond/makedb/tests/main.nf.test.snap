@@ -1,41 +1,101 @@
 {
-    "db_tax": {
+    "Should build a DIAMOND db file from a fasta file with taxonomic information": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.dmnd:md5,9d57aa88cd1766adfda8360876fc0e4f"
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.dmnd:md5,9d57aa88cd1766adfda8360876fc0e4f"
+                    ]
+                ],
+                "1": [
+                    "versions.yml:md5,29a8cea287d2206b9a837d2750de00c4"
+                ],
+                "db": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.dmnd:md5,9d57aa88cd1766adfda8360876fc0e4f"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,29a8cea287d2206b9a837d2750de00c4"
                 ]
-            ]
+            }
         ],
-        "timestamp": "2023-12-05T14:28:48.616684409"
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "24.04.3"
+        },
+        "timestamp": "2024-07-29T14:35:11.221381"
     },
-    "db": {
+    "Should build a DIAMOND db file from a fasta file without taxonomic information": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.dmnd:md5,6039420745dd4db6e761244498460ae1"
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.dmnd:md5,6039420745dd4db6e761244498460ae1"
+                    ]
+                ],
+                "1": [
+                    "versions.yml:md5,29a8cea287d2206b9a837d2750de00c4"
+                ],
+                "db": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.dmnd:md5,6039420745dd4db6e761244498460ae1"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,29a8cea287d2206b9a837d2750de00c4"
                 ]
-            ]
+            }
         ],
-        "timestamp": "2023-12-05T14:22:02.696726038"
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "24.04.3"
+        },
+        "timestamp": "2024-07-29T14:35:00.595693"
     },
-    "gz_db": {
+    "Should build a DIAMOND db file from a zipped fasta file without taxonomic information": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.dmnd:md5,6039420745dd4db6e761244498460ae1"
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.dmnd:md5,6039420745dd4db6e761244498460ae1"
+                    ]
+                ],
+                "1": [
+                    "versions.yml:md5,29a8cea287d2206b9a837d2750de00c4"
+                ],
+                "db": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.dmnd:md5,6039420745dd4db6e761244498460ae1"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,29a8cea287d2206b9a837d2750de00c4"
                 ]
-            ]
+            }
         ],
-        "timestamp": "2023-12-05T14:22:07.430248018"
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "24.04.3"
+        },
+        "timestamp": "2024-07-29T14:35:05.494933"
     }
 }

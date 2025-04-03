@@ -10,43 +10,62 @@ tools:
       homepage: "https://github.com/fulcrumgenomics/fqtk"
       documentation: "https://github.com/fulcrumgenomics/fqtk"
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - sample_sheet:
-      type: file
-      description: Tsv file, with two columns sample_id and barcode
-      pattern: "*.{tsv}"
-  - fastq_readstructure_pairs:
-      type: map
-      description: List of lists i.e. [[<fastq file name>, <read structure>, <absolute path to fastq directory>],...]
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - sample_sheet:
+        type: file
+        description: Tsv file, with two columns sample_id and barcode
+        pattern: "*.{tsv}"
+    - fastq_folder:
+        type: file
+        description: Directory containing fastq files that will be staged as 'input' folder
+        pattern: "*"
+    - fastq_readstructure_pairs:
+        type: map
+        description: List of lists i.e. [[<fastq file name>, <read structure>],...]
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - sample_fastq:
-      type: file
-      description: Demultiplexed per-sample FASTQ files
-      pattern: "output/*R*.fastq.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - output/*.fq.gz:
+          type: file
+          description: Demultiplexed per-sample FASTQ files
+          pattern: "output/*R*.fastq.gz"
   - metrics:
-      type: file
-      description: |
-        Demultiplexing summary stats; sample_id, barcode templates, frac_templates, ratio_to_mean, ratio_to_best
-      pattern: "output/demux-metrics.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - output/demux-metrics.txt:
+          type: file
+          description: |
+            Demultiplexing summary stats; sample_id, barcode templates, frac_templates, ratio_to_mean, ratio_to_best
+          pattern: "output/demux-metrics.txt"
   - most_frequent_unmatched:
-      type: file
-      description: |
-        File containing unmatched fastq records
-      pattern: "output/unmatched*.fq.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - output/unmatched*.fq.gz:
+          type: file
+          description: |
+            File containing unmatched fastq records
+          pattern: "output/unmatched*.fq.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nh13"
   - "@sam-white04"

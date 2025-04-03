@@ -1,0 +1,80 @@
+name: "emu_abundance"
+description: A taxonomic profiler for metagenomic 16S data optimized for error prone
+  long reads.
+keywords:
+- metagenomics
+- 16S
+- nanopore
+tools:
+- emu:
+    description: Emu is a relative abundance estimator for 16s genomic data.
+    homepage: https://gitlab.com/treangenlab/emu
+    documentation: https://gitlab.com/treangenlab/emu
+    doi: 10.1038/s41592-022-01520-4
+    licence: ["MIT"]
+    identifier: biotools:emu
+input:
+- - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - reads:
+      type: file
+      description: fastq.gz file containing 16S metagenomics data
+      pattern: "*.{fastq.gz}"
+- - db:
+      type: directory
+      description: Emu database
+output:
+- report:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+      pattern: "*{.tsv}"
+  - '*.tsv':
+      type: map
+      description: Output file containing relative abundances for reads
+      pattern: "*{.tsv}"
+- assignment_report:
+  - meta:
+      type: map
+      description: Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+      pattern: "*{.tsv}"
+  - '*read-assignment-distributions.tsv':
+      type: map
+      description: Output file with read assignment distributions.
+      pattern: "*{.tsv}"
+- samfile:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+      pattern: "*{.sam}"
+  - '*.sam':
+      type: map
+      description: Sam alignment file
+      pattern: "*{.sam}"
+- unclassified_fa:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+      pattern: "*{.fa}"
+  - '*.fasta':
+      type: map
+      description: Output file with unclassified sequences
+      pattern: "*{.fa}"
+- versions:
+  - versions.yml:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+- "@fwa93"
+- "@sofstam"

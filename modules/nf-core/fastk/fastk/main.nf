@@ -3,7 +3,10 @@ process FASTK_FASTK {
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    container 'ghcr.io/nbisweden/fastk_genescopefk_merquryfk:1.2'
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9f/9f0bee9bfacd05665a9b1a11dd087dbf1be41ac3e640931c38c914a2390642cf/data' :
+        'community.wave.seqera.io/library/fastk_merquryfk_r-cowplot_r-ggplot2_r-viridis:f9994edc2270683c' }"
 
     input:
     tuple val(meta), path(reads)
@@ -18,13 +21,9 @@ process FASTK_FASTK {
     task.ext.when == null || task.ext.when
 
     script:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "FASTK_FASTK module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def FASTK_VERSION = 'f18a4e6d2207539f7b84461daebc54530a9559b0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def args          = task.ext.args ?: ''
+    def prefix        = task.ext.prefix ?: "${meta.id}"
+    def FASTK_VERSION = '1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     FastK \\
         $args \\
@@ -32,6 +31,33 @@ process FASTK_FASTK {
         -M${task.memory.toGiga()} \\
         -N${prefix}_fk \\
         $reads
+
+    find . -name '*.ktab*' -exec chmod a+r {} \\;
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        fastk: $FASTK_VERSION
+    END_VERSIONS
+    """
+
+    stub:
+    def args          = task.ext.args ?: ''
+    def prefix        = task.ext.prefix ?: "${meta.id}"
+    def FASTK_VERSION = '1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def touch_ktab    = args.contains('-t') ? "touch ${prefix}_fk.ktab .${prefix}_fk.ktab.1" : ''
+    def touch_prof    = args.contains('-p') ? "touch ${prefix}_fk.prof .${prefix}_fk.pidx.1" : ''
+    """
+    touch ${prefix}_fk.hist
+    $touch_ktab
+    $touch_prof
+
+    echo \\
+    "FastK \\
+        $args \\
+        -T$task.cpus \\
+        -M${task.memory.toGiga()} \\
+        -N${prefix}_fk \\
+        $reads"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

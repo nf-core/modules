@@ -1,5 +1,6 @@
 name: "wisecondorx_gender"
-description: Returns the gender of a .npz resulting from convert, based on a Gaussian mixture model trained during the newref phase
+description: Returns the gender of a .npz resulting from convert, based on a Gaussian
+  mixture model trained during the newref phase
 keywords:
   - copy number analysis
   - gender determination
@@ -11,35 +12,39 @@ tools:
       documentation: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
       tool_dev_url: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
       doi: "10.1093/nar/gky1263"
-      licence: "['Attribution-NonCommercial-ShareAlike CC BY-NC-SA']"
+      licence: ["Attribution-NonCommercial-ShareAlike CC BY-NC-SA"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - npz:
-      type: file
-      description: Single sample NPZ file (from which to determine the gender)
-      pattern: "*.npz"
-  - reference:
-      type: file
-      description: Reference NPZ file
-      pattern: "*.npz"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - npz:
+        type: file
+        description: Single sample NPZ file (from which to determine the gender)
+        pattern: "*.npz"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reference:
+        type: file
+        description: Reference NPZ file
+        pattern: "*.npz"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - gender:
-      type: string
-      description: The gender of the input NPZ file
-      pattern: "(fe)?male"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

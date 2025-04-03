@@ -11,85 +11,169 @@ tools:
       documentation: https://github.com/kblin/ncbi-genome-download
       tool_dev_url: https://github.com/kblin/ncbi-genome-download
       licence: ["Apache Software License"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - accessions:
-      type: file
-      description: List of accessions (one per line) to download
-      pattern: "*.txt"
-  - taxids:
-      type: file
-      description: List of taxids (one per line) to download
-      pattern: "*.txt"
-  - groups:
-      type: string
-      description: NCBI taxonomic groups to download. Can be a comma-separated list. Options are ['all', 'archaea', 'bacteria', 'fungi', 'invertebrate', 'metagenomes', 'plant', 'protozoa', 'vertebrate_mammalian', 'vertebrate_other', 'viral']
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+  - - accessions:
+        type: file
+        description: List of accessions (one per line) to download
+        pattern: "*.txt"
+  - - taxids:
+        type: file
+        description: List of taxids (one per line) to download
+        pattern: "*.txt"
+  - - groups:
+        type: string
+        description: NCBI taxonomic groups to download. Can be a comma-separated list.
+          Options are ['all', 'archaea', 'bacteria', 'fungi', 'invertebrate', 'metagenomes',
+          'plant', 'protozoa', 'vertebrate_mammalian', 'vertebrate_other', 'viral']
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - gbk:
-      type: file
-      description: GenBank format of the genomic sequence(s) in the assembly
-      pattern: "*_genomic.gbff.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_genomic.gbff.gz":
+          type: file
+          description: GenBank format of the genomic sequence(s) in the assembly
+          pattern: "*_genomic.gbff.gz"
   - fna:
-      type: file
-      description: FASTA format of the genomic sequence(s) in the assembly.
-      pattern: "*_genomic.fna.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_genomic.fna.gz":
+          type: file
+          description: FASTA format of the genomic sequence(s) in the assembly.
+          pattern: "*_genomic.fna.gz"
   - rm:
-      type: file
-      description: RepeatMasker output for eukaryotes.
-      pattern: "*_rm.out.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_rm.out.gz":
+          type: file
+          description: RepeatMasker output for eukaryotes.
+          pattern: "*_rm.out.gz"
   - features:
-      type: file
-      description: Tab-delimited text file reporting locations and attributes for a subset of annotated features
-      pattern: "*_feature_table.txt.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_feature_table.txt.gz":
+          type: file
+          description: Tab-delimited text file reporting locations and attributes for
+            a subset of annotated features
+          pattern: "*_feature_table.txt.gz"
   - gff:
-      type: file
-      description: Annotation of the genomic sequence(s) in GFF3 format
-      pattern: "*_genomic.gff.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_genomic.gff.gz":
+          type: file
+          description: Annotation of the genomic sequence(s) in GFF3 format
+          pattern: "*_genomic.gff.gz"
   - faa:
-      type: file
-      description: FASTA format of the accessioned protein products annotated on the genome assembly.
-      pattern: "*_protein.faa.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_protein.faa.gz":
+          type: file
+          description: FASTA format of the accessioned protein products annotated on the
+            genome assembly.
+          pattern: "*_protein.faa.gz"
   - gpff:
-      type: file
-      description: GenPept format of the accessioned protein products annotated on the genome assembly.
-      pattern: "*_protein.gpff.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_protein.gpff.gz":
+          type: file
+          description: GenPept format of the accessioned protein products annotated on
+            the genome assembly.
+          pattern: "*_protein.gpff.gz"
   - wgs_gbk:
-      type: file
-      description: GenBank flat file format of the WGS master for the assembly
-      pattern: "*_wgsmaster.gbff.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_wgsmaster.gbff.gz":
+          type: file
+          description: GenBank flat file format of the WGS master for the assembly
+          pattern: "*_wgsmaster.gbff.gz"
   - cds:
-      type: file
-      description: FASTA format of the nucleotide sequences corresponding to all CDS features annotated on the assembly
-      pattern: "*_cds_from_genomic.fna.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_cds_from_genomic.fna.gz":
+          type: file
+          description: FASTA format of the nucleotide sequences corresponding to all CDS
+            features annotated on the assembly
+          pattern: "*_cds_from_genomic.fna.gz"
   - rna:
-      type: file
-      description: FASTA format of accessioned RNA products annotated on the genome assembly
-      pattern: "*_rna.fna.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_rna.fna.gz":
+          type: file
+          description: FASTA format of accessioned RNA products annotated on the genome
+            assembly
+          pattern: "*_rna.fna.gz"
   - rna_fna:
-      type: file
-      description: FASTA format of the nucleotide sequences corresponding to all RNA features annotated on the assembly
-      pattern: "*_rna_from_genomic.fna.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_rna_from_genomic.fna.gz":
+          type: file
+          description: FASTA format of the nucleotide sequences corresponding to all RNA
+            features annotated on the assembly
+          pattern: "*_rna_from_genomic.fna.gz"
   - report:
-      type: file
-      description: Tab-delimited text file reporting the name, role and sequence accession.version for objects in the assembly
-      pattern: "*_assembly_report.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_assembly_report.txt":
+          type: file
+          description: Tab-delimited text file reporting the name, role and sequence accession.version
+            for objects in the assembly
+          pattern: "*_assembly_report.txt"
   - stats:
-      type: file
-      description: Tab-delimited text file reporting statistics for the assembly
-      pattern: "*_assembly_stats.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_assembly_stats.txt":
+          type: file
+          description: Tab-delimited text file reporting statistics for the assembly
+          pattern: "*_assembly_stats.txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@rpetit3"
 maintainers:

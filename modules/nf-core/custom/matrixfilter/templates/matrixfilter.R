@@ -69,6 +69,21 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, nrows = -
     )
 }
 
+#' Identify rows that are among the top n most variant
+#'
+#' @param matrix_data Matrix object
+#'
+#' @return output Boolean vector
+
+most_variant_test <- function(matrix_data) {
+
+    # Determine the indices of the top variant rows based on variance
+    top_indices <- order(-apply(matrix_data, 1, var, na.rm = TRUE))[1:opt\$most_variant_features]
+
+    # Return a boolean vector indicating if each row is among the top variant ones
+    1:nrow(matrix_data) %in% top_indices
+}
+
 # Set up default options
 
 opt <- list(
@@ -80,7 +95,8 @@ opt <- list(
     minimum_proportion = 0,
     grouping_variable = NULL,
     minimum_proportion_not_na = 0.5,
-    minimum_samples_not_na = NULL
+    minimum_samples_not_na = NULL,
+    most_variant_features = NULL
 )
 opt_types <- lapply(opt, class)
 
@@ -127,7 +143,7 @@ if (opt\$sample_file != ''){
 
     # If we're not using a sample sheet to select columns, then at least make
     # sure the ones we have are numeric (some upstream things like the RNA-seq
-    # workflow have annotation colummns as well)
+    # workflow have annotation columns as well)
 
     numeric_columns <- unlist(lapply(1:ncol(abundance_matrix), function(x) is.numeric(abundance_matrix[,x])))
     abundance_matrix <- abundance_matrix[,numeric_columns]
@@ -176,6 +192,14 @@ boolean_matrix <- t(apply(abundance_matrix, 1, function(row) {
     sapply(tests, function(f) f(row))
 }))
 
+# Apply the 'most_variant_test' function to identify the most variant rows and add
+# the result to the boolean matrix
+
+if (! is.null(opt\$most_variant_features)) {
+    most_variant_vectors <- most_variant_test(abundance_matrix)
+    boolean_matrix <- cbind(boolean_matrix, most_variant_vectors)
+}
+
 # We will retain features passing all tests
 
 keep <- apply(boolean_matrix, 1, all)
@@ -183,7 +207,7 @@ keep <- apply(boolean_matrix, 1, all)
 # Write out the matrix retaining the specified rows and re-prepending the
 # column with the feature identifiers
 
-prefix = ifelse('$task.ext.prefix' == 'null', '', '$task.ext.prefix')
+prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix')
 
 write.table(
     data.frame(rownames(abundance_matrix)[keep], abundance_matrix[keep,,drop = FALSE]),

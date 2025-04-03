@@ -1,0 +1,82 @@
+name: "metamaps_mapdirectly"
+description: Maps long reads to a metamaps database
+keywords:
+  - metamaps
+  - long reads
+  - metagenomics
+  - taxonomy
+tools:
+  - metamaps:
+      description: MetaMaps is a tool for long-read metagenomic analysis
+      homepage: https://github.com/DiltheyLab/MetaMaps
+      documentation: https://github.com/DiltheyLab/MetaMaps/blob/master/README.md
+      tool_dev_url: https://github.com/DiltheyLab/MetaMaps
+      doi: "10.1038/s41467-019-10934-2"
+      licence: ["Public Domain"]
+      identifier: biotools:metamaps
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: Input fastq file containing query sequences
+        pattern: "*.{fq,fastq,fastq.gz,fq.gz}"
+  - - database:
+        type: file
+        description: Database file in fasta format
+        pattern: "*.{fa,fasta}"
+output:
+  - classification_res:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*classification_res":
+          type: file
+          description: Coordinates where reads map
+          pattern: "*.{classification_res}"
+  - meta_file:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*classification_res.meta":
+          type: file
+          description: Statistics for mapping result
+          pattern: "*.{classification_res.meta}"
+  - meta_unmappedreadsLengths:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*classification_res.meta.unmappedReadsLengths":
+          type: file
+          description: Statistics for length of unmapped reads
+          pattern: "*.{classification_res.meta.unmappedReadsLengths}"
+  - para_file:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*classification_res.parameters":
+          type: file
+          description: Log with parameters
+          pattern: "*.{classification_res.parameters}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@henningonsbring"
+  - "@sofstam"
+maintainers:
+  - "@sofstam"

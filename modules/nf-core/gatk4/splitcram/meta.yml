@@ -1,5 +1,6 @@
 name: "gatk4_splitcram"
-description: Splits CRAM files efficiently by taking advantage of their container based structure
+description: Splits CRAM files efficiently by taking advantage of their container
+  based structure
 keywords:
   - cram
   - gatk4
@@ -15,30 +16,33 @@ tools:
       documentation: https://github.com/broadinstitute/gatk
       doi: 10.1158/1538-7445.AM2017-3590
       licence: ["Apache-2.0"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - cram:
-      type: file
-      description: The CRAM file to split
-      pattern: "*.cram"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - cram:
+        type: file
+        description: The CRAM file to split
+        pattern: "*.cram"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - split_crams:
-      type: file
-      description: A list of split CRAM files
-      pattern: "*.cram"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.cram":
+          type: file
+          description: A list of split CRAM files
+          pattern: "*.cram"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

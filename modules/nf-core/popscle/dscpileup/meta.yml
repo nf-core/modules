@@ -1,0 +1,98 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "popscle_dscpileup"
+description: Software to pileup reads and corresponding base quality for each overlapping
+  SNPs and each barcode.
+keywords:
+  - popscle
+  - demultiplexing
+  - genotype-based deconvoltion
+  - single cell
+  - pile up
+tools:
+  - "popscle":
+      description: "A suite of population scale analysis tools for single-cell genomics
+        data including implementation of Demuxlet / Freemuxlet methods and auxiliary
+        tools"
+      homepage: "https://github.com/statgen/popscle"
+      documentation: "https://github.com/statgen/popscle"
+      tool_dev_url: "https://github.com/statgen/popscle"
+      doi: "10.1038/nbt.4042"
+      licence: ["Apache-2.0"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Input SAM/BAM/CRAM file produced by the standard 10x sequencing
+          platform, or any other barcoded single cell RNA-seq.
+        pattern: "*.{bam,cram,sam}"
+    - vcf:
+        type: file
+        description: Input VCF/BCF file files containing (AC) and (AN) from referenced
+          population (e.g. 1000g).
+        pattern: "*.{vcf,bcf}"
+output:
+  - cel:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - "*.cel.gz":
+          type: file
+          description: Contains the relation between numerated barcode ID and barcode
+            and the number of SNP and number of UMI for each barcoded droplet.
+          pattern: "*.cel.gz"
+  - plp:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - "*.plp.gz":
+          type: file
+          description: Contains the overlapping SNP and the corresponding read and base
+            quality for each barcode ID.
+          pattern: "*.plp.gz"
+  - var:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - "*.var.gz":
+          type: file
+          description: Contains the position, reference allele and allele frequency for
+            each SNP.
+          pattern: "*.var.gz"
+  - umi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - "*.umi.gz":
+          type: file
+          description: Contains the position covered by each umi.
+          pattern: "*.umi.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@mari-ga"
+  - "@maxozo"
+  - "@wxicu"
+  - "@Zethson"
+
+maintainers:
+  - "@mari-ga"
+  - "@maxozo"
+  - "@wxicu"
+  - "@Zethson"

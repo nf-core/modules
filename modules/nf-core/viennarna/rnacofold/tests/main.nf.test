@@ -1,0 +1,58 @@
+nextflow_process {
+
+    name "Test Process VIENNARNA_RNACOFOLD"
+    script "../main.nf"
+    process "VIENNARNA_RNACOFOLD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "viennarna"
+    tag "viennarna/rnacofold"
+
+    test("rnacofold - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'delete_me/viennarna/rnacofold/test.fa', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.rnacofold_csv, process.out.versions).match() }
+            )
+        }
+
+    }
+
+    test("rnacofold - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'delete_me/viennarna/rnacofold/test.fa', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.rnacofold_csv, process.out.versions).match() }
+            )
+        }
+
+    }
+
+}

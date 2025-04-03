@@ -1,0 +1,129 @@
+nextflow_process {
+
+    name "Test Process MIRTRACE_QC"
+    script "../main.nf"
+    process "MIRTRACE_QC"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mirtrace"
+    tag "mirtrace/qc"
+
+    test("human - fastq") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true)
+                    ],
+                    []
+                ]
+                input[1] = "hsa"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+
+                // Check HTML
+                { assert path(process.out.html.get(0).get(1)).text.contains("This file is part of miRTrace.")} ,
+
+                // Check JSON
+                { assert path(process.out.json.get(0).get(1)).json.results[0].stats.uniqueQCPassedSeqsCount == 912 },
+
+                // Check TSV
+                { assert snapshot(process.out.tsv).match("tsv") },
+
+                // Check FASTA files
+                { assert snapshot(process.out.rnatype_unknown_fa).match("rnatype_unknown_fa") },
+                { assert snapshot(process.out.all_fa).match("all_fa") },
+
+                // Check versions
+                { assert snapshot(process.out.versions).match("versions") }
+
+            )
+        }
+
+    }
+
+    test("human - fastq - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
+                    ],
+                    []
+                ]
+                input[1] = "hsa"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("human - fastq - optional config") {
+
+        when {
+            process {
+                """
+                ch_reads = Channel.of([
+                    [ id:'test' ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+
+                ch_mirtrace_config = Channel.of(
+                        "./test_rnaseq_1.fastq.gz,test_rnaseq_1,TGGAATTCTCGGGTGCCAAGG,33")
+                        .collectFile(name: "mirtrace_config.txt", newLine: true)
+
+                input[0] = ch_reads
+                        .combine(ch_mirtrace_config)
+
+                input[1] = "hsa"
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+
+                // Check HTML
+                { assert path(process.out.html.get(0).get(1)).text.contains("This file is part of miRTrace.")} ,
+
+                // Check JSON
+                { assert path(process.out.json.get(0).get(1)).json.results[0].stats.uniqueQCPassedSeqsCount == 912 },
+
+                // Check TSV
+                { assert snapshot(process.out.tsv).match("tsv_config") },
+
+                // Check FASTA files
+                { assert snapshot(process.out.rnatype_unknown_fa).match("rnatype_unknown_fa_config") },
+                { assert snapshot(process.out.all_fa).match("all_fa_config") },
+
+            )
+        }
+
+    }
+
+}

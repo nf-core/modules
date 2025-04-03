@@ -1,50 +1,69 @@
 name: "tiara_tiara"
-description: Domain-level classification of contigs to bacterial, archaeal, eukaryotic, or organelle
+description: Domain-level classification of contigs to bacterial, archaeal, eukaryotic,
+  or organelle
 keywords:
   - contigs
   - metagenomics
   - classify
 tools:
   - "tiara":
-      description: "Deep-learning-based approach for identification of eukaryotic sequences in the metagenomic data powered by PyTorch."
+      description: "Deep-learning-based approach for identification of eukaryotic sequences
+        in the metagenomic data powered by PyTorch."
       homepage: "https://ibe-uw.github.io/tiara/"
       documentation: https://ibe-uw.github.io/tiara/"
       tool_dev_url: "https://github.com/ibe-uw/tiara"
       doi: "10.1093/bioinformatics/btab672"
-      licence: "MIT"
+      licence: ["MIT"]
+      identifier: biotools:tiara-metagenomics
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: FASTA file of assembled contigs.
-      pattern: "*.{fa,fa.gz,fasta,fasta.gz,fna,fna.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: FASTA file of assembled contigs.
+        pattern: "*.{fa,fa.gz,fasta,fasta.gz,fna,fna.gz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - classifications:
-      type: file
-      description: TSV file containing per-contig classification probabilities and overall classifications. Gzipped if flag --gz is set.
-      pattern: "*.{txt,txt.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.{txt,txt.gz}:
+          type: file
+          description: TSV file containing per-contig classification probabilities and
+            overall classifications. Gzipped if flag --gz is set.
+          pattern: "*.{txt,txt.gz}"
   - log:
-      type: file
-      description: Log file containing tiara model parameters. Gzipped if flag --gz is set.
-      pattern: "log_*.{txt,txt.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - log_*.{txt,txt.gz}:
+          type: file
+          description: Log file containing tiara model parameters. Gzipped if flag --gz
+            is set.
+          pattern: "log_*.{txt,txt.gz}"
   - fasta:
-      type: file
-      description: |
-        (optional) - fasta files for each domain category specified in command flag `-tf`, containing classified contigs
-      pattern: "*.{fasta,fasta.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.{fasta,fasta.gz}":
+          type: file
+          description: |
+            (optional) - fasta files for each domain category specified in command flag `-tf`, containing classified contigs
+          pattern: "*.{fasta,fasta.gz}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@prototaxites"
 maintainers:

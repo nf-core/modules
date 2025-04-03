@@ -1,0 +1,48 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "crabz_compress"
+description: Compress files with crabz
+keywords:
+  - compression
+  - gzip
+  - zlib
+tools:
+  - crabz:
+      description: "Like pigz, but rust"
+      homepage: "https://github.com/sstadick/crabz"
+      documentation: "https://github.com/sstadick/crabz"
+      tool_dev_url: "https://github.com/sstadick/crabz"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  # Only when we have meta
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - file:
+        type: file
+        description: File to be compressed
+        pattern: "*.*"
+output:
+  #Only when we have meta
+  - archive:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.gz":
+          type: file
+          description: The compressed file
+          pattern: "*.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@camlloyd"
+maintainers:
+  - "@camlloyd"

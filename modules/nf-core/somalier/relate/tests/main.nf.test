@@ -1,0 +1,124 @@
+nextflow_process {
+
+    name "Test Process SOMALIER_RELATE"
+    script "../main.nf"
+    process "SOMALIER_RELATE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "somalier"
+    tag "somalier/relate"
+
+    test("[ delete_me, [] ], []") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'cohort', single_end:false ], // meta map
+                    [
+                     file(params.modules_testdata_base_path + 'delete_me/somalier/normal.somalier', checkIfExists: true),
+                     file(params.modules_testdata_base_path + 'delete_me/somalier/tumour.somalier', checkIfExists: true)
+                    ],
+                    []
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("[ delete_me, ped ], groups") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'cohort', single_end:false ], // meta map
+                    [
+                     file(params.modules_testdata_base_path + 'delete_me/somalier/normal.somalier', checkIfExists: true),
+                     file(params.modules_testdata_base_path + 'delete_me/somalier/tumour.somalier', checkIfExists: true)
+                    ],
+                    file(params.modules_testdata_base_path + 'delete_me/somalier/family.ped', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'delete_me/somalier/groups.txt', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("[ delete_me, [] ], [] -stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'cohort', single_end:false ], // meta map
+                    [
+                     file(params.modules_testdata_base_path + 'delete_me/somalier/normal.somalier', checkIfExists: true),
+                     file(params.modules_testdata_base_path + 'delete_me/somalier/tumour.somalier', checkIfExists: true)
+                    ],
+                    []
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("[ delete_me, ped ], groups -stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'cohort', single_end:false ], // meta map
+                    [
+                     file(params.modules_testdata_base_path + 'delete_me/somalier/normal.somalier', checkIfExists: true),
+                     file(params.modules_testdata_base_path + 'delete_me/somalier/tumour.somalier', checkIfExists: true)
+                    ],
+                    file(params.modules_testdata_base_path + 'delete_me/somalier/family.ped', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'delete_me/somalier/groups.txt', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

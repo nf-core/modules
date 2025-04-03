@@ -1,0 +1,152 @@
+nextflow_process {
+
+    name "Test Process LEVIOSAM2_LIFT"
+    script "../main.nf"
+    process "LEVIOSAM2_LIFT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "leviosam2"
+    tag "leviosam2/lift"
+    tag "leviosam2/index"
+    tag "gunzip"
+
+    test("lift - bam") {
+        setup {
+            run("GUNZIP") {
+                script "../../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.chain.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+
+            }
+            run("LEVIOSAM2_INDEX") {
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                        ]
+                    input[1] = GUNZIP.out.gunzip.map{ meta, gunzip -> gunzip }
+                    """
+                }
+
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                    ]
+                input[1] = LEVIOSAM2_INDEX.out.clft
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        process.out.bam.collect { file(it[1]).getName() },
+                        process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("lift - cram") {
+        setup {
+            run("GUNZIP") {
+                script "../../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.chain.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+
+            }
+            run("LEVIOSAM2_INDEX") {
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                        ]
+                    input[1] = GUNZIP.out.gunzip.map{ meta, gunzip -> gunzip }
+                    """
+                }
+
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
+                    ]
+                input[1] = LEVIOSAM2_INDEX.out.clft
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        process.out.bam.collect { file(it[1]).getName() },
+                        process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("lift - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                    ]
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

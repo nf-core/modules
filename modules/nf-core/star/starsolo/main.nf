@@ -4,11 +4,12 @@ process STARSOLO {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/star:2.7.10b--h9ee0642_0':
-        'biocontainers/star:2.7.10b--h9ee0642_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/26/268b4c9c6cbf8fa6606c9b7fd4fafce18bf2c931d1a809a0ce51b105ec06c89d/data' :
+        'community.wave.seqera.io/library/htslib_samtools_star_gawk:ae438e9a604351a4' }"
 
     input:
     tuple val(meta), val(solotype), path(reads)
+    path(opt_whitelist)
     tuple val(meta2), path(index)
 
     output:
@@ -31,7 +32,7 @@ process STARSOLO {
     switch(solotype) {
         case "CB_UMI_Simple":
             solotype_args = meta.umi_len ? "--soloUMIlen ${meta.umi_len} " : "";
-            solotype_args = solotype_args + (meta.whitelist ? "--soloCBwhitelist ${meta.whitelist} " : "--soloCBwhitelist None ");
+            solotype_args = solotype_args + (opt_whitelist.name != 'NO_FILE' ? "--soloCBwhitelist ${opt_whitelist} " : "--soloCBwhitelist None ");
             solotype_args = solotype_args + (meta.umi_start ? "--soloUMIstart ${meta.umi_start} " : "");
             solotype_args = solotype_args + (meta.cb_len ? "--soloCBlen ${meta.cb_len} " : "");
             solotype_args = solotype_args + (meta.cb_start ? "--soloCBstart ${meta.cb_start} " : "");
@@ -40,7 +41,7 @@ process STARSOLO {
             break
         case "CB_UMI_Complex":
             solotype_args = meta.cb_position ? "--soloCBposition ${meta.cb_position}" : "";
-            solotype_args = solotype_args + (meta.whitelist ? "--soloCBwhitelist ${meta.whitelist} " : "--soloCBwhitelist None ");
+            solotype_args = solotype_args + (opt_whitelist.name != 'NO_FILE' ? "--soloCBwhitelist ${opt_whitelist} " : "--soloCBwhitelist None ");
             solotype_args = solotype_args + (meta.umi_position ? "--soloUMIposition ${meta.umi_position} " : "");
             solotype_args = solotype_args + (meta.adapter_seq ? "--soloAdapterSequence ${meta.adapter_seq} " : "");
             solotype_args = solotype_args + (meta.max_mismatch_adapter ? "--soloAdapterMismatchesNmax ${meta.max_mismatch_adapter} " : "");
@@ -80,11 +81,11 @@ process STARSOLO {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir ${prefix}.Solo.out/
-    touch ${prefix}.Solo.out/Log.final.out
-    touch ${prefix}.Solo.out/Log.out
-    touch ${prefix}.Solo.out/Log.progress.out
-    touch ${prefix}.Solo.out/Summary.csv
+    mkdir -p ${prefix}.Solo.out/Gene
+    touch ${prefix}.Log.final.out
+    touch ${prefix}.Log.out
+    touch ${prefix}.Log.progress.out
+    touch ${prefix}.Solo.out/Gene/Summary.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

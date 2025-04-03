@@ -8,31 +8,6 @@ nextflow_process {
     tag "modules_nfcore"
     tag "cellpose"
 
-    test("cellpose - no flows, no model") {
-
-        when {
-            config "./nextflow.config"
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ],
-                    file(params.test_data['imaging']['segmentation']['image'], checkIfExists: true)
-                ]
-                input[1] = []
-                """
-            }
-        }
-
-        then {
-            assertAll (
-                { assert process.success },
-                { assert snapshot(process.out.mask).match("mask") },
-                { assert snapshot(process.out.versions).match("versions") }
-            )
-        }
-
-    }
-
     test("cellpose - with flows, no model") {
 
         when {
@@ -41,7 +16,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.test_data['imaging']['segmentation']['image'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'imaging/segmentation/cycif_tonsil_registered.ome.tif', checkIfExists: true)
                 ]
                 input[1] = []
                 """
@@ -69,7 +44,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.test_data['imaging']['segmentation']['image'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'imaging/segmentation/cycif_tonsil_registered.ome.tif', checkIfExists: true)
                 ]
                 input[1] = []
                 """

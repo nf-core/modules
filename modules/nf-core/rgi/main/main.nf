@@ -4,8 +4,8 @@ process RGI_MAIN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/rgi:6.0.3--pyha8f3691_0':
-        'biocontainers/rgi:6.0.3--pyha8f3691_0' }"
+        'https://depot.galaxyproject.org/singularity/rgi:6.0.3--pyha8f3691_1':
+        'biocontainers/rgi:6.0.3--pyha8f3691_1' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -25,7 +25,7 @@ process RGI_MAIN {
 
     script:
     def args = task.ext.args ?: '' // This customizes the command: rgi load
-    def args2 = task.ext.args ?: '' // This customizes the command: rgi main
+    def args2 = task.ext.args2 ?: '' // This customizes the command: rgi main
     def prefix = task.ext.prefix ?: "${meta.id}"
     def load_wildcard = ""
 
@@ -60,7 +60,7 @@ process RGI_MAIN {
         --input_sequence $fasta
 
     mkdir temp/
-    mv *.xml *.fsa *.{nhr,nin,nsq} *.draft *.potentialGenes *{variant,rrna,protein,predictedGenes,overexpression,homolog}.json temp/
+    for FILE in *.xml *.fsa *.{nhr,nin,nsq} *.draft *.potentialGenes *{variant,rrna,protein,predictedGenes,overexpression,homolog}.json; do [[ -e \$FILE ]] && mv \$FILE temp/; done
 
     RGI_VERSION=\$(rgi main --version)
 

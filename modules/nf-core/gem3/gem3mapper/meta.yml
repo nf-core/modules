@@ -1,0 +1,54 @@
+name: "gem3_gem3mapper"
+description: Performs fastq alignment to a fasta reference using using gem3-mapper
+keywords:
+  - fastq
+  - genomics
+  - mappability
+tools:
+  - "gem3":
+      description: "The GEM indexer (v3)."
+      homepage: "https://github.com/smarco/gem3-mapper"
+      licence: ["GPL v3"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing reference/index information
+          e.g. [ id:'test' ]
+    - gem:
+        type: file
+        description: GEM3 genome index files
+        pattern: "*.{gem}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - fastq:
+        type: file
+        description: List of input FastQ files of size 1 and 2 for single-end and paired-end
+          data, respectively.
+        pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
+  - - sort_bam:
+        type: boolean
+        description: use samtools sort (true) or samtools view (false)
+        pattern: "true or false"
+output:
+  - bam:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.bam":
+          type: file
+          description: Sorted BAM/CRAM/SAM file
+          pattern: "*.{bam,cram,sam}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@miqalvarez"

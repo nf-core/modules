@@ -2,8 +2,8 @@
 
 bcl-convert is a commercial tool from Illumina. The container provided for the bcl-convert nf-core module is not provided nor supported by Illumina. Updating the bcl-convert versions in the container and pushing the update to Dockerhub needs to be done manually.
 
-1. Navigate to the appropriate download page. - [BCL Convert](https://support.illumina.com/sequencing/sequencing_software/bcl-convert/downloads.html): find the latest version of bcl-convert
-2. Update the `BCL_VERSION` in the `Dockerfile` (You might have to update the link in the `ADD` statement)
+1. Navigate to the appropriate download page. - [BCL Convert](https://support.illumina.com/sequencing/sequencing_software/bcl-convert/downloads.html): find and download the latest version of bcl-convert RPM package.
+2. Update the `BCL_VERSION` in the `Dockerfile`
 3. Create and test the container:
 
    ```bash

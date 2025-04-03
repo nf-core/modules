@@ -1,0 +1,76 @@
+nextflow_process {
+
+    name "Test Process MCQUANT"
+    script "../main.nf"
+    process "MCQUANT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mcquant"
+
+    test("imaging - image,mask,marker") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'image' ], // meta map
+                    file(params.modules_testdata_base_path + 'imaging/quantification/cycif_tonsil_registered.ome.tif', checkIfExists: true)
+                ]
+                input[1] =  [
+                    [ id:'mask' ], // meta map
+                    file(params.modules_testdata_base_path + 'imaging/quantification/cell.ome.tif', checkIfExists: true)
+                ]
+
+                input[2] = [
+                    [ id:'marker' ], // meta map
+                    file(params.modules_testdata_base_path + 'imaging/quantification/markers.csv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.csv).match("csv") },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+    test("imaging - image,mask,marker - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'image' ], // meta map
+                    file(params.modules_testdata_base_path + 'imaging/quantification/cycif_tonsil_registered.ome.tif', checkIfExists: true)
+                ]
+                input[1] =  [
+                    [ id:'mask' ], // meta map
+                    file(params.modules_testdata_base_path + 'imaging/quantification/cell.ome.tif', checkIfExists: true)
+                ]
+
+                input[2] = [
+                    [ id:'marker' ], // meta map
+                    file(params.modules_testdata_base_path + 'imaging/quantification/markers.csv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

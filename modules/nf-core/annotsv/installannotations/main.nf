@@ -4,8 +4,8 @@ process ANNOTSV_INSTALLANNOTATIONS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/annotsv:3.3.6--py311hdfd78af_0' :
-        'biocontainers/annotsv:3.3.6--py311hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b2/b202e030802ec909556961b542f15e0b37583755cebf08e899b3042a44f93ddb/data' :
+        'community.wave.seqera.io/library/annotsv:3.4.2--6e6cee83703bd24c' }"
 
     output:
     path "AnnotSV_annotations", emit: annotations
@@ -27,6 +27,7 @@ process ANNOTSV_INSTALLANNOTATIONS {
     stub:
     """
     mkdir AnnotSV_annotations
+    touch AnnotSV_annotations/stub_file.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

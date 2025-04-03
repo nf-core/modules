@@ -1,27 +1,27 @@
 process DIAMOND_BLASTP {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_high'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/diamond:2.1.8--h43eeafb_0' :
-        'biocontainers/diamond:2.1.8--h43eeafb_0' }"
+        'https://depot.galaxyproject.org/singularity/diamond:2.1.11--h5ca1c30_0' :
+        'biocontainers/diamond:2.1.11--h5ca1c30_0' }"
 
     input:
     tuple val(meta) , path(fasta)
     tuple val(meta2), path(db)
-    val out_ext
+    val outfmt
     val blast_columns
 
     output:
-    tuple val(meta), path('*.blast'), optional: true, emit: blast
-    tuple val(meta), path('*.xml')  , optional: true, emit: xml
-    tuple val(meta), path('*.txt')  , optional: true, emit: txt
-    tuple val(meta), path('*.daa')  , optional: true, emit: daa
-    tuple val(meta), path('*.sam')  , optional: true, emit: sam
-    tuple val(meta), path('*.tsv')  , optional: true, emit: tsv
-    tuple val(meta), path('*.paf')  , optional: true, emit: paf
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path('*.{blast,blast.gz}'), optional: true, emit: blast
+    tuple val(meta), path('*.{xml,xml.gz}')    , optional: true, emit: xml
+    tuple val(meta), path('*.{txt,txt.gz}')    , optional: true, emit: txt
+    tuple val(meta), path('*.{daa,daa.gz}')    , optional: true, emit: daa
+    tuple val(meta), path('*.{sam,sam.gz}')    , optional: true, emit: sam
+    tuple val(meta), path('*.{tsv,tsv.gz}')    , optional: true, emit: tsv
+    tuple val(meta), path('*.{paf,paf.gz}')    , optional: true, emit: paf
+    path "versions.yml"                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,35 +29,38 @@ process DIAMOND_BLASTP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def is_compressed = fasta.getExtension() == "gz" ? true : false
-    def fasta_name = is_compressed ? fasta.getBaseName() : fasta
+
     def columns = blast_columns ? "${blast_columns}" : ''
-    switch ( out_ext ) {
-        case "blast": outfmt = 0; break
-        case "xml": outfmt = 5; break
-        case "txt": outfmt = 6; break
-        case "daa": outfmt = 100; break
-        case "sam": outfmt = 101; break
-        case "tsv": outfmt = 102; break
-        case "paf": outfmt = 103; break
-        default:
-            outfmt = '6';
-            out_ext = 'txt';
-            log.warn("Unknown output file format provided (${out_ext}): selecting DIAMOND default of tabular BLAST output (txt)");
-            break
+    def out_ext = ""
+
+    if (outfmt == 0) {
+        out_ext = "blast"
+    } else if (outfmt == 5) {
+        out_ext = "xml"
+    } else if (outfmt == 6) {
+        out_ext = "txt"
+    } else if (outfmt == 100) {
+        out_ext = "daa"
+    } else if (outfmt == 101) {
+        out_ext = "sam"
+    } else if (outfmt == 102) {
+        out_ext = "tsv"
+    } else if (outfmt == 103) {
+        out_ext = "paf"
+    } else {
+        log.warn("Unknown output file format provided (${outfmt}): selecting DIAMOND default of tabular BLAST output (txt)")
+        outfmt = 6
+        out_ext = 'txt'
     }
+
+    if ( args =~ /--compress\s+1/ ) out_ext += '.gz'
+
     """
-    if [ "${is_compressed}" == "true" ]; then
-        gzip -c -d ${fasta} > ${fasta_name}
-    fi
-
-    DB=`find -L ./ -name "*.dmnd" | sed 's/\\.dmnd\$//'`
-
     diamond \\
         blastp \\
         --threads ${task.cpus} \\
-        --db \$DB \\
-        --query ${fasta_name} \\
+        --db ${db} \\
+        --query ${fasta} \\
         --outfmt ${outfmt} ${columns} \\
         ${args} \\
         --out ${prefix}.${out_ext}
@@ -69,22 +72,31 @@ process DIAMOND_BLASTP {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    switch ( out_ext ) {
-        case "blast": outfmt = 0; break
-        case "xml": outfmt = 5; break
-        case "txt": outfmt = 6; break
-        case "daa": outfmt = 100; break
-        case "sam": outfmt = 101; break
-        case "tsv": outfmt = 102; break
-        case "paf": outfmt = 103; break
-        default:
-            outfmt = '6';
-            out_ext = 'txt';
-            log.warn("Unknown output file format provided (${out_ext}): selecting DIAMOND default of tabular BLAST output (txt)");
-            break
+
+    def out_ext = ""
+
+    if (outfmt == 0) {
+        out_ext = "blast"
+    } else if (outfmt == 5) {
+        out_ext = "xml"
+    } else if (outfmt == 6) {
+        out_ext = "txt"
+    } else if (outfmt == 100) {
+        out_ext = "daa"
+    } else if (outfmt == 101) {
+        out_ext = "sam"
+    } else if (outfmt == 102) {
+        out_ext = "tsv"
+    } else if (outfmt == 103) {
+        out_ext = "paf"
+    } else {
+        log.warn("Unknown output file format provided (${outfmt}): selecting DIAMOND default of tabular BLAST output (txt)")
+        outfmt = 6
+        out_ext = 'txt'
     }
+
+    if ( args =~ /--compress\s+1/ ) out_ext += '.gz'
 
     """
     touch ${prefix}.${out_ext}

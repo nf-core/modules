@@ -50,7 +50,7 @@ nextflow_process {
             process {
                 """
                 input[0] = STRINGTIE_STRINGTIE.out.transcript_gtf.map { it -> it[1] }
-                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
                 """
             }
         }

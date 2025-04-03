@@ -4,8 +4,8 @@ process PROTEUS_READPROTEINGROUPS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-4e01206f2c47f56077f04e5d2d7b312f50513a1e:92abccefbeb09795ad6a93553b62a6ad3daaea48-0':
-        'biocontainers/mulled-v2-4e01206f2c47f56077f04e5d2d7b312f50513a1e:92abccefbeb09795ad6a93553b62a6ad3daaea48-0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-503e259d7d34ce533ce66c4c8871af4ab409db6d:1e504ef71c83943061a39b6260d826b988bfa56f-0':
+        'biocontainers/mulled-v2-503e259d7d34ce533ce66c4c8871af4ab409db6d:1e504ef71c83943061a39b6260d826b988bfa56f-0' }"
 
     input:
     tuple val(meta), path(samplesheet), path(intensities)
@@ -27,4 +27,26 @@ process PROTEUS_READPROTEINGROUPS {
 
     script:
     template 'proteus_readproteingroups.R'
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}_dendrogram.png
+    touch ${prefix}_mean_variance_relationship.png
+    touch ${prefix}_raw_distributions.png
+    touch ${prefix}_normalized_distributions.png
+    touch ${prefix}_raw_proteingroups.rds
+    touch ${prefix}_normalized_proteingroups.rds
+    touch ${prefix}_raw_proteingroups_tab.tsv
+    touch ${prefix}_normalized_proteingroups_tab.tsv
+    touch ${prefix}_R_sessionInfo.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        r-base: \$(echo \$(R --version 2>&1) | sed 's/^.*R version //; s/ .*\$//')
+        r-proteus-bartongroup: \$(Rscript -e "library(r-proteus-bartongroup); cat(as.character(packageVersion('r-proteus-bartongroup')))")
+        r-plotly: \$(Rscript -e "library(r-plotly); cat(as.character(packageVersion('r-plotly')))")
+        bioconductor-limma: \$(Rscript -e "library(bioconductor-limma); cat(as.character(packageVersion('bioconductor-limma')))")
+    END_VERSIONS
+    """
 }

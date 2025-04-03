@@ -1,0 +1,222 @@
+nextflow_process {
+
+    name "Test Process SEQKIT_SPLIT2"
+    script "../main.nf"
+    process "SEQKIT_SPLIT2"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "seqkit"
+    tag "seqkit/split2"
+
+    test("single_end - length") {
+
+        config "./length.config"
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:true ], // meta map
+                             [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
+                     ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("paired_end - length") {
+
+        config "./length.config"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                             [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                               file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
+                     ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("single_end - length - stub") {
+
+        options "-stub"
+        config "./length.config"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:true ], // meta map
+                             [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
+                     ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("single_end - part") {
+
+        config "./part.config"
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:true ], // meta map
+                             [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
+                     ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("paired_end - part") {
+
+        config "./part.config"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                             [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                               file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
+                     ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("single_end - part - stub") {
+
+        options "-stub"
+        config "./part.config"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:true ], // meta map
+                             [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
+                     ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("single_end - size") {
+
+        config "./size.config"
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:true ], // meta map
+                             [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
+                     ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("paired_end - size") {
+
+        config "./size.config"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                             [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                               file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
+                     ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("single_end - size - stub") {
+
+        options "-stub"
+        config "./size.config"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:true ], // meta map
+                             [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
+                     ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

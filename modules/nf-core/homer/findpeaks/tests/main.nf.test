@@ -1,0 +1,114 @@
+nextflow_process {
+
+    name "Test Process HOMER_FINDPEAKS"
+    script "../main.nf"
+    process "HOMER_FINDPEAKS"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "homer"
+    tag "unzip"
+    tag "homer/findpeaks"
+    tag "homer/maketagdirectory"
+
+    setup {
+        run("HOMER_MAKETAGDIRECTORY") {
+            script "../../maketagdirectory/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test2.bed', checkIfExists: true)
+                    ]
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                """
+            }
+        }
+        run("UNZIP") {
+            script "../../../unzip/main.nf"
+            process {
+                """
+                url = 'https://raw.githubusercontent.com/nf-core/test-datasets/nascent/reference/uniqmap.GRCh38_chr21.50nt.zip'
+
+                input[0] = [
+                    [:],
+                    file(url, checkIfExists: true)
+                ]
+                """
+
+            }
+        }
+    }
+
+    test("sarscov2 - tagdir") {
+
+        when {
+            process {
+                """
+                input[0] = HOMER_MAKETAGDIRECTORY.out.tagdir
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match("tagdir") }
+            )
+        }
+
+    }
+
+    test("sarscov2 - tagdir - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = HOMER_MAKETAGDIRECTORY.out.tagdir
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match("stub") }
+            )
+        }
+    }
+
+    test("sarscov2 - tagdir - uniqmap") {
+
+        tag "uniqmap"
+
+        when {
+            process {
+                """
+                input[0] = HOMER_MAKETAGDIRECTORY.out.tagdir
+                input[1] = UNZIP.out.unzipped_archive.map { it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    // FIXME These are empty?
+                    path(process.out.txt.get(0).get(1)).readLines()[31],
+                    path(process.out.txt.get(0).get(1)).readLines()[33],
+                ).match()
+                }
+            )
+        }
+    }
+}

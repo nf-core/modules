@@ -1,0 +1,77 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "rtn_tni"
+description: Uses the RTN R package for transcriptional regulatory network inference
+  (TNI).
+keywords:
+  - regulatory network
+  - transcriptomics
+  - transcription factors
+tools:
+  - "rtn":
+      description: "RTN: Reconstruction of Transcriptional regulatory Networks and analysis
+        of regulons"
+      homepage: "https://www.bioconductor.org/packages/release/bioc/html/RTN.html"
+      documentation: "https://www.bioconductor.org/packages/release/bioc/vignettes/RTN/inst/doc/RTN.html"
+      tool_dev_url: "https://www.bioconductor.org/packages/release/bioc/html/RTN.html"
+      doi: "10.1038/ncomms3464"
+      licence: ["Artistic-2.0"]
+      identifier: biotools:rtn
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - expression_matrix:
+        type: file
+        description: expression matrix in TSV format
+        pattern: "*.tsv"
+output:
+  - tni:
+      - meta:
+          type: file
+          description: RDS R Object with the TNI object
+          pattern: "tni.rds"
+      - tni.rds:
+          type: file
+          description: RDS R Object with the TNI object
+          pattern: "tni.rds"
+  - tni_perm:
+      - meta:
+          type: file
+          description: RDS R Object with the TNI object after permutation
+          pattern: "tni_permutated.rds"
+      - tni_permutated.rds:
+          type: file
+          description: RDS R Object with the TNI object after permutation
+          pattern: "tni_permutated.rds"
+  - tni_bootstrap:
+      - meta:
+          type: file
+          description: RDS R Object with the TNI object after permutation and bootstrap
+          pattern: "tni_bootstrapped.rds"
+      - tni_bootstrapped.rds:
+          type: file
+          description: RDS R Object with the TNI object after permutation and bootstrap
+          pattern: "tni_bootstrapped.rds"
+  - tni_filtered:
+      - meta:
+          type: file
+          description: RDS R Object with the TNI object after permutation, bootstrap and
+            filtering
+          pattern: "tni_filtered.rds"
+      - tni_filtered.rds:
+          type: file
+          description: RDS R Object with the TNI object after permutation, bootstrap and
+            filtering
+          pattern: "tni_filtered.rds"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@mribeirodantas"
+maintainers:
+  - "@mribeirodantas"

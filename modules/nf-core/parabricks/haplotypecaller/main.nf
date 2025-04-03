@@ -1,47 +1,41 @@
 process PARABRICKS_HAPLOTYPECALLER {
     tag "$meta.id"
     label 'process_high'
+    label 'process_gpu'
+    stageInMode 'copy' // needed by the module to work properly can be removed when fixed upstream - Issue #7226
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.2.0-1"
-
-    /*
-    NOTE: Parabricks requires the files to be non-symlinked
-    Do not change the stageInMode to soft linked! This is default on Nextflow.
-    If you change this setting be careful.
-    */
-    stageInMode "copy"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.4.0-1"
 
     input:
     tuple val(meta), path(input), path(input_index), path(interval_file)
     tuple val(ref_meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.vcf"), emit: vcf
+    tuple val(meta), path("*.vcf"),      optional: true, emit: vcf
+    tuple val(meta), path("*.g.vcf.gz"), optional: true, emit: gvcf
     path "versions.yml",            emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         exit 1, "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def output_file = args =~ "gvcf" ? "${prefix}.g.vcf" : "${prefix}.vcf"
+    def output_file = args.contains("--gvcf") ? "${prefix}.g.vcf.gz" : "${prefix}.vcf"
     def interval_file_command = interval_file ? interval_file.collect{"--interval-file $it"}.join(' ') : ""
+    def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
     """
-
     pbrun \\
         haplotypecaller \\
         --ref $fasta \\
         --in-bam $input \\
         --out-variants $output_file \\
         $interval_file_command \\
-        --num-gpus $task.accelerator.request \\
+        $num_gpus \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
@@ -53,9 +47,9 @@ process PARABRICKS_HAPLOTYPECALLER {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def output_file = args =~ "gvcf" ? "${prefix}.g.vcf" : "${prefix}.vcf"
+    def output_cmd = args.contains("--gvcf") ? "echo '' | gzip > ${prefix}.g.vcf.gz" : "touch ${prefix}.vcf"
     """
-    touch $output_file
+    $output_cmd
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

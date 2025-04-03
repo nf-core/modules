@@ -22,10 +22,10 @@ input:
         Structure: [ val(meta), path(fasta) ]
         Groovy Map containing sample information e.g. [ id:'test', single_end:false ] and the fasta reference used for the sorted BAM file
   - val_repeats:
-      type: value (int)
+      type: integer
       description: Number of bootstrap repeats to perform
   - val_db_name:
-      type: value (string)
+      type: string
       description: Name of the dir where UShER's files will be stored
   - ch_barcodes:
       type: file

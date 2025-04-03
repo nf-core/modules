@@ -1,37 +1,43 @@
 name: cellranger_mkref
-description: Module to build the reference needed by the 10x Genomics Cell Ranger tool. Uses the cellranger mkref command.
+description: Module to build the reference needed by the 10x Genomics Cell Ranger
+  tool. Uses the cellranger mkref command.
 keywords:
   - reference
   - mkref
   - index
 tools:
   - cellranger:
-      description: Cell Ranger by 10x Genomics is a set of analysis pipelines that process Chromium single-cell data to align reads, generate feature-barcode matrices, perform clustering and other secondary analysis, and more.
+      description: Cell Ranger by 10x Genomics is a set of analysis pipelines that process
+        Chromium single-cell data to align reads, generate feature-barcode matrices,
+        perform clustering and other secondary analysis, and more.
       homepage: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger
       documentation: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
       tool_dev_url: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
-      licence: 10x Genomics EULA
+      licence: [10X Genomics EULA]
+      identifier: ""
 input:
-  - fasta:
-      type: file
-      description: Reference genome FASTA file
-      pattern: "*.{fasta,fa}"
-  - gtf:
-      type: file
-      description: Reference transcriptome GTF file
-      pattern: "*.gtf"
-  - reference_name:
-      type: string
-      description: The name to give the new reference folder
-      pattern: str
+  - - fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fasta,fa}"
+  - - gtf:
+        type: file
+        description: Reference transcriptome GTF file
+        pattern: "*.gtf"
+  - - reference_name:
+        type: string
+        description: The name to give the new reference folder
+        pattern: str
 output:
   - reference:
-      type: directory
-      description: Folder containing all the reference indices needed by Cell Ranger
+      - ${reference_name}:
+          type: directory
+          description: Folder containing all the reference indices needed by Cell Ranger
   - versions:
-      type: file
-      description: File containing software version
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software version
+          pattern: "versions.yml"
 authors:
   - "@ggabernet"
 maintainers:

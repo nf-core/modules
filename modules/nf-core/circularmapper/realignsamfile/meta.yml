@@ -1,0 +1,77 @@
+name: "circularmapper_realignsamfile"
+description: Realign reads mapped with BWA to elongated reference genome
+keywords:
+  - realign
+  - circular
+  - map
+  - reference
+  - fasta
+  - bam
+  - short-read
+  - bwa
+tools:
+  - "circularmapper":
+      description: "A method to improve mappings on circular genomes such as Mitochondria."
+      homepage: "https://circularmapper.readthedocs.io/en/latest/index.html"
+      documentation: "https://circularmapper.readthedocs.io/en/latest/index.html"
+      tool_dev_url: "https://github.com/apeltzer/CircularMapper/"
+      doi: "10.1186/s13059-016-0918-z"
+      licence: ["GPL v3"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - bam:
+        type: file
+        description: BAM/SAM file
+        pattern: "*.{bam,sam}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'test' ]`
+    - fasta:
+        type: file
+        description: Input elongated genome fasta
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'test' ]`
+    - elongation_factor:
+        type: integer
+        description: The elongation factor used when running circulargenerator, i.e.
+          the number of bases that the ends of the target chromosome in the reference
+          genome was elongated by
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'test' ]`
+    - elongated_chr_list:
+        type: file
+        description: File listing the chromosomes that were elongated
+        pattern: "*_elongated"
+output:
+  - bam:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*_realigned.bam":
+          type: file
+          description: Realigned BAM file
+          pattern: "*.bam"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@shyama-mama"
+  - "@jbv2"
+  - "@TCLamnidis"

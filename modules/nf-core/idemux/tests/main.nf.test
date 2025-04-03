@@ -1,0 +1,73 @@
+nextflow_process {
+
+    name "Test Process IDEMUX"
+    script "../main.nf"
+    process "IDEMUX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "idemux"
+
+
+    test("idemux - fastq") {
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'NVQ', lane:1 ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/lexogen/idemux/i7_i5_i1_read_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/lexogen/idemux/i7_i5_i1_read_2.fastq.gz', checkIfExists: true)
+                    ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/lexogen/idemux/i7_i5_i1_sample_sheet.csv', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.stats,
+                    process.out.versions,
+                    process.out.fastq,
+                ).match() }
+            )
+        }
+
+    }
+
+    test("idemux - fastq - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'NVQ', lane:1 ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/lexogen/idemux/i7_i5_i1_read_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/lexogen/idemux/i7_i5_i1_read_2.fastq.gz', checkIfExists: true)
+                    ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/lexogen/idemux/i7_i5_i1_sample_sheet.csv', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.stats,
+                    process.out.versions,
+                    process.out.fastq,
+                ).match() }
+            )
+        }
+
+    }
+
+}

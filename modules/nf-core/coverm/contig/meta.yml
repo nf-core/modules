@@ -1,0 +1,76 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "coverm_contig"
+description: Map reads to contigs and estimate coverage
+keywords:
+  - mapping
+  - genomics
+  - metagenomics
+  - coverage
+tools:
+  - "coverm":
+      description: "CoverM aims to be a configurable, easy to use and fast DNA read
+        coverage and relative abundance calculator focused on metagenomics applications"
+      homepage: "https://github.com/wwood/CoverM"
+      documentation: "https://wwood.github.io/CoverM/coverm-contig.html"
+      tool_dev_url: "https://github.com/wwood/CoverM"
+      doi: "10.5281/zenodo.10531253"
+      licence: ["GPL v3"]
+      identifier: biotools:coverm
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+
+    - input:
+        type: file
+        description: |
+          FASTA/FASTQ containing reads (can be gzipped), or sorted BAM files of reads mapped to a reference.
+          If supplying PE fasta for multiple samples, should be in the order "sample1_1, sample1_2, sample2_1, sample2_2...".
+        pattern: "*.{fa,fq,fa.gz,fq.gz,bam}"
+
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'sample1', single_end:false ]`
+
+    - reference:
+        type: file
+        description: Reference FASTA file to map reads to, or minimap2/strobealign index.
+          Not required if using BAM input.
+        pattern: "*.{fasta,fasta.gz,mmi,sti}"
+
+  - - bam_input:
+        type: boolean
+        description: True if input is bam files
+
+  - - interleaved:
+        type: boolean
+        description: True if input is interleaved fastq file
+
+output:
+  - coverage:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+          pattern: "*.depths.{txt}"
+      - "*.depth.txt":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+          pattern: "*.depths.{txt}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@prototaxites"
+maintainers:
+  - "@prototaxites"

@@ -1,0 +1,171 @@
+nextflow_process {
+
+    name "Test Process SEQUALI"
+    script "../main.nf"
+    process "SEQUALI"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "sequali"
+
+    test("sarscov2 - fastq single-end [sequali]") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)])
+                """
+            }
+        }
+        then {
+            assertAll(
+            { assert snapshot(
+                    path(process.out.html[0][1]).getFileName().toString(),
+                    path(process.out.json[0][1]).getFileName().toString(),
+                    path(process.out.json[0][1]).json.remove('summary'),
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+        test("sarscov2 - fastq paired-end [sequali]") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id: 'test', single_end: false], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.html[0][1]).getFileName().toString(),
+                    path(process.out.json[0][1]).getFileName().toString(),
+                    path(process.out.json[0][1]).json.remove('summary'),
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+        test("sarscov2 - unaligned bam [sequali]") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id: 'test', single_end: true], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.unaligned.bam', checkIfExists: true)])
+                """
+            }
+        }
+
+        then {
+            def json_file = path(process.out.json[0][1]).json.get('summary')
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.html[0][1]).getFileName().toString(),
+                    path(process.out.json[0][1]).getFileName().toString(),
+                    path(process.out.json[0][1]).json.remove('summary'),
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+        test("sarscov2 - fastq single-end - stub[sequali]") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.html[0][1]).getFileName().toString(),
+                    path(process.out.json[0][1]).getFileName().toString(),
+                    process.out
+                ).match() }
+            )
+        }
+
+    }
+        test("sarscov2 - fastq paired-end - stub[sequali]") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id: 'test', single_end: false], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.html[0][1]).getFileName().toString(),
+                    path(process.out.json[0][1]).getFileName().toString(),
+                    process.out
+                ).match() }
+            )
+        }
+
+    }
+
+        test("sarscov2 - unaligned bam - stub[sequali]") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id: 'test', single_end: true], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.unaligned.bam', checkIfExists: true)])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.html[0][1]).getFileName().toString(),
+                    path(process.out.json[0][1]).getFileName().toString(),
+                    process.out
+                ).match() }
+            )
+        }
+
+    }
+
+}

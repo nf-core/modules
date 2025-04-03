@@ -1,0 +1,33 @@
+
+nextflow_process {
+
+    name "Test Process VSEARCH_SINTAX"
+    script "../main.nf"
+    process "VSEARCH_SINTAX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "vsearch"
+    tag "vsearch/sintax"
+
+    test("test-vsearch-sintax") {
+        
+        when {
+            process {
+                """
+                input[0] = [[id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+				input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    
+}

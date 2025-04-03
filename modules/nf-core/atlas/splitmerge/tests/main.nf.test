@@ -1,0 +1,43 @@
+
+nextflow_process {
+
+    name "Test Process ATLAS_SPLITMERGE"
+    script "../main.nf"
+    process "ATLAS_SPLITMERGE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "atlas"
+    tag "atlas/splitmerge"
+
+    test("test-atlas-splitmerge") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/read_group_settings.txt', checkIfExists: true),
+                    []
+                ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.txt[0][1]).linesGzip[3..7],
+					bam(process.out.bam[0][1]).getReadsMD5(),
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

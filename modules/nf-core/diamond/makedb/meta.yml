@@ -13,42 +13,54 @@ tools:
       tool_dev_url: https://github.com/bbuchfink/diamond
       doi: "10.1038/s41592-021-01101-x"
       licence: ["GPL v3.0"]
+      identifier: biotools:diamond
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: Input fasta file
-      pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
-  - taxonmap:
-      type: file
-      description: Optional mapping file of NCBI protein accession numbers to taxon ids (gzip compressed), required for taxonomy functionality.
-      pattern: "*.gz"
-  - taxonnodes:
-      type: file
-      description: Optional NCBI taxonomy nodes.dmp file, required for taxonomy functionality.
-      pattern: "*.dmp"
-  - taxonnames:
-      type: file
-      description: Optional NCBI taxonomy names.dmp file, required for taxonomy functionality.
-      pattern: "*.dmp"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Input fasta file
+        pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - - taxonmap:
+        type: file
+        description: Optional mapping file of NCBI protein accession numbers to taxon
+          ids (gzip compressed), required for taxonomy functionality.
+        pattern: "*.gz"
+        ontologies: []
+  - - taxonnodes:
+        type: file
+        description: Optional NCBI taxonomy nodes.dmp file, required for taxonomy functionality.
+        pattern: "*.dmp"
+        ontologies: []
+  - - taxonnames:
+        type: file
+        description: Optional NCBI taxonomy names.dmp file, required for taxonomy functionality.
+        pattern: "*.dmp"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - db:
-      type: file
-      description: File of the indexed DIAMOND database
-      pattern: "*.dmnd"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.dmnd":
+          type: file
+          description: File of the indexed DIAMOND database
+          pattern: "*.dmnd"
+          ontologies: []
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+          ontologies: 
+              - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@spficklin"
 maintainers:

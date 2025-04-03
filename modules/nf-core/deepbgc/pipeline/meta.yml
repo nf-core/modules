@@ -17,70 +17,138 @@ tools:
       tool_dev_url: "https://github.com/Merck/deepbgc"
       doi: "10.1093/nar/gkz654"
       licence: ["MIT"]
+      identifier: biotools:DeepBGC
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - genome:
-      type: file
-      description: FASTA/GenBank/Pfam CSV file
-      pattern: "*.{fasta,fa,fna,gbk,csv}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - genome:
+        type: file
+        description: FASTA/GenBank/Pfam CSV file
+        pattern: "*.{fasta,fa,fna,gbk,csv}"
+  - - db:
+        type: directory
+        description: Database path
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test']
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - readme:
-      type: file
-      description: txt file containing description of output files
-      pattern: "*.{txt}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test']
+      - ${prefix}/README.txt:
+          type: file
+          description: txt file containing description of output files
+          pattern: "*.{txt}"
   - log:
-      type: file
-      description: Log output of DeepBGC
-      pattern: "*.{txt}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test']
+      - ${prefix}/LOG.txt:
+          type: file
+          description: Log output of DeepBGC
+          pattern: "*.{txt}"
   - json:
-      type: file
-      description: AntiSMASH JSON file for sideloading
-      pattern: "*.{json}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test']
+      - ${prefix}/${prefix}.antismash.json:
+          type: file
+          description: AntiSMASH JSON file for sideloading
+          pattern: "*.{json}"
   - bgc_gbk:
-      type: file
-      description: Sequences and features of all detected BGCs in GenBank format
-      pattern: "*.{bgc.gbk}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test']
+      - ${prefix}/${prefix}.bgc.gbk:
+          type: file
+          description: Sequences and features of all detected BGCs in GenBank format
+          pattern: "*.{bgc.gbk}"
   - bgc_tsv:
-      type: file
-      description: Table of detected BGCs and their properties
-      pattern: "*.{bgc.tsv}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test']
+      - ${prefix}/${prefix}.bgc.tsv:
+          type: file
+          description: Table of detected BGCs and their properties
+          pattern: "*.{bgc.tsv}"
   - full_gbk:
-      type: file
-      description: Fully annotated input sequence with proteins, Pfam domains (PFAM_domain features) and BGCs (cluster features)
-      pattern: "*.{full.gbk}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test']
+      - ${prefix}/${prefix}.full.gbk:
+          type: file
+          description: Fully annotated input sequence with proteins, Pfam domains (PFAM_domain
+            features) and BGCs (cluster features)
+          pattern: "*.{full.gbk}"
   - pfam_tsv:
-      type: file
-      description: Table of Pfam domains (pfam_id) from given sequence (sequence_id) in genomic order, with BGC detection scores
-      pattern: "*.{pfam.tsv}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test']
+      - ${prefix}/${prefix}.pfam.tsv:
+          type: file
+          description: Table of Pfam domains (pfam_id) from given sequence (sequence_id)
+            in genomic order, with BGC detection scores
+          pattern: "*.{pfam.tsv}"
   - bgc_png:
-      type: file
-      description: Detected BGCs plotted by their nucleotide coordinates
-      pattern: "*.{bgc.png}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test']
+      - ${prefix}/evaluation/${prefix}.bgc.png:
+          type: file
+          description: Detected BGCs plotted by their nucleotide coordinates
+          pattern: "*.{bgc.png}"
   - pr_png:
-      type: file
-      description: Precision-Recall curve based on predicted per-Pfam BGC scores
-      pattern: "*.{pr.png}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test']
+      - ${prefix}/evaluation/${prefix}.pr.png:
+          type: file
+          description: Precision-Recall curve based on predicted per-Pfam BGC scores
+          pattern: "*.{pr.png}"
   - roc_png:
-      type: file
-      description: ROC curve based on predicted per-Pfam BGC scores
-      pattern: "*.{roc.png}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test']
+      - ${prefix}/evaluation/${prefix}.roc.png:
+          type: file
+          description: ROC curve based on predicted per-Pfam BGC scores
+          pattern: "*.{roc.png}"
   - score_png:
-      type: file
-      description: BGC detection scores of each Pfam domain in genomic order
-      pattern: "*.{score.png}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test']
+      - ${prefix}/evaluation/${prefix}.score.png:
+          type: file
+          description: BGC detection scores of each Pfam domain in genomic order
+          pattern: "*.{score.png}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@louperelo"
   - "@jfy133"
