@@ -1,7 +1,6 @@
 nextflow_process {
 
     name "Test Process CELLRANGERARC_COUNT"
-    config "./nextflow.config"
     script "../main.nf"
     process "CELLRANGERARC_COUNT"
    
@@ -126,18 +125,6 @@ nextflow_process {
                         'raw_feature_bc_matrix/matrix.mtx.gz',
                         'summary.csv',
                     ]
-                        // Unstable outputs:
-                        // 'analysis/feature_linkage/feature_linkage_matrix.h5',
-                        // 'analysis/tf_analysis/filtered_tf_bc_matrix.h5',
-                        // 'atac_fragments.tsv.gz',
-                        // 'atac_fragments.tsv.gz.tbi',
-                        // 'atac_peaks.bed',
-                        // 'atac_possorted_bam.bam',
-                        // 'atac_possorted_bam.bam.bai',
-                        // 'cloupe.cloupe',
-                        // 'filtered_feature_bc_matrix.h5',
-                        // 'raw_feature_bc_matrix.h5',
-                        // 'web_summary.html'
 
                     def stable_files = all_files.findAll { file ->
                         // Check if the file path ends with any of the stable file paths
@@ -150,36 +137,35 @@ nextflow_process {
                         stable_files,
                         process.out.versions[0]
                     ).match()
+
+                    def unstable_file_names = [
+                        'analysis/feature_linkage/feature_linkage_matrix.h5',
+                        'analysis/tf_analysis/filtered_tf_bc_matrix.h5',
+                        'atac_fragments.tsv.gz',
+                        'atac_fragments.tsv.gz.tbi',
+                        'atac_peaks.bed',
+                        'atac_possorted_bam.bam',
+                        'atac_possorted_bam.bam.bai',
+                        'cloupe.cloupe',
+                        'filtered_feature_bc_matrix.h5',
+                        'raw_feature_bc_matrix.h5',
+                        'web_summary.html'
+                    ]
+
+                    def unstable_files = all_files.findAll { file ->
+                        return unstable_file_names.any { unstable_path ->
+                            file.toString().endsWith(unstable_path)
+                        }
+                    }.toSorted()
+
+                    unstable_files.each { filePath ->
+                        def fileObj = file(filePath)
+                        assert fileObj.exists(): "File ${filePath} does not exist"
+                    }
                 }
             )
         }
     }
-    
-    test("test_cellrangerarc_count -- stub") {
-        options '-stub'
-        when {
-            params {
-                module_args = ''
-            }
-            process {
-                """
-                input[0] = [[id:'test'],['gex','atac'],['SRR18907480_chr19_sub','SRR18907481_chr19_sub'],
-                    [file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907480_chr19_sub_S1_L001_R1_001.fastq.gz',checkIfExists:true),
-                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907480_chr19_sub_S1_L001_R2_001.fastq.gz',checkIfExists:true),
-                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907481_chr19_sub_S1_L001_R1_001.fastq.gz',checkIfExists:true),
-                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907481_chr19_sub_S1_L001_R2_001.fastq.gz',checkIfExists:true),
-                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/SRR18907481_chr19_sub_S1_L001_I2_001.fastq.gz',checkIfExists:true)
-                    ]
-                    ]
-                input[1] = CELLRANGERARC_MKREF.out.reference
-                """
-            }
-        }
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
-    }
+// No stub test, as the stub test for `UNZIP` doesn't actually extract the archive.
+// This breaks the downstream stub tests as a fasta file is required.
 }
