@@ -76,7 +76,7 @@ output:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - '*.gene_reads.sorted.sifted.bam.bai':
+    - '*.gene_reads.sorted.sifted.bam':
         type: file
         description: "Sorted BAM file containing reads mapped to gene regions after downsampling coverage"
         pattern: "*.gene_reads.sorted.sifted.bam"
