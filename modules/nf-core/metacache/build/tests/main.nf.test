@@ -1,0 +1,189 @@
+nextflow_process {
+
+    name "Test Process METACACHE_BUILD"
+    script "../main.nf"
+    process "METACACHE_BUILD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "metacache"
+    tag "metacache/build"
+
+    test("sarscov2 genome fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true),
+                ]
+                input[1] = []
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.db[0][1]).size() },
+                { assert file(process.out.db[0][2]).name == 'test.cache0' },
+                { assert file(process.out.db[0][2]).size() },
+                { assert snapshot(process.out.db,
+                                  process.out.versions).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 genome fasta -stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true),
+                ]
+                input[1] = []
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.db[0][2]).name == 'test.cache0' },
+                { assert snapshot(process.out.db,
+                                  process.out.versions).match() }
+            )
+        }
+    }
+
+    test("sarscov2 genome fasta + taxonomy") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+                ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/names.dmp", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/nodes.dmp", checkIfExists: true)
+                ]
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.db[0][1]).size() },
+                { assert file(process.out.db[0][2]).name == 'test.cache0' },
+                { assert file(process.out.db[0][2]).size() },
+                { assert snapshot(process.out.db,
+                                  process.out.versions).match() }
+            )
+        }
+    }
+
+    test("sarscov2 genome fasta + taxonomy -stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+                ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/names.dmp", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/nodes.dmp", checkIfExists: true)
+                ]
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.db[0][2]).name == 'test.cache0' },
+                { assert snapshot(process.out.db,
+                                  process.out.versions).match() }
+            )
+        }
+    }
+
+    test("sarscov2 genome fasta + taxonomy + seq2taxid") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+                ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/names.dmp", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/nodes.dmp", checkIfExists: true)
+                ]
+                input[2] = [
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/seqid2taxid.map", checkIfExists: true),
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.db[0][1]).size() },
+                { assert file(process.out.db[0][2]).name == 'test.cache0' },
+                { assert file(process.out.db[0][2]).size() },
+                { assert snapshot(process.out.db,
+                                  process.out.versions).match() }
+            )
+        }
+    }
+
+    test("sarscov2 genome fasta + taxonomy + seq2taxid -stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+                ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/names.dmp", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/nodes.dmp", checkIfExists: true)
+                ]
+                input[2] = [
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/seqid2taxid.map", checkIfExists: true),
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.db[0][2]).name == 'test.cache0' },
+                { assert snapshot(process.out.db,
+                                  process.out.versions).match() }
+            )
+        }
+    }
+}
