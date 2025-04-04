@@ -1,0 +1,64 @@
+nextflow_process {
+
+    name "Test Process PAML_BUILDCTL"
+    script "../main.nf"
+    process "PAML_BUILDCTL"
+    config "../nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "paml"
+    tag "paml/buildctl"
+
+    test("create config default") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'default_aln' ], // meta map
+                    file('https://raw.githubusercontent.com/RiccPicc/test_data/refs/heads/main/case_a.phy', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'default_tree' ], // meta map
+                    file('https://raw.githubusercontent.com/RiccPicc/test_data/refs/heads/main/case_a.tree', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("stub test default") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'default' ], // meta map
+                    file('https://raw.githubusercontent.com/RiccPicc/test_data/refs/heads/main/case_a.phy', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'default_tree' ], // meta map
+                    file('https://raw.githubusercontent.com/RiccPicc/test_data/refs/heads/main/case_a.tree', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}
