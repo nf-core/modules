@@ -1,6 +1,5 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "clairs"
-## TODO nf-core: Add a description of the module and list keywords
 description: write your description here
 keywords:
   - sort
@@ -8,7 +7,6 @@ keywords:
   - genomics
 tools:
   - "clairs":
-      ## TODO nf-core: Add a description and other details for the software below
       description: ""
       homepage: "https://github.com/HKU-BAL/ClairS"
       documentation: "https://github.com/HKU-BAL/ClairS"
@@ -17,9 +15,7 @@ tools:
       licence: ["BSD-3-clause"]
       identifier: biotools:clairs
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - - meta:
         type: map
         description: |
