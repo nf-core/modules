@@ -37,7 +37,7 @@ process MUSE_SUMP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        MuSE: \$( MuSE --version | sed -e "s/MuSE, version //g" | sed -e "s/MuSE //g" | sed -e "s/^v//g" )
+        MuSE: \$( MuSE --version | sed -e "s/MuSE, version //g" | sed -e "s/MuSE v//g")
         bgzip: \$( bgzip --version | sed -n 's/bgzip (htslib) \\([0-9.]*\\)/\\1/p' )
     END_VERSIONS
     """
@@ -50,7 +50,7 @@ process MUSE_SUMP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        MuSE: \$( MuSE --version | sed -e "s/MuSE, version //g" | sed -e "s/MuSE //g" | sed -e "s/^v//g" )
+        MuSE: \$( MuSE --version | sed -e "s/MuSE, version //g" | sed -e "s/MuSE v//g")
         bgzip: \$( bgzip --version | sed -n 's/bgzip (htslib) \\([0-9.]*\\)/\\1/p' )
     END_VERSIONS
     """
