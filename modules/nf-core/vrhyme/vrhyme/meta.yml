@@ -61,7 +61,8 @@ output:
           type: file
           description: TSV file describing the contig/scaffold membership of each bin
           pattern: "vRhyme_best_bins.*.membership.tsv"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   - summary:
       - meta:
           type: map
