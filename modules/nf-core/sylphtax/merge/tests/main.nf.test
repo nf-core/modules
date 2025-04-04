@@ -65,16 +65,16 @@ nextflow_process {
     test("sarscov2 illumina single-end [fastq_gz]-stub") {
 
         options '-stub'
-        
+
         setup {
             run("SYLPH_PROFILE") {
                 script "../../../sylph/profile/main.nf"
                 process {
                 """
-                input[0] = [ [ id:'test', single_end:true  ], // meta map
-                            [
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
-                    ]
+                input[0] = [
+                            [ id:'test', single_end:false, collapse:false ], // meta map
+                            [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true) ]
                 ]
                 input[1] = file(params.modules_testdata_base_path +'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 """

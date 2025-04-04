@@ -24,6 +24,7 @@ process SYLPHTAX_TAXPROF {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
+    export SYLPH_TAXONOMY_CONFIG="$PWD/config.json"
     sylph-tax \\
         taxprof \\
         $sylph_results \\
@@ -31,21 +32,22 @@ process SYLPHTAX_TAXPROF {
         -t $taxonomy
 
     mv *.sylphmpa ${prefix}.sylphmpa
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sylph-tax: \$(sylph-tax --version 2>&1 | sed -n 's/.*\\([0-9]\\+\\.[0-9]\\+\\.[0-9]\\+\\).*/\\1/p' | head -n 1)
+        sylph-tax: \$(sylph-tax --version)
     END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    export SYLPH_TAXONOMY_CONFIG="$PWD/config.json"
     touch ${prefix}.sylphmpa
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sylph-tax: \$(sylph-tax --version 2>&1 | sed -n 's/.*\\([0-9]\\+\\.[0-9]\\+\\.[0-9]\\+\\).*/\\1/p' | head -n 1)
+        sylph-tax: \$(sylph-tax --version)
     END_VERSIONS
     """
 }
