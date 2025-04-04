@@ -26,16 +26,13 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - input_file:
         type: file
-        description: Input sequencing file - can be BAM, CRAM, FASTQ, or VCF
-        pattern: "*.{bam,cram,fastq,fastq.gz,vcf,vcf.gz}"
+        description: Input sequencing file - VCF
+        pattern: "*.{vcf,vcf.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
-          - edam: "http://edamontology.org/format_3462" # CRAM
-          - edam: "http://edamontology.org/format_1930" # FASTQ
           - edam: "http://edamontology.org/format_3016" # VCF
-  - - cram_reference:
+  - - reference_file:
         type: file
-        description: Reference genome file for CRAM input (only required when using CRAM input)
+        description: Reference genome file
         pattern: "*.{fa,fasta,fna}"
         ontologies:
           - edam: "http://edamontology.org/format_1929" # FASTA
