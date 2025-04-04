@@ -38,7 +38,7 @@ nextflow_process {
                 { assert process.success },
                 {
                     assert snapshot([
-                        output_folder: (process.out.output_folder[0] ==~ "/.*/streamlit_report"),
+                        output_folder: (process.out.output_folder[0]),
                         python_scripts: new File(process.out.output_folder[0] + "/sections")
                                                 .listFiles()
                                                 .any { it.name.endsWith(".py") },
@@ -66,7 +66,7 @@ nextflow_process {
                 { assert process.success },
                 {
                     assert snapshot([
-                        output_folder: (process.out.output_folder[0] ==~ "/.*/quarto_report"),
+                        output_folder: (process.out.output_folder[0]),
                         html_file: new File(process.out.output_folder[0])
                                                 .listFiles()
                                                 .any { it.name.endsWith(".html") },
@@ -94,7 +94,7 @@ nextflow_process {
                 { assert process.success },
                 {
                     assert snapshot([
-                        output_folder: (process.out.output_folder[0] ==~ "/.*/quarto_report"),
+                        output_folder: (process.out.output_folder[0]),
                         pdf_file: new File(process.out.output_folder[0])
                                                 .listFiles()
                                                 .any { it.name.endsWith(".pdf") },
