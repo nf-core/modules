@@ -8,7 +8,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "clairs"
 
-    test("sarscov2 - bam - packaged_model") {
+    test("bam - packaged_model") {
 
         when {
             process {
@@ -46,7 +46,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - bam - stub") {
+    test("bam - stub") {
 
         options "-stub"
 
