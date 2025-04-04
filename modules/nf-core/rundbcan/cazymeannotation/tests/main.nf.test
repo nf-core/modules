@@ -1,0 +1,68 @@
+nextflow_process {
+
+    name "Test Process RUNDBCAN_CAZYMEANNOTATION"
+    script "../main.nf"
+    process "RUNDBCAN_CAZYMEANNOTATION"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "rundbcan"
+    tag "rundbcan/database"
+    tag "rundbcan/cazymeannotation"
+
+    test("dbcancazyme - simplified") {
+
+        setup {
+            run("RUNDBCAN_DATABASE"){
+                script "../../database/main.nf"
+                process {
+                    """
+                    """
+                }
+
+            }
+        }
+
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test_dbcan'],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
+                ]
+                input[1] = RUNDBCAN_DATABASE.out.dbcan_db
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match() }
+
+            )
+        }
+    }
+
+    test("dbcancazyme - cazyme annotation - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [[id: 'stub'],file('stub') ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success }
+                { assert snapshot(process.out.versions).match() }
+
+            )
+        }
+    }
+}
