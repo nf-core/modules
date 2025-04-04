@@ -37,7 +37,6 @@ process CLAIR3 {
     }
     if (packaged_model && user_model) {
         error "Two models specified $user_model and $packaged_model, specify one of them."
-        model = "$user_model"
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"

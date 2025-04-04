@@ -130,14 +130,7 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(
-                        process.out.vcf.collect { file(it[1]).getName() },
-                        process.out.tbi.collect { file(it[1]).getName() },
-                        process.out.versions,
-                        process.out.phased_vcf.collect { file(it[1]).getName() },
-                        process.out.phased_tbi.collect { file(it[1]).getName() })
-                        .match()}
+                { assert process.failed }
             )
         }
 
