@@ -36,10 +36,15 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.output_folder[0] ==~ ".*/streamlit_report" },
-                { assert new File(process.out.output_folder[0] + "/sections").listFiles().any { it.name.endsWith(".py") } },
-                { assert process.out.versions },
-                { assert snapshot(process.out.versions).match() }
+                {
+                    assert snapshot([
+                        output_folder: (process.out.output_folder[0] ==~ "/.*/streamlit_report"),
+                        python_scriptst: new File(process.out.output_folder[0] + "/sections")
+                                                .listFiles()
+                                                .any { it.name.endsWith(".py") },
+                        versions: process.out.versions
+                    ]).match()
+                }
             )
         }
     }
@@ -59,10 +64,15 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.output_folder[0] ==~ ".*/quarto_report" },
-                { assert new File(process.out.output_folder[0]).listFiles().any { it.name.endsWith(".html") } },
-                { assert process.out.versions },
-                { assert snapshot(process.out.versions).match() }
+                {
+                    assert snapshot([
+                        output_folder: (process.out.output_folder[0] ==~ "/.*/quarto_report"),
+                        html_file: new File(process.out.output_folder[0])
+                                                .listFiles()
+                                                .any { it.name.endsWith(".html") },
+                        versions: process.out.versions
+                    ]).match()
+                }
             )
         }
     }
@@ -82,10 +92,15 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.output_folder[0] ==~ ".*/quarto_report" },
-                { assert new File(process.out.output_folder[0]).listFiles().any { it.name.endsWith(".pdf") } },
-                { assert process.out.versions },
-                { assert snapshot(process.out.versions).match() }
+                {
+                    assert snapshot([
+                        output_folder: (process.out.output_folder[0] ==~ "/.*/quarto_report"),
+                        pdf_file: new File(process.out.output_folder[0])
+                                                .listFiles()
+                                                .any { it.name.endsWith(".pdf") },
+                        versions: process.out.versions
+                    ]).match()
+                }
             )
         }
     }
