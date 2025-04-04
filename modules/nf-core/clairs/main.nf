@@ -7,36 +7,19 @@ process CLAIRS {
         'hkubal/clairs:v0.4.1' }"
 
     input:
-    tuple val(meta), path(tumor_bam), path(tumor_bai), path(normal_bam), path(normal_bai), val(packaged_model), path(user_model)
+    tuple val(meta), path(tumor_bam), path(tumor_bai), path(normal_bam), path(normal_bai), val(model)
     tuple val(meta2), path(reference)
     tuple val(meta3), path(index)
 
     output:
-    tuple val(meta), path("*.vcf.gz"), emit: vcf
-    tuple val(meta), path("*.vcf.gz"), emit: tbi
-    path "versions.yml"              , emit: versions
+    tuple val(meta), path("*.vcf.gz"),      emit: vcf
+    tuple val(meta), path("*.vcf.gz.tbi"),  emit: tbi
+    path "versions.yml",                    emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def model = ""
-    if (!user_model) {
-        if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-            model = "\${CONDA_PREFIX}/bin/models/${packaged_model}"
-        }
-        else {
-            model = "/usr/local/bin/models/$packaged_model"
-        }
-    }
-    if (!packaged_model) {
-        model = "$user_model"
-    }
-    if (packaged_model && user_model) {
-        log.error "Two models specified $user_model and $packaged_model, defaulting to $user_model"
-        model = "$user_model"
-    }
-
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
@@ -53,7 +36,8 @@ process CLAIRS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        clairs: \$(/opt/bin/run_clairs --version |& sed '1!d ; s//opt/bin/run_clairs //')
+        clairs: \$(/opt/bin/run_clairs --version |& sed '1!d; s|run_clairs ||'
+)
     END_VERSIONS
     """
 
@@ -63,10 +47,12 @@ process CLAIRS {
 
     """
     touch ${prefix}.vcf.gz
+    touch ${prefix}.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        clairs: \$(/opt/bin/run_clairs --version |& sed '1!d ; s//opt/bin/run_clairs //')
+        clairs: \$(/opt/bin/run_clairs --version |& sed '1!d; s|run_clairs ||'
+)
     END_VERSIONS
     """
 }

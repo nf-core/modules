@@ -7,59 +7,6 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "clairs"
-    tag "untar"
-
-    setup {
-        run("UNTAR") {
-            script "../../../../modules/nf-core/untar/main.nf"
-            process {
-                """
-                input[0] = [
-                    [ id:'test'],
-                    file(params.modules_testdata_base_path + 'generic/models/clair3.hifi.tar.gz', checkIfExists: true)
-                ]
-                """
-            }
-        }
-    }
-    test("sarscov2 - bam - user_model") {
-
-        when {
-            process {
-                """
-                def model_path = UNTAR.out.untar
-                input[0] = Channel.of([
-                    [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam.bai', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true),
-                ])
-                .join(UNTAR.out.untar)
-                .combine(Channel.of(['hifi']))
-                input[1] = [
-                    [ id:'test'],
-                    file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
-                ]
-                input[2] = [
-                    [ id: 'test'],
-                    file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
-                ]
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                                process.out.vcf.collect { file(it[1]).getName() },
-                                process.out.tbi.collect { file(it[1]).getName() },
-                                process.out.versions).match()}
-            )
-        }
-
-    }
 
     test("sarscov2 - bam - packaged_model") {
 
@@ -68,21 +15,19 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [ id:'test' ], // meta map
-                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam.bai', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true),
-                    'hifi_revio',
-                    [],
-                    'hifi',
+                    file('http://www.bio8.cs.hku.hk/clairs/quick_demo/pacbio_hifi/HCC1395BL_normal_chr17_demo.bam', checkIfExists: true),
+                    file('http://www.bio8.cs.hku.hk/clairs/quick_demo/pacbio_hifi/HCC1395BL_normal_chr17_demo.bam.bai', checkIfExists: true),
+                    file('http://www.bio8.cs.hku.hk/clairs/quick_demo/pacbio_hifi/HCC1395_tumor_chr17_demo.bam', checkIfExists: true),
+                    file('http://www.bio8.cs.hku.hk/clairs/quick_demo/pacbio_hifi/HCC1395_tumor_chr17_demo.bam.bai', checkIfExists: true),
+                    'hifi_revio_ssrs',
                 ])
                 input[1] = [
                     [ id:'test'],
-                    file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file('http://www.bio8.cs.hku.hk/clairs/quick_demo/pacbio_hifi/GRCh38_no_alt_chr17.fa', checkIfExists: true),
                 ]
                 input[2] = [
                     [ id: 'test'],
-                    file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
+                    file('http://www.bio8.cs.hku.hk/clairs/quick_demo/pacbio_hifi/GRCh38_no_alt_chr17.fa.fai', checkIfExists: true),
                 ]
                 """
             }
@@ -92,53 +37,14 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                                process.out.vcf.collect { file(it[1]).getName() },
-                                process.out.tbi.collect { file(it[1]).getName() },
-                                process.out.versions).match()}
+                            process.out.vcf.collect { file(it[1]).getName() },
+                            process.out.tbi.collect { file(it[1]).getName() },
+                            process.out.versions)
+                            .match()}
             )
         }
 
     }
-
-    test("sarscov2 - bam - both") {
-
-        when {
-            process {
-                """
-                input[0] = Channel.of([
-                    [ id:'test' ], // meta map
-                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam.bai', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true),
-                    ['hifi_revio'],
-                ])
-                .join(UNTAR.out.untar)
-                .combine(Channel.of(['hifi']))
-                input[1] = [
-                    [ id:'test'],
-                    file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
-                ]
-                input[2] = [
-                    [ id: 'test'],
-                    file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
-                ]
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                                process.out.vcf.collect { file(it[1]).getName() },
-                                process.out.tbi.collect { file(it[1]).getName() },
-                                process.out.versions).match()}
-            )
-        }
-
-    }
-
 
     test("sarscov2 - bam - stub") {
 
@@ -147,16 +53,14 @@ nextflow_process {
         when {
             process {
                 """
-                def model_path = UNTAR.out.untar
                 input[0] = Channel.of([
                     [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam.bai', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true),
+                    file('http://www.bio8.cs.hku.hk/clairs/quick_demo/pacbio_hifi/HCC1395BL_normal_chr17_demo.bam', checkIfExists: true),
+                    file('http://www.bio8.cs.hku.hk/clairs/quick_demo/pacbio_hifi/HCC1395BL_normal_chr17_demo.bam.bai', checkIfExists: true),
+                    file('http://www.bio8.cs.hku.hk/clairs/quick_demo/pacbio_hifi/HCC1395_tumor_chr17_demo.bam', checkIfExists: true),
+                    file('http://www.bio8.cs.hku.hk/clairs/quick_demo/pacbio_hifi/HCC1395_tumor_chr17_demo.bam.bai', checkIfExists: true),
+                    'hifi_revio_ssrs',
                 ])
-                .join(UNTAR.out.untar)
-                .combine(Channel.of(['hifi']))
                 input[1] = [
                     [ id:'test'],
                     file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
@@ -173,12 +77,12 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                                process.out.vcf,
-                                process.out.tbi,
-                                process.out.phased_vcf,
-                                process.out.phased_tbi,
-                                process.out.versions,
-                                ).match()}
+                            process.out.vcf,
+                            process.out.tbi,
+                            process.out.phased_vcf,
+                            process.out.phased_tbi,
+                            process.out.versions,)
+                            .match()}
             )
         }
 
