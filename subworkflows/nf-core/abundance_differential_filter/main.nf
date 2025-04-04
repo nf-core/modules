@@ -26,21 +26,22 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     ch_samplesheet           // [ meta_exp, samplesheet ]
     ch_transcript_lengths    // [ meta_exp, transcript_lengths]
     ch_control_features      // [meta_exp, control_features]
-    ch_contrasts             // [[ meta_contrast, contrast_variable, reference, target ]]
-    ch_contrasts_dream       // [meta_contrast, samplesheet, matrix]
+    ch_contrasts             // [[ meta_contrast, contrast_variable, reference, target, formula ]]
 
     main:
 
     ch_versions = Channel.empty()
 
     // Set up how the channels crossed below will be used to generate channels for processing
-    def criteria = multiMapCriteria { meta_input, abundance, analysis_method, fc_threshold, stat_threshold, meta_exp, samplesheet, meta_contrasts, variable, reference, target ->
+    def criteria = multiMapCriteria { meta_input, abundance, analysis_method, fc_threshold, stat_threshold, meta_exp, samplesheet, meta_contrasts, variable, reference, target, formula ->
         def meta_for_diff = mergeMaps(meta_contrasts, meta_input) + [ 'method_differential': analysis_method ]
         def meta_input_new = meta_input + [ 'method_differential': analysis_method ]
         samples_and_matrix:
             [ meta_input_new, samplesheet, abundance ]
         contrasts_for_diff:
             [ meta_for_diff, variable, reference, target ]
+        contrasts_for_diff_with_formula:
+            [ meta_for_diff, variable, reference, target, formula ]
         filter_params:
             [ meta_for_diff, [ 'fc_threshold': fc_threshold, 'stat_threshold': stat_threshold ]]
         contrasts_for_norm:
@@ -132,18 +133,37 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     ch_versions = ch_versions.mix(PROPR_PROPD.out.versions.first())
 
     // ----------------------------------------------------
+    // Run DREAM
+    // ----------------------------------------------------
+
+    // DREAM only runs with formula
+    dream_inputs = inputs.contrasts_for_diff_with_formula
+        .filter { meta, variable, reference, target, formula ->
+            meta.method_differential == 'dream' && formula != null
+        }
+
+    VARIANCEPARTITION_DREAM(
+        dream_inputs,
+        inputs.samples_and_matrix.filter{ it[0].method_differential == 'dream' }
+    )
+
+    ch_versions = ch_versions.mix( VARIANCEPARTITION_DREAM.out.versions.first() )
+
+    // ----------------------------------------------------
     // Collect results
     // ----------------------------------------------------
 
     ch_results = DESEQ2_DIFFERENTIAL.out.results
         .mix(LIMMA_DIFFERENTIAL.out.results)
         .mix(PROPR_PROPD.out.results_genewise)
+        .mix(VARIANCEPARTITION_DREAM.out.results)
 
     ch_normalised_matrix = DESEQ2_NORM.out.normalised_counts
         .mix(LIMMA_NORM.out.normalised_counts)
 
     ch_model = DESEQ2_DIFFERENTIAL.out.model
         .mix(LIMMA_DIFFERENTIAL.out.model)
+        .mix(VARIANCEPARTITION_DREAM.out.model)
 
     ch_variance_stabilised_matrix = DESEQ2_NORM.out.rlog_counts
         .mix(DESEQ2_NORM.out.vst_counts)
@@ -168,6 +188,10 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
                 'propd' : [
                     fc_column: 'lfc', fc_cardinality: '>=',
                     stat_column: 'weighted_connectivity', stat_cardinality: '>='
+                ],
+                'dream' : [
+                    fc_column: 'logFC', fc_cardinality: '>=',
+                    stat_column: 'adj.P.Val', stat_cardinality: '<='
                 ]
             ]
             filter_input: [meta + filter_meta, results]
@@ -191,18 +215,10 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     )
     ch_versions = ch_versions.mix(CUSTOM_FILTERDIFFERENTIALTABLE.out.versions.first())
 
-    ch_dream_results = Channel.empty()
-
-    VARIANCEPARTITION_DREAM(ch_contrasts_dream)
-    ch_versions = ch_versions.mix( VARIANCEPARTITION_DREAM.out.versions.first() )
-    ch_dream_results = VARIANCEPARTITION_DREAM.out.results
-
-
     emit:
     // main results
     results_genewise           = ch_results
     results_genewise_filtered  = CUSTOM_FILTERDIFFERENTIALTABLE.out.filtered
-    results_dream              = ch_dream_results
 
     // pairwise results
     adjacency                  = PROPR_PROPD.out.adjacency

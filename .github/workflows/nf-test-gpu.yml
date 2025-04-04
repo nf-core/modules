@@ -127,7 +127,7 @@ jobs:
   confirm-pass-gpu:
     runs-on:
       - runs-on=${{ github.run_id }}-confirm-pass-gpu
-      - runner=4cpu-linux-x64
+      - runner=2cpu-linux-x64
       - image=ubuntu22-full-x64
     needs: [nf-test-gpu]
     if: always()
