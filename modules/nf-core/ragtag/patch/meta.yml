@@ -69,12 +69,12 @@ output:
           description: The split target assembly and the renamed query assembly combined into one FASTA file. This file contains all components in ragtag.patch.agp
           pattern: "*.comps.fasta"
   - assembly_alignments:
-        - meta:
+      - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-        - "*.ragtag.patch.asm.*":
+      - "*.ragtag.patch.asm.*":
           type: file
           description: Assembly alignment files
           pattern: "*.ragtag.patch.asm.*"
