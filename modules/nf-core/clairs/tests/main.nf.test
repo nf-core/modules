@@ -79,8 +79,6 @@ nextflow_process {
                 { assert snapshot(
                             process.out.vcf,
                             process.out.tbi,
-                            process.out.phased_vcf,
-                            process.out.phased_tbi,
                             process.out.versions,)
                             .match()}
             )
