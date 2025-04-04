@@ -1,5 +1,5 @@
 process RAGTAG_SCAFFOLD {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
@@ -8,13 +8,13 @@ process RAGTAG_SCAFFOLD {
         : 'biocontainers/ragtag:2.1.0--pyhb7b1952_0'}"
 
     input:
-    tuple val(meta), path(assembly), path(reference)
+    tuple val(meta), path(assembly, name: 'assembly/*'), path(reference, name: 'reference/*'), path(exclude), path(skip), path(hard_skip)
 
     output:
-    tuple val(meta), path("*.fasta"), emit: corrected_assembly
-    tuple val(meta), path("*.agp"),   emit: corrected_agp
-    tuple val(meta), path("*.stats"), emit: corrected_stats
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.fasta"),   emit: corrected_assembly
+    tuple val(meta), path("*.agp"),     emit: corrected_agp
+    tuple val(meta), path("*.stats"),   emit: corrected_stats
+    path "versions.yml",                emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,26 +22,32 @@ process RAGTAG_SCAFFOLD {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def arg_exclude = exclude ? "-e ${exclude}" : ""
+    def arg_skip = skip ? "-j ${skip}" : ""
+    def arg_hard_skip = hard_skip ? "-J ${hard_skip}" : ""
     """
     if [[ ${assembly} == *.gz ]]
     then
         zcat ${assembly} > assembly.fa
     else
-        mv ${assembly} assembly.fa
+        cp ${assembly} assembly.fa
     fi
 
     if [[ ${reference} == *.gz ]]
     then
         zcat ${reference} > reference.fa
     else
-        mv ${reference} reference.fa
+        cp ${reference} reference.fa
     fi
 
     ragtag.py scaffold reference.fa assembly.fa \\
         -o "${prefix}" \\
         -t ${task.cpus} \\
         -C \\
-        $args
+        ${arg_exclude} \\
+        ${arg_skip} \\
+        ${arg_hard_skip} \\
+        ${args}
 
     mv ${prefix}/ragtag.scaffold.fasta ${prefix}.fasta
     mv ${prefix}/ragtag.scaffold.agp ${prefix}.agp
@@ -49,20 +55,23 @@ process RAGTAG_SCAFFOLD {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        RagTag: \$(echo \$(ragtag.py -v | sed 's/v//'))
+        ragtag: \$(echo \$(ragtag.py -v | sed 's/v//'))
     END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def args = task.ext.args ?: ''
+    def _args = task.ext.args ?: ''
+    def _arg_exclude = exclude ? "-e ${exclude}" : ""
+    def _arg_skip = skip ? "-j ${skip}" : ""
+    def _arg_hard_skip = hard_skip ? "-J ${hard_skip}" : ""
     """
     touch ${prefix}.fasta
     touch ${prefix}.agp
     touch ${prefix}.stats
+
     cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        RagTag: \$(echo \$(ragtag.py -v | sed 's/v//'))
+        ragtag: \$(echo \$(ragtag.py -v | sed 's/v//'))
     END_VERSIONS
     """
 }

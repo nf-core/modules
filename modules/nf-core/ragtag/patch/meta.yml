@@ -1,9 +1,11 @@
 name: "ragtag_patch"
-description: Patches a target assembly using a query assembly
+description: "Homology-based assembly patching: Make continuous joins and fill gaps in 'target.fa' using sequences from 'query.fa'"
+
 keywords:
   - assembly
   - consensus
   - ragtag
+  - patch
 tools:
   - "ragtag":
       description: "Fast reference-guided genome assembly scaffolding"
@@ -27,27 +29,35 @@ input:
         type: file
         description: Query assembly
         pattern: "*.{fasta,fasta.gz}"
+    - exclude:
+        type: file
+        description: list of target sequences to ignore
+        pattern: "*.txt"
+    - skip:
+        type: file
+        description: list of query sequences to ignore 
+        pattern: "*.txt"
 output:
-  - patched_fasta:
+  - patch_fasta:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*.patched.fasta":
+      - "*.patch.fasta":
           type: file
           description: FASTA file containing the patched assembly
-          pattern: "*.patched.fasta"
-  - patched_agp:
+          pattern: "*.patch.fasta"
+  - patch_agp:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*.patched.agp":
+      - "*.patch.agp":
           type: file
           description: AGP file defining how ragtag.patch.fasta is built
-          pattern: "*.patched.agp"
+          pattern: "*.patch.agp"
   - patch_components_fasta:
       - meta:
           type: map
@@ -58,6 +68,16 @@ output:
           type: file
           description: The split target assembly and the renamed query assembly combined into one FASTA file. This file contains all components in ragtag.patch.agp
           pattern: "*.comps.fasta"
+  - assembly_alignments:
+        - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+        - "*.ragtag.patch.asm.*":
+          type: file
+          description: Assembly alignment files
+          pattern: "*.ragtag.patch.asm.*"
   - target_splits_agp:
       - meta:
           type: map
@@ -98,7 +118,16 @@ output:
           type: file
           description: A FASTA file with the original query sequence, but with new names
           pattern: "*.rename.fasta"
-
+  - stderr:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.patch.err":
+          type: file
+          description: Standard error logging for all external RagTag commands
+          pattern: "*.patch.err"
   - versions:
       - versions.yml:
           type: file

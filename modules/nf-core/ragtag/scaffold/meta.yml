@@ -36,6 +36,18 @@ input:
         type: file
         description: Reference assembly
         pattern: "*.{fasta,fasta.gz,fa,fa.gz}"
+    - exclude:
+        type: file
+        description: list of target sequences to ignore
+        pattern: "*.txt"
+    - skip:
+        type: file
+        description: list of query sequences to leave unplaced 
+        pattern: "*.txt"
+    - hard_skip:
+        type: file
+        description: list of query headers to leave unplaced and exclude from 'chr0' ('-C') 
+        pattern: "*.txt"
 output:
   - corrected_assembly:
       - meta:

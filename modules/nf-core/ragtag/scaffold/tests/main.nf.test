@@ -15,9 +15,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'Col-0_2MB' ], // meta map
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/genomeassembler/A_thaliana_Col-0_2mb/ONT-Col-0_flye_assembly.fasta.gz', checkIfExists: true),
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/genomeassembler/A_thaliana_Col-0_2mb/Col-CEN_v1.2.Chr1_5MB-7MB.fasta.gz', checkIfExists: true)
+                    [ id:'test' ], // meta map
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true),
+                    [],
+                    [],
+                    []
                 ]
                 """
             }
@@ -39,9 +42,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'Col-0_2MB' ], // meta map
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/genomeassembler/A_thaliana_Col-0_2mb/ONT-Col-0_flye_assembly.fasta.gz', checkIfExists: true),
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/genomeassembler/A_thaliana_Col-0_2mb/Col-CEN_v1.2.Chr1_5MB-7MB.fasta.gz', checkIfExists: true)
+                    [ id:'test' ], // meta map
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true),
+                    [],
+                    [],
+                    []
                 ]
                 """
             }
