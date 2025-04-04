@@ -39,7 +39,7 @@ nextflow_process {
                 {
                     assert snapshot([
                         output_folder: (process.out.output_folder[0] ==~ "/.*/streamlit_report"),
-                        python_scriptst: new File(process.out.output_folder[0] + "/sections")
+                        python_scripts: new File(process.out.output_folder[0] + "/sections")
                                                 .listFiles()
                                                 .any { it.name.endsWith(".py") },
                         versions: process.out.versions
