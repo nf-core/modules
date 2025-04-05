@@ -27,7 +27,7 @@ process BANDAGE_IMAGE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bandage: \$(echo \$(Bandage --version 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
+        bandage: \$(echo \$(export QT_QPA_PLATFORM=offscreen; Bandage --version 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
     END_VERSIONS
     """
 }
