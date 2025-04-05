@@ -2,7 +2,7 @@ process BCL2FASTQ {
     tag {"$meta.lane" ? "$meta.id"+"."+"$meta.lane" : "$meta.id" }
     label 'process_high'
 
-    container "nf-core/bcl2fastq:2.20.0.422"
+    container "nf-core/modules/bcl2fastq:fc1f3591451eb325"
 
     input:
     tuple val(meta), path(samplesheet), path(run_dir)
@@ -67,7 +67,7 @@ process BCL2FASTQ {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bcl2fastq: \$(bcl2fastq -V 2>&1 | grep -m 1 bcl2fastq | sed 's/^.*bcl2fastq v//')
+        bcl2fastq: \$(bcl2fastq --version 2>&1 | grep -m 1 bcl2fastq | sed 's/^.*bcl2fastq v//')
     END_VERSIONS
     """
 }
