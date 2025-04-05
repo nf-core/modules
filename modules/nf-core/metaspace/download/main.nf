@@ -19,4 +19,24 @@ process METASPACE_DOWNLOAD {
 
     script:
     template 'metaspace_download.py'
+
+    stub:
+    """
+    if [[ "${database}" != "null" && "${version}" != "null" ]]; then
+        touch ${dataset_id}_${database}_${version}.csv
+    elif [[ "${database}" != "null" ]]; then
+        touch ${dataset_id}_${database}_all_versions.csv
+    else
+        touch ${dataset_id}_all_databases.csv
+    fi
+
+    echo "Stub: Processing dataset_id: ${dataset_id}, database: ${database}, version: ${version}" > ${dataset_id}.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        python: \$(python --version | sed 's/Python //g')
+        pandas: \$(python -c "import pandas; print(pandas.__version__)")
+        metaspace: \$(python -c "import metaspace; print(metaspace.__version__)")
+    END_VERSIONS
+    """
 }
