@@ -38,4 +38,17 @@ process ULTRA_PIPELINE {
         ultra: \$( uLTRA --version|sed 's/uLTRA //g' )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.sam
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ultra: \$( uLTRA --version|sed 's/uLTRA //g' )
+    END_VERSIONS
+    """
+
+
 }

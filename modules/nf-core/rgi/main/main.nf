@@ -25,7 +25,7 @@ process RGI_MAIN {
 
     script:
     def args = task.ext.args ?: '' // This customizes the command: rgi load
-    def args2 = task.ext.args ?: '' // This customizes the command: rgi main
+    def args2 = task.ext.args2 ?: '' // This customizes the command: rgi main
     def prefix = task.ext.prefix ?: "${meta.id}"
     def load_wildcard = ""
 

@@ -8,7 +8,7 @@ process GANON_BUILDCUSTOM {
 
     input:
     tuple val(meta), path(input)
-    val input_type
+    path input_tsv
     path taxonomy_files
     path genome_size_files
 
@@ -23,14 +23,14 @@ process GANON_BUILDCUSTOM {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_cmd = input_type == 'fasta' ? "--input ${input}" : input_type == 'tsv' ? "--input-file ${input}" : error("Invalid input type: ${input_type}. Options: fasta, tsv")
+    def input_cmd = input_tsv ? "--input-file ${input_tsv}" : "--input ${input}"
     def taxonomy_args = taxonomy_files ? "--taxonomy-files ${taxonomy_files}" : ""
     def genome_size_args = genome_size_files ? "--genome-size-files ${genome_size_files}" : ""
     """
     ganon \\
         build-custom \\
         --threads ${task.cpus} \\
-        --input ${input} \\
+        ${input_cmd} \\
         --db-prefix ${prefix} \\
         ${taxonomy_args} \\
         ${genome_size_args} \\

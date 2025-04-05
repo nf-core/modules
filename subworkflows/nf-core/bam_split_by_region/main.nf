@@ -45,7 +45,7 @@ workflow BAM_SPLIT_BY_REGION {
         .map{ meta, bam, bai, regions, chrom -> [ meta + [ genomic_region:chrom ], bam, bai ] }
 
     // The specified region is put into ext.args2 from the meta. See nextflow.config of the subworkflow.
-    SAMTOOLS_VIEW(ch_bam_for_splitting, [[],[]], [])
+    SAMTOOLS_VIEW(ch_bam_for_splitting, [[],[]], [], [])
     ch_versions = ch_versions.mix(SAMTOOLS_VIEW.out.versions.first())
 
     //

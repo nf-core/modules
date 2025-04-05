@@ -4,8 +4,8 @@ process DYSGU {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/dysgu:48830f55112c399e':
-        'community.wave.seqera.io/library/dysgu:faf71ac972284412' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3a/3a8406b0443d7ed75cd1ff9a687b2f7dd6d30e5ce91d79a8e3c9372bebab5e19/data':
+        'community.wave.seqera.io/library/dysgu:1.6.5--69cfa1b1db5c2aec' }"
 
     input:
     tuple val(meta), path(input), path(index)

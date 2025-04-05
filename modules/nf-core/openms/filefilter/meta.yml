@@ -1,0 +1,70 @@
+name: "openms_filefilter"
+description: Filters peptide/protein identification results by different criteria.
+keywords:
+  - filter
+  - mzML
+  - openms
+  - proteomics
+tools:
+  - "openms":
+      description: "OpenMS is an open-source software C++ library for LC-MS data management
+        and analyses"
+      homepage: "https://openms.de"
+      documentation: "https://openms.readthedocs.io/en/latest/index.html"
+      tool_dev_url: "https://github.com/OpenMS/OpenMS"
+      doi: "10.1038/s41592-024-02197-7"
+      licence: ["BSD"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - file:
+        type: file
+        description: Peptide-spectrum matches.
+        pattern: "*.{mzML,featureXML,consensusXML}"
+
+output:
+  - mzml:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.mzML":
+          type: file
+          description: Filtered mzML file.
+          pattern: "*.mzML"
+  - featurexml:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.featureXML":
+          type: file
+          description: Filtered featureXML file.
+          pattern: "*.featureXML"
+  - consensusxml:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.consensusXML":
+          type: file
+          description: Filtered consensusXML file.
+          pattern: "*.consensusXML"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software version
+          pattern: "versions.yml"
+
+authors:
+  - "@jonasscheid"
+maintainers:
+  - "@jonasscheid"

@@ -8,7 +8,7 @@ process DUPHOLD {
         'biocontainers/duphold:0.2.1--h516909a_1' }"
 
     input:
-    tuple val(meta), path(alignment_file), path(alignement_index), path(sv_variants), path(snp_variants), path(snp_variants_index)
+    tuple val(meta), path(alignment_file), path(alignment_index), path(sv_variants), path(snp_variants), path(snp_variants_index)
     path(fasta)
     path(fasta_fai)
 
@@ -36,6 +36,16 @@ process DUPHOLD {
         ${snp_annotation}
 
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        duphold: \$(duphold -h | head -n 1 | sed -e "s/^version: //")
+    END_VERSIONS
+    """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.vcf.gz
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         duphold: \$(duphold -h | head -n 1 | sed -e "s/^version: //")

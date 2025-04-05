@@ -2,8 +2,10 @@ process GATK4_GERMLINECNVCALLER {
     tag "$meta.id"
     label 'process_single'
 
-    //Conda is not supported at the moment: https://github.com/broadinstitute/gatk/issues/7811
-    container "nf-core/gatk:4.5.0.0" //Biocontainers is missing a package
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b2/b28daf5d9bb2f0d129dcad1b7410e0dd8a9b087aaf3ec7ced929b1f57624ad98/data':
+        'community.wave.seqera.io/library/gatk4_gcnvkernel:e48d414933d188cd' }"
 
     input:
     tuple val(meta), path(tsv), path(intervals), path(ploidy), path(model)
@@ -18,10 +20,6 @@ process GATK4_GERMLINECNVCALLER {
     task.ext.when == null || task.ext.when
 
     script:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "GATK4_GERMLINECNVCALLER module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def intervals_command = intervals ? "--intervals ${intervals}"         : ""
@@ -38,6 +36,7 @@ process GATK4_GERMLINECNVCALLER {
     }
     """
     export THEANO_FLAGS="base_compiledir=\$PWD"
+    export PYTENSOR_FLAGS="base_compiledir=\$PWD"
     export OMP_NUM_THREADS=${task.cpus}
     export MKL_NUM_THREADS=${task.cpus}
 
@@ -58,10 +57,6 @@ process GATK4_GERMLINECNVCALLER {
     """
 
     stub:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "GATK4_GERMLINECNVCALLER module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}-cnv-calls/${prefix}-calls

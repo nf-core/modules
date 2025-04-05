@@ -25,6 +25,7 @@ nextflow_process {
                          . collectFile(name: 'dummy_annot_a.bed', newLine: true)
                          . map { [ [ id:'test'], it ] }
                 input[2] = channel.of("png")
+                input[3] = channel.of([])
                 """
             }
         }
@@ -32,8 +33,37 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
-                { assert process.out.png.get(0).get(1).endsWith("test.png") }
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - contigs - genome - png - filter") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of('NODE_1_length_20973_cov_191.628754\t2000\t2010')
+                         . collectFile(name: 'dummy_annot_b.bed', newLine: true)
+                         . map { [
+                                   [ id:'test' ], // meta map
+                                   file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true),
+                                   it
+                                 ] }
+                input[1] = channel.of('MT192765.1\t1000\t1010')
+                         . collectFile(name: 'dummy_annot_a.bed', newLine: true)
+                         . map { [ [ id:'test'], it ] }
+                input[2] = channel.of("png")
+                input[3] = channel.of("filter")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
             )
         }
 
@@ -51,6 +81,7 @@ nextflow_process {
                 ]
                 input[1] = [ [id: 'test'], [] ]
                 input[2] = "gif"
+                input[3] = []
                 """
             }
         }
@@ -58,8 +89,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
-                { assert process.out.gif.get(0).get(1).endsWith("test.gif") }
+                { assert snapshot(process.out).match() }
             )
         }
 
@@ -78,6 +108,7 @@ nextflow_process {
                 ]
                 input[1] = [ [id: 'test'], [] ]
                 input[2] = "png"
+                input[3] = []
                 """
             }
         }
@@ -85,8 +116,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
-                { assert process.out.png.get(0).get(1).endsWith("test.png") }
+                { assert snapshot(process.out).match() }
             )
         }
 

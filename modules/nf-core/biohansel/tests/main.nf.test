@@ -1,0 +1,129 @@
+nextflow_process {
+
+    name "Test Process BIOHANSEL"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "BIOHANSEL"
+   
+    tag "modules"
+    tag "modules_nfcore"
+    tag "biohansel"
+   
+    test("test_biohansel_paired_end") {
+        when {
+            params {
+                module_args = "--scheme typhi"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:false],
+                    [
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists:true)
+                    ]
+                    ]
+                input[1] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.kmer_results.collect{ [it[0], path(it[1]).readLines()] }
+                ).match() }
+            )
+        }
+    }
+    test("test_biohansel_single_end") {
+        when {
+            params {
+                module_args = "--scheme typhi"
+            }
+            
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:false],
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true)]
+                    ]
+                input[1] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.summary.collect{ [it[0], path(it[1]).readLines()] }
+                ).match() }
+            )
+        }
+    }
+
+    test("test_biohansel_assembly") {
+        tag "test"
+        when {
+            params {
+                module_args = "--scheme typhi"
+            }
+            
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:false],
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists:true)]
+                    ]
+                input[1] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.simple_summary.collect{ [it[0], path(it[1]).readLines()[0]] },
+                    process.out.kmer_results.collect{ [it[0], path(it[1]).readLines()[0]] },
+                    process.out.summary.collect{ [it[0], path(it[1]).readLines().collect { line -> 
+                        line.replaceAll(/[^\t]*\/genome\.fasta\.gz/, 'genome.fasta.gz') 
+                    }] }
+                ).match() }
+            )
+        }
+    }
+
+    test("test_biohansel_assembly - stub") {
+
+        options '-stub'
+
+        when {
+            params {
+                module_args = "--scheme typhi"
+            }
+            
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:false],
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists:true)]
+                    ]
+                input[1] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{ path(it).yaml}
+                ).match() }
+            )
+        }
+    }
+}

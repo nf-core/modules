@@ -67,7 +67,6 @@ nextflow_process {
     }
 
     test("homo_sapiens - [ vcf, tbi ], [], groups, regions, targets - tbi") {
-
         config "./nextflow.config"
 
         when {
@@ -91,16 +90,43 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.vcf,
-                    process.out.tbi.get(0).get(1).find { file(it).name.matches("normal.vcf.gz.tbi|tumor.vcf.gz.tbi") },
-                ) }
+                    process.out.vcf.collect{ it[1].collect { file(it).name } },
+                    process.out.tbi.collect{ it[1].collect { file(it).name } },
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - [ vcf, tbi ], [], [], [], [], - error no sample") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz.tbi', checkIfExists: true)
+                ]
+                input[1] = []
+                input[2] = []
+                input[3] = []
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("No samples to split: input/dbsnp_146.hg38.vcf.gz") }
             )
         }
 
     }
 
     test("homo_sapiens - [ vcf, tbi ], samples, [], [], [] -stub") {
-
         options "-stub"
 
         when {
@@ -130,7 +156,6 @@ nextflow_process {
     }
 
     test("homo_sapiens - [ vcf, tbi ], [], groups, regions, targets -stub") {
-
         options "-stub"
 
         when {
@@ -160,7 +185,6 @@ nextflow_process {
     }
 
     test("homo_sapiens - [ vcf, tbi ], [], groups, regions, targets - tbi -stub") {
-
         config "./nextflow.config"
         options "-stub"
 

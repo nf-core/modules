@@ -1,0 +1,99 @@
+nextflow_process {
+
+    name "Test Process PANGOLIN_RUN"
+    script "../main.nf"
+    process "PANGOLIN_RUN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pangolin/updatedata"
+    tag "pangolin/run"
+    tag "pangolin"
+
+    test("sarscov2 genome [fasta]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test' ], // meta map
+                            [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 genome [fasta] - update data") {
+        setup{
+            run("PANGOLIN_UPDATEDATA") {
+                script "../../updatedata/main.nf"
+                process {
+                    """
+                    input[0] = 'testdb'
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test' ], // meta map
+                            [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+                ]
+                input[1] = PANGOLIN_UPDATEDATA.out.db
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.report[0][1]).readLines().first().contains("taxon,lineage,conflict,ambiguity_score,scorpio_call,scorpio_support,scorpio_conflict,scorpio_notes,version,pangolin_version,scorpio_version,constellation_version,is_designated,qc_status,qc_notes,note") },
+                { assert snapshot(
+                    file(process.out.report[0][1]).name,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("sarscov2 genome [fasta] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test' ], // meta map
+                            [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+
+}
