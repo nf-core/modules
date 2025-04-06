@@ -45,8 +45,8 @@ nextflow_process {
                 { assert snapshot(
                     process.out.config,
                     process.out.versions,
-                    path( "${outputDir}/cellrangerarc_reference/fasta/"                         ),
-                    path( "${outputDir}/cellrangerarc_reference/genes/"                         ),
+                    path( "${outputDir}/cellrangerarc_reference/fasta/"                        ),
+                    path( "${outputDir}/cellrangerarc_reference/genes/"                        ),
                     path( "${outputDir}/cellrangerarc_reference/regions"                       ),
                     path( "${outputDir}/cellrangerarc_reference/reference.json"                ),
                     path( "${outputDir}/cellrangerarc_reference/star/chrLength.txt"            ),
