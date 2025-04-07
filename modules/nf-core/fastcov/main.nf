@@ -6,19 +6,19 @@ process FASTCOV {
     container "${ workflow.containerEngine == 'singularity' ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fe/fe768c866b4ae4f2c8948ea7a274ce66d590eedb1cf967495dbd0fb84643a7e2/data': 'community.wave.seqera.io/library/fastcov:0.1.3--84def91a6ef27f61' }"
 
     input:
-    tuple val(meta), path(bam), path(index)
+    tuple val(meta), path(bam), path(index), val(file_ext), val(args)
 
     output:
     tuple val(meta), path("${prefix}.${file_ext}"), emit: coverage_plot
-    path "versions.yml"                           , emit: versions
+    path "versions.yml"                           ,    emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def file_ext = task.ext.file_ext ?: 'png'
-   prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
+    file_ext = file_ext.isEmpty() ? 'png' : file_ext[0]
+    args = args.isEmpty() ? '' : args[0]
     def VERSION = '0.1.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     fastcov.py \\
@@ -33,7 +33,6 @@ process FASTCOV {
     """
 
     stub:
-    def file_ext = task.ext.file_ext ?: 'png'
     prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '0.1.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
