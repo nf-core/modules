@@ -21,7 +21,10 @@ process FASTCOV {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '0.1.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    fastcov.py -o ${prefix}.${file_ext} ${args} ${bam}
+    fastcov.py \\
+      -o ${prefix}.${file_ext} \\
+      ${args} \\
+      ${bam}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
