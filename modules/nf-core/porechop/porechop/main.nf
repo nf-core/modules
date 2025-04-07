@@ -3,9 +3,10 @@ process PORECHOP_PORECHOP {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/porechop:0.2.4--py39h7cff6ad_2' :
-        'biocontainers/porechop:0.2.4--py39h7cff6ad_2' }"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?        
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2b/2bce1f10c51906a66c4c4d3a7485394f67e304177192ad1cce6cf586a3a18bae/data' :
+        'community.wave.seqera.io/library/porechop_pigz:d1655e5b5bad786c' }"
+
 
     input:
     tuple val(meta), path(reads)
