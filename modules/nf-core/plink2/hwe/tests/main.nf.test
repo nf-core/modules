@@ -1,15 +1,15 @@
 nextflow_process {
 
-    name "Test Process PLINK2_MAF"
+    name "Test Process PLINK2_HWE"
     script "../main.nf"
-    process "PLINK2_MAF"
+    process "PLINK2_HWE"
 
     tag "modules"
     tag "modules_nfcore"
     tag "plink2"
-    tag "plink2/maf"
+    tag "plink2/hwe"
 
-    test("plink2 - plink1_input - maf") {
+    test("plink2 - plink1_input - hwe") {
 
         when {
             process {
@@ -35,7 +35,7 @@ nextflow_process {
 
     }
 
-    test("plink2 - plink2_input - maf") {
+    test("plink2 - plink2_input - hwe") {
 
 
         when {
@@ -62,7 +62,7 @@ nextflow_process {
 
     }
 
-    test("plink2 - plink1_input - maf - stub") {
+    test("plink2 - plink1_input - hwe - stub") {
 
         options "-stub"
 
@@ -89,7 +89,7 @@ nextflow_process {
 
     }
 
-    test("plink2 - plink2_input - maf - stub") {
+    test("plink2 - plink2_input - hwe - stub") {
 
         options "-stub"
 

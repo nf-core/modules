@@ -1,4 +1,4 @@
-process PLINK2_MAF {
+process PLINK2_HWE {
     tag "$meta.id"
     label 'process_medium'
 
@@ -9,7 +9,7 @@ process PLINK2_MAF {
 
     input:
     tuple val(meta), path(plink_genotype_file), path(plink_variant_file), path(plink_sample_file)
-    val (maf)
+    val (hwe)
 
     output:
     tuple val(meta), path("*.bim")  , emit: bim, optional: true
@@ -35,7 +35,7 @@ process PLINK2_MAF {
     plink2 \\
         $mode $input \\
         $args \\
-        --maf $maf \\
+        --hwe $hwe \\
         --threads $task.cpus \\
         $outtype \\
         --out $prefix
