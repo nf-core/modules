@@ -33,7 +33,6 @@ process FASTCOV {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def file_ext = task.ext.file_ext ?: 'png'
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '0.1.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
