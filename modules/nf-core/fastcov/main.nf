@@ -18,7 +18,7 @@ process FASTCOV {
     script:
     def args = task.ext.args ?: ''
     def file_ext = task.ext.file_ext ?: 'png'
-    def prefix = task.ext.prefix ?: "${meta.id}"
+   prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '0.1.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     fastcov.py \\
