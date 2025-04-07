@@ -1,0 +1,97 @@
+nextflow_process {
+
+    name "Test Process SURVIVOR_FILTER"
+    script "../main.nf"
+    process "SURVIVOR_FILTER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "survivor"
+    tag "survivor/filter"
+    config "./nextflow.config"
+
+    test("homo sapiens - vcf") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true),
+                    []
+                    ]
+                input[1] = params.minsv
+                input[2] = params.maxsv
+                input[3] = params.minallelefreq
+                input[4] = params.minnumreads
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo sapiens - vcf - bed") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true),
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
+                    ]
+                input[1] = params.minsv
+                input[2] = params.maxsv
+                input[3] = params.minallelefreq
+                input[4] = params.minnumreads
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("stub") {
+
+        options "-stub"
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true),
+                    []
+                    ]
+                input[1] = params.minsv
+                input[2] = params.maxsv
+                input[3] = params.minallelefreq
+                input[4] = params.minnumreads
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
