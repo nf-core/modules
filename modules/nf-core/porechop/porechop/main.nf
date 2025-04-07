@@ -3,9 +3,7 @@ process PORECHOP_PORECHOP {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/porechop:0.2.4--py39h7cff6ad_2' :
-        'biocontainers/porechop:0.2.4--py39h7cff6ad_2' }"
+    container "community.wave.seqera.io/library/porechop_pigz:d1655e5b5bad786c"
 
     input:
     tuple val(meta), path(reads)
