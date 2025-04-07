@@ -8,9 +8,9 @@ process GTDBTK_CLASSIFYWF {
     input:
     tuple val(meta)   , path("bins/*")
     tuple val(db_name), path("database/*")
-    val mount_opts
     val use_pplacer_scratch_dir
     path mash_db
+    val mount_opts
 
     output:
     tuple val(meta), path("gtdbtk.${prefix}.*.summary.tsv")        , emit: summary
