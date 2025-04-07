@@ -37,7 +37,60 @@ nextflow_workflow {
                 ch_control_features = Channel.of([ [], [] ])
                 ch_contrasts =  Channel.of(['id': 'treatment_mCherry_hND6', 'variable': 'treatment', 'reference': 'mCherry', 'target': 'hND6', 'blocking_factors':'sample_number', 'formula':'~ treatment + (1 | sample_number)'])
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                    }
+                ch_input = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.abundance_file),
+                    'dream',  // analysis method
+                    1.5,       // FC threshold
+                    0.05       // stat (adjusted p-value) threshold
+                ])
+
+                input[0] = ch_input
+                input[1] = ch_samplesheet
+                input[2] = ch_transcript_lengths
+                input[3] = ch_control_features
+                input[4] = ch_contrasts
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.results_genewise,
+                    workflow.out.results_genewise_filtered,
+                    workflow.out.model,
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("dream - complex contrast - literal contrast string comparison") {
+        tag "dream"
+
+        when {
+            workflow {
+                """
+
+                def testData = [
+                    expression_test_data_dir: params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/',
+                    contrasts_file: 'SRP254919.contrasts.csv',
+                    abundance_file: 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv',
+                    samplesheet_file: 'SRP254919.samplesheet.csv'
+                ]
+
+                ch_samplesheet = Channel.of([
+                    [ id:'test' ],
+                    file(testData.expression_test_data_dir + testData.samplesheet_file)
+                ])
+                ch_transcript_lengths = Channel.of([ [], [] ])
+                ch_control_features = Channel.of([ [], [] ])
+                ch_contrasts =  Channel.of(['id': 'treatment_mCherry_hND6', 'variable': 'treatment', 'reference': 'mCherry', 'target': 'hND6', 'blocking_factors':'sample_number', 'formula':'~ 0 + treatment + sample_number', 'comparison':'treatmenthND6 - treatmentmCherry'])
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_input = Channel.of([
                     [ id:'test' ],
@@ -93,7 +146,7 @@ nextflow_workflow {
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_input = Channel.of([
                     [ id:'test' ],
@@ -177,7 +230,7 @@ nextflow_workflow {
                 ch_control_features = Channel.of([ [], [] ])
                 ch_contrasts = Channel.of(['id': 'diagnosis_normal_uremia', 'variable': 'diagnosis', 'reference': 'normal', 'target': 'uremia'])
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_input = AFFY_JUSTRMA.out.expression.map{ meta, file -> [
                     meta,
@@ -235,7 +288,7 @@ nextflow_workflow {
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_input = Channel.of([
                     [ id:'test' ],
@@ -296,7 +349,7 @@ nextflow_workflow {
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_input = Channel.of([
                     [ id:'test' ],
@@ -354,7 +407,7 @@ nextflow_workflow {
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_input = Channel.of([
                     [ id:'test' ],
@@ -410,7 +463,7 @@ nextflow_workflow {
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_input = Channel.of(
                     [
@@ -479,7 +532,7 @@ nextflow_workflow {
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_input = Channel.of(
                     [
@@ -558,7 +611,7 @@ nextflow_workflow {
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_input = Channel.of([
                     [ id:'test' ],

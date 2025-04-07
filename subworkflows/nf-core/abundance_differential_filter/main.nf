@@ -26,14 +26,14 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     ch_samplesheet           // [ meta_exp, samplesheet ]
     ch_transcript_lengths    // [ meta_exp, transcript_lengths]
     ch_control_features      // [meta_exp, control_features]
-    ch_contrasts             // [[ meta_contrast, contrast_variable, reference, target, formula ]]
+    ch_contrasts             // [[ meta_contrast, contrast_variable, reference, target, formula, comparison ]]
 
     main:
 
     ch_versions = Channel.empty()
 
     // Set up how the channels crossed below will be used to generate channels for processing
-    def criteria = multiMapCriteria { meta_input, abundance, analysis_method, fc_threshold, stat_threshold, meta_exp, samplesheet, meta_contrasts, variable, reference, target, formula ->
+    def criteria = multiMapCriteria { meta_input, abundance, analysis_method, fc_threshold, stat_threshold, meta_exp, samplesheet, meta_contrasts, variable, reference, target, formula, comparison ->
         def meta_for_diff = mergeMaps(meta_contrasts, meta_input) + [ 'method_differential': analysis_method ]
         def meta_input_new = meta_input + [ 'method_differential': analysis_method ]
         samples_and_matrix:
@@ -41,7 +41,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         contrasts_for_diff:
             [ meta_for_diff, variable, reference, target ]
         contrasts_for_diff_with_formula:
-            [ meta_for_diff, variable, reference, target, formula ]
+            [ meta_for_diff, variable, reference, target, formula, comparison ]
         filter_params:
             [ meta_for_diff, [ 'fc_threshold': fc_threshold, 'stat_threshold': stat_threshold ]]
         contrasts_for_norm:
@@ -138,7 +138,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
 
     // DREAM only runs with formula
     dream_inputs = inputs.contrasts_for_diff_with_formula
-        .filter { meta, variable, reference, target, formula ->
+        .filter { meta, _variable, _reference, _target, formula, _comparison ->
             meta.method_differential == 'dream' && formula != null
         }
 
