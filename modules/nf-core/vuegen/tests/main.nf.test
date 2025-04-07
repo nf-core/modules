@@ -38,10 +38,17 @@ nextflow_process {
                 { assert process.success },
                 {
                     assert snapshot([
-                        output_folder: (process.out.output_folder[0]),
-                        python_scripts: new File(process.out.output_folder[0] + "/sections")
-                                                .listFiles()
-                                                .any { it.name.endsWith(".py") },
+                        output_folder: (process.out.output_folder[0] ==~ "/.*/streamlit_report"),
+                        output_files: [
+                            "Homepage.py": path(process.out.output_folder[0] + "/sections/Home/Homepage.py"),
+                            "report_manager.py": path(process.out.output_folder[0] + "/sections/report_manager.py"),
+                            "All_Formats.py": path(process.out.output_folder[0] + "/sections/Dataframes/All_Formats.py")
+                                                .readLines()[0..5].sort(),
+                            "Interactive_Plots.py": path(process.out.output_folder[0] + "/sections/Plots/Interactive_Plots.py")
+                                                    .readLines()[0..5].sort(),
+                            "Static_Plots.py": path(process.out.output_folder[0] + "/sections/Plots/Static_Plots.py")
+                                                .readLines()[0..3].sort()
+                        ],
                         versions: process.out.versions
                     ]).match()
                 }
@@ -66,10 +73,13 @@ nextflow_process {
                 { assert process.success },
                 {
                     assert snapshot([
-                        output_folder: (process.out.output_folder[0]),
-                        html_file: new File(process.out.output_folder[0])
-                                                .listFiles()
-                                                .any { it.name.endsWith(".html") },
+                        output_folder: (process.out.output_folder[0] ==~ "/.*/quarto_report"),
+                        output_files: [
+                            "quarto_report.html": path(process.out.output_folder[0] + "/quarto_report.html")
+                                                    .readLines()[0..5],
+                            "quarto_report.qmd": path(process.out.output_folder[0] + "/quarto_report.qmd")
+                                                .readLines()[0..5]
+                        ],
                         versions: process.out.versions
                     ]).match()
                 }
@@ -94,10 +104,22 @@ nextflow_process {
                 { assert process.success },
                 {
                     assert snapshot([
-                        output_folder: (process.out.output_folder[0]),
-                        pdf_file: new File(process.out.output_folder[0])
-                                                .listFiles()
-                                                .any { it.name.endsWith(".pdf") },
+                        output_folder: (process.out.output_folder[0] ==~ "/.*/quarto_report"),
+                        output_files: [
+                            "Abundance_Table_Example_Xls.png": path(process.out.output_folder[0] + "/static/Abundance_Table_Example_Xls.png"),
+                            "Multiline_Plot_Altair.png": path(process.out.output_folder[0] + "/static/Multiline_Plot_Altair.png"),
+                            "Phyla_Correlation_Network_Csv.png": path(process.out.output_folder[0] + "/static/Phyla_Correlation_Network_Csv.png"),
+                            "Pie_Plot_Countries_Plotly.png": path(process.out.output_folder[0] + "/static/Pie_Plot_Countries_Plotly.png"),
+                            "Pie_Plots_Biomes_Plotly.png": path(process.out.output_folder[0] + "/static/Pie_Plots_Biomes_Plotly.png"),
+                            "Saline_Metagenomics_Samples_Map_Altair.png": path(process.out.output_folder[0] + "/static/Saline_Metagenomics_Samples_Map_Altair.png"),
+                            "Sample_Info_Example_Parquet.png": path(process.out.output_folder[0] + "/static/Sample_Info_Example_Parquet.png"),
+                            "Sample_Info_Example_Txt.png": path(process.out.output_folder[0] + "/static/Sample_Info_Example_Txt.png"),
+                            "Top_Species_Plot_By_Biome_Plotly.png": path(process.out.output_folder[0] + "/static/Top_Species_Plot_By_Biome_Plotly.png"),
+                            "quarto_report.pdf": path(process.out.output_folder[0] + "/quarto_report.pdf")
+                                                    .exists(),
+                            "quarto_report.qmd": path(process.out.output_folder[0] + "/quarto_report.qmd")
+                                                    .readLines()[0..5].sort()
+                        ],
                         versions: process.out.versions
                     ]).match()
                 }

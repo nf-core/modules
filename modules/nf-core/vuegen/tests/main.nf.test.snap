@@ -2,14 +2,25 @@
     "vuegen - directory (HTML report)": {
         "content": [
             {
-                "output_folder": [
-                    "quarto_report.html:md5,81976113bdd0d0e616a0f701c91ff8fb",
-                    "quarto_report.qmd:md5,1368a098f7041a56fcbc9cd62f70cf9f",
-                    [
-                        
+                "output_folder": true,
+                "output_files": {
+                    "quarto_report.html": [
+                        "<!DOCTYPE html>",
+                        "<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" xml:lang=\"en\"><head>",
+                        "",
+                        "<meta charset=\"utf-8\">",
+                        "<meta name=\"generator\" content=\"quarto-1.6.42\">",
+                        ""
+                    ],
+                    "quarto_report.qmd": [
+                        "---",
+                        "title: Vuegen Test",
+                        "fig-align: center",
+                        "execute:",
+                        "  echo: false",
+                        "  output: asis"
                     ]
-                ],
-                "html_file": true,
+                },
                 "versions": [
                     "versions.yml:md5,c3e7ebc433dcacf3d15e1113fd44f5ec"
                 ]
@@ -19,27 +30,32 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.5"
         },
-        "timestamp": "2025-04-04T14:31:54.808517"
+        "timestamp": "2025-04-07T13:59:43.607137"
     },
     "vuegen - directory (PDF report)": {
         "content": [
             {
-                "output_folder": [
-                    "quarto_report.pdf:md5,b0583a39b10bfe09f1de21f832e960ad",
-                    "quarto_report.qmd:md5,ee54e193982c427ef6a9e087cb66ee60",
-                    [
-                        "Abundance_Table_Example_Xls.png:md5,3aaf6e37edbd835f4290037a07a8ebe7",
-                        "Multiline_Plot_Altair.png:md5,9cf3c7c53fbd41735ec6584ac30eb937",
-                        "Phyla_Correlation_Network_Csv.png:md5,540794fbed3e0186bc96012ec528773c",
-                        "Pie_Plot_Countries_Plotly.png:md5,4596939248c0db3b2d14df4a2d66aff0",
-                        "Pie_Plots_Biomes_Plotly.png:md5,e10bbe01379bc3063f581933d8712b3b",
-                        "Saline_Metagenomics_Samples_Map_Altair.png:md5,74095f2125764492e0a1a222183d88de",
-                        "Sample_Info_Example_Parquet.png:md5,07958cd4797d641b5e224859e39abc84",
-                        "Sample_Info_Example_Txt.png:md5,899006b2a10316c45a244ae326261ae1",
-                        "Top_Species_Plot_By_Biome_Plotly.png:md5,d8a7a741248986fdd54fe4840f7c49d2"
+                "output_folder": true,
+                "output_files": {
+                    "Abundance_Table_Example_Xls.png": "Abundance_Table_Example_Xls.png:md5,3aaf6e37edbd835f4290037a07a8ebe7",
+                    "Multiline_Plot_Altair.png": "Multiline_Plot_Altair.png:md5,9cf3c7c53fbd41735ec6584ac30eb937",
+                    "Phyla_Correlation_Network_Csv.png": "Phyla_Correlation_Network_Csv.png:md5,540794fbed3e0186bc96012ec528773c",
+                    "Pie_Plot_Countries_Plotly.png": "Pie_Plot_Countries_Plotly.png:md5,4596939248c0db3b2d14df4a2d66aff0",
+                    "Pie_Plots_Biomes_Plotly.png": "Pie_Plots_Biomes_Plotly.png:md5,e10bbe01379bc3063f581933d8712b3b",
+                    "Saline_Metagenomics_Samples_Map_Altair.png": "Saline_Metagenomics_Samples_Map_Altair.png:md5,74095f2125764492e0a1a222183d88de",
+                    "Sample_Info_Example_Parquet.png": "Sample_Info_Example_Parquet.png:md5,07958cd4797d641b5e224859e39abc84",
+                    "Sample_Info_Example_Txt.png": "Sample_Info_Example_Txt.png:md5,899006b2a10316c45a244ae326261ae1",
+                    "Top_Species_Plot_By_Biome_Plotly.png": "Top_Species_Plot_By_Biome_Plotly.png:md5,d8a7a741248986fdd54fe4840f7c49d2",
+                    "quarto_report.pdf": true,
+                    "quarto_report.qmd": [
+                        "  echo: false",
+                        "  output: asis",
+                        "---",
+                        "execute:",
+                        "fig-align: center",
+                        "title: Vuegen Test"
                     ]
-                ],
-                "pdf_file": true,
+                },
                 "versions": [
                     "versions.yml:md5,c3e7ebc433dcacf3d15e1113fd44f5ec"
                 ]
@@ -49,30 +65,38 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.5"
         },
-        "timestamp": "2025-04-04T14:32:40.902187"
+        "timestamp": "2025-04-07T19:35:39.827055"
     },
     "vuegen - directory (Streamlit report)": {
         "content": [
             {
-                "output_folder": [
-                    [
-                        [
-                            "All_Formats.py:md5,154059800a04b69c3997c0d16083755f"
-                        ],
-                        [
-                            "Homepage.py:md5,483a41696c225663772d68ff2d664493"
-                        ],
-                        [
-                            "Interactive_Plots.py:md5,b2e2ff47b3a63b4ab80937ef6f1228f1",
-                            "Static_Plots.py:md5,faaa09d5eef1c1e9f291228e65106935"
-                        ],
-                        "report_manager.py:md5,ed15eefa722b7a2f08cca016c0c8e28d"
+                "output_folder": true,
+                "output_files": {
+                    "Homepage.py": "Homepage.py:md5,483a41696c225663772d68ff2d664493",
+                    "report_manager.py": "report_manager.py:md5,ed15eefa722b7a2f08cca016c0c8e28d",
+                    "All_Formats.py": [
+                        "",
+                        "df_index = 1",
+                        "from st_aggrid import AgGrid, GridOptionsBuilder",
+                        "import pandas as pd",
+                        "import streamlit as st",
+                        "st.markdown('''<h3 style='text-align: center; color: #023558;'>All Formats</h3>''', unsafe_allow_html=True)"
                     ],
-                    [
-                        
+                    "Interactive_Plots.py": [
+                        "",
+                        "import altair as alt",
+                        "import json",
+                        "import requests",
+                        "import streamlit as st",
+                        "st.markdown('''<h3 style='text-align: center; color: #023558;'>Interactive Plots</h3>''', unsafe_allow_html=True)"
+                    ],
+                    "Static_Plots.py": [
+                        "",
+                        "import streamlit as st",
+                        "st.markdown('''<h3 style='text-align: center; color: #023558;'>Static Plots</h3>''', unsafe_allow_html=True)",
+                        "st.markdown('''<h4 style='text-align: center; color: #2b8cbe;'>Number Samples Per Study</h4>''', unsafe_allow_html=True)"
                     ]
-                ],
-                "python_scripts": true,
+                },
                 "versions": [
                     "versions.yml:md5,c3e7ebc433dcacf3d15e1113fd44f5ec"
                 ]
@@ -82,6 +106,6 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.5"
         },
-        "timestamp": "2025-04-04T14:31:17.709289"
+        "timestamp": "2025-04-07T14:41:58.795175"
     }
 }
