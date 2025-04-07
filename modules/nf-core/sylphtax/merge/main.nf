@@ -24,7 +24,7 @@ process SYLPHTAX_MERGE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    export SYLPH_TAXONOMY_CONFIG="$PWD/config.json"
+    export SYLPH_TAXONOMY_CONFIG="/tmp/config.json"
     sylph-tax \\
         merge \\
         ${sylphtax_reports} \\
@@ -40,7 +40,7 @@ process SYLPHTAX_MERGE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    export SYLPH_TAXONOMY_CONFIG="$PWD/config.json"
+    export SYLPH_TAXONOMY_CONFIG="/tmp/config.json"
     touch ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml

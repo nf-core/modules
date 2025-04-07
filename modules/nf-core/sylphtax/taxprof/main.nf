@@ -24,7 +24,7 @@ process SYLPHTAX_TAXPROF {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    export SYLPH_TAXONOMY_CONFIG="$PWD/config.json"
+    export SYLPH_TAXONOMY_CONFIG="/tmp/config.json"
     sylph-tax \\
         taxprof \\
         $sylph_results \\
@@ -42,7 +42,7 @@ process SYLPHTAX_TAXPROF {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    export SYLPH_TAXONOMY_CONFIG="$PWD/config.json"
+    export SYLPH_TAXONOMY_CONFIG="/tmp/config.json"
     touch ${prefix}.sylphmpa
 
     cat <<-END_VERSIONS > versions.yml
