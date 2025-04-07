@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: ragtag_scaffold
 description: |
@@ -19,7 +18,7 @@ tools:
       documentation: "https://github.com/malonge/RagTag/wiki"
       tool_dev_url: "https://github.com/malonge/RagTag"
       doi: "10.1186/s13059-022-02823-7"
-      licence: ['MIT']
+      licence: ["MIT"]
       identifier: biotools:ragtag
 
 input:
@@ -32,21 +31,37 @@ input:
         type: file
         description: Assembly to be scaffolded
         pattern: "*.{fasta,fasta.gz,fa,fa.gz}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
     - reference:
         type: file
         description: Reference assembly
         pattern: "*.{fasta,fasta.gz,fa,fa.gz}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
     - exclude:
         type: file
         description: list of target sequences to ignore
         pattern: "*.txt"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
     - skip:
         type: file
-        description: list of query sequences to leave unplaced 
+        description: list of query sequences to leave unplaced
         pattern: "*.txt"
     - hard_skip:
         type: file
-        description: list of query headers to leave unplaced and exclude from 'chr0' ('-C') 
+        description: list of query headers to leave unplaced and exclude from 'chr0'
+          ('-C')
         pattern: "*.txt"
 output:
   - corrected_assembly:
