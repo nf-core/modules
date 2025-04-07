@@ -8,7 +8,10 @@ process RAGTAG_SCAFFOLD {
         : 'biocontainers/ragtag:2.1.0--pyhb7b1952_0'}"
 
     input:
-    tuple val(meta), path(assembly, name: 'assembly/*'), path(reference, name: 'reference/*'), path(exclude), path(skip), path(hard_skip)
+    tuple val(meta), path(assembly, name: 'assembly/*')
+    tuple val(meta2), path(reference, name: 'reference/*')
+    tuple val(meta3), path(exclude)
+    tuple val(meta4), path(skip), path(hard_skip)
 
     output:
     tuple val(meta), path("*.fasta"),   emit: corrected_assembly
