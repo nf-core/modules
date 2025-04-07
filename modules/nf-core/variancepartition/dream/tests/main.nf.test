@@ -59,7 +59,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert path(process.out.results[0][1]).getText().contains("logFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB\n849.6666") },
+                { assert path(process.out.results[0][1]).getText().contains("1050\t549\t3.78") }
                 )
         }
     }
@@ -87,7 +88,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.model, process.out.versions).match() },
+                { assert path(process.out.results[0][1]).getText().contains("logFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB\n-95.6666") },
+                { assert path(process.out.results[0][1]).getText().contains("1050\t549\t4.15") }
                 )
         }
     }

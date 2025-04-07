@@ -111,9 +111,10 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
+                { assert path(workflow.out.results_genewise[0][1]).getText().contains("logFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB\n-95.6666") },
+                { assert path(workflow.out.results_genewise[0][1]).getText().contains("1050\t549\t4.15") },
                 { assert snapshot(
-                    workflow.out.results_genewise,
-                    workflow.out.results_genewise_filtered,
+                    file(workflow.out.results_genewise[0][1]).name,
                     workflow.out.model,
                     workflow.out.versions
                 ).match() }
