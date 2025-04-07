@@ -9,7 +9,7 @@ process FASTCOV {
     tuple val(meta), path(bam), path(index)
 
     output:
-    tuple val(meta), path("${meta.id}.${task.ext.file_ext ?: 'png'}"), emit: coverage_plot
+    tuple val(meta), path("${prefix}.${file_ext}"), emit: coverage_plot
     path "versions.yml"                                              , emit: versions
 
     when:
