@@ -16,8 +16,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true),
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true),
                     [],
                     [],
                     []
@@ -43,8 +43,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true),
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true),
                     [],
                     [],
                     []
