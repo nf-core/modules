@@ -1,0 +1,80 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "trgt_merge"
+description: Merge TRGT VCFs from multiple samples
+keywords:
+  - trgt
+  - repeat expansion
+  - pacbio
+  - genomics
+tools:
+  - "trgt":
+      description: "Tandem repeat genotyping and visualization from PacBio HiFi data"
+      homepage: "https://github.com/PacificBiosciences/trgt"
+      documentation: "https://github.com/PacificBiosciences/trgt/blob/main/docs/tutorial.md"
+      tool_dev_url: "https://github.com/PacificBiosciences/trgt"
+      doi: "10.1038/s41587-023-02057-3"
+      licence:
+        ["Pacific Biosciences Software License (https://github.com/PacificBiosciences/trgt/blob/main/LICENSE.md)"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - vcfs:
+        type: file
+        description: |
+          List containing VCF files from TRGT
+          Must contain at least 2 elements unless `--force-single` is given
+          Samples in each VCf must be pairwise disjoint
+    - tbis:
+        type: file
+        description: |
+          List containing indexes of VCF files from TRGT
+          Must contain at least 2 elements unless `--force-single` is given
+  - - meta2:
+        type: map
+        description: |
+          Groovy map containing reference information
+          e.g. `[ id: 'genome' ]`
+    - fasta:
+        type: file
+        description: |
+          FASTA reference file (optional)
+          Required if VCFs were generated with TRGT pre 1.0
+        pattern: "*.{fasta,fa,fna}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy map containing reference information
+          e.g. `[ id: 'genome' ]`
+    - fai:
+        type: file
+        description: |
+          Index for FASTA file (optional)
+          Required if VCFs were generated with TRGT pre 1.0
+        pattern: "*.fai"
+
+output:
+  - vcf:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.{vcf,vcf.gz,bcf,bcf.gz}":
+          type: file
+          description: "Merged output file"
+          pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@Schmytzi"
+maintainers:
+  - "@Schmytzi"

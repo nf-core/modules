@@ -1,0 +1,97 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "pypgx_runngspipeline"
+
+description: PyPGx pharmacogenomics genotyping pipeline for NGS data.
+keywords:
+  - pypgx
+  - pharmacogenetics
+  - genotyping
+tools:
+  - "pypgx":
+      description: "A Python package for pharmacogenomics research"
+      homepage: "https://pypgx.readthedocs.io/en/latest/"
+      documentation: "https://pypgx.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/sbslee/pypgx"
+      doi: "10.1371/journal.pone.0272129"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`.
+    - vcf:
+        type: file
+        description: BGZIP compressed VCF file with SNVs/indels. Output of pypgx/createinputvcf.
+        pattern: "*.{vcf.gz}"
+    - tbi:
+        type: file
+        description: VCF tabix index.
+        pattern: "*.{vcf.gz.tbi}"
+    - coverage:
+        type: file
+        description: ZIP compressed file with depth of coverage information. Output
+          of pypgx/preparedepthofcoverage. Coverage information is only required when
+          running the module on a pharmacogene with known structural variants.
+        pattern: "*.{zip}"
+    - control_stats:
+        type: file
+        description: ZIP compressed file with control statistics. Output of pypgx/computecontrolstatistics.
+          Control statistics are only required when running the module on a pharmacogene
+          with known structural variants.
+    - pgx_gene:
+        type: string
+        description: Pharmacogene to genotype/phenotype. A list of supported genes is
+          available in the pypgx documentation "https://pypgx.readthedocs.io/en/latest/genes.html"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`.
+    - resource_bundle:
+        type: directory
+        description: Path to the pypgx resource bundle (https://github.com/sbslee/pypgx-bundle).
+  - - assembly_version:
+        type: string
+        description: Genome assembly version to use.
+output:
+  - results:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*pypgx_output/results.zip":
+          type: file
+          description: Main output file of the pipeline in ZIP format, containing a table
+            with star-alleles per sample and CNV calls where applicable.
+  - cnv_calls:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*pypgx_output/cnv-calls.zip":
+          type: file
+          description: Optional output file in ZIP format, containing CNV calls per sample.
+  - consolidated_variants:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*pypgx_output/consolidated-variants.zip":
+          type: file
+          description: Output file in ZIP format, containing a consolidated (and phased)
+            VCF file.
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@jorivansteenbrugge"
+maintainers:
+  - "@jorivansteenbrugge"

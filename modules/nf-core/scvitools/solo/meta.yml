@@ -1,0 +1,59 @@
+name: scvitools_solo
+description: Detect doublets in single-cell RNA-Seq data
+keywords:
+  - scvi
+  - solo
+  - doublets
+tools:
+  - scvitools:
+      description: "A scalable toolkit for probabilistic modeling applied to single-cell omics data"
+      homepage: "https://scvi-tools.org"
+      documentation: "https://docs.scvi-tools.org/en/stable/"
+      tool_dev_url: "https://github.com/scverse/scvi-tools"
+      licence: ["MIT"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+
+    - h5ad:
+        type: file
+        description: H5AD anndata object
+        pattern: "*.h5ad"
+
+output:
+  - h5ad:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.h5ad":
+          type: file
+          description: H5AD anndata object without doublets
+          pattern: "*.h5ad"
+
+  - predictions:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.pkl":
+          type: file
+          description: pandas dataframe containing the doublet classification
+          pattern: "*.pkl"
+
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@LeonHafner"
+maintainers:
+  - "@LeonHafner"

@@ -1,0 +1,94 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "trgt_plot"
+description: Visualize tandem repeats genotyped by TRGT
+keywords:
+  - trgt
+  - repeat expansion
+  - plotting
+  - pacbio
+  - genomics
+tools:
+  - "trgt":
+      description: "Tandem repeat genotyping and visualization from PacBio HiFi data"
+      homepage: "https://github.com/PacificBiosciences/trgt"
+      documentation: "https://github.com/PacificBiosciences/trgt/blob/main/docs/tutorial.md"
+      tool_dev_url: "https://github.com/PacificBiosciences/trgt"
+      doi: "10.1038/s41587-023-02057-3"
+      licence:
+        ["Pacific Biosciences Software License (https://github.com/PacificBiosciences/trgt/blob/main/LICENSE.md)"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: "Sorted reads spanning tandem repeat from TRGT output"
+        pattern: "*.bam"
+    - bai:
+        type: file
+        description: "Index for reads"
+        pattern: "*.bai"
+    - vcf:
+        type: file
+        description: "Sorted tandem repeat genotypes called by TRGT"
+        pattern: "*.vcf.gz"
+    - tbi:
+        type: file
+        description: "Index for genotypes"
+        pattern: "*.{tbi,csi}"
+    - repeat_id:
+        type: string
+        description: "ID of tandem repeat to plot"
+  - - meta2:
+        type: map
+        description: |
+          Groovy map containing reference information
+          e.g. `[ id: 'genome' ]`
+    - fasta:
+        type: file
+        description: "FASTA reference file"
+        pattern: "*.{fasta,fa,fna}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy map containing reference information
+          e.g. `[ id: 'genome' ]`
+    - fai:
+        type: file
+        description: "Index for FASTA file"
+        pattern: "*.fai"
+  - - meta4:
+        type: map
+        description: |
+          Groovy map containing repeat information
+          e.g. `[ id: 'repeats' ]`
+    - repeats:
+        type: file
+        description: "BED file with repeat coordinates and structure"
+        pattern: "*.bed"
+
+output:
+  - plot:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.{png,pdf,svg}":
+          type: file
+          description: "Plot of region and reads spanning tandem repeat"
+          pattern: "*.{png,pdf,svg}"
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@Schmytzi"
+maintainers:
+  - "@Schmytzi"

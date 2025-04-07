@@ -1,8 +1,0 @@
-- name: sourmash gather test_sourmash_gather
-  command: nextflow run ./tests/modules/nf-core/sourmash/gather -entry test_sourmash_gather -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/sourmash/gather/nextflow.config
-  tags:
-    - sourmash
-    - sourmash/gather
-  files:
-    - path: output/sourmash/test.csv.gz
-    - path: output/sourmash/test_matches.sig.zip

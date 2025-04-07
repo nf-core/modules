@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES"
     script "../main.nf"
     process "ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES"
+    config './nextflow.config'
 
     tag "modules"
     tag "modules_nfcore"
@@ -64,10 +65,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot (
+                { assert snapshot(
                     file(process.out.database.get(0)).list().sort(),
-                    process.out.versions,
-                ).match() }
+                    path(process.out.versions[0]).yaml,
+                    file(process.out.versions[0]).name,
+                    ).match()
+                }
             )
         }
     }
@@ -128,7 +131,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                        file(process.out.database.get(0)).list().sort(),
+                        file(process.out.versions[0]).name,
+                    ).match()
+                }
             )
         }
     }

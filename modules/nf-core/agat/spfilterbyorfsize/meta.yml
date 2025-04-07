@@ -1,0 +1,86 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "agat_spfilterbyorfsize"
+description: The script reads a gff annotation file, and create two output files,
+  one contains the gene models with ORF passing the test, the other contains the rest.
+  By default the test is "> 100" that means all gene models that have ORF longer than
+  100 Amino acids, will pass the test.
+keywords:
+  - genomics
+  - GFF/GTF
+  - filter
+  - annotation
+tools:
+  - "agat":
+      description: "Another Gff Analysis Toolkit (AGAT). Suite of tools to handle gene
+        annotations in any GTF/GFF format."
+      homepage: "https://agat.readthedocs.io/en/latest/"
+      documentation: "https://agat.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/NBISweden/AGAT"
+      doi: "10.5281/zenodo.3552717"
+      licence: ["GPL v3"]
+      identifier: biotools:AGAT
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - gxf:
+        type: file
+        description: Input GFF3/GTF file
+        pattern: "*.{gff,gff3,gtf}"
+        ontologies:
+          - edam: http://edamontology.org/format_2305 # GFF
+          - edam: http://edamontology.org/format_1975 # GFF3
+          - edam: http://edamontology.org/format_2306 # GTF
+  - - config:
+        type: file
+        description: |
+          Input agat config file. By default AGAT takes as input agat_config.yaml file from the working directory if any,
+          otherwise it takes the orignal agat_config.yaml shipped with AGAT. To get the agat_config.yaml locally type: "agat config --expose".
+          The --config option gives you the possibility to use your own AGAT config file (located elsewhere or named differently).
+        pattern: "*.{yaml}"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+output:
+  - passed_gff:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]
+          ontologies: []
+      - "*.passed.gff":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]
+          pattern: "*.passed.{gff}"
+          ontologies:
+            - edam: http://edamontology.org/format_2305
+  - failed_gff:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]
+          ontologies: []
+      - "*.failed.gff":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]
+          pattern: "*.failed.{gff}"
+          ontologies:
+            - edam: http://edamontology.org/format_2305
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+          ontologies: []
+authors:
+  - "@GallVp"
+maintainers:
+  - "@GallVp"

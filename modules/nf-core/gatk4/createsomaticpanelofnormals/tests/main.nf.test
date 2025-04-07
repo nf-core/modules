@@ -1,0 +1,90 @@
+nextflow_process {
+
+    name "Test Process GATK4_CREATESOMATICPANELOFNORMALS"
+    script "../main.nf"
+    process "GATK4_CREATESOMATICPANELOFNORMALS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "untar"
+    tag "gatk4"
+    tag "gatk4/createsomaticpanelofnormals"
+
+    setup {
+        run("UNTAR") {
+            script "../../../untar/main.nf"
+            process {
+            """
+            input[0] = [[id:'test'], file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gatk/test_genomicsdb.tar.gz", checkIfExists: true) ]
+            """
+            }
+        }
+    }
+
+    test("homo sapiens - genomicsdb") {
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                input[1] = [ [ id:'genome' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true)
+                    ]
+                input[2] = [ [ id:'genome' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta.fai", checkIfExists: true)
+                    ]
+                input[3] = [ [ id:'genome' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.dict", checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    file(process.out.vcf[0][1]).name,
+                    file(process.out.tbi[0][1]).name,
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo sapiens - genomicsdb - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                input[1] = [ [ id:'genome' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true)
+                    ]
+                input[2] = [ [ id:'genome' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta.fai", checkIfExists: true)
+                    ]
+                input[3] = [ [ id:'genome' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.dict", checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    file(process.out.vcf[0][1]).name,
+                    file(process.out.tbi[0][1]).name,
+                ).match() }
+            )
+        }
+
+    }
+
+}
