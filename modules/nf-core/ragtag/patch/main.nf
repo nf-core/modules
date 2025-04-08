@@ -48,7 +48,7 @@ process RAGTAG_PATCH {
         cp ${query} query.fa
     fi
     mkdir ${prefix} && touch ${prefix}/ragtag.patch.err
-    tail -F ${prefix}/ragtag.patch.err >&2 &
+    # tail -F ${prefix}/ragtag.patch.err >&2 &
     ragtag.py patch target.fa query.fa \\
         -o "${prefix}" \\
         -t ${task.cpus} \\
