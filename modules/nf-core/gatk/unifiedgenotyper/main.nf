@@ -1,11 +1,11 @@
 process GATK_UNIFIEDGENOTYPER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-5e3fd88c6b8af48bb5982d5721ca5e36da94029b:c496eeb8cc9067e0720d35121dbff7732a7ebdb0-0':
-        'biocontainers/mulled-v2-5e3fd88c6b8af48bb5982d5721ca5e36da94029b:c496eeb8cc9067e0720d35121dbff7732a7ebdb0-0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/mulled-v2-5e3fd88c6b8af48bb5982d5721ca5e36da94029b:c496eeb8cc9067e0720d35121dbff7732a7ebdb0-0'
+        : 'biocontainers/mulled-v2-5e3fd88c6b8af48bb5982d5721ca5e36da94029b:c496eeb8cc9067e0720d35121dbff7732a7ebdb0-0'}"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -19,7 +19,7 @@ process GATK_UNIFIEDGENOTYPER {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml"              , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,9 +34,10 @@ process GATK_UNIFIEDGENOTYPER {
 
     def avail_mem = 3072
     if (!task.memory) {
-        log.info '[GATK RealignerTargetCreator] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        log.info('[GATK RealignerTargetCreator] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
+    }
+    else {
+        avail_mem = (task.memory.mega * 0.8).intValue()
     }
 
     """
@@ -51,9 +52,20 @@ process GATK_UNIFIEDGENOTYPER {
         ${comp_file} \\
         ${intervals_file} \\
         -o ${prefix}.vcf \\
-        $args
+        ${args}
 
     bgzip ${prefix}.vcf
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gatk: \$(echo \$(gatk3 --version))
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | bgzip -c > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

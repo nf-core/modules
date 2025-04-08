@@ -3,7 +3,7 @@ process MITOHIFI_FINDMITOREFERENCE {
     label 'process_single'
 
     // Docker image available at the project github repository
-    container 'ghcr.io/marcelauliano/mitohifi:master'
+    container 'ghcr.io/marcelauliano/mitohifi:3.2.3'
 
     input:
     tuple val(meta), val(species)
@@ -18,6 +18,7 @@ process MITOHIFI_FINDMITOREFERENCE {
 
     script:
     def args = task.ext.args ?: ''
+    def VERSION = '3.2.3' // WARN: Incorrect version information is provided by tool on CLI. Please update this string when bumping container versions.
     """
     findMitoReference.py \\
         --species "$species" \\
@@ -26,7 +27,7 @@ process MITOHIFI_FINDMITOREFERENCE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mitohifi: \$( mitohifi.py -v | sed 's/.* //' )
+        mitohifi: ${VERSION}
     END_VERSIONS
     """
 
@@ -35,6 +36,7 @@ process MITOHIFI_FINDMITOREFERENCE {
     touch accession.fasta
     touch accession.gb
 
+    ## old version command: \$(mitohifi.py -v | sed 's/.* //')
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         mitohifi: \$( mitohifi.py -v | sed 's/.* //' )

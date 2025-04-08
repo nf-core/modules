@@ -23,6 +23,15 @@ input:
         type: list
         description: Input genomic vcf files
         pattern: "*.{gvcf,gvcf.gz,g.vcf,g.vcf.gz}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing regions information
+          e.g. [ id:'test' ]
+    - bed:
+        type: list
+        description: Input BED file
+        pattern: "*.bed"
 output:
   - bcf:
       - meta:

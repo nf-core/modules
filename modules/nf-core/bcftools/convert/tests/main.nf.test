@@ -1,0 +1,207 @@
+nextflow_process {
+
+    name "Test Process BCFTOOLS_CONVERT"
+    script "../main.nf"
+    process "BCFTOOLS_CONVERT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bcftools"
+    tag "bcftools/convert"
+
+    config "./nextflow.config"
+
+    test("homo_sapiens - vcf1, tbi, [], fasta - to bcf") {
+        when {
+            params {
+                module_args = '--no-version --gvcf2vcf --output-type b5 --write-index=tbi'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test3' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz.tbi', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'genome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.bcf_gz,
+                    process.out.tbi.collect{meta, tbi -> file(tbi).name},
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - vcf1, tbi, [], fasta - to hap") {
+        when {
+            params {
+                module_args = '--no-version --haplegendsample test'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test3' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz.tbi', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'genome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.hap,
+                    process.out.legend,
+                    process.out.samples,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - vcf1, tbi, bed, fasta - to gvcf") {
+        when {
+            params {
+                module_args = '--no-version --gvcf2vcf --write-index=csi'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test3' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz.tbi', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'genome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.vcf_gz,
+                    process.out.csi.collect{meta, csi -> file(csi).name},
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - vcf1, tbi, [], fasta - to bcf - stub") {
+        options '-stub'
+        when {
+            params {
+                module_args = '--no-version --gvcf2vcf --output-type b5 --write-index=tbi'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test3' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz.tbi', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'genome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - vcf1, tbi, [], fasta - to hap - stub") {
+        options '-stub'
+        when {
+            params {
+                module_args = '--no-version --haplegendsample test --write-index=tbi'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test3' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz.tbi', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'genome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - vcf1, tbi, bed, fasta - to gvcf - stub") {
+        options '-stub'
+        when {
+            params {
+                module_args = '--no-version --gvcf2vcf --write-index=csi'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test3' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz.tbi', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'genome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+}

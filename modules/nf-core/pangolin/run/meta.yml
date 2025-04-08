@@ -1,0 +1,50 @@
+name: pangolin_run
+description: Phylogenetic Assignment of Named Global Outbreak LINeages
+keywords:
+  - covid
+  - pangolin
+  - lineage
+  - run
+tools:
+  - pangolin:
+      description: |
+        Phylogenetic Assignment of Named Global Outbreak LINeages
+      homepage: https://github.com/cov-lineages/pangolin#pangolearn-description
+      manual: https://github.com/cov-lineages/pangolin#pangolearn-description
+      licence: ["GPL-3.0-or-later"]
+      identifier: biotools:pangolin_cov-lineages
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - fasta:
+        type: file
+        description: |
+          The genome assembly to be evaluated
+  - - db:
+        type: directory
+        description: |
+          Directory containing the Pangolin database
+
+output:
+  - report:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*.csv":
+          type: file
+          description: Pangolin lineage report
+          pattern: "*.{csv}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@kevinmenden"
+  - "@drpatelh"
+maintainers:
+  - "@kevinmenden"
+  - "@drpatelh"

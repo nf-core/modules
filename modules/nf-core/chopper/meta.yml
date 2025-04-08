@@ -38,6 +38,10 @@ input:
         type: file
         description: FastQ with reads from long read sequencing e.g. PacBio or ONT
         pattern: "*.{fastq.gz}"
+  - - fasta:
+        type: file
+        description: An optional reference fasta file against which to remove reads that align to it.
+        pattern: "*.fasta"
 output:
   - fastq:
       - meta:

@@ -27,12 +27,24 @@ input:
     - reads:
         type: file
         description: |
-          List of input fastq files of size 1 and 2 for single-end and paired-end data,
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
-  - - index:
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Input genome fasta file
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - index:
         type: directory
-        description: Biscuit genome index directory (generated with 'biscuit index')
-        pattern: "BiscuitIndex"
+        description: Directory containing biscuit genome index
 output:
   - bam:
       - meta:
@@ -63,3 +75,4 @@ authors:
   - "@njspix"
 maintainers:
   - "@njspix"
+  - "@sateeshperi"
