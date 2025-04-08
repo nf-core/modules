@@ -48,13 +48,15 @@ process RAGTAG_PATCH {
         cp ${query} query.fa
     fi
 
+
     ragtag.py patch target.fa query.fa \\
         -o "${prefix}" \\
         -t ${task.cpus} \\
         ${arg_exclude} \\
         ${arg_skip} \\
         ${args} \\
-        > tee ${prefix}.stdout.log
+        2> >( tee ${prefix}.stderr.log >&2 ) \\
+        | tee ${prefix}.stdout.log
 
     mv ${prefix}/ragtag.patch.agp ${prefix}.patch.agp
     mv ${prefix}/ragtag.patch.fasta ${prefix}.patch.fasta
