@@ -77,10 +77,10 @@ nextflow_process {
                     file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true),
                     []
                     ]
-                input[1] = params.minsv
-                input[2] = params.maxsv
-                input[3] = params.minallelefreq
-                input[4] = params.minnumreads
+                input[1] = 51
+                input[2] = 10001
+                input[3] = 0.01
+                input[4] = 10
                 """
             }
         }
