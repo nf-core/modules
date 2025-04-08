@@ -11,9 +11,7 @@ nextflow_process {
     tag "cellrangerarc/mkref"
     tag "unzip"
 
-    test("test_cellrangerarc_mkref") {
-
-        setup {
+    setup {
             run("UNZIP") {
                 script "../../../unzip/main.nf"
 
@@ -21,13 +19,12 @@ nextflow_process {
                     """
                     input[0] = [[],file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.fa.gz',checkIfExists:true)]
                     """
-                }
             }
         }
+    }
+    test("mouse - fa.gz") {
+
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = UNZIP.out.unzipped_archive.map{it[1]}+"/chr19.fa"
@@ -68,23 +65,9 @@ nextflow_process {
         }
     }
 
-    test("test_cellrangerarc_mkref - stub") {
+    test("mouse - fa.gz - stub") {
         options '-stub'
-        setup {
-            run("UNZIP") {
-                script "../../../unzip/main.nf"
-
-                process {
-                    """
-                    input[0] = [[],file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.fa.gz',checkIfExists:true)]
-                    """
-                }
-            }
-        }
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = UNZIP.out.unzipped_archive.map{it[1]}+"/chr19.fa"
