@@ -81,10 +81,8 @@ INV_dup_number: 2'''
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.vcf[0][1]).name, // unstable
-                    file(process.out.parameters), R
-                    file(process.out.vcf[0][1]).name, // unstable
-                    file(process.out.vcf[0][1]).name, // unstable
-
+                    file(process.out.insertions[0][1]).name, // unstable
+                    file(process.out.fasta[0][1]).name, // unstable
                     process.out.versions
                     ).match()
                 }
@@ -92,7 +90,7 @@ INV_dup_number: 2'''
         }
 
     }
-    test("stub") {
+    test("homo sapiens - fasta - stub") {
 
         options "-stub"
 
