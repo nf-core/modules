@@ -118,7 +118,7 @@ jobs:
       - image=ubuntu22-full-x64
     name: nf-core lint modules
     needs: nf-core-changes
-    if: ${{ (needs.nf-core-changes.outputs.modules == 'true' && needs.nf-core-changes.outputs.modules != '[]') }}
+    if: ${{ needs.nf-core-changes.outputs.modules_files != '[]' }}
     strategy:
       fail-fast: false
       matrix:
@@ -166,7 +166,7 @@ jobs:
       - image=ubuntu22-full-x64
     name: nf-core lint subworkflows
     needs: nf-core-changes
-    if: ${{ (needs.nf-core-changes.outputs.subworkflows == 'true' && needs.nf-core-changes.outputs.subworkflows != '[]') }}
+    if: ${{ needs.nf-core-changes.outputs.subworkflows_files != '[]' }}
     strategy:
       fail-fast: false
       matrix:
