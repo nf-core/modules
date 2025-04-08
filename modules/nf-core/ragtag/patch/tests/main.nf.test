@@ -57,7 +57,7 @@ test("A. thaliana Col-0 test data - ragtag - patch") {
 
         when {
             process {
-"""
+                """
                 input[0] = [
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)

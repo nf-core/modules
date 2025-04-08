@@ -38,14 +38,14 @@ process RAGTAG_PATCH {
     then
         zcat ${target} > target.fa
     else
-        cp ${target} target.fa
+        ln -s ${target} target.fa
     fi
 
     if [[ ${query} == *.gz ]]
     then
         zcat ${query} > query.fa
     else
-        cp ${query} query.fa
+        ln -s ${query} query.fa
     fi
 
 

@@ -33,14 +33,14 @@ process RAGTAG_SCAFFOLD {
     then
         zcat ${assembly} > assembly.fa
     else
-        cp ${assembly} assembly.fa
+        ln -s ${assembly} assembly.fa
     fi
 
     if [[ ${reference} == *.gz ]]
     then
         zcat ${reference} > reference.fa
     else
-        cp ${reference} reference.fa
+        ln -s ${reference} reference.fa
     fi
 
     ragtag.py scaffold reference.fa assembly.fa \\
