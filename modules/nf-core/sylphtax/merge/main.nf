@@ -1,20 +1,21 @@
 
-process SYLPHTAX_TAXPROF {
+process SYLPHTAX_MERGE {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sylph-tax:1.2.0--pyhdfd78af_0':
         'biocontainers/sylph-tax:1.2.0--pyhdfd78af_0' }"
 
+
     input:
-    tuple val(meta), path(sylph_results)
-    path taxonomy
+    tuple val(meta), path(sylphtax_reports)
+    val data_type
 
     output:
-    tuple val(meta), path("*.sylphmpa"), emit: taxprof_output
-    path "versions.yml"                , emit: versions
+    tuple val(meta), path("*.tsv"), emit: tsv
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,16 +23,13 @@ process SYLPHTAX_TAXPROF {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     export SYLPH_TAXONOMY_CONFIG="/tmp/config.json"
     sylph-tax \\
-        taxprof \\
-        $sylph_results \\
-        $args \\
-        -t $taxonomy
-
-    mv *.sylphmpa ${prefix}.sylphmpa
+        merge \\
+        ${sylphtax_reports} \\
+        --column $data_type \\
+        --output ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -43,7 +41,7 @@ process SYLPHTAX_TAXPROF {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     export SYLPH_TAXONOMY_CONFIG="/tmp/config.json"
-    touch ${prefix}.sylphmpa
+    touch ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
