@@ -30,7 +30,6 @@ process PLINK2_HWE {
     def outtype = plink_genotype_file.extension == "pgen" ? '--make-pgen' : '--make-bed'
     def input = "${plink_genotype_file.getBaseName()}"
     if( "${input}" == "${prefix}" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
-
     """
     plink2 \\
         $mode $input \\
