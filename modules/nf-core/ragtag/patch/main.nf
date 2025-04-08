@@ -59,7 +59,7 @@ process RAGTAG_PATCH {
         # 2> >( tee ${prefix}.stderr.log >&2 ) \\
         # | tee ${prefix}.stdout.log
 
-    kill -TERM "$tailpid"
+    kill -TERM "\$tailpid"
 
     mv ${prefix}/ragtag.patch.agp ${prefix}.patch.agp
     mv ${prefix}/ragtag.patch.fasta ${prefix}.patch.fasta
