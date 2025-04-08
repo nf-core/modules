@@ -13,7 +13,7 @@ nextflow_process {
     test("human - bam - tumor_normal_pair") {
         when {
             params {
-                module_args = "--normal-sample $meta.normal_id"
+                module_args = "--normal-sample normal"
             }
             process {
             """
@@ -73,7 +73,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = "--normal-sample $meta.normal_id --f1r2-tar-gz ${meta.id}.f1r2.tar.gz"
+                module_args = "--normal-sample normal --f1r2-tar-gz test.f1r2.tar.gz"
             }
             process {
             """
