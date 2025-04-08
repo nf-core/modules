@@ -22,11 +22,11 @@ input:
           e.g. [ id:'test', single_end:false ]
     - input:
         type: file
-        description: BAM/CRAM file from alignment
+        description: BAM/CRAM file(s) from alignment
         pattern: "*.{bam,cram}"
     - input_index:
         type: file
-        description: BAI/CRAI file from alignment
+        description: BAI/CRAI file(s) from alignment
         pattern: "*.{bai,crai}"
     - intervals:
         type: file

@@ -58,6 +58,7 @@ process SENTIEON_TNHAPLOTYPER2 {
         ""
     """
     $sentieonLicense
+    export SENTIEON_LICENSE=${license}
 
     sentieon driver \\
         -t $task.cpus \\
@@ -82,7 +83,7 @@ process SENTIEON_TNHAPLOTYPER2 {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.vcf.gz
+    echo | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
     touch ${prefix}.contamination_data.tsv
     touch ${prefix}.orientation_data.tsv
