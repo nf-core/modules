@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process PLINK2_HWE"
     script "../main.nf"
     process "PLINK2_HWE"
+    config './nextflow.config'
 
     tag "modules"
     tag "modules_nfcore"
@@ -12,6 +13,9 @@ nextflow_process {
     test("plink2 - plink1_input - hwe") {
 
         when {
+            params {
+                module_args = ''
+            }
             process {
 
                 """
@@ -37,8 +41,10 @@ nextflow_process {
 
     test("plink2 - plink2_input - hwe") {
 
-
         when {
+            params {
+                module_args = ''
+            }
             process {
 
                 """
@@ -67,6 +73,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
 
@@ -94,6 +103,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
