@@ -1,0 +1,55 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "hmmer_jackhmmer"
+description: iterative searches to detect distant homologs by refining an HMM profile from hits
+keywords:
+  - HMM
+  - homologs
+  - iterative refinement
+tools:
+  - "hmmer":
+      description: Biosequence analysis using profile hidden Markov models
+      homepage: http://hmmer.org/
+      documentation: http://hmmer.org/documentation.html
+      tool_dev_url: https://github.com/EddyRivasLab/hmmer
+      doi: "10.1371/journal.pcbi.1002195"
+      licence: ["BSD"]
+      identifier: biotools:hmmer3
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_25722"
+          - edam: "http://edamontology.org/format_2573"
+          - edam: "http://edamontology.org/format_3462"
+output:
+  - bam:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - "*.bam":
+        type: file
+        description: Sorted BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_25722"
+          - edam: "http://edamontology.org/format_2573"
+          - edam: "http://edamontology.org/format_3462"
+  - versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"
