@@ -59,4 +59,3 @@ process PLINK2_GENO {
     END_VERSIONS
     """
 }
-
