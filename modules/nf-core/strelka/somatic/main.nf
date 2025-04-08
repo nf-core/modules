@@ -29,7 +29,6 @@ process STRELKA_SOMATIC {
     def options_target_bed = target_bed ? "--callRegions ${target_bed}" : ""
     def options_manta = manta_candidate_small_indels ? "--indelCandidates ${manta_candidate_small_indels}" : ""
     """
-
     configureStrelkaSomaticWorkflow.py \\
         --tumor $input_tumor \\
         --normal $input_normal \\
