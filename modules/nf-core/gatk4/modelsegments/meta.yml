@@ -1,5 +1,6 @@
 name: "gatk4_modelsegments"
-description: Converts copy number ratios (and optonally allelic counts) to copy number segments
+description: Converts copy number ratios (and optonally allelic counts) to copy number
+  segments
 keywords:
   - copyratios
   - modelsegments
@@ -26,11 +27,6 @@ input:
         type: file
         description: Denoised copy ratios in hdf5 format.
         pattern: "*.{hdf5}"
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'test', single_end:false ]`
 output:
   - segmented:
       - meta:
