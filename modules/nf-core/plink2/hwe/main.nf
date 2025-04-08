@@ -12,13 +12,13 @@ process PLINK2_HWE {
     val (hwe)
 
     output:
-    tuple val(meta), path("*.bim")  , emit: bim, optional: true
-    tuple val(meta), path("*.bed")  , emit: bed, optional: true
-    tuple val(meta), path("*.fam")  , emit: fam, optional: true
-    tuple val(meta), path("*.pgen") , emit: pgen, optional: true
-    tuple val(meta), path("*.psam") , emit: psam, optional: true
-    tuple val(meta), path("*.pvar") , emit: pvar, optional: true
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.bim"),  emit: bim,  optional: true
+    tuple val(meta), path("*.bed"),  emit: bed,  optional: true
+    tuple val(meta), path("*.fam"),  emit: fam,  optional: true
+    tuple val(meta), path("*.pgen"), emit: pgen, optional: true
+    tuple val(meta), path("*.psam"), emit: psam, optional: true
+    tuple val(meta), path("*.pvar"), emit: pvar, optional: true
+    path "versions.yml",             emit: versions
 
     when:
     task.ext.when == null || task.ext.when
