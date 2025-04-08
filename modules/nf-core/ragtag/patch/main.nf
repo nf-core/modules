@@ -49,7 +49,7 @@ process RAGTAG_PATCH {
     fi
 
     tail -F ${prefix}/ragtag.patch.err >&2 &
-    tailpid=$!
+    tailpid=\$!
     ragtag.py patch target.fa query.fa \\
         -o "${prefix}" \\
         -t ${task.cpus} \\
