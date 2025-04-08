@@ -3,14 +3,13 @@ process GTDBTK_CLASSIFYWF {
     label 'process_medium'
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ? 'https://depot.galaxyproject.org/singularity/gtdbtk:2.4.0--pyhdfd78af_1' : 'biocontainers/gtdbtk:2.4.0--pyhdfd78af_1'}"
-    containerOptions "$mount_opts"
+    containerOptions mount_opts ?: ''
 
     input:
     tuple val(meta)   , path("bins/*")
-    tuple val(db_name), path("database/*")
+    tuple val(db_name), path("database/*"), val( mount_opts )
     val use_pplacer_scratch_dir
     path mash_db
-    val mount_opts
 
     output:
     tuple val(meta), path("gtdbtk.${prefix}.*.summary.tsv")        , emit: summary
