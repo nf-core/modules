@@ -89,7 +89,6 @@ jobs:
           ${{ steps.get-test-path.outputs.test_path }}
 
       - name: Commit & push changes
-        if: steps.update-gpu-snapshot.outputs.result == 'fail'
         run: |
           git config user.email "core@nf-co.re"
           git config user.name "nf-core-bot"
