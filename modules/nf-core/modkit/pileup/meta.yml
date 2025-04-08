@@ -37,6 +37,10 @@ input:
         description: Reference sequence in FASTA format. Required for motif (e.g. CpG)
           filtering
         pattern: "*.fasta"
+    - fai:
+        type: file
+        description: Associated index file for FASTA
+        pattern: "*.fai"
   - - meta3:
         type: map
         description: |
