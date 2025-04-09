@@ -3,7 +3,7 @@ process MIRTOP_GFF {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "community.wave.seqera.io/library/mirtop_pybedtools_pysam_samtools_pruned:60b8208f3dbb2910"
+    container "community.wave.seqera.io/library/mirtop_pybedtools_pysam_samtools:b9705c2683e775b8"
 
     input:
     tuple val(meta), path(bam, arity:'1..*')
