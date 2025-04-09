@@ -74,7 +74,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.segments,
+                    process.out.segmented,
                     process.out.versions
                 ).match() }
             )
