@@ -55,9 +55,9 @@ process RAGTAG_PATCH {
         -t ${task.cpus} \\
         ${arg_exclude} \\
         ${arg_skip} \\
-        ${args} # \\
-        # 2> >( tee ${prefix}.stderr.log >&2 ) \\
-        # | tee ${prefix}.stdout.log
+        ${args} \\
+        2> >( tee ${prefix}.stderr.log >&2 ) \\
+         | tee ${prefix}.stdout.log
 
     kill -TERM "\$tailpid"
 
