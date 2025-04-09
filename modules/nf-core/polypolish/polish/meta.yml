@@ -1,0 +1,76 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "polypolish_polish"
+description: Polishing genome assemblies with short reads.
+keywords:
+  - assembly polishing
+  - genome polishing
+  - ont
+tools:
+  - "polypolish":
+      description: "Polishing genome assemblies with short reads."
+      homepage: "https://github.com/rrwick/Polypolish"
+      documentation: "https://github.com/rrwick/Polypolish/wiki"
+      tool_dev_url: "https://github.com/rrwick/Polypolish"
+      doi: "10.1099/mgen.0.001254"
+      licence: ["GPL3"]
+      identifier: biotools:polypolish
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fasta:
+        type: file
+        description: FASTA file with draft assembly of ONT data
+        pattern: "*.{fasta,fna,fa,fas}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - sam:
+        type: file
+        description: List of SAM files of short reads mapped against the FASTA input file
+        pattern: "*.sam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2573"
+  - - save_debug:
+        type: boolean
+        description: "Turn debug output on"
+        pattern: "true|false"
+output:
+  - fasta:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.fasta":
+          type: file
+          description: FASTA file with polished draft assembly
+          pattern: "*.{fasta,fna,fa,fas}"
+          ontologies:
+            - edam: "http://edamontology.org/format_1929"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+  - debug:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.txt":
+          type: file
+          description: "File with debug base information"
+          pattern: "*.txt"
+authors:
+  - "@ktrappe"
+maintainers:
+  - "@ktrappe"
