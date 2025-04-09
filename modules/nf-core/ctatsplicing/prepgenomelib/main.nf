@@ -21,6 +21,7 @@ process CTATSPLICING_PREPGENOMELIB {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '0.0.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     /usr/local/src/CTAT-SPLICING/prep_genome_lib/ctat-splicing-lib-integration.py \\
         --cancer_introns_tsv $cancer_intron_tsv \\
@@ -28,13 +29,14 @@ process CTATSPLICING_PREPGENOMELIB {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        ctatsplicing: 0.0.2
+        ctatsplicing: $VERSION
     END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '0.0.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     mkdir -p $genome_lib/
     mkdir -p $genome_lib/ref_genome.fa.star.idx
@@ -119,7 +121,7 @@ process CTATSPLICING_PREPGENOMELIB {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        ctatsplicing: 0.0.2
+        ctatsplicing: $VERSION
     END_VERSIONS
     """
 }
