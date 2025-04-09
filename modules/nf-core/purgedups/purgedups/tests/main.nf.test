@@ -87,7 +87,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.bed,
-                    process.out.versions,
+                    path(process.out.versions[0]).yaml,
                     file(process.out.log[0][1]).name
                     ).match()}
             )
