@@ -45,6 +45,11 @@ input:
       description: |
         Path to BUSCO config. It is optional and can be set to `[]`
         Structure:val(busco_config)
+  - val_busco_cleanup:
+      type: boolean
+      description: |
+        Flag to indicate if intermediate BUSCO files should be removed
+        Structure:val(busco_cleanup)
 output:
   - assembly_batch_summary:
       type: file

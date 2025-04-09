@@ -4,7 +4,7 @@ process SEQUALI {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/sequali:0.12.0--c288fa2befb47d0f':
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9e/9ed3be5b0d3beb64807ec93b25a80b55abdcdffe684114d12ddef78461dd64e9/data':
         'community.wave.seqera.io/library/sequali:0.12.0--07485bec824d914a' }"
 
     input:

@@ -38,17 +38,37 @@ input:
         type: string
         description: target specific sequence by header, optionally with coordinates
           (optional).
-  - - agpfile:
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - agpfile:
         type: file
         description: converts input agp to path and replaces existing paths.
-  - - include_bed:
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - include_bed:
         type: file
         description: generates output on a subset list of headers or coordinates in
           0-based bed format.
-  - - exclude_bed:
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - exclude_bed:
         type: file
         description: opposite of --include-bed. They can be combined (no coordinates).
-  - - instructions:
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - instructions:
         type: file
         description: set of instructions provided as an ordered list.
 output:

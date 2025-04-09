@@ -7,26 +7,10 @@ nextflow_process {
 
     tag "modules"
     tag "modules_nfcore"
-    tag "nf-core/gunzip"
     tag "liftoff"
-    tag "gunzip"
 
     test("homo_sapiens-genome_21_fasta-genome_1_fasta-genome_1_gtf") {
 
-        setup {
-            run("GUNZIP") {
-                script "../../../nf-core/gunzip"
-
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test' ],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.fasta.gz', checkIfExists: true)
-                    ]
-                    """
-                }
-            }
-        }
 
         when {
             process {
@@ -35,7 +19,9 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = GUNZIP.out.gunzip.map { meta, file -> file }
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.fasta.gz', checkIfExists: true)
+                    ]
                 input[2] = [
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.gtf', checkIfExists: true)
                 ]
@@ -59,21 +45,6 @@ nextflow_process {
     test("homo_sapiens-genome_21_fasta-genome_1_fasta-genome_1_gtf-stub") {
         options '-stub'
 
-        setup {
-            run("GUNZIP") {
-                script "../../../nf-core/gunzip"
-
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test' ],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.fasta.gz', checkIfExists: true)
-                    ]
-                    """
-                }
-            }
-        }
-
         when {
             process {
                 """
@@ -81,7 +52,9 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = GUNZIP.out.gunzip.map { meta, file -> file }
+                input[1] = [ 
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.fasta.gz', checkIfExists: true) 
+                    ]
                 input[2] = [
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.gtf', checkIfExists: true)
                 ]

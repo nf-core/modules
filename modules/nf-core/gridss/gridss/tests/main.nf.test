@@ -45,10 +45,12 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match() },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2") }
+                { assert snapshot(
+                    path(process.out.vcf.get(0).get(1)).vcf.summary, // no SVs exist in the test data
+                    process.out.versions
+                    ).match() }
             )
         }
 
@@ -74,10 +76,12 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match() },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2") }
+                { assert snapshot(
+                    path(process.out.vcf.get(0).get(1)).vcf.summary, // no SVs exist in the test data
+                    process.out.versions
+                    ).match() }
             )
         }
 
@@ -103,10 +107,12 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match() },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2") }
+                { assert snapshot(
+                    path(process.out.vcf.get(0).get(1)).vcf.summary, // no SVs exist in the test data
+                    process.out.versions
+                    ).match() }
             )
         }
 
@@ -134,8 +140,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }

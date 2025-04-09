@@ -1,0 +1,65 @@
+nextflow_process {
+
+    name "Test Process ELPREP_MERGE"
+    script "../main.nf"
+    process "ELPREP_MERGE"
+   
+    tag "modules"
+    tag "modules_nfcore"
+    tag "elprep"
+    tag "elprep/split"
+    tag "elprep/merge"
+   
+    setup {
+        run("ELPREP_SPLIT") {
+            script "../../split/main.nf"
+            
+            process {
+                """
+                input[0] = [
+                    [id:'test',single_end:false],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam',checkIfExists:true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens - bam") {
+        when {
+            process {
+                """
+                input[0] = ELPREP_SPLIT.out.bam
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = ELPREP_SPLIT.out.bam
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}

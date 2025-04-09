@@ -111,6 +111,7 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     stranded_threshold   // float: The fraction of stranded reads that must be assigned to a strandedness for confident assignment. Must be at least 0.5
     unstranded_threshold // float: The difference in fraction of stranded reads assigned to 'forward' and 'reverse' below which a sample is classified as 'unstranded'
     skip_linting         // boolean: true/false
+    fastp_merge          // boolean: true/false: whether to stitch paired end reads together in FASTP output
 
     main:
 
@@ -152,7 +153,7 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         )
         ch_versions = ch_versions.mix(FQ_LINT.out.versions.first())
         ch_lint_log = ch_lint_log.mix(FQ_LINT.out.lint)
-        ch_reads = ch_reads.join(FQ_LINT.out.lint.map{it[0]})
+        ch_filtered_reads = ch_filtered_reads.join(FQ_LINT.out.lint.map{it[0]})
     }
 
     //
@@ -191,7 +192,7 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
             skip_trimming,
             [],
             save_trimmed,
-            save_trimmed,
+            fastp_merge,
             min_trimmed_reads
         )
         ch_filtered_reads      = FASTQ_FASTQC_UMITOOLS_FASTP.out.reads

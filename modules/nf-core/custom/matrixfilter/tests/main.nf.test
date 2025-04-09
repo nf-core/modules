@@ -1,0 +1,100 @@
+nextflow_process {
+
+    name "Test Process CUSTOM_MATRIXFILTER"
+    script "../main.nf"
+    process "CUSTOM_MATRIXFILTER"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "custom_matrixfilter"
+    tag "custom"
+    tag "custom/matrixfilter"
+
+    test("test_custom_matrixfilter") {
+
+        when {
+            params {
+                observations_id_col             = 'sample'
+                filtering_min_samples           = 1.0
+                filtering_min_abundance         = 10
+                filtering_min_proportion        = null
+                filtering_grouping_var          = null
+                filtering_min_proportion_not_na = 0.5
+                filtering_min_samples_not_na    = null
+
+                module_args = [
+                    "--sample_id_col \"${params.observations_id_col}\"",
+                    "--minimum_samples ${params.filtering_min_samples}",
+                    "--minimum_abundance ${params.filtering_min_abundance}",
+                    (params.filtering_min_proportion ? "--minimum_proportion ${params.filtering_min_proportion}" : ''),
+                    (params.filtering_grouping_var ? "--grouping_variable \"${params.filtering_grouping_var}\"" : ''),
+                    (params.filtering_min_proportion_not_na ? "--minimum_proportion_not_na \"${params.filtering_min_proportion_not_na}\"" : ''),
+                    (params.filtering_min_samples_not_na ? "--minimum_samples_not_na \"${params.filtering_min_samples_not_na}\"" : '')
+                ].join(' ').trim()
+            }
+            process {
+                """
+                input[0] = [ [id:"test"],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv",checkIfExists: true)
+                ]
+                input[1] = [ [id:"test"],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.sample_metadata.tsv",checkIfExists: true)
+                ]
+                """
+
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out.filtered,
+                process.out.tests,
+                process.out.versions).match() }
+            )
+        }
+    }
+
+    test("test_custom_matrixfilter - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                observations_id_col             = 'sample'
+                filtering_min_samples           = 1.0
+                filtering_min_abundance         = 10
+                filtering_min_proportion        = null
+                filtering_grouping_var          = null
+                filtering_min_proportion_not_na = 0.5
+                filtering_min_samples_not_na    = null
+                module_args   = [
+                    "--sample_id_col \"${params.observations_id_col}\"",
+                    "--minimum_samples ${params.filtering_min_samples}",
+                    "--minimum_abundance ${params.filtering_min_abundance}",
+                    (params.filtering_min_proportion ? "--minimum_proportion ${params.filtering_min_proportion}" : ''),
+                    (params.filtering_grouping_var ? "--grouping_variable \"${params.filtering_grouping_var}\"" : ''),
+                    (params.filtering_min_proportion_not_na ? "--minimum_proportion_not_na \"${params.filtering_min_proportion_not_na}\"" : ''),
+                    (params.filtering_min_samples_not_na ? "--minimum_samples_not_na \"${params.filtering_min_samples_not_na}\"" : '')
+                ].join(' ').trim()
+            }
+            process {
+                """
+                input[0] = [ [id:"test"],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv",checkIfExists: true)
+                ]
+                input[1] = [ [id:"test"],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.sample_metadata.tsv",checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
