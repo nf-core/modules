@@ -10,7 +10,7 @@ nextflow_process {
     tag "plink2"
     tag "plink2/filter"
 
-    test("plink2 - plink1_input - filter") {
+    test("plink1_input - filter") {
 
         when {
             params {
@@ -39,7 +39,7 @@ nextflow_process {
 
     }
 
-    test("plink2 - plink2_input - filter") {
+    test("plink2_input - filter") {
 
 
         when {
@@ -69,7 +69,7 @@ nextflow_process {
 
     }
 
-    test("plink2 - plink1_input - filter - stub") {
+    test("plink1_input - filter - stub") {
 
         options "-stub"
 
@@ -99,7 +99,7 @@ nextflow_process {
 
     }
 
-    test("plink2 - plink2_input - filter - stub") {
+    test("plink2_input - filter - stub") {
 
         options "-stub"
 
