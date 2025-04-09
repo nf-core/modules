@@ -32,13 +32,15 @@ input:
         description: "Sorted BAM/CRAM/SAM file"
         pattern: "*.{bam,cram,sam}"
         ontologies:
-          - edam: "http://edamontology.org/format_25722"
+          - edam: "http://edamontology.org/format_2572"
           - edam: "http://edamontology.org/format_2573"
           - edam: "http://edamontology.org/format_3462"
     - bai:
         type: file
         description: "BAM/CRAM/SAM index file"
         pattern: "*.{bai,crai,sai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327"
   - - meta2:
         type: map
         description: |
@@ -60,6 +62,8 @@ output:
         type: file
         description: "Sorted BAM file containing reads mapped to cancer introns"
         pattern: "*.cancer_intron_reads.sorted.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
   - cancer_introns_sorted_bai:
     - meta:
         type: map
@@ -70,6 +74,8 @@ output:
         type: file
         description: "Index file for the sorted BAM of cancer introns"
         pattern: "*.cancer_intron_reads.sorted.bam.bai"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327"
   - gene_reads_sorted_bam:
     - meta:
         type: map
@@ -80,6 +86,8 @@ output:
         type: file
         description: "Sorted BAM file containing reads mapped to gene regions after downsampling coverage"
         pattern: "*.gene_reads.sorted.sifted.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
   - gene_reads_sorted_bai:
     - meta:
         type: map
@@ -90,6 +98,8 @@ output:
         type: file
         description: "Index file for the sorted BAM of gene reads after filtering"
         pattern: "*.gene_reads.sorted.sifted.bam.bai"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327"
   - cancer_introns:
     - meta:
         type: map
