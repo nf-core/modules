@@ -25,7 +25,7 @@ process SENTIEON_BWAMEM {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}.bam"
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64 ?
-        "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; " :
+        "export SENTIEON_LICENSE=\"\${PWD}/sentieon_license.lic\"; echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \${SENTIEON_LICENSE}; " :
         ""
 
     """
