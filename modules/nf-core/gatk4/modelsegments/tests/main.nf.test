@@ -70,8 +70,8 @@ nextflow_process {
         when {
 
             params {
-                module_args = "--format TSV --interval-merging-rule OVERLAPPING_ONLY"
-                module_args2 = "--minimum-interval-median-percentile 1.0 --number-of-eigensamples 2"
+                gatk4_collectreadcounts_args = "--format TSV --interval-merging-rule OVERLAPPING_ONLY"
+                gatk4_createreadcountpanelofnormals_args = "--minimum-interval-median-percentile 1.0 --number-of-eigensamples 2"
             }
 
             process {
@@ -97,8 +97,8 @@ nextflow_process {
         when {
 
             params {
-                module_args = "--format TSV --interval-merging-rule OVERLAPPING_ONLY"
-                module_args2 = "--minimum-interval-median-percentile 1.0 --number-of-eigensamples 2"
+                gatk4_collectreadcounts_args = "--format TSV --interval-merging-rule OVERLAPPING_ONLY"
+                gatk4_createreadcountpanelofnormals_args = "--minimum-interval-median-percentile 1.0 --number-of-eigensamples 2"
             }
 
             process {
