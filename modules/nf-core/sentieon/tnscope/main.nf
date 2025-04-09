@@ -9,12 +9,12 @@ process SENTIEON_TNSCOPE {
         'community.wave.seqera.io/library/sentieon:202308.03--59589f002351c221' }"
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(input), path(input_index)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(cosmic), path(cosmic_tbi)
-    tuple val(meta5), path(pon), path(pon_tbi)
-    tuple val(meta6), path(dbsnp), path(dbsnp_tbi)
+    tuple val(meta5), path(pon)   , path(pon_tbi)
+    tuple val(meta6), path(dbsnp) , path(dbsnp_tbi)
     tuple val(meta7), path(interval)
 
     output:
@@ -26,13 +26,14 @@ process SENTIEON_TNSCOPE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args         = task.ext.args   ?: ''
-    def args2        = task.ext.args2  ?: ''
-    def interval_str = interval      ? "--interval ${interval}" : ''
-    def cosmic_str = cosmic          ? "--cosmic ${cosmic}"          : ''
-    def dbsnp_str  = dbsnp           ? "--dbsnp ${dbsnp}"            : ''
-    def pon_str    = pon             ? "--pon ${pon}"                : ''
-    def prefix     = task.ext.prefix ?: "${meta.id}"
+    def args         = task.ext.args     ?: ''
+    def args2        = task.ext.args2    ?: ''
+    def interval_str = interval          ? "--interval ${interval}" : ''
+    def cosmic_str   = cosmic            ? "--cosmic ${cosmic}"     : ''
+    def dbsnp_str    = dbsnp             ? "--dbsnp ${dbsnp}"       : ''
+    def pon_str      = pon               ? "--pon ${pon}"           : ''
+    def inputs       = input.collect{ "-i $it"}.join(" ")
+    def prefix       = task.ext.prefix   ?: "${meta.id}"
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64 ?
         "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; " :
         ""
@@ -42,7 +43,7 @@ process SENTIEON_TNSCOPE {
     sentieon driver \\
         -t $task.cpus \\
         -r $fasta \\
-        -i $bam \\
+        $inputs \\
         $interval_str \\
         $args \\
         --algo TNscope \\
@@ -62,7 +63,7 @@ process SENTIEON_TNSCOPE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.vcf.gz
+    echo | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
