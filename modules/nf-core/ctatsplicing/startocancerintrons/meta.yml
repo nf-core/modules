@@ -1,6 +1,11 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "ctatsplicing_startocancerintrons"
-description: write your description here
+description: "Detection and annotation of aberrant splicing isoforms in cancer transcriptomes"
+long_description: |
+  This module detects and annotates aberrant splicing isoforms in cancer transcriptomes using CTAT-splicing.
+  It takes STAR alignment files, a sorted BAM file, and a CTAT genome library reference as input, and outputs various files related to cancer introns.
+  The output can be used for further analysis of splicing aberrations in cancer.
+  Make sure to provide the correct STAR alignment files and CTAT genome library reference.
 keywords:
   - splicing
   - cancer
