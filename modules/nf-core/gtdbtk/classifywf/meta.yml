@@ -27,13 +27,18 @@ input:
           e.g. [ id:'test', single_end:false,  assembler:'spades' ]
     - '"bins/*"':
         type: file
-        description: bins
+        description: A list of one or more bins in FASTA format for classification
+        pattern: "*.{fasta,fna,fas,fa}{,.gz}"
   - - db_name:
         type: string
         description: The name of the GTDB database to use.
-    - '"database/*"':
+    - db:
         type: file
-        description: GTDB database
+        description: |
+          Path to a directory containing a GDTB database, as uncompressed from from the 'full package' gtdbdtk_data.tar.gz file.
+          You can give the 'release<version number>' directory here.
+          Must contain the 'metadata' subdirectory
+        pattern: "release[0-9]+\/"
   - - use_pplacer_scratch_dir:
         type: boolean
         description: Set to true to reduce pplacer memory usage by writing to disk (slower)

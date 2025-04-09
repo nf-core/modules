@@ -1,0 +1,67 @@
+nextflow_process {
+
+    name "Test Process COOLER_ZOOMIFY"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "COOLER_ZOOMIFY"
+   
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cooler"
+    tag "cooler/zoomify"
+    
+    test("test_cooler_zoomify") {
+        
+        when {
+            params {
+                module_args = '-r 2,4,8'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/merge/toy/toy.symm.upper.2.cool', checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.mcool.collect{ file(it[1]).name }
+                ).match() }
+            )
+        }
+    }
+    
+    
+    test("test_cooler_zoomify -- stub") {
+
+        options '-stub'
+
+        when {
+            params {
+                module_args = '-r 2,4,8'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/merge/toy/toy.symm.upper.2.cool', checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+}
