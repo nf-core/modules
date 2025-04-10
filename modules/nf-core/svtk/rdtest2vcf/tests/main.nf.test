@@ -29,7 +29,6 @@ nextflow_process {
                     input[2] = [ [id:'genome'],
                                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                             ]
-                    // config
                     input[3] = Channel.of("[manta]", "enableRemoteReadRetrievalForInsertionsInGermlineCallingModes = 0")
                                 .collectFile(name:"manta_options.ini", newLine:true)
                     """
