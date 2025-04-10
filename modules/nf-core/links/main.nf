@@ -29,8 +29,8 @@ process LINKS {
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // Currently LINKS does not support more than 3 threads
-    def nthreads = "${task.cpus}" < 3 ? "${task.cpus}" : 3
+    // Currently LINKS does not support more than 4 threads
+    def nthreads = "${task.cpus}" < 4 ? "${task.cpus}" : 4
     def args = task.ext.args ?: ""
     """
     echo "${reads}" > readfile.fof

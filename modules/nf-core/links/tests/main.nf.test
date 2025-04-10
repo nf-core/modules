@@ -34,10 +34,12 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
+                    file(process.out.log[0][1]).name,
                     process.out.pairing_issues,
                     process.out.scaffolds_csv,
                     process.out.scaffolds_fasta,
                     process.out.bloom,
+                    file(process.out.scaffolds_graph[0][1]).name,
                     process.out.assembly_correspondence,
                     process.out.tigpair_checkpoint,
                     process.out.versions
