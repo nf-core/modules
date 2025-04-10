@@ -1,0 +1,106 @@
+nextflow_process {
+
+    name "Test Process COPTR_MAP"
+    script "../main.nf"
+    process "COPTR_MAP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "coptr"
+    tag "coptr/index"
+    tag "coptr/map"
+
+    setup {
+        run("COPTR_INDEX") {
+            script "../../index/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id:'test_0'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - single end test") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_1', single_end: true ],
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true)
+                ]
+                input[1] = COPTR_INDEX.out.index_dir
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.bam.collect{bam(it[1]).getReads(10)},
+                    process.out.bam.collect{bam(it[1]).getStatistics(include:["readCount"])},
+                    process.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - paired end") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end: false ],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_2.fastq.gz", checkIfExists: true)
+                    ]
+                ]
+                input[1] = COPTR_INDEX.out.index_dir
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.bam.collect{bam(it[1]).getStatistics(include:["readCount"])},
+                    process.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+
+    test("sarscov2 - single end - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end: true ],
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true)
+                ]
+                input[1] = COPTR_INDEX.out.index_dir
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

@@ -4,8 +4,8 @@ process SHINYNGS_STATICEXPLORATORY {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-shinyngs:2.0.0--r43hdfd78af_0' :
-        'biocontainers/r-shinyngs:2.0.0--r43hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5b/5b0b2383d86ddb37ad7c2b8bc3c373926e8bc0cd08b137f457756c39e1589dd0/data' :
+        'community.wave.seqera.io/library/r-shinyngs:2.2.2--09ebd939fb477d18' }"
 
     input:
     tuple val(meta), path(sample), path(feature_meta), path(assay_files)

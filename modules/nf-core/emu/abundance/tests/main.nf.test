@@ -1,0 +1,77 @@
+nextflow_process {
+    name "Test Process EMU_ABUNDANCE"
+    script "../main.nf"
+    process "EMU_ABUNDANCE"
+    tag "modules"
+    tag "untar"
+    tag "modules_nfcore"
+    tag "emu"
+    tag "emu/abundance"
+    config "./nextflow.config"
+
+    setup {
+        run("UNTAR") {
+            script "modules/nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [],
+                    file(
+                        params.modules_testdata_base_path + "genomics/prokaryotes/streptococcus_agalactiae/genome/emu.tar.gz",
+                        checkIfExists: true
+                    )
+                ])
+                """
+            }
+        }
+    }
+
+    test("sarscov2 nanopore [fastq_gz]") {
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/streptococcus_agalactiae/nanopore/fastq/test.fastq.gz', checkIfExists: true)
+                        ]
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.report,
+                    process.out.assignment_report,
+                    process.out.samfile,
+                    process.out.versions
+                ).match() },
+    // Match files unclassified_mapped.fasta and unmapped.fasta as they are empty with this test case
+                { assert file(process.out.unclassified_fa[0][1][0]).exists() },
+                { assert file(process.out.unclassified_fa[0][1][1]).exists() }
+            )
+        }
+    }
+
+    test("sarscov2 nanopore [fastq_gz] - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/streptococcus_agalactiae/nanopore/fastq/test.fastq.gz', checkIfExists: true)
+                        ]
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

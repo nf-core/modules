@@ -1,0 +1,52 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "coptr_index"
+description: Indexes a directory of fasta files for use with CoPTR
+keywords:
+  - coptr
+  - index
+  - ptr
+tools:
+  - "coptr":
+      description: "Accurate and robust inference of microbial growth dynamics from
+        metagenomic sequencing reads."
+      homepage: "https://github.com/tyjo/coptr"
+      documentation: "https://coptr.readthedocs.io/"
+      tool_dev_url: "https://github.com/tyjo/coptr"
+      doi: "10.1101/gr.275533.121"
+      licence: ["GPL v3"]
+      identifier: biotools:coptr
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing genome information
+    - indexfasta:
+        type: file
+        description: Fasta file(s) ending in [.fasta, .fna, .fa] to be used to create the index.
+        pattern: "*.{.fasta,.fna,.fa}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+
+output:
+  - index_dir:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing genome information
+      - "bowtie2":
+          type: map
+          description: index genome directory
+          ontologies:
+            - edam: "http://edamontology.org/data_3210"
+          pattern: "*.{genome}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@ramirobarrantes"
+maintainers:
+  - "@ramirobarrantes"

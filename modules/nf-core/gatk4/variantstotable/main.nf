@@ -1,14 +1,14 @@
 process GATK4_VARIANTSTOTABLE {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.5.0.0--py36hdfd78af_0':
-        'biocontainers/gatk4:4.5.0.0--py36hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b2/b28daf5d9bb2f0d129dcad1b7410e0dd8a9b087aaf3ec7ced929b1f57624ad98/data':
+        'community.wave.seqera.io/library/gatk4_gcnvkernel:e48d414933d188cd' }"
 
     input:
-    tuple val(meta), path(vcf), path(tbi), path(arguments_file), path(include_intervals), path(exclude_intervals)
+    tuple val(meta),  path(vcf), path(tbi), path(arguments_file), path(include_intervals), path(exclude_intervals)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(dict)
@@ -42,8 +42,8 @@ process GATK4_VARIANTSTOTABLE {
         --reference $fasta \\
         --tmp-dir . \\
         $arguments_file_arg \\
-        $include_intervals \\
-        $exclude_intervals
+        $include_intervals_arg \\
+        $exclude_intervals_arg
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
