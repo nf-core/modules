@@ -21,7 +21,6 @@ nextflow_process {
                                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true),
                                 [],[]
                             ]
-                    // fasta
                     input[1] = [ [id:'genome'],
                                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                             ]
