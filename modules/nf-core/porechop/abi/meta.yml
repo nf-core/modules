@@ -25,6 +25,10 @@ input:
         type: file
         description: fastq/fastq.gz file
         pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
+  - - custom_adapters:
+         type: file
+         description: Text file containing custom adapters
+        
 output:
   - reads:
       - meta:
