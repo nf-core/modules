@@ -3,7 +3,7 @@ process DRAGMAP_HASHTABLE {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    // WARN: Do not update this file to use 1.3.0 cf https://github.com/Illumina/DRAGMAP/issues/47
+    // WARN: Do not update this tool to 1.3.0 until https://github.com/Illumina/DRAGMAP/issues/47 is resolved
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/dragmap:1.2.1--h72d16da_1'
         : 'biocontainers/dragmap:1.2.1--h72d16da_1'}"
