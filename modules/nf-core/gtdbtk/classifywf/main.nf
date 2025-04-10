@@ -32,7 +32,7 @@ process GTDBTK_CLASSIFYWF {
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    export GTDBTK_DATA_PATH="\$(find -L ${db} -name 'metadata' -type d -exec dirname {} \\;)"#
+    export GTDBTK_DATA_PATH="\$(find -L ${db} -name 'metadata' -type d -exec dirname {} \\;)"
 
     if [ "${pplacer_scratch}" != "" ] ; then
         mkdir pplacer_tmp
