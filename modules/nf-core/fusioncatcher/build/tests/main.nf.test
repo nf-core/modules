@@ -9,6 +9,8 @@ nextflow_process {
     tag "fusioncatcher"
     tag "fusioncatcher/build"
 
+    // Only stub tests because this module downloads about 50 GB of data
+
     test("stub") {
 
         options "-stub"
