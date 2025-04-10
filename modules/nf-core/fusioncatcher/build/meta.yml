@@ -25,13 +25,13 @@ input:
 
 
 output:
-  - references:
+  - reference:
     - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-    - "${prefix}":
+    - ${prefix}:
         type: file
         description: Diretory containing the fusioncatcher reference files
 
