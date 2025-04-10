@@ -41,6 +41,7 @@ nextflow_process {
                         path("${process.out.db[0][1]}/split"),
                         path("${process.out.db[0][1]}/taxID_list"),
                         file("${process.out.db[0][1]}/db.parameters").name,
+                        process.out.versions
                         ).match()
                 }
 

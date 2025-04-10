@@ -10,10 +10,10 @@ keywords:
 tools:
   - "metabuli":
       description: "Metabuli: specific and sensitive metagenomic classification via joint analysis of DNA and amino acid"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      homepage: "https://github.com/steineggerlab/Metabuli"
+      documentation: "https://github.com/steineggerlab/Metabuli"
+      tool_dev_url: "https://github.com/steineggerlab/Metabuli"
+      doi: "10.1101/2023.05.31.543018"
       licence: ['GPL v3']
       identifier: biotools:metabuli
 
@@ -25,7 +25,7 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-  
+
   ## TODO nf-core: Delete / customise this example input
     - bam:
         type: file
@@ -35,7 +35,7 @@ input:
           - edam: "http://edamontology.org/format_25722"
           - edam: "http://edamontology.org/format_2573"
           - edam: "http://edamontology.org/format_3462"
-          
+
 
 ## TODO nf-core: Add a description of all of the variables used as output
 output:
@@ -55,7 +55,7 @@ output:
           - edam: "http://edamontology.org/format_25722"
           - edam: "http://edamontology.org/format_2573"
           - edam: "http://edamontology.org/format_3462"
-          
+
   - versions:
     - "versions.yml":
         type: file
