@@ -42,6 +42,7 @@ process SVTK_RDTEST2VCF {
     """
     echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         svtk: ${VERSION}
