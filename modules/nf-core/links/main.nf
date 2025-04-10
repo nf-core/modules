@@ -33,12 +33,18 @@ process LINKS {
     def nthreads = "${task.cpus}" < 4 ? "${task.cpus}" : 4
     def args = task.ext.args ?: ""
     """
-    zcat -f ${assembly} > assembly.fa
+    if [[ ${assembly} == *.gz ]];
+    then
+        zcat -z ${assembly} > assembly.fa
+    else
+        ln -s ${assembly} assembly.fa
+    fi
+
     for read_file in ${reads};
         do
             if [[ \$read_file == *.gz ]];
             then 
-                zcat \$read_file > \$(basename \$read_file .gz)
+                zcat -z \$read_file > \$(basename \$read_file .gz)
                 echo \$(basename \$read_file .gz) >> readfile.fof
             else
                 echo \$read_file >> readfile.fof
