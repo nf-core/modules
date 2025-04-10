@@ -1,6 +1,4 @@
-// nf-core modules test links
 nextflow_process {
-
     name "Test Process LINKS"
     script "../main.nf"
     process "LINKS"
@@ -10,7 +8,7 @@ nextflow_process {
     tag "links"
 
     test("LINKS test data") {
-        config './nextflow_links_test.config'
+        config './nextflow.config'
 
         when {
             params {
@@ -19,11 +17,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'delete_me/LINKS/contigs.fasta', checkIfExists: true),
                 ]
                 input[1] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test'], 
                     file(params.modules_testdata_base_path + 'delete_me/LINKS/genome.fasta', checkIfExists: true),
                 ]
                 """
@@ -53,7 +51,7 @@ nextflow_process {
     test("LINKS test data - stub") {
 
         options "-stub"
-        config './nextflow_links_test.config'
+        config './nextflow.config'
 
         when {
             params {
@@ -62,11 +60,11 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ], 
                     file(params.modules_testdata_base_path + 'delete_me/LINKS/contigs.fasta', checkIfExists: true),
                 ]
                 input[1] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ], 
                     file(params.modules_testdata_base_path + 'delete_me/LINKS/genome.fasta', checkIfExists: true),
                 ]
                 """

@@ -12,17 +12,17 @@ process LINKS {
     tuple val(meta2), path(reads)
 
     output:
-    tuple val(meta), path("*.log"), emit: log
-    tuple val(meta), path("*.pairing_distribution.csv"), emit: pairing_distribution, optional: true
-    tuple val(meta), path("*.pairing_issues"), emit: pairing_issues
-    tuple val(meta), path("*.scaffolds"), emit: scaffolds_csv
-    tuple val(meta), path("*.scaffolds.fa"), emit: scaffolds_fasta
-    tuple val(meta), path("*.bloom"), emit: bloom
-    tuple val(meta), path("*.gv"), emit: scaffolds_graph
+    tuple val(meta), path("*.log"),                         emit: log
+    tuple val(meta), path("*.pairing_distribution.csv"),    emit: pairing_distribution,  optional: true
+    tuple val(meta), path("*.pairing_issues"),              emit: pairing_issues
+    tuple val(meta), path("*.scaffolds"),                   emit: scaffolds_csv
+    tuple val(meta), path("*.scaffolds.fa"),                emit: scaffolds_fasta
+    tuple val(meta), path("*.bloom"),                       emit: bloom
+    tuple val(meta), path("*.gv"),                          emit: scaffolds_graph
     tuple val(meta), path("*.assembly_correspondence.tsv"), emit: assembly_correspondence
-    tuple val(meta), path("*.simplepair_checkpoint.tsv"), emit: simplepair_checkpoint, optional: true
-    tuple val(meta), path("*.tigpair_checkpoint.tsv"), emit: tigpair_checkpoint
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.simplepair_checkpoint.tsv"),   emit: simplepair_checkpoint, optional: true
+    tuple val(meta), path("*.tigpair_checkpoint.tsv"),      emit: tigpair_checkpoint
+    path "versions.yml",                                    emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,9 +33,19 @@ process LINKS {
     def nthreads = "${task.cpus}" < 4 ? "${task.cpus}" : 4
     def args = task.ext.args ?: ""
     """
-    echo "${reads}" > readfile.fof
+    zcat -f ${assembly} > assembly.fa
+    for read_file in ${reads};
+        do
+            if [[ \$read_file == *.gz ]];
+            then 
+                zcat \$read_file > \$(basename \$read_file .gz)
+                echo \$(basename \$read_file .gz) >> readfile.fof
+            else
+                echo \$read_file >> readfile.fof
+            fi
+        done
 
-    LINKS -f ${assembly} \\
+    LINKS -f assembly.fa \\
         -s readfile.fof \\
         -j $nthreads \\
         -b ${prefix} \\
@@ -48,9 +58,7 @@ process LINKS {
     """
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // Currently LINKS does not support more than 4 threads
-    def _nthreads = "${task.cpus}" < 4 ? "${task.cpus}" : 4 
-    def _args = task.ext.args ?: ""
+
     """
     touch ${prefix}.log
     touch ${prefix}.pairing_distribution.csv

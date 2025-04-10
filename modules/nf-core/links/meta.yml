@@ -30,7 +30,7 @@ input:
     - assembly:
         type: file
         description: (Multi-)fasta file containing the draft assembly
-        pattern: "*.{fa,fasta}"
+        pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
   - - meta2:
         type: map
         description: |
@@ -39,7 +39,7 @@ input:
     - reads:
         type: file
         description: fastq file(s) containing the long reads to be used for scaffolding
-        pattern: "*.{fq,fastq}"
+        pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
 
 output:
   - log:
