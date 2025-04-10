@@ -13,7 +13,7 @@ process FCS_FCSGX {
     output:
     tuple val(meta), path("out/*.fcs_gx_report.txt"), emit: fcs_gx_report
     tuple val(meta), path("out/*.taxonomy.rpt")     , emit: taxonomy_report
-    path "versions.yml"                         , emit: versions
+    path "versions.yml"                             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
