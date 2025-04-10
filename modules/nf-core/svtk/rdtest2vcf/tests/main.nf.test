@@ -25,7 +25,6 @@ nextflow_process {
                     input[1] = [ [id:'genome'],
                                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                             ]
-                    // fai
                     input[2] = [ [id:'genome'],
                                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                             ]
