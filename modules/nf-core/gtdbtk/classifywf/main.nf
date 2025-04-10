@@ -2,7 +2,7 @@ process GTDBTK_CLASSIFYWF {
     tag "${prefix}"
     label 'process_medium'
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ? 'https://depot.galaxyproject.org/singularity/gtdbtk:2.4.0--pyhdfd78af_1' : 'biocontainers/gtdbtk:2.4.0--pyhdfd78af_1'}"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ? 'https://depot.galaxyproject.org/singularity/gtdbtk:2.4.0--pyhdfd78af_2' : 'biocontainers/gtdbtk:2.4.0--pyhdfd78af_2'}"
 
     input:
     tuple val(meta), path("bins/*")
@@ -34,7 +34,7 @@ process GTDBTK_CLASSIFYWF {
     """
     export GTDBTK_DATA_PATH="\$(find -L ${db} -name 'metadata' -type d -exec dirname {} \\;)"#
 
-    if [ ${pplacer_scratch} != "" ] ; then
+    if [ "${pplacer_scratch}" != "" ] ; then
         mkdir pplacer_tmp
     fi
 
@@ -69,7 +69,7 @@ process GTDBTK_CLASSIFYWF {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gtdbtk: \$(echo \$(gtdbtk --version -v 2>&1) | sed "s/gtdbtk: version //; s/ Copyright.*//")
+        gtdbtk: \$(echo \$(gtdbtk --version 2>/dev/null) | sed "s/gtdbtk: version //; s/ Copyright.*//")
     END_VERSIONS
     """
 
@@ -88,7 +88,7 @@ process GTDBTK_CLASSIFYWF {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gtdbtk: \$(echo \$(gtdbtk --version -v 2>&1) | sed "s/gtdbtk: version //; s/ Copyright.*//")
+        gtdbtk: \$(echo \$(gtdbtk --version 2>/dev/null) | sed "s/gtdbtk: version //; s/ Copyright.*//")
     END_VERSIONS
     """
 }
