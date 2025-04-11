@@ -56,29 +56,11 @@ input:
         description: |
           Groovy Map containing reference information.
           e.g. [ id:'test' ]
-    - cosmic:
-        type: file
-        description: Catalogue of Somatic Mutations in Cancer (COSMIC) VCF file.
-        pattern: "*.vcf.gz"
-  - - meta5:
-        type: map
-        description: |
-          Groovy Map containing reference information.
-          e.g. [ id:'test' ]
-    - cosmic_tbi:
-        type: file
-        description: Index of the Catalogue of Somatic Mutations in Cancer (COSMIC) VCF file.
-        pattern: "*.vcf.gz.tbi"
-  - - meta6:
-        type: map
-        description: |
-          Groovy Map containing reference information.
-          e.g. [ id:'test' ]
     - dbsnp:
         type: file
         description: Single Nucleotide Polymorphism database (dbSNP) file
         pattern: "*.vcf.gz"
-  - - meta7:
+  - - meta5:
         type: map
         description: |
           Groovy Map containing reference information.
@@ -87,7 +69,7 @@ input:
         type: file
         description: Index of the Single Nucleotide Polymorphism database (dbSNP) file
         pattern: "*.vcf.gz.tbi"
-  - - meta8:
+  - - meta6:
         type: map
         description: |
           Groovy Map containing reference information.
@@ -96,7 +78,7 @@ input:
         type: file
         description: Single Nucleotide Polymorphism database (dbSNP) file
         pattern: "*.vcf.gz"
-  - - meta9:
+  - - meta7:
         type: map
         description: |
           Groovy Map containing reference information.
@@ -104,6 +86,24 @@ input:
     - pon_tbi:
         type: file
         description: Index of the Single Nucleotide Polymorphism database (dbSNP) file
+        pattern: "*.vcf.gz.tbi"
+  - - meta8:
+        type: map
+        description: |
+          Groovy Map containing reference information.
+          e.g. [ id:'test' ]
+    - cosmic:
+        type: file
+        description: Catalogue of Somatic Mutations in Cancer (COSMIC) VCF file.
+        pattern: "*.vcf.gz"
+  - - meta9:
+        type: map
+        description: |
+          Groovy Map containing reference information.
+          e.g. [ id:'test' ]
+    - cosmic_tbi:
+        type: file
+        description: Index of the Catalogue of Somatic Mutations in Cancer (COSMIC) VCF file.
         pattern: "*.vcf.gz.tbi"
 output:
   - vcf:
