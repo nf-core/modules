@@ -24,6 +24,8 @@ input:
         type: file
         description: Input fasta file containing query sequences
         pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - meta2:
         type: map
         description: |
@@ -33,6 +35,7 @@ input:
         type: file
         description: File of the indexed DIAMOND database
         pattern: "*.dmnd"
+        ontologies: []
   - - outfmt:
         type: integer
         description: |
@@ -59,82 +62,89 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.{blast,blast.gz}"
       - "*.{blast,blast.gz}":
-          type: map
+          type: file
           description: File containing blastp hits
           pattern: "*.{blast,blast.gz}"
+          ontologies:
+            - edam: http://edamontology.org/format_3836 # BLAST XML v2 results format
   - xml:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.{xml,xml.gz}"
       - "*.{xml,xml.gz}":
-          type: map
+          type: file
           description: File containing blastp hits
           pattern: "*.{xml,xml.gz}"
+          ontologies:
+            - edam: http://edamontology.org/format_2332 # XML
   - txt:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.{txt,txt.gz}"
       - "*.{txt,txt.gz}":
-          type: map
+          type: file
           description: File containing hits in tabular BLAST format.
           pattern: "*.{txt,txt.gz}"
+          ontologies: 
+              - edam: http://edamontology.org/format_1333 # BLAST results
   - daa:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.{daa,daa.gz}"
       - "*.{daa,daa.gz}":
-          type: map
+          type: file
           description: File containing hits DAA format
           pattern: "*.{daa,daa.gz}"
+          ontologies: []
   - sam:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.{sam,sam.gz}"
       - "*.{sam,sam.gz}":
-          type: map
+          type: file
           description: File containing aligned reads in SAM format
           pattern: "*.{sam,sam.gz}"
+          ontologies:
+            - edam: http://edamontology.org/format_2573 # SAM
   - tsv:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.{tsv,tsv.gz}"
       - "*.{tsv,tsv.gz}":
-          type: map
+          type: file
           description: Tab separated file containing taxonomic classification of hits
           pattern: "*.{tsv,tsv.gz}"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   - paf:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.{paf,paf.gz}"
       - "*.{paf,paf.gz}":
-          type: map
+          type: file
           description: File containing aligned reads in pairwise mapping format format
           pattern: "*.{paf,paf.gz}"
+          ontologies: []
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies: 
+              - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@spficklin"
   - "@jfy133"

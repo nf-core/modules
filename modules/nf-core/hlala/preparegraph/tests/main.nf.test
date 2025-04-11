@@ -1,0 +1,90 @@
+nextflow_process {
+
+    name "Test Process HLALA_PREPAREGRAPH"
+    script "../main.nf"
+    process "HLALA_PREPAREGRAPH"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hlala"
+    tag "hlala/preparegraph"
+    tag "unzip"
+
+    test("homo_sapiens - prg") {
+        config "./nextflow.config"
+
+        setup {
+
+            run("UNZIP"){
+                script "../../../unzip/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test'], // meta map
+                        file(params.test_data['homo_sapiens']['genome']['prg_input'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+	    params {
+	        outdir = "$outputDir"
+	    }
+            process {
+                """
+                input[0] = UNZIP.out.unzipped_archive.map{ meta, filepath ->
+                    [meta, "\$filepath/PRG_\${filepath.toString().split("/").last()}"]
+                }
+                """
+            }
+        }
+
+        then {
+	    def stable_name    = getAllFilesFromDir(outputDir, relative:true, includeDir: true)
+	    def stable_content = getAllFilesFromDir(outputDir, ignore: ['**/referenceGenome.fa.{bwt,pac,sa}','**/referenceGenome.fa_bowtie2idx*'])
+            assertAll(
+                { assert process.success },
+                { assert snapshot(stable_name,stable_content).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - prg - stub") {
+
+        options "-stub"
+        setup {
+
+            run("UNZIP"){
+                script "../../../unzip/main.nf"
+                options "-stub"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test'], // meta map
+                        file(params.test_data['homo_sapiens']['genome']['prg_input'], checkIfExists: true)
+                    ]
+                    """
+                }
+            } 
+        }
+
+        when {
+            process {
+                """
+                input[0] = UNZIP.out.unzipped_archive
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
