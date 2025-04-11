@@ -44,7 +44,7 @@ process HMMER_JACKHMMER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        hmmer: \$(hmmsearch -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER *//')
+        hmmer: \$(jackhmmer -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER *//')
     END_VERSIONS
     """
 
@@ -63,7 +63,7 @@ process HMMER_JACKHMMER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        hmmer: \$(hmmsearch -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER *//')
+        hmmer: \$(jackhmmer -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER *//')
     END_VERSIONS
     """
 }

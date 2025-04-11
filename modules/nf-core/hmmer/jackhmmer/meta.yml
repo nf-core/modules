@@ -5,7 +5,7 @@ description: iterative searches to detect distant homologs by refining an HMM pr
 keywords:
   - HMM
   - homologs
-  - iterative refinement
+  - iterative model refinement
 tools:
   - "hmmer":
       description: Biosequence analysis using profile hidden Markov models
@@ -20,30 +20,68 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - bam:
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
-        ontologies:
-          - edam: "http://edamontology.org/format_25722"
-          - edam: "http://edamontology.org/format_2573"
-          - edam: "http://edamontology.org/format_3462"
+        description: One or multiple amino acid sequences from which to start building a model iteratively (one model per input sequence)
+        pattern: "*.{fasta,fna,faa,fa,fasta.gz,fna.gz,faa.gz,fa.gz}"
+    - seqdb:
+        type: file
+        description: Database of sequences in FASTA format
+        pattern: "*.{fasta,fna,faa,fa,fasta.gz,fna.gz,faa.gz,fa.gz}"
+    - write_align:
+        type: boolean
+        description: Flag to save optional alignment output. Specify with 'true' to
+          save.
+    - write_target:
+        type: boolean
+        description: Flag to save optional per target summary. Specify with 'true' to
+          save.
+    - write_domain:
+        type: boolean
+        description: Flag to save optional per domain summary. Specify with 'true' to
+          save.
 output:
-  - bam:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - "*.bam":
-        type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
-        ontologies:
-          - edam: "http://edamontology.org/format_25722"
-          - edam: "http://edamontology.org/format_2573"
-          - edam: "http://edamontology.org/format_3462"
+  - output:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt.gz":
+          type: file
+          description: Human readable output summarizing hmmsearch results
+          pattern: "*.{txt.gz}"
+  - alignments:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.sto.gz":
+          type: file
+          description: Optional multiple sequence alignment (MSA) in Stockholm format
+          pattern: "*.{sto.gz}"
+  - target_summary:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tbl.gz":
+          type: file
+          description: Optional tabular (space-delimited) summary of per-target output
+          pattern: "*.{tbl.gz}"
+  - domain_summary:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.domtbl.gz":
+          type: file
+          description: Optional tabular (space-delimited) summary of per-domain output
+          pattern: "*.{domtbl.gz}"
   - versions:
     - "versions.yml":
         type: file
