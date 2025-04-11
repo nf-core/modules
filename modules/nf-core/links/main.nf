@@ -35,7 +35,7 @@ process LINKS {
     """
     if [[ ${assembly} == *.gz ]];
     then
-        zcat -z ${assembly} > assembly.fa
+        gzip -dc ${assembly} > assembly.fa
     else
         ln -s ${assembly} assembly.fa
     fi
@@ -44,7 +44,7 @@ process LINKS {
         do
             if [[ \$read_file == *.gz ]];
             then 
-                zcat -z \$read_file > \$(basename \$read_file .gz)
+                gzip -dc \$read_file > \$(basename \$read_file .gz)
                 echo \$(basename \$read_file .gz) >> readfile.fof
             else
                 echo \$read_file >> readfile.fof
