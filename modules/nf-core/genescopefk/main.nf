@@ -49,7 +49,6 @@ process GENESCOPEFK {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     def GENESCOPE_VERSION = '380815c420f50171f9234a0fd1ff426b39829b91'
-
     """
     touch "${prefix}_linear_plot.png"
     touch "${prefix}_log_plot.png"
