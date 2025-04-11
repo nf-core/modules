@@ -4,22 +4,22 @@ process BLAST_MAKEBLASTDB {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/52/5222a42b366a0468a4c795f5057c2b8cfe39489548f8bd807e8ac0f80069bad5/data':
-        'community.wave.seqera.io/library/blast:2.16.0--540f4b669b0a0ddd' }"
+        'oras://community.wave.seqera.io/library/blast:2.16.0--9231066034144667':
+        'community.wave.seqera.io/library/blast:2.16.0--9231066034144667' }"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*_DB"),  emit: db
-    path "versions.yml",            emit: versions
+    tuple val(meta), path("${prefix}"), emit: db
+    path "versions.yml"               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args            = task.ext.args ?: ''
-    def prefix          = task.ext.prefix ?: "${meta.id}"
+    prefix              = task.ext.prefix ?: "${meta.id}"
     def is_compressed   = fasta.getExtension() == "gz" ? true : false
     def fasta_name      = is_compressed ? fasta.getBaseName() : fasta
     """
@@ -29,12 +29,12 @@ process BLAST_MAKEBLASTDB {
 
     makeblastdb \\
         -in ${fasta_name} \\
-        -out ${prefix}_DB/${fasta_name}
+        -out ${prefix}/${fasta_name}
         ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        blast: \$(blastn -version 2>&1 | sed 's/^.*blastn: //; s/ .*\$//')
+        blast: \$(makeblastdb -version 2>&1 | sed 's/^.*blastn: //; s/ .*\$//')
     END_VERSIONS
     """
 
@@ -58,7 +58,7 @@ process BLAST_MAKEBLASTDB {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        blast: \$(blastn -version 2>&1 | sed 's/^.*blastn: //; s/ .*\$//')
+        blast: \$(makeblastdb -version 2>&1 | sed 's/^.*blastn: //; s/ .*\$//')
     END_VERSIONS
     """
 }
