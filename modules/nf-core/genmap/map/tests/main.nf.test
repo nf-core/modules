@@ -14,7 +14,6 @@ nextflow_process {
     setup {
         run("GENMAP_INDEX") {
             script "../../index/main.nf"
-
             process {
                 """
                 input[0] = [
@@ -30,12 +29,11 @@ nextflow_process {
 
         when {
             params {
-                module_prefix = "test_map"
                 module_args   = "-K 50 -E 2 -w -t -bg -d"
             }
             process {
                 """
-                input[0] = GENMAP_INDEX.out.index
+                input[0] = GENMAP_INDEX.out.index.view()
                 input[1] = [
                     [id:"bed"],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists:true)
@@ -56,7 +54,6 @@ nextflow_process {
         options '-stub'
         when {
             params {
-                module_prefix = "test_map"
                 module_args   = "-K 50 -E 2 -w -t -bg -d"
             }
             process {
