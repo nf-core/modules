@@ -4,7 +4,7 @@ process BLAST_MAKEBLASTDB {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/blast:2.16.0--9231066034144667':
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/52/5222a42b366a0468a4c795f5057c2b8cfe39489548f8bd807e8ac0f80069bad5/data':
         'community.wave.seqera.io/library/blast:2.16.0--9231066034144667' }"
 
     input:
