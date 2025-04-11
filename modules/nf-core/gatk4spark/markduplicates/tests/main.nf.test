@@ -17,12 +17,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
                 ]
-                input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                input[2] = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
-                input[3] = file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
                 """
             }
         }
@@ -45,15 +45,15 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test', single_end:false ],
                     [
-                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_name_sorted_bam'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_name_sorted_bam'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.name.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.name.sorted.bam', checkIfExists: true)
                     ]
                 ]
-                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-                input[2] = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-                input[3] = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                 """
             }
         }
@@ -76,15 +76,15 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test', single_end:false ],
                     [
-                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_name_sorted_bam'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_name_sorted_bam'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.name.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.name.sorted.bam', checkIfExists: true)
                     ]
                 ]
-                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-                input[2] = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-                input[3] = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                 """
             }
         }
@@ -112,15 +112,15 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test', single_end:false ],
                     [
-                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_name_sorted_bam'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_name_sorted_bam'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.name.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.name.sorted.bam', checkIfExists: true)
                     ]
                 ]
-                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-                input[2] = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-                input[3] = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                 """
             }
         }
@@ -144,12 +144,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true)
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.name.sorted.bam', checkIfExists: true)
                 ]
-                input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                input[2] = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
-                input[3] = file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
                 """
             }
         }
@@ -173,15 +173,15 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test', single_end:false ],
                     [
-                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_name_sorted_bam'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_name_sorted_bam'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.name.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.name.sorted.bam', checkIfExists: true)
                     ]
                 ]
-                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-                input[2] = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-                input[3] = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                 """
             }
         }
@@ -205,15 +205,15 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test', single_end:false ],
                     [
-                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_name_sorted_bam'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_name_sorted_bam'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.name.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.name.sorted.bam', checkIfExists: true)
                     ]
                 ]
-                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-                input[2] = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-                input[3] = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                 """
             }
         }
@@ -237,15 +237,15 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test', single_end:false ],
                     [
-                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_name_sorted_bam'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_name_sorted_bam'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.name.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.name.sorted.bam', checkIfExists: true)
                     ]
                 ]
-                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-                input[2] = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-                input[3] = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                 """
             }
         }
