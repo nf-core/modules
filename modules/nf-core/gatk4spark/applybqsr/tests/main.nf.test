@@ -30,40 +30,11 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
-
-    }
-
-    test("sarscov2 - bam intervals") {
-
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['illumina']['test_baserecalibrator_table'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
-                ]
-                input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-                input[2] = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
-                input[3] = file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
-
     }
 
     test("sarscov2 - bam - stub") {
@@ -87,12 +58,68 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
 
+    }
+
+
+    test("sarscov2 - bam intervals") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['illumina']['test_baserecalibrator_table'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
+                ]
+                input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                input[2] = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+                input[3] = file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - bam intervals -stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['illumina']['test_baserecalibrator_table'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
+                ]
+                input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                input[2] = file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true)
+                input[3] = file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
     }
 
     test("sarscov2 - cram") {
@@ -115,13 +142,38 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
 
+    test("sarscov2 - cram -stub") {
+        options "-stub"
 
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram_crai'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['illumina']['test_baserecalibrator_table'], checkIfExists: true),
+                    file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
+                ]
+                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                input[2] = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                input[3] = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
 }

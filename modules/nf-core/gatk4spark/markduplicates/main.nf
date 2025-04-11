@@ -55,6 +55,7 @@ process GATK4SPARK_MARKDUPLICATES {
     touch ${prefix}
     touch ${prefix}.bai
     touch ${prefix}.metrics
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
