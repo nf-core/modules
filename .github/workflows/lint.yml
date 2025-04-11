@@ -118,7 +118,7 @@ jobs:
       - image=ubuntu22-full-x64
     name: nf-core lint modules
     needs: nf-core-changes
-    if: ${{ (needs.nf-core-changes.outputs.modules == 'true' && needs.nf-core-changes.outputs.modules != '[]') }}
+    if: ${{ needs.nf-core-changes.outputs.modules_files != '[]' }}
     strategy:
       fail-fast: false
       matrix:
@@ -145,7 +145,7 @@ jobs:
       - name: Install pip
         run: python -m pip install --upgrade pip
 
-      - uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4
+      - uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4
         with:
           distribution: "temurin"
           java-version: "17"
@@ -166,7 +166,7 @@ jobs:
       - image=ubuntu22-full-x64
     name: nf-core lint subworkflows
     needs: nf-core-changes
-    if: ${{ (needs.nf-core-changes.outputs.subworkflows == 'true' && needs.nf-core-changes.outputs.subworkflows != '[]') }}
+    if: ${{ needs.nf-core-changes.outputs.subworkflows_files != '[]' }}
     strategy:
       fail-fast: false
       matrix:
