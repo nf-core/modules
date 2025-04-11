@@ -25,7 +25,7 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.error },
+                { assert process.failed },
                 { assert process.errorReport.contains("WARNING: This module has been deprecated. Please use nf-core/modules/fcsgx/rungx")}
             )
         }
@@ -50,7 +50,7 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.error },
+                { assert process.failed },
                 { assert process.errorReport.contains("WARNING: This module has been deprecated. Please use nf-core/modules/fcsgx/rungx")}
             )
         }
