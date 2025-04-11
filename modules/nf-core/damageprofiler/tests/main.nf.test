@@ -29,7 +29,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.versions,
                     process.out.results.collect { meta, dir -> [
-                        meta, file(dir).list().collect { // Do not check md5sum for .pdf .svg and .log as unstable
+                        meta, file(dir).list().sort().collect { // Do not check md5sum for .pdf .svg and .log as unstable
                             file ->
                             file.endsWith(".pdf") || file.endsWith(".svg") || file.endsWith(".log") ? file : path(dir).resolve(file)
                         }
@@ -61,7 +61,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.versions,
                     process.out.results.collect { meta, dir -> [
-                        meta, file(dir).list().collect { // Do not check md5sum for .pdf .svg and .log as unstable
+                        meta, file(dir).list().sort().collect { // Do not check md5sum for .pdf .svg and .log as unstable
                             file ->
                             file.endsWith(".pdf") || file.endsWith(".svg") || file.endsWith(".log") ? file : path(dir).resolve(file)
                         }
@@ -92,7 +92,7 @@ nextflow_process {
                     process.out.versions,
                     process.out.results.collect { meta, dir -> [
                         meta, file(dir).listFiles().findAll { it.isDirectory() }.collect { subdir ->
-                            subdir.listFiles().collect { file ->
+                            subdir.listFiles().sort().collect { file ->
                                 file.name.endsWith(".pdf") || file.name.endsWith(".svg") || file.name.endsWith(".log") ? file.name : file
                             }
                         }.flatten()
