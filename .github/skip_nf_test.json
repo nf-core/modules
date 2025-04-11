@@ -18,6 +18,8 @@
         "modules/nf-core/cellranger/mkvdjref",
         "modules/nf-core/cellranger/multi",
         "modules/nf-core/cellranger/vdj",
+        "modules/nf-core/cellrangerarc/mkref",
+        "modules/nf-core/cellrangerarc/count",
         "modules/nf-core/cellrangerarc/mkgtf",
         "modules/nf-core/checkqc",
         "modules/nf-core/coreograph",
@@ -31,7 +33,6 @@
         "modules/nf-core/deepvariant/rundeepvariant",
         "modules/nf-core/deepvariant/vcfstatsreport",
         "modules/nf-core/doubletdetection",
-        "modules/nf-core/ensemblvep/vep",
         "modules/nf-core/fastk/fastk",
         "modules/nf-core/fastk/histex",
         "modules/nf-core/fastk/merge",
@@ -74,6 +75,8 @@
         "modules/nf-core/spaceranger/mkref",
         "modules/nf-core/spotiflow",
         "modules/nf-core/svanalyzer/svbenchmark",
+        "modules/nf-core/svtk/rdtest2vcf",
+        "modules/nf-core/svtk/standardize",
         "modules/nf-core/universc",
         "modules/nf-core/vt/decompose",
         "modules/nf-core/wittyer",
@@ -85,8 +88,7 @@
         "subworkflows/nf-core/deepvariant",
         "subworkflows/nf-core/fasta_newick_epang_gappa",
         "subworkflows/nf-core/fastq_align_bamcmp_bwa",
-        "subworkflows/nf-core/fastq_align_bwa",
-        "subworkflows/nf-core/vcf_annotate_ensemblvep"
+        "subworkflows/nf-core/fastq_align_bwa"
     ],
     "docker": ["modules/nf-core/parabricks", "subworkflows/nf-core/deepvariant/tests/equality"],
     "singularity": [

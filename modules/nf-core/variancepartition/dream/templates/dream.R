@@ -47,12 +47,12 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.nam
 
 # Options list
 opt <- list(
-    output_prefix      = "$meta.contrast_id",       # Prefix for output files
+    output_prefix      = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
     count_file         = "$counts",                 # File containing raw counts
     sample_file        = "$samplesheet",            # File containing sample information
-    contrast_variable  = "$meta.contrast_variable", # Variable for contrast (e.g., "treatment")
-    contrast_reference    = "$meta.contrast_reference",# Reference level for the contrast
-    contrast_target       = "$meta.contrast_target",   # Target level for the contrast (e.g., "mCherry")
+    contrast_variable  = "$contrast_variable",      # Variable for contrast (e.g., "treatment")
+    contrast_reference = "$reference",              # Reference level for the contrast
+    contrast_target    = "$target",                 # Target level for the contrast (e.g., "mCherry")
     sample_id_col      = "sample",                  # Column name for sample IDs
     threads            = "$task.cpus",              # Number of threads for multithreading
     subset_to_contrast_samples = FALSE,            # Whether to subset to contrast samples
@@ -69,7 +69,7 @@ opt <- list(
     winsor_tail_p      = "0.05,0.1",              # Winsor tail probabilities for eBayes
     ddf                = "adaptive",              # 'Satterthwaite', 'Kenward-Roger', or 'adaptive'
     reml               = FALSE,
-    formula            = "$meta.formula",         # User-specified formula (e.g. "~ + (1 | sample_number)")
+    formula            = "$formula",              # User-specified formula (e.g. "~ + (1 | sample_number)")
     apply_voom         = FALSE                    # Whether to apply `voomWithDreamWeights`
 )
 
@@ -158,6 +158,9 @@ results <- topTable(fitmm, coef = coef_name,
 # Export topTable results
 write.table(results, file = paste(opt\$output_prefix, 'dream.results.tsv', sep = '.'),
             col.names = TRUE, row.names = FALSE, sep = '\t', quote = FALSE )
+
+# Save model to file
+write(deparse(form), file=paste(opt\$output_prefix, 'dream.model.txt', sep = '.'))
 
 ################################################
 ################################################
