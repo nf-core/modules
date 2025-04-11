@@ -65,6 +65,37 @@ nextflow_process {
         }
     }
 
+
+    test("Mus musculus - expression table - contrasts + formula + weighted comparison contrast string") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of(['id': 'treatment_mCherry_hND6', 'variable': 'treatment', 'reference': 'mCherry', 'target': 'hND6', 'blocking_factors':'sample_number', 'formula':'~ 0 + treatment', 'comparison':'2 * treatmenthND6 - treatmentmCherry'])
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                    }
+
+                input[1] = Channel.of([
+                    [ id:'test' ],
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv", checkIfExists: true),
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv", checkIfExists: true)
+                    ]
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.model, process.out.versions).match() },
+                { assert path(process.out.results[0][1]).getText().contains("logFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB\n2124\t549\t4.83") },
+                { assert path(process.out.results[0][1]).getText().contains("1707.33") }
+                )
+        }
+    }
+
     test("Mus musculus - expression table - contrasts + formula + comparison contrast string - no intercept") {
 
         when {

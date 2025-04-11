@@ -163,6 +163,32 @@
         },
         "timestamp": "2025-04-07T17:50:03.51650916"
     },
+    "Mus musculus - expression table - contrasts + formula + weighted comparison contrast string": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "treatment_mCherry_hND6",
+                        "variable": "treatment",
+                        "reference": "mCherry",
+                        "target": "hND6",
+                        "blocking_factors": "sample_number",
+                        "formula": "~ 0 + treatment",
+                        "comparison": "2 * treatmenthND6 - treatmentmCherry"
+                    },
+                    "treatment_mCherry_hND6.dream.model.txt:md5,30f74fcf5ad34ef1cc5505b0026963d6"
+                ]
+            ],
+            [
+                "versions.yml:md5,fc1f26eb2194018e99fc2916332676b7"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.5"
+        },
+        "timestamp": "2025-04-11T15:17:26.584285563"
+    },
     "Mus musculus - expression table - contrasts + formula + comparison contrast string": {
         "content": [
             {
