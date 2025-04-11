@@ -53,6 +53,7 @@ opt <- list(
     contrast_variable  = "$contrast_variable",      # Variable for contrast (e.g., "treatment")
     contrast_reference = "$reference",              # Reference level for the contrast
     contrast_target    = "$target",                 # Target level for the contrast (e.g., "mCherry")
+    contrast_string    = "$comparison",             # Optional full (complex) contrast expression comparison
     sample_id_col      = "sample",                  # Column name for sample IDs
     threads            = "$task.cpus",              # Number of threads for multithreading
     subset_to_contrast_samples = FALSE,            # Whether to subset to contrast samples
@@ -85,6 +86,11 @@ for (ao in names(args_opt)) {
 # If there is no formula, convert string "null" to NULL
 if (!is.null(opt\$formula) && tolower(opt\$formula) == "null") {
     opt\$formula <- NULL
+}
+
+# If there is no contrast string, convert string "null" to NULL
+if (!is.null(opt\$contrast_string) && tolower(opt\$contrast_string) == "null") {
+    opt\$contrast_string <- NULL
 }
 
 # Load metadata
@@ -147,13 +153,28 @@ fitmm <- eBayes(fitmm, proportion = opt\$proportion,
 head(fitmm\$design, 3)
 print(colnames(fitmm\$design))
 
-# Write coefficient name from contrast variable and target level (e.g., "treatmentmCherry")
-coef_name <- paste0(opt\$contrast_variable, opt\$contrast_target)
+# If contrast_string is provided, use that for makeContrast
+if (!is.null(opt\$contrast_string) && opt\$contrast_string != "") {
+    cat("Using contrast string:", opt\$contrast_string, "\n")
+    # Use makeContrasts
+    contrast_matrix <- makeContrasts(contrasts = opt\$contrast_string, levels = fitmm\$design)
+    fit2 <- contrasts.fit(fitmm, contrast_matrix)
+    fit2 <- eBayes(fit2, proportion = opt\$proportion,
+                   stdev.coef.lim = stdev_coef_lim_vals,
+                   trend = opt\$trend, robust = opt\$robust,
+                   winsor.tail.p = winsor_tail_p_vals)
+    results <- topTable(fit2, number = nrow(countMatrix),
+                        adjust.method = opt\$adjust.method,
+                        p.value = opt\$p.value, lfc = opt\$lfc, confint = opt\$confint)
 
-# Get topTable results
-results <- topTable(fitmm, coef = coef_name,
-                    adjust.method = opt\$adjust.method, p.value = opt\$p.value,
-                    lfc = opt\$lfc, confint = opt\$confint)
+} else {
+    coef_name <- paste0(opt\$contrast_variable, opt\$contrast_target)
+    cat("Using default contrast matrix:", coef_name, "\n")
+
+    results <- topTable(fitmm, coef = coef_name,
+                        adjust.method = opt\$adjust.method, p.value = opt\$p.value,
+                        lfc = opt\$lfc, confint = opt\$confint)
+}
 
 # Export topTable results
 write.table(results, file = paste(opt\$output_prefix, 'dream.results.tsv', sep = '.'),
