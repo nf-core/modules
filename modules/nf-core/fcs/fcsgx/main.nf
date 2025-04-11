@@ -26,9 +26,10 @@ process FCS_FCSGX {
     task.ext.when == null || task.ext.when
 
     script:
+    // Comment out this block to disable the deprecation warning
     assert false: deprecation_message
 
-        // Exit if running this module with -profile conda / -profile mamba
+    // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "FCS_FCSGX module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
@@ -43,6 +44,7 @@ process FCS_FCSGX {
         --gx-db ./${gxdb[0].baseName} \\
         --tax-id ${meta.taxid} \\
         $args
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python3 --version 2>&1 | sed -e "s/Python //g")
@@ -51,7 +53,9 @@ process FCS_FCSGX {
     """
 
     stub:
+    // Comment out this block to disable the deprecation warning
     assert false: deprecation_message
+
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "FCS_FCSGX module does not support Conda. Please use Docker / Singularity / Podman instead."
@@ -63,6 +67,7 @@ process FCS_FCSGX {
     mkdir -p out
     touch out/${prefix}.fcs_gx_report.txt
     touch out/${prefix}.taxonomy.rpt
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python3 --version 2>&1 | sed -e "s/Python //g")
