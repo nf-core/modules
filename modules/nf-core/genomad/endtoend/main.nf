@@ -68,13 +68,13 @@ process GENOMAD_ENDTOEND {
     touch ${filename}_score_calibration/${filename}_calibrated_aggregated_classification.tsv
     touch ${filename}_score_calibration/${filename}_compositions.tsv
     mkdir ${filename}_summary
-    touch ${filename}_summary/${filename}_plasmid.fna.gz
+    echo "" | gzip > ${filename}_summary/${filename}_plasmid.fna.gz
     touch ${filename}_summary/${filename}_plasmid_genes.tsv
-    touch ${filename}_summary/${filename}_plasmid_proteins.faa.gz
+    echo "" | gzip > ${filename}_summary/${filename}_plasmid_proteins.faa.gz
     touch ${filename}_summary/${filename}_plasmid_summary.tsv
-    touch ${filename}_summary/${filename}_virus.fna.gz
+    echo "" | gzip > ${filename}_summary/${filename}_virus.fna.gz
     touch ${filename}_summary/${filename}_virus_genes.tsv
-    touch ${filename}_summary/${filename}_virus_proteins.faa.gz
+    echo "" | gzip > ${filename}_summary/${filename}_virus_proteins.faa.gz
     touch ${filename}_summary/${filename}_virus_summary.tsv
 
     cat <<-END_VERSIONS > versions.yml

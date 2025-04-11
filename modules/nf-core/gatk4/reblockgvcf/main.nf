@@ -55,7 +55,7 @@ process GATK4_REBLOCKGVCF {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    touch ${prefix}.rb.g.vcf.gz
+    echo "" | gzip > ${prefix}.rb.g.vcf.gz
     touch ${prefix}.rb.g.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
