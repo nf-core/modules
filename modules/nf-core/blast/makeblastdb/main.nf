@@ -4,8 +4,8 @@ process BLAST_MAKEBLASTDB {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/52/5222a42b366a0468a4c795f5057c2b8cfe39489548f8bd807e8ac0f80069bad5/data':
-        'community.wave.seqera.io/library/blast:2.16.0--9231066034144667' }"
+        'https://depot.galaxyproject.org/singularity/blast:2.16.0--h66d330f_5':
+        'biocontainers/blast:2.16.0--h66d330f_5' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -18,10 +18,10 @@ process BLAST_MAKEBLASTDB {
     task.ext.when == null || task.ext.when
 
     script:
-    def args            = task.ext.args ?: ''
-    prefix              = task.ext.prefix ?: "${meta.id}"
-    def is_compressed   = fasta.getExtension() == "gz" ? true : false
-    def fasta_name      = is_compressed ? fasta.getBaseName() : fasta
+    def args           = task.ext.args ?: ''
+    prefix             = task.ext.prefix ?: "${meta.id}"
+    def is_compressed  = fasta.getExtension() == "gz" ? true : false
+    def fasta_name     = is_compressed ? fasta.getBaseName() : fasta
     """
     if [ "${is_compressed}" == "true" ]; then
         gzip -c -d ${fasta} > ${fasta_name}
@@ -29,20 +29,20 @@ process BLAST_MAKEBLASTDB {
 
     makeblastdb \\
         -in ${fasta_name} \\
-        -out ${prefix}/${fasta_name}
+        -out ${prefix}/${fasta_name} \\
         ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        blast: \$(makeblastdb -version 2>&1 | sed 's/^.*blastn: //; s/ .*\$//')
+        blast: \$(makeblastdb -version 2>&1 | sed 's/^.*makeblastdb: //; s/ .*\$//')
     END_VERSIONS
     """
 
     stub:
-    def args            = task.ext.args ?: ''
-    def prefix          = task.ext.prefix ?: "${meta.id}"
-    def is_compressed   = fasta.getExtension() == "gz" ? true : false
-    def fasta_name      = is_compressed ? fasta.getBaseName() : fasta
+    def args           = task.ext.args ?: ''
+    prefix             = task.ext.prefix ?: "${meta.id}"
+    def is_compressed  = fasta.getExtension() == "gz" ? true : false
+    def fasta_name     = is_compressed ? fasta.getBaseName() : fasta
     """
     touch ${fasta_name}.fasta
     touch ${fasta_name}.fasta.ndb
@@ -58,7 +58,7 @@ process BLAST_MAKEBLASTDB {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        blast: \$(makeblastdb -version 2>&1 | sed 's/^.*blastn: //; s/ .*\$//')
+        blast: \$(makeblastdb -version 2>&1 | sed 's/^.*makeblastdb: //; s/ .*\$//')
     END_VERSIONS
     """
 }
