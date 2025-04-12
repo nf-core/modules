@@ -29,7 +29,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.output[0][1]).linesGzip.toString().contains('[ok]') },
+                { assert path(process.out.output[0][1]).linesGzip.toString().contains('[ok]') }, // CPU execution time in result
                 { assert snapshot(process.out.versions).match() }
             )
         }
@@ -56,8 +56,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.output.get(0).get(1)).linesGzip.toString().contains('[ok]') },
-                { assert path(process.out.target_summary.get(0).get(1)).linesGzip.toString().contains('[ok]') },
+                { assert path(process.out.output.get(0).get(1)).linesGzip.toString().contains('[ok]') },         // CPU execution time in result
+                { assert path(process.out.target_summary.get(0).get(1)).linesGzip.toString().contains('[ok]') }, // Timestamp in result
+                { assert path(process.out.target_summary.get(0).get(1)).linesGzip.toString().contains('[ok]') }, // Timestamp in result
                 { assert snapshot(
                     process.out.alignments +
                     process.out.versions
