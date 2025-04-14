@@ -89,7 +89,7 @@ if (!is.null(opt\$formula) && tolower(opt\$formula) == "null") {
 }
 
 # If there is no contrast string, convert string "null" to NULL
-if (!is.null(opt\$contrast_string) && tolower(opt\$contrast_string) == "null") {
+if (!is.null(opt\$contrast_string) && tolower(opt\$contrast_string) == "null" || opt\$contrast_string == "") {
     opt\$contrast_string <- NULL
 }
 
@@ -154,16 +154,17 @@ head(fitmm\$design, 3)
 print(colnames(fitmm\$design))
 
 # If contrast_string is provided, use that for makeContrast
-if (!is.null(opt\$contrast_string) && opt\$contrast_string != "") {
+if (!is.null(opt\$contrast_string)) {
     cat("Using contrast string:", opt\$contrast_string, "\n")
+    colnames(fitmm\$design) <- make.names(colnames(fitmm\$design))
     # Use makeContrasts
-    contrast_matrix <- makeContrasts(contrasts = opt\$contrast_string, levels = fitmm\$design)
+    contrast_matrix <- makeContrasts(contrast = opt\$contrast_string, levels = colnames(fitmm\$design))
     fit2 <- contrasts.fit(fitmm, contrast_matrix)
     fit2 <- eBayes(fit2, proportion = opt\$proportion,
                    stdev.coef.lim = stdev_coef_lim_vals,
                    trend = opt\$trend, robust = opt\$robust,
                    winsor.tail.p = winsor_tail_p_vals)
-    results <- topTable(fit2, number = nrow(countMatrix),
+    results <- topTable(fit2,
                         adjust.method = opt\$adjust.method,
                         p.value = opt\$p.value, lfc = opt\$lfc, confint = opt\$confint)
 
