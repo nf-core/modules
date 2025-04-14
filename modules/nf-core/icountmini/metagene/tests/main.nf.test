@@ -52,7 +52,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [id:'test'],// meta map
+                    [id:'test'],
                     file("https://raw.githubusercontent.com/nf-core/test-datasets/clipseq/crosslinks/clippy.bed", checkIfExists:true)
                 ]
                 input[1] = ICOUNTMINI_SEGMENT.out.gtf.map{it[1]}
