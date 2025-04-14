@@ -17,7 +17,7 @@ nextflow_process {
             
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta',checkIfExists:true)
+                input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
                 """
             }
         }
@@ -29,7 +29,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [id:'test'],// meta map
+                    [id:'test'],
                     [file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists:true)]
                 ]
                 input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
@@ -56,7 +56,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [id:'test'],// meta map
+                    [id:'test'],
                     [file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists:true)]
                 ]
                 input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
