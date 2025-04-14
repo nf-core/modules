@@ -63,13 +63,15 @@ process HMMER_ESLALIMASK {
     def pmask_allarg = pmask_all ? "touch ${prefix}.pmask-all" : ""
 
     """
-    echo "" | gzip > ${prefix}.masked.sthlm.gz
-    $fmask_rfarg
-    $fmask_allarg
-    $gmask_rfarg
-    $gmask_allarg
-    $pmask_rfarg
-    $pmask_allarg
+    touch ${prefix}.masked.sthlm
+    ${fmask_rfarg}
+    ${fmask_allarg}
+    ${gmask_rfarg}
+    ${gmask_allarg}
+    ${pmask_rfarg}
+    ${pmask_allarg}
+
+    gzip ${prefix}.*mask*
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

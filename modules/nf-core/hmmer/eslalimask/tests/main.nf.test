@@ -49,7 +49,6 @@ nextflow_process {
     }
 
     test("ecoli - hmm with optional output files - []") {
-        tag "test"
         when {
             params {
                 module_args = "-pg"
@@ -70,7 +69,7 @@ nextflow_process {
         }
     }
 
-    test("test_hmmer_rfmask -- stub") {
+    test("ecoli - hmm with optional output files - [] -- stub") {
         options '-stub'
         when {
             params {
