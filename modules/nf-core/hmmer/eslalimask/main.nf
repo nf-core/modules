@@ -75,7 +75,7 @@ process HMMER_ESLALIMASK {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        hmmer/easel: \$(esl-reformat -h | grep -o '^# Easel [0-9.]*' | sed 's/^# Easel *//')
+        hmmer/easel: \$(esl-alimask -h | grep -o '^# Easel [0-9.]*' | sed 's/^# Easel *//')
     END_VERSIONS
     """
 }
