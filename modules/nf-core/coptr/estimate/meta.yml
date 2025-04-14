@@ -1,0 +1,56 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "coptr_estimate"
+description: Calculates peak-to-through ratio (PTR) from metagenomic sequence data
+keywords:
+  - coptr
+  - mapping
+  - ptr
+tools:
+  - "coptr":
+      description: "Accurate and robust inference of microbial growth dynamics from
+        metagenomic sequencing reads."
+      homepage: "https://github.com/tyjo/coptr"
+      documentation: "https://coptr.readthedocs.io/"
+      tool_dev_url: "https://github.com/tyjo/coptr"
+      doi: "10.1101/gr.275533.121"
+      licence: ["GPL v3"]
+      identifier: biotools:coptr
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - pkl:
+        type: file
+        description: Python pickle file containing coverage maps
+        pattern: "*.pkl"
+        ontologies:
+          - edam: "http://edamontology.org/format_4002"
+
+output:
+  - ptr:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.csv":
+          type: file
+          description: CSV table with rows as reference genomes, columns samples and entries as log2 PTR
+          pattern: "*.csv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3752"
+
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@ramirobarrantes"
+maintainers:
+  - "@ramirobarrantes"

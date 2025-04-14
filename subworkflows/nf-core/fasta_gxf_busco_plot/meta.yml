@@ -1,0 +1,136 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fasta_gxf_busco_plot"
+description: |
+  Runs BUSCO for input assemblies and their annotations in GFF/GFF3/GTF format, and creates summary plots using `BUSCO/generate_plot.py` script
+keywords:
+  - genome
+  - annotation
+  - busco
+  - plot
+components:
+  - busco/busco
+  - busco/generateplot
+  - gffread
+input:
+  - ch_fasta:
+      type: file
+      description: |
+        Channel containing FASTA files
+        Structure:[ val(meta), fasta ]
+      pattern: "*.{fa,faa,fsa,fas,fasta}(.gz)?"
+  - ch_gxf:
+      type: file
+      description: |
+        Channel containing GFF/GFF3/GTF files
+        Structure:[ val(meta2), gxf ]
+      pattern: "*.{gff,gff3,gtf}"
+  - val_mode:
+      type: string
+      description: |
+        String containing BUSCO mode to apply to ch_fasta files
+        Structure:val(mode)
+  - val_lineages:
+      type: array
+      description: |
+        Array of strings representing BUSCO lineage datasets
+        Structure:[ val(lineage) ]
+  - val_busco_lineages_path:
+      type: path
+      description: |
+        Path where BUSCO lineages are located or downloaded if not already there. If this input is `[]`,
+        BUSCO will download the datasets in the task work directory
+        Structure:val(busco_lineages_path)
+  - val_busco_config:
+      type: path
+      description: |
+        Path to BUSCO config. It is optional and can be set to `[]`
+        Structure:val(busco_config)
+  - val_busco_cleanup:
+      type: boolean
+      description: |
+        Flag to indicate if intermediate BUSCO files should be removed
+        Structure:val(busco_cleanup)
+output:
+  - assembly_batch_summary:
+      type: file
+      description: |
+        Channel containing BUSCO batch summaries corresponding to fasta files
+        Structure: [ val(meta), txt ]
+      pattern: "*.txt"
+  - assembly_short_summaries_txt:
+      type: file
+      description: |
+        Channel containing BUSCO short summaries corresponding to fasta files
+        Structure: [ val(meta), txt ]
+      pattern: "*.txt"
+  - assembly_short_summaries_json:
+      type: file
+      description: |
+        Channel containing BUSCO short summaries corresponding to fasta files
+        Structure: [ val(meta), json ]
+      pattern: "*.json"
+  - assembly_full_table:
+      description: |
+        Channel containing complete results in a tabular format with scores and lengths of BUSCO matches,
+        and coordinates (for genome mode) or gene/protein IDs (for transcriptome or protein modes)
+        Structure: [ val(meta), tsv ]
+      pattern: "*.tsv"
+  - assembly_plot_summary_txt:
+      type: file
+      description: |
+        Channel containing BUSCO short summaries corresponding to fasta files renamed to include lineage in sample id
+        Structure: [ txt ]
+      pattern: "*.txt"
+  - assembly_png:
+      type: file
+      description: |
+        Channel containing summary plot for assemblies
+        Structure: png
+      pattern: "*.png"
+  - annotation_batch_summary:
+      type: file
+      description: |
+        Channel containing BUSCO batch summaries corresponding to annotation files
+        Structure: [ val(meta), txt ]
+      pattern: "*.txt"
+  - annotation_short_summaries_txt:
+      type: file
+      description: |
+        Channel containing BUSCO short summaries corresponding to annotation files
+        Structure: [ val(meta), txt ]
+      pattern: "*.txt"
+  - annotation_short_summaries_json:
+      type: file
+      description: |
+        Channel containing BUSCO short summaries corresponding to annotation files
+        Structure: [ val(meta), json ]
+      pattern: "*.json"
+  - annotation_full_table:
+      description: |
+        Channel containing complete results in a tabular format with scores and lengths of BUSCO matches,
+        protein IDs in protein mode
+        Structure: [ val(meta), tsv ]
+      pattern: "*.tsv"
+  - annotation_plot_summary_txt:
+      type: file
+      description: |
+        Channel containing BUSCO short summaries corresponding to annotation files renamed to include lineage in sample id
+        Structure: [ txt ]
+      pattern: "*.txt"
+  - annotation_png:
+      type: file
+      description: |
+        Channel containing summary plot for annotations
+        Structure: png
+      pattern: "*.png"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@GallVp"
+maintainers:
+  - "@GallVp"
+  - "@FernandoDuarteF"

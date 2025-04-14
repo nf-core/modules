@@ -67,7 +67,7 @@ read_delim_flexible <- function(file, header = TRUE, row.names = 1, check.names 
 #' Check if a variable can be numeric or not
 #'
 #' @param x Input variable
-#' @retur True if it can be numeric, False otherwise
+#' @return True if it can be numeric, False otherwise
 can_be_numeric <- function(x) {
     stopifnot(is.atomic(x) || is.list(x)) # check if x is a vector
     numNAs <- sum(is.na(x))
@@ -223,7 +223,7 @@ mat <- t(mat)
 # check zeros
 # log transformation should be applied on non-zero data
 # otherwise Inf values are generated
-if (any(mat == 0)) print("Zeros will be replaced by minimun value before logratio analysis")
+if (any(mat == 0)) print("Zeros will be replaced by minimum value before logratio analysis")
 
 
 # compute ALR/CLR

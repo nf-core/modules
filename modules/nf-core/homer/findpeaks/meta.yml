@@ -24,6 +24,11 @@ input:
         type: directory
         description: "The 'Tag Directory'"
         pattern: "tagDir"
+  - - uniqmap:
+        type: directory
+        description: "(directory of binary files specifying uniquely mappable locations)
+          Download from http://biowhat.ucsd.edu/homer/groseq/"
+        pattern: "uniqmap/"
 output:
   - txt:
       - meta:

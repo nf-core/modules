@@ -4,8 +4,8 @@ process TRGT_MERGE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/trgt:1.2.0--h9ee0642_0':
-        'biocontainers/trgt:1.2.0--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/trgt:1.5.0--h9ee0642_0':
+        'biocontainers/trgt:1.5.0--h9ee0642_0' }"
 
     input:
     tuple val(meta) , path(vcfs), path(tbis)
@@ -46,9 +46,14 @@ process TRGT_MERGE {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
+    def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
+                    args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
+                    args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
+                    args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
+                    "vcf"
+    def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
     """
-    touch ${prefix}.vcf
+    $create_cmd ${prefix}.${extension}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

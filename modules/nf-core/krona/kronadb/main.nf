@@ -1,5 +1,3 @@
-def VERSION='2.7.1' // Version information not provided by tool on CLI
-
 process KRONA_KRONADB {
     label 'process_single'
 
@@ -16,7 +14,16 @@ process KRONA_KRONADB {
     task.ext.when == null || task.ext.when
 
     script:
+    def deprecation_message = """
+    WARNING: This module has been deprecated. Please use nf-core/modules/krona/ktupdatetaxonomy instead.
+
+    Reason:
+    This module has been superseded by the krona/ktupdatetaxonomy module.
+    """
+    assert false: deprecation_message
+
     def args = task.ext.args ?: ''
+    def VERSION = '2.7.1' // Version information not provided by tool on CLI
     """
     ktUpdateTaxonomy.sh \\
         $args \\
@@ -25,6 +32,18 @@ process KRONA_KRONADB {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         krona: $VERSION
+    END_VERSIONS
+    """
+
+    stub:
+    """
+    mkdir taxonomy
+
+    touch taxonomy/taxonomy.tab
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        krona: \$(ktImportTaxonomy | grep -Po "(?<=KronaTools )[0-9.]+")
     END_VERSIONS
     """
 }

@@ -3,16 +3,16 @@ process MMSEQS_CREATEINDEX {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mmseqs2:15.6f452--pl5321h6a68c12_0':
-        'biocontainers/mmseqs2:15.6f452--pl5321h6a68c12_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/mmseqs2:17.b804f--hd6d6fdc_1'
+        : 'biocontainers/mmseqs2:17.b804f--hd6d6fdc_1'}"
 
     input:
     tuple val(meta), path(db)
 
     output:
-    tuple val(meta), path(db) , emit: db_indexed
-    path "versions.yml"       , emit: versions
+    tuple val(meta), path(db), emit: db_indexed
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,15 +23,14 @@ process MMSEQS_CREATEINDEX {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    DB_INPUT_PATH_NAME=\$(find -L "$db/" -maxdepth 1 -name "$args2" | sed 's/\\.[^.]*\$//' |  sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
+    DB_INPUT_PATH_NAME=\$(find -L "${db}/" -maxdepth 1 -name "${args2}" | sed 's/\\.[^.]*\$//' |  sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
 
     mmseqs \\
         createindex \\
         \${DB_INPUT_PATH_NAME} \\
         tmp1 \\
-        $args \\
-        --threads ${task.cpus} \\
-        --compressed 1
+        ${args} \\
+        --threads ${task.cpus}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -40,8 +39,9 @@ process MMSEQS_CREATEINDEX {
     """
 
     stub:
+    def args2 = task.ext.args2 ?: "*.dbtype"
     """
-    DB_INPUT_PATH_NAME=\$(find -L "$db/" -maxdepth 1 -name "$args2" | sed 's/\\.[^.]*\$//' |  sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
+    DB_INPUT_PATH_NAME=\$(find -L "${db}/" -maxdepth 1 -name "${args2}" | sed 's/\\.[^.]*\$//' |  sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
 
     touch "\${DB_PATH_NAME}.idx"
 

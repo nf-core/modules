@@ -4,8 +4,8 @@ process SOURMASH_COMPARE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sourmash:4.8.4--hdfd78af_0':
-        'biocontainers/sourmash:4.8.4--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/sourmash:4.8.14--hdfd78af_0':
+        'biocontainers/sourmash:4.8.14--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(signatures)
@@ -25,8 +25,8 @@ process SOURMASH_COMPARE {
     script:
     def args   = task.ext.args     ?: ''
     def prefix = task.ext.prefix   ?: "${meta.id}"
-    def comp   = save_numpy_matrix ? "--output comp.npy"  : ''
-    def csv    = save_csv          ? "--csv comp.csv" : ''
+    def comp   = save_numpy_matrix ? "--output ${prefix}_comp.npy"  : ''
+    def csv    = save_csv          ? "--csv ${prefix}_comp.csv" : ''
     if ( !save_numpy_matrix && !save_csv ) error "Supply either save_numpy_matrix, save_csv, or both or no output will be created"
     def ffile = file_list ? "--from-file ${file_list}" : ''
     def sigs = signatures ? "${signatures.sort{it.toString()}.join(' ')}" : ''
@@ -47,10 +47,11 @@ process SOURMASH_COMPARE {
     """
 
     stub:
+    def prefix = task.ext.prefix   ?: "${meta.id}"
     """
-    touch comp.npy.labels.txt
-    touch comp.npy
-    touch comp.csv
+    touch ${prefix}_comp.npy.labels.txt
+    touch ${prefix}_comp.npy
+    touch ${prefix}_comp.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

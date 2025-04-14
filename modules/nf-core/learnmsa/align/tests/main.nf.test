@@ -2,6 +2,7 @@
 nextflow_process {
 
     name "Test Process LEARNMSA_ALIGN"
+    config "./nextflow.config"
     script "../main.nf"
     process "LEARNMSA_ALIGN"
 
@@ -10,15 +11,15 @@ nextflow_process {
     tag "learnmsa"
     tag "learnmsa/align"
 
-    test("sarscov2 - fasta - uncompressed") {
+    test("seatoxin - stub") {
+        options "-stub"
 
         when {
             process {
                 """
-                input[0] = [ [ id:'test' ], // meta map
-                             file(params.test_data['sarscov2']['genome']['informative_sites_fas'], checkIfExists: true)
+                input[0] = [ [ id:'test' ],
+                             file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
                            ]
-                input[1] = false
                 """
             }
         }
@@ -26,31 +27,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.alignment.get(0).get(1)).getText().contains(">sample1") },
-                { assert snapshot(process.out.versions).match("versions") }
-            )
-        }
+                { assert snapshot ( process.out ).match() }
 
-    }
-
-    test("sarscov2 - fasta - compressed") {
-
-        when {
-            process {
-                """
-                input[0] = [ [ id:'test' ], // meta map
-                             file(params.test_data['sarscov2']['genome']['informative_sites_fas'], checkIfExists: true)
-                           ]
-                input[1] = true
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert path(process.out.alignment.get(0).get(1)).getTextGzip().contains(">sample1") },
-                { assert snapshot(process.out.versions).match("versions1") }
             )
         }
 

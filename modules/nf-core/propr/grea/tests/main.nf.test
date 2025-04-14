@@ -8,34 +8,34 @@ nextflow_process {
     tag "modules_nfcore"
     tag "propr"
     tag "propr/grea"
-    tag "mygene"
-    tag "propr/propr"
+    tag "propr/propd"
 
-    test("grea chained to propr using default options") {
+    test("test grea chained to propd") {
 
         tag "default"
         config "./grea_test.config"
 
         setup {
-            run("PROPR_PROPR") {
-                script "../../propr/main.nf"
+            run("PROPR_PROPD") {
+                script "../../propd/main.nf"
                 process {
                 """
-                input[0] = [
-                    [ id:'test' ],
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv")
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target)
+                    }
+                    .first()
+                ch_matrix = [
+                    [id: 'test'],
+                    file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
                 ]
-                """
-                }
-            }
-            run("MYGENE") {
-                script "../../../mygene/main.nf"
-                process {
-                """
-                input[0] = [
-                    [id : 'test'],
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.gene_meta.tsv")
-                ]
+
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
                 """
                 }
             }
@@ -44,8 +44,11 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = PROPR_PROPR.out.adj.collect{ meta, adj -> adj }.map{ adj -> [[ id: 'test_adj'], adj]}
-                input[1] = MYGENE.out.gmt.collect{ meta, gmt -> gmt }.map{ gmt -> [[ id: 'test_gmt'], gmt]}
+                input[0] = PROPR_PROPD.out.adjacency
+                input[1] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -53,9 +56,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.enrichedGO).match("grea chained to propr using default options - enrichedGO") },
-                { assert snapshot(process.out.versions).match("versions") }
-
+                { assert snapshot(
+                    process.out.results,
+                    process.out.versions
+                ).match()}
             )
         }
     }
