@@ -18,9 +18,9 @@ process JUPYTERNOTEBOOK {
     path input_files
 
     output:
-    tuple val(meta), path("*.html"), emit: report
+    tuple val(meta), path("*.html")    , emit: report
     tuple val(meta), path("artifacts/"), emit: artifacts, optional: true
-    path "versions.yml"            , emit: versions
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -55,7 +55,6 @@ process JUPYTERNOTEBOOK {
     } else {
         render_cmd = "papermill"
     }
-
     """
     set -o pipefail
 
@@ -75,6 +74,21 @@ process JUPYTERNOTEBOOK {
     jupytext --to notebook --output - --set-kernel ${kernel} ${notebook} > ${notebook}.ipynb
     ${render_cmd} ${notebook}.ipynb ${notebook}.executed.ipynb
     jupyter nbconvert --stdin --to html --output ${prefix}.html < ${notebook}.executed.ipynb
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        jupytext: \$(jupytext --version)
+        ipykernel: \$(python -c "import ipykernel; print(ipykernel.__version__)")
+        nbconvert: \$(jupyter nbconvert --version)
+        papermill: \$(papermill --version | cut -f1 -d' ')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.html
+    mkdir artifacts
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
