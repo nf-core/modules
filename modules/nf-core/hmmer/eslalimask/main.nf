@@ -35,7 +35,6 @@ process HMMER_ESLALIMASK {
     def pmask_allarg = pmask_all ? "--pmask-all ${prefix}.pmask-all" : ""
     """
     esl-alimask \\
-        $args \\
         $fmask_rfarg \\
         $fmask_allarg \\
         $gmask_rfarg \\
@@ -43,8 +42,7 @@ process HMMER_ESLALIMASK {
         $pmask_rfarg \\
         $pmask_allarg \\
         -o ${prefix}.masked.sthlm \\
-        $unmaskedaln \\
-        $maskfile
+        $args $unmaskedaln $maskfile
 
     gzip ${prefix}.*mask*
 
