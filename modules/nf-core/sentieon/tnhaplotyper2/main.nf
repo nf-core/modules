@@ -58,7 +58,6 @@ process SENTIEON_TNHAPLOTYPER2 {
         ""
     """
     $sentieonLicense
-    export SENTIEON_LICENSE=${license}
 
     sentieon driver \\
         -t $task.cpus \\
