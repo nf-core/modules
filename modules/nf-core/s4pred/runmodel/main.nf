@@ -41,7 +41,7 @@ process S4PRED_RUNMODEL {
     prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.2.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    mkdir ${prefix}
+    mkdir -p ${prefix}
     touch ${prefix}/test.ss2
 
     cat <<-END_VERSIONS > versions.yml
