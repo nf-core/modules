@@ -48,10 +48,10 @@ process PYRODIGAL {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.${output_format}.gz
-    touch ${prefix}.fna.gz
-    touch ${prefix}.faa.gz
-    touch ${prefix}.score.gz
+    echo "" | gzip > ${prefix}.${output_format}.gz
+    echo "" | gzip > ${prefix}.fna.gz
+    echo "" | gzip > ${prefix}.faa.gz
+    echo "" | gzip > ${prefix}.score.gz
     touch versions.yml
 
     cat <<-END_VERSIONS > versions.yml

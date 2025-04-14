@@ -36,7 +36,7 @@ process CELLRANGERARC_MKFASTQ {
     stub:
     """
     mkdir -p "${bcl.getSimpleName()}/outs/fastq_path/"
-    touch ${bcl.getSimpleName()}/outs/fastq_path/fake_file.fastq.gz
+    echo "" | gzip > ${bcl.getSimpleName()}/outs/fastq_path/fake_file.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
