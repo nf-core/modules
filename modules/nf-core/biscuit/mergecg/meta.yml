@@ -27,12 +27,24 @@ input:
         type: file
         description: |
           Biscuit BED file (output of biscuit vcf2bed)
-  - - index:
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Input genome fasta file
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - index:
         type: directory
-        description: Biscuit genome index directory (generated with 'biscuit index')
-        pattern: "BiscuitIndex"
+        description: Directory containing biscuit genome index
 output:
-  - mergecg_bed:
+  - bed:
       - meta:
           type: map
           description: |
@@ -51,3 +63,4 @@ authors:
   - "@njspix"
 maintainers:
   - "@njspix"
+  - "@sateeshperi"

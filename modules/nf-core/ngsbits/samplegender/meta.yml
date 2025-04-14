@@ -36,7 +36,7 @@ input:
         type: file
         description: The reference FASTA to use (mandatory when CRAM files are used)
         pattern: "*.{fasta,fa,fna}"
-  - - meta2:
+  - - meta3:
         type: map
         description: |
           Groovy Map containing reference fasta information
@@ -47,7 +47,7 @@ input:
         pattern: "*.fai"
   - - method:
         type: string
-        description: The method to use to define the gender (posibilities are 'xy',
+        description: The method to use to define the gender (possibilities are 'xy',
           'hetx' and 'sry')
         pattern: "(xy|hetx|sry)"
 output:

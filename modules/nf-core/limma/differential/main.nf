@@ -4,8 +4,8 @@ process LIMMA_DIFFERENTIAL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bioconductor-limma:3.54.0--r42hc0cfd56_0' :
-        'biocontainers/bioconductor-limma:3.54.0--r42hc0cfd56_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/af/afd9579a0ff62890ff451d82b360d85e82a0d61a3da40736ee0eee4e45926269/data' :
+        'community.wave.seqera.io/library/bioconductor-edger_bioconductor-limma:176c202c82450990' }"
 
     input:
     tuple val(meta), val(contrast_variable), val(reference), val(target)
@@ -17,6 +17,7 @@ process LIMMA_DIFFERENTIAL {
     tuple val(meta), path("*.MArrayLM.limma.rds")         , emit: rdata
     tuple val(meta), path("*.limma.model.txt")            , emit: model
     tuple val(meta), path("*.R_sessionInfo.log")          , emit: session_info
+    tuple val(meta), path("*.normalised_counts.tsv")      , emit: normalised_counts, optional: true
     path "versions.yml"                                   , emit: versions
 
     when:
@@ -24,4 +25,34 @@ process LIMMA_DIFFERENTIAL {
 
     script:
     template 'limma_de.R'
+
+    stub:
+    prefix              = task.ext.prefix   ?: "${meta.id}"
+    """
+    #!/usr/bin/env Rscript
+    library(limma)
+    a <- file("${prefix}.limma.results.tsv", "w")
+    close(a)
+    a <- file("${prefix}.limma.mean_difference.png", "w")
+    close(a)
+    a <- file("${prefix}.MArrayLM.limma.rds", "w")
+    close(a)
+    a <- file("${prefix}.normalised_counts.tsv", "w")
+    close(a)
+    a <- file("${prefix}.limma.model.txt", "w")
+    close(a)
+    a <- file("${prefix}.R_sessionInfo.log", "w")
+    close(a)
+    ## VERSIONS FILE
+    r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
+    limma.version <- as.character(packageVersion('limma'))
+    writeLines(
+        c(
+            '"${task.process}":',
+            paste('    r-base:', r.version),
+            paste('    bioconductor-limma:', limma.version)
+        ),
+        'versions.yml'
+    )
+    """
 }

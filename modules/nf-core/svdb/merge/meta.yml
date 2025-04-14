@@ -23,7 +23,7 @@ input:
           One or more VCF files. The order and number of files should correspond to
           the order and number of tags in the `priority` input channel.
         pattern: "*.{vcf,vcf.gz}"
-  - - priority:
+  - - input_priority:
         type: list
         description: |
           Prioritize the input VCF files according to this list,
@@ -34,18 +34,37 @@ input:
         description: |
           Should the input files be sorted by name. The priority tag will be sorted
           together with it's corresponding VCF file.
-
 output:
   - vcf:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test' ]
-      - "*.vcf.gz":
+            e.g. [ id:'test', single_end:false ]
+      - "*.{vcf,vcf.gz,bcf,bcf.gz}":
           type: file
-          description: merged VCF file
-          pattern: "*.vcf.gz"
+          description: VCF output file
+          pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+  - tbi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tbi":
+          type: file
+          description: Alternative VCF file index
+          pattern: "*.tbi"
+  - csi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.csi":
+          type: file
+          description: Default VCF file index
+          pattern: "*.csi"
   - versions:
       - versions.yml:
           type: file
@@ -55,3 +74,4 @@ authors:
   - "@ramprasadn"
 maintainers:
   - "@ramprasadn"
+  - "@fellen31"

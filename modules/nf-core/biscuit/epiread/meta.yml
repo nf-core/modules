@@ -27,19 +27,41 @@ input:
           e.g. [ id:'test', single_end:false ]
     - bam:
         type: file
-        description: Biscuit BAM file
+        description: BAM file contained mapped reads
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
     - bai:
         type: file
-        description: BAM index
+        description: BAM file index
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
     - snp_bed:
         type: file
         description: BED file containing SNP information (optional)
-  - - index:
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Input genome fasta file
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - index:
         type: directory
-        description: Biscuit genome index directory (generated with 'biscuit index')
-        pattern: "BiscuitIndex"
+        description: Directory containing biscuit genome index
 output:
-  - epiread_bed:
+  - bed:
       - meta:
           type: map
           description: |
@@ -58,3 +80,4 @@ authors:
   - "@njspix"
 maintainers:
   - "@njspix"
+  - "@sateeshperi"

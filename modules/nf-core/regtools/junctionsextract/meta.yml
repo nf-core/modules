@@ -1,0 +1,55 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "regtools_junctionsextract"
+description: Extract exon-exon junctions from an RNAseq BAM file. The output is a
+  BED file in the BED12 format.
+keywords:
+  - regtools
+  - leafcutter
+  - RNA-seq
+  - splicing
+tools:
+  - "regtools":
+      description: "RegTools is a set of tools that integrate DNA-seq and RNA-seq data
+        to help interpret mutations in a regulatory and splicing context."
+      homepage: "https://regtools.readthedocs.io/en/latest/"
+      documentation: "https://regtools.readthedocs.io/en/latest/#usage"
+      tool_dev_url: "https://github.com/griffithlab/regtools"
+      licence: ["MIT"]
+      identifier: biotools:regtools
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: Sorted BAM file
+        pattern: "*.{bam}"
+    - bai:
+        type: file
+        description: Index to sorted BAM file
+        pattern: "*.{bai}"
+
+output:
+  - junc:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.junc":
+          type: file
+          description: |
+            BED12 file containing exon-exon "regtools_junctionsextract"
+          pattern: "*.{junc}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@abartlett004"
+maintainers:
+  - "@abartlett004"

@@ -22,13 +22,42 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - maf:
         type: file
-        description: Multiple Aligment Format (MAF) file, optionally compressed with
+        description: Multiple Alignment Format (MAF) file, optionally compressed with
           gzip
         pattern: "*.{maf.gz,maf}"
-  - - format:
+    - format:
         type: string
-        description: Output format (one of axt, blast, blasttab, chain, gff, html, psl,
-          sam, or tab)
+        description: Output format (one of axt, bam, blast, blasttab, cram, chain, gff,
+          html, psl, sam, or tab)
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fasta:
+        type: file
+        description: Genome file in FASTA format for CRAM conversion.  If compressed it
+          must be done in BGZF format (like with the bgzip tool).
+        pattern: "*.{fasta,fasta.gz,fasta.bgz,fasta.bgzf}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fai:
+        type: file
+        description: Genome index file needed for CRAM conversion.
+        pattern: "*.fai"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - gzi:
+        type: file
+        description: Genome index file needed for CRAM conversion when the genome file
+          was compressed with the BGZF algorithm.
+        pattern: "*.gzi"
 output:
   - axt_gz:
       - meta:
@@ -40,6 +69,16 @@ output:
           type: file
           description: Gzipped pairwise alignment in Axt (Blastz) format (optional)
           pattern: "*.axt.gz"
+  - bam:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.bam":
+          type: file
+          description: Pairwise alignment in BAM format (optional)
+          pattern: "*.bam"
   - blast_gz:
       - meta:
           type: map
@@ -70,6 +109,20 @@ output:
           type: file
           description: Gzipped pairwise alignment in UCSC chain format (optional)
           pattern: "*.chain.gz"
+  - cram:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.cram":
+          type: file
+          description: Pairwise alignment in CRAM format (optional)
+          pattern: "*.cram"
+      - fasta:
+          type: file
+          description: Genome file to recover sequences from the CRAM file (optional)
+          pattern: "*.{fasta,fasta.gz,fasta.bgz,fasta.bgzf}"
   - gff_gz:
       - meta:
           type: map

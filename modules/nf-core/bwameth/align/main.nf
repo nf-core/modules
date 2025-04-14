@@ -29,9 +29,7 @@ process BWAMETH_ALIGN {
     # See https://github.com/nf-core/methylseq/pull/217
     touch -c $index/*
 
-    if [ ! -f $index/$fasta ]; then
-        ln -s \$(readlink $fasta) $index/$fasta;
-    fi
+    ln -sf \$(readlink $fasta) $index/$fasta
 
     bwameth.py \\
         $args \\

@@ -42,8 +42,15 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
           pattern: "*.elfasta"
   - log:
-      - meta: {}
-      - logs/elprep/elprep*: {}
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - logs/elprep/elprep*:
+          type: file
+          description: ELFasta log file
+          pattern: "*.log"
   - versions:
       - versions.yml:
           type: file

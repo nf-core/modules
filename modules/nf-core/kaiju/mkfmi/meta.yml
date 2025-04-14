@@ -26,6 +26,10 @@ input:
         type: file
         description: Uncompressed Protein FASTA file (mandatory)
         pattern: "*.{fa,faa,fasta}"
+  - - keep_intermediate:
+        type: boolean
+        description: "Keep intermediate files"
+        pattern: true|false
 output:
   - fmi:
       - meta:
@@ -37,6 +41,26 @@ output:
           type: file
           description: Kaiju FM-index file
           pattern: "*.{fmi}"
+  - bwt:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.bwt":
+          type: file
+          description: Kaiju intermedite bwt-index file (not needed for classification)
+          pattern: "*.{bwt}"
+  - sa:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.sa":
+          type: file
+          description: Kaiju intermedite bwt-index file (not needed for classification)
+          pattern: "*.{sa}"
   - versions:
       - versions.yml:
           type: file
@@ -44,3 +68,4 @@ output:
           pattern: "versions.yml"
 authors:
   - "@alxndrdiaz"
+  - "@jfy133"

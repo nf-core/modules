@@ -33,7 +33,7 @@ process BISMARK_SUMMARY {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${bam.baseName()}"
     """
     touch ${prefix}.report.txt
     touch ${prefix}.report.html
