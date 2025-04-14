@@ -39,6 +39,7 @@ process ICOUNTMINI_METAGENE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    mkdir -p metagene_${prefix}
     touch metagene_${prefix}/${prefix}_plot_data.tsv
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
