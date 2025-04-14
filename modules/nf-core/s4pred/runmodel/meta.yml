@@ -25,6 +25,8 @@ input:
         type: file
         description: protein FASTA file containing one or more amino acid sequences to predict their respective secondary structures
         pattern: "*.{fasta,fa,fas,fna,faa}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
 output:
   - preds:
       - meta:
