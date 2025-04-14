@@ -31,6 +31,7 @@ nextflow_process {
         when {
             params {
                 module_args = 'afa'
+                module_postprocessing = ''
             }
             process {
                 """
@@ -49,6 +50,7 @@ nextflow_process {
         when {
             params {
                 module_args = '-u phylip'
+                module_postprocessing = ''
             }
             process {
                 """
@@ -67,7 +69,8 @@ nextflow_process {
     test("ecoli - sto unalign") {
         when {
             params {
-                module_args = '- afa'
+                module_args = '--gapsym=- afa'
+                module_postprocessing = '| sed "/^>/!s/-//g"'
             }
             process {
                 """
@@ -87,7 +90,8 @@ nextflow_process {
         options '-stub'
         when {
             params {
-                module_args = '- afa'
+                module_args = '--gapsym=- afa'
+                module_postprocessing = ''
             }
             process {
                 """
