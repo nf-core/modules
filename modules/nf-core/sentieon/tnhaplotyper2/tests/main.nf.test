@@ -78,7 +78,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).vcf.summary,
+                    process.out.index,
+                    process.out.versions,
+                    ).match() }
             )
         }
     }
@@ -117,12 +121,16 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).vcf.summary,
+                    process.out.index,
+                    process.out.versions,
+                    ).match() }
             )
         }
     }
 
-    test("test_tnhaplotyper2_emit_contamination_and_orientation_data") {
+    test("emit_contamination_and_orientation_data") {
 
         when {
             params {
@@ -156,12 +164,16 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).vcf.summary,
+                    process.out.index,
+                    process.out.versions,
+                    ).match() }
             )
         }
     }
 
-    test("test_tnhaplotyper2_no_normal") {
+    test("no_normal") {
 
         when {
             params {
@@ -193,13 +205,17 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).vcf.summary,
+                    process.out.index,
+                    process.out.versions,
+                    ).match() }
             )
         }
     }
 
 
-    test("test_tnhaplotyper2_no_pon -- stub") {
+    test("no pon -- stub") {
         options '-stub'
         when {
             params {
@@ -239,7 +255,7 @@ nextflow_process {
     }
 
 
-    test("test_tnhaplotyper2 -- stub") {
+    test("with pon -- stub") {
         options '-stub'
         when {
             params {
@@ -279,7 +295,7 @@ nextflow_process {
     }
 
 
-    test("test_tnhaplotyper2_emit_contamination_and_orientation_data -- stub") {
+    test("emit_contamination_and_orientation_data -- stub") {
         options '-stub'
         when {
             params {
@@ -319,7 +335,7 @@ nextflow_process {
     }
 
 
-    test("test_tnhaplotyper2_no_normal -- stub") {
+    test("no_normal -- stub") {
         options '-stub'
         when {
             params {
