@@ -1,0 +1,56 @@
+nextflow_process {
+
+    name "Test Process IPHOP_DOWNLOAD"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "IPHOP_DOWNLOAD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "iphop"
+    tag "iphop/download"
+
+    test("iPHoP_db_rw_for-test") {
+        when {
+            params {
+                module_args = '--db_version iPHoP_db_rw_for-test'
+            }
+            process {
+                """
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.iphop_db,
+                    process.out.versions,
+                ).match() }
+            )
+        }
+    }
+
+    test("iPHoP_db_rw_for-test -- stub") {
+        tag "stub"
+        options '-stub'
+        when {
+            params {
+                module_args = '--db_version iPHoP_db_rw_for-test'
+            }
+            process {
+                """
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.iphop_db,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}
