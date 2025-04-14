@@ -1,0 +1,86 @@
+nextflow_process {
+
+    name "Test Process ICOUNTMINI_PEAKS"
+
+    script "../main.nf"
+    process "ICOUNTMINI_PEAKS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "icountmini"
+    tag "icountmini/segment"
+    tag "icountmini/sigxls"
+    tag "icountmini/peaks"
+
+    setup {
+        run("ICOUNTMINI_SEGMENT") {
+            script "../../segment/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:false],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists:true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists:true)
+                """
+            }
+        }
+
+        run("ICOUNTMINI_SIGXLS") {
+            script "../../sigxls/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id:'test'],// meta map
+                    "crosslinks"
+                ]
+                input[1] = ICOUNTMINI_SEGMENT.out.gtf.flatten().last()
+                """
+            }
+        }
+    }
+    
+    test("homo_sapiens - sigxls") {
+        when {
+            process {
+                """
+                input[0] = ICOUNTMINI_SIGXLS.out.sigxls
+                    .map{
+                        [[id:'test'], "crosslinks", it[1]]
+                    }
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    
+    
+    test("homo_sapiens - sigxls -- stub") {
+        options '-stub'
+        when {
+            
+            process {
+                """
+                input[0] = ICOUNTMINI_SIGXLS.out.sigxls
+                    .map{
+                        [[id:'test'], "crosslinks", it[1]]
+                    }
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}
