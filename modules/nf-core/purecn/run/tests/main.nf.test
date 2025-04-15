@@ -1,0 +1,89 @@
+nextflow_process {
+
+    name "Test Process PURECN_RUN"
+
+    script "../main.nf"
+    process "PURECN_RUN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "purecn"
+    tag "purecn/run"
+
+    setup {
+        run("PURECN_NORMALDB") {
+            script "../../normaldb/main.nf"
+                process {
+                """
+                input[0] = [
+				    [ id:'test' ],
+				    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/purecn/purecn_ex1_normal.txt.gz', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/purecn/purecn_ex2_normal.txt.gz', checkIfExists: true)
+                    ],
+				    [],
+                    []
+				]
+				input[1] = 'hg38'
+				input[2] = 'illumina'
+                """
+            }
+        }
+    }
+
+
+
+
+    test("test_purecn_run") {
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [id: "test"],
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/purecn/purecn_ex1_intervals.txt', checkIfExists: true),
+                    []
+                    ]
+                input[1] = PURCECN_NORMALDB.out.rds
+                input[2] = "hg38"
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+
+    test("test_purecn_run - stub") {
+        options '-stub'
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file("interval_file.txt"),
+                    file("coverage.txt")
+                    ]
+                input[1] = file("normal_db.rds")
+                input[2] = "hg38"
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
