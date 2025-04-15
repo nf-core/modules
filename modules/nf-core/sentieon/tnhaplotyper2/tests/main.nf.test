@@ -76,12 +76,13 @@ nextflow_process {
             }
         }
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     path(process.out.vcf[0][1]).vcf.summary,
-                    process.out.index,
+                    file(process.out.index[0][1]).name,
                     process.out.versions,
+                    path(process.out.versions[0]).yaml
                     ).match() }
             )
         }
@@ -119,12 +120,13 @@ nextflow_process {
             }
         }
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     path(process.out.vcf[0][1]).vcf.summary,
-                    process.out.index,
+                    file(process.out.index[0][1]).name,
                     process.out.versions,
+                    path(process.out.versions[0]).yaml
                     ).match() }
             )
         }
@@ -162,12 +164,13 @@ nextflow_process {
             }
         }
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     path(process.out.vcf[0][1]).vcf.summary,
-                    process.out.index,
+                    file(process.out.index[0][1]).name,
                     process.out.versions,
+                    path(process.out.versions[0]).yaml
                     ).match() }
             )
         }
@@ -203,12 +206,13 @@ nextflow_process {
             }
         }
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     path(process.out.vcf[0][1]).vcf.summary,
-                    process.out.index,
+                    file(process.out.index[0][1]).name,
                     process.out.versions,
+                    path(process.out.versions[0]).yaml
                     ).match() }
             )
         }
@@ -247,8 +251,8 @@ nextflow_process {
             }
         }
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
@@ -287,8 +291,8 @@ nextflow_process {
             }
         }
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
@@ -327,8 +331,8 @@ nextflow_process {
             }
         }
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
@@ -365,8 +369,8 @@ nextflow_process {
             }
         }
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
