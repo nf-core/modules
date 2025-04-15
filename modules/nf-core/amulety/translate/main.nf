@@ -22,8 +22,8 @@ process AMULETY_TRANSLATE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    export IGDATA="${reference_igblast}/${reference_igblast}"
-    amulety translate-igblast $tsv . "${reference_igblast}/${reference_igblast}"
+    export IGDATA=${reference_igblast}
+    amulety translate-igblast $tsv . ${reference_igblast}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
