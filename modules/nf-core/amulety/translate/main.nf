@@ -25,6 +25,8 @@ process AMULETY_TRANSLATE {
     export IGDATA=${reference_igblast}
     amulety translate-igblast $tsv . ${reference_igblast}
 
+    mv *_translated.tsv ${prefix}_translated.tsv
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         amulety: \$( amulety --help 2>&1 | grep -o "version [0-9\\.]\\+" | grep -o "[0-9\\.]\\+" )
