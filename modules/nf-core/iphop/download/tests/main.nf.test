@@ -11,6 +11,7 @@ nextflow_process {
     tag "iphop/download"
 
     test("iPHoP_db_rw_for-test") {
+        tag "test"
         when {
             params {
                 module_args = '--db_version iPHoP_db_rw_for-test'
@@ -23,10 +24,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.iphop_db,
-                    process.out.versions,
-                ).match() }
+                { assert snapshot(process.out).match() }
             )
         }
     }
