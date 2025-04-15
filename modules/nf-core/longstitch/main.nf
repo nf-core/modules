@@ -26,7 +26,7 @@ process LONGSTITCH {
     tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds_*_l*.log"),                           emit: links_log,                            optional: true
     tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds_*_l*.scaffolds"),                     emit: links_scaffolds,                      optional: true
     tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds_*_l*.scaffolds.fa"),                  emit: links_scaffolds_fa,                   optional: true
-    tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds_*_l*.tigpair_checkpoint.tsv"),        emit: links_checkpoint_tsv,                 optional: true
+    tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds_*_l*.*.tigpair_checkpoint.tsv"),      emit: links_checkpoint_tsv,                 optional: true
     tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds_*_main.tsv"),                         emit: arcs_tsv,                             optional: true
     tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds_*_original.gv"),                      emit: arcs_gv,                              optional: true
     tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds_*.tigpair_checkpoint.tsv"),           emit: arcs_checkpoint_tsv,                  optional: true
