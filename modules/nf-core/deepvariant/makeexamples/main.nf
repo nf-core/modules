@@ -55,8 +55,9 @@ process DEEPVARIANT_MAKEEXAMPLES {
     printf -v SHARD_COUNT "%04d" ${task.cpus}
     for i in \$( seq -f "%04g" 0 ${task.cpus-1} )
     do
-        touch ${prefix}.examples.tfrecord-\$i-of-\$SHARD_COUNT.tfrecord.gz{,.example_info.json}
-        touch ${prefix}.gvcf.tfrecord-\$i-of-\$SHARD_COUNT.tfrecord.gz
+        echo "" | gzip > ${prefix}.examples.tfrecord-\$i-of-\$SHARD_COUNT.tfrecord.gz
+        touch ${prefix}.examples.tfrecord-\$i-of-\$SHARD_COUNT.tfrecord.gz.example_info.json
+        echo "" | gzip > ${prefix}.gvcf.tfrecord-\$i-of-\$SHARD_COUNT.tfrecord.gz
     done
 
     cat <<-END_VERSIONS > versions.yml
