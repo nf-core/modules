@@ -11,7 +11,7 @@ process METACACHE_BUILD {
     input:
     tuple val(meta), path(genomes_fna)
     path(taxonomy, stageAs: 'taxonomy/*')  // optional. Should be [names.dmp, nodes.dmp], plus optionally merged.dmp
-    path(seq2taxid)           // optional
+    path(seq2taxid)                        // optional
 
     output:
     tuple val(meta), path('*.meta'), path('*.cache*'), emit: db
@@ -52,7 +52,8 @@ process METACACHE_BUILD {
     def n_outputs = (args ==~ /-parts\s/) ? (args.replaceAll(/^.*\s-parts\s+(\S+).*$/, '$1') as Integer) : 1
     assert n_outputs > 0
     """
-    touch '${prefix}.meta' '${prefix}.cache'{0..${n_outputs-1}}
+    touch '${prefix}.meta' 
+    touch '${prefix}.cache'{0..${n_outputs-1}}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
