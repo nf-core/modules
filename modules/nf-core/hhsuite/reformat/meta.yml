@@ -13,7 +13,7 @@ tools:
       documentation: "https://github.com/soedinglab/hh-suite/wiki"
       tool_dev_url: "https://github.com/soedinglab/hh-suite"
       doi: "10.1371/journal.pone.0082138"
-      licence: ['GPL v3']
+      licence: ["GPL v3"]
       identifier: biotools:hh-suite
 input:
   - - meta:
@@ -35,20 +35,20 @@ input:
         enum: ["fas", "a2m", "a3m", "sto", "psi", "clu"]
 output:
   - msa:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - "${prefix}.${outformat}.gz":
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "${prefix}.${outformat}.gz":
           type: file
           description: Gzipped reformatted output MSA file
           pattern: "*.{fas.gz,a2m.gz,a3m.gz,sto.gz,psi.gz,clu.gz}"
   - versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@vagkaratzas"
 maintainers:

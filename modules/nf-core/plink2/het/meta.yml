@@ -38,15 +38,15 @@ input:
 output:
   - het:
       - meta:
-         type: map
-         description: |
-           Groovy Map containing sample information
-           e.g. [ id:'test', single_end:false ]
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - "*.het":
-         type: file
-         description: observed and expected homozygous/heterozygous genotype counts for each
-          sample and method-of-moments F coefficient estimates
-         pattern: "*.het"
+          type: file
+          description: observed and expected homozygous/heterozygous genotype counts for each
+            sample and method-of-moments F coefficient estimates
+          pattern: "*.het"
   - versions:
       - "versions.yml":
           type: file
