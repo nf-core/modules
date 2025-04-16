@@ -25,12 +25,26 @@ input:
         type: file
         description: Input file for annotation in vcf or vcf.gz format
         pattern: "*.{vcf,vcf.gz}"
-  - - annotation_dir:
-        type: file
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test' ]
+    - annotation_dir:
+        type: directory
         description: |
           Path to folder containing the vcf files with precomputed CADD scores.
           This folder contains the uncompressed files that would otherwise be in data/annotation folder as described in https://github.com/kircherlab/CADD-scripts/#manual-installation.
-        pattern: "*.{vcf,vcf.gz}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test' ]
+    - prescored_dir:
+        type: directory
+        description: |
+          Path to folder containing prescored files.
+          This folder contains the uncompressed files that would otherwise be in data/prescored/${GENOME_BUILD}_${VERSION}/ folder as described in https://github.com/kircherlab/CADD-scripts/#manual-installation.
 output:
   - tsv:
       - meta:
