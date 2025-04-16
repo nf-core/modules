@@ -1,7 +1,6 @@
 process ARGNORM {
     tag "${meta.id}"
     label 'process_low'
-    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/argnorm:0.8.0--pyhdfd78af_0'
