@@ -37,8 +37,8 @@ output:
             e.g. [ id:'test']
       - "*.vcf.gz":
           type: file
-          description: A VCF file with decomposed variants - BNDs
-        pattern: "*.{vcf.gz}"
+          description: A VCF file with SVTYPE BND variants
+          pattern: "*.vcf.gz"
   - versions:
       - versions.yml:
           type: file
