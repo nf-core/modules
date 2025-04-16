@@ -37,7 +37,7 @@ nextflow_workflow {
                 ])
 
                 input[0] = ch_input
-                input[1] = Channel.of([[], [], [], [], []])
+                input[1] = Channel.of([[], [], [], [], [], []])
                 input[2] = Channel.of([[], []])
                 input[3] = Channel.of([[], [], [], []])
                 """
@@ -85,7 +85,7 @@ nextflow_workflow {
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_input = Channel.of([
                     [ id:'test' ],
@@ -114,7 +114,7 @@ nextflow_workflow {
                     }
 
                 input[0] = ch_input
-                input[1] = Channel.of([[], [], [], [], []])
+                input[1] = Channel.of([[], [], [], [], [], []])
                 input[2] = Channel.of([[], []])
                 input[3] = Channel.of([[], [], [], []])
                 """
@@ -162,7 +162,7 @@ nextflow_workflow {
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_input = Channel.of([
                     [ id:'test' ],
@@ -203,7 +203,7 @@ nextflow_workflow {
                 ch_contrasts = Channel.fromPath(file(testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_samplesheet = Channel.of([
                     [ id:'test' ],
@@ -263,7 +263,7 @@ nextflow_workflow {
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_input = Channel.of([
                     [ id:'test' ],
@@ -293,7 +293,7 @@ nextflow_workflow {
                     }
 
                 input[0] = ch_input
-                input[1] = Channel.of([[], [], [], [], []])
+                input[1] = Channel.of([[], [], [], [], [], []])
                 input[2] = Channel.of([[], []])
                 input[3] = Channel.of([[], [], [], []])
                 """
@@ -339,7 +339,7 @@ nextflow_workflow {
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_input = Channel.of(
                     [
@@ -406,7 +406,7 @@ nextflow_workflow {
                 ch_contrasts = Channel.fromPath(file(testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_samplesheet = Channel.of([
                     [ id:'test' ],
@@ -460,7 +460,7 @@ nextflow_workflow {
                 ])
 
                 input[0] = ch_input
-                input[1] = Channel.of([[], [], [], [], []])
+                input[1] = Channel.of([[], [], [], [], [], []])
                 input[2] = Channel.of([[], []])
                 input[3] = Channel.of([[], [], [], []])
                 """

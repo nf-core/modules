@@ -30,7 +30,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${meta.id}:
+      - ${prefix}:
           type: directory
           description: Output directory containing blast database files
           pattern: "*"
@@ -46,3 +46,4 @@ maintainers:
   - "@joseespinosa"
   - "@drpatelh"
   - "@vagkaratzas"
+  - "@DLBPointon"

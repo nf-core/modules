@@ -1,0 +1,106 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: ragtag_scaffold
+description: |
+  Scaffolding is the process of ordering and orienting draft assembly (query)
+  sequences into longer sequences. Gaps (stretches of "N" characters) are placed
+  between adjacent query sequences to indicate the presence of unknown sequence.
+  RagTag uses whole-genome alignments to a reference assembly to scaffold query sequences.
+  RagTag does not alter input query sequence in any way and only orders and orients sequences, joining them with gaps.
+keywords:
+  - scaffolding
+  - ragtag
+  - assembly
+  - genome
+tools:
+  - "ragtag":
+      description: "Fast reference-guided genome assembly scaffolding"
+      homepage: "https://github.com/malonge/RagTag/wiki"
+      documentation: "https://github.com/malonge/RagTag/wiki"
+      tool_dev_url: "https://github.com/malonge/RagTag"
+      doi: "10.1186/s13059-022-02823-7"
+      licence: ["MIT"]
+      identifier: biotools:ragtag
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - assembly:
+        type: file
+        description: Assembly to be scaffolded
+        pattern: "*.{fasta,fasta.gz,fa,fa.gz}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - reference:
+        type: file
+        description: Reference assembly
+        pattern: "*.{fasta,fasta.gz,fa,fa.gz}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - exclude:
+        type: file
+        description: list of target sequences to ignore
+        pattern: "*.txt"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - skip:
+        type: file
+        description: list of query sequences to leave unplaced
+        pattern: "*.txt"
+    - hard_skip:
+        type: file
+        description: list of query headers to leave unplaced and exclude from 'chr0'
+          ('-C')
+        pattern: "*.txt"
+output:
+  - corrected_assembly:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.fasta":
+          type: file
+          description: FASTA file containing the patched assembly
+          pattern: "*.fasta"
+  - corrected_agp:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.agp":
+          type: file
+          description: agp file defining how corrected_assembly is built
+          pattern: "*.agp"
+  - corrected_stats:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.stats":
+          type: file
+          description: Statistics on the scaffold
+          pattern: "*.stats"
+
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@nschan"
+maintainers:
+  - "@nschan"

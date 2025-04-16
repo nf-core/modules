@@ -1,0 +1,78 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "fusioncatcher_fusioncatcher"
+description: FusionCatcher searches for novel/known somatic fusion genes, translocations, and chimeras in RNA-seq data
+keywords:
+  - fusion
+  - rna
+  - fastq
+tools:
+  - fusioncatcher:
+      description: FusionCatcher searches for novel/known somatic fusion genes, translocations, and chimeras in RNA-seq data
+      homepage: https://github.com/ndaniel/fusioncatcher
+      documentation: https://github.com/ndaniel/fusioncatcher/wiki
+      tool_dev_url: https://github.com/ndaniel/fusioncatcher
+      doi: "10.1101/011650v1"
+      licence: ["GPL v3"]
+      identifier: biotools:fusioncatcher
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fastqs:
+        type: list
+        description: A list of input fastq files
+        pattern: "*.{fastq,fq}.gz"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - reference:
+        type: file
+        description: Directory containing fusioncatcher reference files
+
+output:
+  - fusions:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - "*.fusion-genes.txt":
+        type: file
+        description: The detected fusions in the input files
+        pattern: "*.fusion-genes.txt"
+  - summary:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - "*.summary.txt":
+        type: file
+        description: The generated summary
+        pattern: "*.summary.txt"
+  - log:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - "*.log":
+        type: file
+        description: The Fusioncatcher log
+        pattern: "*.log"
+  - versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@nvnieuwk"
+maintainers:
+  - "@nvnieuwk"

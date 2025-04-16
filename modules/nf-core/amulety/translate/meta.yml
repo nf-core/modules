@@ -1,0 +1,64 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "amulety_translate"
+description: A module to translate BCR and TCR nucleotide sequences into amino acid sequences using amulety and igblast.
+keywords:
+  - immunology
+  - BCR
+  - TCR
+  - translation
+  - amino acid
+  - nucleotide
+  - immunoinformatics
+tools:
+  - "amulety":
+      description: "Python package to create embeddings of BCR and TCR amino acid sequences."
+      homepage: "https://amulety.readthedocs.io/en/latest/"
+      documentation: "https://amulety.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/immcantation/amulety"
+      doi: "10.1101/2025.03.21.644583"
+      licence: ['GPL v3']
+  - "igblast":
+      description: "A tool for immunoglobulin (IG, BCR) and T cell receptor (TCR) V domain sequences blasting."
+      homepage: "https://www.ncbi.nlm.nih.gov/igblast/"
+      documentation: "https://ncbi.github.io/igblast/"
+      tool_dev_url: "https://github.com/ncbi/igblast"
+      doi: "10.1093/nar/gkt382"
+      licence: ['United States Government Work']
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - tsv:
+        type: file
+        description: TSV with BCR/TCR nucleotide sequences in AIRR rearrangement format
+        pattern: "*.{tsv}"
+  - - reference_igblast:
+        type: file
+        description: Built reference databases for igblast
+
+output:
+  - repertoire_translated:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - "*_translated.tsv":
+        type: file
+        description: TSV with BCR/TCR amino acid sequences in AIRR rearrangement format
+        pattern: "*.tsv"
+
+  - versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@ggabernet"
+maintainers:
+  - "@ggabernet"

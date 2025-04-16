@@ -1,0 +1,156 @@
+name: "ragtag_patch"
+description: "Homology-based assembly patching: Make continuous joins and fill gaps
+  in 'target.fa' using sequences from 'query.fa'"
+
+keywords:
+  - assembly
+  - consensus
+  - ragtag
+  - patch
+tools:
+  - "ragtag":
+      description: "Fast reference-guided genome assembly scaffolding"
+      homepage: "https://github.com/malonge/RagTag/wiki"
+      documentation: "https://github.com/malonge/RagTag/wiki"
+      tool_dev_url: "https://github.com/malonge/RagTag"
+      doi: "10.1186/s13059-022-02823-7"
+      licence: ["MIT"]
+      identifier: biotools:ragtag
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - target:
+        type: file
+        description: Target assembly
+        pattern: "*.{fasta,fasta.gz}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - query:
+        type: file
+        description: Query assembly
+        pattern: "*.{fasta,fasta.gz}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - exclude:
+        type: file
+        description: list of target sequences to ignore
+        pattern: "*.txt"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - skip:
+        type: file
+        description: list of query sequences to ignore
+        pattern: "*.txt"
+output:
+  - patch_fasta:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.patch.fasta":
+          type: file
+          description: FASTA file containing the patched assembly
+          pattern: "*.patch.fasta"
+  - patch_agp:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.patch.agp":
+          type: file
+          description: AGP file defining how ragtag.patch.fasta is built
+          pattern: "*.patch.agp"
+  - patch_components_fasta:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.comps.fasta":
+          type: file
+          description: The split target assembly and the renamed query assembly combined
+            into one FASTA file. This file contains all components in ragtag.patch.agp
+          pattern: "*.comps.fasta"
+  - assembly_alignments:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.ragtag.patch.asm.*":
+          type: file
+          description: Assembly alignment files
+          pattern: "*.ragtag.patch.asm.*"
+  - target_splits_agp:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.ctg.agp":
+          type: file
+          description: An AGP file defining how the target assembly was split at gaps
+          pattern: "*.ctg.agp"
+  - target_splits_fasta:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.ctg.fasta":
+          type: file
+          description: FASTA file containing the target assembly split at gaps
+          pattern: "*.ctg.fasta"
+  - qry_rename_agp:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.rename.agp":
+          type: file
+          description: An AGP file defining the new names for query sequences
+          pattern: "*.rename.agp"
+  - qry_rename_fasta:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.rename.fasta":
+          type: file
+          description: A FASTA file with the original query sequence, but with new names
+          pattern: "*.rename.fasta"
+  - stderr:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.patch.err":
+          type: file
+          description: Standard error logging for all external RagTag commands
+          pattern: "*.patch.err"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@nschan"
+maintainers:
+  - "@nschan"
