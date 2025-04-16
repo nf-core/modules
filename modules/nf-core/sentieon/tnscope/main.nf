@@ -30,7 +30,7 @@ process SENTIEON_TNSCOPE {
     script:
     def args         = task.ext.args     ?: ''
     def args2        = task.ext.args2    ?: ''
-    def interval_str = intervals         ? "--interval ${interval}" : ''
+    def interval_str = intervals         ? "--interval ${intervals}" : ''
     def cosmic_str   = cosmic            ? "--cosmic ${cosmic}"     : ''
     def dbsnp_str    = dbsnp             ? "--dbsnp ${dbsnp}"       : ''
     def pon_str      = pon               ? "--pon ${pon}"           : ''
