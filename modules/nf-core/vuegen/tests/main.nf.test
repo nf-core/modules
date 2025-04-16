@@ -76,9 +76,9 @@ nextflow_process {
                         output_folder: (process.out.output_folder[0] ==~ "/.*/quarto_report"),
                         output_files: [
                             "quarto_report.html": path(process.out.output_folder[0] + "/quarto_report.html")
-                                                    .readLines()[0..5],
+                                                    .readLines()[0..3],
                             "quarto_report.qmd": path(process.out.output_folder[0] + "/quarto_report.qmd")
-                                                .readLines()[0..5]
+                                                .readLines()[0..3]
                         ],
                         versions: process.out.versions
                     ]).match()
@@ -118,7 +118,7 @@ nextflow_process {
                             "quarto_report.pdf": path(process.out.output_folder[0] + "/quarto_report.pdf")
                                                     .exists(),
                             "quarto_report.qmd": path(process.out.output_folder[0] + "/quarto_report.qmd")
-                                                    .readLines()[0..5].sort()
+                                                    .readLines()[0..3].sort()
                         ],
                         versions: process.out.versions
                     ]).match()

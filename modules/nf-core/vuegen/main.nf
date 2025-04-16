@@ -30,15 +30,19 @@ process VUEGEN {
                 echo "ERROR: This module requires Python >= \$REQUIRED_VERSION. Current version: \$PYTHON_VERSION" >&2
                 exit 1
             fi
+
+            QUARTO_CHECK_FLAG="--quarto_checks"
+        else
+            QUARTO_CHECK_FLAG=""
         fi
 
         # Execute VueGen based on the input type
         if [ "${input_type}" == "config" ]; then
             echo "Running VueGen with config file: $input_path"
-            vuegen --config $input_path --report_type $report_type $args
+            vuegen --config $input_path --report_type $report_type \$QUARTO_CHECK_FLAG $args
         elif [ "${input_type}" == "directory" ]; then
             echo "Running VueGen with directory: $input_path"
-            vuegen --directory $input_path --report_type $report_type $args
+            vuegen --directory $input_path --report_type $report_type \$QUARTO_CHECK_FLAG $args
         fi
 
         cat <<-END_VERSIONS > versions.yml
