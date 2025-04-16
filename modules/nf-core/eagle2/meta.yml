@@ -14,7 +14,7 @@ tools:
       documentation: "https://alkesgroup.broadinstitute.org/Eagle/"
       tool_dev_url: "https://github.com/poruloh/Eagle"
       doi: "10.1038/ng.3679"
-      licence: ['GPL v3-or-later']
+      licence: ["GPL v3-or-later"]
 
 input:
   - - meta:
@@ -55,24 +55,24 @@ input:
 
 output:
   - phased_variants:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - "*.{vcf,vcf.gz,bcf}":
-        type: file
-        description: Input phased variants
-        pattern: "*.{vcf,vcf.gz,bcf}"
-        ontologies:
-          - edam: "http://edamontology.org/format_3016"
-          - edam: "http://edamontology.org/format_3020"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.{vcf,vcf.gz,bcf}":
+          type: file
+          description: Input phased variants
+          pattern: "*.{vcf,vcf.gz,bcf}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
+            - edam: "http://edamontology.org/format_3020"
 
   - versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 
 authors:
   - "@LouisLeNezet"

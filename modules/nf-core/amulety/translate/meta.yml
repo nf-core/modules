@@ -17,14 +17,14 @@ tools:
       documentation: "https://amulety.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/immcantation/amulety"
       doi: "10.1101/2025.03.21.644583"
-      licence: ['GPL v3']
+      licence: ["GPL v3"]
   - "igblast":
       description: "A tool for immunoglobulin (IG, BCR) and T cell receptor (TCR) V domain sequences blasting."
       homepage: "https://www.ncbi.nlm.nih.gov/igblast/"
       documentation: "https://ncbi.github.io/igblast/"
       tool_dev_url: "https://github.com/ncbi/igblast"
       doi: "10.1093/nar/gkt382"
-      licence: ['United States Government Work']
+      licence: ["United States Government Work"]
 
 input:
   - - meta:
@@ -42,21 +42,21 @@ input:
 
 output:
   - repertoire_translated:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - "*_translated.tsv":
-        type: file
-        description: TSV with BCR/TCR amino acid sequences in AIRR rearrangement format
-        pattern: "*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_translated.tsv":
+          type: file
+          description: TSV with BCR/TCR amino acid sequences in AIRR rearrangement format
+          pattern: "*.tsv"
 
   - versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 
 authors:
   - "@ggabernet"

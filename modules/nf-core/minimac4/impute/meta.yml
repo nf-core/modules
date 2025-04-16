@@ -13,7 +13,7 @@ tools:
       documentation: "https://github.com/statgen/Minimac4"
       tool_dev_url: "https://github.com/statgen/Minimac4"
       doi: "10.1038/ng.3656"
-      licence: ['GPL v3-or-later']
+      licence: ["GPL v3-or-later"]
       identifier: biotools:minimac4
 
 input:
@@ -61,24 +61,24 @@ input:
 
 output:
   - vcf:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - "*.{bcf,sav,vcf.gz,vcf,ubcf,usav}":
-        type: file
-        description: Imputed variants file
-        pattern: "*.{bcf,sav,vcf.gz,vcf,ubcf,usav}"
-        ontologies:
-          - edam: "http://edamontology.org/format_3016"
-          - edam: "http://edamontology.org/format_3020"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.{bcf,sav,vcf.gz,vcf,ubcf,usav}":
+          type: file
+          description: Imputed variants file
+          pattern: "*.{bcf,sav,vcf.gz,vcf,ubcf,usav}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
+            - edam: "http://edamontology.org/format_3020"
 
   - versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 
 authors:
   - "@LouisLeNezet"

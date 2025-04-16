@@ -37,40 +37,40 @@ input:
 
 output:
   - fusions:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - "*.fusion-genes.txt":
-        type: file
-        description: The detected fusions in the input files
-        pattern: "*.fusion-genes.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.fusion-genes.txt":
+          type: file
+          description: The detected fusions in the input files
+          pattern: "*.fusion-genes.txt"
   - summary:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - "*.summary.txt":
-        type: file
-        description: The generated summary
-        pattern: "*.summary.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.summary.txt":
+          type: file
+          description: The generated summary
+          pattern: "*.summary.txt"
   - log:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - "*.log":
-        type: file
-        description: The Fusioncatcher log
-        pattern: "*.log"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.log":
+          type: file
+          description: The Fusioncatcher log
+          pattern: "*.log"
   - versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 
 authors:
   - "@nvnieuwk"

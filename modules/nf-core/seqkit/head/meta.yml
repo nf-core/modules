@@ -34,21 +34,21 @@ input:
 
 output:
   - subset:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - '${prefix}_subset_*':
-        type: file
-        description: Subset FASTA/FASTQ files
-        pattern: "*.{fa,fasta,fq,fastq}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "${prefix}_subset_*":
+          type: file
+          description: Subset FASTA/FASTQ files
+          pattern: "*.{fa,fasta,fq,fastq}"
 
   - versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 
 authors:
   - "@zachary-foster"

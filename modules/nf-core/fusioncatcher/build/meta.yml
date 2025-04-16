@@ -23,23 +23,22 @@ input:
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
 
-
 output:
   - reference:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - ${prefix}:
-        type: file
-        description: Diretory containing the fusioncatcher reference files
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}:
+          type: file
+          description: Diretory containing the fusioncatcher reference files
 
   - versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 
 authors:
   - "@nvnieuwk"
