@@ -39,7 +39,7 @@ output:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test' ]
-    - ${prefix}:
+    - results:
         type: file
         description: Results file
   - extraction:
@@ -48,7 +48,7 @@ output:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test' ]
-    - ${prefix}/extraction.bam:
+    - results/extraction.bam:
         type: file
         description: Extraction BAM file
         pattern: "*.bam"
@@ -58,7 +58,7 @@ output:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test' ]
-    - ${prefix}/extraction.bam.bai:
+    - results/extraction.bam.bai:
         type: file
         description: Extraction BAM index file
         pattern: "*.bam.bai"
@@ -68,7 +68,7 @@ output:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test' ]
-    - ${prefix}/extraction_mapped.bam:
+    - results/extraction_mapped.bam:
         type: file
         description: Extraction mapped BAM file
         pattern: "*.bam"
@@ -78,7 +78,7 @@ output:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test' ]
-    - ${prefix}/extraction_unmapped.bam:
+    - results/extraction_unmapped.bam:
         type: file
         description: Extraction unmapped BAM file
         pattern: "*.bam"
@@ -88,7 +88,7 @@ output:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test' ]
-    - ${prefix}/hla/*:
+    - results/hla/*:
         type: file
         description: HLA results
   - fastq:
@@ -97,7 +97,7 @@ output:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test' ]
-    - ${prefix}/*.fastq:
+    - results/*.fastq:
         type: file
         description: Fastq file
         pattern: "*.fastq"
@@ -107,7 +107,7 @@ output:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test' ]
-    - ${prefix}/reads_per_level.txt:
+    - results/reads_per_level.txt:
         type: file
         description: Reads per level
         pattern: "*.txt"
@@ -117,7 +117,7 @@ output:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test' ]
-    - ${prefix}/remapped_with_a.bam:
+    - results/remapped_with_a.bam:
         type: file
         description: Remapped BAM file
         pattern: "*.bam"
@@ -127,7 +127,7 @@ output:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test' ]
-    - ${prefix}/remapped_with_a.bam.bai:
+    - results/remapped_with_a.bam.bai:
         type: file
         description: Remapped BAM index file
         pattern: "*.bam.bai"
