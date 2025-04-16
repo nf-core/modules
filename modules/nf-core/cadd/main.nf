@@ -7,11 +7,11 @@ process CADD {
 
     containerOptions {
         if (prescored_dir) {
-            workflow.containerEngine == 'singularity' ?
+            ['singularity', 'apptainer'].contains(workflow.containerEngine) ?
                 "-B ${annotation_dir}:/opt/CADD-scripts-1.6.post1/data/annotations -B ${prescored_dir}:/opt/CADD-scripts-1.6.post1/data/prescored" :
                 "-v ${annotation_dir}:/opt/CADD-scripts-1.6.post1/data/annotations -v ${prescored_dir}:/opt/CADD-scripts-1.6.post1/data/prescored"
         } else {
-            workflow.containerEngine == 'singularity' ?
+            ['singularity', 'apptainer'].contains(workflow.containerEngine) ?
                 "-B ${annotation_dir}:/opt/CADD-scripts-1.6.post1/data/annotations" :
                 "-v ${annotation_dir}:/opt/CADD-scripts-1.6.post1/data/annotations"
         }
