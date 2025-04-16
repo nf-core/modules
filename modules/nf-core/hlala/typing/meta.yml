@@ -7,7 +7,7 @@ keywords:
   - hla_typing
   - hlala_typing
 tools:
-  - "hlala":
+  - hlala:
       description: "HLA typing from short and long reads"
       homepage: "https://github.com/DiltheyLab/HLA-LA"
       documentation: "https://github.com/DiltheyLab/HLA-LA#running-hlala"
@@ -20,7 +20,7 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test' ]
     - bam:
         type: file
         description: BAM/CRAM/SAM file
@@ -34,88 +34,108 @@ input:
         description: Path to prepared graph with hla-la --action prepareGraph
 output:
   - results:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - ${meta.id}:
-          type: file
-          description: results file
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - ${prefix}:
+        type: file
+            description: Results file
   - extraction:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - ${meta.id}/extraction.bam*:
-          type: file
-          description: Extraction BAM file
-          pattern: "*.bam*"
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - ${prefix}/extraction.bam:
+        type: file
+        description: Extraction BAM file
+        pattern: "*.bam"
+  - extraction_index:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - ${prefix}/extraction.bam.bai:
+        type: file
+        description: Extraction BAM index file
+        pattern: "*.bam.bai"
   - extraction_mapped:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - ${meta.id}/extraction_mapped.bam:
-          type: file
-          description: Extraction mapped BAM file
-          pattern: "*.bam"
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - ${prefix}/extraction_mapped.bam:
+        type: file
+        description: Extraction mapped BAM file
+        pattern: "*.bam"
   - extraction_unmpapped:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - ${meta.id}/extraction_unmapped.bam:
-          type: file
-          description: Extraction unmapped BAM file
-          pattern: "*.bam"
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - ${prefix}/extraction_unmapped.bam:
+        type: file
+        description: Extraction unmapped BAM file
+        pattern: "*.bam"
   - hla:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - ${meta.id}/hla/*:
-          type: file
-          description: HLA results
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - ${prefix}/hla/*:
+        type: file
+        description: HLA results
   - fastq:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - ${meta.id}/*.fastq:
-          type: file
-          description: Fastq file
-          pattern: "*.fastq"
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - ${prefix}/*.fastq:
+        type: file
+        description: Fastq file
+        pattern: "*.fastq"
   - reads_per_level:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - ${meta.id}/reads_per_level.txt:
-          type: file
-          description: Reads per level
-          pattern: "*.txt"
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - ${prefix}/reads_per_level.txt:
+        type: file
+        description: Reads per level
+        pattern: "*.txt"
   - remapped:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - ${meta.id}/remapped_with_a.bam*:
-          type: file
-          description: Remapped BAM file
-          pattern: "*.bam*"
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - ${prefix}/remapped_with_a.bam:
+        type: file
+        description: Remapped BAM file
+        pattern: "*.bam"
+  - remapped_index:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - ${prefix}/remapped_with_a.bam.bai:
+        type: file
+        description: Remapped BAM index file
+        pattern: "*.bam.bai"
   - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 authors:
   - "@mapo9"
 maintainers:
