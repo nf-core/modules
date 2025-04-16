@@ -138,7 +138,7 @@ nextflow_process {
         }
     }
 
-    test("tumour normal - no pon - stub") {
+    test("tumour normal - stub") {
         options '-stub'
         when {
             params {
@@ -147,20 +147,9 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = NORMAL_ADDORREPLACEREADGROUPS.out.bam
-                    .join( NORMAL_ADDORREPLACEREADGROUPS.out.bai)
-                    .join( TUMOUR_ADDORREPLACEREADGROUPS.out.bam)
-                    .join( TUMOUR_ADDORREPLACEREADGROUPS.out.bai)
-                    .map{
-                    meta,normal_bam,normal_bai,tumour_bam,tumour_bai->
-                    [[id:'test'],[normal_bam,tumour_bam],[normal_bai,tumour_bai],[]]
-                    }
-                input[1] = [ [id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists:true)
-                    ]
-                input[2] = [ [id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists:true)
-                    ]
+                input[0] = [[id:'test'],[],[],[]]
+                input[1] = [[:],[]]
+                input[2] = [[:],[]]
                 input[3] = [[:],[]]
                 input[4] = [[:],[]]
                 input[5] = [[:],[]]
