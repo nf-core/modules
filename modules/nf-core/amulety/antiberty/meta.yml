@@ -28,6 +28,10 @@ input:
         type: file
         description: TSV with BCR/TCR nucleotide sequences in AIRR rearrangement format
         pattern: "*.{tsv}"
+  - - chain:
+        type: string
+        description: |
+          The chain to use for the embeddings. Can be either 'H' (heavy) or 'HL' (heavy + light, for single-cell data).
 
 output:
   - embedding:
