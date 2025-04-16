@@ -27,13 +27,16 @@ input:
         description: |
           BED file of target intervals, generated from IntervalFile.R
         pattern: "{*.bed,*.txt}"
+        ontologies: []
     - coverage:
         type: file
         description: Coverage file generated from Coverage.R
         pattern: "*.txt"
+        ontologies: []
   - - normal_db:
         type: file
         description: normal pannel database
+        ontologies: []
   - - genome:
         type: string
         description: Genome build
@@ -89,11 +92,6 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test' ]
       - "*_amplification_pvalues.csv":
-          type: file
-          description: |
-            CSV file containing amplification p-values. Optional
-          pattern: "*_amplification_pvalues.csv"
-      - ues_csv:
           type: file
           description: |
             CSV file containing amplification p-values. Optional
@@ -168,6 +166,9 @@ output:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
+
 authors:
   - "@aldosr"
   - "@lbeltrame"
