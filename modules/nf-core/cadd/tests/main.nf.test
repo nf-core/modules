@@ -19,8 +19,8 @@ nextflow_process {
                     [id:'test',single_end:false],// meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf',checkIfExists:true)
                 ]
-                input[1] = Channel.fromPath("/path/to/annotations/").map { dir -> [ [ id: dir.getName() ], dir ] }
-                input[2] = Channel.fromPath("/path/to/prescored/").map { dir -> [ [ id: dir.getName() ], dir ] }
+                input[1] = Channel.from("\$PWD").map { dir -> [ [ id: dir ], dir ] }
+                input[2] = Channel.from("/").map { dir -> [ [ id: dir ], dir ] }
                 """
             }
         }
