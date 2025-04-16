@@ -27,23 +27,26 @@ input:
         description: |
           BED file of target intervals, generated from IntervalFile.R
         pattern: "{*.bed,*.txt}"
+        ontologies: []
     - coverage:
         type: file
         description: Coverage file generated from Coverage.R
         pattern: "*.txt"
+        ontologies: []
   - - normal_db:
         type: file
         description: normal pannel database
+        ontologies: []
   - - genome:
         type: string
         description: Genome build
 output:
   - pdf:
       - meta:
-          type: file
+          type: map
           description: |
-            PDF file containing copy number plots
-          pattern: "*.pdf"
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
       - "*.pdf":
           type: file
           description: |
@@ -51,10 +54,10 @@ output:
           pattern: "*.pdf"
   - local_optima_pdf:
       - meta:
-          type: file
+          type: map
           description: |
-            PDF file containing local optima plots
-          pattern: "*_local_optima.pdf"
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
       - "*_local_optima.pdf":
           type: file
           description: |
@@ -62,10 +65,10 @@ output:
           pattern: "*_local_optima.pdf"
   - seg:
       - meta:
-          type: file
+          type: map
           description: |
-            Tab-delimited file containing segmentation results
-          pattern: "*_dnacopy.seg"
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
       - "*_dnacopy.seg":
           type: file
           description: |
@@ -73,10 +76,10 @@ output:
           pattern: "*_dnacopy.seg"
   - genes_csv:
       - meta:
-          type: file
+          type: map
           description: |
-            CSV file containing gene copy number calls. Optional
-          pattern: "*_genes.csv"
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
       - "*_genes.csv":
           type: file
           description: |
@@ -84,26 +87,21 @@ output:
           pattern: "*_genes.csv"
   - amplification_pvalues_csv:
       - meta:
-          type: file
+          type: map
           description: |
-            CSV file containing amplification p-values. Optional
-          pattern: "*_amplification_pvalues.csv"
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
       - "*_amplification_pvalues.csv":
-          type: file
-          description: |
-            CSV file containing amplification p-values. Optional
-          pattern: "*_amplification_pvalues.csv"
-      - ues_csv:
           type: file
           description: |
             CSV file containing amplification p-values. Optional
           pattern: "*_amplification_pvalues.csv"
   - vcf_gz:
       - meta:
-          type: file
+          type: map
           description: |
-            GZipped VCF file containing SNV calls. Optional
-          pattern: "*.vcf.gz"
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
       - "*.vcf.gz":
           type: file
           description: |
@@ -111,10 +109,10 @@ output:
           pattern: "*.vcf.gz"
   - variants_csv:
       - meta:
-          type: file
+          type: map
           description: |
-            CSV file containing SNV calls. Optional
-          pattern: "*_variants.csv"
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
       - "*_variants.csv":
           type: file
           description: |
@@ -122,10 +120,10 @@ output:
           pattern: "*_variants.csv"
   - loh_csv:
       - meta:
-          type: file
+          type: map
           description: |
-            CSV file containing LOH calls. Optional
-          pattern: "*_loh.csv"
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
       - "*_loh.csv":
           type: file
           description: |
@@ -133,10 +131,10 @@ output:
           pattern: "*_loh.csv"
   - chr_pdf:
       - meta:
-          type: file
+          type: map
           description: |
-            PDF file containing chromosome plots. Optional
-          pattern: "*_chromosomes.pdf"
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
       - "*_chromosomes.pdf":
           type: file
           description: |
@@ -144,10 +142,10 @@ output:
           pattern: "*_chromosomes.pdf"
   - segmentation_pdf:
       - meta:
-          type: file
+          type: map
           description: |
-            PDF file containing segmentation plots. Optional
-          pattern: "*_segmentation.pdf"
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
       - "*_segmentation.pdf":
           type: file
           description: |
@@ -168,6 +166,9 @@ output:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
+
 authors:
   - "@aldosr"
   - "@lbeltrame"
