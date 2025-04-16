@@ -16,11 +16,11 @@ process HLALA_TYPING {
     tuple val(meta), path("${prefix}/extraction.bam.bai")          , emit: extraction_index
     tuple val(meta), path("${prefix}/extraction_mapped.bam")       , emit: extraction_mapped
     tuple val(meta), path("${prefix}/extraction_unmapped.bam")     , emit: extraction_unmpapped
-    tuple val(meta), path("${prefix}/hla/*")                       , emit: hla
-    tuple val(meta), path("${prefix}/*.fastq")                     , emit: fastq
     tuple val(meta), path("${prefix}/reads_per_level.txt")         , emit: reads_per_level
     tuple val(meta), path("${prefix}/remapped_with_a.bam")         , emit: remapped
     tuple val(meta), path("${prefix}/remapped_with_a.bam.bai")     , emit: remapped_index
+    tuple val(meta), path("${prefix}/hla/*")                       , emit: hla
+    tuple val(meta), path("${prefix}/*.fastq")                     , emit: fastq
     path "versions.yml"                                            , emit: versions
 
     when:
@@ -40,7 +40,6 @@ process HLALA_TYPING {
     """
     ${bin} \\
         --BAM $bam \\
-        --graph PRG_MHC_GRCh38_withIMGT \\
         --customGraphDir ${graph} \\
         --sampleID $prefix \\
         --workingDir . \\
@@ -56,7 +55,7 @@ process HLALA_TYPING {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir ${prefix}
+    mkdir -p ${prefix}
 
     touch ${prefix}/R_1.fastq
     touch ${prefix}/R_2.fastq
