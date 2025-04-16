@@ -113,7 +113,7 @@ process LONGSTITCH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        LongStitch: \$(echo \$(longstitch | head -n1 | sed 's/LongStitch v//'))
+        longstitch: \$(echo \$(longstitch | head -n1 | sed 's/LongStitch v//'))
     END_VERSIONS
     """
 
@@ -147,7 +147,7 @@ process LONGSTITCH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        longstitch: \$(samtools --version |& sed '1!d ; s/samtools //')
+        longstitch: \$(echo \$(longstitch | head -n1 | sed 's/LongStitch v//'))
     END_VERSIONS
     """
 }
