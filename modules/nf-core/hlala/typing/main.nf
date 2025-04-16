@@ -16,12 +16,12 @@ process HLALA_TYPING {
     tuple val(meta), path("results/extraction.bam.bai")          , emit: extraction_index
     tuple val(meta), path("results/extraction_mapped.bam")       , emit: extraction_mapped
     tuple val(meta), path("results/extraction_unmapped.bam")     , emit: extraction_unmpapped
+    tuple val(meta), path("results/hla/*")                       , emit: hla
+    tuple val(meta), path("results/*.fastq")                     , emit: fastq
     tuple val(meta), path("results/reads_per_level.txt")         , emit: reads_per_level
     tuple val(meta), path("results/remapped_with_a.bam")         , emit: remapped
     tuple val(meta), path("results/remapped_with_a.bam.bai")     , emit: remapped_index
-    tuple val(meta), path("results/hla/*")                       , emit: hla
-    tuple val(meta), path("results/*.fastq")                     , emit: fastq
-    path "versions.yml"                                            , emit: versions
+    path "versions.yml"                                          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
