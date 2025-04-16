@@ -1,5 +1,5 @@
 // IMPORTANT: Add this configuration to your modules.config
-
+```groovy
 process {
 withName: ".*BAM_SPLIT_BY_REGION:SAMTOOLS_VIEW" {
 ext.args2 = {
