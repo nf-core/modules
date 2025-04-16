@@ -1,0 +1,120 @@
+nextflow_process {
+
+    name "Test Process HLALA_TYPING"
+    script "../main.nf"
+    process "HLALA_TYPING"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hlala"
+    tag "hlala/typing"
+    tag "hlala/preparegraph"
+
+
+    test("homo_hapiens - hlala_typing - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.test_data_base + '/data/genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam', checkIfExists: true),
+                    file(params.test_data_base + '/data/genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam.bai', checkIfExists: true),
+                    []
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    // test("homo_sapiens - hlala_typing - [ [ meta ], bam, bai, graph] ] ") {
+
+    // /*
+    // For actual test, download large test files:
+    // Run SAMTOOLS_INDEX on cram, UNTAR graph
+    // graph: wget http://www.well.ox.ac.uk/downloads/PRG_MHC_GRCh38_withIMGT.tar.gz (15GB)
+    // input: wget https://www.dropbox.com/s/xr99u3vqaimk4vo/NA12878.mini.cram?dl=0 -O NA12878.mini.cram
+    // */
+
+    // /* Testdata on testdata/modules not working:
+    // Test graph nodes not complete:  file(params.test_data_base + '/data/genomics/homo_sapiens/genome/PRG_test.zip', checkIfExists: true)
+    // Chromosome not suitable for Hlatyping: file(params.test_data_base + 'data/genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam', checkIfExists: true)
+    // Other testdata would need a different PRG:
+    // file(params.test_data_base + '/data/genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam', checkIfExists: true),
+    // file(params.test_data_base + '/data/genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam.bai', checkIfExists: true)
+    // */
+
+
+    //     config "./nextflow.config"
+
+    //     setup {
+
+    //         run("SAMTOOLS_INDEX") {
+    //             script "../../../samtools/index/main.nf"
+    //             process {
+    //             """
+    //             input[0] = [
+    //                 [ id:'test' ], // meta map
+    //                 //file(params.test_data_base + '/data/genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam', checkIfExists: true)
+    //                 file("/home-link/afijo01/testing/NA12878.mini.cram", checkIfExists: true, stageAs: 'NA12878.mini.cram')
+    //                 ]
+    //             """
+    //             }
+    //         }
+    //     }
+
+
+    //     when {
+
+    //         process {
+    //             """
+
+    //             ch_bai = SAMTOOLS_INDEX.out.bai
+    //             ch_graph = Channel.of([
+    //                         [ id:"test" ],
+    //                         file("/home-link/afijo01/testing/PRG_MHC_GRCh38_withIMGT", checkIfExists: true)
+    //                         ])
+
+    //             ch_input = Channel.of([
+    //                         [ id:"test" ],
+    //                         file("/home-link/afijo01/testing/NA12878.mini.cram", checkIfExists: true, stageAs: 'NA12878.mini.cram')
+    //                         ])
+    //                         .join(ch_bai)
+    //                         .join(ch_graph)
+
+    //             input[0] =  ch_input
+
+    //             """
+    //         }
+    //     }
+
+    //     then {
+    //         assert process.success
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(
+    //                 process.out.results,
+    //                 process.out.extraction,
+    //                 process.out.extraction_mapped,
+    //                 process.out.extraction_unmpapped,
+    //                 process.out.hla,
+    //                 process.out.fastq,
+    //                 process.out.reads_per_level,
+    //                 process.out.remapped
+    //             ).match() }
+    //         )
+    //     }
+
+    // }
+
+}
