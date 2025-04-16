@@ -13,7 +13,7 @@ process ICOUNTMINI_METAGENE {
 
     output:
     tuple val(meta), path("metagene_*/*plot_data.tsv"), emit: tsv
-    path "versions.yml"                               , emit: versions
+    path "versions.yml",                                emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,7 +39,9 @@ process ICOUNTMINI_METAGENE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    mkdir -p metagene_${prefix}
     touch metagene_${prefix}/${prefix}_plot_data.tsv
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         iCount-Mini: \$(iCount-Mini -v)

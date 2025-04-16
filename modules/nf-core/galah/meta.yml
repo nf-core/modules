@@ -29,17 +29,18 @@ input:
     - qc_table:
         type: file
         description: |
-          (optional) Either a (CheckM)[https://nf-co.re/modules/checkm_lineagewf] summary TSV containing
-          information on the completeness and contamination of the input genomes (13 columns),
-          or a 3-column csv with the header `genome,completeness,contamination`.
-          In both cases the first column should contain the names of the input genome files,
-          minus the last file extension
-          (i.e. if the genome is gzipped, the genome name should retain the .fasta extension).
+          (optional) A summary TSV from either CheckM [https://nf-co.re/modules/checkm_lineagewf],
+          CheckM2 [https://nf-co.re/modules/checkm2_predict/], or a CSV 
+          in drep-style format [https://github.com/MrOlm/drep] with three columnns,
+          `genome,completeness,contamination`. In both cases the first column should contain the 
+          names of the input genome files, minus the last file extension 
+          (i.e. if the genome is gzipped, the genome name should 
+          retain the .fasta extension).
         pattern: "*.{csv,tsv}"
     - qc_format:
         type: string
         description: Defines the type if input table in `qc_table`, if specified.
-        pattern: "checkm|genome_info"
+        pattern: "checkm|checkm2|genome_info"
 output:
   - tsv:
       - meta:
@@ -57,7 +58,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-      - ${prefix}-dereplicated/*:
+      - ${prefix}/*:
           type: file
           description: The representative genomes following dereplication by galah.
           pattern: "*"

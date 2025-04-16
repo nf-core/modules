@@ -4,8 +4,8 @@ process BANDAGE_IMAGE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bandage:0.8.1--hc9558a2_2' :
-        'biocontainers/bandage:0.8.1--hc9558a2_2' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3e/3eabbd074e3bc45e2643783450330cae3afc6697fefc635755ab964dc43665a1/data' :
+        'community.wave.seqera.io/library/bandage:0.9.0--4f0567049a14ea6d' }"
 
     input:
     tuple val(meta), path(gfa)
@@ -27,7 +27,7 @@ process BANDAGE_IMAGE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bandage: \$(echo \$(Bandage --version 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
+        bandage: \$(echo \$(export QT_QPA_PLATFORM=offscreen; Bandage --version 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
     END_VERSIONS
     """
 }

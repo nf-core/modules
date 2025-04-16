@@ -1,0 +1,73 @@
+nextflow_process {
+
+    name "Test Process HOMER_MAKEUCSCFILE"
+    script "../main.nf"
+    process "HOMER_MAKEUCSCFILE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "homer"
+    tag "homer/maketagdirectory"
+    tag "homer/makeucscfile"
+
+    setup {
+        run("HOMER_MAKETAGDIRECTORY") {
+            script "../../maketagdirectory/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test2.bed', checkIfExists: true)
+                    ]
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - tagdir") {
+        when {
+            process {
+                """
+                input[0] = HOMER_MAKETAGDIRECTORY.out.tagdir
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.bedGraph.get(0).get(1)).linesGzip.size(),
+                    path(process.out.versions.get(0)).yaml,
+                ).match() },
+            )
+        }
+
+    }
+
+    test("sarscov2 - tagdir - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = HOMER_MAKETAGDIRECTORY.out.tagdir
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match("stub") },
+                { assert snapshot(path(process.out.versions.get(0)).yaml).match("versions") },
+            )
+        }
+    }
+}

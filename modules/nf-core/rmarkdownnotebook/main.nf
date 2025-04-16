@@ -20,8 +20,8 @@ process RMARKDOWNNOTEBOOK {
     output:
     tuple val(meta), path("*.html")              , emit: report
     tuple val(meta), path("*.parameterised.Rmd") , emit: parameterised_notebook, optional: true
-    tuple val(meta), path ("artifacts/*")        , emit: artifacts, optional: true
-    tuple val(meta), path ("session_info.log")   , emit: session_info
+    tuple val(meta), path("artifacts/*")         , emit: artifacts, optional: true
+    tuple val(meta), path("session_info.log")    , emit: session_info
     path  "versions.yml"                         , emit: versions
 
     when:
@@ -126,6 +126,18 @@ process RMARKDOWNNOTEBOOK {
         ${indent_code_block(render_cmd, 8)}
         writeLines(capture.output(sessionInfo()), "session_info.log")
     EOF
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        rmarkdown: \$(Rscript -e "cat(paste(packageVersion('rmarkdown'), collapse='.'))")
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.html
+    touch session_info.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

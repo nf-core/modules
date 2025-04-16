@@ -64,4 +64,56 @@ nextflow_process {
             )
         }
     }
+
+    test("bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                interleave = false
+
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                ])
+                input[1] = interleave
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("bam_interleave - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                interleave = true
+
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                ])
+                input[1] = interleave
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
 }

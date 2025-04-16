@@ -1,9 +1,0 @@
-- name: nucmer test_nucmer
-  command: nextflow run ./tests/modules/nf-core/nucmer -entry test_nucmer -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/nucmer/nextflow.config
-  tags:
-    - nucmer
-  files:
-    - path: output/nucmer/test.coords
-      contains: ["MT192765.1"]
-    - path: output/nucmer/test.delta
-      contains: ["MT192765.1"]

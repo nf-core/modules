@@ -1,0 +1,56 @@
+nextflow_process {
+
+    name "Test Process MMSEQS_CLUSTER"
+    script "../main.nf"
+    process "MMSEQS_CLUSTER"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mmseqs"
+    tag "mmseqs/cluster"
+    tag "untar"
+
+    test("Should cluster an mmseqs database") {
+
+        setup {
+            run("UNTAR") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/mmseqs.tar.gz', checkIfExists: true) ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.db_cluster.size() == 1 },
+                {
+                    def all_files = file(process.out.db_cluster[0][1]).listFiles()
+                    def all_file_names = all_files.collect { it.name }.toSorted()
+                    def stable_file_names = [
+                        'test_output_cluster.dbtype',
+                        'test_output_cluster.index'
+                    ]
+                    def stable_files = all_files.findAll { it.name in stable_file_names }.toSorted()
+
+                    assert snapshot(
+                        all_file_names,
+                        stable_files,
+                        process.out.versions[0]
+                    ).match()
+                }
+            )
+        }
+    }
+}
