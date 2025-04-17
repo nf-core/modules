@@ -81,7 +81,7 @@ process SENTIEON_TNHAPLOTYPER2 {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def orientation = emit_orientation_data ? "touch ${prefix}.orientation_data.tsv" : ""
+    def orientation       = emit_orientation_data      ? "touch ${prefix}.orientation_data.tsv"                                                : ""
     def contamination = emit_contamination_data ? "touch ${prefix}.contamination_data.tsv; touch ${prefix}.segments" : ""
 
     """
