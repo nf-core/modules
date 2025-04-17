@@ -101,11 +101,7 @@ jobs:
           - profile: conda
             tags: cellpose
           - profile: conda
-            tags: cellrangerarc/count
-          - profile: conda
             tags: cellrangerarc/mkfastq
-          - profile: conda
-            tags: cellrangerarc/mkref
           - profile: conda
             tags: cellrangeratac/count
           - profile: conda
@@ -150,8 +146,6 @@ jobs:
             tags: happy/sompy
           - profile: conda
             tags: hlala/preparegraph
-          - profile: conda
-            tags: ilastik/pixelclassification
           - profile: conda
             tags: imputeme/vcftoprs
           - profile: conda
@@ -231,6 +225,8 @@ jobs:
           - profile: conda
             tags: svanalyzer/svbenchmark
           - profile: conda
+            tags: svtk/standardize
+          - profile: conda
             tags: universc
           - profile: singularity
             tags: universc
@@ -242,7 +238,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - name: Set up Python
-        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5
+        uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55 # v5
         with:
           python-version: "3.13"
 
@@ -257,7 +253,7 @@ jobs:
       - name: Install Python dependencies
         run: python -m pip install --upgrade pip pytest-workflow cryptography
 
-      - uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4
+      - uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4
         with:
           distribution: "temurin"
           java-version: "17"
