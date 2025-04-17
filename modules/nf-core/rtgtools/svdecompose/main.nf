@@ -40,7 +40,6 @@ process RTGTOOLS_SVDECOMPOSE {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     echo | gzip -n > ${prefix}.vcf.gz
 
