@@ -38,7 +38,7 @@ nextflow_process {
                         path("${process.out.db[0][1]}/acc2taxid.map"),
                         path("${process.out.db[0][1]}/diffIdx"),
                         path("${process.out.db[0][1]}/info"),
-                        path("${process.out.db[0][1]}/split"),
+                        file("${process.out.db[0][1]}/split").name,
                         path("${process.out.db[0][1]}/taxID_list"),
                         file("${process.out.db[0][1]}/db.parameters").name,
                         process.out.versions
