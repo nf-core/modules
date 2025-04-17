@@ -11,8 +11,8 @@ process RTGTOOLS_SVDECOMPOSE {
     tuple val(meta), path(vcf), path(tbi)
 
     output:
-    tuple val(meta), path("*.vcf.gz")    , emit: bnd_vcf
-    path "versions.yml"                  , emit: versions
+    tuple val(meta), path("*.vcf.gz"), emit: bnd_vcf
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,7 +22,6 @@ process RTGTOOLS_SVDECOMPOSE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def index = tbi ? "" : "rtg index ${vcf}"
     def avail_mem = task.memory.toGiga() + "G"
-
     """
     ${index}
 
