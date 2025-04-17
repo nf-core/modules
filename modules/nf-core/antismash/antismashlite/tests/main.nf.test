@@ -15,7 +15,7 @@ nextflow_process {
 
     setup {
         run("UNTAR", alias: "UNTAR_CSS") {
-            script "modules/nf-core/untar/main.nf"
+            script "../../../untar"
             process {
             """
             input[0] = [
@@ -27,7 +27,7 @@ nextflow_process {
         }
 
         run("UNTAR", alias: "UNTAR_DETECTION") {
-            script "modules/nf-core/untar/main.nf"
+            script "../../../untar"
             process {
             """
             input[0] = [
@@ -39,7 +39,7 @@ nextflow_process {
         }
 
         run("UNTAR", alias: "UNTAR_MODULES") {
-            script "modules/nf-core/untar/main.nf"
+            script "../../../untar"
             process {
             """
             input[0] = [
@@ -51,7 +51,7 @@ nextflow_process {
         }
 
         run("ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES") {
-            script "modules/nf-core/antismash/antismashlitedownloaddatabases"
+            script "../../../antismash/antismashlitedownloaddatabases"
             process {
                 """
                 input[0] = UNTAR_CSS.out.untar.map{ it[1] }
@@ -62,7 +62,7 @@ nextflow_process {
         }
 
         run("GUNZIP") {
-            script "modules/nf-core/gunzip/main.nf"
+            script "../../../gunzip"
             process {
                 """
                 input[0] = [
