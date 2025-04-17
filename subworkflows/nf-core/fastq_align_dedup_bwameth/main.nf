@@ -17,6 +17,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
     ch_fasta_index       // channel: [ val(meta), [ fasta index ] ]
     ch_bwameth_index     // channel: [ val(meta), [ bwameth index ] ]
     skip_deduplication   // boolean: whether to deduplicate alignments
+    use_gpu              // boolean: whether to use GPU or CPU for bwameth alignment
 
     main:
 
@@ -34,7 +35,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
     /*
      * Align with bwameth
      */
-    if (params.use_gpu) {
+    if (use_gpu) {
         /*
         * Align with parabricks GPU enabled fq2bammeth implementation of bwameth
         */
