@@ -20,7 +20,7 @@ process RTGTOOLS_SVDECOMPOSE {
     script:
     def args = task.ext.args ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def index = tbi ? "" : "rtg index ${tbi}"
+    def index = tbi ? "" : "rtg index ${vcf}"
     def avail_mem = task.memory.toGiga() + "G"
 
     """
