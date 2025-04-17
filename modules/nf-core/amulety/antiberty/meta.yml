@@ -1,0 +1,57 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "amulety_antiberty"
+description: A module to create antiberty embeddings of antibody (BCR) amino acid sequences using amulety.
+keywords:
+  - embeddings
+  - BCR
+  - antibody
+  - GPU-accelerated
+  - immunoinformatics
+  - immunology
+tools:
+  - "amulety":
+      description: "Python package to create embeddings of BCR and TCR amino acid sequences."
+      homepage: "https://amulety.readthedocs.io/en/latest/"
+      documentation: "https://amulety.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/immcantation/amulety"
+      doi: "10.1101/2025.03.21.644583"
+      licence: ['GPL v3']
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - tsv:
+        type: file
+        description: TSV with BCR/TCR nucleotide sequences in AIRR rearrangement format
+        pattern: "*.{tsv}"
+  - - chain:
+        type: string
+        description: |
+          The chain to use for the embeddings. Can be either 'H' (heavy) or 'HL' (heavy + light, for single-cell data).
+
+output:
+  - embedding:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - "*_antiberty.tsv":
+        type: file
+        description: TSV with Antiberty embeddings.
+        pattern: "*.tsv"
+
+  - versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@ggabernet"
+maintainers:
+  - "@ggabernet"
