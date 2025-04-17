@@ -1,0 +1,78 @@
+{
+  "multiscales" : [ {
+    "metadata" : {
+      "method" : "loci.common.image.SimpleImageScaler",
+      "version" : "Bio-Formats 7.3.1"
+    },
+    "axes" : [ {
+      "name" : "t",
+      "type" : "time"
+    }, {
+      "name" : "c",
+      "type" : "channel"
+    }, {
+      "name" : "z",
+      "type" : "space"
+    }, {
+      "name" : "y",
+      "type" : "space"
+    }, {
+      "name" : "x",
+      "type" : "space"
+    } ],
+    "name" : "C00_xyz-TableZ0600.tif",
+    "datasets" : [ {
+      "path" : "0",
+      "coordinateTransformations" : [ {
+        "scale" : [ 1.0, 1.0, 1.0, 1.0, 1.0 ],
+        "type" : "scale"
+      } ]
+    }, {
+      "path" : "1",
+      "coordinateTransformations" : [ {
+        "scale" : [ 1.0, 1.0, 1.0, 2.0, 2.0 ],
+        "type" : "scale"
+      } ]
+    }, {
+      "path" : "2",
+      "coordinateTransformations" : [ {
+        "scale" : [ 1.0, 1.0, 1.0, 4.0, 4.0 ],
+        "type" : "scale"
+      } ]
+    }, {
+      "path" : "3",
+      "coordinateTransformations" : [ {
+        "scale" : [ 1.0, 1.0, 1.0, 8.0, 8.0 ],
+        "type" : "scale"
+      } ]
+    }, {
+      "path" : "4",
+      "coordinateTransformations" : [ {
+        "scale" : [ 1.0, 1.0, 1.0, 16.0, 16.0 ],
+        "type" : "scale"
+      } ]
+    } ],
+    "version" : "0.4"
+  } ],
+  "omero" : {
+    "channels" : [ {
+      "color" : "808080",
+      "coefficient" : 1,
+      "active" : true,
+      "label" : "Channel 0",
+      "window" : {
+        "min" : 90.0,
+        "max" : 19451.0,
+        "start" : 90.0,
+        "end" : 19451.0
+      },
+      "family" : "linear",
+      "inverted" : false
+    } ],
+    "rdefs" : {
+      "defaultT" : 0,
+      "model" : "greyscale",
+      "defaultZ" : 0
+    }
+  }
+}
