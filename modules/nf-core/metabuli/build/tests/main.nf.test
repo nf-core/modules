@@ -9,14 +9,11 @@ nextflow_process {
     tag "metabuli"
     tag "metabuli/build"
 
-
     test("sarscov2 - sarscov2 DNA") {
-
 
         when {
             process {
                 """
-
                 input[0] = [
                     [ id:'test' ],
                         [
@@ -44,11 +41,8 @@ nextflow_process {
                         process.out.versions
                         ).match()
                 }
-
-
             )
         }
 
     }
-
 }
