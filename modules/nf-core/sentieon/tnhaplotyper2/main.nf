@@ -22,8 +22,8 @@ process SENTIEON_TNHAPLOTYPER2 {
 
     output:
     tuple val(meta), path("*.orientation_data.tsv")  , emit: orientation_data      , optional:true
-    tuple val(meta), path("*.contamination_data.tsv"), emit: contamination_data    , optional:true 
-    tuple val(meta), path("*.segments")              , emit: contamination_segments, optional:true 
+    tuple val(meta), path("*.contamination_data.tsv"), emit: contamination_data    , optional:true
+    tuple val(meta), path("*.segments")              , emit: contamination_segments, optional:true
     tuple val(meta), path("*.stats")                 , emit: stats
     tuple val(meta), path("*.vcf.gz")                , emit: vcf
     tuple val(meta), path("*.vcf.gz.tbi")            , emit: index
@@ -80,9 +80,9 @@ process SENTIEON_TNHAPLOTYPER2 {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def orientation       = emit_orientation_data      ? "touch ${prefix}.orientation_data.tsv"                                                : ""
-    def contamination = emit_contamination_data ? "touch ${prefix}.contamination_data.tsv; touch ${prefix}.segments" : ""
+    def prefix        = task.ext.prefix ?: "${meta.id}"
+    def orientation   = emit_orientation_data   ? "touch ${prefix}.orientation_data.tsv"              : ""
+    def contamination = emit_contamination_data ? "touch ${prefix}.{contamination_data.tsv,segments}" : ""
 
     """
     echo | gzip > ${prefix}.vcf.gz

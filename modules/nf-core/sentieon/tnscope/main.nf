@@ -31,11 +31,11 @@ process SENTIEON_TNSCOPE {
     def args         = task.ext.args     ?: ''
     def args2        = task.ext.args2    ?: ''
     def interval_str = intervals         ? "--interval ${intervals}" : ''
-    def cosmic_str   = cosmic            ? "--cosmic ${cosmic}"     : ''
-    def dbsnp_str    = dbsnp             ? "--dbsnp ${dbsnp}"       : ''
-    def pon_str      = pon               ? "--pon ${pon}"           : ''
-    def inputs       = input.collect{ "-i $it"}.join(" ")
+    def cosmic_str   = cosmic            ? "--cosmic ${cosmic}"      : ''
+    def dbsnp_str    = dbsnp             ? "--dbsnp ${dbsnp}"        : ''
+    def pon_str      = pon               ? "--pon ${pon}"            : ''
     def prefix       = task.ext.prefix   ?: "${meta.id}"
+    def inputs       = input.collect{ "-i $it"}.join(" ")
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64 ?
         "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; " :
         ""
