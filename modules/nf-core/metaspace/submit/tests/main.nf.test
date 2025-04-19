@@ -1,0 +1,52 @@
+nextflow_process {
+
+    name "Test Process METASPACE_SUBMIT"
+    script "../main.nf"
+    process "METASPACE_SUBMIT"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "metaspace"
+    tag "metaspace/submit"
+
+    test("metaspace_submit_test") {
+
+        when {
+            process {
+                """
+                input[0] = file(params.test_data_base_path + 'test_metaspace_submit/test.imzML', checkIfExists: true)
+                input[1] = file(params.test_data_base_path + 'test_metaspace_submit/test.ibd', checkIfExists: true)
+                input[2] = file(params.test_data_base_path + 'test_metaspace_submit/ds_config.yml')
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success }
+            )
+        }
+    }
+    test("metaspace_submit - stub") {
+        tag "versions_test"
+
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = file(params.test_data_base_path + 'test_metaspace_submit/test.imzML', checkIfExists: true)
+                input[1] = file(params.test_data_base_path + 'test_metaspace_submit/test.ibd', checkIfExists: true)
+                input[2] = file(params.test_data_base_path + 'test_metaspace_submit/ds_config.yml')
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}
