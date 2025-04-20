@@ -36,6 +36,10 @@ input:
         pattern: "*.{fasta,fa,fna}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
+  - - write_align:
+        type: boolean
+        description: Flag to save optional alignment output. Specify with 'true' to
+          save.
 output:
   - output:
       - meta:
@@ -43,10 +47,33 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}.txt:
-          type: file
-          description: Human readable log output
           pattern: "*.{txt}"
+      - ${prefix}.txt:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.{txt}"
+  - target_summary:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - results.tbl:
+          type: file
+          description: Tabular (space-delimited) summary of per-target output
+          pattern: "results.tbl"
+  - alignments:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.ali:
+          type: file
+          description: Optional multiple sequence alignment (MSA) in Stockholm format
+          pattern: "*.ali"
   - versions:
       - versions.yml:
           type: file

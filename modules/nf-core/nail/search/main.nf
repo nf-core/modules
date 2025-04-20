@@ -14,8 +14,8 @@ process NAIL_SEARCH {
 
     output:
     tuple val(meta), path("${prefix}.txt"), emit: output
+    tuple val(meta), path('results.tbl')  , emit: target_summary
     tuple val(meta), path("${prefix}.ali"), emit: alignments    , optional: true
-    tuple val(meta), path('results.tbl')  , emit: target_summary, optional: true
     path "versions.yml"                   , emit: versions
 
     when:
