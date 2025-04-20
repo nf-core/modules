@@ -3,25 +3,25 @@ process RUNDBCAN_EASYCGC {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "ghcr.io/bcb-unl/run_dbcan_new:5.0.2" // Use the same container as RUNDBCAN_DATABASE
-
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/dbcan:5.0.4--pyhdfd78af_0' :
+        'biocontainers/dbcan:5.0.4--pyhdfd78af_0' }"
     input:
     tuple val(meta), path(input_raw_data)
-    tuple val(meta), path(input_gff)
-    tuple val(meta), val (gff_type)
+    tuple val(meta2), path(input_gff), val (gff_type)
     path dbcan_db
 
     output:
-    tuple val(meta), path("${prefix}_dbcan_cgc/overview.tsv"), emit: cazyme_annotation
-    tuple val(meta), path("${prefix}_dbcan_cgc/dbCAN_hmm_results.tsv"), emit: dbcanhmm_results
-    tuple val(meta), path("${prefix}_dbcan_cgc/dbCANsub_hmm_results.tsv"), emit: dbcansub_results
-    tuple val(meta), path("${prefix}_dbcan_cgc/diamond.out"), emit: dbcandiamond_results
-    tuple val(meta), path("${prefix}_dbcan_cgc/cgc.gff"), emit: cgc_gff
-    tuple val(meta), path("${prefix}_dbcan_cgc/cgc_standard_out.tsv"), emit: cgc_standard_out
-    tuple val(meta), path("${prefix}_dbcan_cgc/diamond.out.tc"), emit: diamond_out_tc
-    tuple val(meta), path("${prefix}_dbcan_cgc/TF_hmm_results.tsv"), emit: tf_hmm_results
-    tuple val(meta), path("${prefix}_dbcan_cgc/STP_hmm_results.tsv"), emit: stp_hmm_results
-    tuple val(meta), path("${prefix}_dbcan_cgc/total_cgc_info.tsv"), emit: total_cgc_info
+    tuple val(meta), path("${prefix}/overview.tsv"), emit: cazyme_annotation
+    tuple val(meta), path("${prefix}/dbCAN_hmm_results.tsv"), emit: dbcanhmm_results
+    tuple val(meta), path("${prefix}/dbCANsub_hmm_results.tsv"), emit: dbcansub_results
+    tuple val(meta), path("${prefix}/diamond.out"), emit: dbcandiamond_results
+    tuple val(meta), path("${prefix}/cgc.gff"), emit: cgc_gff
+    tuple val(meta), path("${prefix}/cgc_standard_out.tsv"), emit: cgc_standard_out
+    tuple val(meta), path("${prefix}/diamond.out.tc"), emit: diamond_out_tc
+    tuple val(meta), path("${prefix}/TF_hmm_results.tsv"), emit: tf_hmm_results
+    tuple val(meta), path("${prefix}/STP_hmm_results.tsv"), emit: stp_hmm_results
+    tuple val(meta), path("${prefix}/total_cgc_info.tsv"), emit: total_cgc_info
 
     path "versions.yml", emit: versions
 
@@ -30,8 +30,8 @@ process RUNDBCAN_EASYCGC {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '5.0.2'
+    prefix = task.ext.prefix ?: "${meta.id}_dbcan_cgc"
+    def VERSION = '5.0.4'
 
     """
 
@@ -39,7 +39,7 @@ process RUNDBCAN_EASYCGC {
         --mode protein \\
         --db_dir ${dbcan_db} \\
         --input_raw_data ${input_raw_data} \\
-        --output_dir ${prefix}_dbcan_cgc \\
+        --output_dir ${prefix} \\
         --input_gff ${input_gff} \\
         --gff_type ${gff_type} \\
         ${args}
@@ -52,20 +52,20 @@ process RUNDBCAN_EASYCGC {
 
     stub:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '5.0.2'
+    prefix = task.ext.prefix ?: "${meta.id}_dbcan_cgc"
+    def VERSION = '5.0.4'
     """
-    mkdir -p ${prefix}_dbcan_cgc
-    touch ${prefix}_dbcan_cgc/overview.tsv
-    touch ${prefix}_dbcan_cgc/dbCAN_hmm_results.tsv
-    touch ${prefix}_dbcan_cgc/dbCANsub_hmm_results.tsv
-    touch ${prefix}_dbcan_cgc/diamond.out
-    touch ${prefix}_dbcan_cgc/cgc.gff
-    touch ${prefix}_dbcan_cgc/cgc_standard_out.tsv
-    touch ${prefix}_dbcan_cgc/diamond.out.tc
-    touch ${prefix}_dbcan_cgc/TF_hmm_results.tsv
-    touch ${prefix}_dbcan_cgc/STP_hmm_results.tsv
-    touch ${prefix}_dbcan_cgc/total_cgc_info.tsv
+    mkdir -p ${prefix}
+    touch ${prefix}/overview.tsv
+    touch ${prefix}/dbCAN_hmm_results.tsv
+    touch ${prefix}/dbCANsub_hmm_results.tsv
+    touch ${prefix}/diamond.out
+    touch ${prefix}/cgc.gff
+    touch ${prefix}/cgc_standard_out.tsv
+    touch ${prefix}/diamond.out.tc
+    touch ${prefix}/TF_hmm_results.tsv
+    touch ${prefix}/STP_hmm_results.tsv
+    touch ${prefix}/total_cgc_info.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -3,17 +3,18 @@ process RUNDBCAN_CAZYMEANNOTATION {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "ghcr.io/bcb-unl/run_dbcan_new:5.0.2" // Use the same container as RUNDBCAN_DATABASE
-
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/dbcan:5.0.4--pyhdfd78af_0' :
+        'biocontainers/dbcan:5.0.4--pyhdfd78af_0' }"
     input:
     tuple val(meta), path(input_raw_data)
     path dbcan_db
 
     output:
-    tuple val(meta), path("${prefix}_dbcan_cazyme/overview.tsv"), emit: cazyme_annotation
-    tuple val(meta), path("${prefix}_dbcan_cazyme/dbCAN_hmm_results.tsv"), emit: dbcanhmm_results
-    tuple val(meta), path("${prefix}_dbcan_cazyme/dbCANsub_hmm_results.tsv"), emit: dbcansub_results
-    tuple val(meta), path("${prefix}_dbcan_cazyme/diamond.out"), emit: dbcandiamond_results
+    tuple val(meta), path("${prefix}/overview.tsv")            , emit: cazyme_annotation
+    tuple val(meta), path("${prefix}/dbCAN_hmm_results.tsv")   , emit: dbcanhmm_results
+    tuple val(meta), path("${prefix}/dbCANsub_hmm_results.tsv"), emit: dbcansub_results
+    tuple val(meta), path("${prefix}/diamond.out")             , emit: dbcandiamond_results
 
     path "versions.yml", emit: versions
 
@@ -22,8 +23,8 @@ process RUNDBCAN_CAZYMEANNOTATION {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '5.0.2'
+    prefix = task.ext.prefix ?: "${meta.id}_dbcan_cazyme"
+    def VERSION = '5.0.4'
 
     """
 
@@ -31,7 +32,7 @@ process RUNDBCAN_CAZYMEANNOTATION {
         --mode protein \\
         --db_dir ${dbcan_db} \\
         --input_raw_data ${input_raw_data} \\
-        --output_dir ${prefix}_dbcan_cazyme \\
+        --output_dir ${prefix} \\
         ${args}
 
     cat <<-END_VERSIONS > versions.yml
@@ -42,14 +43,14 @@ process RUNDBCAN_CAZYMEANNOTATION {
 
     stub:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '5.0.2'
+    prefix = task.ext.prefix ?: "${meta.id}_dbcan_cazyme"
+    def VERSION = '5.0.4'
     """
-    mkdir -p ${prefix}_dbcan_cazyme
-    touch ${prefix}_dbcan_cazyme/overview.tsv
-    touch ${prefix}_dbcan_cazyme/dbCAN_hmm_results.tsv
-    touch ${prefix}_dbcan_cazyme/dbCANsub_hmm_results.tsv
-    touch ${prefix}_dbcan_cazyme/diamond.out
+    mkdir -p ${prefix}
+    touch ${prefix}/overview.tsv
+    touch ${prefix}/dbCAN_hmm_results.tsv
+    touch ${prefix}/dbCANsub_hmm_results.tsv
+    touch ${prefix}/diamond.out
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -21,29 +21,27 @@ nextflow_process {
                     """
                 }
 
-            }
         }
+
+    }
 
         when {
             process {
                 """
+
                 input[0] = [
                     [id:'test_dbcan'],
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
                 ]
 
-
                 input[1] = [
                     [id:'test_dbcan'],
-                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true)
-                ]
-
-                input[2] = [
-                    [id:'test_dbcan'], "prodigal"
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true),
+                    "prodigal"
 
                 ]
 
-                input[3] = RUNDBCAN_DATABASE.out.dbcan_db
+                input[2] = RUNDBCAN_DATABASE.out.dbcan_db
                 """
             }
         }
@@ -64,9 +62,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [[id: 'stub'], file('stub')]
-                input[1] = [[id: 'stub'], file('stub.gff')]
-                input[2] = [[id: 'stub'], "prodigal"]
-                input[3] = file('stub_db')
+                input[1] = [[id: 'stub'], file('stub.gff'), "prodigal"]
+                input[2] = file('stub_db')
                 """
             }
         }

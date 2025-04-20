@@ -52,14 +52,14 @@ nextflow_process {
             process {
                 """
                 input[0] = [[id: 'stub'],file('stub') ]
-                input[1] = []
+                input[1] = file('stub_db')
                 """
             }
         }
 
         then {
             assertAll(
-                { assert process.success }
+                { assert process.success },
                 { assert snapshot(process.out.versions).match() }
 
             )
