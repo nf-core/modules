@@ -17,7 +17,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4
+    - uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4
       with:
         distribution: "temurin"
         java-version: "17"
@@ -30,21 +30,13 @@ runs:
     - name: Set up Python
       uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55 # v5
       with:
-        python-version: "3.11"
+        python-version: "3.13"
 
     - name: Set up nf-test
       uses: nf-core/setup-nf-test@v1
       with:
         version: "${{ env.NFT_VER }}"
         install-pdiff: true
-
-    - name: Install dependencies from universe repo
-      if: contains(inputs.profile, 'singularity')
-      shell: bash
-      run: |
-        sudo add-apt-repository universe
-        sudo apt-get update
-        sudo apt-get install -y uidmap squashfs-tools
 
     - name: Setup apptainer
       if: contains(inputs.profile, 'singularity')
