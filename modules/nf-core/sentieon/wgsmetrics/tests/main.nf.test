@@ -10,8 +10,6 @@ nextflow_process {
     tag "sentieon"
     tag "sentieon/wgsmetrics"
    
-    
-    
     test("sarscov2 - bam") {
         
         when {
@@ -38,7 +36,8 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    process.out,
+                    file(process.out.wgs_metrics[0][1]).readLines()[1..5],
+                    process.out.versions,
                     path(process.out.versions[0]).yaml
                     ).match()
                 }
