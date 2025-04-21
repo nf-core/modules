@@ -12,16 +12,16 @@ process RUNDBCAN_EASYCGC {
     path dbcan_db
 
     output:
-    tuple val(meta), path("${prefix}/${prefix}_overview.tsv"), emit: cazyme_annotation
-    tuple val(meta), path("${prefix}/${prefix}_dbCAN_hmm_results.tsv"), emit: dbcanhmm_results
-    tuple val(meta), path("${prefix}/${prefix}_dbCANsub_hmm_results.tsv"), emit: dbcansub_results
-    tuple val(meta), path("${prefix}/${prefix}_diamond.out"), emit: dbcandiamond_results
-    tuple val(meta), path("${prefix}/${prefix}_cgc.gff"), emit: cgc_gff
-    tuple val(meta), path("${prefix}/${prefix}_cgc_standard_out.tsv"), emit: cgc_standard_out
-    tuple val(meta), path("${prefix}/${prefix}_diamond.out.tc"), emit: diamond_out_tc
-    tuple val(meta), path("${prefix}/${prefix}_TF_hmm_results.tsv"), emit: tf_hmm_results
-    tuple val(meta), path("${prefix}/${prefix}_STP_hmm_results.tsv"), emit: stp_hmm_results
-    tuple val(meta), path("${prefix}/${prefix}_total_cgc_info.tsv"), emit: total_cgc_info
+    tuple val(meta), path("${prefix}_overview.tsv"), emit: cazyme_annotation
+    tuple val(meta), path("${prefix}_dbCAN_hmm_results.tsv"), emit: dbcanhmm_results
+    tuple val(meta), path("${prefix}_dbCANsub_hmm_results.tsv"), emit: dbcansub_results
+    tuple val(meta), path("${prefix}_diamond.out"), emit: dbcandiamond_results
+    tuple val(meta), path("${prefix}_cgc.gff"), emit: cgc_gff
+    tuple val(meta), path("${prefix}_cgc_standard_out.tsv"), emit: cgc_standard_out
+    tuple val(meta), path("${prefix}_diamond.out.tc"), emit: diamond_out_tc
+    tuple val(meta), path("${prefix}_TF_hmm_results.tsv"), emit: tf_hmm_results
+    tuple val(meta), path("${prefix}_STP_hmm_results.tsv"), emit: stp_hmm_results
+    tuple val(meta), path("${prefix}_total_cgc_info.tsv"), emit: total_cgc_info
 
     path "versions.yml", emit: versions
 
@@ -39,21 +39,21 @@ process RUNDBCAN_EASYCGC {
         --mode protein \\
         --db_dir ${dbcan_db} \\
         --input_raw_data ${input_raw_data} \\
-        --output_dir ${prefix} \\
+        --output_dir . \\
         --input_gff ${input_gff} \\
         --gff_type ${gff_type} \\
         ${args}
 
-    mv ${prefix}/overview.tsv             ${prefix}/${prefix}_overview.tsv
-    mv ${prefix}/dbCAN_hmm_results.tsv    ${prefix}/${prefix}_dbCAN_hmm_results.tsv
-    mv ${prefix}/dbCANsub_hmm_results.tsv ${prefix}/${prefix}_dbCANsub_hmm_results.tsv
-    mv ${prefix}/diamond.out              ${prefix}/${prefix}_diamond.out
-    mv ${prefix}/cgc.gff                  ${prefix}/${prefix}_cgc.gff
-    mv ${prefix}/cgc_standard_out.tsv     ${prefix}/${prefix}_cgc_standard_out.tsv
-    mv ${prefix}/diamond.out.tc           ${prefix}/${prefix}_diamond.out.tc
-    mv ${prefix}/TF_hmm_results.tsv       ${prefix}/${prefix}_TF_hmm_results.tsv
-    mv ${prefix}/STP_hmm_results.tsv      ${prefix}/${prefix}_STP_hmm_results.tsv
-    mv ${prefix}/total_cgc_info.tsv       ${prefix}/${prefix}_total_cgc_info.tsv
+    mv overview.tsv             ${prefix}_overview.tsv
+    mv dbCAN_hmm_results.tsv    ${prefix}_dbCAN_hmm_results.tsv
+    mv dbCANsub_hmm_results.tsv ${prefix}_dbCANsub_hmm_results.tsv
+    mv diamond.out              ${prefix}_diamond.out
+    mv cgc.gff                  ${prefix}_cgc.gff
+    mv cgc_standard_out.tsv     ${prefix}_cgc_standard_out.tsv
+    mv diamond.out.tc           ${prefix}_diamond.out.tc
+    mv TF_hmm_results.tsv       ${prefix}_TF_hmm_results.tsv
+    mv STP_hmm_results.tsv      ${prefix}_STP_hmm_results.tsv
+    mv total_cgc_info.tsv       ${prefix}_total_cgc_info.tsv
 
 
     cat <<-END_VERSIONS > versions.yml
@@ -67,17 +67,16 @@ process RUNDBCAN_EASYCGC {
     prefix = task.ext.prefix ?: "${meta.id}_dbcan_cgc"
     def VERSION = '5.0.4'
     """
-    mkdir -p ${prefix}
-    touch ${prefix}/${prefix}_overview.tsv
-    touch ${prefix}/${prefix}_dbCAN_hmm_results.tsv
-    touch ${prefix}/${prefix}_dbCANsub_hmm_results.tsv
-    touch ${prefix}/${prefix}_diamond.out
-    touch ${prefix}/${prefix}_cgc.gff
-    touch ${prefix}/${prefix}_cgc_standard_out.tsv
-    touch ${prefix}/${prefix}_diamond.out.tc
-    touch ${prefix}/${prefix}_TF_hmm_results.tsv
-    touch ${prefix}/${prefix}_STP_hmm_results.tsv
-    touch ${prefix}/${prefix}_total_cgc_info.tsv
+    touch ${prefix}_overview.tsv
+    touch ${prefix}_dbCAN_hmm_results.tsv
+    touch ${prefix}_dbCANsub_hmm_results.tsv
+    touch ${prefix}_diamond.out
+    touch ${prefix}_cgc.gff
+    touch ${prefix}_cgc_standard_out.tsv
+    touch ${prefix}_diamond.out.tc
+    touch ${prefix}_TF_hmm_results.tsv
+    touch ${prefix}_STP_hmm_results.tsv
+    touch ${prefix}_total_cgc_info.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

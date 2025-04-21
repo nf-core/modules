@@ -40,44 +40,44 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}/overview.tsv:
+      - ${prefix}_overview.tsv:
           type: map
           description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            TSV file containing the results of dbCAN CAZyme annotation.
+
   - dbcanhmm_results:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}/dbCAN_hmm_results.tsv:
+      - ${prefix}_dbCAN_hmm_results.tsv:
           type: map
           description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            TSV file containing the detailed dbCAN HMM results for CAZyme annotation.
+
   - dbcansub_results:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}/dbCANsub_hmm_results.tsv:
+      - ${prefix}_dbCANsub_hmm_results.tsv:
           type: map
           description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            TSV file containing the detailed dbCAN subfamily results for CAZyme annotation.
+
   - dbcandiamond_results:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}/diamond.out:
+      - ${prefix}_diamond.out:
           type: map
           description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            TSV file containing the detailed dbCAN diamond results for CAZyme annotation.
+
   - versions:
       - versions.yml:
           type: file

@@ -55,7 +55,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}/overview.tsv:
+      - ${prefix}_overview.tsv:
           type: map
           description: |
             TSV file containing the results of dbCAN CAZyme annotation.
@@ -66,7 +66,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}/dbCAN_hmm_results.tsv:
+      - ${prefix}_dbCAN_hmm_results.tsv:
           type: map
           description: |
             TSV file containing the detailed dbCAN HMM results for CAZyme annotation.
@@ -77,7 +77,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}/dbCANsub_hmm_results.tsv:
+      - ${prefix}_dbCANsub_hmm_results.tsv:
           type: map
           description: |
             TSV file containing the detailed dbCAN subfamily results for CAZyme annotation.
@@ -88,7 +88,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}/diamond.out:
+      - ${prefix}_diamond.out:
           type: map
           description: |
             TSV file containing the detailed dbCAN diamond results for CAZyme annotation.
@@ -99,7 +99,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}/cgc.gff:
+      - ${prefix}_cgc.gff:
           type: map
           description: |
             GFF file containing the CAZyme gene clusters (CGC) identified by dbCAN. This file is generated from the dbCAN annotation and contains the locations of CAZyme gene clusters in the genome.
@@ -110,7 +110,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}/cgc_standard_out.tsv:
+      - ${prefix}_cgc_standard_out.tsv:
           type: map
           description: |
             Standard output file from dbCAN for CAZyme gene clusters (CGC) in a tabular format. This file summarizes the CAZyme gene clusters identified in the genome.
@@ -121,7 +121,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}/diamond.out.tc:
+      - ${prefix}_diamond.out.tc:
           type: map
           description: |
             TSV file containing the diamond output for transporter annotation.
@@ -132,7 +132,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}/TF_hmm_results.tsv:
+      - ${prefix}_TF_hmm_results.tsv:
           type: map
           description: |
             TSV file containing the results of Transcription factor.
@@ -143,7 +143,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}/STP_hmm_results.tsv:
+      - ${prefix}_STP_hmm_results.tsv:
           type: map
           description: |
             TSV file containing the results of signaling transduction proteins (STP) annotation.
@@ -154,7 +154,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}/total_cgc_info.tsv:
+      - ${prefix}_total_cgc_info.tsv:
           type: map
           description: |
             TSV file summarizing the total additional genes in the genome.
