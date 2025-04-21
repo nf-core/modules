@@ -29,7 +29,6 @@ process SENTIEON_VARCAL {
     script:
     def args = task.ext.args      ?: ''
     def prefix = task.ext.prefix  ?: "${meta.id}"
-    def reference_command = fasta ? "--reference $fasta " : ''
     def labels_command = ''
 
     // labels is a list. Here is an example of what labels might look like:

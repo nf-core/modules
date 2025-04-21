@@ -39,7 +39,8 @@ process SENTIEON_WGSMETRICS {
         $input \\
         $interval \\
         $args \\
-        --algo WgsMetricsAlgo ${prefix}.txt
+        --algo WgsMetricsAlgo \\
+        ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
