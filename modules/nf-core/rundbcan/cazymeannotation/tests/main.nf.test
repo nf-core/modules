@@ -39,8 +39,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() }
-
+                { assert snapshot(process.out.versions).match()},
+                { assert path(process.out.cazyme_annotation.get(0).get(1)).exists() },
+                { assert path(process.out.dbcanhmm_results.get(0).get(1)).exists() },
+                { assert path(process.out.dbcansub_results.get(0).get(1)).exists()  },
+                { assert path(process.out.dbcandiamond_results.get(0).get(1)).exists()  }
             )
         }
     }
@@ -60,7 +63,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(process.out.versions).match()},
+                { assert path(process.out.cazyme_annotation.get(0).get(1)).exists() },
+                { assert path(process.out.dbcanhmm_results.get(0).get(1)).exists() },
+                { assert path(process.out.dbcansub_results.get(0).get(1)).exists()  },
+                { assert path(process.out.dbcandiamond_results.get(0).get(1)).exists()  }
+
 
             )
         }

@@ -11,10 +11,10 @@ process RUNDBCAN_CAZYMEANNOTATION {
     path dbcan_db
 
     output:
-    tuple val(meta), path("${prefix}/overview.tsv")            , emit: cazyme_annotation
-    tuple val(meta), path("${prefix}/dbCAN_hmm_results.tsv")   , emit: dbcanhmm_results
-    tuple val(meta), path("${prefix}/dbCANsub_hmm_results.tsv"), emit: dbcansub_results
-    tuple val(meta), path("${prefix}/diamond.out")             , emit: dbcandiamond_results
+    tuple val(meta), path("${prefix}/${prefix}_overview.tsv")            , emit: cazyme_annotation
+    tuple val(meta), path("${prefix}/${prefix}_dbCAN_hmm_results.tsv")   , emit: dbcanhmm_results
+    tuple val(meta), path("${prefix}/${prefix}_dbCANsub_hmm_results.tsv"), emit: dbcansub_results
+    tuple val(meta), path("${prefix}/${prefix}_diamond.out")             , emit: dbcandiamond_results
 
     path "versions.yml", emit: versions
 
@@ -35,6 +35,12 @@ process RUNDBCAN_CAZYMEANNOTATION {
         --output_dir ${prefix} \\
         ${args}
 
+    mv ${prefix}/overview.tsv ${prefix}/${prefix}_overview.tsv
+    mv ${prefix}/dbCAN_hmm_results.tsv ${prefix}/${prefix}_dbCAN_hmm_results.tsv
+    mv ${prefix}/dbCANsub_hmm_results.tsv ${prefix}/${prefix}_dbCANsub_hmm_results.tsv
+    mv ${prefix}/diamond.out ${prefix}/${prefix}_diamond.out
+
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         dbcan: $VERSION
@@ -47,10 +53,10 @@ process RUNDBCAN_CAZYMEANNOTATION {
     def VERSION = '5.0.4'
     """
     mkdir -p ${prefix}
-    touch ${prefix}/overview.tsv
-    touch ${prefix}/dbCAN_hmm_results.tsv
-    touch ${prefix}/dbCANsub_hmm_results.tsv
-    touch ${prefix}/diamond.out
+    touch ${prefix}/${prefix}_overview.tsv
+    touch ${prefix}/${prefix}_dbCAN_hmm_results.tsv
+    touch ${prefix}/${prefix}_dbCANsub_hmm_results.tsv
+    touch ${prefix}/${prefix}_diamond.out
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
