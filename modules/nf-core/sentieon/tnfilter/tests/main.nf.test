@@ -8,216 +8,124 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "sentieon"
-    tag "sentieon/tnfilter"
-   
-    
-    
-    test("test_sentieon_tnfilter_base") {
+    tag "sentieon/tnfilter"    
+    config './nextflow.config'
+
+    test("vcf, index, stats only") {
         
         when {
             params {
-                module_args = {"${meta.id}.filtered"}
+                module_args  = ''
+                module_args2 = '--tumor_sample tumour --normal_sample normal'
             }
             process {
                 """
                 input[0] = [
-                    [id:'test'],// meta map
-                    file(params.niche_test['tnfilter']['vcf'],checkIfExists:true),
-                    file(params.niche_test['tnfilter']['tbi'],checkIfExists:true),
-                    file(params.niche_test['tnfilter']['stats'],checkIfExists:true),
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'delete_me/tnfilter/sample4_vs_sample3.tnhaplotyper2.vcf.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'delete_me/tnfilter/sample4_vs_sample3.tnhaplotyper2.vcf.gz.tbi', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'delete_me/tnfilter/sample4_vs_sample3.tnhaplotyper2.vcf.gz.stats', checkIfExists:true),
                     [],
                     [],
                     []
                     ]
-                input[1] = [[id:'genome'],// meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta',checkIfExists:true)
+                input[1] = [[id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists:true)
                     ]
-                input[2] = [[id:'genome'],// meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai',checkIfExists:true)
+                input[2] = [[id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists:true)
                     ]
                 """
             }
         }
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match()
+                }
             )
         }
     }
     
-    
-    test("test_sentieon_tnfilter_with_files") {
+    test("with contamination/orientation data") {
         
         when {
             params {
-                module_args = {"${meta.id}.filtered"}
+                module_args  = ''
+                module_args2 = '--tumor_sample tumour --normal_sample normal'
             }
             process {
                 """
                 input[0] = [
-                    [id:'test'],// meta map
-                    file(params.niche_test['tnfilter']['vcf'],checkIfExists:true),
-                    file(params.niche_test['tnfilter']['tbi'],checkIfExists:true),
-                    file(params.niche_test['tnfilter']['stats'],checkIfExists:true),
-                    [file(params.niche_test['tnfilter']['contamination_data'],checkIfExists:true)],
-                    [file(params.niche_test['tnfilter']['segments'],checkIfExists:true)],
-                    [file(params.niche_test['tnfilter']['orientation_data'],checkIfExists:true)]
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'delete_me/tnfilter/sample4_vs_sample3.tnhaplotyper2.vcf.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'delete_me/tnfilter/sample4_vs_sample3.tnhaplotyper2.vcf.gz.tbi', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'delete_me/tnfilter/sample4_vs_sample3.tnhaplotyper2.vcf.gz.stats', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'delete_me/tnfilter/sample4_vs_sample3.tnhaplotyper2.contamination_data.tsv', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'delete_me/tnfilter/sample4_vs_sample3.tnhaplotyper2.segments', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'delete_me/tnfilter/sample4_vs_sample3.tnhaplotyper2.orientation_data.tsv', checkIfExists:true)
                     ]
-                input[1] = [[id:'genome'],// meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta',checkIfExists:true)
+                input[1] = [[id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists:true)
                     ]
-                input[2] = [[id:'genome'],// meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai',checkIfExists:true)
+                input[2] = [[id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists:true)
                     ]
                 """
             }
         }
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match()
+                }
             )
         }
     }
     
-    
-    test("test_sentieon_tnfilter_base_stubs") {
-        
+    test("vcf, index, stats only - stub") {
+        options '-stub'
         when {
             params {
-                module_args = {"${meta.id}.filtered"}
+                module_args  = ''
+                module_args2 = '--tumor_sample tumour --normal_sample normal'
             }
             process {
                 """
                 input[0] = [
-                    [id:'test'],// meta map
-                    file(params.niche_test['tnfilter']['vcf'],checkIfExists:true),
-                    file(params.niche_test['tnfilter']['tbi'],checkIfExists:true),
-                    file(params.niche_test['tnfilter']['stats'],checkIfExists:true),
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'delete_me/tnfilter/sample4_vs_sample3.tnhaplotyper2.vcf.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'delete_me/tnfilter/sample4_vs_sample3.tnhaplotyper2.vcf.gz.tbi', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'delete_me/tnfilter/sample4_vs_sample3.tnhaplotyper2.vcf.gz.stats', checkIfExists:true),
                     [],
                     [],
                     []
                     ]
-                input[1] = [[id:'genome'],// meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta',checkIfExists:true)
+                input[1] = [[id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists:true)
                     ]
-                input[2] = [[id:'genome'],// meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai',checkIfExists:true)
-                    ]
-                """
-            }
-        }
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
-    }
-    
-    
-    test("test_sentieon_tnfilter_base -- stub") {
-        options '-stub'
-        when {
-            params {
-                module_args = {"${meta.id}.filtered"}
-            }
-            process {
-                """
-                input[0] = [
-                    [id:'test'],// meta map
-                    file(params.niche_test['tnfilter']['vcf'],checkIfExists:true),
-                    file(params.niche_test['tnfilter']['tbi'],checkIfExists:true),
-                    file(params.niche_test['tnfilter']['stats'],checkIfExists:true),
-                    [],
-                    [],
-                    []
-                    ]
-                input[1] = [[id:'genome'],// meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta',checkIfExists:true)
-                    ]
-                input[2] = [[id:'genome'],// meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai',checkIfExists:true)
+                input[2] = [[id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists:true)
                     ]
                 """
             }
         }
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match()
+                }
             )
         }
     }
-    
-    
-    test("test_sentieon_tnfilter_with_files -- stub") {
-        options '-stub'
-        when {
-            params {
-                module_args = {"${meta.id}.filtered"}
-            }
-            process {
-                """
-                input[0] = [
-                    [id:'test'],// meta map
-                    file(params.niche_test['tnfilter']['vcf'],checkIfExists:true),
-                    file(params.niche_test['tnfilter']['tbi'],checkIfExists:true),
-                    file(params.niche_test['tnfilter']['stats'],checkIfExists:true),
-                    [file(params.niche_test['tnfilter']['contamination_data'],checkIfExists:true)],
-                    [file(params.niche_test['tnfilter']['segments'],checkIfExists:true)],
-                    [file(params.niche_test['tnfilter']['orientation_data'],checkIfExists:true)]
-                    ]
-                input[1] = [[id:'genome'],// meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta',checkIfExists:true)
-                    ]
-                input[2] = [[id:'genome'],// meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai',checkIfExists:true)
-                    ]
-                """
-            }
-        }
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
-    }
-    
-    
-    test("test_sentieon_tnfilter_base_stubs -- stub") {
-        options '-stub'
-        when {
-            params {
-                module_args = {"${meta.id}.filtered"}
-            }
-            process {
-                """
-                input[0] = [
-                    [id:'test'],// meta map
-                    file(params.niche_test['tnfilter']['vcf'],checkIfExists:true),
-                    file(params.niche_test['tnfilter']['tbi'],checkIfExists:true),
-                    file(params.niche_test['tnfilter']['stats'],checkIfExists:true),
-                    [],
-                    [],
-                    []
-                    ]
-                input[1] = [[id:'genome'],// meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta',checkIfExists:true)
-                    ]
-                input[2] = [[id:'genome'],// meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai',checkIfExists:true)
-                    ]
-                """
-            }
-        }
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
-    }
+
 }
