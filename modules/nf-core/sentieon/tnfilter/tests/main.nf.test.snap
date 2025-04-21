@@ -29,6 +29,14 @@
                 "3": [
                     "versions.yml:md5,8348776c1a3431dd72a7b64665893861"
                 ],
+                "index": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_filtered.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
                 "stats": [
                     [
                         {
@@ -45,14 +53,6 @@
                         "test_filtered.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
-                "vcf_tbi": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_filtered.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
                 "versions": [
                     "versions.yml:md5,8348776c1a3431dd72a7b64665893861"
                 ]
@@ -67,66 +67,12 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.4"
         },
-        "timestamp": "2025-04-21T13:04:40.956375257"
+        "timestamp": "2025-04-21T13:35:15.860556938"
     },
     "vcf, index, stats only": {
         "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_filtered.vcf.gz:md5,06b7f4351e9742ae445b0e56ff9b5529"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_filtered.vcf.gz.tbi:md5,1812f6c608099dd7131d08472938cf13"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_filtered.vcf.gz.stats:md5,0afebca9cbfe6a666ddf277fed2a6a53"
-                    ]
-                ],
-                "3": [
-                    "versions.yml:md5,8348776c1a3431dd72a7b64665893861"
-                ],
-                "stats": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_filtered.vcf.gz.stats:md5,0afebca9cbfe6a666ddf277fed2a6a53"
-                    ]
-                ],
-                "vcf": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_filtered.vcf.gz:md5,06b7f4351e9742ae445b0e56ff9b5529"
-                    ]
-                ],
-                "vcf_tbi": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_filtered.vcf.gz.tbi:md5,1812f6c608099dd7131d08472938cf13"
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,8348776c1a3431dd72a7b64665893861"
-                ]
-            },
+            "VcfFile [chromosomes=[chr21], sampleCount=2, variantCount=40, phased=false, phasedAutodetect=false]",
+            "test_filtered.vcf.gz.tbi",
             {
                 "SENTIEON_TNFILTER": {
                     "sentieon": 202308.03
@@ -137,66 +83,12 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.4"
         },
-        "timestamp": "2025-04-21T13:03:45.479119177"
+        "timestamp": "2025-04-21T13:34:20.095792399"
     },
     "with contamination/orientation data": {
         "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_filtered.vcf.gz:md5,ae438563a100c831fc668d34e17cf092"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_filtered.vcf.gz.tbi:md5,d92ffa6aabc029aa2092b31b29f2b5e9"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_filtered.vcf.gz.stats:md5,a3874025218d6540b7c9798b4ef64c59"
-                    ]
-                ],
-                "3": [
-                    "versions.yml:md5,8348776c1a3431dd72a7b64665893861"
-                ],
-                "stats": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_filtered.vcf.gz.stats:md5,a3874025218d6540b7c9798b4ef64c59"
-                    ]
-                ],
-                "vcf": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_filtered.vcf.gz:md5,ae438563a100c831fc668d34e17cf092"
-                    ]
-                ],
-                "vcf_tbi": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_filtered.vcf.gz.tbi:md5,d92ffa6aabc029aa2092b31b29f2b5e9"
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,8348776c1a3431dd72a7b64665893861"
-                ]
-            },
+            "VcfFile [chromosomes=[chr21], sampleCount=2, variantCount=40, phased=false, phasedAutodetect=false]",
+            "test_filtered.vcf.gz.tbi",
             {
                 "SENTIEON_TNFILTER": {
                     "sentieon": 202308.03
@@ -207,6 +99,6 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.4"
         },
-        "timestamp": "2025-04-21T13:04:13.408647825"
+        "timestamp": "2025-04-21T13:34:48.199453639"
     }
 }
