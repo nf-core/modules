@@ -13,7 +13,7 @@ process AMULETY_ESM2 {
     val(chain)
 
     output:
-    tuple val(meta), path("*_esm2.tsv"), emit: embedding
+    tuple val(meta), path("*.tsv"), emit: embedding
     path "versions.yml"           , emit: versions
 
     when:
