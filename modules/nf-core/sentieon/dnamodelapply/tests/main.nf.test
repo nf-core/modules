@@ -53,7 +53,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     path(process.out.vcf[0][1]).vcf.summary,
-                    file(process.out.index[0][1]).name,
+                    file(process.out.tbi[0][1]).name,
                     path(process.out.versions[0]).yaml
                     ).match() }
             )

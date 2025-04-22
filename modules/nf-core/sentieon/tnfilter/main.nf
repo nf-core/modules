@@ -15,7 +15,7 @@ process SENTIEON_TNFILTER {
 
     output:
     tuple val(meta), path("*.vcf.gz")      , emit: vcf
-    tuple val(meta), path("*.vcf.gz.tbi")  , emit: index
+    tuple val(meta), path("*.vcf.gz.tbi")  , emit: tbi
     tuple val(meta), path("*.vcf.gz.stats"), emit: stats
     path "versions.yml"                    , emit: versions
 
