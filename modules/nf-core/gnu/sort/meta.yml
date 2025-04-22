@@ -34,6 +34,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+      - ${output_file}:
+          type: file
+          description: Sorted file
+          pattern: "${output_file}"
   - versions:
       - versions.yml:
           type: file
