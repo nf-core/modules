@@ -96,8 +96,8 @@ process HIFIASM {
     touch ${prefix}.p_utg.gfa
     touch ${prefix}.p_ctg.gfa
     touch ${prefix}.a_ctg.gfa
-    touch ${prefix}.hap1.p_ctg.gfa
-    touch ${prefix}.hap2.p_ctg.gfa
+    touch ${prefix}.bp.hap1.p_ctg.gfa
+    touch ${prefix}.bp.hap2.p_ctg.gfa
     echo "" | gzip > ${prefix}.ec.fa.gz
     echo "" | gzip > ${prefix}.ovlp.paf.gz
     touch ${prefix}.stderr.log
