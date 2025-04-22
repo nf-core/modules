@@ -13,7 +13,7 @@ process AMULETY_ANTIBERTA2 {
     val(chain)
 
     output:
-    tuple val(meta), path("*_antiberta2.tsv"), emit: embedding
+    tuple val(meta), path("*.tsv"), emit: embedding
     path "versions.yml"           , emit: versions
 
     when:
