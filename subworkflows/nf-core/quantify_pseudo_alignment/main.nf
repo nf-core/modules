@@ -120,7 +120,7 @@ workflow QUANTIFY_PSEUDO_ALIGNMENT {
     ch_transcript_unified = TXIMETA_TXIMPORT.out.counts_transcript
                         .join(TXIMETA_TXIMPORT.out.lengths_transcript)
                         .join(TXIMETA_TXIMPORT.out.tpm_transcript)
-                        .map{tuple(it[0], [it[1], it[2], it[3]])}
+                        .map{tuple(it[0], it.tail())}
 
     SE_TRANSCRIPT_UNIFIED (
         ch_transcript_unified,
