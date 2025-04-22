@@ -13,7 +13,7 @@ process AMULETY_ESM2 {
     val(chain)
 
     output:
-    tuple val(meta), path("*_esm2.tsv"), emit: embedding
+    tuple val(meta), path("*.tsv"), emit: embedding
     path "versions.yml"           , emit: versions
 
     when:
@@ -23,13 +23,12 @@ process AMULETY_ESM2 {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    export TRANSFORMERS_CACHE="./cache"
-    amulety \\
+    TRANSFORMERS_CACHE="./cache" amulety \\
         esm2 \\
         $args \\
         $tsv \\
         $chain \\
-        ${prefix}_esm2.tsv
+        ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -41,7 +40,7 @@ process AMULETY_ESM2 {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_esm2.tsv
+    touch ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
