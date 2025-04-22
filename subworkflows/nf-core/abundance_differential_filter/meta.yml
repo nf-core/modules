@@ -17,7 +17,7 @@ input:
   - ch_input:
       description: Channel with input data for differential analysis
       structure:
-        - meta_input:
+        - meta:
             type: map
             description: Metadata map
         - counts:
@@ -38,36 +38,36 @@ input:
   - ch_samplesheet:
       description: Channel with sample information
       structure:
-        - meta_exp:
+        - meta:
             type: map
-            description: Experiment metadata map
+            description: Metadata map
         - samplesheet:
             type: file
             description: Sample information file
   - ch_transcript_lengths:
       description: Channel with transcript length information
       structure:
-        - meta_exp:
+        - meta:
             type: map
-            description: Experiment metadata map
+            description: Metadata map
         - transcript_lengths:
             type: file
             description: Transcript length information file
   - ch_control_features:
       description: Channel with control features information
       structure:
-        - meta_exp:
+        - meta:
             type: map
-            description: Experiment metadata map
+            description: Metadata map
         - control_features:
             type: file
             description: Control features information file
   - ch_contrasts:
       description: Channel with contrast information
       structure:
-        - meta_contrast:
+        - meta:
             type: map
-            description: Contrast metadata map
+            description: Metadata map
         - contrast_variable:
             type: value
             description: Contrast variable
