@@ -29,7 +29,7 @@ process AMULETY_ESM2 {
         $args \\
         $tsv \\
         $chain \\
-        ${prefix}_esm2.tsv
+        ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
