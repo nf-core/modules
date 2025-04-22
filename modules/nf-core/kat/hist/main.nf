@@ -23,7 +23,7 @@ process KAT_HIST {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     kat hist \\
@@ -32,7 +32,22 @@ process KAT_HIST {
         $args \\
         $reads
 
-    ls -l
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        kat: \$( kat hist --version | sed 's/kat //' )
+    END_VERSIONS
+    """
+
+    stub:
+    def args      = task.ext.args   ?: ''
+    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def plot_type = args.contains("-p") || args.contains("--output_type") ?
+        args.split("(-p|--output_type) ")[-1].split(" ")[0] : 'png'
+    """
+    touch ${prefix}.hist
+    touch ${prefix}.hist.dist_analysis.json
+    touch ${prefix}.${plot_type}
+    touch ${prefix}-hash.jf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
