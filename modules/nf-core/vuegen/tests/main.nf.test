@@ -135,16 +135,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 {
-                    assert snapshot([
-                        output_folder: (process.out.output_folder[0] ==~ "/.*/quarto_report"),
-                        output_files: [
-                            "quarto_report.html": path(process.out.output_folder[0] + "/quarto_report.html")
-                                                    .readLines()[0..3].join('\n').md5(),
-                            "quarto_report.qmd": path(process.out.output_folder[0] + "/quarto_report.qmd")
-                                                .readLines()[0..3].join('\n').md5()
-                        ],
+                    assert snapshot(
+                        process.out.output_folder.collect { file(it).getName() } +
+                        process.out.output_files.collect { file(it).getName() },
                         versions: process.out.versions
-                    ]).match()
+                    ).match()
                 }
             )
         }
