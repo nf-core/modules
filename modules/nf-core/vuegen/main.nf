@@ -18,19 +18,8 @@ process VUEGEN {
     script:
         def args = task.ext.args ?: ''
         """
-        # Validate Python version if using a conda environment
+        # Validate quarto_check flag if using a conda environment
         if [[ "${task.conda}" != "null" ]]; then
-            echo "Checking Python version in Conda environment..."
-            PYTHON_VERSION=\$(python --version 2>&1 | awk '{print \$2}')
-            echo "Python version: \$PYTHON_VERSION"
-            REQUIRED_VERSION="3.11.0"
-
-            # Check if Python version is lower than the required one
-            if [ "\$(printf '%s\\n' \"\$PYTHON_VERSION\" \"\$REQUIRED_VERSION\" | sort -V | head -n1)" != "\$REQUIRED_VERSION" ]; then
-                echo "ERROR: This module requires Python >= \$REQUIRED_VERSION. Current version: \$PYTHON_VERSION" >&2
-                exit 1
-            fi
-
             QUARTO_CHECK_FLAG="--quarto_checks"
         else
             QUARTO_CHECK_FLAG=""
