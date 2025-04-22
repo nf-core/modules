@@ -4,8 +4,8 @@ process GNU_SPLIT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/coreutils:9.3':
-        'biocontainers/coreutils:9.3' }"
+        'https://depot.galaxyproject.org/singularity/coreutils:9.5':
+        'biocontainers/coreutils:9.5' }"
 
     input:
     tuple val(meta), path(input)
