@@ -43,11 +43,11 @@ nextflow_process {
                             "Homepage.py": path(process.out.output_folder[0] + "/sections/Home/Homepage.py"),
                             "report_manager.py": path(process.out.output_folder[0] + "/sections/report_manager.py"),
                             "All_Formats.py": path(process.out.output_folder[0] + "/sections/Dataframes/All_Formats.py")
-                                                .readLines()[0..5].sort(),
+                                                .readLines()[0..5].sort().join('\n').md5(),
                             "Interactive_Plots.py": path(process.out.output_folder[0] + "/sections/Plots/Interactive_Plots.py")
-                                                    .readLines()[0..5].sort(),
+                                                    .readLines()[0..5].sort().join('\n').md5(),
                             "Static_Plots.py": path(process.out.output_folder[0] + "/sections/Plots/Static_Plots.py")
-                                                .readLines()[0..3].sort()
+                                                .readLines()[0..3].sort().join('\n').md5()
                         ],
                         versions: process.out.versions
                     ]).match()
@@ -76,9 +76,9 @@ nextflow_process {
                         output_folder: (process.out.output_folder[0] ==~ "/.*/quarto_report"),
                         output_files: [
                             "quarto_report.html": path(process.out.output_folder[0] + "/quarto_report.html")
-                                                    .readLines()[0..3],
+                                                    .readLines()[0..3].join('\n').md5(),
                             "quarto_report.qmd": path(process.out.output_folder[0] + "/quarto_report.qmd")
-                                                .readLines()[0..3]
+                                                .readLines()[0..3].join('\n').md5()
                         ],
                         versions: process.out.versions
                     ]).match()
@@ -109,7 +109,39 @@ nextflow_process {
                             "quarto_report.pdf": path(process.out.output_folder[0] + "/quarto_report.pdf")
                                                     .exists(),
                             "quarto_report.qmd": path(process.out.output_folder[0] + "/quarto_report.qmd")
-                                                    .readLines()[0..3].sort()
+                                                    .readLines()[0..3].sort().join('\n').md5()
+                        ],
+                        versions: process.out.versions
+                    ]).match()
+                }
+            )
+        }
+    }
+
+    // Stub test VueGen with a directory (HTML report)
+    test("vuegen - directory (HTML report) -stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = Channel.of("directory")                     // input_type
+                input[1] = UNTAR.out.untar.map { meta, dir -> file(dir) }  // input_path
+                input[2] = Channel.of("html")                          // report_type
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot([
+                        output_folder: (process.out.output_folder[0] ==~ "/.*/quarto_report"),
+                        output_files: [
+                            "quarto_report.html": path(process.out.output_folder[0] + "/quarto_report.html")
+                                                    .readLines()[0..3].join('\n').md5(),
+                            "quarto_report.qmd": path(process.out.output_folder[0] + "/quarto_report.qmd")
+                                                .readLines()[0..3].join('\n').md5()
                         ],
                         versions: process.out.versions
                     ]).match()
