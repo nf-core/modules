@@ -9,7 +9,7 @@ process SENTIEON_WGSMETRICS {
         'community.wave.seqera.io/library/sentieon:202308.03--59589f002351c221' }"
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta) , path(bam), path(bai)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(intervals_list)
@@ -22,10 +22,10 @@ process SENTIEON_WGSMETRICS {
     task.ext.when == null || task.ext.when
 
     script:
-    def args     = task.ext.args ?: ''
-    def input    = bam.sort().collect{"-i $it"}.join(' ')
+    def args     = task.ext.args   ?: ''
     def prefix   = task.ext.prefix ?: "${meta.id}"
-    def interval = intervals_list ? "--interval ${intervals_list}" : ""
+    def interval = intervals_list  ? "--interval ${intervals_list}" : ""
+    def input    = bam.sort().collect{"-i $it"}.join(' ')
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64 ?
         "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; " :
         ""
@@ -39,7 +39,8 @@ process SENTIEON_WGSMETRICS {
         $input \\
         $interval \\
         $args \\
-        --algo WgsMetricsAlgo ${prefix}.txt
+        --algo WgsMetricsAlgo \\
+        ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

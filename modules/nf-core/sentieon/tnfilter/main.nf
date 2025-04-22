@@ -15,7 +15,7 @@ process SENTIEON_TNFILTER {
 
     output:
     tuple val(meta), path("*.vcf.gz")      , emit: vcf
-    tuple val(meta), path("*.vcf.gz.tbi")  , emit: vcf_tbi
+    tuple val(meta), path("*.vcf.gz.tbi")  , emit: tbi
     tuple val(meta), path("*.vcf.gz.stats"), emit: stats
     path "versions.yml"                    , emit: versions
 
@@ -23,12 +23,12 @@ process SENTIEON_TNFILTER {
     task.ext.when == null || task.ext.when
 
     script:
-    def args                       = task.ext.args                      ?: '' // options for the driver
-    def args2                      = task.ext.args2                     ?: '' // options for --algo TNfilter
-    def prefix                     = task.ext.prefix                    ?: "${meta.id}"
-    def contamination_command      = contamination                      ? " --contamination ${contamination} "                             : ''
-    def segments_command           = segments                           ? segments.collect{"--tumor_segments $it"}.join(' ')               : ''
-    def orientation_priors_command = orientation_priors                 ? orientation_priors.collect{"--orientation_priors $it"}.join(' ') : ''
+    def args                       = task.ext.args      ?: '' // options for the driver
+    def args2                      = task.ext.args2     ?: '' // options for --algo TNfilter
+    def prefix                     = task.ext.prefix    ?: "${meta.id}_filtered"
+    def contamination_command      = contamination      ? " --contamination ${contamination} "                             : ''
+    def segments_command           = segments           ? segments.collect{"--tumor_segments $it"}.join(' ')               : ''
+    def orientation_priors_command = orientation_priors ? orientation_priors.collect{"--orientation_priors $it"}.join(' ') : ''
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64 ?
         "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; " :
         ""
@@ -52,9 +52,9 @@ process SENTIEON_TNFILTER {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_filtered"
     """
-    touch ${prefix}.vcf.gz
+    echo | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
     touch ${prefix}.vcf.gz.stats
 
