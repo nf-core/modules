@@ -30,7 +30,12 @@ input:
         ontologies:
           - edam: http://edamontology.org/data_3949 # Profile HMM
           - edam: http://edamontology.org/format_1929 # FASTA
-  - - target:
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - target:
         type: file
         description: Input target file
         pattern: "*.{fasta,fa,fna}"
