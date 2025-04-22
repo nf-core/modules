@@ -41,7 +41,7 @@ process AMULETY_ANTIBERTA2 {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_antiberta2.tsv
+    touch ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
