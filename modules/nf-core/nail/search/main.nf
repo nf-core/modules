@@ -1,6 +1,6 @@
 process NAIL_SEARCH {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -14,8 +14,8 @@ process NAIL_SEARCH {
 
     output:
     tuple val(meta), path("${prefix}.txt"), emit: output
-    tuple val(meta), path('results.tbl')  , emit: target_summary
-    tuple val(meta), path("${prefix}.ali"), emit: alignments    , optional: true
+    tuple val(meta), path("${prefix}.tbl"), emit: target_summary
+    tuple val(meta), path("${prefix}.ali"), emit: alignments, optional: true
     path "versions.yml"                   , emit: versions
 
     when:
@@ -29,7 +29,9 @@ process NAIL_SEARCH {
     """
     nail search \\
         $args \\
+        -t $task.cpus \\
         $alignment \\
+        --tbl-out ${prefix}.tbl \\
         ${query} \\
         ${target} > ${prefix}.txt
 
@@ -45,6 +47,7 @@ process NAIL_SEARCH {
     def VERSION = '0.3.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.txt
+    touch ${prefix}.tbl
     ${write_align ? "touch ${prefix}.ali" : ''}
 
     cat <<-END_VERSIONS > versions.yml
