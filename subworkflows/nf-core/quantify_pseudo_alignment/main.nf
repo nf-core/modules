@@ -108,7 +108,7 @@ workflow QUANTIFY_PSEUDO_ALIGNMENT {
                         .join(TXIMETA_TXIMPORT.out.counts_gene_scaled)
                         .join(TXIMETA_TXIMPORT.out.lengths_gene)
                         .join(TXIMETA_TXIMPORT.out.tpm_gene)
-                        .map{tuple(it[0], [it[1], it[2], it[3], it[4], it[5]])}
+                        .map{tuple(it[0], it.tail())}
 
     SE_GENE_UNIFIED (
         ch_gene_unified,
