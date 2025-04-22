@@ -65,10 +65,6 @@ nextflow_workflow {
                 { assert snapshot(
                         file(workflow.out.merged_gene_rds_unified[0][1]).name,
                         file(workflow.out.merged_transcript_rds_unified[0][1]).name,
-                        file(workflow.out.merged_gene_rds[0][1]).name,
-                        file(workflow.out.merged_gene_rds_length_scaled[0][1]).name,
-                        file(workflow.out.merged_gene_rds_scaled[0][1]).name,
-                        file(workflow.out.merged_transcript_rds[0][1]).name,
                         workflow.out.counts_gene,
                         workflow.out.counts_gene_length_scaled,
                         workflow.out.lengths_gene,
@@ -134,10 +130,6 @@ nextflow_workflow {
                 { assert snapshot(
                         file(workflow.out.merged_gene_rds_unified[0][1]).name,
                         file(workflow.out.merged_transcript_rds_unified[0][1]).name,
-                        file(workflow.out.merged_gene_rds[0][1]).name,
-                        file(workflow.out.merged_gene_rds_length_scaled[0][1]).name,
-                        file(workflow.out.merged_gene_rds_scaled[0][1]).name,
-                        file(workflow.out.merged_transcript_rds[0][1]).name,
                         workflow.out.counts_gene,
                         workflow.out.counts_gene_length_scaled,
                         workflow.out.lengths_gene,
