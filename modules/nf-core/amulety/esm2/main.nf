@@ -1,4 +1,4 @@
-process AMULETY_ANTIBERTY {
+process AMULETY_ESM2 {
     tag "$meta.id"
     label 'process_medium'
     label 'process_gpu'
@@ -23,8 +23,8 @@ process AMULETY_ANTIBERTY {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    amulety \\
-        antiberty \\
+    TRANSFORMERS_CACHE="./cache" amulety \\
+        esm2 \\
         $args \\
         $tsv \\
         $chain \\
