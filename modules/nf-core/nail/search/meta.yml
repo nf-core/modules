@@ -60,9 +60,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - results.tbl:
-          type: file
-          description: Tabular (space-delimited) summary of per-target output
+          pattern: "results.tbl"
+      - ${prefix}.tbl:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "results.tbl"
   - alignments:
       - meta:
@@ -70,9 +73,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*.ali"
       - ${prefix}.ali:
-          type: file
-          description: Optional multiple sequence alignment (MSA) in Stockholm format
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*.ali"
   - versions:
       - versions.yml:

@@ -39,7 +39,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert path(process.out.output[0][1]).text.contains('running nail pipeline...') },
+                { assert path(process.out.target_summary[0][1]).text.contains('ENSSASP00005000002.1 CoV_NSP15_M') },
+                { assert path(process.out.alignments[0][1]).text.contains('query:        CoV_NSP15_M') },
+                { assert snapshot(process.out.versions).match() }
             )
         }
 
@@ -62,7 +65,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
             )
         }
 
