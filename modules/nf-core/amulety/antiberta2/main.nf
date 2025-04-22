@@ -5,8 +5,8 @@ process AMULETY_ANTIBERTA2 {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-92ebbfc09fc136b8e201cb187cd9567ba335d439:459e6ebe51fb2818cb6de807f2c5fa99599b1214-0':
-        'biocontainers/mulled-v2-92ebbfc09fc136b8e201cb187cd9567ba335d439:459e6ebe51fb2818cb6de807f2c5fa99599b1214-0' }"
+        'oras://community.wave.seqera.io/library/amulety_igblast:b2a7736f645c40e5':
+        'community.wave.seqera.io/library/amulety_igblast:659eaa872785adeb' }"
 
     input:
     tuple val(meta), path(tsv)
