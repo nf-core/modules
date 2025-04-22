@@ -1,0 +1,83 @@
+nextflow_process {
+
+    name "Test Process NAIL_SEARCH"
+    script "../main.nf"
+    process "NAIL_SEARCH"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "nail"
+    tag "nail/search"
+    tag "gunzip"
+
+    setup {
+        run("GUNZIP") {
+            script "modules/nf-core/gunzip/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: 'test_hmm' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.hmm.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - hmm - ali - tblout") {
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = [
+                    [ id: 'test_fasta' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
+                ]
+                input[2] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.output[0][1]).text.contains('running nail pipeline...') },
+                { assert path(process.out.target_summary[0][1]).text.contains('ENSSASP00005000002.1 CoV_NSP15_M') },
+                { assert path(process.out.alignments[0][1]).text.contains('query:        CoV_NSP15_M') },
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - hmm - ali - tblout - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = [
+                    [ id: 'test_fasta' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
+                ]
+                input[2] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+
+    }
+
+}
