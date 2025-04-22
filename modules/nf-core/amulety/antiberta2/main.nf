@@ -23,14 +23,13 @@ process AMULETY_ANTIBERTA2 {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    export TRANSFORMERS_CACHE="./cache"
-    amulety \\
+    TRANSFORMERS_CACHE="./cache" amulety \\
         antiberta2 \\
         $args \\
         --cache-dir ./cache \\
         $tsv \\
         $chain \\
-        ${prefix}_antiberta2.tsv
+        ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
