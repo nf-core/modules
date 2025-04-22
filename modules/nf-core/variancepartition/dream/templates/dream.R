@@ -44,6 +44,16 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.nam
     return(df)
 }
 
+#
+#' Turn “null” or empty strings into actual NULL
+#'
+#' @param x Input option
+#'
+#' @return NULL or x
+#'
+nullify <- function(x) {
+  if (is.character(x) && (tolower(x) == "null" || x == "")) NULL else x
+}
 
 # Options list
 opt <- list(
@@ -83,15 +93,9 @@ for (ao in names(args_opt)) {
     opt[[ao]] <- args_opt[[ao]]
 }
 
-# If there is no formula, convert string "null" to NULL
-if (!is.null(opt\$formula) && tolower(opt\$formula) == "null") {
-    opt\$formula <- NULL
-}
-
-# If there is no contrast string, convert string "null" to NULL
-if (!is.null(opt\$contrast_string) && tolower(opt\$contrast_string) == "null" || opt\$contrast_string == "") {
-    opt\$contrast_string <- NULL
-}
+# If there is no option supplied, convert string "null" to NULL
+keys <- c("formula", "contrast_string", "contrast_variable", "contrast_reference")
+opt[keys] <- lapply(opt[keys], nullify)
 
 # Load metadata
 metadata <- read_delim_flexible(opt\$sample_file, header = TRUE, stringsAsFactors = TRUE)
