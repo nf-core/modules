@@ -5,15 +5,15 @@ process AMULETY_ANTIBERTY {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-92ebbfc09fc136b8e201cb187cd9567ba335d439:459e6ebe51fb2818cb6de807f2c5fa99599b1214-0':
-        'biocontainers/mulled-v2-92ebbfc09fc136b8e201cb187cd9567ba335d439:459e6ebe51fb2818cb6de807f2c5fa99599b1214-0' }"
+        'oras://community.wave.seqera.io/library/amulety_igblast:b2a7736f645c40e5':
+        'community.wave.seqera.io/library/amulety_igblast:659eaa872785adeb' }"
 
     input:
     tuple val(meta), path(tsv)
     val(chain)
 
     output:
-    tuple val(meta), path("*_antiberty.tsv"), emit: embedding
+    tuple val(meta), path("*.tsv"), emit: embedding
     path "versions.yml"           , emit: versions
 
     when:
@@ -28,7 +28,7 @@ process AMULETY_ANTIBERTY {
         $args \\
         $tsv \\
         $chain \\
-        ${prefix}_antiberty.tsv
+        ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -40,7 +40,7 @@ process AMULETY_ANTIBERTY {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_antiberty.tsv
+    touch ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
