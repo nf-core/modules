@@ -43,11 +43,13 @@ process KAT_HIST {
     def prefix    = task.ext.prefix ?: "${meta.id}"
     def plot_type = args.contains("-p") || args.contains("--output_type") ?
         args.split("(-p|--output_type) ")[-1].split(" ")[0] : 'png'
+    def hash_cmd  = args.contains("-d") || args.contains("--dump_hash") ? "touch ${prefix}-hash.jf27" : ""
+
     """
     touch ${prefix}.hist
     touch ${prefix}.hist.dist_analysis.json
     touch ${prefix}.${plot_type}
-    touch ${prefix}-hash.jf
+    ${hash_cmd}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

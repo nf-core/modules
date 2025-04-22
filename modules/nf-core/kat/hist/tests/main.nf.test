@@ -27,7 +27,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.hist,
+                    process.out.json,
+                    process.out.png,
+                    file(process.out.jellyfish_hash[0][1]).name // Unstable md5sum
+                ).match() }
             )
         }
     }
@@ -51,7 +57,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.hist,
+                    process.out.json,
+                    file(process.out.ps[0][1]).name // Unstable md5sum
+                ).match() }
             )
         }
     }
@@ -60,7 +71,7 @@ nextflow_process {
         options '-stub'
         when {
             params {
-                module_args = '-p pdf'
+                module_args = '-p pdf --dump_hash'
             }
             process {
                 """
