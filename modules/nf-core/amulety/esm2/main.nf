@@ -23,8 +23,7 @@ process AMULETY_ESM2 {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    export TRANSFORMERS_CACHE="./cache"
-    amulety \\
+    TRANSFORMERS_CACHE="./cache" amulety \\
         esm2 \\
         $args \\
         $tsv \\
