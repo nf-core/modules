@@ -55,10 +55,10 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = UNZIP.out.unzipped_archive.map{it[1]}+"/genome.fasta"
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.gtf',checkIfExists:true)
-                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_motifs.txt',checkIfExists:true)
-                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_config.json',checkIfExists:true)
+                input[0] = UNZIP.out.unzipped_archive.map{it -> it[1]} + "/genome.fasta"
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.gtf', checkIfExists:true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_motifs.txt', checkIfExists:true)
+                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_config.json', checkIfExists:true)
                 input[4] = "cellrangeratac_reference"
                 """
             }
