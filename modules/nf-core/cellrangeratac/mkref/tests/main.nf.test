@@ -17,7 +17,7 @@ nextflow_process {
 
                 process {
                     """
-                    input[0] = [[],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.fasta.gz',checkIfExists:true)]
+                    input[0] = [[],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.fasta.gz', checkIfExists:true)]
                     """
                 }
             }
