@@ -32,8 +32,6 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     // This information is used later to determine which method to run for each input
     // Also, reorganize the structure to match them with the modules' input organization
 
-    ch_input.view()
-
     ch_input_for_other = ch_input
         .multiMap {
             meta, file, genesets, background, method ->
@@ -65,8 +63,7 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     }
     ch_input_for_gsea = ch_input
         .filter{ it[4] == 'gsea' }
-        .join(ch_samplesheet)
-        .join(ch_featuresheet)
+        .combine(ch_samplesheet.join(ch_featuresheet), by:0)
         .combine(ch_contrasts.transpose(), by:0)
         .multiMap(criteria)
 
