@@ -47,15 +47,15 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
             [ meta_with_method, (control_features)?:[] ]
     }
 
+    // create joined channel with samplesheet and optional transcript lengths and control features
+    ch_samplesheet_with_control = ch_samplesheet
+        .join(ch_transcript_lengths, remainder:true)
+        .join(ch_control_features, remainder:true)
+
     // For DIFFERENTIAL modules we need to cross the things we're iterating so we
     // run differential analysis for every combination of matrix and contrast
     inputs = ch_input
-        .combine(
-            ch_samplesheet
-                .join(ch_transcript_lengths, remainder:true)
-                .join(ch_control_features, remainder:true)
-            , by:0
-        )
+        .combine(ch_samplesheet_with_control, by:0)
         .combine(ch_contrasts.transpose(), by:0)
         .multiMap(criteria)
 
@@ -64,15 +64,11 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // on the contrast setting etc, these modules may subset matrices, hence
     // not returning the full normalized matrix as NORM modules would do.
     norm_inputs = ch_input
+        .combine(ch_samplesheet_with_control, by:0)
         .combine(
-            ch_samplesheet
-                .join(ch_transcript_lengths, remainder:true)
-                .join(ch_control_features, remainder:true)
-            , by:0
-        )
-        .combine(
+            // take the first contrast for each common meta
             ch_contrasts.map { meta, contrast, variable, reference, target, formula, comparison ->
-                [meta, contrast[0], variable[0], reference[0], target[0], formula[0], comparison[0]] // Just taking the first contrast
+                [meta, contrast[0], variable[0], reference[0], target[0], formula[0], comparison[0]]
             }
             , by:0
         )
