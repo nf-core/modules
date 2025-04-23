@@ -11,7 +11,7 @@ process FASTCOV {
 
     output:
     tuple val(meta), path("${prefix}.${file_ext}"), emit: coverage_plot
-    path "versions.yml"                           ,    emit: versions
+    path "versions.yml"                           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
