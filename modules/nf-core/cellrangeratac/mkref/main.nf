@@ -51,9 +51,7 @@ process CELLRANGERATAC_MKREF {
     touch "${reference_name}/genes/genes.gtf.gz"
 
     mkdir -p "${reference_name}/regions/"
-    touch "${reference_name}/regions/motifs.pfm" \\
-        "${reference_name}/regions/transcripts.bed" \\
-        "${reference_name}/regions/tss.bed"
+    touch "${reference_name}/regions/{motifs.pfm, transcripts.bed, tss.bed}"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
