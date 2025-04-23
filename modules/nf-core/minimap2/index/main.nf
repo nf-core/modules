@@ -4,8 +4,8 @@ process MINIMAP2_INDEX {
     // Note: the versions here need to match the versions used in minimap2/align
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/minimap2:2.28--he4a0461_0' :
-        'biocontainers/minimap2:2.28--he4a0461_0' }"
+        'https://depot.galaxyproject.org/singularity/minimap2:2.29--h577a1d6_0' :
+        'biocontainers/minimap2:2.29--h577a1d6_0' }"
 
     input:
     tuple val(meta), path(fasta)
