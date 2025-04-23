@@ -8,27 +8,32 @@ process RTGTOOLS_SVDECOMPOSE {
         'biocontainers/rtg-tools:3.12.1--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(vcf), path(tbi)
+    tuple val(meta), path(input), path(tbi)
 
     output:
-    tuple val(meta), path("*.vcf.gz"), emit: bnd_vcf
-    path "versions.yml"              , emit: versions
+    tuple val(meta), path("*.vcf.gz")    , emit: vcf
+    tuple val(meta), path("*.vcf.gz.tbi"), emit: index
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ""
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def index = tbi ? "" : "rtg index ${vcf}"
+    def args      = task.ext.args ?: ""
+    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def index_vcf = tbi ? "" : "rtg index ${input}"
     def avail_mem = task.memory.toGiga() + "G"
+    if ("$input" == "${prefix}.vcf.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+
     """
-    ${index}
+    ${index_vcf}
 
     rtg RTG_MEM=$avail_mem svdecompose \\
         ${args} \\
-        --input=${vcf} \\
+        --input=${input} \\
         --output=${prefix}.vcf.gz
+
+    rtg index ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -38,8 +43,11 @@ process RTGTOOLS_SVDECOMPOSE {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("$input" == "${prefix}.vcf.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+
     """
     echo | gzip -n > ${prefix}.vcf.gz
+    touch ${prefix}.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

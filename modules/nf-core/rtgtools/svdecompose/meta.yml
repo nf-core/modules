@@ -20,16 +20,20 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test' ]
-    - vcf:
+    - input:
         type: file
         description: A VCF with called variants to decompose variants
         pattern: "*.{vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
     - tbi:
         type: file
         description: The index of the VCF with called variants to decompose variants
         pattern: "*.{vcf.gz.tbi}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3616"
 output:
-  - bnd_vcf:
+  - vcf:
       - meta:
           type: map
           description: |
@@ -39,6 +43,20 @@ output:
           type: file
           description: A VCF file with SVTYPE BND variants
           pattern: "*.vcf.gz"
+          ontologies:
+          - edam: "http://edamontology.org/format_3016"
+  - index:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test']
+      - "*.vcf.gz.tbi":
+          type: file
+          description: Index of VCF file with SVTYPE BND variants
+          pattern: "*.vcf.gz.tbi"
+          ontologies:
+          - edam: "http://edamontology.org/format_3616"
   - versions:
       - versions.yml:
           type: file
