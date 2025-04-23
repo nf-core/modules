@@ -5,8 +5,8 @@ process HLALA_PREPAREGRAPH {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hla-la:1.0.3--hd03093a_0':
-        'biocontainers/hla-la:1.0.3--hd03093a_0' }"
+        'https://depot.galaxyproject.org/singularity/hla-la:1.0.4--h077b44d_1':
+        'biocontainers/hla-la:1.0.4--h077b44d_1' }"
 
     input:
     tuple val(meta), path(graph)
