@@ -30,7 +30,6 @@ process RTGTOOLS_SVDECOMPOSE {
         --input=${vcf} \\
         --output=${prefix}.vcf.gz
 
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         rtg-tools: \$(echo \$(rtg version | head -n 1 | awk '{print \$4}'))
