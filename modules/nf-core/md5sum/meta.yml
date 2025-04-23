@@ -10,30 +10,38 @@ tools:
       homepage: "https://www.gnu.org"
       documentation: "https://man7.org/linux/man-pages/man1/md5sum.1.html"
       licence: ["GPL-3.0-or-later"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - files:
-      type: file
-      description: Any number of files. One md5sum file will be generated for each.
-      pattern: "*.*"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - files:
+        type: file
+        description: Any number of files. One md5sum file will be generated for each.
+        pattern: "*.*"
+  - - as_separate_files:
+        type: boolean
+        description: |
+          If true, each file will have its own md5sum file. If false, all files will be
+          checksummed into a single md5sum file.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - checksum:
-      type: file
-      description: File containing checksum
-      pattern: "*.md5"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.md5":
+          type: file
+          description: File containing checksum
+          pattern: "*.md5"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@matthdsm"
 maintainers:

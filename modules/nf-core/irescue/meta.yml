@@ -1,0 +1,95 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "irescue"
+description: Quantification of transposable elements expression in scRNA-seq
+keywords:
+  - scRNA-seq
+  - transposons
+  - repeats
+tools:
+  - "irescue":
+      description: "IRescue is a tool for uncertainty-aware quantification of transposable elements expression in scRNA-seq"
+      homepage: "https://pypi.org/project/IRescue"
+      documentation: "https://pypi.org/project/IRescue"
+      tool_dev_url: "https://github.com/bodegalab/irescue"
+      doi: "10.1093/nar/gkae793"
+      licence: ["MIT"]
+      identifier: biotools:irescue
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: Sorted BAM file
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+  - - genome:
+        type: string
+        description: |
+          Genome assembly symbol. Not used when bed file is provided.
+          In this case, it can be any value or an empty string.
+  - - bed:
+        type: file
+        description: Bed file of repeats genomic coordinates (optional).
+        pattern: "*.bed"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
+
+output:
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+  - results:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}:
+          type: directory
+          description: Folder containing count matrices and logs
+          pattern: "${prefix}"
+  - counts:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}/counts:
+          type: directory
+          description: Folder containing count matrices
+          pattern: "${prefix}/counts"
+  - log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}/irescue.log:
+          type: file
+          description: Text file containing run information
+          pattern: "${prefix}/irescue.log"
+  - tmp:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}/tmp:
+          type: directory
+          description: |
+            Folder containing temporary files,
+            if kept using the "--keeptmp" argument (optional).
+          pattern: "${prefix}/tmp"
+
+authors:
+  - "@bepoli"
+maintainers:
+  - "@bepoli"

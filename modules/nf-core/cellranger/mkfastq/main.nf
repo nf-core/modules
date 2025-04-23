@@ -10,8 +10,8 @@ process CELLRANGER_MKFASTQ {
     output:
     tuple val(meta), path("*_outs/outs/fastq_path/**/*.fastq.gz")          , emit: fastq
     tuple val(meta), path("*_outs/outs/fastq_path/Undetermined*.fastq.gz") , optional:true, emit: undetermined_fastq
-    tuple val(meta), path("*_outs/outs/fastq_path/Reports")                , emit: reports
-    tuple val(meta), path("*_outs/outs/fastq_path/Stats")                  , emit: stats
+    tuple val(meta), path("*_outs/outs/fastq_path/Reports")                , optional:true, emit: reports
+    tuple val(meta), path("*_outs/outs/fastq_path/Stats")                  , optional:true, emit: stats
     tuple val(meta), path("*_outs/outs/interop_path/*.bin")                , emit: interop
     path "versions.yml"                                                    , emit: versions
 
@@ -48,34 +48,19 @@ process CELLRANGER_MKFASTQ {
     }
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p "${prefix}_outs/outs/fastq_path/sample/files/"
-    # data with something to avoid breaking nf-test java I/O stream, fastq
-    cat <<-FAKE_FQ > ${prefix}_outs/outs/fastq_path/fake_file.fastq
-    @SEQ_ID
-    GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT
-    +
-    !''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF>>>>>>CCCCCCC65
-    FAKE_FQ
-    gzip -n ${prefix}_outs/outs/fastq_path/fake_file.fastq
-
-    # data with something to avoid breaking nf-test java I/O stream, fastq_undetermined
-    cat <<-FAKE_FQ > ${prefix}_outs/outs/fastq_path/sample/files/fake_file.fastq
-    @SEQ_ID
-    GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT
-    +
-    !''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF>>>>>>CCCCCCC65
-    FAKE_FQ
-    gzip -n ${prefix}_outs/outs/fastq_path/sample/files/fake_file.fastq
-
     # data for reports output channel
     mkdir -p "${prefix}_outs/outs/fastq_path/Reports"
-
     # data for stats output channel
     mkdir -p "${prefix}_outs/outs/fastq_path/Stats"
-
     # data for interops output channel
     mkdir -p "${prefix}_outs/outs/interop_path/"
     touch "${prefix}_outs/outs/interop_path/IndexMetricsOut.bin"
+    # data for fastq channels
+    mkdir -p "${prefix}_outs/outs/fastq_path/sample/files/"
+    touch "${prefix}_outs/outs/fastq_path/Undetermined_fake_file.fastq"
+    touch "${prefix}_outs/outs/fastq_path/sample/files/fake_file.fastq"
+    gzip "${prefix}_outs/outs/fastq_path/Undetermined_fake_file.fastq"
+    gzip "${prefix}_outs/outs/fastq_path/sample/files/fake_file.fastq"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

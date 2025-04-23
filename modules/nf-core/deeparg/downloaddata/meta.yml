@@ -1,5 +1,6 @@
 name: deeparg_downloaddata
-description: A deep learning based approach to predict Antibiotic Resistance Genes (ARGs) from metagenomes
+description: A deep learning based approach to predict Antibiotic Resistance Genes
+  (ARGs) from metagenomes
 keywords:
   - download
   - database
@@ -9,22 +10,26 @@ keywords:
   - prediction
 tools:
   - deeparg:
-      description: A deep learning based approach to predict Antibiotic Resistance Genes (ARGs) from metagenomes
+      description: A deep learning based approach to predict Antibiotic Resistance Genes
+        (ARGs) from metagenomes
       homepage: https://github.com/gaarangoa/deeparg
       documentation: https://github.com/gaarangoa/deeparg
       tool_dev_url: https://github.com/gaarangoa/deeparg
       doi: "10.1186/s40168-018-0401-z"
       licence: ["MIT"]
+      identifier: ""
 # No input required for download module.
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - db:
-      type: directory
-      description: Directory containing database required for deepARG.
-      pattern: "db/"
+      - db/:
+          type: directory
+          description: Directory containing database required for deepARG.
+          pattern: "db/"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jfy133"
 maintainers:

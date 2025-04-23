@@ -8,11 +8,11 @@ process BWAMETH_INDEX {
         'biocontainers/bwameth:0.2.7--pyh7cba7a3_0' }"
 
     input:
-    path fasta, stageAs: "bwameth/*"
+    tuple val(meta), path(fasta, name:"BwamethIndex/")
 
     output:
-    path "bwameth"      , emit: index
-    path "versions.yml" , emit: versions
+    tuple val(meta), path("BwamethIndex"), emit: index
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,7 +20,30 @@ process BWAMETH_INDEX {
     script:
     def args = task.ext.args ?: ''
     """
+
     bwameth.py index $fasta
+
+    rm $fasta
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bwameth: \$(bwameth.py --version | cut -f2 -d" ")
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    """
+    rm $fasta
+
+    mkdir -p BwamethIndex/
+    touch BwamethIndex/genome.fasta.bwameth.c2t
+    touch BwamethIndex/genome.fasta.bwameth.c2t.amb
+    touch BwamethIndex/genome.fasta.bwameth.c2t.ann
+    touch BwamethIndex/genome.fasta.bwameth.c2t.bwt
+    touch BwamethIndex/genome.fasta.bwameth.c2t.pac
+    touch BwamethIndex/genome.fasta.bwameth.c2t.sa
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

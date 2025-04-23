@@ -1,37 +1,34 @@
 process GTDBTK_CLASSIFYWF {
     tag "${prefix}"
     label 'process_medium'
-
-    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gtdbtk:2.4.0--pyhdfd78af_1' :
-        'biocontainers/gtdbtk:2.4.0--pyhdfd78af_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ? 'https://depot.galaxyproject.org/singularity/gtdbtk:2.4.0--pyhdfd78af_1' : 'biocontainers/gtdbtk:2.4.0--pyhdfd78af_1'}"
 
     input:
-    tuple val(meta), path("bins/*")
+    tuple val(meta)   , path("bins/*")
     tuple val(db_name), path("database/*")
-    path(mash_db)
+    val use_pplacer_scratch_dir
+    path mash_db
 
     output:
-    tuple val(meta), path("gtdbtk.${prefix}.*.summary.tsv")         , emit: summary
-    tuple val(meta), path("gtdbtk.${prefix}.*.classify.tree.gz")    , emit: tree, optional: true
-    tuple val(meta), path("gtdbtk.${prefix}.*.markers_summary.tsv") , emit: markers, optional: true
-    tuple val(meta), path("gtdbtk.${prefix}.*.msa.fasta.gz")        , emit: msa, optional: true
-    tuple val(meta), path("gtdbtk.${prefix}.*.user_msa.fasta.gz")   , emit: user_msa, optional: true
-    tuple val(meta), path("gtdbtk.${prefix}.*.filtered.tsv")        , emit: filtered, optional: true
-    tuple val(meta), path("gtdbtk.${prefix}.failed_genomes.tsv")    , emit: failed, optional: true
-    tuple val(meta), path("gtdbtk.${prefix}.log")                   , emit: log
-    tuple val(meta), path("gtdbtk.${prefix}.warnings.log")          , emit: warnings
-    path("versions.yml")                           , emit: versions
+    tuple val(meta), path("gtdbtk.${prefix}.*.summary.tsv")        , emit: summary
+    tuple val(meta), path("gtdbtk.${prefix}.*.classify.tree.gz")   , emit: tree    , optional: true
+    tuple val(meta), path("gtdbtk.${prefix}.*.markers_summary.tsv"), emit: markers , optional: true
+    tuple val(meta), path("gtdbtk.${prefix}.*.msa.fasta.gz")       , emit: msa     , optional: true
+    tuple val(meta), path("gtdbtk.${prefix}.*.user_msa.fasta.gz")  , emit: user_msa, optional: true
+    tuple val(meta), path("gtdbtk.${prefix}.*.filtered.tsv")       , emit: filtered, optional: true
+    tuple val(meta), path("gtdbtk.${prefix}.failed_genomes.tsv")   , emit: failed  , optional: true
+    tuple val(meta), path("gtdbtk.${prefix}.log")                  , emit: log
+    tuple val(meta), path("gtdbtk.${prefix}.warnings.log")         , emit: warnings
+    path ("versions.yml"), emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def pplacer_scratch = params.gtdbtk_pplacer_scratch ? "--scratch_dir pplacer_tmp" : ""
-    def mash_mode = mash_db ? "--mash_db ${mash_db}" : "--skip_ani_screen"
+    def pplacer_scratch = use_pplacer_scratch_dir ? "--scratch_dir pplacer_tmp" : ""
+    def mash_mode       = mash_db                 ? "--mash_db ${mash_db}"      : "--skip_ani_screen"
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
@@ -41,27 +38,25 @@ process GTDBTK_CLASSIFYWF {
     fi
 
     gtdbtk classify_wf \\
-        $args \\
+        ${args} \\
         --genome_dir bins \\
         --prefix "gtdbtk.${prefix}" \\
         --out_dir "\${PWD}" \\
-        --cpus $task.cpus \\
-        $mash_mode \\
-        $pplacer_scratch \\
-        --min_perc_aa $params.gtdbtk_min_perc_aa \\
-        --min_af $params.gtdbtk_min_af
+        --cpus ${task.cpus} \\
+        ${mash_mode} \\
+        ${pplacer_scratch}
 
     ## If mash db given, classify/ and identify/ directories won't be created
-    if [[ -d classify/ ]]; then
+    if [[ -d classify/ && \$(ls -A classify/) ]]; then
         mv classify/* .
     fi
 
-    if [[ -d identify/ ]]; then
+    if [[ -d identify/ && \$(ls -A identify/) ]]; then
         mv identify/* .
     fi
 
     ## If nothing aligns, no output, so only run
-    if [[ -d align/ ]]; then
+    if [[ -d align/ && \$(ls -A align/) ]]; then
         mv align/* .
     fi
 
@@ -78,7 +73,6 @@ process GTDBTK_CLASSIFYWF {
     """
 
     stub:
-    def VERSION = '2.3.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch gtdbtk.${prefix}.stub.summary.tsv
@@ -93,7 +87,7 @@ process GTDBTK_CLASSIFYWF {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gtdbtk: \$(echo "$VERSION")
+        gtdbtk: \$(echo \$(gtdbtk --version -v 2>&1) | sed "s/gtdbtk: version //; s/ Copyright.*//")
     END_VERSIONS
     """
 }

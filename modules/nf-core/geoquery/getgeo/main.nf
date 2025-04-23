@@ -4,8 +4,8 @@ process GEOQUERY_GETGEO {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bioconductor-geoquery:2.66.0--r42hdfd78af_0' :
-        'biocontainers/bioconductor-geoquery:2.66.0--r42hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/bioconductor-geoquery:2.70.0--r43hdfd78af_0' :
+        'biocontainers/bioconductor-geoquery:2.70.0--r43hdfd78af_0' }"
 
     input:
     tuple val(meta), val(querygse)
@@ -21,4 +21,18 @@ process GEOQUERY_GETGEO {
 
     script:
     template 'getgeo.R'
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.rds
+    touch ${prefix}.matrix.tsv
+    touch ${prefix}.annotation.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        r-base: \$(Rscript -e 'R.Version()\$version.string' | sed -n 's|\\[1\\] "R version \\(.*\\) (.*|\\1|p')
+        bioconductor-geoquery: \$(Rscript -e 'packageVersion("GEOquery")' | sed -n 's|\\[1\\] ‘\\(.*\\)’|\\1|p')
+    END_VERSIONS
+    """
 }

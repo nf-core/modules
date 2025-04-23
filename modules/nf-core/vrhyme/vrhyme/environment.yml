@@ -1,7 +1,11 @@
-name: vrhyme_vrhyme
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
-  - defaults
+
 dependencies:
   - bioconda::vrhyme=1.1.0
+  - conda-forge::numpy=1.23.5
+  - conda-forge::python=3.10.8
+  - conda-forge::scikit-learn=1.2.2

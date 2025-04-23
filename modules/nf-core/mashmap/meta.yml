@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "mashmap"
-description: Mashmap is an approximate long read or contig mapper based on Jaccard similarity
+description: Mashmap is an approximate long read or contig mapper based on Jaccard
+  similarity
 keywords:
   - mapper
   - aligner
@@ -15,41 +15,43 @@ tools:
       tool_dev_url: "https://github.com/marbl/MashMap"
       doi: "10.1007/978-3-319-56970-3_5"
       licence: ["Public Domain"]
+      identifier: biotools:mashmap
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-
-  - fasta:
-      type: file
-      description: Input fasta file containing query sequences
-      pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
-
-  - reference:
-      type: file
-      description: Input fasta file containing reference sequences
-      pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fasta:
+        type: file
+        description: Input fasta file containing query sequences
+        pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - reference:
+        type: file
+        description: Input fasta file containing reference sequences
+        pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-
   - paf:
-      type: file
-      description: Alignment in PAF format
-      pattern: "*.paf"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.paf":
+          type: file
+          description: Alignment in PAF format
+          pattern: "*.paf"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@mberacochea"
 

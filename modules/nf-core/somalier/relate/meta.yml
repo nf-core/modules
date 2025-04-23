@@ -1,5 +1,6 @@
 name: "somalier_relate"
-description: Somalier can extract informative sites, evaluate relatedness, and perform quality-control on BAM/CRAM/BCF/VCF/GVCF or from jointly-called VCFs
+description: Somalier can extract informative sites, evaluate relatedness, and perform
+  quality-control on BAM/CRAM/BCF/VCF/GVCF or from jointly-called VCFs
 keywords:
   - relatedness
   - QC
@@ -14,47 +15,67 @@ keywords:
   - family
 tools:
   - "somalier":
-      description: "Somalier can extract informative sites, evaluate relatedness, and perform quality-control on BAM/CRAM/BCF/VCF/GVCF or from jointly-called VCFs"
+      description: "Somalier can extract informative sites, evaluate relatedness, and
+        perform quality-control on BAM/CRAM/BCF/VCF/GVCF or from jointly-called VCFs"
       homepage: "https://github.com/brentp/somalier"
       documentation: "https://github.com/brentp/somalier/blob/master/README.md"
       tool_dev_url: "https://github.com/brentp/somalier"
       doi: "10.1186/s13073-020-00761-2"
       licence: ["MIT"]
+      identifier: biotools:somalier
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - extract:
-      type: file
-      description: extract file(s) from Somalier extract
-      pattern: "*.somalier"
-  - ped:
-      type: file
-      description: optional path to a ped or fam file indicating the expected relationships among samples
-      pattern: "*.{ped,fam}"
-  - sample_groups:
-      type: file
-      description: optional path to expected groups of samples such as tumor normal pairs specified as comma-separated groups per line
-      pattern: "*.{txt,csv}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - extract:
+        type: file
+        description: extract file(s) from Somalier extract
+        pattern: "*.somalier"
+    - ped:
+        type: file
+        description: optional path to a ped or fam file indicating the expected relationships
+          among samples
+        pattern: "*.{ped,fam}"
+  - - sample_groups:
+        type: file
+        description: optional path to expected groups of samples such as tumor normal
+          pairs specified as comma-separated groups per line
+        pattern: "*.{txt,csv}"
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - html:
-      type: file
-      description: html file
-      pattern: "*.html"
+      - meta:
+          type: file
+          description: html file
+          pattern: "*.html"
+      - "*.html":
+          type: file
+          description: html file
+          pattern: "*.html"
   - pairs_tsv:
-      type: file
-      description: tsv file with output stats for pairs of samples
-      pattern: "*.pairs.tsv"
+      - meta:
+          type: file
+          description: tsv file with output stats for pairs of samples
+          pattern: "*.pairs.tsv"
+      - "*.pairs.tsv":
+          type: file
+          description: tsv file with output stats for pairs of samples
+          pattern: "*.pairs.tsv"
   - samples_tsv:
-      type: file
-      description: tsv file with sample-level information
-      pattern: "*.samples.tsv"
+      - meta:
+          type: file
+          description: tsv file with sample-level information
+          pattern: "*.samples.tsv"
+      - "*.samples.tsv":
+          type: file
+          description: tsv file with sample-level information
+          pattern: "*.samples.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@ashotmarg"
   - "@nvnieuwk"

@@ -8,47 +8,41 @@ keywords:
   - genomics
 tools:
   - "trycycler":
-      description: Trycycler is a tool for generating consensus long-read assemblies for bacterial genomes
+      description: Trycycler is a tool for generating consensus long-read assemblies
+        for bacterial genomes
       homepage: https://github.com/rrwick/Trycycler
       documentation: https://github.com/rrwick/Trycycler/wiki
       doi: 10.1186/s13059-021-02483-z
       licence: ["GPL v3"]
+      identifier: biotools:trycycler
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-
-  - reads:
-      type: file
-      description: Long-read FASTQ file, optionally gzip compressed
-
-  - assemblies:
-      type: file
-      description: Input assemblies whose contigs will be clustered
-
-  - out_dir:
-      type: directory
-      description: Output directory for clustering results
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - contigs:
+        type: file
+        description: Contigs file
+    - reads:
+        type: file
+        description: Long-read FASTQ file, optionally gzip compressed
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-
   - cluster_dir:
-      type: directory
-      description: Output directory containing clustering results
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*":
+          type: directory
+          description: Output directory containing clustering results
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@watsonar"
 maintainers:

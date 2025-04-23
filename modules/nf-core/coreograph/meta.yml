@@ -1,5 +1,8 @@
 name: "coreograph"
-description: Great....yet another TMA dearray program. What does this one do? Coreograph uses UNet, a deep learning model, to identify complete/incomplete tissue cores on a tissue microarray. It has been trained on 9 TMA slides of different sizes and tissue types.
+description: Great....yet another TMA dearray program. What does this one do? Coreograph
+  uses UNet, a deep learning model, to identify complete/incomplete tissue cores on
+  a tissue microarray. It has been trained on 9 TMA slides of different sizes and
+  tissue types.
 keywords:
   - UNet
   - TMA dearray
@@ -7,47 +10,70 @@ keywords:
   - Cores
 tools:
   - "coreograph":
-      description: "A TMA dearray porgram that uses UNet, a deep learning model, to identify complete/incomplete tissue cores on a tissue microarray."
+      description: "A TMA dearray program that uses UNet, a deep learning model, to
+        identify complete/incomplete tissue cores on a tissue microarray."
       homepage: "https://mcmicro.org/parameters/core.html#coreograph"
       documentation: "https://mcmicro.org/troubleshooting/tuning/coreograph.html"
       tool_dev_url: "https://github.com/HMS-IDAC/UNetCoreograph"
       doi: 10.1038/s41592-021-01308-y
-      licence: "MIT License"
+      license: ["MIT License"]
+      identifier: ""
 input:
-  - image:
-      type: file
-      description: ome.tif/tif file
-      pattern: "*.{ome.tif,tif}"
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - image:
+        type: file
+        description: OME-TIFF or TIFF file for core detection and extraction.
+        pattern: "*.{ome.tif,tif,tiff}"
 output:
   #
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - cores:
-      type: file
-      description: Complete/Incomplete tissue cores
-      pattern: "*.{tif}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*[0-9]*.tif":
+          type: file
+          description: Complete/Incomplete tissue cores
+          pattern: "*.{tif}"
   - masks:
-      type: file
-      description: Binary masks for the Complete/Incomplete tissue cores
-      pattern: "./masks/*.{tif}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "masks/*.tif":
+          type: file
+          description: Binary masks for the Complete/Incomplete tissue cores
+          pattern: "./masks/*.{tif}"
   - tma_map:
-      type: file
-      description: A TMA map showing labels and outlines
-      pattern: "TMA_MAP.tif"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - TMA_MAP.tif:
+          type: file
+          description: A TMA map showing labels and outlines
+          pattern: "TMA_MAP.tif"
   - centroids:
-      type: file
-      description: A text file listing centroids of each core in format Y, X
-      pattern: "centroidsY-X.txt"
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - centroidsY-X.txt:
+          type: file
+          description: A text file listing centroids of each core in format Y, X
+          pattern: "centroidsY-X.txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@arozhada"
   - "@MargotCh"

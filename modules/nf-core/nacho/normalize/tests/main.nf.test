@@ -1,0 +1,86 @@
+nextflow_process {
+
+    name "Test Process NACHO_NORMALIZE"
+    script "../main.nf"
+    process "NACHO_NORMALIZE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "nacho"
+    tag "nacho/normalize"
+
+    test("Salmon - RCC files") {
+
+        when {
+            params {
+                module_args = '--norm_method "GEO"'
+            }
+            process {
+                """
+                // RCC Files: Collect from sample sheet
+                input[0] =
+                    Channel.fromPath('https://raw.githubusercontent.com/nf-core/test-datasets/nanostring/samplesheets/samplesheet_test.csv', checkIfExists: true)
+                        .splitCsv( header: true )
+                        .map { row -> return file(row.RCC_FILE, checkIfExists: true) } // Select first column: path to file
+                        .collect()
+                        .map{ files ->
+                            tuple( [id: 'test'], files ) // Add meta component
+                        }
+
+
+                // Sample sheet
+                input[1] = Channel.of( [
+                        [ id: 'test_samplesheet'],
+                        [ file('https://raw.githubusercontent.com/nf-core/test-datasets/nanostring/samplesheets/samplesheet_test.csv', checkIfExists: true) ]
+                    ] )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("Salmon - RCC files - stub") {
+
+        options "-stub"
+        when {
+            params {
+                module_args = '--norm_method "GEO"'
+            }
+            process {
+                """
+                // RCC Files: Collect from sample sheet
+                input[0] =
+                    Channel.fromPath('https://raw.githubusercontent.com/nf-core/test-datasets/nanostring/samplesheets/samplesheet_test.csv', checkIfExists: true)
+                        .splitCsv( header: true )
+                        .map { row -> return file(row.RCC_FILE, checkIfExists: true) } // Select first column: path to file // Select first column: path to file
+                        .collect()
+                        .map{ files ->
+                            tuple( [id: 'test'], files ) // Add meta component
+                        }
+
+                // Sample sheet
+                input[1] =
+                    Channel.of( [
+                        [id: 'test_samplesheet'],
+                        [ file('https://raw.githubusercontent.com/nf-core/test-datasets/nanostring/samplesheets/samplesheet_test.csv', checkIfExists: true) ]
+                    ] )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

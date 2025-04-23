@@ -12,61 +12,63 @@ tools:
       documentation: "https://github.com/Illumina/hap.py"
       tool_dev_url: "https://github.com/Illumina/hap.py"
       licence: ["BSD-2-clause"]
+      identifier: biotools:happy
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test']
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing sample information for reference fasta
-        e.g. [ id:'test2']
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing sample information for reference fai
-        e.g. [ id:'test3' ]
-  - vcf:
-      type: file
-      description: VCF file to process
-      pattern: "*.{vcf,vcf.gz}"
-  - regions_bed:
-      type: file
-      description: BED file. Restrict analysis to given (sparse) regions.
-      pattern: "*.bed"
-  - targets_bed:
-      type: file
-      description: Restrict analysis to given (dense) regions.
-      pattern: "*.bed"
-  - bam:
-      type: file
-      description: Pass one or more BAM files for feature table extraction
-      pattern: "*.bam"
-  - fasta:
-      type: file
-      description: FASTA file of the reference genome
-      pattern: "*.{fa,fasta}"
-  - fasta_fai:
-      type: file
-      description: The index of the reference FASTA
-      pattern: "*.fai"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test']
+    - vcf:
+        type: file
+        description: VCF file to process
+        pattern: "*.{vcf,vcf.gz}"
+    - regions_bed:
+        type: file
+        description: BED file. Restrict analysis to given (sparse) regions.
+        pattern: "*.bed"
+    - targets_bed:
+        type: file
+        description: Restrict analysis to given (dense) regions.
+        pattern: "*.bed"
+    - bam:
+        type: file
+        description: Pass one or more BAM files for feature table extraction
+        pattern: "*.bam"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information for reference fasta
+          e.g. [ id:'test2']
+    - fasta:
+        type: file
+        description: FASTA file of the reference genome
+        pattern: "*.{fa,fasta}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information for reference fai
+          e.g. [ id:'test3' ]
+    - fasta_fai:
+        type: file
+        description: The index of the reference FASTA
+        pattern: "*.fai"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - features:
-      type: file
-      description: Fuature table
-      pattern: "*.csv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.csv":
+          type: file
+          description: Fuature table
+          pattern: "*.csv"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@kubranarci"
 maintainers:

@@ -18,34 +18,38 @@ tools:
       tool_dev_url: "https://github.com/BinPro/CONCOCT"
       doi: "10.1038/nmeth.3103"
       licence: ["FreeBSD"]
+      identifier: biotools:concoct
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - original_fasta:
-      type: file
-      description: Original input FASTA file to CONOCT cut_up_fasta
-      pattern: "*.{fasta,fna,fa,fas}"
-  - csv:
-      type: boolean
-      description: Output table of merge_cutup_clustering with new cluster assignments
-      pattern: ".csv"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - original_fasta:
+        type: file
+        description: Original input FASTA file to CONOCT cut_up_fasta
+        pattern: "*.{fasta,fna,fa,fas}"
+    - csv:
+        type: boolean
+        description: Output table of merge_cutup_clustering with new cluster assignments
+        pattern: ".csv"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - fasta:
-      type: file
-      description: FASTA files containing CONCOCT predicted bin clusters, named numerically by CONCOCT cluster ID in a directory called `fasta_bins`
-      pattern: "*.fa.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/*.fa.gz:
+          type: file
+          description: FASTA files containing CONCOCT predicted bin clusters, named numerically
+            by CONCOCT cluster ID in a directory called `fasta_bins`
+          pattern: "*.fa.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jfy133"
 maintainers:

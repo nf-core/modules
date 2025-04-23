@@ -14,34 +14,37 @@ tools:
       homepage: https://github.com/ekg/seqwish
       documentation: https://github.com/ekg/seqwish
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - paf:
-      type: list
-      description: comma-separated PAF file(s) of alignments, single entry allowed
-      pattern: "[*.{paf,paf.gz},*.{paf,paf.gz},...]"
-  - fasta:
-      type: file
-      description: FASTA file used to generate alignments
-      pattern: "*.{fa,fa.gz,fasta,fasta.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - paf:
+        type: list
+        description: comma-separated PAF file(s) of alignments, single entry allowed
+        pattern: "[*.{paf,paf.gz},*.{paf,paf.gz},...]"
+    - fasta:
+        type: file
+        description: FASTA file used to generate alignments
+        pattern: "*.{fa,fa.gz,fasta,fasta.gz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - gfa:
-      type: file
-      description: Variation graph in GFA 1.0 format
-      pattern: "*.{gfa}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.gfa":
+          type: file
+          description: Variation graph in GFA 1.0 format
+          pattern: "*.{gfa}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@heuermh"
 maintainers:

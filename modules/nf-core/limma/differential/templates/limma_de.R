@@ -77,6 +77,8 @@ opt <- list(
     subset_to_contrast_samples = FALSE,
     exclude_samples_col = NULL,
     exclude_samples_values = NULL,
+    use_voom = FALSE,
+    number = Inf,
     ndups = NULL,                # lmFit
     spacing = NULL,              # lmFit
     block = NULL,                # lmFit
@@ -142,6 +144,7 @@ opt[vector_opt] = lapply(strsplit(unlist(opt[vector_opt]), ','), as.numeric)
 ################################################
 
 library(limma)
+library(edgeR)
 
 ################################################
 ################################################
@@ -208,7 +211,7 @@ if (!contrast_variable %in% colnames(sample.sheet)) {
         '\" not in sample sheet'
         )
     )
-} else if (any(!c(opt\$reflevel, opt\$treatlevel) %in% sample.sheet[[contrast_variable]])) {
+} else if (any(!c(opt\$reference_level, opt\$target_level) %in% sample.sheet[[contrast_variable]])) {
     stop(
         paste(
         'Please choose reference and target levels that are present in the',
@@ -228,6 +231,20 @@ if (!contrast_variable %in% colnames(sample.sheet)) {
         )
     }
 }
+
+# Handle conflicts between blocking variables and block
+if (!is.null(opt\$block) && !is.null(opt\$blocking_variables)) {
+    if (opt\$block %in% blocking.vars) {
+        warning(paste("Variable", opt\$block, "is specified both as a fixed effect and a random effect. It will be treated as a random effect only."))
+        blocking.vars <- setdiff(blocking.vars, opt\$block)
+        if (length(blocking.vars) == 0) {
+            opt\$blocking_variables <- NULL
+        } else {
+            opt\$blocking_variables <- paste(blocking.vars, collapse = ';')
+        }
+    }
+}
+
 # Optionally, subset to only the samples involved in the contrast
 
 if (opt\$subset_to_contrast_samples){
@@ -255,83 +272,193 @@ if ((! is.null(opt\$exclude_samples_col)) && (! is.null(opt\$exclude_samples_val
     sample.sheet <- sample.sheet[selected_samples, ]
 }
 
-# Now specify the model. Use cell-means style so we can be explicit with the
-# contrasts
+################################################
+################################################
+## Build the Model Formula                    ##
+################################################
+################################################
 
-model <- paste('~ 0 +', contrast_variable)
+# Build the model formula with blocking variables first
+model_vars <- c()
 
 if (!is.null(opt\$blocking_variables)) {
-    model <- paste(model, paste(blocking.vars, collapse = '+'), sep = '+')
+    # Include blocking variables (including pairing variables if any)
+    model_vars <- c(model_vars, blocking.vars)
 }
 
-# Make sure all the appropriate variables are factors
+# Add the contrast variable at the end
+model_vars <- c(model_vars, contrast_variable)
 
-for (v in c(blocking.vars, contrast_variable)) {
+# Construct the model formula
+model <- paste('~ 0 +', paste(model_vars, collapse = '+'))
+
+# Make sure all the appropriate variables are factors
+vars_to_factor <- model_vars  # All variables in the model need to be factors
+for (v in vars_to_factor) {
     sample.sheet[[v]] <- as.factor(sample.sheet[[v]])
 }
 
 ################################################
 ################################################
-## Run Limma processes                       ##
+## Run Limma processes                        ##
 ################################################
 ################################################
 
-# Generate the design
-
+# Generate the design matrix
 design <- model.matrix(
     as.formula(model),
     data=sample.sheet
 )
+
+# Adjust column names for the contrast variable
 colnames(design) <- sub(
-    contrast_variable,
-    paste0(contrast_variable, '.'), colnames(design)
+    paste0('^', contrast_variable),
+    paste0(contrast_variable, '.'),
+    colnames(design)
 )
+
+# Adjust column names to be syntactically valid
+colnames(design) <- make.names(colnames(design))
+
+
+# Perform voom normalisation for RNA-seq data
+if (!is.null(opt\$use_voom) && opt\$use_voom) {
+    # Create a DGEList object for RNA-seq data
+    dge <- DGEList(counts = intensities.table)
+
+    # Normalize counts using TMM
+    dge <- calcNormFactors(dge, method = "TMM")
+
+    # Run voom to transform the data
+    data_for_fit <- voom(dge, design)
+} else {
+    # Use as.matrix for regular microarray analysis
+    data_for_fit <- as.matrix(intensities.table)
+}
+
+if (!is.null(opt\$block)) {
+    corfit = duplicateCorrelation(data_for_fit, design = design, block = sample.sheet[[opt\$block]])
+    if (!is.null(opt\$use_voom) && opt\$use_voom) {
+        data_for_fit <- voom(counts = dge, design = design, plot = FALSE, correlation = corfit\$consensus.correlation)
+    }
+}
+
+# For Voom, write the normalized counts matrix to a TSV file
+if (!is.null(opt\$use_voom) && opt\$use_voom) {
+    normalized_counts <- data_for_fit\$E
+    normalized_counts_with_genes <- data.frame(Gene = rownames(normalized_counts), normalized_counts, row.names = NULL)
+    colnames(normalized_counts_with_genes)[1] <- opt\$probe_id_col
+    write.table(normalized_counts_with_genes,
+        file = paste(opt\$output_prefix, "normalised_counts.tsv", sep = '.'),
+        sep = "\t",
+        quote = FALSE,
+        row.names = FALSE)
+}
 
 # Prepare for and run lmFit()
 
-lmfit_args = c(
-    list(
-        object = as.matrix(intensities.table),
-        design = design
-    ),
-    opt[c('ndups', 'spacing', 'block', 'method')]
+lmfit_args <- list(
+    object = data_for_fit,
+    design = design
 )
 
+# Include optional parameters if provided
+if (! is.null(opt\$ndups)){
+    lmfit_args[['ndups']] <- as.numeric(opt\$ndups)
+}
+if (! is.null(opt\$spacing)){
+    lmfit_args[['spacing']] <- as.numeric(opt\$spacing)
+}
 if (! is.null(opt\$block)){
-    lmfit_args[['block']] = sample.sheet[[opt\$block]]
+    lmfit_args[['block']] <- sample.sheet[[opt\$block]]
 }
 if (! is.null(opt\$correlation)){
-    lmfit_args[['correlation']] = opt\$correlation
+    lmfit_args[['correlation']] <- as.numeric(opt\$correlation)
+} else if (! is.null(opt\$block)){
+    lmfit_args[['correlation']] <- corfit\$consensus.correlation
+}
+if (! is.null(opt\$method)){
+    lmfit_args[['method']] <- opt\$method
 }
 
 fit <- do.call(lmFit, lmfit_args)
 
 # Contrasts bit
-contrast <- paste(paste(contrast_variable, c(opt\$target_level, opt\$reference_level), sep='.'), collapse='-')
-contrast.matrix <- makeContrasts(contrasts=contrast, levels=design)
+
+# Create the contrast string for the specified comparison
+
+# Construct the expected column names for the target and reference levels in the design matrix
+treatment_target <- paste0(contrast_variable, ".", opt\$target_level)
+treatment_reference <- paste0(contrast_variable, ".", opt\$reference_level)
+
+# Determine how to construct the contrast string based on which levels are present in the design matrix
+if ((treatment_target %in% colnames(design)) && (treatment_reference %in% colnames(design))) {
+    # Both target and reference levels are present in the design matrix
+    # We can directly compare the two levels
+    contrast_string <- paste0(treatment_target, "-", treatment_reference)
+} else if (treatment_target %in% colnames(design)) {
+    # Only the target level is present in the design matrix
+    # The reference level may have been omitted due to collinearity or being set as the baseline
+    # We compare the target level to zero (implicit reference)
+    contrast_string <- paste0(treatment_target, "- 0")
+} else if (treatment_reference %in% colnames(design)) {
+    # Only the reference level is present in the design matrix
+    # The target level may have been omitted from the design matrix
+    # We compare zero (implicit target) to the reference level
+    contrast_string <- paste0("0 - ", treatment_reference)
+} else {
+    # Neither level is present in the design matrix
+    # This indicates an error; the specified levels are not found
+    stop(paste0(treatment_target, " and ", treatment_reference, " not found in design matrix"))
+}
+
+# Create the contrast matrix
+contrast.matrix <- makeContrasts(contrasts=contrast_string, levels=design)
 fit2 <- contrasts.fit(fit, contrast.matrix)
 
-# Prepare for and run ebayes
+# Prepare for and run eBayes
 
-ebayes_args = c(
-    list(
-        fit = fit2
-    ),
-    opt[c('proportion', 'stdev.coef.lim', 'trend', 'robust', 'winsor.tail.p')]
+ebayes_args <- list(
+    fit = fit2
 )
+
+if (! is.null(opt\$proportion)){
+    ebayes_args[['proportion']] <- as.numeric(opt\$proportion)
+}
+if (! is.null(opt\$stdev.coef.lim)){
+    ebayes_args[['stdev.coef.lim']] <- as.numeric(opt\$stdev.coef.lim)
+}
+if (! is.null(opt\$trend)){
+    ebayes_args[['trend']] <- as.logical(opt\$trend)
+}
+if (! is.null(opt\$robust)){
+    ebayes_args[['robust']] <- as.logical(opt\$robust)
+}
+if (! is.null(opt\$winsor.tail.p)){
+    ebayes_args[['winsor.tail.p']] <- as.numeric(opt\$winsor.tail.p)
+}
 
 fit2 <- do.call(eBayes, ebayes_args)
 
 # Run topTable() to generate a results data frame
-
-toptable_args = c(
-    list(
-        fit = fit2,
-        sort.by = 'none',
-        number = nrow(intensities.table)
-    ),
-    opt[c('adjust.method', 'p.value', 'lfc', 'confint')]
+toptable_args <- list(
+    fit = fit2,
+    sort.by = 'none',
+    number = nrow(intensities.table)
 )
+
+if (! is.null(opt\$adjust.method)){
+    toptable_args[['adjust.method']] <- opt\$adjust.method
+}
+if (! is.null(opt\$p.value)){
+    toptable_args[['p.value']] <- as.numeric(opt\$p.value)
+}
+if (! is.null(opt\$lfc)){
+    toptable_args[['lfc']] <- as.numeric(opt\$lfc)
+}
+if (! is.null(opt\$confint)){
+    toptable_args[['confint']] <- as.logical(opt\$confint)
+}
 
 comp.results <- do.call(topTable, toptable_args)[rownames(intensities.table),]
 
@@ -345,7 +472,7 @@ contrast.name <-
     paste(opt\$target_level, opt\$reference_level, sep = "_vs_")
 cat("Saving results for ", contrast.name, " ...\n", sep = "")
 
-# Differential expression table- note very limited rounding for consistency of
+# Differential expression table - note very limited rounding for consistency of
 # results
 
 out_df <- cbind(
@@ -368,7 +495,7 @@ png(
     width = 600,
     height = 600
 )
-plotMD(intensities.table)
+plotMD(fit2)
 dev.off()
 
 # R object for other processes to use

@@ -1,6 +1,6 @@
 process GLNEXUS {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_high'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -9,6 +9,7 @@ process GLNEXUS {
 
     input:
     tuple val(meta), path(gvcfs)
+    tuple val(meta2), path(bed)
 
     output:
     tuple val(meta), path("*.bcf"), emit: bcf
@@ -20,6 +21,7 @@ process GLNEXUS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def regions = bed ? "--bed ${bed}" : ""
 
     // Make list of GVCFs to merge
     def input = gvcfs.collect { it.toString() }
@@ -33,6 +35,7 @@ process GLNEXUS {
     glnexus_cli \\
         --threads $task.cpus \\
         --mem-gbytes $avail_mem \\
+        $regions \\
         $args \\
         ${input.join(' ')} \\
         > ${prefix}.bcf

@@ -1,45 +1,56 @@
 name: "porechop_abi"
-description: Extension of Porechop whose purpose is to process adapter sequences in ONT reads.
+description: Extension of Porechop whose purpose is to process adapter sequences in
+  ONT reads.
 keywords:
   - porechop_abi
   - adapter
   - nanopore
 tools:
   - "porechop_abi":
-      description: Extension of Porechop whose purpose is to process adapter sequences in ONT reads.
+      description: Extension of Porechop whose purpose is to process adapter sequences
+        in ONT reads.
       homepage: "https://github.com/bonsai-team/Porechop_ABI"
       documentation: "https://github.com/bonsai-team/Porechop_ABI"
       tool_dev_url: "https://github.com/bonsai-team/Porechop_ABI"
       doi: "10.1101/2022.07.07.499093"
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: fastq/fastq.gz file
-      pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: fastq/fastq.gz file
+        pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - reads:
-      type: file
-      description: Adapter-trimmed fastq.gz file
-      pattern: "*.fastq.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fastq.gz":
+          type: file
+          description: Adapter-trimmed fastq.gz file
+          pattern: "*.fastq.gz"
   - log:
-      type: file
-      description: Log file containing stdout information
-      pattern: "*.log"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: Log file containing stdout information
+          pattern: "*.log"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@sofstam"
   - "LilyAnderssonLee"

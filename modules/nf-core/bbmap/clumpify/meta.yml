@@ -7,39 +7,49 @@ keywords:
   - fastq
 tools:
   - bbmap:
-      description: BBMap is a short read aligner, as well as various other bioinformatic tools.
+      description: BBMap is a short read aligner, as well as various other bioinformatic
+        tools.
       homepage: https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/clumpify-guide/
       documentation: https://www.biostars.org/p/225338/
       licence: ["UC-LBL license (see package)"]
+      identifier: biotools:bbmap
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: |
-        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-        respectively.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - reads:
-      type: file
-      description: The reordered/clumped (and if necessary deduped) fastq reads
-      pattern: "*.clumped.fastq.gz"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fastq.gz":
+          type: file
+          description: The reordered/clumped (and if necessary deduped) fastq reads
+          pattern: "*.clumped.fastq.gz"
   - log:
-      type: file
-      description: Clumpify log file
-      pattern: "*clumpify.log"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: Clumpify log file
+          pattern: "*clumpify.log"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@tamuanand"
 maintainers:

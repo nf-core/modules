@@ -1,80 +1,83 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "longphase_phase"
-description: LongPhase is an ultra-fast program for simultaneously co-phasing SNPs, small indels, large SVs, and (5mC) modifications for Nanopore and PacBio platforms.
+description: LongPhase is an ultra-fast program for simultaneously co-phasing SNPs,
+  small indels, large SVs, and (5mC) modifications for Nanopore and PacBio platforms.
 keywords:
   - phase
   - long-read
   - genomics
 tools:
   - "longphase":
-      description: "LongPhase is an ultra-fast program for simultaneously co-phasing SNPs, small indels, large SVs, and (5mC) modifications for Nanopore and PacBio platforms."
+      description: "LongPhase is an ultra-fast program for simultaneously co-phasing
+        SNPs, small indels, large SVs, and (5mC) modifications for Nanopore and PacBio
+        platforms."
       homepage: "https://github.com/twolinin/longphase"
       documentation: "https://github.com/twolinin/longphase"
       tool_dev_url: "https://github.com/twolinin/longphase"
       doi: "10.1093/bioinformatics/btac058"
       licence: ["GPL v3"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM file(s)
-      pattern: "*.{bam,cram}"
-  - bai:
-      type: file
-      description: Index of sorted BAM/CRAM file(s)
-      pattern: "*.{bai,crai,csi}"
-  - snps:
-      type: file
-      description: VCF file with SNPs (and INDELs)
-      pattern: "*.{vcf,vcf.gz}"
-  - svs:
-      type: file
-      description: VCF file with SVs
-      pattern: "*.{vcf,vcf.gz}"
-  - mods:
-      type: file
-      description: modcall-generated VCF with modifications
-      pattern: "*.{vcf,vcf.gz}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. `[ id:'hg38' ]`
-  - fasta:
-      type: file
-      description: Reference fasta file
-      pattern: "*.fasta"
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. `[ id:'hg38' ]`
-  - fai:
-      type: file
-      description: Reference fai index
-      pattern: "*.fai"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM file(s)
+        pattern: "*.{bam,cram}"
+    - bai:
+        type: file
+        description: Index of sorted BAM/CRAM file(s)
+        pattern: "*.{bai,crai,csi}"
+    - snps:
+        type: file
+        description: VCF file with SNPs (and INDELs)
+        pattern: "*.{vcf,vcf.gz}"
+    - svs:
+        type: file
+        description: VCF file with SVs
+        pattern: "*.{vcf,vcf.gz}"
+    - mods:
+        type: file
+        description: modcall-generated VCF with modifications
+        pattern: "*.{vcf,vcf.gz}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'hg38' ]`
+    - fasta:
+        type: file
+        description: Reference fasta file
+        pattern: "*.fasta"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'hg38' ]`
+    - fai:
+        type: file
+        description: Reference fai index
+        pattern: "*.fai"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - vcf:
-      type: file
-      description: Compressed VCF file with phased variants
-      pattern: "*.vcf.gz"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.vcf.gz":
+          type: file
+          description: Compressed VCF file with phased variants
+          pattern: "*.vcf.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@fellen31"
 maintainers:

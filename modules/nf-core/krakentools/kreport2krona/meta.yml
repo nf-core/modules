@@ -7,33 +7,38 @@ keywords:
   - visualization
 tools:
   - krakentools:
-      description: KrakenTools is a suite of scripts to be used for post-analysis of Kraken/KrakenUniq/Kraken2/Bracken results. Please cite the relevant paper if using KrakenTools with any of the listed programs.
+      description: KrakenTools is a suite of scripts to be used for post-analysis of
+        Kraken/KrakenUniq/Kraken2/Bracken results. Please cite the relevant paper if
+        using KrakenTools with any of the listed programs.
       homepage: https://github.com/jenniferlu717/KrakenTools
       licence: ["GPL v3"]
+      identifier: biotools:krakentools
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - kreport:
-      type: file
-      description: Kraken report
-      pattern: "*.{txt,kreport}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - kreport:
+        type: file
+        description: Kraken report
+        pattern: "*.{txt,kreport}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - txt:
-      type: file
-      description: Krona text-based input file converted from Kraken report
-      pattern: "*.{txt,krona}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt":
+          type: file
+          description: Krona text-based input file converted from Kraken report
+          pattern: "*.{txt,krona}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@MillironX"
 maintainers:

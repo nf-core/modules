@@ -24,8 +24,8 @@ process LONGPHASE_HAPLOTAG {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def sv_file = params.svs ? "--sv-file ${svs}" : ""
-    def mod_file = params.mods ? "--mod-file ${mods}" : ""
+    def sv_file = svs ? "--sv-file ${svs}" : ""
+    def mod_file = mods ? "--mod-file ${mods}" : ""
 
     """
     longphase \\

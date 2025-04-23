@@ -13,25 +13,30 @@ tools:
       documentation: "http://eido.databio.org/en/latest/"
       doi: "10.1093/gigascience/giab077"
       licence: ["BSD-2-Clause"]
+      identifier: biotools:eido-python-package
 input:
-  - samplesheet:
-      type: file
-      description: Nextflow samplesheet or PEP project
-      pattern: "*.{yaml,yml,csv}"
-  - format:
-      type: string
-      description: Extension of an output file
-  - pep_input_base_dir:
-      type: file
-      description: Optional path to the directory where files specified in a PEP config file are stored. Any paths specified in the config will need to be relative to this base directory.
+  - - samplesheet:
+        type: file
+        description: Nextflow samplesheet or PEP project
+        pattern: "*.{yaml,yml,csv}"
+  - - format:
+        type: string
+        description: Extension of an output file
+  - - pep_input_base_dir:
+        type: file
+        description: Optional path to the directory where files specified in a PEP config
+          file are stored. Any paths specified in the config will need to be relative
+          to this base directory.
 output:
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
   - samplesheet_converted:
-      type: file
-      description: PEP project or samplesheet converted to csv file
+      - ${prefix}.${format}:
+          type: file
+          description: PEP project or samplesheet converted to csv file
 authors:
   - "@rafalstepien"
 maintainers:

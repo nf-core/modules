@@ -29,37 +29,36 @@ workflow FASTQ_ALIGN_DNA {
         ch_versions     = Channel.empty()
 
         // Align fastq files to reference genome and (optionally) sort
-        switch (aligner) {
-            case 'bowtie2':
+        if (aligner == 'bowtie2') {
                 BOWTIE2_ALIGN(ch_reads, ch_aligner_index, ch_fasta, false, sort) // if aligner is bowtie2
                 ch_bam = ch_bam.mix(BOWTIE2_ALIGN.out.bam)
                 ch_versions = ch_versions.mix(BOWTIE2_ALIGN.out.versions)
-                break
-            case 'bwamem':
+        }
+        else if (aligner == 'bwamem'){
                 BWAMEM1_MEM  (ch_reads, ch_aligner_index, ch_fasta, sort)        // If aligner is bwa-mem
                 ch_bam = ch_bam.mix(BWAMEM1_MEM.out.bam)
                 ch_bam_index = ch_bam_index.mix(BWAMEM1_MEM.out.csi)
                 ch_versions = ch_versions.mix(BWAMEM1_MEM.out.versions)
-                break
-            case 'bwamem2':
+        }
+        else if (aligner == 'bwamem2'){
                 BWAMEM2_MEM  (ch_reads, ch_aligner_index, ch_fasta, sort)       // If aligner is bwa-mem2
                 ch_bam = ch_bam.mix(BWAMEM2_MEM.out.bam)
                 ch_versions = ch_versions.mix(BWAMEM2_MEM.out.versions)
-                break
-            case 'dragmap':
+        }
+        else if (aligner == 'dragmap'){
                 DRAGMAP_ALIGN(ch_reads, ch_aligner_index, ch_fasta, sort)       // If aligner is dragmap
                 ch_bam = ch_bam.mix(DRAGMAP_ALIGN.out.bam)
                 ch_reports = ch_reports.mix(DRAGMAP_ALIGN.out.log)
                 ch_versions = ch_versions.mix(DRAGMAP_ALIGN.out.versions)
-                break
-            case 'snap':
-                SNAP_ALIGN   (ch_reads, ch_aligner_index)                       // If aligner is snap
-                ch_bam = ch_bam.mix(SNAP_ALIGN.out.bam)
-                ch_bam_index.mix(SNAP_ALIGN.out.bai)
-                ch_versions = ch_versions.mix(SNAP_ALIGN.out.versions)
-                break
-            default:
-                error "Unknown aligner: ${aligner}"
+        }
+        else if (aligner == 'snap'){
+            SNAP_ALIGN   (ch_reads, ch_aligner_index)                       // If aligner is snap
+            ch_bam = ch_bam.mix(SNAP_ALIGN.out.bam)
+            ch_bam_index.mix(SNAP_ALIGN.out.bai)
+            ch_versions = ch_versions.mix(SNAP_ALIGN.out.versions)
+        }
+        else {
+            error "Unknown aligner: ${aligner}"
         }
 
     emit:

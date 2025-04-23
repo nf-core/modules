@@ -24,14 +24,9 @@ process LONGPHASE_PHASE {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def sv_file = params.svs ? "--sv-file ${svs}" : ""
-    def mod_file = params.mods ? "--mod-file ${mods}" : ""
-
-    def bamList = []
-    for (file in bam) {
-        bamList.add("-b")
-        bamList.add(file)
-    }
+    def sv_file = svs ? "--sv-file ${svs}" : ""
+    def mod_file = mods ? "--mod-file ${mods}" : ""
+    def bams = bam.collectMany { file -> ["-b", file] }.join(" ")
     """
     longphase \\
         phase \\
@@ -40,7 +35,7 @@ process LONGPHASE_PHASE {
         -o ${prefix} \\
         --reference ${fasta} \\
         --snp-file ${snps} \\
-        ${bamList.join(" ")} \\
+        ${bams} \\
         ${sv_file} \\
         ${mod_file} \\
 

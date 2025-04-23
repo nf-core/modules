@@ -1,5 +1,6 @@
 name: "interproscan"
-description: Produces protein annotations and predictions from an amino acids FASTA file
+description: Produces protein annotations and predictions from an amino acids FASTA
+  file
 keywords:
   - annotation
   - fasta
@@ -8,46 +9,90 @@ keywords:
   - interproscan
 tools:
   - "interproscan":
-      description: "InterPro integrates together predictive information about proteins function from a number of partner resources"
+      description: "InterPro integrates together predictive information about proteins
+        function from a number of partner resources"
       homepage: "https://www.ebi.ac.uk/interpro/search/sequence/"
       documentation: "https://interproscan-docs.readthedocs.io"
       tool_dev_url: "https://github.com/ebi-pf-team/interproscan"
       doi: "10.1093/bioinformatics/btu031"
       licence: ["GPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: Input fasta file containing the amino acid or dna query sequences
-      pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
-  - interproscan_database:
-      type: directory
-      description: Path to the interproscan database (untarred http://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/${version_major}-${version_minor}/interproscan-${version_major}-${version_minor}-64-bit.tar.gz)
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Input fasta file containing the amino acid or dna query sequences
+        pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - - interproscan_database:
+        type: directory
+        description: Path to the interproscan database (untarred
+          http://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/${version_major}-${version_minor}/interproscan-${version_major}-${version_minor}-64-bit.tar.gz)
 output:
   - tsv:
-      type: file
-      description: Tab separated file containing with detailed hits
-      pattern: "*.{tsv}"
+      - meta:
+          type: file
+          description: Tab separated file containing with detailed hits
+          pattern: "*.{tsv}"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+      - "*.tsv":
+          type: file
+          description: Tab separated file containing with detailed hits
+          pattern: "*.{tsv}"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   - xml:
-      type: file
-      description: XML file containing with detailed hits
-      pattern: "*.{xml}"
+      - meta:
+          type: file
+          description: XML file containing with detailed hits
+          pattern: "*.{xml}"
+          ontologies:
+            - edam: http://edamontology.org/format_2332 # XML
+      - "*.xml":
+          type: file
+          description: XML file containing with detailed hits
+          pattern: "*.{xml}"
+          ontologies:
+            - edam: http://edamontology.org/format_2332 # XML
   - gff3:
-      type: file
-      description: GFF3 file containing with detailed hits
-      pattern: "*.{gff3}"
+      - meta:
+          type: file
+          description: GFF3 file containing with detailed hits
+          pattern: "*.{gff3}"
+          ontologies:
+            - edam: http://edamontology.org/format_1975 # GFF3
+      - "*.gff3":
+          type: file
+          description: GFF3 file containing with detailed hits
+          pattern: "*.{gff3}"
+          ontologies:
+            - edam: http://edamontology.org/format_1975 # GFF3
   - json:
-      type: file
-      description: JSON file containing with detailed hits
-      pattern: "*.{json}"
+      - meta:
+          type: file
+          description: JSON file containing with detailed hits
+          pattern: "*.{json}"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+      - "*.json":
+          type: file
+          description: JSON file containing with detailed hits
+          pattern: "*.{json}"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+          ontologies: 
+              - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@toniher"
   - "@mahesh-panchal"

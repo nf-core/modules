@@ -1,7 +1,6 @@
 //
 // Read QC, UMI extraction and trimming
 //
-
 include { FASTQC as FASTQC_RAW  } from '../../../modules/nf-core/fastqc/main'
 include { FASTQC as FASTQC_TRIM } from '../../../modules/nf-core/fastqc/main'
 include { UMITOOLS_EXTRACT      } from '../../../modules/nf-core/umitools/extract/main'
@@ -10,26 +9,31 @@ include { FASTP                 } from '../../../modules/nf-core/fastp/main'
 //
 // Function that parses fastp json output file to get total number of reads after trimming
 //
-import groovy.json.JsonSlurper
 
 def getFastpReadsAfterFiltering(json_file, min_num_reads) {
 
     if ( workflow.stubRun ) { return min_num_reads }
 
-    def Map json = (Map) new JsonSlurper().parseText(json_file.text).get('summary')
+    def json = new groovy.json.JsonSlurper().parseText(json_file.text).get('summary')
     return json['after_filtering']['total_reads'].toLong()
 }
 
-def getFastpAdapterSequence(json_file){
-
-    if ( workflow.stubRun ) { return "" }
-
-    def Map json = (Map) new JsonSlurper().parseText(json_file.text)
-    try{
-        adapter = json['adapter_cutting']['read1_adapter_sequence']
-    } catch(Exception ex){
-        adapter = ""
+def getFastpAdapterSequence(json_file) {
+    // Handle stub runs
+    if (workflow.stubRun) {
+        return ""
     }
+
+    // Ensure the input file is valid and parse the JSON
+    def adapter = ""
+    try {
+        def json = new groovy.json.JsonSlurper().parseText(json_file.text)
+        adapter = json?.adapter_cutting?.read1_adapter_sequence ?: ""
+    } catch (Exception ex) {
+        // Log the exception or handle it as needed
+        println "Error parsing JSON or retrieving adapter sequence: ${ex.message}"
+    }
+
     return adapter
 }
 
@@ -47,9 +51,20 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
     min_trimmed_reads // integer: > 0
 
     main:
-    ch_versions = Channel.empty()
-    fastqc_raw_html = Channel.empty()
-    fastqc_raw_zip  = Channel.empty()
+    ch_versions       = Channel.empty()
+    fastqc_raw_html   = Channel.empty()
+    fastqc_raw_zip    = Channel.empty()
+    umi_log           = Channel.empty()
+    trim_json         = Channel.empty()
+    trim_html         = Channel.empty()
+    trim_log          = Channel.empty()
+    trim_reads_fail   = Channel.empty()
+    trim_reads_merged = Channel.empty()
+    fastqc_trim_html  = Channel.empty()
+    fastqc_trim_zip   = Channel.empty()
+    trim_read_count   = Channel.empty()
+    adapter_seq       = Channel.empty()
+
     if (!skip_fastqc) {
         FASTQC_RAW (
             reads
@@ -60,7 +75,6 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
     }
 
     umi_reads = reads
-    umi_log   = Channel.empty()
     if (with_umi && !skip_umi_extract) {
         UMITOOLS_EXTRACT (
             reads
@@ -75,24 +89,14 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
                 .out
                 .reads
                 .map {
-                    meta, reads ->
-                        meta.single_end ? [ meta, reads ] : [ meta + [single_end: true], reads[umi_discard_read % 2] ]
+                    meta, _reads ->
+                        meta.single_end ? [ meta, _reads ] : [ meta + [single_end: true], _reads[umi_discard_read % 2] ]
                 }
                 .set { umi_reads }
         }
     }
 
-    trim_reads        = umi_reads
-    trim_json         = Channel.empty()
-    trim_html         = Channel.empty()
-    trim_log          = Channel.empty()
-    trim_reads_fail   = Channel.empty()
-    trim_reads_merged = Channel.empty()
-    fastqc_trim_html  = Channel.empty()
-    fastqc_trim_zip   = Channel.empty()
-    trim_read_count   = Channel.empty()
-    adapter_seq       = Channel.empty()
-
+    trim_reads = umi_reads
     if (!skip_trimming) {
         FASTP (
             umi_reads,
@@ -115,16 +119,16 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
             .out
             .reads
             .join(trim_json)
-            .map { meta, reads, json -> [ meta, reads, getFastpReadsAfterFiltering(json, min_trimmed_reads.toLong()) ] }
+            .map { meta, _reads, json -> [ meta, _reads, getFastpReadsAfterFiltering(json, min_trimmed_reads.toLong()) ] }
             .set { ch_num_trimmed_reads }
 
         ch_num_trimmed_reads
-            .filter { meta, reads, num_reads -> num_reads >= min_trimmed_reads.toLong() }
-            .map { meta, reads, num_reads -> [ meta, reads ] }
+            .filter { meta, _reads, num_reads -> num_reads >= min_trimmed_reads.toLong() }
+            .map { meta, _reads, num_reads -> [ meta, _reads ] }
             .set { trim_reads }
 
         ch_num_trimmed_reads
-            .map { meta, reads, num_reads -> [ meta, num_reads ] }
+            .map { meta, _reads, num_reads -> [ meta, num_reads ] }
             .set { trim_read_count }
 
         trim_json
@@ -143,22 +147,17 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
 
     emit:
     reads = trim_reads // channel: [ val(meta), [ reads ] ]
-
     fastqc_raw_html    // channel: [ val(meta), [ html ] ]
     fastqc_raw_zip     // channel: [ val(meta), [ zip ] ]
-
     umi_log            // channel: [ val(meta), [ log ] ]
     adapter_seq        // channel: [ val(meta), [ adapter_seq] ]
-
     trim_json          // channel: [ val(meta), [ json ] ]
     trim_html          // channel: [ val(meta), [ html ] ]
     trim_log           // channel: [ val(meta), [ log ] ]
     trim_reads_fail    // channel: [ val(meta), [ fastq.gz ] ]
     trim_reads_merged  // channel: [ val(meta), [ fastq.gz ] ]
     trim_read_count    // channel: [ val(meta), val(count) ]
-
     fastqc_trim_html   // channel: [ val(meta), [ html ] ]
     fastqc_trim_zip    // channel: [ val(meta), [ zip ] ]
-
-    versions = ch_versions.ifEmpty(null) // channel: [ versions.yml ]
+    versions = ch_versions // channel: [ versions.yml ]
 }

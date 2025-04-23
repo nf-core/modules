@@ -12,30 +12,33 @@ tools:
       documentation: https://github.com/tseemann/snp-dists
       tool_dev_url: https://github.com/tseemann/snp-dists
       licence: ["GPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - alignment:
-      type: file
-      description: The input FASTA sequence alignment file
-      pattern: "*.{fasta,fasta.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - alignment:
+        type: file
+        description: The input FASTA sequence alignment file
+        pattern: "*.{fasta,fasta.gz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - tsv:
-      type: file
-      description: The output TSV file containing SNP distance matrix
-      pattern: "*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: The output TSV file containing SNP distance matrix
+          pattern: "*.tsv"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@abhi18av"
 maintainers:

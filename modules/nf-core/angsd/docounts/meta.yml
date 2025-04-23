@@ -1,5 +1,6 @@
 name: "angsd_docounts"
-description: Calculates base frequency statistics across reference positions from BAM.
+description: Calculates base frequency statistics across reference positions from
+  BAM.
 keywords:
   - angsd
   - population genetics
@@ -13,58 +14,92 @@ tools:
       tool_dev_url: "https://github.com/ANGSD/angsd"
       doi: "10.1186/s12859-014-0356-4"
       licence: ["GPL v3, MIT"]
+      identifier: biotools:angsd
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: A list of BAM or CRAM files
-      pattern: "*.{bam,cram}"
-  - bai:
-      type: file
-      description: List of BAM/CRAM index files
-      pattern: "*.{bai,csi}"
-  - minqfile:
-      type: file
-      description: File with individual quality score thresholds
-      pattern: "*"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: A list of BAM or CRAM files
+        pattern: "*.{bam,cram}"
+    - bai:
+        type: file
+        description: List of BAM/CRAM index files
+        pattern: "*.{bai,csi}"
+    - minqfile:
+        type: file
+        description: File with individual quality score thresholds
+        pattern: "*"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - depth_sample:
-      type: file
-      description: Distribution of sequencing depths
-      pattern: "*.depthSample"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.depthSample":
+          type: file
+          description: Distribution of sequencing depths
+          pattern: "*.depthSample"
   - depth_global:
-      type: file
-      description: Distribution of sequencing depths
-      pattern: "*.depthGlobal"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.depthGlobal":
+          type: file
+          description: Distribution of sequencing depths
+          pattern: "*.depthGlobal"
   - qs:
-      type: file
-      description: Distribution of scores
-      pattern: "*.qs"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.qs":
+          type: file
+          description: Distribution of scores
+          pattern: "*.qs"
   - pos:
-      type: file
-      description: Various types of depth statistics (depending on value for -dumpCounts)
-      pattern: "*.pos.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.pos.gz":
+          type: file
+          description: Various types of depth statistics (depending on value for -dumpCounts)
+          pattern: "*.pos.gz"
   - counts:
-      type: file
-      description: Various types of statistics (related to pos.gz)
-      pattern: "*.counts.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.counts.gz":
+          type: file
+          description: Various types of statistics (related to pos.gz)
+          pattern: "*.counts.gz"
   - icounts:
-      type: file
-      description: Internal format for dumping binary single chrs. Useful for ANGSD contamination
-      pattern: "*.icnts.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.icnts.gz":
+          type: file
+          description: Internal format for dumping binary single chrs. Useful for ANGSD
+            contamination
+          pattern: "*.icnts.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jfy133"
 maintainers:

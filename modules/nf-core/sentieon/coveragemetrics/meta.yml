@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "sentieon_coveragemetrics"
 description: Accelerated implementation of the GATK DepthOfCoverage tool.
@@ -14,89 +13,129 @@ tools:
       homepage: https://www.sentieon.com/
       documentation: https://www.sentieon.com/
       licence: ["Commercial (requires license for use; redistribution allowed)"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - meta4:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-  - bai:
-      type: file
-      description: BAM/CRAM/SAM file index
-      pattern: "*.{bai,crai}"
-  - interval:
-      type: file
-      description: BED file of genome regions to draw coverage from
-      pattern: "*.bed"
-  - fasta:
-      type: file
-      description: Genome fasta file
-      pattern: "*.{fa,fasta}"
-  - fai:
-      type: file
-      description: Index of the genome fasta file
-      pattern: "*.fai"
-  - gene_list:
-      type: file
-      description: RefSeq file used to aggregate the results
-      pattern: "*"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+    - bai:
+        type: file
+        description: BAM/CRAM/SAM file index
+        pattern: "*.{bai,crai}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - interval:
+        type: file
+        description: BED file of genome regions to draw coverage from
+        pattern: "*.bed"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - fasta:
+        type: file
+        description: Genome fasta file
+        pattern: "*.{fa,fasta}"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - fai:
+        type: file
+        description: Index of the genome fasta file
+        pattern: "*.fai"
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - gene_list:
+        type: file
+        description: RefSeq file used to aggregate the results
+        pattern: "*"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - per_locus:
-      type: file
-      description: The per locus coverage with no partition.
-      pattern: "${sample_id}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - $prefix:
+          type: file
+          description: The per locus coverage with no partition.
+          pattern: "${sample_id}"
   - sample_summary:
-      type: file
-      description: The summary for PARTITION_GROUP sample, aggregated over all bases.
-      pattern: "${sample_id}.sample_summary"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}.${partitions_output}_summary:
+          type: file
+          description: The summary for PARTITION_GROUP sample, aggregated over all bases.
+          pattern: "${sample_id}.sample_summary"
   - statistics:
-      type: file
-      description: The statistics for PARTITION_GROUP library, aggregated by interval.
-      pattern: "${sample_id}.interval_statistics"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}.${partitions_output}_interval_statistics:
+          type: file
+          description: The statistics for PARTITION_GROUP library, aggregated by interval.
+          pattern: "${sample_id}.interval_statistics"
   - coverage_counts:
-      type: file
-      description: Contains the histogram of loci with depth larger than x.
-      pattern: "${sample_id}.interval_statistics"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}.${partitions_output}_cumulative_coverage_counts:
+          type: file
+          description: Contains the histogram of loci with depth larger than x.
+          pattern: "${sample_id}.interval_statistics"
   - coverage_proportions:
-      type: file
-      description: Contains the normalized histogram of loci with depth larger than x.
-      pattern: "${sample_id}.interval_statistics"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}.${partitions_output}_cumulative_coverage_proportions:
+          type: file
+          description: Contains the normalized histogram of loci with depth larger than
+            x.
+          pattern: "${sample_id}.interval_statistics"
   - interval_summary:
-      type: file
-      description: The summary for PARTITION_GROUP library, aggregated by interval.
-      pattern: "${sample_id}.interval_summary"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}.${partitions_output}_interval_summary:
+          type: file
+          description: The summary for PARTITION_GROUP library, aggregated by interval.
+          pattern: "${sample_id}.interval_summary"
+      - _summary:
+          type: file
+          description: The summary for PARTITION_GROUP library, aggregated by interval.
+          pattern: "${sample_id}.interval_summary"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@adamrtalbot"
 maintainers:

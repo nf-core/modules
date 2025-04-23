@@ -11,38 +11,41 @@ tools:
       documentation: "https://github.com/GeneDx/scramble"
       tool_dev_url: "https://github.com/GeneDx/scramble"
       licence: ["CC"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - input:
-      type: file
-      description: BAM/CRAM file
-      pattern: "*.{bam,cram}"
-  - input_index:
-      type: file
-      description: Index of the BAM/CRAM file
-      pattern: "*.{bai,crai}"
-  - fasta:
-      type: file
-      description: The reference FASTA file (mandatory when using CRAM files)
-      pattern: "*.{fasta,fa}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input:
+        type: file
+        description: BAM/CRAM file
+        pattern: "*.{bam,cram}"
+    - input_index:
+        type: file
+        description: Index of the BAM/CRAM file
+        pattern: "*.{bai,crai}"
+  - - fasta:
+        type: file
+        description: The reference FASTA file (mandatory when using CRAM files)
+        pattern: "*.{fasta,fa}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - clusters:
-      type: file
-      description: Tab-delimited file containing the soft-clipped clusters
-      pattern: "*.clusters.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.clusters.txt":
+          type: file
+          description: Tab-delimited file containing the soft-clipped clusters
+          pattern: "*.clusters.txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

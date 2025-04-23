@@ -1,0 +1,63 @@
+
+nextflow_process {
+
+    name "Test Process BIOBAMBAM_BAMMARKDUPLICATES2"
+    script "../main.nf"
+    process "BIOBAMBAM_BAMMARKDUPLICATES2"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "biobambam"
+    tag "biobambam/bammarkduplicates2"
+
+    test("test-biobambam-bammarkduplicates2") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					bam(process.out.bam[0][1]).getReadsMD5(),
+					file(process.out.metrics[0][1]).readLines()[3..7],
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-biobambam-bammarkduplicates2-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

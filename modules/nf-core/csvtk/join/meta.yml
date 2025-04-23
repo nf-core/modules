@@ -1,5 +1,6 @@
 name: csvtk_join
-description: Join two or more CSV (or TSV) tables by selected fields into a single table
+description: Join two or more CSV (or TSV) tables by selected fields into a single
+  table
 keywords:
   - join
   - tsv
@@ -11,30 +12,33 @@ tools:
       documentation: http://bioinf.shenwei.me/csvtk
       tool_dev_url: https://github.com/shenwei356/csvtk
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - csv:
-      type: file
-      description: CSV/TSV formatted files
-      pattern: "*.{csv,tsv}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - csv:
+        type: file
+        description: CSV/TSV formatted files
+        pattern: "*.{csv,tsv}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "version.yml"
   - csv:
-      type: file
-      description: Joined CSV/TSV file
-      pattern: "*.{csv,tsv}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.${out_extension}:
+          type: file
+          description: Joined CSV/TSV file
+          pattern: "*.{csv,tsv}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "version.yml"
 authors:
   - "@anoronh4"
 maintainers:

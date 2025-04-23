@@ -2,11 +2,10 @@ process PURECN_INTERVALFILE {
     tag "${meta.id}"
     label 'process_low'
 
-    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-582ac26068889091d5e798347c637f8208d77a71:a29c64a63498b1ee8b192521fdf6ed3c65506994-0':
-        'biocontainers/mulled-v2-582ac26068889091d5e798347c637f8208d77a71:a29c64a63498b1ee8b192521fdf6ed3c65506994-0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/31/31bad5bbf2277cc9ea746c3c4fd440d1689dd7c8d32d0697b5077f08c084a03e/data':
+        'community.wave.seqera.io/library/bioconductor-org.hs.eg.db_bioconductor-purecn_bioconductor-txdb.hsapiens.ucsc.hg19.knowngene_bioconductor-txdb.hsapiens.ucsc.hg38.knowngene_pruned:bc942848b4c78040' }"
 
     input:
     tuple val(meta), path(target_bed)
@@ -25,7 +24,6 @@ process PURECN_INTERVALFILE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '2.4.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     library_path=\$(Rscript -e 'cat(.libPaths(), sep = "\\n")')
@@ -38,7 +36,7 @@ process PURECN_INTERVALFILE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        purecn: ${VERSION}
+        purecn: \$(Rscript -e 'packageVersion("PureCN")' | sed -n 's|\\[1\\] ‘\\(.*\\)’|\\1|p')
     END_VERSIONS
     """
 
@@ -47,14 +45,13 @@ process PURECN_INTERVALFILE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def bed = args.contains("--export") ? "touch ${prefix}.bed" : ""
-    def VERSION = '2.4.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     touch ${prefix}.txt
     ${bed}
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        purecn: ${VERSION}
+        purecn: \$(Rscript -e 'packageVersion("PureCN")' | sed -n 's|\\[1\\] ‘\\(.*\\)’|\\1|p')
     END_VERSIONS
     """
 }

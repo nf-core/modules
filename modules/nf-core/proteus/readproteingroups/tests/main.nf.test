@@ -1,0 +1,79 @@
+nextflow_process {
+
+    name "Test Process PROTEUS_READPROTEINGROUPS"
+    script "../main.nf"
+    process "PROTEUS_READPROTEINGROUPS"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "proteus_readproteingroups"
+    tag "proteus"
+    tag "proteus/readproteingroups"
+
+    test("test_proteus_readproteingroups") {
+
+        when {
+            params{
+                module_args = "--contrast_variable fakeBatch --sample_id_col Experiment  --measure_col_prefix \"LFQ intensity\" --round_digits 3 --norm_function \"normalizeQuantiles\""
+            }
+            process {
+                """
+                input[0] = [[ id:"fakeBatch" ], file(params.test_data['proteomics']['maxquant']['mq_samplesheet'], checkIfExists: true), file(params.test_data['proteomics']['maxquant']['mq_proteingroups'], checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.dendro_plot[0][1]).name,
+                    file(process.out.mean_var_plot[0][1]).name,
+                    file(process.out.raw_dist_plot[0][1]).name,
+                    file(process.out.norm_dist_plot[0][1]).name,
+                    file(process.out.raw_rdata[0][1]).name,
+                    file(process.out.norm_rdata[0][1]).name,
+                    process.out.raw_tab,
+                    process.out.norm_tab,
+                    file(process.out.session_info[0][1]).name,
+                    process.out.versions,
+                ).match() }
+            )
+        }
+    }
+
+    test("test_proteus_readproteingroups - stub") {
+
+        options "-stub"
+
+        when {
+            params{
+                module_args = "--contrast_variable fakeBatch --sample_id_col Experiment  --measure_col_prefix \"LFQ intensity\" --round_digits 3 --norm_function \"normalizeQuantiles\""
+            }
+            process {
+                """
+                input[0] = [[ id:"fakeBatch" ], file(params.test_data['proteomics']['maxquant']['mq_samplesheet'], checkIfExists: true), file(params.test_data['proteomics']['maxquant']['mq_proteingroups'], checkIfExists: true)]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.dendro_plot[0][1]).name,
+                    file(process.out.mean_var_plot[0][1]).name,
+                    file(process.out.raw_dist_plot[0][1]).name,
+                    file(process.out.norm_dist_plot[0][1]).name,
+                    file(process.out.raw_rdata[0][1]).name,
+                    file(process.out.norm_rdata[0][1]).name,
+                    process.out.raw_tab,
+                    process.out.norm_tab,
+                    file(process.out.session_info[0][1]).name,
+                    process.out.versions,
+                ).match() }
+            )
+        }
+    }
+
+}

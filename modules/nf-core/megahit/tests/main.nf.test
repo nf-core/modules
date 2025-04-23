@@ -14,8 +14,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [id:"test", single_end:true],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
-                    ]
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    []]
                 """
             }
         }
@@ -28,7 +28,11 @@ nextflow_process {
                 { assert process.out.addi_contigs[0][1].each{path(it).linesGzip.toString().contains(">k")}},
                 { assert process.out.local_contigs[0][1].each{path(it).linesGzip.toString().contains(">k")}},
                 { assert process.out.kfinal_contigs[0][1].each{path(it).linesGzip.toString().contains(">k")}},
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(
+                        path(process.out.log[0][1]).readLines().last().contains("ALL DONE. Time elapsed"),
+                        process.out.versions
+                    ).match()
+                }
             )
         }
 
@@ -39,9 +43,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [id:"test", single_end:true],
-                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]
+                input[0] = [ [id:"test", single_end:false],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 """
             }
@@ -55,7 +59,42 @@ nextflow_process {
                 { assert process.out.addi_contigs[0][1].each{path(it).linesGzip.toString().contains(">k")}},
                 { assert process.out.local_contigs[0][1].each{path(it).linesGzip.toString().contains(">k")}},
                 { assert process.out.kfinal_contigs[0][1].each{path(it).linesGzip.toString().contains(">k")}},
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(
+                        path(process.out.log[0][1]).readLines().last().contains("ALL DONE. Time elapsed"),
+                        process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fastq - pe - coassembly") {
+
+        when {
+            process {
+                """
+                input[0] = [ [id:"test", single_end:false],
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test2_1.fastq.gz', checkIfExists: true)] ,
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test2_2.fastq.gz', checkIfExists: true)]
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.contigs[0][1]).linesGzip.toString().contains(">k") },
+                { assert process.out.k_contigs[0][1].each{path(it).linesGzip.toString().contains(">k")}},
+                { assert process.out.addi_contigs[0][1].each{path(it).linesGzip.toString().contains(">k")}},
+                { assert process.out.local_contigs[0][1].each{path(it).linesGzip.toString().contains(">k")}},
+                { assert process.out.kfinal_contigs[0][1].each{path(it).linesGzip.toString().contains(">k")}},
+                { assert snapshot(
+                        path(process.out.log[0][1]).readLines().last().contains("ALL DONE. Time elapsed"),
+                        process.out.versions
+                    ).match()
+                }
             )
         }
 
@@ -69,7 +108,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [id:"test", single_end:true],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    []
                     ]
                 """
             }

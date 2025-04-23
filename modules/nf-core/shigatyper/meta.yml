@@ -12,34 +12,43 @@ tools:
       tool_dev_url: "https://github.com/CFSAN-Biostatistics/shigatyper"
       doi: "10.1128/AEM.00165-19"
       licence: ["Public Domain"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false, is_ont:false ]
-  - reads:
-      type: file
-      description: Illumina or Nanopore FASTQ file
-      pattern: "*.fastq.gz"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false, is_ont:false ]
+    - reads:
+        type: file
+        description: Illumina or Nanopore FASTQ file
+        pattern: "*.fastq.gz"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - tsv:
-      type: file
-      description: A TSV formatted file with ShigaTyper results
-      pattern: "*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.tsv:
+          type: file
+          description: A TSV formatted file with ShigaTyper results
+          pattern: "*.tsv"
   - hits:
-      type: file
-      description: A TSV formatted file with individual gene hits
-      pattern: "*-hits.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}-hits.tsv:
+          type: file
+          description: A TSV formatted file with individual gene hits
+          pattern: "*-hits.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@rpetit3"
 maintainers:

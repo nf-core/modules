@@ -1,60 +1,74 @@
 name: "beagle5_beagle"
-description: Beagle v5.2 is a software package for phasing genotypes and for imputing ungenotyped markers.
+description: Beagle v5.2 is a software package for phasing genotypes and for imputing
+  ungenotyped markers.
 keywords:
   - phasing
   - imputation
   - genotype
 tools:
   - "beagle5":
-      description: "Beagle is a software package for phasing genotypes and for imputing ungenotyped markers."
+      description: "Beagle is a software package for phasing genotypes and for imputing
+        ungenotyped markers."
       homepage: "https://faculty.washington.edu/browning/beagle/b5_2.html"
       documentation: "https://faculty.washington.edu/browning/beagle/beagle_5.2_13Oct21.pdf"
       doi: "10.1016/j.ajhg.2021.08.005; doi:10.1016/j.ajhg.2018.07.015"
       licence: ["GPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - vcf:
-      type: file
-      description: target VCF input file to be imputed and or phased
-      pattern: "*.{vcf,vcf.gz}"
-  - ref:
-      type: file
-      description: reference panel in bref3 or VCF format
-      pattern: "*.{vcf,vcf.gz,bref3}"
-  - genmap:
-      type: file
-      description: a PLINK format genetic map with cM units
-      pattern: "*.{map,map.gz,map.zip}"
-  - exclsamples:
-      type: file
-      description: text file containing samples one sample per line to be excluded from the analysis
-      pattern: "*.*"
-  - exclmarkers:
-      type: file
-      description: text file containing markers one marker per line to be excluded from the analysis
-      pattern: "*.*"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - vcf:
+        type: file
+        description: target VCF input file to be imputed and or phased
+        pattern: "*.{vcf,vcf.gz}"
+  - - refpanel:
+        type: file
+        description: target reference panel
+  - - genmap:
+        type: file
+        description: a PLINK format genetic map with cM units
+        pattern: "*.{map,map.gz,map.zip}"
+  - - exclsamples:
+        type: file
+        description: text file containing samples one sample per line to be excluded
+          from the analysis
+        pattern: "*.*"
+  - - exclmarkers:
+        type: file
+        description: text file containing markers one marker per line to be excluded
+          from the analysis
+        pattern: "*.*"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - vcf:
-      type: file
-      description: bgzip compressed VCF file that contains phased non missing genotypes for all non reference samples
-      pattern: "*.vcf.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.vcf.gz":
+          type: file
+          description: bgzip compressed VCF file that contains phased non missing genotypes
+            for all non reference samples
+          pattern: "*.vcf.gz"
   - log:
-      type: file
-      description: a summary of the analysis that includes the Beagle version, the command line arguments, and compute time.
-      pattern: "*.log"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.log":
+          type: file
+          description: a summary of the analysis that includes the Beagle version, the
+            command line arguments, and compute time.
+          pattern: "*.log"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@ashotmarg"
 maintainers:

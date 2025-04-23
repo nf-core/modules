@@ -6,39 +6,39 @@ keywords:
   - convert
 tools:
   - "seqkit":
-      description: "Cross-platform and ultrafast toolkit for FASTA/Q file manipulation, written by Wei Shen."
+      description: "Cross-platform and ultrafast toolkit for FASTA/Q file manipulation,
+        written by Wei Shen."
       homepage: "https://github.com/shenwei356/seqkit"
       documentation: "https://bioinf.shenwei.me/seqkit/"
       doi: "10.1371/journal.pone.0163962"
       licence: ["MIT"]
+      identifier: biotools:seqkit
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-
-  - fastq:
-      type: file
-      description: Sequence file in fastq format
-      pattern: "*.{fastq,fq}.gz"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - fastq:
+        type: file
+        description: Sequence file in fastq format
+        pattern: "*.{fastq,fq}.gz"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test', single_end:false ]`
-
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - fasta:
-      type: file
-      description: Sequence file in fasta format
-      pattern: "*.{fasta,fa}.gz"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.fa.gz":
+          type: file
+          description: Sequence file in fasta format
+          pattern: "*.{fasta,fa}.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@d-jch"

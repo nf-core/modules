@@ -12,45 +12,72 @@ keywords:
   - bam
 tools:
   - biscuit:
-      description: A utility for analyzing sodium bisulfite conversion-based DNA methylation/modification data
+      description: A utility for analyzing sodium bisulfite conversion-based DNA methylation/modification
+        data
       homepage: https://huishenlab.github.io/biscuit/
       documentation: https://huishenlab.github.io/biscuit/epiread_format/
       tool_dev_url: https://github.com/huishenlab/biscuit
       licence: ["MIT"]
+      identifier: biotools:biscuit
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: Biscuit BAM file
-  - bai:
-      type: file
-      description: BAM index
-  - snp_bed:
-      type: file
-      description: BED file containing SNP information (optional)
-  - index:
-      type: directory
-      description: Biscuit genome index directory (generated with 'biscuit index')
-      pattern: "BiscuitIndex"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM file contained mapped reads
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bai:
+        type: file
+        description: BAM file index
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - snp_bed:
+        type: file
+        description: BED file containing SNP information (optional)
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Input genome fasta file
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - index:
+        type: directory
+        description: Directory containing biscuit genome index
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - epiread_bed:
-      type: file
-      description: Gzipped BED file with methylation (and optionally SNV) information
-      pattern: "*.{epiread.bed.gz}"
+  - bed:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bed.gz":
+          type: file
+          description: Gzipped BED file with methylation (and optionally SNV) information
+          pattern: "*.{epiread.bed.gz}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@njspix"
 maintainers:
   - "@njspix"
+  - "@sateeshperi"

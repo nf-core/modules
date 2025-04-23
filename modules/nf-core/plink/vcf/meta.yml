@@ -13,38 +13,53 @@ tools:
       homepage: "https://www.cog-genomics.org/plink"
       tool_dev_url: "https://www.cog-genomics.org/plink/1.9/dev"
       licence: ["GPL"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: Variant calling file (vcf)
-      pattern: "*.{vcf}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: Variant calling file (vcf)
+        pattern: "*.{vcf}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - bed:
-      type: file
-      description: PLINK binary biallelic genotype table
-      pattern: "*.{bed}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bed":
+          type: file
+          description: PLINK binary biallelic genotype table
+          pattern: "*.{bed}"
   - bim:
-      type: file
-      description: PLINK extended MAP file
-      pattern: "*.{bim}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bim":
+          type: file
+          description: PLINK extended MAP file
+          pattern: "*.{bim}"
   - fam:
-      type: file
-      description: PLINK sample information file
-      pattern: "*.{fam}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fam":
+          type: file
+          description: PLINK sample information file
+          pattern: "*.{fam}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@Mxrcon"
   - "@abhi18av"

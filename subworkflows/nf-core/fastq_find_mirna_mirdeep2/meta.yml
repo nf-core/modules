@@ -1,0 +1,51 @@
+name: "fastq_find_mirna_mirdeep2"
+description: |
+  This subworkflow identifies miRNAs from FASTQ files using miRDeep2. The workflow converts FASTQ to FASTA, processes and replaces any whitespace in sequence IDs, builds a Bowtie index of the genome, and then maps reads using miRDeep2 mapper before identifying known and novel miRNAs.
+keywords:
+  - miRNA
+  - FASTQ
+  - FASTA
+  - Bowtie
+  - miRDeep2
+components:
+  - seqkit/fq2fa
+  - seqkit/replace
+  - bowtie/build
+  - mirdeep2/mapper
+  - mirdeep2/mirdeep2
+input:
+  - ch_reads:
+      type: file
+      description: |
+        The input channel containing the FASTQ files to process and identify miRNAs.
+        Structure: [ val(meta), path(fastq) ]
+      pattern: "*.fastq.gz"
+  - ch_genome_fasta:
+      type: file
+      description: |
+        The input channel containing the genome FASTA files used to build the Bowtie index.
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.fa"
+  - ch_mirna_mature_hairpin:
+      type: file
+      description: |
+        The input channel containing the mature and hairpin miRNA sequences for miRNA identification.
+        Structure: [ val(meta), path(mature_fasta), path(hairpin_fasta) ]
+      pattern: "*.fa"
+output:
+  - outputs:
+      type: file
+      description: |
+        The output channel containing the BED, CSV, and HTML files with the identified miRNAs.
+        Structure: [ val(meta), path(bed), path(csv), path(html) ]
+      pattern: "*.{bed,csv,html}"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@atrigila"
+maintainers:
+  - "@atrigila"

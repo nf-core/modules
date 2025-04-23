@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "orthofinder"
-description: OrthoFinder is a fast, accurate and comprehensive platform for comparative genomics.
+description: OrthoFinder is a fast, accurate and comprehensive platform for comparative
+  genomics.
 keywords:
   - genomics
   - orthogroup
@@ -12,38 +12,59 @@ keywords:
   - phylogeny
 tools:
   - "orthofinder":
-      description: "Accurate inference of orthogroups, orthologues, gene trees and rooted species tree made easy!"
+      description: "Accurate inference of orthogroups, orthologues, gene trees and rooted
+        species tree made easy!"
       homepage: "https://github.com/davidemms/OrthoFinder"
       documentation: "https://github.com/davidemms/OrthoFinder"
       tool_dev_url: "https://github.com/davidemms/OrthoFinder"
       doi: "10.1186/s13059-019-1832-y"
       licence: ["GPL v3"]
+      identifier: biotools:OrthoFinder
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1' ]`
-  - fastas:
-      type: list
-      description: Input fasta files
-      pattern: "*.{fa,faa,fasta,fas,pep}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fastas:
+        type: list
+        description: Input fasta files
+        pattern: "*.{fa,faa,fasta,fas,pep}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing a name
+          e.g. `[ id:'folder1' ]`
+    - prior_run:
+        type: directory
+        description: |
+          A folder container containing a previous WorkingDirectory from Orthofinder.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1' ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - orthofinder:
-      type: directory
-      description: Orthofinder output directory
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - $prefix:
+          type: directory
+          description: Orthofinder output directory
+  - working:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - $prefix/WorkingDirectory:
+          type: directory
+          description: Orthofinder output WorkingDirectory (used for the orthofinder resume
+            function)
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@GallVp"
 maintainers:

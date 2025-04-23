@@ -1,5 +1,6 @@
 name: "art_illumina"
-description: Simulation tool to generate synthetic Illumina next-generation sequencing reads
+description: Simulation tool to generate synthetic Illumina next-generation sequencing
+  reads
 keywords:
   - fastq
   - fasta
@@ -7,51 +8,74 @@ keywords:
   - simulate
 tools:
   - "art":
-      description: "ART is a set of simulation tools to generate synthetic next-generation sequencing reads. ART simulates sequencing reads by mimicking real sequencing process with empirical error models or quality profiles summarized from large recalibrated sequencing data. ART can also simulate reads using user own read error model or quality profiles. "
+      description: "ART is a set of simulation tools to generate synthetic next-generation
+        sequencing reads. ART simulates sequencing reads by mimicking real sequencing
+        process with empirical error models or quality profiles summarized from large
+        recalibrated sequencing data. ART can also simulate reads using user own read
+        error model or quality profiles. "
       homepage: "https://www.niehs.nih.gov/research/resources/software/biostatistics/art/index.cfm"
       doi: "10.1093/bioinformatics/btr708"
       licence: ["GPL version 3 license"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - fasta:
-      type: file
-      description: FASTA file of input DNA/RNA reference
-      pattern: "*.{fasta,fa}"
-  - sequencing_system:
-      type: string
-      description: The name of Illumina sequencing system of the built-in profile used for simulation
-  - fold_coverage:
-      type: integer
-      description: The fold of read coverage to be simulated or number of reads/read pairs generated for each amplicon
-  - read_length:
-      type: integer
-      description: The length of reads to be simulated
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: FASTA file of input DNA/RNA reference
+        pattern: "*.{fasta,fa}"
+  - - sequencing_system:
+        type: string
+        description: The name of Illumina sequencing system of the built-in profile
+          used for simulation
+  - - fold_coverage:
+        type: integer
+        description: The fold of read coverage to be simulated or number of reads/read
+          pairs generated for each amplicon
+  - - read_length:
+        type: integer
+        description: The length of reads to be simulated
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - fastq:
-      type: file
-      description: Simulated reads
-      pattern: "*.fq.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fq.gz":
+          type: file
+          description: Simulated reads
+          pattern: "*.fq.gz"
   - aln:
-      type: file
-      description: OPTIONAL Alignment file of the simulated reads. Enabled by default, to disable, use -na/--noALN.
-      pattern: "*.aln"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.aln":
+          type: file
+          description: OPTIONAL Alignment file of the simulated reads. Enabled by default,
+            to disable, use -na/--noALN.
+          pattern: "*.aln"
   - sam:
-      type: file
-      description: OPTIONAL Alignment file in SAM format of the simulated reads. Enabled with -sam/--samout.
-      pattern: "*.sam"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.sam":
+          type: file
+          description: OPTIONAL Alignment file in SAM format of the simulated reads. Enabled
+            with -sam/--samout.
+          pattern: "*.sam"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@MarieLataretu"
 maintainers:

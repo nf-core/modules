@@ -1,5 +1,6 @@
 name: cellranger_vdj
-description: Module to use Cell Ranger's pipelines analyze sequencing data produced from Chromium Single Cell Immune Profiling.
+description: Module to use Cell Ranger's pipelines analyze sequencing data produced
+  from Chromium Single Cell Immune Profiling.
 keywords:
   - align
   - vdj
@@ -9,35 +10,49 @@ keywords:
   - cellranger
 tools:
   - cellranger:
-      description: Cell Ranger processes data from 10X Genomics Chromium kits. `cellranger vdj` takes FASTQ files from `cellranger mkfastq` or `bcl2fastq` for V(D)J libraries and performs sequence assembly and paired clonotype calling. It uses the Chromium cellular barcodes and UMIs to assemble V(D)J transcripts per cell. Clonotypes and CDR3 sequences are output as a `.vloupe` file which can be loaded into Loupe V(D)J Browser.
+      description: Cell Ranger processes data from 10X Genomics Chromium kits. `cellranger
+        vdj` takes FASTQ files from `cellranger mkfastq` or `bcl2fastq` for V(D)J libraries
+        and performs sequence assembly and paired clonotype calling. It uses the Chromium
+        cellular barcodes and UMIs to assemble V(D)J transcripts per cell. Clonotypes
+        and CDR3 sequences are output as a `.vloupe` file which can be loaded into Loupe
+        V(D)J Browser.
       homepage: https://support.10xgenomics.com/single-cell-vdj/software/pipelines/latest/what-is-cell-ranger
       documentation: https://support.10xgenomics.com/single-cell-vdj/software/pipelines/latest/tutorial/tutorial-vdj
       tool_dev_url: https://support.10xgenomics.com/single-cell-vdj/software/pipelines/latest/tutorial/tutorial-vdj
       licence: [10X Genomics EULA]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: |
-        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-        respectively.
-      pattern: "${Sample_Name}_S1_L00${Lane_Number}_${I1,I2,R1,R2}_001.fastq.gz"
-  - reference:
-      type: directory
-      description: Folder containing all the reference indices needed by Cell Ranger
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively.
+        pattern: "${Sample_Name}_S1_L00${Lane_Number}_${I1,I2,R1,R2}_001.fastq.gz"
+  - - reference:
+        type: directory
+        description: Folder containing all the reference indices needed by Cell Ranger
 output:
   - outs:
-      type: file
-      description: Files containing the outputs of Cell Ranger, see official 10X Genomics documentation for a complete list
-      pattern: "${meta.id}/outs/*"
+      - meta:
+          type: file
+          description: Files containing the outputs of Cell Ranger, see official 10X Genomics
+            documentation for a complete list
+          pattern: "${meta.id}/outs/*"
+      - "**/outs/**":
+          type: file
+          description: Files containing the outputs of Cell Ranger, see official 10X Genomics
+            documentation for a complete list
+          pattern: "${meta.id}/outs/*"
   - versions:
-      type: file
-      description: File containing software version
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software version
+          pattern: "versions.yml"
 authors:
   - "@ggabernet"
   - "@edmundmiller"

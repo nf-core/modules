@@ -3,6 +3,8 @@ description: Typing of clinical and environmental isolates of Legionella pneumop
 keywords:
   - bacteria
   - legionella
+  - clinical
+  - pneumophila
 tools:
   - legsta:
       description: In silico Legionella pneumophila Sequence Based Typing
@@ -10,30 +12,33 @@ tools:
       documentation: https://github.com/tseemann/legsta
       tool_dev_url: https://github.com/tseemann/legsta
       licence: ["GPL v3"]
+      identifier: biotools:legsta
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - seqs:
-      type: file
-      description: FASTA, GenBank or EMBL formatted files
-      pattern: "*.{fasta,gbk,embl}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - seqs:
+        type: file
+        description: FASTA, GenBank or EMBL formatted files
+        pattern: "*.{fasta,gbk,embl}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - tsv:
-      type: file
-      description: Tab-delimited summary of the results
-      pattern: "*.{tsv}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: Tab-delimited summary of the results
+          pattern: "*.{tsv}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@rpetit3"
 maintainers:

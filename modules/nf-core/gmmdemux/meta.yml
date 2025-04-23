@@ -1,90 +1,125 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "gmmdemux"
 
-description: GMM-Demux is a Gaussian-Mixture-Model-based software for processing sample barcoding data (cell hashing and MULTI-seq).
+description: GMM-Demux is a Gaussian-Mixture-Model-based software for processing sample
+  barcoding data (cell hashing and MULTI-seq).
 keywords:
   - demultiplexing
   - hashing-based deconvolution
   - single-cell
 tools:
   - "gmmdemux":
-      description: "GMM-Demux is a Gaussian-Mixture-Model-based software for processing sample barcoding data (cell hashing and MULTI-seq)."
+      description: "GMM-Demux is a Gaussian-Mixture-Model-based software for processing
+        sample barcoding data (cell hashing and MULTI-seq)."
       homepage: "https://pypi.org/project/GMM-Demux/"
       documentation: "https://github.com/CHPGenetics/GMM-Demux"
       tool_dev_url: "https://github.com/CHPGenetics/GMM-demux"
       doi: "10.1186/s13059-020-02084-2"
       licence: ["MIT"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1']`
-  - hto_matrix:
-      type: file
-      description: path to matrix from cell hashing data, the tool receives either CSV files or TSV, type must be specified using parameters
-  - hto_names:
-      type: string
-      description: |
-        Comma separated list of HTO names, without whitespace
-  - type_report:
-      type: boolean
-      description: |
-        If true, full classification report is generated, otherwise the simplified classification report.
-  - summary_report:
-      type: boolean
-      description: |
-        If true, summary report is generated.
-  - skip:
-      type: file
-      description: |
-        Load a full classification report and skip the mtx folder as input. Require a path argument.
-  - examine:
-      type: file
-      description: |
-        Provide the cell list. Requires a file argument. Only executes if -u is set.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1']`
+    - hto_matrix:
+        type: file
+        description: path to matrix from cell hashing data, the tool receives either
+          CSV files or TSV, type must be specified using parameters
+    - hto_names:
+        type: string
+        description: |
+          Comma separated list of HTO names, without whitespace
+  - - type_report:
+        type: boolean
+        description: |
+          If true, full classification report is generated, otherwise the simplified classification report.
+  - - summary_report:
+        type: boolean
+        description: |
+          If true, summary report is generated.
+  - - skip:
+        type: file
+        description: |
+          Load a full classification report and skip the mtx folder as input. Require a path argument.
+  - - examine:
+        type: file
+        description: |
+          Provide the cell list. Requires a file argument. Only executes if -u is set.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1' ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - barcodes:
-      type: file
-      description: |
-        barcodes tsv file with removed cell-hashing-identifiable multiplets
-      pattern: "barcodes.tsv.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - 'barcodes.tsv.gz"     ':
+          type: file
+          description: |
+            barcodes tsv file with removed cell-hashing-identifiable multiplets
+          pattern: "barcodes.tsv.gz"
   - matrix:
-      type: file
-      description: |
-        matrix mtx.tsv file with removed cell-hashing-identifiable multiplets
-      pattern: "matrix.mtx.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - 'matrix.mtx.gz"       ':
+          type: file
+          description: |
+            matrix mtx.tsv file with removed cell-hashing-identifiable multiplets
+          pattern: "matrix.mtx.gz"
   - features:
-      type: file
-      description: |
-        features tsv file with removed cell-hashing-identifiable multiplets
-      pattern: "features.tsv.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - 'features.tsv.gz"     ':
+          type: file
+          description: |
+            features tsv file with removed cell-hashing-identifiable multiplets
+          pattern: "features.tsv.gz"
   - classification_report:
-      type: file
-      description: |
-        full or simplified classification report
-      pattern: "GMM_*.csv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - 'GMM_*.csv"           ':
+          type: file
+          description: |
+            full or simplified classification report
+          pattern: "GMM_*.csv"
   - config_report:
-      type: file
-      description: |
-        Configuration report mapping the results obtained by the tool to the respective names of the HTOs in the classification report.
-      pattern: "GMM_*.csv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - 'GMM_*.config"        ':
+          type: file
+          description: |
+            Configuration report mapping the results obtained by the tool to the respective names of the HTOs in the classification report.
+          pattern: "GMM_*.csv"
   - summary_report:
-      type: file
-      description: |
-        summary report, optional output
-      pattern: "test/summary_report_*.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - summary_report_*.txt:
+          type: file
+          description: |
+            summary report, optional output
+          pattern: "test/summary_report_*.txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@mari-ga"
   - "@maxozo"

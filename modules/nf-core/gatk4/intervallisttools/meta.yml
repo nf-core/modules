@@ -1,5 +1,6 @@
 name: gatk4_intervallisttools
-description: Splits the interval list file into unique, equally-sized interval files and place it under a directory
+description: Splits the interval list file into unique, equally-sized interval files
+  and place it under a directory
 keywords:
   - bed
   - gatk4
@@ -15,30 +16,36 @@ tools:
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
       doi: 10.1158/1538-7445.AM2017-3590
       licence: ["Apache-2.0"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - interval_list:
-      type: file
-      description: Interval list file
-      pattern: "*.interval_list"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - intervals:
+        type: file
+        description: Interval file
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - interval_list:
-      type: file
-      description: Interval list files
-      pattern: "*.interval_list"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_split/*/*.interval_list":
+          type: file
+          description: Interval list files
+          pattern: "*.interval_list"
+      - _list:
+          type: file
+          description: Interval list files
+          pattern: "*.interval_list"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@praveenraj2018"
 maintainers:

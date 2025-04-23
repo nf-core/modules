@@ -114,7 +114,6 @@ process NANOCOMP {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch versions.yml
     touch "${prefix}"NanoComp_lengths_violin.html
     touch "${prefix}"NanoComp_log_length_violin.html
     touch "${prefix}"NanoComp_N50.html
@@ -133,5 +132,10 @@ process NANOCOMP {
     touch "${prefix}"NanoComp_CumulativeYieldPlot_Gigabases.html
     touch "${prefix}"NanoComp_sequencing_speed_over_time.html
     touch "${prefix}"NanoStats.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        nanocomp: \$(echo \$(NanoComp --version 2>&1) | sed 's/^.*NanoComp //; s/Using.*\$//' ))
+    END_VERSIONS
     """
 }

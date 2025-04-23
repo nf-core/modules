@@ -6,36 +6,40 @@ keywords:
   - vcf
 tools:
   - snpsift:
-      description: SnpSift is a toolbox that allows you to filter and manipulate annotated files
+      description: SnpSift is a toolbox that allows you to filter and manipulate annotated
+        files
       homepage: https://pcingola.github.io/SnpEff/ss_introduction/
       documentation: https://pcingola.github.io/SnpEff/ss_introduction/
       tool_dev_url: https://github.com/pcingola/SnpEff
       doi: "10.3389/fgene.2012.00035"
       licence: ["MIT"]
+      identifier: biotools:snpsift
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: VCF file(s)
-      pattern: "*.{vcf,vcf.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: VCF file(s)
+        pattern: "*.{vcf,vcf.gz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - out_vcfs:
-      type: file
-      description: Split/Joined VCF file(s)
-      pattern: "*.vcf"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf":
+          type: file
+          description: Split/Joined VCF file(s)
+          pattern: "*.vcf"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@SusiJo"
   - "@jonasscheid"

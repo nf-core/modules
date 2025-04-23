@@ -1,39 +1,49 @@
 name: cellrangeratac_count
-description: Module to use Cell Ranger's ATAC pipelines analyze sequencing data produced from Chromium Single Cell ATAC.
+description: Module to use Cell Ranger's ATAC pipelines analyze sequencing data produced
+  from Chromium Single Cell ATAC.
 keywords:
   - align
   - count
   - reference
 tools:
   - cellranger-atac:
-      description: Cell Ranger ATAC is a set of analysis pipelines that process Chromium Single Cell ATAC data.
+      description: Cell Ranger ATAC is a set of analysis pipelines that process Chromium
+        Single Cell ATAC data.
       homepage: https://support.10xgenomics.com/single-cell-atac/software/pipelines/latest/what-is-cell-ranger-atac
       documentation: https://support.10xgenomics.com/single-cell-atac/software/pipelines/latest/what-is-cell-ranger-atac
       tool_dev_url: https://support.10xgenomics.com/single-cell-atac/software/pipelines/latest/what-is-cell-ranger-atac
-      licence: 10x Genomics EULA
+      licence: ["10x Genomics EULA"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: |
-        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-        respectively, plus an additional FastQ for the barcodes
-  - reference:
-      type: directory
-      description: Directory containing all the reference indices needed by Cell Ranger ATAC
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively, plus an additional FastQ for the barcodes
+  - - reference:
+        type: directory
+        description: Directory containing all the reference indices needed by Cell Ranger
+          ATAC
 output:
   - outs:
-      type: file
-      description: Files containing the outputs of Cell Ranger ATAC
-      pattern: "sample-${meta.gem}/outs/*"
+      - meta:
+          type: file
+          description: Files containing the outputs of Cell Ranger ATAC
+          pattern: "sample-${meta.gem}/outs/*"
+      - ${meta.id}/outs/*:
+          type: file
+          description: Files containing the outputs of Cell Ranger ATAC
+          pattern: "sample-${meta.gem}/outs/*"
   - versions:
-      type: file
-      description: File containing software version
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software version
+          pattern: "versions.yml"
 authors:
   - "@ggabernet"
   - "@edmundmiller"

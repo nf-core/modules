@@ -11,11 +11,10 @@ nextflow_process {
     tag "arriba/download"
 
     test("test-arriba-download") {
-
         when {
             process {
                 """
-
+                input[0] = 'GRCh38'
                 """
             }
         }
@@ -23,11 +22,27 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.reference[0].collect { file(it).name }.toSorted(),
-                    process.out.versions
-                    ).match()
-                }
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("download - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = 'GRCh38'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success }
             )
         }
     }
