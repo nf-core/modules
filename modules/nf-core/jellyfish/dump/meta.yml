@@ -28,18 +28,20 @@ input:
         description: Jellyfish binary k-mer database
         pattern: "*.jf"
 output:
-  - fa:
+  - output:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - ${prefix}.fa:
+      - ${prefix}.${extension}:
           type: file
-          description: Human readable k-mer database in fasta format
-          pattern: "*.fa"
+          description: Human readable k-mer database in fasta format, or in 2-column space
+            delimited format if the -c argument is provided
+          pattern: "*.{fa,txt}"
           ontologies:
             - edam: http://edamontology.org/format_1929 # FASTA
+            - edam: http://edamontology.org/format_2330 # Textual format
   - versions:
       - versions.yml:
           type: file

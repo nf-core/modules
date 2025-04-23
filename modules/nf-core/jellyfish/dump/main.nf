@@ -11,8 +11,8 @@ process JELLYFISH_DUMP {
     tuple val(meta), path(jf)
 
     output:
-    tuple val(meta), path("${prefix}.fa"), emit: fa
-    path "versions.yml"                  , emit: versions
+    tuple val(meta), path("${prefix}.${extension}"), emit: output
+    path "versions.yml"                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,11 +20,12 @@ process JELLYFISH_DUMP {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    extension = args.contains("-c") ? "txt" : "fa"
     """
     jellyfish \\
         dump \\
         $args \\
-        ${jf} > ${prefix}.fa
+        ${jf} > ${prefix}.${extension}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -35,8 +36,9 @@ process JELLYFISH_DUMP {
     stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    extension = args.contains("-c") ? "txt" : "fa"
     """
-    touch ${prefix}.fa
+    touch ${prefix}.${extension}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
