@@ -60,7 +60,7 @@ process VSEARCH_CLUSTER {
 
     if [[ $args3 == "--clusters" ]]
     then
-        find . -name \"${prefix}.${out_ext}*[0-9]\" | xargs gzip -n
+        find . -type f -name \"${prefix}.${out_ext}*[0-9]\" | xargs gzip -n
     elif [[ $args3 != "--samout" ]]
     then
         gzip -n ${prefix}.${out_ext}
