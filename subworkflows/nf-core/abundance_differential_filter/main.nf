@@ -50,9 +50,12 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // For DIFFERENTIAL modules we need to cross the things we're iterating so we
     // run differential analysis for every combination of matrix and contrast
     inputs = ch_input
-        .join(ch_samplesheet)
-        .join(ch_transcript_lengths, remainder:true)
-        .join(ch_control_features, remainder:true)
+        .combine(
+            ch_samplesheet
+                .join(ch_transcript_lengths, remainder:true)
+                .join(ch_control_features, remainder:true)
+            , by:0
+        )
         .combine(ch_contrasts.transpose(), by:0)
         .multiMap(criteria)
 
@@ -61,10 +64,18 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // on the contrast setting etc, these modules may subset matrices, hence
     // not returning the full normalized matrix as NORM modules would do.
     norm_inputs = ch_input
-        .join(ch_samplesheet)
-        .join(ch_transcript_lengths, remainder:true)
-        .join(ch_control_features, remainder:true)
-        .join(ch_contrasts.transpose().first()) // Just taking the first contrast
+        .combine(
+            ch_samplesheet
+                .join(ch_transcript_lengths, remainder:true)
+                .join(ch_control_features, remainder:true)
+            , by:0
+        )
+        .combine(
+            ch_contrasts.map { meta, contrast, variable, reference, target, formula, comparison ->
+                [meta, contrast[0], variable[0], reference[0], target[0], formula[0], comparison[0]] // Just taking the first contrast
+            }
+            , by:0
+        )
         .multiMap(criteria)
 
     // ----------------------------------------------------
