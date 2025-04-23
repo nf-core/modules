@@ -45,13 +45,13 @@ process CELLRANGERATAC_MKREF {
     """
     mkdir -p "${reference_name}/"
     mkdir -p "${reference_name}/fasta/"
-    touch "${reference_name}/fasta/genome.fa{,.amb,.ann,.bwt,.fai,.pac,.sa}"
+    eval touch \""${reference_name}/fasta"\"/genome.fa{,.amb,.ann,.bwt,.fai,.pac,.sa}
 
     mkdir -p "${reference_name}/genes/"
     echo | gzip > "${reference_name}/genes/genes.gtf.gz"
 
     mkdir -p "${reference_name}/regions/"
-    touch "${reference_name}/regions/{motifs.pfm, transcripts.bed, tss.bed}"
+    eval touch \""${reference_name}/regions"\"/{motifs.pfm,transcripts.bed,tss.bed}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
