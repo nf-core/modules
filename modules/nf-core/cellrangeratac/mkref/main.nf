@@ -45,7 +45,7 @@ process CELLRANGERATAC_MKREF {
     """
     mkdir -p "${reference_name}/"
     mkdir -p "${reference_name}/fasta/"
-    eval touch \""${reference_name}/fasta"\"/genome.fa{,.amb,.ann,.bwt,.fai,.pac,.sa}
+    touch ${reference_name}/fasta/genome.fa{,.amb,.ann,.bwt,.fai,.pac,.sa}
 
     mkdir -p "${reference_name}/genes/"
     echo | gzip > "${reference_name}/genes/genes.gtf.gz"
