@@ -36,7 +36,6 @@ process CELLRANGERATAC_MKREF {
     END_VERSIONS
     """
 
-
     stub:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
