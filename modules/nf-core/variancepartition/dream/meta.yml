@@ -37,6 +37,9 @@ input:
     - formula:
         type: string
         description: (Mandatory) R formula string used for modeling, e.g. '~ treatment + (1 | sample_number)'.
+    - comparison:
+        type: string
+        description: (Optional) Literal string passed to `limma::makeContrasts`, e.g. 'treatmenthND6 - treatmentmCherry'.
   - - meta2:
         type: map
         description: |
