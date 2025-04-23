@@ -52,15 +52,9 @@ process KAT_HIST {
     stub:
     def args      = task.ext.args   ?: ''
     def prefix    = task.ext.prefix ?: "${meta.id}"
-    def plot_type = args.contains("-p") || args.contains("--output_type") ?
-        args.split("(-p|--output_type) ")[-1].split(" ")[0] : 'png'
-    def hash_cmd  = args.contains("-d") || args.contains("--dump_hash") ? "touch ${prefix}-hash.jf27" : ""
     assert false: deprecation_message
     """
     touch ${prefix}.hist
-    touch ${prefix}.hist.dist_analysis.json
-    touch ${prefix}.${plot_type}
-    ${hash_cmd}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
