@@ -1,3 +1,11 @@
+def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/merqury/merqury
+
+Reason:
+This module no longer works in conda due to glibc incompatibilities with plotting libraries
+This module is no longer maintained by the authors
+"""
+
 process KAT_HIST {
     tag "$meta.id"
     label 'process_medium'
@@ -25,12 +33,15 @@ process KAT_HIST {
     script:
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    assert false: deprecation_message
     """
     kat hist \\
         --threads $task.cpus \\
         --output_prefix ${prefix}.hist \\
         $args \\
         $reads
+
+    ls -l
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -44,7 +55,7 @@ process KAT_HIST {
     def plot_type = args.contains("-p") || args.contains("--output_type") ?
         args.split("(-p|--output_type) ")[-1].split(" ")[0] : 'png'
     def hash_cmd  = args.contains("-d") || args.contains("--dump_hash") ? "touch ${prefix}-hash.jf27" : ""
-
+    assert false: deprecation_message
     """
     touch ${prefix}.hist
     touch ${prefix}.hist.dist_analysis.json

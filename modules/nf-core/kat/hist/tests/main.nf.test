@@ -26,14 +26,7 @@ nextflow_process {
         }
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    process.out.hist,
-                    process.out.json,
-                    process.out.png,
-                    file(process.out.jellyfish_hash[0][1]).name // Unstable md5sum
-                ).match() }
+                { assert process.failed }
             )
         }
     }
@@ -56,13 +49,7 @@ nextflow_process {
         }
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    process.out.hist,
-                    process.out.json,
-                    file(process.out.ps[0][1]).name // Unstable md5sum
-                ).match() }
+                { assert process.failed }
             )
         }
     }
@@ -87,11 +74,7 @@ nextflow_process {
         }
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert process.failed }
             )
         }
     }
