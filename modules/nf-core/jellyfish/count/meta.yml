@@ -22,7 +22,7 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
+          e.g. `[ id:'sample1' ]`
     - fasta:
         type: file
         description: Nucleotide sequences in FASTA format
@@ -34,14 +34,16 @@ input:
         description: k-mer size to use
   - - size:
         type: string
-        description: Specifies the memory hash size (in bytes) to allocate for the k-mer counting hash table
+        description: |
+          Specifies the memory hash size (in bytes) to allocate for the k-mer counting hash table (e.g., '100M').
+          A mean estimation could be carried with this formula: 'genome size + (genome size * coverage * kmer-length * error rate)'
 output:
   - jf:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1' ]`
       - ${prefix}.jf:
           type: file
           description: Jellyfish binary k-mer database
