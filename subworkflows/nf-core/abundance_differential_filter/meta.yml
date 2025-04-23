@@ -69,14 +69,20 @@ input:
             type: map
             description: Metadata map
         - contrast_variable:
-            type: value
-            description: Contrast variable
+            type: list
+            description: List of contrast variable
         - reference:
-            type: value
-            description: Reference level
+            type: list
+            description: List of reference level
         - target:
-            type: value
-            description: Target level
+            type: list
+            description: List of target level
+        - formula:
+            type: list
+            description: List of contrast formula
+        - comparison:
+            type list:
+            description: List of contrast comparison
 
 output:
   - versions:
