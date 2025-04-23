@@ -44,6 +44,22 @@ process CELLRANGERATAC_MKREF {
     def args = task.ext.args ?: ''
     """
     mkdir -p "${reference_name}/"
+    mkdir -p "${reference_name}/fasta/"
+    touch "${reference_name}/fasta/genome.fa" \\
+        "${reference_name}/fasta/genome.fa.amb" \\
+        "${reference_name}/fasta/genome.fa.ann" \\
+        "${reference_name}/fasta/genome.fa.bwt" \\
+        "${reference_name}/fasta/genome.fa.fai" \\
+        "${reference_name}/fasta/genome.fa.pac" \\
+        "${reference_name}/fasta/genome.fa.sa"
+
+    mkdir -p "${reference_name}/genes/"
+    touch "${reference_name}/genes/genes.gtf.gz"
+
+    mkdir -p "${reference_name}/regions/"
+    touch "${reference_name}/regions/motifs.pfm" \\
+        "${reference_name}/regions/transcripts.bed" \\
+        "${reference_name}/regions/tss.bed"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
