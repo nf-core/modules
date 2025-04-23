@@ -18,8 +18,8 @@ process FASTCOV {
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
-    file_ext = file_ext.isEmpty() ? 'png' : file_ext[0]
-    args = args.isEmpty() ? '' : args[0]
+    args = task.ext.args ?: ""
+    file_ext = file_ext.isEmpty() ? 'png' : file_ext
     def VERSION = '0.1.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     fastcov.py \\
@@ -35,6 +35,8 @@ process FASTCOV {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
+    args = task.ext.args ?: ""
+    file_ext = file_ext.isEmpty() ? 'png' : file_ext
     def VERSION = '0.1.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
