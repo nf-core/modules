@@ -51,7 +51,7 @@ process CELLRANGERATAC_MKREF {
     echo | gzip > "${reference_name}/genes/genes.gtf.gz"
 
     mkdir -p "${reference_name}/regions/"
-    eval touch \""${reference_name}/regions"\"/{motifs.pfm,transcripts.bed,tss.bed}
+    touch ${reference_name}/regions/{motifs.pfm,transcripts.bed,tss.bed}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
