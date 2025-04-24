@@ -30,7 +30,6 @@ process SEQUENCETOOLS_PILEUPCALLER {
     freqsum_output = "-e" in args_list || "--eigenstratOut" in args_list || "-p" in args_list || "--plinkOut" in args_list ? '' : "| gzip -c > ${prefix}.freqsum.gz"
 
     """
-    echo $args
     gzip -cdf ${mpileup} | \\
     pileupCaller \\
         -f ${snpfile} \\
