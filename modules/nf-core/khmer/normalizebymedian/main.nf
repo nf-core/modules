@@ -19,7 +19,7 @@ process KHMER_NORMALIZEBYMEDIAN {
 
     script:
     def args   = task.ext.args   ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_normalized"
     assert "${prefix}.fastq.gz" != fastq_paired.name   : "KHMER_NORMALIZEBYMEDIAN: The output file name must be different from the input file name. Please set a different prefix."
     assert "${prefix}.fastq.gz" != fastq_unpaired.name : "KHMER_NORMALIZEBYMEDIAN: The output file name must be different from the input file name. Please set a different prefix."
     def paired   = fastq_paired   ? "--paired"                     : ""
