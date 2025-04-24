@@ -41,7 +41,7 @@ process KHMER_NORMALIZEBYMEDIAN {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_normalized"
     """
     echo "" | gzip > ${prefix}.fastq.gz
     cat <<-END_VERSIONS > versions.yml
