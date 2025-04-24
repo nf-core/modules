@@ -68,7 +68,12 @@ input:
         - meta:
             type: map
             description: Metadata map
-        - contrast_variable:
+        - contrast:
+            type: map
+            description: |
+              Map with all the contrast info, such as contrast
+              id, variable, reference, target, etc.
+        - variable:
             type: list
             description: List of contrast variable
         - reference:
