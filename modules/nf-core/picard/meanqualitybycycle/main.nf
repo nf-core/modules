@@ -12,7 +12,7 @@ process PICARD_MEANQUALITYBYCYCLE {
 
     output:
     tuple val(meta), path("*.txt"), emit: metrics
-    tuple val(meta), path("*.pdf"), emit: chart
+    tuple val(meta), path("*.pdf"), emit: pdf
     path "versions.yml"           , emit: versions
 
     when:
