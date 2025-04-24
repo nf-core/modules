@@ -34,10 +34,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.gz":
+      - "*.merged.gz":
           type: file
           description: Output file in gzipped format
-          pattern: "*.gz"
+          pattern: "*.merged.gz"
   - versions:
       - versions.yml:
           type: file
