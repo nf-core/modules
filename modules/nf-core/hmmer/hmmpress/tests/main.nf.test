@@ -1,0 +1,66 @@
+
+nextflow_process {
+
+    name "Test Process HMMER_HMMPRESS"
+    script "../main.nf"
+    process "HMMER_HMMPRESS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hmmer"
+    tag "hmmer/hmmpress"
+    tag "gunzip"
+
+    setup {
+            run("GUNZIP") {
+                script "../../../gunzip"
+
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.hmm.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+    test("sarscov2 - proteome - hmm - gz") {
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - proteome - hmm - gz - stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

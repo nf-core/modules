@@ -31,8 +31,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match()},
                 { assert path(process.out.alignment.get(0).get(1)).getTextGzip().contains("1ahl") },
+                { assert snapshot(process.out.versions).match()}
             )
         }
     }
@@ -57,8 +57,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match()},
                 { assert path(process.out.alignment.get(0).get(1)).getText().contains("1ahl") },
+                { assert snapshot(process.out.versions).match()}
             )
         }
     }
@@ -98,8 +98,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match()},
                 { assert path(process.out.alignment.get(0).get(1)).getTextGzip().contains("1ahl") },
+                { assert snapshot(process.out.versions).match()}
             )
         }
 
@@ -142,7 +142,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.alignment.get(0).get(1)).getTextGzip().contains("1ahl") },
-                { assert snapshot(process.out.versions).match("versions_structure") }
+                { assert snapshot(process.out.versions).match() }
             )
         }
 
@@ -169,8 +169,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.alignment.get(0).get(1)).getTextGzip().contains("1ahl") },
-                { assert snapshot(process.out.versions).match()
-                }
+                { assert snapshot(process.out.versions).match()}
             )
         }
     }
@@ -195,13 +194,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.alignment,
-                    process.out.versions
-                    ).match()
+                { assert snapshot(process.out).match()
                 }
             )
         }
     }
-
 }

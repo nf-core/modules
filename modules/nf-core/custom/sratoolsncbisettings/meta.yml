@@ -14,7 +14,10 @@ tools:
       documentation: https://github.com/ncbi/sra-tools/wiki
       tool_dev_url: https://github.com/ncbi/sra-tools
       licence: ["Public Domain"]
-      identifier: ""
+input:
+  - - ids:
+        type: string
+        description: List of id settings
 output:
   - ncbi_settings:
       - "*.mkfg":

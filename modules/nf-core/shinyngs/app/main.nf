@@ -1,4 +1,3 @@
-
 process SHINYNGS_APP {
     tag "$meta.id"
     label 'process_single'
@@ -15,8 +14,8 @@ process SHINYNGS_APP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-shinyngs:2.0.0--r43hdfd78af_0' :
-        'biocontainers/r-shinyngs:2.0.0--r43hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cc/cc056f19e734938edd84eff6ed0504f5a5b0e11e31e7ee22f6d7eae35faa62b9/data' :
+        'community.wave.seqera.io/library/r-shinyngs:2.2.3--22cbe481c5403325' }"
 
     input:
     tuple val(meta), path(sample), path(feature_meta), path(assay_files)    // Experiment-level info

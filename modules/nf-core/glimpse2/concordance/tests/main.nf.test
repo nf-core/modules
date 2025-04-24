@@ -1,0 +1,114 @@
+nextflow_process {
+
+    name "Test Process GLIMPSE2_CONCORDANCE"
+    script "../main.nf"
+    process "GLIMPSE2_CONCORDANCE"
+    tag "glimpse2"
+    tag "glimpse2/concordance"
+    tag "glimpse2/phase"
+    tag "bcftools/index"
+    tag "modules_nfcore"
+    tag "modules"
+
+    test("test glimpse2 concordance") {
+        config "./nextflow.config"
+
+        when {
+            params {
+                glimpse2_concordance_args = "--gt-val --af-tag AF"
+            }
+            process {
+                """
+                target = Channel.of([
+                    [id: "input"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi",checkIfExists:true)
+                ])
+                truth = Channel.of([
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz.csi",checkIfExists:true)
+                ])
+                allele_freq = Channel.of([
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz.csi",checkIfExists:true)
+                ])
+                list_inputs = target
+                        .combine( truth )
+                        .combine( allele_freq )
+                        .combine( Channel.of([[]]) )
+                        .combine( Channel.of(["chr22"]) )
+
+                input[0] = list_inputs
+                input[1] = Channel.of([[id:"params"], [],"0 0.01 0.05 0.1 0.2 0.5", [], [], [], []])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.errors_cal.collect{ file(it[1]).name },
+                    process.out.errors_grp.collect{ file(it[1]).name },
+                    process.out.errors_spl.collect{ file(it[1]).name },
+                    process.out.rsquare_grp.collect{ file(it[1]).name },
+                    process.out.rsquare_spl.collect{ file(it[1]).name },
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("test list of region and rsquare per site") {
+        config "./nextflow.config"
+
+        when {
+            params {
+                glimpse2_concordance_args = "--gt-val --af-tag AF --out-r2-per-site"
+            }
+            process {
+                """
+                target = Channel.of([
+                    [id: "input"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi",checkIfExists:true)
+                ])
+                truth = Channel.of([
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz.csi",checkIfExists:true)
+                ])
+                allele_freq = Channel.of([
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz.csi",checkIfExists:true)
+                ])
+                list_inputs = target
+                        .combine( truth )
+                        .combine( allele_freq )
+                        .combine( Channel.of([[]]) )
+                        .combine( Channel.of([["chr22", "chr22"]]) )
+                        .view()
+
+                input[0] = list_inputs
+                input[1] = Channel.of([[id:"params"], [],"0 0.01 0.05 0.1 0.2 0.5", [], [], [], []])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.errors_cal.collect{ file(it[1]).name },
+                    process.out.errors_grp.collect{ file(it[1]).name },
+                    process.out.errors_spl.collect{ file(it[1]).name },
+                    process.out.rsquare_grp.collect{ file(it[1]).name },
+                    process.out.rsquare_spl.collect{ file(it[1]).name },
+                    process.out.rsquare_per_site.collect{ file(it[1]).name },
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+}

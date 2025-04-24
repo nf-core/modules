@@ -1,0 +1,108 @@
+nextflow_process {
+
+    name "Test Process ANNDATA_GETSIZE"
+    script "../main.nf"
+    process "ANNDATA_GETSIZE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "anndata"
+    tag "anndata/getsize"
+
+    test("scdownstream - h5ad - cells") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/pbmc1k.h5ad', checkIfExists: true),
+                ]
+                input[1] = 'cells'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("scdownstream - h5ad - genes") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/pbmc1k.h5ad', checkIfExists: true),
+                ]
+                input[1] = 'genes'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("scdownstream - h5ad - cells - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/pbmc1k.h5ad', checkIfExists: true),
+                ]
+                input[1] = 'cells'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("scdownstream - h5ad - genes - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/pbmc1k.h5ad', checkIfExists: true),
+                ]
+                input[1] = 'genes'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

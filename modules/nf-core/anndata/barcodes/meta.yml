@@ -1,0 +1,58 @@
+name: anndata_barcodes
+description: Module to subset AnnData object to cells with matching barcodes from the csv file
+keywords:
+  - single-cell
+  - barcodes
+  - anndata
+  - subsetting
+  - transcriptomics
+tools:
+  - "anndata":
+      description: "An annotated data matrix."
+      homepage: "https://anndata.readthedocs.io"
+      documentation: "https://anndata.readthedocs.io"
+      tool_dev_url: "https://github.com/theislab/anndata"
+      doi: "10.21105/joss.04371"
+      licence: ["BSD-3-clause"]
+      identifier: biotools:anndata
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - h5ad:
+        type: file
+        description: Anndata object as H5AD file
+        pattern: "*.h5ad"
+    - barcodes:
+        type: file
+        description: |
+          CSV file containing barcodes. Barcodes are written in plain text. One column, no header
+        pattern: "*.csv"
+
+output:
+  - h5ad:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+          pattern: "*.h5ad"
+      - "*.h5ad":
+          type: file
+          description: |
+            AnnData file containing all cells with barcodes that match those in the input barcodes csv file
+          pattern: "*.h5ad"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@nictru"
+  - "@chaochaowong"
+  - "@LeonHafner"
+maintainers:
+  - "@nictru"
+  - "@LeonHafner"

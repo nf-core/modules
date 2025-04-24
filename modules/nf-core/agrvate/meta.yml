@@ -33,12 +33,12 @@ output:
             e.g. [ id:'test', single_end:false ]
       - ${fasta.baseName}-results/${fasta.baseName}-summary.tab:
           type: file
-          description: A summary of the agrvate assessement
+          description: A summary of the agrvate assessment
           pattern: "*-summary.tab"
   - results_dir:
       - ${fasta.baseName}-results:
           type: directory
-          description: Results of the agrvate assessement
+          description: Results of the agrvate assessment
           pattern: "*-results"
   - versions:
       - versions.yml:

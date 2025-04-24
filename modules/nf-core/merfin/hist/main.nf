@@ -9,15 +9,15 @@ process MERFIN_HIST {
 
     input:
     tuple val(meta), path(fasta_assembly)   // Required Input -sequence files can be FASTA or FASTQ; uncompressed, gz compressed.
-    tuple val(meta1), path(meryl_db_reads)  // Required readmers (raw reads meryl db). As it comes from another tool, it might be relevant to mantain the meta.
+    tuple val(meta1), path(meryl_db_reads)  // Required readmers (raw reads meryl db). As it comes from another tool, it might be relevant to maintain the meta.
     path(lookup_table)                      // Optional input vector of probabilities (obtained by genomescope2 with parameter --fitted_hist).
     path(seqmers)                           // Optional input for pre-built sequence meryl db (-seqmers).
     val(peak)                               // Required input to hard set copy 1 and infer multiplicity to copy number.
 
     output:
-    tuple val(meta), path("*.hist")     , emit: hist
-    path("*.hist.stderr.log")           , emit: log_stderr
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.hist")           , emit: hist
+    tuple val(meta), path("*.hist.stderr.log"), emit: log_stderr
+    path "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -48,10 +48,7 @@ process MERFIN_HIST {
     """
 
     stub:
-    def args                    = task.ext.args ?: ''
     def prefix                  = task.ext.prefix ?: "${meta.id}"
-    def optional_lookup_table   = lookup_table ? "-prob ${lookup_table}" : ""
-    def optional_seqmers        = seqmers ? "-seqmers ${seqmers}" : ""
     """
     touch ${prefix}.hist
     touch ${prefix}.hist.stderr.log

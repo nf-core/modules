@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process BISMARK_ALIGN"
     script "../main.nf"
     process "BISMARK_ALIGN"
+    config './nextflow.config'
 
     tag "modules"
     tag "modules_nfcore"
@@ -16,16 +17,15 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of([
-                    [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                            [ id:'test' ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ])
                 """
             }
         }
     }
 
-    test("bowtie2 single-end / sarscov2 genome [fasta]") {
-        config './nextflow.config'
+    test("bowtie2 | single-end | sarscov2 genome [fasta]") {
 
         when {
             params {
@@ -36,8 +36,11 @@ nextflow_process {
                 input[0] = Channel.of([
                             [ id:'test', single_end:true ],
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true)
-                        ])
-                input[1] = Channel.of([ [ id:'sarscov2'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ])
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
                 input[2] = BISMARK_GENOMEPREPARATION.out.index
                 """
             }
@@ -47,8 +50,12 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bam.collect { bam(it[1]).getReadsMD5() },
-                    file(process.out.report[0][1]).readLines().contains("Number of alignments with a unique best hit from the different alignments:\t5009"),
+                    process.out.bam.collect { meta, bamfile ->
+                                                bam(bamfile).getReadsMD5()
+                                            },
+                    process.out.report.collect { meta, report ->
+                                                    file(report).readLines().contains("Number of alignments with a unique best hit from the different alignments:\t5009")
+                                                },
                     process.out.unmapped,
                     process.out.versions
                     ).match()
@@ -57,8 +64,7 @@ nextflow_process {
         }
     }
 
-    test("bowtie2 paired-end / sarscov2 genome [fasta]") {
-        config './nextflow.config'
+    test("bowtie2 | paired-end | sarscov2 genome [fasta]") {
 
         when {
             params {
@@ -72,8 +78,11 @@ nextflow_process {
                                 file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
                                 file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true)
                             ]
-                        ])
-                input[1] = Channel.of([ [ id:'sarscov2'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ])
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
                 input[2] = BISMARK_GENOMEPREPARATION.out.index
                 """
             }
@@ -83,8 +92,16 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bam.collect { bam(it[1][0]).getReadsMD5() },
-                    file(process.out.report[0][1][0]).readLines().contains("Number of alignments with a unique best hit from the different alignments:\t5009"),
+                    process.out.bam.collect { meta, bamfiles ->
+                                                bamfiles.collect { bamfile ->
+                                                    bam(bamfile).getReadsMD5()
+                                                }
+                                            },
+                    process.out.report.collect { meta, reports ->
+                                                    reports.collect { report ->
+                                                        file(report).readLines().contains("Number of alignments with a unique best hit from the different alignments:\t5009")
+                                                        }
+                                                },
                     process.out.unmapped,
                     process.out.versions
                     ).match()
@@ -93,8 +110,7 @@ nextflow_process {
         }
     }
 
-    test("hisat2 single-end / sarscov2 genome [fasta]") {
-        config './nextflow.config'
+    test("hisat2 | single-end | sarscov2 genome [fasta]") {
 
         when {
             params {
@@ -105,8 +121,11 @@ nextflow_process {
                 input[0] = Channel.of([
                             [ id:'test', single_end:true ],
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true)
-                        ])
-                input[1] = Channel.of([ [ id:'sarscov2'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ])
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
                 input[2] = BISMARK_GENOMEPREPARATION.out.index
                 """
             }
@@ -116,8 +135,12 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bam.collect { bam(it[1]).getReadsMD5() },
-                    file(process.out.report[0][1]).readLines().contains("Number of alignments with a unique best hit from the different alignments:\t5009"),
+                    process.out.bam.collect { meta, bamfile ->
+                                                bam(bamfile).getReadsMD5()
+                                            },
+                    process.out.report.collect { meta, report ->
+                                                    file(report).readLines().contains("Number of alignments with a unique best hit from the different alignments:\t5009")
+                                                },
                     process.out.unmapped,
                     process.out.versions
                     ).match()
@@ -126,8 +149,7 @@ nextflow_process {
         }
     }
 
-    test("hisat2 paired-end / sarscov2 genome [fasta]") {
-        config './nextflow.config'
+    test("hisat2 | paired-end | sarscov2 genome [fasta]") {
 
         when {
             params {
@@ -141,8 +163,11 @@ nextflow_process {
                                 file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
                                 file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true)
                             ]
-                        ])
-                input[1] = Channel.of([ [ id:'sarscov2'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ])
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
                 input[2] = BISMARK_GENOMEPREPARATION.out.index
                 """
             }
@@ -152,8 +177,16 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bam.collect { bam(it[1][0]).getReadsMD5() },
-                    file(process.out.report[0][1][0]).readLines().contains("Number of alignments with a unique best hit from the different alignments:\t5009"),
+                    process.out.bam.collect { meta, bamfiles ->
+                                                bamfiles.collect { bamfile ->
+                                                    bam(bamfile).getReadsMD5()
+                                                }
+                                            },
+                    process.out.report.collect { meta, reports ->
+                                                    reports.collect { report ->
+                                                        file(report).readLines().contains("Number of alignments with a unique best hit from the different alignments:\t5009")
+                                                        }
+                                                },
                     process.out.unmapped,
                     process.out.versions
                     ).match()
@@ -162,8 +195,7 @@ nextflow_process {
         }
     }
 
-    test("minimap2 single-end / sarscov2 genome [fasta]") {
-        config './nextflow.config'
+    test("minimap2 | single-end | sarscov2 genome [fasta]") {
 
         when {
             params {
@@ -174,8 +206,11 @@ nextflow_process {
                 input[0] = Channel.of([
                             [ id:'test', single_end:true ],
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true)
-                        ])
-                input[1] = Channel.of([ [ id:'sarscov2'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ])
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
                 input[2] = BISMARK_GENOMEPREPARATION.out.index
                 """
             }
@@ -185,11 +220,95 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bam.collect { bam(it[1]).getReadsMD5() },
-                    file(process.out.report[0][1]).readLines().contains("Number of alignments with a unique best hit from the different alignments:\t5047"),
+                    process.out.bam.collect { meta, bamfile ->
+                                                bam(bamfile).getReadsMD5()
+                                            },
+                    process.out.report.collect { meta, report ->
+                                                    file(report).readLines().contains("Number of alignments with a unique best hit from the different alignments:\t5009")
+                                                },
                     process.out.unmapped,
                     process.out.versions
                     ).match()
+                }
+            )
+        }
+    }
+
+    test("minimap2 | paired-end | sarscov2 genome [fasta]") {
+
+        when {
+            params {
+                bismark_args = '--minimap2'
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:true ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true)
+                            ]
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = BISMARK_GENOMEPREPARATION.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.bam.collect { meta, bamfiles ->
+                                                bamfiles.collect { bamfile ->
+                                                    bam(bamfile).getReadsMD5()
+                                                }
+                                            },
+                    process.out.report.collect { meta, reports ->
+                                                    reports.collect { report ->
+                                                        file(report).readLines().contains("Number of alignments with a unique best hit from the different alignments:\t5009")
+                                                        }
+                                                },
+                    process.out.unmapped,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("minimap2 | paired-end | sarscov2 genome [fasta] | stub") {
+        options "-stub"
+
+        when {
+            params {
+                bismark_args = '--minimap2'
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:true ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz', checkIfExists: true)
+                            ]
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = BISMARK_GENOMEPREPARATION.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match()
                 }
             )
         }
