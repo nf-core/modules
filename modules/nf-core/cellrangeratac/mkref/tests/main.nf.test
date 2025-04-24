@@ -1,0 +1,76 @@
+nextflow_process {
+
+    name "Test Process CELLRANGERATAC_MKREF"
+
+    script "../main.nf"
+    process "CELLRANGERATAC_MKREF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cellrangeratac"
+    tag "cellrangeratac/mkref"
+    tag "unzip"
+
+    setup {
+            run("UNZIP") {
+                script "../../../unzip/main.nf"
+
+                process {
+                    """
+                    input[0] = [[],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.fasta.gz', checkIfExists:true)]
+                    """
+                }
+            }
+        }
+
+    test("test_cellrangeratac_mkref") {
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = UNZIP.out.unzipped_archive.map{it -> it[1]} + "/genome.fasta"
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.gtf', checkIfExists:true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_motifs.txt', checkIfExists:true)
+                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_config.json', checkIfExists:true)
+                input[4] = "cellrangeratac_reference"
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+        test("test_cellrangeratac_mkref - stub") {
+        options '-stub'
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = UNZIP.out.unzipped_archive.map{it -> it[1]} + "/genome.fasta"
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.gtf', checkIfExists:true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_motifs.txt', checkIfExists:true)
+                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_config.json', checkIfExists:true)
+                input[4] = "cellrangeratac_reference"
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+}
