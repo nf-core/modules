@@ -10,6 +10,7 @@ include { PROPR_PROPD                         } from '../../../modules/nf-core/p
 include { CUSTOM_FILTERDIFFERENTIALTABLE      } from '../../../modules/nf-core/custom/filterdifferentialtable/main'
 include { VARIANCEPARTITION_DREAM             } from '../../../modules/nf-core/variancepartition/dream/main'
 
+
 workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     take:
     // Things we may need to iterate
@@ -19,16 +20,16 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     ch_samplesheet           // [ meta, samplesheet ]
     ch_transcript_lengths    // [ meta, transcript_lengths]
     ch_control_features      // [ meta, control_features ]
-    ch_contrasts             // [ meta, [contrast], [variable], [reference], [target], [formula], [comparison] ]
+    ch_contrasts             // [ meta, [meta_contrast], [variable], [reference], [target], [formula], [comparison] ]
 
     main:
 
     ch_versions = Channel.empty()
 
     // Set up how the channels crossed below will be used to generate channels for processing
-    def criteria = multiMapCriteria { meta, abundance, analysis_method, fc_threshold, stat_threshold, samplesheet, transcript_length, control_features, contrast, variable, reference, target, formula, comparison ->
+    def criteria = multiMapCriteria { meta, abundance, analysis_method, fc_threshold, stat_threshold, samplesheet, transcript_length, control_features, meta_contrast, variable, reference, target, formula, comparison ->
         def meta_with_method = meta + [ 'differential_method': analysis_method ]
-        def meta_for_diff = meta_with_method + contrast
+        def meta_for_diff = meta_with_method + meta_contrast
         samples_and_matrix:
             [ meta_with_method, samplesheet, abundance ]
         contrasts_for_diff:
@@ -65,13 +66,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // not returning the full normalized matrix as NORM modules would do.
     norm_inputs = ch_input
         .combine(ch_samplesheet_with_control, by:0)
-        .combine(
-            // take the first contrast for each common meta
-            ch_contrasts.map { meta, contrast, variable, reference, target, formula, comparison ->
-                [meta, contrast[0], variable[0], reference[0], target[0], formula[0], comparison[0]]
-            }
-            , by:0
-        )
+        .join(ch_contrasts.transpose()) // by using join instead of combine, it only returns the inner join with the first contrast
         .multiMap(criteria)
 
     // ----------------------------------------------------
