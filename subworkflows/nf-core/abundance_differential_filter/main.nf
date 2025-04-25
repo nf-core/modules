@@ -10,6 +10,12 @@ include { PROPR_PROPD                         } from '../../../modules/nf-core/p
 include { CUSTOM_FILTERDIFFERENTIALTABLE      } from '../../../modules/nf-core/custom/filterdifferentialtable/main'
 include { VARIANCEPARTITION_DREAM             } from '../../../modules/nf-core/variancepartition/dream/main'
 
+// Combine meta maps, including merging non-identical values of shared keys (e.g. 'id')
+def mergeMaps(meta, meta2){
+    (meta + meta2).collectEntries { k, v ->
+        meta[k] && meta[k] != v ? [k, "${meta[k]}_${v}"] : [k, v]
+    }
+}
 
 workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     take:
@@ -29,7 +35,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // Set up how the channels crossed below will be used to generate channels for processing
     def criteria = multiMapCriteria { meta, abundance, analysis_method, fc_threshold, stat_threshold, samplesheet, transcript_length, control_features, meta_contrast, variable, reference, target, formula, comparison ->
         def meta_with_method = meta + [ 'differential_method': analysis_method ]
-        def meta_for_diff = meta_with_method + meta_contrast
+        def meta_for_diff = mergeMaps(meta_contrast, meta_with_method)
         samples_and_matrix:
             [ meta_with_method, samplesheet, abundance ]
         contrasts_for_diff:

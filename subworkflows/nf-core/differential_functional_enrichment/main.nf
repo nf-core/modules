@@ -9,6 +9,12 @@ include { CUSTOM_TABULARTOGSEACHIP } from '../../../modules/nf-core/custom/tabul
 include { GSEA_GSEA                } from '../../../modules/nf-core/gsea/gsea/main.nf'
 include { PROPR_GREA               } from "../../../modules/nf-core/propr/grea/main.nf"
 
+// Combine meta maps, including merging non-identical values of shared keys (e.g. 'id')
+def mergeMaps(meta, meta2){
+    (meta + meta2).collectEntries { k, v ->
+        meta[k] && meta[k] != v ? [k, "${meta[k]}_${v}"] : [k, v]
+    }
+}
 
 workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     take:
@@ -49,7 +55,7 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
 
     def criteria = multiMapCriteria { meta, input, genesets, background, method, samplesheet, featuresheet, features_id, features_symbol, meta_contrast, variable, reference, target, formula, comparison ->
         def meta_with_method = meta + [ 'functional_method': method ]
-        def meta_with_contrast = meta_with_method + meta_contrast
+        def meta_with_contrast = mergeMaps(meta_contrast, meta_with_method)
         input:
             [ meta_with_contrast, input ]
         genesets:
