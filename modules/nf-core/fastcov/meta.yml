@@ -29,13 +29,9 @@ input:
         type: file
         description: BAM index file
         pattern: "*.bai"
-    - file_ext:
+  - - file_ext:
         type: string
         description: output plot file extension string
-    - args:
-        type: string
-        description: additional fastcov arguments string
-
 output:
   #Only when we have meta
   - coverage_plot:
