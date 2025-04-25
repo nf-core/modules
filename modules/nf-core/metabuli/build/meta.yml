@@ -1,11 +1,11 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "metabuli_build"
-description: Wraps `metabuli build` execution
+description: Builds a database for classification with metabuli from FASTA files and a taxonomy
 keywords:
-  - genomics
-  - proteomics
-  - taxonomy
   - database
+  - taxonomic classification
+  - classification
+  - metagenomics
 tools:
   - "metabuli":
       description: "Metabuli: specific and sensitive metagenomic classification via
@@ -36,7 +36,7 @@ input:
         description: Optional input to map old/deprecated TaxID to new ones
   - - accession2taxid:
         type: directory
-        description: Maps accession (from fasta) to TaxID
+        description: TSV file (with no header) of first column with mapping accession (from first part of each fasta entry) and second column the corresponding TaxID
 
 output:
   - db:
@@ -45,7 +45,7 @@ output:
           description: Groovy Map containing sample information
       - $prefix:
           type: directory
-          description: metabuli database
+          description: metabuli database directory for classification
   - versions:
       - versions.yml:
           type: file
