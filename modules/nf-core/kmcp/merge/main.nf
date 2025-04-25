@@ -13,7 +13,7 @@ process KMCP_MERGE {
     tuple val(meta), path(search_out)
 
     output:
-    tuple val(meta), path("*.merged.gz"), emit: result
+    tuple val(meta), path("*.gz"), emit: result
     path "versions.yml"                 , emit: versions
 
     when:
@@ -21,13 +21,13 @@ process KMCP_MERGE {
 
     script:
     def args   = task.ext.args   ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}.merged"
     """
     kmcp \\
         merge \\
         $args \\
         --threads $task.cpus \\
-        --out-file ${prefix}.merged.gz \\
+        --out-file ${prefix}.gz \\
         $search_out
 
     cat <<-END_VERSIONS > versions.yml
@@ -37,9 +37,9 @@ process KMCP_MERGE {
     """
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}.merged"
     """
-    echo "" | gzip > ${prefix}.merged.gz
+    echo "" | gzip > ${prefix}.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
