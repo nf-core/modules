@@ -49,6 +49,10 @@ input:
       type: boolean
       description: |
         Skip deduplication of aligned reads
+  - use_gpu:
+      type: boolean
+      description: |
+        Use GPU for alignment
 output:
   - bam:
       type: file
@@ -114,3 +118,4 @@ authors:
   - "@sateeshperi"
 maintainers:
   - "@sateeshperi"
+  - "@gallvp"
