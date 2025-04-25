@@ -16,7 +16,7 @@ input:
   - ch_input:
       description: Channel with the input data for functional analysis.
       structure:
-        - meta_input:
+        - meta:
             type: map
             description: Metadata map
         - input:
@@ -39,18 +39,29 @@ input:
   - ch_contrasts:
       description: Channel with contrast information
       structure:
+        - meta:
+            type: map
+            description: Metadata map
         - meta_contrast:
             type: map
-            description: Contrast metadata map
-        - contrast_variable:
-            type: value
-            description: Contrast variable
+            description: |
+              Map with all the contrast info, such as contrast
+              id, variable, reference, target, etc.
+        - variable:
+            type: list
+            description: List of contrast variable
         - reference:
-            type: value
-            description: Reference level
+            type: list
+            description: List of reference level
         - target:
-            type: value
-            description: Target level
+            type: list
+            description: List of target level
+        - formula:
+            type: list
+            description: List of contrast formula
+        - comparison:
+            type list:
+            description: List of contrast comparison
   - ch_samplesheet:
       description: Channel with sample information
       structure:

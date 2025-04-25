@@ -85,8 +85,9 @@ nextflow_workflow {
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                        tuple([id: 'test'], it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
+                    .groupTuple()
                 ch_input = Channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.abundance_file),
@@ -162,8 +163,9 @@ nextflow_workflow {
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                        tuple([ id:'test' ], it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
+                    .groupTuple()
                 ch_input = Channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.abundance_file),
@@ -194,27 +196,36 @@ nextflow_workflow {
                     genesets_file: test_data_dir + 'gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt'
                 ]
 
-                // define input channels
+                // get input from upstream subworkflow
                 ch_input = ABUNDANCE_DIFFERENTIAL_FILTER.out.normalised_matrix
                     .combine(Channel.fromPath(testData.genesets_file))
                     .map { meta, matrix, genesets ->
                         [meta, matrix, genesets, [], 'gsea']
                     }
-                ch_contrasts = Channel.fromPath(file(testData.contrasts_file))
-                    .splitCsv ( header:true, sep:',' )
-                    .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
-                    }
-                ch_samplesheet = Channel.of([
-                    [ id:'test' ],
-                    file(testData.samplesheet_file)
-                ])
-                ch_featuresheet = Channel.of([
-                    [ id:'test' ],
-                    file(testData.abundance_file),
-                    'gene_id',
-                    'gene_name'
-                ])
+
+                // define other input files using ch_input meta
+                ch_contrasts = ch_input
+                    .map {it[0]}
+                    .combine(
+                        Channel.fromPath(file(testData.contrasts_file))
+                            .splitCsv ( header:true, sep:',' )
+                            .map{
+                                tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                            }
+                    )
+                    .groupTuple()
+                ch_samplesheet = ch_input
+                    .map {it[0]}
+                    .combine( Channel.of(file(testData.samplesheet_file)) )
+                ch_featuresheet = ch_input
+                    .map {it[0]}
+                    .combine(
+                        Channel.of([
+                            file(testData.abundance_file),
+                            'gene_id',
+                            'gene_name'
+                        ])
+                    )
 
                 input[0] = ch_input
                 input[1] = ch_contrasts
@@ -263,8 +274,9 @@ nextflow_workflow {
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                        tuple([ id:'test' ], it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
+                    .groupTuple()
                 ch_input = Channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.abundance_file),
@@ -339,8 +351,9 @@ nextflow_workflow {
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                        tuple([ id:'test' ], it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
+                    .groupTuple()
                 ch_input = Channel.of(
                     [
                         [ id:'test' ],
@@ -402,22 +415,29 @@ nextflow_workflow {
                         [meta, input_file, genesets, [], method]
                     }
 
-                // define gsea-specific inputs
-                ch_contrasts = Channel.fromPath(file(testData.contrasts_file))
-                    .splitCsv ( header:true, sep:',' )
-                    .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
-                    }
-                ch_samplesheet = Channel.of([
-                    [ id:'test' ],
-                    file(testData.samplesheet_file)
-                ])
-                ch_featuresheet = Channel.of([
-                    [ id:'test' ],
-                    file(testData.abundance_file),
-                    'gene_id',
-                    'gene_name'
-                ])
+                // define other input files using ch_input meta
+                ch_contrasts = ch_input
+                    .map {it[0]}
+                    .combine(
+                        Channel.fromPath(file(testData.contrasts_file))
+                            .splitCsv ( header:true, sep:',' )
+                            .map{
+                                tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                            }
+                    )
+                    .groupTuple()
+                ch_samplesheet = ch_input
+                    .map {it[0]}
+                    .combine( Channel.of(file(testData.samplesheet_file)) )
+                ch_featuresheet = ch_input
+                    .map {it[0]}
+                    .combine(
+                        Channel.of([
+                            file(testData.abundance_file),
+                            'gene_id',
+                            'gene_name'
+                        ])
+                    )
 
                 input[0] = ch_input
                 input[1] = ch_contrasts

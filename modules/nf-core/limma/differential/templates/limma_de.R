@@ -92,7 +92,8 @@ opt <- list(
     adjust.method = "BH",        # topTable
     p.value = 1,                 # topTable
     lfc = 0,                     # topTable
-    confint = FALSE              # topTable
+    confint = FALSE ,            # topTable
+    round_digits = NULL
 )
 opt_types <- lapply(opt, class)
 
@@ -110,6 +111,9 @@ for ( ao in names(args_opt)){
         }
         opt[[ao]] <- args_opt[[ao]]
     }
+}
+if ( ! is.null(opt\$round_digits)){
+    opt\$round_digits <- as.numeric(opt\$round_digits)
 }
 
 # Check if required parameters have been provided
@@ -346,6 +350,9 @@ if (!is.null(opt\$block)) {
 # For Voom, write the normalized counts matrix to a TSV file
 if (!is.null(opt\$use_voom) && opt\$use_voom) {
     normalized_counts <- data_for_fit\$E
+    if (! is.null(opt\$round_digits)){
+        normalized_counts <- apply(normalized_counts, 2, function(x) round(x, opt\$round_digits))
+    }
     normalized_counts_with_genes <- data.frame(Gene = rownames(normalized_counts), normalized_counts, row.names = NULL)
     colnames(normalized_counts_with_genes)[1] <- opt\$probe_id_col
     write.table(normalized_counts_with_genes,
@@ -475,6 +482,9 @@ cat("Saving results for ", contrast.name, " ...\n", sep = "")
 # Differential expression table - note very limited rounding for consistency of
 # results
 
+if (! is.null(opt\$round_digits)){
+    comp.results <- apply(data.frame(comp.results), 2, function(x) round(x, opt\$round_digits))
+}
 out_df <- cbind(
     setNames(data.frame(rownames(comp.results)), opt\$probe_id_col),
     data.frame(comp.results[, !(colnames(comp.results) %in% opt\$probe_id_col)], check.names = FALSE)
