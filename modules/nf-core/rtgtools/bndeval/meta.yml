@@ -24,24 +24,34 @@ input:
         type: file
         description: A VCF with called variants to benchmark against the standard
         pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
     - query_vcf_tbi:
         type: file
         description: The index of the VCF file with called variants to benchmark against the standard
         pattern: "*.{vcf.gz.tbi, vcf.tbi}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3616"
     - truth_vcf:
         type: file
         description: A standard VCF to compare against
         pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
     - truth_vcf_tbi:
         type: file
         description: The index of the standard VCF to compare against
         pattern: "*.{vcf.gz.tbi, vcf.tbi}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3616"
     - regions_bed:
         type: file
         description: A BED file containing the regions where bndeval will evaluate every
           fully and partially overlapping variant (optional)
           This input should be used to provide the regions used by the analysis
         pattern: "*.bed"
+        ontologies:
+            - edam: "http://edamontology.org/format_3003"
 output:
   - tp_vcf:
       - meta:
@@ -53,6 +63,8 @@ output:
           type: file
           description: A VCF file for the true positive variants
           pattern: "*.tp.vcf.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
   - tp_tbi:
       - meta:
           type: map
@@ -63,6 +75,8 @@ output:
           type: file
           description: The index of the VCF file for the true positive variants
           pattern: "*.tp.vcf.gz.tbi"
+          ontologies:
+            - edam: "http://edamontology.org/format_3616"
   - fn_vcf:
       - meta:
           type: map
@@ -73,6 +87,8 @@ output:
           type: file
           description: A VCF file for the false negative variants
           pattern: "*.fn.vcf.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
   - fn_tbi:
       - meta:
           type: map
@@ -83,6 +99,8 @@ output:
           type: file
           description: The index of the VCF file for the false negative variants
           pattern: "*.fn.vcf.gz.tbi"
+          ontologies:
+            - edam: "http://edamontology.org/format_3616"
   - fp_vcf:
       - meta:
           type: map
@@ -93,6 +111,8 @@ output:
           type: file
           description: A VCF file for the false positive variants
           pattern: "*.fp.vcf.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
   - fp_tbi:
       - meta:
           type: map
@@ -103,6 +123,8 @@ output:
           type: file
           description: The index of the VCF file for the false positive variants
           pattern: "*.fp.vcf.gz.tbi"
+          ontologies:
+            - edam: "http://edamontology.org/format_3616"
   - baseline_vcf:
       - meta:
           type: map
@@ -113,6 +135,8 @@ output:
           type: file
           description: A VCF file for the true positive variants from the baseline
           pattern: "*.tp-baseline.vcf.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
   - baseline_tbi:
       - meta:
           type: map
@@ -124,6 +148,8 @@ output:
           description: The index of the VCF file for the true positive variants from the
             baseline
           pattern: "*.tp-baseline.vcf.gz.tbi"
+          ontologies:
+            - edam: "http://edamontology.org/format_3616"
   - weighted_roc:
       - meta:
           type: map
@@ -134,6 +160,8 @@ output:
           type: file
           description: TSV files containing weighted ROC data for all variants
           pattern: "*.weighted_snp_roc.tsv.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3616"
   - summary:
       - meta:
           type: map
@@ -144,6 +172,8 @@ output:
           type: file
           description: A TXT file containing the summary of the evaluation
           pattern: "*.summary.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_1964"
   - versions:
       - versions.yml:
           type: file
