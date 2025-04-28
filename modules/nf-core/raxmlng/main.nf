@@ -38,10 +38,6 @@ process RAXMLNG {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if (!meta.id) {
-        error "Input meta map does not contain 'id'. Received: ${meta}"
-    }
-    // Use a dedicated param for stub testing the bootstrap output scenario
     def touch_support = args.contains('--bootstrap') || args.contains('--bs-trees') ? "touch ${prefix}.raxml.support" : ""
     """
     # Create stub output files
