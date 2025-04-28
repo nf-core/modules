@@ -61,7 +61,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', split:false ], // meta map
+                    [ id:'test', split:false ],
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf', checkIfExists: true)
