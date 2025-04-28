@@ -34,8 +34,8 @@ output:
           description: Groovy Map containing sample information
           pattern: "*.{raxml.bestTree}"
       - "*.raxml.bestTree":
-          type: map
-          description: Groovy Map containing sample information
+          type: file
+          description: A phylogeny in Newick format
           pattern: "*.{raxml.bestTree}"
   - phylogeny_bootstrapped:
       - meta:
@@ -44,8 +44,8 @@ output:
           pattern: "*.{raxml.support}"
           optional: true
       - "*.raxml.support":
-          type: map
-          description: Groovy Map containing sample information
+          type: file
+          description: A phylogeny in Newick format with bootstrap values
           pattern: "*.{raxml.support}"
           optional: true
   - versions:

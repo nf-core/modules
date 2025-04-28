@@ -11,7 +11,7 @@ process RAXMLNG {
 
     output:
     tuple val(meta), path("*.raxml.bestTree")              , emit: phylogeny
-    tuple val(meta), path("*.raxml.support"), optional:true, emit: phylogeny_bootstrapped
+    tuple val(meta), path("*.raxml.support")               , emit: phylogeny_bootstrapped, optional:true
     path "versions.yml"                                    , emit: versions
 
     when:
