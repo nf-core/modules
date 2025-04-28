@@ -50,16 +50,24 @@ input:
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
     - barcode_read:
-        type: file
-        description: barcode read file
+        type: string
+        description: Read containing barcode (either R1 or R2)
   - - meta5:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
     - umi_read:
+        type: string
+        description: Read containing barcode (either R1 or R2)
+  - - meta6:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - barcode_whitelist:
         type: file
-        description: umi read file
+        description: BarocdeWhitelist file
 output:
   - tsv:
       - meta:

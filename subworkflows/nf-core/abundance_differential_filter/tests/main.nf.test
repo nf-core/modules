@@ -15,8 +15,8 @@ nextflow_workflow {
     tag "untar"
     tag "variancepartition/dream"
 
-        test("dream") {
-        tag "dream"
+    test("dream") {
+        tag "dream_simple"
 
         when {
             workflow {
@@ -37,8 +37,9 @@ nextflow_workflow {
                 ch_control_features = Channel.of([ [], [] ])
                 ch_contrasts =  Channel.of(['id': 'treatment_mCherry_hND6', 'variable': 'treatment', 'reference': 'mCherry', 'target': 'hND6', 'blocking_factors':'sample_number', 'formula':'~ treatment + (1 | sample_number)'])
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                        tuple([id: 'test'], it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
+                    .groupTuple()
                 ch_input = Channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.abundance_file),
@@ -69,7 +70,7 @@ nextflow_workflow {
     }
 
     test("dream - complex contrast - literal contrast string comparison") {
-        tag "dream"
+        tag "dream_complex"
 
         when {
             workflow {
@@ -90,8 +91,9 @@ nextflow_workflow {
                 ch_control_features = Channel.of([ [], [] ])
                 ch_contrasts =  Channel.of(['id': 'treatment_mCherry_hND6', 'variable': 'treatment', 'reference': 'mCherry', 'target': 'hND6', 'blocking_factors':'sample_number', 'formula':'~ 0 + treatment + sample_number', 'comparison':'treatmenthND6 - treatmentmCherry'])
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                        tuple([id: 'test'], it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
+                    .groupTuple()
                 ch_input = Channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.abundance_file),
@@ -147,8 +149,9 @@ nextflow_workflow {
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                        tuple([ id:'test' ], it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
+                    .groupTuple()
                 ch_input = Channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.abundance_file),
@@ -231,8 +234,9 @@ nextflow_workflow {
                 ch_control_features = Channel.of([ [], [] ])
                 ch_contrasts = Channel.of(['id': 'diagnosis_normal_uremia', 'variable': 'diagnosis', 'reference': 'normal', 'target': 'uremia'])
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                        tuple([ id:'test' ], it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
+                    .groupTuple()
                 ch_input = AFFY_JUSTRMA.out.expression.map{ meta, file -> [
                     meta,
                     file,
@@ -252,9 +256,8 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert path(workflow.out.results_genewise[0][1]).getText().contains("1007_s_at\t-0.2775254")},
                 { assert snapshot(
-                    file(workflow.out.results_genewise[0][1]).name,
+                    workflow.out.results_genewise,
                     workflow.out.results_genewise_filtered,
                     workflow.out.normalised_matrix,
                     workflow.out.model,
@@ -289,8 +292,9 @@ nextflow_workflow {
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                        tuple([ id:'test' ], it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
+                    .groupTuple()
                 ch_input = Channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.abundance_file),
@@ -310,8 +314,8 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert path(workflow.out.results_genewise[0][1]).getText().contains("ENSMUSG00000023978\t2.84055986312942") },
                 { assert snapshot(
+                    workflow.out.results,
                     workflow.out.results_genewise_filtered,
                     workflow.out.normalised_matrix,
                     workflow.out.model,
@@ -350,8 +354,9 @@ nextflow_workflow {
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                        tuple([ id:'test' ], it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
+                    .groupTuple()
                 ch_input = Channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.abundance_file),
@@ -408,8 +413,9 @@ nextflow_workflow {
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                        tuple([ id:'test' ], it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
+                    .groupTuple()
                 ch_input = Channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.abundance_file),
@@ -464,8 +470,9 @@ nextflow_workflow {
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                        tuple([ id:'test' ], it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
+                    .groupTuple()
                 ch_input = Channel.of(
                     [
                         [ id:'test' ],
@@ -494,11 +501,9 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert path(workflow.out.results_genewise[0][1]).getText().contains("ENSMUSG00000023978\t307.071") },
-                { assert path(workflow.out.results_genewise_filtered[0][1]).getText().contains("gene_id") },
                 { assert snapshot(
-                    file(workflow.out.results_genewise[0][1]).name,
-                    file(workflow.out.results_genewise_filtered[0][1]).name,
+                    workflow.out.results_genewise,
+                    workflow.out.results_genewise_filtered,
                     workflow.out.normalised_matrix,
                     workflow.out.variance_stabilised_matrix,
                     workflow.out.model,
@@ -533,8 +538,9 @@ nextflow_workflow {
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                        tuple([ id:'test' ], it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
+                    .groupTuple()
                 ch_input = Channel.of(
                     [
                         [ id:'test' ],
@@ -570,11 +576,9 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert path(workflow.out.results_genewise[0][1]).getText().contains("ENSMUSG00000023978\t307.071") },
-                { assert path(workflow.out.results_genewise_filtered[0][1]).getText().contains("gene_id") },
                 { assert snapshot(
-                    file(workflow.out.results_genewise[0][1]).name,
-                    file(workflow.out.results_genewise_filtered[0][1]).name,
+                    workflow.out.results_genewise,
+                    workflow.out.results_genewise_filtered,
                     workflow.out.adjacency,
                     workflow.out.normalised_matrix,
                     workflow.out.variance_stabilised_matrix,
@@ -612,8 +616,9 @@ nextflow_workflow {
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                        tuple([id: 'test'], it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
+                    .groupTuple()
                 ch_input = Channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.abundance_file),
