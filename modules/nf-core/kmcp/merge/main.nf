@@ -1,4 +1,3 @@
-
 process KMCP_MERGE {
     tag "$meta.id"
     label 'process_medium'
@@ -8,13 +7,12 @@ process KMCP_MERGE {
         'https://depot.galaxyproject.org/singularity/kmcp:0.9.4--h9ee0642_0':
         'biocontainers/kmcp:0.9.4--h9ee0642_0' }"
 
-
     input:
     tuple val(meta), path(search_out)
 
     output:
     tuple val(meta), path("*.gz"), emit: result
-    path "versions.yml"                 , emit: versions
+    path "versions.yml"          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,7 +34,6 @@ process KMCP_MERGE {
     END_VERSIONS
     """
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}.merged"
     """
     echo "" | gzip > ${prefix}.gz
