@@ -13,6 +13,7 @@ process TRUST4 {
     tuple val(meta3), path(vdj_reference)
     tuple val(meta4), val(barcode_read)
     tuple val(meta5), val(umi_read)
+    tuple val(meta6), path(barcode_whitelist)
 
     output:
     tuple val(meta), path("*.tsv")                  , emit: tsv
@@ -40,6 +41,8 @@ process TRUST4 {
     def paired_end_mode = reads && (meta.single_end == false) ? "-1 ${forward[0]} -2 ${reverse[0]}" : ''
     // read format is optional
     def readFormat = params.read_format ? "--readFormat ${params.read_format}" : ''
+    // barcodeWhitelist is optional 
+    def barcodeWhitelist  = barcode_whitelist ? "--barcodeWhitelist ${barcode_whitelist}" : ""
     // add barcode information if present
     if (barcode_read) {
         if (barcode_read == "R1") {
@@ -62,7 +65,7 @@ process TRUST4 {
     else {
         umi = ''
     }
-
+    
     """
     run-trust4 \\
         ${bam_mode} \\
@@ -75,6 +78,7 @@ process TRUST4 {
         -f ${fasta} \\
         -o ${prefix} \\
         ${reference} \\
+        ${barcodeWhitelist} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

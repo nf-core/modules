@@ -68,10 +68,8 @@ nextflow_process {
         test("raxmlng - stub - with bootstrap") {
         options "-stub"
         when {
-            params.test_stub_bootstrap = true
             params {
-            // Set the bootstrap parameter to true
-            test_stub_bootstrap = true
+                module_args = '--bootstrap'
             }
             process {
             """
