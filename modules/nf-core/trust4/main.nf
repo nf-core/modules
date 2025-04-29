@@ -12,7 +12,7 @@ process TRUST4 {
     tuple val(meta2), path(bam)
     path(fasta)
     path(vdj_reference)
-    val(barcode_read)
+    val(cell_barcode_read)
     val(umi_read)
     path(barcode_whitelist)
 
