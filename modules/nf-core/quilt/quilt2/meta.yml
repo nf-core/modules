@@ -1,24 +1,26 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "quilt2"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: |
+  QUILT2 is an R and C++ program for fast genotype imputation from low-coverage sequence using a large reference panel.
+  QUILT2 is accurate and versatile, able to handle imputation from short read, long read, ancient DNA and cell-free DNA from NIPT.
 keywords:
-  - sort
-  - example
+  - imputation
+  - low-coverage
+  - long-read
+  - genotype
   - genomics
+  - vcf
 tools:
   - "quilt2":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Rapid and accurate genotype imputation from low coverage short read, long read, and cell free DNA sequence."
       homepage: "https://github.com/rwdavies/quilt"
       documentation: "https://github.com/rwdavies/quilt"
       tool_dev_url: "https://github.com/rwdavies/quilt"
       doi: ""
       licence: ['GPL v3']
-      identifier: 
+      identifier: ""
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   # Only when we have meta
   - - meta:

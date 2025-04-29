@@ -1,4 +1,4 @@
-process QUILT2 {
+process QUILT_QUILT2 {
     tag "$meta.id"
     label 'process_medium'
 
@@ -8,7 +8,7 @@ process QUILT2 {
         'biocontainers/r-quilt:2.0.1--r44h503566f_1' }"
 
     input:
-    tuple val(meta), path(bams), path(bais), path(bamlist), path(reference_vcf_file), val(chr), val(regions_start), val(regions_end), val(ngen), val(buffer), path(genetic_map_file)
+    tuple val(meta), path(bams), path(bais), path(bamlist), path(reference_vcf_file), path(reference_vcf_file_index), val(chr), val(regions_start), val(regions_end), val(ngen), val(buffer), path(genetic_map_file)
     tuple val(meta2), path(posfile), path(phasefile)
     tuple val(meta3), path(fasta)
 
@@ -43,7 +43,7 @@ process QUILT2 {
         BAM_LIST="all_files.txt"
     fi
 
-    QUILT.R \\
+    QUILT2.R \\
         ${list_command}\$BAM_LIST \\
         $genetic_map_file_command \\
         $posfile_command \\
@@ -62,7 +62,7 @@ process QUILT2 {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         r-base: \$(Rscript -e "cat(strsplit(R.version[['version.string']], ' ')[[1]][3])")
-        r-quilt: \$(Rscript -e "cat(as.character(utils::packageVersion(\\"QUILT\\")))")
+        r-quilt2: \$(Rscript -e "cat(as.character(utils::packageVersion(\\"QUILT2\\")))")
     END_VERSIONS
     """
 }
