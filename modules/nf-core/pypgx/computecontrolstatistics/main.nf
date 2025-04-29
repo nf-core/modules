@@ -10,7 +10,6 @@ process PYPGX_COMPUTECONTROLSTATISTICS {
     input:
     tuple val(meta), path(bam), path(bai)
     val(control_gene)
-    val(assembly_version)
 
     output:
     tuple val(meta), path('*.zip'), emit: control_stats
@@ -23,12 +22,10 @@ process PYPGX_COMPUTECONTROLSTATISTICS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def control = "${control_gene}"  ?: "VDR"
-    def assembly = "${assembly_version}" ?: "GRCh38"
 
     """
     pypgx compute-control-statistics \\
         ${args} \\
-        --assembly ${assembly} \\
         ${control} \\
         ${prefix}_${control}.zip \\
         $bam
