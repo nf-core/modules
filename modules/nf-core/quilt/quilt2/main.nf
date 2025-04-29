@@ -8,9 +8,8 @@ process QUILT_QUILT2 {
         'biocontainers/r-quilt:2.0.1--r44h503566f_1' }"
 
     input:
-    tuple val(meta), path(bams), path(bais), path(bamlist), path(reference_vcf_file), path(reference_vcf_file_index), val(chr), val(regions_start), val(regions_end), val(ngen), val(buffer), path(genetic_map_file)
-    tuple val(meta2), path(posfile), path(phasefile)
-    tuple val(meta3), path(fasta)
+    tuple val(meta), path(bams), path(bais), path(bamlist), path(reference_vcf_file), path(reference_vcf_file_index), path(posfile), path(phasefile), val(chr), val(regions_start), val(regions_end), val(ngen), val(buffer), path(genetic_map_file)
+    tuple val(meta2), path(fasta)
 
     output:
     tuple val(meta), path("*.vcf.gz"),              emit: vcf
