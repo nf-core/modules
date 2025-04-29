@@ -20,10 +20,6 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-    - bam:
-        type: file
-        description: BAM file from bulk or single-cell RNA-seq data
-        pattern: "*.bam"
     - reads:
         type: file
         description: List of input FastQ files of size 1 and 2 for single-end and paired-end
@@ -33,39 +29,23 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - fasta:
+    - bam:
+        type: file
+        description: BAM file from bulk or single-cell RNA-seq data
+        pattern: "*.bam"
+  - - fasta:
         type: file
         description: Path to the fasta file coordinate and sequence of V/D/J/C genes
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - vdj_reference:
+  - - vdj_reference:
         type: file
         description: reference file of V/D/J genes
-  - - meta4:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - barcode_read:
+  - - barcode_read:
         type: string
         description: Read containing barcode (either R1 or R2)
-  - - meta5:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - umi_read:
+  - - umi_read:
         type: string
         description: Read containing barcode (either R1 or R2)
-  - - meta6:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - barcode_whitelist:
+  - - barcode_whitelist:
         type: file
         description: BarocdeWhitelist file
 output:
