@@ -1,3 +1,10 @@
+def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/fcsgx/rungx
+
+Reason:
+This module is now renamed as FCSGX_RUNGX and as been updated to the latest version
+"""
+
 process FCS_FCSGX {
     tag "$meta.id"
     label 'process_low'
@@ -13,12 +20,15 @@ process FCS_FCSGX {
     output:
     tuple val(meta), path("out/*.fcs_gx_report.txt"), emit: fcs_gx_report
     tuple val(meta), path("out/*.taxonomy.rpt")     , emit: taxonomy_report
-    path "versions.yml"                         , emit: versions
+    path "versions.yml"                             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+    // Comment out this block to disable the deprecation warning
+    assert false: deprecation_message
+
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "FCS_FCSGX module does not support Conda. Please use Docker / Singularity / Podman instead."
@@ -43,6 +53,9 @@ process FCS_FCSGX {
     """
 
     stub:
+    // Comment out this block to disable the deprecation warning
+    assert false: deprecation_message
+
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "FCS_FCSGX module does not support Conda. Please use Docker / Singularity / Podman instead."

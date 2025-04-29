@@ -1,0 +1,54 @@
+nextflow_process {
+
+    name "Test Process KRONA_KRONADB"
+    script "../main.nf"
+    process "KRONA_KRONADB"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "krona"
+    tag "krona/kronadb"
+
+    // Commented tests because of deprecation
+
+    // test("test-krona-kronadb") {
+
+    //     when {
+    //         process {
+    //             """
+
+    //             """
+    //         }
+    //     }
+
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(
+    //                 file(process.out.db[0]).name, //unstable
+    //                 process.out.versions
+    //                 ).match()
+    //             }
+    //         )
+    //     }
+    // }
+
+    // test("test-krona-kronadb-stub") {
+    //     options '-stub'
+
+    //     when {
+    //         process {
+    //             """
+
+    //             """
+    //         }
+    //     }
+
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(process.out).match() }
+    //         )
+    //     }
+    // }
+}
