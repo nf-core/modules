@@ -37,10 +37,6 @@ nextflow_workflow {
     test("Params: bwameth single-end | default") {
 
         when {
-            params {
-                skip_deduplication = false
-                use_gpu            = false
-            }
 
             workflow {
                 """
@@ -57,7 +53,8 @@ nextflow_workflow {
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
                 input[3] = UNTAR.out.untar
-                input[4] = params.skip_deduplication
+                input[4] = false // skip_deduplication
+                input[5] = false // use_gpu
                 """
             }
         }
@@ -84,10 +81,6 @@ nextflow_workflow {
     test("Params: bwameth paired-end | default") {
 
         when {
-            params {
-                skip_deduplication = false
-                use_gpu            = false
-            }
 
             workflow {
                 """
@@ -105,7 +98,8 @@ nextflow_workflow {
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
                 input[3] = UNTAR.out.untar
-                input[4] = params.skip_deduplication
+                input[4] = false // skip_deduplication
+                input[5] = false // use_gpu
                 """
             }
         }
@@ -132,10 +126,6 @@ nextflow_workflow {
     test("Params: bwameth paired-end | skip_deduplication") {
 
         when {
-            params {
-                skip_deduplication = true
-                use_gpu            = false
-            }
 
             workflow {
                 """
@@ -153,7 +143,8 @@ nextflow_workflow {
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
                 input[3] = UNTAR.out.untar
-                input[4] = params.skip_deduplication
+                input[4] = true // skip_deduplication
+                input[5] = false // use_gpu
                 """
             }
         }
