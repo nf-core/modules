@@ -25,17 +25,12 @@ input:
         type: file
         description: Input BAM file
         pattern: "*.{bam}"
+        ontologies: []
     - bai:
         type: file
         description: Input BAM index file
         pattern: "*.{bam.bai}"
-  - - pgx_genes:
-        type: list
-        description: List of PGx genes supported by PyPGx to include in variant calling.
-  - - assembly_version:
-        type: string
-        description: Genome assembly version to use.
-        pattern: "{GRCh37,GRCh38}"
+        ontologies: []
 output:
   - coverage:
       - meta:
@@ -55,7 +50,9 @@ output:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
-  - "@jorivansteenbrugge"
+  - "@jorisvansteenbrugge"
 maintainers:
-  - "@jorivansteenbrugge"
+  - "@jorisvansteenbrugge"

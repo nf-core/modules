@@ -32,10 +32,6 @@ input:
         type: string
         description: Gene to use as control gene
         pattern: "{VDR,EGFR,RYR1}"
-  - - assembly_version:
-        type: string
-        description: Genome assembly version to use.
-        pattern: "{GRCh37,GRCh38}"
 output:
   - control_stats:
       - meta:
@@ -56,6 +52,6 @@ output:
           description: File containing software versions
           pattern: "versions.yml"
 authors:
-  - "@jorivansteenbrugge"
+  - "@jorisvansteenbrugge"
 maintainers:
-  - "@jorivansteenbrugge"
+  - "@jorisvansteenbrugge"
