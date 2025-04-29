@@ -17,7 +17,7 @@ input:
   - ch_input:
       description: Channel with input data for differential analysis
       structure:
-        - meta_input:
+        - meta:
             type: map
             description: Metadata map
         - counts:
@@ -38,45 +38,56 @@ input:
   - ch_samplesheet:
       description: Channel with sample information
       structure:
-        - meta_exp:
+        - meta:
             type: map
-            description: Experiment metadata map
+            description: Metadata map
         - samplesheet:
             type: file
             description: Sample information file
   - ch_transcript_lengths:
       description: Channel with transcript length information
       structure:
-        - meta_exp:
+        - meta:
             type: map
-            description: Experiment metadata map
+            description: Metadata map
         - transcript_lengths:
             type: file
             description: Transcript length information file
   - ch_control_features:
       description: Channel with control features information
       structure:
-        - meta_exp:
+        - meta:
             type: map
-            description: Experiment metadata map
+            description: Metadata map
         - control_features:
             type: file
             description: Control features information file
   - ch_contrasts:
       description: Channel with contrast information
       structure:
+        - meta:
+            type: map
+            description: Metadata map
         - meta_contrast:
             type: map
-            description: Contrast metadata map
-        - contrast_variable:
-            type: value
-            description: Contrast variable
+            description: |
+              Map with all the contrast info, such as contrast
+              id, variable, reference, target, etc.
+        - variable:
+            type: list
+            description: List of contrast variable
         - reference:
-            type: value
-            description: Reference level
+            type: list
+            description: List of reference level
         - target:
-            type: value
-            description: Target level
+            type: list
+            description: List of target level
+        - formula:
+            type: list
+            description: List of contrast formula
+        - comparison:
+            type list:
+            description: List of contrast comparison
 
 output:
   - versions:
