@@ -4,8 +4,8 @@ process RUNDBCAN_DATABASE {
     conda "${moduleDir}/environment.yml"
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/dbcan:5.0.4--pyhdfd78af_0' :
-        'biocontainers/dbcan:5.0.4--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/dbcan:5.0.6--pyhdfd78af_0' :
+        'biocontainers/dbcan:5.0.6--pyhdfd78af_0' }"
 
     output:
 
@@ -17,7 +17,6 @@ process RUNDBCAN_DATABASE {
 
     script:
     def args = task.ext.args ?: ''
-    def VERSION = '5.0.4'
     """
 
     run_dbcan database \\
@@ -25,20 +24,19 @@ process RUNDBCAN_DATABASE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        dbcan: $VERSION
+        dbcan: \$(echo \$(run_dbcan version) | cut -f2 -d':' | cut -f2 -d' ')
     END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
-    def VERSION = '5.0.4'
 
     """
     mkdir  -p dbcan_db
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        dbcan: $VERSION
+        dbcan: \$(echo \$(run_dbcan version) | cut -f2 -d':' | cut -f2 -d' ')
     END_VERSIONS
     """
 

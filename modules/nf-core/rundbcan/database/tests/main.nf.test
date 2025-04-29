@@ -19,9 +19,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                {assert snapshot(process.out.versions).match()},
+                { assert snapshot(path(process.out.versions[0]).yaml).match() },
                 { assert path(process.out.dbcan_db.get(0)).exists() }
             )
 
@@ -39,11 +39,12 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                {assert snapshot(process.out.versions).match()},
+                { assert snapshot(path(process.out.versions[0]).yaml).match() },
                 { assert path(process.out.dbcan_db.get(0)).exists() }
             )
+
         }
     }
 }

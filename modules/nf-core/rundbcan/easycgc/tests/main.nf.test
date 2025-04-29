@@ -45,19 +45,13 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match()},
-                { assert path(process.out.cazyme_annotation.get(0).get(1)).exists() },
-                { assert path(process.out.dbcanhmm_results.get(0).get(1)).exists() },
-                { assert path(process.out.dbcansub_results.get(0).get(1)).exists()  },
-                { assert path(process.out.dbcandiamond_results.get(0).get(1)).exists()},
-                { assert path(process.out.cgc_gff.get(0).get(1)).exists() },
-                { assert path(process.out.cgc_standard_out.get(0).get(1)).exists() },
-                { assert path(process.out.diamond_out_tc.get(0).get(1)).exists() },
-                { assert path(process.out.tf_hmm_results.get(0).get(1)).exists() },
-                { assert path(process.out.stp_hmm_results.get(0).get(1)).exists() },
-                { assert path(process.out.total_cgc_info.get(0).get(1)).exists() }
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match()
+                }
             )
         }
     }
@@ -76,21 +70,14 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match()},
-                { assert path(process.out.cazyme_annotation.get(0).get(1)).exists() },
-                { assert path(process.out.dbcanhmm_results.get(0).get(1)).exists() },
-                { assert path(process.out.dbcansub_results.get(0).get(1)).exists()  },
-                { assert path(process.out.dbcandiamond_results.get(0).get(1)).exists()  },
-                { assert path(process.out.cgc_gff.get(0).get(1)).exists() },
-                { assert path(process.out.cgc_standard_out.get(0).get(1)).exists() },
-                { assert path(process.out.diamond_out_tc.get(0).get(1)).exists() },
-                { assert path(process.out.tf_hmm_results.get(0).get(1)).exists() },
-                { assert path(process.out.stp_hmm_results.get(0).get(1)).exists() },
-                { assert path(process.out.total_cgc_info.get(0).get(1)).exists() }
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match()
+                }
             )
-
         }
     }
 }

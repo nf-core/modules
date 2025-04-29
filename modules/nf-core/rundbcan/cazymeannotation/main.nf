@@ -4,8 +4,8 @@ process RUNDBCAN_CAZYMEANNOTATION {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/dbcan:5.0.4--pyhdfd78af_0' :
-        'biocontainers/dbcan:5.0.4--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/dbcan:5.0.6--pyhdfd78af_0' :
+        'biocontainers/dbcan:5.0.6--pyhdfd78af_0' }"
     input:
     tuple val(meta), path(input_raw_data)
     path dbcan_db
@@ -24,7 +24,6 @@ process RUNDBCAN_CAZYMEANNOTATION {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}_dbcan_cazyme"
-    def VERSION = '5.0.4'
 
     """
 
@@ -43,14 +42,15 @@ process RUNDBCAN_CAZYMEANNOTATION {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        dbcan: $VERSION
+        dbcan: \$(echo \$(run_dbcan version) | cut -f2 -d':' | cut -f2 -d' ')
     END_VERSIONS
     """
+
+
 
     stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}_dbcan_cazyme"
-    def VERSION = '5.0.4'
     """
     touch ${prefix}_overview.tsv
     touch ${prefix}_dbCAN_hmm_results.tsv
@@ -59,7 +59,7 @@ process RUNDBCAN_CAZYMEANNOTATION {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        dbcan: $VERSION
+        dbcan: \$(echo \$(run_dbcan version) | cut -f2 -d':' | cut -f2 -d' ')
     END_VERSIONS
     """
 }

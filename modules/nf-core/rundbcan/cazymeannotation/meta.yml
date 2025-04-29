@@ -25,11 +25,14 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
+          e.g. `[ id:'sample1' ]`
     - input_raw_data:
         type: file
         description: FASTA file for protein sequences.
         pattern: "*.{fasta,fa,faa}"
+        ontologies:
+          - edam: "http://edamontology.org/data_2044" # Sequence
+          - edam: "http://edamontology.org/format_1929" # FASTA
   - - dbcan_db:
         type: directory
         description: Path to the dbCAN database directory.
@@ -41,7 +44,7 @@ output:
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - ${prefix}_overview.tsv:
-          type: map
+          type: file
           description: |
             TSV file containing the results of dbCAN CAZyme annotation.
 
@@ -52,7 +55,7 @@ output:
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - ${prefix}_dbCAN_hmm_results.tsv:
-          type: map
+          type: file
           description: |
             TSV file containing the detailed dbCAN HMM results for CAZyme annotation.
 
@@ -61,9 +64,9 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1' ]`
       - ${prefix}_dbCANsub_hmm_results.tsv:
-          type: map
+          type: file
           description: |
             TSV file containing the detailed dbCAN subfamily results for CAZyme annotation.
 
@@ -72,9 +75,9 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1' ]`
       - ${prefix}_diamond.out:
-          type: map
+          type: file
           description: |
             TSV file containing the detailed dbCAN diamond results for CAZyme annotation.
 

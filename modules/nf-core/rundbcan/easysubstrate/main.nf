@@ -4,8 +4,8 @@ process RUNDBCAN_EASYSUBSTRATE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/dbcan:5.0.4--pyhdfd78af_0' :
-        'biocontainers/dbcan:5.0.4--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/dbcan:5.0.6--pyhdfd78af_0' :
+        'biocontainers/dbcan:5.0.6--pyhdfd78af_0' }"
     input:
     tuple val(meta), path(input_raw_data)
     tuple val(meta2), path(input_gff), val (gff_type)
@@ -38,7 +38,6 @@ process RUNDBCAN_EASYSUBSTRATE {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}_dbcan_substrate"
-    def VERSION = '5.0.4'
 
     """
     touch PUL_blast.out
@@ -69,14 +68,13 @@ process RUNDBCAN_EASYSUBSTRATE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        dbcan: $VERSION
+        dbcan: \$(echo \$(run_dbcan version) | cut -f2 -d':' | cut -f2 -d' ')
     END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}_dbcan_substrate"
-    def VERSION = '5.0.4'
     """
     touch ${prefix}_overview.tsv
     touch ${prefix}_dbCAN_hmm_results.tsv
@@ -95,7 +93,7 @@ process RUNDBCAN_EASYSUBSTRATE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        dbcan: $VERSION
+        dbcan: \$(echo \$(run_dbcan version) | cut -f2 -d':' | cut -f2 -d' ')
     END_VERSIONS
     """
 }
