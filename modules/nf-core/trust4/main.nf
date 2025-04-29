@@ -45,10 +45,10 @@ process TRUST4 {
     // barcodeWhitelist is optional
     def barcodeWhitelist  = barcode_whitelist ? "--barcodeWhitelist ${barcode_whitelist}" : ""
     // add barcode information if present
-    if (barcode_read) {
-        if (barcode_read == "R1") {
+    if (cell_barcode_read) {
+        if (cell_barcode_read == "R1") {
             def barcode = "--barcode ${forward[0]}"
-        } else if (barcode_read == "R2") {
+        } else if (cell_barcode_read == "R2") {
             def barcode = "--barcode ${reverse[0]}"
         }
     } else {
