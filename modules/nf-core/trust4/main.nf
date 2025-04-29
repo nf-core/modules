@@ -47,22 +47,22 @@ process TRUST4 {
     // add barcode information if present
     if (cell_barcode_read) {
         if (cell_barcode_read == "R1") {
-            def barcode = "--barcode ${forward[0]}"
+            barcode = "--barcode ${forward[0]}"
         } else if (cell_barcode_read == "R2") {
-            def barcode = "--barcode ${reverse[0]}"
+            barcode = "--barcode ${reverse[0]}"
         }
     } else {
-        def barcode = ''
+        barcode = ''
     }
     // add umi information if present
     if (umi_read) {
         if (umi_read == "R1") {
-            def umi = "--UMI ${forward[0]}"
+            umi = "--UMI ${forward[0]}"
         } else if (umi_read == "R2") {
-            def umi = "--UMI ${reverse[0]}"
+            umi = "--UMI ${reverse[0]}"
         }
     } else {
-        def umi = ''
+        umi = ''
     }
 
     """
