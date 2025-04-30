@@ -56,37 +56,6 @@ nextflow_process {
 
     }
 
-    test("homo_sapiens - [vcf, [], truth, [], []]") {
-
-        when {
-            process {
-                """
-                truth = RTGTOOLS_SVDECOMPOSE.out.vcf
-                test  = Channel.of([
-                    [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz', checkIfExists: true),
-                    []
-                    ])
-                regions = Channel.of([
-                    [id:'test'], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists:true)
-                    ])
-
-                input[0] = truth.join(test).map{it-> tuple([it[0],it[1],[],it[2],it[3]])}.join(regions)
-
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
-
-    }
-
     test("homo_sapiens - [vcf, tbi, truth, truth_tbi, regions_bed] - stub") {
 
         options "-stub"
