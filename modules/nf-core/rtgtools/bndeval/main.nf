@@ -30,22 +30,17 @@ process RTGTOOLS_BNDEVAL {
     def args = task.ext.args ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
     def bed_regions = regions_bed ? "--bed-regions=${regions_bed}" : ""
-    def truth_index = truth_vcf_tbi ? "" : "rtg index ${truth_vcf}"
-    def query_index = query_vcf_tbi ? "" : "rtg index ${query_vcf}"
     def avail_mem = task.memory.toGiga() + "G"
 
     """
-    ${truth_index}
-    ${query_index}
-
     rtg RTG_MEM=$avail_mem bndeval \\
         ${args} \\
         --baseline=${truth_vcf} \\
         ${bed_regions} \\
         --calls=${query_vcf} \\
-        --output=output
+        --output=${prefix}
 
-    cd output/
+    cd ${prefix}/
     mv done progress ..
     for f in * ; do mv "\$f" "../${prefix}.\$f" ; done
     cd ..
