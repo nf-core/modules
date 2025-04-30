@@ -2,14 +2,13 @@ process TRUST4 {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::trust4=1.1.5"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/trust4:1.1.5--h43eeafb_0':
-        'biocontainers/trust4:1.1.5--h43eeafb_0' }"
+        'https://depot.galaxyproject.org/singularity/trust4:1.1.5--h5ca1c30_0':
+        'biocontainers/trust4:1.1.5--h5ca1c30_0' }"
 
     input:
-    tuple val(meta), path(reads)
-    tuple val(meta2), path(bam)
+    tuple val(meta), path(bam), path(reads)
     path(fasta)
     path(vdj_reference)
     val(cell_barcode_read)
