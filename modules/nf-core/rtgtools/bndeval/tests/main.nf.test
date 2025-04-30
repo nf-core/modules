@@ -1,0 +1,92 @@
+nextflow_process {
+
+    name "Test Process RTGTOOLS_BNDEVAL"
+    script "../main.nf"
+    process "RTGTOOLS_BNDEVAL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "rtgtools"
+    tag "rtgtools/bndeval"
+    tag "rtgtools/svdecompose"
+
+    setup {
+        run("RTGTOOLS_SVDECOMPOSE") {
+            script "../../../rtgtools/svdecompose/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz.tbi', checkIfExists: true)
+                    ])
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens - [vcf, tbi, truth, truth_tbi, regions_bed]") {
+
+        when {
+            process {
+                """
+                truth = RTGTOOLS_SVDECOMPOSE.out.vcf.join(RTGTOOLS_SVDECOMPOSE.out.index)
+                test  = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz.tbi', checkIfExists: true)
+                    ])
+                regions = Channel.of([
+                    [id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists:true)
+                    ])
+
+                input[0] = truth.join(test).join(regions)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - [vcf, tbi, truth, truth_tbi, regions_bed] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                truth = RTGTOOLS_SVDECOMPOSE.out.vcf.join(RTGTOOLS_SVDECOMPOSE.out.index)
+                test  = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz.tbi', checkIfExists: true)
+                    ])
+                regions = Channel.of([
+                    [id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists:true)
+                    ])
+
+                input[0] = truth.join(test).join(regions)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
