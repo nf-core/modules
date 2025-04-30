@@ -11,7 +11,7 @@ process GNU_SORT {
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), file( "${output_file}" )   , emit: sorted
+    tuple val(meta), path( "${output_file}" )   , emit: sorted
     path "versions.yml"                         , emit: versions
 
     when:

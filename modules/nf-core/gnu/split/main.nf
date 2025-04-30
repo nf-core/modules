@@ -11,21 +11,22 @@ process GNU_SPLIT {
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path( "*split*" ), emit: split
-    path "versions.yml"               , emit: versions
+    tuple val(meta), path( "${outfile_prefix}.*" )  , emit: split
+    path "versions.yml"                             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = input.extension
+    def args        = task.ext.args   ?: ''
+    def prefix      = task.ext.prefix ?: "${meta.id}"
+    def suffix      = input.extension
+    outfile_prefix  = "${prefix}.split"
     if (suffix == 'gz') {
         def next_suffix = file(input.baseName).getExtension()
         """
-        gunzip -c ${input} | split ${args} --additional-suffix=.${next_suffix} - ${prefix}.split.
-        gzip ${prefix}.split.*
+        gunzip -c ${input} | split ${args} --additional-suffix=.${next_suffix} - ${outfile_prefix}.
+        gzip ${outfile_prefix}.*
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -34,7 +35,7 @@ process GNU_SPLIT {
         """
     } else {
         """
-        split ${args} --additional-suffix=.${suffix} ${input} ${prefix}.split.
+        split ${args} --additional-suffix=.${suffix} ${input} ${outfile_prefix}.
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -46,8 +47,9 @@ process GNU_SPLIT {
     stub:
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    outfile_prefix  = "${prefix}.split"
     """
-    touch ${prefix}.split.000.csv ${prefix}.split.001.csv ${prefix}.split.002.csv
+    touch ${outfile_prefix}.000.csv ${outfile_prefix}.001.csv ${outfile_prefix}.002.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
