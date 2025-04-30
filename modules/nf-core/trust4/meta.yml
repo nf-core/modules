@@ -28,44 +28,19 @@ input:
         type: file
         description: List of input FastQ files of size 1 and 2 for single-end and paired-end
           data, respectively
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - fasta:
+  - - fasta:
         type: file
         description: Path to the fasta file coordinate and sequence of V/D/J/C genes
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - vdj_reference:
+  - - vdj_reference:
         type: file
         description: reference file of V/D/J genes
-  - - meta4:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - barcode_read:
+  - - cell_barcode_read:
         type: string
-        description: Read containing barcode (either R1 or R2)
-  - - meta5:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - umi_read:
+        description: Read containing cell barcode (either R1 or R2)
+  - - umi_read:
         type: string
-        description: Read containing barcode (either R1 or R2)
-  - - meta6:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - barcode_whitelist:
+        description: Read containing umi barcode (either R1 or R2)
+  - - barcode_whitelist:
         type: file
         description: BarocdeWhitelist file
 output:
