@@ -5,7 +5,7 @@ process BUSCO_DOWNLOAD {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/busco:5.8.2--pyhdfd78af_0':
-        'biocontainers/busco:5.8.2--pyhdfd78af_0' }"
+        'biocontainers/busco:5.8.3--pyhdfd78af_0' }"
 
     input:
     val lineage
