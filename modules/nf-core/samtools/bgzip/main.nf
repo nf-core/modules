@@ -11,7 +11,7 @@ process SAMTOOLS_BGZIP {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path ("*.bgzip.fa.gz") , emit: fa
+    tuple val(meta), path("${output}")      , emit: fa
     path "versions.yml"                     , emit: versions
 
     when:
@@ -20,19 +20,22 @@ process SAMTOOLS_BGZIP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    in_bgzip  = ["gz", "bgz", "bgzf"].contains(input.getExtension())
+    extension = in_bgzip ? input.getBaseName().tokenize(".")[-1] : input.getExtension()
+    output    = in_bgzip ? "${prefix}.${extension}" : "${prefix}.${extension}.gz"
     """
     FILE_TYPE=\$(htsfile $fasta)
     case "\$FILE_TYPE" in
         *BGZF-compressed*)
-            ln -s $fasta ${prefix}.bgzip.fa.gz ;;
+            ln -s $fasta ${output} ;;
         *gzip-compressed*)
-            zcat  $fasta | bgzip -c $args -@${task.cpus} > ${prefix}.bgzip.fa.gz ;;
+            zcat  $fasta | bgzip -c $args -@${task.cpus} > ${output} ;;
         *bzip2-compressed*)
-            bzcat $fasta | bgzip -c $args -@${task.cpus} > ${prefix}.bgzip.fa.gz ;;
+            bzcat $fasta | bgzip -c $args -@${task.cpus} > ${output} ;;
         *XZ-compressed*)
-            xzcat $fasta | bgzip -c $args -@${task.cpus} > ${prefix}.bgzip.fa.gz ;;
+            xzcat $fasta | bgzip -c $args -@${task.cpus} > ${output} ;;
         *)
-            bgzip -c $args -@${task.cpus} $fasta > ${prefix}.bgzip.fa.gz ;;
+            bgzip -c $args -@${task.cpus} $fasta > ${output} ;;
     esac
 
     cat <<-END_VERSIONS > versions.yml
@@ -43,8 +46,11 @@ process SAMTOOLS_BGZIP {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    in_bgzip  = ["gz", "bgz", "bgzf"].contains(input.getExtension())
+    extension = in_bgzip ? input.getBaseName().tokenize(".")[-1] : input.getExtension()
+    output    = in_bgzip ? "${prefix}.${extension}" : "${prefix}.${extension}.gz"
     """
-    echo '' | bgzip > ${prefix}.bgzip.fa.gz
+    echo '' | bgzip > ${output}
 
     cat <<-END_VERSIONS > versions.yml
 
