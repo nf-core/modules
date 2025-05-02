@@ -30,11 +30,10 @@ process GTDBTK_CLASSIFYWF {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args            = task.ext.args ?: ''
+    prefix              = task.ext.prefix ?: "${meta.id}"
     def pplacer_scratch = use_pplacer_scratch_dir ? "--scratch_dir pplacer_tmp" : ""
-    def mash_mode = mash_db ? "--mash_db ${mash_db}" : "--skip_ani_screen"
-    prefix = task.ext.prefix ?: "${meta.id}"
-
+    def mash_mode       = mash_db ? "--mash_db ${mash_db}" : "--skip_ani_screen"
     """
     export GTDBTK_DATA_PATH="\$(find -L ${db} -name 'metadata' -type d -exec dirname {} \\;)"
 

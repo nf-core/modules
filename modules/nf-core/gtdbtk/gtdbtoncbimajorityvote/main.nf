@@ -23,10 +23,10 @@ process GTDBTK_GTDBTONCBIMAJORITYVOTE {
     if(!bac120_metadata && !ar53_metadata) {
         log.error("ERROR: Neither the ar53 or bac120 metadata files were provided to gtdbtk/gtdbtoncbimajorityvote!")
     }
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix        = task.ext.prefix ?: "${meta.id}"
+    bac120            = bac120_metadata ? "--bac120_metadata_file ${bac120_metadata}" : ""
+    ar53              = ar53_metadata   ? "--ar53_metadata_file ${ar53_metadata}"     : ""
     def gtdbtk_prefix = gtdbtk_output.find { it.name =~ /summary\.tsv/}.getName() - ~/\.(bac120|ar53)\.summary\.tsv/
-    bac120 = bac120_metadata ? "--bac120_metadata_file ${bac120_metadata}" : ""
-    ar53 = ar53_metadata     ? "--ar53_metadata_file ${ar53_metadata}"     : ""
     """
     gtdb_to_ncbi_majority_vote.py \\
         --gtdbtk_output_dir . \\
