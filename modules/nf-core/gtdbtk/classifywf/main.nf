@@ -8,7 +8,7 @@ process GTDBTK_CLASSIFYWF {
         'biocontainers/gtdbtk:2.4.1--pyhdfd78af_1' }"
 
     input:
-    tuple val(meta), path("bins/*")
+    tuple val(meta)   , path("bins/*")
     tuple val(db_name), path(db)
     val use_pplacer_scratch_dir
     path mash_db
