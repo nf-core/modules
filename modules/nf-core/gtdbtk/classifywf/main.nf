@@ -1,8 +1,11 @@
 process GTDBTK_CLASSIFYWF {
-    tag "${prefix}"
-    label 'process_medium'
+    tag "${meta.id}"
+    label 'process_high_memory'
+
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ? 'https://depot.galaxyproject.org/singularity/gtdbtk:2.4.0--pyhdfd78af_2' : 'biocontainers/gtdbtk:2.4.0--pyhdfd78af_2'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/gtdbtk:2.4.1--pyhdfd78af_1':
+        'biocontainers/gtdbtk:2.4.1--pyhdfd78af_1' }"
 
     input:
     tuple val(meta), path("bins/*")
@@ -11,16 +14,17 @@ process GTDBTK_CLASSIFYWF {
     path mash_db
 
     output:
-    tuple val(meta), path("gtdbtk.${prefix}.*.summary.tsv"), emit: summary
-    tuple val(meta), path("gtdbtk.${prefix}.*.classify.tree.gz"), emit: tree, optional: true
-    tuple val(meta), path("gtdbtk.${prefix}.*.markers_summary.tsv"), emit: markers, optional: true
-    tuple val(meta), path("gtdbtk.${prefix}.*.msa.fasta.gz"), emit: msa, optional: true
-    tuple val(meta), path("gtdbtk.${prefix}.*.user_msa.fasta.gz"), emit: user_msa, optional: true
-    tuple val(meta), path("gtdbtk.${prefix}.*.filtered.tsv"), emit: filtered, optional: true
-    tuple val(meta), path("gtdbtk.${prefix}.failed_genomes.tsv"), emit: failed, optional: true
-    tuple val(meta), path("gtdbtk.${prefix}.log"), emit: log
-    tuple val(meta), path("gtdbtk.${prefix}.warnings.log"), emit: warnings
-    path ("versions.yml"), emit: versions
+    tuple val(meta), path("*")                             , emit: gtdb_files
+    tuple val(meta), path("classify/*.summary.tsv")        , emit: summary
+    tuple val(meta), path("classify/*.classify.tree")      , emit: tree       , optional: true
+    tuple val(meta), path("identify/*.markers_summary.tsv"), emit: markers    , optional: true
+    tuple val(meta), path("align/*.msa.fasta.gz")          , emit: msa        , optional: true
+    tuple val(meta), path("align/*.user_msa.fasta.gz")     , emit: user_msa   , optional: true
+    tuple val(meta), path("align/*.filtered.tsv")          , emit: filtered   , optional: true
+    tuple val(meta), path("identify/*.failed_genomes.tsv") , emit: failed     , optional: true
+    tuple val(meta), path("gtdbtk.${prefix}.log")          , emit: log
+    tuple val(meta), path("gtdbtk.${prefix}.warnings.log") , emit: warnings
+    path ("versions.yml")                                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -47,25 +51,8 @@ process GTDBTK_CLASSIFYWF {
         ${mash_mode} \\
         ${pplacer_scratch}
 
-    ## If mash db given, classify/ and identify/ directories won't be created
-    if [[ -d classify/ && \$(ls -A classify/) ]]; then
-        mv classify/* .
-    fi
-
-    if [[ -d identify/ && \$(ls -A identify/) ]]; then
-        mv identify/* .
-    fi
-
-    ## If nothing aligns, no output, so only run
-    if [[ -d align/ && \$(ls -A align/) ]]; then
-        mv align/* .
-    fi
-
     mv gtdbtk.log "gtdbtk.${prefix}.log"
-
     mv gtdbtk.warnings.log "gtdbtk.${prefix}.warnings.log"
-
-    find -name "gtdbtk.${prefix}.*.classify.tree" | xargs -r gzip # do not fail if .tree is missing
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -76,12 +63,25 @@ process GTDBTK_CLASSIFYWF {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch gtdbtk.${prefix}.stub.summary.tsv
-    echo "" | gzip > gtdbtk.${prefix}.stub.classify.tree.gz
-    touch gtdbtk.${prefix}.stub.markers_summary.tsv
-    echo "" | gzip > gtdbtk.${prefix}.stub.msa.fasta.gz
-    echo "" | gzip > gtdbtk.${prefix}.stub.user_msa.fasta.gz
-    touch gtdbtk.${prefix}.stub.filtered.tsv
+    mkdir identify
+    mkdir classify
+    mkdir align
+
+    touch classify/gtdbtk.${prefix}.ar53.summary.tsv
+    touch classify/gtdbtk.${prefix}.bac120.summary.tsv
+    ln -s classify/gtdbtk.${prefix}.ar53.summary.tsv gtdbtk.${prefix}.ar53.summary.tsv
+    ln -s classify/gtdbtk.${prefix}.bac120.summary.tsv gtdbtk.${prefix}.bac120.summary.tsv
+    touch classify/gtdbtk.${prefix}.ar53.classify.tree
+    touch classify/gtdbtk.${prefix}.bac120.classify.tree
+
+    touch identify/gtdbtk.${prefix}.ar53.markers_summary.tsv
+    touch identify/gtdbtk.${prefix}.bac120.markers_summary.tsv
+
+    echo "" | gzip > align/gtdbtk.${prefix}.ar53.msa.fasta.gz
+    echo "" | gzip > align/gtdbtk.${prefix}.bac120.user_msa.fasta.gz
+    touch align/gtdbtk.${prefix}.ar53.filtered.tsv
+    touch align/gtdbtk.${prefix}.bac120.filtered.tsv
+
     touch gtdbtk.${prefix}.log
     touch gtdbtk.${prefix}.warnings.log
     touch gtdbtk.${prefix}.failed_genomes.tsv

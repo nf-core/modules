@@ -1,0 +1,86 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "gtdbtk_gtdbtoncbimajorityvote"
+description: Converts the output classifications of GTDB-TK from GTDB taxonomy to NCBI taxonomy
+keywords:
+  - GTDB taxonomy
+  - NCBI taxonomy
+  - taxonomic classification
+  - metagenomics
+  - classification
+  - genome taxonomy database
+  - bacteria
+  - archaea
+tools:
+  - gtdbtk:
+      description: GTDB-Tk is a software toolkit for assigning objective taxonomic classifications
+        to bacterial and archaeal genomes based on the Genome Database Taxonomy GTDB.
+      homepage: https://ecogenomics.github.io/GTDBTk/
+      documentation: https://ecogenomics.github.io/GTDBTk/
+      tool_dev_url: https://github.com/Ecogenomics/GTDBTk
+      doi: "10.1093/bioinformatics/btz848"
+      licence: ["GNU General Public v3 (GPL v3)"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+
+    - gtdbtk_output:
+        type: file
+        description: All the output files from GTDB-Tk
+        pattern: "*"
+
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+
+    - ar53_metadata:
+        type: file
+        description: GTDB ar53 metadata file (from https://data.ace.uq.edu.au/public/gtdb/data/releases/latest/)
+        pattern: "*.tsv.gz"
+        ontologies:
+          - "http://edamontology.org/format_3475"
+
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+
+    - bac120_metadata:
+        type: file
+        description: GTDB bac120 metadata file (from https://data.ace.uq.edu.au/public/gtdb/data/releases/latest/)
+        pattern: "*.tsv.gz"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+
+output:
+  - tsv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.tsv":
+          type: file
+          description: Output TSV mapping each genome and its GTDB taxonomy to an NCBI taxonomic lineage
+          pattern: "*.{tsv}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@prototaxites"
+maintainers:
+  - "@prototaxites"
