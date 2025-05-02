@@ -20,19 +20,24 @@ process GTDBTK_GTDBTONCBIMAJORITYVOTE {
     task.ext.when == null || task.ext.when
 
     script:
+    if(!bac120_metadata && !ar53_metadata) {
+        log.error("ERROR: Neither the ar53 or bac120 metadata files were provided to gtdbtk/gtdbtoncbimajorityvote!")
+    }
     def prefix = task.ext.prefix ?: "${meta.id}"
     def gtdbtk_prefix = gtdbtk_output.find { it.name =~ /summary\.tsv/}.getName() - ~/\.(bac120|ar53)\.summary\.tsv/
+    bac120 = bac120_metadata ? "--bac120_metadata_file ${bac120_metadata}" : ""
+    ar53 = ar53_metadata     ? "--ar53_metadata_file ${ar53_metadata}"     : ""
     """
     gtdb_to_ncbi_majority_vote.py \\
         --gtdbtk_output_dir . \\
-        ${bac120_metadata} \\
-        ${ar53_metadata} \\
+        ${bac120} \\
+        ${ar53} \\
         --gtdbtk_prefix ${gtdbtk_prefix} \\
         --output_file gtdbtk.${prefix}.ncbi.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gtdb_to_ncbi_majority_vote.py: \$(gtdb_to_ncbi_majority_vote.py -v 2>/dev/null | head -n 1 | grep -Po "(\\d+\\.)+\\d+")
+        gtdb_to_ncbi_majority_vote.py: \$(echo \$(gtdb_to_ncbi_majority_vote.py -v 2>/dev/null) | grep -o -E "[0-9]+(\\.[0-9]+)+" | head -n 1)
     END_VERSIONS
     """
 
@@ -43,7 +48,7 @@ process GTDBTK_GTDBTONCBIMAJORITYVOTE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        gtdb_to_ncbi_majority_vote.py: \$(gtdb_to_ncbi_majority_vote.py -v 2>/dev/null | head -n 1 | grep -Po "(\\d+\\.)+\\d+")
+        gtdb_to_ncbi_majority_vote.py: \$(echo \$(gtdb_to_ncbi_majority_vote.py -v 2>/dev/null) | grep -o -E "[0-9]+(\\.[0-9]+)+" | head -n 1)
     END_VERSIONS
     """
 }
