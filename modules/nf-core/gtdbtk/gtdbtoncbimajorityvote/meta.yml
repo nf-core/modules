@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "gtdbtk_gtdbtoncbimajorityvote"
-description: Converts the output classifications of GTDB-TK from GTDB taxonomy to NCBI taxonomy
+description: Converts the output classifications of GTDB-TK from GTDB taxonomy to
+  NCBI taxonomy
 keywords:
   - GTDB taxonomy
   - NCBI taxonomy
@@ -33,7 +33,7 @@ input:
         type: file
         description: All the output files from GTDB-Tk
         pattern: "*"
-
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -45,7 +45,8 @@ input:
         description: GTDB ar53 metadata file (from https://data.ace.uq.edu.au/public/gtdb/data/releases/latest/)
         pattern: "*.tsv.gz"
         ontologies:
-          - "http://edamontology.org/format_3475"
+          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3989 # GZIP format
 
   - - meta3:
         type: map
@@ -58,7 +59,8 @@ input:
         description: GTDB bac120 metadata file (from https://data.ace.uq.edu.au/public/gtdb/data/releases/latest/)
         pattern: "*.tsv.gz"
         ontologies:
-          - edam: "http://edamontology.org/format_3475"
+          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3989 # GZIP format
 
 output:
   - tsv:
@@ -67,19 +69,25 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.tsv":
-          type: file
-          description: Output TSV mapping each genome and its GTDB taxonomy to an NCBI taxonomic lineage
-          pattern: "*.{tsv}"
+          pattern: "*.ncbi.tsv"
           ontologies:
-            - edam: "http://edamontology.org/format_3475"
+            - edam: http://edamontology.org/format_3475
+
+      - "*.ncbi.tsv":
+          type: map
+          description: TSV map for input genomes, mapping GTDB classification taxonomy
+            to NCBI taxonomy
+          pattern: "*.ncbi.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
 
   - versions:
-      - "versions.yml":
+      - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
-
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@prototaxites"
 maintainers:

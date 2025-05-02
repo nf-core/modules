@@ -48,6 +48,16 @@ input:
           mode is used (optional)
         pattern: "*.msh"
 output:
+  - gtdb_files:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*":
+          type: file
+          description: All files output by GTDB-Tk.
+          pattern: "*"
   - summary:
       - meta:
           type: map
