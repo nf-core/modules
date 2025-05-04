@@ -27,12 +27,22 @@ input:
         description: File containing alignment coordinates
         pattern: "*.{table, sam, bam, paf}"
         ontologies: []
-  - - query_fasta:
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - query_fasta:
         type: file
         description: Query genome for the alignments
         pattern: "*.{fasta}"
         ontologies: []
-  - - reference_fasta:
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - reference_fasta:
         type: file
         description: Reference genome for the alignments
         pattern: "*.{fasta}"
