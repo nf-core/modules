@@ -9,8 +9,8 @@ process SYRI {
 
     input:
     tuple val(meta), path(infile)
-    path(query_fasta)
-    path(reference_fasta)
+    tuple val(meta2), path(query_fasta)
+    tuple val(meta3), path(reference_fasta)
     val(file_type)
 
     output:
@@ -47,7 +47,6 @@ process SYRI {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}syri.out

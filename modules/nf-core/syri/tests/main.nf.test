@@ -13,6 +13,11 @@ nextflow_process {
     setup {
         run("MINIMAP2_ALIGN") {
             script "../../minimap2/align"
+
+            params {
+                minimap2_args = '-x asm5 --eqx'
+            }
+
             process {
                 """
                 input[0] = [
@@ -38,8 +43,8 @@ nextflow_process {
             process {
                 """
                 input[0] = MINIMAP2_ALIGN.out.bam
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome2.fasta', checkIfExists: true)
+                input[1] = [ [], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                input[2] = [ [], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome2.fasta', checkIfExists: true) ]
                 input[3] = 'B'
                 """
             }
@@ -62,8 +67,8 @@ nextflow_process {
             process {
                 """
                 input[0] = MINIMAP2_ALIGN.out.bam
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome2.fasta', checkIfExists: true)
+                input[1] = [ [], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                input[2] = [ [], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome2.fasta', checkIfExists: true) ]
                 input[3] = 'B'
                 """
             }
