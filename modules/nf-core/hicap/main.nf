@@ -1,11 +1,11 @@
 process HICAP {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hicap:1.0.3--py_0' :
-        'biocontainers/hicap:1.0.3--py_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/hicap:1.0.3--py_0'
+        : 'biocontainers/hicap:1.0.3--py_0'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -16,7 +16,7 @@ process HICAP {
     tuple val(meta), path("*.gbk"), emit: gbk, optional: true
     tuple val(meta), path("*.svg"), emit: svg, optional: true
     tuple val(meta), path("*.tsv"), emit: tsv, optional: true
-    path "versions.yml"           , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,15 +29,15 @@ process HICAP {
     def is_compressed = fasta.getName().endsWith(".gz") ? true : false
     def fasta_name = fasta.getName().replace(".gz", "")
     """
-    if [ "$is_compressed" == "true" ]; then
-        gzip -c -d $fasta > $fasta_name
+    if [ "${is_compressed}" == "true" ]; then
+        gzip -c -d ${fasta} > ${fasta_name}
     fi
     hicap \\
-        --query_fp $fasta_name \\
-        $database_args \\
-        $model_args \\
-        $args \\
-        --threads $task.cpus \\
+        --query_fp ${fasta_name} \\
+        ${database_args} \\
+        ${model_args} \\
+        ${args} \\
+        --threads ${task.cpus} \\
         -o ./
 
     cat <<-END_VERSIONS > versions.yml

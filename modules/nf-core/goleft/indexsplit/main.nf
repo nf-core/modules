@@ -1,20 +1,20 @@
 process GOLEFT_INDEXSPLIT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/goleft:0.2.4--h9ee0642_1':
-        'biocontainers/goleft:0.2.4--h9ee0642_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/goleft:0.2.4--h9ee0642_1'
+        : 'biocontainers/goleft:0.2.4--h9ee0642_1'}"
 
     input:
-    tuple val(meta) , path(bai)
+    tuple val(meta), path(bai)
     tuple val(meta2), path(fai)
     val split
 
     output:
-    tuple val(meta), path("*.bed") , emit: bed
-    path  "versions.yml"           , emit: versions
+    tuple val(meta), path("*.bed"), emit: bed
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,7 +25,7 @@ process GOLEFT_INDEXSPLIT {
     """
     goleft \\
         indexsplit \\
-        $args \\
+        ${args} \\
         -n ${split} \\
         --fai ${fai} \\
         ${bai} \\

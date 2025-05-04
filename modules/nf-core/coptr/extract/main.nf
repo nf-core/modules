@@ -1,30 +1,30 @@
 process COPTR_EXTRACT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/coptr:1.1.4--pyhdfd78af_3':
-        'biocontainers/coptr:1.1.4--pyhdfd78af_3' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/coptr:1.1.4--pyhdfd78af_3'
+        : 'biocontainers/coptr:1.1.4--pyhdfd78af_3'}"
 
     input:
     tuple val(meta), path(bam, stageAs: "bamfolder/*")
 
     output:
     tuple val(meta), path("*.pkl"), emit: coverage
-    path "versions.yml"           , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     coptr \\
         extract \\
-        $args \\
+        ${args} \\
         bamfolder/ \\
         .
 

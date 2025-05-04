@@ -1,21 +1,21 @@
 process VRHYME_VRHYME {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vrhyme:1.1.0--pyhdfd78af_1':
-        'biocontainers/vrhyme:1.1.0--pyhdfd78af_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/vrhyme:1.1.0--pyhdfd78af_1'
+        : 'biocontainers/vrhyme:1.1.0--pyhdfd78af_1'}"
 
     input:
     tuple val(meta), path(reads)
     tuple val(meta2), path(fasta)
 
     output:
-    tuple val(meta), path("vRhyme_best_bins_fasta/")                , emit: bins
-    tuple val(meta), path("**/vRhyme_best_bins.*.membership.tsv")   , emit: membership
-    tuple val(meta), path("**/vRhyme_best_bins.*.summary.tsv")      , emit: summary
-    path "versions.yml"                                             , emit: versions
+    tuple val(meta), path("vRhyme_best_bins_fasta/"), emit: bins
+    tuple val(meta), path("**/vRhyme_best_bins.*.membership.tsv"), emit: membership
+    tuple val(meta), path("**/vRhyme_best_bins.*.summary.tsv"), emit: summary
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,19 +24,19 @@ process VRHYME_VRHYME {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def fasta_input = fasta.toString().replaceAll(/\.gz$/, '')
-    def gunzip      = fasta.getExtension() == "gz" ? "gunzip -c ${fasta} > ${fasta_input}" : ""
-    def cleanup     = fasta.getExtension() == "gz" ? "rm ${fasta_input}" : ""
+    def gunzip = fasta.getExtension() == "gz" ? "gunzip -c ${fasta} > ${fasta_input}" : ""
+    def cleanup = fasta.getExtension() == "gz" ? "rm ${fasta_input}" : ""
     """
     ${gunzip}
 
     vRhyme \\
-        -i $fasta_input \\
-        -r $reads \\
-        -o $prefix \\
-        -t $task.cpus \\
-        $args
+        -i ${fasta_input} \\
+        -r ${reads} \\
+        -o ${prefix} \\
+        -t ${task.cpus} \\
+        ${args}
 
-    mv $prefix/vRhyme_best_bins_fasta/ vRhyme_best_bins_fasta
+    mv ${prefix}/vRhyme_best_bins_fasta/ vRhyme_best_bins_fasta
 
     ${cleanup}
 
@@ -49,9 +49,9 @@ process VRHYME_VRHYME {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p $prefix
-    touch $prefix/vRhyme_best_bins.19.membership.tsv
-    touch $prefix/vRhyme_best_bins.19.summary.tsv
+    mkdir -p ${prefix}
+    touch ${prefix}/vRhyme_best_bins.19.membership.tsv
+    touch ${prefix}/vRhyme_best_bins.19.summary.tsv
     mkdir -p vRhyme_best_bins_fasta
     touch vRhyme_best_bins_fasta/vRhyme_bin_1.fasta
     touch vRhyme_best_bins_fasta/vRhyme_bin_10.fasta

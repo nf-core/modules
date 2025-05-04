@@ -1,18 +1,18 @@
 process CRABZ_COMPRESS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/crabz:0.9.0':
-        'biocontainers/crabz:0.9.0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/crabz:0.9.0'
+        : 'biocontainers/crabz:0.9.0'}"
 
     input:
     tuple val(meta), path(file)
 
     output:
     tuple val(meta), path("*.gz"), emit: archive
-    path "versions.yml"           , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,10 +22,10 @@ process CRABZ_COMPRESS {
     def prefix = task.ext.prefix ?: "${file}"
     """
     crabz \\
-        $args \\
-        -p $task.cpus \\
+        ${args} \\
+        -p ${task.cpus} \\
         -o ${prefix}.gz \\
-        $file
+        ${file}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

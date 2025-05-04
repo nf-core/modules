@@ -1,19 +1,19 @@
 process LOFREQ_VITERBI {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/lofreq:2.1.5--py310h47ef89e_10' :
-        'biocontainers/lofreq:2.1.5--py310h47ef89e_10' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/lofreq:2.1.5--py310h47ef89e_10'
+        : 'biocontainers/lofreq:2.1.5--py310h47ef89e_10'}"
 
     input:
-    tuple val(meta),  path(bam)
+    tuple val(meta), path(bam)
     tuple val(meta2), path(fasta)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,13 +25,13 @@ process LOFREQ_VITERBI {
     """
     lofreq \\
         viterbi \\
-        $args \\
-        -ref $fasta \\
-        $bam |
+        ${args} \\
+        -ref ${fasta} \\
+        ${bam} |
         samtools sort \\
-            $args2 \\
+            ${args2} \\
             -T ${prefix} \\
-            --threads $task.cpus \\
+            --threads ${task.cpus} \\
             -o ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml

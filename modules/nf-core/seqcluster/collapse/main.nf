@@ -1,18 +1,18 @@
 process SEQCLUSTER_COLLAPSE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/seqcluster:1.2.9--pyh5e36f6f_0':
-        'biocontainers/seqcluster:1.2.9--pyh5e36f6f_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/seqcluster:1.2.9--pyh5e36f6f_0'
+        : 'biocontainers/seqcluster:1.2.9--pyh5e36f6f_0'}"
 
     input:
     tuple val(meta), path(fastq)
 
     output:
-    tuple val(meta), path("*.fastq.gz") , emit: fastq
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.fastq.gz"), emit: fastq
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,12 +20,14 @@ process SEQCLUSTER_COLLAPSE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if ("$fastq" == "${prefix}.fastq.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${fastq}" == "${prefix}.fastq.gz") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
     """
     seqcluster \\
         collapse \\
-        $args \\
-        -f $fastq  \\
+        ${args} \\
+        -f ${fastq}  \\
         -o collapsed
 
     gzip collapsed/*_trimmed.fastq

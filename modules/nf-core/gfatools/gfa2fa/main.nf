@@ -1,18 +1,18 @@
 process GFATOOLS_GFA2FA {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gfatools:0.5--he4a0461_4':
-        'biocontainers/gfatools:0.5--he4a0461_4' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/gfatools:0.5--he4a0461_4'
+        : 'biocontainers/gfatools:0.5--he4a0461_4'}"
 
     input:
     tuple val(meta), path(gfa)
 
     output:
     tuple val(meta), path("*.fasta.gz"), emit: fasta
-    path "versions.yml"                , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,8 +23,8 @@ process GFATOOLS_GFA2FA {
     """
     gfatools \\
         gfa2fa \\
-        $args \\
-        $gfa \\
+        ${args} \\
+        ${gfa} \\
         | gzip -c > ${prefix}.fasta.gz
 
     cat <<-END_VERSIONS > versions.yml

@@ -3,16 +3,16 @@ process VIENNARNA_RNAFOLD {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/viennarna:2.6.4--py310pl5321h6cc9453_1':
-        'biocontainers/viennarna:2.6.4--py310pl5321h6cc9453_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/viennarna:2.6.4--py310pl5321h6cc9453_1'
+        : 'biocontainers/viennarna:2.6.4--py310pl5321h6cc9453_1'}"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.fold")      , emit: rnafold_txt
-    tuple val(meta), path("*.ps")        , emit: rnafold_ps
+    tuple val(meta), path("*.fold"), emit: rnafold_txt
+    tuple val(meta), path("*.ps"), emit: rnafold_ps
     tuple val(meta), path("versions.yml"), emit: versions
 
     when:
@@ -25,7 +25,7 @@ process VIENNARNA_RNAFOLD {
     RNAfold \\
         ${args} \\
         --jobs=${task.cpus} \\
-        --infile=$fasta \\
+        --infile=${fasta} \\
         --outfile=${fasta}.fold
 
     cat <<-END_VERSIONS > versions.yml

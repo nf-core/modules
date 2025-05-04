@@ -1,11 +1,11 @@
 process HTSEQ_COUNT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/htseq:2.0.3--py310ha14a713_0':
-        'biocontainers/htseq:2.0.3--py310ha14a713_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/htseq:2.0.3--py310ha14a713_0'
+        : 'biocontainers/htseq:2.0.3--py310ha14a713_0'}"
 
     input:
     tuple val(meta), path(input), path(index)
@@ -13,7 +13,7 @@ process HTSEQ_COUNT {
 
     output:
     tuple val(meta), path("*.txt"), emit: txt
-    path "versions.yml"           , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when

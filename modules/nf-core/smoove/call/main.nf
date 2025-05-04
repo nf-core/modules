@@ -1,11 +1,11 @@
 process SMOOVE_CALL {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/smoove:0.2.8--h9ee0642_1' :
-        'biocontainers/smoove:0.2.8--h9ee0642_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/smoove:0.2.8--h9ee0642_1'
+        : 'biocontainers/smoove:0.2.8--h9ee0642_1'}"
 
     input:
     tuple val(meta), path(input), path(index), path(exclude_beds)
@@ -14,7 +14,7 @@ process SMOOVE_CALL {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml"              , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when

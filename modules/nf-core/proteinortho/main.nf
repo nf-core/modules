@@ -1,20 +1,20 @@
 process PROTEINORTHO {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/proteinortho:6.3.0--h70414c8_0':
-        'biocontainers/proteinortho:6.3.0--h70414c8_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/proteinortho:6.3.0--h70414c8_0'
+        : 'biocontainers/proteinortho:6.3.0--h70414c8_0'}"
 
     input:
     tuple val(meta), path(fasta_files, stageAs: "?/*")
 
     output:
-    tuple val(meta), path("${meta.id}.proteinortho.tsv")                     , emit: orthologgroups
-    tuple val(meta), path("${meta.id}.proteinortho-graph")                   , emit: orthologgraph
-    tuple val(meta), path("${meta.id}.blast-graph")                          , emit: blastgraph
-    path "versions.yml"                                                      , emit: versions
+    tuple val(meta), path("${meta.id}.proteinortho.tsv"), emit: orthologgroups
+    tuple val(meta), path("${meta.id}.proteinortho-graph"), emit: orthologgraph
+    tuple val(meta), path("${meta.id}.blast-graph"), emit: blastgraph
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,10 +24,10 @@ process PROTEINORTHO {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     proteinortho \\
-        $args \\
-        -cpus=$task.cpus \\
-        -project=$prefix \\
-        $fasta_files
+        ${args} \\
+        -cpus=${task.cpus} \\
+        -project=${prefix} \\
+        ${fasta_files}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

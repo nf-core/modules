@@ -1,12 +1,11 @@
-
 process SOMALIER_EXTRACT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/somalier:0.2.19--h0c29559_0':
-        'biocontainers/somalier:0.2.19--h0c29559_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/somalier:0.2.19--h0c29559_0'
+        : 'biocontainers/somalier:0.2.19--h0c29559_0'}"
 
     input:
     tuple val(meta), path(input), path(input_index)
@@ -15,8 +14,8 @@ process SOMALIER_EXTRACT {
     tuple val(meta4), path(sites)
 
     output:
-    tuple val(meta), path("*.somalier") , emit: extract
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.somalier"), emit: extract
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when

@@ -1,19 +1,19 @@
 process PIGZ_UNCOMPRESS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
     //stageInMode 'copy' // this directive can be set in case the original input should be kept
 
     conda "conda-forge::pigz"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pigz:2.8':
-        'biocontainers/pigz:2.8' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/pigz:2.8'
+        : 'biocontainers/pigz:2.8'}"
 
     input:
     tuple val(meta), path(zip)
 
     output:
-    tuple val(meta), path("${uncompressed_filename}") , emit: file
-    path "versions.yml"                               , emit: versions
+    tuple val(meta), path("${uncompressed_filename}"), emit: file
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,9 +24,9 @@ process PIGZ_UNCOMPRESS {
     // calling pigz -f to make it follow symlinks
     """
     unpigz \\
-        -p $task.cpus \\
+        -p ${task.cpus} \\
         -fk \\
-        $args \\
+        ${args} \\
         ${zip}
 
     cat <<-END_VERSIONS > versions.yml
@@ -39,7 +39,7 @@ process PIGZ_UNCOMPRESS {
     def args = task.ext.args ?: ''
     uncompressed_filename = zip.toString() - '.gz'
     """
-    touch $uncompressed_filename
+    touch ${uncompressed_filename}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

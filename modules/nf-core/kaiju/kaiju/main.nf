@@ -1,19 +1,19 @@
 process KAIJU_KAIJU {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/kaiju:1.10.0--h43eeafb_0':
-        'biocontainers/kaiju:1.10.0--h43eeafb_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/kaiju:1.10.0--h43eeafb_0'
+        : 'biocontainers/kaiju:1.10.0--h43eeafb_0'}"
 
     input:
     tuple val(meta), path(reads)
-    path(db)
+    path db
 
     output:
     tuple val(meta), path('*.tsv'), emit: results
-    path "versions.yml"           , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,12 +26,12 @@ process KAIJU_KAIJU {
     dbnodes=`find -L ${db} -name "*nodes.dmp"`
     dbname=`find -L ${db} -name "*.fmi" -not -name "._*"`
     kaiju \\
-        $args \\
-        -z $task.cpus \\
+        ${args} \\
+        -z ${task.cpus} \\
         -t \$dbnodes \\
         -f \$dbname \\
         -o ${prefix}.tsv \\
-        $input
+        ${input}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -51,5 +51,4 @@ process KAIJU_KAIJU {
         kaiju: \$(echo \$( kaiju -h 2>&1 | sed -n 1p | sed 's/^.*Kaiju //' ))
     END_VERSIONS
     """
-
 }

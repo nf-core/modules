@@ -1,11 +1,11 @@
 process REGTOOLS_JUNCTIONSEXTRACT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/14/143bc2dfa40320fbe1e52329953c8508780591835223f4ca492d3206598604a8/data' :
-        'community.wave.seqera.io/library/regtools:1.0.0--461ddf16709a70cf' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/14/143bc2dfa40320fbe1e52329953c8508780591835223f4ca492d3206598604a8/data'
+        : 'community.wave.seqera.io/library/regtools:1.0.0--461ddf16709a70cf'}"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -22,10 +22,10 @@ process REGTOOLS_JUNCTIONSEXTRACT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     regtools junctions extract \\
-        $args \\
+        ${args} \\
         -s XS \\
         -o ${prefix}.junc \\
-        $bam
+        ${bam}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

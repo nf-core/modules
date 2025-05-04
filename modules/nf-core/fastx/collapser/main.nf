@@ -1,18 +1,18 @@
 process FASTX_COLLAPSER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fastx_toolkit:0.0.14--hdbdd923_11':
-        'biocontainers/fastx_toolkit:0.0.14--hdbdd923_11' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/fastx_toolkit:0.0.14--hdbdd923_11'
+        : 'biocontainers/fastx_toolkit:0.0.14--hdbdd923_11'}"
 
     input:
     tuple val(meta), path(fastx)
 
     output:
     tuple val(meta), path("${prefix}.fasta"), emit: fasta
-    path "versions.yml"                     , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,8 +22,8 @@ process FASTX_COLLAPSER {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     fastx_collapser \\
-        $args \\
-        -i $fastx \\
+        ${args} \\
+        -i ${fastx} \\
         -o ${prefix}.fasta
 
     cat <<-END_VERSIONS > versions.yml

@@ -1,11 +1,11 @@
 process DELLY_CALL {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/delly:1.3.3--h4d20210_0' :
-        'biocontainers/delly:1.3.3--h4d20210_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/delly:1.3.3--h4d20210_0'
+        : 'biocontainers/delly:1.3.3--h4d20210_0'}"
 
     input:
     tuple val(meta), path(input), path(input_index), path(vcf), path(vcf_index), path(exclude_bed)
@@ -13,9 +13,9 @@ process DELLY_CALL {
     tuple val(meta3), path(fai)
 
     output:
-    tuple val(meta), path("*.{bcf,vcf.gz}")  , emit: bcf
-    tuple val(meta), path("*.{csi,tbi}")     , emit: csi
-    path "versions.yml"                      , emit: versions
+    tuple val(meta), path("*.{bcf,vcf.gz}"), emit: bcf
+    tuple val(meta), path("*.{csi,tbi}"), emit: csi
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when

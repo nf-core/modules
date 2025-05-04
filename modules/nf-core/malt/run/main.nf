@@ -1,21 +1,21 @@
 process MALT_RUN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/malt:0.61--hdfd78af_0' :
-        'biocontainers/malt:0.61--hdfd78af_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/malt:0.61--hdfd78af_0'
+        : 'biocontainers/malt:0.61--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(fastqs)
     path index
 
     output:
-    tuple val(meta), path("*.rma6")                                , emit: rma6
-    tuple val(meta), path("*.{tab,text,sam,tab.gz,text.gz,sam.gz}"),  optional:true, emit: alignments
-    tuple val(meta), path("*.log")                                 , emit: log
-    path "versions.yml"                                            , emit: versions
+    tuple val(meta), path("*.rma6"), emit: rma6
+    tuple val(meta), path("*.{tab,text,sam,tab.gz,text.gz,sam.gz}"), optional: true, emit: alignments
+    tuple val(meta), path("*.log"), emit: log
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,12 +25,12 @@ process MALT_RUN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     malt-run \\
-        -t $task.cpus \\
+        -t ${task.cpus} \\
         -v \\
         -o . \\
-        $args \\
+        ${args} \\
         --inFile ${fastqs.join(' ')} \\
-        --index $index/ |&tee ${prefix}-malt-run.log
+        --index ${index}/ |&tee ${prefix}-malt-run.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -1,30 +1,31 @@
 process WIPERTOOLS_FASTQSCATTER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/wipertools:1.1.5--pyhdfd78af_0':
-        'biocontainers/wipertools:1.1.5--pyhdfd78af_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/wipertools:1.1.5--pyhdfd78af_0'
+        : 'biocontainers/wipertools:1.1.5--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(fastq)
-    val(num_splits)
+    val num_splits
 
     output:
-    tuple val(meta), path("${out_folder}/*") , emit: fastq_chunks
-    path "versions.yml"                      , emit: versions
+    tuple val(meta), path("${out_folder}/*"), emit: fastq_chunks
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args        = task.ext.args ?: ''
-    def prefix      = task.ext.prefix ?: "${meta.id}"
-    def args_list   = args.tokenize()
-    out_folder      = (args_list.contains('--out_folder') ? args_list[args_list.indexOf('--out_folder')+1] :
-                        (args_list.contains('-o') ? args_list[args_list.indexOf('-o')+1] : 'chunks'))
-    if(!args.contains('-o') && !args.contains('--out_folder')) {
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args_list = args.tokenize()
+    out_folder = (args_list.contains('--out_folder')
+        ? args_list[args_list.indexOf('--out_folder') + 1]
+        : (args_list.contains('-o') ? args_list[args_list.indexOf('-o') + 1] : 'chunks'))
+    if (!args.contains('-o') && !args.contains('--out_folder')) {
         args += " -o ${out_folder}"
     }
     """
@@ -42,12 +43,13 @@ process WIPERTOOLS_FASTQSCATTER {
     """
 
     stub:
-    def args      = task.ext.args ?: ''
-    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def args_list = args.tokenize()
-    out_folder    = (args_list.contains('--out_folder') ? args_list[args_list.indexOf('--out_folder')+1] :
-                        (args_list.contains('-o') ? args_list[args_list.indexOf('-o')+1] : 'chunks'))
-    if(!args.contains('-o') && !args.contains('--out_folder')) {
+    out_folder = (args_list.contains('--out_folder')
+        ? args_list[args_list.indexOf('--out_folder') + 1]
+        : (args_list.contains('-o') ? args_list[args_list.indexOf('-o') + 1] : 'chunks'))
+    if (!args.contains('-o') && !args.contains('--out_folder')) {
         args += " -o ${out_folder}"
     }
     """

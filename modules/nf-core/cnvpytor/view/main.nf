@@ -1,11 +1,11 @@
 process CNVPYTOR_VIEW {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cnvpytor:1.2.1--pyhdfd78af_0':
-        'biocontainers/cnvpytor:1.2.1--pyhdfd78af_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/cnvpytor:1.2.1--pyhdfd78af_0'
+        : 'biocontainers/cnvpytor:1.2.1--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(pytor_files)
@@ -13,18 +13,18 @@ process CNVPYTOR_VIEW {
     val output_format
 
     output:
-    tuple val(meta), path("*.vcf"), emit: vcf      , optional: true
-    tuple val(meta), path("*.tsv"), emit: tsv      , optional: true
-    tuple val(meta), path("*.xls"), emit: xls      , optional: true
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.vcf"), emit: vcf, optional: true
+    tuple val(meta), path("*.tsv"), emit: tsv, optional: true
+    tuple val(meta), path("*.xls"), emit: xls, optional: true
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def output_suffix = output_format ?: 'vcf'
-    def bins   = bin_sizes ?: '1000'
-    def input  = pytor_files.join(" ")
+    def bins = bin_sizes ?: '1000'
+    def input = pytor_files.join(" ")
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
 

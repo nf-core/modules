@@ -1,11 +1,11 @@
 process MASH_DIST {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mash:2.3--he348c14_1' :
-        'biocontainers/mash:2.3--he348c14_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/mash:2.3--he348c14_1'
+        : 'biocontainers/mash:2.3--he348c14_1'}"
 
     input:
     tuple val(meta), path(query)
@@ -13,7 +13,7 @@ process MASH_DIST {
 
     output:
     tuple val(meta), path("*.txt"), emit: dist
-    path "versions.yml"           , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,10 +24,10 @@ process MASH_DIST {
     """
     mash \\
         dist \\
-        -p $task.cpus \\
-        $args \\
-        $reference \\
-        $query > ${prefix}.txt
+        -p ${task.cpus} \\
+        ${args} \\
+        ${reference} \\
+        ${query} > ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

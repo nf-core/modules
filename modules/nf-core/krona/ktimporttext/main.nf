@@ -1,18 +1,18 @@
 process KRONA_KTIMPORTTEXT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/krona:2.8.1--pl5321hdfd78af_1':
-        'biocontainers/krona:2.8.1--pl5321hdfd78af_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/krona:2.8.1--pl5321hdfd78af_1'
+        : 'biocontainers/krona:2.8.1--pl5321hdfd78af_1'}"
 
     input:
     tuple val(meta), path(report)
 
     output:
-    tuple val(meta), path ('*.html'), emit: html
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path('*.html'), emit: html
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,9 +22,9 @@ process KRONA_KTIMPORTTEXT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     ktImportText  \\
-        $args \\
+        ${args} \\
         -o ${prefix}.html \\
-        $report
+        ${report}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

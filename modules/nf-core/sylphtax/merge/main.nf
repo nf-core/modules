@@ -1,13 +1,11 @@
-
 process SYLPHTAX_MERGE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sylph-tax:1.2.0--pyhdfd78af_0':
-        'biocontainers/sylph-tax:1.2.0--pyhdfd78af_0' }"
-
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/sylph-tax:1.2.0--pyhdfd78af_0'
+        : 'biocontainers/sylph-tax:1.2.0--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(sylphtax_reports)
@@ -15,7 +13,7 @@ process SYLPHTAX_MERGE {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml"           , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,7 +26,7 @@ process SYLPHTAX_MERGE {
     sylph-tax \\
         merge \\
         ${sylphtax_reports} \\
-        --column $data_type \\
+        --column ${data_type} \\
         --output ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml

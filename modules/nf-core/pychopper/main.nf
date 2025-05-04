@@ -1,18 +1,18 @@
 process PYCHOPPER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pychopper:2.7.10--pyhdfd78af_0':
-        'biocontainers/pychopper:2.7.10--pyhdfd78af_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/pychopper:2.7.10--pyhdfd78af_0'
+        : 'biocontainers/pychopper:2.7.10--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(fastq)
 
     output:
     tuple val(meta), path("*.out.fastq.gz"), emit: fastq
-    path "versions.yml"                    , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,16 +24,16 @@ process PYCHOPPER {
 
     """
     pychopper \\
-        $args \\
-        -t $task.cpus \\
-        $fastq \\
+        ${args} \\
+        -t ${task.cpus} \\
+        ${fastq} \\
         ${prefix}.out.fastq
 
     gzip -f ${prefix}.out.fastq > ${prefix}.out.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pychopper: $PYCHOPPER_VERSION (hard coded- check container used for this module)
+        pychopper: ${PYCHOPPER_VERSION} (hard coded- check container used for this module)
     END_VERSIONS
     """
 

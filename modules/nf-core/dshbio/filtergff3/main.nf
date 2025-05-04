@@ -3,16 +3,16 @@ process DSHBIO_FILTERGFF3 {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/dsh-bio:3.0--hdfd78af_0' :
-        'biocontainers/dsh-bio:3.0--hdfd78af_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/dsh-bio:3.0--hdfd78af_0'
+        : 'biocontainers/dsh-bio:3.0--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(gff3)
 
     output:
     tuple val(meta), path("*.gff3.gz"), emit: gff3
-    path "versions.yml"               , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,8 +23,8 @@ process DSHBIO_FILTERGFF3 {
     """
     dsh-bio \\
         filter-gff3 \\
-        $args \\
-        -i $gff3 \\
+        ${args} \\
+        -i ${gff3} \\
         -o ${prefix}.gff3.gz
 
     cat <<-END_VERSIONS > versions.yml

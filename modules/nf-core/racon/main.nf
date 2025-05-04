@@ -1,18 +1,18 @@
 process RACON {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/racon:1.4.20--h9a82719_1' :
-        'biocontainers/racon:1.4.20--h9a82719_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/racon:1.4.20--h9a82719_1'
+        : 'biocontainers/racon:1.4.20--h9a82719_1'}"
 
     input:
     tuple val(meta), path(reads), path(assembly), path(paf)
 
     output:
-    tuple val(meta), path('*_assembly_consensus.fasta.gz') , emit: improved_assembly
-    path "versions.yml"          , emit: versions
+    tuple val(meta), path('*_assembly_consensus.fasta.gz'), emit: improved_assembly
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,10 +21,10 @@ process RACON {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    racon -t "$task.cpus" \\
+    racon -t "${task.cpus}" \\
         "${reads}" \\
         "${paf}" \\
-        $args \\
+        ${args} \\
         "${assembly}" > \\
         ${prefix}_assembly_consensus.fasta
 

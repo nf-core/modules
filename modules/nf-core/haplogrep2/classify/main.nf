@@ -1,19 +1,19 @@
 process HAPLOGREP2_CLASSIFY {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/haplogrep:2.4.0--hdfd78af_0':
-        'biocontainers/haplogrep:2.4.0--hdfd78af_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/haplogrep:2.4.0--hdfd78af_0'
+        : 'biocontainers/haplogrep:2.4.0--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(inputfile)
-    val(format)
+    val format
 
     output:
     tuple val(meta), path("*.txt"), emit: txt
-    path "versions.yml"           , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,10 +24,10 @@ process HAPLOGREP2_CLASSIFY {
     """
     haplogrep \\
         classify \\
-        $args \\
-        --in $inputfile \\
+        ${args} \\
+        --in ${inputfile} \\
         --out ${prefix}.txt \\
-        --format $format
+        --format ${format}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -45,5 +45,4 @@ process HAPLOGREP2_CLASSIFY {
         haplogrep2: \$(echo \$(haplogrep --version 2>&1) | (sed 's/htt.*//') | (sed 's/.*v//'))
     END_VERSIONS
     """
-
 }

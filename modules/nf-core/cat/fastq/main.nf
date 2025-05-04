@@ -26,7 +26,8 @@ process CAT_FASTQ {
             """
             cat ${readList.join(' ')} ${compress} > ${prefix}.merged.fastq.gz
             """
-        } else {
+        }
+        else {
             error("Could not find any FASTQ files to concatenate in the process input")
         }
     }
@@ -39,7 +40,8 @@ process CAT_FASTQ {
             cat ${read1.join(' ')} ${compress} > ${prefix}_1.merged.fastq.gz
             cat ${read2.join(' ')} ${compress} > ${prefix}_2.merged.fastq.gz
             """
-        } else {
+        }
+        else {
             error("Could not find any FASTQ file pairs to concatenate in the process input")
         }
     }
@@ -52,7 +54,8 @@ process CAT_FASTQ {
             """
             echo '' | gzip > ${prefix}.merged.fastq.gz
             """
-        } else {
+        }
+        else {
             error("Could not find any FASTQ files to concatenate in the process input")
         }
     }
@@ -62,7 +65,8 @@ process CAT_FASTQ {
             echo '' | gzip > ${prefix}_1.merged.fastq.gz
             echo '' | gzip > ${prefix}_2.merged.fastq.gz
             """
-        } else {
+        }
+        else {
             error("Could not find any FASTQ file pairs to concatenate in the process input")
         }
     }

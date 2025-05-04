@@ -1,18 +1,18 @@
 process GAPPA_EXAMINEGRAFT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gappa:0.8.0--h9a82719_0':
-        'biocontainers/gappa:0.8.0--h9a82719_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/gappa:0.8.0--h9a82719_0'
+        : 'biocontainers/gappa:0.8.0--h9a82719_0'}"
 
     input:
     tuple val(meta), path(jplace)
 
     output:
     tuple val(meta), path("*.newick"), emit: newick
-    path "versions.yml"              , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,10 +24,10 @@ process GAPPA_EXAMINEGRAFT {
     gappa \\
         examine \\
         graft \\
-        $args \\
-        --threads $task.cpus \\
+        ${args} \\
+        --threads ${task.cpus} \\
         --file-prefix ${prefix}. \\
-        --jplace-path $jplace
+        --jplace-path ${jplace}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

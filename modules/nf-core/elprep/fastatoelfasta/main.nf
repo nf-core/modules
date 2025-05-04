@@ -1,19 +1,19 @@
 process ELPREP_FASTATOELFASTA {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/elprep:5.1.3--he881be0_1':
-        'biocontainers/elprep:5.1.3--he881be0_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/elprep:5.1.3--he881be0_1'
+        : 'biocontainers/elprep:5.1.3--he881be0_1'}"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.elfasta")          , emit: elfasta
+    tuple val(meta), path("*.elfasta"), emit: elfasta
     tuple val(meta), path("logs/elprep/elprep*"), emit: log
-    path "versions.yml"                         , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,7 +22,7 @@ process ELPREP_FASTATOELFASTA {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     elprep fasta-to-elfasta \\
-        $fasta \\
+        ${fasta} \\
         ${prefix}.elfasta \\
         --log-path ./
 

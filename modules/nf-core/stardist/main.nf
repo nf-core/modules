@@ -1,5 +1,5 @@
 process STARDIST {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
@@ -10,20 +10,20 @@ process STARDIST {
 
     output:
     tuple val(meta), path("*.stardist.tif"), emit: mask
-    path "versions.yml"                    , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args               = task.ext.args   ?: ''
-    def prefix             = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     stardist-predict2d \\
-        -i $image \\
+        -i ${image} \\
         -o . \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -35,8 +35,8 @@ process STARDIST {
     """
 
     stub:
-    def args               = task.ext.args   ?: ''
-    def prefix             = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.stardist.tif
 

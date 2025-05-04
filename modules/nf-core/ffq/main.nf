@@ -1,17 +1,17 @@
 process FFQ {
-    tag "${ids.size() == 1 ? ids[0] : "${ids[0]+'..'+ids[-1]}"}"
+    tag "${ids.size() == 1 ? ids[0] : "${ids[0] + '..' + ids[-1]}"}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ffq:0.2.1--pyhdfd78af_0':
-        'biocontainers/ffq:0.2.1--pyhdfd78af_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/ffq:0.2.1--pyhdfd78af_0'
+        : 'biocontainers/ffq:0.2.1--pyhdfd78af_0'}"
 
     input:
     val ids
 
     output:
-    path "*.json"      , emit: json
+    path "*.json", emit: json
     path "versions.yml", emit: versions
 
     when:
@@ -25,7 +25,7 @@ process FFQ {
     """
     ffq \\
         ${id_list.join(' ')} \\
-        $args \\
+        ${args} \\
         > ${prefix}.json
 
     cat <<-END_VERSIONS > versions.yml

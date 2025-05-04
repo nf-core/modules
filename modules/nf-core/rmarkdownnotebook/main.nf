@@ -1,16 +1,16 @@
-include { dump_params_yml; indent_code_block } from "./parametrize"
+include { dump_params_yml ; indent_code_block } from "./parametrize"
 
 process RMARKDOWNNOTEBOOK {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     //NB: You likely want to override this with a container containing all required
     //dependencies for your analysis. The container at least needs to contain the
     //yaml and rmarkdown R packages.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-31ad840d814d356e5f98030a4ee308a16db64ec5:0e852a1e4063fdcbe3f254ac2c7469747a60e361-0' :
-        'biocontainers/mulled-v2-31ad840d814d356e5f98030a4ee308a16db64ec5:0e852a1e4063fdcbe3f254ac2c7469747a60e361-0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/mulled-v2-31ad840d814d356e5f98030a4ee308a16db64ec5:0e852a1e4063fdcbe3f254ac2c7469747a60e361-0'
+        : 'biocontainers/mulled-v2-31ad840d814d356e5f98030a4ee308a16db64ec5:0e852a1e4063fdcbe3f254ac2c7469747a60e361-0'}"
 
     input:
     tuple val(meta), path(notebook)
@@ -18,11 +18,11 @@ process RMARKDOWNNOTEBOOK {
     path input_files
 
     output:
-    tuple val(meta), path("*.html")              , emit: report
-    tuple val(meta), path("*.parameterised.Rmd") , emit: parameterised_notebook, optional: true
-    tuple val(meta), path("artifacts/*")         , emit: artifacts, optional: true
-    tuple val(meta), path("session_info.log")    , emit: session_info
-    path  "versions.yml"                         , emit: versions
+    tuple val(meta), path("*.html"), emit: report
+    tuple val(meta), path("*.parameterised.Rmd"), emit: parameterised_notebook, optional: true
+    tuple val(meta), path("artifacts/*"), emit: artifacts, optional: true
+    tuple val(meta), path("session_info.log"), emit: session_info
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,9 +30,9 @@ process RMARKDOWNNOTEBOOK {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def parametrize = (task.ext.parametrize == null) ?  true : task.ext.parametrize
-    def implicit_params = (task.ext.implicit_params == null) ? true : task.ext.implicit_params
-    def meta_params = (task.ext.meta_params == null) ? true : task.ext.meta_params
+    def parametrize = task.ext.parametrize == null ? true : task.ext.parametrize
+    def implicit_params = task.ext.implicit_params == null ? true : task.ext.implicit_params
+    def meta_params = task.ext.meta_params == null ? true : task.ext.meta_params
 
     // Dump parameters to yaml file.
     // Using a yaml file over using the CLI params because
@@ -99,7 +99,8 @@ process RMARKDOWNNOTEBOOK {
             # Render based on the updated file
             rmarkdown::render('${prefix}.parameterised.Rmd', output_file='${prefix}.html', envir = new.env())
         """
-    } else {
+    }
+    else {
         render_cmd = "rmarkdown::render('${prefix}.Rmd', output_file='${prefix}.html')"
     }
 
@@ -111,9 +112,9 @@ process RMARKDOWNNOTEBOOK {
     mkdir artifacts
 
     # Set parallelism for BLAS/MKL etc. to avoid over-booking of resources
-    export MKL_NUM_THREADS="$task.cpus"
-    export OPENBLAS_NUM_THREADS="$task.cpus"
-    export OMP_NUM_THREADS="$task.cpus"
+    export MKL_NUM_THREADS="${task.cpus}"
+    export OPENBLAS_NUM_THREADS="${task.cpus}"
+    export OMP_NUM_THREADS="${task.cpus}"
 
     # Work around  https://github.com/rstudio/rmarkdown/issues/1508
     # If the symbolic link is not replaced by a physical file

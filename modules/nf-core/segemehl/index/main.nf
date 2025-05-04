@@ -1,17 +1,17 @@
 process SEGEMEHL_INDEX {
-    tag "$fasta"
+    tag "${fasta}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/segemehl:0.3.4--hc2ea5fd_5':
-        'biocontainers/segemehl:0.3.4--hc2ea5fd_5' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/segemehl:0.3.4--hc2ea5fd_5'
+        : 'biocontainers/segemehl:0.3.4--hc2ea5fd_5'}"
 
     input:
     path fasta
 
     output:
-    path "*.idx",        emit: index
+    path "*.idx", emit: index
     path "versions.yml", emit: versions
 
     when:
@@ -22,10 +22,10 @@ process SEGEMEHL_INDEX {
     def prefix = "${fasta.baseName}"
     """
     segemehl.x \\
-        -t $task.cpus \\
-        -d $fasta \\
+        -t ${task.cpus} \\
+        -d ${fasta} \\
         -x ${prefix}.idx \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

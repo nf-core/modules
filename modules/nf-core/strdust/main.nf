@@ -1,22 +1,22 @@
 process STRDUST {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8a/8af306fa3605b63ac81132b68e028f028b1d1497ca63c9b68376402a5020f359/data':
-        'community.wave.seqera.io/library/htslib_strdust:4cd2921c1a23f72c' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8a/8af306fa3605b63ac81132b68e028f028b1d1497ca63c9b68376402a5020f359/data'
+        : 'community.wave.seqera.io/library/htslib_strdust:4cd2921c1a23f72c'}"
 
     input:
-    tuple val(meta) , path(bam), path(bai)
+    tuple val(meta), path(bam), path(bai)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(bed)
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    tuple val(meta), path("*.tbi")   , emit: tbi     , optional: true
-    path "versions.yml"              , emit: versions
+    tuple val(meta), path("*.tbi"), emit: tbi, optional: true
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,22 +29,23 @@ process STRDUST {
     def prefix = task.ext.prefix ?: "${meta.id}"
     // If region defined in args, use that, otherwise use bed if available.
     // If that isn't there, either, use --pathogenic
-    def regions = args.contains("-r ") || args.contains("--region ") || args.contains("-R ") || args.contains("--region-file ") || args.contains("--pathogenic") ? "" :
-        bed ? "--region-file $bed" : "--pathogenic"
+    def regions = args.contains("-r ") || args.contains("--region ") || args.contains("-R ") || args.contains("--region-file ") || args.contains("--pathogenic")
+        ? ""
+        : bed ? "--region-file ${bed}" : "--pathogenic"
 
     // If sorted output requested, index output
-    def tabix_cmd = args.contains("--sorted") ? "tabix $args3 ${prefix}.vcf.gz" : ''
+    def tabix_cmd = args.contains("--sorted") ? "tabix ${args3} ${prefix}.vcf.gz" : ''
 
     """
     STRdust \\
-        $args \\
-        $regions \\
-        --threads $task.cpus \\
-        $fasta \\
-        $bam \\
-        | bgzip $args2 --threads $task.cpus \\
+        ${args} \\
+        ${regions} \\
+        --threads ${task.cpus} \\
+        ${fasta} \\
+        ${bam} \\
+        | bgzip ${args2} --threads ${task.cpus} \\
         > ${prefix}.vcf.gz
-    $tabix_cmd
+    ${tabix_cmd}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -59,7 +60,7 @@ process STRDUST {
     def tabix_cmd = args.contains("--sorted") ? "touch ${prefix}.vcf.gz.tbi" : ''
     """
     echo "" | bgzip > ${prefix}.vcf.gz
-    $tabix_cmd
+    ${tabix_cmd}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

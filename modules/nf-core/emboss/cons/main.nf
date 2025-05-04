@@ -1,18 +1,18 @@
 process EMBOSS_CONS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/emboss:6.6.0--h86d058a_5':
-        'biocontainers/emboss:6.6.0--h86d058a_5' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/emboss:6.6.0--h86d058a_5'
+        : 'biocontainers/emboss:6.6.0--h86d058a_5'}"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.fa") , emit: consensus
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.fa"), emit: consensus
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,12 +20,14 @@ process EMBOSS_CONS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if ("$fasta" == "${prefix}.fa") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${fasta}" == "${prefix}.fa") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
     """
     cons \\
         ${args} \\
         -name ${prefix} \\
-        -sequence $fasta \\
+        -sequence ${fasta} \\
         -outseq ${prefix}.fa \\
 
     cat <<-END_VERSIONS > versions.yml
@@ -35,8 +37,10 @@ process EMBOSS_CONS {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "$meta.id"
-    if ("$fasta" == "${prefix}.fa") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("${fasta}" == "${prefix}.fa") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
     """
     touch ${prefix}.fa
 

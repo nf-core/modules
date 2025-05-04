@@ -1,21 +1,21 @@
 process GRAPHMAP2_ALIGN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
-    tag "$meta.id"
+    tag "${meta.id}"
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/graphmap:0.6.3--he513fc3_0' :
-        'biocontainers/graphmap:0.6.3--he513fc3_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/graphmap:0.6.3--he513fc3_0'
+        : 'biocontainers/graphmap:0.6.3--he513fc3_0'}"
 
     input:
     tuple val(meta), path(reads)
-    path  fasta
-    path  index
+    path fasta
+    path index
 
     output:
     tuple val(meta), path("*.sam"), emit: sam
-    path "versions.yml"           , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,12 +26,12 @@ process GRAPHMAP2_ALIGN {
     """
     graphmap2 \\
         align \\
-        -t $task.cpus \\
-        -r $fasta \\
-        -i $index \\
-        -d $reads \\
+        -t ${task.cpus} \\
+        -r ${fasta} \\
+        -i ${index} \\
+        -d ${reads} \\
         -o ${prefix}.sam \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -50,5 +50,4 @@ process GRAPHMAP2_ALIGN {
         graphmap2: \$(echo \$(graphmap2 align 2>&1) | sed 's/^.*Version: v//; s/ .*\$//')
     END_VERSIONS
     """
-
 }

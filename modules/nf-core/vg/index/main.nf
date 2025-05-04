@@ -1,19 +1,19 @@
 process VG_INDEX {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vg:1.45.0--h9ee0642_0':
-        'biocontainers/vg:1.45.0--h9ee0642_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/vg:1.45.0--h9ee0642_0'
+        : 'biocontainers/vg:1.45.0--h9ee0642_0'}"
 
     input:
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path("*.xg")       , emit: xg
-    tuple val(meta), path("*.vgi")      , emit: vg_index, optional: true
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.xg"), emit: xg
+    tuple val(meta), path("*.vgi"), emit: vg_index, optional: true
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when

@@ -3,16 +3,16 @@ process GETORGANELLE_CONFIG {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/getorganelle:1.7.7.0--pyh7cba7a3_0':
-        'biocontainers/getorganelle:1.7.7.0--pyh7cba7a3_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/getorganelle:1.7.7.0--pyh7cba7a3_0'
+        : 'biocontainers/getorganelle:1.7.7.0--pyh7cba7a3_0'}"
 
     input:
-    val(organelle_type)
+    val organelle_type
 
     output:
     tuple val(organelle_type), path("getorganelle"), emit: db
-    path "versions.yml"                            , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,7 +21,7 @@ process GETORGANELLE_CONFIG {
     def args = task.ext.args ?: ''
     """
     get_organelle_config.py \\
-        $args \\
+        ${args} \\
         -a ${organelle_type} \\
         --config-dir getorganelle
 

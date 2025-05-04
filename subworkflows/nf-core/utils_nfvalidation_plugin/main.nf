@@ -32,8 +32,8 @@ workflow UTILS_NFVALIDATION_PLUGIN {
     log.debug("Using schema file: ${schema_filename}")
 
     // Default values for strings
-    pre_help_text    = pre_help_text    ?: ''
-    post_help_text   = post_help_text   ?: ''
+    pre_help_text = pre_help_text ?: ''
+    post_help_text = post_help_text ?: ''
     workflow_command = workflow_command ?: ''
 
     //

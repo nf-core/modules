@@ -1,18 +1,18 @@
 process LEGSTA {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/legsta%3A0.5.1--hdfd78af_2':
-        'biocontainers/legsta:0.5.1--hdfd78af_2' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/legsta%3A0.5.1--hdfd78af_2'
+        : 'biocontainers/legsta:0.5.1--hdfd78af_2'}"
 
     input:
     tuple val(meta), path(seqs)
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml"           , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,8 +22,8 @@ process LEGSTA {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     legsta \\
-        $args \\
-        $seqs > ${prefix}.tsv
+        ${args} \\
+        ${seqs} > ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

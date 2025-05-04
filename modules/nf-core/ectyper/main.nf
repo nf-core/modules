@@ -1,11 +1,11 @@
 process ECTYPER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ectyper:1.0.0--pyhdfd78af_1' :
-        'biocontainers/ectyper:1.0.0--pyhdfd78af_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/ectyper:1.0.0--pyhdfd78af_1'
+        : 'biocontainers/ectyper:1.0.0--pyhdfd78af_1'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -14,7 +14,7 @@ process ECTYPER {
     tuple val(meta), path("*.log"), emit: log
     tuple val(meta), path("*.tsv"), emit: tsv
     tuple val(meta), path("*.txt"), emit: txt
-    path "versions.yml"           , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,15 +25,15 @@ process ECTYPER {
     def is_compressed = fasta.getName().endsWith(".gz") ? true : false
     def fasta_name = fasta.getName().replace(".gz", "")
     """
-    if [ "$is_compressed" == "true" ]; then
-        gzip -c -d $fasta > $fasta_name
+    if [ "${is_compressed}" == "true" ]; then
+        gzip -c -d ${fasta} > ${fasta_name}
     fi
 
     ectyper \\
-        $args \\
-        --cores $task.cpus \\
+        ${args} \\
+        --cores ${task.cpus} \\
         --output ./ \\
-        --input $fasta_name
+        --input ${fasta_name}
 
     mv output.tsv ${prefix}.tsv
 

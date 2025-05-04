@@ -1,19 +1,18 @@
 process TCOFFEE_EXTRACTFROMPDB {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/t-coffee:13.46.0.919e8c6b--hfc96bf3_0':
-        'biocontainers/t-coffee:13.46.0.919e8c6b--hfc96bf3_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/t-coffee:13.46.0.919e8c6b--hfc96bf3_0'
+        : 'biocontainers/t-coffee:13.46.0.919e8c6b--hfc96bf3_0'}"
 
     input:
     tuple val(meta), path(pdb)
 
     output:
     tuple val(meta), path("${prefix}.pdb"), emit: formatted_pdb
-    path "versions.yml" , emit: versions
-
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,7 +24,7 @@ process TCOFFEE_EXTRACTFROMPDB {
     export TEMP='./'
     t_coffee -other_pg extract_from_pdb \
         -infile ${pdb} \
-        $args \
+        ${args} \
         > "${prefix}.pdb"
 
     cat <<-END_VERSIONS > versions.yml

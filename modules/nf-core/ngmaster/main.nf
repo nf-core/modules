@@ -1,18 +1,18 @@
 process NGMASTER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ngmaster:0.5.8--pyhdfd78af_1' :
-        'biocontainers/ngmaster:0.5.8--pyhdfd78af_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/ngmaster:0.5.8--pyhdfd78af_1'
+        : 'biocontainers/ngmaster:0.5.8--pyhdfd78af_1'}"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml"           , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,8 +22,8 @@ process NGMASTER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     ngmaster \\
-        $args \\
-        $fasta \\
+        ${args} \\
+        ${fasta} \\
         > ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml

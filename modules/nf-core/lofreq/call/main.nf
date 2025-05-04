@@ -1,11 +1,11 @@
 process LOFREQ_CALL {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/lofreq:2.1.5--py38h588ecb2_4' :
-        'biocontainers/lofreq:2.1.5--py38h588ecb2_4' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/lofreq:2.1.5--py38h588ecb2_4'
+        : 'biocontainers/lofreq:2.1.5--py38h588ecb2_4'}"
 
     input:
     tuple val(meta), path(bam), path(intervals)
@@ -13,7 +13,7 @@ process LOFREQ_CALL {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml"              , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,11 +25,11 @@ process LOFREQ_CALL {
     """
     lofreq \\
         call \\
-        $args \\
-        $options_intervals \\
-        -f $fasta \\
+        ${args} \\
+        ${options_intervals} \\
+        -f ${fasta} \\
         -o ${prefix}.vcf.gz \\
-        $bam
+        ${bam}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -1,11 +1,11 @@
 process CSVTK_SPLIT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/csvtk:0.31.0--h9ee0642_0' :
-        'biocontainers/csvtk:0.31.0--h9ee0642_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/csvtk:0.31.0--h9ee0642_0'
+        : 'biocontainers/csvtk:0.31.0--h9ee0642_0'}"
 
     input:
     tuple val(meta), path(csv)
@@ -14,7 +14,7 @@ process CSVTK_SPLIT {
 
     output:
     tuple val(meta), path("*.${out_extension}"), emit: split_csv
-    path "versions.yml"                        , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,14 +26,14 @@ process CSVTK_SPLIT {
     def out_delimiter = out_format == "tsv" ? "--out-tabs" : (out_format == "csv" ? "--out-delimiter ',' " : out_format)
     out_extension = out_format == "tsv" ? 'tsv' : 'csv'
     """
-    sed -i.bak '/^##/d' $csv
+    sed -i.bak '/^##/d' ${csv}
     csvtk \\
         split \\
-        $args \\
-        --num-cpus $task.cpus \\
-        $delimiter \\
-        $out_delimiter \\
-        $csv
+        ${args} \\
+        --num-cpus ${task.cpus} \\
+        ${delimiter} \\
+        ${out_delimiter} \\
+        ${csv}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

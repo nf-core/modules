@@ -1,20 +1,20 @@
 process MYKROBE_PREDICT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mykrobe:0.11.0--py39h2add14b_1':
-        'biocontainers/mykrobe:0.11.0--py39h2add14b_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/mykrobe:0.11.0--py39h2add14b_1'
+        : 'biocontainers/mykrobe:0.11.0--py39h2add14b_1'}"
 
     input:
     tuple val(meta), path(seqs)
     val species
 
     output:
-    tuple val(meta), path("${prefix}.csv") , emit: csv
+    tuple val(meta), path("${prefix}.csv"), emit: csv
     tuple val(meta), path("${prefix}.json"), emit: json
-    path "versions.yml"                    , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,13 +25,13 @@ process MYKROBE_PREDICT {
     """
     mykrobe \\
         predict \\
-        $args \\
-        --species $species \\
-        --threads $task.cpus \\
-        --sample $prefix \\
+        ${args} \\
+        --species ${species} \\
+        --threads ${task.cpus} \\
+        --sample ${prefix} \\
         --format json_and_csv \\
         --output ${prefix} \\
-        --seq $seqs
+        --seq ${seqs}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

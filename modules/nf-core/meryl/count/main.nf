@@ -1,19 +1,19 @@
 process MERYL_COUNT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/meryl:1.4.1--h4ac6f70_1':
-        'biocontainers/meryl:1.4.1--h4ac6f70_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/meryl:1.4.1--h4ac6f70_1'
+        : 'biocontainers/meryl:1.4.1--h4ac6f70_1'}"
 
     input:
     tuple val(meta), path(reads)
     val kvalue
 
     output:
-    tuple val(meta), path("*.meryl")    , emit: meryl_db
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.meryl"), emit: meryl_db
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when

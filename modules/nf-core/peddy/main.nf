@@ -1,11 +1,11 @@
 process PEDDY {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/peddy:0.4.8--pyh5e36f6f_0' :
-        'biocontainers/peddy:0.4.8--pyh5e36f6f_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/peddy:0.4.8--pyh5e36f6f_0'
+        : 'biocontainers/peddy:0.4.8--pyh5e36f6f_0'}"
 
     input:
     tuple val(meta), path(vcf), path(vcf_tbi)
@@ -13,17 +13,17 @@ process PEDDY {
     tuple val(meta3), path(sites)
 
     output:
-    tuple val(meta), path("${prefix}.vs.html")              , emit: vs_html
-    tuple val(meta), path("${prefix}.html")                 , emit: html
-    tuple val(meta), path("*.peddy.ped")                    , emit: ped
-    tuple val(meta), path("*.het_check.png")                , optional: true, emit: het_check_png
-    tuple val(meta), path("*.ped_check.png")                , optional: true, emit: ped_check_png
-    tuple val(meta), path("*.sex_check.png")                , optional: true, emit: sex_check_png
-    tuple val(meta), path("*.het_check.csv")                , optional: true, emit: het_check_csv
-    tuple val(meta), path("*.ped_check.csv")                , optional: true, emit: ped_check_csv
-    tuple val(meta), path("*.sex_check.csv")                , optional: true, emit: sex_check_csv
-    tuple val(meta), path("*.ped_check.rel-difference.csv") , optional: true, emit: ped_check_rel_difference_csv
-    path "versions.yml"                                     , emit: versions
+    tuple val(meta), path("${prefix}.vs.html"), emit: vs_html
+    tuple val(meta), path("${prefix}.html"), emit: html
+    tuple val(meta), path("*.peddy.ped"), emit: ped
+    tuple val(meta), path("*.het_check.png"), optional: true, emit: het_check_png
+    tuple val(meta), path("*.ped_check.png"), optional: true, emit: ped_check_png
+    tuple val(meta), path("*.sex_check.png"), optional: true, emit: sex_check_png
+    tuple val(meta), path("*.het_check.csv"), optional: true, emit: het_check_csv
+    tuple val(meta), path("*.ped_check.csv"), optional: true, emit: ped_check_csv
+    tuple val(meta), path("*.sex_check.csv"), optional: true, emit: sex_check_csv
+    tuple val(meta), path("*.ped_check.rel-difference.csv"), optional: true, emit: ped_check_rel_difference_csv
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,17 +31,19 @@ process PEDDY {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def sites_arg = sites ? "--sites $sites" : ''
-    if (sites && args.contains('--sites')) error "Double definition of --sites (in sites channel and in ext.args)"
+    def sites_arg = sites ? "--sites ${sites}" : ''
+    if (sites && args.contains('--sites')) {
+        error("Double definition of --sites (in sites channel and in ext.args)")
+    }
     """
     peddy \\
-        $args \\
-        --prefix $prefix \\
+        ${args} \\
+        --prefix ${prefix} \\
         --plot \\
-        -p $task.cpus \\
-        $vcf \\
-        $sites_arg \\
-        $ped
+        -p ${task.cpus} \\
+        ${vcf} \\
+        ${sites_arg} \\
+        ${ped}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -52,7 +54,9 @@ process PEDDY {
     stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    if (sites && args.contains('--sites')) error "Double definition of --sites (in sites channel and in ext.args)"
+    if (sites && args.contains('--sites')) {
+        error("Double definition of --sites (in sites channel and in ext.args)")
+    }
     """
     touch ${prefix}.vs.html
     touch ${prefix}.html

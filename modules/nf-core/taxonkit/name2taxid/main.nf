@@ -1,11 +1,11 @@
 process TAXONKIT_NAME2TAXID {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/taxonkit:0.15.1--h9ee0642_0':
-        'biocontainers/taxonkit:0.15.1--h9ee0642_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/taxonkit:0.15.1--h9ee0642_0'
+        : 'biocontainers/taxonkit:0.15.1--h9ee0642_0'}"
 
     input:
     tuple val(meta), val(name), path(names_txt)
@@ -13,7 +13,7 @@ process TAXONKIT_NAME2TAXID {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml"           , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,11 +25,11 @@ process TAXONKIT_NAME2TAXID {
     """
     taxonkit \\
         name2taxid \\
-        $args \\
-        --data-dir $taxdb \\
-        --threads $task.cpus \\
+        ${args} \\
+        --data-dir ${taxdb} \\
+        --threads ${task.cpus} \\
         --out-file ${prefix}.tsv \\
-        ${name? "<<< '$name'": names_txt}
+        ${name ? "<<< '${name}'" : names_txt}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -1,19 +1,19 @@
 process ISLANDPATH {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/islandpath:1.0.6--hdfd78af_0':
-        'biocontainers/islandpath:1.0.6--hdfd78af_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/islandpath:1.0.6--hdfd78af_0'
+        : 'biocontainers/islandpath:1.0.6--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(genome)
 
     output:
-    tuple val(meta), path("*.gff")        , emit: gff
-    path "Dimob.log"                      , emit: log
-    path "versions.yml"                   , emit: versions
+    tuple val(meta), path("*.gff"), emit: gff
+    path "Dimob.log", emit: log
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,13 +25,13 @@ process ISLANDPATH {
     def VERSION = '1.0.6'
     """
     islandpath \\
-        $genome \\
+        ${genome} \\
         ${prefix}.gff \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        islandpath: $VERSION
+        islandpath: ${VERSION}
     END_VERSIONS
     """
 }

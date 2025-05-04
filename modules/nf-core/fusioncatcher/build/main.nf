@@ -3,16 +3,16 @@ process FUSIONCATCHER_BUILD {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fusioncatcher:1.33--hdfd78af_5':
-        'biocontainers/fusioncatcher:1.33--hdfd78af_5' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/fusioncatcher:1.33--hdfd78af_5'
+        : 'biocontainers/fusioncatcher:1.33--hdfd78af_5'}"
 
     input:
-    val(meta)
+    val meta
 
     output:
-    tuple val(meta), path("${prefix}")  , emit: reference
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("${prefix}"), emit: reference
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when

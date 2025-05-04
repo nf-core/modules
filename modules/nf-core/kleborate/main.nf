@@ -1,18 +1,18 @@
 process KLEBORATE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/kleborate:2.1.0--pyhdfd78af_1' :
-        'biocontainers/kleborate:2.1.0--pyhdfd78af_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/kleborate:2.1.0--pyhdfd78af_1'
+        : 'biocontainers/kleborate:2.1.0--pyhdfd78af_1'}"
 
     input:
     tuple val(meta), path(fastas)
 
     output:
     tuple val(meta), path("*.txt"), emit: txt
-    path "versions.yml"           , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,9 +22,9 @@ process KLEBORATE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     kleborate \\
-        $args \\
+        ${args} \\
         --outfile ${prefix}.results.txt \\
-        --assemblies $fastas
+        --assemblies ${fastas}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

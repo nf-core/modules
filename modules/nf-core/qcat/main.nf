@@ -1,19 +1,19 @@
 process QCAT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/qcat:1.1.0--py_0' :
-        'biocontainers/qcat:1.1.0--py_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/qcat:1.1.0--py_0'
+        : 'biocontainers/qcat:1.1.0--py_0'}"
 
     input:
     tuple val(meta), path(reads)
-    val   barcode_kit
+    val barcode_kit
 
     output:
     tuple val(meta), path("fastq/*.fastq.gz"), emit: reads
-    path "versions.yml"                      , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,17 +24,17 @@ process QCAT {
     """
     ## Unzip fastq file
     ## qcat doesn't support zipped files yet
-    FILE=$reads
+    FILE=${reads}
     if [[ \$FILE == *.gz ]]
     then
-        zcat $reads > unzipped.fastq
+        zcat ${reads} > unzipped.fastq
         FILE=unzipped.fastq
     fi
 
     qcat \\
         -f \$FILE \\
         -b ./fastq \\
-        --kit $barcode_kit
+        --kit ${barcode_kit}
 
     ## Zip fastq files
     gzip fastq/*

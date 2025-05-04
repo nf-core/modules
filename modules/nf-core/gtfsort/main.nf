@@ -1,11 +1,11 @@
 process GTFSORT {
-    tag "$gtf"
+    tag "${gtf}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gtfsort:0.2.2--h4ac6f70_0':
-        'biocontainers/gtfsort:0.2.2--h4ac6f70_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/gtfsort:0.2.2--h4ac6f70_0'
+        : 'biocontainers/gtfsort:0.2.2--h4ac6f70_0'}"
 
     input:
 
@@ -19,14 +19,14 @@ process GTFSORT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${gtf.baseName}"
 
     """
     gtfsort \\
-        -i $gtf \\
+        -i ${gtf} \\
         -o ${prefix}.sorted.gtf \\
-        -t $task.cpus
+        -t ${task.cpus}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -35,7 +35,7 @@ process GTFSORT {
     """
 
     stub:
-    def args   = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${gtf.baseName}"
 
     """

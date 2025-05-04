@@ -1,28 +1,28 @@
 process ISOSEQ_CLUSTER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/isoseq:4.0.0--h9ee0642_0' :
-        'biocontainers/isoseq:4.0.0--h9ee0642_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/isoseq:4.0.0--h9ee0642_0'
+        : 'biocontainers/isoseq:4.0.0--h9ee0642_0'}"
 
     input:
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path("*.transcripts.bam")               , emit: bam
-    tuple val(meta), path("*.transcripts.bam.pbi")           , emit: pbi
-    tuple val(meta), path("*.transcripts.cluster")           , emit: cluster
+    tuple val(meta), path("*.transcripts.bam"), emit: bam
+    tuple val(meta), path("*.transcripts.bam.pbi"), emit: pbi
+    tuple val(meta), path("*.transcripts.cluster"), emit: cluster
     tuple val(meta), path("*.transcripts.cluster_report.csv"), emit: cluster_report
-    tuple val(meta), path("*.transcripts.transcriptset.xml") , emit: transcriptset
-    tuple val(meta), path("*.transcripts.hq.bam")            , optional: true, emit: hq_bam
-    tuple val(meta), path("*.transcripts.hq.bam.pbi")        , optional: true, emit: hq_pbi
-    tuple val(meta), path("*.transcripts.lq.bam")            , optional: true, emit: lq_bam
-    tuple val(meta), path("*.transcripts.lq.bam.pbi")        , optional: true, emit: lq_pbi
-    tuple val(meta), path("*.transcripts.singletons.bam")    , optional: true, emit: singletons_bam
+    tuple val(meta), path("*.transcripts.transcriptset.xml"), emit: transcriptset
+    tuple val(meta), path("*.transcripts.hq.bam"), optional: true, emit: hq_bam
+    tuple val(meta), path("*.transcripts.hq.bam.pbi"), optional: true, emit: hq_pbi
+    tuple val(meta), path("*.transcripts.lq.bam"), optional: true, emit: lq_bam
+    tuple val(meta), path("*.transcripts.lq.bam.pbi"), optional: true, emit: lq_pbi
+    tuple val(meta), path("*.transcripts.singletons.bam"), optional: true, emit: singletons_bam
     tuple val(meta), path("*.transcripts.singletons.bam.pbi"), optional: true, emit: singletons_pbi
-    path  "versions.yml"                                     , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,9 +33,9 @@ process ISOSEQ_CLUSTER {
     """
     isoseq \\
         cluster \\
-        $bam \\
+        ${bam} \\
         ${prefix}.transcripts.bam \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -1,11 +1,11 @@
 process CNVPYTOR_IMPORTREADDEPTH {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cnvpytor:1.3.1--pyhdfd78af_1':
-        'biocontainers/cnvpytor:1.3.1--pyhdfd78af_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/cnvpytor:1.3.1--pyhdfd78af_1'
+        : 'biocontainers/cnvpytor:1.3.1--pyhdfd78af_1'}"
 
     input:
     tuple val(meta), path(input_file), path(index)
@@ -13,8 +13,8 @@ process CNVPYTOR_IMPORTREADDEPTH {
     path fai
 
     output:
-    tuple val(meta), path("*.pytor")	, emit: pytor
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.pytor"), emit: pytor
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,9 +26,9 @@ process CNVPYTOR_IMPORTREADDEPTH {
     """
     cnvpytor \\
         -root ${prefix}.pytor \\
-        -rd $input_file \\
-        $args \\
-        $reference
+        -rd ${input_file} \\
+        ${args} \\
+        ${reference}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

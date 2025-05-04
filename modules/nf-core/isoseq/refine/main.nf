@@ -1,23 +1,23 @@
 process ISOSEQ_REFINE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/isoseq:4.0.0--h9ee0642_0' :
-        'biocontainers/isoseq:4.0.0--h9ee0642_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/isoseq:4.0.0--h9ee0642_0'
+        : 'biocontainers/isoseq:4.0.0--h9ee0642_0'}"
 
     input:
     tuple val(meta), path(bam)
     path primers
 
     output:
-    tuple val(meta), path("*.bam")                       , emit: bam
-    tuple val(meta), path("*.bam.pbi")                   , emit: pbi
-    tuple val(meta), path("*.consensusreadset.xml")      , emit: consensusreadset
+    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.bam.pbi"), emit: pbi
+    tuple val(meta), path("*.consensusreadset.xml"), emit: consensusreadset
     tuple val(meta), path("*.filter_summary.report.json"), emit: summary
-    tuple val(meta), path("*.report.csv")                , emit: report
-    path  "versions.yml"                                 , emit: versions
+    tuple val(meta), path("*.report.csv"), emit: report
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,10 +28,10 @@ process ISOSEQ_REFINE {
     """
     isoseq \\
         refine \\
-        -j $task.cpus \\
-        $args \\
-        $bam \\
-        $primers \\
+        -j ${task.cpus} \\
+        ${args} \\
+        ${bam} \\
+        ${primers} \\
         ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml

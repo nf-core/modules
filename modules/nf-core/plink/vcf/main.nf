@@ -1,11 +1,11 @@
 process PLINK_VCF {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h779adbc_1' :
-        'biocontainers/plink:1.90b6.21--h779adbc_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h779adbc_1'
+        : 'biocontainers/plink:1.90b6.21--h779adbc_1'}"
 
     input:
     tuple val(meta), path(vcf)
@@ -15,7 +15,7 @@ process PLINK_VCF {
     tuple val(meta), path("*.bim"), emit: bim, optional: true
     tuple val(meta), path("*.fam"), emit: fam, optional: true
 
-    path "versions.yml" , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,8 +27,8 @@ process PLINK_VCF {
     """
     plink \\
         --vcf ${vcf} \\
-        $args \\
-        --threads $task.cpus \\
+        ${args} \\
+        --threads ${task.cpus} \\
         --out ${prefix}
 
     cat <<-END_VERSIONS > versions.yml

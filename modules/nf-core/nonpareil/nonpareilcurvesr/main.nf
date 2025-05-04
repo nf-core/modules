@@ -1,22 +1,22 @@
 process NONPAREIL_NONPAREILCURVESR {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/nonpareil:3.5.5--r43hdcf5f25_0':
-        'biocontainers/nonpareil:3.5.5--r43hdcf5f25_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/nonpareil:3.5.5--r43hdcf5f25_0'
+        : 'biocontainers/nonpareil:3.5.5--r43hdcf5f25_0'}"
 
     input:
     tuple val(meta), path(npos)
 
     output:
     tuple val(meta), path("*.json"), emit: json, optional: true
-    tuple val(meta), path("*.tsv" ), emit: tsv , optional: true
-    tuple val(meta), path("*.csv" ), emit: csv , optional: true
-    tuple val(meta), path("*.pdf" ), emit: pdf , optional: true
+    tuple val(meta), path("*.tsv"), emit: tsv, optional: true
+    tuple val(meta), path("*.csv"), emit: csv, optional: true
+    tuple val(meta), path("*.pdf"), emit: pdf, optional: true
 
-    path "versions.yml"           , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,12 +27,12 @@ process NONPAREIL_NONPAREILCURVESR {
 
     """
     NonpareilCurves.R \\
-        $args \\
+        ${args} \\
         --json ${prefix}.json \\
         --tsv ${prefix}.tsv \\
         --csv ${prefix}.csv \\
         --pdf ${prefix}.pdf \\
-        $npos
+        ${npos}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -3,24 +3,24 @@ process SURVIVOR_SIMSV {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/survivor:1.0.7--hd03093a_2':
-        'biocontainers/survivor:1.0.7--hd03093a_2' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/survivor:1.0.7--hd03093a_2'
+        : 'biocontainers/survivor:1.0.7--hd03093a_2'}"
 
     input:
-    tuple val(meta) , path(fasta)
+    tuple val(meta), path(fasta)
     tuple val(meta2), path(fai)
     tuple val(meta3), path(parameters)
-    val(snp_mutation_frequency)
-    val(sim_reads)
+    val snp_mutation_frequency
+    val sim_reads
 
     output:
-    tuple val(meta), path("*.txt")          , emit: parameters, optional:true
-    tuple val(meta), path("*.vcf")          , emit: vcf, optional:true
-    tuple val(meta), path("*.bed")          , emit: bed, optional:true
-    tuple val(meta), path("*.fasta")        , emit: fasta, optional:true
-    tuple val(meta), path("*.insertions.fa"), emit: insertions, optional:true
-    path "versions.yml"                     , emit: versions
+    tuple val(meta), path("*.txt"), emit: parameters, optional: true
+    tuple val(meta), path("*.vcf"), emit: vcf, optional: true
+    tuple val(meta), path("*.bed"), emit: bed, optional: true
+    tuple val(meta), path("*.fasta"), emit: fasta, optional: true
+    tuple val(meta), path("*.insertions.fa"), emit: insertions, optional: true
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when

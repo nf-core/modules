@@ -1,36 +1,37 @@
 process WINDOWMASKER_MKCOUNTS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/blast:2.15.0--pl5321h6f7f691_1':
-        'biocontainers/blast:2.15.0--pl5321h6f7f691_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/blast:2.15.0--pl5321h6f7f691_1'
+        : 'biocontainers/blast:2.15.0--pl5321h6f7f691_1'}"
 
     input:
     tuple val(meta), path(ref)
 
     output:
-    tuple val(meta), path("*.txt")  , emit: counts
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path("*.txt"), emit: counts
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args     ?: ""
-    def prefix  = task.ext.prefix   ?: "${meta.id}"
+    def args = task.ext.args ?: ""
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def memory  = 3072
+    def memory = 3072
     if (!task.memory) {
-        log.info '[WINDOWMASKER: MK_COUNTS] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
-    } else {
-        memory  = (task.memory.toMega()).intValue()
+        log.info('[WINDOWMASKER: MK_COUNTS] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
+    }
+    else {
+        memory = (task.memory.toMega()).intValue()
     }
 
     """
     windowmasker -mk_counts \\
-        $args \\
+        ${args} \\
         -mem ${memory} \\
         -in ${ref} \\
         -out ${prefix}.txt
@@ -42,7 +43,7 @@ process WINDOWMASKER_MKCOUNTS {
     """
 
     stub:
-    def prefix  = task.ext.prefix   ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     touch ${prefix}.txt

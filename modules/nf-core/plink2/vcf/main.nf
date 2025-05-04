@@ -1,21 +1,21 @@
 process PLINK2_VCF {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/plink2:2.00a2.3--h712d239_1' :
-        'biocontainers/plink2:2.00a2.3--h712d239_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/plink2:2.00a2.3--h712d239_1'
+        : 'biocontainers/plink2:2.00a2.3--h712d239_1'}"
 
     input:
     tuple val(meta), path(vcf)
 
     output:
-    tuple val(meta), path("*.pgen")    , emit: pgen
-    tuple val(meta), path("*.psam")    , emit: psam
-    tuple val(meta), path("*.pvar")    , emit: pvar
+    tuple val(meta), path("*.pgen"), emit: pgen
+    tuple val(meta), path("*.psam"), emit: psam
+    tuple val(meta), path("*.pvar"), emit: pvar
     tuple val(meta), path("*.pvar.zst"), emit: pvar_zst, optional: true
-    path "versions.yml"                , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,10 +26,10 @@ process PLINK2_VCF {
     def mem_mb = task.memory.toMega()
     """
     plink2 \\
-        --threads $task.cpus \\
-        --memory $mem_mb \\
-        $args \\
-        --vcf $vcf \\
+        --threads ${task.cpus} \\
+        --memory ${mem_mb} \\
+        ${args} \\
+        --vcf ${vcf} \\
         --out ${prefix}
 
     cat <<-END_VERSIONS > versions.yml

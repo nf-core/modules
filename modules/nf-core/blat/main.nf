@@ -1,19 +1,19 @@
 process BLAT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ucsc-blat:472--h9b8f530_0':
-        'biocontainers/ucsc-blat:472--h664eb37_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/ucsc-blat:472--h9b8f530_0'
+        : 'biocontainers/ucsc-blat:472--h664eb37_1'}"
 
     input:
-    tuple val(meta) , path(query)
+    tuple val(meta), path(query)
     tuple val(meta2), path(subject)
 
     output:
     tuple val(meta), path("*.psl"), emit: psl
-    path "versions.yml"           , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,20 +24,20 @@ process BLAT {
     def unzip = query.toString().endsWith(".gz")
 
     """
-    in=$query
-    if $unzip
+    in=${query}
+    if ${unzip}
     then
-        gunzip -cdf $query > ${prefix}.fasta
+        gunzip -cdf ${query} > ${prefix}.fasta
         in=${prefix}.fasta
     fi
 
     blat \\
-        $args \\
-        $subject \\
+        ${args} \\
+        ${subject} \\
         \$in \\
         ${prefix}.psl
 
-    if $unzip
+    if ${unzip}
     then
         rm ${prefix}.fasta
     fi

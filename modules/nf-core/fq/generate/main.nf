@@ -1,18 +1,18 @@
 process FQ_GENERATE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fq:0.12.0--h9ee0642_0':
-        'biocontainers/fq:0.12.0--h9ee0642_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/fq:0.12.0--h9ee0642_0'
+        : 'biocontainers/fq:0.12.0--h9ee0642_0'}"
 
     input:
     val meta
 
     output:
     tuple val(meta), path("*.fastq.gz"), emit: fastq
-    path "versions.yml"                , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,7 +22,7 @@ process FQ_GENERATE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     fq generate \\
-        $args \\
+        ${args} \\
         ${prefix}_R1.fastq.gz ${prefix}_R2.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml

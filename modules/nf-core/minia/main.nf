@@ -1,11 +1,11 @@
 process MINIA {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/minia:3.2.6--h9a82719_0' :
-        'biocontainers/minia:3.2.6--h9a82719_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/minia:3.2.6--h9a82719_0'
+        : 'biocontainers/minia:3.2.6--h9a82719_0'}"
 
     input:
     tuple val(meta), path(reads)
@@ -13,8 +13,8 @@ process MINIA {
     output:
     tuple val(meta), path('*.contigs.fa'), emit: contigs
     tuple val(meta), path('*.unitigs.fa'), emit: unitigs
-    tuple val(meta), path('*.h5')        , emit: h5
-    path  "versions.yml"                 , emit: versions
+    tuple val(meta), path('*.h5'), emit: h5
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,10 +26,10 @@ process MINIA {
     """
     echo "${read_list}" | sed 's/,/\\n/g' > input_files.txt
     minia \\
-        $args \\
-        -nb-cores $task.cpus \\
+        ${args} \\
+        -nb-cores ${task.cpus} \\
         -in input_files.txt \\
-        -out $prefix
+        -out ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

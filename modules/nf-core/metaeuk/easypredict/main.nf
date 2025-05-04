@@ -1,22 +1,22 @@
 process METAEUK_EASYPREDICT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/metaeuk:6.a5d39d9--pl5321hf1761c0_2':
-        'biocontainers/metaeuk:6.a5d39d9--pl5321hf1761c0_2' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/metaeuk:6.a5d39d9--pl5321hf1761c0_2'
+        : 'biocontainers/metaeuk:6.a5d39d9--pl5321hf1761c0_2'}"
 
     input:
     tuple val(meta), path(fasta)
-    path(database)
+    path database
 
     output:
-    tuple val(meta), path("${prefix}.fas")      , emit: faa
+    tuple val(meta), path("${prefix}.fas"), emit: faa
     tuple val(meta), path("${prefix}.codon.fas"), emit: codon
-    tuple val(meta), path("*.tsv")              , emit: tsv
-    tuple val(meta), path("*.gff")              , emit: gff
-    path "versions.yml"                         , emit: versions
+    tuple val(meta), path("*.tsv"), emit: tsv
+    tuple val(meta), path("*.gff"), emit: gff
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when

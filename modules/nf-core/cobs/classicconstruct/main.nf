@@ -1,18 +1,18 @@
 process COBS_CLASSICCONSTRUCT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cobs:0.3.0--hdcf5f25_1' :
-        'biocontainers/cobs:0.3.0--hdcf5f25_1'}"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/cobs:0.3.0--hdcf5f25_1'
+        : 'biocontainers/cobs:0.3.0--hdcf5f25_1'}"
 
     input:
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path("*.index.cobs_classic")   , emit: index
-    path "versions.yml"                             , emit: versions
+    tuple val(meta), path("*.index.cobs_classic"), emit: index
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,10 +24,10 @@ process COBS_CLASSICCONSTRUCT {
     """
     cobs \\
         classic-construct \\
-        $args \\
-        --memory $task_memory_in_bytes \\
-        --threads $task.cpus \\
-        $input \\
+        ${args} \\
+        --memory ${task_memory_in_bytes} \\
+        --threads ${task.cpus} \\
+        ${input} \\
         ${prefix}.index.cobs_classic
 
 

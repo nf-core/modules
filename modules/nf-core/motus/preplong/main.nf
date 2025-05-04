@@ -1,11 +1,11 @@
 process MOTUS_PREPLONG {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/motus:3.1.0--pyhdfd78af_0':
-        'biocontainers/motus:3.1.0--pyhdfd78af_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/motus:3.1.0--pyhdfd78af_0'
+        : 'biocontainers/motus:3.1.0--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(reads)
@@ -13,7 +13,7 @@ process MOTUS_PREPLONG {
 
     output:
     tuple val(meta), path("*.gz"), emit: out
-    path "versions.yml"          , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,17 +26,17 @@ process MOTUS_PREPLONG {
     """
     motus \\
         prep_long \\
-        $args \\
-        -i $reads \\
-        $refdb \\
-        -t $task.cpus \\
+        ${args} \\
+        -i ${reads} \\
+        ${refdb} \\
+        -t ${task.cpus} \\
         -o ${prefix}.gz \\
         2>| >(tee ${prefix}.log >&2)
 
-    if [ "$db" == "" ]; then
+    if [ "${db}" == "" ]; then
         VERSION=\$(echo \$(motus -h 2>&1) | sed 's/^.*Version: //; s/References.*\$//')
     else
-        VERSION=\$(grep motus $db/db_mOTU_versions | sed 's/motus\\t//g')
+        VERSION=\$(grep motus ${db}/db_mOTU_versions | sed 's/motus\\t//g')
     fi
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -50,10 +50,10 @@ process MOTUS_PREPLONG {
     """
     echo '' | gzip > ${prefix}.gz
 
-    if [ "$db" == "" ]; then
+    if [ "${db}" == "" ]; then
         VERSION=\$(echo \$(motus -h 2>&1) | sed 's/^.*Version: //; s/References.*\$//')
     else
-        VERSION=\$(grep motus $db/db_mOTU_versions | sed 's/motus\\t//g')
+        VERSION=\$(grep motus ${db}/db_mOTU_versions | sed 's/motus\\t//g')
     fi
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

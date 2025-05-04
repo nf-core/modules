@@ -1,11 +1,11 @@
 process MINIPROT_ALIGN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/miniprot:0.11--he4a0461_2':
-        'biocontainers/miniprot:0.11--he4a0461_2' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/miniprot:0.11--he4a0461_2'
+        : 'biocontainers/miniprot:0.11--he4a0461_2'}"
 
     input:
     tuple val(meta), path(pep)
@@ -14,7 +14,7 @@ process MINIPROT_ALIGN {
     output:
     tuple val(meta), path("*.paf"), optional: true, emit: paf
     tuple val(meta), path("*.gff"), optional: true, emit: gff
-    path "versions.yml"                           , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,8 +25,8 @@ process MINIPROT_ALIGN {
     def extension = args.contains("--gff") ? "gff" : "paf"
     """
     miniprot \\
-        $args \\
-        -t $task.cpus \\
+        ${args} \\
+        -t ${task.cpus} \\
         ${ref} \\
         ${pep} \\
         > ${prefix}.${extension}

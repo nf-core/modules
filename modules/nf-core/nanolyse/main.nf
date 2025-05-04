@@ -1,20 +1,20 @@
 process NANOLYSE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/nanolyse:1.2.0--py_0' :
-        'biocontainers/nanolyse:1.2.0--py_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/nanolyse:1.2.0--py_0'
+        : 'biocontainers/nanolyse:1.2.0--py_0'}"
 
     input:
     tuple val(meta), path(fastq)
-    path  fasta
+    path fasta
 
     output:
     tuple val(meta), path("*.fastq.gz"), emit: fastq
-    path "*.log"                       , emit: log
-    path "versions.yml"                , emit: versions
+    path "*.log", emit: log
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,7 +23,7 @@ process NANOLYSE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    gunzip -c $fastq | NanoLyse -r $fasta | gzip > ${prefix}.fastq.gz
+    gunzip -c ${fastq} | NanoLyse -r ${fasta} | gzip > ${prefix}.fastq.gz
     mv NanoLyse.log ${prefix}.nanolyse.log
 
     cat <<-END_VERSIONS > versions.yml

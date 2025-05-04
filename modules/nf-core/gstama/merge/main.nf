@@ -1,22 +1,22 @@
 process GSTAMA_MERGE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gs-tama:1.0.3--hdfd78af_0' :
-        'biocontainers/gs-tama:1.0.3--hdfd78af_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/gs-tama:1.0.3--hdfd78af_0'
+        : 'biocontainers/gs-tama:1.0.3--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(bed)
     path filelist
 
     output:
-    tuple val(meta), path("*.bed")             , emit: bed
-    tuple val(meta), path("*_gene_report.txt") , emit: gene_report
-    tuple val(meta), path("*_merge.txt")       , emit: merge
+    tuple val(meta), path("*.bed"), emit: bed
+    tuple val(meta), path("*_gene_report.txt"), emit: gene_report
+    tuple val(meta), path("*_merge.txt"), emit: merge
     tuple val(meta), path("*_trans_report.txt"), emit: trans_report
-    path "versions.yml"                        , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,10 +26,10 @@ process GSTAMA_MERGE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     tama_merge.py \\
-        -f $filelist \\
+        -f ${filelist} \\
         -d merge_dup \\
         -p ${prefix} \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

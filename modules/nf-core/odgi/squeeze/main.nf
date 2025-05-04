@@ -1,18 +1,18 @@
 process ODGI_SQUEEZE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/odgi:0.9.0--py312h5e9d817_1':
-        'biocontainers/odgi:0.9.0--py312h5e9d817_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/odgi:0.9.0--py312h5e9d817_1'
+        : 'biocontainers/odgi:0.9.0--py312h5e9d817_1'}"
 
     input:
     tuple val(meta), path(graphs)
 
     output:
     tuple val(meta), path("*.og"), emit: graph
-    path "versions.yml"          , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,8 +24,8 @@ process ODGI_SQUEEZE {
     ls *.og > files
     odgi \\
         squeeze \\
-        $args \\
-        --threads $task.cpus \\
+        ${args} \\
+        --threads ${task.cpus} \\
         --input-graphs files \\
         -o ${prefix}.og
 

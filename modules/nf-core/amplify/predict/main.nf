@@ -1,20 +1,20 @@
 process AMPLIFY_PREDICT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/amplify:2.0.0--py36hdfd78af_1':
-        'biocontainers/amplify:2.0.0--py36hdfd78af_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/amplify:2.0.0--py36hdfd78af_1'
+        : 'biocontainers/amplify:2.0.0--py36hdfd78af_1'}"
 
     input:
     tuple val(meta), path(faa)
-    path(model_dir)
+    path model_dir
 
     output:
     tuple val(meta), path('*.tsv'), emit: tsv
-    path "versions.yml"           , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when

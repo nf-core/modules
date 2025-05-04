@@ -2,16 +2,16 @@ process FASTTREE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fasttree:2.1.10--h516909a_4' :
-        'biocontainers/fasttree:2.1.10--h516909a_4' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/fasttree:2.1.10--h516909a_4'
+        : 'biocontainers/fasttree:2.1.10--h516909a_4'}"
 
     input:
     path alignment
 
     output:
-    path "*.tre",         emit: phylogeny
-    path "versions.yml" , emit: versions
+    path "*.tre", emit: phylogeny
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,9 +20,9 @@ process FASTTREE {
     def args = task.ext.args ?: ''
     """
     fasttree \\
-        $args \\
+        ${args} \\
         -log fasttree_phylogeny.tre.log \\
-        -nt $alignment \\
+        -nt ${alignment} \\
         > fasttree_phylogeny.tre
 
     cat <<-END_VERSIONS > versions.yml

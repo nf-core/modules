@@ -1,18 +1,18 @@
 process BWAMEME_INDEX {
-    tag "$fasta"
+    tag "${fasta}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bwa-meme:1.0.6--hdcf5f25_2':
-        'biocontainers/bwa-meme:1.0.6--hdcf5f25_2' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/bwa-meme:1.0.6--hdcf5f25_2'
+        : 'biocontainers/bwa-meme:1.0.6--hdcf5f25_2'}"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
     tuple val(meta), path("bwameme"), emit: index
-    path "versions.yml"             , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,27 +20,29 @@ process BWAMEME_INDEX {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${fasta}"
-    def VERSION = '1.0.6' // WARN: Version information provided by tool on CLI is incorrect. Please update this string when bumping container versions.
+    def VERSION = '1.0.6'
+    // WARN: Version information provided by tool on CLI is incorrect. Please update this string when bumping container versions.
     """
     mkdir bwameme
 
     bwa-meme index \\
-        $args \\
-        -t $task.cpus \\
-        -p bwameme/$prefix \\
-        $fasta
+        ${args} \\
+        -t ${task.cpus} \\
+        -p bwameme/${prefix} \\
+        ${fasta}
 
-    build_rmis_dna.sh bwameme/$prefix
+    build_rmis_dna.sh bwameme/${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bwameme: $VERSION
+        bwameme: ${VERSION}
     END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${fasta}"
-    def VERSION = '1.0.6' // WARN: Version information provided by tool on CLI is incorrect. Please update this string when bumping container versions.
+    def VERSION = '1.0.6'
+    // WARN: Version information provided by tool on CLI is incorrect. Please update this string when bumping container versions.
     """
     mkdir bwameme
     touch bwameme/${prefix}.0123
@@ -55,7 +57,7 @@ process BWAMEME_INDEX {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bwameme: $VERSION
+        bwameme: ${VERSION}
     END_VERSIONS
     """
 }

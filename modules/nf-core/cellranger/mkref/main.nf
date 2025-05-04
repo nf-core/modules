@@ -1,5 +1,5 @@
 process CELLRANGER_MKREF {
-    tag "$fasta"
+    tag "${fasta}"
     label 'process_high'
 
     container "nf-core/cellranger:10.0.0"
@@ -11,7 +11,7 @@ process CELLRANGER_MKREF {
 
     output:
     path "${reference_name}", emit: reference
-    path "versions.yml"     , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -19,7 +19,7 @@ process CELLRANGER_MKREF {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "CELLRANGER_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("CELLRANGER_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     def args = task.ext.args ?: ''
     // --localcores is passed to the martian runtime and specifies the number of allocated jobs
@@ -28,13 +28,13 @@ process CELLRANGER_MKREF {
     """
     cellranger \\
         mkref \\
-        --genome=$reference_name \\
-        --fasta=$fasta \\
-        --genes=$gtf \\
+        --genome=${reference_name} \\
+        --fasta=${fasta} \\
+        --genes=${gtf} \\
         --localcores=${task.cpus} \\
         --localmem=${task.memory.toGiga()} \\
         --nthreads=${task.cpus} \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -45,11 +45,11 @@ process CELLRANGER_MKREF {
     stub:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "CELLRANGER_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("CELLRANGER_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     def args = task.ext.args ?: ''
     """
-    mkdir $reference_name
+    mkdir ${reference_name}
     touch ${reference_name}/empty_file
 
     cat <<-END_VERSIONS > versions.yml
@@ -57,5 +57,4 @@ process CELLRANGER_MKREF {
         cellranger: \$(echo \$( cellranger --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
     END_VERSIONS
     """
-
 }
