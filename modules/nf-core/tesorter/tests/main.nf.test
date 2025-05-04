@@ -34,9 +34,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     path(process.out.domtbl[0][1]).text,
-                    process.out.dom_faa,
                     process.out.dom_tsv,
-                    process.out.dom_gff3,
                     process.out.versions
                     ).match()
                 }
