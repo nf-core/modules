@@ -28,11 +28,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.domtbl[0][1]).text.contains('[ok]') },
-                { assert snapshot(process.out.dom_faa).match("dom_faa") },
-                { assert snapshot(process.out.dom_tsv).match("dom_tsv") },
-                { assert snapshot(process.out.dom_gff3).match("dom_gff3") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                path(process.out.domtbl[0][1]).text
+                process.out.dom_faa,
+                process.out.dom_tsv,
+                process.out.dom_gff3,
+                process.out.versions).match() },
             )
         }
 
