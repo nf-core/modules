@@ -13,8 +13,8 @@ process HELITRONSCANNER_DRAW {
     tuple val(meta3), path(tail)
 
     output:
-    tuple val(meta), path("*.draw")     , emit: draw
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.draw"), emit: draw
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
