@@ -18,7 +18,6 @@ process REPEATMASKER_RMOUTTOGFF3 {
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
 
     """
@@ -35,7 +34,6 @@ process REPEATMASKER_RMOUTTOGFF3 {
     """
 
     stub:
-    def args    = task.ext.args ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.gff3

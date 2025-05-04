@@ -14,6 +14,11 @@ nextflow_process {
     setup {
         run("REPEATMASKER_REPEATMASKER") {
             script "../../repeatmasker"
+
+            params {
+                repeatmasker_args = '-no_is -gff' // Not required but significantly cuts the runtime
+            }
+
             process {
                 """
                 input[0] = [
