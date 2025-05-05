@@ -1,0 +1,74 @@
+nextflow_process {
+
+    name "Test Process REPEATMASKER_RMOUTTOGFF3"
+    script "../main.nf"
+    process "REPEATMASKER_RMOUTTOGFF3"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "repeatmasker"
+    tag "repeatmasker/rmouttogff3"
+    tag "repeatmasker/repeatmasker"
+
+    setup {
+        run("REPEATMASKER_REPEATMASKER") {
+            script "../../repeatmasker"
+
+            params {
+                repeatmasker_args = '-no_is -gff' // Not required but significantly cuts the runtime
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = []
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - genome - fasta - repeatmasker - out") {
+
+        when {
+            process {
+                """
+                input[0] = REPEATMASKER_REPEATMASKER.out.out
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - genome - fasta - repeatmasker - out - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = input[0] = REPEATMASKER_REPEATMASKER.out.out
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
