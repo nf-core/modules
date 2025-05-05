@@ -14,6 +14,11 @@ nextflow_process {
     setup {
         run("MINIMAP2_ALIGN") {
             script "../../minimap2/align"
+
+            params {
+                minimap2_args = '-x asm5 --eqx'
+            }
+
             process {
                 """
                 def genome2_cleanid     = file('genome2_cleanid.fasta')
