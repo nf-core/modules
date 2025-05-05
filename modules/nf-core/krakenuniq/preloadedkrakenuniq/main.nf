@@ -31,8 +31,10 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     assert sequence_type in ['fasta', 'fastq']
     sequences = sequences instanceof List ? sequences : [sequences]
 
-    def args = task.ext.args ?: ''
-    def args2 = task.ext.args ?: ''
+    // Pass task.ext.args last to give them precedence over values passed as input.
+    // Pass ram_chunk_size to database preload call and each classify call.
+    def args = ["--preload-size $ram_chunk_size", task.ext.args ?: ''].join(' ')
+    def args2 = ["--preload-size $ram_chunk_size", task.ext.args ?: ''].join(' ')
 
     classified   = meta.single_end ? "\${PREFIX}.classified.${sequence_type}"   : "\${PREFIX}.merged.classified.${sequence_type}"
     unclassified = meta.single_end ? "\${PREFIX}.unclassified.${sequence_type}" : "\${PREFIX}.merged.unclassified.${sequence_type}"
@@ -58,7 +60,6 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             $args \\
             --db $db \\
             --preload \\
-            --preload-size $ram_chunk_size \\
             --threads $task.cpus
 
         # Run the KrakenUniq classification on each sample in the batch.
@@ -96,7 +97,6 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             $args \\
             --db $db \\
             --preload \\
-            --preload-size $ram_chunk_size \\
             --threads $task.cpus
 
         # Run the KrakenUniq classification on each sample in the batch.
@@ -126,8 +126,8 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     assert sequence_type in ['fasta', 'fastq']
     sequences = sequences instanceof List ? sequences : [sequences]
 
-    def args = task.ext.args ?: ''
-    def args2 = task.ext.args ?: ''
+    def args = ["--preload-size $ram_chunk_size", task.ext.args ?: ''].join(' ')
+    def args2 = ["--preload-size $ram_chunk_size", task.ext.args ?: ''].join(' ')
 
     classified   = meta.single_end ? "\${PREFIX}.classified.${sequence_type}"   : "\${PREFIX}.merged.classified.${sequence_type}"
     unclassified = meta.single_end ? "\${PREFIX}.unclassified.${sequence_type}" : "\${PREFIX}.merged.unclassified.${sequence_type}"
@@ -153,7 +153,6 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             $args \\
             --db $db \\
             --preload \\
-            --preload-size $ram_chunk_size \\
             --threads $task.cpus
 
         create_file() {
@@ -204,7 +203,6 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
             $args \\
             --db $db \\
             --preload \\
-            --preload-size $ram_chunk_size \\
             --threads $task.cpus
 
         create_file() {
