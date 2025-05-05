@@ -9,7 +9,7 @@ process TESORTER {
 
     input:
     tuple val(meta), path(fasta)
-    path db_hmm
+    tuple val(meta2), path(db_hmm)
 
     output:
     tuple val(meta), path("*.domtbl")  , emit: domtbl

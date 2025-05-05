@@ -30,7 +30,12 @@ input:
         pattern: "*.{fa,fasta,fsa,faa}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
-  - - db_hmm:
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - db_hmm:
         type: file
         optional: true
         description: The database HMM file used
@@ -123,7 +128,8 @@ output:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@GallVp"
 maintainers:
