@@ -7,14 +7,13 @@ process CADD {
 
     containerOptions {
         if (prescored_dir) {
-            ['singularity', 'apptainer'].contains(workflow.containerEngine)
-                ? "-B ${annotation_dir}:/opt/CADD-scripts-1.6.post1/data/annotations -B ${prescored_dir}:/opt/CADD-scripts-1.6.post1/data/prescored"
-                : "-v ${annotation_dir}:/opt/CADD-scripts-1.6.post1/data/annotations -v ${prescored_dir}:/opt/CADD-scripts-1.6.post1/data/prescored"
-        }
-        else {
-            ['singularity', 'apptainer'].contains(workflow.containerEngine)
-                ? "-B ${annotation_dir}:/opt/CADD-scripts-1.6.post1/data/annotations"
-                : "-v ${annotation_dir}:/opt/CADD-scripts-1.6.post1/data/annotations"
+            ['singularity', 'apptainer'].contains(workflow.containerEngine) ?
+                "-B ${annotation_dir}:/opt/CADD-scripts-1.6.post1/data/annotations -B ${prescored_dir}:/opt/CADD-scripts-1.6.post1/data/prescored" :
+                "-v ${annotation_dir}:/opt/CADD-scripts-1.6.post1/data/annotations -v ${prescored_dir}:/opt/CADD-scripts-1.6.post1/data/prescored"
+        } else {
+            ['singularity', 'apptainer'].contains(workflow.containerEngine) ?
+                "-B ${annotation_dir}:/opt/CADD-scripts-1.6.post1/data/annotations" :
+                "-v ${annotation_dir}:/opt/CADD-scripts-1.6.post1/data/annotations"
         }
     }
 
@@ -25,7 +24,7 @@ process CADD {
 
     output:
     tuple val(meta), path("*.tsv.gz"), emit: tsv
-    path "versions.yml", emit: versions
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

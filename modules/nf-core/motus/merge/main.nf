@@ -1,22 +1,21 @@
 process MOTUS_MERGE {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/motus:3.1.0--pyhdfd78af_0'
-        : 'biocontainers/motus:3.1.0--pyhdfd78af_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/motus:3.1.0--pyhdfd78af_0':
+        'biocontainers/motus:3.1.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(input)
-    path db
-    // to stop docker saying it can't find it... would have to have the module in upstream steps anyway
+    path db // to stop docker saying it can't find it... would have to have the module in upstream steps anyway
     path profile_version_yml, stageAs: 'profile_version.yml'
 
     output:
-    tuple val(meta), path("*.txt"), optional: true, emit: txt
+    tuple val(meta), path("*.txt") , optional: true, emit: txt
     tuple val(meta), path("*.biom"), optional: true, emit: biom
-    path "versions.yml", emit: versions
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,9 +28,9 @@ process MOTUS_MERGE {
     """
     motus \\
         merge \\
-        -db ${db} \\
+        -db $db \\
         ${cmd_input} \\
-        ${args} \\
+        $args \\
         -o ${prefix}.${suffix}
 
     ## Take version from the mOTUs/profile module output, as cannot reconstruct
@@ -60,4 +59,5 @@ process MOTUS_MERGE {
         motus: \$VERSION
     END_VERSIONS
     """
+
 }

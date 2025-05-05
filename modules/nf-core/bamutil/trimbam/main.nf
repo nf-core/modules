@@ -1,18 +1,18 @@
 process BAMUTIL_TRIMBAM {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/bamutil:1.0.15--h2e03b76_1'
-        : 'biocontainers/bamutil:1.0.15--h2e03b76_1'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/bamutil:1.0.15--h2e03b76_1' :
+        'biocontainers/bamutil:1.0.15--h2e03b76_1' }"
 
     input:
     tuple val(meta), path(bam), val(trim_left), val(trim_right)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml", emit: versions
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,11 +23,11 @@ process BAMUTIL_TRIMBAM {
     """
     bam \\
         trimBam \\
-        ${bam} \\
+        $bam \\
         ${prefix}.bam \\
-        ${args} \\
-        -L ${trim_left} \\
-        -R ${trim_right}
+        $args \\
+        -L $trim_left \\
+        -R $trim_right
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

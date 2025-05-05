@@ -1,18 +1,18 @@
 process NONPAREIL_SET {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/nonpareil:3.5.5--r43hdcf5f25_0'
-        : 'biocontainers/nonpareil:3.5.5--r43hdcf5f25_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/nonpareil:3.5.5--r43hdcf5f25_0':
+        'biocontainers/nonpareil:3.5.5--r43hdcf5f25_0' }"
 
     input:
     tuple val(meta), path(npos)
 
     output:
     tuple val(meta), path("*.png"), emit: png
-    path "versions.yml", emit: versions
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

@@ -2,16 +2,16 @@ process METAPHLAN_MERGEMETAPHLANTABLES {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/metaphlan:4.1.1--pyhdfd78af_0'
-        : 'biocontainers/metaphlan:4.1.1--pyhdfd78af_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/metaphlan:4.1.1--pyhdfd78af_0' :
+        'biocontainers/metaphlan:4.1.1--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(profiles)
 
     output:
-    tuple val(meta), path("${prefix}.txt"), emit: txt
-    path "versions.yml", emit: versions
+    tuple val(meta), path("${prefix}.txt") , emit: txt
+    path "versions.yml"                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,7 +21,7 @@ process METAPHLAN_MERGEMETAPHLANTABLES {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     merge_metaphlan_tables.py \\
-        ${args} \\
+        $args \\
         -o ${prefix}.txt \\
         ${profiles}
 

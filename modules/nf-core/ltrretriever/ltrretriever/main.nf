@@ -1,38 +1,38 @@
 process LTRRETRIEVER_LTRRETRIEVER {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/ltr_retriever:2.9.9--hdfd78af_0'
-        : 'biocontainers/ltr_retriever:2.9.9--hdfd78af_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/ltr_retriever:2.9.9--hdfd78af_0':
+        'biocontainers/ltr_retriever:2.9.9--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(genome)
-    path harvest
-    path finder
-    path mgescan
-    path non_tgca
+    path(harvest)
+    path(finder)
+    path(mgescan)
+    path(non_tgca)
 
     output:
-    tuple val(meta), path("*.log"), emit: log
-    tuple val(meta), path("${prefix}.pass.list"), emit: pass_list, optional: true
-    tuple val(meta), path("*.pass.list.gff3"), emit: pass_list_gff, optional: true
-    tuple val(meta), path("*.LTRlib.fa"), emit: ltrlib, optional: true
-    tuple val(meta), path("${prefix}.out"), emit: annotation_out, optional: true
-    tuple val(meta), path("*.out.gff3"), emit: annotation_gff, optional: true
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.log")              , emit: log
+    tuple val(meta), path("${prefix}.pass.list"), emit: pass_list       , optional: true
+    tuple val(meta), path("*.pass.list.gff3")   , emit: pass_list_gff   , optional: true
+    tuple val(meta), path("*.LTRlib.fa")        , emit: ltrlib          , optional: true
+    tuple val(meta), path("${prefix}.out")      , emit: annotation_out  , optional: true
+    tuple val(meta), path("*.out.gff3")         , emit: annotation_gff  , optional: true
+    path "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
-    def inharvest = harvest ? "-inharvest ${harvest}" : ''
-    def infinder = finder ? "-infinder ${finder}" : ''
-    def inmgescan = mgescan ? "-inmgescan ${mgescan}" : ''
-    def non_tgca_file = non_tgca ? "-nonTGCA ${non_tgca}" : ''
+    def args            = task.ext.args     ?: ''
+    prefix              = task.ext.prefix   ?: "${meta.id}"
+    def inharvest       = harvest           ? "-inharvest $harvest" : ''
+    def infinder        = finder            ? "-infinder $finder"   : ''
+    def inmgescan       = mgescan           ? "-inmgescan $mgescan" : ''
+    def non_tgca_file   = non_tgca          ? "-nonTGCA $non_tgca"  : ''
     def writable_genome = "${genome.baseName}.writable.${genome.extension}"
     // writable_genome:
     // This is needed to avoid LTR_retriever:2.9.9 failure when the input `genome` is
@@ -43,21 +43,21 @@ process LTRRETRIEVER_LTRRETRIEVER {
     // has been resolved.
     """
     cp \\
-        ${genome} \\
-        ${writable_genome}
+        $genome \\
+        $writable_genome
 
     chmod \\
         a+w \\
-        ${writable_genome}
+        $writable_genome
 
     LTR_retriever \\
-        -genome ${writable_genome} \\
-        ${inharvest} \\
-        ${infinder} \\
-        ${inmgescan} \\
-        ${non_tgca_file} \\
-        -threads ${task.cpus} \\
-        ${args} \\
+        -genome $writable_genome \\
+        $inharvest \\
+        $infinder \\
+        $inmgescan \\
+        $non_tgca_file \\
+        -threads $task.cpus \\
+        $args \\
         &> >(tee "${prefix}.log" 2>&1) \\
         || echo "Errors from LTR_retriever printed to ${prefix}.log"
 
@@ -74,17 +74,17 @@ process LTRRETRIEVER_LTRRETRIEVER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
-    def touch_out = args.contains('-noanno') ? '' : "touch ${prefix}.out"
-    def touch_out_gff = args.contains('-noanno') ? '' : "touch ${prefix}.out.gff3"
+    def args            = task.ext.args             ?: ''
+    prefix              = task.ext.prefix           ?: "${meta.id}"
+    def touch_out       = args.contains('-noanno')  ? ''            : "touch ${prefix}.out"
+    def touch_out_gff   = args.contains('-noanno')  ? ''            : "touch ${prefix}.out.gff3"
     """
     touch "${prefix}.log"
     touch "${prefix}.pass.list"
     touch "${prefix}.pass.list.gff3"
     touch "${prefix}.LTRlib.fa"
-    ${touch_out}
-    ${touch_out_gff}
+    $touch_out
+    $touch_out_gff
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

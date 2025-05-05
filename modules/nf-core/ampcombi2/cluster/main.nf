@@ -3,18 +3,18 @@ process AMPCOMBI2_CLUSTER {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/ampcombi:2.0.1--pyhdfd78af_0'
-        : 'biocontainers/ampcombi:2.0.1--pyhdfd78af_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/ampcombi:2.0.1--pyhdfd78af_0':
+        'biocontainers/ampcombi:2.0.1--pyhdfd78af_0' }"
 
     input:
-    path summary_file
+    path(summary_file)
 
     output:
-    path ("Ampcombi_summary_cluster.tsv"), emit: cluster_tsv
-    path ("Ampcombi_summary_cluster_representative_seq.tsv"), emit: rep_cluster_tsv
-    path ("Ampcombi_cluster.log"), emit: log, optional: true
-    path "versions.yml", emit: versions
+    path("Ampcombi_summary_cluster.tsv")                   , emit: cluster_tsv
+    path("Ampcombi_summary_cluster_representative_seq.tsv"), emit: rep_cluster_tsv
+    path("Ampcombi_cluster.log")                           , emit: log, optional:true
+    path "versions.yml"                                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,7 +24,7 @@ process AMPCOMBI2_CLUSTER {
     """
     ampcombi cluster \\
         --ampcombi_summary ${summary_file} \\
-        ${args} \\
+        $args \\
         --threads ${task.cpus}
 
     cat <<-END_VERSIONS > versions.yml

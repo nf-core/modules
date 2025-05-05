@@ -1,19 +1,19 @@
 process SMOOTHXG {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/smoothxg:0.8.0--h40c17d1_0'
-        : 'biocontainers/smoothxg:0.8.0--h40c17d1_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/smoothxg:0.8.0--h40c17d1_0' :
+        'biocontainers/smoothxg:0.8.0--h40c17d1_0' }"
 
     input:
     tuple val(meta), path(gfa)
 
     output:
     tuple val(meta), path("*smoothxg.gfa"), emit: gfa
-    path ("*.maf"), optional: true, emit: maf
-    path "versions.yml", emit: versions
+    path("*.maf") , optional: true, emit: maf
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,10 +23,10 @@ process SMOOTHXG {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     smoothxg \\
-        --threads=${task.cpus} \\
+        --threads=$task.cpus \\
         --gfa-in=${gfa} \\
         --smoothed-out=${prefix}.smoothxg.gfa \\
-        ${args}
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -1,16 +1,16 @@
 process ILASTIK_PIXELCLASSIFICATION {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_single'
 
     container "docker.io/biocontainers/ilastik:1.4.0_cv1"
 
     input:
     tuple val(meta), path(input_img), val(output_format), val(export_source)
-    path ilp
+    path(ilp)
 
     output:
-    tuple val(meta), path("*.${output_format}"), emit: output
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.${output_format}") , emit: output
+    path "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -18,7 +18,7 @@ process ILASTIK_PIXELCLASSIFICATION {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error("ILASTIK_PIXELCLASSIFICATION module does not support Conda. Please use Docker / Singularity / Podman instead.")
+        error "ILASTIK_PIXELCLASSIFICATION module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -44,7 +44,7 @@ process ILASTIK_PIXELCLASSIFICATION {
     stub:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error("ILASTIK_PIXELCLASSIFICATION module does not support Conda. Please use Docker / Singularity / Podman instead.")
+        error "ILASTIK_PIXELCLASSIFICATION module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def prefix = task.ext.prefix ?: "${meta.id}"
     """

@@ -1,9 +1,8 @@
 process DEEPSOMATIC {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_high'
 
     container "docker.io/google/deepsomatic:1.7.0"
-
     input:
     tuple val(meta), path(input_normal), path(index_normal), path(input_tumor), path(index_tumor)
     tuple val(meta2), path(intervals)
@@ -12,11 +11,11 @@ process DEEPSOMATIC {
     tuple val(meta5), path(gzi)
 
     output:
-    tuple val(meta), path("${prefix}.vcf.gz"), emit: vcf
-    tuple val(meta), path("${prefix}.vcf.gz.tbi"), emit: vcf_tbi
-    tuple val(meta), path("${prefix}.g.vcf.gz"), emit: gvcf
-    tuple val(meta), path("${prefix}.g.vcf.gz.tbi"), emit: gvcf_tbi
-    path "versions.yml", emit: versions
+    tuple val(meta), path("${prefix}.vcf.gz")      ,  emit: vcf
+    tuple val(meta), path("${prefix}.vcf.gz.tbi")  ,  emit: vcf_tbi
+    tuple val(meta), path("${prefix}.g.vcf.gz")    ,  emit: gvcf
+    tuple val(meta), path("${prefix}.g.vcf.gz.tbi"),  emit: gvcf_tbi
+    path "versions.yml"                            ,  emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,7 +23,7 @@ process DEEPSOMATIC {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error("DEEPSOMATIC module does not support Conda. Please use Docker / Singularity / Podman instead.")
+        error "DEEPSOMATIC module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
@@ -47,14 +46,14 @@ process DEEPSOMATIC {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        deepsomatic: ${VERSION}
+        deepsomatic: $VERSION
     END_VERSIONS
     """
 
     stub:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error("DEEPSOMATIC module does not support Conda. Please use Docker / Singularity / Podman instead.")
+        error "DEEPSOMATIC module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.7.0'
@@ -66,7 +65,7 @@ process DEEPSOMATIC {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        deepsomatic: ${VERSION}
+        deepsomatic: $VERSION
     END_VERSIONS
     """
 }

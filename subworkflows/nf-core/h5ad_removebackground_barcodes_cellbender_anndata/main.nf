@@ -5,6 +5,7 @@ include { CELLBENDER_REMOVEBACKGROUND } from '../../../modules/nf-core/cellbende
 include { ANNDATA_BARCODES            } from '../../../modules/nf-core/anndata/barcodes'
 
 workflow H5AD_REMOVEBACKGROUND_BARCODES_CELLBENDER_ANNDATA {
+
     take:
     ch_unfiltered // channel: [mandatory] meta, h5ad
 
@@ -18,6 +19,8 @@ workflow H5AD_REMOVEBACKGROUND_BARCODES_CELLBENDER_ANNDATA {
     ch_versions = ch_versions.mix(ANNDATA_BARCODES.out.versions)
 
     emit:
-    h5ad     = ANNDATA_BARCODES.out.h5ad // channel: [ val(meta), path(h5ad) ]
-    versions = ch_versions // channel: [ path(versions.yml) ]
+    h5ad = ANNDATA_BARCODES.out.h5ad  // channel: [ val(meta), path(h5ad) ]
+
+    versions = ch_versions  // channel: [ path(versions.yml) ]
 }
+

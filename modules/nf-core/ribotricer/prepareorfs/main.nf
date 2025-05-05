@@ -1,18 +1,18 @@
 process RIBOTRICER_PREPAREORFS {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/ribotricer:1.3.3--pyhdfd78af_0'
-        : 'biocontainers/ribotricer:1.3.3--pyhdfd78af_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/ribotricer:1.3.3--pyhdfd78af_0':
+        'biocontainers/ribotricer:1.3.3--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta), path(gtf)
 
     output:
     tuple val(meta), path("*_candidate_orfs.tsv"), emit: candidate_orfs
-    path "versions.yml", emit: versions
+    path "versions.yml"                          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,10 +23,10 @@ process RIBOTRICER_PREPAREORFS {
 
     """
     ribotricer prepare-orfs \\
-        --gtf ${gtf} \\
-        --fasta ${fasta} \\
-        --prefix ${prefix} \\
-        ${args}
+        --gtf $gtf \\
+        --fasta $fasta \\
+        --prefix $prefix \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

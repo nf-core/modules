@@ -1,19 +1,19 @@
 process GT_GFF3VALIDATOR {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/genometools-genometools:1.6.5--py310h3db02ab_0'
-        : 'biocontainers/genometools-genometools:1.6.5--py310h3db02ab_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/genometools-genometools:1.6.5--py310h3db02ab_0':
+        'biocontainers/genometools-genometools:1.6.5--py310h3db02ab_0' }"
 
     input:
     tuple val(meta), path(gff3)
 
     output:
-    tuple val(meta), path('*.success.log'), emit: success_log, optional: true
-    tuple val(meta), path('*.error.log'), emit: error_log, optional: true
-    path "versions.yml", emit: versions
+    tuple val(meta), path('*.success.log')  , emit: success_log , optional: true
+    tuple val(meta), path('*.error.log')    , emit: error_log   , optional: true
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,7 +23,7 @@ process GT_GFF3VALIDATOR {
     """
     gt \\
         gff3validator \\
-        "${gff3}" \\
+        "$gff3" \\
         > "${prefix}.stdout" \\
         2>| >(tee "${prefix}.stderr" >&2) \\
         || echo "Errors from gt-gff3validator printed to ${prefix}.error.log"

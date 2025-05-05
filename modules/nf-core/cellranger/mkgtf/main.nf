@@ -1,5 +1,5 @@
 process CELLRANGER_MKGTF {
-    tag "${gtf}"
+    tag "$gtf"
     label 'process_low'
 
     container "nf-core/cellranger:10.0.0"
@@ -8,8 +8,8 @@ process CELLRANGER_MKGTF {
     path gtf
 
     output:
-    path "*.gtf", emit: gtf
-    path "versions.yml", emit: versions
+    path "*.gtf"         , emit: gtf
+    path "versions.yml"  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -17,16 +17,16 @@ process CELLRANGER_MKGTF {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error("CELLRANGER_MKGTF module does not support Conda. Please use Docker / Singularity / Podman instead.")
+        error "CELLRANGER_MKGTF module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${gtf.baseName}.filtered"
     """
     cellranger \\
         mkgtf \\
-        ${gtf} \\
+        $gtf \\
         ${prefix}.gtf \\
-        ${args}
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -37,7 +37,7 @@ process CELLRANGER_MKGTF {
     stub:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error("CELLRANGER_MKGTF module does not support Conda. Please use Docker / Singularity / Podman instead.")
+        error "CELLRANGER_MKGTF module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${gtf.baseName}.filtered"

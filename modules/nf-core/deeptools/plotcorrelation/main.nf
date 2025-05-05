@@ -1,21 +1,21 @@
 process DEEPTOOLS_PLOTCORRELATION {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/deeptools:3.5.5--pyhdfd78af_0'
-        : 'biocontainers/deeptools:3.5.5--pyhdfd78af_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/deeptools:3.5.5--pyhdfd78af_0':
+        'biocontainers/deeptools:3.5.5--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(matrix)
-    val method
-    val plot_type
+    val(method)
+    val(plot_type)
 
     output:
     tuple val(meta), path("*.pdf"), emit: pdf
     tuple val(meta), path("*.tab"), emit: matrix
-    path "versions.yml", emit: versions
+    path  "versions.yml"          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,10 +27,10 @@ process DEEPTOOLS_PLOTCORRELATION {
     def resolved_plot_type = plot_type ?: 'heatmap'
     """
     plotCorrelation \\
-        ${args} \\
-        --corData ${matrix} \\
-        --corMethod ${resolved_method} \\
-        --whatToPlot ${resolved_plot_type} \\
+        $args \\
+        --corData $matrix \\
+        --corMethod $resolved_method \\
+        --whatToPlot $resolved_plot_type \\
         --plotFile ${prefix}.plotCorrelation.pdf \\
         --outFileCorMatrix ${prefix}.plotCorrelation.mat.tab
 

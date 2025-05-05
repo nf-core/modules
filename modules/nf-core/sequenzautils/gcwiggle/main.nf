@@ -1,18 +1,18 @@
 process SEQUENZAUTILS_GCWIGGLE {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/sequenza-utils:3.0.0--py38h6ed170a_2'
-        : 'biocontainers/sequenza-utils:3.0.0--py38h6ed170a_2'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/sequenza-utils:3.0.0--py38h6ed170a_2' :
+        'biocontainers/sequenza-utils:3.0.0--py38h6ed170a_2' }"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
     tuple val(meta), path("*.wig.gz"), emit: wig
-    path "versions.yml", emit: versions
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,8 +23,8 @@ process SEQUENZAUTILS_GCWIGGLE {
     """
     sequenza-utils \\
         gc_wiggle \\
-        ${args} \\
-        --fasta ${fasta} \\
+        $args \\
+        --fasta $fasta \\
         -o ${prefix}.wig.gz
 
     cat <<-END_VERSIONS > versions.yml

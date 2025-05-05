@@ -1,11 +1,11 @@
 process ULTRA_ALIGN {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/mulled-v2-4b749ef583d6de806ddbf51c2d235ac8c14763c6:c2c0cd48e7ed1cf3f365b421c7389d04e6bfa812-0'
-        : 'biocontainers/mulled-v2-4b749ef583d6de806ddbf51c2d235ac8c14763c6:c2c0cd48e7ed1cf3f365b421c7389d04e6bfa812-0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/mulled-v2-4b749ef583d6de806ddbf51c2d235ac8c14763c6:c2c0cd48e7ed1cf3f365b421c7389d04e6bfa812-0':
+        'biocontainers/mulled-v2-4b749ef583d6de806ddbf51c2d235ac8c14763c6:c2c0cd48e7ed1cf3f365b421c7389d04e6bfa812-0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -14,7 +14,7 @@ process ULTRA_ALIGN {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml", emit: versions
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,20 +26,20 @@ process ULTRA_ALIGN {
     """
     uLTRA \\
         align \\
-        --t ${task.cpus} \\
-        --prefix ${prefix} \\
+        --t $task.cpus \\
+        --prefix $prefix \\
         --index ./ \\
-        ${args} \\
-        ${genome} \\
-        ${reads} \\
+        $args \\
+        $genome \\
+        $reads \\
         ./
 
     samtools \\
         sort \\
-        --threads ${task.cpus} \\
+        --threads $task.cpus \\
         -o ${prefix}.bam \\
         -O BAM \\
-        ${args2} \\
+        $args2 \\
         ${prefix}.sam
 
     rm ${prefix}.sam

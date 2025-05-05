@@ -3,17 +3,17 @@ process VSEARCH_SINTAX {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/vsearch:2.21.1--h95f258a_0'
-        : 'biocontainers/vsearch:2.21.1--h95f258a_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/vsearch:2.21.1--h95f258a_0':
+        'biocontainers/vsearch:2.21.1--h95f258a_0' }"
 
     input:
     tuple val(meta), path(queryfasta)
     path db
 
     output:
-    tuple val(meta), path('*.tsv'), optional: true, emit: tsv
-    path "versions.yml", emit: versions
+    tuple val(meta), path('*.tsv')   , optional: true, emit: tsv
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,10 +24,10 @@ process VSEARCH_SINTAX {
 
     """
     vsearch \\
-        --sintax ${queryfasta} \\
-        --db ${db} \\
-        --threads ${task.cpus} \\
-        ${args} \\
+        --sintax $queryfasta \\
+        --db $db \\
+        --threads $task.cpus \\
+        $args \\
         --tabbedout ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml

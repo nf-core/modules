@@ -1,11 +1,11 @@
 process RHOCALL_ANNOTATE {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/rhocall:0.5.1--py39hbf8eff0_0'
-        : 'biocontainers/rhocall:0.5.1--py39hbf8eff0_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/rhocall:0.5.1--py39hbf8eff0_0':
+        'biocontainers/rhocall:0.5.1--py39hbf8eff0_0' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
@@ -14,13 +14,13 @@ process RHOCALL_ANNOTATE {
 
     output:
     tuple val(meta), path("*_rhocall.vcf"), emit: vcf
-    path "versions.yml", emit: versions
+    path "versions.yml"                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def az_bed = bed ? "-b ${bed}" : ''
     """
@@ -28,11 +28,11 @@ process RHOCALL_ANNOTATE {
 
     rhocall \\
         annotate \\
-        ${args} \\
-        ${az_bed} \\
-        -r ${roh} \\
+        $args \\
+        $az_bed \\
+        -r $roh \\
         -o ${prefix}_rhocall.vcf \\
-        ${vcf}
+        $vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

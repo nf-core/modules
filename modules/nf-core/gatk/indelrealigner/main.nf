@@ -1,11 +1,11 @@
 process GATK_INDELREALIGNER {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/gatk:3.5--hdfd78af_11'
-        : 'biocontainers/gatk:3.5--hdfd78af_11'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/gatk:3.5--hdfd78af_11':
+        'biocontainers/gatk:3.5--hdfd78af_11' }"
 
     input:
     tuple val(meta), path(bam), path(bai), path(intervals)
@@ -16,7 +16,7 @@ process GATK_INDELREALIGNER {
 
     output:
     tuple val(meta), path("*.bam"), path("*.bai"), emit: bam
-    path "versions.yml", emit: versions
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,16 +26,13 @@ process GATK_INDELREALIGNER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def known = known_vcf ? "-known ${known_vcf}" : ""
 
-    if ("${bam}" == "${prefix}.bam") {
-        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
-    }
+    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     def avail_mem = 3072
     if (!task.memory) {
-        log.info('[GATK IndelRealigner] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
-    }
-    else {
-        avail_mem = (task.memory.mega * 0.8).intValue()
+        log.info '[GATK IndelRealigner] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = (task.memory.mega*0.8).intValue()
     }
 
     """
@@ -47,7 +44,7 @@ process GATK_INDELREALIGNER {
         --targetIntervals ${intervals} \\
         ${known} \\
         -o ${prefix}.bam \\
-        ${args}
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -14,10 +14,10 @@ process RAGTAG_SCAFFOLD {
     tuple val(meta4), path(skip), path(hard_skip)
 
     output:
-    tuple val(meta), path("*.fasta"), emit: corrected_assembly
-    tuple val(meta), path("*.agp"), emit: corrected_agp
-    tuple val(meta), path("*.stats"), emit: corrected_stats
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.fasta"),   emit: corrected_assembly
+    tuple val(meta), path("*.agp"),     emit: corrected_agp
+    tuple val(meta), path("*.stats"),   emit: corrected_stats
+    path "versions.yml",                emit: versions
 
     when:
     task.ext.when == null || task.ext.when

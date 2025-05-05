@@ -1,5 +1,5 @@
-include { DEEPVARIANT_RUNDEEPVARIANT } from '../../../../modules/nf-core/deepvariant/rundeepvariant/main'
-include { DEEPVARIANT                } from '../main'
+include { DEEPVARIANT_RUNDEEPVARIANT      } from '../../../../modules/nf-core/deepvariant/rundeepvariant/main'
+include { DEEPVARIANT                     } from '../main'
 
 workflow DEEPVARIANT_WORKFLOW_AND_PROCESS_EQUALITY_TESTER {
     take:
@@ -15,8 +15,8 @@ workflow DEEPVARIANT_WORKFLOW_AND_PROCESS_EQUALITY_TESTER {
     DEEPVARIANT_RUNDEEPVARIANT(ch_input, ch_fasta, ch_fai, ch_gzi, ch_par_bed)
 
     emit:
-    wf_vcf  = DEEPVARIANT.out.vcf
-    pc_vcf  = DEEPVARIANT_RUNDEEPVARIANT.out.vcf
+    wf_vcf = DEEPVARIANT.out.vcf
+    pc_vcf = DEEPVARIANT_RUNDEEPVARIANT.out.vcf
     wf_gvcf = DEEPVARIANT.out.gvcf
     pc_gvcf = DEEPVARIANT_RUNDEEPVARIANT.out.gvcf
 }

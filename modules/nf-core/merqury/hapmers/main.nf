@@ -1,31 +1,31 @@
 process MERQURY_HAPMERS {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/merqury:1.3--hdfd78af_1'
-        : 'biocontainers/merqury:1.3--hdfd78af_1'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/merqury:1.3--hdfd78af_1':
+        'biocontainers/merqury:1.3--hdfd78af_1' }"
 
     input:
     tuple val(meta), path(child_meryl, stageAs: 'child.meryl')
-    path maternal_meryl, stageAs: 'mat.meryl'
-    path paternal_meryl, stageAs: 'pat.meryl'
+    path(maternal_meryl, stageAs: 'mat.meryl')
+    path(paternal_meryl, stageAs: 'pat.meryl')
 
     output:
-    tuple val(meta), path('*_mat.hapmer.meryl'), emit: mat_hapmer_meryl
-    tuple val(meta), path('*_pat.hapmer.meryl'), emit: pat_hapmer_meryl
-    tuple val(meta), path('*_inherited_hapmers.fl.png'), emit: inherited_hapmers_fl_png
-    tuple val(meta), path('*_inherited_hapmers.ln.png'), emit: inherited_hapmers_ln_png
-    tuple val(meta), path('*_inherited_hapmers.st.png'), emit: inherited_hapmers_st_png
-    path "versions.yml", emit: versions
+    tuple val(meta), path('*_mat.hapmer.meryl')         , emit: mat_hapmer_meryl
+    tuple val(meta), path('*_pat.hapmer.meryl')         , emit: pat_hapmer_meryl
+    tuple val(meta), path('*_inherited_hapmers.fl.png') , emit: inherited_hapmers_fl_png
+    tuple val(meta), path('*_inherited_hapmers.ln.png') , emit: inherited_hapmers_ln_png
+    tuple val(meta), path('*_inherited_hapmers.st.png') , emit: inherited_hapmers_st_png
+    path "versions.yml"                                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args    = task.ext.args ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}"
     def VERSION = 1.3
     """
     # Nextflow changes the container --entrypoint to /bin/bash (container default entrypoint: /usr/local/env-execute)
@@ -40,7 +40,7 @@ process MERQURY_HAPMERS {
         mat.meryl \\
         pat.meryl\\
         child.meryl \\
-        ${args}
+        $args
 
     mv mat.hapmer.meryl             ${prefix}_mat.hapmer.meryl
     mv pat.hapmer.meryl             ${prefix}_pat.hapmer.meryl
@@ -50,13 +50,13 @@ process MERQURY_HAPMERS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        merqury: ${VERSION}
+        merqury: $VERSION
     END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args    = task.ext.args ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}"
     def VERSION = 1.3
     """
     # Nextflow changes the container --entrypoint to /bin/bash (container default entrypoint: /usr/local/env-execute)
@@ -72,7 +72,7 @@ process MERQURY_HAPMERS {
         mat.meryl \\
         pat.meryl\\
         child.meryl \\
-        ${args}"
+        $args"
 
     mkdir ${prefix}_mat.hapmer.meryl
     touch ${prefix}_mat.hapmer.meryl/0x000000.merylData
@@ -90,7 +90,7 @@ process MERQURY_HAPMERS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        merqury: ${VERSION}
+        merqury: $VERSION
     END_VERSIONS
     """
 }

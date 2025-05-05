@@ -1,20 +1,20 @@
 process DEEPTOOLS_COMPUTEMATRIX {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/deeptools:3.5.5--pyhdfd78af_0'
-        : 'biocontainers/deeptools:3.5.5--pyhdfd78af_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/deeptools:3.5.5--pyhdfd78af_0':
+        'biocontainers/deeptools:3.5.5--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(bigwig)
-    path bed
+    path  bed
 
     output:
-    tuple val(meta), path("*.mat.gz"), emit: matrix
+    tuple val(meta), path("*.mat.gz") , emit: matrix
     tuple val(meta), path("*.mat.tab"), emit: table
-    path "versions.yml", emit: versions
+    path  "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,12 +24,12 @@ process DEEPTOOLS_COMPUTEMATRIX {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     computeMatrix \\
-        ${args} \\
-        --regionsFileName ${bed} \\
-        --scoreFileName ${bigwig} \\
+        $args \\
+        --regionsFileName $bed \\
+        --scoreFileName $bigwig \\
         --outFileName ${prefix}.computeMatrix.mat.gz \\
         --outFileNameMatrix ${prefix}.computeMatrix.vals.mat.tab \\
-        --numberOfProcessors ${task.cpus}
+        --numberOfProcessors $task.cpus
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

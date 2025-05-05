@@ -1,18 +1,18 @@
 process HMTNOTE_ANNOTATE {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/hmtnote:0.7.2--pyhdfd78af_1'
-        : 'biocontainers/hmtnote:0.7.2--pyhdfd78af_1'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/hmtnote:0.7.2--pyhdfd78af_1':
+        'biocontainers/hmtnote:0.7.2--pyhdfd78af_1' }"
 
     input:
     tuple val(meta), path(vcf)
 
     output:
     tuple val(meta), path("*_annotated.vcf"), emit: vcf
-    path "versions.yml", emit: versions
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,16 +24,15 @@ process HMTNOTE_ANNOTATE {
     """
     hmtnote \\
         annotate \\
-        ${vcf} \\
+        $vcf \\
         ${prefix}_annotated.vcf \\
-        ${args}
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         hmtnote: \$(echo \$(hmtnote --version 2>&1) | sed 's/^.*hmtnote, version //; s/Using.*\$//' ))
     END_VERSIONS
     """
-
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """

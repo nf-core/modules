@@ -1,19 +1,19 @@
 process VT_DECOMPOSEBLOCKSUB {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/vt:2015.11.10--h5ef6573_4'
-        : 'biocontainers/vt:2015.11.10--h5ef6573_4'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/vt:2015.11.10--h5ef6573_4':
+        'biocontainers/vt:2015.11.10--h5ef6573_4' }"
 
     input:
     tuple val(meta), path(vcf), path(index), path(intervals)
 
     output:
-    tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.vcf.gz")   , emit: vcf
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,8 +22,8 @@ process VT_DECOMPOSEBLOCKSUB {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    if ("${vcf}" == "${prefix}.vcf.gz") {
-        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    if ("$vcf" == "${prefix}.vcf.gz") {
+        error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     }
 
     def bed = intervals ? "-i ${intervals}" : ""
@@ -43,8 +43,8 @@ process VT_DECOMPOSEBLOCKSUB {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    if ("${vcf}" == "${prefix}.vcf.gz") {
-        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    if ("$vcf" == "${prefix}.vcf.gz") {
+        error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     }
 
     """

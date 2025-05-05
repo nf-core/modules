@@ -1,20 +1,20 @@
 process GUNC_RUN {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/gunc:1.0.6--pyhdfd78af_0'
-        : 'biocontainers/gunc:1.0.6--pyhdfd78af_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/gunc:1.0.6--pyhdfd78af_0' :
+        'biocontainers/gunc:1.0.6--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta_files, stageAs: 'input_files/*')
-    path db
+    path(db)
 
     output:
-    tuple val(meta), path("*maxCSS_level.tsv"), emit: maxcss_level_tsv
-    tuple val(meta), path("*all_levels.tsv"), optional: true, emit: all_levels_tsv
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*maxCSS_level.tsv")                  , emit: maxcss_level_tsv
+    tuple val(meta), path("*all_levels.tsv")    , optional: true, emit: all_levels_tsv
+    path "versions.yml"                                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,9 +27,9 @@ process GUNC_RUN {
     gunc \\
         run \\
         --input_file input_files.txt \\
-        --db_file ${db} \\
-        --threads ${task.cpus} \\
-        ${args}
+        --db_file $db \\
+        --threads $task.cpus \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -1,18 +1,18 @@
 process TRYCYCLER_CLUSTER {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/trycycler:0.5.3--pyhdfd78af_0'
-        : 'biocontainers/trycycler:0.5.3--pyhdfd78af_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/trycycler:0.5.3--pyhdfd78af_0':
+        'biocontainers/trycycler:0.5.3--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(contigs), path(reads)
 
     output:
-    tuple val(meta), path("*"), emit: cluster_dir
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*") , emit: cluster_dir
+    path "versions.yml"        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,13 +25,13 @@ process TRYCYCLER_CLUSTER {
     """
     trycycler \\
         cluster \\
-        ${args} \\
+        $args \\
         --assemblies ${contigs} \\
         --reads ${reads} \\
-        --threads ${task.cpus} \\
+        --threads $task.cpus \\
         --out_dir ${prefix}
 
-    gzip ${args2} ${prefix}/cluster_*/*/*.fasta
+    gzip $args2 ${prefix}/cluster_*/*/*.fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

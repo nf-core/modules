@@ -1,22 +1,22 @@
 process PLINK2_INDEPPAIRWISE {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/plink2:2.00a5.10--h4ac6f70_0'
-        : 'biocontainers/plink2:2.00a5.10--h4ac6f70_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/plink2:2.00a5.10--h4ac6f70_0':
+        'biocontainers/plink2:2.00a5.10--h4ac6f70_0' }"
 
     input:
     tuple val(meta), path(plink_genotype_file), path(plink_variant_file), path(plink_sample_file)
-    val win
-    val step
-    val r2
+    val(win)
+    val(step)
+    val(r2)
 
     output:
-    tuple val(meta), path("*.prune.in"), emit: prune_in
-    tuple val(meta), path("*.prune.out"), emit: prune_out
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.prune.in")  , emit: prune_in
+    tuple val(meta), path("*.prune.out") , emit: prune_out
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,10 +28,10 @@ process PLINK2_INDEPPAIRWISE {
     def input = "${plink_genotype_file.getBaseName()}"
     """
     plink2 \\
-        ${mode} ${input} \\
-        ${args} \\
-        --indep-pairwise ${win} ${step} ${r2} \\
-        --threads ${task.cpus} \\
+        $mode $input \\
+        $args \\
+        --indep-pairwise $win $step $r2 \\
+        --threads $task.cpus \\
         --out ${prefix}
 
     cat <<-END_VERSIONS > versions.yml

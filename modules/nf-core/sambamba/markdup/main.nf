@@ -1,11 +1,11 @@
 process SAMBAMBA_MARKDUP {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/sambamba:1.0.1--h6f6fda4_0'
-        : 'biocontainers/sambamba:1.0.1--h6f6fda4_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/sambamba:1.0.1--h6f6fda4_0':
+        'biocontainers/sambamba:1.0.1--h6f6fda4_0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -13,7 +13,7 @@ process SAMBAMBA_MARKDUP {
     output:
     tuple val(meta), path("*.bam"), emit: bam
     tuple val(meta), path("*.bai"), emit: bai, optional: true
-    path "versions.yml", emit: versions
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,10 +25,10 @@ process SAMBAMBA_MARKDUP {
     """
     sambamba \\
         markdup \\
-        ${args} \\
-        -t ${task.cpus} \\
+        $args \\
+        -t $task.cpus \\
         --tmpdir ./ \\
-        ${bam} \\
+        $bam \\
         ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml

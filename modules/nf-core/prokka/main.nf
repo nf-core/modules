@@ -3,9 +3,9 @@ process PROKKA {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3a/3af46b047c8fe84112adeaecf300878217c629b97f111f923ecf327656ddd141/data'
-        : 'community.wave.seqera.io/library/prokka_openjdk:10546cadeef11472'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3a/3af46b047c8fe84112adeaecf300878217c629b97f111f923ecf327656ddd141/data' :
+        'community.wave.seqera.io/library/prokka_openjdk:10546cadeef11472' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -25,19 +25,19 @@ process PROKKA {
     tuple val(meta), path("${prefix}/*.log"), emit: log
     tuple val(meta), path("${prefix}/*.txt"), emit: txt
     tuple val(meta), path("${prefix}/*.tsv"), emit: tsv
-    path "versions.yml", emit: versions
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
-    def input = fasta.toString() - ~/\.gz$/
-    def decompress = fasta.getExtension() == "gz" ? "gunzip -c ${fasta} > ${input}" : ""
-    def cleanup = fasta.getExtension() == "gz" ? "rm ${input}" : ""
-    def proteins_opt = proteins ? "--proteins ${proteins}" : ""
-    def prodigal_tf_in = prodigal_tf ? "--prodigaltf ${prodigal_tf}" : ""
+    def args             = task.ext.args   ?: ''
+    prefix               = task.ext.prefix ?: "${meta.id}"
+    def input            = fasta.toString() - ~/\.gz$/
+    def decompress       = fasta.getExtension() == "gz" ? "gunzip -c ${fasta} > ${input}" : ""
+    def cleanup          = fasta.getExtension() == "gz" ? "rm ${input}" : ""
+    def proteins_opt     = proteins ? "--proteins ${proteins}" : ""
+    def prodigal_tf_in   = prodigal_tf ? "--prodigaltf ${prodigal_tf}" : ""
     """
     ${decompress}
 

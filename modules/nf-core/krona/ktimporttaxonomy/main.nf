@@ -4,17 +4,17 @@ process KRONA_KTIMPORTTAXONOMY {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/krona:2.8.1--pl5321hdfd78af_1'
-        : 'biocontainers/krona:2.8.1--pl5321hdfd78af_1'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/krona:2.8.1--pl5321hdfd78af_1':
+        'biocontainers/krona:2.8.1--pl5321hdfd78af_1' }"
 
     input:
     tuple val(meta), path(report)
     path taxonomy, stageAs: 'taxonomy.tab'
 
     output:
-    tuple val(meta), path('*.html'), emit: html
-    path "versions.yml", emit: versions
+    tuple val(meta), path ('*.html'), emit: html
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,10 +27,10 @@ process KRONA_KTIMPORTTAXONOMY {
     echo \$TAXONOMY
 
     ktImportTaxonomy \\
-        ${args} \\
+        $args \\
         -o ${prefix}.html \\
         -tax \$TAXONOMY/ \\
-        ${report}
+        $report
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -1,18 +1,18 @@
 process SNPDISTS {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/snp-dists:0.8.2--h5bf99c6_0'
-        : 'biocontainers/snp-dists:0.8.2--h5bf99c6_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/snp-dists:0.8.2--h5bf99c6_0' :
+        'biocontainers/snp-dists:0.8.2--h5bf99c6_0' }"
 
     input:
     tuple val(meta), path(alignment)
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml", emit: versions
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,8 +22,8 @@ process SNPDISTS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     snp-dists \\
-        ${args} \\
-        ${alignment} > ${prefix}.tsv
+        $args \\
+        $alignment > ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

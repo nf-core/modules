@@ -1,19 +1,19 @@
 process PIRATE {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/pirate:1.0.5--hdfd78af_0'
-        : 'biocontainers/pirate:1.0.5--hdfd78af_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/pirate:1.0.5--hdfd78af_0' :
+        'biocontainers/pirate:1.0.5--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(gff)
 
     output:
-    tuple val(meta), path("${prefix}_results/*"), emit: results
+    tuple val(meta), path("${prefix}_results/*")                                   , emit: results
     tuple val(meta), path("${prefix}_results/core_alignment.fasta"), optional: true, emit: aln
-    path "versions.yml", emit: versions
+    path "versions.yml"                                                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,8 +27,8 @@ process PIRATE {
 
     # Run pirate on all .gff in input directory
     PIRATE \\
-        ${args} \\
-        --threads ${task.cpus} \\
+        $args \\
+        --threads $task.cpus \\
         --input ./ \\
         --output ${prefix}_results/
 

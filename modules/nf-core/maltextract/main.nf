@@ -3,9 +3,9 @@ process MALTEXTRACT {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/hops:0.35--hdfd78af_1'
-        : 'biocontainers/hops:0.35--hdfd78af_1'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/hops:0.35--hdfd78af_1' :
+        'biocontainers/hops:0.35--hdfd78af_1' }"
 
     input:
     tuple val(meta), path(rma6)
@@ -13,8 +13,8 @@ process MALTEXTRACT {
     path ncbi_dir
 
     output:
-    tuple val(meta), path("results"), emit: results
-    path "versions.yml", emit: versions
+    tuple val(meta), path("results")      , emit: results
+    path "versions.yml"                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,12 +24,12 @@ process MALTEXTRACT {
     """
     MaltExtract \\
         -Xmx${task.memory.toGiga()}g \\
-        -p ${task.cpus} \\
+        -p $task.cpus \\
         -i ${rma6.join(' ')} \\
-        -t ${taxon_list} \\
-        -r ${ncbi_dir} \\
+        -t $taxon_list \\
+        -r $ncbi_dir \\
         -o results/ \\
-        ${args}
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

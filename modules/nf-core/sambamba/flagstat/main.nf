@@ -1,18 +1,18 @@
 process SAMBAMBA_FLAGSTAT {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/sambamba:1.0.1--h6f6fda4_0'
-        : 'biocontainers/sambamba:1.0.1--h6f6fda4_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/sambamba:1.0.1--h6f6fda4_0':
+        'biocontainers/sambamba:1.0.1--h6f6fda4_0' }"
 
     input:
     tuple val(meta), path(bam)
 
     output:
     tuple val(meta), path("*.stats"), emit: stats
-    path "versions.yml", emit: versions
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,8 +24,8 @@ process SAMBAMBA_FLAGSTAT {
     """
     sambamba \\
         flagstat \\
-        -t ${task.cpus} \\
-        ${bam} \\
+        -t $task.cpus \\
+        $bam \\
         > ${prefix}.stats
 
     cat <<-END_VERSIONS > versions.yml

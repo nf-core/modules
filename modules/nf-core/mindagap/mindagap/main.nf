@@ -1,18 +1,18 @@
 process MINDAGAP_MINDAGAP {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/mindagap:0.0.2--pyhdfd78af_1'
-        : 'biocontainers/mindagap:0.0.2--pyhdfd78af_1'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/mindagap:0.0.2--pyhdfd78af_1' :
+        'biocontainers/mindagap:0.0.2--pyhdfd78af_1' }"
 
     input:
     tuple val(meta), path(panorama)
 
     output:
     tuple val(meta), path("*.{tif,tiff}"), emit: tiff
-    path "versions.yml", emit: versions
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,8 +21,8 @@ process MINDAGAP_MINDAGAP {
     def args = task.ext.args ?: ''
     """
     mindagap.py \\
-        ${panorama} \\
-        ${args}
+        $panorama \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

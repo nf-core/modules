@@ -1,11 +1,11 @@
 process CUTESV {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/cutesv:2.0.2--pyhdfd78af_0'
-        : 'biocontainers/cutesv:2.0.2--pyhdfd78af_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/cutesv:2.0.2--pyhdfd78af_0' :
+        'biocontainers/cutesv:2.0.2--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -13,7 +13,7 @@ process CUTESV {
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
-    path "versions.yml", emit: versions
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,8 +27,8 @@ process CUTESV {
         ${fasta} \\
         ${prefix}.vcf \\
         . \\
-        --threads ${task.cpus} \\
-        ${args}
+        --threads $task.cpus \\
+        $args
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         cuteSV: \$( cuteSV --version 2>&1 | sed 's/cuteSV //g' )
@@ -36,7 +36,7 @@ process CUTESV {
     """
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}" 
     """
     touch "${prefix}.vcf"
     cat <<-END_VERSIONS > versions.yml

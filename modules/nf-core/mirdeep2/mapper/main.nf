@@ -1,11 +1,11 @@
 process MIRDEEP2_MAPPER {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/mirdeep2:2.0.1.2--0'
-        : 'biocontainers/mirdeep2:2.0.1.2--0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/mirdeep2:2.0.1.2--0':
+        'biocontainers/mirdeep2:2.0.1.2--0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -13,7 +13,7 @@ process MIRDEEP2_MAPPER {
 
     output:
     tuple val(meta), path('*.fa'), path('*.arf'), emit: outputs
-    path "versions.yml", emit: versions
+    path "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,14 +26,14 @@ process MIRDEEP2_MAPPER {
     """
     mapper.pl \\
     ${reads} \\
-    ${args} \\
+    $args \\
     -p ${index}/${meta2.id}  \\
     -s ${prefix}_collapsed.fa \\
     -t ${prefix}_reads_collapsed_vs_${meta2.id}_genome.arf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mirdeep2: \$(echo "${VERSION}")
+        mirdeep2: \$(echo "$VERSION")
     END_VERSIONS
     """
 
@@ -47,7 +47,7 @@ process MIRDEEP2_MAPPER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mirdeep2: \$(echo "${VERSION}")
+        mirdeep2: \$(echo "$VERSION")
     END_VERSIONS
     """
 }

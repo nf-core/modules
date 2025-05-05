@@ -1,25 +1,26 @@
 process METAMAPS_CLASSIFY {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/metamaps:0.1.633d2e0--h21ec9f0_0'
-        : 'biocontainers/metamaps:0.1.633d2e0--h21ec9f0_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/metamaps:0.1.633d2e0--h21ec9f0_0':
+        'biocontainers/metamaps:0.1.633d2e0--h21ec9f0_0' }"
 
     input:
     tuple val(meta), path(classification_res), path(meta_file), path(meta_unmappedreadsLengths), path(para_file)
     path database_folder
 
+
     output:
-    tuple val(meta), path("*classification_res.EM.WIMP"), emit: wimp
-    tuple val(meta), path("*classification_res.EM.evidenceUnknownSpecies"), emit: evidence_unknown_species
-    tuple val(meta), path("*classification_res.EM.reads2Taxon"), emit: reads2taxon
-    tuple val(meta), path("*classification_res.EM"), emit: em
-    tuple val(meta), path("*classification_res.EM.contigCoverage"), emit: contig_coverage
-    tuple val(meta), path("*classification_res.EM.lengthAndIdentitiesPerMappingUnit"), emit: length_and_id
-    tuple val(meta), path("*classification_res.EM.reads2Taxon.krona"), emit: krona
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*classification_res.EM.WIMP")                              , emit: wimp
+    tuple val(meta), path("*classification_res.EM.evidenceUnknownSpecies")            , emit: evidence_unknown_species
+    tuple val(meta), path("*classification_res.EM.reads2Taxon")                       , emit: reads2taxon
+    tuple val(meta), path("*classification_res.EM")                                   , emit: em
+    tuple val(meta), path("*classification_res.EM.contigCoverage")                    , emit: contig_coverage
+    tuple val(meta), path("*classification_res.EM.lengthAndIdentitiesPerMappingUnit") , emit: length_and_id
+    tuple val(meta), path("*classification_res.EM.reads2Taxon.krona")                 , emit: krona
+    path "versions.yml"                                                               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,10 +31,10 @@ process METAMAPS_CLASSIFY {
     """
     metamaps \\
         classify \\
-        ${args} \\
-        --mappings ${classification_res} \\
-        --threads ${task.cpus} \\
-        --DB ${database_folder}
+        $args \\
+        --mappings $classification_res \\
+        --threads $task.cpus \\
+        --DB $database_folder
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -58,4 +59,5 @@ process METAMAPS_CLASSIFY {
         metamaps: \$(metamaps | sed -n 2p | sed 's/^.*MetaMaps v //')
     END_VERSIONS
     """
+
 }

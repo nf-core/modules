@@ -1,20 +1,20 @@
 process GSTAMA_POLYACLEANUP {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/gs-tama:1.0.3--hdfd78af_0'
-        : 'biocontainers/gs-tama:1.0.3--hdfd78af_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/gs-tama:1.0.3--hdfd78af_0':
+        'biocontainers/gs-tama:1.0.3--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*_tama.fa.gz"), emit: fasta
+    tuple val(meta), path("*_tama.fa.gz")                   , emit: fasta
     tuple val(meta), path("*_tama_polya_flnc_report.txt.gz"), emit: report
-    tuple val(meta), path("*_tama_tails.fa.gz"), emit: tails
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*_tama_tails.fa.gz")             , emit: tails
+    path "versions.yml"                                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,14 +22,12 @@ process GSTAMA_POLYACLEANUP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if ("${fasta}" == "${prefix}.fasta" | "${fasta}" == "${prefix}.fa") {
-        error("Input and output names are the same, set prefix in module configuration")
-    }
+    if( "$fasta" == "${prefix}.fasta" | "$fasta" == "${prefix}.fa" ) error "Input and output names are the same, set prefix in module configuration"
     """
     tama_flnc_polya_cleanup.py \\
-        -f ${fasta} \\
+        -f $fasta \\
         -p ${prefix} \\
-        ${args}
+        $args
     gzip ${prefix}.fa
     gzip ${prefix}_polya_flnc_report.txt
     gzip ${prefix}_tails.fa

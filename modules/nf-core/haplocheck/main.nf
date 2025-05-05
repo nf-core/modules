@@ -1,19 +1,19 @@
 process HAPLOCHECK {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/haplocheck:1.3.3--h4a94de4_0'
-        : 'biocontainers/haplocheck:1.3.3--h4a94de4_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/haplocheck:1.3.3--h4a94de4_0':
+        'biocontainers/haplocheck:1.3.3--h4a94de4_0' }"
 
     input:
     tuple val(meta), path(vcf)
 
     output:
-    tuple val(meta), path("*.txt"), emit: txt
+    tuple val(meta), path("*.txt") , emit: txt
     tuple val(meta), path("*.html"), emit: html
-    path "versions.yml", emit: versions
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,7 +22,7 @@ process HAPLOCHECK {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    haplocheck --raw --out ${prefix} ${vcf}
+    haplocheck --raw --out $prefix $vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

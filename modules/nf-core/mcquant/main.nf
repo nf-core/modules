@@ -1,5 +1,5 @@
 process MCQUANT {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
@@ -12,7 +12,7 @@ process MCQUANT {
 
     output:
     tuple val(meta), path("*.csv"), emit: csv
-    path "versions.yml", emit: versions
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,19 +20,18 @@ process MCQUANT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.5.4'
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '1.5.4' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     python /app/CommandSingleCellExtraction.py \
-        --masks ${mask} \
-        --image ${image} \
-        --channel_names ${markerfile} \
+        --masks $mask \
+        --image $image \
+        --channel_names $markerfile \
         --output . \
-        ${args}
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mcquant: ${VERSION}
+        mcquant: $VERSION
     END_VERSIONS
     """
 
@@ -44,7 +43,7 @@ process MCQUANT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mcquant: ${VERSION}
+        mcquant: $VERSION
     END_VERSIONS
     """
 }

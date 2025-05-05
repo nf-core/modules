@@ -1,18 +1,18 @@
 process TIDK_PLOT {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/tidk:0.2.41--hdbdd923_0'
-        : 'biocontainers/tidk:0.2.41--hdbdd923_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/tidk:0.2.41--hdbdd923_0':
+        'biocontainers/tidk:0.2.41--hdbdd923_0' }"
 
     input:
     tuple val(meta), path(tsv)
 
     output:
     tuple val(meta), path("*.svg"), emit: svg
-    path "versions.yml", emit: versions
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,9 +23,9 @@ process TIDK_PLOT {
     """
     tidk \\
         plot \\
-        --output ${prefix} \\
-        ${args} \\
-        --tsv "${tsv}"
+        --output $prefix \\
+        $args \\
+        --tsv "$tsv"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

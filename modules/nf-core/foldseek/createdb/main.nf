@@ -1,18 +1,18 @@
 process FOLDSEEK_CREATEDB {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/foldseek:9.427df8a--pl5321hb365157_0'
-        : 'biocontainers/foldseek:9.427df8a--pl5321hb365157_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/foldseek:9.427df8a--pl5321hb365157_0':
+        'biocontainers/foldseek:9.427df8a--pl5321hb365157_0' }"
 
     input:
     tuple val(meta), path(pdb)
 
     output:
     tuple val(meta), path("${meta.id}"), emit: db
-    path "versions.yml", emit: versions
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

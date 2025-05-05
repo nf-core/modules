@@ -1,19 +1,19 @@
 process MASH_SCREEN {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/mash:2.3--he348c14_1'
-        : 'biocontainers/mash:2.3--he348c14_1'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/mash:2.3--he348c14_1':
+        'biocontainers/mash:2.3--he348c14_1' }"
 
     input:
-    tuple val(meta), path(query)
+    tuple val(meta) , path(query)
     tuple val(meta2), path(sequences_sketch)
 
     output:
     tuple val(meta), path("*.screen"), emit: screen
-    path "versions.yml", emit: versions
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,10 +24,10 @@ process MASH_SCREEN {
     """
     mash \\
         screen \\
-        ${args} \\
-        -p ${task.cpus} \\
-        ${sequences_sketch} \\
-        ${query} \\
+        $args \\
+        -p $task.cpus \\
+        $sequences_sketch \\
+        $query \\
         > ${prefix}.screen
 
     cat <<-END_VERSIONS > versions.yml

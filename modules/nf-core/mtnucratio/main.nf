@@ -1,20 +1,20 @@
 process MTNUCRATIO {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/mtnucratio:0.7--hdfd78af_2'
-        : 'biocontainers/mtnucratio:0.7--hdfd78af_2'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/mtnucratio:0.7--hdfd78af_2' :
+        'biocontainers/mtnucratio:0.7--hdfd78af_2' }"
 
     input:
     tuple val(meta), path(bam)
-    val mt_id
+    val(mt_id)
 
     output:
     tuple val(meta), path("*.mtnucratio"), emit: mtnucratio
-    tuple val(meta), path("*.json"), emit: json
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.json")      , emit: json
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,9 +25,9 @@ process MTNUCRATIO {
 
     """
     mtnucratio \\
-        ${args} \\
-        ${bam} \\
-        ${mt_id}
+        $args \\
+        $bam \\
+        $mt_id
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

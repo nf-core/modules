@@ -11,7 +11,7 @@ process MMSEQS_TSV2EXPROFILEDB {
     path database
 
     output:
-    path (database), emit: db_exprofile
+    path (database)    , emit: db_exprofile
     path "versions.yml", emit: versions
 
     when:

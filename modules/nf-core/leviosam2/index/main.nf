@@ -1,19 +1,19 @@
 process LEVIOSAM2_INDEX {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/leviosam2:0.4.2--h4ac6f70_0'
-        : 'biocontainers/leviosam2:0.4.2--h4ac6f70_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/leviosam2:0.4.2--h4ac6f70_0':
+        'biocontainers/leviosam2:0.4.2--h4ac6f70_0' }"
 
     input:
     tuple val(meta), path(fai)
-    path chain
+    path(chain)
 
     output:
     tuple val(meta), path("*.clft"), emit: clft
-    path "versions.yml", emit: versions
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

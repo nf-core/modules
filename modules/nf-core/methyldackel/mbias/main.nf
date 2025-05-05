@@ -1,11 +1,11 @@
 process METHYLDACKEL_MBIAS {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/methyldackel:0.6.1--he4a0461_7'
-        : 'biocontainers/methyldackel:0.6.1--he4a0461_7'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/methyldackel:0.6.1--he4a0461_7' :
+        'biocontainers/methyldackel:0.6.1--he4a0461_7' }"
 
     input:
     tuple val(meta), path(bam)
@@ -15,7 +15,7 @@ process METHYLDACKEL_MBIAS {
 
     output:
     tuple val(meta), path("*.mbias.txt"), emit: txt
-    path "versions.yml", emit: versions
+    path  "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,10 +25,10 @@ process METHYLDACKEL_MBIAS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     MethylDackel mbias \\
-        ${args} \\
-        ${fasta} \\
-        ${bam} \\
-        ${prefix} \\
+        $args \\
+        $fasta \\
+        $bam \\
+        $prefix \\
         --txt \\
         > ${prefix}.mbias.txt
 

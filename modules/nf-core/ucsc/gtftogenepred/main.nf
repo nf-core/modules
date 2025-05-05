@@ -3,17 +3,17 @@ process UCSC_GTFTOGENEPRED {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/ucsc-gtftogenepred:447--h954228d_0'
-        : 'biocontainers/ucsc-gtftogenepred:447--h954228d_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/ucsc-gtftogenepred:447--h954228d_0':
+        'biocontainers/ucsc-gtftogenepred:447--h954228d_0' }"
 
     input:
     tuple val(meta), path(gtf)
 
     output:
     tuple val(meta), path("*.genepred"), emit: genepred
-    tuple val(meta), path("*.refflat"), emit: refflat, optional: true
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.refflat") , emit: refflat , optional: true
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,12 +22,11 @@ process UCSC_GTFTOGENEPRED {
     def args = task.ext.args ?: ''
     def gen_refflat = args.contains("-genePredExt") && args.contains("-geneNameAsName2") ? "true" : "false"
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '447'
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '447' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     gtfToGenePred \\
-        ${args} \\
-        ${gtf}  \\
+        $args \\
+        $gtf  \\
         ${prefix}.genepred
 
     if [ "${gen_refflat}" == "true" ] ; then
@@ -36,7 +35,7 @@ process UCSC_GTFTOGENEPRED {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        ucsc: ${VERSION}
+        ucsc: $VERSION
     END_VERSIONS
     """
 
@@ -49,7 +48,7 @@ process UCSC_GTFTOGENEPRED {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        ucsc: ${VERSION}
+        ucsc: $VERSION
     END_VERSIONS
     """
 }

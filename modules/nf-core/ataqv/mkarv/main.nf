@@ -2,15 +2,15 @@ process ATAQV_MKARV {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/ataqv:1.3.1--py310ha155cf9_1'
-        : 'biocontainers/ataqv:1.3.1--py310ha155cf9_1'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/ataqv:1.3.1--py310ha155cf9_1':
+        'biocontainers/ataqv:1.3.1--py310ha155cf9_1' }"
 
     input:
     path "jsons/*"
 
     output:
-    path "html", emit: html
+    path "html"        , emit: html
     path "versions.yml", emit: versions
 
     when:
@@ -20,8 +20,8 @@ process ATAQV_MKARV {
     def args = task.ext.args ?: ''
     """
     mkarv \\
-        ${args} \\
-        --concurrency ${task.cpus} \\
+        $args \\
+        --concurrency $task.cpus \\
         --force \\
         ./html/ \\
         jsons/*

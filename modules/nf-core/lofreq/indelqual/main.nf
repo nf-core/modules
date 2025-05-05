@@ -1,19 +1,19 @@
 process LOFREQ_INDELQUAL {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/lofreq:2.1.5--py38h588ecb2_4'
-        : 'biocontainers/lofreq:2.1.5--py38h588ecb2_4'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/lofreq:2.1.5--py38h588ecb2_4' :
+        'biocontainers/lofreq:2.1.5--py38h588ecb2_4' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta),  path(bam)
     tuple val(meta2), path(fasta)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml", emit: versions
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,10 +23,10 @@ process LOFREQ_INDELQUAL {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     lofreq indelqual \\
-        ${args} \\
-        -f ${fasta} \\
+        $args \\
+        -f $fasta \\
         -o ${prefix}.bam \\
-        ${bam}
+        $bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

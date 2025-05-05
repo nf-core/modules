@@ -1,19 +1,19 @@
 process SVTK_STANDARDIZE {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/svtk:0.0.20190615--py37h73a75cf_2'
-        : 'biocontainers/svtk:0.0.20190615--py37h73a75cf_2'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/svtk:0.0.20190615--py37h73a75cf_2':
+        'biocontainers/svtk:0.0.20190615--py37h73a75cf_2' }"
 
     input:
     tuple val(meta), path(input)
-    tuple val(meta2), path(fai)
+    tuple val(meta2), path (fai)
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml", emit: versions
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,20 +22,17 @@ process SVTK_STANDARDIZE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def contigs = fai ? "--contigs ${fai}" : ""
-    def VERSION = '0.0.20190615'
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '0.0.20190615' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
-    if ("${input}" == "${prefix}.vcf.gz") {
-        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
-    }
+    if ("$input" == "${prefix}.vcf.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     """
     svtk standardize \\
-        ${args} \\
+        $args \\
         ${contigs} \\
         ${input} \\
         ${prefix}.vcf.gz \\
-        ${meta.caller}
+        $meta.caller
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -45,11 +42,8 @@ process SVTK_STANDARDIZE {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '0.0.20190615'
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    if ("${input}" == "${prefix}.vcf.gz") {
-        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
-    }
+    def VERSION = '0.0.20190615' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    if ("$input" == "${prefix}.vcf.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     """
     echo | gzip > ${prefix}.vcf.gz

@@ -6,11 +6,11 @@ process CELLRANGER_VDJ {
 
     input:
     tuple val(meta), path(reads)
-    path reference
+    path  reference
 
     output:
     tuple val(meta), path("**/outs/**"), emit: outs
-    path "versions.yml", emit: versions
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -18,7 +18,7 @@ process CELLRANGER_VDJ {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error("CELLRANGER_VDJ module does not support Conda. Please use Docker / Singularity / Podman instead.")
+        error "CELLRANGER_VDJ module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -28,10 +28,10 @@ process CELLRANGER_VDJ {
         vdj \\
         --id='${prefix}' \\
         --fastqs=. \\
-        --reference=${reference_name} \\
+        --reference=$reference_name \\
         --localcores=${task.cpus} \\
         --localmem=${task.memory.toGiga()} \\
-        ${args}
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -42,7 +42,7 @@ process CELLRANGER_VDJ {
     stub:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error("CELLRANGER_VDJ module does not support Conda. Please use Docker / Singularity / Podman instead.")
+        error "CELLRANGER_VDJ module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def prefix = task.ext.prefix ?: "${meta.id}"
     """

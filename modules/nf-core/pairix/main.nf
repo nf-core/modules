@@ -1,18 +1,18 @@
 process PAIRIX {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/pairix:0.3.7--py36h30a8e3e_3'
-        : 'biocontainers/pairix:0.3.7--py36h30a8e3e_3'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/pairix:0.3.7--py36h30a8e3e_3' :
+        'biocontainers/pairix:0.3.7--py36h30a8e3e_3' }"
 
     input:
     tuple val(meta), path(pair)
 
     output:
     tuple val(meta), path(pair), path("*.px2"), emit: index
-    path "versions.yml", emit: versions
+    path "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,8 +21,8 @@ process PAIRIX {
     def args = task.ext.args ?: ''
     """
     pairix \\
-        ${args} \\
-        ${pair}
+        $args \\
+        $pair
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

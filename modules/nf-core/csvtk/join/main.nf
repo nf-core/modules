@@ -1,18 +1,18 @@
 process CSVTK_JOIN {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/csvtk:0.31.0--h9ee0642_0'
-        : 'biocontainers/csvtk:0.31.0--h9ee0642_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/csvtk:0.31.0--h9ee0642_0':
+        'biocontainers/csvtk:0.31.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(csv)
 
     output:
     tuple val(meta), path("${prefix}.${out_extension}"), emit: csv
-    path "versions.yml", emit: versions
+    path "versions.yml"                                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,10 +24,10 @@ process CSVTK_JOIN {
     """
     csvtk \\
         join \\
-        ${args} \\
-        --num-cpus ${task.cpus} \\
+        $args \\
+        --num-cpus $task.cpus \\
         --out-file ${prefix}.${out_extension} \\
-        ${csv}
+        $csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

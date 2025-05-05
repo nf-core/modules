@@ -1,20 +1,20 @@
 process PASTY {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/pasty:1.0.0--hdfd78af_0'
-        : 'biocontainers/pasty:1.0.0--hdfd78af_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/pasty:1.0.0--hdfd78af_0':
+        'biocontainers/pasty:1.0.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("${prefix}.tsv"), emit: tsv
-    tuple val(meta), path("${prefix}.blastn.tsv"), emit: blast
+    tuple val(meta), path("${prefix}.tsv")        , emit: tsv
+    tuple val(meta), path("${prefix}.blastn.tsv") , emit: blast
     tuple val(meta), path("${prefix}.details.tsv"), emit: details
-    path "versions.yml", emit: versions
+    path "versions.yml"                           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,9 +24,9 @@ process PASTY {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     pasty \\
-        ${args} \\
-        --prefix ${prefix} \\
-        --assembly ${fasta}
+        $args \\
+        --prefix $prefix \\
+        --assembly $fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

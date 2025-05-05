@@ -3,16 +3,16 @@ process VIENNARNA_RNALFOLD {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/viennarna:2.6.4--py310pl5321h6cc9453_1'
-        : 'biocontainers/viennarna:2.6.4--py310pl5321h6cc9453_1'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/viennarna:2.6.4--py310pl5321h6cc9453_1':
+        'biocontainers/viennarna:2.6.4--py310pl5321h6cc9453_1' }"
 
     input:
     path fasta
 
     output:
-    path "*.lfold", emit: rnalfold_txt
-    path "versions.yml", emit: versions
+    path "*.lfold"        , emit: rnalfold_txt
+    path "versions.yml"   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,7 +22,7 @@ process VIENNARNA_RNALFOLD {
     """
     RNALfold \\
         ${args} \\
-        --infile=${fasta} \\
+        --infile=$fasta \\
         --outfile=${fasta.baseName}.lfold
 
     cat <<-END_VERSIONS > versions.yml

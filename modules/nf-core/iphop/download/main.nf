@@ -2,13 +2,13 @@ process IPHOP_DOWNLOAD {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/iphop:1.3.2--pyhdfd78af_0'
-        : 'biocontainers/iphop:1.3.2--pyhdfd78af_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/iphop:1.3.2--pyhdfd78af_0':
+        'biocontainers/iphop:1.3.2--pyhdfd78af_0' }"
 
     output:
-    path "iphop_db/", emit: iphop_db
-    path "versions.yml", emit: versions
+    path "iphop_db/"        , emit: iphop_db
+    path "versions.yml"     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,7 +23,7 @@ process IPHOP_DOWNLOAD {
         download \\
         --db_dir download_dir \\
         --no_prompt \\
-        ${args}
+        $args
 
     rm download_dir/*.tar.*
     mv download_dir/*/* iphop_db
@@ -33,7 +33,7 @@ process IPHOP_DOWNLOAD {
         --db_dir iphop_db \\
         --no_prompt \\
         --full_verify \\
-        ${args}
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

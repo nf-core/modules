@@ -1,11 +1,11 @@
 process ALLELECOUNTER {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/cancerit-allelecount:4.3.0--h41abebc_0'
-        : 'biocontainers/cancerit-allelecount:4.3.0--h41abebc_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/cancerit-allelecount:4.3.0--h41abebc_0' :
+        'biocontainers/cancerit-allelecount:4.3.0--h41abebc_0' }"
 
     input:
     tuple val(meta), path(input), path(input_index)
@@ -14,7 +14,7 @@ process ALLELECOUNTER {
 
     output:
     tuple val(meta), path("*.alleleCount"), emit: allelecount
-    path "versions.yml", emit: versions
+    path "versions.yml"                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,13 +22,13 @@ process ALLELECOUNTER {
     script:
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def reference_options = fasta ? "-r ${fasta}" : ""
+    def reference_options = fasta ? "-r $fasta": ""
     """
     alleleCounter \\
-        ${args} \\
-        -l ${loci} \\
-        -b ${input} \\
-        ${reference_options} \\
+        $args \\
+        -l $loci \\
+        -b $input \\
+        $reference_options \\
         -o ${prefix}.alleleCount
 
     cat <<-END_VERSIONS > versions.yml

@@ -1,11 +1,11 @@
 process VG_CONSTRUCT {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/vg:1.45.0--h9ee0642_0'
-        : 'biocontainers/vg:1.45.0--h9ee0642_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/vg:1.45.0--h9ee0642_0':
+        'biocontainers/vg:1.45.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(input), path(tbis), path(insertions_fasta)
@@ -13,8 +13,8 @@ process VG_CONSTRUCT {
     tuple val(meta3), path(fasta_fai)
 
     output:
-    tuple val(meta), path("*.vg"), emit: graph
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.vg") , emit: graph
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,7 +23,7 @@ process VG_CONSTRUCT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def mode = input instanceof List || input.toString().endsWith(".vcf.gz") ? 'vcf' : 'msa'
+    def mode =  input instanceof ArrayList || input.toString().endsWith(".vcf.gz") ? 'vcf' : 'msa'
 
     input_files = mode == 'vcf' ? input.collect { "--vcf ${it}" }.join(" ") : "--msa ${input}"
     reference = mode == 'vcf' ? "--reference ${fasta}" : ""

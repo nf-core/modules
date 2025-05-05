@@ -1,11 +1,11 @@
 process CUSTOM_GTFFILTER {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/python:3.9--1'
-        : 'biocontainers/python:3.9--1'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/python:3.9--1' :
+        'biocontainers/python:3.9--1' }"
 
     input:
     tuple val(meta), path(gtf)
@@ -13,7 +13,7 @@ process CUSTOM_GTFFILTER {
 
     output:
     tuple val(meta), path("${prefix}.${suffix}"), emit: gtf
-    path "versions.yml", emit: versions
+    path "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,7 +21,7 @@ process CUSTOM_GTFFILTER {
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
     suffix = task.ext.suffix ?: "gtf" + (gtf.extension == 'gz' ? '.gz' : '')
-    template('gtffilter.py')
+    template 'gtffilter.py'
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"

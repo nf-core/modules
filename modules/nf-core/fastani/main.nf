@@ -1,11 +1,11 @@
 process FASTANI {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/fastani:1.32--he1c1bb9_0'
-        : 'biocontainers/fastani:1.32--he1c1bb9_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/fastani:1.32--he1c1bb9_0' :
+        'biocontainers/fastani:1.32--he1c1bb9_0' }"
 
     input:
     tuple val(meta), path(query)
@@ -13,7 +13,7 @@ process FASTANI {
 
     output:
     tuple val(meta), path("*.ani.txt"), emit: ani
-    path "versions.yml", emit: versions
+    path "versions.yml"               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,8 +25,8 @@ process FASTANI {
     if (meta.batch_input) {
         """
         fastANI \\
-            -ql ${query} \\
-            -rl ${reference} \\
+            -ql $query \\
+            -rl $reference \\
             -o ${prefix}.ani.txt
 
         cat <<-END_VERSIONS > versions.yml
@@ -34,12 +34,11 @@ process FASTANI {
             fastani: \$(fastANI --version 2>&1 | sed 's/version//;')
         END_VERSIONS
         """
-    }
-    else {
+    } else {
         """
         fastANI \\
-            -q ${query} \\
-            -r ${reference} \\
+            -q $query \\
+            -r $reference \\
             -o ${prefix}.ani.txt
 
         cat <<-END_VERSIONS > versions.yml

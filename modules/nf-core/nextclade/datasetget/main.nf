@@ -1,18 +1,18 @@
 process NEXTCLADE_DATASETGET {
-    tag "${dataset}"
+    tag "$dataset"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/93/936786744b34cf016b948026a6b4e9489011424e15c28dfb2f7d03c31bb4afb5/data'
-        : 'community.wave.seqera.io/library/nextclade:3.11.0--155203da8341cfe6'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/93/936786744b34cf016b948026a6b4e9489011424e15c28dfb2f7d03c31bb4afb5/data' :
+        'community.wave.seqera.io/library/nextclade:3.11.0--155203da8341cfe6' }"
 
     input:
     val dataset
     val tag
 
     output:
-    path "${prefix}", emit: dataset
+    path "$prefix"     , emit: dataset
     path "versions.yml", emit: versions
 
     when:
@@ -26,10 +26,10 @@ process NEXTCLADE_DATASETGET {
     nextclade \\
         dataset \\
         get \\
-        ${args} \\
-        --name ${dataset} \\
-        ${version} \\
-        --output-dir ${prefix}
+        $args \\
+        --name $dataset \\
+        $version \\
+        --output-dir $prefix
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -55,4 +55,5 @@ process NEXTCLADE_DATASETGET {
         nextclade: \$(echo \$(nextclade --version 2>&1) | sed 's/^.*nextclade //; s/ .*\$//')
     END_VERSIONS
     """
+
 }

@@ -1,10 +1,10 @@
 process WGET {
     input:
-    val url
-    val outname
+    val(url)
+    val(outname)
 
     output:
-    path ("${outname}"), emit: outfile
+    path("${outname}"), emit: outfile
 
     script:
     """

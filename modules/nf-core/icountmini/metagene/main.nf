@@ -1,11 +1,11 @@
 process ICOUNTMINI_METAGENE {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/icount-mini:3.0.1--pyh7cba7a3_0'
-        : 'biocontainers/icount-mini:3.0.1--pyh7cba7a3_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/icount-mini:3.0.1--pyh7cba7a3_0':
+        'biocontainers/icount-mini:3.0.1--pyh7cba7a3_0' }"
 
     input:
     tuple val(meta), path(bed)
@@ -13,7 +13,7 @@ process ICOUNTMINI_METAGENE {
 
     output:
     tuple val(meta), path("metagene_*/*plot_data.tsv"), emit: tsv
-    path "versions.yml", emit: versions
+    path "versions.yml",                                emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,12 +23,12 @@ process ICOUNTMINI_METAGENE {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    mv ${bed} ${prefix}.bed
+    mv $bed ${prefix}.bed
 
     iCount-Mini metagene \\
         ${prefix}.bed \\
-        ${segmentation} \\
-        ${args}
+        $segmentation \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

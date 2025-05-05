@@ -1,27 +1,27 @@
 process CHEWBBACA_ALLELECALL {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/chewbbaca:3.3.10--pyhdfd78af_0'
-        : 'biocontainers/chewbbaca:3.3.10--pyhdfd78af_0'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/chewbbaca:3.3.10--pyhdfd78af_0':
+        'biocontainers/chewbbaca:3.3.10--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta, stageAs: "input_dir/*")
     tuple val(meta2), path(scheme)
 
     output:
-    tuple val(meta), path("*_results_statistics.tsv"), emit: stats
-    tuple val(meta), path("*_results_contigsInfo.tsv"), emit: contigs_info
-    tuple val(meta), path("*_results_alleles.tsv"), emit: alleles
-    tuple val(meta), path("*_logging_info.txt"), emit: log
-    tuple val(meta), path("*_paralogous_counts.tsv"), emit: paralogous_counts, optional: true
-    tuple val(meta), path("*_paralogous_loci.tsv"), emit: paralogous_loci, optional: true
-    tuple val(meta), path("*_cds_coordinates.tsv"), emit: cds_coordinates, optional: true
-    tuple val(meta), path("*_invalid_cds.txt"), emit: invalid_cds, optional: true
-    tuple val(meta), path("*_loci_summary_stats.tsv"), emit: loci_summary_stats, optional: true
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*_results_statistics.tsv")  , emit: stats
+    tuple val(meta), path("*_results_contigsInfo.tsv") , emit: contigs_info
+    tuple val(meta), path("*_results_alleles.tsv")     , emit: alleles
+    tuple val(meta), path("*_logging_info.txt")        , emit: log
+    tuple val(meta), path("*_paralogous_counts.tsv")   , emit: paralogous_counts  , optional:true
+    tuple val(meta), path("*_paralogous_loci.tsv")     , emit: paralogous_loci    , optional:true
+    tuple val(meta), path("*_cds_coordinates.tsv")     , emit: cds_coordinates    , optional:true
+    tuple val(meta), path("*_invalid_cds.txt")         , emit: invalid_cds        , optional:true
+    tuple val(meta), path("*_loci_summary_stats.tsv")  , emit: loci_summary_stats , optional:true
+    path "versions.yml"                                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,7 +34,7 @@ process CHEWBBACA_ALLELECALL {
     chewie \\
         AlleleCall \\
         --cpu ${task.cpus} \\
-        ${args} \\
+        $args \\
         --input-files input_dir \\
         --schema-directory ${scheme} \\
         --output-directory results

@@ -1,18 +1,19 @@
+
 process SURVIVOR_BEDPETOVCF {
-    tag "${meta.id}"
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/survivor:1.0.7--h9a82719_1'
-        : 'biocontainers/survivor:1.0.7--h9a82719_1'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/survivor:1.0.7--h9a82719_1':
+        'biocontainers/survivor:1.0.7--h9a82719_1' }"
 
     input:
     tuple val(meta), path(bedpe)
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
-    path "versions.yml", emit: versions
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,7 +23,7 @@ process SURVIVOR_BEDPETOVCF {
     """
     SURVIVOR \\
         bedpetovcf \\
-        ${bedpe} \\
+        $bedpe \\
         ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
