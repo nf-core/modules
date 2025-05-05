@@ -52,6 +52,17 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.nam
     )
 }
 
+#
+#' Turn “null” or empty strings into actual NULL
+#'
+#' @param x Input option
+#'
+#' @return NULL or x
+#'
+nullify <- function(x) {
+  if (is.character(x) && (tolower(x) == "null" || x == "")) NULL else x
+}
+
 ################################################
 ################################################
 ## PARSE PARAMETERS FROM NEXTFLOW             ##
@@ -71,6 +82,8 @@ opt <- list(
     contrast_variable = '$contrast_variable',
     reference_level = '$reference',
     target_level = '$target',
+    formula                 = '$formula',
+    contrast_string         = '$comparison',
     blocking_variables = NULL,
     probe_id_col = "probe_id",
     sample_id_col = "experiment_accession",
@@ -115,6 +128,10 @@ for ( ao in names(args_opt)){
 if ( ! is.null(opt\$round_digits)){
     opt\$round_digits <- as.numeric(opt\$round_digits)
 }
+
+# If there is no option supplied, convert string "null" to NULL
+keys <- c("formula", "contrast_string")
+opt[keys] <- lapply(opt[keys], nullify)
 
 # Check if required parameters have been provided
 
@@ -282,6 +299,10 @@ if ((! is.null(opt\$exclude_samples_col)) && (! is.null(opt\$exclude_samples_val
 ################################################
 ################################################
 
+if (!is.null(opt\$formula)) {
+    model <- opt\$formula
+} else {
+
 # Build the model formula with blocking variables first
 model_vars <- c()
 
@@ -302,6 +323,7 @@ for (v in vars_to_factor) {
     sample.sheet[[v]] <- as.factor(sample.sheet[[v]])
 }
 
+}
 ################################################
 ################################################
 ## Run Limma processes                        ##
@@ -393,6 +415,9 @@ fit <- do.call(lmFit, lmfit_args)
 # Contrasts bit
 
 # Create the contrast string for the specified comparison
+if (!is.null(opt\$contrast_string)) {
+    contrast_string <- opt\$contrast_string
+} else {
 
 # Construct the expected column names for the target and reference levels in the design matrix
 treatment_target <- paste0(contrast_variable, ".", opt\$target_level)
@@ -417,6 +442,7 @@ if ((treatment_target %in% colnames(design)) && (treatment_reference %in% colnam
     # Neither level is present in the design matrix
     # This indicates an error; the specified levels are not found
     stop(paste0(treatment_target, " and ", treatment_reference, " not found in design matrix"))
+}
 }
 
 # Create the contrast matrix
