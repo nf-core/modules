@@ -48,8 +48,8 @@ nextflow_process {
                 genome2_cleanid.text    = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome2.fasta', checkIfExists: true).text.replace(/>chr22:16600000-16800000/, '>chr22')
 
                 input[0] = MINIMAP2_ALIGN.out.bam
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                input[2] = genome2_cleanid
+                input[1] = [ [], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                input[2] = [ [], genome2_cleanid ]
                 input[3] = 'B'
                 """
             }
