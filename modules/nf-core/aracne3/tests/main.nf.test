@@ -14,15 +14,15 @@ nextflow_process {
         when {
             params {
                 outdir = "./output"
-                aracne3_args = "--threads 5 --alpha 1"
+                aracne3_args = "--threads 5 --alpha 1 --seed 9001"
             }
             process {
                 """
                 input[0] = [
                     [ id:'test'], // meta map
-                    file("https://raw.githubusercontent.com/juanesarango/nf-core-test-datasets/339ccf09482508244df06afd5ae6f4e1d29f805a/data/delete_me/aracne3/expression_matrix.tsv", checkIfExists: true),
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/aracne3/expression_matrix.tsv", checkIfExists: true),
                 ]
-                input[1] = file("https://raw.githubusercontent.com/juanesarango/nf-core-test-datasets/339ccf09482508244df06afd5ae6f4e1d29f805a/data/delete_me/aracne3/regulators.txt", checkIfExists: true)
+                input[1] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/aracne3/regulators.txt", checkIfExists: true)
                 """
             }
         }
