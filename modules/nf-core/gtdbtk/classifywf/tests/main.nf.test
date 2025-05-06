@@ -18,7 +18,7 @@ nextflow_process {
             """
             input[0] = [
                         [ id:'mockup' ], // meta map
-                        file('https://data.gtdb.ecogenomic.org/releases/latest/auxillary_files/gtdbtk_package/mockup_db/mockup.tar.gz', checkIfExists: true)
+                        file('https://github.com/nf-core/test-datasets/raw/refs/heads/mag/databases/gtdbtk/gtdbtk_mockup_20250422.tar.gz', checkIfExists: true)
             ]
             """
             }
