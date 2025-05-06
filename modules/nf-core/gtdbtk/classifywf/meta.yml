@@ -60,7 +60,7 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false,  assembler:'spades' ]
           pattern: "*"
-      - "*":
+      - "${prefix}":
           type: map
           description: All files output by GTDB-Tk
 
@@ -72,7 +72,7 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false,  assembler:'spades' ]
           pattern: "*.{summary.tsv}"
-      - classify/*.summary.tsv:
+      - ${prefix}/classify/*.summary.tsv:
           type: map
           description: A TSV summary file for the classification
           pattern: "*.{summary.tsv}"
@@ -83,7 +83,7 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.{classify.tree}"
-      - classify/*.classify.tree:
+      - ${prefix}/classify/*.classify.tree:
           type: map
           description: |
             Groovy Map NJ or UPGMA trees in Newick format produced from a multiple sequence
@@ -96,7 +96,7 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.{markers_summary.tsv}"
-      - identify/*.markers_summary.tsv:
+      - ${prefix}/identify/*.markers_summary.tsv:
           type: map
           description: A TSV summary file lineage markers used for the classification.
           pattern: "*.{markers_summary.tsv}"
@@ -107,7 +107,7 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.{msa.fasta.gz}"
-      - align/*.msa.fasta.gz:
+      - ${prefix}/align/*.msa.fasta.gz:
           type: map
           description: Multiple sequence alignments file.
           pattern: "*.{msa.fasta.gz}"
@@ -118,7 +118,7 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.{user_msa.fasta.gz}"
-      - align/*.user_msa.fasta.gz:
+      - ${prefix}/align/*.user_msa.fasta.gz:
           type: map
           description: Multiple sequence alignments file for the user-provided files.
           pattern: "*.{user_msa.fasta.gz}"
@@ -129,7 +129,7 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.{filtered.tsv}"
-      - align/*.filtered.tsv:
+      - ${prefix}/align/*.filtered.tsv:
           type: map
           description: A list of genomes with an insufficient number of amino acids in MSA
           pattern: "*.{filtered.tsv}"
@@ -140,7 +140,7 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.{failed_genomes.tsv}"
-      - identify/*.failed_genomes.tsv:
+      - ${prefix}/identify/*.failed_genomes.tsv:
           type: map
           description: A TSV summary of the genomes which GTDB-tk failed to classify.
           pattern: "*.{failed_genomes.tsv}"
@@ -151,7 +151,7 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.{log}"
-      - gtdbtk.${prefix}.log:
+      - ${prefix}/gtdbtk.${prefix}.log:
           type: map
           description: GTDB-tk log file
           pattern: "*.{log}"
@@ -162,7 +162,7 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.{warnings.log}"
-      - gtdbtk.${prefix}.warnings.log:
+      - ${prefix}/gtdbtk.${prefix}.warnings.log:
           type: map
           description: GTDB-tk warnings log file
           pattern: "*.{warnings.log}"

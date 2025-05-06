@@ -14,17 +14,17 @@ process GTDBTK_CLASSIFYWF {
     path mash_db
 
     output:
-    tuple val(meta), path("*")                             , emit: gtdb_files
-    tuple val(meta), path("classify/*.summary.tsv")        , emit: summary
-    tuple val(meta), path("classify/*.classify.tree")      , emit: tree       , optional: true
-    tuple val(meta), path("identify/*.markers_summary.tsv"), emit: markers    , optional: true
-    tuple val(meta), path("align/*.msa.fasta.gz")          , emit: msa        , optional: true
-    tuple val(meta), path("align/*.user_msa.fasta.gz")     , emit: user_msa   , optional: true
-    tuple val(meta), path("align/*.filtered.tsv")          , emit: filtered   , optional: true
-    tuple val(meta), path("identify/*.failed_genomes.tsv") , emit: failed     , optional: true
-    tuple val(meta), path("gtdbtk.${prefix}.log")          , emit: log
-    tuple val(meta), path("gtdbtk.${prefix}.warnings.log") , emit: warnings
-    path ("versions.yml")                                  , emit: versions
+    tuple val(meta), path("${prefix}")                               , emit: gtdb_outdir
+    tuple val(meta), path("${prefix}/classify/*.summary.tsv")        , emit: summary
+    tuple val(meta), path("${prefix}/classify/*.classify.tree")      , emit: tree       , optional: true
+    tuple val(meta), path("${prefix}/identify/*.markers_summary.tsv"), emit: markers    , optional: true
+    tuple val(meta), path("${prefix}/align/*.msa.fasta.gz")          , emit: msa        , optional: true
+    tuple val(meta), path("${prefix}/align/*.user_msa.fasta.gz")     , emit: user_msa   , optional: true
+    tuple val(meta), path("${prefix}/align/*.filtered.tsv")          , emit: filtered   , optional: true
+    tuple val(meta), path("${prefix}/identify/*.failed_genomes.tsv") , emit: failed     , optional: true
+    tuple val(meta), path("${prefix}/${prefix}.log")                 , emit: log
+    tuple val(meta), path("${prefix}/${prefix}.warnings.log")        , emit: warnings
+    path ("versions.yml")                                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -45,13 +45,13 @@ process GTDBTK_CLASSIFYWF {
         ${args} \\
         --genome_dir bins \\
         --prefix "${prefix}" \\
-        --out_dir "\${PWD}" \\
+        --out_dir ${prefix} \\
         --cpus ${task.cpus} \\
         ${mash_mode} \\
         ${pplacer_scratch}
 
-    mv gtdbtk.log "gtdbtk.${prefix}.log"
-    mv gtdbtk.warnings.log "gtdbtk.${prefix}.warnings.log"
+    mv ${prefix}/gtdbtk.log "${prefix}/${prefix}.log"
+    mv ${prefix}/gtdbtk.warnings.log "${prefix}/${prefix}.warnings.log"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -62,28 +62,27 @@ process GTDBTK_CLASSIFYWF {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir identify
-    mkdir classify
-    mkdir align
+    mkdir ${prefix}
+    mkdir ${prefix}/identify
+    mkdir ${prefix}/classify
+    mkdir ${prefix}/align
 
-    touch classify/gtdbtk.${prefix}.ar53.summary.tsv
-    touch classify/gtdbtk.${prefix}.bac120.summary.tsv
-    ln -s classify/gtdbtk.${prefix}.ar53.summary.tsv gtdbtk.${prefix}.ar53.summary.tsv
-    ln -s classify/gtdbtk.${prefix}.bac120.summary.tsv gtdbtk.${prefix}.bac120.summary.tsv
-    touch classify/gtdbtk.${prefix}.ar53.classify.tree
-    touch classify/gtdbtk.${prefix}.bac120.classify.tree
+    touch ${prefix}/classify/${prefix}.ar53.summary.tsv
+    touch ${prefix}/classify/${prefix}.bac120.summary.tsv
+    touch ${prefix}/classify/${prefix}.ar53.classify.tree
+    touch ${prefix}/classify/${prefix}.bac120.classify.tree
 
-    touch identify/gtdbtk.${prefix}.ar53.markers_summary.tsv
-    touch identify/gtdbtk.${prefix}.bac120.markers_summary.tsv
+    touch ${prefix}/identify/${prefix}.ar53.markers_summary.tsv
+    touch ${prefix}/identify/${prefix}.bac120.markers_summary.tsv
 
-    echo "" | gzip > align/gtdbtk.${prefix}.ar53.msa.fasta.gz
-    echo "" | gzip > align/gtdbtk.${prefix}.bac120.user_msa.fasta.gz
-    touch align/gtdbtk.${prefix}.ar53.filtered.tsv
-    touch align/gtdbtk.${prefix}.bac120.filtered.tsv
+    echo "" | gzip > ${prefix}/align/${prefix}.ar53.msa.fasta.gz
+    echo "" | gzip > ${prefix}/align/${prefix}.bac120.user_msa.fasta.gz
+    touch ${prefix}/align/${prefix}.ar53.filtered.tsv
+    touch ${prefix}/align/${prefix}.bac120.filtered.tsv
 
-    touch gtdbtk.${prefix}.log
-    touch gtdbtk.${prefix}.warnings.log
-    touch gtdbtk.${prefix}.failed_genomes.tsv
+    touch ${prefix}/${prefix}.log
+    touch ${prefix}/${prefix}.warnings.log
+    touch ${prefix}/${prefix}.failed_genomes.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

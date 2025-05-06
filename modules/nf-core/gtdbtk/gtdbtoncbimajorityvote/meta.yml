@@ -36,6 +36,14 @@ input:
         pattern: "*"
         ontologies: []
 
+    - gtdbtk_prefix:
+        type: string
+        description: |
+          The prefix used when running gtdbtk/classifywf. If using output from the nf-core module,
+          this defaults to "${meta.id}".
+        pattern: "*"
+        ontologies: []
+
   - - meta2:
         type: map
         description: |
