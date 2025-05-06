@@ -46,11 +46,15 @@ nextflow_process {
     test("E. coli - genome fasta") {
 
         when {
+            params {
+                module_args_gtdbtk = "--extension fa --skip_ani_screen"
+            }
+
             process {
                 """
-                input[0] = GTDBTK_CLASSIFYWF.out.gtdb_files
-                input[1] = [[id: "ar53"], file("https://data.ace.uq.edu.au/public/gtdb/data/releases/release226/226.0/ar53_metadata_r226.tsv.gz")]
-                input[2] = [[id: "bac120"], file("https://data.ace.uq.edu.au/public/gtdb/data/releases/release226/226.0/bac120_metadata_r226.tsv.gz")]
+                input[0] = GTDBTK_CLASSIFYWF.out.gtdb_files.map { meta, outfiles -> [meta, outfiles, "test"]}
+                input[1] = [[id: "ar53"], file("https://data.ace.uq.edu.au/public/gtdb/data/releases/release226/226.0/ar53_metadata_r226.tsv.gz", checkIfExists: true)]
+                input[2] = [[id: "bac120"], file("https://data.ace.uq.edu.au/public/gtdb/data/releases/release226/226.0/bac120_metadata_r226.tsv.gz", checkIfExists: true)]
                 """
             }
         }
@@ -68,6 +72,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args_gtdbtk = "--extension fa --skip_ani_screen"
+            }
 
             process {
                 """

@@ -44,7 +44,7 @@ process GTDBTK_CLASSIFYWF {
     gtdbtk classify_wf \\
         ${args} \\
         --genome_dir bins \\
-        --prefix "gtdbtk.${prefix}" \\
+        --prefix "${prefix}" \\
         --out_dir "\${PWD}" \\
         --cpus ${task.cpus} \\
         ${mash_mode} \\

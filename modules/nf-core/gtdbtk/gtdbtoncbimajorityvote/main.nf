@@ -8,7 +8,7 @@ process GTDBTK_GTDBTONCBIMAJORITYVOTE {
         'biocontainers/gtdbtk:2.4.1--pyhdfd78af_1' }"
 
     input:
-    tuple val(meta) , path(gtdbtk_output)
+    tuple val(meta) , path(gtdbtk_output), val(gtdbtk_prefix)
     tuple val(meta2), path(ar53_metadata)
     tuple val(meta3), path(bac120_metadata)
 
@@ -26,7 +26,6 @@ process GTDBTK_GTDBTONCBIMAJORITYVOTE {
     def prefix        = task.ext.prefix ?: "${meta.id}"
     bac120            = bac120_metadata ? "--bac120_metadata_file ${bac120_metadata}" : ""
     ar53              = ar53_metadata   ? "--ar53_metadata_file ${ar53_metadata}"     : ""
-    def gtdbtk_prefix = gtdbtk_output.find { it.name =~ /summary\.tsv/}.getName() - ~/\.(bac120|ar53)\.summary\.tsv/
     """
     gtdb_to_ncbi_majority_vote.py \\
         --gtdbtk_output_dir . \\

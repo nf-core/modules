@@ -56,37 +56,38 @@ output:
   - gtdb_files:
       - meta:
           type: map
-          description: All files output by GTDB-Tk.
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false,  assembler:'spades' ]
           pattern: "*"
       - "*":
           type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+          description: All files output by GTDB-Tk
+
           pattern: "*"
   - summary:
       - meta:
           type: map
-          description: A TSV summary file for the classification
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false,  assembler:'spades' ]
           pattern: "*.{summary.tsv}"
       - classify/*.summary.tsv:
           type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+          description: A TSV summary file for the classification
           pattern: "*.{summary.tsv}"
   - tree:
       - meta:
           type: map
           description: |
-            Groovy Map NJ or UPGMA trees in Newick format produced from a multiple sequence
-            alignment
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*.{classify.tree}"
       - classify/*.classify.tree:
           type: map
           description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            Groovy Map NJ or UPGMA trees in Newick format produced from a multiple sequence
+            alignment
           pattern: "*.{classify.tree}"
   - markers:
       - meta:
