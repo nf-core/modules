@@ -53,7 +53,7 @@ input:
         ontologies:
           - edam: http://edamontology.org/format_3911 # msh
 output:
-  - gtdb_files:
+  - gtdb_outdir:
       - meta:
           type: map
           description: |
@@ -151,7 +151,7 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.{log}"
-      - ${prefix}/gtdbtk.${prefix}.log:
+      - ${prefix}/${prefix}.log:
           type: map
           description: GTDB-tk log file
           pattern: "*.{log}"
@@ -161,8 +161,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.{warnings.log}"
-      - ${prefix}/gtdbtk.${prefix}.warnings.log:
+      - ${prefix}/${prefix}.warnings.log:
           type: map
           description: GTDB-tk warnings log file
           pattern: "*.{warnings.log}"

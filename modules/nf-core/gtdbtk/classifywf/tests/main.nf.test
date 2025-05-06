@@ -62,7 +62,6 @@ nextflow_process {
                         process.out.user_msa,
                         process.out.filtered,
                         file(process.out.log[0][1]).readLines().contains('INFO: Done.'),
-                        process.out.warnings,
                         process.out.versions,
                     ).match() }
             )
