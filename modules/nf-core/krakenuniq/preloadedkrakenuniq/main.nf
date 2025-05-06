@@ -12,7 +12,6 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     tuple val(meta), path(sequences, name: 'sequences/*'), val(prefixes)
     val sequence_type
     path db
-    val ram_chunk_size
     val save_output_reads
     val report_file
     val save_output
@@ -31,10 +30,8 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     assert sequence_type in ['fasta', 'fastq']
     sequences = sequences instanceof List ? sequences : [sequences]
 
-    // Pass task.ext.args last to give them precedence over values passed as input.
-    // Pass ram_chunk_size to database preload call and each classify call.
-    def args = ["--preload-size $ram_chunk_size", task.ext.args ?: ''].join(' ')
-    def args2 = ["--preload-size $ram_chunk_size", task.ext.args ?: ''].join(' ')
+    def args = task.ext.args ?: ''
+    def args2 = task.ext.args ?: ''
 
     classified   = meta.single_end ? "\${PREFIX}.classified.${sequence_type}"   : "\${PREFIX}.merged.classified.${sequence_type}"
     unclassified = meta.single_end ? "\${PREFIX}.unclassified.${sequence_type}" : "\${PREFIX}.merged.unclassified.${sequence_type}"
@@ -126,8 +123,8 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     assert sequence_type in ['fasta', 'fastq']
     sequences = sequences instanceof List ? sequences : [sequences]
 
-    def args = ["--preload-size $ram_chunk_size", task.ext.args ?: ''].join(' ')
-    def args2 = ["--preload-size $ram_chunk_size", task.ext.args ?: ''].join(' ')
+    def args = task.ext.args ?: ''
+    def args2 = task.ext.args ?: ''
 
     classified   = meta.single_end ? "\${PREFIX}.classified.${sequence_type}"   : "\${PREFIX}.merged.classified.${sequence_type}"
     unclassified = meta.single_end ? "\${PREFIX}.unclassified.${sequence_type}" : "\${PREFIX}.merged.unclassified.${sequence_type}"
