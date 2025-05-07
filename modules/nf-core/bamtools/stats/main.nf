@@ -20,12 +20,23 @@ process BAMTOOLS_STATS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     bamtools \\
         stats \\
         -in $bam \\
+        $args \\
         >${prefix}.bam.stats
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bamtools: \$( bamtools --version | grep -e 'bamtools' | sed 's/^.*bamtools //' )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bam.stats
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
