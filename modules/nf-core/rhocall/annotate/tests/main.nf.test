@@ -1,21 +1,21 @@
 nextflow_process {
 
     name "Test Process RHOCALL_ANNOTATE"
-    
+
     script "../main.nf"
     process "RHOCALL_ANNOTATE"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "rhocall"
     tag "rhocall/annotate"
     tag "bcftools"
     tag "bcftools/roh"
-   
+
     setup {
         run("BCFTOOLS_ROH") {
             script "../../../bcftools/roh/main.nf"
-            
+
             process {
                 """
                 input[0] = [[id:'test'],
@@ -31,9 +31,9 @@ nextflow_process {
             }
         }
     }
-    
+
     test("sarscov2") {
-        
+
         when {
             params {
                 module_args = ''
@@ -54,12 +54,13 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
-                    process.out.versions
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
                     ).match() }
             )
         }
     }
-    
+
     test("sarscov2 - stub") {
         options '-stub'
         when {
@@ -83,5 +84,5 @@ nextflow_process {
             )
         }
     }
-    
+
 }
