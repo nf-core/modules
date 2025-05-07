@@ -32,8 +32,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - output:
-          type: file
+          pattern: "*.{fa.gz,fasta.gz}"
+      - ${output}:
+          type: map
           description: |
             A FASTA file compressed with the BGZF algorithm.  It will be
             the original file if it was already BGZF-compressed.
