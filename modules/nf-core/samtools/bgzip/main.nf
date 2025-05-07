@@ -20,9 +20,7 @@ process SAMTOOLS_BGZIP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    in_bgzip  = ["gz", "bgz", "bgzf"].contains(fasta.getExtension())
-    extension = in_bgzip ? fasta.getBaseName().tokenize(".")[-1] : fasta.getExtension()
-    output    = in_bgzip ? "${prefix}.${extension}" : "${prefix}.${extension}.gz"
+    output = "${prefix}.gz"
     """
     FILE_TYPE=\$(htsfile $fasta)
     case "\$FILE_TYPE" in
@@ -30,6 +28,7 @@ process SAMTOOLS_BGZIP {
             # Do nothing or just rename if the file was already compressed
             [ "\$(basename $fasta)" != "\$(basename ${output})" ] && ln -s $fasta ${output} ;;
         *gzip-compressed*)
+            [ "\$(basename $fasta)" == "\$(basename ${output})" ] && echo "Filename collision (\$basename $fasta)" && exit 1
             zcat  $fasta | bgzip -c $args -@${task.cpus} > ${output} ;;
         *bzip2-compressed*)
             bzcat $fasta | bgzip -c $args -@${task.cpus} > ${output} ;;
@@ -47,10 +46,9 @@ process SAMTOOLS_BGZIP {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    in_bgzip  = ["gz", "bgz", "bgzf"].contains(fasta.getExtension())
-    extension = in_bgzip ? fasta.getBaseName().tokenize(".")[-1] : fasta.getExtension()
-    output    = in_bgzip ? "${prefix}.${extension}" : "${prefix}.${extension}.gz"
+    output = "${prefix}.gz"
     """
+    [ "\$(basename $fasta)" == "\$(basename ${output})" ] && echo "Filename collision (\$basename $fasta)" && exit 1
     echo '' | bgzip > ${output}
 
     cat <<-END_VERSIONS > versions.yml
