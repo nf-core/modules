@@ -142,7 +142,8 @@ jobs:
 
   update-meta-yml:
     needs: [generate-matrix, conda-wave, dockerfile-wave]
-    if: ${{ needs.generate-matrix.outputs.conda-matrix != '[]' || needs.generate-matrix.outputs.dockerfile-matrix != '[]' }}
+    # Make sure this job runs even if some dependencies fail
+    if: always() && (needs.generate-matrix.outputs.conda-matrix != '[]' || needs.generate-matrix.outputs.dockerfile-matrix != '[]')
     name: Update meta.yml with Container Info
     runs-on: ubuntu-latest
     steps:
@@ -151,6 +152,15 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Debug workflow state
+        run: |
+          echo "Conda Matrix: ${{ needs.generate-matrix.outputs.conda-matrix }}"
+          echo "Dockerfile Matrix: ${{ needs.generate-matrix.outputs.dockerfile-matrix }}"
+          echo "Conda Wave Result: ${{ needs.conda-wave.result }}"
+          echo "Conda Wave Output: ${{ needs.conda-wave.outputs.container_info }}"
+          echo "Dockerfile Wave Result: ${{ needs.dockerfile-wave.result }}"
+          echo "Dockerfile Wave Output: ${{ needs.dockerfile-wave.outputs.container_info }}"
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -164,11 +174,32 @@ jobs:
 
       - name: Update meta.yml files
         run: |
+          # Process whatever outputs are available, ignoring failures
+          CONDA_FILES='${{ needs.generate-matrix.outputs.conda-matrix }}'
+          DOCKERFILE_FILES='${{ needs.generate-matrix.outputs.dockerfile-matrix }}'
+          CONDA_CONTAINERS='[]'
+          DOCKERFILE_CONTAINERS='[]'
+
+          # Use actual outputs if they exist
+          if [[ "${{ needs.conda-wave.result || 'skipped' }}" == "success" ]]; then
+            CONDA_CONTAINERS='${{ needs.conda-wave.outputs.container_info || '[]' }}'
+          fi
+
+          if [[ "${{ needs.dockerfile-wave.result || 'skipped' }}" == "success" ]]; then
+            DOCKERFILE_CONTAINERS='${{ needs.dockerfile-wave.outputs.container_info || '[]' }}'
+          fi
+
+          echo "Running update script with:"
+          echo "Conda files: $CONDA_FILES"
+          echo "Dockerfile files: $DOCKERFILE_FILES"
+          echo "Conda containers: $CONDA_CONTAINERS"
+          echo "Dockerfile containers: $DOCKERFILE_CONTAINERS"
+
           python .github/scripts/update_meta_yml.py \
-            --conda-files '${{ needs.generate-matrix.outputs.conda-matrix }}' \
-            --dockerfile-files '${{ needs.generate-matrix.outputs.dockerfile-matrix }}' \
-            --conda-containers '${{ needs.conda-wave.outputs.container_info }}' \
-            --dockerfile-containers '${{ needs.dockerfile-wave.outputs.container_info }}'
+            --conda-files "$CONDA_FILES" \
+            --dockerfile-files "$DOCKERFILE_FILES" \
+            --conda-containers "$CONDA_CONTAINERS" \
+            --dockerfile-containers "$DOCKERFILE_CONTAINERS"
 
       - name: Commit changes
         run: |
