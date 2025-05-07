@@ -12,15 +12,15 @@ process LEEHOM {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("${prefix}.bam")          , optional: true, emit: bam
-    tuple val(meta), path("${prefix}.fq.gz")        , optional: true, emit: fq_pass
-    tuple val(meta), path("${prefix}.fail.fq.gz")   , optional: true, emit: fq_fail
-    tuple val(meta), path("${prefix}_r1.fq.gz")     , optional: true, emit: unmerged_r1_fq_pass
-    tuple val(meta), path("${prefix}_r1.fail.fq.gz"), optional: true, emit: unmerged_r1_fq_fail
-    tuple val(meta), path("${prefix}_r2.fq.gz")     , optional: true, emit: unmerged_r2_fq_pass
-    tuple val(meta), path("${prefix}_r2.fail.fq.gz"), optional: true, emit: unmerged_r2_fq_fail
-    tuple val(meta), path("*.log")                                  , emit: log
-    path "versions.yml"                                             , emit: versions
+    tuple val(meta), path("${prefix}.bam")          , emit: bam                , optional: true
+    tuple val(meta), path("${prefix}.fq.gz")        , emit: fq_pass            , optional: true
+    tuple val(meta), path("${prefix}.fail.fq.gz")   , emit: fq_fail            , optional: true
+    tuple val(meta), path("${prefix}_r1.fq.gz")     , emit: unmerged_r1_fq_pass, optional: true
+    tuple val(meta), path("${prefix}_r1.fail.fq.gz"), emit: unmerged_r1_fq_fail, optional: true
+    tuple val(meta), path("${prefix}_r2.fq.gz")     , emit: unmerged_r2_fq_pass, optional: true
+    tuple val(meta), path("${prefix}_r2.fail.fq.gz"), emit: unmerged_r2_fq_fail, optional: true
+    tuple val(meta), path("*.log")                  , emit: log
+    path "versions.yml"                             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -73,4 +73,33 @@ process LEEHOM {
         END_VERSIONS
         """
     }
+
+    stub:
+    prefix   = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args   ?: ''
+    def VERSION = '1.2.15' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    is_bam = reads.toString().endsWith('.bam')
+    is_single_end = meta.single_end
+
+    """
+    if [[ "$is_bam" == "true" ]]; then
+        touch ${prefix}.bam
+    else
+        echo "" | gzip > ${prefix}.fq.gz
+        echo "" | gzip > ${prefix}.fail.fq.gz
+        if [[ "$is_single_end" == "false" ]]; then
+            echo "" | gzip > ${prefix}_r1.fq.gz
+            echo "" | gzip > ${prefix}_r1.fail.fq.gz
+            echo "" | gzip > ${prefix}_r2.fq.gz
+            echo "" | gzip > ${prefix}_r2.fail.fq.gz
+        fi
+    fi
+    touch ${prefix}.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        leehom: $VERSION
+    END_VERSIONS
+    """
+
 }
