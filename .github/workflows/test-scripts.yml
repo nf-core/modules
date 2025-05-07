@@ -1,0 +1,25 @@
+name: Test Scripts
+
+on:
+  push:
+    paths:
+      - '.github/scripts/**'
+  pull_request:
+    paths:
+      - '.github/scripts/**'
+
+jobs:
+  test:
+    name: Test Python Scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Run tests
+        run: |
+          cd .github/scripts
+          chmod +x test_update_meta_yml.py
+          ./test_update_meta_yml.py
