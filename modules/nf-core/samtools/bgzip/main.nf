@@ -27,7 +27,8 @@ process SAMTOOLS_BGZIP {
     FILE_TYPE=\$(htsfile $fasta)
     case "\$FILE_TYPE" in
         *BGZF-compressed*)
-            ln -s $fasta ${output} ;;
+            # Do nothing or just rename if the file was already compressed
+            [ "\$(basename $fasta)" != "$(basename ${output})" ] && ln -s $fasta ${output} ;;
         *gzip-compressed*)
             zcat  $fasta | bgzip -c $args -@${task.cpus} > ${output} ;;
         *bzip2-compressed*)
