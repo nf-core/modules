@@ -20,8 +20,8 @@ process SAMTOOLS_BGZIP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    in_bgzip  = ["gz", "bgz", "bgzf"].contains(input.getExtension())
-    extension = in_bgzip ? input.getBaseName().tokenize(".")[-1] : input.getExtension()
+    in_bgzip  = ["gz", "bgz", "bgzf"].contains(fasta.getExtension())
+    extension = in_bgzip ? fasta.getBaseName().tokenize(".")[-1] : fasta.getExtension()
     output    = in_bgzip ? "${prefix}.${extension}" : "${prefix}.${extension}.gz"
     """
     FILE_TYPE=\$(htsfile $fasta)
@@ -47,8 +47,8 @@ process SAMTOOLS_BGZIP {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    in_bgzip  = ["gz", "bgz", "bgzf"].contains(input.getExtension())
-    extension = in_bgzip ? input.getBaseName().tokenize(".")[-1] : input.getExtension()
+    in_bgzip  = ["gz", "bgz", "bgzf"].contains(fasta.getExtension())
+    extension = in_bgzip ? fasta.getBaseName().tokenize(".")[-1] : fasta.getExtension()
     output    = in_bgzip ? "${prefix}.${extension}" : "${prefix}.${extension}.gz"
     """
     echo '' | bgzip > ${output}
