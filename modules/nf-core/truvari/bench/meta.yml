@@ -20,7 +20,7 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'test', single_end:false ]`
+          e.g. `[ id:'test' ]`
     - vcf:
         type: file
         description: Input SV VCF file
@@ -45,7 +45,7 @@ input:
         type: map
         description: |
           Groovy Map containing fasta information
-          e.g. `[ id:'test', single_end:false ]`
+          e.g. `[ id:'test' ]`
     - fasta:
         type: file
         description: Reference FASTA file
@@ -54,7 +54,7 @@ input:
         type: map
         description: |
           Groovy Map containing fasta index information
-          e.g. `[ id:'test', single_end:false ]`
+          e.g. `[ id:'test' ]`
     - fai:
         type: file
         description: Reference FASTA index file
@@ -65,7 +65,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+            e.g. `[ id:'test' ]`
       - "*.fn.vcf.gz":
           type: file
           description: VCF file with false negatives
@@ -75,7 +75,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+            e.g. `[ id:'test' ]`
       - "*.fn.vcf.gz.tbi":
           type: file
           description: VCF index file with false negatives
@@ -85,7 +85,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+            e.g. `[ id:'test' ]`
       - "*.fp.vcf.gz":
           type: file
           description: VCF file with false positives
@@ -95,7 +95,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+            e.g. `[ id:'test' ]`
       - "*.fp.vcf.gz.tbi":
           type: file
           description: VCF index file with false positives
@@ -105,7 +105,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+            e.g. `[ id:'test' ]`
       - "*.tp-base.vcf.gz":
           type: file
           description: VCF file with base true positives
@@ -115,7 +115,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+            e.g. `[ id:'test' ]`
       - "*.tp-base.vcf.gz.tbi":
           type: file
           description: VCF index file with base true positives
@@ -125,7 +125,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+            e.g. `[ id:'test' ]`
       - "*.tp-comp.vcf.gz":
           type: file
           description: VCF file with compared true positives
@@ -135,7 +135,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+            e.g. `[ id:'test' ]`
       - "*.tp-comp.vcf.gz.tbi":
           type: file
           description: VCF index file with compared true positives
@@ -145,7 +145,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
+            e.g. `[ id:'test' ]`
       - "*.summary.json":
           type: file
           description: Summary JSON file with results from the benchmark
