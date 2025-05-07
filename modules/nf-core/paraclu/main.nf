@@ -28,7 +28,7 @@ process PARACLU {
 
     awk -F "\t" '{print\$1"\t"\$6"\t"\$2"\t"\$5}' < $bed > ${bed}_4P
     sort -k1,1 -k3n ${bed}_4P > ${bed}_4Ps
-    paraclu $min_cluster ${bed}_4Ps > ${prefix}.clustered
+    paraclu ${args} ${min_cluster} ${bed}_4Ps > ${prefix}.clustered
     paraclu-cut ${args2} ${prefix}.clustered >  ${prefix}.clustered.simplified
     awk -F '\t' '{print \$1"\t"\$3"\t"\$4"\t"\$1":"\$3".."\$4","\$2"\t"\$6"\t"\$2}' ${prefix}.clustered.simplified >  ${prefix}.clustered.simplified.bed
 
