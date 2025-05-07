@@ -1,6 +1,6 @@
 process MAGECK_COUNT {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_high'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -12,9 +12,11 @@ process MAGECK_COUNT {
     path(library)
 
     output:
-    tuple val(meta), path("*count.txt")           , emit: count
+    tuple val(meta), path("*count.txt"),             emit: count
     tuple val(meta), path("*.count_normalized.txt"), emit: norm
-    path "versions.yml"                            , emit: versions
+    tuple val(meta), path("*.countsummary.txt"),     emit: summary
+    tuple val(meta), path("*.log"),                  emit: logs
+    path "versions.yml",                             emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,8 +24,13 @@ process MAGECK_COUNT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_file = ("$inputfile".endsWith(".fastq.gz")) ? "--fastq ${inputfile}" : "-k ${inputfile}"
     def sample_label = ("$inputfile".endsWith(".fastq.gz") || "$inputfile".endsWith(".fq.gz")) ? "--sample-label ${meta.id}" : ''
+
+    if (meta.single_end && ("$inputfile".endsWith(".fastq.gz") || "$inputfile".endsWith(".fq.gz"))) {
+        input = "--fastq ${inputfile}"
+    } else {
+        input = "--fastq ${inputfile[0]} --fastq-2 ${inputfile[1]}"
+    }
 
     """
     mageck \\
@@ -31,8 +38,9 @@ process MAGECK_COUNT {
         $args \\
         -l $library \\
         -n $prefix \\
+        --threads $task.cpus \\
         $sample_label \\
-        $input_file \\
+        $input
 
 
     cat <<-END_VERSIONS > versions.yml
