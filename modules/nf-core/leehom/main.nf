@@ -32,62 +32,61 @@ process LEEHOM {
     if (reads.toString().endsWith('.bam')) {
         """
         leeHom \\
-            $args \\
-            -t $task.cpus \\
+            ${args} \\
+            -t ${task.cpus} \\
             -o ${prefix}.bam \\
             --log ${prefix}.log \\
-            $reads
+            ${reads}
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-            leehom: $VERSION
+            leehom: ${VERSION}
         END_VERSIONS
         """
     } else if (meta.single_end) {
         """
         leeHom \\
-            $args \\
-            -t $task.cpus \\
-            -fq1 $reads \\
-            -fqo $prefix \\
+            ${args} \\
+            -t ${task.cpus} \\
+            -fq1 ${reads} \\
+            -fqo ${prefix} \\
             --log ${prefix}.log
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-            leehom: $VERSION
+            leehom: ${VERSION}
         END_VERSIONS
         """
     } else {
         """
         leeHom \\
-            $args \\
-            -t $task.cpus \\
+            ${args} \\
+            -t ${task.cpus} \\
             -fq1 ${reads[0]} \\
             -fq2 ${reads[1]} \\
-            -fqo $prefix \\
+            -fqo ${prefix} \\
             --log ${prefix}.log
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-            leehom: $VERSION
+            leehom: ${VERSION}
         END_VERSIONS
         """
     }
 
     stub:
-    prefix   = task.ext.prefix ?: "${meta.id}"
-    def args = task.ext.args   ?: ''
-    def VERSION = '1.2.15' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    is_bam = reads.toString().endsWith('.bam')
+    prefix        = task.ext.prefix ?: "${meta.id}"
+    def VERSION   = '1.2.15' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    is_bam        = reads.toString().endsWith('.bam')
     is_single_end = meta.single_end
 
     """
-    if [[ "$is_bam" == "true" ]]; then
+    if [[ "${is_bam}" == "true" ]]; then
         touch ${prefix}.bam
     else
         echo "" | gzip > ${prefix}.fq.gz
         echo "" | gzip > ${prefix}.fail.fq.gz
-        if [[ "$is_single_end" == "false" ]]; then
+        if [[ "${is_single_end}" == "false" ]]; then
             echo "" | gzip > ${prefix}_r1.fq.gz
             echo "" | gzip > ${prefix}_r1.fail.fq.gz
             echo "" | gzip > ${prefix}_r2.fq.gz
@@ -98,7 +97,7 @@ process LEEHOM {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        leehom: $VERSION
+        leehom: ${VERSION}
     END_VERSIONS
     """
 

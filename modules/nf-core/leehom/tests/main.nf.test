@@ -62,7 +62,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot( // Need to discard fail files as empty
+                    process.out.bam,
+                    process.out.fq_pass,
+                    process.out.unmerged_r1_fq_pass,
+                    process.out.unmerged_r2_fq_pass,
+                    process.out.log,
+                    process.out.versions
+                ).match() }
             )
         }
     }
@@ -86,7 +93,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot( // Need to discard fail files as empty
+                    process.out.bam,
+                    process.out.fq_pass,
+                    process.out.unmerged_r1_fq_pass,
+                    process.out.unmerged_r2_fq_pass,
+                    process.out.log,
+                    process.out.versions
+                ).match() }
             )
         }
     }
