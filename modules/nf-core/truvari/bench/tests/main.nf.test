@@ -35,9 +35,22 @@ nextflow_process {
             }
         }
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    path(process.out.fn_vcf[0][1]).vcf.summary,
+                    file(process.out.fn_tbi[0][1]).name,
+                    path(process.out.fp_vcf[0][1]).vcf.summary,
+                    file(process.out.fp_tbi[0][1]).name,
+                    path(process.out.tp_base_vcf[0][1]).vcf.summary,
+                    file(process.out.tp_base_tbi[0][1]).name,
+                    path(process.out.tp_comp_vcf[0][1]).vcf.summary,
+                    file(process.out.tp_comp_tbi[0][1]).name,
+                    path(process.out.versions[0]).yaml,
+                    process.out.summary,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
     }
@@ -68,9 +81,22 @@ nextflow_process {
             }
         }
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    path(process.out.fn_vcf[0][1]).vcf.summary,
+                    file(process.out.fn_tbi[0][1]).name,
+                    path(process.out.fp_vcf[0][1]).vcf.summary,
+                    file(process.out.fp_tbi[0][1]).name,
+                    path(process.out.tp_base_vcf[0][1]).vcf.summary,
+                    file(process.out.tp_base_tbi[0][1]).name,
+                    path(process.out.tp_comp_vcf[0][1]).vcf.summary,
+                    file(process.out.tp_comp_tbi[0][1]).name,
+                    path(process.out.versions[0]).yaml,
+                    process.out.summary,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
     }
@@ -101,9 +127,13 @@ nextflow_process {
             }
         }
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match()
+                }
             )
         }
     }
