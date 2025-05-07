@@ -1,0 +1,61 @@
+nextflow_process {
+
+    name "Test Process MAXQUANT_LFQ"
+
+    script "../main.nf"
+    process "MAXQUANT_LFQ"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "maxquant"
+    tag "maxquant/lfq"
+
+    test("yeast_UPS - msspectra raw") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS.fasta', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'proteomics/parameter/mqpar.xml', checkIfExists:true)
+                ]
+                input[1] = Channel.of([
+                    file(params.modules_testdata_base_path + 'proteomics/msspectra/OVEMB150205_12.raw'),
+                    file(params.modules_testdata_base_path + 'proteomics/msspectra/OVEMB150205_14.raw')
+                ]).collect()
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("yeast_UPS - msspectra raw -- stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS.fasta', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'proteomics/parameter/mqpar.xml', checkIfExists:true)
+                ]
+                input[1] = Channel.of([
+                    file(params.modules_testdata_base_path + 'proteomics/msspectra/OVEMB150205_12.raw'),
+                    file(params.modules_testdata_base_path + 'proteomics/msspectra/OVEMB150205_14.raw')
+                ]).collect()
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
