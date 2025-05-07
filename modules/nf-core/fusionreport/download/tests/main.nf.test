@@ -1,0 +1,51 @@
+nextflow_process {
+
+    name "Test Process FUSIONREPORT_DOWNLOAD"
+    script "../main.nf"
+    process "FUSIONREPORT_DOWNLOAD"
+
+    test("Download fusionreport databases") {
+        config './nextflow.config'
+
+        when {
+            process {
+                """
+                // This process doesn't have any inputs
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.fusionreport_ref[0][1]).resolve("fusiongdb2.db"),
+                    path(process.out.fusionreport_ref[0][1]).resolve("mitelman.db"),
+                    path(process.out.fusionreport_ref[0][1]).resolve("DB-timestamp.txt").exists(),
+                    path(process.out.fusionreport_ref[0][1]).resolve("fusion_report.log").exists(),
+                    process.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+    test("Create stub files") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                // This process doesn't have any inputs
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
