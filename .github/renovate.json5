@@ -22,5 +22,17 @@
                 "# renovate: datasource=(?<datasource>[a-z-.]+?) depName=(?<depName>[^\\s]+?)(?: (?:lookupName|packageName)=(?<packageName>[^\\s]+?))?(?: versioning=(?<versioning>[^\\s]+?))?(?: extractVersion=(?<extractVersion>[^\\s]+?))?\\s+[A-Za-z0-9_]+?_VER(SION)?\\s*:\\s*[\"']?(?<currentValue>.+?)[\"']?\\s",
             ],
         },
+        {
+            customType: "regex",
+            description: "Update container and lock file URLs in meta.yml",
+            fileMatch: [
+                "(^|/)meta\\.yml$"
+            ],
+            matchStrings: [
+                "# renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>[^\\s]+) versioning=(?<versioning>[^\\s]+)\\s*\\n\\s*name:\\s*(?<currentValue>[^\\s]+)",
+                "# renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>[^\\s]+) versioning=(?<versioning>[^\\s]+)\\s*\\n\\s*name:\\s*(?<currentValue>[^\\s]+)",
+                "# renovate: datasource=(?<datasource>[a-z-]+) depName=(?<depName>[^\\s]+) versioning=(?<versioning>[^\\s]+)\\s*\\n\\s*lock file:\\s*(?<currentValue>[^\\s]+)"
+            ],
+        },
     ],
 }
