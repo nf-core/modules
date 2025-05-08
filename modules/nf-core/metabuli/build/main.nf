@@ -26,7 +26,7 @@ process METABULI_BUILD {
     make_merged = taxonomy_merged ? "" : "touch taxonomy/merged.dmp"
     """
     $make_merged
-    realpath -s $fasta > fasta.txt
+    echo $fasta | tr ' ' '\\n' > fasta.txt
 
     metabuli build \\
         "${prefix}" \\
@@ -34,7 +34,7 @@ process METABULI_BUILD {
         $accession2taxid \\
         --taxonomy-path taxonomy \\
         --max-ram ${task.memory.toGiga()} \\
-        --threads ${task.cpu} \\
+        --threads ${task.cpus} \\
         $args
         
     cat <<-END_VERSIONS > versions.yml
