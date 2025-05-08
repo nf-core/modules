@@ -42,6 +42,7 @@ process SENTIEON_TNSCOPE {
     """
     $sentieonLicense
 
+
     sentieon driver \\
         -t $task.cpus \\
         -r $fasta \\
