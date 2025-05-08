@@ -32,6 +32,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
 
     def args = task.ext.args ?: ''
     def args2 = task.ext.args ?: ''
+    def preload_mode = !task.ext.args.contains('--preload-size')
 
     classified   = meta.single_end ? "\${PREFIX}.classified.${sequence_type}"   : "\${PREFIX}.merged.classified.${sequence_type}"
     unclassified = meta.single_end ? "\${PREFIX}.unclassified.${sequence_type}" : "\${PREFIX}.merged.unclassified.${sequence_type}"
@@ -52,12 +53,14 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
         ${command_inputs.join('\n        ')}
         END_INPUTS
 
-        # Preload the KrakenUniq database into memory.
-        krakenuniq \\
-            $args \\
-            --db $db \\
-            --preload \\
-            --threads $task.cpus
+        if (preload_mode) {
+            # Preload the KrakenUniq database into memory.
+            krakenuniq \\
+                $args \\
+                --db $db \\
+                --preload \\
+                --threads $task.cpus
+        }
 
         # Run the KrakenUniq classification on each sample in the batch.
         while IFS='\t' read -r SEQ PREFIX; do
@@ -89,12 +92,14 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
         ${command_inputs.join('\n        ')}
         END_INPUTS
 
-        # Preload the KrakenUniq database into memory.
-        krakenuniq \\
-            $args \\
-            --db $db \\
-            --preload \\
-            --threads $task.cpus
+        if (preload_mode) {
+            # Preload the KrakenUniq database into memory.
+            krakenuniq \\
+                $args \\
+                --db $db \\
+                --preload \\
+                --threads $task.cpus
+        }
 
         # Run the KrakenUniq classification on each sample in the batch.
         while IFS='\t' read -r FIRST_SEQ SECOND_SEQ PREFIX; do
@@ -125,6 +130,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
 
     def args = task.ext.args ?: ''
     def args2 = task.ext.args ?: ''
+    def preload_mode = !task.ext.args.contains('--preload-size')
 
     classified   = meta.single_end ? "\${PREFIX}.classified.${sequence_type}"   : "\${PREFIX}.merged.classified.${sequence_type}"
     unclassified = meta.single_end ? "\${PREFIX}.unclassified.${sequence_type}" : "\${PREFIX}.merged.unclassified.${sequence_type}"
@@ -145,12 +151,14 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
         ${command_inputs.join('\n        ')}
         END_INPUTS
 
-        # Preload the KrakenUniq database into memory.
-        echo krakenuniq \\
-            $args \\
-            --db $db \\
-            --preload \\
-            --threads $task.cpus
+        if (preload_mode) {
+            # Preload the KrakenUniq database into memory.
+            echo krakenuniq \\
+                $args \\
+                --db $db \\
+                --preload \\
+                --threads $task.cpus
+        }
 
         create_file() {
             echo '<3 nf-core' > "\$1"
@@ -195,12 +203,14 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
         ${command_inputs.join('\n        ')}
         END_INPUTS
 
-        # Preload the KrakenUniq database into memory.
-        echo krakenuniq \\
-            $args \\
-            --db $db \\
-            --preload \\
-            --threads $task.cpus
+        if (preload_mode) {
+            # Preload the KrakenUniq database into memory.
+            echo krakenuniq \\
+                $args \\
+                --db $db \\
+                --preload \\
+                --threads $task.cpus
+        }
 
         create_file() {
             echo '<3 nf-core' > "\$1"
