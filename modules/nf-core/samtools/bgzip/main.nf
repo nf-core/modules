@@ -11,8 +11,8 @@ process SAMTOOLS_BGZIP {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("${output}")      , emit: fa
-    path "versions.yml"                     , emit: versions
+    tuple val(meta), path("${output}"), emit: fasta
+    path "versions.yml"               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
