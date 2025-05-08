@@ -67,7 +67,7 @@ input:
           e.g. [ id:'bwa' ]
     - bwa_index:
         type: file
-        description: BWA genome index files
+        description: BWA genome index files. Note that this tool requires the bwa index files to be of the format `prefix.suffix.amb`, where `prefix.suffix` is the full name of the fasta file, not just the prefix.
         pattern: "Directory containing BWA index *.{amb,ann,bwt,pac,sa}"
   - - meta5:
         type: map
