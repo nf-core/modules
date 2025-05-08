@@ -69,6 +69,19 @@ process SVABA {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo | gzip > ${prefix}.bps.txt.gz
+    echo | gzip > ${prefix}.svaba.sv.vcf.gz
+    echo | gzip > ${prefix}.svaba.indel.vcf.gz
+    echo | gzip > ${prefix}.svaba.germline.indel.vcf.gz
+    echo | gzip > ${prefix}.svaba.germline.sv.vcf.gz
+    echo | gzip > ${prefix}.svaba.somatic.indel.vcf.gz
+    echo | gzip > ${prefix}.svaba.somatic.sv.vcf.gz
+    echo | gzip > ${prefix}.unfiltered.sv.vcf.gz
+    echo | gzip > ${prefix}.unfiltered.indel.vcf.gz
+    echo | gzip > ${prefix}.unfiltered.germline.indel.vcf.gz
+    echo | gzip > ${prefix}.unfiltered.germline.sv.vcf.gz
+    echo | gzip > ${prefix}.unfiltered.somatic.indel.vcf.gz
+    echo | gzip > ${prefix}.unfiltered.somatic.sv.vcf.gz
+    echo | gzip > ${prefix}.discondants.txt.gz
     touch ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
