@@ -1,58 +1,65 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "ngsbits_bedannotategc"
-description: write your description here
+description: Annotates GC content fraction to regions in a BED file.
 keywords:
-  - sort
-  - example
-  - genomics
+  - gc
+  - bed
+  - regions
 tools:
   - "ngsbits":
       description: "Short-read sequencing tools"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
-      licence: ['MIT license']
-      identifier: 
+      homepage: "https://github.com/imgag/ngs-bits"
+      documentation: "https://github.com/imgag/ngs-bits"
+      tool_dev_url: "https://github.com/imgag/ngs-bits"
+      licence: ["MIT"]
+      identifier: ""
 
 input:
-  # Only when we have meta
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-  
-  
-    - input:
+    - bed:
         type: file
-        description: 
-        pattern: 
-        ontologies:
-          
-          - edam: ""
+        description: Input BED file containing regions to annotate
+        pattern: "*.bed"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference fasta information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fasta:
+        type: file
+        description: The reference FASTA to use (mandatory when CRAM files are used, otherwise optional)
+        pattern: "*.{fasta,fa,fna}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference fasta information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fai:
+        type: file
+        description: The index file from the reference FASTA
+        pattern: "*.fai"
 
 output:
   - output:
-  #Only when we have meta
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-  
-    - "*":
-        type: file
-        description: 
-        pattern: 
-        ontologies:
-          - edam: ""
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.bed":
+          type: file
+          description: Annotated BED file with GC content fraction
+          pattern: "*.bed"
   - versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 
 authors:
   - "@nvnieuwk"
