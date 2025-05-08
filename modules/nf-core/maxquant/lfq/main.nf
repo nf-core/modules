@@ -11,23 +11,24 @@ process MAXQUANT_LFQ {
     path(raw)
 
     output:
-    tuple val(meta), path("results/*.txt"), emit: maxquant_txt
+    tuple val(meta), path("${prefix}/*.txt"), emit: maxquant_txt
     path "versions.yml"                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
     """
     sed \"s_<numThreads>.*_<numThreads>$task.cpus</numThreads>_\" ${paramfile} > mqpar_changed.xml
     sed -i \"s|PLACEHOLDER|\$PWD/|g\" mqpar_changed.xml
 
-    mkdir temp results
+    mkdir ${prefix}
     maxquant \\
         ${args} \\
         mqpar_changed.xml
-    mv combined/txt/*.txt results/
+    mv combined/txt/*.txt ${prefix}/
 
     cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -36,22 +37,23 @@ process MAXQUANT_LFQ {
     """
 
     stub:
+    prefix   = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir results
-    touch 'results/Oxidation (M)Sites.txt'
-    touch results/allPeptides.txt
-    touch results/evidence.txt
-    touch results/matchedFeatures.txt
-    touch results/modificationSpecificPeptides.txt
-    touch results/ms3Scans.txt
-    touch results/msScans.txt
-    touch results/msms.txt
-    touch results/msmsScans.txt
-    touch results/mzRange.txt
-    touch results/parameters.txt
-    touch results/peptides.txt
-    touch results/proteinGroups.txt
-    touch results/summary.txt
+    mkdir ${prefix}
+    touch '${prefix}/Oxidation (M)Sites.txt'
+    touch ${prefix}/allPeptides.txt
+    touch ${prefix}/evidence.txt
+    touch ${prefix}/matchedFeatures.txt
+    touch ${prefix}/modificationSpecificPeptides.txt
+    touch ${prefix}/ms3Scans.txt
+    touch ${prefix}/msScans.txt
+    touch ${prefix}/msms.txt
+    touch ${prefix}/msmsScans.txt
+    touch ${prefix}/mzRange.txt
+    touch ${prefix}/parameters.txt
+    touch ${prefix}/peptides.txt
+    touch ${prefix}/proteinGroups.txt
+    touch ${prefix}/summary.txt
 
     cat <<-END_VERSIONS > versions.yml
         "${task.process}":
