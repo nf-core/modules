@@ -25,12 +25,17 @@ process FCSGX_RUNGX {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def mv_database_to_ram = ramdisk_path ? "rclone copy $gxdb $ramdisk_path/$task.index/" : ''
     def database = ramdisk_path ? "$ramdisk_path/$task.index/" : gxdb // Use task.index to make memory location unique
+    ( ramdisk_path ?
     """
-    # Copy DB to RAM-disk when supplied. Otherwise, the tool is very slow.
-    $mv_database_to_ram
+    # Copy DB to RAM-disk when supplied. Otherwise, rungx is very slow.
+    rclone copy ${gxdb} ${database}
+    # Clean up shared memory on exit
+    trap "rm -rf "${database}" EXIT
 
+    """: "")
+    <<
+    """
     export GX_NUM_CORES=${task.cpus}
     run_gx.py \\
         --fasta ${fasta} \\
