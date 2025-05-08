@@ -49,6 +49,13 @@ process METABULI_BUILD {
     """
     mkdir -p "$prefix"
 
+    touch "$prefix/acc2taxid.map"
+    touch "$prefix/diffIdx"
+    touch "$prefix/info"
+    touch "$prefix/split"
+    touch "$prefix/taxID_list"
+    touch "$prefix/db.parameters"
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         metabuli: metabuli_version
