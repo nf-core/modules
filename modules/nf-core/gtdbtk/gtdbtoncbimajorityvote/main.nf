@@ -21,7 +21,7 @@ process GTDBTK_GTDBTONCBIMAJORITYVOTE {
 
     script:
     if(!bac120_metadata && !ar53_metadata) {
-        log.error("ERROR: Neither the ar53 or bac120 metadata files were provided to gtdbtk/gtdbtoncbimajorityvote!")
+        log.error("ERROR: Neither the ar53 or bac120 metadata files were provided to GTDBTK_GTDBTONCBIMAJORITYVOTE!")
     }
     def prefix        = task.ext.prefix ?: "${meta.id}"
     def args          = task.ext.args   ?: ""

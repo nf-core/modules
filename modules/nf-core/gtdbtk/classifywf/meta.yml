@@ -49,7 +49,6 @@ input:
         description: The local copy of the Mash sketch database used by GTDB-tk if `ani_screen`
           mode is used (optional)
         pattern: "*.msh"
-
         ontologies:
           - edam: http://edamontology.org/format_3911 # msh
 output:
@@ -63,7 +62,6 @@ output:
       - "${prefix}":
           type: map
           description: All files output by GTDB-Tk
-
           pattern: "*"
   - summary:
       - meta:
@@ -174,6 +172,7 @@ output:
             - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@skrakau"
+  - "@prototaxites"
   - "@abhi18av"
 maintainers:
   - "@skrakau"
