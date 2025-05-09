@@ -1,0 +1,69 @@
+nextflow_process {
+
+    name "Test Process ROARY"
+    script "../main.nf"
+    process "ROARY"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "roary"
+
+    test("candidatus_portiera_aleyrodidarum - multi_gffs") {
+
+        when {
+            process {
+                """
+                // meta map and gff files are required
+                input[0] = [
+                    [ id: "test_gff" ], // meta map with id
+                    [                       // List of paths to GFF files
+                        file(params.modules_testdata_base_path + '/genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true),
+                        file(params.modules_testdata_base_path + '/genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test2.gff', checkIfExists: true),
+                        file(params.modules_testdata_base_path + '/genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test3.gff', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert path(process.out.results[0][1].find { it.toString().contains("gene_presence_absence.csv") }).exists() },
+                { assert path(process.out.results[0][1].find { it.toString().contains("accessory_binary_genes.fa.newick") }).exists() },
+                { assert path(process.out.results[0][1].find { it.toString().contains("summary_statistics.txt") }).exists() },
+                { assert path(process.out.results[0][1].find { it.toString().contains("accessory_binary_genes.fa") }).exists() },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+    test("candidatus_portiera_aleyrodidarum - multi_gffs - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                // meta map and gff files are required
+                input[0] = [
+                    [ id: "test_gff" ], // meta map with id
+                    [                       // List of paths to GFF files
+                        file(params.modules_testdata_base_path + '/genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true),
+                        file(params.modules_testdata_base_path + '/genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test2.gff', checkIfExists: true),
+                        file(params.modules_testdata_base_path + '/genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test3.gff', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

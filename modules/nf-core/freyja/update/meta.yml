@@ -20,10 +20,10 @@ input:
         description: "The name of the database directory"
 output:
   - barcodes:
-      - ${db_name}/usher_barcodes.csv:
+      - ${db_name}/usher_barcodes.feather:
           type: file
           description: File containing lineage defining barcodes
-          pattern: "*barcodes.csv"
+          pattern: "*barcodes.feather"
   - lineages_topology:
       - ${db_name}/lineages.yml:
           type: file
