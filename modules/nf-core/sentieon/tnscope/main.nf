@@ -5,8 +5,8 @@ process SENTIEON_TNSCOPE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sentieon:202308.03--h5ca1c30_3' :
-        'community.wave.seqera.io/library/sentieon:202308.03--b599c8ad694846bd' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/80/80ccb05eb4f1a193a3bd99c4da90f55f74ea6556c25f154e53e1ff5a6caa372d/data' :
+        'community.wave.seqera.io/library/sentieon:202503--5e378058d837c58c' }"
 
     input:
     tuple val(meta), path(input), path(input_index), path(intervals)

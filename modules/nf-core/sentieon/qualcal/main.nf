@@ -4,8 +4,8 @@ process SENTIEON_QUALCAL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sentieon:202308.03--h5ca1c30_3' :
-        'community.wave.seqera.io/library/sentieon:202308.03--b599c8ad694846bd' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/68/68b1ed28e610d30e71f2941062dd1dddc5ccaa59496442761d0a3579e0ab9d69/data' :
+        'community.wave.seqera.io/library/sentieon_gnuplot:be1a7a35856e97bb' }"
 
     input:
     tuple val(meta), path(input), path(input_index)
@@ -92,7 +92,6 @@ process SENTIEON_QUALCAL {
     }
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def file_suffix = input.name.endsWith(".bam") ? "bam" : "cram"
     def recalibrated_bam = generate_recalibrated_bams ? "${prefix}.recalibrated.${file_suffix}" : ""
