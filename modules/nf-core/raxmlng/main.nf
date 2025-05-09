@@ -7,28 +7,47 @@ process RAXMLNG {
         'biocontainers/raxml-ng:1.0.3--h32fcf60_0' }"
 
     input:
-    path alignment
+    tuple val(meta), path(alignment), val(model)
 
     output:
-    path "*.raxml.bestTree", emit: phylogeny
-    path "*.raxml.support" , optional:true, emit: phylogeny_bootstrapped
-    path "versions.yml"    , emit: versions
+    tuple val(meta), path("*.raxml.bestTree")              , emit: phylogeny
+    tuple val(meta), path("*.raxml.support")               , emit: phylogeny_bootstrapped, optional:true
+    path "versions.yml"                                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
     """
     raxml-ng \\
         $args \\
         --msa $alignment \\
+        --model $model \\
         --threads $task.cpus \\
-        --prefix output
+        --prefix ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         raxmlng: \$(echo \$(raxml-ng --version 2>&1) | sed 's/^.*RAxML-NG v. //; s/released.*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def touch_support = args.contains('--bootstrap') || args.contains('--bs-trees') ? "touch ${prefix}.raxml.support" : ""
+    """
+    # Create stub output files
+    touch ${prefix}.raxml.bestTree
+    ${touch_support}
+
+    # Create versions.yml
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        raxmlng: stub_version
     END_VERSIONS
     """
 }
