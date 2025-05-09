@@ -11,7 +11,7 @@ process PYDAMAGE_FILTER {
     tuple val(meta), path(csv)
 
     output:
-    tuple val(meta), path("pydamage_results/*_pydamage_filtered_results.csv"), emit: csv
+    tuple val(meta), path("${prefix}_pydamage_filtered_results.csv"), emit: csv
     path "versions.yml"           , emit: versions
 
     when:
@@ -19,7 +19,7 @@ process PYDAMAGE_FILTER {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     export NUMBA_CACHE_DIR=./tmp
     export MPLCONFIGDIR=./tmp
@@ -29,7 +29,7 @@ process PYDAMAGE_FILTER {
         $args \\
         $csv
 
-    mv pydamage_results/pydamage_filtered_results.csv pydamage_results/${prefix}_pydamage_filtered_results.csv
+    mv pydamage_results/pydamage_filtered_results.csv ${prefix}_pydamage_filtered_results.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -38,11 +38,12 @@ process PYDAMAGE_FILTER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p pydamage_results
-    touch pydamage_results/${prefix}_pydamage_filtered_results.csv
+    export NUMBA_CACHE_DIR=./tmp
+    export MPLCONFIGDIR=./tmp
+
+    touch ${prefix}_pydamage_filtered_results.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
