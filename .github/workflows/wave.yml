@@ -52,7 +52,8 @@ jobs:
     # if: github.repository == 'nf-core/modules'
     if: ${{ needs.generate-matrix.outputs.conda-matrix != '[]' }}
     needs: generate-matrix
-    name: 🌊 ${{ matrix.files }} ${{ matrix.profile }} ${{ matrix.platform }}
+    # https://github.com/nf-core/modules/pull/7101/files#r1860391423
+    name: Build ${{ matrix.files }} ${{ matrix.profile }} ${{ matrix.platform }} Container
     runs-on: ubuntu-latest
     timeout-minutes: 60
     strategy:
@@ -90,7 +91,7 @@ jobs:
     # if: github.repository == 'nf-core/modules'
     if: ${{ needs.generate-matrix.outputs.dockerfile-matrix != '[]' }}
     needs: generate-matrix
-    name: 🌊 Dockerfile ${{ matrix.platform }} Container
+    name: Build Dockerfile-based ${{ matrix.platform }} Container ${{ matrix.files }}
     runs-on: ubuntu-latest
     timeout-minutes: 60
     strategy:
