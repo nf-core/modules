@@ -4,8 +4,8 @@ process SHINYNGS_VALIDATEFOMCOMPONENTS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cc/cc056f19e734938edd84eff6ed0504f5a5b0e11e31e7ee22f6d7eae35faa62b9/data' :
-        'community.wave.seqera.io/library/r-shinyngs:2.2.3--22cbe481c5403325' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4f/4fc080dc45831489dd70b8183314a5a6f840064d6c78f3466790df0fba1503d0/data' :
+        'community.wave.seqera.io/library/r-shinyngs:2.2.4--2bf759f8be585e75' }"
 
     input:
     tuple val(meta),  path(sample), path(assay_files)
