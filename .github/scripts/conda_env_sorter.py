@@ -8,7 +8,7 @@
 
 """Sort dependencies in conda environment files."""
 # Test with
-# uv run --with pytest -- pytest -v .github/scripts/conda_env_sorter.py
+# uv run --with pytest --with "ruamel.yaml" -- pytest -v .github/scripts/conda_env_sorter.py
 
 import argparse
 import sys
@@ -49,23 +49,39 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
 
         # Parse the YAML content
         doc = yaml.load(content)
-        dicts = []
-        others = []
+        if doc is None:
+            raise ruamel.yaml.scanner.ScannerError("Empty YAML file")
 
-        for term in doc["dependencies"]:
-            if isinstance(term, dict):
-                dicts.append(term)
-            else:
-                others.append(term)
-        others.sort(key=str)
-        for dict_term in dicts:
-            for value in dict_term.values():
-                if isinstance(value, list):
-                    value.sort(key=str)
-        dicts.sort(key=str)
-        doc["dependencies"].clear()
-        doc["dependencies"].extend(others)
-        doc["dependencies"].extend(dicts)
+        # Sort channels if they exist
+        if "channels" in doc:
+            # Define channel priority order
+            channel_order = {
+                "conda-forge": 0,
+                "bioconda": 1,
+            }
+
+            # Sort channels based on priority order, then alphabetically within same priority
+            doc["channels"].sort(key=lambda x: (channel_order.get(x, 2), str(x)))
+
+        # Sort dependencies if they exist
+        if "dependencies" in doc:
+            dicts = []
+            others = []
+
+            for term in doc["dependencies"]:
+                if isinstance(term, dict):
+                    dicts.append(term)
+                else:
+                    others.append(term)
+            others.sort(key=str)
+            for dict_term in dicts:
+                for value in dict_term.values():
+                    if isinstance(value, list):
+                        value.sort(key=str)
+            dicts.sort(key=str)
+            doc["dependencies"].clear()
+            doc["dependencies"].extend(others)
+            doc["dependencies"].extend(dicts)
 
         # Write back to file with headers
         with path.open("w") as f:
@@ -90,6 +106,51 @@ if "pytest" in sys.modules:
             ("dependencies:\n  - pip:\n    - b\n    - a\n  - python\n", ["python", {"pip": ["a", "b"]}]),
             # Test existing headers
             ("---\n# yaml-language-server: $schema=...\ndependencies:\n  - b\n  - a\n", ["a", "b"]),
+            # Test channel sorting
+            (
+                "channels:\n  - conda-forge\n  - bioconda\ndependencies:\n  - python\n",
+                {"channels": ["conda-forge", "bioconda"], "dependencies": ["python"]},
+            ),
+            # Test channel sorting with additional channels
+            (
+                "channels:\n  - bioconda\n  - conda-forge\n  - defaults\n  - r\n",
+                {"channels": ["conda-forge", "bioconda", "defaults", "r"]},
+            ),
+            # Test namespaced dependencies
+            (
+                "dependencies:\n  - bioconda::ngscheckmate=1.0.1\n  - bioconda::bcftools=1.21\n",
+                ["bioconda::bcftools=1.21", "bioconda::ngscheckmate=1.0.1"],
+            ),
+            # Test mixed dependencies
+            (
+                "dependencies:\n  - bioconda::ngscheckmate=1.0.1\n  - python\n  - bioconda::bcftools=1.21\n",
+                ["bioconda::bcftools=1.21", "bioconda::ngscheckmate=1.0.1", "python"],
+            ),
+            # Test full environment with channels and namespaced dependencies
+            (
+                """
+                channels:
+                    - conda-forge
+                    - bioconda
+                dependencies:
+                    - bioconda::ngscheckmate=1.0.1
+                    - bioconda::bcftools=1.21
+                """,
+                {
+                    "channels": ["conda-forge", "bioconda"],
+                    "dependencies": ["bioconda::bcftools=1.21", "bioconda::ngscheckmate=1.0.1"],
+                },
+            ),
+        ],
+        ids=[
+            "basic_dependency_sorting",
+            "dict_dependency_sorting",
+            "existing_headers",
+            "channel_sorting",
+            "channel_sorting_with_additional_channels",
+            "namespaced_dependencies",
+            "mixed_dependencies",
+            "full_environment",
         ],
     )
     def test_conda_sorter(tmp_path, input_content, expected):
@@ -109,7 +170,13 @@ if "pytest" in sys.modules:
         parsed = yaml.load("".join(result.splitlines(True)[2:]))
 
         # Compare the actual dependencies structure
-        assert parsed["dependencies"] == expected
+        if isinstance(expected, list):
+            assert parsed["dependencies"] == expected
+        else:
+            # For comparing dictionaries, only compare the keys that are in the expected dictionary
+            for key, value in expected.items():
+                assert key in parsed
+                assert parsed[key] == value
 
     def test_invalid_file(tmp_path):
         test_file = tmp_path / "bad.yml"
@@ -117,3 +184,26 @@ if "pytest" in sys.modules:
 
         with pytest.raises(ruamel.yaml.scanner.ScannerError):
             main([str(test_file)])
+
+    def test_empty_file(tmp_path):
+        """Test handling of empty files."""
+        test_file = tmp_path / "empty.yml"
+        test_file.write_text("")
+
+        with pytest.raises(ruamel.yaml.scanner.ScannerError):
+            main([str(test_file)])
+
+    def test_missing_dependencies(tmp_path):
+        """Test handling of files without dependencies section."""
+        test_file = tmp_path / "no_deps.yml"
+        test_file.write_text("channels:\n  - conda-forge\n")
+
+        # Run without error now that we handle missing dependencies
+        main([str(test_file)])
+
+        # Read back and verify channel is preserved
+        result = test_file.read_text()
+        parsed = yaml.load("".join(result.splitlines(True)[2:]))
+        assert "channels" in parsed
+        assert parsed["channels"] == ["conda-forge"]
+        assert "dependencies" not in parsed
