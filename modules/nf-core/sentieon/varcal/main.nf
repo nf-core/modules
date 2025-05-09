@@ -5,7 +5,7 @@ process SENTIEON_VARCAL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/16/16937d89b8aa2548d7925bc473bbf353b4a415e5c4a951cc809717223f75a19b/data' :
+        'https://depot.galaxyproject.org/singularity/sentieon:202308.03--h5ca1c30_3' :
         'community.wave.seqera.io/library/sentieon:202308.03--b599c8ad694846bd' }"
 
     input:
@@ -33,17 +33,21 @@ process SENTIEON_VARCAL {
 
     // labels is a list. Here is an example of what labels might look like:
     // ['--resource:dbsnp,known=false,training=true,truth=false,prior=2.0 dbsnp_146.hg38.vcf.gz', '--resource:gatk,known=false,training=true,truth=true,prior=10.0 Homo_sapiens_assembly38.known_indels.vcf.gz --resource:mills,known=false,training=true,truth=true,prior=10.0 Mills_and_1000G_gold_standard.indels.hg38.vcf.gz']
-    for(label in labels){
-        for(gatk_resource_string in label.split('--resource:').findAll()){  // The findAll cmd is there to remove any empty string elements in the list
-            def items = gatk_resource_string.split(' ')
-            // Here is an example of what the list items might look like:
-            // ['dbsnp,known=false,training=true,truth=false,prior=2.0', 'dbsnp_146.hg38.vcf.gz']
-            if (items.size() != 2) {
-                error("Expected the list '${items}' to contain two elements.")
+    def processLabel = { label ->
+        label.split('--resource:')
+            .findAll()  // Remove any empty string elements
+            .collect { gatk_resource_string ->
+                def items = gatk_resource_string.split(' ', 2)
+                if (items.size() != 2) {
+                    error("Expected the resource string '${gatk_resource_string}' to contain two elements separated by a space.")
+                }
+                "--resource ${items[1]} --resource_param ${items[0]}"
             }
-            labels_command +=  "--resource ${items[1]} --resource_param ${items[0]} "
-        }
+            .join(' ')
     }
+
+    labels_command = labels.trim().isEmpty() ? '' : processLabel(labels)
+
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64 ?
         "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; " :
         ""

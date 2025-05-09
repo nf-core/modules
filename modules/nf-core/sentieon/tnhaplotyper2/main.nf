@@ -5,7 +5,7 @@ process SENTIEON_TNHAPLOTYPER2 {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/16/16937d89b8aa2548d7925bc473bbf353b4a415e5c4a951cc809717223f75a19b/data' :
+        'https://depot.galaxyproject.org/singularity/sentieon:202308.03--h5ca1c30_3' :
         'community.wave.seqera.io/library/sentieon:202308.03--b599c8ad694846bd' }"
 
     input:

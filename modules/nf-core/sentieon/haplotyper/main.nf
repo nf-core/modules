@@ -5,15 +5,15 @@ process SENTIEON_HAPLOTYPER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/16/16937d89b8aa2548d7925bc473bbf353b4a415e5c4a951cc809717223f75a19b/data' :
+        'https://depot.galaxyproject.org/singularity/sentieon:202308.03--h5ca1c30_3' :
         'community.wave.seqera.io/library/sentieon:202308.03--b599c8ad694846bd' }"
 
     input:
     tuple val(meta), path(input), path(input_index), path(intervals), path(recal_table)
-    tuple val(meta1), path(fasta)
-    tuple val(meta2), path(fai)
-    tuple val(meta3), path(dbsnp)
-    tuple val(meta4), path(dbsnp_tbi)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
+    tuple val(meta4), path(dbsnp)
+    tuple val(meta5), path(dbsnp_tbi)
     val(emit_vcf)
     val(emit_gvcf)
 
@@ -50,7 +50,7 @@ process SENTIEON_HAPLOTYPER {
 
     // Create a gVCF command to export a gVCF
     def gvcf_cmd = emit_gvcf ?
-        gvcf_cmd = base_cmd + args3 + ' --emit_mode gvcf ' + prefix + '.g.vcf.gz' :
+        base_cmd + args3 + ' --emit_mode gvcf ' + prefix + '.g.vcf.gz' :
         ""
 
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64 ?
