@@ -1,0 +1,21 @@
+name: "Test Report"
+on:
+  workflow_run:
+    workflows: ["Run nf-test"] # runs after CI workflow
+    types:
+      - completed
+permissions:
+  contents: read
+  actions: read
+  checks: write
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dorny/test-reporter@v1
+        continue-on-error: true
+        with:
+          artifact: /test-results-(.*)-(.*)-(.*)/
+          name: "nf-test Tests Report: $1 shard $2/$3"
+          path: "*.xml" # Path to test results (inside artifact .zip)
+          reporter: java-junit
