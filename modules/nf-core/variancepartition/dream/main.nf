@@ -1,5 +1,5 @@
 process VARIANCEPARTITION_DREAM {
-    tag "${meta.id} - ${meta.contrast_id}"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -8,10 +8,12 @@ process VARIANCEPARTITION_DREAM {
         'community.wave.seqera.io/library/bioconductor-edger_bioconductor-variancepartition_r-optparse:ba778938d72f30c5' }"
 
     input:
-    tuple val(meta), path(samplesheet), path(counts)
+    tuple val(meta), val(contrast_variable), val(reference), val(target), val(formula), val(comparison)
+    tuple val(meta2), path(samplesheet), path(counts)
 
     output:
     tuple val(meta), path("*.dream.results.tsv")        , emit: results
+    tuple val(meta), path("*.dream.model.txt")          , emit: model
     path "versions.yml"                                 , emit: versions
 
     when:
@@ -21,9 +23,9 @@ process VARIANCEPARTITION_DREAM {
     template 'dream.R'
 
     stub:
-    prefix = task.ext.prefix   ?: "${meta.id}"
     """
-    touch "${meta.contrast_id}.dream.results.tsv"
+    touch "${meta.id}.dream.results.tsv"
+    touch "${meta.id}.dream.model.txt"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
