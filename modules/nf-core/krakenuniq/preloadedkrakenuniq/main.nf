@@ -43,16 +43,20 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     compress_reads_command = save_output_reads ? "find . -maxdepth 0 -name '*.${sequence_type}' -print0 | xargs -0 -t -P ${task.cpus} -I % gzip --no-name %" : ''
     def command_inputs_file = '.inputs.txt'
 
-    def preload_cmd = preload_mode ? (
+    def preload_cmd = (
         """
-        # Preload the KrakenUniq database into memory.
-        krakenuniq \\
-            $args \\
-            --db $db \\
-            --preload \\
-            --threads $task.cpus
+        export PRELOAD_MODE=${preload_mode}
+
+        if ( \$PRELOAD_MODE ); then
+            # Preload the KrakenUniq database into memory.
+            krakenuniq \\
+                $args \\
+                --db $db \\
+                --preload \\
+                --threads $task.cpus
+        fi
         """
-    ) : ''
+    )
 
     if (meta.single_end) {
         assert sequences.size() == prefixes.size()
@@ -138,16 +142,20 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     compress_reads_command = save_output_reads ? "find . -name '*.${sequence_type}' -print0 | xargs -0 -t -P ${task.cpus} -I % gzip --no-name %" : ''
     def command_inputs_file = '.inputs.txt'
 
-    def preload_cmd = preload_mode ? (
+    def preload_cmd = (
         """
-        # Preload the KrakenUniq database into memory.
-        echo krakenuniq \\
-            $args \\
-            --db $db \\
-            --preload \\
-            --threads $task.cpus
+        export PRELOAD_MODE=${preload_mode}
+
+        if ( \$PRELOAD_MODE ); then
+            # Preload the KrakenUniq database into memory.
+            echo krakenuniq \\
+                $args \\
+                --db $db \\
+                --preload \\
+                --threads $task.cpus
+        fi
         """
-    ) : ''
+    )
 
     if (meta.single_end) {
         assert sequences.size() == prefixes.size()
