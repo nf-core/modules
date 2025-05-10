@@ -12,7 +12,6 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     tuple val(meta), path(sequences, name: 'sequences/*'), val(prefixes)
     val sequence_type
     path db
-    val ram_chunk_size
     val save_output_reads
     val report_file
     val save_output
@@ -33,6 +32,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
 
     def args = task.ext.args ?: ''
     def args2 = task.ext.args ?: ''
+    def preload_mode = !task.ext.args.contains('--preload-size')
 
     classified   = meta.single_end ? "\${PREFIX}.classified.${sequence_type}"   : "\${PREFIX}.merged.classified.${sequence_type}"
     unclassified = meta.single_end ? "\${PREFIX}.unclassified.${sequence_type}" : "\${PREFIX}.merged.unclassified.${sequence_type}"
@@ -42,6 +42,17 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     def report = report_file ? '--report-file "\${PREFIX}.krakenuniq.report.txt"' : ''
     compress_reads_command = save_output_reads ? "find . -maxdepth 0 -name '*.${sequence_type}' -print0 | xargs -0 -t -P ${task.cpus} -I % gzip --no-name %" : ''
     def command_inputs_file = '.inputs.txt'
+
+    def preload_cmd = preload_mode ? (
+        """
+        # Preload the KrakenUniq database into memory.
+        krakenuniq \\
+            $args \\
+            --db $db \\
+            --preload \\
+            --threads $task.cpus
+        """
+    ) : ''
 
     if (meta.single_end) {
         assert sequences.size() == prefixes.size()
@@ -53,13 +64,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
         ${command_inputs.join('\n        ')}
         END_INPUTS
 
-        # Preload the KrakenUniq database into memory.
-        krakenuniq \\
-            --db $db \\
-            --preload \\
-            --preload-size $ram_chunk_size \\
-            --threads $task.cpus \\
-            $args
+        ${preload_cmd}
 
         # Run the KrakenUniq classification on each sample in the batch.
         while IFS='\t' read -r SEQ PREFIX; do
@@ -91,13 +96,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
         ${command_inputs.join('\n        ')}
         END_INPUTS
 
-        # Preload the KrakenUniq database into memory.
-        krakenuniq \\
-            --db $db \\
-            --preload \\
-            --preload-size $ram_chunk_size \\
-            --threads $task.cpus \\
-            $args
+        ${preload_cmd}
 
         # Run the KrakenUniq classification on each sample in the batch.
         while IFS='\t' read -r FIRST_SEQ SECOND_SEQ PREFIX; do
@@ -128,6 +127,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
 
     def args = task.ext.args ?: ''
     def args2 = task.ext.args ?: ''
+    def preload_mode = !task.ext.args.contains('--preload-size')
 
     classified   = meta.single_end ? "\${PREFIX}.classified.${sequence_type}"   : "\${PREFIX}.merged.classified.${sequence_type}"
     unclassified = meta.single_end ? "\${PREFIX}.unclassified.${sequence_type}" : "\${PREFIX}.merged.unclassified.${sequence_type}"
@@ -137,6 +137,17 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     def report = report_file ? '--report-file "\${PREFIX}.krakenuniq.report.txt"' : ''
     compress_reads_command = save_output_reads ? "find . -name '*.${sequence_type}' -print0 | xargs -0 -t -P ${task.cpus} -I % gzip --no-name %" : ''
     def command_inputs_file = '.inputs.txt'
+
+    def preload_cmd = preload_mode ? (
+        """
+        # Preload the KrakenUniq database into memory.
+        echo krakenuniq \\
+            $args \\
+            --db $db \\
+            --preload \\
+            --threads $task.cpus
+        """
+    ) : ''
 
     if (meta.single_end) {
         assert sequences.size() == prefixes.size()
@@ -148,13 +159,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
         ${command_inputs.join('\n        ')}
         END_INPUTS
 
-        # Preload the KrakenUniq database into memory.
-        echo krakenuniq \\
-            --db $db \\
-            --preload \\
-            --preload-size $ram_chunk_size \\
-            --threads $task.cpus \\
-            $args
+        ${preload_cmd}
 
         create_file() {
             echo '<3 nf-core' > "\$1"
@@ -199,13 +204,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
         ${command_inputs.join('\n        ')}
         END_INPUTS
 
-        # Preload the KrakenUniq database into memory.
-        echo krakenuniq \\
-            --db $db \\
-            --preload \\
-            --preload-size $ram_chunk_size \\
-            --threads $task.cpus \\
-            $args
+        ${preload_cmd}
 
         create_file() {
             echo '<3 nf-core' > "\$1"
