@@ -10,9 +10,9 @@ process RAXMLNG {
     tuple val(meta), path(alignment), val(model)
 
     output:
-    tuple val(meta), path("*.raxml.bestTree")              , emit: phylogeny
-    tuple val(meta), path("*.raxml.support")               , emit: phylogeny_bootstrapped, optional:true
-    path "versions.yml"                                    , emit: versions
+    tuple val(meta), path("*.raxml.bestTree"), emit: phylogeny
+    tuple val(meta), path("*.raxml.support") , emit: phylogeny_bootstrapped, optional:true
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
