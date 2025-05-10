@@ -36,7 +36,6 @@ process RAXMLNG {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def touch_support = args.contains('--bootstrap') || args.contains('--bs-trees') ? "touch ${prefix}.raxml.support" : ""
     """
