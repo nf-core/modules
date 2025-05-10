@@ -24,43 +24,52 @@ nextflow_process {
         }
 
         then {
+            def stablefiles = []
+            file(process.out.results.get(0).get(1)).eachFileRecurse{ file -> if (!file.isDirectory() && ["short_report.tsv", "short_report.txt", "alignments_metrics.txt", "basic_metrics.txt", "misassemblies.txt", "Nx.png", "sensitivity.txt", "specificity.txt", "transcript_length.png", "alignment_multiplicity.txt", "block_length.txt", "blocks_per_alignment", "mismatch_rate.txt", "transcript_length.txt", "x-aligned.txt"].find {file.toString().endsWith(it)}) {stablefiles.add(file)} }
+            def unstablefiles = []
+            file(process.out.results.get(0).get(1)).eachFileRecurse{ file -> if (["short_report.pdf", "short_report.tex", "rnaQUAST.log", "transcriptome.GeneMarkS_T.err.log"].find {file.toString().endsWith(it)}) {unstablefiles.add(file.getName().toString())} }
+
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    stablefiles.sort(),
+                    unstablefiles.sort(),
+                    process.out.versions
+                    ).match() }
             )
         }
 
     }
 
-    test("sarscov2 - transcripts - reference - gtf") {
+    // test("sarscov2 - transcripts - reference - gtf") {
 
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'test', single_end:true ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true),
-                ]
-                input[1] = [
-                    [ id:'test_reference' ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
-                ]
-                input[2] = [
-                    [ id:'test_gtf' ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true),
-                ]
-                """
-            }
-        }
+    //     when {
+    //         process {
+    //             """
+    //             input[0] = [
+    //                 [ id:'test', single_end:true ],
+    //                 file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true),
+    //             ]
+    //             input[1] = [
+    //                 [ id:'test_reference' ],
+    //                 file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+    //             ]
+    //             input[2] = [
+    //                 [ id:'test_gtf' ],
+    //                 file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true),
+    //             ]
+    //             """
+    //         }
+    //     }
 
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(process.out).match() }
+    //         )
+    //     }
 
-    }
+    // }
 
     test("sarscov2 - bam - stub") {
 

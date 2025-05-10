@@ -25,7 +25,7 @@ process RNAQUAST {
     reference = reference ? "--reference ${reference}" : ''
     gtf = gtf ? "--gtf ${gtf}" : ''
     """
-    python rnaQUAST.py \\
+    rnaQUAST.py \\
         $args \\
         --threads $task.cpus \\
         --transcripts ${fasta} \\
@@ -35,10 +35,9 @@ process RNAQUAST {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        rnaquast: \$(python rnaQUAST.py -h | grep -i 'rnaQUAST.py v' | sed -E 's/.*v\\.([0-9.]+).*/\\1/')
+        rnaquast: \$(rnaQUAST.py -h | grep -i 'rnaQUAST.py v' | sed -E 's/.*v\\.([0-9.]+).*/\\1/')
     END_VERSIONS
     """
-    // rnaquast: \$(echo \$(rnaQUAST.py -h 2>&1) | sed 's/^.*rnaQUAST //; s/Using.*\$//' )) // TODO alternative
     stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
@@ -48,7 +47,7 @@ process RNAQUAST {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        rnaquast: \$(python rnaQUAST.py -h | grep -i 'rnaQUAST.py v' | sed -E 's/.*v\\.([0-9.]+).*/\\1/')
+        rnaquast: \$(rnaQUAST.py -h | grep -i 'rnaQUAST.py v' | sed -E 's/.*v\\.([0-9.]+).*/\\1/')
     END_VERSIONS
     """
 }
