@@ -25,9 +25,9 @@ nextflow_process {
 
         then {
             def stablefiles = []
-            file(process.out.results.get(0).get(1)).eachFileRecurse{ file -> if (!file.isDirectory() && ["short_report.tsv", "short_report.txt", "alignments_metrics.txt", "basic_metrics.txt", "misassemblies.txt", "Nx.png", "sensitivity.txt", "specificity.txt", "transcript_length.png", "blocks_per_alignment", "transcript_length.txt", "transcriptome.GeneMarkS_T.err.log"].find {file.toString().endsWith(it)}) {stablefiles.add(file)} }
+            file(process.out.results.get(0).get(1)).eachFileRecurse{ file -> if (!file.isDirectory() && ["short_report.tsv", "short_report.txt", "alignments_metrics.txt", "basic_metrics.txt", "misassemblies.txt", "sensitivity.txt", "specificity.txt", "blocks_per_alignment", "transcript_length.txt"].find {file.toString().endsWith(it)}) {stablefiles.add(file)} }
             def unstablefiles = []
-            file(process.out.results.get(0).get(1)).eachFileRecurse{ file -> if (["short_report.pdf", "short_report.tex", "rnaQUAST.log", "alignment_multiplicity.txt", "block_length.txt", "mismatch_rate.txt", "x-aligned.txt"].find {file.toString().endsWith(it)}) {unstablefiles.add(file.getName().toString())} }
+            file(process.out.results.get(0).get(1)).eachFileRecurse{ file -> if (["short_report.pdf", "short_report.tex", "rnaQUAST.log", "alignment_multiplicity.txt", "block_length.txt", "mismatch_rate.txt", "x-aligned.txt", "transcriptome.GeneMarkS_T.err.log", "Nx.png", "transcript_length.png"].find {file.toString().endsWith(it)}) {unstablefiles.add(file.getName().toString())} }
 
             assertAll(
                 { assert process.success },
@@ -61,9 +61,9 @@ nextflow_process {
 
         then {
             def stablefiles = []
-            file(process.out.results.get(0).get(1)).eachFileRecurse{ file -> if (!file.isDirectory() && ["short_report.tsv", "short_report.txt", "alignments_metrics.txt", "basic_metrics.txt", "misassemblies.txt", "Nx.png", "sensitivity.txt", "specificity.txt", "transcript_length.png", "alignment_multiplicity.txt", "block_length.txt", "blocks_per_alignment", "mismatch_rate.txt", "transcript_length.txt", "x-aligned.txt", "transcriptome.GeneMarkS_T.err.log", "block_length.png", "blocks_per_alignment.png", "mismatch_rate.png", "NAx.png", "transcriptome.correct.fasta", "x-aligned.png"].find {file.toString().endsWith(it)}) {stablefiles.add(file)} }
+            file(process.out.results.get(0).get(1)).eachFileRecurse{ file -> if (!file.isDirectory() && ["short_report.tsv", "short_report.txt", "alignments_metrics.txt", "basic_metrics.txt", "misassemblies.txt", "sensitivity.txt", "specificity.txt", "alignment_multiplicity.txt", "block_length.txt", "mismatch_rate.txt", "transcript_length.txt", "x-aligned.txt", "mismatch_rate.png", "transcriptome.correct.fasta"].find {file.toString().endsWith(it)}) {stablefiles.add(file)} }
             def unstablefiles = []
-            file(process.out.results.get(0).get(1)).eachFileRecurse{ file -> if (["short_report.pdf", "short_report.tex", "rnaQUAST.log", "gmap.transcriptome.err.log", "gmap_build.err.log", "gmap_build.out.log", "transcriptome.misassembled.blast.fasta", "transcriptome.misassembled.blat.fasta", "transcriptome.misassembled.fasta", "transcriptome.paralogs.fasta", "transcriptome.unaligned.fasta"].find {file.toString().endsWith(it)}) {unstablefiles.add(file.getName().toString())} }
+            file(process.out.results.get(0).get(1)).eachFileRecurse{ file -> if (["short_report.pdf", "short_report.tex", "rnaQUAST.log", "gmap.transcriptome.err.log", "gmap_build.err.log", "gmap_build.out.log", "Nx.png", "transcriptome.misassembled.blast.fasta", "transcript_length.png", "transcriptome.misassembled.blat.fasta", "transcriptome.misassembled.fasta", "transcriptome.paralogs.fasta", "x-aligned.png", "blocks_per_alignment.png", "transcriptome.unaligned.fasta", "transcriptome.GeneMarkS_T.err.log", "NAx.png", "block_length.png"].find {file.toString().endsWith(it)}) {unstablefiles.add(file.getName().toString())} }
 
             assertAll(
                 { assert process.success },
