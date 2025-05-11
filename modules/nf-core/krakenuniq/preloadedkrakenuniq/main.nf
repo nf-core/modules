@@ -45,7 +45,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
 
     def preload_cmd = (
         """
-        export PRELOAD_MODE=${preload_mode}
+        PRELOAD_MODE=${preload_mode}
 
         if ( \$PRELOAD_MODE ); then
             # Preload the KrakenUniq database into memory.
