@@ -49,7 +49,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.tsv.collect { file(it[1]).getName() } +
+                { assert snapshot(
+                    process.out.tsv.collect { file(it[1]).getName() },
+
                                 process.out.versions).match() }
             )
         }
