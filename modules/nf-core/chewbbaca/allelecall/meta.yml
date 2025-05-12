@@ -1,0 +1,169 @@
+name: chewbbaca_allelecall
+description: Determine the allelic profiles of a genome using a pre-defined schema
+keywords:
+  - cgMLST
+  - WGS
+  - genomics
+tools:
+  - chewbbaca:
+      description: "A complete suite for gene-by-gene schema creation and strain identification."
+      homepage: "https://chewbbaca.readthedocs.io/en/latest/index.html"
+      documentation: "https://chewbbaca.readthedocs.io/en/latest/index.html"
+      tool_dev_url: "https://github.com/B-UMMI/chewBBACA"
+      doi: "10.1099/mgen.0.000166"
+      licence: ["GPL v3"]
+      identifier: "biotools:chewbbaca"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test']`
+    - fasta:
+        type: file
+        description: FASTA file(s) to be staged in a directory for allele calling
+        pattern: "*.{fasta,fa,fna}"
+        stageAs: "input_dir/*"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing scheme information
+          e.g. `[ id:'scheme' ]`
+    - scheme:
+        type: directory
+        description: Directory containing the schema files
+        pattern: "*/"
+output:
+  - stats:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*_results_statistics.tsv":
+          type: file
+          description: File contains the total number of exact matches
+          pattern: "*_results_statistics.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # Tab-separated values
+  - contigs_info:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*_results_contigsInfo.tsv":
+          type: file
+          description: File contains the loci coordinates in the genomes analyzed
+          pattern: "*_results_contigsInfo.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # Tab-separated values
+  - alleles:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*_results_alleles.tsv":
+          type: file
+          description: File contains the allelic profiles determined for the input sample
+          pattern: "*_results_alleles.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # Tab-separated values
+  - log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*_logging_info.txt":
+          type: file
+          description: File contains the log information
+          pattern: "*_logging_info.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Plain text
+  - paralogous_counts:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*_paralogous_counts.tsv":
+          type: file
+          description:
+            File contains the list of paralogous loci and the number of times
+            those loci matched a CDS that was also similar to other loci in the schema
+          pattern: "*_paralogous_counts.tsv"
+          ontologies: []
+  - paralogous_loci:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*_paralogous_loci.tsv":
+          type: file
+          description:
+            File contains the sets of paralogous loci identified in the input
+            sample
+          pattern: "*_paralogous_loci.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # Tab-separated values
+  - cds_coordinates:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*_cds_coordinates.tsv":
+          type: file
+          description: File contains the coordinates of the CDS in the input sample
+          pattern: "*_cds_coordinates.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # Tab-separated values
+  - invalid_cds:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*_invalid_cds.txt":
+          type: file
+          description:
+            File contains the list of alleles predicted by Prodigal that were
+            excluded
+          pattern: "*_invalid_cds.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Plain text
+      - id_cds:
+          type: file
+          description:
+            File contains the list of alleles predicted by Prodigal that were
+            excluded
+          pattern: "*_invalid_cds.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Plain text
+  - loci_summary_stats:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*_loci_summary_stats.tsv":
+          type: file
+          description: File contains summary statistics for each locus
+          pattern: "*_loci_summary_stats.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # Tab-separated values
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@anwarMZ"
