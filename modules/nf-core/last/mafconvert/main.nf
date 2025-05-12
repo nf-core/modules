@@ -16,6 +16,7 @@ process LAST_MAFCONVERT {
     output:
     tuple val(meta), path("*.axt.gz"),             optional:true, emit: axt_gz
     tuple val(meta), path("*.bam"),                optional:true, emit: bam
+    tuple val(meta), path("*.bed.gz"),             optional:true, emit: bed_gz
     tuple val(meta), path("*.blast.gz"),           optional:true, emit: blast_gz
     tuple val(meta), path("*.blasttab.gz"),        optional:true, emit: blasttab_gz
     tuple val(meta), path("*.chain.gz"),           optional:true, emit: chain_gz
