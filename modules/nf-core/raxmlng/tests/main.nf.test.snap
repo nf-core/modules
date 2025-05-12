@@ -1,15 +1,5 @@
 {
-    "versions_yml": {
-        "content": [
-            "versions.yml:md5,e5a855c4c9bcde2084ec9e34861379f0"
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
-        },
-        "timestamp": "2025-03-31T17:18:00.904972153"
-    },
-    "raxmlng - stub - no bootstrap": {
+    "sarscov2 - bootstrap - stub": {
         "content": [
             {
                 "0": [
@@ -44,19 +34,19 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
+            "nextflow": "24.10.6"
         },
-        "timestamp": "2025-04-29T03:45:26.591099723"
+        "timestamp": "2025-05-11T08:59:10.813044428"
     },
-    "stub_with_bootstrap": {
+    "sarscov2 - no bootstrap - stub": {
         "content": [
             {
                 "0": [
                     [
                         {
-                            "id": "test_bootstrap"
+                            "id": "test_stub"
                         },
-                        "test_bootstrap.raxml.bestTree:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test_stub.raxml.bestTree:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "1": [
@@ -68,9 +58,9 @@
                 "phylogeny": [
                     [
                         {
-                            "id": "test_bootstrap"
+                            "id": "test_stub"
                         },
-                        "test_bootstrap.raxml.bestTree:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test_stub.raxml.bestTree:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "phylogeny_bootstrapped": [
@@ -83,8 +73,67 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
+            "nextflow": "24.10.6"
         },
-        "timestamp": "2025-04-29T03:48:56.563811341"
+        "timestamp": "2025-05-11T08:59:02.198146141"
+    },
+    "sarscov2 - bootstrap": {
+        "content": [
+            "test.raxml.bootstraps",
+            {
+                "RAXMLNG": {
+                    "raxmlng": "1.0.3"
+                }
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.6"
+        },
+        "timestamp": "2025-05-12T08:18:31.989497884"
+    },
+    "sarscov2 - no bootstrap": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.raxml.bestTree:md5,0fc888c87cf6c0f5d2d3ba01db8525f1"
+                    ]
+                ],
+                "1": [
+                    
+                ],
+                "2": [
+                    "versions.yml:md5,e5a855c4c9bcde2084ec9e34861379f0"
+                ],
+                "phylogeny": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.raxml.bestTree:md5,0fc888c87cf6c0f5d2d3ba01db8525f1"
+                    ]
+                ],
+                "phylogeny_bootstrapped": [
+                    
+                ],
+                "versions": [
+                    "versions.yml:md5,e5a855c4c9bcde2084ec9e34861379f0"
+                ]
+            },
+            {
+                "RAXMLNG": {
+                    "raxmlng": "1.0.3"
+                }
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.6"
+        },
+        "timestamp": "2025-05-12T05:39:05.171434992"
     }
 }
