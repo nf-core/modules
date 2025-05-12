@@ -49,7 +49,7 @@ input:
         type: file
         description: FASTA file
         pattern: "*.{fasta|fa}"
-  - - meta2:
+  - - meta3:
         type: map
         description: |
           Groovy Map containing FASTA information
@@ -59,7 +59,7 @@ input:
         type: file
         description: Index of FASTA file
         pattern: "*.{fai}"
-  - - meta3:
+  - - meta4:
         type: map
         description: |
           Groovy Map containing BWA information
@@ -67,9 +67,9 @@ input:
           e.g. [ id:'bwa' ]
     - bwa_index:
         type: file
-        description: BWA genome index files
+        description: BWA genome index files. Note that this tool requires the bwa index files to be of the format `prefix.suffix.amb`, where `prefix.suffix` is the full name of the fasta file, not just the prefix.
         pattern: "Directory containing BWA index *.{amb,ann,bwt,pac,sa}"
-  - - meta4:
+  - - meta5:
         type: map
         description: |
           Groovy Map containing dbSNP information
@@ -79,7 +79,7 @@ input:
         type: file
         description: VCF file including dbSNP variants
         pattern: "*.vcf.gz"
-  - - meta4:
+  - - meta6:
         type: map
         description: |
           Groovy Map containing dbSNP information
@@ -89,7 +89,7 @@ input:
         type: file
         description: Index of VCF file including dbSNP variants
         pattern: "*.vcf.gz.tbi"
-  - - meta5:
+  - - meta7:
         type: map
         description: |
           Groovy Map containing regions information
