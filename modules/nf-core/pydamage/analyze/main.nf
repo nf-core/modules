@@ -41,7 +41,7 @@ process PYDAMAGE_ANALYZE {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    export NUMBA_CACHE_DIR=./tmp
+    export NUMBA_CACHE_DIR=./tmp # exports required for versions to resolve correctly
     export MPLCONFIGDIR=./tmp
 
     touch ${prefix}_pydamage_results.csv
