@@ -29,4 +29,19 @@ process PURGEDUPS_CALCUTS {
         purgedups: \$( purge_dups -h |& sed '3!d; s/.*: //' )
     END_VERSIONS
     """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${prefix}.cutoffs
+    touch ${prefix}.calcuts.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        purgedups: \$( purge_dups -h |& sed '3!d; s/.*: //' )
+    END_VERSIONS
+    """
+
+
 }
