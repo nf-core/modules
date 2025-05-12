@@ -82,7 +82,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bam.collect { bam(it[1]).getSamLines() },
+                    process.out.bam.collect { bam(it[1]).getReadsMD5() },
                     process.out.versions
                 ).match() }
             )
@@ -117,7 +117,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.cram.collect { cram(it[1], it[2]).getSamLines() },
+                    process.out.cram.collect { cram(it[1], it[2]).getReadsMD5() },
                     process.out.versions
                 ).match() }
             )
