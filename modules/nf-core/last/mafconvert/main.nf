@@ -39,11 +39,14 @@ process LAST_MAFCONVERT {
 
     case $format in
         bam)
-            maf-convert $args -d sam  $maf | samtools view -b -o ${prefix}.${format}
+            maf-convert $args -d sam  $maf | samtools sort - -u | samtools  addreplacerg - -r "ID:${meta.id}" -r "SM:${meta.id}" -O ${format}    -o ${prefix}.${format}
             ;;
         cram)
             # CRAM output is not supported if the genome is compressed with something else than bgzip
-            maf-convert $args -d sam  $maf | samtools view -Ct $fasta -o ${prefix}.${format}
+            maf-convert $args -d sam  $maf | samtools sort - -u | samtools  addreplacerg - -r "ID:${meta.id}" -r "SM:${meta.id}" -O ${format}    -o ${prefix}.${format}    --reference $fasta
+            ;;
+        sam)
+            maf-convert $args -d sam  $maf | samtools sort -    | samtools  addreplacerg - -r "ID:${meta.id}" -r "SM:${meta.id}" | gzip --no-name > ${prefix}.${format}.gz
             ;;
         *)
             maf-convert $args $format $maf | gzip --no-name > ${prefix}.${format}.gz
@@ -54,6 +57,7 @@ process LAST_MAFCONVERT {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         last: \$(lastdb --version 2>&1 | sed 's/lastdb //')
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 
@@ -77,6 +81,7 @@ process LAST_MAFCONVERT {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         last: \$(lastdb --version 2>&1 | sed 's/lastdb //')
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 }
