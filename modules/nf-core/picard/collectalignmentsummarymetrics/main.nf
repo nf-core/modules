@@ -8,8 +8,8 @@ process PICARD_COLLECTALIGNMENTSUMMARYMETRICS {
         'biocontainers/picard:3.3.0--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bam)
-    path  fasta
+    tuple val(meta),  path(bam)
+    tuple val(meta2), path(fasta)
 
     output:
     tuple val(meta), path("*.txt"), emit: metrics
