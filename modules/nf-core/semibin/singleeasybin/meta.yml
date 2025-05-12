@@ -18,7 +18,7 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test' ]
     - fasta:
         type: file
         description: Fasta file of the assembled contigs
@@ -33,8 +33,8 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.csv":
+            e.g. [ id:'test' ]
+      - "${prefix}/*.csv":
           type: file
           description: generated files
           pattern: "*.csv"
@@ -43,8 +43,8 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.h5":
+            e.g. [ id:'test' ]
+      - "${prefix}/*.h5":
           type: file
           description: model file
           pattern: "*.h5"
@@ -53,28 +53,18 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - output_prerecluster_bins/*.fa:
+            e.g. [ id:'test' ]
+      - "${prefix}/output_bins/*.fa.gz":
           type: file
           description: precluster fasta files
-          pattern: "*.fa"
-  - recluster_fasta:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - output_recluster_bins/*.fa:
-          type: file
-          description: recluster fasta files
           pattern: "*.fa"
   - tsv:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.tsv":
+            e.g. [ id:'test' ]
+      - "${prefix}/*.tsv":
           type: file
           description: information of bins
           pattern: "*.tsv"
