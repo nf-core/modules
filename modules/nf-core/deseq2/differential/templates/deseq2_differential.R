@@ -68,6 +68,17 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.nam
     )
 }
 
+#
+#' Turn “null” or empty strings into actual NULL
+#'
+#' @param x Input option
+#'
+#' @return NULL or x
+#'
+nullify <- function(x) {
+  if (is.character(x) && (tolower(x) == "null" || x == "")) NULL else x
+}
+
 ################################################
 ################################################
 ## PARSE PARAMETERS FROM NEXTFLOW             ##
@@ -87,6 +98,8 @@ opt <- list(
     contrast_variable = '$contrast_variable',
     reference_level = '$reference',
     target_level = '$target',
+    contrast_string    = "$comparison",             # Optional full (complex) contrast expression comparison
+    formula            = "$formula",              # User-specified formula
     blocking_variables = NULL,
     control_genes_file = '$control_genes_file',
     transcript_lengths_file = '$transcript_lengths_file',
@@ -134,6 +147,10 @@ for ( ao in names(args_opt)){
 if ( ! is.null(opt\$round_digits)){
     opt\$round_digits <- as.numeric(opt\$round_digits)
 }
+
+# If there is no option supplied, convert string "null" to NULL
+keys <- c("formula", "contrast_string")
+opt[keys] <- lapply(opt[keys], nullify)
 
 # Check if required parameters have been provided
 
@@ -281,23 +298,26 @@ if ((is_valid_string(opt\$exclude_samples_col)) && (is_valid_string(opt\$exclude
 # Now specify the model. Use cell-means style so we can be explicit with the
 # contrasts
 
-model <- '~ 0'
+if (!is.null(opt\$formula)) {
+    model <- opt\$formula
+} else {
+    model <- '~ 0'
 
-if (is_valid_string(opt\$blocking_variables)) {
-    model <- paste(model, paste(blocking.vars, collapse = ' + '), sep=' + ')
+    if (is_valid_string(opt\$blocking_variables)) {
+        model <- paste(model, paste(blocking.vars, collapse = ' + '), sep=' + ')
+    }
+
+    # Make sure all the appropriate variables are factors
+
+    for (v in c(blocking.vars, contrast_variable)) {
+        sample.sheet[[v]] <- as.factor(sample.sheet[[v]])
+    }
+
+    # Variable of interest goes last, see
+    # https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#multi-factor-designs
+
+    model <- paste(model, contrast_variable, sep = ' + ')
 }
-
-# Make sure all the appropriate variables are factors
-
-for (v in c(blocking.vars, contrast_variable)) {
-    sample.sheet[[v]] <- as.factor(sample.sheet[[v]])
-}
-
-# Variable of interest goes last, see
-# https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#multi-factor-designs
-
-model <- paste(model, contrast_variable, sep = ' + ')
-
 ################################################
 ################################################
 ## Run DESeq2 processes                       ##
@@ -348,6 +368,36 @@ dds <- DESeq(
     parallel=TRUE, BPPARAM=MulticoreParam(opt\$cores)
 )
 
+if (!is.null(opt\$contrast_string)) {
+    coef_names <- resultsNames(dds)
+    if (opt\$contrast_string %in% coef_names) {
+        comp.results <- results(
+            dds,
+            name               = opt\$contrast_string,
+            lfcThreshold       = opt\$lfc_threshold,
+            altHypothesis      = opt\$alt_hypothesis,
+            independentFiltering = opt\$independent_filtering,
+            alpha              = opt\$alpha,
+            pAdjustMethod      = opt\$p_adjust_method,
+            minmu              = opt\$minmu
+        )
+        if (opt\$shrink_lfc) {
+            comp.results <- lfcShrink(
+                dds,
+                type = 'ashr',
+                coef = opt\$contrast_string
+            )
+        }
+    } else {
+        stop(
+            sprintf(
+                "Contrast '%s' not in design. Available coefficients: %s",
+                opt\$contrast_string,
+                paste(coef_names, collapse = ", ")
+            )
+        )
+    }
+} else {
 comp.results <-
     results(
         dds,
@@ -371,6 +421,7 @@ if (opt\$shrink_lfc){
             c(opt\$target_level, opt\$reference_level)
         )
     )
+}
 }
 
 # See https://support.bioconductor.org/p/97676/

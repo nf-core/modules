@@ -21,7 +21,104 @@ nextflow_process {
                 ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                    }
+                ch_matrix = [
+                    [id: 'test'],
+                    file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+                ch_spikes = [[],[]]
+                ch_lengths = [[],[]]
+
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.results,
+                    process.out.size_factors,
+                    process.out.normalised_counts,
+                    process.out.rlog_counts,
+                    process.out.vst_counts,
+                    process.out.model,
+                    process.out.versions,
+                    file(process.out.dispersion_plot[0][1]).name,
+                    file(process.out.rdata[0][1]).name
+                ).match() },
+                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }
+            )
+        }
+    }
+
+    test("mouse - contrasts - matrix - with formula and contrast string (reference-level deseq2 coding)") {
+
+        config './contrasts_matrix.config'
+
+        when {
+            process {
+                """
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target, '~ treatment', 'treatment_mCherry_vs_hND6')
+                    }
+                ch_matrix = [
+                    [id: 'test'],
+                    file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+                ch_spikes = [[],[]]
+                ch_lengths = [[],[]]
+
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.results,
+                    process.out.size_factors,
+                    process.out.normalised_counts,
+                    process.out.rlog_counts,
+                    process.out.vst_counts,
+                    process.out.model,
+                    process.out.versions,
+                    file(process.out.dispersion_plot[0][1]).name,
+                    file(process.out.rdata[0][1]).name
+                ).match() },
+                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }
+            )
+        }
+    }
+
+
+    test("mouse - contrasts - matrix - with formula and contrast string (reference-level coding)") {
+
+        config './contrasts_matrix.config'
+
+        when {
+            process {
+                """
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target, '~ treatment', 'treatment_mCherry_vs_hND6')
                     }
                 ch_matrix = [
                     [id: 'test'],
@@ -69,7 +166,7 @@ nextflow_process {
                 ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_matrix = [
                     [id: 'test'],
@@ -123,7 +220,7 @@ nextflow_process {
                 ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_matrix = [
                     [id: 'test'],
@@ -171,7 +268,7 @@ nextflow_process {
                 ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_matrix = [
                     [id: 'test'],
@@ -222,7 +319,7 @@ nextflow_process {
                 ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_matrix = [
                     [id: 'test'],
@@ -273,7 +370,7 @@ nextflow_process {
                 ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
 
                 // Convert the matrix to a CSV first
@@ -327,7 +424,7 @@ nextflow_process {
                 ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_matrix = [
                     [id: 'test'],
@@ -375,7 +472,7 @@ nextflow_process {
                 ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_matrix = [
                     [id: 'test'],
@@ -423,7 +520,7 @@ nextflow_process {
                 ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_matrix = [
                     [id: 'test'],
@@ -472,7 +569,7 @@ nextflow_process {
                 ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_matrix = [
                     [id: 'test'],
