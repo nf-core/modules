@@ -65,6 +65,7 @@ process LAST_MAFCONVERT {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         last: \$(lastdb --version 2>&1 | sed 's/lastdb //')
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 
@@ -88,6 +89,7 @@ process LAST_MAFCONVERT {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         last: \$(lastdb --version 2>&1 | sed 's/lastdb //')
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 }
