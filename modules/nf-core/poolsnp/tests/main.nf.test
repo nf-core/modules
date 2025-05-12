@@ -15,12 +15,15 @@ nextflow_process {
             script "../../samtools/mpileup/main.nf"
             process {
             """
-            input[0] = Channel.of([
-                [ id:'test', single_end:false ], // meta map
+            input[0] = [
+                [ id:'test'],
                 file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                 file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
-            ])
-            input[1] = Channel.of([ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ])
+            ]
+            input[1] = [
+                [ id: 'fasta'],
+                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+            ]
             """
             }
         }
@@ -32,12 +35,12 @@ nextflow_process {
             process {
                 """
                 input[0] = SAMTOOLS_MPILEUP.out.mpileup
-                input[1] = Channel.of([
-                    [ id:'test' ], // meta map
+                input[1] = [
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                ])
+                ]
                 input[2] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     0.7,
                     []
                 ]
@@ -64,12 +67,12 @@ nextflow_process {
             process {
                 """
                 input[0] = SAMTOOLS_MPILEUP.out.mpileup
-                input[1] = Channel.of([
-                    [ id:'test' ], // meta map
+                input[1] = [
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                ])
+                ]
                 input[2] = Channel.of([
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     '',
                 ]).combine( Channel.of("MT192765.1\t98").collectFile( name:'max_cov.tsv', newLine: true ))
                 """
@@ -96,10 +99,10 @@ nextflow_process {
             process {
                 """
                 input[0] = SAMTOOLS_MPILEUP.out.mpileup
-                input[1] = Channel.of([
-                    [ id:'test' ], // meta map
+                input[1] = [
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                ])
+                ]
                 input[2] = [
                     [ id:'test' ], // meta map
                     0.7,
@@ -130,12 +133,12 @@ nextflow_process {
             process {
                 """
                 input[0] = SAMTOOLS_MPILEUP.out.mpileup
-                input[1] = Channel.of([
-                    [ id:'test' ], // meta map
+                input[1] = [
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                ])
+                ]
                 input[2] = Channel.of([
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     '',
                 ]).combine( Channel.of("MT192765.1\t98").collectFile( name:'max_cov.tsv', newLine: true ))
                 """
