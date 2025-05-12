@@ -69,7 +69,7 @@ nextflow_process {
                 ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, '~ treatment', 'treatment_mCherry_vs_hND6')
+                        tuple(it, it.variable, it.reference, it.target, '~ treatment', 'treatmenthND6')
                     }
                 ch_matrix = [
                     [id: 'test'],
@@ -105,8 +105,7 @@ nextflow_process {
         }
     }
 
-
-    test("mouse - contrasts - matrix - with formula and contrast string (reference-level coding)") {
+     test("mouse - contrasts - matrix - with formula and contrast string (cell-means deseq2 coding)") {
 
         config './contrasts_matrix.config'
 
@@ -118,7 +117,7 @@ nextflow_process {
                 ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target, '~ treatment', 'treatment_mCherry_vs_hND6')
+                        tuple(it, it.variable, it.reference, it.target, '~ 0 + treatment', 'treatmenthND6')
                     }
                 ch_matrix = [
                     [id: 'test'],

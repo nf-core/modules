@@ -299,7 +299,10 @@ if ((is_valid_string(opt\$exclude_samples_col)) && (is_valid_string(opt\$exclude
 # contrasts
 
 if (!is.null(opt\$formula)) {
-    model <- opt\$formula
+    user_formula  <- as.formula(opt\$formula)
+    model_formula <- update(user_formula,  ~ 0 + .)
+    model  <- paste(as.character(model_formula), collapse = " ")
+    print(paste('Cell-means style model formula to be used', model))
 } else {
     model <- '~ 0'
 
