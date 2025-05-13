@@ -57,6 +57,7 @@ nextflow_process {
                         [id:"test"], it[1]
                     ]}
                     .groupTuple(sort : true)
+                    .view()
                 """
             }
         }
