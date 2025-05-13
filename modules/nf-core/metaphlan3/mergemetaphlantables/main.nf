@@ -17,13 +17,14 @@ process METAPHLAN3_MERGEMETAPHLANTABLES {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args   ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    def args  = task.ext.args   ?: ''
+    prefix    = task.ext.prefix ?: "${meta.id}"
+    def input = profiles.sort{it.toString()}.join(" ")
     """
     merge_metaphlan_tables.py \\
         $args \\
         -o ${prefix}.txt \\
-        ${profiles}
+        ${input}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
