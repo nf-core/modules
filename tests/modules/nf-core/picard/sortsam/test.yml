@@ -1,9 +1,0 @@
-- name: picard sortsam test_picard_sortsam
-  command: nextflow run ./tests/modules/nf-core/picard/sortsam -entry test_picard_sortsam -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/picard/sortsam/nextflow.config
-  tags:
-    - picard
-    - picard/sortsam
-  files:
-    - path: output/picard/test.sorted.bam
-      md5sum: b44a6ca04811a9470c7813c3c9465fd5
-    - path: output/picard/versions.yml

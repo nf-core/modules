@@ -19,14 +19,14 @@ nextflow_process {
                 """
                 raw_ch = Channel.of([
                     [ id:'test' ], // meta map
-                    file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
                 ])
                 config = Channel.of(["config.yaml", "header:", "  - name: test", "    content: test"])
                     .collectFile(newLine:true, sort:'index')
                 input[0] = raw_ch.combine(config)
                 input[1] = [
                     [id:"ref"],
-                    file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 """
             }
@@ -52,14 +52,14 @@ nextflow_process {
                 """
                 raw_ch = Channel.of([
                     [ id:'test' ], // meta map
-                    file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
                 ])
                 config = Channel.of(["config.yaml", "header:", "  - name: test", "    content: test"])
                     .collectFile(newLine:true, sort:'index')
                 input[0] = raw_ch.combine(config)
                 input[1] = [
                     [id:"ref"],
-                    file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 """
             }

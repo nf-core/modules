@@ -4,8 +4,8 @@ process KMCP_COMPUTE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/kmcp:0.9.1--h9ee0642_0':
-        'biocontainers/kmcp:0.9.1--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/kmcp:0.9.4--h9ee0642_0':
+        'biocontainers/kmcp:0.9.4--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(sequences)

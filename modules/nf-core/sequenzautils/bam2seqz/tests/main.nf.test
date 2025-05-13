@@ -1,0 +1,64 @@
+
+nextflow_process {
+
+    name "Test Process SEQUENZAUTILS_BAM2SEQZ"
+    script "../main.nf"
+    process "SEQUENZAUTILS_BAM2SEQZ"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "sequenzautils"
+    tag "sequenzautils/bam2seqz"
+
+    test("test-sequenzautils-bam2seqz") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true)
+				]
+				input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+				input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/wig/test.wig.gz', checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-sequenzautils-bam2seqz-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true)
+				]
+				input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+				input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/wig/test.wig.gz', checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

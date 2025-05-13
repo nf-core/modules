@@ -1,8 +1,0 @@
-- name: atlas recal test_atlas_recal
-  command: nextflow run ./tests/modules/nf-core/atlas/recal -entry test_atlas_recal -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/atlas/recal/nextflow.config
-  tags:
-    - atlas/recal
-    - atlas
-  files:
-    - path: output/atlas/test_recalibrationEM.txt
-      contains: ["readGroup"]

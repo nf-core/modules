@@ -16,8 +16,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
                 input[2] = "homo_sapiens_reference"
                 """
             }
@@ -36,9 +36,9 @@ nextflow_process {
                         path( "${outputDir}/homo_sapiens_reference/star/geneInfo.tab"     ),
                         path( "${outputDir}/homo_sapiens_reference/star/exonGeTrInfo.tab" ),
                         path( "${outputDir}/homo_sapiens_reference/star/exonInfo.tab"     ),
-                        path( "${outputDir}/homo_sapiens_reference/star/sjdbList.out.tab" )
-                    ).match(),
-                { assert snapshot(process.out.versions).match("versions") }
+                        path( "${outputDir}/homo_sapiens_reference/star/sjdbList.out.tab" ),
+                        process.out.versions
+                    ).match()
                 }
             )
         }
@@ -62,8 +62,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.reference).match() },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out).match() }
             )
         }
 

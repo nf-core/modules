@@ -10,42 +10,46 @@ tools:
       homepage: "https://scimap.xyz/"
       documentation: "https://scimap.xyz/All%20Functions/A.%20Pre%20Processing/sm.pp.mcmicro_to_scimap/"
       tool_dev_url: "https://github.com/labsyspharm/scimap"
-      licence: "MIT License"
+      licence: ["MIT License"]
+      identifier: biotools:SCIMAP
 input:
   # Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - cellByFeature:
-      type: file
-      description: CSV file with cell by feature table
-      pattern: "*.{csv}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - cellbyfeature:
+        type: file
+        description: CSV file with cell by feature table
+        pattern: "*.{csv}"
 output:
   #Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  #
+  - csv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.csv":
+          type: file
+          description: Sorted CSV file
+          pattern: "*.{csv}"
+  - h5ad:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.h5ad":
+          type: file
+          description: Sorted H5AD file
+          pattern: "*.{h5ad}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - annotedDataCsv:
-      type: file
-      description: Sorted CSV file
-      pattern: "*.{csv}"
-  - annotedDataH5ad:
-      type: file
-      description: Sorted H5AD file
-      pattern: "*.{h5ad}"
-      # - clusterPlot:
-      #     type: file
-      #     description: UPMA plot of the data in pdf file
-      #     pattern: "*.pdf"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@luiskuhn"
 maintainers:

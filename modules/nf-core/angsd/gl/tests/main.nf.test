@@ -11,18 +11,21 @@ nextflow_process {
     tag "angsd/gl"
 
     test("angsd - gl_samtools - bam") {
+        config "./nextflow.config"
 
         when {
-            config "./config_gl_1.conf"
+            params {
+                angsd_args = '-GL 1 -doGlf 1'
+            }
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_markduplicates_sorted_bam'], checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists: true),
                 ]
                 input[1] = [
                     [ id:'test_fa' ],
-                    file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 ]
                 input[2] = [ [], [] ]
                 """
@@ -39,18 +42,22 @@ nextflow_process {
     }
 
     test("angsd - gl_gatk - bam") {
+        config "./nextflow.config"
 
         when {
-            config "./config_gl_2.conf"
+            params {
+                // -doMajorMinor is needed for -doGlf 2
+                angsd_args = '-GL 2 -doGlf 2 -doMajorMinor 1'
+            }
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_markduplicates_sorted_bam'], checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists: true),
                 ]
                 input[1] = [
                     [ id:'test_fa' ],
-                    file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 ]
                 input[2] = [ [], [] ]
                 """
@@ -67,18 +74,22 @@ nextflow_process {
     }
 
     test("angsd - gl_soapsnp - bam") {
+        config "./nextflow.config"
 
         when {
-            config "./config_gl_3.conf"
+            params {
+                // -doMajorMinor is needed for -doGlf 3
+                angsd_args = '-GL 3 -doGlf 3 -doMajorMinor 1'
+            }
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_markduplicates_sorted_bam'], checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists: true),
                 ]
                 input[1] = [
                     [ id:'test_fa' ],
-                    file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 ]
                 input[2] = [ [], [] ]
                 """
@@ -95,18 +106,21 @@ nextflow_process {
     }
 
     test("angsd - gl_syk - bam") {
+        config "./nextflow.config"
 
         when {
-            config "./config_gl_4.conf"
+            params {
+                angsd_args = '-GL 4 -doGlf 4'
+            }
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_markduplicates_sorted_bam'], checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists: true),
                 ]
                 input[1] = [
                     [ id:'test_fa' ],
-                    file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 ]
                 input[2] = [ [], [] ]
                 """
@@ -127,16 +141,15 @@ nextflow_process {
         options "-stub"
 
         when {
-            config "./config_gl_1.conf"
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_markduplicates_sorted_bam'], checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists: true),
                 ]
                 input[1] = [
                     [ id:'test_fa' ],
-                    file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 ]
                 input[2] = [ [], [] ]
                 """
@@ -157,16 +170,15 @@ nextflow_process {
         options "-stub"
 
         when {
-            config "./config_gl_2.conf"
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_markduplicates_sorted_bam'], checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists: true),
                 ]
                 input[1] = [
                     [ id:'test_fa' ],
-                    file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 ]
                 input[2] = [ [], [] ]
                 """
@@ -187,16 +199,15 @@ nextflow_process {
         options "-stub"
 
         when {
-            config "./config_gl_3.conf"
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_markduplicates_sorted_bam'], checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists: true),
                 ]
                 input[1] = [
                     [ id:'test_fa' ],
-                    file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 ]
                 input[2] = [ [], [] ]
                 """
@@ -217,16 +228,15 @@ nextflow_process {
         options "-stub"
 
         when {
-            config "./config_gl_4.conf"
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_markduplicates_sorted_bam'], checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists: true),
                 ]
                 input[1] = [
                     [ id:'test_fa' ],
-                    file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 ]
                 input[2] = [ [], [] ]
                 """

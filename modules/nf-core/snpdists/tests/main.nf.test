@@ -1,0 +1,32 @@
+
+nextflow_process {
+
+    name "Test Process SNPDISTS"
+    script "../main.nf"
+    process "SNPDISTS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "snpdists"
+
+    test("test-snpdists") {
+        
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+				file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true) ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    
+}

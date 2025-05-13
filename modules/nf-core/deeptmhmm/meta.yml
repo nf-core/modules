@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: deeptmhmm
 description: A Deep Learning Model for Transmembrane Topology Prediction and Classification
@@ -8,51 +7,84 @@ keywords:
   - classification
 tools:
   - deeptmhmm:
-      description: Deep Learning model for Transmembrane Helices protein domain prediction through the BioLib Python Client
+      description: Deep Learning model for Transmembrane Helices protein domain prediction
+        through the BioLib Python Client
       homepage: https://dtu.biolib.com/DeepTMHMM
       documentation: https://dtu.biolib.com/DeepTMHMM
       doi: 10.1101/2022.04.08.487609
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: Database of sequences in FASTA format
-      pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Database of sequences in FASTA format
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - gff3:
-      type: file
-      description: Predicted topologies (inside, outside, TMhelix) in general Feature Format Version 3
-      pattern: "biolib_results/TMRs.gff3"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - biolib_results/TMRs.gff3:
+          type: file
+          description: Predicted topologies (inside, outside, TMhelix) in general Feature
+            Format Version 3
+          pattern: "biolib_results/TMRs.gff3"
   - line3:
-      type: file
-      description: Predicted topologies and information of protein sequences in three lines (name, sequence, topology)
-      pattern: "biolib_results/predicted_topologies.3line"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - biolib_results/predicted_topologies.3line:
+          type: file
+          description: Predicted topologies and information of protein sequences in three
+            lines (name, sequence, topology)
+          pattern: "biolib_results/predicted_topologies.3line"
   - md:
-      type: file
-      description: Markdown results file
-      pattern: "biolib_results/deeptmhmm_results.md"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - biolib_results/deeptmhmm_results.md:
+          type: file
+          description: Markdown results file
+          pattern: "biolib_results/deeptmhmm_results.md"
   - csv:
-      type: file
-      description: CSV file with per-residue predictions for the likelihood of each amino acid being in structural regions such as Beta-sheet, Periplasm, Membrane, Inside, Outside or Signal (only when querying against genomic fasta)
-      pattern: "biolib_results/*_probs.csv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - biolib_results/*_probs.csv:
+          type: file
+          description: CSV file with per-residue predictions for the likelihood of each
+            amino acid being in structural regions such as Beta-sheet, Periplasm, Membrane,
+            Inside, Outside or Signal (only when querying against genomic fasta)
+          pattern: "biolib_results/*_probs.csv"
   - png:
-      type: file
-      description: Most likely topology probability line plots (only when querying against genomic fasta)
-      pattern: "biolib_results/plot.png"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - biolib_results/plot.png:
+          type: file
+          description: Most likely topology probability line plots (only when querying
+            against genomic fasta)
+          pattern: "biolib_results/plot.png"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@vagkaratzas"
 maintainers:

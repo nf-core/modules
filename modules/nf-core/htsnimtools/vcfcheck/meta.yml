@@ -1,6 +1,7 @@
----
 name: "htsnimtools_vcfcheck"
-description: This tools takes a background VCF, such as gnomad, that has full genome (though in some cases, users will instead want whole exome) coverage and uses that as an expectation of variants.
+description: This tools takes a background VCF, such as gnomad, that has full genome
+  (though in some cases, users will instead want whole exome) coverage and uses that
+  as an expectation of variants.
 keywords:
   - validation
   - check
@@ -12,50 +13,52 @@ tools:
       documentation: "https://github.com/brentp/hts-nim-tools"
       tool_dev_url: "https://github.com/brentp/hts-nim-tools"
       licence: ["MIT"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - vcf:
-      type: file
-      description: The query VCF file
-      pattern: "*.{vcf,vcf.gz,bcf}"
-  - tbi:
-      type: file
-      description: The index of the query VCF file
-      pattern: "*.{tbi}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing background VCF information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - background_vcf:
-      type: file
-      description: The background VCF file
-      pattern: "*.{vcf,vcf.gz,bcf}"
-  - background_tbi:
-      type: file
-      description: The index of the background VCF file
-      pattern: "*.{tbi}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - vcf:
+        type: file
+        description: The query VCF file
+        pattern: "*.{vcf,vcf.gz,bcf}"
+    - tbi:
+        type: file
+        description: The index of the query VCF file
+        pattern: "*.{tbi}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing background VCF information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - background_vcf:
+        type: file
+        description: The background VCF file
+        pattern: "*.{vcf,vcf.gz,bcf}"
+    - background_tbi:
+        type: file
+        description: The index of the background VCF file
+        pattern: "*.{tbi}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - tsv:
-      type: file
-      description: A tab-delimited file comparing the variant count of each region in the query VCF and background VCF
-      pattern: "*.tsv"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.tsv":
+          type: file
+          description: A tab-delimited file comparing the variant count of each region
+            in the query VCF and background VCF
+          pattern: "*.tsv"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nvnieuwk"
 maintainers:

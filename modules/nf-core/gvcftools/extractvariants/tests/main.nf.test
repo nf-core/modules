@@ -1,0 +1,88 @@
+
+nextflow_process {
+
+    name "Test Process GVCFTOOLS_EXTRACTVARIANTS"
+    script "../main.nf"
+    process "GVCFTOOLS_EXTRACTVARIANTS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gvcftools"
+    tag "gvcftools/extractvariants"
+
+    test("test-gvcftools-extractvariants") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					path(process.out.vcf[0][1]).vcf.variantsMD5,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-gvcftools-extractvariants-uncompressed") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					path(process.out.vcf[0][1]).vcf.variantsMD5,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-gvcftools-extractvariants-uncompressed-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

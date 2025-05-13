@@ -1,5 +1,6 @@
 name: "endorspy"
-description: endorS.py calculates endogenous DNA from samtools flagstat files and print to screen
+description: endorS.py calculates endogenous DNA from samtools flagstat files and
+  print to screen
 keywords:
   - endogenous DNA
   - ancient DNA
@@ -7,41 +8,49 @@ keywords:
   - statistics
 tools:
   - "endorspy":
-      description: "endorS.py calculates percent on target and/or clonality from samtools flagstat files and print to screen"
+      description: "endorS.py calculates percent on target and/or clonality from samtools
+        flagstat files and print to screen"
       homepage: "https://github.com/aidaanva/endorS.py"
       documentation: "https://github.com/aidaanva/endorS.py"
       tool_dev_url: "https://github.com/aidaanva/endorS.py"
       doi: "10.7717/peerj.10947"
-      licence: "['GPL v3']"
+      licence: ["GPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - stats_raw:
-      type: file
-      description: output of samtools flagstat in a txt file, assumes no quality filtering nor duplicate removal performed
-  - stats_qualityfiltered:
-      type: file
-      description: output of samtools flagstat in a txt file, assumes some form of quality or length filtering has been performed, must be provided with at least one of the options -r or -d
-  - stats_deduplicated:
-      type: file
-      description: output of samtools flagstat in a txt file, whereby duplicate removal has been performed on the input reads
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - stats_raw:
+        type: file
+        description: output of samtools flagstat in a txt file, assumes no quality filtering
+          nor duplicate removal performed
+    - stats_qualityfiltered:
+        type: file
+        description: output of samtools flagstat in a txt file, assumes some form of
+          quality or length filtering has been performed, must be provided with at least
+          one of the options -r or -d
+    - stats_deduplicated:
+        type: file
+        description: output of samtools flagstat in a txt file, whereby duplicate removal
+          has been performed on the input reads
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - json:
-      type: file
-      description: file with the endogenous DNA calculation tailored for multiQC
-      pattern: "*_mqc.json"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_mqc.json":
+          type: file
+          description: file with the endogenous DNA calculation tailored for multiQC
+          pattern: "*_mqc.json"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@aidaanva"
 maintainers:

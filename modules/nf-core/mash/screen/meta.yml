@@ -13,34 +13,41 @@ tools:
       tool_dev_url: https://github.com/marbl/Mash
       doi: "10.1186/s13059-016-0997-x"
       licence: ["https://github.com/marbl/Mash/blob/master/LICENSE.txt"]
+      identifier: biotools:mash
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - query:
-      type: file
-      description: Query sequences
-      pattern: "*.fastq.gz"
-  - sequence_sketch:
-      type: file
-      description: Sequence files to match against
-      pattern: "*.msh"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - query:
+        type: file
+        description: Query sequences
+        pattern: "*.fastq.gz"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - sequences_sketch:
+        type: file
+        description: sketch file of sequences
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - screen:
-      type: file
-      description: List of sequences from fastx_db similar to query sequences
-      pattern: "*.screen"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.screen":
+          type: file
+          description: List of sequences from fastx_db similar to query sequences
+          pattern: "*.screen"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@mahesh-panchal"
 maintainers:

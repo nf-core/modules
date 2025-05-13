@@ -12,7 +12,7 @@ nextflow_process {
 
     test("homo_sapiens - [npz]") {
 
-        // Stub run because this process needs at least 30 samples to succesfully run
+        // Stub run because this process needs at least 30 samples to successfully run
         options "-stub"
 
         setup {
@@ -22,13 +22,13 @@ nextflow_process {
                     """
                     input[0] = Channel.of([
                         [ id:'test' ], // meta map
-                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
                     ],
                     [
                         [ id: 'test2' ],
-                        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam_bai'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam.bai', checkIfExists: true)
                     ])
                     input[1] = [[],[]]
                     input[2] = [[],[]]

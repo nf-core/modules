@@ -16,7 +16,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['pangenome']['pangenome_smoothxg_gfa'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.smoothxg.gfa', checkIfExists: true)
                     ]
                 """
             }
@@ -25,7 +25,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    file(process.out.unchopped_graph[0][1]).name,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
 

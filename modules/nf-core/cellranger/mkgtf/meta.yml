@@ -1,30 +1,36 @@
 name: cellranger_mkgtf
-description: Module to build a filtered GTF needed by the 10x Genomics Cell Ranger tool. Uses the cellranger mkgtf command.
+description: Module to build a filtered GTF needed by the 10x Genomics Cell Ranger
+  tool. Uses the cellranger mkgtf command.
 keywords:
   - reference
   - mkref
   - index
 tools:
   - cellranger:
-      description: Cell Ranger by 10x Genomics is a set of analysis pipelines that process Chromium single-cell data to align reads, generate feature-barcode matrices, perform clustering and other secondary analysis, and more.
+      description: Cell Ranger by 10x Genomics is a set of analysis pipelines that process
+        Chromium single-cell data to align reads, generate feature-barcode matrices,
+        perform clustering and other secondary analysis, and more.
       homepage: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger
       documentation: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
       tool_dev_url: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
       licence: [10X Genomics EULA]
+      identifier: ""
 input:
-  - gtf:
-      type: file
-      description: The reference GTF transcriptome file
-      pattern: "*.gtf"
+  - - gtf:
+        type: file
+        description: The reference GTF transcriptome file
+        pattern: "*.gtf"
 output:
   - gtf:
-      type: directory
-      description: The filtered GTF transcriptome file
-      pattern: "*.filtered.gtf"
+      - "*.gtf":
+          type: directory
+          description: The filtered GTF transcriptome file
+          pattern: "*.filtered.gtf"
   - versions:
-      type: file
-      description: File containing software version
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software version
+          pattern: "versions.yml"
 authors:
   - "@ggabernet"
   - "@edmundmiller"

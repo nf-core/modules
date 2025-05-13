@@ -17,17 +17,19 @@ tools:
       tool_dev_url: "https://github.com/gbouras13/pharokka"
       doi: "10.1093/bioinformatics/btac776"
       licence: ["MIT"]
+      identifier: biotools:pharokka
 
 output:
   - pharokka_db:
-      type: directory
-      description: Directory pointing to Pharokka's database
-      pattern: "${prefix}/"
+      - ${prefix}/:
+          type: directory
+          description: Directory pointing to Pharokka's database
+          pattern: "${prefix}/"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@CarsonJM"
 maintainers:

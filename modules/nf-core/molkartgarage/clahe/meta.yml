@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "molkartgarage_clahe"
-description: Contrast-limited adjusted histogram equalization (CLAHE) on single-channel tif images.
+description: Contrast-limited adjusted histogram equalization (CLAHE) on single-channel
+  tif images.
 keywords:
   - clahe
   - image_processing
@@ -9,43 +9,42 @@ keywords:
   - correction
 tools:
   - "molkartgarage":
-      description: "One-stop-shop for scripts and tools for processing data for molkart and spatial omics pipelines."
+      description: "One-stop-shop for scripts and tools for processing data for molkart
+        and spatial omics pipelines."
       homepage: https://github.com/SchapiroLabor/molkart-local/tree/main
       documentation: https://github.com/SchapiroLabor/molkart-local/tree/main
       tool_dev_url: https://github.com/SchapiroLabor/molkart-local/blob/main/scripts/molkart_clahe.py
       licence: ["MIT"]
+      identifier: ""
 
 input:
   # Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1']`
-
-  - image:
-      type: file
-      description: Single-channel tiff file to be corrected.
-      pattern: "*.{tif,tiff}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1']`
+    - image:
+        type: file
+        description: Single-channel tiff file to be corrected.
+        pattern: "*.{tif,tiff}"
 output:
   #Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1']`
-
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
   - img_clahe:
-      type: file
-      description: CLAHE corrected tiff file.
-      pattern: "*.{tiff}"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - "*.tiff":
+          type: file
+          description: CLAHE corrected tiff file.
+          pattern: "*.{tiff}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@kbestak"
 maintainers:

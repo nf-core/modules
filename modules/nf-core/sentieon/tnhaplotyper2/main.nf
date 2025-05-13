@@ -3,12 +3,10 @@ process SENTIEON_TNHAPLOTYPER2 {
     label 'process_high'
     label 'sentieon'
 
-    secret 'SENTIEON_LICENSE_BASE64'
-
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sentieon:202308.02--h43eeafb_0' :
-        'biocontainers/sentieon:202308.02--h43eeafb_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/80/80ccb05eb4f1a193a3bd99c4da90f55f74ea6556c25f154e53e1ff5a6caa372d/data' :
+        'community.wave.seqera.io/library/sentieon:202503--5e378058d837c58c' }"
 
     input:
     tuple val(meta), path(input), path(input_index), path(intervals)
@@ -23,9 +21,9 @@ process SENTIEON_TNHAPLOTYPER2 {
     val(emit_contamination_data)
 
     output:
-    tuple val(meta), path("*.orientation_data.tsv")  , optional:true , emit: orientation_data
-    tuple val(meta), path("*.contamination_data.tsv"), optional:true , emit: contamination_data
-    tuple val(meta), path("*.segments")              , optional:true , emit: contamination_segments
+    tuple val(meta), path("*.orientation_data.tsv")  , emit: orientation_data      , optional:true
+    tuple val(meta), path("*.contamination_data.tsv"), emit: contamination_data    , optional:true
+    tuple val(meta), path("*.segments")              , emit: contamination_segments, optional:true
     tuple val(meta), path("*.stats")                 , emit: stats
     tuple val(meta), path("*.vcf.gz")                , emit: vcf
     tuple val(meta), path("*.vcf.gz.tbi")            , emit: index
@@ -35,17 +33,6 @@ process SENTIEON_TNHAPLOTYPER2 {
     task.ext.when == null || task.ext.when
 
     script:
-    // The following code sets LD_LIBRARY_PATH in the script-section when the module is run by Singularity.
-    // That turned out to be one way of overcoming the following issue with the Singularity-Sentieon-containers from galaxy, Sentieon (LD_LIBRARY_PATH) and the way Nextflow runs Singularity-containers.
-    // The galaxy container uses a runscript which is responsible for setting LD_PRELOAD properly. Nextflow executes singularity containers using `singularity exec`, which avoids the run script, leading to the LD_LIBRARY_PATH/libstdc++.so.6 error.
-    if (workflow.containerEngine in ['singularity','apptainer']) {
-        fix_ld_library_path = 'LD_LIBRARY_PATH=/usr/local/lib/:\$LD_LIBRARY_PATH;export LD_LIBRARY_PATH'
-    } else {
-        fix_ld_library_path = ''
-    }
-
-    def sentieon_auth_mech_base64 = task.ext.sentieon_auth_mech_base64 ?: ''
-    def sentieon_auth_data_base64 = task.ext.sentieon_auth_data_base64 ?: ''
     def args                      = task.ext.args                      ?: ''  // options for "sentieon driver"
     def args2                     = task.ext.args2                     ?: ''  // options for the TNhaplotyper2 algorithm. It could be something like "--tumor_sample <tumour_id> --normal_sample <normal_id>"
     def args3                     = task.ext.args3                     ?: ''  // options for the OrientationBias algorithm. It could be something like "--tumor_sample <tumour_id>"
@@ -66,24 +53,11 @@ process SENTIEON_TNHAPLOTYPER2 {
         contamination_cmd = "--algo ContaminationModel $args4 --vcf $germline_resource --tumor_segments ${prefix}.segments ${prefix}.contamination_data.tsv"
     }
 
+    def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64 ?
+        "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; " :
+        ""
     """
-    if [ "\${#SENTIEON_LICENSE_BASE64}" -lt "1500" ]; then  # If the string SENTIEON_LICENSE_BASE64 is short, then it is an encrypted url.
-        export SENTIEON_LICENSE=\$(echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d)
-    else  # Localhost license file
-        # The license file is stored as a nextflow variable like, for instance, this:
-        # nextflow secrets set SENTIEON_LICENSE_BASE64 \$(cat <sentieon_license_file.lic> | base64 -w 0)
-        export SENTIEON_LICENSE=\$(mktemp)
-        echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d > \$SENTIEON_LICENSE
-    fi
-
-    if  [ ${sentieon_auth_mech_base64} ] && [ ${sentieon_auth_data_base64} ]; then
-        # If sentieon_auth_mech_base64 and sentieon_auth_data_base64 are non-empty strings, then Sentieon is mostly likely being run with some test-license.
-        export SENTIEON_AUTH_MECH=\$(echo -n "${sentieon_auth_mech_base64}" | base64 -d)
-        export SENTIEON_AUTH_DATA=\$(echo -n "${sentieon_auth_data_base64}" | base64 -d)
-        echo "Decoded and exported Sentieon test-license system environment variables"
-    fi
-
-    $fix_ld_library_path
+    $sentieonLicense
 
     sentieon driver \\
         -t $task.cpus \\
@@ -106,25 +80,16 @@ process SENTIEON_TNHAPLOTYPER2 {
     """
 
     stub:
-    // The following code sets LD_LIBRARY_PATH in the script-section when the module is run by Singularity.
-    // That turned out to be one way of overcoming the following issue with the Singularity-Sentieon-containers from galaxy, Sentieon (LD_LIBRARY_PATH) and the way Nextflow runs Singularity-containers.
-    // The galaxy container uses a runscript which is responsible for setting LD_PRELOAD properly. Nextflow executes singularity containers using `singularity exec`, which avoids the run script, leading to the LD_LIBRARY_PATH/libstdc++.so.6 error.
-    if (workflow.containerEngine in ['singularity','apptainer']) {
-        fix_ld_library_path = 'LD_LIBRARY_PATH=/usr/local/lib/:\$LD_LIBRARY_PATH;export LD_LIBRARY_PATH'
-    } else {
-        fix_ld_library_path = ''
-    }
-
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix        = task.ext.prefix ?: "${meta.id}"
+    def orientation   = emit_orientation_data   ? "touch ${prefix}.orientation_data.tsv"              : ""
+    def contamination = emit_contamination_data ? "touch ${prefix}.{contamination_data.tsv,segments}" : ""
 
     """
-    $fix_ld_library_path
-
-    touch ${prefix}.vcf.gz
+    echo | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
-    touch ${prefix}.contamination_data.tsv
-    touch ${prefix}.orientation_data.tsv
-    touch ${prefix}.segments
+    touch ${prefix}.vcf.gz.stats
+    $orientation
+    $contamination
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

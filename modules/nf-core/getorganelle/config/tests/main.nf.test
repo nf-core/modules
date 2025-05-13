@@ -1,0 +1,73 @@
+import groovy.io.FileType
+
+nextflow_process {
+
+    name "Test Process GETORGANELLE_CONFIG"
+    script "../main.nf"
+    process "GETORGANELLE_CONFIG"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "getorganelle"
+    tag "getorganelle/config"
+
+    test("test-getorganelle-config") {
+
+        when {
+            process {
+                """
+                input[0] = 'all'
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    def all_files = []
+
+                    file(process.out.db[0][1]).eachFileRecurse (FileType.FILES) { file ->
+                        all_files << file
+                    }
+
+                    def all_file_names = all_files.collect { it.name }.toSorted()
+
+                    def stable_file_names = [
+                        'VERSION',
+                        'animal_mt.fasta'
+                    ]
+
+                    def stable_files = all_files.findAll { it.name in stable_file_names }.toSorted()
+
+                    assert snapshot(
+                        all_file_names,
+                        stable_files,
+                        process.out.versions[0]
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-getorganelle-config-stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = 'all'
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

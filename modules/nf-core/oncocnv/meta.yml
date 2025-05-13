@@ -11,54 +11,71 @@ tools:
       documentation: "https://github.com/BoevaLab/ONCOCNV/blob/master/README.md"
       tool_dev_url: "https://github.com/BoevaLab/ONCOCNV/"
       doi: "10.1093/bioinformatics/btu436"
-      licence: "GPL-3.0-or-later"
+      license: ["GPL-3.0-or-later"]
+      identifier: biotools:oncocnv
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - normal:
-      type: file
-      description: BAM files
-      pattern: "*.bam"
-  - normal_index:
-      type: file
-      description: BAM file indices
-      pattern: "*.bam.bai"
-  - tumor:
-      type: file
-      description: BAM files
-      pattern: "*.bam"
-  - tumor_index:
-      type: file
-      description: BAM file indices
-      pattern: "*.bam.bai"
-  - bed:
-      type: file
-      description: annotated BED file containing target regions
-      pattern: "*.bed"
-  - fasta:
-      type: file
-      description: genome FASTA file
-      pattern: "*.fasta"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - normal:
+        type: file
+        description: BAM files
+        pattern: "*.bam"
+    - normal_index:
+        type: file
+        description: BAM file indices
+        pattern: "*.bam.bai"
+    - tumor:
+        type: file
+        description: BAM files
+        pattern: "*.bam"
+    - tumor_index:
+        type: file
+        description: BAM file indices
+        pattern: "*.bam.bai"
+  - - bed:
+        type: file
+        description: annotated BED file containing target regions
+        pattern: "*.bed"
+  - - fasta:
+        type: file
+        description: genome FASTA file
+        pattern: "*.fasta"
 output:
   - png:
-      type: file
-      description: PNG file containing profile plot
-      pattern: "*.profile.png"
+      - meta:
+          type: file
+          description: PNG file containing profile plot
+          pattern: "*.profile.png"
+      - "*.profile.png":
+          type: file
+          description: PNG file containing profile plot
+          pattern: "*.profile.png"
   - profile:
-      type: file
-      description: TXT file containing profile data
-      pattern: "*.profile.txt"
+      - meta:
+          type: file
+          description: TXT file containing profile data
+          pattern: "*.profile.txt"
+      - "*.profile.txt":
+          type: file
+          description: TXT file containing profile data
+          pattern: "*.profile.txt"
   - summary:
-      type: file
-      description: TXT file containing summarized data
-      pattern: "*.summary.txt"
+      - meta:
+          type: file
+          description: TXT file containing summarized data
+          pattern: "*.summary.txt"
+      - "*.summary.txt":
+          type: file
+          description: TXT file containing summarized data
+          pattern: "*.summary.txt"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@marrip"
 maintainers:

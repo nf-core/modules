@@ -5,8 +5,8 @@ process CONCOCT_CONCOCT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/concoct:1.1.0--py311h245ed52_4':
-        'biocontainers/concoct:1.1.0--py311h245ed52_4' }"
+        'https://depot.galaxyproject.org/singularity/concoct:1.1.0--py312h245ed52_6':
+        'biocontainers/concoct:1.1.0--py312h245ed52_6' }"
 
     input:
     tuple val(meta), path(coverage_file), path(fasta)
@@ -33,6 +33,23 @@ process CONCOCT_CONCOCT {
         --coverage_file ${coverage_file} \\
         --composition_file ${fasta} \\
         -b ${prefix}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        concoct: \$(echo \$(concoct --version 2>&1) | sed 's/concoct //g' )
+    END_VERSIONS
+    """
+
+    stub:
+    def args       = task.ext.args ?: ''
+    def prefix     = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}_args.txt
+    touch ${prefix}_clustering_gt1000.csv
+    touch ${prefix}_log.txt
+    touch ${prefix}_original_data_gt1000.csv
+    touch ${prefix}_PCA_components_data_gt1000.csv
+    touch ${prefix}_PCA_transformed_data_gt1000.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -11,38 +11,71 @@ keywords:
   - quality control
 tools:
   - biscuit:
-      description: A utility for analyzing sodium bisulfite conversion-based DNA methylation/modification data
+      description: A utility for analyzing sodium bisulfite conversion-based DNA methylation/modification
+        data
       homepage: https://huishenlab.github.io/biscuit/
       documentation: https://huishenlab.github.io/biscuit/docs/subcommand_help.html#biscuit-qc
       tool_dev_url: https://github.com/huishenlab/biscuit
       licence: ["MIT"]
+      identifier: biotools:biscuit
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: BAM file produced using Biscuit
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM file produced using Biscuit
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Input genome fasta file
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - index:
+        type: directory
+        description: Directory containing biscuit genome index
 output:
-  - biscuit_qc_reports:
-      type: file
-      description: |
-        Summary files containing the following information:
-          - CpG retention by position in read
-          - CpH retention by position in read
-          - Read duplication statistics
-          - Insert size distribution
-          - Distribution of mapping qualities
-          - Proportion of reads mapping to each strand
-          - Read-averaged cytosine conversion rate for CpA, CpC, CpG, and CpT
-      pattern: "*.txt"
+  - reports:
+      - meta:
+          type: file
+          description: |
+            Summary files containing the following information:
+              - CpG retention by position in read
+              - CpH retention by position in read
+              - Read duplication statistics
+              - Insert size distribution
+              - Distribution of mapping qualities
+              - Proportion of reads mapping to each strand
+              - Read-averaged cytosine conversion rate for CpA, CpC, CpG, and CpT
+          pattern: "*.txt"
+      - "*.txt":
+          type: file
+          description: |
+            Summary files containing the following information:
+              - CpG retention by position in read
+              - CpH retention by position in read
+              - Read duplication statistics
+              - Insert size distribution
+              - Distribution of mapping qualities
+              - Proportion of reads mapping to each strand
+              - Read-averaged cytosine conversion rate for CpA, CpC, CpG, and CpT
+          pattern: "*.txt"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@njspix"
 maintainers:
   - "@njspix"
+  - "@sateeshperi"

@@ -1,0 +1,53 @@
+
+nextflow_process {
+
+    name "Test Process PINDEL_PINDEL"
+    script "../main.nf"
+    process "PINDEL_PINDEL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "modules_pindel"
+    tag "pindel"
+    tag "pindel/pindel"
+
+    test("test-pindel-pindel") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false, insert_size:500 ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+				]
+				input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+				input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+				input[3] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					file(process.out.bp[0][1]).name, // empty
+					file(process.out.cem[0][1]).name, // empty
+					file(process.out.del[0][1]).name, // empty
+					process.out.dd, // absent
+					file(process.out.int_final[0][1]).name, // empty
+					file(process.out.inv[0][1]).name, // empty
+					file(process.out.li[0][1]).name, // empty
+					file(process.out.rp[0][1]).name, // empty
+					file(process.out.si[0][1]).name, // empty
+					file(process.out.td[0][1]).name, // empty
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

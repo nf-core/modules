@@ -3,12 +3,14 @@ process METAPHLAN_MAKEDB {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/metaphlan:4.0.6--pyhca03a8a_0' :
-        'biocontainers/metaphlan:4.0.6--pyhca03a8a_0' }"
+        'https://depot.galaxyproject.org/singularity/metaphlan:4.1.1--pyhdfd78af_0' :
+        'biocontainers/metaphlan:4.1.1--pyhdfd78af_0' }"
+
+    input:
 
     output:
     path "metaphlan_db_latest"      , emit: db
-    path "versions.yml"         , emit: versions
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,6 +30,7 @@ process METAPHLAN_MAKEDB {
         metaphlan: \$(metaphlan --version 2>&1 | awk '{print \$3}')
     END_VERSIONS
     """
+
     stub:
     """
     mkdir metaphlan_db_latest
@@ -49,5 +52,3 @@ process METAPHLAN_MAKEDB {
     END_VERSIONS
     """
 }
-
-

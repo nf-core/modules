@@ -1,0 +1,71 @@
+
+nextflow_process {
+
+    name "Test Process MINIA"
+    script "../main.nf"
+    process "MINIA"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "minia"
+
+    test("test-minia") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+				    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.contigs[0][1]).text.contains('AAA') },
+                { assert file(process.out.unitigs[0][1]).text.contains('CCC') },
+                { assert snapshot(
+                    file(process.out.contigs[0][1]).name,
+                    file(process.out.unitigs[0][1]).name,
+                    file(process.out.h5[0][1]).name,
+                    process.out.versions,
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-minia-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+				    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

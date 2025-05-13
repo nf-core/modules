@@ -19,12 +19,13 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test' ], // meta map
-                        file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                     ]
                     input[1] = 'genome'
                     input[2] = 'bacteria_odb10'
                     input[3] = []
                     input[4] = []
+                    input[5] = false
                     """
                 }
             }
@@ -55,7 +56,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
+                input[0] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                 """
             }
         }

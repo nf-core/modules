@@ -4,8 +4,8 @@ process FQ_SUBSAMPLE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fq:0.9.1--h9ee0642_0':
-        'biocontainers/fq:0.9.1--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/fq:0.12.0--h9ee0642_0':
+        'biocontainers/fq:0.12.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(fastq)
@@ -46,6 +46,18 @@ process FQ_SUBSAMPLE {
         $fastq \\
         $fastq1_output \\
         $fastq2_output
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        fq: \$(echo \$(fq subsample --version | sed 's/fq-subsample //g'))
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo '' | gzip >  ${prefix}_R1.fastq.gz
+    echo '' | gzip >  ${prefix}_R2.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -4,8 +4,8 @@ process UNICYCLER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/unicycler:0.4.8--py38h8162308_3' :
-        'biocontainers/unicycler:0.4.8--py38h8162308_3' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2b/2b9f404e2169ea74161d63d24f55d6339dc98c3745bf2442e425d5a673617fca/data' :
+        'community.wave.seqera.io/library/unicycler:0.5.1--b9d21c454db1e56b' }"
 
     input:
     tuple val(meta), path(shortreads), path(longreads)
@@ -43,4 +43,19 @@ process UNICYCLER {
         unicycler: \$(echo \$(unicycler --version 2>&1) | sed 's/^.*Unicycler v//; s/ .*\$//')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+
+    cat "" | gzip > ${prefix}.scaffolds.fa.gz
+    cat "" | gzip >  ${prefix}.assembly.gfa.gz
+    touch ${prefix}.unicycler.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        unicycler: \$(echo \$(unicycler --version 2>&1) | sed 's/^.*Unicycler v//; s/ .*\$//')
+    END_VERSIONS
+    """
+
 }

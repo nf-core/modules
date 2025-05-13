@@ -1,0 +1,61 @@
+nextflow_process {
+
+    name "Test Process UNICYCLER"
+    script "../main.nf"
+    process "UNICYCLER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "unicycler"
+
+    test("bacteroides_fragilis - nanopore") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true ], // meta map
+                    [],
+                    [ file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/nanopore/fastq/test.fastq.gz', checkIfExists: true)]
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out.scaffolds,
+                                  process.out.gfa,
+                                  file(process.out.log.get(0).get(1)).name,
+                                  process.out.versions).match()
+                }
+            )
+        }
+    }
+
+    test("bacteroides_fragilis - nanopore - stub") {
+
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true ], // meta map
+                    [],
+                    [ file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/nanopore/fastq/test.fastq.gz', checkIfExists: true)]
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match()
+                }
+            )
+        }
+    }
+
+}

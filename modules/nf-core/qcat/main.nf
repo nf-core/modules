@@ -41,7 +41,22 @@ process QCAT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        qcat: \$(qcat --version 2>&1 | sed 's/^.*qcat //; s/ .*\$//')
+        qcat: \$(qcat --version | sed 's/^.*qcat //; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    """
+    mkdir -p fastq
+
+    touch fastq/barcode00.fastq
+    touch fastq/none.fastq
+
+    gzip fastq/*
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        qcat: \$(qcat --version | sed 's/^.*qcat //; s/ .*\$//')
     END_VERSIONS
     """
 }

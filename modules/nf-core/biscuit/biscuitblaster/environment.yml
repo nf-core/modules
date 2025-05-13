@@ -1,9 +1,9 @@
-name: biscuit_blaster
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
-  - defaults
 dependencies:
-  - bioconda::biscuit=1.1.0.20220707
+  - bioconda::biscuit=1.5.0.20240506
   - bioconda::samblaster=0.1.26
-  - bioconda::samtools=1.16.1
+  - bioconda::samtools=1.21

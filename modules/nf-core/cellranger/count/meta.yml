@@ -1,49 +1,61 @@
 name: cellranger_count
-description: Module to use Cell Ranger's pipelines analyze sequencing data produced from Chromium Single Cell Gene Expression.
+description: Module to use Cell Ranger's pipelines analyze sequencing data produced
+  from Chromium Single Cell Gene Expression.
 keywords:
   - align
   - count
   - reference
 tools:
   - cellranger:
-      description: Cell Ranger by 10x Genomics is a set of analysis pipelines that process Chromium single-cell data to align reads, generate feature-barcode matrices, perform clustering and other secondary analysis, and more.
+      description: Cell Ranger by 10x Genomics is a set of analysis pipelines that process
+        Chromium single-cell data to align reads, generate feature-barcode matrices,
+        perform clustering and other secondary analysis, and more.
       homepage: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger
       documentation: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
       tool_dev_url: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
       licence:
         - 10x Genomics EULA
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: |
-        List of input FastQ files. The order of the input files MUST be ["sample1 R1", "sample1 R2", "sample2, R1",
-        "sample2, R2", ...]. This can usually be achieved by sorting the input files by file name.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files. The order of the input files MUST be ["sample1 R1", "sample1 R2", "sample2, R1",
+          "sample2, R2", ...]. This can usually be achieved by sorting the input files by file name.
 
-        Background: 10x data is always paired-end with R1 containing cell barcode and UMI
-        and R2 containing the actual read sequence. Cell Ranger requires files to adhere to the following file-name
-        convention: `${Sample_Name}_S1_L00${Lane_Number}_${R1,R2}_001.fastq.gz`. This module automatically
-        renames files to match this convention based on the order of input files to avoid various
-        issues (see https://github.com/nf-core/scrnaseq/issues/241). To avoid mistakes, the module
-        throws an error if a pair of R1 and R2 fastq files does not have the same filename except for the "_R1"/"_R2" part.
-        Renaming the files does not affect the results (see README.md for detailed tests).
-      pattern: "*{R1,R2}*.fastq.gz"
-  - reference:
-      type: directory
-      description: Folder containing all the reference indices needed by Cell Ranger
+          Background: 10x data is always paired-end with R1 containing cell barcode and UMI
+          and R2 containing the actual read sequence. Cell Ranger requires files to adhere to the following file-name
+          convention: `${Sample_Name}_S1_L00${Lane_Number}_${R1,R2}_001.fastq.gz`. This module automatically
+          renames files to match this convention based on the order of input files to avoid various
+          issues (see https://github.com/nf-core/scrnaseq/issues/241). To avoid mistakes, the module
+          throws an error if a pair of R1 and R2 fastq files does not have the same filename except for the "_R1"/"_R2" part.
+          Renaming the files does not affect the results (see README.md for detailed tests).
+        pattern: "*{R1,R2}*.fastq.gz"
+  - - reference:
+        type: directory
+        description: Folder containing all the reference indices needed by Cell Ranger
 output:
   - outs:
-      type: file
-      description: Files containing the outputs of Cell Ranger, see official 10X Genomics documentation for a complete list
-      pattern: "${meta.id}/outs/*"
+      - meta:
+          type: file
+          description: Files containing the outputs of Cell Ranger, see official 10X Genomics
+            documentation for a complete list
+          pattern: "${meta.id}/outs/*"
+      - "**/outs/**":
+          type: file
+          description: Files containing the outputs of Cell Ranger, see official 10X Genomics
+            documentation for a complete list
+          pattern: "${meta.id}/outs/*"
   - versions:
-      type: file
-      description: File containing software version
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software version
+          pattern: "versions.yml"
 authors:
   - "@ggabernet"
   - "@edmundmiller"

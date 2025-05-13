@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "fastme"
 description: "Distance-based phylogeny with FastME"
@@ -9,7 +8,8 @@ keywords:
   - distance-based
 tools:
   - "fastme":
-      description: "A comprehensive, accurate and fast distance-based phylogeny inference program."
+      description: "A comprehensive, accurate and fast distance-based phylogeny inference
+        program."
       homepage: "http://www.atgc-montpellier.fr/fastme"
       documentation: "http://www.atgc-montpellier.fr/fastme/usersguide.php"
       tool_dev_url: "https://gite.lirmm.fr/atgc/FastME/"
@@ -17,44 +17,70 @@ tools:
       licence: ["GPL v3"]
       args_id: "$args"
 
+      identifier: biotools:fastme
 input:
-  - meta:
-      type: map
-      description: |
-        A Groovy map containing sample information,
-        e.g. [ id: "test" ]
-  - infile:
-      type: file
-      description: MSA or distance matrix in Phylip format
-      pattern: "*"
-      # note: I have omitted any specific extension as it is not standardized for those file types
-  - topo:
-      type: file
-      description: Initial tree topology in Newick format
-      pattern: "*.{nwk,dnd}"
-
+  - - meta:
+        type: map
+        description: |
+          A Groovy map containing sample information,
+          e.g. [ id: "test" ]
+    - infile:
+        type: file
+        description: MSA or distance matrix in Phylip format
+        pattern: "*"
+    - initial_tree:
+        type: file
+        description: Initial tree
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - nwk:
-      type: file
-      description: Final phylogeny in Newick format
-      pattern: "*.nwk"
+      - meta:
+          type: file
+          description: Final phylogeny in Newick format
+          pattern: "*.nwk"
+      - "*.nwk":
+          type: file
+          description: Final phylogeny in Newick format
+          pattern: "*.nwk"
   - stats:
-      type: file
-      description: A text file with the statistics of the phylogeny
-      pattern: "*_stat.txt"
+      - meta:
+          type: file
+          description: A text file with the statistics of the phylogeny
+          pattern: "*_stat.txt"
+      - "*_stat.txt":
+          type: file
+          description: A text file with the statistics of the phylogeny
+          pattern: "*_stat.txt"
   - matrix:
-      type: file
-      description: Optional; the distance matrix in Phylip matrix format; it is generated if the -O option is passed in ext.args, although the provided file name will be overwritten
-      pattern: "*.matrix.phy"
+      - meta:
+          type: file
+          description: Optional; the distance matrix in Phylip matrix format; it is generated
+            if the -O option is passed in ext.args, although the provided file name will
+            be overwritten
+          pattern: "*.matrix.phy"
+      - "*.matrix.phy":
+          type: file
+          description: Optional; the distance matrix in Phylip matrix format; it is generated
+            if the -O option is passed in ext.args, although the provided file name will
+            be overwritten
+          pattern: "*.matrix.phy"
   - bootstrap:
-      type: file
-      description: A file containing all bootstrap trees in Newick format; it is generated if the -B option is passed in ext.args (and bootstrap is used), although the provided file name will be overwritten
-      pattern: "*.bootstrap"
-
+      - meta:
+          type: file
+          description: A file containing all bootstrap trees in Newick format; it is generated
+            if the -B option is passed in ext.args (and bootstrap is used), although the
+            provided file name will be overwritten
+          pattern: "*.bootstrap"
+      - "*.bootstrap":
+          type: file
+          description: A file containing all bootstrap trees in Newick format; it is generated
+            if the -B option is passed in ext.args (and bootstrap is used), although the
+            provided file name will be overwritten
+          pattern: "*.bootstrap"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@itrujnara"
 maintainers:

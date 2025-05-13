@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "plink_ld"
 description: LD analysis in PLINK examines genetic variant associations within populations
@@ -8,86 +7,100 @@ keywords:
   - variants
 tools:
   - "plink":
-      description: "Whole genome association analysis toolset, designed to perform a range of basic, large-scale analyses in a computationally efficient manner."
+      description: "Whole genome association analysis toolset, designed to perform a
+        range of basic, large-scale analyses in a computationally efficient manner."
       homepage: "https://www.cog-genomics.org/plink"
       documentation: "https://www.cog-genomics.org/plink/1.9/data#recode"
       tool_dev_url: "https://www.cog-genomics.org/plink/1.9/dev"
       licence: ["GPL"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-        meta is associated to PLINK native files input
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-        meta2 is associated to VCF files input
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-        meta is associated to BCF files input
-  - meta4:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-        meta is associated to randomly selected snp files input
-  - bed:
-      type: file
-      description: PLINK binary biallelic genotype table file
-      pattern: "*.{bed}"
-  - bim:
-      type: file
-      description: PLINK extended MAP file
-      pattern: "*.{bim}"
-  - fam:
-      type: file
-      description: PLINK sample information file
-      pattern: "*.{fam}"
-  - vcf:
-      type: file
-      description: VCF format input file
-      pattern: "*.{vcf} | *{vcf.gz}"
-  - bcf:
-      type: file
-      description: BCF format input file
-      pattern: "*.{bcf}"
-  - snpfile:
-      type: file
-      description: randomly selected snp identifiers, used to calculate linkage disequilibrium
-      pattern: "*.{txt}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+          meta is associated to PLINK native files input
+    - bed:
+        type: file
+        description: PLINK binary biallelic genotype table file
+        pattern: "*.{bed}"
+    - bim:
+        type: file
+        description: PLINK extended MAP file
+        pattern: "*.{bim}"
+    - fam:
+        type: file
+        description: PLINK sample information file
+        pattern: "*.{fam}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+          meta2 is associated to VCF files input
+    - vcf:
+        type: file
+        description: VCF format input file
+        pattern: "*.{vcf} | *{vcf.gz}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+          meta is associated to BCF files input
+    - bcf:
+        type: file
+        description: BCF format input file
+        pattern: "*.{bcf}"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+          meta is associated to randomly selected snp files input
+    - snpfile:
+        type: file
+        description: randomly selected snp identifiers, used to calculate linkage disequilibrium
+        pattern: "*.{txt}"
 output:
   #Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - ld:
-      type: file
-      description: |
-        The output of a linkage disequilibrium analysis in PLINK typically includes a table showing variant pairs and their associated LD values, often expressed as R².
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.ld":
+          type: file
+          description: |
+            The output of a linkage disequilibrium analysis in PLINK typically includes a table showing variant pairs and their associated LD values, often expressed as R².
   - log:
-      type: file
-      description: |
-        Log file of the ld process
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.log":
+          type: file
+          description: |
+            Log file of the ld process
   - nosex:
-      type: file
-      description: |
-        Ambiguous sex ID file
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.nosex":
+          type: file
+          description: |
+            Ambiguous sex ID file
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@davidebag"
 maintainers:

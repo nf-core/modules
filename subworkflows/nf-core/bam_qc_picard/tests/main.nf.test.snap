@@ -4,6 +4,10 @@
             "test.CollectWgsMetrics.coverage_metrics",
             "test.CollectMultipleMetrics.alignment_summary_metrics"
         ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
         "timestamp": "2023-11-29T17:33:46.472439804"
     },
     "sascov2_targetted - [bam,bai]": {
@@ -15,7 +19,7 @@
             "test.CollectHsMetrics.coverage_metrics",
             [
                 "## htsjdk.samtools.metrics.StringHeader",
-                "# CollectHsMetrics --BAIT_INTERVALS baits.interval_list --TARGET_INTERVALS targets.interval_list --INPUT test.paired_end.sorted.bam --OUTPUT test.CollectHsMetrics.coverage_metrics --REFERENCE_SEQUENCE genome.fasta --METRIC_ACCUMULATION_LEVEL ALL_READS --NEAR_DISTANCE 250 --MINIMUM_MAPPING_QUALITY 20 --MINIMUM_BASE_QUALITY 20 --CLIP_OVERLAPPING_READS true --INCLUDE_INDELS false --COVERAGE_CAP 200 --SAMPLE_SIZE 10000 --ALLELE_FRACTION 0.001 --ALLELE_FRACTION 0.005 --ALLELE_FRACTION 0.01 --ALLELE_FRACTION 0.02 --ALLELE_FRACTION 0.05 --ALLELE_FRACTION 0.1 --ALLELE_FRACTION 0.2 --ALLELE_FRACTION 0.3 --ALLELE_FRACTION 0.5 --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
+                "# CollectHsMetrics --BAIT_INTERVALS baits/baits.interval_list --TARGET_INTERVALS targets/targets.interval_list --INPUT test.paired_end.sorted.bam --OUTPUT test.CollectHsMetrics.coverage_metrics --REFERENCE_SEQUENCE genome.fasta --METRIC_ACCUMULATION_LEVEL ALL_READS --NEAR_DISTANCE 250 --MINIMUM_MAPPING_QUALITY 20 --MINIMUM_BASE_QUALITY 20 --CLIP_OVERLAPPING_READS true --INCLUDE_INDELS false --COVERAGE_CAP 200 --SAMPLE_SIZE 10000 --ALLELE_FRACTION 0.001 --ALLELE_FRACTION 0.005 --ALLELE_FRACTION 0.01 --ALLELE_FRACTION 0.02 --ALLELE_FRACTION 0.05 --ALLELE_FRACTION 0.1 --ALLELE_FRACTION 0.2 --ALLELE_FRACTION 0.3 --ALLELE_FRACTION 0.5 --VERBOSITY INFO --QUIET false --VALIDATION_STRINGENCY STRICT --COMPRESSION_LEVEL 5 --MAX_RECORDS_IN_RAM 500000 --CREATE_INDEX false --CREATE_MD5_FILE false --help false --version false --showHidden false --USE_JDK_DEFLATER false --USE_JDK_INFLATER false",
                 "## htsjdk.samtools.metrics.StringHeader"
             ],
             {
@@ -53,11 +57,15 @@
                 "## htsjdk.samtools.metrics.StringHeader"
             ],
             [
-                "versions.yml:md5,d04aca83a6423efc7b818b0d3e0cb1ba",
-                "versions.yml:md5,e0ec5ed2685f50270d45602c891fad3b"
+                "versions.yml:md5,92450dccc1a141f405d689d7f07480c0",
+                "versions.yml:md5,df149b65b51dcad73b8914e6ce30fadf"
             ]
         ],
-        "timestamp": "2023-11-29T17:33:30.682811765"
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-10-18T10:16:09.107786306"
     },
     "sascov2_wgs - [bam,bai]": {
         "content": [
@@ -106,10 +114,14 @@
                 "## htsjdk.samtools.metrics.StringHeader"
             ],
             [
-                "versions.yml:md5,600deaee68c6f78bbdf023b794d7b4fe",
-                "versions.yml:md5,d04aca83a6423efc7b818b0d3e0cb1ba"
+                "versions.yml:md5,21d43bb86ef743e75e729dfa77ba8f91",
+                "versions.yml:md5,92450dccc1a141f405d689d7f07480c0"
             ]
         ],
-        "timestamp": "2023-11-29T17:32:57.186833877"
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-10-18T10:15:48.344077986"
     }
 }

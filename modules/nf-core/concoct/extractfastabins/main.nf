@@ -4,8 +4,8 @@ process CONCOCT_EXTRACTFASTABINS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/concoct:1.1.0--py311h245ed52_4':
-        'biocontainers/concoct:1.1.0--py311h245ed52_4' }"
+        'https://depot.galaxyproject.org/singularity/concoct:1.1.0--py312h245ed52_6':
+        'biocontainers/concoct:1.1.0--py312h245ed52_6' }"
 
     input:
     tuple val(meta), path(original_fasta), path(csv)
@@ -34,6 +34,19 @@ process CONCOCT_EXTRACTFASTABINS {
         mv \${i} \${i/\\///${prefix}_}
         gzip \${i/\\///${prefix}_}
     done
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        concoct: \$(echo \$(concoct --version 2>&1) | sed 's/concoct //g' )
+    END_VERSIONS
+    """
+
+    stub:
+    def args   = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir -p ${prefix}
+    echo "" | gzip > ${prefix}/${prefix}.fa.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

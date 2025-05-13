@@ -1,0 +1,136 @@
+nextflow_process {
+    name "Test Process METAPHLAN_METAPHLAN"
+    script "../main.nf"
+    config "./nextflow.config"
+
+    process "METAPHLAN_METAPHLAN"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "untar"
+    tag "metaphlan"
+    tag "metaphlan/metaphlan"
+
+    setup {
+        run("UNTAR") {
+            script "modules/nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [],
+                    file( params.modules_testdata_base_path + 'delete_me/metaphlan4_database.tar.gz', checkIfExists: true )
+                ])
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - illumina single end [fastq]") {
+
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true ], // meta map
+                    file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz',checkIfExists: true )
+                ])
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        path(process.out.profile[0][1]).readLines()[2..5],
+                        path(process.out.biom[0][1]).readLines().last().contains('Biological Observation Matrix'),
+                        process.out.bt2out,
+                        process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("sarscov2 - illumina pair end [fastq]") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [ file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz',checkIfExists: true ),
+                    file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz',checkIfExists: true ) ]
+                ])
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        path(process.out.profile[0][1]).readLines()[2..5],
+                        path(process.out.biom[0][1]).readLines().last().contains('Biological Observation Matrix'),
+                        process.out.bt2out,
+                        process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("sarscov2 - illumina single end [fasta]") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true ], // meta map
+                    file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta',checkIfExists: true )
+                ])
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        path(process.out.profile[0][1]).readLines()[2..5],
+                        path(process.out.biom[0][1]).readLines().last().contains('Biological Observation Matrix'),
+                        process.out.bt2out,
+                        process.out.versions
+                    ).match()
+                }            )
+        }
+    }
+
+    test("sarscov2 - illumina pair end [fastq] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [ file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz',checkIfExists: true ),
+                    file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz',checkIfExists: true )]
+                ])
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot( process.out ).match() }
+            )
+        }
+    }
+}

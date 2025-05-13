@@ -7,6 +7,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "plink2"
     tag "plink2/extract"
+    tag "plink2/vcf"
 
     test("plink2_extract") {
         config "./nextflow.config"
@@ -18,7 +19,7 @@ nextflow_process {
                     input[0] = [
                         [ id: 'test', single_end:false ],
                         [
-                            file(params.test_data['homo_sapiens']['genome']['syntheticvcf_short_vcf_gz'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/syntheticvcf_short.vcf.gz', checkIfExists: true)
                         ]
                     ]
                     """

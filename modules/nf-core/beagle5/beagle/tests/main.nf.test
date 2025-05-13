@@ -1,0 +1,106 @@
+
+nextflow_process {
+
+    name "Test Process BEAGLE5_BEAGLE"
+    script "../main.nf"
+    process "BEAGLE5_BEAGLE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "beagle5"
+    tag "beagle5/beagle"
+
+    test("test-beagle5-beagle") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/beagle/target.22Jul22.46e.vcf.gz", checkIfExists: true)
+				]
+				input[1] = []
+				input[2] = []
+				input[3] = []
+				input[4] = []
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					path(process.out.vcf[0][1]).vcf.variantsMD5,
+					file(process.out.log[0][1]).name,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-beagle5-beagle-ref") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/beagle/target.22Jul22.46e.vcf.gz", checkIfExists: true)
+				]
+				input[1] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/beagle/ref.22Jul22.46e.vcf.gz", checkIfExists: true)
+				input[2] = []
+				input[3] = []
+				input[4] = []
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					path(process.out.vcf[0][1]).vcf.variantsMD5,
+					file(process.out.log[0][1]).name,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-beagle5-beagle-ref-map") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/beagle/target.22Jul22.46e.vcf.gz", checkIfExists: true)
+				]
+				input[1] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/beagle/ref.22Jul22.46e.vcf.gz", checkIfExists: true)
+				input[2] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/beagle/plink.chr22.GRCh38.map", checkIfExists: true)
+				input[3] = []
+				input[4] = []
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					path(process.out.vcf[0][1]).vcf.variantsMD5,
+					file(process.out.log[0][1]).name,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

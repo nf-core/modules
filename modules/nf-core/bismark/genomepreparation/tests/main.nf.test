@@ -3,31 +3,54 @@ nextflow_process {
     name "Test Process BISMARK_GENOMEPREPARATION"
     script "../main.nf"
     process "BISMARK_GENOMEPREPARATION"
-    tag "bismark"
-    tag "bismark/genomepreparation"
+
     tag "modules"
+    tag "bismark/genomepreparation"
+    tag "bismark"
     tag "modules_nfcore"
 
-    test("Should run bismark/genomepreparation without failures") {
+    test("sarscov2 genome [fasta]") {
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
-                input[0] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
                 """
             }
         }
 
         then {
             assertAll(
-            { assert process.success },
-            { assert snapshot(process.out).match() }
+                { assert process.success },
+                { assert snapshot(process.out).match() }
             )
         }
+    }
 
+    test("sarscov2 genome [fasta] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
     }
 
 }

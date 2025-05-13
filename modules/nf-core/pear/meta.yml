@@ -1,5 +1,6 @@
 name: "pear"
-description: PEAR is an ultrafast, memory-efficient and highly accurate pair-end read merger.
+description: PEAR is an ultrafast, memory-efficient and highly accurate pair-end read
+  merger.
 keywords:
   - pair-end
   - read
@@ -9,39 +10,58 @@ tools:
       description: "paired-end read merger"
       homepage: "https://cme.h-its.org/exelixis/web/software/pear/"
       documentation: "https://cme.h-its.org/exelixis/web/software/pear/doc.html"
-      licence: "['Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported']"
+      licence: ["Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported"]
+      identifier: biotools:pear
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - reads:
-      type: file
-      description: |
-        List of input FastQ files with paired-end reads forward and reverse.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files with paired-end reads forward and reverse.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - assembled:
-      type: file
-      description: FastQ file containing Assembled reads.
-      pattern: "*.{fastq.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.assembled.fastq.gz":
+          type: file
+          description: FastQ file containing Assembled reads.
+          pattern: "*.{fastq.gz}"
   - unassembled:
-      type: file
-      description: FastQ files containing Unassembled forward and reverse reads.
-      pattern: "*.{fastq.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.unassembled.forward.fastq.gz":
+          type: file
+          description: FastQ files containing Unassembled forward and reverse reads.
+          pattern: "*.{fastq.gz}"
+      - "*.unassembled.reverse.fastq.gz":
+          type: file
+          description: FastQ files containing Unassembled forward and reverse reads.
+          pattern: "*.{fastq.gz}"
   - discarded:
-      type: file
-      description: FastQ file containing discarded reads.
-      pattern: "*.{fastq.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.discarded.fastq.gz":
+          type: file
+          description: FastQ file containing discarded reads.
+          pattern: "*.{fastq.gz}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@mirpedrol"
 maintainers:

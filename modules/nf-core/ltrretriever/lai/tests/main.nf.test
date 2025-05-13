@@ -26,7 +26,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test' ],
-                        file(params.test_data['actinidia_chinensis']['genome']['genome_21_fasta_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/eukaryotes/actinidia_chinensis/genome/chr1/genome.fasta.gz', checkIfExists: true)
                     ]
                     """
                 }
@@ -114,7 +114,7 @@ nextflow_process {
 
                 input[0] = [
                     [ id:'test' ],
-                    file(params.test_data['actinidia_chinensis']['genome']['genome_21_fasta_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/actinidia_chinensis/genome/chr1/genome.fasta.gz', checkIfExists: true)
                 ]
                 input[1] = pass_list.toPath()
                 input[2] = out_file.toPath()
@@ -145,7 +145,7 @@ nextflow_process {
 
                 input[0] = [
                     [ id:'test' ],
-                    file(params.test_data['actinidia_chinensis']['genome']['genome_21_fasta_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/actinidia_chinensis/genome/chr1/genome.fasta.gz', checkIfExists: true)
                 ]
                 input[1] = pass_list.toPath()
                 input[2] = out_file.toPath()

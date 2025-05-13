@@ -48,4 +48,22 @@ process BIOBAMBAM_BAMSORMADUP {
         bamsormadup: \$(echo \$(bamsormadup --version 2>&1) | sed 's/^This is biobambam2 version //; s/..biobambam2 is .*\$//' )
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def suffix = args.contains("outputformat=cram") ? "cram" : "bam"
+    if (args.contains("outputformat=cram") && reference == null) error "Reference required for CRAM output."
+
+    """
+    touch ${prefix}.${suffix}
+    touch ${prefix}.metrics.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bamcat: \$(echo \$(bamcat --version 2>&1) | sed 's/^This is biobambam2 version //; s/..biobambam2 is .*\$//' )
+        bamcollate2: \$(echo \$(bamcollate2 --version 2>&1) | sed 's/^This is biobambam2 version //; s/..biobambam2 is .*\$//' )
+        bamsormadup: \$(echo \$(bamsormadup --version 2>&1) | sed 's/^This is biobambam2 version //; s/..biobambam2 is .*\$//' )
+    END_VERSIONS
+    """
 }

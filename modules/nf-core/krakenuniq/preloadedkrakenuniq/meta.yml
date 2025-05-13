@@ -8,77 +8,108 @@ keywords:
   - db
 tools:
   - "krakenuniq":
-      description: "Metagenomics classifier with unique k-mer counting for more specific results"
+      description: "Metagenomics classifier with unique k-mer counting for more specific
+        results"
       homepage: https://github.com/fbreitwieser/krakenuniq
       documentation: https://github.com/fbreitwieser/krakenuniq
       doi: 10.1186/s13059-018-1568-0
       licence: ["MIT"]
+      identifier: biotools:KrakenUniq
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - sequences:
-      type: file
-      description: List of input files containing sequences. All of them must be either in FASTA or FASTQ format.
-  - sequence_type:
-      type: string
-      description: Format of all given sequencing files as literal string, either 'fasta' or 'fastq'.
-      pattern: "{fasta,fastq}"
-  - db:
-      type: directory
-      description: KrakenUniq database
-  - ram_chunk_size:
-      type: string
-      description: Amount of maximum amount of RAM each chunk of database that should be loaded at any one time
-      pattern: "*GB"
-  - save_output_reads:
-      type: boolean
-      description: |
-        Optionally, commands are added to save classified and unclassified reads
-        as FASTQ or FASTA files depending on the input format.  When the input
-        is paired-end, the single output FASTQ contains merged reads.
-  - report_file:
-      type: boolean
-      description: Whether to generate a report of relative abundances.
-  - save_output:
-      type: boolean
-      description: Whether to save a file reporting the taxonomic classification of each input read.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - sequences:
+        type: file
+        description: List of input files containing sequences. All of them must be either
+          in FASTA or FASTQ format.
+    - prefixes:
+        type: string
+        description: >
+          List of sample identifiers or filename prefixes. Must correspond in order and
+          length to the 'sequences', or to the number of sequencing pairs.
+  - - sequence_type:
+        type: string
+        description: Format of all given sequencing files as literal string, either
+          'fasta' or 'fastq'.
+        pattern: "{fasta,fastq}"
+  - - db:
+        type: directory
+        description: KrakenUniq database
+  - - ram_chunk_size:
+        type: string
+        description: Amount of maximum amount of RAM each chunk of database that should
+          be loaded at any one time
+        pattern: "*GB"
+  - - save_output_reads:
+        type: boolean
+        description: |
+          Optionally, commands are added to save classified and unclassified reads
+          as FASTQ or FASTA files depending on the input format.  When the input
+          is paired-end, the single output FASTQ contains merged reads.
+  - - report_file:
+        type: boolean
+        description: Whether to generate a report of relative abundances.
+  - - save_output:
+        type: boolean
+        description: Whether to save a file reporting the taxonomic classification of
+          each input read.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - classified_reads:
-      type: file
-      description: |
-        Reads classified as belonging to any of the taxa
-        in the KrakenUniq reference database.
-      pattern: "*.classified.{fastq,fasta}.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.classified.${sequence_type}.gz":
+          type: file
+          description: |
+            Reads classified as belonging to any of the taxa
+            in the KrakenUniq reference database.
+          pattern: "*.classified.{fastq,fasta}.gz"
   - unclassified_reads:
-      type: file
-      description: |
-        Reads not classified to any of the taxa
-        in the KrakenUniq reference database.
-      pattern: "*.unclassified.{fastq,fasta}.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.unclassified.${sequence_type}.gz":
+          type: file
+          description: |
+            Reads not classified to any of the taxa
+            in the KrakenUniq reference database.
+          pattern: "*.unclassified.{fastq,fasta}.gz"
   - classified_assignment:
-      type: file
-      description: |
-        KrakenUniq output file indicating the taxonomic assignment of
-        each input read ## DOUBLE CHECK!!
-      pattern: "*.krakenuniq.classified.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.krakenuniq.classified.txt":
+          type: file
+          description: |
+            KrakenUniq output file indicating the taxonomic assignment of
+            each input read ## DOUBLE CHECK!!
+          pattern: "*.krakenuniq.classified.txt"
   - report:
-      type: file
-      description: |
-        KrakenUniq report containing statistics about classified
-        and unclassified reads.
-      pattern: "*.krakenuniq.report.txt"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.krakenuniq.report.txt":
+          type: file
+          description: |
+            KrakenUniq report containing statistics about classified
+            and unclassified reads.
+          pattern: "*.krakenuniq.report.txt"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@mjamy"
   - "@Midnighter"

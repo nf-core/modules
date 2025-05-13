@@ -1,0 +1,92 @@
+nextflow_process {
+
+    name "Test Process MIRTOP_EXPORT"
+    script "../main.nf"
+    process "MIRTOP_EXPORT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mirtop"
+    tag "mirtop/gff"
+    tag "mirtop/export"
+
+    setup {
+            run("MIRTOP_GFF") {
+                script "../../gff/main.nf"
+                process {
+                """
+                input[0] = [
+                    [ id:'sample_sim_isomir_bam'], // meta map
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/mirtop/sim_isomir_sort.bam", checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'hairpin'], // meta map
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/mirtop/hairpin_mirtop.fa", checkIfExists: true),
+                ]
+                input[2] = [
+                    [ id:'hsa' ], // meta map
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/mirtop/hsa.gff3", checkIfExists: true),
+                "hsa"]
+                """
+            }
+            }
+        }
+
+    test("isomir - bam") {
+
+        when {
+            process {
+                """
+                input[0] = MIRTOP_GFF.out.gff
+                input[1] = [
+                    [ id:'hairpin'], // meta map
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/mirtop/hairpin_mirtop.fa", checkIfExists: true),
+                ]
+                input[2] = [
+                    [ id:'hsa' ], // meta map
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/mirtop/hsa.gff3", checkIfExists: true),
+                "hsa"]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("isomir - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = MIRTOP_GFF.out.gff
+                input[1] = [
+                    [ id:'hairpin'], // meta map
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/mirtop/hairpin_mirtop.fa", checkIfExists: true),
+                ]
+                input[2] = [
+                    [ id:'hsa' ], // meta map
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/mirtop/hsa.gff3", checkIfExists: true),
+                "hsa"]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+
+}

@@ -1,0 +1,57 @@
+
+nextflow_process {
+
+    name "Test Process STAPHOPIASCCMEC"
+    script "../main.nf"
+    process "STAPHOPIASCCMEC"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "staphopiasccmec"
+
+    test("test-staphopiasccmec") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-staphopiasccmec-hamming") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

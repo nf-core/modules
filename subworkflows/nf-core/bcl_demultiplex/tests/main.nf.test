@@ -19,10 +19,10 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = Channel.value([
-                    [id:'test', lane:1 ],
-                    "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.csv",
-                    "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bcl/flowcell.tar.gz"
-                    ])
+                    [id:'HMTFYDRXX', lane:1],
+                    "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/bcl/SampleSheet.csv",
+                    "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/bcl/200624_A00834_0183_BHMTFYDRXX.tar.gz"
+                ])
                 input[1] = "bclconvert"
                 """
                 }
@@ -39,7 +39,8 @@ nextflow_workflow {
                     workflow.out.interop.get(0).get(1).findAll { file(it).name != "IndexMetricsOut.bin" },
                     ).match()
                 },
-                { assert file(workflow.out.interop.get(0).get(1).find { file(it).name == "IndexMetricsOut.bin" }).exists() }
+                { assert file(workflow.out.interop.get(0).get(1).find { file(it).name == "IndexMetricsOut.bin" }).exists() },
+                { assert file(workflow.out.empty_fastq.get(0).get(1).find { file(it).name == "SampleZ_S5_L001_R1_001.fastq.gz" }).exists() }
             )
         }
     }
@@ -54,7 +55,7 @@ nextflow_workflow {
                     [id:'test', lane:1 ],
                     "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.csv",
                     "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bcl/flowcell.tar.gz"
-                    ])
+                ])
                 input[1] = "bcl2fastq"
                 """
                     }

@@ -6,38 +6,42 @@ keywords:
   - spatial_transcriptomics
 tools:
   - "mindagap":
-      description: "Takes a single panorama image and fills the empty grid lines with neighbour-weighted values."
+      description: "Takes a single panorama image and fills the empty grid lines with
+        neighbour-weighted values."
       homepage: "https://github.com/ViriatoII/MindaGap/blob/main/README.md"
       documentation: "https://github.com/ViriatoII/MindaGap/blob/main/README.md"
       tool_dev_url: "https://github.com/ViriatoII/MindaGap"
       licence: ["BSD 3-clause License"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - spot_table:
-      type: file
-      description: tsv file containing one spot per row with order x,y,z,gene without column header.
-      pattern: "*.{tsv,txt}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - spot_table:
+        type: file
+        description: tsv file containing one spot per row with order x,y,z,gene without
+          column header.
+        pattern: "*.{tsv,txt}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - marked_dups_spots:
-      type: file
-      description: tsv file containing one spot per row, with duplicated spots labeled with "Duplicated" in their gene column.
-      pattern: "*.{markedDups.txt}"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*markedDups.txt":
+          type: file
+          description: tsv file containing one spot per row, with duplicated spots labeled
+            with "Duplicated" in their gene column.
+          pattern: "*.{markedDups.txt}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@FloWuenne"
 maintainers:

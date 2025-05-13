@@ -13,47 +13,58 @@ tools:
       tool_dev_url: https://github.com/rrwick/Unicycler
       doi: 10.1371/journal.pcbi.1005595
       licence: ["GPL v3"]
+      identifier: biotools:unicycler
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - shortreads:
-      type: file
-      description: |
-        List of input Illumina FastQ files of size 1 and 2 for single-end and paired-end data,
-        respectively.
-  - longreads:
-      type: file
-      description: |
-        List of input FastQ files of size 1, PacBio or Nanopore long reads.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - shortreads:
+        type: file
+        description: |
+          List of input Illumina FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively.
+    - longreads:
+        type: file
+        description: |
+          List of input FastQ files of size 1, PacBio or Nanopore long reads.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - scaffolds:
-      type: file
-      description: Fasta file containing scaffolds
-      pattern: "*.{scaffolds.fa.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.scaffolds.fa.gz":
+          type: file
+          description: Fasta file containing scaffolds
+          pattern: "*.{scaffolds.fa.gz}"
   - gfa:
-      type: file
-      description: gfa file containing assembly
-      pattern: "*.{assembly.gfa.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.assembly.gfa.gz":
+          type: file
+          description: gfa file containing assembly
+          pattern: "*.{assembly.gfa.gz}"
   - log:
-      type: file
-      description: unicycler log file
-      pattern: "*.{log}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: unicycler log file
+          pattern: "*.{log}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@JoseEspinosa"
   - "@drpatelh"

@@ -8,34 +8,30 @@ keywords:
   - ncbi
 tools:
   - "krakenuniq":
-      description: "Metagenomics classifier with unique k-mer counting for more specific results"
+      description: "Metagenomics classifier with unique k-mer counting for more specific
+        results"
       homepage: https://github.com/fbreitwieser/krakenuniq
       documentation: https://github.com/fbreitwieser/krakenuniq
       tool_dev_url: https://github.com/fbreitwieser/krakenuniq
       doi: 10.1186/s13059-018-1568-0
       licence: ["MIT"]
+      identifier: biotools:KrakenUniq
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - pattern:
-      type: string
-      description: Pattern indicating what type of NCBI data to download. See KrakenUniq documnation for possibilities.
+  - - pattern:
+        type: string
+        description: Pattern indicating what type of NCBI data to download. See KrakenUniq
+          documnation for possibilities.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - output:
-      type: directory
-      description: Directory containing downloaded data with directory naming being the user provided pattern.
+      - ${pattern}/:
+          type: directory
+          description: Directory containing downloaded data with directory naming being
+            the user provided pattern.
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jfy133"
 maintainers:

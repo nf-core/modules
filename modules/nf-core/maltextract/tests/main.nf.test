@@ -15,7 +15,7 @@ nextflow_process {
                 script "../../unzip/main.nf"
                 process {
                     """
-                    input[0] = [[], file('https://github.com/nf-core/test-datasets/raw/modules/data/genomics/sarscov2/genome/db/maltextract/ncbi_taxmap.zip')]
+                    input[0] = [[], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/maltextract/ncbi_taxmap.zip')]
                     """
                 }
             }
@@ -25,8 +25,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [], // meta map
-                file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/malt/test.rma6') ]
-                input[1] = file('https://github.com/nf-core/test-datasets/raw/modules/data/genomics/sarscov2/genome/db/maltextract/taxon_list.txt')
+                    file(params.modules_testdata_base_path + 'delete_me/malt/test.rma6')
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/maltextract/taxon_list.txt')
                 input[2] = UNZIP.out.unzipped_archive.map { it[1] }
                 """
             }
@@ -35,12 +36,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match('version') },
-                // snapshots dont work, because the results channel contains a log file that changes with each run
                 { assert snapshot(
-                        path("${process.out.results.get(0).get(1)}/ScanSummary.txt"),
-                    ).match('results')
-                }
+                    process.out.versions,
+                    path("${process.out.results.get(0).get(1)}/ScanSummary.txt")
+                ).match() },
             )
         }
     }

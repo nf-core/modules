@@ -9,39 +9,41 @@ keywords:
   - proteomics
 tools:
   - thermorawfileparser:
-      description: "Wrapper around the .net (C#) ThermoFisher ThermoRawFileReader library for running on Linux with mono"
+      description: "Wrapper around the .net (C#) ThermoFisher ThermoRawFileReader library
+        for running on Linux with mono"
       homepage: "https://github.com/compomics/ThermoRawFileParser/blob/master/README.md"
       documentation: "https://github.com/compomics/ThermoRawFileParser/blob/master/README.md"
       tool_dev_url: "https://github.com/compomics/ThermoRawFileParser"
       doi: "10.1021/acs.jproteome.9b00328"
       licence: ["Apache Software"]
+      identifier: biotools:ThermoRawFileParser
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - raw:
-      type: file
-      description: Thermo RAW file
-      pattern: "*.{raw,RAW}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - raw:
+        type: file
+        description: Thermo RAW file
+        pattern: "*.{raw,RAW}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - spectra:
-      type: file
-      description: Mass spectra in open format
-      pattern: "*.{mzML,mzML.gz,mgf,mgf.gz,parquet,parquet.gz}"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.{mzML,mzML.gz,mgf,mgf.gz,parquet,parquet.gz}":
+          type: file
+          description: Mass spectra in open format
+          pattern: "*.{mzML,mzML.gz,mgf,mgf.gz,parquet,parquet.gz}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@jonasscheid"
 maintainers:

@@ -1,0 +1,70 @@
+
+nextflow_process {
+
+    name "Test Process STADENIOLIB_SCRAMBLE"
+    script "../main.nf"
+    process "STADENIOLIB_SCRAMBLE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "stadeniolib"
+    tag "stadeniolib/scramble"
+
+    test("test-stadeniolib") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+				]
+				input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+				input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+				input[3] = []
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					file(process.out.cram[0][1]).name,
+					process.out.gzi,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-stadeniolib-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+				]
+				input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+				input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+				input[3] = []
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match()
+				}
+            )
+        }
+    }
+
+}

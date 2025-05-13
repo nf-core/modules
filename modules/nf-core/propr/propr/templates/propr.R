@@ -96,7 +96,7 @@ set_reference <- function(ivar, mat){
     return(ivar)
 }
 
-#' Set the appropiate range for the sequence of cutoffs used in updateCutoffs.
+#' Set the appropriate range for the sequence of cutoffs used in updateCutoffs.
 #' Adjusts the interval to the different metrics.
 #'
 #' @param object propr object. Output from propr function.
@@ -124,33 +124,26 @@ seqCutoff <- function(object){
 valCutoff  <- function(object, metric, fdrVal = 0.05){
     fdr_df <- object@fdr
     print(fdr_df)
-    metric_up <- c("rho", "cor", "pcor", "pcor.shrink", "pcor.bshrink")
+    # metric_up <- c("rho", "cor", "pcor", "pcor.shrink", "pcor.bshrink")
+
     if (prod(dim(fdr_df) == 0)){
         warning("Please run updateCutoff on propr first")
     }else{
         fdr_vals <- fdr_df\$FDR
-        if (any(is.na(fdr_vals))){
-            stop("FDR not defined. This metric is not appropiate for the given dataset")
-        }
-        threshold <- any(fdr_vals <= fdrVal)
-        if (metric %in% metric_up){
-            if (threshold){
-                fdr_threshold <- fdr_vals[which.max(fdr_vals <= fdrVal)]
+        if(any(!is.na(fdr_vals))){ # if there is some defined value, continue, else out of range
+            if(any(fdr_vals <= fdrVal)){ # if there is some value that is belowe the FDR threshold,
+                fdr_threshold <- fdr_vals[which.max(fdr_vals <= fdrVal)] #choose the highest FDR that is lower than the threshold, else choose the lowest
             }else{
                 warning("FDR is higher than the specified threshold for all proportionality values. Using the lowest fdr instead")
-                fdr_threshold <- fdr_vals[length(fdr_vals)]
+                fdr_threshold <- min(fdr_vals, na.rm = TRUE)
             }
+            cutoff <- fdr_df\$cutoff[which(fdr_df\$FDR == fdr_threshold)] #select the corresponding cutoff value for the FDR
+            print(cutoff)
         }else{
-            if (threshold){
-                fdr_threshold <- fdr_vals[which.min(fdr_vals <= fdrVal) - 1]
-            }else{
-                warning("FDR is higher than the specified threshold for all proportionality values. Using the lowest fdr instead")
-                fdr_threshold <- fdr_vals[1]
-            }
+            stop("FDR not defined. This metric is not appropriate for the given dataset")
         }
-    cutoff <- fdr_df\$cutoff[fdr_df\$FDR == fdr_threshold]
-    }
     return(cutoff)
+    }
 }
 
 
@@ -286,7 +279,7 @@ mat <- t(mat)
 # check zeros
 # log transformation should be applied on non-zero data
 # otherwise Inf values are generated
-if (any(mat == 0)) print("Warning: Zeros will be replaced by minimun value before logratio analysis")
+if (any(mat == 0)) print("Warning: Zeros will be replaced by minimum value before logratio analysis")
 
 # set logratio transformation parameter -> ivar
 # if alr, set the index of the reference gene as ivar

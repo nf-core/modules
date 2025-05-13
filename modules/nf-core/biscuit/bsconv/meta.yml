@@ -11,42 +11,64 @@ keywords:
   - filter
 tools:
   - biscuit:
-      description: A utility for analyzing sodium bisulfite conversion-based DNA methylation/modification data
+      description: A utility for analyzing sodium bisulfite conversion-based DNA methylation/modification
+        data
       homepage: https://huishenlab.github.io/biscuit/
       documentation: https://huishenlab.github.io/biscuit/docs/subcommand_help.html#biscuit-bsconv
       tool_dev_url: https://github.com/huishenlab/biscuit
       licence: ["MIT"]
+      identifier: biotools:biscuit
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: BAM file contained mapped reads
-  - bai:
-      type: file
-      description: BAM file index
-  - index:
-      type: directory
-      description: Biscuit genome index directory (generated with 'biscuit index')
-      pattern: "BiscuitIndex"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM file contained mapped reads
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bai:
+        type: file
+        description: BAM file index
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Input genome fasta file
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - index:
+        type: directory
+        description: Directory containing biscuit genome index
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bsconv_bam:
-      type: file
-      description: Output BAM file containing filtered read alignments
-      pattern: "*.{bam}"
+  - bam:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bam":
+          type: file
+          description: Output BAM file containing filtered read alignments
+          pattern: "*.{bam}"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@njspix"
 maintainers:
   - "@njspix"
+  - "@sateeshperi"

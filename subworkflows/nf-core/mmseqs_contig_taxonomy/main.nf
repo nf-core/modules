@@ -53,4 +53,3 @@ workflow MMSEQS_CONTIG_TAXONOMY {
     db_contig   = ch_taxonomy_querydb       // channel: [ val(meta), db ]
     versions    = ch_versions               // channel: [ versions.yml ]
 }
-

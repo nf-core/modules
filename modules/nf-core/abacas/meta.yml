@@ -1,21 +1,22 @@
 name: abacas
 description: contiguate draft genome assembly
 keywords:
-  - genome
-  - assembly
-  - contiguate
+- genome
+- assembly
+- contiguate
 tools:
-  - abacas:
-      description: |
-        ABACAS is intended to rapidly contiguate (align, order, orientate),
-        visualize and design primers to close gaps on shotgun assembled
-        contigs based on a reference sequence.
-      homepage: http://abacas.sourceforge.net/documentation.html
-      documentation: http://abacas.sourceforge.net/documentation.html
-      doi: "10.1093/bioinformatics/btp347"
-      licence: ["GPL v2-or-later"]
+- abacas:
+    description: |
+      ABACAS is intended to rapidly contiguate (align, order, orientate),
+      visualize and design primers to close gaps on shotgun assembled
+      contigs based on a reference sequence.
+    homepage: http://abacas.sourceforge.net/documentation.html
+    documentation: http://abacas.sourceforge.net/documentation.html
+    doi: "10.1093/bioinformatics/btp347"
+    licence: ["GPL v2-or-later"]
+    identifier: biotools:abacas
 input:
-  - meta:
+- - meta:
       type: map
       description: |
         Groovy Map containing sample information
@@ -24,17 +25,22 @@ input:
       type: file
       description: Fasta file containing scaffold
       pattern: "*.{fasta,fa}"
-  - fasta:
+      ontologies:
+      - edam: http://edamontology.org/format_1929  # FASTA
+- - fasta:
       type: file
       description: FASTA reference file
       pattern: "*.{fasta,fa}"
+      ontologies:
+      - edam: http://edamontology.org/format_1929  # FASTA
 output:
+- results:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-  - results:
+  - "*.abacas*":
       type: file
       description: |
         List containing abacas output files
@@ -44,13 +50,16 @@ output:
         'test.abacas.tab', 'test.abacas.unused.contigs.out',
         'test.abacas.MULTIFASTA.fa' ]
       pattern: "*.{abacas}*"
-  - versions:
+      ontologies: []
+- versions:
+  - versions.yml:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
+      ontologies: []
 authors:
-  - "@joseespinosa"
-  - "@drpatelh"
+- "@joseespinosa"
+- "@drpatelh"
 maintainers:
-  - "@joseespinosa"
-  - "@drpatelh"
+- "@joseespinosa"
+- "@drpatelh"

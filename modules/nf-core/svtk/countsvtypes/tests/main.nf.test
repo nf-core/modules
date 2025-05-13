@@ -1,0 +1,35 @@
+
+nextflow_process {
+
+    name "Test Process SVTK_COUNTSVTYPES"
+    script "../main.nf"
+    process "SVTK_COUNTSVTYPES"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "svtk"
+    tag "svtk/countsvtypes"
+
+    test("test-svtk-countsvtypes") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

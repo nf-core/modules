@@ -1,0 +1,68 @@
+name: picard_positionbaseddownsamplesam
+description: Samples a SAM/BAM/CRAM file using flowcell position information for the
+  best approximation of having sequenced fewer reads
+keywords:
+  - sample
+  - bam
+  - sam
+  - cram
+tools:
+  - picard:
+      description: |
+        A set of command line tools (in Java) for manipulating high-throughput sequencing (HTS)
+        data and formats such as SAM/BAM/CRAM and VCF.
+      homepage: https://broadinstitute.github.io/picard/
+      documentation: https://broadinstitute.github.io/picard/
+      licence: ["MIT"]
+      identifier: biotools:picard_tools
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM file
+        pattern: "*.{bam,cram,sam}"
+    - fraction:
+        type: float
+        description: Fraction of reads to downsample to
+output:
+  - bam:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.ds*.bam":
+          type: file
+          description: A downsampled BAM file
+          pattern: "*.{bam}"
+  - bai:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.ds*.bai":
+          type: file
+          description: An optional BAM index file. If desired, --CREATE_INDEX must be
+            passed as a flag
+          pattern: "*.{bai}"
+  - num_reads:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ACTUAL_NUM_READS:
+          type: integer
+          description: The actual number of downsampled reads
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@bwlang"

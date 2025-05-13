@@ -38,4 +38,17 @@ process MYKROBE_PREDICT {
         mykrobe: \$(echo \$(mykrobe --version 2>&1) | sed 's/^.*mykrobe v//' )
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.csv
+    touch ${prefix}.json
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        mykrobe: \$(echo \$(mykrobe --version 2>&1) | sed 's/^.*mykrobe v//' )
+    END_VERSIONS
+    """
 }

@@ -13,55 +13,79 @@ tools:
       tool_dev_url: https://github.com/EddyRivasLab/hmmer
       doi: "10.1371/journal.pcbi.1002195"
       licence: ["BSD"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - hmmfile:
-      type: file
-      description: One or more HMM profiles created with hmmbuild
-      pattern: "*.{hmm,hmm.gz}"
-  - seqdb:
-      type: file
-      description: Database of sequences in FASTA format
-      pattern: "*.{fasta,fna,faa,fa,fasta.gz,fna.gz,faa.gz,fa.gz}"
-  - write_align:
-      type: boolean
-      description: Flag to save optional alignment output. Specify with 'true' to save.
-  - write_target:
-      type: boolean
-      description: Flag to save optional per target summary. Specify with 'true' to save.
-  - write_domain:
-      type: boolean
-      description: Flag to save optional per domain summary. Specify with 'true' to save.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - hmmfile:
+        type: file
+        description: One or more HMM profiles created with hmmbuild
+        pattern: "*.{hmm,hmm.gz}"
+    - seqdb:
+        type: file
+        description: Database of sequences in FASTA format
+        pattern: "*.{fasta,fna,faa,fa,fasta.gz,fna.gz,faa.gz,fa.gz}"
+    - write_align:
+        type: boolean
+        description: Flag to save optional alignment output. Specify with 'true' to
+          save.
+    - write_target:
+        type: boolean
+        description: Flag to save optional per target summary. Specify with 'true' to
+          save.
+    - write_domain:
+        type: boolean
+        description: Flag to save optional per domain summary. Specify with 'true' to
+          save.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - output:
-      type: file
-      description: Human readable output summarizing hmmsearch results
-      pattern: "*.{txt.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt.gz":
+          type: file
+          description: Human readable output summarizing hmmsearch results
+          pattern: "*.{txt.gz}"
   - alignments:
-      type: file
-      description: Optional multiple sequence alignment (MSA) in Stockholm format
-      pattern: "*.{sto.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.sto.gz":
+          type: file
+          description: Optional multiple sequence alignment (MSA) in Stockholm format
+          pattern: "*.{sto.gz}"
   - target_summary:
-      type: file
-      description: Optional tabular (space-delimited) summary of per-target output
-      pattern: "*.{tbl.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tbl.gz":
+          type: file
+          description: Optional tabular (space-delimited) summary of per-target output
+          pattern: "*.{tbl.gz}"
   - domain_summary:
-      type: file
-      description: Optional tabular (space-delimited) summary of per-domain output
-      pattern: "*.{domtbl.gz}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.domtbl.gz":
+          type: file
+          description: Optional tabular (space-delimited) summary of per-domain output
+          pattern: "*.{domtbl.gz}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@Midnighter"
 maintainers:

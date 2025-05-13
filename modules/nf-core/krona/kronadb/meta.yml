@@ -6,20 +6,25 @@ keywords:
   - krona
 tools:
   - krona:
-      description: Krona Tools is a set of scripts to create Krona charts from several Bioinformatics tools as well as from text and XML files.
+      description: Krona Tools is a set of scripts to create Krona charts from several
+        Bioinformatics tools as well as from text and XML files.
       homepage: https://github.com/marbl/Krona/wiki/KronaTools
       documentation: https://github.com/marbl/Krona/wiki/Installing
-      doi: 10.1186/1471-2105-12-385
-#  There is no input. This module downloads a pre-built taxonomy database for use with Krona Tools.
+      doi:
+        10.1186/1471-2105-12-385
+        #  There is no input. This module downloads a pre-built taxonomy database for use with Krona Tools.
+      identifier: biotools:krona
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - db:
-      type: file
-      description: A TAB separated file that contains a taxonomy database.
-      pattern: "*.{tab}"
+      - taxonomy/taxonomy.tab:
+          type: file
+          description: A TAB separated file that contains a taxonomy database.
+          pattern: "*.{tab}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@mjakobs"
 maintainers:

@@ -12,38 +12,63 @@ tools:
       homepage: http://www.cog-genomics.org/plink/2.0/
       documentation: http://www.cog-genomics.org/plink/2.0/general_usage
       licence: ["GPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: Variant calling file (vcf)
-      pattern: "*.{vcf}, *.{vcf.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: Variant calling file (vcf)
+        pattern: "*.{vcf}, *.{vcf.gz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - pgen:
-      type: file
-      description: PLINK 2 binary genotype table
-      pattern: "*.{pgen}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.pgen":
+          type: file
+          description: PLINK 2 binary genotype table
+          pattern: "*.{pgen}"
   - psam:
-      type: file
-      description: PLINK 2 sample information file
-      pattern: "*.{psam}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.psam":
+          type: file
+          description: PLINK 2 sample information file
+          pattern: "*.{psam}"
   - pvar:
-      type: file
-      description: PLINK 2 variant information file
-      pattern: "*.{pvar.zst}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.pvar":
+          type: file
+          description: PLINK 2 variant information file
+          pattern: "*.{pvar.zst}"
+  - pvar_zst:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.pvar.zst":
+          type: file
+          description: PLINK 2 variant information zst file
+          pattern: "*.pvar.zst"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nebfield"
 maintainers:

@@ -24,7 +24,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test_query', single_end:false ],
-                        file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                         ]
                     """
                 }
@@ -76,7 +76,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test_query', single_end:true ],
-                        file(params.test_data['sarscov2']['genome']['mmseqs_tar_gz'], checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/mmseqs.tar.gz', checkIfExists: true),
                     ]
                     """
                 }
@@ -87,7 +87,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test_target', single_end:true ],
-                        file(params.test_data['sarscov2']['genome']['mmseqs_tar_gz'], checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/mmseqs.tar.gz', checkIfExists: true),
                     ]
                     """
                 }
@@ -98,7 +98,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test_result', single_end:true ],
-                        file(params.test_data['sarscov2']['genome']['mmseqs_tar_gz'], checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/mmseqs.tar.gz', checkIfExists: true),
                     ]
                     """
                 }
@@ -123,8 +123,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.tsv).match("tsv") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out).match() }
             )
         }
     }
@@ -141,7 +140,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test_query', single_end:false ],
-                        file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                         ]
                     """
                 }
@@ -194,7 +193,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test_query', single_end:true ],
-                        file(params.test_data['sarscov2']['genome']['mmseqs_tar_gz'], checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/mmseqs.tar.gz', checkIfExists: true),
                     ]
                     """
                 }
@@ -205,7 +204,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test_target', single_end:true ],
-                        file(params.test_data['sarscov2']['genome']['mmseqs_tar_gz'], checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/mmseqs.tar.gz', checkIfExists: true),
                     ]
                     """
                 }
@@ -216,7 +215,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test_result', single_end:true ],
-                        file(params.test_data['sarscov2']['genome']['mmseqs_tar_gz'], checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/mmseqs.tar.gz', checkIfExists: true),
                     ]
                     """
                 }

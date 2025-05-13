@@ -1,0 +1,54 @@
+
+nextflow_process {
+
+    name "Test Process KRONA_KTUPDATETAXONOMY"
+    script "../main.nf"
+    process "KRONA_KTUPDATETAXONOMY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "krona"
+    tag "krona/ktupdatetaxonomy"
+
+    test("test-krona-ktupdatetaxonomy") {
+
+        when {
+            process {
+                """
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.db[0]).name, //unstable
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-krona-ktupdatetaxonomy-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

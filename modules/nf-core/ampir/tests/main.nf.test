@@ -15,7 +15,7 @@ nextflow_process {
                 """
                 input[0] = [
                             [ id:'test', single_end:false ], // meta map
-                            file(params.test_data['candidatus_portiera_aleyrodidarum']['genome']['proteome_fasta'], checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true),
                 ]
                 input[1] = "precursor" // model
                 input[2] = 10          // min_length
@@ -42,7 +42,7 @@ nextflow_process {
                 """
                 input[0] = [
                             [ id:'test', single_end:false ], // meta map
-                            file(params.test_data['candidatus_portiera_aleyrodidarum']['genome']['proteome_fasta'], checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true),
                 ]
                 input[1] = "precursor" // model
                 input[2] = 10          // min_length

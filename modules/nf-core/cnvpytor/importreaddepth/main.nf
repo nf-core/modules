@@ -4,8 +4,8 @@ process CNVPYTOR_IMPORTREADDEPTH {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cnvpytor:1.2.1--pyhdfd78af_0':
-        'biocontainers/cnvpytor:1.2.1--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/cnvpytor:1.3.1--pyhdfd78af_1':
+        'biocontainers/cnvpytor:1.3.1--pyhdfd78af_1' }"
 
     input:
     tuple val(meta), path(input_file), path(index)
@@ -32,7 +32,7 @@ process CNVPYTOR_IMPORTREADDEPTH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/CNVpytor //' )
+        cnvpytor: \$(cnvpytor --version | sed -n 's/.*CNVpytor \\(.*\\)/\\1/p')
     END_VERSIONS
     """
 
@@ -43,7 +43,7 @@ process CNVPYTOR_IMPORTREADDEPTH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cnvpytor: \$(echo \$(cnvpytor --version 2>&1) | sed 's/CNVpytor //' )
+        cnvpytor: \$(cnvpytor --version | sed -n 's/.*CNVpytor \\(.*\\)/\\1/p')
     END_VERSIONS
     """
 }

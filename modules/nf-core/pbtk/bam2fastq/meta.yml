@@ -1,0 +1,54 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "pbtk_bam2fastq"
+description: converts pacbio bam files to fastq.gz using PacBioToolKit (pbtk) bam2fastq
+keywords:
+  - convert
+  - bam
+  - genomics
+  - pacbio
+tools:
+  - "pbtk":
+      description: "pbtk - PacBio BAM toolkit"
+      homepage: "https://github.com/PacificBiosciences/pbtk"
+      documentation: "https://github.com/PacificBiosciences/pbtk#usage"
+      tool_dev_url: "https://github.com/PacificBiosciences/pbtk"
+      doi: "no DOI available"
+      licence: ["BSD-3-clause-Clear"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - bam:
+        type: file
+        description: PacBio BAM file
+        pattern: "*.bam"
+    - pbi:
+        type: file
+        description: PacBio BAM file index (.pbi)
+        pattern: "*.pbi"
+output:
+  - fastq:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.$extension":
+          type: file
+          description: Gzipped FASTQ file
+          pattern: "*.fastq.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@mbeavitt"
+  - "@gallvp"
+maintainers:
+  - "@mbeavitt"
+  - "@gallvp"

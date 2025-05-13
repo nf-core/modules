@@ -1,0 +1,46 @@
+
+nextflow_process {
+
+    name "Test Process ATLAS_PMD"
+    script "../main.nf"
+    process "ATLAS_PMD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "atlas"
+    tag "atlas/pmd"
+
+    test("test-atlas-pmd") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+				    []
+				]
+				input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+				input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					file(process.out.empiric[0][1]).readLines()[0],
+					file(process.out.exponential[0][1]).readLines()[0][0..13],
+					file(process.out.counts[0][1]).readLines()[0],
+					file(process.out.table[0][1]).readLines()[0],
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

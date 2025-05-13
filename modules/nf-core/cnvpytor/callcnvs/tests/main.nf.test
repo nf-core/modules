@@ -1,0 +1,59 @@
+
+nextflow_process {
+
+    name "Test Process CNVPYTOR_CALLCNVS"
+    script "../main.nf"
+    process "CNVPYTOR_CALLCNVS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cnvpytor"
+    tag "cnvpytor/callcnvs"
+
+    test("test-cnvpytor-callcnvs") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test'], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pytor/test.pytor', checkIfExists: true)
+				]
+                input[1] = []
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-cnvpytor-callcnvs-stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test'], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pytor/test.pytor', checkIfExists: true)
+				]
+                input[1] = []
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

@@ -1,0 +1,36 @@
+name: Update module
+description: Update a module in nf-core/modules
+title: "update module: TOOL/SUBTOOL"
+labels: update module
+body:
+  - type: checkboxes
+    attributes:
+      label: Is there an existing module for this?
+      description: This module already exists with the [`nf-core modules list`](https://github.com/nf-core/tools#list-modules) command
+      options:
+        - label: I have searched for the existing module
+          required: true
+
+  - type: checkboxes
+    attributes:
+      label: Is there an open PR for this?
+      description: There is no [open pull request](https://github.com/nf-core/modules/pulls) for this module
+      options:
+        - label: I have searched for existing PRs
+          required: true
+
+  - type: checkboxes
+    attributes:
+      label: Is there an open issue for this?
+      description: There is no [open issue](https://github.com/nf-core/modules/issues) for this module
+      options:
+        - label: I have searched for existing issues
+          required: true
+
+  - type: checkboxes
+    attributes:
+      label: Are you going to work on this?
+      description: If I'm planning to work on this module, I added myself to the `Assignees` to facilitate tracking who is working on the module
+      options:
+        - label: If I'm planning to work on this module, I added myself to the `Assignees` to facilitate tracking who is working on the module
+          required: false

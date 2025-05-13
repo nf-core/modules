@@ -16,7 +16,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'test' ],
-                    file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                 ]
                 """
             }
@@ -44,7 +44,7 @@ nextflow_process {
         when {
             process {
                 """
-                def input_file_lines = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true).text.split('\\n')
+                def input_file_lines = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true).text.split('\\n')
                 def file_with_adapters = file('sarscov2_with_adapters.fasta')
                 file_with_adapters.text = (
                     input_file_lines[0..<(input_file_lines.size()/2)]
@@ -89,7 +89,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'test' ],
-                    file(params.test_data['bacteroides_fragilis']['genome']['genome_fna_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                 ]
                 """
             }

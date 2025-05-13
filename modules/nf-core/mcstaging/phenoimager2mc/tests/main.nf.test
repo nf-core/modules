@@ -1,0 +1,79 @@
+nextflow_process {
+
+    name "Test Process MCSTAGING_PHENOIMAGER2MC"
+    script "../main.nf"
+    process "MCSTAGING_PHENOIMAGER2MC"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mcstaging"
+    tag "mcstaging/phenoimager2mc"
+
+    test("phenoimager2mc - tif") {
+        when {
+            process {
+                """
+                // stage input tif files in a folder
+                tmpdir = file("tmpdir", type: 'dir')
+                tmpdir.mkdir()
+                tif_file_1 = file(params.modules_testdata_base_path + 'imaging/staging/phenoimager/tile1.tif', checkIfExists: true)
+                tif_file_2 = file(params.modules_testdata_base_path + 'imaging/staging/phenoimager/tile2.tif', checkIfExists: true)
+                tif_file_1.copyTo(tmpdir)
+                tif_file_2.copyTo(tmpdir)
+
+                // define inputs of the process here. Example:
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(tmpdir, type:'dir', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(
+                      file(process.out.tif[0][1]).name,
+                      process.out.versions).match() }
+            )
+        }
+    }
+
+
+test("phenoimager2mc - tif - stub") {
+
+    options "-stub"
+        when {
+            process {
+                """
+                // stage input tif files in a folder
+                tmpdir = file("tmpdir", type: 'dir')
+                tmpdir.mkdir()
+                tif_file_1 = file(params.modules_testdata_base_path + 'imaging/staging/phenoimager/tile1.tif', checkIfExists: true)
+                tif_file_2 = file(params.modules_testdata_base_path + 'imaging/staging/phenoimager/tile2.tif', checkIfExists: true)
+                tif_file_1.copyTo(tmpdir)
+                tif_file_2.copyTo(tmpdir)
+
+                // define inputs of the process here. Example:
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(tmpdir, type:'dir', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(
+                      file(process.out.tif[0][1]).name,
+                      process.out.versions).match() }
+            )
+        }
+    }
+}

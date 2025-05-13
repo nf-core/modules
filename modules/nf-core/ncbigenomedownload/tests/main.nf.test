@@ -1,0 +1,41 @@
+
+nextflow_process {
+
+    name "Test Process NCBIGENOMEDOWNLOAD"
+    script "../main.nf"
+    process "NCBIGENOMEDOWNLOAD"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ncbigenomedownload"
+
+    test("test-ncbigenomedownload") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ] ]
+				input[1] = []
+				input[2] = []
+				input[3] = 'bacteria'
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					path(process.out.gbk[0][1]).linesGzip[3..7],
+					path(process.out.fna[0][1]).linesGzip[3..7],
+					process.out.stats,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

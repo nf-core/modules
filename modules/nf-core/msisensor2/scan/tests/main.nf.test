@@ -1,0 +1,60 @@
+
+nextflow_process {
+
+    name "Test Process MSISENSOR2_SCAN"
+    script "../main.nf"
+    process "MSISENSOR2_SCAN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "msisensor2"
+    tag "msisensor2/scan"
+
+    test("test-msisensor2-scan") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome2.fasta', checkIfExists: true)
+				]
+				input[1] = "outputfile"
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-msisensor2-scan-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome2.fasta', checkIfExists: true)
+				]
+				input[1] = "outputfile"
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

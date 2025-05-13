@@ -1,0 +1,63 @@
+
+nextflow_process {
+
+    name "Test Process SCIMAP_MCMICRO"
+    script "../main.nf"
+    process "SCIMAP_MCMICRO"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "scimap"
+    tag "scimap/mcmicro"
+
+    test("test-scimap-mcmicro") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'imaging/downstream/cycif_tonsil_cell.csv', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.csv[0][1]).readLines()[0],  // unstable
+                    file(process.out.h5ad[0][1]).name, // unstable
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-scimap-mcmicro-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'imaging/downstream/cycif_tonsil_cell.csv', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

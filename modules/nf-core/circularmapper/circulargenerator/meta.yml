@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "circularmapper_circulargenerator"
 description: A method to improve mappings on circular genomes, using the BWA mapper.
@@ -8,48 +7,70 @@ keywords:
   - genomics
 tools:
   - "circulargenerator":
-      description: "Creating a modified reference genome, with an elongation of the an specified amount of bases"
+      description: "Creating a modified reference genome, with an elongation of the
+        an specified amount of bases"
       homepage: "https://github.com/apeltzer/CircularMapper"
       documentation: "https://github.com/apeltzer/CircularMapper/blob/master/docs/contents/userguide.rst"
       tool_dev_url: "https://github.com/apeltzer/CircularMapper"
       doi: "no DOI available"
       licence: ["GPL v3"]
-
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-
-  - reference:
-      type: file
-      description: Genome fasta file
-      pattern: "*.fasta"
-
-  - elong:
-      type: integer
-      description: elongation value for the modified reference genome
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'sample1' ]`
+    - reference:
+        type: file
+        description: Genome fasta file
+        pattern: "*.fasta"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'sample1' ]`
+    - elongation_factor:
+        type: integer
+        description: The number of bases that the ends of the target chromosome in the
+          reference genome should be elongated by
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'sample1' ]`
+    - target:
+        type: string
+        description: The name of the chromosome in the reference genome that should
+          be elongated
 output:
-  #Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
   - fasta:
-      type: file
-      description: Genome fasta file
-      pattern: "*.fasta"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_${elongation_factor}.fasta":
+          type: file
+          description: Genome fasta file
+          pattern: "*.fasta"
+  - elongated:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*${elongation_factor}_elongated":
+          type: file
+          description: File listing the chromosomes that were elongated
+          pattern: "*_elongated"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@apalleja"
+  - "@TCLamnidis"
 maintainers:
   - ""

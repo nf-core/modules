@@ -18,32 +18,37 @@ tools:
       tool_dev_url: https://bitbucket.org/berkeleylab/checkv/src/master/
       doi: "10.1038/s41587-020-00774-7"
       licence: ["BSD License"]
+      identifier: biotools:checkv
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'sample', bin:'1' ]
-  - fasta:
-      type: file
-      description: fasta file containing additional sequences for the existing checkv database
-      pattern: "*.{fasta,fna,fa}"
-  - db:
-      type: directory
-      description: directory pointing to existing checkV database to avoid redownloading the database
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample', bin:'1' ]
+    - fasta:
+        type: file
+        description: fasta file containing additional sequences for the existing checkv
+          database
+        pattern: "*.{fasta,fna,fa}"
+  - - db:
+        type: directory
+        description: directory pointing to existing checkV database to avoid redownloading
+          the database
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'sample', bin:'1' ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - checkv_db:
-      type: directory
-      description: directory pointing to database
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample', bin:'1' ]
+      - ${prefix}/*:
+          type: directory
+          description: directory pointing to database
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@Joon-Klaps"
 maintainers:

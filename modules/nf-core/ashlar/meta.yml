@@ -11,30 +11,39 @@ tools:
       documentation: "https://labsyspharm.github.io/ashlar/"
       doi: "10.1093/bioinformatics/btac544"
       licence: ["MIT"]
+      identifier: biotools:ASHLAR
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - images:
-      type: file
-      description: Overlapping tile image data in formats from most commercial microscopes
-      pattern: "*.{ome.tiff,ome.tif,rcpnl,btf,nd2,tiff,tif,czi}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - images:
+        type: file
+        description: Overlapping tile image data in formats from most commercial microscopes
+        pattern: "*.{ome.tiff,ome.tif,rcpnl,btf,nd2,tiff,tif,czi}"
+  - - opt_dfp:
+        type: file
+        description: Optional dark field image data
+  - - opt_ffp:
+        type: file
+        description: Optional flat field image data
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - tif:
-      type: file
-      description: A pyramidal, tiled OME-TIFF file created from input images.
-      pattern: "*.ome.tif"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.ome.tif":
+          type: file
+          description: A pyramidal, tiled OME-TIFF file created from input images.
+          pattern: "*.ome.tif"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@RobJY"
   - "@jmuhlich"

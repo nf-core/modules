@@ -1,9 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
-name: "pharokka_installdatabases"
 channels:
   - conda-forge
   - bioconda
-  - defaults
 dependencies:
-  - "bioconda::pharokka=1.5.1"
+  - bioconda::pharokka=1.7.3

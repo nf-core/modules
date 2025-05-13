@@ -1,5 +1,9 @@
-name: merquryfk_merquryfk
 channels:
   - conda-forge
   - bioconda
-  - defaults
+
+dependencies:
+  - bioconda::fastk=1.1.0
+  - bioconda::merquryfk=1.1.1
+  - conda-forge::r-ggplot2=3.4.0
+  - conda-forge::r-viridis=0.6.5

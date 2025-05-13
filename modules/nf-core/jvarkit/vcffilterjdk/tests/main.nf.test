@@ -1,0 +1,119 @@
+// nf-core modules test jvarkit/vcffilterjdk
+nextflow_process {
+
+    name "Test Process JVARKIT_VCFFILTERJDK"
+    script "../main.nf"
+    process "JVARKIT_VCFFILTERJDK"
+    config "./nextflow.config"
+
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "jvarkit"
+    tag "jvarkit/vcffilterjdk"
+
+    test("sarscov2 - vcf") {
+
+        when {
+            process {
+                """
+                input[0] =[
+                    [id:"vcf_test"],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
+                    [],
+                    []
+                ]
+                input[1] = [ [:] , file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+                input[2] = [ [:] , file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true) ]
+                input[3] = [ [:] , file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true) ]
+                input[4] = [ [] , []]
+                input[5] = [ [] , []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+
+
+    test("sarscov2 - vcf+bed") {
+
+        when {
+            process {
+                """
+                input[0] =[
+                    [id:"vcf_test"],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
+                    [],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
+                ]
+                input[1] = [ [:] , file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+                input[2] = [ [:] , file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true) ]
+                input[3] = [ [:] , file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true) ]
+                input[4] = [ [] , []]
+                input[5] = [ [] , []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.vcf[0][1]).exists() },
+                { assert snapshot(process.out.versions).match()
+                }
+            )
+        }
+    }
+
+
+
+
+    test("sarscov2 - vcf - stub") {
+
+        options  "-stub"
+
+        when {
+            process {
+                """
+                input[0] =[
+                    [id:"vcf_test"],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
+                    [],
+                    []
+                ]
+                input[1] = [ [:] , file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true) ]
+                input[2] = [ [:] , file(params.test_data['sarscov2']['genome']['genome_fasta_fai'], checkIfExists: true) ]
+                input[3] = [ [:] , file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true) ]
+                input[4] = [ [] , []]
+                input[5] = [ [] , []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.vcf[0][1]),
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+
+}

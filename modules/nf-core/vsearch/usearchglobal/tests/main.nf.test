@@ -1,0 +1,64 @@
+
+nextflow_process {
+
+    name "Test Process VSEARCH_USEARCHGLOBAL"
+    script "../main.nf"
+    process "VSEARCH_USEARCHGLOBAL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "vsearch"
+    tag "vsearch/usearchglobal"
+
+    test("test-vsearch-usearchglobal") {
+
+        when {
+            process {
+                """
+                input[0] = [[id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)]
+				input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+				input[2] = 0.985
+				input[3] = "xcfert"
+				input[4] = ""
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.aln[0][1]).text.contains('Query >lcl|MT192765.1_cds_QIK50427.1_2') },
+                { assert snapshot(
+                    file(process.out.aln[0][1]).name,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-vsearch-usearchglobal-userout") {
+
+        when {
+            process {
+                """
+                input[0] = [[id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)]
+				input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+				input[2] = 0.985
+				input[3] = "userout"
+				input[4] = "query+target+id"
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

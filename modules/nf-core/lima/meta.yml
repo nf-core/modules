@@ -13,82 +13,161 @@ tools:
       documentation: https://lima.how/
       tool_dev_url: https://github.com/pacificbiosciences/barcoding/
       licence: ["BSD-3-Clause-Clear"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - ccs:
-      type: file
-      description: A BAM or fasta or fasta.gz or fastq or fastq.gz file of subreads or ccs
-      pattern: "*.{bam,fasta,fasta.gz,fastq,fastq.gz}"
-  - primers:
-      type: file
-      description: Fasta file, sequences of primers
-      pattern: "*.fasta"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - ccs:
+        type: file
+        description: A BAM or fasta or fasta.gz or fastq or fastq.gz file of subreads
+          or ccs
+        pattern: "*.{bam,fasta,fasta.gz,fastq,fastq.gz}"
+  - - primers:
+        type: file
+        description: Fasta file, sequences of primers
+        pattern: "*.fasta"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - bam:
-      type: file
-      description: A bam file of ccs purged of primers
-      pattern: "*.bam"
-  - pbi:
-      type: file
-      description: Pacbio index file of ccs purged of primers
-      pattern: "*.bam"
-  - xml:
-      type: file
-      description: An XML file representing a set of a particular sequence data type such as subreads, references or aligned subreads.
-      pattern: "*.xml"
-  - json:
-      type: file
-      description: A metadata json file
-      pattern: "*.json"
-  - clips:
-      type: file
-      description: A fasta file of clipped primers
-      pattern: "*.clips"
   - counts:
-      type: file
-      description: A tabulated file of describing pairs of primers
-      pattern: "*.counts"
-  - guess:
-      type: file
-      description: A second tabulated file of describing pairs of primers (no doc available)
-      pattern: "*.guess"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.counts":
+          type: file
+          description: A tabulated file of describing pairs of primers
+          pattern: "*.counts"
   - report:
-      type: file
-      description: A tab-separated file about each ZMW, unfiltered
-      pattern: "*.report"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.report":
+          type: file
+          description: A tab-separated file about each ZMW, unfiltered
+          pattern: "*.report"
   - summary:
-      type: file
-      description: This file shows how many ZMWs have been filtered, how ZMWs many are same/different, and how many reads have been filtered.
-      pattern: "*.summary"
-  - fasta:
-      type: file
-      description: A fasta file of ccs purged of primers.
-      pattern: "*.fa"
-  - fastagz:
-      type: file
-      description: A fasta.gz file of ccs purged of primers.
-      pattern: "*.fasta.gz"
-  - fastq:
-      type: file
-      description: A fastq file of ccs purged of primers.
-      pattern: "*.fastq"
-  - fastqgz:
-      type: file
-      description: A fastq.gz file of ccs purged of primers.
-      pattern: "*.fastq.gz"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.summary":
+          type: file
+          description: This file shows how many ZMWs have been filtered, how ZMWs many
+            are same/different, and how many reads have been filtered.
+          pattern: "*.summary"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+  - bam:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.bam":
+          type: file
+          description: A bam file of ccs purged of primers
+          pattern: "*.bam"
+  - pbi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.bam.pbi":
+          type: file
+          description: Pacbio index file of ccs purged of primers
+          pattern: "*.bam"
+  - fasta:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.{fa, fasta}":
+          type: file
+          description: A fasta file of ccs purged of primers.
+          pattern: "*.fa"
+  - fastagz:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.{fa.gz, fasta.gz}":
+          type: file
+          description: A fasta.gz file of ccs purged of primers.
+          pattern: "*.fasta.gz"
+  - fastq:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.fastq":
+          type: file
+          description: A fastq file of ccs purged of primers.
+          pattern: "*.fastq"
+  - fastqgz:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.fastq.gz":
+          type: file
+          description: A fastq.gz file of ccs purged of primers.
+          pattern: "*.fastq.gz"
+  - xml:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.xml":
+          type: file
+          description: An XML file representing a set of a particular sequence data type
+            such as subreads, references or aligned subreads.
+          pattern: "*.xml"
+  - json:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.json":
+          type: file
+          description: A metadata json file
+          pattern: "*.json"
+  - clips:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.clips":
+          type: file
+          description: A fasta file of clipped primers
+          pattern: "*.clips"
+  - guess:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.guess":
+          type: file
+          description: A second tabulated file of describing pairs of primers (no doc
+            available)
+          pattern: "*.guess"
 authors:
   - "@sguizard"
 maintainers:

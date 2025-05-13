@@ -1,79 +1,127 @@
-name: "VERIFYBAMID_VERIFYBAMID"
-description: Detecting and estimating inter-sample DNA contamination became a crucial quality assessment step to ensure high quality sequence reads and reliable downstream analysis.
+name: "verifybamid_verifybamid"
+description: Detecting and estimating inter-sample DNA contamination became a crucial
+  quality assessment step to ensure high quality sequence reads and reliable downstream
+  analysis.
 keywords:
   - qc
   - contamination
   - bam
 tools:
   - "verifybamid":
-      description: "verifyBamID is a software that verifies whether the reads in particular file match previously known genotypes for an individual (or group of individuals), and checks whether the reads are contaminated as a mixture of two samples."
+      description: "verifyBamID is a software that verifies whether the reads in particular
+        file match previously known genotypes for an individual (or group of individuals),
+        and checks whether the reads are contaminated as a mixture of two samples."
       homepage: "https://genome.sph.umich.edu/wiki/VerifyBamID"
       documentation: "http://genome.sph.umich.edu/wiki/VerifyBamID"
       tool_dev_url: "https://github.com/statgen/verifyBamID"
       doi: "10.1016/j.ajhg.2012.09.004"
-      licence: "['GPL v3']"
+      licence: ["GPL v3"]
+      identifier: biotools:verifybamid
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: |
-        BAM file, a sorted, indexed, base quality recalibrated, and duplication-marked BAM file.
-        It also requires to contain "@RG" header lines to annotation different readGroups (sequencing runs and lanes).
-        The SM tag in the "@RG" header should match with one of the genotyped sample.
-      pattern: "*.bam"
-  - bai:
-      type: file
-      description: BAM index file BAI
-      pattern: "*.bai"
-  - refvcf:
-      type: file
-      description: |
-        The input VCF file contains
-        (1) external genotype information and/or
-        (2) allele frequency information as AF entry or AC/AN entries in the INFO field.
-      pattern: "*.{vcf,vcf.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: |
+          BAM file, a sorted, indexed, base quality recalibrated, and duplication-marked BAM file.
+          It also requires to contain "@RG" header lines to annotation different readGroups (sequencing runs and lanes).
+          The SM tag in the "@RG" header should match with one of the genotyped sample.
+        pattern: "*.bam"
+    - bai:
+        type: file
+        description: BAM index file BAI
+        pattern: "*.bai"
+  - - refvcf:
+        type: file
+        description: |
+          The input VCF file contains
+          (1) external genotype information and/or
+          (2) allele frequency information as AF entry or AC/AN entries in the INFO field.
+        pattern: "*.{vcf,vcf.gz}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - log:
-      type: file
-      description: Detailed summary of the verifyBamID result.
-      pattern: "*.log"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: Detailed summary of the verifyBamID result.
+          pattern: "*.log"
   - selfsm:
-      type: file
-      description: Per-sample statistics describing how well the sample matches to the annotated sample.
-      pattern: "*.selfSM"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.selfSM":
+          type: file
+          description: Per-sample statistics describing how well the sample matches to
+            the annotated sample.
+          pattern: "*.selfSM"
   - depthsm:
-      type: file
-      description: The depth distribution of the sequence reads per sample
-      pattern: "*.depthSM"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.depthSM":
+          type: file
+          description: The depth distribution of the sequence reads per sample
+          pattern: "*.depthSM"
   - selfrg:
-      type: file
-      description: Per-readGroup statistics describing how well each lane matches to the annotated sample. (available only without --ignoreRG option)
-      pattern: "*.selfRG"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.selfRG":
+          type: file
+          description: Per-readGroup statistics describing how well each lane matches
+            to the annotated sample. (available only without --ignoreRG option)
+          pattern: "*.selfRG"
   - depthrg:
-      type: file
-      description: The depth distribution of the sequence reads per readGroup. (available only without --ignoreRG option)
-      pattern: "*.depthRG"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.depthRG":
+          type: file
+          description: The depth distribution of the sequence reads per readGroup. (available
+            only without --ignoreRG option)
+          pattern: "*.depthRG"
   - bestsm:
-      type: file
-      description: Per-sample best-match statistics with best-matching sample among the genotyped sample (available only with --best option)
-      pattern: "*.bestSM"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bestSM":
+          type: file
+          description: Per-sample best-match statistics with best-matching sample among
+            the genotyped sample (available only with --best option)
+          pattern: "*.bestSM"
   - bestrg:
-      type: file
-      description: Per-readgroup best-match statistics with best-matching sample among the genotyped sample (available only with --best and without --ignoreRG option)
-      pattern: "*.bestRG"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bestRG":
+          type: file
+          description: Per-readgroup best-match statistics with best-matching sample among
+            the genotyped sample (available only with --best and without --ignoreRG option)
+          pattern: "*.bestRG"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@manifestoso"
 maintainers:

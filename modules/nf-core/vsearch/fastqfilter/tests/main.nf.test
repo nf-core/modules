@@ -1,0 +1,64 @@
+nextflow_process {
+
+    name "Test Process VSEARCH_FASTQFILTER"
+    script "../main.nf"
+    process "VSEARCH_FASTQFILTER"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "vsearch"
+    tag "vsearch/fastqfilter"
+
+    test("sarscov2 - fastq") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fasta,
+                    file(process.out.log[0]).readLines()[3..4],
+                    process.out.versions,
+                    ).match() }
+            )
+        }
+
+    }
+
+
+    test("sarscov2 - fastq - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

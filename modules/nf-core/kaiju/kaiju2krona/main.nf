@@ -49,4 +49,3 @@ process KAIJU_KAIJU2KRONA {
     END_VERSIONS
     """
 }
-

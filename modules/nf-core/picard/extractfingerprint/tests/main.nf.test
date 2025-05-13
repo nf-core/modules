@@ -17,13 +17,13 @@ nextflow_process {
                 """
                 bam = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam_bai'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
                 ]
-                fasta = [file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)]
-                fai   = [file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)]
-                dict  = [file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)]
-                haplotype_map  = [file(params.test_data['homo_sapiens']['genome']['haplotype_map'], checkIfExists: true)]
+                fasta = [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
+                fai   = [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]
+                dict  = [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)]
+                haplotype_map  = [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/haplotype_map.txt', checkIfExists: true)]
 
                 input[0] = bam
                 input[1] = haplotype_map

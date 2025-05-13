@@ -16,8 +16,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     [
-                        file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_1_fastq_gz'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_2_fastq_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true)
                     ]
                 ]
                 """
@@ -27,13 +27,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert path(process.out.log[0][1]).text.contains("All commands completed successfully.") },
+                { assert path(process.out.transcript_fasta[0][1]).linesGzip.toString().contains(">TRINITY_DN7_c0_g1_i1 len=299 path=[0:0-151 2:152-298]") },
                 { assert snapshot(
                     process.out.versions
-                    ).match("versions")
-                },
-                { assert path(process.out.log[0][1]).text.contains("All commands completed successfully.") },
-                { assert path(process.out.transcript_fasta[0][1]).linesGzip.toString().contains(">TRINITY_DN7_c0_g1_i1 len=299 path=[0:0-151 2:152-298]") }
-
+                    ).match()
+                }
             )
         }
     }
@@ -45,7 +44,7 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:true ], // meta map
                     [
-                        file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_1_fastq_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true)
                     ]
                 ]
                 """
@@ -55,12 +54,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert path(process.out.log[0][1]).text.contains("All commands completed successfully.") },
+                { assert path(process.out.transcript_fasta[0][1]).linesGzip.toString().contains(">TRINITY_DN10_c0_g1_i1 len=534 path=[0:0-533]") },
                 { assert snapshot(
                     process.out.versions
-                    ).match("versions")
+                    ).match()
                 },
-                { assert path(process.out.log[0][1]).text.contains("All commands completed successfully.") },
-                { assert path(process.out.transcript_fasta[0][1]).linesGzip.toString().contains(">TRINITY_DN10_c0_g1_i1 len=534 path=[0:0-533]") }
             )
         }
     }
@@ -72,10 +71,10 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     [
-                        file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_1_fastq_gz'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_2_fastq_gz'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_1_fastq_gz'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_2_fastq_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true)
                     ]
                 ]
                 """
@@ -85,12 +84,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert path(process.out.log[0][1]).text.contains("All commands completed successfully.") },
+                { assert path(process.out.transcript_fasta[0][1]).linesGzip.toString().contains(">TRINITY_DN12_c0_g1_i1 len=225 path=[0:0-224]") },
                 { assert snapshot(
                     process.out.versions
-                    ).match("versions")
-                },
-                { assert path(process.out.log[0][1]).text.contains("All commands completed successfully.") },
-                { assert path(process.out.transcript_fasta[0][1]).linesGzip.toString().contains(">TRINITY_DN12_c0_g1_i1 len=225 path=[0:0-224]") }
+                    ).match()
+                }
 
             )
         }
@@ -103,8 +102,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:true ], // meta map
                     [
-                        file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_1_fastq_gz'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_1_fastq_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true)
                     ]
                 ]
                 """
@@ -114,12 +113,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert path(process.out.log[0][1]).text.contains("All commands completed successfully.") },
+                { assert path(process.out.transcript_fasta[0][1]).linesGzip.toString().contains(">TRINITY_DN12_c0_g1_i1 len=268 path=[0:0-267]") },
                 { assert snapshot(
                     process.out.versions
-                    ).match("versions")
-                },
-                { assert path(process.out.log[0][1]).text.contains("All commands completed successfully.") },
-                { assert path(process.out.transcript_fasta[0][1]).linesGzip.toString().contains(">TRINITY_DN12_c0_g1_i1 len=268 path=[0:0-267]") }
+                    ).match()
+                }
             )
         }
     }
@@ -134,8 +133,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     [
-                        file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_1_fastq_gz'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_2_fastq_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true)
                     ]
                 ]
                 """
@@ -145,12 +144,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                        process.out.transcript_fasta,
-                        process.out.log
-                    ).match()
-                },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out).match() }
             )
         }
     }

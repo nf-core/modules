@@ -17,7 +17,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [id: "test" ],
-                    [ file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                 ]
                 """
             }
@@ -25,8 +25,11 @@ nextflow_process {
     }
 
     test("sarscov2_fasta_binary") {
-        config "./convert_binary.config"
+        config "./nextflow.config"
         when {
+            params {
+                windowmasker_args = '-sformat binary'
+            }
             process {
                 """
                 input[0] = WINDOWMASKER_MKCOUNTS.out.counts
@@ -44,8 +47,11 @@ nextflow_process {
     }
 
     test("sarscov2_fasta_obinary") {
-        config "./convert_obinary.config"
+        config "./nextflow.config"
         when {
+            params {
+                windowmasker_args = '-sformat obinary'
+            }
             process {
                 """
                 input[0] = WINDOWMASKER_MKCOUNTS.out.counts
@@ -63,8 +69,11 @@ nextflow_process {
     }
 
     test("sarscov2_fasta_oascii") {
-        config "./convert_oascii.config"
+        config "./nextflow.config"
         when {
+            params {
+                windowmasker_args = '-sformat oascii'
+            }
             process {
                 """
                 input[0] = WINDOWMASKER_MKCOUNTS.out.counts
@@ -90,7 +99,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [id: "test" ],
-                    [ file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)]
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                 ]
                 """
             }
