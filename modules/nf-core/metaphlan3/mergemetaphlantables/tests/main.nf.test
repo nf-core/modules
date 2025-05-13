@@ -56,7 +56,7 @@ nextflow_process {
                     .map{[
                         [id:"test"], it[1]
                     ]}
-                    .groupTuple()
+                    .groupTuple(sort : true)
                 """
             }
         }
