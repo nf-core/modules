@@ -1,0 +1,94 @@
+nextflow_process {
+
+    name "Test Process METAEUK_EASYPREDICT"
+
+    script "../main.nf"
+    process "METAEUK_EASYPREDICT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mmseqs"
+    tag "mmseqs/databases"
+    tag "metaeuk"
+    tag "metaeuk/easypredict"
+
+    test("homo_sapiens - fasta - fasta") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
+                ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS.fasta', checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    
+    test("homo_sapiens - fasta - mmseqs db") {
+        setup {
+            run("MMSEQS_DATABASES") {
+                script "../../../mmseqs/databases/main.nf"
+                
+                process {
+                    """
+                    input[0] = 'UniProtKB/Swiss-Prot'
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
+                ]
+                input[1] = MMSEQS_DATABASES.out.database
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    
+    
+    test("homo_sapiens - fasta - fasta -- stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
+                ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS.fasta', checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}
