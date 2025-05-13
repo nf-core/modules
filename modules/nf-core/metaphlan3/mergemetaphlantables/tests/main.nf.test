@@ -4,19 +4,19 @@ nextflow_process {
     config "./nextflow.config"
     script "../main.nf"
     process "METAPHLAN3_MERGEMETAPHLANTABLES"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "untar"
     tag "metaphlan3"
     tag "metaphlan3/metaphlan3"
     tag "metaphlan3/mergemetaphlantables"
-   
+
     test("sarscov2 - profiles") {
         setup {
             run("UNTAR") {
                 script "../../../untar/main.nf"
-                
+
                 process {
                     """
                     input[0] = [
@@ -26,7 +26,7 @@ nextflow_process {
                     """
                 }
             }
-            
+
             run("METAPHLAN3_METAPHLAN3") {
                 script "../../metaphlan3/main.nf"
                 process {
@@ -56,8 +56,7 @@ nextflow_process {
                     .map{[
                         [id:"test"], it[1]
                     ]}
-                    .groupTuple(sort : true)
-                    .view()
+                    .groupTuple()
                 """
             }
         }
