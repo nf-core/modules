@@ -8,7 +8,8 @@ process PICARD_COLLECTALIGNMENTSUMMARYMETRICS {
         'biocontainers/picard:3.3.0--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta),  path(bam)
+    tuple val(meta2), path(fasta)
 
     output:
     tuple val(meta), path("*.txt"), emit: metrics
@@ -20,6 +21,7 @@ process PICARD_COLLECTALIGNMENTSUMMARYMETRICS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def reference = fasta ? "--REFERENCE_SEQUENCE ${fasta}" : ""
 
     def avail_mem = 3072
     if (!task.memory) {
@@ -33,6 +35,7 @@ process PICARD_COLLECTALIGNMENTSUMMARYMETRICS {
         CollectAlignmentSummaryMetrics \\
         --INPUT $bam \\
         --OUTPUT ${prefix}.txt \\
+        ${reference} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

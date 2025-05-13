@@ -1,26 +1,37 @@
 
 nextflow_process {
 
-    name "Test Process PYDAMAGE_ANALYZE"
+    name "Test Process PYDAMAGE_FILTER"
     script "../main.nf"
-    process "PYDAMAGE_ANALYZE"
+    process "PYDAMAGE_FILTER"
 
     tag "modules"
     tag "modules_nfcore"
     tag "pydamage"
     tag "pydamage/analyze"
+    tag "pydamage/filter"
 
     test("homo_sapiens") {
+
+        setup {
+            run ("PYDAMAGE_ANALYZE") {
+                script "../../../pydamage/analyze/main.nf"
+                process {
+                """
+                input[0] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                ]
+                """
+                }
+            }
+        }
 
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test' ],
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
-                ]
-
+                input[0] = PYDAMAGE_ANALYZE.out.csv
                 """
             }
         }
@@ -37,17 +48,12 @@ nextflow_process {
         }
     }
 
-    test("homo_sapiens -- stub") {
+    test("homo_sapiens - stub") {
         options '-stub'
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test'],
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
-                ]
-
+                input[0] = [[id: 'test'],[]]
                 """
             }
         }
