@@ -63,7 +63,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out,
+                    path(process.out.txt[0][1]).readLines().join('\n'),
+                ).match() }
             )
         }
     }
