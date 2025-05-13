@@ -33,7 +33,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args ?: ''
     def preload_mode = !task.ext.args.toString().contains('--preload-size')
-    def preload_cmd = preload_mode ? '' : "krakenuniq ${args} --db ${db} --preload --threads ${task.cpus}"
+    def preload_cmd = preload_mode ? "krakenuniq ${args} --db ${db} --preload --threads ${task.cpus}" : ''
 
     classified = meta.single_end ? "\${PREFIX}.classified.${sequence_type}" : "\${PREFIX}.merged.classified.${sequence_type}"
     unclassified = meta.single_end ? "\${PREFIX}.unclassified.${sequence_type}" : "\${PREFIX}.merged.unclassified.${sequence_type}"
