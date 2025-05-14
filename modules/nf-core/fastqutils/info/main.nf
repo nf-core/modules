@@ -29,7 +29,7 @@ process FASTQUTILS_INFO {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        fastq_utils: "\$(fastq_info -h 2>&1 | head -n 1 | sed 's/^fastq_utils //')"
+        fastq_utils: \$(fastq_info -h 2>&1 | head -n 1 | sed 's/^fastq_utils //')
     END_VERSIONS
     """
 
@@ -41,7 +41,7 @@ process FASTQUTILS_INFO {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        fastq_utils: "\$(fastq_info -h 2>&1 | head -n 1 | sed 's/^fastq_utils //')"
+        fastq_utils: \$(fastq_info -h 2>&1 | head -n 1 | sed 's/^fastq_utils //')
     END_VERSIONS
     """
 }
