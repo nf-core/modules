@@ -1,0 +1,55 @@
+nextflow_process {
+
+    name "Test Process ULTRA_INDEX"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "ULTRA_INDEX"
+   
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ultra"
+    tag "ultra/index"
+    tag "gnu"
+    tag "gnu/sort"
+   
+    test("test_ultra_index") {
+        
+        setup {
+            run("GNU_SORT") {
+                script "../../../gnu/sort/main.nf"
+                
+                process {
+                    """
+                    input[0] = [
+                        [id:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf',checkIfExists:true)
+                        ]
+                    """
+                }
+            }
+        }
+        when {
+            params {
+                gnu_sort_param = '-k1,1 -k4,4n'
+                utra_index_param = '--disable_infer'
+            }
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',checkIfExists:true)
+                input[1] = GNU_SORT.out.sorted.map{it[1]}
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.index[0][1],
+                    process.out.index[0][0].collect{ fileName ->
+                        file(fileName.toString()).name }
+                ).match() }
+            )
+        }
+    }
+}
