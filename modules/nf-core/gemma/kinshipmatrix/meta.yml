@@ -1,0 +1,82 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "gemma_kinshipmatrix"
+## TODO nf-core: Add a description of the module and list keywords
+description: write your description here
+keywords:
+  - sort
+  - example
+  - genomics
+tools:
+  - "gemma":
+      ## TODO nf-core: Add a description and other details for the software below
+      description: "Linear mixed models (LMMs) for genome-wide association (GWA)"
+      homepage: "None"
+      documentation: "None"
+      tool_dev_url: "None"
+      doi: ""
+      licence: ["GPL v3"]
+      identifier: biotools:gemma
+
+## TODO nf-core: Add a description of all of the variables used as input
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+
+    - genotype:
+        type: file
+        description: genotype_matrix file
+        pattern: "*.txt"
+
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+
+    - phenotype:
+        type: file
+        description: phenotype file
+        pattern: "*.txt"
+
+output:
+  - heat_map:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.{}":
+          # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
+          type: file
+          description: heat_map file
+          pattern: "*.{}"
+          ontologies:
+            - edam: "http://edamontology.org/data_1636" # Heat map
+  - quality_control_report:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.{}":
+          # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
+          type: file
+          description: quality_control_report file
+          pattern: "*.{}"
+          ontologies:
+            - edam: "http://edamontology.org/data_3914" # Quality control report
+
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@chriswyatt1"
+maintainers:
+  - "@chriswyatt1"
