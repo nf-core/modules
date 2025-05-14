@@ -5,7 +5,7 @@ process GEMMA_KINSHIPMATRIX {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gemma:0.98.5--ha36d3ea_0':
-        'biocontainers/gemma/0.98.1dfsg-1-deb' }"
+        'biocontainers/gemma/0.98.5--ha36d3ea_0' }"
 
     input:
     tuple val(meta), path(genotype)
