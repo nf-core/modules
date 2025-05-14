@@ -58,7 +58,7 @@ nextflow_workflow {
                     workflow.out.vcf_tbi.collect { [it[0], file(it[1]).name, file(it[2]).name] },
                     workflow.out.reports.collect { it instanceof String ? file(it).name : it },
                     workflow.out.versions.collect { it }
-                ).match()}
+                ).match() }
             )
         }
     }
@@ -88,7 +88,7 @@ nextflow_workflow {
         then {
             assert workflow.success
             assertAll(
-                { assert snapshot(workflow.out).match()}
+                { assert snapshot(workflow.out).match() }
             )
         }
     }
