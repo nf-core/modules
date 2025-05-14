@@ -28,24 +28,31 @@ input:
         type: file
         description: FASTQ or FASTQ.GZ file, list of 2 files for paired-end data
         pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
   - - reference:
         type: file
         description: Reference genome file
+        ontologies: []
 output:
   - outs:
       - meta:
           type: file
           description: Files containing the outputs of Cell Ranger
           pattern: "sample-${meta.id}/outs/*"
+          ontologies: []
       - sample-${meta.id}/outs/*:
           type: file
           description: Files containing the outputs of Cell Ranger
           pattern: "sample-${meta.id}/outs/*"
+          ontologies: []
   - versions:
       - versions.yml:
           type: file
           description: File containing software version
           pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@kbattenb"
   - "@tomkellygenetics"
