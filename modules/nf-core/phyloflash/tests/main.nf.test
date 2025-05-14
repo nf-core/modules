@@ -1,0 +1,41 @@
+nextflow_process {
+
+    name "Test Process PHYLOFLASH"
+
+    script "../main.nf"
+    process "PHYLOFLASH"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "phyloflash"
+
+    // only stub runs as a database has to be downloaded
+    test("test_phyloflash_single_end -- stub") {
+        options '-stub'
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end: true],
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true)]
+                    ]
+                input[1] = []
+                input[2] = []
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+
+}
