@@ -36,7 +36,6 @@ nextflow_process {
                 input[2] = CATPACK_PREPARE.out.taxonomy
                 input[3] = [[:], []]
                 input[4] = [[:], []]
-                input[5] = '.fasta'
                 """
             }
         }
@@ -84,7 +83,6 @@ nextflow_process {
                 input[2] = CATPACK_PREPARE.out.taxonomy
                 input[3] = CATPACK_CONTIGS.out.faa
                 input[4] = [[:], []]
-                input[5] = '.fasta'
                 """
             }
         }
@@ -118,7 +116,6 @@ nextflow_process {
                 input[2] = CATPACK_PREPARE.out.taxonomy
                 input[3] = [[:], []]
                 input[4] = [[:], []]
-                input[5] = '.fasta'
                 """
             }
         }
