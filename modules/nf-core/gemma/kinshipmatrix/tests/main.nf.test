@@ -10,7 +10,7 @@ nextflow_process {
     tag "gemma/kinshipmatrix"
 
     // TODO nf-core: Change the test name preferably indicating the test-data and file-format used
-    test("sarscov2 - bam") {
+    test("gwas - vcf - pheno") {
 
         when {
             process {
@@ -19,11 +19,12 @@ nextflow_process {
 
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file('mouse_hs1940.geno.txt', checkIfExists: true),
+                    file( "https://raw.githubusercontent.com/genetics-statistics/GEMMA/master/example/mouse_hs1940.geno.txt.gz", checkIfExists: true)
+
                 ]
                 input[1] = [
                     [ id:'test', single_end:false ], // meta map
-                    file('mouse_hs1940.pheno.txt', checkIfExists: true),
+                    file( "https://raw.githubusercontent.com/genetics-statistics/GEMMA/master/example/mouse_hs1940.pheno.txt", checkIfExists: true),
                 ]
                 """
             }
@@ -39,7 +40,7 @@ nextflow_process {
     }
 
     // TODO nf-core: Change the test name preferably indicating the test-data and file-format used but keep the " - stub" suffix.
-    test("sarscov2 - bam - stub") {
+    test("gwas - vcf - pheno - stub") {
 
         options "-stub"
 
@@ -50,12 +51,14 @@ nextflow_process {
 
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file('mouse_hs1940.geno.txt', checkIfExists: true),
+                    file( "https://raw.githubusercontent.com/genetics-statistics/GEMMA/master/example/mouse_hs1940.geno.txt.gz", checkIfExists: true)
+
                 ]
                 input[1] = [
                     [ id:'test', single_end:false ], // meta map
-                    file('mouse_hs1940.pheno.txt', checkIfExists: true),
+                    file( "https://raw.githubusercontent.com/genetics-statistics/GEMMA/master/example/mouse_hs1940.pheno.txt", checkIfExists: true),
                 ]
+
                 """
             }
         }

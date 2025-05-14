@@ -1,19 +1,17 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "gemma_kinshipmatrix"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: GEMMA is a software toolkit for fast application of linear mixed models (LMMs)
 keywords:
-  - sort
-  - example
-  - genomics
+  - matrix
+  - lmms
+  - gwas
 tools:
   - "gemma":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Linear mixed models (LMMs) for genome-wide association (GWA)"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
+      homepage: "https://github.com/genetics-statistics/GEMMA"
+      documentation: "https://github.com/genetics-statistics/GEMMA"
+      tool_dev_url: "https://github.com/genetics-statistics/GEMMA"
       doi: ""
       licence: ["GPL v3"]
       identifier: biotools:gemma
@@ -49,26 +47,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.{}":
-          # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
+      - "*.cXX.txt":
           type: file
-          description: heat_map file
-          pattern: "*.{}"
-          ontologies:
-            - edam: "http://edamontology.org/data_1636" # Heat map
-  - quality_control_report:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - "*.{}":
-          # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
-          type: file
-          description: quality_control_report file
-          pattern: "*.{}"
-          ontologies:
-            - edam: "http://edamontology.org/data_3914" # Quality control report
+          description: kinship matrix
+          pattern: "*cXX.txt"
 
   - versions:
       - "versions.yml":

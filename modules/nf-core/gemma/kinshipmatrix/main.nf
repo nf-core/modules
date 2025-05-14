@@ -2,7 +2,6 @@ process GEMMA_KINSHIPMATRIX {
     tag "$meta.id"
     label 'process_single'
 
-    // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gemma:0.98.5--ha36d3ea_0':
@@ -13,9 +12,7 @@ process GEMMA_KINSHIPMATRIX {
     tuple val(meta2), path(phenotype)
 
     output:
-    // TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
-    tuple val(meta), path("*.{}"), emit: heat_map
-    tuple val(meta), path("*.{}"), emit: quality_control_report
+    tuple val(meta), path("output/${meta.id}.out.cXX.txt"), emit: matrix
     path "versions.yml"           , emit: versions
 
     when:
@@ -27,11 +24,10 @@ process GEMMA_KINSHIPMATRIX {
     """
     gemma \\
         $args \\
-        -@ $task.cpus \\
         -g $genotype \\
         -p $phenotype  \\
-        -gk
-        -o $meta\.out
+        -gk \\
+        -o ${meta.id}.out
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -43,7 +39,8 @@ process GEMMA_KINSHIPMATRIX {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch $meta\.out
+    mkdir output
+    touch output/${meta.id}.out.cXX.txt
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         gemma: \$(gemma --version)
