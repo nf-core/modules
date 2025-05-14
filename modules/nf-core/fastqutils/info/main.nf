@@ -12,7 +12,8 @@ process FASTQUTILS_INFO {
     tuple val(meta), path(reads)
 
     output:
-    path "versions.yml"                   , emit: versions
+    tuple val(meta), path("*.txt"), emit: info
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,6 +27,8 @@ process FASTQUTILS_INFO {
         $args \\
         ${reads}
 
+    echo "fastq_utils fastq_info ran and found no issues with ${reads}" > ${prefix}.txt
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         fastq_utils: ${VERSION}
@@ -37,6 +40,8 @@ process FASTQUTILS_INFO {
     prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '0.25.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
+    touch ${prefix}.txt
+    
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         fastqutils: ${VERSION}
