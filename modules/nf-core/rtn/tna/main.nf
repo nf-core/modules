@@ -1,6 +1,6 @@
 process RTN_TNA {
     debug true
-    tag "{$expression_matrix.name}"
+    tag "{$tna_object.name}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"

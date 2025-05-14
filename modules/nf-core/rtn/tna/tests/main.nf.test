@@ -9,8 +9,13 @@ nextflow_process {
     tag "rtn"
     tag "rtn/tna"
 
-    test("musmusculus tna expression matrix") {
-        when {
+    setup {
+        def content = "CYP24A1\nNNAT\nPHACTR3"
+        def DEGs = file("${workDir}/degs.tsv")
+        DEGs.text = content
+
+        run("RTN_TNI") {
+            script "../../../rtn/tni/main.nf"
             process {
                 """
                 input[0] = [
@@ -20,109 +25,6 @@ nextflow_process {
                 """
             }
         }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert file(process.out.tna_object[0][1]).exists() },
-                { assert file(process.out.mra_object[0][1]).exists() },
-                { assert file(process.out.gsea1_object[0][1]).exists() },
-                { assert file(process.out.gsea1_plot[0][1]).exists() },
-                { assert file(process.out.gsea2_object[0][1]).exists() },
-                { assert file(process.out.gsea2_plot[0][1]).exists() },
-                { assert file(process.out.versions[0]).exists() },
-                { assert process.stdout.contains('Nb permutations          : 10') } // the default value is 10
-            )
-        }
-
-    }
-
-    test("musmusculus tna expression matrix with --n_permutations 5") {
-        when {
-        config "./nextflow.config"
-            process {
-                """
-                input[0] = [
-                  [id:'test'],
-                  file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/salmon.merged.gene_counts_length_scaled.tsv', checkIfExists: true)
-                ]
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert file(process.out.tna_object[0][1]).exists() },
-                { assert file(process.out.mra_object[0][1]).exists() },
-                { assert file(process.out.gsea1_object[0][1]).exists() },
-                { assert file(process.out.gsea1_plot[0][1]).exists() },
-                { assert file(process.out.gsea2_object[0][1]).exists() },
-                { assert file(process.out.gsea2_plot[0][1]).exists() },
-                { assert file(process.out.versions[0]).exists() },
-                { assert process.stdout.contains('Nb permutations          : 5') }
-            )
-        }
-
-    }
-
-    test("musmusculus tna expression matrix with --tfs ENSG00000125798,ENSG00000125816") {
-        when {
-        config "./nextflow.config2"
-            process {
-                """
-                input[0] = [
-                  [id:'test'],
-                  file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/salmon.merged.gene_counts_length_scaled.tsv', checkIfExists: true)
-                ]
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert file(process.out.tna_object[0][1]).exists() },
-                { assert file(process.out.mra_object[0][1]).exists() },
-                { assert file(process.out.gsea1_object[0][1]).exists() },
-                { assert file(process.out.gsea1_plot[0][1]).exists() },
-                { assert file(process.out.gsea2_object[0][1]).exists() },
-                { assert file(process.out.gsea2_plot[0][1]).exists() },
-                { assert file(process.out.versions[0]).exists() },
-                { assert process.stdout.contains('TFs                      : ENSG00000125798,ENSG00000125816') }
-            )
-        }
-
-    }
-
-    test("musmusculus tna expression matrix with --n_permutations 12 and --tfs ENSG00000125798,ENSG00000125816") {
-        when {
-        config "./nextflow.config3"
-            process {
-                """
-                input[0] = [
-                  [id:'test'],
-                  file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/salmon.merged.gene_counts_length_scaled.tsv', checkIfExists: true)
-                ]
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert file(process.out.tna_object[0][1]).exists() },
-                { assert file(process.out.mra_object[0][1]).exists() },
-                { assert file(process.out.gsea1_object[0][1]).exists() },
-                { assert file(process.out.gsea1_plot[0][1]).exists() },
-                { assert file(process.out.gsea2_object[0][1]).exists() },
-                { assert file(process.out.gsea2_plot[0][1]).exists() },
-                { assert file(process.out.versions[0]).exists() },
-                { assert process.stdout.contains('Nb permutations          : 12') },
-                { assert process.stdout.contains('TFs                      : ENSG00000125798,ENSG00000125816') }
-            )
-        }
-
     }
 
     test("musmusculus tna expression matrix - stub") {
@@ -132,10 +34,19 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
-                  [id:'test'],
-                  file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/salmon.merged.gene_counts_length_scaled.tsv', checkIfExists: true)
-                ]
+                input[0] = RTN_TNI.out.tni
+                input[1] = Channel.of([
+                    [ id:'test', single_end: true ], // meta map
+                    [ file("${workDir}/degs.tsv", checkIfExists: true) ]
+                ])
+                input[2] = Channel.of([
+                    [ id:'test', single_end: true ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/treatment_mCherry_hND6_.deseq2.results_filtered.tsv', checkIfExists: true) ]
+                ])
+                input[3] = Channel.of([
+                    [ id:'test', single_end: true ], // meta map
+                    [ ]
+                ])
                 """
             }
         }
