@@ -2,7 +2,6 @@ process FASTQUTILS_INFO {
     tag "$meta.id"
     label 'process_medium'
 
-    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/fastq_utils:0.25.2--h96c455f_2':
@@ -21,7 +20,6 @@ process FASTQUTILS_INFO {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '0.25.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     fastq_info \\
         $args \\
@@ -31,20 +29,19 @@ process FASTQUTILS_INFO {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        fastq_utils: ${VERSION}
+        fastq_utils: "\$(fastq_info -h 2>&1 | head -n 1 | sed 's/^fastq_utils //')"
     END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '0.25.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.txt
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        fastqutils: ${VERSION}
+        fastq_utils: "\$(fastq_info -h 2>&1 | head -n 1 | sed 's/^fastq_utils //')"
     END_VERSIONS
     """
 }
