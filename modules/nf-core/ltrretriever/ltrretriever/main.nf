@@ -58,7 +58,7 @@ process LTRRETRIEVER_LTRRETRIEVER {
         $non_tgca_file \\
         -threads $task.cpus \\
         $args \\
-        &> >(tee "${prefix}.log" 2>&1) \\
+        &>| >(tee "${prefix}.log" 2>&1) \\
         || echo "Errors from LTR_retriever printed to ${prefix}.log"
 
     mv "${writable_genome}.pass.list"       "${prefix}.pass.list"       || echo ".pass.list was not produced"

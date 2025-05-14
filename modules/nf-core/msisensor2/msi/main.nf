@@ -43,7 +43,7 @@ process MSISENSOR2_MSI {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        msisensor2: \$(echo \$(msisensor2 2> >(grep Version) | sed 's/Version: v//g'))
+        msisensor2: \$(echo \$(msisensor2 2>| >(grep Version) | sed 's/Version: v//g'))
     END_VERSIONS
     """
 

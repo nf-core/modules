@@ -67,7 +67,7 @@ process HIFIASM {
         ${ultralong} \\
         -o ${prefix} \\
         ${long_reads_sorted} \\
-        2> >( tee ${prefix}.stderr.log >&2 )
+        2>| >( tee ${prefix}.stderr.log >&2 )
 
     if [ -f ${prefix}.ec.fa ]; then
         gzip ${prefix}.ec.fa

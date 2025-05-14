@@ -32,7 +32,7 @@ process ANNOSINE {
         $mode \\
         $fasta \\
         $prefix \\
-        &> >(tee ${prefix}.log 2>&1)
+        &>| >(tee ${prefix}.log 2>&1)
 
     mv \\
         $prefix/Seed_SINE.fa \\
