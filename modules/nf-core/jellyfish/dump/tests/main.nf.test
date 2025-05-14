@@ -1,0 +1,91 @@
+nextflow_process {
+
+    name "Test Process JELLYFISH_DUMP"
+    script "../main.nf"
+    process "JELLYFISH_DUMP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "jellyfish"
+    tag "jellyfish/dump"
+    tag "jellyfish/count"
+
+    setup {
+        run("JELLYFISH_COUNT") {
+            script "../../count/main.nf"
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = 7
+                input[2] = '100M'
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = JELLYFISH_COUNT.out.jf
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - txt") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = JELLYFISH_COUNT.out.jf
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = JELLYFISH_COUNT.out.jf
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

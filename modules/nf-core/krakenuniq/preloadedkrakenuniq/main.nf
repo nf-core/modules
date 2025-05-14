@@ -55,11 +55,11 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
 
         # Preload the KrakenUniq database into memory.
         krakenuniq \\
-            $args \\
             --db $db \\
             --preload \\
             --preload-size $ram_chunk_size \\
-            --threads $task.cpus
+            --threads $task.cpus \\
+            $args
 
         # Run the KrakenUniq classification on each sample in the batch.
         while IFS='\t' read -r SEQ PREFIX; do
@@ -93,11 +93,11 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
 
         # Preload the KrakenUniq database into memory.
         krakenuniq \\
-            $args \\
             --db $db \\
             --preload \\
             --preload-size $ram_chunk_size \\
-            --threads $task.cpus
+            --threads $task.cpus \\
+            $args
 
         # Run the KrakenUniq classification on each sample in the batch.
         while IFS='\t' read -r FIRST_SEQ SECOND_SEQ PREFIX; do
@@ -150,11 +150,11 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
 
         # Preload the KrakenUniq database into memory.
         echo krakenuniq \\
-            $args \\
             --db $db \\
             --preload \\
             --preload-size $ram_chunk_size \\
-            --threads $task.cpus
+            --threads $task.cpus \\
+            $args
 
         create_file() {
             echo '<3 nf-core' > "\$1"
@@ -201,11 +201,11 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
 
         # Preload the KrakenUniq database into memory.
         echo krakenuniq \\
-            $args \\
             --db $db \\
             --preload \\
             --preload-size $ram_chunk_size \\
-            --threads $task.cpus
+            --threads $task.cpus \\
+            $args
 
         create_file() {
             echo '<3 nf-core' > "\$1"

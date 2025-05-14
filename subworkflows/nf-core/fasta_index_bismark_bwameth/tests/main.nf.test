@@ -134,6 +134,37 @@ nextflow_workflow {
         }
     }
 
+    test("Params: bismark | download bismark index (bowtie2) | run_picard_collecthsmetrics") {
+
+        when {
+            params {
+                aligner = "bismark"
+                run_picard_collecthsmetrics = true
+            }
+            workflow {
+                """
+                input[0] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.gz', checkIfExists: true)
+                input[1] = [] // fasta_index
+                input[2] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Bowtie2_Index.tar.gz', checkIfExists: true)
+                input[3] = [] // bwameth_index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.fasta,
+                    workflow.out.fasta_index,
+                    workflow.out.bismark_index,
+                    workflow.out.bwameth_index,
+                    workflow.out.versions
+                    ).match() }
+            )
+        }
+    }
+
     test("Params: bwameth | download fasta index | download bwameth index") {
 
         when {
@@ -206,6 +237,37 @@ nextflow_workflow {
                 input[1] = [] // fasta_index
                 input[2] = [] // bismark index
                 input[3] = [] // bwameth index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.fasta,
+                    workflow.out.fasta_index,
+                    workflow.out.bismark_index,
+                    workflow.out.bwameth_index,
+                    workflow.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+    test("Params: bwameth | generate fasta index | download bwameth index | run_picard_collecthsmetrics") {
+
+        when {
+            params {
+                aligner = "bwameth"
+                run_picard_collecthsmetrics = true
+            }
+            workflow {
+                """
+                input[0] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.gz', checkIfExists: true)
+                input[1] = [] //fasta index
+                input[2] = [] // bismark index
+                input[3] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Bwameth_Index.tar.gz', checkIfExists: true)
                 """
             }
         }

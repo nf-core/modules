@@ -31,6 +31,15 @@ input:
         description: |
           Sharded tfrecord file from DEEPVARIANT_MAKEEXAMPLES with the coverage information used for GVCF output
         pattern: "*.gz"
+    - small_model_calls:
+        type: file
+        description: |
+          Sharded tfrecord file from DEEPVARIANT_MAKEEXAMPLES with variant calls from the small model
+        pattern: "*.gz"
+    - intervals:
+        type: file
+        description: Interval file for targeted regions
+        pattern: "*.bed"
   - - meta2:
         type: map
         description: |
@@ -69,16 +78,16 @@ output:
           type: file
           description: Compressed VCF file
           pattern: "*.vcf.gz"
-  - vcf_tbi:
+  - vcf_index:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}.vcf.gz.tbi:
+      - ${prefix}.vcf.gz.{tbi,csi}:
           type: file
           description: Index for VCF
-          pattern: "*.vcf.gz.tbi"
+          pattern: "$*.vcf.gz.{tbi,csi}"
   - gvcf:
       - meta:
           type: map
@@ -89,16 +98,16 @@ output:
           type: file
           description: Compressed GVCF file
           pattern: "*.g.vcf.gz"
-  - gvcf_tbi:
+  - gvcf_index:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}.g.vcf.gz.tbi:
+      - ${prefix}.g.vcf.gz.{tbi,csi}:
           type: file
           description: Index for GVCF
-          pattern: "*.g.vcf.gz.tbi"
+          pattern: "*.g.vcf.gz.{tbi,csi}"
   - versions:
       - versions.yml:
           type: file
