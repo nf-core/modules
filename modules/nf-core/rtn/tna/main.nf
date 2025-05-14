@@ -1,6 +1,6 @@
 process RTN_TNA {
     debug true
-    tag "{$tna_object.name}"
+    tag "{$tni_object.name}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
@@ -9,7 +9,7 @@ process RTN_TNA {
         'community.wave.seqera.io/library/bioconductor-rtn:2.30.0--71b797cd8b2d56b3' }"
 
     input:
-    tuple val(meta), path(tna_object)
+    tuple val(meta), path(tni_object)
     tuple val(meta), path(degs)
     tuple val(meta), path(degs_log2)
     tuple val(meta), path(degs_annotation)
