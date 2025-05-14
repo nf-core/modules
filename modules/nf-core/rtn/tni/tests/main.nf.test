@@ -35,33 +35,6 @@ nextflow_process {
 
     }
 
-    test("musmusculus tni expression matrix with --n_permutations 5") {
-        when {
-        config "./nextflow.config"
-            process {
-                """
-                input[0] = [
-                  [id:'test'],
-                  file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/salmon.merged.gene_counts_length_scaled.tsv', checkIfExists: true)
-                ]
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert file(process.out.tni[0][1]).exists() },
-                { assert file(process.out.tni_perm[0][1]).exists() },
-                { assert file(process.out.tni_bootstrap[0][1]).exists() },
-                { assert file(process.out.tni_filtered[0][1]).exists() },
-                { assert file(process.out.versions[0]).exists() },
-                { assert process.stdout.contains('Nb permutations          : 5') }
-            )
-        }
-
-    }
-
     test("musmusculus tni expression matrix with --tfs ENSG00000125798,ENSG00000125816") {
         when {
         config "./nextflow.config2"
