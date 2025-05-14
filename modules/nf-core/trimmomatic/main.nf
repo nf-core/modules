@@ -38,7 +38,7 @@ process TRIMMOMATIC {
         $reads \\
         $output \\
         $qual_trim \\
-        $args 2> >(tee ${prefix}_out.log >&2)
+        $args 2>| >(tee ${prefix}_out.log >&2)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
