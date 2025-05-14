@@ -50,10 +50,12 @@ nextflow_workflow {
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success},
                 { assert snapshot(
-                    workflow.out.vcf_tbi.collect { [it[0], "${file(it[1]).name},variantsMD5:CANNOT_CHECK_ASK_MAXULYSSE_ABOUT_THIS", file(it[2]).name] },
+                    // Not capturing the content of the VCF files as vep produce an empty VCF for this test
+                    // Which is kinda expected as vep annotates a sarscov2 vcf with WBcel235
+                    workflow.out.vcf_tbi.collect { [it[0], file(it[1]).name, file(it[2]).name] },
                     workflow.out.reports.collect { it instanceof String ? file(it).name : it },
                     workflow.out.versions.collect { it }
                 ).match()}
@@ -84,8 +86,8 @@ nextflow_workflow {
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success},
                 { assert snapshot(workflow.out).match()}
             )
         }
