@@ -38,7 +38,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).vcf.summary,
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    file(process.out.json[0][1]).name, // Cannot test the MD5sum due to hash of input vcf
+                    process.out.versions
+                ).match() }
             )
         }
     }
@@ -71,7 +76,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).vcf.summary,
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    process.out.versions
+                ).match() }
             )
         }
     }
