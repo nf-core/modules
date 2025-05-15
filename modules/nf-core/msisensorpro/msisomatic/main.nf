@@ -9,7 +9,7 @@ process MSISENSORPRO_MSISOMATIC {
 
     input:
     tuple val(meta), path(normal), path(normal_index), path(tumor), path(tumor_index), path(intervals)
-    path(fasta)
+    tuple val(meta2), path(fasta)
     path(msisensor_scan)
 
     output:

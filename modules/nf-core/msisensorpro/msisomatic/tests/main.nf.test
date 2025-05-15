@@ -37,7 +37,10 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test2.paired_end.recalibrated.sorted.cram.crai', checkIfExists:true),
                     []
                 ]
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists:true)
+                input[1] = [
+                    [ id: 'hg38' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists:true)
+                ]
                 input[2] = MSISENSORPRO_SCAN.out.list.map{ it[1] }
                 """
             }
@@ -63,7 +66,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test2.paired_end.recalibrated.sorted.cram.crai', checkIfExists:true),
                     []
                 ]
-                input[1] = []
+                input[1] = [[], []]
                 input[2] = []
                 """
             }
