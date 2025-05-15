@@ -13,14 +13,14 @@ process VARLOCIRAPTOR_CALLVARIANTS {
     val (scenario_sample_name)
 
     output:
-    tuple val(meta), path("*.bcf")   , emit: bcf
-    path "versions.yml"              , emit: versions
+    tuple val(meta), path("*.bcf"), emit: bcf
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_called"
 
     //If we use a scenario file and if there is more than 1 normal vcf, then collect scenario_sample_name and normal vcf to scenario_sample_name_0=normal_vcf_0 scenario_sample_name_1=normal_vcf_1, etc
