@@ -4,8 +4,8 @@ process VARLOCIRAPTOR_CALLVARIANTS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/varlociraptor:8.1.1--hc349b7f_0':
-        'biocontainers/varlociraptor:8.1.1--hc349b7f_0' }"
+        'https://depot.galaxyproject.org/singularity/varlociraptor:8.7.1--ha8ac579_0':
+        'biocontainers/varlociraptor:8.7.1--ha8ac579_0' }"
 
     input:
     tuple val(meta), path(normal_vcf), path(tumor_vcf)
