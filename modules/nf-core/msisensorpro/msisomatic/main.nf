@@ -9,8 +9,8 @@ process MSISENSORPRO_MSISOMATIC {
 
     input:
     tuple val(meta), path(normal), path(normal_index), path(tumor), path(tumor_index), path(intervals)
-    path (fasta)
-    path (msisensor_scan)
+    tuple val(meta2), path(fasta)
+    path(msisensor_scan)
 
     output:
     tuple val(meta), path("${prefix}")         , emit: output_report
@@ -25,19 +25,35 @@ process MSISENSORPRO_MSISOMATIC {
     script:
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
-    def fasta = fasta ? "-g ${fasta}" : ""
-    def intervals = intervals ? " -e ${intervals} " : ""
+    def fasta_cmd     = fasta     ? "-g ${fasta}"       : ""
+    def intervals_cmd = intervals ? " -e ${intervals} " : ""
+
     """
     msisensor-pro \\
         msi \\
         -d ${msisensor_scan} \\
         -n ${normal} \\
         -t ${tumor} \\
-        ${fasta} \\
-        -o $prefix \\
+        ${fasta_cmd} \\
+        -o ${prefix} \\
         -b ${task.cpus} \\
-        ${intervals} \\
-        $args
+        ${intervals_cmd} \\
+        ${args}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        msisensor-pro: \$(msisensor-pro 2>&1 | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p')
+    END_VERSIONS
+    """
+
+    stub:
+    prefix   = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${prefix}
+    touch ${prefix}_dis
+    touch ${prefix}_germline
+    touch ${prefix}_somatic
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
