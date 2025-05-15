@@ -42,7 +42,7 @@ process LAST_LASTAL {
         }
         END {
             percentIdentity       = (totalAlignmentLength > 0) ? (totalMatches / totalAlignmentLength * 100) : 0;
-            percentIdentityNogaps = (totalAlignmentLength > 0) ? (totalMatches / totalAlignedBases    * 100) : 0;
+            percentIdentityNoGaps = (totalAlignmentLength > 0) ? (totalMatches / totalAlignedBases    * 100) : 0;
             print "$meta.id" "\t" totalAlignmentLength "\t" percentIdentity "\t" percentIdentityNogaps;  # Data in TSV format
         }'
     }
