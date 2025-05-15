@@ -1,0 +1,91 @@
+nextflow_process {
+
+    name "Test Process PRETEXTSNAPSHOT"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "PRETEXTSNAPSHOT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pretextsnapshot"
+
+    test("all") {
+
+        when {
+            params {
+                module_args = '--sequences "=all" -c 26 -r 2160'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/galaxea_fascicularis/hic/jaGalFasc40_2.pretext', checkIfExists:true)
+                    ]
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.image[0][1].collect {png -> file(png).getName() },
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+    test("full") {
+
+        when {
+            params {
+                module_args = '--sequences "=full" -c 26 -r 2160'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/galaxea_fascicularis/hic/jaGalFasc40_2.pretext', checkIfExists:true)
+                    ]
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.image.collect { file(it[1]).getName() },
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+
+    test("all - stub") {
+        options '-stub'
+        when {
+            params {
+                module_args = '--sequences "=all" -c 26 -r 2160'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/galaxea_fascicularis/hic/jaGalFasc40_2.pretext', checkIfExists:true)
+                    ]
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+
+}

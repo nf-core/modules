@@ -16,6 +16,7 @@ process LAST_MAFCONVERT {
     output:
     tuple val(meta), path("*.axt.gz"),             optional:true, emit: axt_gz
     tuple val(meta), path("*.bam"),                optional:true, emit: bam
+    tuple val(meta), path("*.bed.gz"),             optional:true, emit: bed_gz
     tuple val(meta), path("*.blast.gz"),           optional:true, emit: blast_gz
     tuple val(meta), path("*.blasttab.gz"),        optional:true, emit: blasttab_gz
     tuple val(meta), path("*.chain.gz"),           optional:true, emit: chain_gz
@@ -37,15 +38,26 @@ process LAST_MAFCONVERT {
     set -o pipefail
 
     case $format in
+        sam)
+            maf-convert $args -d sam $maf |
+                samtools addreplacerg -r 'ID:${meta.id}' -r 'SM:${meta.id}' -O BAM -u - |
+                samtools sort -O sam |
+                gzip --no-name > ${prefix}.sam.gz
+            ;;
         bam)
-            maf-convert $args -d sam  $maf | samtools view -b -o ${prefix}.${format}
+            maf-convert $args -d sam $maf |
+                samtools addreplacerg -r 'ID:${meta.id}' -r 'SM:${meta.id}' -O BAM -u - |
+                samtools sort -o ${prefix}.bam
             ;;
         cram)
             # CRAM output is not supported if the genome is compressed with something else than bgzip
-            maf-convert $args -d sam  $maf | samtools view -Ct $fasta -o ${prefix}.${format}
+            maf-convert $args -d sam $maf |
+                samtools addreplacerg -r "ID:${meta.id}" -r 'SM:${meta.id}' -O cram -u --reference $fasta - |
+                samtools sort -o ${prefix}.cram
             ;;
         *)
-            maf-convert $args $format $maf | gzip --no-name > ${prefix}.${format}.gz
+            maf-convert $args $format $maf |
+                gzip --no-name > ${prefix}.${format}.gz
             ;;
     esac
 
@@ -53,6 +65,7 @@ process LAST_MAFCONVERT {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         last: \$(lastdb --version 2>&1 | sed 's/lastdb //')
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 
@@ -76,6 +89,7 @@ process LAST_MAFCONVERT {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         last: \$(lastdb --version 2>&1 | sed 's/lastdb //')
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 }

@@ -79,6 +79,16 @@ output:
           type: file
           description: Pairwise alignment in BAM format (optional)
           pattern: "*.bam"
+  - bed_gz:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.bed.gz":
+          type: file
+          description: Gzipped pairwise alignment in BED format (optional)
+          pattern: "*.bed.gz"
   - blast_gz:
       - meta:
           type: map

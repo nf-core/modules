@@ -24,7 +24,12 @@ input:
         type: file
         description: Reads in FASTQ format
         pattern: "*.{fastq.gz}"
-  - - db:
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing database information
+          e.g. [ id:'test']
+    - db:
         type: file
         description: A database formatted for MIDAS
         pattern: "*.{db}"
@@ -39,7 +44,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - results/*:
+      - ${prefix}/*:
           type: file
           description: A directory of results from MIDAS run
           pattern: "*"
