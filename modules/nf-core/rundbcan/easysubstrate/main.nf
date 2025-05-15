@@ -40,7 +40,7 @@ process RUNDBCAN_EASYSUBSTRATE {
     prefix = task.ext.prefix ?: "${meta.id}_dbcan_substrate"
 
     """
-    touch PUL_blast.out
+    echo "CM000172.1|CGC122|EAL84470.1|TC|2.A.3	PUL0296_1:PUL0296::APC1503_1956:PKC87186.1:TC:gnl|TC-DB|P15993|2.A.3.1.3	30.8	439	256	8	8	411	38	463	9.08e-56	192	492	491" > PUL_blast.out
 
     run_dbcan easy_substrate \\
         --mode protein \\

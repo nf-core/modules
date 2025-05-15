@@ -9,7 +9,6 @@ nextflow_process {
     tag "rundbcan"
     tag "rundbcan/database"
 
-
     test("rundbcan - database - basic") {
         when {
             process {
@@ -20,11 +19,14 @@ nextflow_process {
 
         then {
             assert process.success
+            assert path(process.out.dbcan_db.get(0)).exists()
+            assert path(process.out.versions[0]).exists()
             assertAll(
-                { assert snapshot(path(process.out.versions[0]).yaml).match() },
-                { assert path(process.out.dbcan_db.get(0)).exists() }
+                { assert snapshot(
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() }
             )
-
         }
     }
 
@@ -40,11 +42,14 @@ nextflow_process {
 
         then {
             assert process.success
+            assert path(process.out.dbcan_db.get(0)).exists()
+            assert path(process.out.versions[0]).exists()
             assertAll(
-                { assert snapshot(path(process.out.versions[0]).yaml).match() },
-                { assert path(process.out.dbcan_db.get(0)).exists() }
+                { assert snapshot(
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() }
             )
-
         }
     }
 }
