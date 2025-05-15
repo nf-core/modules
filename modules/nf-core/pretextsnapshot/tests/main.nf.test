@@ -28,7 +28,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    file(process.out.image[0][1]).name,
+                    process.out.image[0][1].collect {png -> file(png).getName() },
                     process.out.versions,
                     path(process.out.versions[0]).yaml
                     ).match() }
