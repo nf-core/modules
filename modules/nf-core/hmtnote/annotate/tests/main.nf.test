@@ -11,13 +11,16 @@ nextflow_process {
     tag "hmtnote"
     tag "hmtnote/annotate"
 
-    test("test-hmtnote-annotate") {
+    test("sarscov2") {
 
         when {
+            params {
+                module_args = '--basic --variab'
+            }
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
 				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true)
 				]
 
@@ -37,13 +40,16 @@ nextflow_process {
         }
     }
 
-    test("test-hmtnote-annotate-stub") {
+    test("sarscov2 - stub") {
         options '-stub'
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
 				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true)
 				]
 
