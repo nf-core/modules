@@ -112,7 +112,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                // This will show phylogeny and versions, but not phylogeny_bootstrapped
+                // This will show phylogeny_bootstrapped and versions, but not phylogeny
                 { assert snapshot(process.out).match() }
             )
         }

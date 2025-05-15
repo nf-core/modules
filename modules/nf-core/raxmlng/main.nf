@@ -38,12 +38,12 @@ process RAXMLNG {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def touch_support = args.contains('--bootstrap') || args.contains('--bs-trees') ? "touch ${prefix}.raxml.bootstraps" : ""
+    def touch_files = args.contains('--bootstrap') || args.contains('--bs-trees') ? "touch ${prefix}.raxml.bootstraps" : "touch ${prefix}.raxml.bestTree"
     """
     # Create stub output files
-    touch ${prefix}.raxml.bestTree
-    ${touch_support}
+    ${touch_files}
 
     # Create versions.yml
     cat <<-END_VERSIONS > versions.yml
