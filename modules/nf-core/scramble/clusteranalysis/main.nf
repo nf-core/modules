@@ -4,12 +4,12 @@ process SCRAMBLE_CLUSTERANALYSIS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/scramble:1.0.1--h779adbc_1':
-        'biocontainers/scramble:1.0.1--h779adbc_1' }"
+        'https://depot.galaxyproject.org/singularity/scramble:1.0.2--h031d066_1':
+        'biocontainers/scramble:1.0.2--h031d066_1' }"
 
     input:
-    tuple val(meta), path(clusters)
-    path fasta
+    tuple val(meta) , path(clusters)
+    tuple val(meta2), path(fasta)
     path mei_ref
 
     output:
