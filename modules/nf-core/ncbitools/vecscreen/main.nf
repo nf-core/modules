@@ -34,6 +34,7 @@ process NCBITOOLS_VECSCREEN {
     """
 
     stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
     // WARN: VecScreen doesn't output a version number and doesn't appear to have a Github repository. 1.0 is arbitrarily used here as the version number
     """
     touch ${prefix}.vecscreen.out
