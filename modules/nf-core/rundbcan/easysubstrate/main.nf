@@ -74,7 +74,7 @@ process RUNDBCAN_EASYSUBSTRATE {
 
     stub:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}_dbcan_substrate"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_overview.tsv
     touch ${prefix}_dbCAN_hmm_results.tsv

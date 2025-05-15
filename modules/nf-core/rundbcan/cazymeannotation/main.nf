@@ -50,7 +50,7 @@ process RUNDBCAN_CAZYMEANNOTATION {
 
     stub:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}_dbcan_cazyme"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_overview.tsv
     touch ${prefix}_dbCAN_hmm_results.tsv

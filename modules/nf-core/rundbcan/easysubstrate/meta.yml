@@ -25,7 +25,7 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
+          e.g. `[ id:'sample1']`
     - input_raw_data:
         type: file
         description: FASTA file for protein sequences.
@@ -38,7 +38,7 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
+          e.g. `[ id:'sample1']`
     - input_gff:
         type: file
         description: GFF file for protein sequences.
@@ -58,7 +58,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1']`
       - ${prefix}_overview.tsv:
           type: file
           description: |
@@ -69,7 +69,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1']`
       - ${prefix}_dbCAN_hmm_results.tsv:
           type: file
           description: |
@@ -80,7 +80,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1']`
       - ${prefix}_dbCANsub_hmm_results.tsv:
           type: file
           description: |
@@ -91,7 +91,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1']`
       - ${prefix}_diamond.out:
           type: file
           description: |
@@ -102,7 +102,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1']`
       - ${prefix}_cgc.gff:
           type: file
           description: |
@@ -113,7 +113,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1']`
       - ${prefix}_cgc_standard_out.tsv:
           type: file
           description: |
@@ -124,7 +124,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1']`
       - ${prefix}_diamond.out.tc:
           type: file
           description: |
@@ -135,7 +135,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1']`
       - ${prefix}_TF_hmm_results.tsv:
           type: file
           description: |
@@ -146,7 +146,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1']`
       - ${prefix}_STP_hmm_results.tsv:
           type: file
           description: |
@@ -157,7 +157,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1']`
       - ${prefix}_total_cgc_info.tsv:
           type: file
           description: |
@@ -168,7 +168,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1']`
       - ${prefix}_CGC.faa:
           type: file
           description: |
@@ -178,7 +178,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1']`
       - ${prefix}_PUL_blast.out:
           type: file
           description: |
@@ -188,7 +188,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1']`
       - ${prefix}_substrate_prediction.tsv:
           type: file
           description: |
@@ -198,7 +198,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1']`
       - ${prefix}_synteny_pdf/:
           type: directory
           description: |

@@ -8,20 +8,20 @@ process RUNDBCAN_EASYCGC {
         'biocontainers/dbcan:5.0.6--pyhdfd78af_0' }"
     input:
     tuple val(meta), path(input_raw_data)
-    tuple val(meta2), path(input_gff), val (gff_type)
+    tuple val(meta2), path(input_gff), val(gff_type)
     path dbcan_db
 
     output:
-    tuple val(meta), path("${prefix}_overview.tsv"), emit: cazyme_annotation
-    tuple val(meta), path("${prefix}_dbCAN_hmm_results.tsv"), emit: dbcanhmm_results
-    tuple val(meta), path("${prefix}_dbCANsub_hmm_results.tsv"), emit: dbcansub_results
-    tuple val(meta), path("${prefix}_diamond.out"), emit: dbcandiamond_results
-    tuple val(meta), path("${prefix}_cgc.gff"), emit: cgc_gff
-    tuple val(meta), path("${prefix}_cgc_standard_out.tsv"), emit: cgc_standard_out
-    tuple val(meta), path("${prefix}_diamond.out.tc"), emit: diamond_out_tc
-    tuple val(meta), path("${prefix}_TF_hmm_results.tsv"), emit: tf_hmm_results
-    tuple val(meta), path("${prefix}_STP_hmm_results.tsv"), emit: stp_hmm_results
-    tuple val(meta), path("${prefix}_total_cgc_info.tsv"), emit: total_cgc_info
+    tuple val(meta), path("${prefix}_overview.tsv")                 ,emit: cazyme_annotation
+    tuple val(meta), path("${prefix}_dbCAN_hmm_results.tsv")        ,emit: dbcanhmm_results
+    tuple val(meta), path("${prefix}_dbCANsub_hmm_results.tsv")     ,emit: dbcansub_results
+    tuple val(meta), path("${prefix}_diamond.out")                  ,emit: dbcandiamond_results
+    tuple val(meta), path("${prefix}_cgc.gff")                      ,emit: cgc_gff
+    tuple val(meta), path("${prefix}_cgc_standard_out.tsv")         ,emit: cgc_standard_out
+    tuple val(meta), path("${prefix}_diamond.out.tc")               ,emit: diamond_out_tc
+    tuple val(meta), path("${prefix}_TF_hmm_results.tsv")           ,emit: tf_hmm_results
+    tuple val(meta), path("${prefix}_STP_hmm_results.tsv")          ,emit: stp_hmm_results
+    tuple val(meta), path("${prefix}_total_cgc_info.tsv")           ,emit: total_cgc_info
 
     path "versions.yml", emit: versions
 
@@ -31,9 +31,7 @@ process RUNDBCAN_EASYCGC {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}_dbcan_cgc"
-
     """
-
     run_dbcan easy_CGC \\
         --mode protein \\
         --db_dir ${dbcan_db} \\
@@ -54,7 +52,6 @@ process RUNDBCAN_EASYCGC {
     mv STP_hmm_results.tsv      ${prefix}_STP_hmm_results.tsv
     mv total_cgc_info.tsv       ${prefix}_total_cgc_info.tsv
 
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         dbcan: \$(echo \$(run_dbcan version) | cut -f2 -d':' | cut -f2 -d' ')
@@ -63,7 +60,7 @@ process RUNDBCAN_EASYCGC {
 
     stub:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}_dbcan_cgc"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_overview.tsv
     touch ${prefix}_dbCAN_hmm_results.tsv
