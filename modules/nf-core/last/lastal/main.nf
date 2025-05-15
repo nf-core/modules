@@ -33,7 +33,7 @@ process LAST_LASTAL {
             totalMatches = 0;
             totalAlignmentLength = 0;
             totalAlignedBases = 0;
-            print "Sample\tTotalAlignmentLength\tPercentIdentity\tPercentIdentityNogaps";  # Header for MultiQC
+            print "Sample\tTotalAlignmentLength\tPercentIdentity\tPercentIdentityNoGaps";  # Header for MultiQC
         }
         {
             totalMatches         += \$1 +       \$3            ;  # Sum matches          and repMatches
