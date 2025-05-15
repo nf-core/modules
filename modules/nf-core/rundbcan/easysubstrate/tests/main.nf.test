@@ -50,7 +50,16 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    process.out,
+                    process.out.cazyme_annotation,
+                    process.out.dbcanhmm_results,
+                    process.out.dbcansub_results,
+                    process.out.dbcandiamond_results,
+                    process.out.cgc_gff,
+                    process.out.cgc_standard_out,
+                    process.out.diamond_out_tc,
+                    process.out.tf_hmm_results,
+                    process.out.stp_hmm_results,
+                    process.out.total_cgc_info,
                     path(process.out.versions[0]).yaml
                     ).match()
                 }
