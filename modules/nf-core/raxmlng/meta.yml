@@ -43,10 +43,10 @@ output:
           description: Groovy Map containing sample information
           pattern: "*.{raxml.support}"
           optional: true
-      - "*.raxml.support":
+      - "*.raxml.bootstraps":
           type: file
           description: A phylogeny in Newick format with bootstrap values
-          pattern: "*.{raxml.support}"
+          pattern: "*.{raxml.bootstraps}"
           optional: true
   - versions:
       - versions.yml:

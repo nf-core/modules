@@ -3,8 +3,8 @@ process RAXMLNG {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/raxml-ng:1.0.3--h32fcf60_0' :
-        'biocontainers/raxml-ng:1.0.3--h32fcf60_0' }"
+        'https://depot.galaxyproject.org/singularity/raxml-ng:1.2.2--h6747034_1' :
+        'biocontainers/raxml-ng:1.2.2--h6747034_1' }"
 
     input:
     tuple val(meta), path(alignment), val(model)
@@ -39,7 +39,7 @@ process RAXMLNG {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def touch_support = args.contains('--bootstrap') || args.contains('--bs-trees') ? "touch ${prefix}.raxml.support" : ""
+    def touch_support = args.contains('--bootstrap') || args.contains('--bs-trees') ? "touch ${prefix}.raxml.bootstraps" : ""
     """
     # Create stub output files
     touch ${prefix}.raxml.bestTree
@@ -48,7 +48,7 @@ process RAXMLNG {
     # Create versions.yml
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        raxmlng: stub_version
+        raxmlng: \$(echo \$(raxml-ng --version 2>&1) | sed 's/^.*RAxML-NG v. //; s/released.*\$//')
     END_VERSIONS
     """
 }
