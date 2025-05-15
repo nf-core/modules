@@ -60,6 +60,7 @@ nextflow_process {
                     process.out.tf_hmm_results,
                     process.out.stp_hmm_results,
                     process.out.total_cgc_info,
+                    process.out.versions,
                     path(process.out.versions[0]).yaml
                     ).match()
                 }
