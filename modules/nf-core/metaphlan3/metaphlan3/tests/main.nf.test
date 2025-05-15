@@ -134,17 +134,27 @@ nextflow_process {
         }
         then {
             assert process.success
+
+            // chop first three lines of profile output file to prevent command being writen into snapshot
             assertAll(
                 { assert path(process.out.biom[0][1]).text.contains('"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"') },
                 { assert snapshot(
                     process.out.bt2out,
-                    process.out.profile
+                    path(process.out.profile.get(0).get(1).toString()).readLines()[2..-1]
                     ).match()}
             )
         }
     }
 
-
+// [
+//     [
+//         [
+//             [id:test, single_end:false],
+//             /Users/nnsangou/projects/nf-core/modules/.nf-test/tests/1b0b84df5ba4ed86ad76e5e202370d46/work/01/56a87b6f66c6ae
+// bfee78b7301d0d0c/test_profile.txt
+//         ]
+//     ]
+// ]
     test("metaphlan3 fasta") {
 
         setup {
