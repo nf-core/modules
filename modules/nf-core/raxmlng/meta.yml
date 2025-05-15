@@ -13,24 +13,41 @@ tools:
       documentation: https://github.com/amkozlov/raxml-ng/wiki
       tool_dev_url: https://github.com/amkozlov/raxml-ng
       doi: 10.1093/bioinformatics/btz305
-      licence: ["GPL v2-or-later"]
+      license: ["GPL v2-or-later"]
       identifier: ""
 input:
-  - - alignment:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information (e.g. [ id:'sample1' ])
+    - alignment:
         type: file
         description: A FASTA format multiple sequence alignment file
         pattern: "*.{fasta,fas,fa,mfa}"
+    - model:
+        type: string
+        description: The substitution model to use for the phylogenetic inference
+
 output:
   - phylogeny:
+      - meta:
+          type: map
+          description: Groovy Map containing sample information
+          pattern: "*.{raxml.bestTree}"
       - "*.raxml.bestTree":
           type: file
           description: A phylogeny in Newick format
           pattern: "*.{raxml.bestTree}"
   - phylogeny_bootstrapped:
-      - "*.raxml.support":
+      - meta:
+          type: map
+          description: Groovy Map containing sample information
+          pattern: "*.{raxml.support}"
+          optional: true
+      - "*.raxml.bootstraps":
           type: file
           description: A phylogeny in Newick format with bootstrap values
-          pattern: "*.{raxml.support}"
+          pattern: "*.{raxml.bootstraps}"
+          optional: true
   - versions:
       - versions.yml:
           type: file
