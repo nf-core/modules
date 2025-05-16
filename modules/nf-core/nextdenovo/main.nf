@@ -4,8 +4,8 @@ process NEXTDENOVO {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fa/fa1c1e961de38d24cf36c424a8f4a9920ddd07b63fdb4cfa51c9e3a593c3c979/data' :
-        'community.wave.seqera.io/library/flye:2.9.5--d577924c8416ccd8' }"
+        'https://depot.galaxyproject.org/singularity/nextdenovo:2.5.2--py310h0ceaa1d_6' :
+        'biocontainers/nextdenovo:2.5.2--py310h0ceaa1d_6' }"
 
     input:
     tuple val(meta), path(reads)
@@ -23,8 +23,8 @@ process NEXTDENOVO {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    pip install paralleltask
     echo ${reads} > input.fofn
-    cat input.fofn
     nextDenovo \\
         $config \\
         input.fofn \\
