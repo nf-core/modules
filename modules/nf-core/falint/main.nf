@@ -4,7 +4,7 @@ process FALINT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fa-lint:1.0.0--he881be0_0.img':
+        'https://depot.galaxyproject.org/singularity/fa-lint:1.0.0--he881be0_0':
         'biocontainers/fa-lint:1.0.0--he881be0_0' }"
 
     input:
