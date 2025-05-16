@@ -9,14 +9,14 @@ process BUSCO_BUSCO {
 
     input:
     tuple val(meta), path(fasta, stageAs: 'tmp_input/*')
-    val mode
     // Required:    One of genome, proteins, or transcriptome
-    val lineage
+    val mode
     // Required:    lineage for checking against, or "auto/auto_prok/auto_euk" for enabling auto-lineage
-    path busco_lineages_path
+    val lineage
     // Recommended: BUSCO lineages file - downloads if not set
-    path config_file
+    path busco_lineages_path
     // Optional:    BUSCO configuration file
+    path config_file
     val clean_intermediates
 
     output:
