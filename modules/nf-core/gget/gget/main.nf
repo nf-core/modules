@@ -4,7 +4,7 @@ process GGET_GGET {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/gget_mysql-server:4038f03fd83c2a08':
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/50/501e350873e0d6172d8f6bb49da18d8a3a0a602093616fbff92d64fc3b80339c/data':
         'community.wave.seqera.io/library/gget_mysql-server:514acfd07ace9ce4' }"
 
     input:
