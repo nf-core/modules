@@ -1,0 +1,67 @@
+nextflow_process {
+
+    name "Test Process GXF2BED"
+    script "../main.nf"
+    process "GXF2BED"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gxf2bed"
+
+    test("sarscov2 - gtf") {
+        config "./gtf.config"
+        when {
+            process {
+                """
+                input[0] = file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - gtf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = file(params.test_data['sarscov2']['genome']['genome_gtf'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - gff") {
+        config "./gff.config"
+        when {
+            process {
+                """
+                input[0] = file(params.test_data['homo_sapiens']['genome']['genome_gff3'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                // FIXME https://github.com/alejandrogzi/gxf2bed/issues/1
+                { assert process.failed },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
