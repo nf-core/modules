@@ -9,7 +9,7 @@ process SCRAMBLE_CLUSTERIDENTIFIER {
 
     input:
     tuple val(meta), path(input), path(input_index)
-    path fasta
+    tuple val(meta2), path(fasta)
 
     output:
     tuple val(meta), path("*.clusters.txt") , emit: clusters
