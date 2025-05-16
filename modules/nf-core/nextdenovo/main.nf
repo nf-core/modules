@@ -24,6 +24,7 @@ process NEXTDENOVO {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo ${reads} > input.fofn
+    cat input.fofn
     nextDenovo \\
         $config \\
         input.fofn \\
