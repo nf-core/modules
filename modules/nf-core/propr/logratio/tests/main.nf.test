@@ -29,7 +29,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
+                    process.out.versions,
+                    process.out.logratio,
+                    file(process.out.session_info[0][1]).name, // Presence of Platform info and BLAS/LAPACK path that differ in conda
                     path(process.out.versions[0]).yaml
                 ).match() }
             )
@@ -53,7 +55,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.logratio,
+                    file(process.out.session_info[0][1]).name, // Presence of Platform info and BLAS/LAPACK path that differ in conda
+                    path(process.out.versions[0]).yaml
+                ).match() }
             )
         }
     }
@@ -75,7 +82,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.logratio,
+                    file(process.out.session_info[0][1]).name, // Presence of Platform info and BLAS/LAPACK path that differ in conda
+                    path(process.out.versions[0]).yaml
+                ).match() }
             )
         }
     }
@@ -97,7 +109,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.logratio,
+                    file(process.out.session_info[0][1]).name, // Presence of Platform info and BLAS/LAPACK path that differ in conda
+                    path(process.out.versions[0]).yaml
+                ).match() }
             )
         }
     }
@@ -119,7 +136,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.logratio,
+                    file(process.out.session_info[0][1]).name, // Presence of Platform info and BLAS/LAPACK path that differ in conda
+                    path(process.out.versions[0]).yaml
+                ).match() }
             )
         }
     }
@@ -141,7 +163,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.logratio,
+                    file(process.out.session_info[0][1]).name, // Presence of Platform info and BLAS/LAPACK path that differ in conda
+                    path(process.out.versions[0]).yaml
+                ).match() }
             )
         }
     }
@@ -163,7 +190,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.logratio,
+                    file(process.out.session_info[0][1]).name, // Presence of Platform info and BLAS/LAPACK path that differ in conda
+                    path(process.out.versions[0]).yaml
+                ).match() }
             )
         }
     }
