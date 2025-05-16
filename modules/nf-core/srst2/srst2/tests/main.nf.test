@@ -17,9 +17,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [id:'test',single_end:false,db:"mlst"],// meta map
-                    [file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/srst2/SRR9067271_1.fastq.gz",checkIfExists:true),
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/srst2/SRR9067271_2.fastq.gz",checkIfExists:true)],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/srst2/MLST_DB.fas')
+                    [
+                        file(params.modules_testdata_base_path + 'delete_me/srst2/SRR9067271_1.fastq.gz',checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'delete_me/srst2/SRR9067271_2.fastq.gz',checkIfExists:true)
+                    ],
+                    file(params.modules_testdata_base_path + 'delete_me/srst2/MLST_DB.fas' checkIfExists:true)
                     ]
                 """
             }
@@ -46,8 +48,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [id:'test',single_end:false,db:"gene"],// meta map
-                    [file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz',checkIfExists:true),
-                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_2.fastq.gz',checkIfExists:true)],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz',checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_2.fastq.gz',checkIfExists:true)
+                    ],
                     file(params.modules_testdata_base_path + 'delete_me/srst2/resFinder_20180221_srst2.fasta',checkIfExists:true)
                     ]
                 """

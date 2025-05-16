@@ -11,12 +11,12 @@ process SRST2_SRST2 {
     tuple val(meta), path(fastq_s), path(db)
 
     output:
-    tuple val(meta), path("*_genes_*_results.txt")    , optional:true, emit: gene_results
-    tuple val(meta), path("*_fullgenes_*_results.txt"), optional:true, emit: fullgene_results
-    tuple val(meta), path("*_mlst_*_results.txt")     , optional:true, emit: mlst_results
-    tuple val(meta), path("*.pileup")                 ,                emit: pileup
-    tuple val(meta), path("*.sorted.bam")             ,                emit: sorted_bam
-    path "versions.yml"                               ,                emit: versions
+    tuple val(meta), path("*_genes_*_results.txt")    , emit: gene_results    , optional:true
+    tuple val(meta), path("*_fullgenes_*_results.txt"), emit: fullgene_results, optional:true
+    tuple val(meta), path("*_mlst_*_results.txt")     , emit: mlst_results    , optional:true
+    tuple val(meta), path("*.pileup")                 , emit: pileup
+    tuple val(meta), path("*.sorted.bam")             , emit: sorted_bam
+    path "versions.yml"                               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
