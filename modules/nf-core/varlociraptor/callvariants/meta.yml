@@ -37,26 +37,6 @@ input:
         type: string
         description: Sample name for the scenario
 output:
-  - bcf_gz:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.bcf.gz":
-          type: file
-          description: BCF file containing sample observations
-          pattern: "*.bcf.gz"
-  - vcf_gz:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.vcf.gz":
-          type: file
-          description: Compressed VCF file containing sample observations
-          pattern: "*.vcf.gz"
   - bcf:
       - meta:
           type: map
@@ -67,16 +47,6 @@ output:
           type: file
           description: BCF file containing sample observations
           pattern: "*.bcf"
-  - vcf:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.vcf":
-          type: file
-          description: VCF file containing sample observations
-          pattern: "*.vcf"
   - versions:
       - versions.yml:
           type: file
