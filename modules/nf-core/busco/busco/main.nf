@@ -119,7 +119,7 @@ process BUSCO_BUSCO {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        busco: \$( busco --version 2>&1 | sed 's/^BUSCO //' )
+        busco: echo \$(busco --version 2>2) | sed 's/^BUSCO //'
     END_VERSIONS
     """
 }
