@@ -20,4 +20,17 @@ process PROPR_LOGRATIO {
 
     script:
     template 'logratio.R'
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.logratio.tsv
+    touch ${prefix}.R_sessionInfo.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        r-base: \$(Rscript -e "cat(strsplit(R.version[['version.string']], ' ')[[1]][3])")
+        r-propr: \$(Rscript -e "library('propr'); cat(as.character(packageVersion('propr')))")
+    END_VERSIONS
+    """
 }
