@@ -25,10 +25,12 @@ input:
         type: file
         description: Draft assembly in fasta format
         pattern: "*.fasta"
+        ontologies: []
     - bed:
         type: file
         description: Bed file listing duplicated sequences, produced by PURGEDUPS_PURGEDUPS
         pattern: "*.bed"
+        ontologies: []
 output:
   - haplotigs:
       - meta:
@@ -40,6 +42,7 @@ output:
           type: file
           description: Fasta file containing purged haplotigs
           pattern: "*.hap.fa"
+          ontologies: []
   - purged:
       - meta:
           type: map
@@ -50,11 +53,14 @@ output:
           type: file
           description: Fasta file purged of duplicated haplotigs
           pattern: "*.purged.fa"
+          ontologies: []
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mahesh-panchal"
 maintainers:
