@@ -1,0 +1,177 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTA_INDEX_DNA"
+    script "../main.nf"
+    workflow "FASTA_INDEX_DNA"
+    config "./nextflow.config"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fasta_index_dna"
+    tag "bowtie2/build"
+    tag "bwa/index"
+    tag "bwamem2/index"
+    tag "dragmap/hashtable"
+    tag "snapaligner/index"
+
+    test("Params: bowtie2 | generate bowtie2 index") {
+
+        when {
+            params {
+                aligner = "bowtie2"
+            }
+            workflow {
+                """
+                input[0] = [
+                [id = ['test'],
+                file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.gz', checkIfExists: true)
+                ]
+                input[1] = [] // altliftover
+                input[2] = "bowtie2"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.fasta,
+                    workflow.out.fasta_index,
+                    workflow.out.bismark_index,
+                    workflow.out.bwameth_index,
+                    workflow.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+    test("Params: bwamem | generate bwamem1 index") {
+
+        when {
+            params {
+                aligner = "bwa"
+            }
+            workflow {
+                """
+                input[0] = [
+                [id = ['test'],
+                file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.gz', checkIfExists: true)
+                ]
+                input[1] = [] // altliftover
+                input[2] = "bwamem"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.fasta,
+                    workflow.out.fasta_index,
+                    workflow.out.bismark_index,
+                    workflow.out.bwameth_index,
+                    workflow.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+    test("Params: bwamem2 | generate bwamem2 index") {
+
+        when {
+            params {
+                aligner = "bismark_hisat"
+            }
+            workflow {
+                """
+                input[0] = [
+                [id = ['test'],
+                file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.gz', checkIfExists: true)
+                ]
+                input[1] = [] // altliftover
+                input[2] = "bwamem2"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.fasta,
+                    workflow.out.fasta_index,
+                    workflow.out.bismark_index,
+                    workflow.out.bwameth_index,
+                    workflow.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+    test("Params: dragmap | generate dragmap hashtable") {
+
+        when {
+            params {
+                aligner = "dragmap"
+            }
+            workflow {
+                """
+                input[0] = [
+                [id = ['test'],
+                file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.gz', checkIfExists: true)
+                ]
+                input[1] = [] // altliftover
+                input[2] = "dragmap"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.fasta,
+                    workflow.out.fasta_index,
+                    workflow.out.bismark_index,
+                    workflow.out.bwameth_index,
+                    workflow.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+    test("Params: snapaligner | generate snapaligner index") {
+
+        when {
+            params {
+                aligner = "bwameth"
+            }
+            workflow {
+                """
+                input[0] = [
+                [id = ['test'],
+                file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.gz', checkIfExists: true)
+                ]
+                input[1] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
+                input[2] = "snap"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.fasta,
+                    workflow.out.fasta_index,
+                    workflow.out.bismark_index,
+                    workflow.out.bwameth_index,
+                    workflow.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+}
