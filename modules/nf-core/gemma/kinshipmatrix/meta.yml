@@ -41,17 +41,16 @@ input:
         pattern: "*.txt"
 
 output:
-  - heat_map:
+  - matrix:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.cXX.txt":
+      - "output/${meta.id}.out.cXX.txt":
           type: file
           description: kinship matrix
-          pattern: "*cXX.txt"
-
+          pattern: "output/*out.cXX.txt"
   - versions:
       - "versions.yml":
           type: file
