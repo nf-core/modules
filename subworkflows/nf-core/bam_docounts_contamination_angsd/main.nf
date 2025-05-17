@@ -1,3 +1,7 @@
+//
+// ANGSD doCounts and contamination estimation on the X-chromosome
+//
+
 include { ANGSD_DOCOUNTS      } from '../../../modules/nf-core/angsd/docounts/main'
 include { ANGSD_CONTAMINATION } from '../../../modules/nf-core/angsd/contamination/main'
 
