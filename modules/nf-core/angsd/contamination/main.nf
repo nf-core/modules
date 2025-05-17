@@ -41,7 +41,6 @@ process ANGSD_CONTAMINATION {
     """
     touch ${prefix}.txt
 
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         angsd: \$(echo \$(angsd 2>&1) | grep version | head -n 1 | sed 's/.*version: //g;s/ .*//g')
