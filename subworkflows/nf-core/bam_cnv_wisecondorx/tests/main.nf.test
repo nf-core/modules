@@ -4,9 +4,11 @@ nextflow_workflow {
 
     script "../main.nf"
     workflow "BAM_CNV_WISECONDORX"
-    tag "subworkflows"
     tag "subworkflows_nfcore"
+    tag "subworkflows"
+    tag "subworkflows/bam_cnv_wisecondorx"
     tag "bam_cnv_wisecondorx"
+
     tag "wisecondorx"
     tag "wisecondorx/convert"
     tag "wisecondorx/predict"
