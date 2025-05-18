@@ -18,7 +18,7 @@ workflow BED_SCATTER_BEDTOOLS {
         .map(
             { meta, beds ->
                 // Checks if the scatter count corresponds to the amount of files created. (This doesn't match in some edge cases)
-                scatter_count = beds instanceof Path ? 1 : beds.size()
+                def scatter_count = beds instanceof Path ? 1 : beds.size()
                 [ meta, beds, scatter_count ]
             }
         )
