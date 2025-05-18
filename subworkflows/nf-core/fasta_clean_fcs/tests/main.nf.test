@@ -1,0 +1,84 @@
+nextflow_workflow {
+
+    name "Test Workflow FASTA_CLEAN_FCS"
+
+    script "../main.nf"
+    workflow "FASTA_CLEAN_FCS"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fasta_clean_fcs"
+    tag "fasta_clean_fcs"
+
+    tag "fcs/fcsadaptor"
+    tag "fcs/fcsgx"
+    tag "fcs"
+
+    test("bacteroides_fragilis - fna - gwi gws taxa jsonl blast_div") {
+        tag "test"
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id:'test', single_end:false, taxid:'9606'],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists:true)
+                ])
+                input[1] = Channel.of([
+                    file("https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/database/test-only/test-only.gxi", checkIfExists:true),
+                    file("https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/database/test-only/test-only.gxs", checkIfExists:true),
+                    file("https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/database/test-only/test-only.taxa.tsv", checkIfExists:true),
+                    file("https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/database/test-only/test-only.meta.jsonl", checkIfExists:true),
+                    file("https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/database/test-only/test-only.blast_div.tsv.gz", checkIfExists:true)
+                ])
+                input[2] = ""
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.fcsadaptor_cleaned_assembly,
+                    workflow.out.fcsadaptor_report,
+                    file(workflow.out.fcsadaptor_log[0][1]).name, // Change due to timestamps
+                    workflow.out.fcsadaptor_pipeline_args,
+                    workflow.out.fcsadaptor_skipped_trims,
+                    workflow.out.fcsgx_report,
+                    workflow.out.fcsgx_taxonomy_report,
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("bacteroides_fragilis - fna - gwi gws taxa jsonl blast_div -- stub") {
+        options "-stub"
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [id:'test', single_end:false, taxid:'9606'],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists:true)
+                ]
+                input[1] = Channel.of([[
+                    file("https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/database/test-only/test-only.gxi", checkIfExists:true),
+                    file("https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/database/test-only/test-only.gxs", checkIfExists:true),
+                    file("https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/database/test-only/test-only.taxa.tsv", checkIfExists:true),
+                    file("https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/database/test-only/test-only.meta.jsonl", checkIfExists:true),
+                    file("https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/database/test-only/test-only.blast_div.tsv.gz", checkIfExists:true)
+                ]])
+                input[2] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect { path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+}
