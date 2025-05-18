@@ -1,0 +1,108 @@
+nextflow_workflow {
+
+    name "Test Workflow FASTA_CLEAN_FCS"
+
+    script "../main.nf"
+    workflow "FASTA_CLEAN_FCS"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fasta_clean_fcs"
+    tag "fasta_clean_fcs"
+
+    tag "fcs/fcsadaptor"
+    tag "fcsgx/fetchdb"
+    tag "fcsgx/rungx"
+    tag "fcs"
+    tag "fcsgx"
+
+    test("bacteroides_fragilis - fna - gwi gws taxa jsonl blast_div") {
+        setup {
+            run("FCSGX_FETCHDB"){
+                script "../../../../modules/nf-core/fcsgx/fetchdb/main.nf"
+                process {
+                    """
+                    input[0] = file('https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/database/test-only/test-only.manifest', checkIfExists: true)
+                    """
+                }
+            }
+        }
+        tag "test"
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id:'test', taxid:'9606'],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists:true)
+                ])
+                input[1] = FCSGX_FETCHDB.out.database
+                input[2] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.fcsadaptor_cleaned_assembly,
+                    workflow.out.fcsadaptor_report,
+                    file(workflow.out.fcsadaptor_log[0][1]).name, // Change due to timestamps
+                    workflow.out.fcsadaptor_pipeline_args,
+                    file(workflow.out.fcsadaptor_skipped_trims[0][1]).name, // File empty
+                    file(workflow.out.fcsgx_report[0][1]).readLines().drop(1).join('\n'), // Change due to timestamps
+                    file(workflow.out.fcsgx_taxonomy_report[0][1]).readLines().drop(1).join('\n'), // Change due to timestamps
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("bacteroides_fragilis - fna - gwi gws taxa jsonl blast_div -- stub") {
+        tag "stub"
+        options "-stub"
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id:'test', taxid:'9606'],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists:true)
+                ])
+                input[1] = Channel.of([])
+                input[2] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect { path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+
+    test("bacteroides_fragilis - no taxid fna - gwi gws taxa jsonl blast_div -- stub") {
+        options "-stub"
+        tag "error"
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists:true)
+                ])
+                input[1] = Channel.of([])
+                input[2] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.failed },
+                { assert workflow.errorReport.contains("taxid is mandatory in the meta map") }
+            )
+        }
+    }
+}
