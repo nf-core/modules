@@ -19,14 +19,16 @@ process ANGSD_CONTAMINATION {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args     = task.ext.args   ?: ''
+    def prefix   = task.ext.prefix ?: "${meta.id}"
+    def seed_cmd = args.contains("-seed") ? '' : '-seed 1'
     """
     contamination \
         ${args} \
         -a ${icounts} \
         -h ${hapmap_file} \
         -p ${task.cpus} \
+        ${seed_cmd}
         2> >(tee ${prefix}.txt >&2)
 
 

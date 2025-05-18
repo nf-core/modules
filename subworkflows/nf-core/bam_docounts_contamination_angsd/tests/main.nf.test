@@ -35,10 +35,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    workflow.out.versions,
-                    path(workflow.out.txt[0][1]).readLines()[0..11]
-                ).match() }
+                { assert snapshot(workflow.out).match() }
             )
         }
     }

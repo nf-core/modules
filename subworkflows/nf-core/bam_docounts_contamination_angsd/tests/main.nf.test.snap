@@ -48,29 +48,37 @@
     },
     "homo_sapiens - bam bai - hapmap": {
         "content": [
-            [
-                "versions.yml:md5,3bf0fb169d6ae7f35569cafd1d904f6e",
-                "versions.yml:md5,564bdd3eda2bfc9e585010991e3451f7"
-            ],
-            [
-                "-----------------",
-                "hapmap:HapMapChrX.gz counts:test.icnts.gz minMaf:0.050000 startPos:5000000 stopPos:154900000 minDepth:2 maxDepth:200 skiptrans:0 nthreads:2 seed:0 skipML:0",
-                "Method2 is subject to fluctuations due to random sampling",
-                "Seed value of 0 (zero) will use time as seed",
-                "-----------------",
-                "[readhap] We now have: 58190 snpSites after filtering based on hapMapfile",
-                "[readicnts] fname:test.icnts.gz minDepth:2 maxDepth:200",
-                "[readicnts] Has read:1557012 sites,  1517472 sites (after depfilter) from ANGSD icnts file",
-                "  After removing SNP sites with no data in 5bp surrounding region`",
-                "  We have nSNP sites: 628, with flanking: 5652",
-                "Mismatch_rate_for_flanking:0.019200 MisMatch_rate_for_snpsite:0.018897 ",
-                ""
-            ]
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    "versions.yml:md5,3bf0fb169d6ae7f35569cafd1d904f6e",
+                    "versions.yml:md5,564bdd3eda2bfc9e585010991e3451f7"
+                ],
+                "txt": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,3bf0fb169d6ae7f35569cafd1d904f6e",
+                    "versions.yml:md5,564bdd3eda2bfc9e585010991e3451f7"
+                ]
+            }
         ],
         "meta": {
             "nf-test": "0.9.2",
             "nextflow": "24.10.4"
         },
-        "timestamp": "2025-05-17T18:17:39.152383886"
+        "timestamp": "2025-05-18T12:24:23.565667073"
     }
 }
