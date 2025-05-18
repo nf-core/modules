@@ -11,8 +11,10 @@ nextflow_workflow {
     tag "fasta_clean_fcs"
 
     tag "fcs/fcsadaptor"
-    tag "fcs/fcsgx"
+    tag "fcsgx/fetchdb"
+    tag "fcsgx/rungx"
     tag "fcs"
+    tag "fcsgx"
 
     test("bacteroides_fragilis - fna - gwi gws taxa jsonl blast_div") {
         setup {
@@ -46,7 +48,7 @@ nextflow_workflow {
                     workflow.out.fcsadaptor_report,
                     file(workflow.out.fcsadaptor_log[0][1]).name, // Change due to timestamps
                     workflow.out.fcsadaptor_pipeline_args,
-                    workflow.out.fcsadaptor_skipped_trims,
+                    file(workflow.out.fcsadaptor_skipped_trims[0][1]).name, // File empty
                     file(workflow.out.fcsgx_report[0][1]).readLines().drop(1).join('\n'), // Change due to timestamps
                     file(workflow.out.fcsgx_taxonomy_report[0][1]).readLines().drop(1).join('\n'), // Change due to timestamps
                     workflow.out.versions
