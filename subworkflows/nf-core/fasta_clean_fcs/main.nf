@@ -11,18 +11,18 @@ workflow FASTA_CLEAN_FCS {
     main:
     ch_versions = Channel.empty()
 
+    ch_fasta.map{
+        meta, _fasta -> [ meta.taxid ?: error("taxid is mandatory in the meta map") ]
+    }
+
     FCS_FCSADAPTOR ( ch_fasta )
     ch_versions = ch_versions.mix(FCS_FCSADAPTOR.out.versions)
-
 
     ch_cleaned_assembly = ch_fasta
         .join(FCS_FCSADAPTOR.out.cleaned_assembly, by:0, remainder: true )
         .map { meta, input, cleaned ->
             [ meta, meta.taxid, cleaned ?: input ]
         }
-
-    ch_cleaned_assembly.view()
-    database.view()
 
     FCSGX_RUNGX ( ch_cleaned_assembly, database, ramdisk_path)
     ch_versions = ch_versions.mix(FCSGX_RUNGX.out.versions)
