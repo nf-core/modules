@@ -1,0 +1,126 @@
+nextflow_process {
+
+    name "Test Process SOMALIER_ANCESTRY"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "SOMALIER_ANCESTRY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "somalier"
+    tag "somalier/extract"
+    tag "somalier/ancestry"
+    tag "bcftools/view"
+    tag "bcftools"
+
+    test("homo_sapiens - somalier target - tsv somalier panel") {
+        setup {
+            run("BCFTOOLS_VIEW") {
+                script "../../../bcftools/view/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id:"1000G"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi', checkIfExists: true)
+                    ]
+                    input[1] = []
+                    input[2] = []
+                    input[3] = []
+                    """
+                }
+            }
+            run("SOMALIER_EXTRACT", alias: "SOMALIER_EXTRACT_PANEL") {
+                script "../../extract/main.nf"
+                process {
+                    """
+                    input[0] = BCFTOOLS_VIEW.out.vcf
+                        .join(BCFTOOLS_VIEW.out.csi)
+                    input[1] = [
+                        [id: "hg38"],
+                        [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
+                    ]
+                    input[2] = [
+                        [id: "hg38"],
+                        [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]
+                    ]
+                    input[3] = [
+                        [id: "1000G"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+            run("SOMALIER_EXTRACT", alias: "SOMALIER_EXTRACT_SAMPLE") {
+                script "../../extract/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id:"NA12878"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz.csi', checkIfExists: true)
+                    ]
+                    input[1] = [
+                        [id: "hg38"],
+                        [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
+                    ]
+                    input[2] = [
+                        [id: "hg38"],
+                        [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]
+                    ]
+                    input[3] = [
+                        [id: "1000G"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = SOMALIER_EXTRACT_SAMPLE.out.extract
+                input[1] = Channel.of([
+                    [id:"1000G"],
+                    file("https://github.com/brentp/somalier/raw/73db124d3fe9febe3a53787707554f863595b48f/scripts/ancestry-labels-1kg.tsv", checkIfExists: true)
+                ]).join(SOMALIER_EXTRACT_PANEL.out.extract)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.tsv[0][1]).name, // Samples order and value change drastically
+                    file(process.out.html[0][1]).name, // Not stable as consequence
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - somalier target - tsv somalier panel -- stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [[id: "test"], []]
+                input[1] = Channel.of([
+                    [id:"1000G"],
+                    file("https://github.com/brentp/somalier/raw/73db124d3fe9febe3a53787707554f863595b48f/scripts/ancestry-labels-1kg.tsv", checkIfExists: true),
+                    []
+                ])
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}
