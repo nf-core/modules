@@ -9,33 +9,27 @@ nextflow_workflow {
     tag "subworkflows_nfcore"
     tag "multiple_impute_glimpse2"
 
-    test("test_multiple_impute_glimpse2_without_sample") {
+    test("homo_sapiens - vcf [] - panel vcf region - [] - [] - recursive") {
         when {
             workflow {
                 """
                 input[0] = Channel.of([
-                    [id:'input_vcf'],// meta map
-                    file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz.csi", checkIfExists: true),
+                    [id:'input_vcf'],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi", checkIfExists: true),
                     []
                 ])
                 input[1] = Channel.of([
-                    [id:'ref_panel'],
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf",
-                    checkIfExists:true),
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi",
-                    checkIfExists:true),
-                    "chr21"
-                    ])
+                    [id:'ref_panel', chr: "22"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
+                    "chr22",
+                ])
                 input[2] = Channel.of([
-                    [id:'map'],
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/chr21.b38.gmap.gz",checkIfExists:true)
-                    ]).collect()
-                input[3] = Channel.of([
-                    [id:'ref_fasta'],
-                    [],
+                    [id: 'ref_panel', chr: "22"],
                     []
-                    ]).collect()
+                ])
+                input[3] = Channel.of([[id:'ref_fasta'], [], []]).collect()
                 input[4] = "recursive"
                 """
             }
@@ -43,35 +37,41 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(
+                    workflow.out.chunk_chr,
+                    workflow.out.merged_variants.collect{ path(it[1]).vcf.variantsMD5},
+                    file(workflow.out.merged_variants_index[0][1]).name, // The .csi index file sometimes change
+                    workflow.out.versions
+                ).match() }
             )
         }
     }
-    test("test_multiple_impute_glimpse2_with_sample") {
-
-
+    test("homo_sapiens - vcf sample - panel vcf - [] - [] - recursive") {
         when {
-
             workflow {
                 """
-                input[0] = ch_input_vcf.combine(sample)
+                sample = Channel.of('NA12878 2')
+                    .collectFile(name: 'sampleinfos.txt')
+                input[0] = Channel.of([
+                    [id:'input_vcf'],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi", checkIfExists: true),
+                ]).combine(sample)
                 input[1] = Channel.of([
-                    [id:'ref_panel'],
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf",
-                    checkIfExists:true),
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi",
-                    checkIfExists:true),
-                    "chr21"
-                    ])
+                    [id:'ref_panel', chr: "22"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
+                    "chr22:16570065-16609999",
+                ])
                 input[2] = Channel.of([
-                    [id:'map'],
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/chr21.b38.gmap.gz",checkIfExists:true)
-                    ]).collect()
+                    [id:'ref_panel', chr: "22"],
+                    []
+                ]).collect()
                 input[3] = Channel.of([
                     [id:'ref_fasta'],
                     [],
                     []
-                    ]).collect()
+                ]).collect()
                 input[4] = "recursive"
                 """
             }
@@ -79,89 +79,85 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(
+                    workflow.out.chunk_chr,
+                    workflow.out.merged_variants.collect{ path(it[1]).vcf.variantsMD5},
+                    file(workflow.out.merged_variants_index[0][1]).name,
+                    workflow.out.versions
+                ).match() }
             )
         }
     }
-    test("test_multiple_impute_glimpse2_bam") {
-
-
+    test("homo_sapiens - bam [] - panel vcf - [] - [] - sequential") {
         when {
-
             workflow {
                 """
                 input[0] = Channel.of([
-                    [id:'input'],
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.bam",checkIfExists:true),
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.bam.bai",checkIfExists:true),
+                    [id:'input_bam'],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam.bai", checkIfExists: true),
                     []
-                    ])
+                ])
                 input[1] = Channel.of([
-                    [id:'ref_panel'],
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf",
-                    checkIfExists:true),
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi",
-                    checkIfExists:true),
-                    "chr21"
-                    ])
+                    [id:'ref_panel', chr: "22"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
+                    "chr22",
+                ])
                 input[2] = Channel.of([
-                    [id:'map'],
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/chr21.b38.gmap.gz",checkIfExists:true)
-                    ]).collect()
-                input[3] = Channel.of([
-                    [id:'ref_fasta'],
-                    [],
+                    [id: 'ref_panel', chr: "22"],
                     []
-                    ]).collect()
-                input[4] = "recursive"
+                ])
+                input[3] = Channel.of([[id:'ref_fasta'], [], []]).collect()
+                input[4] = "sequential"
                 """
             }
         }
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(
+                    workflow.out.chunk_chr,
+                    workflow.out.merged_variants.collect{ path(it[1]).vcf.variantsMD5},
+                    file(workflow.out.merged_variants_index[0][1]).name,
+                    workflow.out.versions
+                ).match() }
             )
         }
     }
-    test("test_multiple_impute_glimpse2_cram") {
-
-
+    test("homo_sapiens - bam [] - panel vcf - [] - [] - sequential -- stub") {
+        tag "stub"
+        options "-stub"
         when {
-
             workflow {
                 """
-                input[0] = Channel.of([
-                    [id:'input'],
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.cram",checkIfExists:true),
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.cram.crai",checkIfExists:true),
+                input[0] = input[0] = Channel.of([
+                    [id:'input_vcf'],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam.bai", checkIfExists: true),
                     []
-                    ])
+                ])
                 input[1] = Channel.of([
-                    [id:'ref_panel'],
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf",
-                    checkIfExists:true),
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi",
-                    checkIfExists:true),
-                    "chr21"
-                    ])
+                    [id:'ref_panel', chr: "22"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
+                    "chr22",
+                ])
                 input[2] = Channel.of([
-                    [id:'map'],
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/chr21.b38.gmap.gz",checkIfExists:true)
-                    ]).collect()
-                input[3] = Channel.of([
-                    [id:'refHG38_chr21'],
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/hs38DH.chr21.fa.gz",checkIfExists:true),
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/hs38DH.chr21.fa.gz.fai",checkIfExists:true)
-                    ]).collect()
-                input[4] = "recursive"
+                    [id: 'ref_panel', chr: "22"],
+                    []
+                ])
+                input[3] = Channel.of([[id:'ref_fasta'], [], []]).collect()
+                input[4] = "sequential"
                 """
             }
         }
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(
+                    workflow.out
+                ).match() }
             )
         }
     }
