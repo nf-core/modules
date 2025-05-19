@@ -23,7 +23,6 @@ process NEXTDENOVO {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    pip install paralleltask
     echo ${reads} > input.fofn
     nextDenovo \\
         $config \\
