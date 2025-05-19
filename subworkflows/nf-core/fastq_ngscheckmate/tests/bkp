@@ -1,0 +1,135 @@
+nextflow_workflow {
+
+    name "Test Workflow FASTQ_NGSCHECKMATE"
+    config "./nextflow.config"
+    script "../main.nf"
+    workflow "FASTQ_NGSCHECKMATE"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "fastq_ngscheckmate"
+    tag "bedtools"
+    tag "bedtools/makewindows"
+    tag "bowtie"
+    tag "bowtie/build"
+    tag "gawk"
+    tag "ngscheckmate"
+    tag "ngscheckmate/patterngenerator"
+
+    test("test_fastq_ngscheckmate") {
+
+        setup {
+            run("GAWK", alias: "GAWK_FAI") {
+                script "../../../../modules/nf-core/gawk/main.nf"
+                params {
+                    module_args = '\'BEGIN { FS = OFS = "\t" } { print \$1 FS "0" FS \$2 }\''
+                }
+
+                process {
+                    """
+                    input[0] = [
+                        [id:'sarscov2'],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai',checkIfExists:true)
+                        ]
+                    input[1] = []
+                    input[2] = false
+                    """
+                }
+            }
+
+            run("BEDTOOLS_MAKEWINDOWS") {
+                script "../../../../modules/nf-core/bedtools/makewindows/main.nf"
+                params {
+                    module_args = '-w 1'
+                }
+
+                process {
+                    """
+                    input[0] = GAWK_FAI.out.output
+                    """
+                }
+            }
+
+            run("GAWK", alias: "GAWK_BED") {
+                script "../../../../modules/nf-core/gawk/main.nf"
+                params {
+                    module_args = '\'NR > 20 && NR < 20000 && FS = OFS = "\t" { print $0 FS "rs1" FS "G" FS "C" }\''
+                }
+
+                process {
+                    """
+                    input[0] = BEDTOOLS_MAKEWINDOWS.out.bed
+                    input[1] = []
+                    input[2] = false
+                    """
+                }
+            }
+
+            run("BOWTIE_BUILD") {
+                script "../../../../modules/nf-core/bowtie/build/main.nf"
+
+                process {
+                    """
+                    input[0] = [
+                        [id:'sarscov2'],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta',checkIfExists:true)
+                        ]
+                    """
+                }
+            }
+
+            run("NGSCHECKMATE_PATTERNGENERATOR") {
+                script "../../../../modules/nf-core/ngscheckmate/patterngenerator/main.nf"
+
+                process {
+                    """
+                    input[0] = GAWK_BED.out.output
+                    input[1] = [
+                        [id:'sarscov2'],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta',checkIfExists:true)
+                        ]
+                    input[2] = BOWTIE_BUILD.out.index
+                    """
+                }
+            }
+        }
+        when {
+
+            workflow {
+                """
+                input[0] = Channel.from([
+                    [
+                        [ id:'test1' ], // file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                        [
+                            file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                            file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                        ]
+                    ],
+                    [
+                        [ id:'test2' ],
+                        [
+                            file(params.test_data['sarscov2']['illumina']['test2_1_fastq_gz'], checkIfExists: true),
+                            file(params.test_data['sarscov2']['illumina']['test2_2_fastq_gz'], checkIfExists: true)
+                        ]
+                    ],
+                    [
+                        [ id:'test3' ],
+                        [
+                            file(params.test_data['sarscov2']['illumina']['test_methylated_1_fastq_gz'], checkIfExists: true),
+                            file(params.test_data['sarscov2']['illumina']['test_methylated_2_fastq_gz'], checkIfExists: true)
+                        ]
+                    ],
+                ])
+                input[1] = NGSCHECKMATE_PATTERNGENERATOR.out.pt
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert process.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+}
