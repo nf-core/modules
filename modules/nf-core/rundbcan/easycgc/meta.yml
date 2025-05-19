@@ -62,7 +62,6 @@ output:
           type: file
           description: |
             TSV file containing the results of dbCAN CAZyme annotation.
-
   - dbcanhmm_results:
       - meta:
           type: map
@@ -73,7 +72,6 @@ output:
           type: file
           description: |
             TSV file containing the detailed dbCAN HMM results for CAZyme annotation.
-
   - dbcansub_results:
       - meta:
           type: map
@@ -84,7 +82,6 @@ output:
           type: file
           description: |
             TSV file containing the detailed dbCAN subfamily results for CAZyme annotation.
-
   - dbcandiamond_results:
       - meta:
           type: map
@@ -95,7 +92,6 @@ output:
           type: file
           description: |
             TSV file containing the detailed dbCAN diamond results for CAZyme annotation.
-
   - cgc_gff:
       - meta:
           type: map
@@ -106,7 +102,6 @@ output:
           type: file
           description: |
             GFF file containing the CAZyme gene clusters (CGC) identified by dbCAN. This file is generated from the dbCAN annotation and contains the locations of CAZyme gene clusters in the genome.
-
   - cgc_standard_out:
       - meta:
           type: map
@@ -117,7 +112,6 @@ output:
           type: file
           description: |
             Standard output file from dbCAN for CAZyme gene clusters (CGC) in a tabular format. This file summarizes the CAZyme gene clusters identified in the genome.
-
   - diamond_out_tc:
       - meta:
           type: map
@@ -128,7 +122,6 @@ output:
           type: file
           description: |
             TSV file containing the diamond output for transporter annotation.
-
   - tf_hmm_results:
       - meta:
           type: map
@@ -139,7 +132,6 @@ output:
           type: file
           description: |
             TSV file containing the results of Transcription factor.
-
   - stp_hmm_results:
       - meta:
           type: map
@@ -150,18 +142,6 @@ output:
           type: file
           description: |
             TSV file containing the results of signaling transduction proteins (STP) annotation.
-
-  - total_cgc_info:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1']`
-      - ${prefix}_total_cgc_info.tsv:
-          type: file
-          description: |
-            TSV file summarizing the total additional genes in the genome.
-
   - versions:
       - versions.yml:
           type: file

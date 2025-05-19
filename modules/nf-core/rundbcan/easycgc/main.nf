@@ -6,31 +6,30 @@ process RUNDBCAN_EASYCGC {
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/dbcan:5.0.6--pyhdfd78af_0' :
         'biocontainers/dbcan:5.0.6--pyhdfd78af_0' }"
+
     input:
-    tuple val(meta), path(input_raw_data)
+    tuple val(meta),  path(input_raw_data)
     tuple val(meta2), path(input_gff), val(gff_type)
-    path dbcan_db
+    path  dbcan_db
 
     output:
-    tuple val(meta), path("${prefix}_overview.tsv")                 ,emit: cazyme_annotation
-    tuple val(meta), path("${prefix}_dbCAN_hmm_results.tsv")        ,emit: dbcanhmm_results
-    tuple val(meta), path("${prefix}_dbCANsub_hmm_results.tsv")     ,emit: dbcansub_results
-    tuple val(meta), path("${prefix}_diamond.out")                  ,emit: dbcandiamond_results
-    tuple val(meta), path("${prefix}_cgc.gff")                      ,emit: cgc_gff
-    tuple val(meta), path("${prefix}_cgc_standard_out.tsv")         ,emit: cgc_standard_out
-    tuple val(meta), path("${prefix}_diamond.out.tc")               ,emit: diamond_out_tc
-    tuple val(meta), path("${prefix}_TF_hmm_results.tsv")           ,emit: tf_hmm_results
-    tuple val(meta), path("${prefix}_STP_hmm_results.tsv")          ,emit: stp_hmm_results
-    tuple val(meta), path("${prefix}_total_cgc_info.tsv")           ,emit: total_cgc_info
-
-    path "versions.yml", emit: versions
+    tuple val(meta), path("${prefix}_overview.tsv")                 , emit: cazyme_annotation
+    tuple val(meta), path("${prefix}_dbCAN_hmm_results.tsv")        , emit: dbcanhmm_results
+    tuple val(meta), path("${prefix}_dbCANsub_hmm_results.tsv")     , emit: dbcansub_results
+    tuple val(meta), path("${prefix}_diamond.out")                  , emit: dbcandiamond_results
+    tuple val(meta), path("${prefix}_cgc.gff")                      , emit: cgc_gff
+    tuple val(meta), path("${prefix}_cgc_standard_out.tsv")         , emit: cgc_standard_out
+    tuple val(meta), path("${prefix}_diamond.out.tc")               , emit: diamond_out_tc
+    tuple val(meta), path("${prefix}_TF_hmm_results.tsv")           , emit: tf_hmm_results
+    tuple val(meta), path("${prefix}_STP_hmm_results.tsv")          , emit: stp_hmm_results
+    path  "versions.yml"                                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}_dbcan_cgc"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     run_dbcan easy_CGC \\
         --mode protein \\

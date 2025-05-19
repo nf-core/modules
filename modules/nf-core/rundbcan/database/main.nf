@@ -7,9 +7,8 @@ process RUNDBCAN_DATABASE {
         'biocontainers/dbcan:5.0.6--pyhdfd78af_0' }"
 
     output:
-
-    path "dbcan_db", emit: dbcan_db
-    path "versions.yml", emit: versions
+    path "dbcan_db"         , emit: dbcan_db
+    path "versions.yml"     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -17,7 +16,6 @@ process RUNDBCAN_DATABASE {
     script:
     def args = task.ext.args ?: ''
     """
-
     run_dbcan database \\
         --db_dir dbcan_db
 

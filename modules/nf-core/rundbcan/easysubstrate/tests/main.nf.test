@@ -20,27 +20,21 @@ nextflow_process {
                     """
                     """
                 }
-
+            }
         }
-
-    }
 
         when {
             process {
                 """
-
                 input[0] = [
                     [id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
                 ]
-
                 input[1] = [
                     [id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true),
                     "prodigal"
-
                 ]
-
                 input[2] = RUNDBCAN_DATABASE.out.dbcan_db
                 """
             }
@@ -69,6 +63,7 @@ nextflow_process {
     }
 
     test("easysubstrate - stub") {
+
         options "-stub"
 
         when {

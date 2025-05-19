@@ -6,40 +6,37 @@ process RUNDBCAN_EASYSUBSTRATE {
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/dbcan:5.0.6--pyhdfd78af_0' :
         'biocontainers/dbcan:5.0.6--pyhdfd78af_0' }"
+
     input:
-    tuple val(meta), path(input_raw_data)
-    tuple val(meta2), path(input_gff), val (gff_type)
-    path dbcan_db
+    tuple val(meta),  path(input_raw_data)
+    tuple val(meta2), path(input_gff), val(gff_type)
+    path  dbcan_db
 
     output:
-    tuple val(meta), path("${prefix}_overview.tsv"), emit: cazyme_annotation
-    tuple val(meta), path("${prefix}_dbCAN_hmm_results.tsv"), emit: dbcanhmm_results
-    tuple val(meta), path("${prefix}_dbCANsub_hmm_results.tsv"), emit: dbcansub_results
-    tuple val(meta), path("${prefix}_diamond.out"), emit: dbcandiamond_results
-    tuple val(meta), path("${prefix}_cgc.gff"), emit: cgc_gff
-    tuple val(meta), path("${prefix}_cgc_standard_out.tsv"), emit: cgc_standard_out
-    tuple val(meta), path("${prefix}_diamond.out.tc"), emit: diamond_out_tc
-    tuple val(meta), path("${prefix}_TF_hmm_results.tsv"), emit: tf_hmm_results
-    tuple val(meta), path("${prefix}_STP_hmm_results.tsv"), emit: stp_hmm_results
-    tuple val(meta), path("${prefix}_total_cgc_info.tsv"), emit: total_cgc_info
-    tuple val(meta), path("${prefix}_CGC.faa"), emit: cgc_faa
-    tuple val(meta), path("${prefix}_PUL_blast.out"), emit: pul_blast_out
-    tuple val(meta), path("${prefix}_substrate_prediction.tsv"), emit: substrate_prediction
-    tuple val(meta), path("${prefix}_synteny_pdf/"), emit: synteny_pdf
-
-
-
-
-    path "versions.yml", emit: versions
+    tuple val(meta), path("${prefix}_overview.tsv")                , emit: cazyme_annotation
+    tuple val(meta), path("${prefix}_dbCAN_hmm_results.tsv")       , emit: dbcanhmm_results
+    tuple val(meta), path("${prefix}_dbCANsub_hmm_results.tsv")    , emit: dbcansub_results
+    tuple val(meta), path("${prefix}_diamond.out")                 , emit: dbcandiamond_results
+    tuple val(meta), path("${prefix}_cgc.gff")                     , emit: cgc_gff
+    tuple val(meta), path("${prefix}_cgc_standard_out.tsv")        , emit: cgc_standard_out
+    tuple val(meta), path("${prefix}_diamond.out.tc")              , emit: diamond_out_tc
+    tuple val(meta), path("${prefix}_TF_hmm_results.tsv")          , emit: tf_hmm_results
+    tuple val(meta), path("${prefix}_STP_hmm_results.tsv")         , emit: stp_hmm_results
+    tuple val(meta), path("${prefix}_total_cgc_info.tsv")          , emit: total_cgc_info
+    tuple val(meta), path("${prefix}_CGC.faa")                     , emit: cgc_faa
+    tuple val(meta), path("${prefix}_PUL_blast.out")               , emit: pul_blast_out
+    tuple val(meta), path("${prefix}_substrate_prediction.tsv")    , emit: substrate_prediction
+    tuple val(meta), path("${prefix}_synteny_pdf/")                , emit: synteny_pdf
+    path  "versions.yml"                                           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}_dbcan_substrate"
-
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
+    ##mock file for the run_dbcan substrate process to avoid blank output error. Will be removed in the future.
     echo "CM000172.1|CGC122|EAL84470.1|TC|2.A.3	PUL0296_1:PUL0296::APC1503_1956:PKC87186.1:TC:gnl|TC-DB|P15993|2.A.3.1.3	30.8	439	256	8	8	411	38	463	9.08e-56	192	492	491" > PUL_blast.out
 
     run_dbcan easy_substrate \\
