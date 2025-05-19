@@ -10,13 +10,15 @@ nextflow_process {
     tag "modules"
     tag "glimpse2"
     tag "glimpse2/phase"
+    tag "samtools/view"
+    tag "samtools"
 
     test("homo_sapiens - vcf region - panel") {
         when {
             process {
                 """
                 input_vcf = Channel.of([
-                    [ id:'input' ], // meta map
+                    [ id:'input' ],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi", checkIfExists: true),
                     [], [],
@@ -327,5 +329,39 @@ nextflow_process {
                 ).match()}
             )
         }
+    }
+
+    test("homo_sapiens - vcf region - panel -- stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input_vcf = Channel.of([
+                    [ id:'input' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi", checkIfExists: true),
+                    [], [],
+                    "chr22:16600000-16800000",
+                    "chr22:16650000-16750000",
+                    [], [], []
+                ])
+
+                // [meta, vcf, index, sample_infos, regionin, regionout,ref, index, map] [meta, fasta, fai]
+                input[0] = input_vcf
+                input[1] = Channel.of([[],[],[]])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions
+                ).match()}
+            )
+        }
+
     }
 }
