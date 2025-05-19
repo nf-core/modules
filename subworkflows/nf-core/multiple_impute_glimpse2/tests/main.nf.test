@@ -1,0 +1,168 @@
+nextflow_workflow {
+
+    name "Test Workflow MULTIPLE_IMPUTE_GLIMPSE2"
+    config "./nextflow.config"
+    script "../main.nf"
+    workflow "MULTIPLE_IMPUTE_GLIMPSE2"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "multiple_impute_glimpse2"
+
+    test("test_multiple_impute_glimpse2_without_sample") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id:'input_vcf'],// meta map
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz.csi", checkIfExists: true),
+                    []
+                ])
+                input[1] = Channel.of([
+                    [id:'ref_panel'],
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf",
+                    checkIfExists:true),
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi",
+                    checkIfExists:true),
+                    "chr21"
+                    ])
+                input[2] = Channel.of([
+                    [id:'map'],
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/chr21.b38.gmap.gz",checkIfExists:true)
+                    ]).collect()
+                input[3] = Channel.of([
+                    [id:'ref_fasta'],
+                    [],
+                    []
+                    ]).collect()
+                input[4] = "recursive"
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+    test("test_multiple_impute_glimpse2_with_sample") {
+
+
+        when {
+
+            workflow {
+                """
+                input[0] = ch_input_vcf.combine(sample)
+                input[1] = Channel.of([
+                    [id:'ref_panel'],
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf",
+                    checkIfExists:true),
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi",
+                    checkIfExists:true),
+                    "chr21"
+                    ])
+                input[2] = Channel.of([
+                    [id:'map'],
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/chr21.b38.gmap.gz",checkIfExists:true)
+                    ]).collect()
+                input[3] = Channel.of([
+                    [id:'ref_fasta'],
+                    [],
+                    []
+                    ]).collect()
+                input[4] = "recursive"
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+    test("test_multiple_impute_glimpse2_bam") {
+
+
+        when {
+
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id:'input'],
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.bam",checkIfExists:true),
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.bam.bai",checkIfExists:true),
+                    []
+                    ])
+                input[1] = Channel.of([
+                    [id:'ref_panel'],
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf",
+                    checkIfExists:true),
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi",
+                    checkIfExists:true),
+                    "chr21"
+                    ])
+                input[2] = Channel.of([
+                    [id:'map'],
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/chr21.b38.gmap.gz",checkIfExists:true)
+                    ]).collect()
+                input[3] = Channel.of([
+                    [id:'ref_fasta'],
+                    [],
+                    []
+                    ]).collect()
+                input[4] = "recursive"
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+    test("test_multiple_impute_glimpse2_cram") {
+
+
+        when {
+
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id:'input'],
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.cram",checkIfExists:true),
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.cram.crai",checkIfExists:true),
+                    []
+                    ])
+                input[1] = Channel.of([
+                    [id:'ref_panel'],
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf",
+                    checkIfExists:true),
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi",
+                    checkIfExists:true),
+                    "chr21"
+                    ])
+                input[2] = Channel.of([
+                    [id:'map'],
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/chr21.b38.gmap.gz",checkIfExists:true)
+                    ]).collect()
+                input[3] = Channel.of([
+                    [id:'refHG38_chr21'],
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/hs38DH.chr21.fa.gz",checkIfExists:true),
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/hs38DH.chr21.fa.gz.fai",checkIfExists:true)
+                    ]).collect()
+                input[4] = "recursive"
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+}
