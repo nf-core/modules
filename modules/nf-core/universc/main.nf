@@ -49,6 +49,7 @@ process UNIVERSC {
         --per-cell-data \\
         $args 1> _log 2> _err
 
+    mkdir sample-${meta.id}/outs/
     # save log files
     echo !! > sample-${meta.id}/outs/_invocation
     cp _log sample-${meta.id}/outs/_log
