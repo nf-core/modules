@@ -4,14 +4,16 @@ process STARFUSION_BUILD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/be/bed86145102fdf7e381e1a506a4723676f98b4bbe1db5085d02213cef18525c9/data' :
-        'community.wave.seqera.io/library/dfam_hmmer_minimap2_star-fusion:aa3a8e3951498552'}"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b0/b0a58b9d30f9c72b22135f85746e10596d568c40a7d9634b13e0a0749cacd21b/data' :
+        'community.wave.seqera.io/library/dfam_hmmer_minimap2_star-fusion:c2bc5374f142ac93'}"
 
     input:
     tuple val(meta), path(fasta)
     tuple val(meta2), path(gtf)
     path fusion_annot_lib
     val dfam_species
+    val dfam_version
+    val pfam_version
 
     output:
     tuple val(meta), path("${prefix}_genome_lib_build_dir"), emit: reference
@@ -24,18 +26,30 @@ process STARFUSION_BUILD {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    wget http://ftp.ebi.ac.uk/pub/databases/Pfam/releases/Pfam${pfam_version}/Pfam-A.hmm.gz --no-check-certificate
+    wget https://www.dfam.org/releases/Dfam_${dfam_version}/infrastructure/dfamscan/${dfam_species}_dfam.hmm --no-check-certificate
+    wget https://www.dfam.org/releases/Dfam_${dfam_version}/infrastructure/dfamscan/${dfam_species}_dfam.hmm.h3f --no-check-certificate
+    wget https://www.dfam.org/releases/Dfam_${dfam_version}/infrastructure/dfamscan/${dfam_species}_dfam.hmm.h3i --no-check-certificate
+    wget https://www.dfam.org/releases/Dfam_${dfam_version}/infrastructure/dfamscan/${dfam_species}_dfam.hmm.h3m --no-check-certificate
+    wget https://www.dfam.org/releases/Dfam_${dfam_version}/infrastructure/dfamscan/${dfam_species}_dfam.hmm.h3p --no-check-certificate
+    gunzip Pfam-A.hmm.gz && hmmpress Pfam-A.hmm
+    wget https://data.broadinstitute.org/Trinity/CTAT_RESOURCE_LIB/AnnotFilterRule.pm -O AnnotFilterRule.pm --no-check-certificate
+
+
     prep_genome_lib.pl \\
         --genome_fa $fasta \\
         --gtf $gtf \\
-        --dfam_db ${dfam_species} \\
-        --pfam_db current \\
+        --dfam_db ${dfam_species}_dfam.hmm \\
+        --pfam_db Pfam-A.hmm \\
         --fusion_annot_lib $fusion_annot_lib \\
+        --annot_filter_rule AnnotFilterRule.pm \\
         --CPU $task.cpus \\
         --output_dir ${prefix}_genome_lib_build_dir \\
         ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
+        wget: \$(wget --version | head -1 | cut -d ' ' -f 3)
         STAR-Fusion: \$(STAR-Fusion --version 2>&1 | grep -i 'version' | sed 's/STAR-Fusion version: //')
     END_VERSIONS
     """
@@ -128,6 +142,7 @@ process STARFUSION_BUILD {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
+        wget: \$(wget --version | head -1 | cut -d ' ' -f 3)
         STAR-Fusion: \$(STAR-Fusion --version 2>&1 | grep -i 'version' | sed 's/STAR-Fusion version: //')
     END_VERSIONS
     """
