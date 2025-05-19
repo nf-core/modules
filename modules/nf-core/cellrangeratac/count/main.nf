@@ -4,11 +4,6 @@ process CELLRANGERATAC_COUNT {
 
     container "nf-core/cellranger-atac:2.1.0"
 
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "CELLRANGERATAC_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-
     input:
     tuple val(meta), path(reads)
     path reference
@@ -21,6 +16,10 @@ process CELLRANGERATAC_COUNT {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "CELLRANGERATAC_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
     def sample_arg = meta.samples.unique().join(",")
     def reference_name = reference.name
@@ -33,6 +32,7 @@ process CELLRANGERATAC_COUNT {
         --sample=$sample_arg \\
         --localcores=$task.cpus \\
         --localmem=${task.memory.toGiga()} \\
+        --disable-ui \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
