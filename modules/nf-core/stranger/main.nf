@@ -22,7 +22,7 @@ process STRANGER {
     script:
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
-    def args3 = task.ext.args2 ?: ''
+    def args3 = task.ext.args3 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_stranger"
     def options_variant_catalog = variant_catalog ? "--repeats-file $variant_catalog" : ""
 
