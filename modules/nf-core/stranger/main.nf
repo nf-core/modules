@@ -4,8 +4,8 @@ process STRANGER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/00/00247d8ec55c8cfef3e32187b401c018b0dbcb90c61b84479eb26cb2544297fb/data':
-        'community.wave.seqera.io/library/tabix_pip_stranger:269568cde8849a48' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/19/19f14a7c1b0ec9cbdeb6d32e3692208d559e9186b210e9a0a6922e001cb6ad32/data':
+        'community.wave.seqera.io/library/stranger_tabix:847b205e87ed124b' }"
 
     input:
     tuple val(meta), path(vcf)
