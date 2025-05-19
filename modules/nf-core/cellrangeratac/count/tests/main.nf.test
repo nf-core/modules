@@ -19,7 +19,7 @@ nextflow_process {
 
             process {
                 """
-                input[0] = [[],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.fasta.gz',checkIfExists:true)]
+                input[0] = [[],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.fasta.gz', checkIfExists:true)]
                 """
             }
         }
@@ -29,10 +29,10 @@ nextflow_process {
 
             process {
                 """
-                input[0] = UNZIP.out.unzipped_archive.map{it[1]}+"/genome.fasta"
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.gtf',checkIfExists:true)
-                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_motifs.txt',checkIfExists:true)
-                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_config.json',checkIfExists:true)
+                input[0] = UNZIP.out.unzipped_archive.map{it -> it[1]} + "/genome.fasta"
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.gtf', checkIfExists:true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_motifs.txt', checkIfExists:true)
+                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_config.json', checkIfExists:true)
                 input[4] = "cellrangeratac_reference"
                 """
             }
@@ -48,10 +48,10 @@ nextflow_process {
             process {
                 """
                 input[0] = [[id:'test', single_end:false, samples:["test_scATAC"]], // meta map
-                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger-atac/test_scATAC_S1_L001_I1_001.fastq.gz',checkIfExists:true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger-atac/test_scATAC_S1_L001_R1_001.fastq.gz',checkIfExists:true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger-atac/test_scATAC_S1_L001_R3_001.fastq.gz',checkIfExists:true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger-atac/test_scATAC_S1_L001_R2_001.fastq.gz',checkIfExists:true)
+                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger-atac/test_scATAC_S1_L001_I1_001.fastq.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger-atac/test_scATAC_S1_L001_R1_001.fastq.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger-atac/test_scATAC_S1_L001_R3_001.fastq.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger-atac/test_scATAC_S1_L001_R2_001.fastq.gz', checkIfExists:true)
                     ]
                     ]
                 input[1] = CELLRANGERATAC_MKREF.out.reference
@@ -97,9 +97,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [[id:'test',single_end:false,samples:["test_scATAC"]],// meta map
-                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger-atac/test_scATAC_S1_L001_R1_001.fastq.gz',checkIfExists:true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger-atac/test_scATAC_S1_L001_R3_001.fastq.gz',checkIfExists:true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger-atac/test_scATAC_S1_L001_R2_001.fastq.gz',checkIfExists:true)
+                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger-atac/test_scATAC_S1_L001_R1_001.fastq.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger-atac/test_scATAC_S1_L001_R3_001.fastq.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger-atac/test_scATAC_S1_L001_R2_001.fastq.gz', checkIfExists:true)
                     ]
                     ]
                 input[1] = CELLRANGERATAC_MKREF.out.reference
