@@ -41,10 +41,26 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.gz":
-          type: file
-          description: annotated VCF with keys STR_STATUS, NormalMax and PathologicMin
           pattern: "*.{vcf.gz}"
+      - "*.vcf.gz":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.{vcf.gz}"
+  - tbi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.{vcf.gz.tbi}"
+      - "*.vcf.gz.tbi":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.{vcf.gz.tbi}"
   - versions:
       - versions.yml:
           type: file
