@@ -38,28 +38,20 @@ output:
   - vcf:
       - meta:
           type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+          description: Annotated VCF file
           pattern: "*.{vcf.gz}"
       - "*.vcf.gz":
           type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+          description: Annotated VCF file
           pattern: "*.{vcf.gz}"
   - tbi:
       - meta:
           type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+          description: Index of the annotated VCF file
           pattern: "*.{vcf.gz.tbi}"
       - "*.vcf.gz.tbi":
           type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+          description: Index of the annotated VCF file
           pattern: "*.{vcf.gz.tbi}"
   - versions:
       - versions.yml:
