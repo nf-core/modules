@@ -132,7 +132,7 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = input[0] = Channel.of([
-                    [id:'input_vcf'],
+                    [id:'input_bam'],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam.bai", checkIfExists: true),
                     []
