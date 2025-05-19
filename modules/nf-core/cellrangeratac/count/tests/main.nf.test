@@ -61,7 +61,28 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.config,
+                    process.out.versions,
+                    path( "${outputDir}/cellrangeratac/test/outs/filtered_peak_bc_matrix.h5"                        ),
+                    path( "${outputDir}/cellrangeratac/test/outs/filtered_peak_bc_matrix/barcodes.tsv"              ),
+                    path( "${outputDir}/cellrangeratac/test/outs/filtered_peak_bc_matrix/peaks.bed"                 ),
+                    path( "${outputDir}/cellrangeratac/test/outs/filtered_peak_bc_matrix/matrix.mtx"                ),
+                    path( "${outputDir}/cellrangeratac/test/outs/filtered_tf_bc_matrix.h5"                          ),
+                    path( "${outputDir}/cellrangeratac/test/outs/filtered_tf_bc_matrix/barcodes.tsv.gz"             ),
+                    path( "${outputDir}/cellrangeratac/test/outs/filtered_tf_bc_matrix/motifs.tsv"                  ),
+                    path( "${outputDir}/cellrangeratac/test/outs/filtered_tf_bc_matrix/matrix.mtx.gz"               ),
+                    path( "${outputDir}/cellrangeratac/test/outs/raw_peak_bc_matrix.h5"                             ),
+                    path( "${outputDir}/cellrangeratac/test/outs/raw_peak_bc_matrix/barcodes.tsv"                   ),
+                    path( "${outputDir}/cellrangeratac/test/outs/raw_peak_bc_matrix/peaks.bed"                      ),
+                    path( "${outputDir}/cellrangeratac/test/outs/raw_peak_bc_matrix/matrix.mtx"                     ),
+                    path( "${outputDir}/cellrangeratac/test/outs/summary.csv"                                       ),
+                    path( "${outputDir}/cellrangeratac/test/outs/summary.json"                                      ),
+                    path( "${outputDir}/cellrangeratac/test/outs/peak_motif_mapping.bed"                            ),
+                    path( "${outputDir}/cellrangeratac/test/outs/peak_annotation.tsv"                               ),
+                    path( "${outputDir}/cellrangeratac/test/outs/cut_sites.bigwig"                                  ),
+                    path( "${outputDir}/cellrangeratac/test/outs/singlecell.csv"                                    )
+                ).match() }
             )
         }
     }
