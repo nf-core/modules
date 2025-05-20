@@ -53,7 +53,7 @@ process TRINITY {
         --output ${prefix}_trinity \\
         --CPU $task.cpus \\
         $args \\
-        > ${prefix}.log
+        | tee ${prefix}.log
 
     gzip \\
         -cf \\
