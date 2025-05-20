@@ -83,10 +83,10 @@ workflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_GATK {
     ch_stats = GATK4_MUTECT2.out.stats.collect()
     ch_orientation = GATK4_LEARNREADORIENTATIONMODEL.out.artifactprior.collect()
     ch_segment = GATK4_CALCULATECONTAMINATION.out.segmentation.collect()
-    ch_contamination = GATK4_CALCULATECONTAMINATION.out.contamination.collect()
 
-    //[] is used as a placeholder for optional input to specify the contamination estimate as a value, since the contamination table is used, this is not needed.
-    ch_contamination.add([])
+    // [] is used as a placeholder for optional input to specify the contamination estimate as a value, since the contamination table is used, this is not needed.
+    ch_contamination = GATK4_CALCULATECONTAMINATION.out.contamination.map { meta, table -> [meta, table, []] }.collect()
+
     ch_filtermutect_in = ch_vcf
         .join(ch_tbi, failOnDuplicate: true, failOnMismatch: true)
         .join(ch_stats, failOnDuplicate: true, failOnMismatch: true)
