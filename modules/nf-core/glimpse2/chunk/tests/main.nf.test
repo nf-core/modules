@@ -55,7 +55,6 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.chunk_chr,
-                    file(process.out.chunk_chr[0][1]).name, // Result not stable when using a map
                     process.out.versions
                 ).match() }
             )
