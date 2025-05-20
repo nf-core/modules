@@ -23,9 +23,11 @@ process NEXTDENOVO {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    echo "parallel_jobs = ${task.cpus}" >> conf.cfg
+    cat $config >> conf.cfg
     echo ${reads} > input.fofn
     nextDenovo \\
-        $config \\
+        conf.cfg \\
         input.fofn \\
 
     gzip -c ./03.ctg_graph/nd.asm.fasta > ${prefix}.assembly.fasta.gz
