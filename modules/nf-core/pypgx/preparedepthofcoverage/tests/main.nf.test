@@ -19,8 +19,6 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.PGx.CYP2D6.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.PGx.CYP2D6.bam.bai', checkIfExists: true)
                 ]
-                input[1] = ["CYP2D6"]
-                input[2] = "GRCh37"
                 """
             }
         }
@@ -35,7 +33,7 @@ nextflow_process {
                 {assert zipFile.isValid()},
                 {assert snapshot(
                     metaFile,
-                   dataFile).match()}
+                    dataFile).match()}
             )
         }
     }
@@ -50,8 +48,6 @@ nextflow_process {
                     [],
                     []
                 ]
-                input[1] = []
-                input[2] = ""
                 """
             }
         }
