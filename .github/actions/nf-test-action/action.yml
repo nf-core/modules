@@ -75,9 +75,7 @@ runs:
       run: |
         ls -la /home/runner/.nf-test/
         which pdiff
-        NFT_WORKDIR=~ \
-        NFT_DIFF= /home/runner/.nf-test/pdiff \
-        NFT_DIFF_ARGS="--line-numbers --expand-tabs=2"
+        NFT_WORKDIR=~
 
         nf-test test \
           --profile=${{ inputs.profile }} \
