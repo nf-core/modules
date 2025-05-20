@@ -7,6 +7,7 @@ nextflow_workflow {
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "subworkflows/bam_tumor_only_somatic_variant_calling_gatk"
+
     tag "gatk4"
     tag "gatk4/mutect2"
     tag "gatk4/getpileupsummaries"
@@ -49,7 +50,16 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out
+                    workflow.out.contamination_table,
+                    workflow.out.filtered_stats,
+                    file(workflow.out.filtered_tbi[0][1]).name,
+                    workflow.out.filtered_vcf.collect { meta, vcf -> [meta, "${file(vcf).name},variantsMD5:${path(vcf).vcf.variantsMD5}"] },
+                    workflow.out.mutect2_stats,
+                    file(workflow.out.mutect2_tbi[0][1]).name,
+                    workflow.out.mutect2_vcf.collect { meta, vcf -> [meta, "${file(vcf).name},variantsMD5:${path(vcf).vcf.variantsMD5}"] },
+                    workflow.out.pileup_table,
+                    workflow.out.segmentation_table,
+                    workflow.out.versions
                 ).match() }
             )
         }
