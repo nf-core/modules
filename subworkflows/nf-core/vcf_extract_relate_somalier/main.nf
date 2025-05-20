@@ -48,7 +48,7 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
             def new_meta = val_common_id ? meta + [id:meta[val_common_id]] : meta
             [ count ? groupKey(new_meta, count): new_meta, extract ]
         }
-        .groupTuple()
+        .groupTuple( sort: true )
         .join(ch_peds, failOnDuplicate: true, failOnMismatch: true)
         .map { meta, extract, ped ->
             def extract2 = extract[0] instanceof ArrayList ? extract[0] : extract
