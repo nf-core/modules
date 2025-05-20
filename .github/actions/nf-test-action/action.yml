@@ -36,11 +36,7 @@ runs:
       uses: nf-core/setup-nf-test@v1
       with:
         version: "${{ env.NFT_VER }}"
-
-    - name: Install pdiff
-      shell: bash
-      run: |
-        python -m pip install pdiff
+        install-pdiff: true
 
     - name: Setup apptainer
       if: contains(inputs.profile, 'singularity')
@@ -78,6 +74,7 @@ runs:
         SENTIEON_AUTH_MECH: "GitHub Actions - token"
       run: |
         ls -la /home/runner/.nf-test/
+        which pdiff
         NFT_WORKDIR=~ \
         NFT_DIFF= /home/runner/.nf-test/pdiff \
         NFT_DIFF_ARGS="--line-numbers --expand-tabs=2"
