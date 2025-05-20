@@ -50,9 +50,9 @@ process GLIMPSE2_CHUNK {
 
     stub:
     def prefix    = task.ext.prefix ?: "${meta.id}"
-    def args      = task.ext.args   ?: ""
+
     """
-    touch ${prefix}.txt
+    echo "${meta.id}\t${region}\t0\t0\t0\t0\t0\t0" > ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

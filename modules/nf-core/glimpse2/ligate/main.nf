@@ -37,11 +37,11 @@ process GLIMPSE2_LIGATE {
     """
 
     stub:
-    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "vcf.gz"
+    def create_cmd = suffix.endsWith(".gz") ? "echo | gzip > ${prefix}.${suffix}" : "touch ${prefix}.${suffix}"
     """
-    touch ${prefix}.${suffix}
+    ${create_cmd}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
