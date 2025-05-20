@@ -36,7 +36,11 @@ runs:
       uses: nf-core/setup-nf-test@v1
       with:
         version: "${{ env.NFT_VER }}"
-        install-pdiff: true
+
+    - name: Install pdiff
+      shell: bash
+      run: |
+        python -m pip install pdiff
 
     - name: Setup apptainer
       if: contains(inputs.profile, 'singularity')
