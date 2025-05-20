@@ -23,7 +23,7 @@ runs:
         java-version: "17"
 
     - name: Set up Nextflow
-      uses: nf-core/setup-nextflow@v2
+      uses: nf-core/setup-nextflow@fix-pdiff-variables
       with:
         version: "${{ env.NXF_VERSION }}"
 
@@ -73,7 +73,6 @@ runs:
         SENTIEON_LICSRVR_IP: ${{ env.SENTIEON_LICSRVR_IP }}
         SENTIEON_AUTH_MECH: "GitHub Actions - token"
       run: |
-        ls -la /home/runner/.nf-test/
         which pdiff
         NFT_WORKDIR=~
 
