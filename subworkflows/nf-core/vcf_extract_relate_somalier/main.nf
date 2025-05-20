@@ -27,7 +27,7 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
         ch_input.no_tbi
     )
 
-    ch_versions = ch_versions.mix(TABIX_TABIX.out.versions.first())
+    ch_versions = ch_versions.mix(TABIX_TABIX.out.versions)
 
     ch_somalierextract_input = ch_input.no_tbi
         .join(TABIX_TABIX.out.tbi)
@@ -40,7 +40,7 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
         ch_somalier_sites
     )
 
-    ch_versions = ch_versions.mix(SOMALIER_EXTRACT.out.versions.first())
+    ch_versions = ch_versions.mix(SOMALIER_EXTRACT.out.versions)
 
     ch_somalierrelate_input = SOMALIER_EXTRACT.out.extract
         .join(ch_vcfs, failOnDuplicate: true, failOnMismatch: true)
@@ -60,7 +60,7 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
         ch_sample_groups
     )
 
-    ch_versions = ch_versions.mix(SOMALIER_EXTRACT.out.versions)
+    ch_versions = ch_versions.mix(SOMALIER_RELATE.out.versions)
 
     emit:
     extract        = SOMALIER_EXTRACT.out.extract       // channel: [ val(meta), path(extract) ]

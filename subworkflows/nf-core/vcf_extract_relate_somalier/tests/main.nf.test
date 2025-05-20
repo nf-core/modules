@@ -9,7 +9,17 @@ nextflow_workflow {
 
     tag "subworkflows"
     tag "subworkflows_nfcore"
+    tag "subworkflows/vcf_extract_relate_somalier"
     tag "vcf_extract_relate_somalier"
+
+    tag "somalier/extract"
+    tag "somalier/relate"
+    tag "somalier"
+    tag "tabix/tabix"
+    tag "tabix"
+
+    tag "bcftools/merge"
+    tag "bcftools"
 
     test("homo_sapiens minimal - vcf 1 - fasta - fai - sites - [] - [] - []") {
         when {
@@ -154,7 +164,6 @@ nextflow_workflow {
                     .collectFile(name: 'family.ped', newLine: true)
                 ch_ped = Channel.of([id: "test"], [id: "test2"])
                     .combine(ped_file)
-                    .view()
 
                 input[0] = Channel.of(
                     [
