@@ -75,8 +75,6 @@ runs:
       run: |
         which pdiff
         NFT_WORKDIR=~
-        export NFT_DIFF=pdiff
-        export NFT_DIFF_ARGS="--line-numbers --expand-tabs=2"
 
         nf-test test \
           --profile=${{ inputs.profile }} \
