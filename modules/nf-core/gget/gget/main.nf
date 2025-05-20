@@ -5,7 +5,7 @@ process GGET_GGET {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7c/7ca1a63d986bc5b68d0543ce326a703265d4a3645be7e05f9af94f2992aa8352/data':
-        'community.wave.seqera.io/library/gget:0.29.1--3b5a50589bc0feb3' }"
+        'community.wave.seqera.io/library/gget_mysql-server:645dae78cd375e17' }"
 
     input:
     tuple val(meta), path(files)
