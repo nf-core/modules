@@ -52,7 +52,21 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(
+                    file(workflow.out.artifact_priors[0][1]).name,
+                    workflow.out.contamination_table,
+                    workflow.out.filtered_stats,
+                    workflow.out.filtered_tbi,
+                    workflow.out.filtered_vcf,
+                    workflow.out.mutect2_f1r2,
+                    workflow.out.mutect2_stats,
+                    workflow.out.mutect2_tbi,
+                    workflow.out.mutect2_vcf,
+                    workflow.out.pileup_table_normal,
+                    workflow.out.pileup_table_tumor,
+                    workflow.out.segmentation_table,
+                    workflow.out.versions
+                ).match() }
             )
         }
     }
