@@ -1,0 +1,253 @@
+nextflow_workflow {
+
+    name "Test Workflow VCF_EXTRACT_RELATE_SOMALIER"
+
+    script "../main.nf"
+    workflow "VCF_EXTRACT_RELATE_SOMALIER"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "vcf_extract_relate_somalier"
+
+    test("homo_sapiens - vcf 1 - fasta - fai - sites - [] - [] - []") {
+        tag "test"
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id:"test"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz', checkIfExists: true),
+                    [],
+                    1
+                ])
+                input[1] = Channel.of([ [id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)])
+                input[2] = Channel.of([ [id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)])
+                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz', checkIfExists: true)
+                input[4] = Channel.of([
+                    [id:"test"],
+                    []
+                    ])
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+    test("test_vcf_extract_relate_somalier_index") {
+
+
+        when {
+
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id:"test"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz.tbi',checkIfExists:true),
+                    1
+                    ])
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',checkIfExists:true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai',checkIfExists:true)
+                input[3] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/somalier/sites_chr21.hg38.vcf.gz",checkIfExists:true)
+                input[4] = Channel.of([
+                    [id:"test"],
+                    []
+                    ])
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+    test("test_vcf_extract_relate_somalier_ped") {
+
+
+        when {
+
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id:"test"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz.tbi',checkIfExists:true),
+                    1
+                    ])
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',checkIfExists:true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai',checkIfExists:true)
+                input[3] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/somalier/sites_chr21.hg38.vcf.gz",checkIfExists:true)
+                input[4] = Channel.of([
+                    [id:"test"],
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/somalier/family.ped",checkIfExists:true)
+                    ])
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+    test("test_vcf_extract_relate_somalier_mixed_combine") {
+
+
+        when {
+
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id:"test2",common:"test"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz',checkIfExists:true),
+                    [],
+                    2
+                    ],[
+                    [id:"test",common:"test"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz.tbi',checkIfExists:true),
+                    2
+                    ])
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',checkIfExists:true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai',checkIfExists:true)
+                input[3] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/somalier/sites_chr21.hg38.vcf.gz",checkIfExists:true)
+                input[4] = Channel.of([
+                    [id:"test",common:"test"],
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/somalier/family.ped",checkIfExists:true)
+                    ])
+                input[5] = Channel.of("disease_103,testN").collectFile(name:"sample_groups.txt")
+                input[6] = "common"
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+    test("test_vcf_extract_relate_somalier_mixed_no_combine") {
+
+
+        when {
+
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id:"test"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz.tbi',checkIfExists:true),
+                    1
+                    ],[
+                    [id:"test2"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz',checkIfExists:true),
+                    [],
+                    1
+                    ])
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',checkIfExists:true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai',checkIfExists:true)
+                input[3] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/somalier/sites_chr21.hg38.vcf.gz",checkIfExists:true)
+                input[4] = Channel.of([
+                    [id:"test"],
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/somalier/family.ped",checkIfExists:true)
+                    ],
+                    [
+                    [id:"test2"],
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/somalier/family.ped",checkIfExists:true)
+                    ])
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+    test("test_vcf_extract_relate_somalier_joint_vcf") {
+
+
+        when {
+
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id:"test"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz.tbi',checkIfExists:true),
+                    []
+                    ])
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',checkIfExists:true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai',checkIfExists:true)
+                input[3] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/somalier/sites_chr21.hg38.vcf.gz",checkIfExists:true)
+                input[4] = Channel.of([
+                    [id:"test"],
+                    []
+                    ])
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+    test("test_vcf_extract_relate_somalier_mixed_combine_no_count") {
+
+
+        when {
+
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id:"test2",common:"test"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz',checkIfExists:true),
+                    [],
+                    []
+                    ],[
+                    [id:"test",common:"test"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz.tbi',checkIfExists:true),
+                    []
+                    ])
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',checkIfExists:true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai',checkIfExists:true)
+                input[3] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/somalier/sites_chr21.hg38.vcf.gz",checkIfExists:true)
+                input[4] = Channel.of([
+                    [id:"test",common:"test"],
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/somalier/family.ped",checkIfExists:true)
+                    ])
+                input[5] = Channel.of("disease_103,testN").collectFile(name:"sample_groups.txt")
+                input[6] = "common"
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+}
