@@ -196,7 +196,6 @@ nextflow_workflow {
         }
     }
     test("homo_sapiens joint_vcf - vcf index [] - fasta - fai - sites - [] - [] - []") {
-        tag "test"
         setup {
             run ("BCFTOOLS_MERGE") {
                 script "../../../../modules/nf-core/bcftools/merge"
@@ -286,7 +285,6 @@ nextflow_workflow {
     }
 
     test("homo_sapiens mixed_combine_no_count- [vcf, vcf] [index, []] [] - fasta - fai - sites - ped - samples - common -- stub") {
-        tag "stub"
         options "-stub"
         when {
             workflow {

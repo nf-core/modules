@@ -48,11 +48,12 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
             def new_meta = val_common_id ? meta + [id:meta[val_common_id]] : meta
             [ count ? groupKey(new_meta, count): new_meta, extract ]
         }
-        .groupTuple( sort: true )
+        .groupTuple()
         .join(ch_peds, failOnDuplicate: true, failOnMismatch: true)
         .map { meta, extract, ped ->
             def extract2 = extract[0] instanceof ArrayList ? extract[0] : extract
-            [ meta, extract2, ped ]
+            def sorted_extract = extract2.sort { a, b -> file(a).name <=> file(b).name }
+            [ meta, sorted_extract, ped ]
         }
 
     SOMALIER_RELATE(
