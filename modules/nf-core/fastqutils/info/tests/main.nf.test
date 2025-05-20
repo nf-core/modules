@@ -1,0 +1,109 @@
+nextflow_process {
+
+    name "Test Process FASTQUTILS_INFO"
+    script "../main.nf"
+    process "FASTQUTILS_INFO"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fastqutils"
+    tag "fastqutils/info"
+
+    test("human - fastq - truncated") {
+
+        when {
+            process {
+                """
+                input[0] =  [ [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_truncated_clean.fastq', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert snapshot(
+                    process.errorReport.toString().contains("file truncated")
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("human - fastq - quality-mismatch") {
+
+        when {
+            process {
+                """
+                input[0] =  [ [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_quality_mismatch.fastq', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert snapshot(
+                    process.errorReport.toString().contains("sequence and quality don't have the same length 52!=47")
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fastq.gz - pe") {
+
+        when {
+            process {
+                """
+                input[0] =  [ [ id:'test', single_end:true ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                      file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.info[0][1]).readLines()
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fastq.gz - se - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] =  [ [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+
+    }
+
+}
