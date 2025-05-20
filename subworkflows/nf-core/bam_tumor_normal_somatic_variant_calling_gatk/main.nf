@@ -78,11 +78,11 @@ workflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_GATK {
     GATK4_CALCULATECONTAMINATION(ch_calccon_in)
 
     // GATK4_MUTECT2 calls filtered by filtermutectcalls using the artifactpriors, contamination and segmentation tables.
-    ch_vcf = GATK4_MUTECT2.out.vcf.collect()
-    ch_tbi = GATK4_MUTECT2.out.tbi.collect()
-    ch_stats = GATK4_MUTECT2.out.stats.collect()
+    ch_vcf         = GATK4_MUTECT2.out.vcf.collect()
+    ch_tbi         = GATK4_MUTECT2.out.tbi.collect()
+    ch_stats       = GATK4_MUTECT2.out.stats.collect()
     ch_orientation = GATK4_LEARNREADORIENTATIONMODEL.out.artifactprior.collect()
-    ch_segment = GATK4_CALCULATECONTAMINATION.out.segmentation.collect()
+    ch_segment     = GATK4_CALCULATECONTAMINATION.out.segmentation.collect()
 
     // [] is used as a placeholder for optional input to specify the contamination estimate as a value, since the contamination table is used, this is not needed.
     ch_contamination = GATK4_CALCULATECONTAMINATION.out.contamination.map { meta, table -> [meta, table, []] }.collect()
@@ -110,16 +110,16 @@ workflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_GATK {
 
     emit:
     artifact_priors     = GATK4_LEARNREADORIENTATIONMODEL.out.artifactprior // channel: [ val(meta), path(artifactprior) ]
-    contamination_table = GATK4_CALCULATECONTAMINATION.out.contamination // channel: [ val(meta), path(table) ]
-    filtered_stats      = GATK4_FILTERMUTECTCALLS.out.stats // channel: [ val(meta), path(stats) ]
-    filtered_tbi        = GATK4_FILTERMUTECTCALLS.out.tbi // channel: [ val(meta), path(tbi) ]
-    filtered_vcf        = GATK4_FILTERMUTECTCALLS.out.vcf // channel: [ val(meta), path(vcf) ]
-    mutect2_f1r2        = GATK4_MUTECT2.out.f1r2 // channel: [ val(meta), path(f1r2) ]
-    mutect2_stats       = GATK4_MUTECT2.out.stats // channel: [ val(meta), path(stats) ]
-    mutect2_tbi         = GATK4_MUTECT2.out.tbi // channel: [ val(meta), path(tbi) ]
-    mutect2_vcf         = GATK4_MUTECT2.out.vcf // channel: [ val(meta), path(vcf) ]
-    pileup_table_normal = GATK4_GETPILEUPSUMMARIES_NORMAL.out.table // channel: [ val(meta), path(table) ]
-    pileup_table_tumor  = GATK4_GETPILEUPSUMMARIES_TUMOR.out.table // channel: [ val(meta), path(table) ]
-    segmentation_table  = GATK4_CALCULATECONTAMINATION.out.segmentation // channel: [ val(meta), path(table) ]
-    versions            // channel: [ path(versions.yml) ]
+    contamination_table = GATK4_CALCULATECONTAMINATION.out.contamination    // channel: [ val(meta), path(table) ]
+    filtered_stats      = GATK4_FILTERMUTECTCALLS.out.stats                 // channel: [ val(meta), path(stats) ]
+    filtered_tbi        = GATK4_FILTERMUTECTCALLS.out.tbi                   // channel: [ val(meta), path(tbi) ]
+    filtered_vcf        = GATK4_FILTERMUTECTCALLS.out.vcf                   // channel: [ val(meta), path(vcf) ]
+    mutect2_f1r2        = GATK4_MUTECT2.out.f1r2                            // channel: [ val(meta), path(f1r2) ]
+    mutect2_stats       = GATK4_MUTECT2.out.stats                           // channel: [ val(meta), path(stats) ]
+    mutect2_tbi         = GATK4_MUTECT2.out.tbi                             // channel: [ val(meta), path(tbi) ]
+    mutect2_vcf         = GATK4_MUTECT2.out.vcf                             // channel: [ val(meta), path(vcf) ]
+    pileup_table_normal = GATK4_GETPILEUPSUMMARIES_NORMAL.out.table         // channel: [ val(meta), path(table) ]
+    pileup_table_tumor  = GATK4_GETPILEUPSUMMARIES_TUMOR.out.table          // channel: [ val(meta), path(table) ]
+    segmentation_table  = GATK4_CALCULATECONTAMINATION.out.segmentation     // channel: [ val(meta), path(table) ]
+    versions                                                                // channel: [ path(versions.yml) ]
 }
