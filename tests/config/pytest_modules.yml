@@ -68,21 +68,9 @@ subworkflows/bam_tumor_only_somatic_variant_calling_gatk:
 subworkflows/bam_variant_calling_sort_freebayes_bcftools:
   - subworkflows/nf-core/bam_variant_calling_sort_freebayes_bcftools/**
   - tests/subworkflows/nf-core/bam_variant_calling_sort_freebayes_bcftools/**
-subworkflows/fasta_clean_fcs:
-  - subworkflows/nf-core/fasta_clean_fcs/**
-  - tests/subworkflows/nf-core/fasta_clean_fcs/**
 subworkflows/fasta_index_dna:
   - subworkflows/nf-core/fasta_index_dna/**
   - tests/subworkflows/nf-core/fasta_index_dna/**
-subworkflows/fastq_align_bwaaln:
-  - subworkflows/nf-core/fastq_align_bwaaln/**
-  - tests/subworkflows/nf-core/fastq_align_bwaaln/**
-subworkflows/fastq_align_chromap:
-  - subworkflows/nf-core/fastq_align_chromap/**
-  - tests/subworkflows/nf-core/fastq_align_chromap/**
-subworkflows/fastq_contam_seqtk_kraken:
-  - subworkflows/nf-core/fastq_contam_seqtk_kraken/**
-  - tests/subworkflows/nf-core/fastq_contam_seqtk_kraken/**
 subworkflows/multiple_impute_glimpse2:
   - subworkflows/nf-core/multiple_impute_glimpse2/**
   - tests/subworkflows/nf-core/multiple_impute_glimpse2/**
@@ -107,6 +95,3 @@ ultra/index:
 universc:
   - modules/nf-core/universc/**
   - tests/modules/nf-core/universc/**
-varlociraptor/callvariants:
-  - modules/nf-core/varlociraptor/callvariants/**
-  - tests/modules/nf-core/varlociraptor/callvariants/**
