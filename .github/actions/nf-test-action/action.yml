@@ -23,7 +23,7 @@ runs:
         java-version: "17"
 
     - name: Set up Nextflow
-      uses: nf-core/setup-nextflow@fix-pdiff-variables
+      uses: nf-core/setup-nextflow@v2
       with:
         version: "${{ env.NXF_VERSION }}"
 
@@ -33,7 +33,7 @@ runs:
         python-version: "3.13"
 
     - name: Set up nf-test
-      uses: nf-core/setup-nf-test@v1
+      uses: nf-core/setup-nf-test@fix-pdiff-variables
       with:
         version: "${{ env.NFT_VER }}"
         install-pdiff: true
