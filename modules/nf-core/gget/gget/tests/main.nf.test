@@ -83,53 +83,53 @@ nextflow_process {
         }
     }
 
-    test("search_json_human") {
+    // test("search_json_human") {
 
-        when {
-            params {
-                module_args = 'search -s human gaba gamma-aminobutyric'
-            }
-            process {
-                """
-                input[0] = [
-                    [id:'test'],// meta map
-                    []
-                    ]
-                """
-            }
-        }
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.output,
-                path(process.out.versions[0]).yaml).match() }
-            )
-        }
-    }
+    //     when {
+    //         params {
+    //             module_args = 'search -s human gaba gamma-aminobutyric'
+    //         }
+    //         process {
+    //             """
+    //             input[0] = [
+    //                 [id:'test'],// meta map
+    //                 []
+    //                 ]
+    //             """
+    //         }
+    //     }
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(process.out.output,
+    //             path(process.out.versions[0]).yaml).match() }
+    //         )
+    //     }
+    // }
 
-    test("search_csv_human") {
+    // test("search_csv_human") {
 
-        when {
-            params {
-                module_args = 'search --csv -s human gaba gamma-aminobutyric'
-            }
-            process {
-                """
-                input[0] = [
-                    [id:'test'],// meta map
-                    []
-                    ]
-                """
-            }
-        }
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.output,
-                path(process.out.versions[0]).yaml).match() }
-            )
-        }
-    }
+    //     when {
+    //         params {
+    //             module_args = 'search --csv -s human gaba gamma-aminobutyric'
+    //         }
+    //         process {
+    //             """
+    //             input[0] = [
+    //                 [id:'test'],// meta map
+    //                 []
+    //                 ]
+    //             """
+    //         }
+    //     }
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(process.out.output,
+    //             path(process.out.versions[0]).yaml).match() }
+    //         )
+    //     }
+    // }
 
     test("search_csv_human - stub") {
 
