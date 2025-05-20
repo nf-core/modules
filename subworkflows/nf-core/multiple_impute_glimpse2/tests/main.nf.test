@@ -8,6 +8,15 @@ nextflow_workflow {
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "multiple_impute_glimpse2"
+    tag "subworkflows/multiple_impute_glimpse2"
+
+    tag "glimpse2/chunk"
+    tag "glimpse2/splitreference"
+    tag "glimpse2/phase"
+    tag "glimpse2/ligate"
+    tag "glimpse2"
+    tag "bcftools/index"
+    tag "bcftools"
 
     test("homo_sapiens - vcf [] - panel vcf region - [] - [] - recursive") {
         when {
