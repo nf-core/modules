@@ -14,11 +14,11 @@ workflow BED_SCATTER_BEDTOOLS {
     )
     ch_versions = ch_versions.mix(BEDTOOLS_SPLIT.out.versions.first())
 
+    // Checks if the scatter count corresponds to the amount of files created. (This doesn't match in some edge cases)
     ch_scattered_beds = BEDTOOLS_SPLIT.out.beds
         .map(
             { meta, beds ->
-                // Checks if the scatter count corresponds to the amount of files created. (This doesn't match in some edge cases)
-                scatter_count = beds instanceof Path ? 1 : beds.size()
+                def scatter_count = beds instanceof Path ? 1 : beds.size()
                 [ meta, beds, scatter_count ]
             }
         )

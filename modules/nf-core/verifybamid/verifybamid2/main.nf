@@ -54,4 +54,20 @@ process VERIFYBAMID_VERIFYBAMID2 {
         verifybamid: \$(echo \$(verifybamid2 --help 2>&1 | sed -e '3p;d' | sed -e 's/ Version://'))
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.log
+    touch ${prefix}.ud
+    touch ${prefix}.bed
+    touch ${prefix}.mu
+    touch ${prefix}.selfSM
+    touch ${prefix}.Ancestry
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        verifybamid: \$(echo \$(verifybamid2 --help 2>&1 | sed -e '3p;d' | sed -e 's/ Version://'))
+    END_VERSIONS
+    """
 }

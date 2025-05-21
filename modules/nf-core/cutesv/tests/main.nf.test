@@ -1,0 +1,66 @@
+nextflow_process {
+
+    name "Test Process CUTESV"
+    
+    script "../main.nf"
+    process "CUTESV"
+   
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cutesv"
+   
+    test("sarscov2 - bam - fasta") {
+        when {
+            
+            process {
+                """
+                input[0] = Channel.of([[id:'test'],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/bam/test.sorted.bam',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/bam/test.sorted.bam.bai',checkIfExists:true),
+                ])
+                input[1] = Channel.of([[id:'fasta'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta',checkIfExists:true)
+                ])
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.vcf.collect{ [it[0], path(it[1]).vcf.summary] }
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - bam - fasta - stub") {
+
+        options '-stub'
+
+        when {
+            
+            process {
+                """
+                input[0] = Channel.of([[id:'test'],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/bam/test.sorted.bam',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/bam/test.sorted.bam.bai',checkIfExists:true),
+                ])
+                input[1] = Channel.of([[id:'fasta'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta',checkIfExists:true)
+                ])
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+}
