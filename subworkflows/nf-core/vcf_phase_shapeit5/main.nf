@@ -61,10 +61,10 @@ workflow VCF_PHASE_SHAPEIT5 {
         ch_scaffold,
         ch_map
     )
-    ch_versions = ch_versions.mix(SHAPEIT5_PHASECOMMON.out.versions.first())
+    ch_versions = ch_versions.mix(SHAPEIT5_PHASECOMMON.out.versions)
 
     VCF_INDEX1(SHAPEIT5_PHASECOMMON.out.phased_variant)
-    ch_versions = ch_versions.mix(VCF_INDEX1.out.versions.first())
+    ch_versions = ch_versions.mix(VCF_INDEX1.out.versions)
 
     ch_ligate_input = SHAPEIT5_PHASECOMMON.out.phased_variant
         .join(VCF_INDEX1.out.csi, failOnMismatch:true, failOnDuplicate:true)
@@ -88,10 +88,10 @@ workflow VCF_PHASE_SHAPEIT5 {
         }
 
     SHAPEIT5_LIGATE(ch_ligate_input)
-    ch_versions = ch_versions.mix(SHAPEIT5_LIGATE.out.versions.first())
+    ch_versions = ch_versions.mix(SHAPEIT5_LIGATE.out.versions)
 
     VCF_INDEX2(SHAPEIT5_LIGATE.out.merged_variants)
-    ch_versions = ch_versions.mix(VCF_INDEX2.out.versions.first())
+    ch_versions = ch_versions.mix(VCF_INDEX2.out.versions)
 
     emit:
     bed                 = BEDTOOLS_MAKEWINDOWS.out.bed           // channel: [ val(meta), bed ]
