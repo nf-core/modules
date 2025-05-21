@@ -27,9 +27,6 @@ nextflow_process {
             }
         }
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = PURGEDUPS_PBCSTAT.out.stat
