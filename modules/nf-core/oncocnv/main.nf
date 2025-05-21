@@ -27,7 +27,6 @@ process ONCOCNV {
     def normal_id = normal.join(',')
     def tumor_id = tumor.join(',')
     def VERSION = '7.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     """
     perl \$(which ONCOCNV_getCounts.pl) \\
         getControlStats \\
