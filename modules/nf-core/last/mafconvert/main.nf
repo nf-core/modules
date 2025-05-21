@@ -12,6 +12,7 @@ process LAST_MAFCONVERT {
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(gzi)
+    tuple val(meta5), path(dict)
 
     output:
     tuple val(meta), path("*.axt.gz"),             optional:true, emit: axt_gz
@@ -37,9 +38,8 @@ process LAST_MAFCONVERT {
     """
     set -o pipefail
 
-    if [ -f "$fasta" ]; then
-        samtools dict $fasta -u ./${fasta} -a ${meta2.id} -o ${fasta}.dict
-        DICT_ARGS="-f ${fasta}.dict"
+    if [ -f "$dict" ]; then
+        DICT_ARGS="-f ${dict}"
     else
         DICT_ARGS="-d"
     fi
