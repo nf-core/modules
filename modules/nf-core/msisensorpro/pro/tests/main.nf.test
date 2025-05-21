@@ -17,7 +17,7 @@ nextflow_process {
                 script "../../scan/main.nf"
                 process {
                     """
-                    input[0] = [ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                    input[0] = [ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true) ]
                     """
                 }
             }
@@ -27,12 +27,12 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test_bam' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam.bai', checkIfExists: true)
                 ]
                 input[1] = MSISENSORPRO_SCAN.out.list
-                input[2] = [ [ id:'test_fasta' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
-                input[3] = [ [ id:'test_fai' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true) ]
+                input[2] = [ [ id:'test_fasta' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true) ]
+                input[3] = [ [ id:'test_fai' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true) ]
 
                 """
             }
@@ -56,7 +56,7 @@ nextflow_process {
                 script "../../scan/main.nf"
                 process {
                     """
-                    input[0] = [ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                    input[0] = [ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true) ]
                     """
                 }
             }
@@ -67,12 +67,12 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test_bam' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam.bai', checkIfExists: true)
                 ]
                 input[1] = MSISENSORPRO_SCAN.out.list
-                input[2] = [ [ id:'test_fasta' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
-                input[3] = [ [ id:'test_fai' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true) ]
+                input[2] = [ [ id:'test_fasta' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true) ]
+                input[3] = [ [ id:'test_fai' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true) ]
 
                 """
             }
