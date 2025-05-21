@@ -1,14 +1,55 @@
 {
-    "versions": {
+    "Should run glimpse ligate": {
         "content": [
             [
                 "versions.yml:md5,44addcaef4965ff6409a8293c5bcad84"
+            ],
+            [
+                "8730c5450f0c32d72c6d5cb4eb02b38b"
             ]
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.4"
         },
-        "timestamp": "2024-03-18T15:52:19.469961519"
+        "timestamp": "2025-05-19T23:17:50.793909707"
+    },
+    "Should run glimpse ligate -- stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "input"
+                        },
+                        "input.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "1": [
+                    "versions.yml:md5,44addcaef4965ff6409a8293c5bcad84"
+                ],
+                "merged_variants": [
+                    [
+                        {
+                            "id": "input"
+                        },
+                        "input.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,44addcaef4965ff6409a8293c5bcad84"
+                ]
+            },
+            {
+                "GLIMPSE2_LIGATE": {
+                    "glimpse2": "2.0.0"
+                }
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.4"
+        },
+        "timestamp": "2025-05-19T23:19:24.515887682"
     }
 }

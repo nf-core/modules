@@ -56,20 +56,20 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*-ancestry.tsv":
+      - "*.somalier-ancestry.tsv":
           type: file
           description: TSV with ancestry information for query and labelled samples.
-          pattern: "*.{-ancestry.tsv}"
+          pattern: "*.somalier-ancestry.tsv"
   - html:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*-ancestry.html":
+      - "*.somalier-ancestry.html":
           type: file
           description: html file with ancestry information for query and labelled samples.
-          pattern: "*.{-ancestry.html}"
+          pattern: "*.somalier-ancestry.html"
   - versions:
       - versions.yml:
           type: file

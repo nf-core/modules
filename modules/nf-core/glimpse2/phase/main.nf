@@ -33,7 +33,7 @@ process GLIMPSE2_PHASE {
     def region = input_region    ? "${output_region.replace(":","_")}" : "${reference}"
     def args   = task.ext.args   ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}_${region}"
-    def suffix = task.ext.suffix ?: "bcf"
+    def suffix = task.ext.suffix ?: "vcf.gz"
 
     def map_command           = map                 ? "--map $map"                    : ""
     def samples_file_command  = samples_file        ? "--samples-file $samples_file"  : ""
@@ -63,7 +63,7 @@ process GLIMPSE2_PHASE {
         input_command="--bam-list $bamlist"
     elif $input_list ;
     then
-        ls -1 | grep '\\.cram\$\\|\\.bam\$' > all_bam.txt
+        ls -1 | grep '\\.cram\$\\|\\.bam\$' | sort > all_bam.txt
         input_command="--bam-list all_bam.txt"
     else
         if [ "$input_type" == "bam" ];
@@ -99,11 +99,11 @@ process GLIMPSE2_PHASE {
 
     stub:
     def region = input_region    ? "${output_region.replace(":","_")}" : "${reference}"
-    def args   = task.ext.args   ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}_${region}"
-    def suffix = task.ext.suffix ?: "bcf"
+    def suffix = task.ext.suffix ?: "vcf.gz"
+    def create_cmd = suffix.endsWith(".gz") ? "echo | gzip > ${prefix}.${suffix}" : "touch ${prefix}.${suffix}"
     """
-    touch ${prefix}.${suffix}
+    ${create_cmd}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

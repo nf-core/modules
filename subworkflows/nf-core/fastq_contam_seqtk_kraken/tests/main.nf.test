@@ -1,0 +1,97 @@
+nextflow_workflow {
+
+    name "Test Workflow FASTQ_CONTAM_SEQTK_KRAKEN"
+    config "./nextflow.config"
+    script "../main.nf"
+    workflow "FASTQ_CONTAM_SEQTK_KRAKEN"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fastq_contam_seqtk_kraken"
+    tag "fastq_contam_seqtk_kraken"
+    tag "untar"
+
+    tag "kraken2/kraken2"
+    tag "seqtk/sample"
+    tag "kraken2"
+    tag "seqtk"
+
+    setup {
+        run("UNTAR") {
+            script "../../../../modules/nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz', checkIfExists:true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - fastq - 25000 - krakendb") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id:'test', single_end:true],
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true)],
+                ])
+                input[1] = Channel.of(25000)
+                input[2] = UNTAR.out.untar.map{it[1]}
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+    test("sarscov2 - fastq - [12500, 25000] - krakendb") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id:'test', single_end:true],
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true)],
+                ])
+                input[1] = Channel.of(12500,25000)
+                input[2] = UNTAR.out.untar.map{it[1]}
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+    test("sarscov2 - fastq - [12500, 25000] - krakendb -- stub") {
+        options "-stub"
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id:'test', single_end:true],
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true)],
+                ])
+                input[1] = Channel.of(12500,25000)
+                input[2] = UNTAR.out.untar.map{it[1]}
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+}
