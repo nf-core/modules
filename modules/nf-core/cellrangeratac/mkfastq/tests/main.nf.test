@@ -26,9 +26,6 @@ nextflow_process {
     test("test_cellrangeratac_mkfastq_simple") {
         
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = UNTAR.out.untar.map{it[1]}
