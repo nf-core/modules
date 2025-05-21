@@ -24,8 +24,8 @@ process ONCOCNV {
     script:
     def cghseg = task.ext.args2 ?: 'cghseg'
     def mode = task.ext.args ?: '-m Ampli'
-    def normal = normal.join(',')
-    def tumor = tumor.join(',')
+    def normal_id = normal.join(',')
+    def tumor_id = tumor.join(',')
     def VERSION = '7.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
@@ -33,14 +33,14 @@ process ONCOCNV {
         getControlStats \\
         $mode \\
         -b ${bed} \\
-        -c $normal \\
+        -c $normal_id \\
         -o ControlStats.txt
 
     perl \$(which ONCOCNV_getCounts.pl) \\
         getSampleStats \\
         $mode \\
         -c ControlStats.txt \\
-        -s $tumor \\
+        -s $tumor_id \\
         -o SampleStats.txt
 
     cat ControlStats.txt \\
@@ -74,8 +74,7 @@ process ONCOCNV {
 
     stub:
     def VERSION = '7.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-def prefix = task.ext.prefix ?: "${meta.id}"
-    // TODO add relevant files name
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.profile.png
     touch ${prefix}.profile.txt
@@ -88,5 +87,4 @@ def prefix = task.ext.prefix ?: "${meta.id}"
         r: \$(R --version | grep "R version" | sed 's/R version //g')
     END_VERSIONS
     """
-
 }
