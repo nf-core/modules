@@ -41,7 +41,44 @@ nextflow_process {
         }
     }
 
-    test("crams") {
+    test("crams_fastq") {
+
+        config "./index.config"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.recalibrated.sorted.cram', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test2.paired_end.recalibrated.sorted.cram', checkIfExists: true) ]
+                ])
+                input[1] = Channel.of([
+                    [ id:'genome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = Channel.of([
+                    [ id:'genome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ])
+                input[3] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(file(process.out.cram[0][1]).name).match("crams_fastq_cram") },
+                { assert snapshot(process.out.bam).match("crams_fastq_bam") },
+                { assert snapshot(file(process.out.crai[0][1]).name).match("crams_fastq_crai") },
+                { assert snapshot(process.out.csi).match("crams_fastq_csi") },
+                { assert snapshot(process.out.versions).match("crams_fastq_versions") }
+            )
+        }
+    }
+
+    test("crams_fastq_gz") {
 
         config "./index.config"
 
@@ -72,11 +109,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.cram[0][1]).name).match("crams_cram") },
-                { assert snapshot(process.out.bam).match("crams_bam") },
-                { assert snapshot(file(process.out.crai[0][1]).name).match("crams_crai") },
-                { assert snapshot(process.out.csi).match("crams_csi") },
-                { assert snapshot(process.out.versions).match("crams_versions") }
+                { assert snapshot(file(process.out.cram[0][1]).name).match("crams_fastq_gz_cram") },
+                { assert snapshot(process.out.bam).match("crams_fastq_gz_bam") },
+                { assert snapshot(file(process.out.crai[0][1]).name).match("crams_fastq_gz_crai") },
+                { assert snapshot(process.out.csi).match("crams_fastq_gz_csi") },
+                { assert snapshot(process.out.versions).match("crams_fastq_gz_versions") }
             )
         }
     }
