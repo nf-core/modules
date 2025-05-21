@@ -339,7 +339,7 @@ if (!is.null(opt\$formula)) {
     cat("Internal column names after make.names():\n")
     colnames(design) <- make.names(colnames(design))
 
-    } else {
+} else {
     # Generate the design matrix
     design <- model.matrix(
         as.formula(model),
