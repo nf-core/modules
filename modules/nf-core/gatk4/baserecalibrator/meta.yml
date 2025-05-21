@@ -68,7 +68,7 @@ input:
           e.g. [ id:'genome']
     - known_sites:
         type: file
-        description: VCF files with known sites for indels / snps (optional)
+        description: VCF files with known sites for indels / snps 
         pattern: "*.vcf.gz"
   - - meta6:
         type: map
@@ -77,7 +77,7 @@ input:
           e.g. [ id:'genome']
     - known_sites_tbi:
         type: file
-        description: Tabix index of the known_sites (optional)
+        description: Tabix index of the known_sites 
         pattern: "*.vcf.gz.tbi"
 output:
   - table:
