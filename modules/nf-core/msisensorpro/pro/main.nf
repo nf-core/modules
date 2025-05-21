@@ -8,11 +8,10 @@ process MSISENSORPRO_PRO {
         'quay.io/biocontainers/msisensor-pro:1.3.0--hfef96ef_0' }"
 
     input:
-    tuple val(meta), path(cram)
-    path("${cram}.crai")
-    path(list)
-    path(fasta)
-    path("${fasta}.fai")
+    tuple val(meta), path(input), path(index)
+    tuple val(meta2), path(list)
+    tuple val(meta3), path(fasta)
+    tuple val(meta4), path(fai)
 
     output:
     tuple val(meta), path("${prefix}")          , emit: summary_msi
@@ -31,7 +30,7 @@ process MSISENSORPRO_PRO {
     msisensor-pro \\
         pro \\
         -d $list \\
-        -t $cram \\
+        -t $input \\
         -g $fasta \\
         -o ${prefix} \\
         -b $task.cpus \\
