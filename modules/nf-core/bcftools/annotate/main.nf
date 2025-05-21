@@ -69,6 +69,7 @@ process BCFTOOLS_ANNOTATE {
     def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
     def create_index = extension.endsWith(".gz") && index_extension.matches("csi|tbi") ? "touch ${prefix}.${extension}.${index_extension}" : ""
 
+    if ("$input" == "${prefix}.${extension}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     ${create_cmd} ${prefix}.${extension}
     ${create_index}
