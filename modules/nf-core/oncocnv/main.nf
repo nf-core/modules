@@ -66,8 +66,8 @@ process ONCOCNV {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         oncocnv: $VERSION
-        perl: \$(perl --version | grep 'This is perl' | sed 's/.*(v//g' | sed 's/)//g')
-        r: \$(R --version | grep "R version" | sed 's/R version //g')
+        perl: \$(perl --version | grep 'This is perl' | sed -E 's/.*v([0-9]+\\.[0-9]+\\.[0-9]+).*/\\1/')
+        r: \$(R --version | grep "R version" | sed -E 's/R version ([0-9]+\\.[0-9]+\\.[0-9]+).*/\\1/')
     END_VERSIONS
     """
 
@@ -82,8 +82,8 @@ process ONCOCNV {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         oncocnv: $VERSION
-        perl: \$(perl --version | grep 'This is perl' | sed 's/.*(v//g' | sed 's/)//g')
-        r: \$(R --version | grep "R version" | sed 's/R version //g')
+        perl: \$(perl --version | grep 'This is perl' | sed -E 's/.*v([0-9]+\\.[0-9]+\\.[0-9]+).*/\\1/')
+        r: \$(R --version | grep "R version" | sed -E 's/R version ([0-9]+\\.[0-9]+\\.[0-9]+).*/\\1/')
     END_VERSIONS
     """
 }
