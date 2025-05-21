@@ -300,9 +300,7 @@ if ((! is.null(opt\$exclude_samples_col)) && (! is.null(opt\$exclude_samples_val
 ################################################
 ################################################
 
-if (!is.null(opt\$formula)) {
-    model <- opt\$formula
-} else {
+if (is.null(opt\$formula)) {
 
     # Build the model formula with blocking variables first
     model_vars <- c()
@@ -430,13 +428,6 @@ fit <- do.call(lmFit, lmfit_args)
 if (!is.null(opt\$contrast_string)) {
     cat("Using contrast string:", opt\$contrast_string, "\n")
     contrast_string <- as.character(opt\$contrast_string)
-
-    # Display design matrix
-    cat("Design matrix:")
-
-    head(design, 3)
-    print(colnames(design))
-
     contrast.matrix <- makeContrasts(contrasts=contrast_string, levels=colnames(design))
 
 } else {
