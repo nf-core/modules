@@ -10,6 +10,9 @@ nextflow_process {
     tag "bcftools"
     tag "bcftools/pluginfilltags"
 
+    tag "bcftools/query"
+    tag "gawk"
+
     test("homo_sapiens - vcf") {
         when {
             params {
