@@ -1,0 +1,111 @@
+nextflow_workflow {
+
+    name "Test Workflow VCF_PHASE_SHAPEIT5"
+    config "./nextflow.config"
+    script "../main.nf"
+    workflow "VCF_PHASE_SHAPEIT5"
+   
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "vcf_phase_shapeit5"
+    tag "bcftools"
+    tag "bcftools/view"
+    tag "bcftools/index"
+   
+    test("test_vcf_phase_shapeit5_panel") {
+        
+        
+        when {
+            
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id:'1000GP',region:"chr21:16600115-16799989"],
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf",
+                    checkIfExists:true),
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi",
+                    checkIfExists:true),
+                    [],
+                    "chr21:16600115-16799989"
+                    ])
+                input[1] = Channel.of([[],[],[]]).collect()
+                input[2] = Channel.of([[],[],[]]).collect()
+                input[3] = Channel.of([[],[]]).collect()
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+    test("test_vcf_phase_shapeit5_ind") {
+        
+        setup {
+            run("BCFTOOLS_VIEW") {
+                script "../../../../modules/nf-core/bcftools/view/main.nf"
+                params {
+                    module_args = [
+                    "-Oz",
+                    "-e 'GT=\"./.\"||GT=\".\"'"
+                    ].join(' ')
+                }
+                
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [id:'NA12878',region:"chr21:16600115-16799989"],// meta map
+                        file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz",
+                        checkIfExists:true),
+                        file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/NA12878.chr21.s.1x.vcf.gz.csi",
+                        checkIfExists:true)
+                        ])
+                    input[1] = []
+                    input[2] = []
+                    input[3] = []
+                    """
+                }
+            }
+            
+            run("BCFTOOLS_INDEX") {
+                script "../../../../modules/nf-core/bcftools/index/main.nf"
+                
+                process {
+                    """
+                    input[0] = BCFTOOLS_VIEW.out.vcf
+                    """
+                }
+            }
+        }
+        when {
+            
+            workflow {
+                """
+                input[0] = BCFTOOLS_VIEW.out.vcf
+                    .join(BCFTOOLS_INDEX.out.csi)
+                    .combine(Channel.of([[],"chr21:16600115-16799989"]))
+                input[1] = Channel.of([
+                    [panel:'1000GP'],
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf",
+                    checkIfExists:true),
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi",
+                    checkIfExists:true)
+                    ]).collect()
+                input[2] = Channel.of([[],[],[]]).collect()
+                input[3] = Channel.of([
+                    [map:'chr21.b38'],
+                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/chr21.b38.gmap.gz",checkIfExists:true)
+                    ]).collect()
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+}
