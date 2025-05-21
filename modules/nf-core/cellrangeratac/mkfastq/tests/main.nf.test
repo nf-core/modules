@@ -64,7 +64,7 @@ nextflow_process {
             process {
                 """
                 input[0] = UNTAR.out.untar.map{it[1]}
-                input[1] = file("https://cf.10xgenomics.com/supp/cell-atac/cellranger-atac-tiny-bcl-samplesheet-1.0.0.csv",checkIfExists:true)
+                input[1] = file("https://cf.10xgenomics.com/supp/cell-atac/cellranger-atac-tiny-bcl-samplesheet-1.0.0.csv", checkIfExists:true)
                 """
             }
         }
