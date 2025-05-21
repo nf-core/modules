@@ -18,7 +18,8 @@ workflow VCF_GATHER_BCFTOOLS {
         .map{ meta, vcf, tbi, _bed, gather_count ->
             meta = val_common_meta ? meta + [id:meta[val_common_meta]] : meta
             [ groupKey(meta, gather_count), vcf, tbi ]
-        }.groupTuple( sort: true )
+        }.groupTuple()
+        .map { meta, vcf, tbi -> [meta.target, vcf, tbi] }
 
     BCFTOOLS_CONCAT ( ch_concat_input )
     ch_versions = ch_versions.mix(BCFTOOLS_CONCAT.out.versions)
