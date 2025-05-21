@@ -74,12 +74,12 @@ process ONCOCNV {
 
     stub:
     def VERSION = '7.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
+def prefix = task.ext.prefix ?: "${meta.id}"
     // TODO add relevant files name
     """
-    touch stub.profile.png
-    touch stub.profile.txt
-    touch stub.summary.txt
+    touch ${prefix}.profile.png
+    touch ${prefix}.profile.txt
+    touch ${prefix}.summary.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
