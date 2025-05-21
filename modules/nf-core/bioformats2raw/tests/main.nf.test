@@ -1,0 +1,59 @@
+// nf-core modules test bioformats2raw
+nextflow_process {
+
+    name "Test Process BIOFORMATS2RAW"
+    script "../main.nf"
+    process "BIOFORMATS2RAW"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bioformats2raw"
+
+    test("bioformats2raw tiff to ome.zarr") {
+
+        when {
+            process {
+                """     
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/molkart/test_data/input_data/nuclear.tiff', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("bioformats2raw tiff to ome.zarr - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/molkart/test_data/input_data/nuclear.tiff', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+
+            )
+        }
+
+    }
+
+}
