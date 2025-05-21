@@ -22,7 +22,6 @@ nextflow_workflow {
     tag "bcftools/pluginfilltags"
 
     test("homo_sapiens - panel - [] - [] - []") {
-        tag "test"
         when {
             workflow {
                 """
@@ -40,17 +39,10 @@ nextflow_workflow {
             }
         }
         then {
-            println "VCF path: ${workflow.out.variants_phased[0][1]}"
-            println "Index file: ${workflow.out.variants_index[0][1]}"
-            println "BED file: ${workflow.out.bed}"
-            println "Versions: ${workflow.out.versions}"
-
-            def vcf_summary = path(workflow.out.variants_phased[0][1]).vcf
-            println "VCF summary: ${vcf_summary}"
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    path(workflow.out.variants_phased[0][1]).vcf.variantsMD5,
+                    path(workflow.out.variants_phased[0][1]).vcf.summary,
                     file(workflow.out.variants_index[0][1]).name,
                     workflow.out.bed,
                     workflow.out.versions
