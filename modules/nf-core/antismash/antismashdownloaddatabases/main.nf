@@ -6,7 +6,6 @@ process ANTISMASH_ANTISMASHDOWNLOADDATABASES {
 
     output:
     path ("antismash_db"), emit: database
-    path ("antismash_dir"), emit: antismash_dir
     path "versions.yml", emit: versions
 
     when:
@@ -30,8 +29,17 @@ process ANTISMASH_ANTISMASHDOWNLOADDATABASES {
     """
     echo "download-antismash-databases --database-dir antismash_db ${args}"
 
-    mkdir antismash_dir
     mkdir antismash_db
+    mkdir antismash_db/as-js
+    mkdir antismash_db/clusterblast
+    mkdir antismash_db/clustercompare
+    mkdir antismash_db/comparippson
+    mkdir antismash_db/knownclusterblast
+    mkdir antismash_db/mite
+    mkdir antismash_db/nrps_pks
+    mkdir antismash_db/pfam
+    mkdir antismash_db/resfam
+    mkdir antismash_db/tigrfam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
