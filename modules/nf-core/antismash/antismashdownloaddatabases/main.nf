@@ -5,7 +5,7 @@ process ANTISMASH_ANTISMASHDOWNLOADDATABASES {
     container "nf-core/antismash:8.0.0"
 
     output:
-    path ("antismash_db"), emit: database
+    path "antismash_db", emit: database
     path "versions.yml", emit: versions
 
     when:

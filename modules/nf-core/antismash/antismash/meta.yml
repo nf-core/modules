@@ -29,10 +29,10 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test' ]
     - sequence_input:
         type: file
-        description: nucleotide sequence file (annotated)
+        description: Nucleotide sequence file (annotated)
         pattern: "*.{gbk, gb, gbff, genbank, embl, fasta, fna}"
   - - databases:
         type: directory
@@ -50,7 +50,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - ${prefix}/clusterblast/*_c*.txt:
           type: file
           description: Output of ClusterBlast algorithm
