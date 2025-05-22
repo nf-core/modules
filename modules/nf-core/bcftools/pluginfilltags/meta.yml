@@ -37,11 +37,12 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - vcf:
+    - input:
         type: file
         description: |
-          The vcf file to be inspected.
-          e.g. 'file.vcf'
+          The input file in variant calling format to be inspected.
+          e.g. 'file.vcf.gz'
+        pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
     - index:
         type: file
         description: |
