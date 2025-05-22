@@ -18,6 +18,7 @@ nextflow_process {
             params {
                 bcftools_pluginfilltags_args  = "--write-index"
                 bcftools_pluginfilltags_args2 = "-t AC,AN"
+                bcftools_query_args = ""
             }
             process {
                 """
@@ -78,6 +79,7 @@ nextflow_process {
             params {
                 bcftools_pluginfilltags_args  = "--write-index"
                 bcftools_pluginfilltags_args2 = "-t HWE"
+                bcftools_query_args = "--list-samples"
             }
             process {
                 """
@@ -111,6 +113,7 @@ nextflow_process {
             params {
                 bcftools_pluginfilltags_args  = "-W=tbi  --output-type b"
                 bcftools_pluginfilltags_args2 = ""
+                bcftools_query_args = "--list-samples"
             }
             process {
                 """
