@@ -20,7 +20,7 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Install nf-test
+    - name: Set up nf-test
       uses: nf-core/setup-nf-test@v1
       with:
         version: ${{ env.NFT_VER }}
