@@ -23,36 +23,79 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-    - cram:
+    - input:
         type: file
-        description: Sorted CRAM file
-        pattern: "*.{cram}"
-  - - list:
+        description: sorted BAM/CRAM file
+        pattern: "*.{bam,cram}"
+    - index:
+        type: file
+        description: index file for input
+        pattern: "*.{bai,crai}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - list:
         type: path
         description: path to micro-satellite list
-  - - fasta:
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fasta:
         type: path
         description: path to reference genome used to create micro-satellite list
         pattern: "*.{fasta}"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fai:
+        type: file
+        description: index file for reference fasta
+        pattern: "*.{fai}"
 output:
-  - - summary_msi:
-        type: file
-        description: txt file containing summary of results
-        pattern: "*.txt"
-  - - all_msi:
-        type: file
-        description: txt file containing all results
-        pattern: "*_all.txt"
-  - - dis_msi:
-        type: file
-        description: txt file containing the allele length distribution
-        pattern: "*_dis.txt"
-  - - unstable_msi:
-        type: file
-        description: txt file containing unstable micro-satellite sites
-        pattern: "*_unstable.txt"
+  - summary_msi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}:
+          type: file
+          description: txt file containing summary of results
+  - all_msi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}:
+          type: file
+          description: txt file containing all results
+  - dis_msi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}:
+          type: file
+          description: txt file containing the allele length distribution
+  - unstable_msi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}:
+          type: file
+          description: txt file containing unstable micro-satellite sites
   - versions:
-      - "versions.yml":
+      - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"

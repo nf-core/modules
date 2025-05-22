@@ -5,7 +5,7 @@ process MSISENSORPRO_PRO {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/msisensor-pro%3A1.3.0--hfef96ef_0':
-        'quay.io/biocontainers/msisensor-pro:1.3.0--hfef96ef_0' }"
+        'biocontainers/msisensor-pro:1.3.0--hfef96ef_0' }"
 
     input:
     tuple val(meta), path(input), path(index)
@@ -38,7 +38,7 @@ process MSISENSORPRO_PRO {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        msisensorpro: \$(msisensor-pro 2>&1 | sed -nE 's/Version:\\s*//p')
+        msisensor-pro: \$(msisensor-pro 2>&1 | sed -nE 's/Version:\\s*//p')
     END_VERSIONS
     """
 
@@ -49,7 +49,7 @@ process MSISENSORPRO_PRO {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        msisensorpro: \$(msisensor-pro 2>&1 | sed -nE 's/Version:\\s*//p')
+        msisensor-pro: \$(msisensor-pro 2>&1 | sed -nE 's/Version:\\s*//p')
     END_VERSIONS
     """
 }
