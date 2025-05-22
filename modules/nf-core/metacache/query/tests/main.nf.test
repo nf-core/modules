@@ -1,0 +1,85 @@
+nextflow_process {
+
+    name "Test Process METACACHE_QUERY"
+    script "../main.nf"
+    process "METACACHE_QUERY"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "metacache"
+    tag "metacache/query"
+
+    test("sarscov2 nanopore [fastq_gz]") {
+
+        setup {
+        run ("UNTAR") {
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] =  [ [], file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/test-db-metacache.tar.gz', checkIfExists: true) ]
+                """
+            }
+        }
+    }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test_2.fastq.gz', checkIfExists: true),
+                ]
+                input[1] = UNTAR.out.untar.map{it[1]}
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 nanopore [fastq_gz] stub") {
+
+       options "-stub"
+
+        setup {
+        run ("UNTAR") {
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] =  [ [], file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/test-db-metacache.tar.gz', checkIfExists: true) ]
+                """
+            }
+        }
+    }
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test_2.fastq.gz', checkIfExists: true),
+                ]
+                input[1] = UNTAR.out.untar.map{it[1]}
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+
+
+
+}
