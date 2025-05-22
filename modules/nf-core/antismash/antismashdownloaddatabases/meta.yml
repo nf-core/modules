@@ -1,0 +1,44 @@
+name: antismash_antismashdownloaddatabases
+description: antiSMASH allows the rapid genome-wide identification, annotation and
+  analysis of secondary metabolite biosynthesis gene clusters. This module downloads
+  the antiSMASH databases for conda and docker/singularity runs.
+keywords:
+  - secondary metabolites
+  - BGC
+  - biosynthetic gene cluster
+  - genome mining
+  - NRPS
+  - RiPP
+  - antibiotics
+  - prokaryotes
+  - bacteria
+  - eukaryotes
+  - fungi
+  - antismash
+  - database
+tools:
+  - antismash:
+      description: antiSMASH - the antibiotics and Secondary Metabolite Analysis SHell
+      homepage: https://docs.antismash.secondarymetabolites.org
+      documentation: https://docs.antismash.secondarymetabolites.org
+      tool_dev_url: https://github.com/antismash/antismash
+      doi: "10.1093/nar/gkab335"
+      licence: ["AGPL v3"]
+      identifier: biotools:antismash
+input: []
+output:
+  - database:
+      - antismash_db:
+          type: directory
+          description: Download directory for antiSMASH databases
+          pattern: "antismash_db"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@jasmezz"
+maintainers:
+  - "@jasmezz"
+  - "@jfy133"
