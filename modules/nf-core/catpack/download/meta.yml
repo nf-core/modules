@@ -36,7 +36,7 @@ output:
       - "${prefix}/*.${db}.gz":
           type: file
           description: FASTA file containing all the NCBI NR or GTDB sequences
-          pattern: "${prefix}/*.${db}.gz"
+          pattern: "*.${db}.gz"
           ontologies:
             - edam: "http://edamontology.org/format_1929"
   - names:
@@ -48,7 +48,7 @@ output:
       - "${prefix}/*.names.dmp":
           type: file
           description: NCBI taxonomy-style names text file
-          pattern: "${prefix}/*.names.dmp"
+          pattern: "*.names.dmp"
           ontologies:
             - edam: "http://edamontology.org/format_1964"
   - nodes:
@@ -60,7 +60,7 @@ output:
       - "${prefix}/*.nodes.dmp":
           type: file
           description: NCBI taxonomy-style nodes text file
-          pattern: "${prefix}/*.nodes.dmp"
+          pattern: "*.nodes.dmp"
           ontologies:
             - edam: "http://edamontology.org/format_1964"
   - acc2tax:
@@ -72,7 +72,19 @@ output:
       - "${prefix}/*accession2taxid*.gz":
           type: file
           description: NCBI taxonomy names accession to taxonomy file
-          pattern: "${prefix}/*accession2taxid*"
+          pattern: "*accession2taxid*"
+          ontologies:
+            - edam: "http://edamontology.org/format_1964"
+  - log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "${prefix}/*.log":
+          type: file
+          description: Log file of the download process
+          pattern: "*.log"
           ontologies:
             - edam: "http://edamontology.org/format_1964"
 

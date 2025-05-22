@@ -15,6 +15,7 @@ process CATPACK_DOWNLOAD {
     tuple val(meta), path("${prefix}/*.names.dmp"), emit: names
     tuple val(meta), path("${prefix}/*.nodes.dmp"), emit: nodes
     tuple val(meta), path("${prefix}/*accession2taxid*.gz"), emit: acc2tax
+    tuple val(meta), path("${prefix}/*.log"), emit: log
     path "versions.yml", emit: versions
 
     when:
@@ -47,10 +48,11 @@ process CATPACK_DOWNLOAD {
         -o ${prefix}/"
 
     mkdir ${prefix}/
-    echo "" | gzip > ${prefix}/cat_db.${db}.gz
-    touch ${prefix}/cat_db.names.dmp
-    touch ${prefix}/cat_db.nodes.dmp
-    echo "" | gzip > ${prefix}/cat_db.accession2taxid.gz
+    echo "" | gzip > ${prefix}/${prefix}.${db}.gz
+    touch ${prefix}/${prefix}.names.dmp
+    touch ${prefix}/${prefix}.nodes.dmp
+    echo "" | gzip > ${prefix}/${prefix}.accession2taxid.gz
+    touch ${prefix}/${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
