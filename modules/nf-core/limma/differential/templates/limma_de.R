@@ -296,14 +296,19 @@ if ((! is.null(opt\$exclude_samples_col)) && (! is.null(opt\$exclude_samples_val
 
 ################################################
 ################################################
-## Build the Model Formula                    ##
+## Build the Model Formula and Run Limma      ##
 ################################################
 ################################################
 
 if (!is.null(opt\$formula)) {
     model <- opt\$formula
-} else {
+    model_formula <- as.formula(model)
+    cat("Using user-specified formula:\n   ", deparse(model_formula), "\n")
+    design <- model.matrix(model_formula, data = sample.sheet)
+    colnames(design) <- make.names(colnames(design))
+    cat("Column names after make.names():\n   ", paste(colnames(design), collapse = ", "), "\n")
 
+} else {
     # Build the model formula with blocking variables first
     model_vars <- c()
 
@@ -324,22 +329,6 @@ if (!is.null(opt\$formula)) {
         sample.sheet[[v]] <- as.factor(sample.sheet[[v]])
     }
 
-}
-################################################
-################################################
-## Run Limma processes                        ##
-################################################
-################################################
-if (!is.null(opt\$formula)) {
-    model_formula        <- as.formula(opt\$formula)
-    cat("Using user formula object:\n")
-    print(model_formula)
-    design        <- model.matrix(model_formula, data = sample.sheet)
-    print(colnames(design))
-    cat("Internal column names after make.names():\n")
-    colnames(design) <- make.names(colnames(design))
-
-} else {
     # Generate the design matrix
     design <- model.matrix(
         as.formula(model),
@@ -357,7 +346,7 @@ if (!is.null(opt\$formula)) {
     colnames(design) <- make.names(colnames(design))
     cat("Final column names after make.names():\n")
     print(colnames(design))
-    }
+}
 
 # Perform voom normalisation for RNA-seq data
 if (!is.null(opt\$use_voom) && opt\$use_voom) {
