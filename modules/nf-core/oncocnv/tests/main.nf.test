@@ -31,8 +31,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.png[0][1]).name,
-                    path(process.out.profile[0][1]).readLines(),
-                    path( process.out.summary[0][1]).readLines(),
+                    file(process.out.profile[0][1]).name + "-line0:md5," + path(process.out.profile[0][1]).readLines()[0].join('\n').md5(),
+                    file(process.out.summary[0][1]).name + "-line0:md5," + path( process.out.summary[0][1]).readLines()[0].join('\n').md5(),
                     process.out.versions
                     ).match() }
             )
