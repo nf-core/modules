@@ -4,8 +4,8 @@ process ONCOCNV {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://containers.biocontainers.pro/s3/SingImgsRepo/oncocnv/v7.0_cv2/oncocnv_v7.0_cv2.sif':
-        'registry.hub.docker.com/biocontainers/oncocnv:v7.0_cv2' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cb/cb8cdb3cd909c70d582e1ad133f828eba9814405a57712ee37e3b086b46fe942/data':
+        'community.wave.seqera.io/library/oncocnv:7.0--fe1a5c51d4487409' }"
 
     input:
     tuple val(meta), path(normal), path(normal_index), path(tumor), path(tumor_index)
