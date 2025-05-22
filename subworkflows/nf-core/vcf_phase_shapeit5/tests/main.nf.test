@@ -23,6 +23,14 @@ nextflow_workflow {
 
     test("homo_sapiens - panel - [] - [] - []") {
         when {
+            params {
+                bcftools_pluginfilltags_args = "--write-index"
+                bcftools_pluginfilltags_args2 = "-t AC,AN"
+                bcftools_pluginfilltags_prefix = { "${meta.id}_filled" }
+                bcftools_view_args = ""
+                bedtools_makewindows_args = "-w 60000 -s 40000"
+                bedtools_makewindows_prefix = { "${meta.id}_${meta.region.replace(":","_")}" }
+            }
             workflow {
                 """
                 input[0] = Channel.of([
@@ -83,7 +91,14 @@ nextflow_workflow {
             }
         }
         when {
-
+            params {
+                bcftools_pluginfilltags_args = "--write-index"
+                bcftools_pluginfilltags_args2 = "-t AC,AN"
+                bcftools_pluginfilltags_prefix = { "${meta.id}_filled" }
+                bcftools_view_args = "-Oz -e 'GT=\"./.\"||GT=\".\"' --write-index"
+                bedtools_makewindows_args = "-w 60000 -s 40000"
+                bedtools_makewindows_prefix = { "${meta.id}_${meta.region.replace(":","_")}" }
+            }
             workflow {
                 """
                 input[0] = BCFTOOLS_PLUGINFILLTAGS.out.vcf
@@ -115,6 +130,14 @@ nextflow_workflow {
     test("homo_sapiens - panel - [] - [] - [] -- stub") {
         options "-stub"
         when {
+            params {
+                bcftools_pluginfilltags_args = "--write-index"
+                bcftools_pluginfilltags_args2 = "-t AC,AN"
+                bcftools_pluginfilltags_prefix = { "${meta.id}_filled" }
+                bcftools_view_args = ""
+                bedtools_makewindows_args = "-w 60000 -s 40000"
+                bedtools_makewindows_prefix = { "${meta.id}_${meta.region.replace(":","_")}" }
+            }
             workflow {
                 """
                 input[0] = Channel.of([
