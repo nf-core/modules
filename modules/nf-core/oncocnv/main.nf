@@ -4,8 +4,8 @@ process ONCOCNV {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cb/cb8cdb3cd909c70d582e1ad133f828eba9814405a57712ee37e3b086b46fe942/data':
-        'community.wave.seqera.io/library/oncocnv:7.0--fe1a5c51d4487409' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1f/1f04dcb708961e66aade70ebd0f9faa1a2980e2eff66bdbd8c947575c8ba4f31/data':
+        'community.wave.seqera.io/library/oncocnv_r-pscbs:ffe800b4a6974d56' }"
 
     input:
     tuple val(meta), path(normal), path(normal_index), path(tumor), path(tumor_index)
@@ -13,10 +13,10 @@ process ONCOCNV {
     path fasta
 
     output:
-    tuple val(meta), path("*.profile.png")  ,emit: png
-    tuple val(meta), path("*.profile.txt")  ,emit: profile
-    tuple val(meta), path("*.summary.txt")  ,emit: summary
-    path "versions.yml"                     ,emit: versions
+    tuple val(meta), path("*.profile.png"), emit: png
+    tuple val(meta), path("*.profile.txt"), emit: profile
+    tuple val(meta), path("*.summary.txt"), emit: summary
+    path "versions.yml"                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
