@@ -25,24 +25,24 @@ input:
     - contrast_variable:
         type: string
         description: |
-          The column in the sample sheet that should be used to define groups for
+          (Optional, required if reference and target are used) The column in the sample sheet that should be used to define groups for
           comparison
     - reference:
         type: string
         description: |
-          The value within the contrast_variable column of the sample sheet that
+          (Optional, required if contrast_variable and target are used) The value within the contrast_variable column of the sample sheet that
           should be used to derive the reference samples
     - target:
         type: string
         description: |
-          The value within the contrast_variable column of the sample sheet that
+          (Optional, required if contrast_variable and reference are used) The value within the contrast_variable column of the sample sheet that
           should be used to derive the target samples
     - formula:
         type: string
-        description: (Mandatory) R formula string used for modeling, e.g. '~ treatment + (1 | sample_number)'.
+        description: (Optional, requires comparison if used) R formula string used for modeling, e.g. '~ treatment'.
     - comparison:
         type: string
-        description: (Optional) Literal string passed to `limma::makeContrasts`, e.g. 'treatmenthND6 - treatmentmCherry'.
+        description: (Optional, mandatory if formula is used) Literal string passed to `limma::makeContrasts`, e.g. 'treatmentmCherry'.
   - - meta2:
         type: map
         description: |
