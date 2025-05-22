@@ -37,16 +37,16 @@ input:
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
     - list:
-        type: path
-        description: path to micro-satellite list
+        type: file
+        description: micro-satellite list
   - - meta3:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
     - fasta:
-        type: path
-        description: path to reference genome used to create micro-satellite list
+        type: file
+        description: reference genome used to create micro-satellite list
         pattern: "*.{fasta}"
   - - meta4:
         type: map
