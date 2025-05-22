@@ -8,7 +8,7 @@ process BCFTOOLS_PLUGINFILLTAGS {
         'biocontainers/bcftools:1.21--h3a4d415_1' }"
 
     input:
-    tuple val(meta), path(vcf), path(index)
+    tuple val(meta), path(input), path(index)
     path(regions)
     path(targets)
     path(samples)
@@ -35,7 +35,7 @@ process BCFTOOLS_PLUGINFILLTAGS {
                     args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
                     "vcf.gz"
 
-    vcf.collect{
+    input.collect{
         assert it.name != "${prefix}.${extension}" : "Input and output names are the same, set prefix in module configuration to disambiguate!"
     }
 
@@ -46,7 +46,7 @@ process BCFTOOLS_PLUGINFILLTAGS {
         ${targets_file} \\
         ${args} \\
         --threads $task.cpus \\
-        ${vcf} \\
+        ${input} \\
         -- \\
         ${samples_file} \\
         ${args2}
