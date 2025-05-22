@@ -5,7 +5,7 @@ process MSISENSORPRO_SCAN {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
             'https://depot.galaxyproject.org/singularity/msisensor-pro%3A1.3.0--hfef96ef_0':
-            'quay.io/biocontainers/msisensor-pro:1.3.0--hfef96ef_0' }"
+            'biocontainers/msisensor-pro:1.3.0--hfef96ef_0' }"
 
     input:
     tuple val(meta), path(fasta)
