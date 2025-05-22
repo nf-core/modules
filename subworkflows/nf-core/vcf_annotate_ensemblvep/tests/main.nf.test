@@ -1,0 +1,95 @@
+nextflow_workflow {
+
+    name "Test Subworkflow VCF_ANNOTATE_ENSEMBLVEP"
+    script "../main.nf"
+    workflow "VCF_ANNOTATE_ENSEMBLVEP"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/vcf_annotate_ensemblvep"
+    tag "ensemblvep/download"
+    tag "ensemblvep/vep"
+    tag "tabix/tabix"
+
+    config "./nextflow.config"
+
+    test("WBcel235 caenorhabditis_elegans 113 - test.vcf.gz") {
+
+        setup {
+            run("ENSEMBLVEP_DOWNLOAD") {
+                script "../../../../modules/nf-core/ensemblvep/download"
+                process {
+                    """
+                    input[0] = [
+                        [id:"WBcel235_113"],
+                        "WBcel235",
+                        "caenorhabditis_elegans",
+                        "113"
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    []
+                ])
+                input[1] = [[id:'null'],[]]
+                input[2] = "WBcel235"
+                input[3] = "caenorhabditis_elegans"
+                input[4] = "113"
+                input[5] = ENSEMBLVEP_DOWNLOAD.out.cache.map { meta, cache -> cache }
+                input[6] = []
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    // Not capturing the content of the VCF files as vep produce an empty VCF for this test
+                    // Which is kinda expected as vep annotates a sarscov2 vcf with WBcel235
+                    workflow.out.vcf_tbi.collect { [it[0], file(it[1]).name, file(it[2]).name] },
+                    workflow.out.reports.collect { it instanceof String ? file(it).name : it },
+                    workflow.out.versions.collect { it }
+                ).match() }
+            )
+        }
+    }
+
+    test("WBcel235 caenorhabditis_elegans 113 - test.vcf.gz - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    []
+                ])
+                input[1] = [[id:'null'],[]]
+                input[2] = "WBcel235"
+                input[3] = "caenorhabditis_elegans"
+                input[4] = "113"
+                input[5] = file("${projectDir}")
+                input[6] = []
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+}

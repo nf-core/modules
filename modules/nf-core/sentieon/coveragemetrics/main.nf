@@ -5,8 +5,8 @@ process SENTIEON_COVERAGEMETRICS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a6/a64461f38d76bebea8e21441079e76e663e1168b0c59dafee6ee58440ad8c8ac/data' :
-        'community.wave.seqera.io/library/sentieon:202308.03--59589f002351c221' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/80/80ccb05eb4f1a193a3bd99c4da90f55f74ea6556c25f154e53e1ff5a6caa372d/data' :
+        'community.wave.seqera.io/library/sentieon:202503--5e378058d837c58c' }"
 
     input:
     tuple val(meta) , path(bam), path(bai)
@@ -16,24 +16,24 @@ process SENTIEON_COVERAGEMETRICS {
     tuple val(meta5), path(gene_list)
 
     output:
-    tuple val(meta), path("$prefix")                                                       , optional: true, emit: per_locus
+    tuple val(meta), path("${prefix}")                                                     , optional: true, emit: per_locus
     tuple val(meta), path("${prefix}.${partitions_output}_summary")                        , optional: true, emit: sample_summary
     tuple val(meta), path("${prefix}.${partitions_output}_interval_statistics")            , optional: true, emit: statistics
     tuple val(meta), path("${prefix}.${partitions_output}_cumulative_coverage_counts")     , optional: true, emit: coverage_counts
     tuple val(meta), path("${prefix}.${partitions_output}_cumulative_coverage_proportions"), optional: true, emit: coverage_proportions
     tuple val(meta), path("${prefix}.${partitions_output}_interval_summary")               , optional: true, emit: interval_summary
-    path "versions.yml"                                                                   , emit: versions
+    path "versions.yml"                                                                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     prefix  = task.ext.prefix ?: "${meta.id}"
-    def args           = task.ext.args  ?: ''
-    def args2          = task.ext.args2 ?: ''
-    def input          = bam.sort().collect{"-i $it"}.join(' ')
-    def interval_cmd   = interval   ? "--interval $interval"                : ""
-    def gene_list_cmd  = gene_list  ? "--gene_list ${gene_list}"            : ""
+    def args          = task.ext.args  ?: ''
+    def args2         = task.ext.args2 ?: ''
+    def input         = bam.sort().collect{"-i $it"}.join(' ')
+    def interval_cmd  = interval   ? "--interval ${interval}"   : ""
+    def gene_list_cmd = gene_list  ? "--gene_list ${gene_list}" : ""
     // Glob that matches any version of 'sample_library_platform_center'.
     partitions_output = "{sample,}{_library,}{_platform,}{_center,}{_readgroup,}"
     """
@@ -42,6 +42,7 @@ process SENTIEON_COVERAGEMETRICS {
         -t $task.cpus \\
         -r $fasta \\
         $interval_cmd \\
+        $gene_list_cmd \\
         $input \\
         $args \\
         --algo CoverageMetrics \\
@@ -55,8 +56,7 @@ process SENTIEON_COVERAGEMETRICS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}
     touch ${prefix}.sample_interval_statistics
