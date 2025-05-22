@@ -9,14 +9,14 @@ nextflow_process {
     tag "metacache"
     tag "metacache/build"
 
-    test("sarscov2 genome fasta") {
+    test("one fasta") {
 
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true),
                 ]
                 input[1] = []
                 input[2] = []
@@ -37,7 +37,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 genome fasta -stub") {
+    test("one fasta -stub") {
 
         options "-stub"
 
@@ -46,7 +46,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true),
                 ]
                 input[1] = []
                 input[2] = []
@@ -64,7 +64,64 @@ nextflow_process {
         }
     }
 
-    test("sarscov2 genome fasta + taxonomy") {
+    test("two fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true),
+                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true)]
+                ]
+                input[1] = []
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.db[0][1]).size() },
+                { assert file(process.out.db[0][2]).name == 'test.cache0' },
+                { assert file(process.out.db[0][2]).size() },
+                { assert snapshot(process.out.db,
+                                  process.out.versions).match() }
+            )
+        }
+
+    }
+
+    test("two fasta -stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true),
+                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true)]
+                ]
+                input[1] = []
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.db[0][2]).name == 'test.cache0' },
+                { assert snapshot(process.out.db,
+                                  process.out.versions).match() }
+            )
+        }
+    }
+
+    test("one fasta + taxonomy") {
         when {
             process {
                 """
@@ -93,7 +150,7 @@ nextflow_process {
         }
     }
 
-    test("sarscov2 genome fasta + taxonomy -stub") {
+    test("one fasta + taxonomy -stub") {
 
         options "-stub"
 
@@ -123,7 +180,7 @@ nextflow_process {
         }
     }
 
-    test("sarscov2 genome fasta + taxonomy + seq2taxid") {
+    test("one fasta + taxonomy + seq2taxid") {
 
         when {
             process {
@@ -155,7 +212,7 @@ nextflow_process {
         }
     }
 
-    test("sarscov2 genome fasta + taxonomy + seq2taxid -stub") {
+    test("one fasta + taxonomy + seq2taxid -stub") {
 
         options "-stub"
 
