@@ -1,9 +1,9 @@
 # Updating the docker container and making a new module release
 
 antiSMASH is an open source tool.
-The developers do provide their own docker container but this includes the antiSMASH database and is extremely large.
-Instead we prefer to use the biocontainers container which is much smaller as it does not include the database.
-However, the tool requires a preparation caching step that depends on the location of installation files of the tool itself (which cannot work with conda versions of the tool, but with a conda installation the database preparation can be executed again by the user).
+The developers do provide their own docker container but this uses some additional modifications that do not allow us to run out of the box.
+Instead we prefer to use the biocontainers container for consistency with the bioconda recipe.
+However, the tool requires a preparation caching step that depends on the location of installation files of the tool itself (which works with conda versions of the tool, as conda installation the database preparation can be executed again by the user and installation paths can be updated).
 
 Therefore, for docker and singularity containers, we need to create a new contianer based on the biocontainers container, with the additional preparation step executed to generated the configuration _but_ then remove the database after.
 
