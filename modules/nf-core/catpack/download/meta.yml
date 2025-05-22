@@ -24,21 +24,70 @@ input:
     - db:
         type: string
         description: Which database to download
-        pattern: "nr|gtdb"
+        pattern: "nr|GTDB"
 
 output:
-  - rawdb:
+  - fasta:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "${prefix}/":
-          type: directory
-          description: Directory containing all the required NCBI Nr or GTDB database files required for building into a CAT database
-          pattern: "${db}/"
+      - "${prefix}/*.${db}.gz":
+          type: file
+          description: FASTA file containing all the NCBI NR or GTDB sequences
+          pattern: "*.${db}.gz"
           ontologies:
-            - edam: "http://edamontology.org/data_1049"
+            - edam: "http://edamontology.org/format_1929"
+  - names:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "${prefix}/*.names.dmp":
+          type: file
+          description: NCBI taxonomy-style names.dmp text file
+          pattern: "*.names.dmp"
+          ontologies:
+            - edam: "http://edamontology.org/format_1964"
+  - nodes:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "${prefix}/*.nodes.dmp":
+          type: file
+          description: NCBI taxonomy-style nodes.dmp text file
+          pattern: "*.nodes.dmp"
+          ontologies:
+            - edam: "http://edamontology.org/format_1964"
+  - acc2tax:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "${prefix}/*accession2taxid*.gz":
+          type: file
+          description: NCBI taxonomy names accession to taxonomy file
+          pattern: "*accession2taxid*"
+          ontologies:
+            - edam: "http://edamontology.org/format_1964"
+  - log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "${prefix}/*.log":
+          type: file
+          description: Log file of the download process
+          pattern: "*.log"
+          ontologies:
+            - edam: "http://edamontology.org/format_1964"
+
   - versions:
       - "versions.yml":
           type: file
