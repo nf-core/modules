@@ -27,18 +27,55 @@ input:
         pattern: "nr|gtdb"
 
 output:
-  - rawdb:
+  - fasta:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "${prefix}/":
-          type: directory
-          description: Directory containing all the required NCBI Nr or GTDB database files required for building into a CAT database
-          pattern: "${db}/"
+      - "${prefix}/*.${db}.gz":
+          type: file
+          description: FASTA file containing all the NCBI NR or GTDB sequences
+          pattern: "${prefix}/*.${db}.gz"
           ontologies:
-            - edam: "http://edamontology.org/data_1049"
+            - edam: "http://edamontology.org/format_1929"
+  - names:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "${prefix}/*.names.dmp":
+          type: file
+          description: NCBI taxonomy-style names text file
+          pattern: "${prefix}/*.names.dmp"
+          ontologies:
+            - edam: "http://edamontology.org/format_1964"
+  - nodes:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "${prefix}/*.nodes.dmp":
+          type: file
+          description: NCBI taxonomy-style nodes text file
+          pattern: "${prefix}/*.nodes.dmp"
+          ontologies:
+            - edam: "http://edamontology.org/format_1964"
+  - acc2tax:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "${prefix}/*accession2taxid*.gz":
+          type: file
+          description: NCBI taxonomy names accession to taxonomy file
+          pattern: "${prefix}/*accession2taxid*"
+          ontologies:
+            - edam: "http://edamontology.org/format_1964"
+
   - versions:
       - "versions.yml":
           type: file
