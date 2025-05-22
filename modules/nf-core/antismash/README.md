@@ -1,11 +1,15 @@
 # Updating the docker container and making a new module release
 
 antiSMASH is an open source tool.
-The developers do provide their own docker container but this uses some additional modifications that do not allow us to run out of the box.
-Instead we prefer to use the biocontainers container for consistency with the bioconda recipe.
-However, the tool requires a preparation caching step that depends on the location of installation files of the tool itself (which works with conda versions of the tool, as conda installation the database preparation can be executed again by the user and installation paths can be updated).
+The developers do provide two premade docker containers, one that contains a very large database and one that does not.
+The database containing version takes an extremely long time to pull as it's multiple gigabytes in size.
+While theoretically we could use the one without the database, and we would prefer to use a container that is sync with the conda recipe.
 
-Therefore, for docker and singularity containers, we need to create a new contianer based on the biocontainers container, with the additional preparation step executed to generated the configuration _but_ then remove the database after.
+Unfortunately, the default biocontainer recipe does not work out of the box, as the tool requires caching information to be stored inside the installation directories of the tool.
+This caching procedure happens after database downloading, however the database does not fit on the bioconda/biocontainer CI nodes, thus the caching step cannot be executed.
+Therefore, when supplying an externally downloaded database to the container, the tool tries to update the cache locations inside the installation directories which thus fails as containers are read only.
+
+Therefore, for docker and singularity containers, we need to create a new container based on the biocontainers container, however we locally download the database, generate the cache within the container, _but_ then remove the database before finishing the build.
 
 _Thanks to @mberacochea for finding the solution and providing the Dockerfile below!_
 
