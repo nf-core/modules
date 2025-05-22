@@ -430,13 +430,6 @@ fit <- do.call(lmFit, lmfit_args)
 if (!is.null(opt\$contrast_string)) {
     cat("Using contrast string:", opt\$contrast_string, "\n")
     contrast_string <- as.character(opt\$contrast_string)
-
-    # Display design matrix
-    cat("Design matrix:")
-
-    head(design, 3)
-    print(colnames(design))
-
     contrast.matrix <- makeContrasts(contrasts=contrast_string, levels=colnames(design))
 
 } else {
