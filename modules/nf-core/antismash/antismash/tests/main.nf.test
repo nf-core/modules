@@ -1,0 +1,94 @@
+nextflow_process {
+
+    name "Test Process ANTISMASH_ANTISMASH"
+    script "../main.nf"
+    process "ANTISMASH_ANTISMASH"
+    config './nextflow.config'
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "antismash"
+    tag "antismash/antismash"
+    tag "antismash/antismashdownloaddatabases"
+    tag "gunzip"
+
+
+    setup {
+
+        run("ANTISMASH_ANTISMASHDOWNLOADDATABASES") {
+            script "../../../antismash/antismashdownloaddatabases"
+            process {
+                """
+                """
+            }
+        }
+
+        run("GUNZIP") {
+            script "../../../gunzip"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.gbff.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("antismash - bacteroides_fragilis - genome") {
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = ANTISMASH_ANTISMASHDOWNLOADDATABASES.out.database
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                            path(process.out.gbk_results.get(0).get(1).get(0)).text.contains("##antiSMASH-Data-START##"),
+                            path(process.out.gbk_input.get(0).get(1).get(0)).text.contains("##antiSMASH-Data-END##"),
+                            path(process.out.zip.get(0).get(1)).exists(),
+                            path(process.out.html.get(0).get(1)).text.contains("https://antismash.secondarymetabolites.org/"),
+                            path(process.out.json_sideloading.get(0).get(1)).text.contains("NZ_CP069563.1"),
+                            path(process.out.log.get(0).get(1)).text.contains("antiSMASH status: SUCCESS"),
+                            process.out.html_accessory_files,
+                            path(process.out.versions[0]).yaml,
+                            file(process.out.versions[0]).name,
+                        ).match()
+                    }
+                )
+            }
+        }
+
+    test("antismash - bacteroides_fragilis - genome - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = ANTISMASH_ANTISMASHDOWNLOADDATABASES.out.database
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.versions[0]).name,
+                    ).match()
+                }
+            )
+        }
+    }
+}
