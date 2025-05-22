@@ -44,6 +44,15 @@ input:
         type: file
         description: Index of the reference file the CRAM was created with (optional)
         pattern: "*.fai"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - gzi:
+        type: file
+        description: Index of the compressed reference file the CRAM was created with (optional)
+        pattern: "*.gzi"
 output:
   - bam:
       - meta:
