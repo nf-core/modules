@@ -15,8 +15,8 @@ process MSISENSORPRO_MSISOMATIC {
     output:
     tuple val(meta), path("${prefix}")         , emit: output_report
     tuple val(meta), path("${prefix}_dis")     , emit: output_dis
-    // tuple val(meta), path("${prefix}_germline"), emit: output_germline
-    // tuple val(meta), path("${prefix}_somatic") , emit: output_somatic
+    tuple val(meta), path("${prefix}_germline"), emit: output_germline, optional: true
+    tuple val(meta), path("${prefix}_somatic") , emit: output_somatic,  optional: true
     path "versions.yml"                        , emit: versions
 
     when:
