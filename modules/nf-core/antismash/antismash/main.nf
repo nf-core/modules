@@ -1,25 +1,13 @@
-process ANTISMASH_ANTISMASHLITE {
+process ANTISMASH_ANTISMASH {
     tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/antismash-lite:7.1.0--pyhdfd78af_0'
-        : 'biocontainers/antismash-lite:7.1.0--pyhdfd78af_0'}"
-
-    containerOptions {
-        ['singularity', 'apptainer'].contains(workflow.containerEngine)
-            ? "-B ${antismash_dir}:/usr/local/lib/python3.10/site-packages/antismash"
-            : workflow.containerEngine == 'docker'
-                ? "-v \$PWD/${antismash_dir}:/usr/local/lib/python3.10/site-packages/antismash"
-                : ''
-    }
+    container "nf-core/antismash:8.0.0"
 
     input:
     tuple val(meta), path(sequence_input)
     path databases
-    path antismash_dir
-    // Optional input: AntiSMASH installation folder. It is not needed for using this module with conda, but required for docker/singularity (see meta.yml).
     path gff
 
     output:
@@ -45,16 +33,6 @@ process ANTISMASH_ANTISMASHLITE {
     task.ext.when == null || task.ext.when
 
     script:
-    def deprecation_message = """
-        WARNING: This module has been deprecated. Please use nf-core/modules/antismash/antismash
-
-        Reason:
-        This module includes non-standard workarounds to allow for use with container engines, due to database caching systems with antiSMASH not being compatible with the biocontainers build system.
-        The new module antismash/antismash uses a different nf-core hosted container that works around this issue, thus providing a much better developer and user experience.
-
-    """
-
-    assert false: deprecation_message
     def args = task.ext.args ?: ''
     prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     gff_flag = gff ? "--genefinding-gff3 ${gff}" : ""
@@ -76,21 +54,11 @@ process ANTISMASH_ANTISMASHLITE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        antismash-lite: \$(echo \$(antismash --version) | sed 's/antiSMASH //;s/-.*//g')
+        antismash: \$(echo \$(antismash --version) | sed 's/antiSMASH //;s/-.*//g')
     END_VERSIONS
     """
 
     stub:
-    def deprecation_message = """
-        WARNING: This module has been deprecated. Please use nf-core/modules/antismash/antismash
-
-        Reason:
-        This module includes non-standard workarounds to allow for use with container engines, due to database caching systems with antiSMASH not being compatible with the biocontainers build system.
-        The new module antismash/antismash uses a different nf-core hosted container that works around this issue, thus providing a much better developer and user experience.
-
-    """
-
-    assert false: deprecation_message
     prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     """
     mkdir -p ${prefix}/css
@@ -111,7 +79,7 @@ process ANTISMASH_ANTISMASHLITE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        antismash-lite: \$(echo \$(antismash --version) | sed 's/antiSMASH //;s/-.*//g')
+        antismash: \$(echo \$(antismash --version) | sed 's/antiSMASH //;s/-.*//g')
     END_VERSIONS
     """
 }
