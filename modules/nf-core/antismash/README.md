@@ -21,10 +21,10 @@ Updating the antiSMASH version in the container and pushing the update to Docker
 3. Create and test the container:
 
    ```bash
-   docker build . -t quay.io/nf-core/antismash:<TOOL>
+docker build . -t quay.io/nf-core/antismash:<version>
    ```
 
-4. Push the container to Dockerhub:
+4. Push the container to Quay:
 
    ```bash
    docker push quay.io/nf-core/antismash:8.0.0
