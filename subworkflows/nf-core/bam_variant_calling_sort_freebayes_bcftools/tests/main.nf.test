@@ -8,8 +8,9 @@ nextflow_workflow {
     tag "subworkflows_nfcore"
     tag "subworkflows/bam_variant_calling_sort_freebayes_bcftools"
 
-    tag "gatk4/mergevcfs"
-    tag "strelka/somatic"
+    tag "freebayes"
+    tag "bcftools/index"
+    tag "bcftools/sort"
 
     config "./nextflow.config"
 
