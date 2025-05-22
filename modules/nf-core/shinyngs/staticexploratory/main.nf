@@ -8,7 +8,7 @@ process SHINYNGS_STATICEXPLORATORY {
         'community.wave.seqera.io/library/r-shinyngs:2.2.4--2bf759f8be585e75' }"
 
     input:
-    tuple val(meta), path(sample), path(feature_meta), path(assay_files)
+    tuple val(meta), path(sample), path(feature_meta), path(assay_files), val(variable)
 
     output:
     tuple val(meta), path("*/png/boxplot.png")                  , emit: boxplots_png
@@ -37,7 +37,7 @@ process SHINYNGS_STATICEXPLORATORY {
         --sample_metadata "$sample" \\
         --feature_metadata "$feature_meta" \\
         --assay_files "${assay_files.join(',')}" \\
-        --contrast_variable "${meta.id}" \\
+        --contrast_variable "$variable" \\
         --outdir "$prefix" \\
         $args
 
