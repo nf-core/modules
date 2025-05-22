@@ -1,0 +1,85 @@
+nextflow_workflow {
+
+    name "Test Subworkflow BAM_VARIANT_CALLING_SORT_FREEBAYES_BCFTOOLS"
+    script "../main.nf"
+    workflow "BAM_VARIANT_CALLING_SORT_FREEBAYES_BCFTOOLS"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/bam_variant_calling_sort_freebayes_bcftools"
+
+    tag "freebayes"
+    tag "bcftools/index"
+    tag "bcftools/sort"
+
+    config "./nextflow.config"
+
+    test("human - cram - paired_end") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([ [ id:'test'], // meta map
+                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.recalibrated.sorted.cram', checkIfExists: true)],
+                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.recalibrated.sorted.cram.crai', checkIfExists: true)],
+                    [],
+                    [],
+                    []
+                ])
+                input[1] = Channel.of([[ id:'reference' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                ])
+                input[2] = [[:], []]
+                input[3] = [[:], []]
+                input[4] = [[:], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.csi.collect { meta, csi -> [meta, "${file(csi).name}"] },
+                    workflow.out.vcf.collect { meta, vcf -> [meta, "${file(vcf).name}, variantSize:${path(vcf).vcf.variants.size()}"] },
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("human - cram - paired_end - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([ [ id:'test'], // meta map
+                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.recalibrated.sorted.cram', checkIfExists: true)],
+                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.recalibrated.sorted.cram.crai', checkIfExists: true)],
+                    [],
+                    [],
+                    []
+                ])
+                input[1] = Channel.of([[ id:'reference' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                ])
+                input[2] = [[:], []]
+                input[3] = [[:], []]
+                input[4] = [[:], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+
+}
