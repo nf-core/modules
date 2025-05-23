@@ -28,8 +28,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.output,
-                path(process.out.versions[0]).yaml).match() }
+                { assert snapshot(
+                    process.out.output,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
             )
         }
     }
@@ -77,8 +80,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.output,
-                path(process.out.versions[0]).yaml).match() }
+                { assert snapshot(
+                    process.out.output,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
             )
         }
     }
@@ -151,8 +157,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.output,
-                path(process.out.versions[0]).yaml).match() }
+                { assert snapshot(
+                    process.out.output,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
             )
         }
     }
@@ -175,8 +184,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.output,
-                path(process.out.versions[0]).yaml).match() }
+                { assert snapshot(
+                    process.out.output,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
             )
         }
     }
@@ -199,8 +211,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.output,
-                path(process.out.versions[0]).yaml).match() }
+                { assert snapshot(
+                    process.out.output,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
             )
         }
     }
@@ -223,8 +238,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.output,
-                path(process.out.versions[0]).yaml).match() }
+                { assert snapshot(
+                    process.out.output,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
             )
         }
     }
@@ -247,8 +265,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.output,
-                path(process.out.versions[0]).yaml).match() }
+                { assert snapshot(
+                    process.out.output,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
             )
         }
     }
@@ -271,8 +292,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.output,
-                path(process.out.versions[0]).yaml).match() }
+                { assert snapshot(
+                    process.out.output,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
             )
         }
     }
@@ -295,8 +319,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.output,
-                path(process.out.versions[0]).yaml).match() }
+                { assert snapshot(
+                    process.out.output,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
             )
         }
     }
@@ -319,8 +346,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.output,
-                path(process.out.versions[0]).yaml).match() }
+                { assert snapshot(
+                    process.out.output,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
             )
         }
     }
@@ -345,8 +375,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.output,
-                path(process.out.versions[0]).yaml).match() }
+                { assert snapshot(
+                    process.out.output,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
             )
         }
     }

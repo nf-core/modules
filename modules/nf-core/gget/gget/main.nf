@@ -26,6 +26,7 @@ process GGET_GGET {
                 args.contains("-csv")   ? "csv" :
                 "json"
     """
+    export MPLCONFIGDIR=\$PWD/.tmp
     gget \\
         $args \\
         -o ${prefix}.${extension} \\
@@ -44,6 +45,7 @@ process GGET_GGET {
                 args.contains("-csv")   ? "csv" :
                 "json"
     """
+    export MPLCONFIGDIR=\$PWD/.tmp    #included in stub to stop errors in the version string
     touch ${prefix}.${extension}
 
     cat <<-END_VERSIONS > versions.yml
