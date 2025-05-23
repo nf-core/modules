@@ -13,7 +13,8 @@ process GANGSTR {
     path(fasta_fai)
 
     output:
-    tuple val(meta), path("*.vcf")              , emit: vcf
+    tuple val(meta), path("*.vcf.gz")           , emit: vcf
+    tuple val(meta), path("*.vcf.gz.tbi")       , emit: index
     tuple val(meta), path("*.samplestats.tab")  , emit: samplestats
     path "versions.yml"                         , emit: versions
 
@@ -34,6 +35,9 @@ process GANGSTR {
         --out ${prefix} \\
         ${args}
 
+    bgzip -f ${prefix}.vcf
+    tabix -f -p vcf ${prefix}.vcf.gz
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         gangstr: \$(echo \$(GangSTR --version 2>&1))
@@ -44,7 +48,8 @@ process GANGSTR {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    touch ${prefix}.vcf
+    echo | gzip > ${prefix}.vcf.gz
+    touch ${prefix}.vcf.gz.tbi
     touch ${prefix}.samplestats.tab
 
     cat <<-END_VERSIONS > versions.yml
