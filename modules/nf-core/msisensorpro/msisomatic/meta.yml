@@ -43,7 +43,12 @@ input:
         type: file
         description: bed file containing interval information, optional
         pattern: "*.{bed}"
-  - - fasta:
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing genome information
+          e.g. [ id:'genome' ]
+    - fasta:
         type: file
         description: Reference genome
         pattern: "*.{fasta}"
