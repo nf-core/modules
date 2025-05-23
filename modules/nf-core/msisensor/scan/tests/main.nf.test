@@ -24,7 +24,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.failed },
-                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
+                { assert snapshot(process.errorReport.split("\n")[4]).match() }
             )
         }
     }
@@ -44,7 +44,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.failed },
-                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
+                { assert snapshot(process.errorReport.split("\n")[4]).match() }
             )
         }
     }
