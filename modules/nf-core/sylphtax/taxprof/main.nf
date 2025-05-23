@@ -5,8 +5,8 @@ process SYLPHTAX_TAXPROF {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sylph-tax:1.1.2--pyhdfd78af_0':
-        'biocontainers/sylph-tax:1.1.2--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/sylph-tax:1.2.0--pyhdfd78af_0':
+        'biocontainers/sylph-tax:1.2.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(sylph_results)
@@ -24,6 +24,7 @@ process SYLPHTAX_TAXPROF {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
+    export SYLPH_TAXONOMY_CONFIG="/tmp/config.json"
     sylph-tax \\
         taxprof \\
         $sylph_results \\
@@ -31,21 +32,22 @@ process SYLPHTAX_TAXPROF {
         -t $taxonomy
 
     mv *.sylphmpa ${prefix}.sylphmpa
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sylph-tax: \$(sylph-tax --version 2>&1 | sed -n 's/.*\\([0-9]\\+\\.[0-9]\\+\\.[0-9]\\+\\).*/\\1/p' | head -n 1)
+        sylph-tax: \$(sylph-tax --version)
     END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    export SYLPH_TAXONOMY_CONFIG="/tmp/config.json"
     touch ${prefix}.sylphmpa
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sylph-tax: \$(sylph-tax --version 2>&1 | sed -n 's/.*\\([0-9]\\+\\.[0-9]\\+\\.[0-9]\\+\\).*/\\1/p' | head -n 1)
+        sylph-tax: \$(sylph-tax --version)
     END_VERSIONS
     """
 }

@@ -6,8 +6,8 @@ process BWAMEM2_INDEX {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bwa-mem2:2.2.1--he513fc3_0' :
-        'biocontainers/bwa-mem2:2.2.1--he513fc3_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9a/9ac054213e67b3c9308e409b459080bbe438f8fd6c646c351bc42887f35a42e7/data' :
+        'community.wave.seqera.io/library/bwa-mem2_htslib_samtools:e1f420694f8e42bd' }"
 
     input:
     tuple val(meta), path(fasta)
