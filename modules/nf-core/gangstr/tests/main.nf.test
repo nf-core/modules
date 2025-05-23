@@ -1,0 +1,149 @@
+nextflow_process {
+
+    name "Test Process GANGSTR"
+
+    script "../main.nf"
+    process "GANGSTR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gangstr"
+
+    test("homo_sapiens - cram bed - fasta - fai") {
+        when {
+            process {
+                """
+                bed = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true))
+                    .map({ bed ->
+                        def content = bed.text.replace('\\n', '').tokenize('\\t')
+                        content.addAll(["5","CGCGC"])
+                        [ content.join('\\t') ]
+                    })
+                    .collectFile( newLine: true ) { content ->
+                        [ "genome.bed", content[0] ]
+                    }
+                input[0] = Channel.of([
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists:true)
+                ]).combine(bed)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.vcf,
+                    file(process.out.index[0][1]).name,
+                    process.out.samplestats,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+    test("homo_sapiens - single bam bed - fasta - fai") {
+        when {
+            process {
+                """
+                bed = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true))
+                    .map({ bed ->
+                        def content = bed.text.replace('\\n', '').tokenize('\\t')
+                        content.addAll(["5","CGCGC"])
+                        [ content.join('\\t') ]
+                    })
+                    .collectFile( newLine: true ) { content ->
+                        [ "genome.bed", content[0] ]
+                    }
+                input[0] = Channel.of([
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists:true)
+                ]).combine(bed)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.vcf,
+                    file(process.out.index[0][1]).name,
+                    process.out.samplestats,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+    test("homo_sapiens - multiple bam bed - fasta - fai") {
+        when {
+            process {
+                """
+                bed = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true))
+                    .map({ bed ->
+                        def content = bed.text.replace('\\n', '').tokenize('\\t')
+                        content.addAll(["5","CGCGC"])
+                        [ content.join('\\t') ]
+                    })
+                    .collectFile( newLine: true ) { content ->
+                        [ "genome.bed", content[0] ]
+                    }
+                input[0] = Channel.of([
+                    [id:'test'],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists:true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam.bai', checkIfExists:true)
+                    ]
+                ]).combine(bed)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.vcf,
+                    file(process.out.index[0][1]).name,
+                    process.out.samplestats,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+    test("homo_sapiens - cram -- stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists:true),
+                    []
+                ])
+                input[1] = []
+                input[2] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}
