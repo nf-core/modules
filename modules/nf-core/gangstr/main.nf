@@ -21,7 +21,7 @@ process GANGSTR {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def input = alignment_files.join(",")
@@ -33,6 +33,19 @@ process GANGSTR {
         --regions ${ref_regions} \\
         --out ${prefix} \\
         ${args}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gangstr: \$(echo \$(GangSTR --version 2>&1))
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${prefix}.vcf
+    touch ${prefix}.samplestats.tab
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
