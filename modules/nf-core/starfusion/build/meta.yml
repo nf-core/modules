@@ -47,6 +47,15 @@ input:
   - - dfam_species:
         type: string
         description: Dfam species name
+  - - dfam_version:
+        type: string
+        description: DNA transposable element database version, required for repeat
+          masking. Values such as '3.4' are accepted (will automatically pull the resources
+          from dfam).
+  - - pfam_version:
+        type: string
+        description: Protein families database version, to get domain information. Values
+          such as '37.4' are accepted (will automatically pull the resources from Pfam).
 output:
   - reference:
       - meta:
