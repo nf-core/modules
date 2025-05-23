@@ -35,6 +35,10 @@ input:
         type: file
         description: |
           List of TSV-format matrix files representing different measures for the same samples (e.g. raw and normalised).
+    - variable:
+        type: string
+        description: |
+          Variable to use for the contrast variable in the plots.
 output:
   - boxplots_png:
       - meta:
