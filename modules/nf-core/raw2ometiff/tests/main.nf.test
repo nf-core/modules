@@ -10,14 +10,24 @@ nextflow_process {
     tag "raw2ometiff"
 
     test("raw2ometiff - zarr") {
+        setup {
+            run ("UNTAR") {
+               script "../../untar/main.nf"
+               process {
+                    """
+                    input[0] = Channel.fromList([
+                        tuple([ id:'test'], // meta map
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/lsmquant/test_data/zarr.tar', checkIfExists: true))
+                    ])
+                    """
+               }
+            }
+        }
 
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test'], // meta map
-                    file('./../../../modules/nf-core/raw2ometiff/tests/zarr', checkIfExists: true),
-                ]
+                input[0] =  UNTAR.out.untar
                 """
             }
         }
@@ -30,7 +40,6 @@ nextflow_process {
                 { assert snapshot(process.out.versions).match() }
             )
         }
-
     }
 
 
@@ -41,10 +50,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test'], // meta map
-                    file('./../../../modules/nf-core/raw2ometiff/tests/zarr', checkIfExists: true),
-                ]
+                input[0] = Channel.fromList([
+                        tuple([ id:'test'], // meta map
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/lsmquant/test_data/zarr.zip', checkIfExists: true))
+                    ])
                 """
             }
         }
