@@ -45,6 +45,16 @@ process ANTISMASH_ANTISMASHLITE {
     task.ext.when == null || task.ext.when
 
     script:
+    def deprecation_message = """
+        WARNING: This module has been deprecated. Please use nf-core/modules/antismash/antismash
+
+        Reason:
+        This module includes non-standard workarounds to allow for use with container engines, due to database caching systems with antiSMASH not being compatible with the biocontainers build system.
+        The new module antismash/antismash uses a different nf-core hosted container that works around this issue, thus providing a much better developer and user experience.
+
+    """
+
+    assert false: deprecation_message
     def args = task.ext.args ?: ''
     prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     gff_flag = gff ? "--genefinding-gff3 ${gff}" : ""
@@ -71,6 +81,16 @@ process ANTISMASH_ANTISMASHLITE {
     """
 
     stub:
+    def deprecation_message = """
+        WARNING: This module has been deprecated. Please use nf-core/modules/antismash/antismash
+
+        Reason:
+        This module includes non-standard workarounds to allow for use with container engines, due to database caching systems with antiSMASH not being compatible with the biocontainers build system.
+        The new module antismash/antismash uses a different nf-core hosted container that works around this issue, thus providing a much better developer and user experience.
+
+    """
+
+    assert false: deprecation_message
     prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
     """
     mkdir -p ${prefix}/css
