@@ -73,7 +73,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}:
+      - ${prefix}_all:
           type: file
           description: txt file containing all results
   - dis_msi:
@@ -82,7 +82,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}:
+      - ${prefix}_dis:
           type: file
           description: txt file containing the allele length distribution
   - unstable_msi:
@@ -91,7 +91,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}:
+      - ${prefix}_unstable:
           type: file
           description: txt file containing unstable micro-satellite sites
   - versions:
