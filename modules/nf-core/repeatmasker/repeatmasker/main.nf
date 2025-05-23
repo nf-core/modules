@@ -25,6 +25,8 @@ process REPEATMASKER_REPEATMASKER {
     def args    = task.ext.args     ?: ''
     prefix      = task.ext.prefix   ?: "${meta.id}"
     def lib_arg = lib               ? "-lib $lib"   : ''
+    out_fasta = fasta.getBaseName(fasta.name.endsWith('.gz') ? 1 : 0)
+
     """
     RepeatMasker \\
         $lib_arg \\
@@ -33,10 +35,10 @@ process REPEATMASKER_REPEATMASKER {
         ${args} \\
         ${fasta}
 
-    mv $prefix/${fasta}.masked  ${prefix}.masked
-    mv $prefix/${fasta}.out     ${prefix}.out
-    mv $prefix/${fasta}.tbl     ${prefix}.tbl
-    mv $prefix/${fasta}.out.gff ${prefix}.gff       || echo "GFF is not produced"
+    mv $prefix/${out_fasta}.masked  ${prefix}.masked
+    mv $prefix/${out_fasta}.out     ${prefix}.out
+    mv $prefix/${out_fasta}.tbl     ${prefix}.tbl
+    mv $prefix/${out_fasta}.out.gff ${prefix}.gff       || echo "GFF is not produced"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
