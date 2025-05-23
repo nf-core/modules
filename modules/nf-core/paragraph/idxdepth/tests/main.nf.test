@@ -61,10 +61,11 @@ nextflow_process {
             }
         }
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
+            if (process.success) {
+                assert snapshot(process.out).match()
+            } else {
+                assert process.errorReport.contains("PARAGRAPH_IDXDEPTH module does not support Conda with CRAM input. Please use Docker / Singularity / Podman instead.")
+            }
         }
     }
 
@@ -119,10 +120,11 @@ nextflow_process {
             }
         }
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
+            if (process.success) {
+                assert snapshot(process.out).match()
+            } else {
+                assert process.errorReport.contains("PARAGRAPH_IDXDEPTH module does not support Conda with CRAM input. Please use Docker / Singularity / Podman instead.")
+            }
         }
     }
 }
