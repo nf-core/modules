@@ -19,11 +19,13 @@ process ANGSD_CONTAMINATION {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args     = task.ext.args   ?: ''
+    def prefix   = task.ext.prefix ?: "${meta.id}"
+    def seed_cmd = args.contains("-s ") ? '' : '-s 1'
     """
     contamination \
         ${args} \
+        ${seed_cmd} \
         -a ${icounts} \
         -h ${hapmap_file} \
         -p ${task.cpus} \
@@ -40,7 +42,6 @@ process ANGSD_CONTAMINATION {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt
-
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
