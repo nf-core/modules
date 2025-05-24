@@ -11,7 +11,7 @@ nextflow_process {
     tag "msisensor/scan"
     tag "msisensor/msi"
 
-    /*
+    /* Old test
     test("sarscov2 - bam bai - scan tab") {
         setup {
             run("MSISENSOR_SCAN") {
@@ -46,12 +46,16 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml,
+                    process.out.output,
+                    process.out.output_dis,
+                    // process.out.output_germline, //  Empty output
+                    // process.out.output_somatic, //  Empty output
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
                 ).match() }
             )
         }
-    } */
+    }*/
 
     test("Deprecated") {
         when {
@@ -72,7 +76,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.failed },
-                { assert snapshot(process.errorReport.split("\n")[4]).match() }
+                { assert process.errorReport.contains("WARNING: This module has been deprecated") }
             )
         }
     }
@@ -97,7 +101,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.failed },
-                { assert snapshot(process.errorReport.split("\n")[4]).match() }
+                { assert process.errorReport.contains("WARNING: This module has been deprecated") }
             )
         }
     }
