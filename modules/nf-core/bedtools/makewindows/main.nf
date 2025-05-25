@@ -39,7 +39,7 @@ process BEDTOOLS_MAKEWINDOWS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     if ("${regions}" == "${prefix}.bed") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
-    touch ${prefix}.bed
+    echo "0\t0\t0" > ${prefix}.bed
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
