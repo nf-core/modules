@@ -3,7 +3,7 @@ nextflow_workflow {
     name "Test Subworkflow FASTA_INDEX_DNA"
     script "../main.nf"
     workflow "FASTA_INDEX_DNA"
-   
+
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "subworkflows/fasta_index_dna"
@@ -12,16 +12,15 @@ nextflow_workflow {
     tag "bwamem2/index"
     tag "dragmap/hashtable"
     tag "snapaligner/index"
-   
+
     test("Params: bowtie2 | generate bowtie2 index") {
-        
+
         when {
-            
             workflow {
                 """
                 input[0] = Channel.value([
                     [id:'test'],
-                    file(params.test_data['sarscov2']['genome']['genome_fasta'],checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                     ])
                 input[1] = Channel.value([
                     [id:'test'],
@@ -32,22 +31,23 @@ nextflow_workflow {
             }
         }
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
             )
         }
     }
     test("Params: bwamem | generate bwamem1 index") {
-        
-        
+
         when {
-            
             workflow {
                 """
                 input[0] = Channel.value([
                     [id:'test'],
-                    file(params.test_data['sarscov2']['genome']['genome_fasta'],checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                     ])
                 input[1] = Channel.value([
                     [id:'test'],
@@ -58,22 +58,23 @@ nextflow_workflow {
             }
         }
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
             )
         }
     }
     test("Params: bwamem2 | generate bwamem2 index") {
-        
-        
+
         when {
-            
             workflow {
                 """
                 input[0] = Channel.value([
                     [id:'test'],
-                    file(params.test_data['sarscov2']['genome']['genome_fasta'],checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                     ])
                 input[1] = Channel.value([
                     [id:'test'],
@@ -84,22 +85,23 @@ nextflow_workflow {
             }
         }
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
             )
         }
     }
     test("Params: dragmap | generate dragmap hashtable") {
-        
-        
+
         when {
-            
             workflow {
                 """
                 input[0] = Channel.value([
                     [id:'test'],
-                    file(params.test_data['sarscov2']['genome']['genome_fasta'],checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                     ])
                 input[1] = Channel.value([
                     [id:'test'],
@@ -110,22 +112,23 @@ nextflow_workflow {
             }
         }
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
             )
         }
     }
     test("Params: snapaligner | generate snapaligner index") {
-        
-        
+
         when {
-            
             workflow {
                 """
                 input[0] = Channel.value([
                     [id:'test'],
-                    file(params.test_data['sarscov2']['genome']['genome_fasta'],checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                     ])
                 input[1] = Channel.value([
                     [id:'test'],
@@ -136,10 +139,151 @@ nextflow_workflow {
             }
         }
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
             )
         }
     }
+
+
+    test("Params: bowtie2 | generate bowtie2 index - stub") {
+        options '-stub'
+        when {
+            workflow {
+                """
+                input[0] = Channel.value([
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    ])
+                input[1] = Channel.value([
+                    [id:'test'],
+                    []
+                    ])
+                input[2] = 'bowtie2'
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+    test("Params: bwamem | generate bwamem1 index - stub") {
+        options '-stub'
+        when {
+            workflow {
+                """
+                input[0] = Channel.value([
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    ])
+                input[1] = Channel.value([
+                    [id:'test'],
+                    []
+                    ])
+                input[2] = 'bwamem'
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+    test("Params: bwamem2 | generate bwamem2 index - stub") {
+        options '-stub'
+        when {
+            workflow {
+                """
+                input[0] = Channel.value([
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    ])
+                input[1] = Channel.value([
+                    [id:'test'],
+                    []
+                    ])
+                input[2] = 'bwamem2'
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+    test("Params: dragmap | generate dragmap hashtable - stub") {
+        options '-stub'
+        when {
+            workflow {
+                """
+                input[0] = Channel.value([
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    ])
+                input[1] = Channel.value([
+                    [id:'test'],
+                    []
+                    ])
+                input[2] = 'dragmap'
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+    test("Params: snapaligner | generate snapaligner index - stub") {
+        options '-stub'
+        when {
+            workflow {
+                """
+                input[0] = Channel.value([
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    ])
+                input[1] = Channel.value([
+                    [id:'test'],
+                    []
+                    ])
+                input[2] = 'snap'
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+
 }
