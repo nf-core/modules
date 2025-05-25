@@ -9,21 +9,21 @@ nextflow_process {
     tag "metaphlan"
     tag "untar"
 
-    test("metaphlan3 single-end") {
-
-        setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                """
-                input[0] = [
-                            [ id:'test' ],
-                            file(params.modules_testdata_base_path + 'delete_me/metaphlan_database.tar.gz', checkIfExists: true)
-                ]
-                """
-                }
+    setup {
+        run("UNTAR") {
+            script "../../../untar/main.nf"
+            process {
+            """
+            input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'delete_me/metaphlan_database.tar.gz', checkIfExists: true)
+            ]
+            """
             }
         }
+    }
+
+    test("metaphlan3 single-end") {
 
         when {
             process {
@@ -49,20 +49,6 @@ nextflow_process {
     }
 
     test("metaphlan3 paired end") {
-
-        setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                """
-                input[0] = [
-                            [ id:'test' ],
-                            file(params.modules_testdata_base_path + 'delete_me/metaphlan_database.tar.gz', checkIfExists: true)
-                ]
-                """
-                }
-            }
-        }
 
         when {
             process {
@@ -93,17 +79,6 @@ nextflow_process {
         config "./nextflow.config"
 
         setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                """
-                input[0] = [
-                            [ id:'test' ],
-                            file(params.modules_testdata_base_path + 'delete_me/metaphlan_database.tar.gz', checkIfExists: true)
-                ]
-                """
-                }
-            }
 
             run("SAMTOOLS_VIEW"){
                 script "../../../samtools/view/main.nf"
@@ -156,20 +131,6 @@ nextflow_process {
 //     ]
 // ]
     test("metaphlan3 fasta") {
-
-        setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                """
-                input[0] = [
-                            [ id:'test' ],
-                            file(params.modules_testdata_base_path + 'delete_me/metaphlan_database.tar.gz', checkIfExists: true)
-                ]
-                """
-                }
-            }
-        }
 
         when {
             process {
