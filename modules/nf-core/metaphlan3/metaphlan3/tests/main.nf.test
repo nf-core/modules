@@ -26,6 +26,10 @@ nextflow_process {
     test("metaphlan3 single-end") {
 
         when {
+            // params {
+            //     ext = [:]
+            //     ext.args = '--index mpa_v30_CHOCOPhlAn_201901 --add_viruses --bt2_ps very-sensitive-local'
+            // }
             process {
                 """
                 input[0] = [
@@ -51,6 +55,10 @@ nextflow_process {
     test("metaphlan3 paired end") {
 
         when {
+            // params {
+            //     ext = [:]
+            //     ext.args = '--index mpa_v30_CHOCOPhlAn_201901 --add_viruses --bt2_ps very-sensitive-local'
+            // }
             process {
                 """
                 input[0] = [
@@ -82,6 +90,11 @@ nextflow_process {
 
             run("SAMTOOLS_VIEW"){
                 script "../../../samtools/view/main.nf"
+                // params {
+                //     ext = [:]
+                //     ext.args   = "--output-fmt sam"
+                //     hello = "world"
+                // }
                 process {
                 """
 
@@ -100,6 +113,10 @@ nextflow_process {
         }
 
         when {
+            // params {
+            //     ext = [:]
+            //     ext.args = '--index mpa_v30_CHOCOPhlAn_201901 --add_viruses --bt2_ps very-sensitive-local'
+            // }
             process {
                 """
                 input[0] = SAMTOOLS_VIEW.out.sam
@@ -124,6 +141,10 @@ nextflow_process {
     test("metaphlan3 fasta") {
 
         when {
+            params {
+                ext = [:]
+                ext.args = '--index mpa_v30_CHOCOPhlAn_201901 --add_viruses --bt2_ps very-sensitive-local'
+            }
             process {
                 """
                 input[0] = [
