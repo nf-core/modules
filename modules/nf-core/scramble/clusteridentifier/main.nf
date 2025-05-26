@@ -4,8 +4,8 @@ process SCRAMBLE_CLUSTERIDENTIFIER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/scramble:1.0.1--h779adbc_1':
-        'biocontainers/scramble:1.0.1--h779adbc_1' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/65/65d3a32dfd347b370e87589189717c75468e6d737b7cee6931e4dae21ce1a9cf/data':
+        'community.wave.seqera.io/library/bioconductor-pwalign_scramble:31d27d3832b0689e' }"
 
     input:
     tuple val(meta), path(input), path(input_index)
