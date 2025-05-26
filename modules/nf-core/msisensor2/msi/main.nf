@@ -45,4 +45,17 @@ process MSISENSOR2_MSI {
         msisensor2: \$(echo \$(msisensor2 2> >(grep Version) | sed 's/Version: v//g'))
     END_VERSIONS
     """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}
+    touch ${prefix}_dis
+    touch ${prefix}_somatic
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        msisensor2: \$(echo \$(msisensor2 2> >(grep Version) | sed 's/Version: v//g'))
+    END_VERSIONS
+    """
 }
