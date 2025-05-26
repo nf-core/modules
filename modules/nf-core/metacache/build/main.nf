@@ -9,7 +9,7 @@ process METACACHE_BUILD {
         'biocontainers/metacache:2.5.0--h077b44d_0' }"
 
     input:
-    tuple val(meta), path(genomes_fna, stageAs: 'genomes/*')
+    tuple val(meta), path(genome_files, stageAs: 'genomes/*')
     path(taxonomy, stageAs: 'taxonomy/*')  // optional. Should be [names.dmp, nodes.dmp], plus optionally merged.dmp
     path(seq2taxid)                        // optional
 
