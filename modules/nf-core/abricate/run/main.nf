@@ -23,7 +23,7 @@ process ABRICATE_RUN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def datadir = databasedir ? "--datadir ${databasedir}" : ''
     """
-    cp $assembly ${prefix}.fasta
+    mv $assembly ${prefix}.fasta
 
     abricate \\
         ${prefix}.fasta \\
