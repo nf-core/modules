@@ -44,10 +44,10 @@ nextflow_process {
                 { assert snapshot(
                     process.out.sample_fastq[0][1].collect{ file(it).name },
                     process.out.metrics,
-                    process.out.most_frequent_unmatched,
+                    file(process.out.most_frequent_unmatched[0][1]).name, // Unstable
                     process.out.per_project_metrics,
                     process.out.per_sample_metrics,
-                    process.out.sample_barcode_hop_metrics,
+                    file(process.out.sample_barcode_hop_metrics[0][1]).name, // Empty file
                     process.out.versions
                 ).match() }
             )

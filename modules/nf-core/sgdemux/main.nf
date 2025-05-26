@@ -27,7 +27,6 @@ process SGDEMUX {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p prefix/
     sgdemux \\
         --sample-metadata ${sample_sheet} \\
         --fastqs ${fastqs_dir} \\
