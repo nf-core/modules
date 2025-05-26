@@ -26,7 +26,12 @@ process SCRAMBLE_CLUSTERANALYSIS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.0.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
-    def scramble_path = "/opt/conda/share/scramble"
+
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        scramble_path =  "\$CONDA_PREFIX/share/scramble"
+    } else {
+        scramble_path = "/opt/conda/share/scramble"
+    }
     def blastdb = args.contains("--eval-dels") ? "makeblastdb -in ${fasta} -parse_seqids -title ${fasta} -dbtype nucl -out ${fasta}" : ""
     def reference = fasta ? "--ref `pwd`/${fasta}" : ""
 
