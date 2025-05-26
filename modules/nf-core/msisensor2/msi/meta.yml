@@ -80,6 +80,15 @@ output:
       - ${prefix}_somatic:
           type: file
           description: Somatic MSI regions detected.
+  - germline:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}_germline:
+          type: file
+          description: Germline MSI regions detected.
   - versions:
       - versions.yml:
           type: file
