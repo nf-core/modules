@@ -71,6 +71,7 @@ process GATK_INDELREALIGNER {
     }
     """
     touch ${prefix}.bam
+    touch ${prefix}.bam.bai
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
