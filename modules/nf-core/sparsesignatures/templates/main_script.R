@@ -33,6 +33,7 @@ opt = list(
     lambda_values_alpha = "c(0.00, 0.01, 0.05, 0.10)",
     lambda_values_beta = "c(0.01, 0.05, 0.1, 0.2)",
     lambda_rate_alpha = "0",
+    seed = "NULL",
     verbose = "TRUE"
 )
 args_opt = parse_args('$task.ext.args')
@@ -122,7 +123,6 @@ tables = lapply(patients_tsv, FUN = function(p_table){
 )
 multisample_table = dplyr::bind_rows(tables)
 
-
 #Extract input data information
 input_data = multisample_table[,c("Indiv","chr","from","to","ref","alt")]
 input_data = setNames(input_data, c("sample","chrom","start","end","ref","alt"))
@@ -159,11 +159,14 @@ saveRDS(object = mut_counts, file = paste0(opt[["prefix"]], "_mut_counts.rds"))
 # Load a reference SBS5 background signature from COSMIC
 data(background)
 
+set.seed(eval(parse(text = opt[["seed"]])))
+
 # Estimate the initial values of beta
 starting_betas = SparseSignatures::startingBetaEstimation(x = mut_counts,
                                                         K = eval(parse(text=opt[["K"]])),
                                                         background_signature = background,
-                                                        nmf_runs = as.integer(opt[["nmf_runs"]]))
+                                                        nmf_runs = as.integer(opt[["nmf_runs"]]),
+                                                        seed = eval(parse(text = opt[["seed"]])))
 
 # Find the optimal number of signatures and sparsity level: rely on cross-validation
 # higher number of CV repetitions corresponds to more accurate parameter estimates
@@ -183,6 +186,7 @@ cv_out = SparseSignatures::nmfLassoCV(
   iterations = as.integer(opt[["iterations"]]),
   max_iterations_lasso = as.integer(opt[["max_iterations_lasso"]]),
   num_processes = n_procs,
+  seed = eval(parse(text = opt[["seed"]])),
   verbose = as.logical(opt[["verbose"]])
 )
 
@@ -230,6 +234,7 @@ nmf_Lasso_out = SparseSignatures::nmfLasso(
   lambda_rate_beta = min_Lambda_beta,
   iterations = as.integer(opt[["iterations"]]),
   max_iterations_lasso = as.integer(opt[["max_iterations_lasso"]]),
+  seed = eval(parse(text = opt[["seed"]])),
   verbose = as.logical(opt[["verbose"]])
 )
 
@@ -252,7 +257,7 @@ plot_exposure = nmf_Lasso_out[["alpha"]] %>%
             axis.line=element_line(colour="black"))
 
 plt_all = patchwork::wrap_plots(plot_exposure, plot_signatures, ncol=2) + patchwork::plot_annotation(title = "$meta.id")
-ggplot2::ggsave(plot = plt_all, filename = paste0(opt[["prefix"]], "_plot_all.pdf"), width = 210, height = 297, units="mm", dpi = 200)
+ggplot2::ggsave(plot = plt_all, filename = paste0(opt[["prefix"]], "_plot_all.png"), width = 210, height = 297, units="mm", dpi = 200, device = "png")
 saveRDS(object = plt_all, file = paste0(opt[["prefix"]], "_plot_all.rds"))
 
 # version export

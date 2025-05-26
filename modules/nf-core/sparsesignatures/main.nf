@@ -5,8 +5,8 @@ process SPARSE_SIGNATURES {
     
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-d410175e2fbd9c47aa685bb5dfb87cfad76d408b%3Aa995bb98b7122825523ffed7ae131cb006e56cbe-0':
-        'biocontainers/mulled-v2-d410175e2fbd9c47aa685bb5dfb87cfad76d408b%3Aa995bb98b7122825523ffed7ae131cb006e56cbe-0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-d410175e2fbd9c47aa685bb5dfb87cfad76d408b:a995bb98b7122825523ffed7ae131cb006e56cbe-0':
+        'biocontainers/mulled-v2-d410175e2fbd9c47aa685bb5dfb87cfad76d408b:a995bb98b7122825523ffed7ae131cb006e56cbe-0' }"
 
     input:
     tuple val(meta), path(tsv_join,  stageAs: '*.tsv')
@@ -17,7 +17,7 @@ process SPARSE_SIGNATURES {
     tuple val(meta), path("*_best_params_config.rds"), emit: signatures_bestConf_rds
     tuple val(meta), path("*_nmf_Lasso_out.rds"), emit: signatures_nmfOut_rds
     tuple val(meta), path("*_plot_all.rds"), emit: signatures_plot_rds
-    tuple val(meta), path("*_plot_all.pdf"), emit: signatures_plot_pdf
+    tuple val(meta), path("*_plot_all.png"), emit: signatures_plot_png
     path "versions.yml", emit: versions
 
     when:
@@ -34,7 +34,7 @@ process SPARSE_SIGNATURES {
     touch ${prefix}_best_params_config.rds
     touch ${prefix}_nmf_Lasso_out.rds
     touch ${prefix}_plot_all.rds
-    touch ${prefix}_plot_all.pdf
+    touch ${prefix}_plot_all.png
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
