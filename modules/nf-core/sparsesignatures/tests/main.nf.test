@@ -1,0 +1,68 @@
+nextflow_process {
+
+    name "Test Process SPARSE_SIGNATURES"
+    script "../main.nf"
+    process "SPARSE_SIGNATURES"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "sparsesignatures"
+
+    test("test_sparsesignatures_single_sample") {
+    
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], 
+                    file(params.modules_testdata_base_path + 'delete_me/sparsesignatures/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+        
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.signatures_mutCounts_rds,
+                    process.out.signatures_cv_rds,
+                    process.out.signatures_bestConf_rds,
+                    process.out.signatures_nmfOut_rds,
+                    process.out.signatures_plot_rds,
+                    process.out.signatures_plot_pdf,
+                    process.out.versions
+                    ).match() }
+            )
+        }
+
+    }
+
+
+    test("test_sparsesignatures - singlesample  - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'delete_me/sparsesignatures/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
