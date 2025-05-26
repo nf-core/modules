@@ -8,7 +8,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "metaphlan"
     tag "untar"
-
+    config "./nextflow.config"
     setup {
         run("UNTAR") {
             script "../../../untar/main.nf"
@@ -26,10 +26,9 @@ nextflow_process {
     test("metaphlan3 single-end") {
 
         when {
-            // params {
-            //     ext = [:]
-            //     ext.args = '--index mpa_v30_CHOCOPhlAn_201901 --add_viruses --bt2_ps very-sensitive-local'
-            // }
+            params {
+                metaphlan_args = '--index mpa_v30_CHOCOPhlAn_201901 --add_viruses --bt2_ps very-sensitive-local'
+            }
             process {
                 """
                 input[0] = [
@@ -55,10 +54,9 @@ nextflow_process {
     test("metaphlan3 paired end") {
 
         when {
-            // params {
-            //     ext = [:]
-            //     ext.args = '--index mpa_v30_CHOCOPhlAn_201901 --add_viruses --bt2_ps very-sensitive-local'
-            // }
+            params {
+                metaphlan_args = '--index mpa_v30_CHOCOPhlAn_201901 --add_viruses --bt2_ps very-sensitive-local'
+            }
             process {
                 """
                 input[0] = [
@@ -90,11 +88,6 @@ nextflow_process {
 
             run("SAMTOOLS_VIEW"){
                 script "../../../samtools/view/main.nf"
-                // params {
-                //     ext = [:]
-                //     ext.args   = "--output-fmt sam"
-                //     hello = "world"
-                // }
                 process {
                 """
 
@@ -113,10 +106,10 @@ nextflow_process {
         }
 
         when {
-            // params {
-            //     ext = [:]
-            //     ext.args = '--index mpa_v30_CHOCOPhlAn_201901 --add_viruses --bt2_ps very-sensitive-local'
-            // }
+            params {
+                 metaphlan_args = '--index mpa_v30_CHOCOPhlAn_201901 --add_viruses --bt2_ps very-sensitive-local'
+                 samtools_args = "--output-fmt sam"
+            }
             process {
                 """
                 input[0] = SAMTOOLS_VIEW.out.sam
@@ -142,8 +135,7 @@ nextflow_process {
 
         when {
             params {
-                ext = [:]
-                ext.args = '--index mpa_v30_CHOCOPhlAn_201901 --add_viruses --bt2_ps very-sensitive-local'
+                metaphlan_args = '--index mpa_v30_CHOCOPhlAn_201901 --add_viruses --bt2_ps very-sensitive-local'
             }
             process {
                 """
