@@ -17,21 +17,18 @@ nextflow_process {
                     """
                     input[0] = [
                         [id:'sim-data'],
-                        file(params.demultiplex_testdata_base_path + "fastq.tar.gz", checkIfExists:true)
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/demultiplex/testdata/sim-data/fastq.tar.gz", checkIfExists:true)
                     ]
                     """
                 }
             }
         }
         when {
-            params {
-                params.demultiplex_testdata_base_path = "https://raw.githubusercontent.com/nf-core/test-datasets/demultiplex/testdata/sim-data/"
-            }
             process {
                 """
                 input[0] = Channel.of([
                     [id:'sim-data'],
-                    file(params.demultiplex_testdata_base_path + "out.sample_meta.csv", checkIfExists:true)
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/demultiplex/testdata/sim-data/out.sample_meta.csv", checkIfExists:true)
                 ]).join(
                     UNTAR.out.untar
                 )
@@ -57,14 +54,11 @@ nextflow_process {
     test("test_sgdemux -- stub") {
         options "-stub"
         when {
-            params {
-                params.demultiplex_testdata_base_path = "https://raw.githubusercontent.com/nf-core/test-datasets/demultiplex/testdata/sim-data/"
-            }
             process {
                 """
                 input[0] = Channel.of([
                     [id:'sim-data'],
-                    file(params.demultiplex_testdata_base_path + "out.sample_meta.csv", checkIfExists:true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/demultiplex/testdata/sim-data/out.sample_meta.csv", checkIfExists:true),
                     []
                 ])
                 """
