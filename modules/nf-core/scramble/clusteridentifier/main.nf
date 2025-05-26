@@ -21,7 +21,7 @@ process SCRAMBLE_CLUSTERIDENTIFIER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.0.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '1.0.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     // The tool does not contain a way to specify the reference file when using CRAM files.
     // It just looks in the header of the CRAM file where the reference file is located,
@@ -47,7 +47,7 @@ process SCRAMBLE_CLUSTERIDENTIFIER {
     """
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.0.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '1.0.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.clusters.txt
 
