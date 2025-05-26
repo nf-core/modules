@@ -22,8 +22,7 @@ nextflow_process {
                     input[0] = [
                         [id:'test'],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scramble/test.bam', checkIfExists:true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scramble/test.bam.bai', checkIfExists:true),
-                        []
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scramble/test.bam.bai', checkIfExists:true)
                         ]
                     input[1] = [[id:"fasta"],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scramble/test.fa', checkIfExists:true)
@@ -68,8 +67,7 @@ nextflow_process {
                     input[0] = [
                         [id:'test'],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scramble/test.cram', checkIfExists:true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scramble/test.cram.crai', checkIfExists:true),
-                        []
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scramble/test.cram.crai', checkIfExists:true)
                         ]
                     input[1] = [[id:"fasta"],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scramble/test.fa', checkIfExists:true)
@@ -117,8 +115,7 @@ nextflow_process {
                     input[0] = [
                         [id:'test'],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scramble/test.bam', checkIfExists:true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scramble/test.bam.bai', checkIfExists:true),
-                        []
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scramble/test.bam.bai', checkIfExists:true)
                         ]
                     input[1] = [[],[]]
                     """
