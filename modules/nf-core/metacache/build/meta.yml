@@ -33,13 +33,14 @@ input:
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
 
-    - genomes_fna:
+    - genome_files:
         # Mandatory
         type: file
-        description: "(possibly gzipped) fasta files of full genomes, for example from an NCBI assembly"
-        pattern: "*.{fna,fa,fasta}{,.gz}"
+        description: "(possibly gzipped) fasta or fastq files of full genomes, for example from an NCBI assembly"
+        pattern: "*.{fna,fa,fasta,fnq,fq,fastq}{,.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_1929"
+          - edam: "http://edamontology.org/format_1930"
           - edam: "http://edamontology.org/format_1954"
           - edam: "http://edamontology.org/data_2044"
   - - taxonomy:
