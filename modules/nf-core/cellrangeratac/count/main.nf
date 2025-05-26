@@ -32,7 +32,6 @@ process CELLRANGERATAC_COUNT {
         --sample=$sample_arg \\
         --localcores=$task.cpus \\
         --localmem=${task.memory.toGiga()} \\
-        --disable-ui \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

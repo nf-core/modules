@@ -3,7 +3,6 @@ nextflow_process {
     name "Test Process CELLRANGERATAC_COUNT"
 
     script "../main.nf"
-    config "./nextflow.config"
     process "CELLRANGERATAC_COUNT"
 
     tag "modules"
@@ -42,9 +41,6 @@ nextflow_process {
     test("test_cellrangeratac_count") {
 
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = [[id:'test', single_end:false, samples:["test_scATAC"]], // meta map
@@ -64,23 +60,23 @@ nextflow_process {
                 { assert snapshot(
                     process.out.config,
                     process.out.versions,
-                    path( "${outputDir}/cellrangeratac/test/outs/filtered_peak_bc_matrix.h5"                        ),
-                    path( "${outputDir}/cellrangeratac/test/outs/filtered_peak_bc_matrix/barcodes.tsv"              ),
-                    path( "${outputDir}/cellrangeratac/test/outs/filtered_peak_bc_matrix/peaks.bed"                 ),
-                    path( "${outputDir}/cellrangeratac/test/outs/filtered_peak_bc_matrix/matrix.mtx"                ),
-                    path( "${outputDir}/cellrangeratac/test/outs/filtered_tf_bc_matrix.h5"                          ),
-                    path( "${outputDir}/cellrangeratac/test/outs/filtered_tf_bc_matrix/barcodes.tsv.gz"             ),
-                    path( "${outputDir}/cellrangeratac/test/outs/filtered_tf_bc_matrix/motifs.tsv"                  ),
-                    path( "${outputDir}/cellrangeratac/test/outs/filtered_tf_bc_matrix/matrix.mtx.gz"               ),
-                    path( "${outputDir}/cellrangeratac/test/outs/raw_peak_bc_matrix.h5"                             ),
-                    path( "${outputDir}/cellrangeratac/test/outs/raw_peak_bc_matrix/barcodes.tsv"                   ),
-                    path( "${outputDir}/cellrangeratac/test/outs/raw_peak_bc_matrix/peaks.bed"                      ),
-                    path( "${outputDir}/cellrangeratac/test/outs/raw_peak_bc_matrix/matrix.mtx"                     ),
-                    path( "${outputDir}/cellrangeratac/test/outs/summary.csv"                                       ),
-                    path( "${outputDir}/cellrangeratac/test/outs/peak_motif_mapping.bed"                            ),
-                    path( "${outputDir}/cellrangeratac/test/outs/peak_annotation.tsv"                               ),
-                    path( "${outputDir}/cellrangeratac/test/outs/cut_sites.bigwig"                                  ),
-                    path( "${outputDir}/cellrangeratac/test/outs/singlecell.csv"                                    )
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/filtered_peak_bc_matrix.h5"                        ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/filtered_peak_bc_matrix/barcodes.tsv"              ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/filtered_peak_bc_matrix/peaks.bed"                 ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/filtered_peak_bc_matrix/matrix.mtx"                ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/filtered_tf_bc_matrix.h5"                          ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/filtered_tf_bc_matrix/barcodes.tsv.gz"             ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/filtered_tf_bc_matrix/motifs.tsv"                  ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/filtered_tf_bc_matrix/matrix.mtx.gz"               ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/raw_peak_bc_matrix.h5"                             ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/raw_peak_bc_matrix/barcodes.tsv"                   ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/raw_peak_bc_matrix/peaks.bed"                      ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/raw_peak_bc_matrix/matrix.mtx"                     ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/summary.csv"                                       ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/peak_motif_mapping.bed"                            ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/peak_annotation.tsv"                               ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/cut_sites.bigwig"                                  ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/singlecell.csv"                                    )
                 ).match() }
             )
         }
@@ -90,9 +86,6 @@ nextflow_process {
     test("test_cellrangeratac_count -- stub") {
         options '-stub'
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = [[id:'test',single_end:false,samples:["test_scATAC"]],// meta map
