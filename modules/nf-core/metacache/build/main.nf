@@ -9,7 +9,7 @@ process METACACHE_BUILD {
         'biocontainers/metacache:2.5.0--h077b44d_0' }"
 
     input:
-    tuple val(meta), path(genomes_fna)
+    tuple val(meta), path(genomes_fna, stageAs: 'genomes/*')
     path(taxonomy, stageAs: 'taxonomy/*')  // optional. Should be [names.dmp, nodes.dmp], plus optionally merged.dmp
     path(seq2taxid)                        // optional
 
@@ -32,7 +32,7 @@ process METACACHE_BUILD {
     metacache \\
         build \\
         ${prefix} \\
-        ${genomes_fna.join(' ')} \\
+        genomes/ \\
         $taxonomy_args \\
         $seq2taxid_args \\
         $args
@@ -52,7 +52,7 @@ process METACACHE_BUILD {
     def n_outputs = (args ==~ /-parts\s/) ? (args.replaceAll(/^.*\s-parts\s+(\S+).*$/, '$1') as Integer) : 1
     assert n_outputs > 0
     """
-    touch '${prefix}.meta' 
+    touch '${prefix}.meta'
     touch '${prefix}.cache'{0..${n_outputs-1}}
 
     cat <<-END_VERSIONS > versions.yml
