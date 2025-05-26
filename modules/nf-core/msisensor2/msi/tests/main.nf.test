@@ -52,7 +52,7 @@ nextflow_process {
             )
         }
     }
-    test("homo_sapiens tumor_normal - bam tumor bam norma - fasta scan") {
+    test("homo_sapiens tumor_normal - bam tumor bam normal - fasta scan") {
         setup {
             run("MSISENSOR2_SCAN") {
                 script "../../scan/main.nf"
@@ -88,6 +88,7 @@ nextflow_process {
                     process.out.msi,
                     process.out.distribution,
                     file(process.out.somatic[0][1]).name, // Empty file
+                    file(process.out.germline[0][1]).name, // Empty file
                     process.out.versions
                 ).match() }
             )

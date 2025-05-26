@@ -13,10 +13,11 @@ process MSISENSOR2_MSI {
     path(models, stageAs: "models/*")
 
     output:
-    tuple val(meta), path("${prefix}")        , emit: msi
-    tuple val(meta), path("${prefix}_dis")    , emit: distribution
-    tuple val(meta), path("${prefix}_somatic"), emit: somatic
-    path "versions.yml"                       , emit: versions
+    tuple val(meta), path("${prefix}")         , emit: msi
+    tuple val(meta), path("${prefix}_dis")     , emit: distribution
+    tuple val(meta), path("${prefix}_somatic") , emit: somatic
+    tuple val(meta), path("${prefix}_germline"), emit: germline, optional: true
+    path "versions.yml"                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -52,6 +53,7 @@ process MSISENSOR2_MSI {
     touch ${prefix}
     touch ${prefix}_dis
     touch ${prefix}_somatic
+    touch ${prefix}_germline
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
