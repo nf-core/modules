@@ -19,6 +19,9 @@ process PURGEDUPS_CALCUTS {
     task.ext.when == null || task.ext.when
 
     script:
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "PURGEDUPS modules give segmentation faults when testing using conda and so are currently not recommended"
+    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
@@ -31,6 +34,9 @@ process PURGEDUPS_CALCUTS {
     """
 
     stub:
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "PURGEDUPS modules give segmentation faults when testing using conda and so are currently not recommended"
+    }
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
