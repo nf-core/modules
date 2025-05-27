@@ -33,6 +33,7 @@ process ULTRA_INDEX {
     "${task.process}":
         ultra: \$( uLTRA --version|sed 's/uLTRA //g' )
         gffutils: \$(python -c "import gffutils; print(gffutils.__version__)")
+        sqlite: \$(python -c "import sqlite3; print(sqlite3.sqlite_version)")
     END_VERSIONS
     """
 
@@ -64,6 +65,7 @@ process ULTRA_INDEX {
     "${task.process}":
         ultra: \$( uLTRA --version|sed 's/uLTRA //g' )
         gffutils: \$(python -c "import gffutils; print(gffutils.__version__)")
+        sqlite: \$(python -c "import sqlite3; print(sqlite3.sqlite_version)")
     END_VERSIONS
     """
 }
