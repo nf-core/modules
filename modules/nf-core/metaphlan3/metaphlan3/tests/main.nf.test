@@ -9,6 +9,7 @@ nextflow_process {
     tag "metaphlan"
     tag "untar"
     config "./nextflow.config"
+
     setup {
         run("UNTAR") {
             script "../../../untar/main.nf"
@@ -28,6 +29,7 @@ nextflow_process {
         when {
             params {
                 metaphlan_args = '--index mpa_v30_CHOCOPhlAn_201901 --add_viruses --bt2_ps very-sensitive-local'
+                samtools_args = ''
             }
             process {
                 """
@@ -56,6 +58,7 @@ nextflow_process {
         when {
             params {
                 metaphlan_args = '--index mpa_v30_CHOCOPhlAn_201901 --add_viruses --bt2_ps very-sensitive-local'
+                samtools_args = ''
             }
             process {
                 """
@@ -81,8 +84,6 @@ nextflow_process {
     }
 
     test("metaphlan3 sam") {
-
-        config "./nextflow.config"
 
         setup {
 
@@ -120,7 +121,7 @@ nextflow_process {
         then {
             assert process.success
 
-            // chop first three lines of profile output file to prevent command being writen into snapshot
+            // exclude first three lines of profile output file to prevent command being writen into snapshot
             assertAll(
                 { assert path(process.out.biom[0][1]).text.contains('"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"') },
                 { assert snapshot(
@@ -136,6 +137,7 @@ nextflow_process {
         when {
             params {
                 metaphlan_args = '--index mpa_v30_CHOCOPhlAn_201901 --add_viruses --bt2_ps very-sensitive-local'
+                samtools_args = ''
             }
             process {
                 """
