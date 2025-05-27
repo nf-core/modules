@@ -19,10 +19,29 @@ process PURGEDUPS_CALCUTS {
     task.ext.when == null || task.ext.when
 
     script:
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "PURGEDUPS modules give segmentation faults when testing using conda and so are currently not recommended"
+    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     calcuts $args $stat > ${prefix}.cutoffs 2> >(tee ${prefix}.calcuts.log >&2)
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        purgedups: \$( purge_dups -h |& sed '3!d; s/.*: //' )
+    END_VERSIONS
+    """
+
+    stub:
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "PURGEDUPS modules give segmentation faults when testing using conda and so are currently not recommended"
+    }
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch "${prefix}.cutoffs"
+    touch "${prefix}.calcuts.log"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
