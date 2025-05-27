@@ -9,7 +9,8 @@ process ULTRA_ALIGN {
 
     input:
     tuple val(meta), path(reads)
-    tuple val(meta2), path(genome), path(pickle), path(db)
+    tuple val(meta2), path(genome)
+    tuple val(meta3), path(pickle), path(db)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam

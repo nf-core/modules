@@ -21,7 +21,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = [
-                        [id:'test'],
+                        [id: 'test'],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists:true)
                     ]
                     """
@@ -33,7 +33,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = [
-                        [id:'test'],
+                        [id: 'test'],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists:true)
                     ]
                     """
@@ -59,9 +59,10 @@ nextflow_process {
                 """
                 input[0] = GUNZIP.out.gunzip
                 input[1] = Channel.of([
-                    [id: "fasta"],
+                    [id: 'fasta'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
-                ]).join( ULTRA_INDEX.out.index )
+                ])
+                input[2] = ULTRA_INDEX.out.index
                 """
             }
         }
@@ -82,13 +83,12 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [[], []]
+                input[0] = [[id: 'test'], []]
                 input[1] = [
-                    ["id": "fasta"],
+                    [id: 'fasta'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true),
-                    [],
-                    []
                 ]
+                input[2] = [[id: 'index'], [], []]
                 """
             }
         }
