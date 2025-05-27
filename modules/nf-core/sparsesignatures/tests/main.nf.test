@@ -8,47 +8,45 @@ nextflow_process {
     tag "modules_nfcore"
     tag "sparsesignatures"
 
-    test("test_sparsesignatures_single_sample") {
-        
+    def isCI = System.getenv('CI') == 'true'
+    def profile = System.getenv('NXF_PROFILE') ?: ""
 
-        config "./nextflow.config"
+    if (!(isCI && profile.contains("docker"))) {
 
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'test'], 
-                    file(params.modules_testdata_base_path + 'delete_me/sparsesignatures/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true)
-                ]
-                """
-            }
-        }
-        
-        then {
-            def isCI = System.getenv('CI') == 'true'
-            def profile = System.getenv('NXF_PROFILE') ?: ""
-            if (isCI && profile.contains("docker")) {
-                println "Skipping 'test_sparsesignatures_single_sample' in CI with docker profile"
-                return
-            }   
-            assertAll(
-                { assert process.success },
-                // Snapshot only stable deterministic outputs
-                { assert snapshot(
-                    process.out.signatures_mutCounts_rds,
-                    process.out.signatures_cv_rds,
-                    process.out.signatures_bestConf_rds,
-                    process.out.signatures_plot_rds,
-                    process.out.versions
+        test("test_sparsesignatures_single_sample") {
+
+            config "./nextflow.config"
+
+            when {
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test'],
+                        file(params.modules_testdata_base_path + 'delete_me/sparsesignatures/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true)
+                     ]
+                    """
+                }  
+            }  
+
+            then {
+                assertAll(
+                    { assert process.success },
+                    { assert snapshot(
+                        process.out.signatures_mutCounts_rds,
+                        process.out.signatures_cv_rds,
+                        process.out.signatures_bestConf_rds,
+                        process.out.signatures_plot_rds,
+                        process.out.versions
                     ).match() },
-      
-                // Check nondeterministic files exist
-                { assert file(process.out.signatures_nmfOut_rds[0][1]).exists() },
-                { assert file(process.out.signatures_plot_png[0][1]).exists()   }
-            )
-        }
+                    { assert file(process.out.signatures_nmfOut_rds[0][1]).exists() },
+                    { assert file(process.out.signatures_plot_png[0][1]).exists() }
+                )   
+            }   
+        }  
 
-    }
+} else {
+    println "Skipping test_sparsesignatures_single_sample in CI with Docker profile"
+}
 
 
     test("test_sparsesignatures - singlesample  - stub") {
