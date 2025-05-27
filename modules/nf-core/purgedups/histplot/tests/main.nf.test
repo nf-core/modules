@@ -19,7 +19,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [id:'test'],// meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.paf',checkIfExists:true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.paf', checkIfExists:true)
                     ]
                 """
             }
@@ -36,12 +36,9 @@ nextflow_process {
         }
     }
 
-    test("test_purgedups_histplot") {
+    test("purgedups_histplot") {
 
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = PURGEDUPS_PBCSTAT.out.stat.join(PURGEDUPS_CALCUTS.out.cutoff)
@@ -57,12 +54,9 @@ nextflow_process {
     }
 
 
-    test("test_purgedups_histplot -- stub") {
+    test("purgedups_histplot -- stub") {
         options '-stub'
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = PURGEDUPS_PBCSTAT.out.stat.join(PURGEDUPS_CALCUTS.out.cutoff)
