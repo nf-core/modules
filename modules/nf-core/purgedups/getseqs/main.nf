@@ -33,4 +33,16 @@ process PURGEDUPS_GETSEQS {
         purgedups: \$( purge_dups -h |& sed '3!d; s/.*: //' )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch "${prefix}.hap.fa"
+    touch "${prefix}.purged.fa"
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        purgedups: \$( purge_dups -h |& sed '3!d; s/.*: //' )
+    END_VERSIONS
+    """
 }
