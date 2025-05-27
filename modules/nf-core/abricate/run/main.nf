@@ -22,13 +22,12 @@ process ABRICATE_RUN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def datadir = databasedir ? "--datadir ${databasedir}" : ''
-    if ("${assembly}" == "${prefix}.fasta") {
-        error("File name clash in internal file preparation, please modify prefix in module configuration to disambiguate!")
-    }
     """
-    ## Symlink to rename the file to allow specifying the prefix variable  inside report
+    ## Symlink when necessary to rename the file to allow specifying the prefix variable inside report
     ## As the variable is what is used as the sample ID in the report file
-    ln -s ${assembly} ${prefix}.fasta
+    if [[ "${assembly}" != "${prefix}.fasta" ]]; then
+        ln -s ${assembly} ${prefix}.fasta
+    fi
 
     abricate \\
         ${prefix}.fasta \\
