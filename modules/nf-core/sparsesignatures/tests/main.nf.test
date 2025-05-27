@@ -10,12 +10,12 @@ nextflow_process {
 
     test("test_sparsesignatures_single_sample") {
         // Skip this test in CI with Docker profile (likely to fail due to OOM)
-        def profile = System.getenv('NXF_PROFILE') ?: ""
+        def profiles = (System.getenv('NXF_PROFILE') ?: "").split(',')*.trim()
         def isCI = System.getenv('CI') == 'true'
-        if (isCI && profile == 'docker') {
+        if (isCI && 'docker' in profiles) {
             println "Skipping test_sparsesignatures_single_sample in CI with docker profile"
             return
-    }
+        }   
 
         config "./nextflow.config"
 
