@@ -21,6 +21,7 @@ process PURGEDUPS_PURGEDUPS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+
     """
     purge_dups \\
         $args \\
