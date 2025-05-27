@@ -159,14 +159,18 @@ saveRDS(object = mut_counts, file = paste0(opt[["prefix"]], "_mut_counts.rds"))
 # Load a reference SBS5 background signature from COSMIC
 data(background)
 
-set.seed(eval(parse(text = opt[["seed"]])))
+seed_val <- if (!is.null(opt[["seed"]])) as.integer(opt[["seed"]]) else NULL
+
+if (!is.null(seed_val)) {
+  set.seed(seed_val)
+}
 
 # Estimate the initial values of beta
 starting_betas = SparseSignatures::startingBetaEstimation(x = mut_counts,
                                                         K = eval(parse(text=opt[["K"]])),
                                                         background_signature = background,
                                                         nmf_runs = as.integer(opt[["nmf_runs"]]),
-                                                        seed = eval(parse(text = opt[["seed"]])))
+                                                        seed = seed_val)
 
 # Find the optimal number of signatures and sparsity level: rely on cross-validation
 # higher number of CV repetitions corresponds to more accurate parameter estimates
@@ -186,7 +190,7 @@ cv_out = SparseSignatures::nmfLassoCV(
   iterations = as.integer(opt[["iterations"]]),
   max_iterations_lasso = as.integer(opt[["max_iterations_lasso"]]),
   num_processes = n_procs,
-  seed = eval(parse(text = opt[["seed"]])),
+  seed = seed_val,
   verbose = as.logical(opt[["verbose"]])
 )
 
@@ -234,7 +238,7 @@ nmf_Lasso_out = SparseSignatures::nmfLasso(
   lambda_rate_beta = min_Lambda_beta,
   iterations = as.integer(opt[["iterations"]]),
   max_iterations_lasso = as.integer(opt[["max_iterations_lasso"]]),
-  seed = eval(parse(text = opt[["seed"]])),
+  seed = seed_val,
   verbose = as.logical(opt[["verbose"]])
 )
 
