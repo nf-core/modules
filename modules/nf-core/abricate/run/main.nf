@@ -25,7 +25,7 @@ process ABRICATE_RUN {
     """
     ## Symlink when necessary to rename the file to allow specifying the prefix variable inside report
     ## As the variable is what is used as the sample ID in the report file
-    if [[ ${assembly} -ne ${prefix}.fasta ]]; then
+    if [[ "${assembly}" -ne "${prefix}.fasta" ]]; then
         ln -s ${assembly} ${prefix}.fasta
     fi
 
