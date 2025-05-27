@@ -32,6 +32,7 @@ process ULTRA_INDEX {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         ultra: \$( uLTRA --version|sed 's/uLTRA //g' )
+        gffutils: \$(python -c "import gffutils; print(gffutils.__version__)")
     END_VERSIONS
     """
 
@@ -62,6 +63,7 @@ process ULTRA_INDEX {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         ultra: \$( uLTRA --version|sed 's/uLTRA //g' )
+        gffutils: \$(python -c "import gffutils; print(gffutils.__version__)")
     END_VERSIONS
     """
 }
