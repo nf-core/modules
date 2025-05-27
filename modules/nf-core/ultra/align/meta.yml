@@ -27,7 +27,12 @@ input:
         type: file
         description: A fasta or fastq file of reads to align
         pattern: "*.{fa,fasta,fastq}"
-  - - genome:
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing genome information
+          e.g. [ id:'test' ]
+    - genome:
         type: file
         description: A fasta file of reference genome
         pattern: "*.{fa,fasta}"
