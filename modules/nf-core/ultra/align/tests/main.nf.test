@@ -62,7 +62,8 @@ nextflow_process {
                     [id: 'fasta'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
                 ])
-                input[2] = ULTRA_INDEX.out.index
+                input[2] = ULTRA_INDEX.out.pickle
+                    .join(ULTRA_INDEX.out.database)
                 """
             }
         }
