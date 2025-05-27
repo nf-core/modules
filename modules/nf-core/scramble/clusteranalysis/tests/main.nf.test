@@ -130,8 +130,8 @@ nextflow_process {
                 """
                 input[0] = SCRAMBLE_CLUSTERIDENTIFIER.out.clusters
                 input[1] = [[id:"fasta"],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scramble/test.fa', checkIfExists:true)
-                ]
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scramble/test.fa', checkIfExists:true)
+                        ]
                 input[2] = []
                 """
             }
