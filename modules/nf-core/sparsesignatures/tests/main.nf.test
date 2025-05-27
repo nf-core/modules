@@ -26,15 +26,18 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                // Snapshot only stable deterministic outputs
                 { assert snapshot(
                     process.out.signatures_mutCounts_rds,
                     process.out.signatures_cv_rds,
                     process.out.signatures_bestConf_rds,
-                    process.out.signatures_nmfOut_rds,
                     process.out.signatures_plot_rds,
-                    process.out.signatures_plot_png,
                     process.out.versions
-                    ).match() }
+                    ).match() },
+      
+                // Check nondeterministic files exist
+                { assert file(process.out.signatures_nmfOut_rds[0][1]).exists() },
+                { assert file(process.out.signatures_plot_png[0][1]).exists()   }
             )
         }
 
