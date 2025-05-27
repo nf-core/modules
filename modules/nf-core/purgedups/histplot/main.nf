@@ -24,6 +24,7 @@ process PURGEDUPS_HISTPLOT {
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.2.6' // WARN: Incorrect version printed inside the container, please check this if bumping version
     """
     hist_plot.py \\
         -c $cutoff \\
@@ -33,18 +34,19 @@ process PURGEDUPS_HISTPLOT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        hist_plot : \$( hist_plot.py -v | sed 's/hist_plot //' )
+        purgedups: $VERSION
     END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.2.6' // WARN: Incorrect version printed inside the container, please check this if bumping version
     """
     touch ${prefix}.png
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        hist_plot : \$( hist_plot.py -v | sed 's/hist_plot //' )
+        purgedups: $VERSION
     END_VERSIONS
     """
 }
