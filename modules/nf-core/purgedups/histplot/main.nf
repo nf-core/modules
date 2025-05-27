@@ -20,7 +20,7 @@ process PURGEDUPS_HISTPLOT {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "PURGEDUPS modules give segmentation faults when testing using conda and so are currently not recommended"
+        error "PURGEDUPS modules give segmentation faults when testing using conda and is so is not currently recommended"
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -38,7 +38,6 @@ process PURGEDUPS_HISTPLOT {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.png

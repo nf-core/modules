@@ -33,4 +33,15 @@ process PURGEDUPS_PBCSTAT {
         purgedups: \$( purge_dups -h |& sed '3!d; s/.*: //' )
     END_VERSIONS
     """
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.PB.base.cov
+    touch ${prefix}.PB.stat
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        purgedups: \$( purge_dups -h |& sed '3!d; s/.*: //' )
+    END_VERSIONS
+    """
 }
