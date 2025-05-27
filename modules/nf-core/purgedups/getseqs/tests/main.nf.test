@@ -1,0 +1,60 @@
+nextflow_process {
+
+    name "Test Process PURGEDUPS_GETSEQS"
+
+    script "../main.nf"
+    process "PURGEDUPS_GETSEQS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "purgedups"
+    tag "purgedups/getseqs"
+
+    test("sarcov2 - fasta - bed") {
+        when {
+            process {
+                """
+                ch_bed = Channel.of('MT192765.1\\n0\\t29828\\tJUNK\\n').collectFile(name: 'test.bed' )
+                input[0] = Channel.of([
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]).combine(ch_bed)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.haplotigs[0][1]).name, // Empty file
+                    process.out.purged,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("sarcov2 - fasta - bed -- stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                ch_bed = Channel.of('MT192765.1\\n0\\t29828\\tJUNK\\n').collectFile(name: 'test.bed' )
+                input[0] = Channel.of([
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]).combine(ch_bed)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}
