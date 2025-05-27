@@ -28,7 +28,7 @@ runs:
         version: "${{ env.NXF_VERSION }}"
 
     - name: Set up Python
-      uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55 # v5
+      uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
       with:
         python-version: "3.13"
 
@@ -73,9 +73,7 @@ runs:
         SENTIEON_LICSRVR_IP: ${{ env.SENTIEON_LICSRVR_IP }}
         SENTIEON_AUTH_MECH: "GitHub Actions - token"
       run: |
-        NFT_WORKDIR=~ \
-        NFT_DIFF=pdiff \
-        NFT_DIFF_ARGS="--line-numbers --expand-tabs=2"
+        NFT_WORKDIR=~
 
         nf-test test \
           --profile=${{ inputs.profile }} \
