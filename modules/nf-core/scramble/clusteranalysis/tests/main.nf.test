@@ -50,7 +50,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.meis_tab,
-                    path(process.out.vcf[0][1]).vcf.summary,
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
                     path(process.out.versions[0]).yaml
                     ).match() }
             )
@@ -85,7 +85,7 @@ nextflow_process {
                 input[0] = SCRAMBLE_CLUSTERIDENTIFIER.out.clusters
                 input[1] = [[id:"fasta"],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scramble/test.fa', checkIfExists:true)
-                    ]
+                ]
                 input[2] = []
                 """
             }
@@ -96,7 +96,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.meis_tab,
                     process.out.dels_tab,
-                    path(process.out.vcf[0][1]).vcf.summary,
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
                     process.out.versions,
                     path(process.out.versions[0]).yaml
                     ).match() }
@@ -105,7 +105,7 @@ nextflow_process {
     }
 
     test("no fasta - stub") {
-
+        options '-stub'
         setup {
             run("SCRAMBLE_CLUSTERIDENTIFIER") {
                 script "../../clusteridentifier/main.nf"
@@ -125,6 +125,49 @@ nextflow_process {
         when {
             params {
                 module_args = ''
+            }
+            process {
+                """
+                input[0] = SCRAMBLE_CLUSTERIDENTIFIER.out.clusters
+                input[1] = [[id:"fasta"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scramble/test.fa', checkIfExists:true)
+                ]
+                input[2] = []
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+
+    test("fasta - stub") {
+        options '-stub'
+        setup {
+            run("SCRAMBLE_CLUSTERIDENTIFIER") {
+                script "../../clusteridentifier/main.nf"
+
+                process {
+                    """
+                    input[0] = [
+                        [id:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scramble/test.bam', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scramble/test.bam.bai', checkIfExists:true)
+                        ]
+                    input[1] = [[],[]]
+                    """
+                }
+            }
+        }
+        when {
+            params {
+                module_args = '--eval-meis --eval-dels'
             }
             process {
                 """
