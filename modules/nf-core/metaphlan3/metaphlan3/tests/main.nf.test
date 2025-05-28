@@ -78,11 +78,9 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert path(process.out.biom[0][1]).text.contains('"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"') },
                 { assert snapshot(
-                    process.out.bt2out,
-                    path(process.out.profile.get(0).get(1)).readLines()[2..-1].join('\n').md5(),
-                    process.out.versions
+                    process.out,
+                    path(process.out.versions[0]).yaml
                     ).match()}
             )
         }
@@ -207,14 +205,10 @@ nextflow_process {
         }
         then {
             assert process.success
-
-            // exclude first three lines of profile output file to prevent command being writen into snapshot
             assertAll(
-                { assert path(process.out.biom[0][1]).text.contains('"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"') },
                 { assert snapshot(
-                    process.out.bt2out,
-                    path(process.out.profile.get(0).get(1)).readLines()[2..-1].join('\n').md5(),
-                    process.out.versions
+                    process.out,
+                    path(process.out.versions[0]).yaml
                     ).match()}
             )
         }
