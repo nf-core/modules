@@ -18,8 +18,13 @@ process PURGEDUPS_HISTPLOT {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "PURGEDUPS modules give segmentation faults when testing using conda and is so is not currently recommended"
+    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.2.6' // WARN: Incorrect version printed inside the container, please check this if bumping version
     """
     hist_plot.py \\
         -c $cutoff \\
@@ -29,19 +34,19 @@ process PURGEDUPS_HISTPLOT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        hist_plot : \$( hist_plot.py -v | sed 's/hist_plot //' )
+        purgedups: $VERSION
     END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.2.6' // WARN: Incorrect version printed inside the container, please check this if bumping version
     """
     touch ${prefix}.png
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        hist_plot : \$( hist_plot.py -v | sed 's/hist_plot //' )
+        purgedups: $VERSION
     END_VERSIONS
     """
 }

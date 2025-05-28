@@ -21,7 +21,6 @@ process PURGEDUPS_PURGEDUPS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     def VERSION = '1.2.6' // WARN: Incorrect version printed inside the container, please check this if bumping version
     """
     purge_dups \\
