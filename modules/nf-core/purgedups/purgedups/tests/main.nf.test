@@ -1,0 +1,83 @@
+nextflow_process {
+
+    name "Test Process PURGEDUPS_PURGEDUPS"
+    script "../main.nf"
+    process "PURGEDUPS_PURGEDUPS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "purgedups"
+    tag "purgedups/pbcstat"
+    tag "purgedups/calcuts"
+    tag "purgedups/purgedups"
+
+    test("purgedups_purgedups") {
+        setup {
+            run("PURGEDUPS_PBCSTAT") {
+                script "../../pbcstat/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.paf', checkIfExists:true)
+                    ]
+                    """
+                }
+            }
+
+            run("PURGEDUPS_CALCUTS") {
+                script "../../calcuts/main.nf"
+                process {
+                    """
+                    input[0] = PURGEDUPS_PBCSTAT.out.stat
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = PURGEDUPS_PBCSTAT.out.basecov
+                    .join(PURGEDUPS_CALCUTS.out.cutoff)
+                    .join(Channel.of([
+                        [id:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.paf', checkIfExists:true)
+                    ]))
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.bed[0][1]).name, // Not stable
+                    file(process.out.log[0][1]).name, // Strange characters not stable k_EV M�U
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 -- stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test'], [], [],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.paf', checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}
