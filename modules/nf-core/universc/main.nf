@@ -68,7 +68,7 @@ process UNIVERSC {
         error "UNIVERSC module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     """
-    mkdir "sample-${meta.id}/outs/"
+    mkdir -p "sample-${meta.id}/outs/"
     touch sample-${meta.id}/outs/fake_file.txt
 
     cat <<-END_VERSIONS > versions.yml
