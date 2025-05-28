@@ -15,13 +15,13 @@ nextflow_process {
                 """
                 input[0] = [
                     [id:'test', single_end:false], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
                 ]
-                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_21_annotated_bed'], checkIfExists: true)
-                input[2] = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists:true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/annotated.bed', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 """
             }
         }
@@ -48,24 +48,24 @@ nextflow_process {
                 input[0] = [
                     [id:'test', single_end:false], // meta map
                     [
-                        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true)
                     ],
                     [
-                        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
                     ],
                     [
-                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_markduplicates_sorted_bam'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_markduplicates_sorted_bam'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.markduplicates.sorted.bam', checkIfExists: true)
                     ],
                     [
-                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test_paired_end_markduplicates_sorted_bam_bai'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_markduplicates_sorted_bam_bai'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.markduplicates.sorted.bam.bai', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.markduplicates.sorted.bam.bai', checkIfExists: true)
                     ]
                 ]
-                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_21_annotated_bed'], checkIfExists: true)
-                input[2] = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists:true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/annotated.bed', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 """
             }
         }
@@ -90,13 +90,13 @@ nextflow_process {
                 """
                 input[0] = [
                     [id:'test', single_end:false], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam'], checkIfExists: true),
-                    file(params.test_data['homo_sapiens']['illumina']['test_paired_end_recalibrated_sorted_bam_bai'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
                 ]
-                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_21_annotated_bed'], checkIfExists: true)
-                input[2] = file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists:true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/annotated.bed', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 """
             }
         }
