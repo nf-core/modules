@@ -75,16 +75,16 @@ output:
           type: file
           description: File containig the data to generate plots
           pattern: "*{_plot_all.rds}"
-  - signatures_plot_png:
+  - signatures_plot_pdf:
       - meta: 
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_plot_all.png":
+      - "*_plot_all.pdf":
           type: file
           description: File containing the generated plots
-          pattern: "*{_plot_all.png}"
+          pattern: "*{_plot_all.pdf}"
   - versions:
       - versions.yml:
           type: file

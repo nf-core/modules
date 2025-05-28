@@ -17,7 +17,7 @@ process SPARSE_SIGNATURES {
     tuple val(meta), path("*_best_params_config.rds"), emit: signatures_bestConf_rds
     tuple val(meta), path("*_nmf_Lasso_out.rds"), emit: signatures_nmfOut_rds
     tuple val(meta), path("*_plot_all.rds"), emit: signatures_plot_rds
-    tuple val(meta), path("*_plot_all.png"), emit: signatures_plot_png
+    tuple val(meta), path("*_plot_all.pdf"), emit: signatures_plot_pdf
     path "versions.yml", emit: versions
 
     when:
@@ -34,7 +34,7 @@ process SPARSE_SIGNATURES {
     touch ${prefix}_best_params_config.rds
     touch ${prefix}_nmf_Lasso_out.rds
     touch ${prefix}_plot_all.rds
-    touch ${prefix}_plot_all.png
+    touch ${prefix}_plot_all.pdf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

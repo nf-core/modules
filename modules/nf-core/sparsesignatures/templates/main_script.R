@@ -39,65 +39,6 @@ opt = list(
 args_opt = parse_args('$task.ext.args')
 for ( ao in names(args_opt)) opt[[ao]] = args_opt[[ao]]
 
-# Auxiliary functions #
-
-get_sample = function(m_cnaqc_obj, sample, which_obj) {
-    if (class(m_cnaqc_obj) != "m_cnaqc") {
-        wrong_class_all = class(m_cnaqc_obj)
-        cli::cli_abort(
-            c("cnaqc_objs must be a {.field m_cnaqc} object",
-            "x" = "{.var m_cnaqc_obj} is a {.cls {class(m_cnaqc_obj)}}")
-        )
-    }
-
-    consented_obj = c("shared", "original")
-    if ((which_obj %in% consented_obj) == FALSE) {
-        cli::cli_abort("{.var which_obj} must be one of {.val shared} or {.val original}")
-    }
-
-    # define the element names
-    if (which_obj == "original") {
-        type = "original_cnaqc_objc"
-        # check if the original cnaqc obj exist
-        check_or = any(names(m_cnaqc_obj) == type)
-        if (check_or == FALSE) {
-            cli::cli_abort(c("mCNAqc object was build without keeping original CNAqc objects"),
-                        "x" = "It is not possible to retrieve the required samples")
-        } else {
-            cli::cli_h1("Retrieving original {.cls CNAqc} objects")
-            cnaqc_samples = m_cnaqc_obj[[type]][sample]
-        }
-    } else {
-        type = "cnaqc_obj_new_segmentation"
-        cli::cli_h1("Retrieving {.cls CNAqc} objects with the new segmentation")
-        cnaqc_samples = m_cnaqc_obj[[type]][sample]
-    }
-    return(cnaqc_samples)
-}
-
-
-get_sample_name =function(x) {
-    if (class(x) == "m_cnaqc") {
-        lapply(x[["cnaqc_obj_new_segmentation"]], function(y) {
-            y[["sample"]]
-        }) %>% unlist() %>% unname()
-    } else if (class(x) == "cnaqc") {
-        x[["sample"]]
-    } else {
-        wrong_class_all = class(x)
-        cli::cli_abort(
-            c("must provide a {.field m_cnaqc} object",
-            "x" = "{.var x} is a {.cls {class(x)}}")
-        )
-    }
-}
-
-
-get_mCNAqc_stats = function(m_cnaqc_obj){
-    stats = m_cnaqc_obj[["m_cnaqc_stats"]]
-    return(stats)
-}
-
 
 # Script #
 
@@ -261,7 +202,7 @@ plot_exposure = nmf_Lasso_out[["alpha"]] %>%
             axis.line=element_line(colour="black"))
 
 plt_all = patchwork::wrap_plots(plot_exposure, plot_signatures, ncol=2) + patchwork::plot_annotation(title = "$meta.id")
-ggplot2::ggsave(plot = plt_all, filename = paste0(opt[["prefix"]], "_plot_all.png"), width = 210, height = 297, units="mm", dpi = 200, device = "png")
+ggplot2::ggsave(plot = plt_all, filename = paste0(opt[["prefix"]], "_plot_all.pdf"), width = 210, height = 297, units="mm", dpi = 200, device = "pdf")
 saveRDS(object = plt_all, file = paste0(opt[["prefix"]], "_plot_all.rds"))
 
 # version export
