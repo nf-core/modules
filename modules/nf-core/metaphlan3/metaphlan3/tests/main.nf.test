@@ -8,6 +8,9 @@ nextflow_process {
     tag "modules_nfcore"
     tag "metaphlan"
     tag "untar"
+    tag "metaphlan3/metaphlan3"
+    tag "metaphlan3"
+    tag "samtools/view"
     config "./nextflow.config"
 
     setup {
@@ -47,7 +50,8 @@ nextflow_process {
                 { assert path(process.out.biom[0][1]).text.contains('"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"') },
                 { assert snapshot(
                     process.out.bt2out,
-                    path(process.out.profile.get(0).get(1)).readLines()[2..-1].join('\n').md5()
+                    path(process.out.profile.get(0).get(1)).readLines()[2..-1].join('\n').md5(),
+                    process.out.versions
                     ).match()}
             )
         }
@@ -77,7 +81,8 @@ nextflow_process {
                 { assert path(process.out.biom[0][1]).text.contains('"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"') },
                 { assert snapshot(
                     process.out.bt2out,
-                    path(process.out.profile.get(0).get(1)).readLines()[2..-1].join('\n').md5()
+                    path(process.out.profile.get(0).get(1)).readLines()[2..-1].join('\n').md5(),
+                    process.out.versions
                     ).match()}
             )
         }
@@ -107,7 +112,8 @@ nextflow_process {
                 { assert path(process.out.biom[0][1]).text.contains('"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"') },
                 { assert snapshot(
                     process.out.bt2out,
-                    path(process.out.profile.get(0).get(1)).readLines()[2..-1].join('\n').md5()
+                    path(process.out.profile.get(0).get(1)).readLines()[2..-1].join('\n').md5(),
+                    process.out.versions
                     ).match()}
             )
         }
@@ -156,7 +162,8 @@ nextflow_process {
                 { assert path(process.out.biom[0][1]).text.contains('"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"') },
                 { assert snapshot(
                     process.out.bt2out,
-                    path(process.out.profile.get(0).get(1)).readLines()[2..-1].join('\n').md5()
+                    path(process.out.profile.get(0).get(1)).readLines()[2..-1].join('\n').md5(),
+                    process.out.versions
                     ).match()}
             )
         }
@@ -206,7 +213,8 @@ nextflow_process {
                 { assert path(process.out.biom[0][1]).text.contains('"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"') },
                 { assert snapshot(
                     process.out.bt2out,
-                    path(process.out.profile.get(0).get(1)).readLines()[2..-1].join('\n').md5()
+                    path(process.out.profile.get(0).get(1)).readLines()[2..-1].join('\n').md5(),
+                    process.out.versions
                     ).match()}
             )
         }
@@ -235,7 +243,8 @@ nextflow_process {
                 { assert path(process.out.biom[0][1]).text.contains('"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"') },
                 { assert snapshot(
                     process.out.bt2out,
-                    path(process.out.profile.get(0).get(1)).readLines()[2..-1].join('\n').md5()
+                    path(process.out.profile.get(0).get(1)).readLines()[2..-1].join('\n').md5(),
+                    process.out.versions
                     ).match()}
             )
         }
