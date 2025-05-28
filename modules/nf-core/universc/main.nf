@@ -50,6 +50,7 @@ process UNIVERSC {
         ${args} 1> _log 2> _err
 
     # save log files
+    mkdir sample-${meta.id}/outs/
     echo !! > sample-${meta.id}/outs/_invocation
     cp _log sample-${meta.id}/outs/_log
     cp _err sample-${meta.id}/outs/_err
@@ -68,8 +69,10 @@ process UNIVERSC {
         error "UNIVERSC module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     """
-    mkdir -p "sample-${meta.id}/outs/"
-    touch sample-${meta.id}/outs/fake_file.txt
+    mkdir -p sample-${meta.id}/outs/
+    touch sample-${meta.id}/outs/_invocation
+    touch sample-${meta.id}/outs/_log
+    touch sample-${meta.id}/outs/_err
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
