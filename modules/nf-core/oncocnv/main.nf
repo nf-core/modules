@@ -28,6 +28,8 @@ process ONCOCNV {
     def tumor_id = tumor.join(',')
     def VERSION = '7.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
+    export R_USER_CACHE_DIR=\$(pwd)/R_cache
+
     perl \$(which ONCOCNV_getCounts.pl) \\
         getControlStats \\
         $mode \\
