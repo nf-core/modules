@@ -92,13 +92,14 @@
         "subworkflows/nf-core/fastq_align_bamcmp_bwa",
         "subworkflows/nf-core/fastq_align_bwa"
     ],
-    "docker": ["modules/nf-core/parabricks", "subworkflows/nf-core/deepvariant/tests/equality", "modules/nf-core/sparsesignatures"],
+    "docker": ["modules/nf-core/parabricks", "subworkflows/nf-core/deepvariant/tests/equality"],
     "singularity": [
         "modules/nf-core/bases2fastq",
         "modules/nf-core/deepvariant/rundeepvariant",
         "modules/nf-core/deepvariant/vcfstatsreport",
         "modules/nf-core/deepsomatic",
         "modules/nf-core/parabricks",
+	"modules/nf-core/sparsesignatures",
         "modules/nf-core/universc",
         "subworkflows/nf-core/deepvariant/tests/equality"
     ]
