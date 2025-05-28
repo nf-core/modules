@@ -1,0 +1,111 @@
+nextflow_process {
+
+    name "Test Process CELLRANGERATAC_COUNT"
+
+    script "../main.nf"
+    process "CELLRANGERATAC_COUNT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cellrangeratac"
+    tag "cellrangeratac/mkref"
+    tag "cellrangeratac/count"
+    tag "unzip"
+
+    setup {
+        run("UNZIP") {
+            script "../../../unzip/main.nf"
+
+            process {
+                """
+                input[0] = [[],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.fasta.gz', checkIfExists:true)]
+                """
+            }
+        }
+
+        run("CELLRANGERATAC_MKREF") {
+            script "../../mkref/main.nf"
+
+            process {
+                """
+                input[0] = UNZIP.out.unzipped_archive.map{it -> it[1]} + "/genome.fasta"
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.gtf', checkIfExists:true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_motifs.txt', checkIfExists:true)
+                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_config.json', checkIfExists:true)
+                input[4] = "cellrangeratac_reference"
+                """
+            }
+        }
+    }
+
+    test("test_cellrangeratac_count") {
+
+        when {
+            process {
+                """
+                input[0] = [[id:'test', single_end:false, samples:["test_scATAC"]], // meta map
+                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger-atac/test_scATAC_S1_L001_I1_001.fastq.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger-atac/test_scATAC_S1_L001_R1_001.fastq.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger-atac/test_scATAC_S1_L001_R3_001.fastq.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger-atac/test_scATAC_S1_L001_R2_001.fastq.gz', checkIfExists:true)
+                    ]
+                    ]
+                input[1] = CELLRANGERATAC_MKREF.out.reference
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.config,
+                    process.out.versions,
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/filtered_peak_bc_matrix.h5"                        ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/filtered_peak_bc_matrix/barcodes.tsv"              ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/filtered_peak_bc_matrix/peaks.bed"                 ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/filtered_peak_bc_matrix/matrix.mtx"                ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/filtered_tf_bc_matrix.h5"                          ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/filtered_tf_bc_matrix/barcodes.tsv.gz"             ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/filtered_tf_bc_matrix/motifs.tsv"                  ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/filtered_tf_bc_matrix/matrix.mtx.gz"               ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/raw_peak_bc_matrix.h5"                             ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/raw_peak_bc_matrix/barcodes.tsv"                   ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/raw_peak_bc_matrix/peaks.bed"                      ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/raw_peak_bc_matrix/matrix.mtx"                     ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/summary.csv"                                       ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/peak_motif_mapping.bed"                            ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/peak_annotation.tsv"                               ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/cut_sites.bigwig"                                  ),
+                    path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/singlecell.csv"                                    )
+                ).match() }
+            )
+        }
+    }
+
+
+    test("test_cellrangeratac_count -- stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [[id:'test',single_end:false,samples:["test_scATAC"]],// meta map
+                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger-atac/test_scATAC_S1_L001_R1_001.fastq.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger-atac/test_scATAC_S1_L001_R3_001.fastq.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger-atac/test_scATAC_S1_L001_R2_001.fastq.gz', checkIfExists:true)
+                    ]
+                    ]
+                input[1] = CELLRANGERATAC_MKREF.out.reference
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{ path(it).yaml }
+                    ).match() }
+            )
+        }
+    }
+}
