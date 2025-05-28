@@ -1,0 +1,158 @@
+nextflow_process {
+
+    name "Test Process SRST2_SRST2"
+
+    script "../main.nf"
+    process "SRST2_SRST2"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "srst2"
+    tag "srst2/srst2"
+
+    test("delete_me - fastq.gz") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:false],// meta map
+                    [
+                        file(params.modules_testdata_base_path + 'delete_me/srst2/SRR9067271_1.fastq.gz',checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'delete_me/srst2/SRR9067271_2.fastq.gz',checkIfExists:true)
+                    ],
+                    file(params.modules_testdata_base_path + 'delete_me/srst2/MLST_DB.fas', checkIfExists:true)
+                    ]
+                input[1] = "mlst"
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.mlst_results.get(0).get(1)).readLines(),
+                    path(process.out.pileup.get(0).get(1)).readLines()[0..10],
+                    bam(process.out.sorted_bam.get(0).get(1)).getStatistics(),
+                    process.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+    // test("bacteroides_fragilis - fastq.gz - paired_end") {
+
+    //     when {
+    //         process {
+    //             """
+    //             input[0] = [
+    //                 [id:'test', single_end:false],// meta map
+    //                 [
+    //                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz',checkIfExists:true),
+    //                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_2.fastq.gz',checkIfExists:true)
+    //                 ],
+    //                 file(params.modules_testdata_base_path + 'delete_me/srst2/resFinder_20180221_srst2.fasta',checkIfExists:true)
+    //                 ]
+    //             input[1] = "gene"
+    //             """
+    //         }
+    //     }
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(
+    //                 path(process.out.gene_results.get(0).get(1)).readLines(),
+    //                 path(process.out.fullgene_results.get(0).get(1)).readLines(),
+    //                 path(process.out.pileup.get(0).get(1)).readLines(),
+    //                 bam(process.out.sorted_bam.get(0).get(1)).getReadsMD5(),
+    //                 process.out.versions
+    //                 ).match() }
+    //         )
+    //     }
+    // }
+
+    // test("bacteroides_fragilis - fastq.gz - single_end") {
+
+    //     when {
+    //         process {
+    //             """
+    //             input[0] = [
+    //                 [id:'test', single_end:true],// meta map
+    //                 file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz', checkIfExists:true),
+    //                 file(params.modules_testdata_base_path + 'delete_me/srst2/resFinder_20180221_srst2.fasta', checkIfExists:true)
+    //                 ]
+    //             input[1] = "gene"
+    //             """
+    //         }
+    //     }
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(
+    //                 path(process.out.gene_results.get(0).get(1)).readLines(),
+    //                 path(process.out.fullgene_results.get(0).get(1)).readLines(),
+    //                 path(process.out.pileup.get(0).get(1)).readLines(),
+    //                 bam(process.out.sorted_bam.get(0).get(1)).getReadsMD5(),
+    //                 process.out.versions
+    //                 ).match() }
+    //         )
+    //     }
+    // }
+
+    test("delete_me - fastq.gz - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:false],// meta map
+                    [
+                        file(params.modules_testdata_base_path + 'delete_me/srst2/SRR9067271_1.fastq.gz',checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'delete_me/srst2/SRR9067271_2.fastq.gz',checkIfExists:true)
+                    ],
+                    file(params.modules_testdata_base_path + 'delete_me/srst2/MLST_DB.fas', checkIfExists:true)
+                    ]
+                input[1] = "mlst"
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+
+    test("bacteroides_fragilis - fastq.gz - single_end - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test',single_end:true],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'delete_me/srst2/resFinder_20180221_srst2.fasta',checkIfExists:true)
+                    ]
+                input[1] = "gene"
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+}
