@@ -19,8 +19,8 @@ process UNIVERSC {
     val(technology)
 
     output:
-    tuple val(meta), path("sample-${prefix}/outs/*"), emit: outs
-    path "versions.yml"                              , emit: versions
+    tuple val(meta), path("${prefix}/outs/*"), emit: outs
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,7 +38,7 @@ process UNIVERSC {
     """
     export PYTHON_EGG_CACHE=\$(pwd)/.cache
     universc \\
-        --id 'sample-${prefix}' \\
+        --id ${prefix} \\
         ${input_reads} \\
         --technology ${technology} \\
         --reference ${reference_name} \\
@@ -49,9 +49,9 @@ process UNIVERSC {
         ${args} 1> _log 2> _err
 
     # save log files
-    echo !! > sample-${prefix}/outs/_invocation
-    cp _log sample-${prefix}/outs/_log
-    cp _err sample-${prefix}/outs/_err
+    echo !! > ${prefix}/outs/_invocation
+    cp _log ${prefix}/outs/_log
+    cp _err ${prefix}/outs/_err
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -70,8 +70,8 @@ process UNIVERSC {
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    mkdir -p sample-${prefix}/outs/
-    cd sample-${prefix}/outs/
+    mkdir -p ${prefix}/outs/
+    cd ${prefix}/outs/
 
     touch _invocation
     touch _log

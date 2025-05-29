@@ -48,10 +48,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - sample-${prefix}/outs/*:
+      - ${prefix}/outs/*:
           type: file
           description: Files containing the outputs of Cell Ranger
-          pattern: "sample-${prefix}/outs/*"
+          pattern: "${prefix}/outs/*"
   - versions:
       - versions.yml:
           type: file
