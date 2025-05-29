@@ -57,7 +57,7 @@ process UNIVERSC {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        cellranger:  \$(echo \$(cellranger csount --version 2>&1 | head -n 2 | tail -n 1 | sed 's/^.* //g' | sed 's/(//g' | sed 's/)//g' ))
+        cellranger:  \$(echo \$(cellranger count --version 2>&1 | head -n 2 | tail -n 1 | sed 's/^.* //g' | sed 's/(//g' | sed 's/)//g' ))
         universc:  \$(echo \$(bash /universc/launch_universc.sh --version | grep version | grep universc  | sed 's/^.* //g' ))
     END_VERSIONS
     """
