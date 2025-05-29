@@ -42,7 +42,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.outs[0][1].collect{
-                        file(it).name in ["_err", "_log"] ? file(it).name : it // _err is empty and _log is not stable
+                        file(it).name.find(/_err|_log|\.h5|\.bam/)
+                            ? file(it).name : it // _err is empty and others are not stable
                     },
                     process.out.versions
                 ).match() }
