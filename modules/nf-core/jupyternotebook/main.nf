@@ -1,5 +1,3 @@
-include { dump_params_yml; indent_code_block } from "./parametrize"
-
 process JUPYTERNOTEBOOK {
     tag "$meta.id"
     label 'process_low'
@@ -39,18 +37,18 @@ process JUPYTERNOTEBOOK {
     //  * allows to pass nested maps instead of just single values
     def params_cmd = ""
     def render_cmd = ""
+    def meta_string = meta.collect { key, value -> "${key}: ${value}" }.join('\n')
+    def params_string = parameters.collect { key, value -> "${key}: ${value}" }.join('\n')
     if (parametrize) {
-        nb_params = [:]
         if (implicit_params) {
-            nb_params["cpus"] = task.cpus
-            nb_params["artifact_dir"] = "artifacts"
-            nb_params["input_dir"] = "./"
+            params_cmd += 'echo cpus: ' + task.cpus + ' >> ./.params.yml \n'
+            params_cmd += 'echo "artifact_dir: artifacts"  >> ./.params.yml \n'
+            params_cmd += 'echo "input_dir: ./"  >> ./.params.yml \n'
         }
         if (meta_params) {
-            nb_params["meta"] = meta
+            params_cmd += 'echo "' + meta_string + '" >> ./.params.yml \n'
         }
-        nb_params += parameters
-        params_cmd = dump_params_yml(nb_params)
+        params_cmd += 'echo "' + params_string + '" >> ./.params.yml'
         render_cmd = "papermill -f .params.yml"
     } else {
         render_cmd = "papermill"
@@ -58,8 +56,8 @@ process JUPYTERNOTEBOOK {
     """
     set -o pipefail
 
-    # Dump .params.yml heredoc (section will be empty if parametrization is disabled)
-    ${indent_code_block(params_cmd, 4)}
+    # write .params.yml file if required
+    $params_cmd
 
     # Create output directory
     mkdir artifacts
@@ -69,6 +67,9 @@ process JUPYTERNOTEBOOK {
     export OPENBLAS_NUM_THREADS="$task.cpus"
     export OMP_NUM_THREADS="$task.cpus"
     export NUMBA_NUM_THREADS="$task.cpus"
+
+    # Set temporary directory to remove warning about Matplotlib creating temporary directory
+    export MPLCONFIGDIR=./tmp
 
     # Convert notebook to ipynb using jupytext, execute using papermill, convert using nbconvert
     jupytext --to notebook --output - --set-kernel ${kernel} ${notebook} > ${notebook}.ipynb
@@ -97,5 +98,45 @@ process JUPYTERNOTEBOOK {
         nbconvert: \$(jupyter nbconvert --version)
         papermill: \$(papermill --version | cut -f1 -d' ')
     END_VERSIONS
+    """
+}
+
+/**
+ * Multiline code blocks need to have the same indentation level
+ * as the `script:` section. This function re-indents code to the specified level.
+ */
+def indent_code_block(code, n_spaces) {
+    def indent_str = " ".multiply(n_spaces)
+    return code.stripIndent().split("\n").join("\n" + indent_str)
+}
+
+/**
+ * Create a config YAML file from a groovy map
+ *
+ * @params task The process' `task` variable
+ * @returns a line to be inserted in the bash script.
+ */
+def dump_params_yml(params) {
+    def options = new org.yaml.snakeyaml.DumperOptions();
+    options.setDefaultFlowStyle(org.yaml.snakeyaml.DumperOptions.FlowStyle.BLOCK);
+
+    // Properly handle Groovy GStrings
+    // see https://stackoverflow.com/a/35108062/2340703
+    def representer = new org.yaml.snakeyaml.representer.Representer() {{
+        this.multiRepresenters.put(GString, this.representers.get(String))
+    }}
+
+    def yaml = new org.yaml.snakeyaml.Yaml(representer, options)
+    def yaml_str = yaml.dump(params)
+
+    // Writing the .params.yml file directly as follows does not work.
+    // It only works in 'exec:', but not if there is a `script:` section:
+    // task.workDir.resolve('.params.yml').text = yaml_str
+
+    // Therefore, we inject it into the bash script:
+    return """\
+        cat <<"END_PARAMS_SECTION" > ./.params.yml
+        ${indent_code_block(yaml_str, 8)}
+        END_PARAMS_SECTION
     """
 }

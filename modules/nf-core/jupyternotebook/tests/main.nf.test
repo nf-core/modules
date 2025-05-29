@@ -17,8 +17,8 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [[id:'test_jupyter'],// meta map
-                    file(params.modules_testdata_base_path + 'generic/notebooks/jupyter/ipython_notebook.md',checkIfExists:true)]
+                input[0] = [[id:'test_jupyter'],
+                    file(params.modules_testdata_base_path + 'generic/notebooks/jupyter/ipython_notebook.md', checkIfExists:true)]
                 input[1] = [:]
                 input[2] = []
                 """
@@ -40,10 +40,10 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [[id:'test_jupyter'],// meta map
-                    file(params.modules_testdata_base_path + 'generic/notebooks/jupyter/ipython_notebook.md',checkIfExists:true)]
-                input[1] = [input_filename:"hello.txt",n_iter:12]
-                input[2] = file(params.modules_testdata_base_path + 'generic/txt/hello.txt',checkIfExists:true)
+                input[0] = [[id:'test_jupyter'],
+                    file(params.modules_testdata_base_path + 'generic/notebooks/jupyter/ipython_notebook.md', checkIfExists:true)]
+                input[1] = [input_filename:"hello.txt", n_iter:12]
+                input[2] = file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists:true)
                 """
             }
         }
@@ -64,10 +64,10 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [[id:'test_jupyter'],// meta map
-                    file(params.modules_testdata_base_path + 'generic/notebooks/jupyter/ipython_notebook.ipynb',checkIfExists:true)]
-                input[1] = [input_filename:"hello.txt",n_iter:12]
-                input[2] = file(params.modules_testdata_base_path + 'generic/txt/hello.txt',checkIfExists:true)
+                input[0] = [[id:'test_jupyter'],
+                    file(params.modules_testdata_base_path + 'generic/notebooks/jupyter/ipython_notebook.ipynb', checkIfExists:true)]
+                input[1] = [input_filename:"hello.txt", n_iter:12]
+                input[2] = file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists:true)
                 """
             }
         }
@@ -89,8 +89,8 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [[id:'test_jupyter'],// meta map
-                    file(params.modules_testdata_base_path + 'generic/notebooks/jupyter/ipython_notebook.md',checkIfExists:true)]
+                input[0] = [[id:'test_jupyter'],
+                    file(params.modules_testdata_base_path + 'generic/notebooks/jupyter/ipython_notebook.md', checkIfExists:true)]
                 input[1] = [:]
                 input[2] = []
                 """
