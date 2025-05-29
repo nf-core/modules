@@ -3,7 +3,7 @@ description: mutational signature deconvolution of cancer cells
 keywords:
   - mutational signatures
   - SBS
-  - tsv
+  - bs genome reference
 tools:
   - sparsesignatures:
       description: SparseSignatures is an R-based computational framework which performs
@@ -14,6 +14,18 @@ tools:
       doi: "10.1371/journal.pcbi.1009119"
       licence: ["Apache-2.0"]
       identifier: biotools:sparsesignatures
+  - bsgenome.hsapiens.1000genomes.hs37d5:
+      description: Reference Genome Sequence (hs37d5), based on NCBI GRCh37
+      documentation: https://bioconductor.org/packages/3.8/data/annotation/html/BSgenome.Hsapiens.1000genomes.hs37d5.html
+      doi: "10.1038/s41467-022-29271-y"
+      licence: ["Artistic-2.0"]
+      identifier: biotools:bsgenome.hsapiens.1000genomes.hs37d5
+  - bsgenome.hsapiens.ucsc.hg38:
+      description: Full genomic sequences for Homo sapiens (UCSC genome hg38)
+      documentation: https://bioconductor.org/packages/3.16/data/annotation/html/BSgenome.Hsapiens.UCSC.hg38.html
+      doi: "10.18129/B9.bioc.BSgenome.Hsapiens.UCSC.hg38"
+      licence: ["Artistic-2.0"]
+      identifier: biotools:bsgenome.hsapiens.ucsc.hg38
 input:
   - - meta:
         type: map
