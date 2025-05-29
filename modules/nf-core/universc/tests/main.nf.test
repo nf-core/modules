@@ -6,31 +6,19 @@ nextflow_process {
 
     tag "modules"
     tag "modules_nfcore"
-    tag "cellranger"
-    tag "cellranger/mkgtf"
-    tag "cellranger/mkref"
+    tag "untar"
     tag "universc"
 
     test("universc_10x") {
         setup {
-            run("CELLRANGER_MKGTF") {
-                script "../../cellranger/mkgtf/main.nf"
-
+            run("UNTAR") {
+                script "../../untar/main.nf"
                 process {
                     """
-                    input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf',checkIfExists:true)
-                    """
-                }
-            }
-
-            run("CELLRANGER_MKREF") {
-                script "../../cellranger/mkref/main.nf"
-
-                process {
-                    """
-                    input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',checkIfExists:true)
-                    input[1] = CELLRANGER_MKGTF.out.gtf
-                    input[2] = "homo_sapiens_chr22_reference"
+                    input[0] = [
+                        [id: "homo_sapiens_chr22_reference"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/universc/homo_sapiens_chr22_reference.tar.gz', checkIfExists:true)
+                    ]
                     """
                 }
             }
@@ -41,11 +29,11 @@ nextflow_process {
                 input[0] = [
                     [id:'123', technology:'10x', chemistry:'SC3Pv3', single_end:false, strandedness:'forward', samples:["test_10x"]],
                     [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R1_001.fastq.gz',checkIfExists:true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R2_001.fastq.gz',checkIfExists:true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R1_001.fastq.gz', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R2_001.fastq.gz', checkIfExists:true)
                     ]
                 ]
-                input[1] = CELLRANGER_MKREF.out.reference
+                input[1] = UNTAR.out.untar
                 """
             }
         }

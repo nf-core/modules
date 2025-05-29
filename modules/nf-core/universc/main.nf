@@ -36,6 +36,7 @@ process UNIVERSC {
     def sample_arg     = meta.samples.unique().join(",")
     def reference_name = reference.name
     """
+    export PYTHON_EGG_CACHE=\$(pwd)/.cache
     universc \\
         --id 'sample-${meta.id}' \\
         ${input_reads} \\
@@ -50,7 +51,6 @@ process UNIVERSC {
         ${args} 1> _log 2> _err
 
     # save log files
-    mkdir sample-${meta.id}/outs/
     echo !! > sample-${meta.id}/outs/_invocation
     cp _log sample-${meta.id}/outs/_log
     cp _err sample-${meta.id}/outs/_err
@@ -70,9 +70,30 @@ process UNIVERSC {
     }
     """
     mkdir -p sample-${meta.id}/outs/
-    touch sample-${meta.id}/outs/_invocation
-    touch sample-${meta.id}/outs/_log
-    touch sample-${meta.id}/outs/_err
+    cd sample-${meta.id}/outs/
+
+    touch _invocation
+    touch _log
+    touch _err
+
+    touch basic_stats.txt
+    touch metrics_summary.csv
+    touch molecule_info.h5
+    touch possorted_genome_bam.bam
+    touch possorted_genome_bam.bam.bai
+    touch web_summary.html
+
+    mkdir -p filtered_feature_bc_matrix
+    touch filtered_feature_bc_matrix.h5
+    echo | gzip > filtered_feature_bc_matrix/barcodes.tsv.gz
+    echo | gzip > filtered_feature_bc_matrix/features.tsv.gz
+    echo | gzip > filtered_feature_bc_matrix/matrix.mtx.gz
+
+    mkdir -p raw_feature_bc_matrix
+    touch raw_feature_bc_matrix.h5
+    echo | gzip > raw_feature_bc_matrix/barcodes.tsv.gz
+    echo | gzip > raw_feature_bc_matrix/features.tsv.gz
+    echo | gzip > raw_feature_bc_matrix/matrix.mtx.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
