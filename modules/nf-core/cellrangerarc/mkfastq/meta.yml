@@ -33,21 +33,21 @@ input:
         description: Sample sheet
         pattern: "*.csv"
 output:
+  - fastq:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/outs/fastq_path/*.fastq.gz:
+          type: file
+          description: Unaligned FastQ files
+          pattern: "${prefix}/outs/fastq_path/*.fastq.gz"
   - versions:
       - versions.yml:
           type: file
           description: File containing software version
           pattern: "versions.yml"
-  - fastq:
-      - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
-      - ${prefix}/outs/fastq_path/*.fastq.gz:
-          type: file
-          description: Unaligned FastQ files
-          pattern: "*.fastq.gz"
 authors:
   - "@ggabernet"
   - "@edmundmiller"
