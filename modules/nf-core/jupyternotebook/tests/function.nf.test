@@ -1,0 +1,70 @@
+nextflow_function {
+
+    name "Test functions for JUPYTERNOTEBOOK"
+    script "../parametrize.nf"
+
+    tag "functions"
+    tag "functions_nfcore"
+
+    test("indent_code_block - 4 spaces") {
+        function "indent_code_block"
+        when {
+            function {
+                """
+                input[0] = "This is a test\\n\\n```python\\nprint('Hello World')\\n```\\n\\nAnd some more text."
+                input[1] = 4
+                """
+            }
+        }
+        then {
+            assert function.success
+            assert function.result == 'This is a test\n    \n    ```python\n    print(\'Hello World\')\n    ```\n    \n    And some more text.'
+        }
+    }
+
+    test("indent_code_block - 1 space") {
+        function "indent_code_block"
+        when {
+            function {
+                """
+                input[0] = "This is a test\\n\\n```python\\nprint('Hello World')\\n```\\n\\nAnd some more text."
+                input[1] = 1
+                """
+            }
+        }
+        then {
+            assert function.success
+            assert function.result == 'This is a test\n \n ```python\n print(\'Hello World\')\n ```\n \n And some more text.'
+        }
+    }
+
+    test("dump_params_yml - simple params") {
+        function "dump_params_yml"
+        when {
+            function {
+                """
+                input[0] = [cpus: 4, input_dir: './', artifact_dir: 'artifacts']
+                """
+            }
+        }
+        then {
+            assert function.success
+            assert function.result == '        cat <<"END_PARAMS_SECTION" > ./.params.yml\n        cpus: 4\n        input_dir: ./\n        artifact_dir: artifacts\n        END_PARAMS_SECTION\n    '
+        }
+    }
+
+    test("dump_params_yml - complex params") {
+        function "dump_params_yml"
+        when {
+            function {
+                """
+                input[0] = [cpus: 4, input_dir: './', artifact_dir: 'artifacts', meta: [id: 'test', version: '1.0']]
+                """
+            }
+        }
+        then {
+            assert function.success
+            assert function.result == '        cat <<"END_PARAMS_SECTION" > ./.params.yml\n        cpus: 4\n        input_dir: ./\n        artifact_dir: artifacts\n        meta:\n          id: test\n          version: \'1.0\'\n        END_PARAMS_SECTION\n    '
+        }
+    }
+}

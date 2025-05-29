@@ -26,12 +26,12 @@ process JUPYTERNOTEBOOK {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def _args  = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def parametrize = (task.ext.parametrize == null) ?  true : task.ext.parametrize
     def implicit_params = (task.ext.implicit_params == null) ? true : task.ext.implicit_params
     def meta_params = (task.ext.meta_params == null) ? true : task.ext.meta_params
-    def kernel   = task.ext.kernel ?: '-'
+    def kernel = task.ext.kernel ?: '-'
 
     // Dump parameters to yaml file.
     // Using a yaml file over using the CLI params because
@@ -76,6 +76,20 @@ process JUPYTERNOTEBOOK {
     ${render_cmd} ${notebook}.ipynb ${notebook}.executed.ipynb
     jupyter nbconvert --stdin --to html --output ${prefix}.html < ${notebook}.executed.ipynb
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        jupytext: \$(jupytext --version)
+        ipykernel: \$(python -c "import ipykernel; print(ipykernel.__version__)")
+        nbconvert: \$(jupyter nbconvert --version)
+        papermill: \$(papermill --version | cut -f1 -d' ')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.html
+    mkdir artifacts
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         jupytext: \$(jupytext --version)

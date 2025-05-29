@@ -1,8 +1,3 @@
-import org.yaml.snakeyaml.Yaml
-import org.yaml.snakeyaml.representer.Representer
-import org.yaml.snakeyaml.DumperOptions
-
-
 /**
  * Multiline code blocks need to have the same indentation level
  * as the `script:` section. This function re-indents code to the specified level.
@@ -19,16 +14,15 @@ def indent_code_block(code, n_spaces) {
  * @returns a line to be inserted in the bash script.
  */
 def dump_params_yml(params) {
-    DumperOptions options = new DumperOptions();
-    options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+    def options = new org.yaml.snakeyaml.DumperOptions()
+    options.setDefaultFlowStyle(org.yaml.snakeyaml.DumperOptions.FlowStyle.BLOCK)
 
     // Properly handle Groovy GStrings
     // see https://stackoverflow.com/a/35108062/2340703
-    def representer = new Representer() {{
-        this.multiRepresenters.put(GString, this.representers.get(String))
-    }}
+    def representer = new org.yaml.snakeyaml.representer.Representer(options)
+    representer.representers.put(GString, representer.representers.get(String))
 
-    def yaml = new Yaml(representer, options)
+    def yaml = new org.yaml.snakeyaml.Yaml(representer, options)
     def yaml_str = yaml.dump(params)
 
     // Writing the .params.yml file directly as follows does not work.
