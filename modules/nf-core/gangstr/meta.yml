@@ -55,10 +55,20 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.vcf":
+      - "*.vcf.gz":
           type: file
           description: The resulting VCF file containing the genotypes
-          pattern: "*.vcf"
+          pattern: "*.vcf.gz"
+  - index:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf.gz.tbi":
+          type: file
+          description: The resulting index of the VCF file containing the genotypes
+          pattern: "*.vcf.gz.tbi"
   - samplestats:
       - meta:
           type: map
