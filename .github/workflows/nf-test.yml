@@ -92,6 +92,7 @@ jobs:
     runs-on:
       - runs-on=${{ github.run_id }}
       - runner=4cpu-linux-${{ matrix.arch }}
+      - image=ubuntu24-full-${{ matrix.arch }}
     name: "${{ matrix.arch }} | ${{ matrix.profile }} | ${{ matrix.shard }}"
     needs: [nf-test-changes]
     if: ${{ needs.nf-test-changes.outputs.total_shards != '0' }}
