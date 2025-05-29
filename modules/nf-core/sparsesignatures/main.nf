@@ -1,6 +1,6 @@
 process SPARSE_SIGNATURES {
     tag "$meta.id"
-    label "process_long"
+    label "process_low_long"
     label "error_retry"
     
     conda "${moduleDir}/environment.yml"
