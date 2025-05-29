@@ -18,9 +18,9 @@ process JUPYTERNOTEBOOK {
     path input_files
 
     output:
-    tuple val(meta), path("*.html"), emit: report
+    tuple val(meta), path("*.html")    , emit: report
     tuple val(meta), path("artifacts/"), emit: artifacts, optional: true
-    path "versions.yml"            , emit: versions
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
