@@ -25,33 +25,28 @@ workflow FASTA_INDEX_DNA {
     // Handle different aligners using conditional logic
     if (val_aligner == 'bowtie2') {
         BOWTIE2_BUILD(ch_fasta)
-        ch_aligner_index = ch_aligner_index.mix(BOWTIE2_BUILD.out.index)
-        ch_versions = ch_versions.mix(BOWTIE2_BUILD.out.versions)
+        ch_aligner_index = BOWTIE2_BUILD.out.index
+        ch_versions = BOWTIE2_BUILD.out.versions
     } else if (val_aligner == 'bwamem') {
         BWAMEM1_INDEX(ch_fasta)
 
-        // using index_ inside the map else nf-test collects full file paths
-        ch_aligner_index = ch_aligner_index
-            .mix(
-                BWAMEM1_INDEX.out.index
-                .join(ch_altliftover)
-                .map { meta, index_, alt -> [meta, index_ + alt] }
-            )
-        ch_versions = ch_versions.mix(BWAMEM1_INDEX.out.versions)
+        // returning the alt file next to the index, not inside the folder
+        ch_aligner_index = BWAMEM1_INDEX.out.index
+            .join(ch_altliftover)
+            .map { meta, index, alt -> [meta, [index, alt] ] }
+        ch_versions = BWAMEM1_INDEX.out.versions
     } else if (val_aligner == 'bwamem2') {
         BWAMEM2_INDEX(ch_fasta)
-        // using index_ inside the map else nf-test collects full file paths
-        ch_aligner_index = ch_aligner_index
-            .mix(
-                BWAMEM2_INDEX.out.index
-                .join(ch_altliftover)
-                .map { meta, index_, alt -> [meta, index_ + alt] }
-            )
-        ch_versions = ch_versions.mix(BWAMEM2_INDEX.out.versions)
+        // returning the alt file next to the index, not inside the folder
+        ch_aligner_index = BWAMEM2_INDEX.out.index
+            .join(ch_altliftover)
+            .map { meta, index, alt -> [meta, [index, alt] ] }
+
+        ch_versions = BWAMEM2_INDEX.out.versions
     } else if (val_aligner == 'dragmap') {
         DRAGMAP_HASHTABLE(ch_fasta)
-        ch_aligner_index = ch_aligner_index.mix(DRAGMAP_HASHTABLE.out.hashmap)
-        ch_versions = ch_versions.mix(DRAGMAP_HASHTABLE.out.versions)
+        ch_aligner_index = DRAGMAP_HASHTABLE.out.hashmap
+        ch_versions = DRAGMAP_HASHTABLE.out.versions
     } else if (val_aligner == 'snap') {
         ch_snap_reference = ch_fasta
             .join(ch_altliftover)
