@@ -23,9 +23,9 @@ process EARLGREY {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    earlgrey \\
+    earlGrey \\
         $args \\
-        -i $genome \\
+        -g $genome \\
         -s ${prefix} \\
         -t $task.cpus \\
         -o ${prefix}
