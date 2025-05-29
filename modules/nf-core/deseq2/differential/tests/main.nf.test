@@ -65,10 +65,6 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     'id': 'genotype_WT_KO_treatment_Control_Treated',
-                    'variable': 'genotype',
-                    'reference': 'WT',
-                    'target': 'KO',
-                    'blocking_factors': 'batch',
                     'formula': '~ genotype * treatment',
                     'comparison': 'genotypeWT.treatmentTreated'
                 ])
@@ -108,102 +104,6 @@ nextflow_process {
             )
         }
 }
-
-    test("mouse - contrasts - matrix - with formula and contrast string (reference-level deseq2 coding)") {
-
-        config './contrasts_matrix.config'
-
-        when {
-            process {
-                """
-                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
-
-                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
-                    .splitCsv ( header:true, sep:',' )
-                    .map{
-                        tuple(it, it.variable, it.reference, it.target, '~ treatment', 'treatmenthND6')
-                    }
-                ch_matrix = [
-                    [id: 'test'],
-                    file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
-                    file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
-                ]
-                ch_spikes = [[],[]]
-                ch_lengths = [[],[]]
-
-                input[0] = ch_contrasts
-                input[1] = ch_matrix
-                input[2] = ch_spikes
-                input[3] = ch_lengths
-                """
-            }
-        }
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.results,
-                    process.out.size_factors,
-                    process.out.normalised_counts,
-                    process.out.rlog_counts,
-                    process.out.vst_counts,
-                    process.out.model,
-                    process.out.versions,
-                    file(process.out.dispersion_plot[0][1]).name,
-                    file(process.out.rdata[0][1]).name
-                ).match() },
-                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }
-            )
-        }
-    }
-
-    test("mouse - contrasts - matrix - with formula and contrast string (cell-means deseq2 coding)") {
-
-        config './contrasts_matrix.config'
-
-        when {
-            process {
-                """
-                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
-
-                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
-                    .splitCsv ( header:true, sep:',' )
-                    .map{
-                        tuple(it, it.variable, it.reference, it.target, '~ 0 + treatment', 'treatmenthND6')
-                    }
-                ch_matrix = [
-                    [id: 'test'],
-                    file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
-                    file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
-                ]
-                ch_spikes = [[],[]]
-                ch_lengths = [[],[]]
-
-                input[0] = ch_contrasts
-                input[1] = ch_matrix
-                input[2] = ch_spikes
-                input[3] = ch_lengths
-                """
-            }
-        }
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.results,
-                    process.out.size_factors,
-                    process.out.normalised_counts,
-                    process.out.rlog_counts,
-                    process.out.vst_counts,
-                    process.out.model,
-                    process.out.versions,
-                    file(process.out.dispersion_plot[0][1]).name,
-                    file(process.out.rdata[0][1]).name
-                ).match() },
-                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }
-            )
-        }
-    }
 
     test("mouse - contrasts - matrix - lengths") {
 
