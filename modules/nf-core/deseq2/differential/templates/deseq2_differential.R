@@ -149,12 +149,15 @@ if ( ! is.null(opt\$round_digits)){
 }
 
 # If there is no option supplied, convert string "null" to NULL
-keys <- c("formula", "contrast_string")
+keys <- c("formula", "contrast_string", "contrast_variable", "reference_level", "target_level")
 opt[keys] <- lapply(opt[keys], nullify)
 
 # Check if required parameters have been provided
-
-required_opts <- c('contrast_variable', 'reference_level', 'target_level', 'output_prefix')
+if (is_valid_string(opt\$formula)) {
+    required_opts <- c('output_prefix', 'contrast_string')
+} else {
+    required_opts <- c('contrast_variable', 'reference_level', 'target_level', 'output_prefix')
+}
 missing <- required_opts[!unlist(lapply(opt[required_opts], is_valid_string)) | !required_opts %in% names(opt)]
 
 if (length(missing) > 0){
@@ -235,48 +238,48 @@ if (length(missing_samples) > 0) {
 ## CHECK CONTRAST SPECIFICATION               ##
 ################################################
 ################################################
+if (! is_valid_string(opt\$formula)) {
+    contrast_variable <- make.names(opt\$contrast_variable)
+    blocking.vars <- c()
 
-contrast_variable <- make.names(opt\$contrast_variable)
-blocking.vars <- c()
-
-if (!contrast_variable %in% colnames(sample.sheet)) {
-    stop(
-        paste0(
-        'Chosen contrast variable \"',
-        contrast_variable,
-        '\" not in sample sheet'
-        )
-    )
-} else if (any(!c(opt\$reflevel, opt\$treatlevel) %in% sample.sheet[[contrast_variable]])) {
-    stop(
-        paste(
-        'Please choose reference and treatment levels that are present in the',
-        contrast_variable,
-        'column of the sample sheet'
-        )
-    )
-} else if (is_valid_string(opt\$blocking_variables)) {
-    blocking.vars = make.names(unlist(strsplit(opt\$blocking_variables, split = ';')))
-    if (!all(blocking.vars %in% colnames(sample.sheet))) {
-        missing_block <- paste(blocking.vars[! blocking.vars %in% colnames(sample.sheet)], collapse = ',')
+    if (!contrast_variable %in% colnames(sample.sheet)) {
         stop(
-            paste(
-                'Blocking variables', missing_block,
-                'do not correspond to sample sheet columns.'
+            paste0(
+            'Chosen contrast variable \"',
+            contrast_variable,
+            '\" not in sample sheet'
             )
         )
+    } else if (any(!c(opt\$reflevel, opt\$treatlevel) %in% sample.sheet[[contrast_variable]])) {
+        stop(
+            paste(
+            'Please choose reference and treatment levels that are present in the',
+            contrast_variable,
+            'column of the sample sheet'
+            )
+        )
+    } else if (is_valid_string(opt\$blocking_variables)) {
+        blocking.vars = make.names(unlist(strsplit(opt\$blocking_variables, split = ';')))
+        if (!all(blocking.vars %in% colnames(sample.sheet))) {
+            missing_block <- paste(blocking.vars[! blocking.vars %in% colnames(sample.sheet)], collapse = ',')
+            stop(
+                paste(
+                    'Blocking variables', missing_block,
+                    'do not correspond to sample sheet columns.'
+                )
+            )
+        }
     }
+
+    # Optionally, subset to only the samples involved in the contrast
+    if (opt\$subset_to_contrast_samples){
+        sample_selector <- sample.sheet[[contrast_variable]] %in% c(opt\$target_level, opt\$reference_level)
+        selected_samples <- sample.sheet[sample_selector, opt\$sample_id_col]
+        count.table <- count.table[, selected_samples]
+        sample.sheet <- sample.sheet[selected_samples, ]
+    }
+
 }
-
-# Optionally, subset to only the samples involved in the contrast
-
-if (opt\$subset_to_contrast_samples){
-    sample_selector <- sample.sheet[[contrast_variable]] %in% c(opt\$target_level, opt\$reference_level)
-    selected_samples <- sample.sheet[sample_selector, opt\$sample_id_col]
-    count.table <- count.table[, selected_samples]
-    sample.sheet <- sample.sheet[selected_samples, ]
-}
-
 # Optionally, remove samples with specified values in a given field (probably
 # don't use this as well as the above)
 
@@ -298,12 +301,12 @@ if ((is_valid_string(opt\$exclude_samples_col)) && (is_valid_string(opt\$exclude
 # Now specify the model. Use cell-means style so we can be explicit with the
 # contrasts
 
-if (!is.null(opt\$formula)) {
-    user_formula  <- as.formula(opt\$formula)
-    model_formula <- update(user_formula,  ~ 0 + .)
-    model  <- paste(as.character(model_formula), collapse = " ")
-    print(paste('Cell-means style model formula to be used', model))
-} else {
+    if (is_valid_string(opt\$formula)) {
+        message("Using user-specified formula: ", opt\$formula)
+        user_f  <- as.formula(opt\$formula)
+        model_f <- update(user_f, ~ 0 + .)
+        model   <- paste(as.character(model_f), collapse = " ")
+    }  else {
     model <- '~ 0'
 
     if (is_valid_string(opt\$blocking_variables)) {
@@ -321,6 +324,8 @@ if (!is.null(opt\$formula)) {
 
     model <- paste(model, contrast_variable, sep = ' + ')
 }
+message("Final design formula: ", model)
+
 ################################################
 ################################################
 ## Run DESeq2 processes                       ##
@@ -441,8 +446,14 @@ if (opt\$transcript_lengths_file != ''){
 ################################################
 ################################################
 
-contrast.name <-
-    paste(opt\$target_level, opt\$reference_level, sep = "_vs_")
+if (is_valid_string(opt\$contrast_string)) {
+    # in formula mode we require a --contrast_string
+    contrast.name <- opt\$contrast_string
+} else {
+    # default two-level mode
+    contrast.name <- paste(opt\$target_level, opt\$reference_level, sep = "_vs_")
+}
+
 cat("Saving results for ", contrast.name, " ...\n", sep = "")
 
 # Differential expression table- note very limited rounding for consistency of
