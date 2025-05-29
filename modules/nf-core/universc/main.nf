@@ -16,9 +16,10 @@ process UNIVERSC {
     input:
     tuple val(meta), path(reads)
     tuple val(meta2), path(reference)
+    val(technology)
 
     output:
-    tuple val(meta), path("sample-${meta.id}/outs/*"), emit: outs
+    tuple val(meta), path("sample-${prefix}/outs/*"), emit: outs
     path "versions.yml"                              , emit: versions
 
     when:
@@ -30,19 +31,17 @@ process UNIVERSC {
         error "UNIVERSC module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args        = task.ext.args   ?: ''
+    prefix          = task.ext.prefix ?: "${meta.id}"
     def input_reads = meta.single_end ? "--file $reads" : "-R1 ${reads[0]} -R2 ${reads[1]}"
 
-    def sample_arg     = meta.samples.unique().join(",")
     def reference_name = reference.name
     """
     export PYTHON_EGG_CACHE=\$(pwd)/.cache
     universc \\
-        --id 'sample-${meta.id}' \\
+        --id 'sample-${prefix}' \\
         ${input_reads} \\
-        --technology '${meta.technology}' \\
-        --chemistry '${meta.chemistry}' \\
+        --technology ${technology} \\
         --reference ${reference_name} \\
-        --description ${sample_arg} \\
         --jobmode "local" \\
         --localcores ${task.cpus} \\
         --localmem ${task.memory.toGiga()} \\
@@ -50,9 +49,9 @@ process UNIVERSC {
         ${args} 1> _log 2> _err
 
     # save log files
-    echo !! > sample-${meta.id}/outs/_invocation
-    cp _log sample-${meta.id}/outs/_log
-    cp _err sample-${meta.id}/outs/_err
+    echo !! > sample-${prefix}/outs/_invocation
+    cp _log sample-${prefix}/outs/_log
+    cp _err sample-${prefix}/outs/_err
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -67,9 +66,12 @@ process UNIVERSC {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "UNIVERSC module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
+
+    prefix = task.ext.prefix ?: "${meta.id}"
+
     """
-    mkdir -p sample-${meta.id}/outs/
-    cd sample-${meta.id}/outs/
+    mkdir -p sample-${prefix}/outs/
+    cd sample-${prefix}/outs/
 
     touch _invocation
     touch _log

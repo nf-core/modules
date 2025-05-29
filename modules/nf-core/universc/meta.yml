@@ -23,7 +23,7 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false, samples: ['sample1', 'sample2'], technology:'10x', chemistry:'SC3Pv3', strandedness:'forward'  ]
+          e.g. [ id:'test', single_end:false ]
     - reads:
         type: file
         description: FASTQ or FASTQ.GZ file, list of 2 files for paired-end data
@@ -38,6 +38,9 @@ input:
     - reference:
         type: file
         description: Reference genome file
+  - - technology:
+        type: string
+        description: Technology to pass to universc `--technology argument`
 output:
   - outs:
       - meta:
@@ -45,10 +48,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - sample-${meta.id}/outs/*:
+      - sample-${prefix}/outs/*:
           type: file
           description: Files containing the outputs of Cell Ranger
-          pattern: "sample-${meta.id}/outs/*"
+          pattern: "sample-${prefix}/outs/*"
   - versions:
       - versions.yml:
           type: file

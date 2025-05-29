@@ -2,6 +2,7 @@ nextflow_process {
 
     name "Test Process UNIVERSC"
     script "../main.nf"
+    config "./nextflow.config"
     process "UNIVERSC"
 
     tag "modules"
@@ -24,16 +25,20 @@ nextflow_process {
             }
         }
         when {
+            params {
+                universc_args = "--chemistry 'SC3Pv3' --description test_10x"
+            }
             process {
                 """
                 input[0] = [
-                    [id:'123', technology:'10x', chemistry:'SC3Pv3', single_end:false, strandedness:'forward', samples:["test_10x"]],
+                    [ id:'test', single_end:false ],
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R1_001.fastq.gz', checkIfExists:true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R2_001.fastq.gz', checkIfExists:true)
                     ]
                 ]
                 input[1] = UNTAR.out.untar
+                input[2] = "10x"
                 """
             }
         }
@@ -54,18 +59,21 @@ nextflow_process {
 
     test("universc_10x -- stub") {
         options '-stub'
-        tag "stub"
         when {
+            params {
+                universc_args = ""
+            }
             process {
                 """
                 input[0] = [
-                    [id:'123', technology:'10x', chemistry:'SC3Pv3', single_end:false, strandedness:'forward', samples:["test_10x"]],
+                    [id:'test', single_end:false ],
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R1_001.fastq.gz',checkIfExists:true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R2_001.fastq.gz',checkIfExists:true)
                     ]
                 ]
                 input[1] = [[], []]
+                input[2] = [[]]
                 """
             }
         }
