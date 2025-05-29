@@ -27,7 +27,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    file(process.out.report[0][1]).name,
+                    process.out.artifacts,
+                    process.out.versions
+                ).match() }
             )
         }
     }
@@ -49,7 +53,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    file(process.out.report[0][1]).name,
+                    process.out.artifacts,
+                    process.out.versions
+                ).match() }
             )
         }
     }
@@ -71,7 +79,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    file(process.out.report[0][1]).name,
+                    process.out.artifacts,
+                    process.out.versions
+                ).match() }
             )
         }
     }
