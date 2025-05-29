@@ -1,0 +1,58 @@
+nextflow_process {
+
+    name "Test Process GRIDSS_SOMATICFILTER"
+    script "../main.nf"
+    process "GRIDSS_SOMATICFILTER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gridss"
+    tag "gridss/somaticfilter"
+
+    test("human - vcf") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/vcf/gridss.somatic.vcf', checkIfExists: true)
+                        ]
+                input[1] = [ [], [] ] // pondir
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("human - vcf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/vcf/gridss.somatic.vcf', checkIfExists: true)
+                        ]
+                input[1] = [ [], [] ] // pondir
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

@@ -4,15 +4,16 @@ process BISCUIT_QC {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/biscuit:1.1.0.20220707--he272189_1':
-        'biocontainers/biscuit:1.1.0.20220707--he272189_1' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/33/33a9ca30b4154f11253c8d91a75382065dcb8282ba99b74dbee59ed8faceabd7/data':
+        'community.wave.seqera.io/library/biscuit:1.5.0.20240506--ca92d9d0a37b5fa8' }"
 
     input:
     tuple val(meta), path(bam)
-    path(index)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(index)
 
     output:
-    tuple val(meta), path("*.txt"), emit: biscuit_qc_reports
+    tuple val(meta), path("*.txt"), emit: reports
     path "versions.yml"           , emit: versions
 
     when:
@@ -23,12 +24,12 @@ process BISCUIT_QC {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def se = meta.single_end ? "-s" : ""
     """
-    INDEX=`find -L ./ -name "*.bis.amb" | sed 's/\\.bis.amb\$//'`
+    ln -sf \$(readlink $fasta) $index/$fasta
 
     biscuit qc \\
         $args \\
         $se \\
-        \$INDEX \\
+        $index/$fasta \\
         $bam \\
         $prefix
 

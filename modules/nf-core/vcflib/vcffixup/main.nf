@@ -4,8 +4,8 @@ process VCFLIB_VCFFIXUP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vcflib:1.0.3--hecb563c_1':
-        'biocontainers/vcflib:1.0.3--hecb563c_1' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/61/61442a6401d3dad42fc9645a00a4575420d306d345a9e9d694d031cf1b3f383f/data':
+        'community.wave.seqera.io/library/vcflib:1.0.12--2281750e7717b014' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
@@ -20,7 +20,7 @@ process VCFLIB_VCFFIXUP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.0.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '1.0.12' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     vcffixup \\
@@ -34,7 +34,7 @@ process VCFLIB_VCFFIXUP {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.0.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '1.0.12' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.fixup.vcf.gz
 

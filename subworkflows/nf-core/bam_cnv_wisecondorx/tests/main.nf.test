@@ -1,0 +1,56 @@
+nextflow_workflow {
+
+    name "Test Workflow BAM_CNV_WISECONDORX"
+
+    script "../main.nf"
+    workflow "BAM_CNV_WISECONDORX"
+    tag "subworkflows_nfcore"
+    tag "subworkflows"
+    tag "subworkflows/bam_cnv_wisecondorx"
+    tag "bam_cnv_wisecondorx"
+
+    tag "wisecondorx"
+    tag "wisecondorx/convert"
+    tag "wisecondorx/predict"
+
+    test("sarscov2 - bam bai - fasta - fai - reference - blacklist -- stub") {
+        options "-stub" // A reference can't be created on the test scale.
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam.bai', checkIfExists:true)
+                ]
+                input[1] = [
+                    [id:'fasta'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
+                ]
+                input[2] = [
+                    [id:'fai'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists:true)
+                    ]
+                input[3] = [
+                    [id:'wc_reference'],
+                    [] // A reference can't be created on the test scale. This should be given when running full tests of the subwf
+                ]
+                input[4] = [
+                    [id:'blacklist'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out,
+                    path(workflow.out.versions[0]).yaml,
+                    path(workflow.out.versions[1]).yaml
+                ).match() }
+            )
+        }
+    }
+}

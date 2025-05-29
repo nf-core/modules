@@ -92,7 +92,8 @@ opt <- list(
     adjust.method = "BH",        # topTable
     p.value = 1,                 # topTable
     lfc = 0,                     # topTable
-    confint = FALSE              # topTable
+    confint = FALSE ,            # topTable
+    round_digits = NULL
 )
 opt_types <- lapply(opt, class)
 
@@ -110,6 +111,9 @@ for ( ao in names(args_opt)){
         }
         opt[[ao]] <- args_opt[[ao]]
     }
+}
+if ( ! is.null(opt\$round_digits)){
+    opt\$round_digits <- as.numeric(opt\$round_digits)
 }
 
 # Check if required parameters have been provided
@@ -231,6 +235,20 @@ if (!contrast_variable %in% colnames(sample.sheet)) {
         )
     }
 }
+
+# Handle conflicts between blocking variables and block
+if (!is.null(opt\$block) && !is.null(opt\$blocking_variables)) {
+    if (opt\$block %in% blocking.vars) {
+        warning(paste("Variable", opt\$block, "is specified both as a fixed effect and a random effect. It will be treated as a random effect only."))
+        blocking.vars <- setdiff(blocking.vars, opt\$block)
+        if (length(blocking.vars) == 0) {
+            opt\$blocking_variables <- NULL
+        } else {
+            opt\$blocking_variables <- paste(blocking.vars, collapse = ';')
+        }
+    }
+}
+
 # Optionally, subset to only the samples involved in the contrast
 
 if (opt\$subset_to_contrast_samples){
@@ -316,11 +334,25 @@ if (!is.null(opt\$use_voom) && opt\$use_voom) {
     dge <- calcNormFactors(dge, method = "TMM")
 
     # Run voom to transform the data
-    voom_result <- voom(dge, design)
-    data_for_fit <- voom_result
+    data_for_fit <- voom(dge, design)
+} else {
+    # Use as.matrix for regular microarray analysis
+    data_for_fit <- as.matrix(intensities.table)
+}
 
-    # Write the normalized counts matrix to a TSV file
-    normalized_counts <- voom_result\$E
+if (!is.null(opt\$block)) {
+    corfit = duplicateCorrelation(data_for_fit, design = design, block = sample.sheet[[opt\$block]])
+    if (!is.null(opt\$use_voom) && opt\$use_voom) {
+        data_for_fit <- voom(counts = dge, design = design, plot = FALSE, correlation = corfit\$consensus.correlation)
+    }
+}
+
+# For Voom, write the normalized counts matrix to a TSV file
+if (!is.null(opt\$use_voom) && opt\$use_voom) {
+    normalized_counts <- data_for_fit\$E
+    if (! is.null(opt\$round_digits)){
+        normalized_counts <- apply(normalized_counts, 2, function(x) round(x, opt\$round_digits))
+    }
     normalized_counts_with_genes <- data.frame(Gene = rownames(normalized_counts), normalized_counts, row.names = NULL)
     colnames(normalized_counts_with_genes)[1] <- opt\$probe_id_col
     write.table(normalized_counts_with_genes,
@@ -328,10 +360,6 @@ if (!is.null(opt\$use_voom) && opt\$use_voom) {
         sep = "\t",
         quote = FALSE,
         row.names = FALSE)
-
-} else {
-    # Use as.matrix for regular microarray analysis
-    data_for_fit <- as.matrix(intensities.table)
 }
 
 # Prepare for and run lmFit()
@@ -353,6 +381,8 @@ if (! is.null(opt\$block)){
 }
 if (! is.null(opt\$correlation)){
     lmfit_args[['correlation']] <- as.numeric(opt\$correlation)
+} else if (! is.null(opt\$block)){
+    lmfit_args[['correlation']] <- corfit\$consensus.correlation
 }
 if (! is.null(opt\$method)){
     lmfit_args[['method']] <- opt\$method
@@ -452,6 +482,9 @@ cat("Saving results for ", contrast.name, " ...\n", sep = "")
 # Differential expression table - note very limited rounding for consistency of
 # results
 
+if (! is.null(opt\$round_digits)){
+    comp.results <- apply(data.frame(comp.results), 2, function(x) round(x, opt\$round_digits))
+}
 out_df <- cbind(
     setNames(data.frame(rownames(comp.results)), opt\$probe_id_col),
     data.frame(comp.results[, !(colnames(comp.results) %in% opt\$probe_id_col)], check.names = FALSE)

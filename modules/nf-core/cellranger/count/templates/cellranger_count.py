@@ -21,7 +21,7 @@ sample_id = "${meta.id}"
 
 # get fastqs, ordered by path. Files are staged into
 #   - "fastq_001/{original_name.fastq.gz}"
-#   - "fastq_002/{oritinal_name.fastq.gz}"
+#   - "fastq_002/{original_name.fastq.gz}"
 #   - ...
 # Since we require fastq files in the input channel to be ordered such that a R1/R2 pair
 # of files follows each other, ordering will get us a sequence of [R1, R2, R1, R2, ...]

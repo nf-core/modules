@@ -9,27 +9,34 @@ nextflow_process {
     tag "biscuit/index"
     tag "biscuit/mergecg"
 
-    test("sars_cov_bed") {
-
-        setup {
+    setup {
             run("BISCUIT_INDEX") {
                 script "../../index/main.nf"
                 process {
                     """
-                    input[0] = file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+                    input[0] = Channel.of([
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ])
                     """
                 }
             }
         }
+
+    test("sarscov2 cov [bed]") {
+
         when {
             process {
                 """
-                input[0] = [
+                input[0] = Channel.of([
                             [ id:'test', single_end:false ], // meta map
                             file(params.modules_testdata_base_path + "delete_me/biscuit/test-cg.bed.gz", checkIfExists: true)
-                        ]
-
-                input[1] = BISCUIT_INDEX.out.index
+                ])
+                input[1] = Channel.of([
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = BISCUIT_INDEX.out.index
                 """
             }
         }
@@ -43,27 +50,21 @@ nextflow_process {
 
     }
 
-    test("sars_cov_bed -stub") {
+    test("sarscov2 cov [bed] - stub") {
         options "-stub"
-        setup {
-            run("BISCUIT_INDEX") {
-                script "../../index/main.nf"
-                process {
-                    """
-                    input[0] = file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
-                    """
-                }
-            }
-        }
+
         when {
             process {
                 """
-                input[0] = [
+                input[0] = Channel.of([
                             [ id:'test', single_end:false ], // meta map
                             file(params.modules_testdata_base_path + "delete_me/biscuit/test-cg.bed.gz", checkIfExists: true)
-                        ]
-
-                input[1] = BISCUIT_INDEX.out.index
+                ])
+                input[1] = Channel.of([
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = BISCUIT_INDEX.out.index
                 """
             }
         }

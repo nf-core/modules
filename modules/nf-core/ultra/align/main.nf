@@ -9,8 +9,8 @@ process ULTRA_ALIGN {
 
     input:
     tuple val(meta), path(reads)
-    path genome
-    tuple path(pickle), path(db)
+    tuple val(meta2), path(genome)
+    tuple val(meta3), path(pickle), path(db)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
@@ -20,8 +20,8 @@ process ULTRA_ALIGN {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
+    def args   = task.ext.args   ?: ''
+    def args2  = task.ext.args2  ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     uLTRA \\
@@ -44,6 +44,17 @@ process ULTRA_ALIGN {
 
     rm ${prefix}.sam
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ultra: \$( uLTRA --version|sed 's/uLTRA //g' )
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bam
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         ultra: \$( uLTRA --version|sed 's/uLTRA //g' )

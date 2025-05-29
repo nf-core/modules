@@ -1,0 +1,59 @@
+nextflow_process {
+
+    name "Test Process PLINK_GENOME"
+    script "../main.nf"
+    process "PLINK_GENOME"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "plink"
+    tag "plink/genome"
+
+    test("plink - genome") {
+        when {
+            process {
+                """                
+                input[0] = [
+                        [id:"test"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("plink - genome - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """                
+                input[0] = [
+                        [id:"test"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+}

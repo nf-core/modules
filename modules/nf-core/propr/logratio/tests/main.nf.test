@@ -1,0 +1,230 @@
+nextflow_process {
+
+    name "Test Process PROPR_LOGRATIO"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "PROPR_LOGRATIO"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "propr"
+    tag "propr/logratio"
+
+    test("mus_musculus - tsv") {
+        when {
+            params {
+                module_args = ''
+                module_prefix = 'test.clr.NA.NA'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.logratio,
+                    file(process.out.session_info[0][1]).name, // Presence of Platform info and BLAS/LAPACK path that differ in conda
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+    test("mus_musculus - tsv - boxcox") {
+        when {
+            params {
+                module_args = '--alpha 0.1'
+                module_prefix = 'test.clr.NA.0.1'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.logratio,
+                    file(process.out.session_info[0][1]).name, // Presence of Platform info and BLAS/LAPACK path that differ in conda
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+    test("mus_musculus - tsv - alr") {
+        when {
+            params {
+                module_args = '--transformation alr'
+                module_prefix = 'test.alr.NA.NA'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.logratio,
+                    file(process.out.session_info[0][1]).name, // Presence of Platform info and BLAS/LAPACK path that differ in conda
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+    test("mus_musculus - tsv - alr boxcox") {
+        when {
+            params {
+                module_args = '--transformation alr --alpha 0.1'
+                module_prefix = 'test.alr.NA.0.1'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.logratio,
+                    file(process.out.session_info[0][1]).name, // Presence of Platform info and BLAS/LAPACK path that differ in conda
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+    test("mus_musculus - tsv - alr geneid") {
+        when {
+            params {
+                module_args = '--transformation alr --reference ENSMUSG00000030324'
+                module_prefix = 'test.alr.ENSMUSG00000030324.NA'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.logratio,
+                    file(process.out.session_info[0][1]).name, // Presence of Platform info and BLAS/LAPACK path that differ in conda
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+    test("mus_musculus - tsv - alr genename") {
+        when {
+            params {
+                module_args = '--transformation alr --reference Rho --feature_id_col gene_name'
+                module_prefix = 'test.alr.Rho.NA'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.logratio,
+                    file(process.out.session_info[0][1]).name, // Presence of Platform info and BLAS/LAPACK path that differ in conda
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+    test("mus_musculus - tsv - alr geneid boxcox") {
+        tag "test"
+        when {
+            params {
+                module_args = '--transformation alr --reference ENSMUSG00000030324 --alpha 0.2'
+                module_prefix = 'test.alr.ENSMUSG00000030324.0.2'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    file(process.out.logratio[0][1]).name, // Change in decimal in conda for [ENSMUSG00000048087, SRX8042386]: singularity = -0.576361550095816 conda = -0.576361550095815
+                    file(process.out.session_info[0][1]).name, // Presence of Platform info and BLAS/LAPACK path that differ in conda
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+    test("mus_musculus - tsv -- stub") {
+        tag "stub"
+        options "-stub"
+        when {
+            params {
+                module_args = ''
+                module_prefix = 'test.clr.NA.NA'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}

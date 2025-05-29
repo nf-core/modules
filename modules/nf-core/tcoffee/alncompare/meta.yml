@@ -31,11 +31,19 @@ input:
         description: fasta file containing the alignment to be evaluated. Can be gzipped
           or uncompressed
         pattern: "*.{aln,fa,fasta,fas}{.gz,}"
+        ontologies:
+          - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
+          - edam: http://edamontology.org/format_1929 # FASTA
     - ref_msa:
         type: file
         description: fasta file containing the reference alignment used for the evaluation.
           Can be gzipped or uncompressed
         pattern: "*.{aln,fa,fasta,fas}{.gz,}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
+          - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
+          - edam: http://edamontology.org/format_1984 # FASTA-ALN
 output:
   - scores:
       - meta:
@@ -47,11 +55,14 @@ output:
           type: file
           description: a file containing the score of the alignment
           pattern: "*.scores"
+          ontologies: []
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@l-mansouri"
   - "@luisas"

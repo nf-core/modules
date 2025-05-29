@@ -2,10 +2,8 @@ process UPP_ALIGN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/sepp_pigz:d72591720d0277b1':
-        'community.wave.seqera.io/library/sepp_pigz:ea6dbc7704a2e251' }"
+    //TODO: Use bioconda container once the recipe is fixed (see https://github.com/smirarab/sepp/issues/141)
+    container "nf-core/multiplesequencealign_upp2:4.5.5"
 
     input:
     tuple val(meta) , path(fasta)
@@ -23,6 +21,9 @@ process UPP_ALIGN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def tree_args = tree ? "-t $tree" : ""
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error("Upp align module does not support Conda. Please use Docker / Singularity / Podman instead.")
+    }
     """
 
     if [ "$workflow.containerEngine" = 'singularity' ]; then

@@ -20,7 +20,7 @@ process BISMARK_REPORT {
     script:
     def args = task.ext.args ?: ''
     """
-    bismark2report $args
+    bismark2report ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
