@@ -15,8 +15,7 @@ process UNIVERSC {
 
     input:
     tuple val(meta), path(reads)
-    path  reference
-
+    tuple val(meta2), path(reference)
 
     output:
     tuple val(meta), path("sample-${meta.id}/outs/*"), emit: outs
@@ -94,6 +93,8 @@ process UNIVERSC {
     echo | gzip > raw_feature_bc_matrix/barcodes.tsv.gz
     echo | gzip > raw_feature_bc_matrix/features.tsv.gz
     echo | gzip > raw_feature_bc_matrix/matrix.mtx.gz
+
+    cd ../..
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
