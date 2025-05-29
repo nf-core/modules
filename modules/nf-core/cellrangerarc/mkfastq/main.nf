@@ -9,8 +9,8 @@ process CELLRANGERARC_MKFASTQ {
     path csv
 
     output:
-    tuple val(meta), path("versions.yml")                        , emit: versions
     tuple val(meta), path("${prefix}/outs/fastq_path/*.fastq.gz"), emit: fastq
+    path "versions.yml"                                          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

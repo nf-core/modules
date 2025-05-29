@@ -19,7 +19,12 @@ tools:
         - 10x Genomics EULA
       identifier: ""
 input:
-  - - bcl:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bcl:
         type: file
         description: Base call files
         pattern: "*.bcl.bgzf"
@@ -34,11 +39,12 @@ output:
           description: File containing software version
           pattern: "versions.yml"
   - fastq:
-      - ${bcl.getSimpleName(:
-          type: file
-          description: Unaligned FastQ files
-          pattern: "*.fastq.gz"
-      - /*.fastq.gz:
+      - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+      - ${prefix}/outs/fastq_path/*.fastq.gz:
           type: file
           description: Unaligned FastQ files
           pattern: "*.fastq.gz"
