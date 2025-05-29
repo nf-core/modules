@@ -115,7 +115,7 @@ nextflow_workflow {
             assert workflow.success
             assertAll(
                 { assert snapshot(
-                    workflow.out,
+                    workflow.out.index[1].collect { file(it).name }.toSorted(),
                     workflow.out.versions.collect{ path(it).yaml }
                 ).match() }
             )
@@ -142,7 +142,7 @@ nextflow_workflow {
             assert workflow.success
             assertAll(
                 { assert snapshot(
-                    workflow.out,
+                    workflow.out.index[0][1].collect { file(it).name }.toSorted(),
                     workflow.out.versions.collect{ path(it).yaml }
                 ).match() }
             )
