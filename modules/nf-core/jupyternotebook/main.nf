@@ -101,4 +101,3 @@ process JUPYTERNOTEBOOK {
     """
 }
 
-}
