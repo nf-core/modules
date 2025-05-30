@@ -47,7 +47,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test2.genome.vcf.gz', checkIfExists: true),
                     ],
-                    file('https://raw.githubusercontent.com/awgymer/nf-core-test-datasets/refs/heads/add-glnexus-config/data/delete_me/glnexus/gatk.yml')
+                    file(params.modules_testdata_base_path + '/delete_me/glnexus/gatk.yml', checkIfExists: true)
                 ])
                 input[1] = [[],[]]
                 input[2] = false
