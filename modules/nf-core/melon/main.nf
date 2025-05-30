@@ -33,7 +33,7 @@ process MELON {
         --threads $task.cpus \\
         $k2_db_arg \\
         $args \\
-        2> >(tee ${prefix}.log >&2)
+        2>| >(tee ${prefix}.log >&2)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -27,7 +27,7 @@ process PURGEDUPS_PURGEDUPS {
         $args \\
         -T $cutoff \\
         -c $basecov \\
-        $paf > ${prefix}.dups.bed 2> >(tee ${prefix}.purge_dups.log >&2)
+        $paf > ${prefix}.dups.bed 2>| >(tee ${prefix}.purge_dups.log >&2)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
