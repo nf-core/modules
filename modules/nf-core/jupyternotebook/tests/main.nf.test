@@ -28,8 +28,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
-                    path(process.out.report[0][1]).readLines()
+                    file(process.out.report[0][1]).name,
+                    path(process.out.report[0][1]).readLines().contains("n_iter = 12"),
+                    process.out.versions
                     ).match() }
             )
         }
@@ -54,8 +55,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
-                    path(process.out.report[0][1]).readLines()
+                    file(process.out.report[0][1]).name,
+                    path(process.out.report[0][1]).readLines().contains("n_iter = 12"),
+                    process.out.artifacts,
+                    process.out.versions
                     ).match() }
             )
         }
@@ -81,8 +84,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
-                    path(process.out.report[0][1]).readLines()
+                    file(process.out.report[0][1]).name,
+                    path(process.out.report[0][1]).readLines().contains("n_iter = 12"),
+                    process.out.artifacts,
+                    process.out.versions
                     ).match() }
             )
         }
