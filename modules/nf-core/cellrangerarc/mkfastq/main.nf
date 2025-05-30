@@ -1,6 +1,7 @@
 process CELLRANGERARC_MKFASTQ {
     tag "mkfastq"
     label 'process_medium'
+    cpus task.cpus ?: 1
 
     container "nf-core/cellranger-arc-mkfastq:2.0.2"
 
