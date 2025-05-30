@@ -1,0 +1,81 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test vizgenpostprocessing/preparesegmentation
+nextflow_process {
+
+    name "Test Process VIZGENPOSTPROCESSING_PREPARESEGMENTATION"
+    script "../main.nf"
+    process "VIZGENPOSTPROCESSING_PREPARESEGMENTATION"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "vizgenpostprocessing"
+    tag "vizgenpostprocessing/preparesegmentation"
+
+    test("nuclei - json, images, csv") {
+
+        setup {
+            run("PREPARE_TEST_DATA") {
+                script "../../utils/setup_test_data.nf"
+                process {
+                    """
+                    input[0] = "dummy"
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                ]
+                input[1] = file('https://raw.githubusercontent.com/Vizgen/vpt-plugin-cellpose2/refs/heads/develop/example_analysis_algorithm/cellpose2_nuclei.json', checkIfExists: true)
+                input[2] = PREPARE_TEST_DATA.out.image_directory
+                input[3] = "mosaic_(?P<stain>[\\\\w|-]+)_z(?P<z>[0-9]+).tif"
+                input[4] = PREPARE_TEST_DATA.out.micron_to_mosaic_transform
+                input[5] = 200
+                input[6] = 200
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("nuclei - json, images, csv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                ]
+                input[1] = file('https://raw.githubusercontent.com/Vizgen/vpt-plugin-cellpose2/refs/heads/develop/example_analysis_algorithm/cellpose2_nuclei.json', checkIfExists: true)
+                input[2] = PREPARE_TEST_DATA.out.image_directory
+                input[3] = "mosaic_(?P<stain>[\\\\w|-]+)_z(?P<z>[0-9]+).tif"
+                input[4] = PREPARE_TEST_DATA.out.micron_to_mosaic_transform
+                input[5] = 200
+                input[6] = 200
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

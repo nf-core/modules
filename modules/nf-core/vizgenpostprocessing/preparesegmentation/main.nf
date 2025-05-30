@@ -51,7 +51,7 @@ process VIZGENPOSTPROCESSING_PREPARESEGMENTATION {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${algorithm_specification}
+    touch algorithm_specification.json
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
