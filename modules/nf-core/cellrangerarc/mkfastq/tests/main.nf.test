@@ -1,0 +1,171 @@
+nextflow_process {
+
+    name "Test Process CELLRANGERARC_MKFASTQ"
+
+    script "../main.nf"
+    config "./nextflow.config"
+    process "CELLRANGERARC_MKFASTQ"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "untar"
+    tag "cellrangerarc"
+    tag "cellrangerarc/mkfastq"
+
+    test("cellrangerarc_mkfastq - simple atac") {
+        tag "test"
+        setup {
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: "test"],
+                        file("https://cf.10xgenomics.com/supp/cell-arc/cellranger-arc-tiny-bcl-atac-1.0.0.tar.gz", checkIfExists:true)
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                input[1] = file("https://cf.10xgenomics.com/supp/cell-arc/cellranger-arc-tiny-bcl-atac-simple-1.0.0.csv", checkIfExists:true)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fastq[0][1].collect{ [file(it).name, path(it).fastq.getNumberOfRecords()] },
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("cellrangerarc_mkfastq - simple gex") {
+        setup {
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: "test"],
+                        file("https://cf.10xgenomics.com/supp/cell-arc/cellranger-arc-tiny-bcl-gex-1.0.0.tar.gz", checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                input[1] = file("https://cf.10xgenomics.com/supp/cell-arc/cellranger-arc-tiny-bcl-gex-simple-1.0.0.csv", checkIfExists:true)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fastq[0][1].collect{ [file(it).name, path(it).fastq.getNumberOfRecords()] },
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("cellrangerarc_mkfastq - illumina atac") {
+        setup {
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: "test"],
+                        file("https://cf.10xgenomics.com/supp/cell-arc/cellranger-arc-tiny-bcl-atac-1.0.0.tar.gz", checkIfExists:true)
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                input[1] = file("https://cf.10xgenomics.com/supp/cell-arc/cellranger-arc-tiny-bcl-atac-samplesheet-1.0.0.csv", checkIfExists:true)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fastq[0][1].collect{ [file(it).name, path(it).fastq.getNumberOfRecords()] },
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("cellrangerarc_mkfastq - illumina gex") {
+        setup {
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: "test"],
+                        file("https://cf.10xgenomics.com/supp/cell-arc/cellranger-arc-tiny-bcl-gex-1.0.0.tar.gz", checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                input[1] = file("https://cf.10xgenomics.com/supp/cell-arc/cellranger-arc-tiny-bcl-gex-samplesheet-1.0.0.csv", checkIfExists:true)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fastq[0][1].collect{ [file(it).name, path(it).fastq.getNumberOfRecords()] },
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+
+    test("cellrangerarc_mkfastq - simple atac -- stub") {
+        tag "stub"
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [[id : "test"], []]
+                input[1] = file("https://cf.10xgenomics.com/supp/cell-arc/cellranger-arc-tiny-bcl-atac-simple-1.0.0.csv", checkIfExists:true)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+}
