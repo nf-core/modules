@@ -19,12 +19,12 @@ process AGRVATE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args    = task.ext.args   ?: ''
+    def _prefix = task.ext.prefix ?: "${meta.id}"
     """
     agrvate \\
-        $args \\
-        -i $fasta
+        ${args} \\
+        -i ${fasta}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -33,8 +33,7 @@ process AGRVATE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+
     """
     mkdir ${fasta.baseName}-results
     touch ${fasta.baseName}-results/${fasta.baseName}-summary.tab

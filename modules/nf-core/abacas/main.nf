@@ -19,13 +19,13 @@ process ABACAS {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     abacas.pl \\
-        -r $fasta \\
-        -q $scaffold \\
-        $args \\
+        -r ${fasta} \\
+        -q ${scaffold} \\
+        ${args} \\
         -o ${prefix}.abacas
 
     mv nucmer.delta ${prefix}.abacas.nucmer.delta

@@ -22,7 +22,7 @@ process AMPIR {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def _args  = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     if ("$faa" == "${prefix}.faa") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
@@ -46,9 +46,8 @@ process AMPIR {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if ("$faa" == "${prefix}.faa") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${faa}" == "${prefix}.faa") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     #!/usr/bin/env Rscript
     library(ampir)
