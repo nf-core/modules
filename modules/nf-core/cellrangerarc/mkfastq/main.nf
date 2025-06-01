@@ -2,6 +2,8 @@ process CELLRANGERARC_MKFASTQ {
     tag "mkfastq"
     label 'process_medium'
 
+    // WARNING !! Cell Ranger ARC mkfastq results are not deterministic, so the number of threads used in the process might affect the results.
+
     container "nf-core/cellranger-arc-mkfastq:2.0.2"
 
     input:
@@ -21,8 +23,8 @@ process CELLRANGERARC_MKFASTQ {
         exit 1, "CELLRANGERARC_MKFASTQ module does not support Conda. Please use docker or singularity containers."
     }
 
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}_mkfastq"
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}_mkfastq"
     """
     cellranger-arc mkfastq --id=${prefix} \\
         --localmem=${task.memory.toGiga()} \\
