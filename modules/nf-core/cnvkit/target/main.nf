@@ -5,7 +5,7 @@ process CNVKIT_TARGET {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cnvkit:0.9.10--pyhdfd78af_0':
-        'biocontainers/cnvkit:0.9.10--pyhdfd78af_0' }"
+        'biocontainers/cnvkit:0.9.12--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(baits)
