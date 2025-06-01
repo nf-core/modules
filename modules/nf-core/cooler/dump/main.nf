@@ -5,7 +5,7 @@ process COOLER_DUMP {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cooler:0.10.2--pyhdfd78af_0' :
-        'biocontainers/cooler:0.10.2--pyhdfd78af_0' }"
+        'biocontainers/cooler:0.10.3--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(cool), val(resolution)
