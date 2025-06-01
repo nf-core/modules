@@ -89,4 +89,42 @@ process ADAPTERREMOVAL {
         """
     }
 
+    stub:
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
+
+    collapse_cmd = args.contains('--collapse')
+
+    if (meta.single_end) {
+        """
+        touch '${prefix}.settings'
+        echo | gzip > '${prefix}.truncated.fastq.gz'
+        echo | gzip '${prefix}.discarded.fastq.gz'
+
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            adapterremoval: \$(AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g")
+        END_VERSIONS
+        """
+    } else {
+        """
+        touch '${prefix}.settings'
+
+        echo | gzip > '${prefix}.truncated.fastq.gz'
+        echo | gzip > '${prefix}.discarded.fastq.gz'
+        echo | gzip > '${prefix}.pair1.truncated.fastq.gz'
+        echo | gzip > '${prefix}.pair2.truncated.fastq.gz'
+        echo | gzip > '${prefix}.paired.fastq.gz'
+
+        if [ "${collapse_cmd}" = true ]; then
+            echo | gzip > '${prefix}.collapsed.truncated.fastq.gz'
+            echo | gzip > '${prefix}.collapsed.fastq.gz'
+        fi
+
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            adapterremoval: \$(AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g")
+        END_VERSIONS
+        """
+    }
 }
