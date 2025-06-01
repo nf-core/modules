@@ -1,15 +1,3 @@
-def deprecation_message = """
-WARNING: This module has been deprecated.
-
-Reason:
-This module is no longer recommended for use to parse results from antimicrobial tools.
-It is recommended to use ampcombi v.0.2.2 submodules instead:
-- nf-core/modules/ampcombi2/parse_tables
-- nf-core/modules/ampcombi2/complete
-- nf-core/modules/ampcombi2/cluster
-
-"""
-
 process AMPCOMBI {
     tag "$meta.id"
     label 'process_medium'
@@ -42,7 +30,18 @@ process AMPCOMBI {
     task.ext.when == null || task.ext.when
 
     script:
-    assert true: deprecation_message
+    def deprecation_message = """
+    WARNING: This module has been deprecated.
+
+    Reason:
+    This module is no longer recommended for use to parse results from antimicrobial tools.
+    It is recommended to use ampcombi v.0.2.2 submodules instead:
+    - nf-core/modules/ampcombi2/parse_tables
+    - nf-core/modules/ampcombi2/complete
+    - nf-core/modules/ampcombi2/cluster
+
+    """
+    assert false: deprecation_message
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def db = opt_amp_db? "--amp_database $opt_amp_db": ""
@@ -62,7 +61,18 @@ process AMPCOMBI {
     END_VERSIONS
     """
     stub:
-    assert true: deprecation_message
+    def deprecation_message = """
+    WARNING: This module has been deprecated.
+
+    Reason:
+    This module is no longer recommended for use to parse results from antimicrobial tools.
+    It is recommended to use ampcombi v.0.2.2 submodules instead:
+    - nf-core/modules/ampcombi2/parse_tables
+    - nf-core/modules/ampcombi2/complete
+    - nf-core/modules/ampcombi2/cluster
+
+    """
+    assert false: deprecation_message
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
