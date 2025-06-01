@@ -14,7 +14,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                            [ id:'test', single_end:false ], // meta map
+                            [ id:'test' ],
                             file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true),
                 ]
                 input[1] = "precursor" // model
@@ -41,7 +41,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                            [ id:'test', single_end:false ], // meta map
+                            [ id:'test' ],
                             file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true),
                 ]
                 input[1] = "precursor" // model
@@ -54,9 +54,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.amps_faa.collect { file(it[1]).getName() } +
-                                process.out.amps_tsv.collect { file(it[1]).getName() } +
-                                process.out.versions).match() }
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml,
+                ).match() }
             )
         }
 
