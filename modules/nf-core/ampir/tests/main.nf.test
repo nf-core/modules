@@ -27,7 +27,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.amps_faa,
+                    path(process.out.amps_tsv[0][1]).readLines(),
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml,
+                ).match() }
             )
         }
 
