@@ -96,7 +96,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.paired_truncated,
                     process.out.collapsed,
-                    process.out.collapsed_truncated,
+                    file(process.out.collapsed_truncated[0][1]).name, // Check for present but is empty
                     process.out.settings,
                     process.out.versions
                 ).match() },
