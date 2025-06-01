@@ -34,4 +34,16 @@ process ADAPTERREMOVALFIXPREFIX {
         adapterremovalfixprefix: ${VERSION}
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '0.0.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    echo | gzip > ${prefix}.fq.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        adapterremovalfixprefix: ${VERSION}
+    END_VERSIONS
+    """
 }
