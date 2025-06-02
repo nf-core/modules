@@ -12,19 +12,21 @@ process CRABS_IMPORT {
     tuple val(meta2), path(accession2taxid)
     tuple val(meta3), path(names)
     tuple val(meta4), path(nodes)
+    val(import_format)
 
     output:
-    tuple val(meta), path("*.fa"), emit: fasta
-    path "versions.yml"          , emit: versions
+    tuple val(meta), path("*.txt"), emit: crabsdb
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args          = task.ext.args ?: ''
-    def prefix        = task.ext.prefix ?: "${meta.id}"
-    def is_compressed = fasta.name.endsWith(".gz")
-    def fasta_name    = fasta.name.replace(".gz", "")
+    def args           = task.ext.args ?: ''
+    def prefix         = task.ext.prefix ?: "${meta.id}"
+    def is_compressed  = fasta.name.endsWith(".gz")
+    def fasta_name     = fasta.name.replace(".gz", "")
+    def import_fmt_cmd = "--import-format ${import_format}"
     """
     if [ "${is_compressed}" == "true" ]; then
         gzip -c -d ${fasta} > ${fasta_name}
@@ -32,11 +34,12 @@ process CRABS_IMPORT {
 
     crabs --import \\
         --input ${fasta_name} \\
-        --output ${prefix}.crabsdb.fa \\
+        --output ${prefix}.txt \\
         --acc2tax ${accession2taxid} \\
         --names ${names} \\
         --nodes ${nodes} \\
-        $args
+        ${import_fmt_cmd} \\
+        ${args}
 
     rm ${fasta_name}
 
@@ -49,7 +52,7 @@ process CRABS_IMPORT {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.fa
+    touch ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

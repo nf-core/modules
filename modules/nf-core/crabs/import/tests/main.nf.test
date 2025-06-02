@@ -15,7 +15,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = "--import-format embl --ranks 'superkingdom;phylum;class;order;family;genus;species' \\"
+                module_args = "--ranks 'superkingdom;phylum;class;order;family;genus;species'"
             }
             process {
                 """
@@ -35,6 +35,7 @@ nextflow_process {
                     [ id:'nodes' ], // meta map
                     file(params.modules_testdata_base_path +'genomics/prokaryotes/metagenome/taxonomy/taxdmp/nodes.dmp', checkIfExists: true)
                 ]
+                input[4] = 'embl' // import format
                 """
             }
         }
@@ -71,6 +72,7 @@ nextflow_process {
                     [ id:'nodes' ], // meta map
                     file(params.modules_testdata_base_path +'genomics/prokaryotes/metagenome/taxonomy/taxdmp/nodes.dmp', checkIfExists: true)
                 ]
+                input[4] = 'embl' // import format
                 """
             }
         }
