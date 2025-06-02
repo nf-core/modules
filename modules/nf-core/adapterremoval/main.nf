@@ -95,23 +95,12 @@ process ADAPTERREMOVAL {
 
     collapse_cmd = args.contains('--collapse')
 
-    if (meta.single_end) {
-        """
-        touch '${prefix}.settings'
-        echo | gzip > '${prefix}.truncated.fastq.gz'
-        echo | gzip > '${prefix}.discarded.fastq.gz'
+    """
+    touch '${prefix}.settings'
+    echo | gzip > '${prefix}.truncated.fastq.gz'
+    echo | gzip > '${prefix}.discarded.fastq.gz'
 
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            adapterremoval: \$(AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g")
-        END_VERSIONS
-        """
-    } else {
-        """
-        touch '${prefix}.settings'
-
-        echo | gzip > '${prefix}.truncated.fastq.gz'
-        echo | gzip > '${prefix}.discarded.fastq.gz'
+    if [ "${meta.single_end}" = true ]; then
         echo | gzip > '${prefix}.pair1.truncated.fastq.gz'
         echo | gzip > '${prefix}.pair2.truncated.fastq.gz'
         echo | gzip > '${prefix}.paired.fastq.gz'
@@ -120,11 +109,11 @@ process ADAPTERREMOVAL {
             echo | gzip > '${prefix}.collapsed.truncated.fastq.gz'
             echo | gzip > '${prefix}.collapsed.fastq.gz'
         fi
+    fi
 
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            adapterremoval: \$(AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g")
-        END_VERSIONS
-        """
-    }
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        adapterremoval: \$(AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g")
+    END_VERSIONS
+    """
 }
