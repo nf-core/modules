@@ -1,6 +1,6 @@
 process GATK4_COUNTREADS {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -14,7 +14,7 @@ process GATK4_COUNTREADS {
     tuple val(meta4), path(dict)
 
     output:
-    tuple val(meta), path("*_metrics"), emit: metrics
+    tuple val(meta), path("*.metrics"), emit: metrics
     path "versions.yml"               , emit: versions
 
     when:
@@ -45,7 +45,7 @@ process GATK4_COUNTREADS {
     gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         CountReads \\
         --input ${bam} \\
-        --output ${prefix}.CountReads.read_metrics \\
+        --output ${prefix}.metrics \\
         ${reference} \\
         ${args}
 
@@ -58,10 +58,9 @@ process GATK4_COUNTREADS {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def reference = fasta ? "--reference ${fasta}" : ""
 
     """
-    touch ${prefix}.CountReads.read_metrics
+    touch ${prefix}.metrics
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
