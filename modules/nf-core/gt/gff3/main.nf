@@ -27,7 +27,7 @@ process GT_GFF3 {
         $args \\
         "$gff3" \\
         > "${prefix}.gt.gff3" \\
-        2> >(tee "${prefix}.error.log" >&2) \\
+        2>| >(tee "${prefix}.error.log" >&2) \\
         || echo "Errors from gt-gff3 printed to ${prefix}.error.log"
 
     if grep -q "gt gff3: error:" "${prefix}.error.log"; then
