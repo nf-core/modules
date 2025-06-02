@@ -27,6 +27,10 @@ process CRABS_IMPORT {
     def is_compressed  = fasta.name.endsWith(".gz")
     def fasta_name     = fasta.name.replace(".gz", "")
     def import_fmt_cmd = "--import-format ${import_format}"
+    def version_cmd    = "\$(crabs --help 2>/dev/null | grep 'CRABS |' | sed 's/.*CRABS | v\\([0-9.]*\\).*/\\1/')"
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        version_cmd    = '1.0.7'
+    }
     """
     if [ "${is_compressed}" == "true" ]; then
         gzip -c -d ${fasta} > ${fasta_name}
@@ -45,18 +49,22 @@ process CRABS_IMPORT {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        crabs: \$(crabs --help 2>/dev/null | grep 'CRABS |' | sed 's/.*CRABS | v\\([0-9.]*\\).*/\\1/')
+        crabs: ${version_cmd}
     END_VERSIONS
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix       = task.ext.prefix ?: "${meta.id}"
+    def version_cmd  = "\$(crabs --help 2>/dev/null | grep 'CRABS |' | sed 's/.*CRABS | v\\([0-9.]*\\).*/\\1/')"
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        version_cmd  = '1.0.7'
+    }
     """
     touch ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        crabs: \$(crabs --help 2>/dev/null | grep 'CRABS |' | sed 's/.*CRABS | v\\([0-9.]*\\).*/\\1/')
+        crabs: ${version_cmd}
     END_VERSIONS
     """
 }
