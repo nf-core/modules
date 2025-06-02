@@ -100,7 +100,7 @@ process ADAPTERREMOVAL {
     echo | gzip > '${prefix}.truncated.fastq.gz'
     echo | gzip > '${prefix}.discarded.fastq.gz'
 
-    if [ "${meta.single_end}" = true ]; then
+    if [ "${meta.single_end}" = false ]; then
         echo | gzip > '${prefix}.pair1.truncated.fastq.gz'
         echo | gzip > '${prefix}.pair2.truncated.fastq.gz'
         echo | gzip > '${prefix}.paired.fastq.gz'

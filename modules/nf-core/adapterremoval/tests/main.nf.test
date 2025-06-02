@@ -17,7 +17,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                            [ id:'test', single_end:true, collapse:false ],
+                            [ id:'test', single_end:true ],
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ]
                 input[1] = []
@@ -46,7 +46,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                            [ id:'test', single_end:false, collapse:false ],
+                            [ id:'test', single_end:false ],
                             [
                                 file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                                 file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
@@ -78,7 +78,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                            [ id:'test', single_end:false, collapse:true ],
+                            [ id:'test', single_end:false ],
                             [
                                 file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                                 file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
@@ -113,13 +113,13 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                            [ id:'test', single_end:false, collapse:false ],
+                            [ id:'test', single_end:false ],
                             [
                                 file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                                 file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                             ]
                 ]
-                input[1] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/adapterremoval/adapterremoval_adapterlist.txt", checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + '/delete_me/adapterremoval/adapterremoval_adapterlist.txt', checkIfExists: true)
                 """
             }
         }
@@ -146,13 +146,13 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                            [ id:'test', single_end:false, collapse:true ],
+                            [ id:'test', single_end:false ],
                             [
                                 file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                                 file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                             ]
                 ]
-                input[1] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/adapterremoval/adapterremoval_adapterlist.txt", checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + '/delete_me/adapterremoval/adapterremoval_adapterlist.txt', checkIfExists: true)
                 """
             }
         }
@@ -177,7 +177,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                            [ id:'test', single_end:true, collapse:false ],
+                            [ id:'test', single_end:true ],
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ]
                 input[1] = []
@@ -205,7 +205,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                            [ id:'test', single_end:false, collapse:false ],
+                            [ id:'test', single_end:false ],
                             [
                                 file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                                 file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
