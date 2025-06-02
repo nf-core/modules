@@ -99,7 +99,7 @@ process ADAPTERREMOVAL {
         """
         touch '${prefix}.settings'
         echo | gzip > '${prefix}.truncated.fastq.gz'
-        echo | gzip '${prefix}.discarded.fastq.gz'
+        echo | gzip > '${prefix}.discarded.fastq.gz'
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
