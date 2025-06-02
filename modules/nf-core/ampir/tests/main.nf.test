@@ -29,7 +29,9 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.amps_faa,
-                    path(process.out.amps_tsv[0][1]).readLines(),
+                    path(process.out.amps_tsv[0][1]).csv(sep: "\t")["columns"].findAll {
+                        key, _ -> key != "prob_AMP" // prob_AMP has floating-point inprecision issues
+                    },
                     process.out.versions,
                     path(process.out.versions[0]).yaml,
                 ).match() }
