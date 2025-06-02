@@ -26,7 +26,7 @@ process PURGEDUPS_CALCUTS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.2.6' // WARN: Incorrect version printed inside the container, please check this if bumping version
     """
-    calcuts $args $stat > ${prefix}.cutoffs 2> >(tee ${prefix}.calcuts.log >&2)
+    calcuts $args $stat > ${prefix}.cutoffs 2>| >(tee ${prefix}.calcuts.log >&2)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
