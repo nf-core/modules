@@ -89,7 +89,7 @@ jobs:
         if: ${{ failure() && matrix.platform == 'linux/arm64' }}
         run: |
           MODULE_DIR=$(dirname "${{ matrix.files }}")
-          SKIP_FILE="$MODULE_DIR/.skip-arm"
+          SKIP_FILE="$MODULE_DIR/tests/.skip-arm"
 
           # Create simple skip marker with workflow run link
           echo "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" > "$SKIP_FILE"
@@ -143,7 +143,7 @@ jobs:
         if: ${{ failure() && matrix.platform == 'linux/arm64' }}
         run: |
           MODULE_DIR=$(dirname "${{ matrix.files }}")
-          SKIP_FILE="$MODULE_DIR/.skip-arm"
+          SKIP_FILE="$MODULE_DIR/tests/.skip-arm"
 
           # Create simple skip marker with workflow run link
           echo "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" > "$SKIP_FILE"

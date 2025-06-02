@@ -15,7 +15,7 @@ def main():
         parts = path.split("/")
         if len(parts) >= 3 and parts[1] == "nf-core":
             module_dir = "/".join(parts[:3])
-            if os.path.exists(f"{module_dir}/.skip-arm"):
+            if os.path.exists(f"{module_dir}/tests/.skip-arm"):
                 print(f"⚠️  Skipping ARM tests for {path}", file=sys.stderr)
                 continue
         filtered.append(path)

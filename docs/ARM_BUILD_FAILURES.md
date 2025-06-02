@@ -35,17 +35,17 @@ The GitHub Actions workflow automatically:
 
 **To skip ARM tests for a module:**
 ```bash
-touch modules/nf-core/problematic-module/.skip-arm
+touch modules/nf-core/problematic-module/tests/.skip-arm
 ```
 
 **To link to a wave build failure (optional):**
 ```bash
-echo "https://wave.seqera.io/build/12345" > modules/nf-core/problematic-module/.skip-arm
+echo "https://wave.seqera.io/build/12345" > modules/nf-core/problematic-module/tests/.skip-arm
 ```
 
 **To re-enable ARM tests:**
 ```bash
-rm modules/nf-core/problematic-module/.skip-arm
+rm modules/nf-core/problematic-module/tests/.skip-arm
 ```
 
 **To list modules with ARM tests disabled:**
@@ -63,16 +63,16 @@ The `.skip-arm` file can be:
 Examples:
 ```bash
 # Empty file
-touch modules/nf-core/fastqc/.skip-arm
+touch modules/nf-core/fastqc/tests/.skip-arm
 
 # With wave build failure link
-echo "https://wave.seqera.io/build/12345" > modules/nf-core/fastqc/.skip-arm
+echo "https://wave.seqera.io/build/12345" > modules/nf-core/fastqc/tests/.skip-arm
 
 # With GitHub issue link
-echo "https://github.com/nf-core/modules/issues/12345" > modules/nf-core/fastqc/.skip-arm
+echo "https://github.com/nf-core/modules/issues/12345" > modules/nf-core/fastqc/tests/.skip-arm
 
 # With brief note
-echo "bioconda package unavailable for ARM64" > modules/nf-core/fastqc/.skip-arm
+echo "bioconda package unavailable for ARM64" > modules/nf-core/fastqc/tests/.skip-arm
 ```
 
 ## Workflow Impact
@@ -126,21 +126,21 @@ To re-enable ARM tests for a module:
 
 ```bash
 # Skip ARM tests due to missing bioconda package
-echo "https://github.com/bioconda/bioconda-recipes/issues/12345" > modules/nf-core/tool/.skip-arm
+echo "https://github.com/bioconda/bioconda-recipes/issues/12345" > modules/nf-core/tool/tests/.skip-arm
 ```
 
 ### Example 2: Wave Build Failure
 
 ```bash
 # Skip ARM tests due to wave container build failure
-echo "https://wave.seqera.io/build/abc123def456" > modules/nf-core/tool/.skip-arm
+echo "https://wave.seqera.io/build/abc123def456" > modules/nf-core/tool/tests/.skip-arm
 ```
 
 ### Example 3: Simple Skip
 
 ```bash
 # Just skip without detailed tracking
-touch modules/nf-core/tool/.skip-arm
+touch modules/nf-core/tool/tests/.skip-arm
 ```
 
 ## Troubleshooting
@@ -149,13 +149,13 @@ touch modules/nf-core/tool/.skip-arm
 
 If ARM tests still run despite having a skip marker:
 1. Check the file name is exactly `.skip-arm`
-2. Verify the file is in the correct module directory: `modules/nf-core/modulename/.skip-arm`
+2. Verify the file is in the correct module tests directory: `modules/nf-core/modulename/tests/.skip-arm`
 3. Check the workflow logs for any errors in the filtering step
 
 ### Re-enabling Tests
 
 To test if ARM tests can be re-enabled:
-1. Remove the skip marker file: `rm modules/nf-core/module/.skip-arm`
+1. Remove the skip marker file: `rm modules/nf-core/module/tests/.skip-arm`
 2. Create a small PR that modifies the module
 3. Monitor the CI workflow for successful ARM tests
 4. If still failing, re-add the marker with updated information
