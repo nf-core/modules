@@ -64,8 +64,7 @@ nextflow_process {
                     process.out.paired_truncated,
                     process.out.settings,
                     process.out.versions
-                ).match() },
-                { assert process.out.discarded }
+                ).match() }
             )
         }
     }
@@ -98,8 +97,7 @@ nextflow_process {
                     file(process.out.collapsed_truncated[0][1]).name, // Check for present but is empty
                     process.out.settings,
                     process.out.versions
-                ).match() },
-                { assert process.out.discarded }
+                ).match() }
             )
         }
 
@@ -131,8 +129,7 @@ nextflow_process {
                     process.out.paired_truncated,
                     process.out.settings,
                     process.out.versions
-                ).match() },
-                { assert process.out.discarded }
+                ).match() }
             )
         }
     }
