@@ -1,200 +1,171 @@
-# ARM Build Failure Management
+# ARM Test Skipping
 
-This document describes the system for managing ARM build failures in nf-core modules.
+This document describes the simple system for skipping ARM tests in nf-core modules.
 
 ## Overview
 
-Some modules may fail to build on ARM64 architecture due to various reasons such as:
+Some modules may fail to run tests on ARM64 architecture due to various reasons such as:
 - Dependencies not available for ARM64
 - Architecture-specific compilation issues
 - Upstream package limitations
 
-To handle these cases gracefully, we have implemented a system that allows temporarily disabling ARM builds for specific modules until the issues are resolved.
+To handle these cases gracefully, we have implemented a simple system that allows temporarily disabling ARM tests for specific modules until the issues are resolved.
 
 ## How It Works
 
-### Failure Marker Files
+### Skip Marker Files
 
-When a module consistently fails ARM builds, you can create a `.arm-build-failure.yml` file in the module directory. This file:
+When a module consistently fails ARM tests, you can create a `.skip-arm` file in the module directory. This file:
 
-1. **Disables ARM builds** for that module in CI/CD pipelines
-2. **Documents the failure reason** and relevant information
+1. **Disables ARM tests** for that module in CI/CD pipelines
+2. **Can contain a link** to the wave build failure (optional)
 3. **Can be easily removed** when the issue is resolved
 
 ### Workflow Integration
 
 The GitHub Actions workflow automatically:
-- Checks for `.arm-build-failure.yml` files before building containers
-- Skips ARM builds (`linux/arm64`) for modules with failure markers
-- Continues with AMD64 builds (`linux/amd64`) as normal
-- Logs the reason for skipping ARM builds
+- Checks for `.skip-arm` files before running tests on ARM runners
+- Skips ARM tests for modules with skip markers
+- Continues with AMD64 tests as normal
+- Logs which tests are being skipped
 
-## Managing ARM Build Failures
+## Managing ARM Test Skipping
 
-### Using the Helper Script
+### Simple File Management
 
-We provide a helper script to manage ARM build failure markers:
-
+**To skip ARM tests for a module:**
 ```bash
-# Add a failure marker
-./scripts/manage-arm-failures.py add fastqc \
-  --reason "Package xyz not available for ARM64" \
-  --reported-by "your-github-username" \
-  --issue-url "https://github.com/nf-core/modules/issues/12345"
-
-# Check if a module has ARM builds disabled
-./scripts/manage-arm-failures.py check fastqc
-
-# List all modules with ARM build failures
-./scripts/manage-arm-failures.py list
-
-# Remove a failure marker (re-enable ARM builds)
-./scripts/manage-arm-failures.py remove fastqc
+touch modules/nf-core/problematic-module/.skip-arm
 ```
 
-### Manual Management
+**To link to a wave build failure (optional):**
+```bash
+echo "https://wave.seqera.io/build/12345" > modules/nf-core/problematic-module/.skip-arm
+```
 
-You can also manually create/edit the `.arm-build-failure.yml` files:
+**To re-enable ARM tests:**
+```bash
+rm modules/nf-core/problematic-module/.skip-arm
+```
 
-```yaml
-# ARM Build Failure Marker
-# This file indicates that ARM builds are disabled for this module
-# Remove this file to re-enable ARM builds
-
-reason: "Package XYZ not available for ARM64 architecture"
-date: "2024-01-15"
-reported_by: "github-username"
-issue_url: "https://github.com/nf-core/modules/issues/12345"
-error_details: |
-  The conda package 'some-package' does not have ARM64 builds available.
-  This causes the wave container build to fail consistently.
-notes: |
-  Alternative solutions investigated:
-  - Tried using different base image: failed
-  - Contacted upstream maintainer: waiting for response
+**To list modules with ARM tests disabled:**
+```bash
+find modules/nf-core -name ".skip-arm"
 ```
 
 ## File Format
 
-The `.arm-build-failure.yml` file supports the following fields:
+The `.skip-arm` file can be:
+- **Empty**: Just presence of the file disables ARM tests
+- **Contain a URL**: Link to wave build failure or GitHub issue
+- **Contain notes**: Brief description of the issue
 
-- **`reason`** (required): Brief description of why ARM builds fail
-- **`date`** (required): Date when the failure was first reported
-- **`reported_by`** (optional): GitHub username of the person reporting the issue
-- **`issue_url`** (optional): Link to the related GitHub issue
-- **`error_details`** (optional): Detailed error information or logs
-- **`notes`** (optional): Additional notes, investigation details, or workarounds attempted
+Examples:
+```bash
+# Empty file
+touch modules/nf-core/fastqc/.skip-arm
+
+# With wave build failure link
+echo "https://wave.seqera.io/build/12345" > modules/nf-core/fastqc/.skip-arm
+
+# With GitHub issue link
+echo "https://github.com/nf-core/modules/issues/12345" > modules/nf-core/fastqc/.skip-arm
+
+# With brief note
+echo "bioconda package unavailable for ARM64" > modules/nf-core/fastqc/.skip-arm
+```
 
 ## Workflow Impact
 
-### Conda-based Builds (`conda-wave` job)
+### Test Filtering
 
-- Modules with `.arm-build-failure.yml` will skip ARM builds
-- Docker and Singularity profiles are both affected
-- AMD64 builds continue normally
-
-### Dockerfile-based Builds (`dockerfile-wave` job)
-
-- Modules with `.arm-build-failure.yml` will skip ARM builds
-- AMD64 builds continue normally
+- Modules with `.skip-arm` will have ARM tests skipped
+- AMD64 tests continue normally on all profiles (conda, docker, singularity)
+- ARM builds still happen when `environment.yml` files are changed (builds are separate from tests)
 
 ### CI/CD Logs
 
-When ARM builds are skipped, you'll see logs like:
+When ARM tests are skipped, you'll see logs like:
 
 ```
-⚠️  ARM builds disabled for modules/nf-core/fastqc (failure marker found)
-   Reason: Package XYZ not available for ARM64 architecture
-   Date: 2024-01-15
-   Skipping linux/arm64 build for docker
-   Skipping linux/arm64 build for singularity
+⚠️  Skipping ARM tests for modules/nf-core/fastqc
 ```
 
 ## Best Practices
 
-### When to Add Failure Markers
+### When to Add Skip Markers
 
-- ARM builds consistently fail for legitimate architecture reasons
-- The failure is not due to temporary issues (network, quota, etc.)
+- ARM tests consistently fail for legitimate architecture reasons
+- The failure is due to missing ARM64 packages or architecture-specific issues
 - The issue has been investigated and documented
 - An upstream issue has been reported (when applicable)
 
 ### Documentation Requirements
 
-When adding a failure marker, please include:
-- A clear reason for the failure
-- Link to any related GitHub issues
-- Details of investigation or workarounds attempted
-- Date when the failure was first observed
+When adding a skip marker, consider including:
+- Link to wave build failure or GitHub issue in the file
+- Brief note about the reason (if not obvious from linked issue)
 
 ### Regular Review
 
-Periodically review ARM build failures:
+Periodically review ARM test skips:
 - Check if upstream issues have been resolved
 - Test if packages have become available for ARM64
 - Remove markers when issues are fixed
 
-### Re-enabling ARM Builds
+### Re-enabling ARM Tests
 
-To re-enable ARM builds for a module:
-1. Remove the `.arm-build-failure.yml` file
-2. Test the ARM build manually (if possible)
-3. Monitor the CI for successful ARM builds
+To re-enable ARM tests for a module:
+1. Remove the `.skip-arm` file: `rm modules/nf-core/module/.skip-arm`
+2. Test the ARM build manually if possible
+3. Monitor the CI for successful ARM tests
 
 ## Examples
 
 ### Example 1: Package Not Available
 
-```yaml
-reason: "bioconda package 'tool-xyz' has no ARM64 builds"
-date: "2024-01-15"
-reported_by: "maintainer-username"
-issue_url: "https://github.com/bioconda/bioconda-recipes/issues/12345"
-error_details: |
-  Wave build fails with:
-  PackagesNotFoundError: The following packages are not available from current channels:
-    - tool-xyz[version='>=1.0.0',build=*linux-aarch64]
-notes: |
-  Contacted bioconda maintainers about ARM64 support.
-  Alternative tools investigated but none suitable.
+```bash
+# Skip ARM tests due to missing bioconda package
+echo "https://github.com/bioconda/bioconda-recipes/issues/12345" > modules/nf-core/tool/.skip-arm
 ```
 
-### Example 2: Architecture-Specific Compilation Issue
+### Example 2: Wave Build Failure
 
-```yaml
-reason: "Compilation fails on ARM64 due to assembly code"
-date: "2024-02-01"
-reported_by: "developer-username"
-issue_url: "https://github.com/upstream/tool/issues/456"
-error_details: |
-  Build fails during compilation with:
-  Error: unsupported instruction on ARM64 architecture
-notes: |
-  Upstream aware of issue, fix planned for next major release.
-  No workaround available currently.
+```bash
+# Skip ARM tests due to wave container build failure
+echo "https://wave.seqera.io/build/abc123def456" > modules/nf-core/tool/.skip-arm
+```
+
+### Example 3: Simple Skip
+
+```bash
+# Just skip without detailed tracking
+touch modules/nf-core/tool/.skip-arm
 ```
 
 ## Troubleshooting
 
-### Script Not Working
+### Workflow Still Running ARM Tests
 
-If the management script doesn't work:
-1. Ensure you're in the repository root
-2. Check that `uv` is installed
-3. Verify the modules directory structure
+If ARM tests still run despite having a skip marker:
+1. Check the file name is exactly `.skip-arm`
+2. Verify the file is in the correct module directory: `modules/nf-core/modulename/.skip-arm`
+3. Check the workflow logs for any errors in the filtering step
 
-### Workflow Still Running ARM Builds
+### Re-enabling Tests
 
-If ARM builds still run despite having a failure marker:
-1. Check the file name is exactly `.arm-build-failure.yml`
-2. Verify the file is in the correct module directory
-3. Ensure the YAML syntax is valid
-4. Check the workflow logs for any errors in the filtering step
-
-### Re-enabling Builds
-
-To test if ARM builds can be re-enabled:
-1. Remove the failure marker file
-2. Create a small PR that touches the module's `environment.yml`
-3. Monitor the CI workflow for successful ARM builds
+To test if ARM tests can be re-enabled:
+1. Remove the skip marker file: `rm modules/nf-core/module/.skip-arm`
+2. Create a small PR that modifies the module
+3. Monitor the CI workflow for successful ARM tests
 4. If still failing, re-add the marker with updated information
+
+### Finding All Skipped Modules
+
+```bash
+# List all modules with ARM tests disabled
+find modules/nf-core -name ".skip-arm" -exec dirname {} \;
+
+# See what's in the skip files
+find modules/nf-core -name ".skip-arm" -exec echo "=== {} ===" \; -exec cat {} \;
+```

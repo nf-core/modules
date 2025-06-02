@@ -153,16 +153,12 @@ jobs:
 
           echo "filtered_paths=${FILTERED}" >> $GITHUB_OUTPUT
 
-      - name: Filter ARM failure tests
+      - name: Filter ARM tests
         id: filter-arm
         run: |
           PATHS='${{ steps.filter.outputs.filtered_paths }}'
-          if [ "$PATHS" = "[]" ] || [ -z "$PATHS" ]; then
-            echo "arm_filtered_paths=[]" >> $GITHUB_OUTPUT
-          else
-            ARM_FILTERED=$(.github/scripts/filter_arm_failure_tests.py "$PATHS")
-            echo "arm_filtered_paths=${ARM_FILTERED}" >> $GITHUB_OUTPUT
-          fi
+          ARM_FILTERED=$(.github/scripts/filter_arm_tests.py "$PATHS")
+          echo "arm_filtered_paths=${ARM_FILTERED}" >> $GITHUB_OUTPUT
 
       - name: debug
         run: |
