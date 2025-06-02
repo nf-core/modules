@@ -21,8 +21,7 @@ process ADMIXTURE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args   ?: ''
-    def _prefix = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args   ?: ''
     """
     admixture \\
         ${bed_ped_geno} \\

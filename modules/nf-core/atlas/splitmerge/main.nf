@@ -21,7 +21,6 @@ process ATLAS_SPLITMERGE {
     script:
     def optional = blacklist ? 'blacklist=${blacklist}' : ''
     def args     = task.ext.args   ?: ''
-    def _prefix  = task.ext.prefix ?: "${meta.id}"
     """
     atlas \\
         task=splitMerge bam=${bam} \\

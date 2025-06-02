@@ -24,7 +24,6 @@ process ATLAS_PMD {
 
     script:
     def args    = task.ext.args   ?: ''
-    def _prefix = task.ext.prefix ?: "${meta.id}"
     def pool_rg_txt_cmd = pool_rg_txt ? "poolReadGroups=${pool_rg_txt}" : ""
     """
     atlas \\

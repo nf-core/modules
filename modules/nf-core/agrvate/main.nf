@@ -19,8 +19,7 @@ process AGRVATE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args   ?: ''
-    def _prefix = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args   ?: ''
     """
     agrvate \\
         ${args} \\

@@ -19,7 +19,6 @@ process AMULETY_TRANSLATE {
     task.ext.when == null || task.ext.when
 
     script:
-    def _args  = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     export IGDATA=${reference_igblast}
