@@ -13,8 +13,8 @@ process PICARD_BEDTOINTERVALLIST {
     file arguments_file
 
     output:
-    tuple val(meta), path('*.interval_list'), emit: interval_list
-    path  "versions.yml"                    , emit: versions
+    tuple val(meta), path('*.intervallist'), emit: intervallist
+    path  "versions.yml"                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,7 +34,7 @@ process PICARD_BEDTOINTERVALLIST {
         -Xmx${avail_mem}M \\
         BedToIntervalList \\
         --INPUT ${bed} \\
-        --OUTPUT ${prefix}.interval_list \\
+        --OUTPUT ${prefix}.intervallist \\
         --SEQUENCE_DICTIONARY ${dict} \\
         --TMP_DIR . \\
         ${args_file} \\
@@ -60,7 +60,7 @@ process PICARD_BEDTOINTERVALLIST {
         -Xmx${avail_mem}M \\
         BedToIntervalList \\
         --INPUT ${bed} \\
-        --OUTPUT ${prefix}.interval_list \\
+        --OUTPUT ${prefix}.intervallist \\
         --SEQUENCE_DICTIONARY ${dict} \\
         --TMP_DIR . \\
         ${args_file} \\
