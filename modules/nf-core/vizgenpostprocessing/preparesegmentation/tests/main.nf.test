@@ -15,8 +15,8 @@ nextflow_process {
             process {
                 """
                 // Create test directory and files before process execution
-                def testDir = file("\$TMPDIR/images")
-                testDir.mkdirs()
+                testDir = file("tmpdir", type: 'dir')
+                testDir.mkdir()
 
                 // Download source file
                 def sourceUrl = 'https://github.com/nf-core/test-datasets/raw/modules/data/imaging/segmentation/nuclear_image.tif'
@@ -59,8 +59,8 @@ nextflow_process {
             process {
                 """
                 // Create test directory and files before process execution
-                def testDir = file("\$TMPDIR/test_images")
-                testDir.mkdirs()
+                testDir = file("tmpdir", type: 'dir')
+                testDir.mkdir()
 
                 def transformFile = file("\$testDir/micron_to_mosaic_pixel_transform.csv")
 
