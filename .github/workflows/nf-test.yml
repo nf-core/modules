@@ -64,6 +64,7 @@ jobs:
           n_parents: 0
           exclude_tags: "gpu"
 
+          # FIXME Can't we just do this with nf-test --filter?
       - name: Separate modules and subworkflows
         id: components
         run: |
