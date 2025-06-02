@@ -44,9 +44,9 @@ input:
           e.g. `[ id:'sample1' ]`
     - names:
         type: file
-        description: Containing information about the phylogenetic name associated with each taxonomic ID 
+        description: Containing information about the phylogenetic name associated with each taxonomic ID
         pattern: "*.dmp"
-  - - meta4: 
+  - - meta4:
         type: map
         description: |
           Groovy Map containing sample information
@@ -55,17 +55,21 @@ input:
         type: file
         description: Containing information how taxonomic IDs are linked
         pattern: "*.dmp"
+  - - import_format:
+        type: string
+        description: Name of the repository from which the data was downloaded, i.e., BOLD, EMBL, GreenGenes, MIDORI, MITOFISH, NCBI, SILVA, or UNITE.
+        choices: ["bold", "embl", "greengenes", "midori", "mitofish", "ncbi", "silva", "unite"]
 output:
-  - fasta:
+  - crabsdb:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.fa":
+      - "*.txt":
           type: file
           description: Reverse complemented Sequence
-          pattern: "*.{fa,fasta}"
+          pattern: "*.txt"
   - versions:
       - versions.yml:
           type: file
