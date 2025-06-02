@@ -2,7 +2,7 @@ process VIZGENPOSTPROCESSING_PREPARESEGMENTATION {
     tag "$meta.id"
     label 'process_single'
 
-    container 'ghcr.io/wehi-soda-hub/vizgen-postprocessing_container:v0.1.0'
+    container 'ghcr.io/wehi-soda-hub/vizgen-postprocessing_container:v0.1.1'
 
     input:
     val(meta)
