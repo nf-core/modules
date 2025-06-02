@@ -68,7 +68,6 @@ nextflow_process {
                 { assert process.out.discarded }
             )
         }
-
     }
 
     test("paired-end collapse - sarscov2 - [fastq]") {
@@ -154,6 +153,65 @@ nextflow_process {
                             ]
                 ]
                 input[1] = file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/adapterremoval/adapterremoval_adapterlist.txt", checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+    test("single-end - sarscov2 - [fastq] -- stub") {
+        options "-stub"
+        when {
+            params {
+                adapterremoval_args = ""
+            }
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:true, collapse:false ],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+    test("paired-end - sarscov2 - [fastq] -- stub") {
+        options "-stub"
+        when {
+            params {
+                adapterremoval_args = ""
+            }
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false, collapse:false ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                            ]
+                ]
+                input[1] = []
                 """
             }
         }
