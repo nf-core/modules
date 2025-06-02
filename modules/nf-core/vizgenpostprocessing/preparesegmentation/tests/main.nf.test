@@ -59,16 +59,16 @@ nextflow_process {
             process {
                 """
                 // Create test directory and files before process execution
-                testDir = file("tmpdir", type: 'dir')
-                testDir.mkdir()
+                stubTestDir = file("tmpdir_stub", type: 'dir')
+                stubTestDir.mkdir()
 
-                def transformFile = file("\${testDir}/micron_to_mosaic_pixel_transform.csv")
+                def transformFile = file("\${stubTestDir}/micron_to_mosaic_pixel_transform.csv")
 
                 input[0] = [
                     [ id:'test' ], // meta map
                 ]
                 input[1] = file('https://raw.githubusercontent.com/Vizgen/vpt-plugin-cellpose2/refs/heads/develop/example_analysis_algorithm/cellpose2_nuclei.json', checkIfExists: true)
-                input[2] = testDir
+                input[2] = stubTestDir
                 input[3] = "mosaic_(?P<stain>[\\\\w|-]+)_z(?P<z>[0-9]+).tif"
                 input[4] = transformFile
                 input[5] = 200
