@@ -31,7 +31,7 @@ process MOTUS_PREPLONG {
         $refdb \\
         -t $task.cpus \\
         -o ${prefix}.gz \\
-        2> >(tee ${prefix}.log >&2)
+        2>| >(tee ${prefix}.log >&2)
 
     if [ "$db" == "" ]; then
         VERSION=\$(echo \$(motus -h 2>&1) | sed 's/^.*Version: //; s/References.*\$//')

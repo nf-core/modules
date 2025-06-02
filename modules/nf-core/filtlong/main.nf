@@ -28,7 +28,7 @@ process FILTLONG {
         $short_reads \\
         $args \\
         $longreads \\
-        2> >(tee ${prefix}.log >&2) \\
+        2>| >(tee ${prefix}.log >&2) \\
         | gzip -n > ${prefix}.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml
