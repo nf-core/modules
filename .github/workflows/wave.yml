@@ -26,6 +26,8 @@ jobs:
     outputs:
       conda-matrix: ${{ steps.conda-diff.outputs.all_changed_files }}
       dockerfile-matrix: ${{ steps.docker-diff.outputs.all_changed_files }}
+      filtered-conda-matrix: ${{ steps.filter-conda.outputs.result }}
+      filtered-dockerfile-matrix: ${{ steps.filter-dockerfile.outputs.result }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
@@ -47,10 +49,26 @@ jobs:
           files: |
             modules/**/Dockerfile
 
+      - name: Filter conda builds for ARM failures
+        id: filter-conda
+        if: ${{ steps.conda-diff.outputs.all_changed_files != '[]' }}
+        run: |
+          # Use the external script to filter ARM builds
+          FILTERED_MATRIX=$(.github/scripts/report_arm_build_failure.py conda '${{ steps.conda-diff.outputs.all_changed_files }}' | tail -n 1)
+          echo "result=$FILTERED_MATRIX" >> $GITHUB_OUTPUT
+
+      - name: Filter dockerfile builds for ARM failures
+        id: filter-dockerfile
+        if: ${{ steps.docker-diff.outputs.all_changed_files != '[]' }}
+        run: |
+          # Use the external script to filter ARM builds
+          FILTERED_MATRIX=$(.github/scripts/report_arm_build_failure.py dockerfile '${{ steps.docker-diff.outputs.all_changed_files }}' | tail -n 1)
+          echo "result=$FILTERED_MATRIX" >> $GITHUB_OUTPUT
+
   conda-wave:
     # NOTE This should get skipped because generate-matrix won't run
     # if: github.repository == 'nf-core/modules'
-    if: ${{ needs.generate-matrix.outputs.conda-matrix != '[]' }}
+    if: ${{ needs.generate-matrix.outputs.filtered-conda-matrix != '' && needs.generate-matrix.outputs.filtered-conda-matrix != '{"include":[]}' }}
     needs: generate-matrix
     name: Build ${{ matrix.profile }} ${{ matrix.platform }} Container
     runs-on: ubuntu-latest
@@ -58,10 +76,8 @@ jobs:
     strategy:
       fail-fast: false
       max-parallel: 4
-      matrix:
-        files: "${{ fromJson(needs.generate-matrix.outputs.conda-matrix) }}"
-        profile: [docker, singularity]
-        platform: ["linux/amd64", "linux/arm64"]
+      matrix: ${{ fromJson(needs.generate-matrix.outputs.filtered-conda-matrix) }}
+
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
@@ -73,7 +89,7 @@ jobs:
 
       - name: Build ${{ matrix.profile }} container
         # FIXME Hack while iron out the CI
-        continue-on-error: true
+        continue-on-error: false
         env:
           PROFILE: ${{ (contains(matrix.profile, 'singularity') && '--singularity') || '' }}
         run: |
@@ -85,10 +101,32 @@ jobs:
               --tower-token ${{ secrets.TOWER_ACCESS_TOKEN }} \
               --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }}
 
+      - name: Mark ARM build failure
+        if: ${{ failure() && matrix.platform == 'linux/arm64' }}
+        run: |
+          MODULE_DIR=$(dirname "${{ matrix.files }}")
+          FAILURE_FILE="$MODULE_DIR/.arm-build-failure.yml"
+
+          # Create failure marker
+          cat > "$FAILURE_FILE" << EOF
+          # ARM Build Failure Marker
+          # This file indicates that ARM builds are disabled for this module
+          # Remove this file to re-enable ARM builds
+
+          reason: Wave ${{ matrix.profile }} build failed on ARM platform
+          date: '$(date -I)'
+          reported_by: github-actions
+          workflow_run: ${{ github.run_id }}
+          commit_sha: ${{ github.sha }}
+          EOF
+
+          echo "Created ARM failure marker at $FAILURE_FILE"
+          cat "$FAILURE_FILE"
+
   dockerfile-wave:
     # NOTE This should get skipped because generate-matrix won't run
     # if: github.repository == 'nf-core/modules'
-    if: ${{ needs.generate-matrix.outputs.dockerfile-matrix != '[]' }}
+    if: ${{ needs.generate-matrix.outputs.filtered-dockerfile-matrix != '' && needs.generate-matrix.outputs.filtered-dockerfile-matrix != '{"include":[]}' }}
     needs: generate-matrix
     name: Build Dockerfile-based ${{ matrix.platform }} Container
     runs-on: ubuntu-latest
@@ -96,12 +134,7 @@ jobs:
     strategy:
       fail-fast: false
       max-parallel: 4
-      matrix:
-        files: "${{ fromJson(needs.generate-matrix.outputs.dockerfile-matrix) }}"
-        # NOTE singularity build requires a Singularity definition file in place of Dockerfile
-        # https://nextflow.slack.com/archives/C0477AS31T5/p1731755350230149?thread_ts=1731697852.661849&cid=C0477AS31T5
-        # profile: [docker]
-        platform: ["linux/amd64", "linux/arm64"]
+      matrix: ${{ fromJson(needs.generate-matrix.outputs.filtered-dockerfile-matrix) }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
@@ -131,6 +164,28 @@ jobs:
               --cache-repository quay.io/nf-core/wave-cache/docker/${{ matrix.platform }} \
               --tower-token ${{ secrets.TOWER_ACCESS_TOKEN }} \
               --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }}
+
+      - name: Mark ARM build failure
+        if: ${{ failure() && matrix.platform == 'linux/arm64' }}
+        run: |
+          MODULE_DIR=$(dirname "${{ matrix.files }}")
+          FAILURE_FILE="$MODULE_DIR/.arm-build-failure.yml"
+
+          # Create failure marker
+          cat > "$FAILURE_FILE" << EOF
+          # ARM Build Failure Marker
+          # This file indicates that ARM builds are disabled for this module
+          # Remove this file to re-enable ARM builds
+
+          reason: Wave Dockerfile build failed on ARM platform
+          date: '$(date -I)'
+          reported_by: github-actions
+          workflow_run: ${{ github.run_id }}
+          commit_sha: ${{ github.sha }}
+          EOF
+
+          echo "Created ARM failure marker at $FAILURE_FILE"
+          cat "$FAILURE_FILE"
 
   # bump-versions:
   #   needs: generate-matrix
