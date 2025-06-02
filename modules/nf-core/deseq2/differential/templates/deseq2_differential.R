@@ -1,5 +1,5 @@
 #!/usr/bin/env Rscript
-set.seed(1)
+
 ################################################
 ################################################
 ## Functions                                  ##
@@ -125,7 +125,8 @@ opt <- list(
     cores = 1,
     vs_blind = TRUE,
     vst_nsub = 1000,
-    round_digits = NULL
+    round_digits = NULL,
+    seed = 1
 )
 opt_types <- lapply(opt, class)
 
@@ -144,6 +145,9 @@ for ( ao in names(args_opt)){
         opt[[ao]] <- args_opt[[ao]]
     }
 }
+
+set.seed(opt\$seed)
+
 if ( ! is.null(opt\$round_digits)){
     opt\$round_digits <- as.numeric(opt\$round_digits)
 }
