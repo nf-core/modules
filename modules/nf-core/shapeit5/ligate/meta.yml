@@ -44,6 +44,17 @@ output:
             Output VCF/BCF file for the merged regions.
             Phased information (HS field) is updated accordingly for the full region.
           pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+  - index:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tbi":
+          type: file
+          description: |
+            Index file for the merged VCF/BCF file.
+          pattern: "*.tbi"
   - versions:
       - versions.yml:
           type: file
