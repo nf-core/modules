@@ -8,11 +8,11 @@ process CRABS_INSILICOPCR {
         'biocontainers/crabs:1.0.7--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(fasta)
+    tuple val(meta), path(crabsdb)
 
     output:
-    tuple val(meta), path("*.{fa,fasta}"), emit: fasta
-    path "versions.yml"                  , emit: versions
+    tuple val(meta), path("*.txt}"), emit: txt
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,10 +22,10 @@ process CRABS_INSILICOPCR {
     def prefix  = task.ext.prefix ?: "${meta.id}"
     """
     crabs --in-silico-pcr \\
-        --input $fasta \\
-        --output ${prefix}.crabs.fa \\
+        --input ${crabsdb} \\
+        --output ${prefix}.txt \\
         --threads ${task.cpus} \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -36,7 +36,7 @@ process CRABS_INSILICOPCR {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.fa
+    touch ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
