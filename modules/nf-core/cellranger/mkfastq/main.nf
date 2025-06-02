@@ -2,7 +2,7 @@ process CELLRANGER_MKFASTQ {
     tag {"$meta.lane" ? "$meta.id"+"."+"$meta.lane" : "$meta.id" }
     label 'process_medium'
 
-    container "nf-core/cellrangermkfastq:8.0.0"
+    container "nf-core/cellrangermkfastq:9.0.1"
 
     input:
     tuple val(meta), path(csv), path(bcl)
