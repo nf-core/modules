@@ -51,7 +51,11 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.tsv":
           type: file
-          description: Alignment summary for MultiQC
+          description: |
+            Summary reporting the total alignment length (including gaps) and the
+            percent identity computed with and without taking gaps in
+            consideration (because there is no standard definition of percent
+            identity).
           pattern: "*.tsv"
   - versions:
       - versions.yml:
