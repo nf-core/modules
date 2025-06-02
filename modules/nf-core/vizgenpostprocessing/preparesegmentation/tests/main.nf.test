@@ -19,15 +19,15 @@ nextflow_process {
                 testDir.mkdir()
 
                 // Download source file
-                def sourceUrl = 'https://github.com/nf-core/test-datasets/raw/modules/data/imaging/segmentation/nuclear_image.tif'
-                def sourceFile = file(sourceUrl)
+                sourceUrl = 'https://github.com/nf-core/test-datasets/raw/modules/data/imaging/segmentation/nuclear_image.tif'
+                sourceFile = file(sourceUrl)
 
                 // Create renamed copies
                 sourceFile.copyTo(file("\${testDir}/mosaic_DAPI_z3.tif"))
                 sourceFile.copyTo(file("\${testDir}/mosaic_PolyT_z3.tif"))
 
                 // Create transform file
-                def transformFile = file("\${testDir}/micron_to_mosaic_pixel_transform.csv")
+                transformFile = file("\${testDir}/micron_to_mosaic_pixel_transform.csv")
                 transformFile.text = "2 0 0\\n0 2 0\\n0 0 1"
 
                 input[0] = [
@@ -59,16 +59,16 @@ nextflow_process {
             process {
                 """
                 // Create test directory and files before process execution
-                stubTestDir = file("tmpdir_stub", type: 'dir')
-                stubTestDir.mkdir()
+                testDir = file("tmpdir", type: 'dir')
+                testDir.mkdir()
 
-                def transformFile = file("\${stubTestDir}/micron_to_mosaic_pixel_transform.csv")
+                transformFile = file("\${testDir}/micron_to_mosaic_pixel_transform.csv")
 
                 input[0] = [
                     [ id:'test' ], // meta map
                 ]
                 input[1] = file('https://raw.githubusercontent.com/Vizgen/vpt-plugin-cellpose2/refs/heads/develop/example_analysis_algorithm/cellpose2_nuclei.json', checkIfExists: true)
-                input[2] = stubTestDir
+                input[2] = testDir
                 input[3] = "mosaic_(?P<stain>[\\\\w|-]+)_z(?P<z>[0-9]+).tif"
                 input[4] = transformFile
                 input[5] = 200
