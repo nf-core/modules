@@ -10,7 +10,7 @@ process METACACHE_QUERY {
 
     input:
     tuple val(meta), path(reads)
-    path db
+    path (db, stageAs: 'db/*')
 
     output:
     tuple val(meta), path("*.txt"), emit: mapping_results
