@@ -36,7 +36,9 @@ input:
         type: list
         description: Input BED file
         pattern: "*.bed"
-  - - vcf_output: {}
+  - - vcf_output:
+        type: boolean
+        description: Specify that output should be VCF format
 output:
   - bcf:
       - meta:
