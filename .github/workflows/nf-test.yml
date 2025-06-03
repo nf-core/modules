@@ -104,8 +104,7 @@ jobs:
         profile: [conda, docker, singularity]
         arch:
           - x64
-          # FIXME
-          # - arm64
+          - arm64
     env:
       NXF_ANSI_LOG: false
       TOTAL_SHARDS: ${{ needs.nf-test-changes.outputs.total_shards }}
