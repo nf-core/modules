@@ -23,6 +23,10 @@ input:
         type: list
         description: Input genomic vcf files
         pattern: "*.{gvcf,gvcf.gz,g.vcf,g.vcf.gz}"
+    - custom_config:
+        type: path
+        description: Custom YML config for additional profiles
+        pattern: "*.{yml,yaml}"
   - - meta2:
         type: map
         description: |
@@ -32,15 +36,27 @@ input:
         type: list
         description: Input BED file
         pattern: "*.bed"
+  - - vcf_output: {}
 output:
   - bcf:
       - meta:
-          type: file
-          description: merged BCF file
-          pattern: "*.bcf"
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
       - "*.bcf":
           type: file
           description: merged BCF file
+          pattern: "*.bcf"
+  - vcf:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.vcf.gz":
+          type: file
+          description: merged VCF file
           pattern: "*.bcf"
   - versions:
       - versions.yml:
