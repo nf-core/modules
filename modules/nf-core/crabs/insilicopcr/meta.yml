@@ -1,0 +1,52 @@
+name: crabs_insilicopcr
+description: CRABS extracts the amplicon region of the primer set by conducting an
+  in silico PCR.
+keywords:
+  - insilico
+  - PCR
+  - amplicon
+  - sequencing
+tools:
+  - crabs:
+      description: |
+        Crabs (Creating Reference databases for Amplicon-Based Sequencing)
+        is a program to download and curate reference databases
+        for eDNA metabarcoding analyses
+      homepage: https://github.com/gjeunen/reference_database_creator
+      documentation: https://github.com/gjeunen/reference_database_creator?tab=readme-ov-file#running-crabs
+      tool_dev_url: https://github.com/gjeunen/reference_database_creator
+      doi: 10.1111/1755-0998.13741
+      licence: ["MIT License"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Sequence to conduct in silico PCR on
+        pattern: "*.{fa,fasta}"
+output:
+  - txt:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.insilicopc.txt":
+          type: file
+          description: Extracted amplicon regions
+          pattern: "*.insilicopc.txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@famosab"
+  - "@a4000"
+maintainers:
+  - "@famosab"
+  - "@a4000"
