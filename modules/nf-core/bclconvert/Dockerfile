@@ -3,8 +3,7 @@
 # Push to nfcore/bclconvert:<VER>
 
 FROM debian:bullseye-slim
-ARG BCLCONVERT_VERSION="4.3.6"
-LABEL org.opencontainers.image.authors="Matthias De Smet <matthias.desmet@ugent.be>"
+ARG BCLCONVERT_VERSION="4.3.13"
 LABEL org.opencontainers.image.description="Docker image containing bcl-convert"
 LABEL org.opencontainers.image.version="$BCLCONVERT_VERSION"
 LABEL org.opencontainers.image.documentation="https://github.com/nf-core/modules/blob/master/modules/nf-core/bclconvert/README.md"
@@ -25,7 +24,7 @@ RUN apt-get update \
 # Link hostname cmd to fix hardcoded path
 RUN ln -s /bin/hostname /usr/bin/hostname
 # Install bcl-convert
-ADD bcl-convert-4.3.6-2.el8.x86_64.rpm bcl-convert.rpm
+ADD bcl-convert-4.3.13-2.el7.x86_64.rpm bcl-convert.rpm
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN rpm2cpio bcl-convert.rpm | cpio -idmv \
     && rm bcl-convert.rpm
