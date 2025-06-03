@@ -1,0 +1,92 @@
+nextflow_process {
+
+    name "Test Process CRABS_IMPORT"
+    script "../main.nf"
+    process "CRABS_IMPORT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "crabs"
+    tag "crabs/import"
+
+    test("sarscov2 - fasta") {
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                module_args = "--ranks 'superkingdom;phylum;class;order;family;genus;species'"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path +'genomics/sarscov2/genome/genome-ena.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'accession2taxid' ], // meta map
+                    file(params.modules_testdata_base_path +'genomics/prokaryotes/metagenome/taxonomy/accession2taxid/nucl_gb.accession2taxid', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'names' ], // meta map
+                    file(params.modules_testdata_base_path +'genomics/prokaryotes/metagenome/taxonomy/taxdmp/names.dmp', checkIfExists: true)
+                ]
+                input[3] = [
+                    [ id:'nodes' ], // meta map
+                    file(params.modules_testdata_base_path +'genomics/prokaryotes/metagenome/taxonomy/taxdmp/nodes.dmp', checkIfExists: true)
+                ]
+                input[4] = 'embl' // import format
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path +'genomics/sarscov2/genome/genome-ena.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'accession2taxid' ], // meta map
+                    file(params.modules_testdata_base_path +'genomics/prokaryotes/metagenome/taxonomy/accession2taxid/nucl_gb.accession2taxid', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'names' ], // meta map
+                    file(params.modules_testdata_base_path +'genomics/prokaryotes/metagenome/taxonomy/taxdmp/names.dmp', checkIfExists: true)
+                ]
+                input[3] = [
+                    [ id:'nodes' ], // meta map
+                    file(params.modules_testdata_base_path +'genomics/prokaryotes/metagenome/taxonomy/taxdmp/nodes.dmp', checkIfExists: true)
+                ]
+                input[4] = 'embl' // import format
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+
+    }
+
+}
