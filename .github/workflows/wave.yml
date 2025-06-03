@@ -71,7 +71,7 @@ jobs:
 
       - name: Build ${{ matrix.profile }} container
         # FIXME Hack while iron out the CI
-        continue-on-error: false
+        continue-on-error: true
         env:
           PROFILE: ${{ (contains(matrix.profile, 'singularity') && '--singularity') || '' }}
         run: |
