@@ -12,30 +12,36 @@ tools:
       tool_dev_url: "https://github.com/open2c/cooltools/"
       doi: "10.5281/zenodo.5214125"
       licence: ["MIT"]
+      identifier: biotools:cooltools
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - cool:
-      type: file
-      description: cool file
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information e.g. id:'test', single_end:false
+    - cool:
+        type: file
+        description: cool file
+        pattern: "*.cool"
 
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - bigwig:
-      type: file
-      description: bigwig file for different window sizes
-      pattern: "*.bw"
   - tsv:
-      type: file
-      description: tsv file with insulation score and boundaries for several window sizes
-      pattern: "*.tsv"
-
+      - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. id:'test', single_end:false
+      - "*tsv":
+          type: file
+          description: tsv file with insulation score and boundaries for several window sizes
+  - bigwig:
+      - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. id:'test', single_end:false
+      - "*.bw":
+          type: file
+          description: bigwig file for different window sizes
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@nservant"
