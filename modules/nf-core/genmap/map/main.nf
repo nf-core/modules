@@ -22,9 +22,9 @@ process GENMAP_MAP {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "$meta.id"
-    def bed = regions ? "--selection ${regions}" : ""
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}_map"
+    def bed    = regions ? "--selection ${regions}" : ""
 
     if ("$index" == "${prefix}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
@@ -43,13 +43,13 @@ process GENMAP_MAP {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "$meta.id"
+    def args       = task.ext.args   ?: ''
+    def prefix     = task.ext.prefix ?: "${meta.id}_map"
     def token_args = args.tokenize(" ")
-    def wig = token_args.contains("-w") || token_args.contains("--wig") ?       "touch ${prefix}.wig"       : ""
-    def bg =  token_args.contains("-bg") || token_args.contains("--bedgraph") ? "touch ${prefix}.bedgraph"  : ""
-    def txt = token_args.contains("-t") || token_args.contains("--txt") ?       "touch ${prefix}.txt"       : ""
-    def csv = token_args.contains("-d") || token_args.contains("--csv") ?       "touch ${prefix}.csv"       : ""
+    def wig = token_args.contains("-w")  || token_args.contains("--wig")      ? "touch ${prefix}.wig"       : ""
+    def bg  = token_args.contains("-bg") || token_args.contains("--bedgraph") ? "touch ${prefix}.bedgraph"  : ""
+    def txt = token_args.contains("-t")  || token_args.contains("--txt")      ? "touch ${prefix}.txt"       : ""
+    def csv = token_args.contains("-d")  || token_args.contains("--csv")      ? "touch ${prefix}.csv"       : ""
 
     if ("$index" == "${prefix}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
