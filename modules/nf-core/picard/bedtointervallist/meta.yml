@@ -36,19 +36,16 @@ input:
         description: Sequence dictionary
         pattern: "*.dict"
 output:
-  - interval_list:
+  - intervallist:
       - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test']
+      - "*.intervallist":
           type: file
           description: gatk interval list file
-          pattern: "*.interval_list"
-      - "*.interval_list":
-          type: file
-          description: gatk interval list file
-          pattern: "*.interval_list"
-      - _list:
-          type: file
-          description: gatk interval list file
-          pattern: "*.interval_list"
+          pattern: "*.intervallist"
   - versions:
       - versions.yml:
           type: file
