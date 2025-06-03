@@ -66,7 +66,7 @@ process PICARD_BEDTOINTERVALLIST {
         ${args_file} \\
         ${args}"
 
-    touch ${prefix}.interval_list
+    touch ${prefix}.intervallist
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
