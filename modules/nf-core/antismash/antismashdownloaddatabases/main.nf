@@ -2,7 +2,7 @@ process ANTISMASH_ANTISMASHDOWNLOADDATABASES {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "nf-core/antismash:8.0.0"
+    container "nf-core/antismash:8.0.1--pyhdfd78af_0"
 
     output:
     path "antismash_db", emit: database
