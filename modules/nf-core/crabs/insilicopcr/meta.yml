@@ -29,16 +29,16 @@ input:
         description: Sequence to conduct in silico PCR on
         pattern: "*.{fa,fasta}"
 output:
-  - fasta:
+  - txt:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.{fa,fasta}":
+      - "*.insilicopc.txt":
           type: file
-          description: Reverse complemented amplified Sequence
-          pattern: "*.{fa,fasta}"
+          description: Extracted amplicon regions
+          pattern: "*.insilicopc.txt"
   - versions:
       - versions.yml:
           type: file

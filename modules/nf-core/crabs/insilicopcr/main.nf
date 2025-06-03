@@ -11,8 +11,8 @@ process CRABS_INSILICOPCR {
     tuple val(meta), path(crabsdb)
 
     output:
-    tuple val(meta), path("*.txt}"), emit: txt
-    path "versions.yml"            , emit: versions
+    tuple val(meta), path("*.insilicopc.txt"), emit: txt
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,7 +23,7 @@ process CRABS_INSILICOPCR {
     """
     crabs --in-silico-pcr \\
         --input ${crabsdb} \\
-        --output ${prefix}.txt \\
+        --output ${prefix}.insilicopcr.txt \\
         --threads ${task.cpus} \\
         ${args}
 
@@ -36,7 +36,7 @@ process CRABS_INSILICOPCR {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.txt
+    touch ${prefix}.insilicopcr.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

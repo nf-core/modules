@@ -8,10 +8,11 @@ nextflow_process {
     tag "modules_nfcore"
     tag "crabs"
     tag "crabs/insilicopcr"
+    tag "crabs/import"
 
     setup {
         run("CRABS_IMPORT") {
-            script "../import/main.nf"
+            script "../../import/main.nf"
             process {
                 """
                 input[0] = [
