@@ -33,8 +33,7 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-      pattern: "*{.tsv}"
-  - '*.tsv':
+  - '{,*/}${prefix}_rel-abundance.tsv':
       type: map
       description: Output file containing relative abundances for reads
       pattern: "*{.tsv}"
@@ -43,8 +42,7 @@ output:
       type: map
       description: Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-      pattern: "*{.tsv}"
-  - '*read-assignment-distributions.tsv':
+  - '{,*/}${prefix}_read-assignment-distributions.tsv':
       type: map
       description: Output file with read assignment distributions.
       pattern: "*{.tsv}"
@@ -54,8 +52,7 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-      pattern: "*{.sam}"
-  - '*.sam':
+  - '{,*/}${prefix}_emu_alignments.sam':
       type: map
       description: Sam alignment file
       pattern: "*{.sam}"
@@ -65,11 +62,20 @@ output:
       description: |
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ]
-      pattern: "*{.fa}"
-  - '*.fasta':
+  - '{,*/}${prefix}_unclassified_mapped.fasta':
       type: map
       description: Output file with unclassified sequences
-      pattern: "*{.fa}"
+      pattern: "*{.fasta}"
+- unmapped_fa:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - '{,*/}${prefix}_unmapped.fasta':
+      type: map
+      description: Output file with unmapped sequences
+      pattern: "*{.fasta}"
 - versions:
   - versions.yml:
       type: file
