@@ -33,7 +33,6 @@ input:
         ontologies:
           - edam: "http://edamontology.org/data_2044" # Sequence
           - edam: "http://edamontology.org/format_1929" # FASTA
-
   - - meta2:
         type: map
         description: |
@@ -46,7 +45,6 @@ input:
         type: string
         description: |
           Type of GFF file. Options are `NCBI_prok`, `JGI`, `NCBI_euk`, and `prodigal`. This is used to parse the GFF file correctly.
-
   - - dbcan_db:
         type: directory
         description: Path to the dbCAN database directory.

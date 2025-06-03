@@ -33,7 +33,6 @@ input:
         ontologies:
           - edam: "http://edamontology.org/data_2044" # Sequence
           - edam: "http://edamontology.org/format_1929" # FASTA
-
   - - meta2:
         type: map
         description: |
@@ -42,12 +41,10 @@ input:
     - input_gff:
         type: file
         description: GFF file for protein sequences.
-
     - gff_type:
         type: string
         description: |
           Type of GFF file. Options are `NCBI_prok`, `JGI`, `NCBI_euk`, and `prodigal`. This is used to parse the GFF file correctly.
-
   - - dbcan_db:
         type: directory
         description: Path to the dbCAN database directory.
@@ -63,7 +60,6 @@ output:
           type: file
           description: |
             TSV file containing the results of dbCAN CAZyme annotation.
-
   - dbcanhmm_results:
       - meta:
           type: map
@@ -74,7 +70,6 @@ output:
           type: file
           description: |
             TSV file containing the detailed dbCAN HMM results for CAZyme annotation.
-
   - dbcansub_results:
       - meta:
           type: map
@@ -85,7 +80,6 @@ output:
           type: file
           description: |
             TSV file containing the detailed dbCAN subfamily results for CAZyme annotation.
-
   - dbcandiamond_results:
       - meta:
           type: map
@@ -96,7 +90,6 @@ output:
           type: file
           description: |
             TSV file containing the detailed dbCAN diamond results for CAZyme annotation.
-
   - cgc_gff:
       - meta:
           type: map
@@ -107,7 +100,6 @@ output:
           type: file
           description: |
             GFF file containing the CAZyme gene clusters (CGC) identified by dbCAN. This file is generated from the dbCAN annotation and contains the locations of CAZyme gene clusters in the genome.
-
   - cgc_standard_out:
       - meta:
           type: map
@@ -118,7 +110,6 @@ output:
           type: file
           description: |
             Standard output file from dbCAN for CAZyme gene clusters (CGC) in a tabular format. This file summarizes the CAZyme gene clusters identified in the genome.
-
   - diamond_out_tc:
       - meta:
           type: map
@@ -129,7 +120,6 @@ output:
           type: file
           description: |
             TSV file containing the diamond output for transporter annotation.
-
   - tf_hmm_results:
       - meta:
           type: map
@@ -140,7 +130,6 @@ output:
           type: file
           description: |
             TSV file containing the results of Transcription factor.
-
   - stp_hmm_results:
       - meta:
           type: map
@@ -151,7 +140,6 @@ output:
           type: file
           description: |
             TSV file containing the results of signaling transduction proteins (STP) annotation.
-
   - total_cgc_info:
       - meta:
           type: map
@@ -162,27 +150,6 @@ output:
           type: file
           description: |
             TSV file summarizing the total additional genes in the genome.
-
-  - cgc_faa:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1']`
-      - ${prefix}_CGC.faa:
-          type: file
-          description: |
-            FAA file containing the protein sequences of the CAZyme gene clusters (CGC) identified by dbCAN. This file is generated from the dbCAN annotation and contains the amino acid sequences of the CAZymes in the genome.
-  - pul_blast_out:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1']`
-      - ${prefix}_PUL_blast.out:
-          type: file
-          description: |
-            TSV file containing the results of the PUL (Polysaccharide Utilization Locus) blast search. This file provides information on the potential PULs identified in the genome based on the dbCAN annotation.
   - substrate_prediction:
       - meta:
           type: map
@@ -203,7 +170,6 @@ output:
           type: directory
           description: |
             Directory containing the synteny plots in PDF format for the CAZyme gene clusters (CGC) identified by dbCAN. This directory will contain one or more PDF files showing the syntenic regions of the CGC in the genome.
-
   - versions:
       - versions.yml:
           type: file

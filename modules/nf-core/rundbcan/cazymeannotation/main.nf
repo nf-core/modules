@@ -4,19 +4,19 @@ process RUNDBCAN_CAZYMEANNOTATION {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/dbcan:5.0.6--pyhdfd78af_0' :
-        'biocontainers/dbcan:5.0.6--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/dbcan:5.1.1--pyhdfd78af_0' :
+        'biocontainers/dbcan:5.1.1--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(input_raw_data)
-    path  dbcan_db
+    path dbcan_db
 
     output:
-    tuple val(meta), path("${prefix}_overview.tsv")                 , emit: cazyme_annotation
-    tuple val(meta), path("${prefix}_dbCAN_hmm_results.tsv")        , emit: dbcanhmm_results
-    tuple val(meta), path("${prefix}_dbCANsub_hmm_results.tsv")     , emit: dbcansub_results
-    tuple val(meta), path("${prefix}_diamond.out")                  , emit: dbcandiamond_results
-    path  "versions.yml"                                            , emit: versions
+    tuple val(meta), path("${prefix}_overview.tsv")            , emit: cazyme_annotation
+    tuple val(meta), path("${prefix}_dbCAN_hmm_results.tsv")   , emit: dbcanhmm_results
+    tuple val(meta), path("${prefix}_dbCANsub_hmm_results.tsv"), emit: dbcansub_results
+    tuple val(meta), path("${prefix}_diamond.out")             , emit: dbcandiamond_results
+    path  "versions.yml"                                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,7 +24,6 @@ process RUNDBCAN_CAZYMEANNOTATION {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     run_dbcan CAZyme_annotation \\
         --mode protein \\
