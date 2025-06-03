@@ -1,19 +1,21 @@
 #!/usr/bin/env Rscript
 
-parse_args = function(x) {
-    x = gsub("\\\\[","",x)
-    x = gsub("\\\\]","",x)
-    args_list = unlist(strsplit(x, ", (?=[^)]*(?:\\\\(|\$))", perl=TRUE))
-    args_vals = lapply(args_list, function(x) {
-        x_splt = strsplit(x, split=":")[[1]]
-        c(x_splt[1],  paste(x_splt[2:length(x_splt)], collapse=":"))
-    })
+pkgs <- c("SparseSignatures", "dplyr", "tidyr", "tibble", "purrr", "stringr", "ggplot2", "patchwork")
+sapply(pkgs, require, character.only = TRUE)
 
-    # Ensure the option vectors are length 2 (key/ value) to catch empty ones
-    args_vals = lapply(args_vals, function(z){ length(z) = 2; z})
+parse_args <- function(x) {
+  # Remove brackets
+  x <- str_remove_all(x, "\\\\[|\\\\]")  
 
-    parsed_args = structure(lapply(args_vals, function(x) x[2]), names = lapply(args_vals, function(x) x[1]))
-    parsed_args[! is.na(parsed_args)]
+  # Split into key:value pairs
+  args_list = unlist(strsplit(x, ", (?=[^)]*(?:\\\\(|\$))", perl=TRUE))
+
+  # Convert to tibble and split key:value
+  tibble(arg = args_list) %>%
+    separate(arg, into = c("key", "value"), sep = ":", extra = "merge", fill = "right") %>%
+    dplyr::mutate(across(everything(), ~str_trim(.))) %>%
+    dplyr::filter(!is.na(key) & !is.na(value)) %>%
+    tibble::deframe()
 }
 
 opt = list(
@@ -27,7 +29,7 @@ opt = list(
     iterations = "30",
     max_iterations_lasso = "10000",
     num_processes = "all",
-    cross_validation__entries = "0.01",
+    cross_validation_entries = "0.01",
     cross_validation_repetitions = "50",
     cross_validation_iterations = "5",
     lambda_values_alpha = "c(0.00, 0.01, 0.05, 0.10)",
@@ -41,9 +43,6 @@ for ( ao in names(args_opt)) opt[[ao]] = args_opt[[ao]]
 
 
 # Script #
-
-pkgs <- c("SparseSignatures", "dplyr", "stringr", "ggplot2", "patchwork")
-sapply(pkgs, require, character.only = TRUE)
 
 num_procs_string <- opt[["num_processes"]]
 
@@ -100,11 +99,13 @@ saveRDS(object = mut_counts, file = paste0(opt[["prefix"]], "_mut_counts.rds"))
 # Load a reference SBS5 background signature from COSMIC
 data(background)
 
-seed_val <- if (!is.null(opt[["seed"]])) as.integer(opt[["seed"]]) else NULL
 
-if (!is.null(seed_val)) {
-  set.seed(seed_val)
+seed_val <- if (!is.null(opt[["seed"]]) && opt[["seed"]] != "NULL") {
+    as.integer(opt[["seed"]])
+} else {
+    42  # fallback default
 }
+set.seed(seed_val)
 
 # Estimate the initial values of beta
 starting_betas = SparseSignatures::startingBetaEstimation(x = mut_counts,
