@@ -87,21 +87,17 @@ jobs:
         if: ${{ failure() && matrix.platform == 'linux/arm64' }}
         run: |
           MODULE_DIR=$(dirname "${{ matrix.files }}")
-          SKIP_FILE="$MODULE_DIR/tests/.skip-arm"
 
-          # Create simple skip marker with workflow run link
-          echo "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" > "$SKIP_FILE"
+          # Add arm_failure tag to nf-test file
+          python .github/scripts/add_arm_failure_tag.py "$MODULE_DIR"
 
-          echo "Created ARM skip marker at $SKIP_FILE"
-          cat "$SKIP_FILE"
-
-      - name: Commit ARM skip marker
+      - name: Commit ARM failure tag
         if: ${{ failure() && matrix.platform == 'linux/arm64' }}
         run: |
           git config user.email "core@nf-co.re"
           git config user.name "nf-core-bot"
           git add .
-          git commit -m "Add ARM test skip marker for $(dirname "${{ matrix.files }}")" || exit 0
+          git commit -m "Add ARM failure tag for $(dirname "${{ matrix.files }}")" || exit 0
           git push
 
   dockerfile-wave:
@@ -150,21 +146,17 @@ jobs:
         if: ${{ failure() && matrix.platform == 'linux/arm64' }}
         run: |
           MODULE_DIR=$(dirname "${{ matrix.files }}")
-          SKIP_FILE="$MODULE_DIR/tests/.skip-arm"
 
-          # Create simple skip marker with workflow run link
-          echo "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" > "$SKIP_FILE"
+          # Add arm_failure tag to nf-test file
+          python .github/scripts/add_arm_failure_tag.py "$MODULE_DIR"
 
-          echo "Created ARM skip marker at $SKIP_FILE"
-          cat "$SKIP_FILE"
-
-      - name: Commit ARM skip marker
+      - name: Commit ARM failure tag
         if: ${{ failure() && matrix.platform == 'linux/arm64' }}
         run: |
           git config user.email "core@nf-co.re"
           git config user.name "nf-core-bot"
           git add .
-          git commit -m "Add ARM test skip marker for $(dirname "${{ matrix.files }}")" || exit 0
+          git commit -m "Add ARM failure tag for $(dirname "${{ matrix.files }}")" || exit 0
           git push
 
   # bump-versions:

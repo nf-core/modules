@@ -10,6 +10,7 @@ nextflow_process {
     tag "gunzip"
     tag "modules"
     tag "modules_nfcore"
+    tag "arm_failure"
 
     setup {
 
@@ -127,8 +128,6 @@ nextflow_process {
     }
 
     test("sarscov2 protein_db stub") {
-
-        tag "arm_failure"
 
         options "-stub"
 

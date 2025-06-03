@@ -62,9 +62,9 @@ jobs:
           head: ${{ github.sha }}
           base: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
           n_parents: 0
-          exclude_tags: "gpu"
+          exclude_tags: "gpu,arm_failure"
 
-          # FIXME Can't we just do this with nf-test --filter?
+        # FIXME Can't we just do this with nf-test --filter?
       - name: Separate modules and subworkflows
         id: components
         run: |
@@ -110,7 +110,7 @@ jobs:
       NXF_ANSI_LOG: false
       TOTAL_SHARDS: ${{ needs.nf-test-changes.outputs.total_shards }}
     outputs:
-      arm_filtered_paths: ${{ steps.filter-arm.outputs.arm_filtered_paths }}
+      filtered_paths: ${{ steps.filter.outputs.filtered_paths }}
 
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
@@ -153,20 +153,12 @@ jobs:
 
           echo "filtered_paths=${FILTERED}" >> $GITHUB_OUTPUT
 
-      - name: Filter ARM tests
-        id: filter-arm
-        run: |
-          PATHS='${{ steps.filter.outputs.filtered_paths }}'
-          ARM_FILTERED=$(.github/scripts/filter_arm_tests.py "$PATHS")
-          echo "arm_filtered_paths=${ARM_FILTERED}" >> $GITHUB_OUTPUT
-
       - name: debug
         run: |
           echo filtered_paths = ${{ steps.filter.outputs.filtered_paths }}
-          echo arm_filtered_paths = ${{ steps.filter-arm.outputs.arm_filtered_paths }}
 
       - name: Run nf-test Action
-        if: ${{steps.filter-arm.outputs.arm_filtered_paths != '[]'}}
+        if: ${{steps.filter.outputs.filtered_paths != '[]'}}
         uses: ./.github/actions/nf-test-action
         env:
           SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
@@ -177,7 +169,7 @@ jobs:
           profile: ${{ matrix.profile }}${{ runner.arch == 'ARM64' && ',arm_CI,wave' || '' }}
           shard: ${{ matrix.shard }}
           total_shards: ${{ env.TOTAL_SHARDS }}
-          paths: "${{ join(fromJson(steps.filter-arm.outputs.arm_filtered_paths), ' ') }}"
+          paths: "${{ join(fromJson(steps.filter.outputs.filtered_paths), ' ') }}"
 
   confirm-pass-nf-test:
     runs-on:
