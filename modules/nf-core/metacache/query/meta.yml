@@ -40,7 +40,13 @@ output:
         type: file
         description: Output file containing mapping results
         pattern: "*.txt"
-    - "*abundances.txt":
+  - abundances:
+     - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+     - "*abundances.txt":
         type: file
         description: Output file showing absolute and relative abundance of each taxon
         pattern: "*.txt"
