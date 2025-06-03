@@ -1,4 +1,3 @@
-
 process METACACHE_BUILD {
     tag "$meta.id"
     label 'process_long'
