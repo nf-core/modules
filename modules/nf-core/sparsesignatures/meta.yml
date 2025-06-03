@@ -31,7 +31,7 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
+          e.g. [ id:'sample1' ]
     - tsv_join:
         type: file
         description: joint tsv file with validated mutations by CNAqc
@@ -42,7 +42,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*_mut_counts.rds":
           type: file
           description: File containing mutational counts across samples/patients
@@ -52,7 +52,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*_cv_means_mse.rds": 
           type: file
           description: File containing cross-validation results
@@ -62,7 +62,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*_best_params_config.rds": 
           type: file
           description: File containing best parameters configuration (numer of signatures (K) and lambda)
@@ -72,7 +72,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*_nmf_Lasso_out.rds":
           type: file
           description: File containing the results of nmf LASSO fit (signatures and exposures)
@@ -82,7 +82,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*_plot_all.rds":
           type: file
           description: File containig the data to generate plots
@@ -92,7 +92,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*_plot_all.pdf":
           type: file
           description: File containing the generated plots
@@ -104,15 +104,8 @@ output:
           pattern: "versions.yml"
 authors:
   - "@Katerina10-cloud"
-  - "@valerianilucrezia"
   - "@elena-buscaroli"
-  - "@giorgiagandolfi"
-  - "@vvirgy"
-  - "@nicola-calonaci"
 maintainers:
   - "@Katerina10-cloud"
-  - "@valerianilucrezia"
   - "@elena-buscaroli"
-  - "@giorgiagandolfi"
-  - "@vvirgy"
-  - "@nicola-calonaci"
+  
