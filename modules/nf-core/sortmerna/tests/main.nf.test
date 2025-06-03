@@ -28,7 +28,7 @@ nextflow_process {
                 { assert process.success },
                 { assert ! process.out.reads },
                 { assert snapshot(
-                    file(process.out.index[0][1]).listFiles().findAll { !it.name.endsWith(".stats") },
+                    file(process.out.index[0][1]).listFiles().findAll { !it.name.endsWith(".stats") }.sort { it.name },
                     process.out.versions
                 ).match() }
             )
@@ -94,7 +94,9 @@ nextflow_process {
                         ).sort()
                     ).match("sarscov2 single_end_match")
                 },
-                { assert snapshot(file(process.out.index[0][1]).listFiles().findAll { !it.name.endsWith(".stats")}).match("index_single_end") },
+                { assert snapshot(
+                    file(process.out.index[0][1]).listFiles().findAll { !it.name.endsWith(".stats") }.sort { it.name }
+                ).match("index_single_end")},
                 { assert snapshot(process.out.versions).match("versions_single_end") }
             )
         }
@@ -172,8 +174,11 @@ nextflow_process {
                         ).sort()
                     ).match("sarscov2 paired_end_match")
                 },
-                { assert snapshot(file(process.out.index[0][1]).listFiles().findAll { !it.name.endsWith(".stats")}).match("index_paired_end") },
+                { assert snapshot(
+                    file(process.out.index[0][1]).listFiles().findAll { !it.name.endsWith(".stats") }.sort { it.name }
+                ).match("index_paired_end") },
                 { assert snapshot(process.out.versions).match("versions_paired_end") }
+
             )
         }
 
@@ -267,7 +272,9 @@ nextflow_process {
                         ).sort()
                     ).match("sarscov2 single_end_premade_index_match")
                 },
-                { assert snapshot(file(process.out.index[0][1]).listFiles().findAll { !it.name.endsWith(".stats") }).match("index_single_end_premade_index") },
+                { assert snapshot(
+                    file(process.out.index[0][1]).listFiles().findAll { !it.name.endsWith(".stats") }.sort{ it.name }
+                ).match("index_single_end_premade_index") },
                 { assert snapshot(process.out.versions).match("versions_single_end_premade_index") }
             )
         }
