@@ -13,8 +13,9 @@ process METACACHE_QUERY {
     path (db, stageAs: 'db/*')
 
     output:
-    tuple val(meta), path("*.txt"), emit: mapping_results
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.txt")          , emit: mapping_results
+    tuple val(meta), path("*abundances.txt"), emit: abundances, optional: true
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
