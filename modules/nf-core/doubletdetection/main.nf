@@ -4,7 +4,7 @@ process DOUBLETDETECTION {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'oras://community.wave.seqera.io/library/pyyaml_pip_doubletdetection:d67fd9203a935dfe'
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/41/414cdfd17bf902c5a385bc9991cec042446b440fc3b16454e01a3634c923ba29/data'
         : 'community.wave.seqera.io/library/pyyaml_pip_doubletdetection:5af145ffec01d7da'}"
 
     input:
