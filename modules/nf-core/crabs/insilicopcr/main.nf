@@ -12,7 +12,7 @@ process CRABS_INSILICOPCR {
 
     output:
     tuple val(meta), path("*.insilicopcr.txt"), emit: txt
-    path "versions.yml"                      , emit: versions
+    path "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,6 +20,10 @@ process CRABS_INSILICOPCR {
     script:
     def args    = task.ext.args ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
+    def version_cmd    = "\$(crabs --help 2>/dev/null | grep 'CRABS |' | sed 's/.*CRABS | v\\([0-9.]*\\).*/\\1/')"
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        version_cmd    = '1.0.7'
+    }
     """
     crabs --in-silico-pcr \\
         --input ${crabsdb} \\
@@ -29,18 +33,22 @@ process CRABS_INSILICOPCR {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        crabs: \$(crabs --help | grep 'CRABS |' | sed 's/.*CRABS | \\(v[0-9.]*\\).*/\\1/')
+        crabs: ${version_cmd}
     END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def version_cmd    = "\$(crabs --help 2>/dev/null | grep 'CRABS |' | sed 's/.*CRABS | v\\([0-9.]*\\).*/\\1/')"
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        version_cmd    = '1.0.7'
+    }
     """
     touch ${prefix}.insilicopcr.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        crabs: \$(crabs --help | grep 'CRABS |' | sed 's/.*CRABS | \\(v[0-9.]*\\).*/\\1/')
+        crabs: ${version_cmd}
     END_VERSIONS
     """
 }
