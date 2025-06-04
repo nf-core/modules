@@ -32,8 +32,9 @@ process METACACHE_QUERY {
         query \\
         \$dbmeta \\
         ${input_file} \\
+        $abundance_opt \\
         $args \\
-        -out ${prefix}.txt
+        -out ${prefix}.mapping.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
