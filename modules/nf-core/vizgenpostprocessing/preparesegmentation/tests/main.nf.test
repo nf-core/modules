@@ -31,14 +31,14 @@ nextflow_process {
                 transformFile.text = "2 0 0\\n0 2 0\\n0 0 1"
 
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
+                    testDir,
+                    transformFile
                 ]
                 input[1] = file('https://raw.githubusercontent.com/Vizgen/vpt-plugin-cellpose2/refs/heads/develop/example_analysis_algorithm/cellpose2_nuclei.json', checkIfExists: true)
-                input[2] = testDir
-                input[3] = "mosaic_(?P<stain>[\\\\w|-]+)_z(?P<z>[0-9]+).tif"
-                input[4] = transformFile
-                input[5] = 200
-                input[6] = 200
+                input[2] = "mosaic_(?P<stain>[\\\\w|-]+)_z(?P<z>[0-9]+).tif"
+                input[3] = 200
+                input[4] = 200
                 """
             }
         }
@@ -67,14 +67,14 @@ nextflow_process {
                 transformFile = file("\${testDir}/micron_to_mosaic_pixel_transform.csv")
 
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
+                    testDir,
+                    transformFile
                 ]
                 input[1] = file('https://raw.githubusercontent.com/Vizgen/vpt-plugin-cellpose2/refs/heads/develop/example_analysis_algorithm/cellpose2_nuclei.json', checkIfExists: true)
-                input[2] = testDir
-                input[3] = "mosaic_(?P<stain>[\\\\w|-]+)_z(?P<z>[0-9]+).tif"
-                input[4] = transformFile
-                input[5] = 200
-                input[6] = 200
+                input[2] = "mosaic_(?P<stain>[\\\\w|-]+)_z(?P<z>[0-9]+).tif"
+                input[3] = 200
+                input[4] = 200
                 """
             }
         }

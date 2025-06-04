@@ -24,18 +24,25 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'sample1', single_end:false ]
+    - input_images:
+        type: directory
+        description: |
+          Path to the input images directory to be used for segmentation.
+        ontologies:
+          - edam: "http://edamontology.org/data_1049"
+    - um_to_mosaic_file:
+        type: file
+        description: |
+          Path to the micron-to-mosaic pixel transform matrix file.
+        pattern: "*.csv"
+        ontologies:
+          - edam: "http://edamontology.org/format_3752"
   - - algorithm_json:
         type: file
         description: JSON file containing the algorithm specification
         pattern: "*.json"
         ontologies:
           - edam: "http://edamontology.org/format_3464"
-  - - input_images:
-        type: directory
-        description: |
-          Path to the input images directory to be used for segmentation.
-        ontologies:
-          - edam: "http://edamontology.org/data_1049"
   - - images_regex:
         type: string
         description: |
@@ -45,13 +52,6 @@ input:
           files to be used (e.g., mosaic_(?P<stain>[\w|-]+)_z(?P<z>[0-9]+).tif)
         ontologies:
           - edam: "http://edamontology.org/data_1352"
-  - - um_to_mosaic_file:
-        type: file
-        description: |
-          Path to the micron-to-mosaic pixel transform matrix file.
-        pattern: "*.csv"
-        ontologies:
-          - edam: "http://edamontology.org/format_3752"
   - - tile_size:
         type: integer
         description: |

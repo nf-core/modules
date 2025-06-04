@@ -5,11 +5,9 @@ process VIZGENPOSTPROCESSING_PREPARESEGMENTATION {
     container 'ghcr.io/wehi-soda-hub/vizgen-postprocessing_container:v0.1.1'
 
     input:
-    val(meta)
+    tuple val(meta), path(input_images), path(um_to_mosaic_file)
     path(algorithm_json)
-    path(input_images)
     val(images_regex)
-    path(um_to_mosaic_file)
     val(tile_size)
     val(tile_overlap)
 
