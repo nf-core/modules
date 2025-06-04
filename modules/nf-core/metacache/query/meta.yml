@@ -28,7 +28,9 @@ input:
   - - db:
         type: directory
         description:  A MetaCache database contains taxonomic information and min-hash signatures of reference sequences (complete genomes, scaffolds, contigs, ...).
-
+  - - do_abundances:
+        type: boolean
+        description: Flag indicating whether to produce the abundance table.
 output:
   - mapping_results:
     - meta:

@@ -11,7 +11,7 @@ process METACACHE_QUERY {
     input:
     tuple val(meta), path(reads)
     path (db, stageAs: 'db/*')
-    val(do_abundances)  // empty list or Boolean: flag to produce abundances.txt
+    val(do_abundances)
 
     output:
     tuple val(meta), path("*mapping.txt")   , emit: mapping_results
@@ -47,10 +47,9 @@ process METACACHE_QUERY {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def input_file = meta.single_end ? reads : "${reads[0]} ${reads[1]} -pairfiles"
     def abundance_opt = do_abundances ? "-abundances ${prefix}.abundances.txt" : ''
-    def dbmeta = db.find{ p -> p.name =~ $/\.meta$$/$ }
-    assert dbmeta
     """
-    touch ${prefix}.txt
+    touch ${prefix}.mapping.txt
+    touch ${prefix}.abundances.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
