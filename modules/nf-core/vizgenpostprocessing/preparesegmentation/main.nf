@@ -30,19 +30,19 @@ process VIZGENPOSTPROCESSING_PREPARESEGMENTATION {
     """
     vpt --verbose \\
         prepare-segmentation \\
-        $args \\
-        --segmentation-algorithm $algorithm_json \\
+        ${args} \\
+        --segmentation-algorithm ${algorithm_json} \\
         --input-images "${input_images}/${images_regex}" \\
-        --input-micron-to-mosaic $um_to_mosaic_file \\
+        --input-micron-to-mosaic ${um_to_mosaic_file} \\
         --output-path . \\
-        --tile-size $tile_size \\
-        --tile-overlap $tile_overlap
+        --tile-size ${tile_size} \\
+        --tile-overlap ${tile_overlap}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         vpt: \$( pip show vpt | grep Version | sed -e "s/Version: //g" )
         vpt-plugin-cellpose2: \$( pip show vpt-plugin-cellpose2 | grep Version | sed -e "s/Version: //g" )
-    END_VERSION
+    END_VERSIONS
     """
 
     stub:
@@ -55,6 +55,6 @@ process VIZGENPOSTPROCESSING_PREPARESEGMENTATION {
     "${task.process}":
         vpt: \$( pip show vpt | grep Version | sed -e "s/Version: //g" )
         vpt-plugin-cellpose2: \$( pip show vpt-plugin-cellpose2 | grep Version | sed -e "s/Version: //g" )
-    END_VERSION
+    END_VERSIONS
     """
 }
