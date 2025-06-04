@@ -11,6 +11,7 @@ process METACACHE_QUERY {
     input:
     tuple val(meta), path(reads)
     path (db, stageAs: 'db/*')
+    val(do_abundances)  // empty list or Boolean: flag to produce abundances.txt
 
     output:
     tuple val(meta), path("*.txt")          , emit: mapping_results
