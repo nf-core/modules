@@ -24,10 +24,10 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - fasta:
+    - crabsdb:
         type: file
-        description: Sequence to conduct in silico PCR on
-        pattern: "*.{fa,fasta}"
+        description: CRABSDB to conduct in silico PCR on
+        pattern: "*.txt"
 output:
   - txt:
       - meta:
