@@ -14,7 +14,7 @@ process VIZGENPOSTPROCESSING_PREPARESEGMENTATION {
     val(tile_overlap)
 
     output:
-    tuple val(meta), path("*.json"), path(input_images), path(algorithm_json), emit: segmentation_files
+    tuple val(meta), path("*/*.json"), path(input_images), path(algorithm_json), emit: segmentation_files
     path "versions.yml"           , emit: versions
 
     when:
@@ -28,13 +28,15 @@ process VIZGENPOSTPROCESSING_PREPARESEGMENTATION {
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    mkdir -p ${prefix}
+
     vpt --verbose \\
         prepare-segmentation \\
         ${args} \\
         --segmentation-algorithm ${algorithm_json} \\
         --input-images "${input_images}/${images_regex}" \\
         --input-micron-to-mosaic ${um_to_mosaic_file} \\
-        --output-path . \\
+        --output-path ${prefix} \\
         --tile-size ${tile_size} \\
         --tile-overlap ${tile_overlap}
 
@@ -48,7 +50,8 @@ process VIZGENPOSTPROCESSING_PREPARESEGMENTATION {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch algorithm_specification.json
+    mkdir -p ${prefix}
+    touch ${prefix}/algorithm_specification.json
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
