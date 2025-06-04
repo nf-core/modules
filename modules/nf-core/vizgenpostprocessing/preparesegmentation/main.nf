@@ -8,8 +8,6 @@ process VIZGENPOSTPROCESSING_PREPARESEGMENTATION {
     tuple val(meta), path(input_images), path(um_to_mosaic_file)
     path(algorithm_json)
     val(images_regex)
-    val(tile_size)
-    val(tile_overlap)
 
     output:
     tuple val(meta), path("*/*.json"), emit: segmentation_files
@@ -34,9 +32,7 @@ process VIZGENPOSTPROCESSING_PREPARESEGMENTATION {
         --segmentation-algorithm ${algorithm_json} \\
         --input-images "${input_images}/${images_regex}" \\
         --input-micron-to-mosaic ${um_to_mosaic_file} \\
-        --output-path ${prefix} \\
-        --tile-size ${tile_size} \\
-        --tile-overlap ${tile_overlap}
+        --output-path ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

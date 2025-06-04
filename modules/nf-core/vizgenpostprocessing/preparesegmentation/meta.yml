@@ -52,14 +52,6 @@ input:
           files to be used (e.g., mosaic_(?P<stain>[\w|-]+)_z(?P<z>[0-9]+).tif)
         ontologies:
           - edam: "http://edamontology.org/data_1352"
-  - - tile_size:
-        type: integer
-        description: |
-          Pixel width and height of each square tile.
-  - - tile_overlap:
-        type: integer
-        description: |
-          Pixel overlap between tiles.
 
 output:
   - segmentation_files:

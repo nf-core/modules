@@ -12,6 +12,9 @@ nextflow_process {
     test("nuclei - json, images, csv") {
 
         when {
+            params {
+                module_args = '--tile-size 200 --tile-overlap 20'
+            }
             process {
                 """
                 // Create test directory and files before process execution
@@ -37,8 +40,6 @@ nextflow_process {
                 ]
                 input[1] = file('https://raw.githubusercontent.com/Vizgen/vpt-plugin-cellpose2/refs/heads/develop/example_analysis_algorithm/cellpose2_nuclei.json', checkIfExists: true)
                 input[2] = "mosaic_(?P<stain>[\\\\w|-]+)_z(?P<z>[0-9]+).tif"
-                input[3] = 200
-                input[4] = 200
                 """
             }
         }
@@ -73,8 +74,6 @@ nextflow_process {
                 ]
                 input[1] = file('https://raw.githubusercontent.com/Vizgen/vpt-plugin-cellpose2/refs/heads/develop/example_analysis_algorithm/cellpose2_nuclei.json', checkIfExists: true)
                 input[2] = "mosaic_(?P<stain>[\\\\w|-]+)_z(?P<z>[0-9]+).tif"
-                input[3] = 200
-                input[4] = 200
                 """
             }
         }
