@@ -36,10 +36,10 @@ output:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-    - "*.txt":
+    - "*.mapping.txt":
         type: file
         description: Output file containing mapping results
-        pattern: "*.txt"
+        pattern: "*mapping.txt"
   - abundances:
      - meta:
         type: map
