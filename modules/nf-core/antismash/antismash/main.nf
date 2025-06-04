@@ -3,7 +3,7 @@ process ANTISMASH_ANTISMASH {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "nf-core/antismash:8.0.0"
+    container "nf-core/antismash:8.0.1--pyhdfd78af_0"
 
     input:
     tuple val(meta), path(sequence_input)
