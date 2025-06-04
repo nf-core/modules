@@ -28,6 +28,9 @@ nextflow_process {
 
     test("sarscov2 nanopore [fastq_gz]") {
         when {
+            params {
+                module_args = "--keep-files --keep-read-assignments --output-unclassified"
+            }
             process {
                 """
                 input[0] = [ [ id:'test' ], // meta map
@@ -57,6 +60,9 @@ nextflow_process {
     test("sarscov2 nanopore [fastq_gz] - stub") {
         options "-stub"
         when {
+            params {
+                module_args = ""
+            }
             process {
                 """
                 input[0] = [ [ id:'test' ], // meta map

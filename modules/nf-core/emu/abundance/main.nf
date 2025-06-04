@@ -12,12 +12,12 @@ process EMU_ABUNDANCE {
     path db
 
     output:
-    tuple val(meta), path("{,*/}${prefix}_rel-abundance.tsv")                , emit: report
-    tuple val(meta), path("{,*/}${prefix}_read-assignment-distributions.tsv"), emit: assignment_report, optional: true
-    tuple val(meta), path("{,*/}${prefix}_emu_alignments.sam")               , emit: samfile, optional: true
-    tuple val(meta), path("{,*/}${prefix}_unclassified_mapped.fasta")        , emit: unclassified_fa, optional: true
-    tuple val(meta), path("{,*/}${prefix}_unmapped.fasta")                   , emit: unmapped_fa, optional: true
-    path "versions.yml"                                                      , emit: versions
+    tuple val(meta), path("${prefix}_rel-abundance.tsv")                , emit: report
+    tuple val(meta), path("${prefix}_read-assignment-distributions.tsv"), emit: assignment_report, optional: true
+    tuple val(meta), path("${prefix}_emu_alignments.sam")               , emit: samfile, optional: true
+    tuple val(meta), path("${prefix}_unclassified_mapped.fasta")        , emit: unclassified_fa, optional: true
+    tuple val(meta), path("${prefix}_unmapped.fasta")                   , emit: unmapped_fa, optional: true
+    path "versions.yml"                                                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,6 +34,10 @@ process EMU_ABUNDANCE {
         --output-basename ${prefix} \\
         ${reads}
 
+    if [ -d results ]; then
+        mv results/* .
+    fi
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         emu: \$(echo \$(emu --version 2>&1) | sed 's/^.*emu //; s/Using.*\$//' )
@@ -44,8 +48,7 @@ process EMU_ABUNDANCE {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir results
-    touch results/${prefix}_rel-abundance.tsv
+    touch ${prefix}_rel-abundance.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
