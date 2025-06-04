@@ -31,7 +31,7 @@ process SAMTOOLS_FIXMATE {
     samtools \\
         fixmate  \\
         $args \\
-        --threads ${task.cpus-1} \\
+        --threads ${task.cpus} \\
         $input \\
         ${prefix}.${extension} \\
 
