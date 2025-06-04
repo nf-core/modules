@@ -74,21 +74,6 @@ output:
           pattern: "*.json"
           ontologies:
             - edam: "http://edamontology.org/format_3464"
-      - input_images:
-          type: directory
-          description: |
-            Path to the input images directory to be used for segmentation.
-            This is output for the next module (compiletilesegmentation).
-          ontologies:
-            - edam: "http://edamontology.org/data_1049"
-      - algorithm_json:
-          type: file
-          description: |
-            JSON file containing the algorithm specification. Output for the
-            next module (compiletilesegmentation).
-          pattern: "*.json"
-          ontologies:
-            - edam: "http://edamontology.org/format_3464"
   - versions:
       - "versions.yml":
           type: file

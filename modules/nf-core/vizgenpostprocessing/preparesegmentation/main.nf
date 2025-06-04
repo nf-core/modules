@@ -12,8 +12,8 @@ process VIZGENPOSTPROCESSING_PREPARESEGMENTATION {
     val(tile_overlap)
 
     output:
-    tuple val(meta), path("*/*.json"), path(input_images), path(algorithm_json), emit: segmentation_files
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*/*.json"), emit: segmentation_files
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
