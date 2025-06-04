@@ -8,17 +8,24 @@ keywords:
   - fasta
 components:
   - fcs/fcsadaptor
-  - fcs/fcsgx
+  - fcsgx/rungx
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
-        e.g. [ id:'test' ]
+        with taxonomy ID of the expected organism
+        e.g. [ id:'test', taxid:'id' ]
   - assembly:
       type: file
       description: assembly fasta file
       pattern: "*.{fasta,fa}"
+  - database:
+      type: directory
+      description: Directory containing the FCS-GX database
+  - ramdisk_path:
+      type: string
+      description: Path to RAM disk for improved performance (optional)
 output:
   - meta:
       type: map

@@ -16,20 +16,27 @@ tools:
       licence: ["BSD License"]
       identifier: biotools:khmer
 input:
-  - - pe_reads:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fastq_paired:
         type: file
         description: Paired-end interleaved fastq files
         pattern: "*.{fq,fastq}.gz"
-  - - se_reads:
+    - fastq_unpaired:
         type: file
         description: Single-end fastq files
         pattern: "*.{fq,fastq}.gz"
-  - - name:
-        type: string
-        description: filename for output file(s); ".fastq.gz" will be appended
 output:
   - reads:
-      - ${name}.fastq.gz:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fastq.gz":
           type: file
           description: Interleaved fastq files
           pattern: "*.{fq,fastq}.gz"
