@@ -14,7 +14,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [id: 'test'],
-                    file("https://github.com/nf-core/test-datasets/raw/refs/heads/scdownstream/pbmc/SRR28679759_filtered_matrix.h5ad", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/scrnaseq/h5ad/SRR28679759_filtered_matrix.h5ad", checkIfExists: true)
                 ]
                 """
             }
@@ -49,7 +49,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [id: 'test'],
-                    file("https://github.com/nf-core/test-datasets/raw/refs/heads/scdownstream/pbmc/SRR28679759_filtered_matrix.h5ad", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/scrnaseq/h5ad/SRR28679759_filtered_matrix.h5ad", checkIfExists: true)
                 ]
                 """
             }
