@@ -14,7 +14,7 @@ process METACACHE_QUERY {
     val(do_abundances)  // empty list or Boolean: flag to produce abundances.txt
 
     output:
-    tuple val(meta), path("*.txt")          , emit: mapping_results
+    tuple val(meta), path("*mapping.txt")   , emit: mapping_results
     tuple val(meta), path("*abundances.txt"), emit: abundances, optional: true
     path "versions.yml"                     , emit: versions
 
