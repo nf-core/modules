@@ -10,7 +10,7 @@ process METACACHE_QUERY {
 
     input:
     tuple val(meta), path(reads)
-    path (db, stageAs: 'db/*')
+    path db, stageAs: 'db/*'
     val(do_abundances)
 
     output:
