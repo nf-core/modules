@@ -20,16 +20,16 @@ process AGAT_SPFILTERFEATUREFROMKILLLIST {
     task.ext.when == null || task.ext.when
 
     script:
-    def args            = task.ext.args ?: ''
+    def args            = task.ext.args   ?: ''
     def prefix          = task.ext.prefix ?: "${meta.id}"
-    def config_param    = config ? "--config $config" : ''
-    if( "$gff" == "${prefix}.gff" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    def config_param    = config ? "--config ${config}" : ''
+    if( "${gff}" == "${prefix}.gff" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     agat_sp_filter_feature_from_kill_list.pl \\
-        --gff $gff \\
-        --kill_list $kill_list \\
-        $config_param \\
-        $args \\
+        --gff ${gff} \\
+        --kill_list ${kill_list} \\
+        ${config_param} \\
+        ${args} \\
         --output "${prefix}.gff"
 
     cat <<-END_VERSIONS > versions.yml
@@ -39,7 +39,7 @@ process AGAT_SPFILTERFEATUREFROMKILLLIST {
     """
 
     stub:
-    def prefix          = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     if( "$gff" == "${prefix}.gff" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     touch "${prefix}.gff"

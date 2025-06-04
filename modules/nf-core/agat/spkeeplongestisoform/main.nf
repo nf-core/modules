@@ -19,16 +19,16 @@ process AGAT_SPKEEPLONGESTISOFORM {
     task.ext.when == null || task.ext.when
 
     script:
-    def args         = task.ext.args ?: ''
-    def config_param = config ? "--config $config" : ""
-    def prefix       = meta.id ?: gff.getBaseName()
+    def args         = task.ext.args   ?: ''
+    def prefix       = task.ext.prefix ?: "${meta.id}"
+    def config_param = config ? "--config ${config}" : ""
     output           = "${prefix}.longest.gff"
     """
     agat_sp_keep_longest_isoform.pl \\
-        --gff $gxf \\
-        $config_param \\
-        --out $output \\
-        $args
+        --gff ${gxf} \\
+        ${config_param} \\
+        --out ${output} \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -37,7 +37,7 @@ process AGAT_SPKEEPLONGESTISOFORM {
     """
 
     stub:
-    def prefix = meta.id ?: gff.getBaseName()
+    def prefix = task.ext.prefix ?: "${meta.id}"
     output     = "${prefix}.longest.gff"
     """
     touch ${output}

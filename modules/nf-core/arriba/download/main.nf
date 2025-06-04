@@ -11,11 +11,11 @@ process ARRIBA_DOWNLOAD {
     val(genome)
 
     output:
-    path "blacklist*${genome}*.tsv.gz"       , emit: blacklist
-    path "cytobands*${genome}*.tsv"          , emit: cytobands
-    path "protein_domains*${genome}*.gff3"   , emit: protein_domains
-    path "known_fusions*${genome}*.tsv.gz"   , emit: known_fusions
-    path "versions.yml"                      , emit: versions
+    path "blacklist*${genome}*.tsv.gz"    , emit: blacklist
+    path "cytobands*${genome}*.tsv"       , emit: cytobands
+    path "protein_domains*${genome}*.gff3", emit: protein_domains
+    path "known_fusions*${genome}*.tsv.gz", emit: known_fusions
+    path "versions.yml"                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

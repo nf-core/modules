@@ -13,14 +13,14 @@ process ABRICATE_RUN {
 
     output:
     tuple val(meta), path("*.txt"), emit: report
-    path "versions.yml", emit: versions
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args    = task.ext.args   ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}"
     def datadir = databasedir ? "--datadir ${databasedir}" : ''
     """
     ## Symlink when necessary to rename the file to allow specifying the prefix variable inside report
@@ -43,9 +43,7 @@ process ABRICATE_RUN {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def datadir = databasedir ? '--datadir ${databasedir}' : ''
     """
     touch ${prefix}.txt
 

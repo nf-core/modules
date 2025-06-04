@@ -11,20 +11,20 @@ process AGAT_CONVERTBED2GFF {
     tuple val(meta), path(bed)
 
     output:
-    tuple val(meta), path("*.gff")  , emit: gff
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path("*.gff"), emit: gff
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     agat_convert_bed2gff.pl \\
-        --bed $bed \\
+        --bed ${bed} \\
         --output ${prefix}.gff \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

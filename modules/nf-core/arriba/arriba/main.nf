@@ -25,25 +25,26 @@ process ARRIBA_ARRIBA {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def blacklist_arg = blacklist ? "-b $blacklist" : "-f blacklist"
-    def known_fusions_arg = known_fusions ? "-k $known_fusions" : ""
-    def cytobands_arg = cytobands ? "-d $cytobands" : ""
-    def protein_domains_arg = protein_domains ? "-p $protein_domains" : ""
+
+    def blacklist_arg       = blacklist       ? "-b ${blacklist}"       : "-f blacklist"
+    def known_fusions_arg   = known_fusions   ? "-k ${known_fusions}"   : ""
+    def cytobands_arg       = cytobands       ? "-d ${cytobands}"       : ""
+    def protein_domains_arg = protein_domains ? "-p ${protein_domains}" : ""
 
     """
     arriba \\
-        -x $bam \\
-        -a $fasta \\
-        -g $gtf \\
+        -x ${bam} \\
+        -a ${fasta} \\
+        -g ${gtf} \\
         -o ${prefix}.fusions.tsv \\
         -O ${prefix}.fusions.discarded.tsv \\
-        $blacklist_arg \\
-        $known_fusions_arg \\
-        $cytobands_arg \\
-        $protein_domains_arg \\
-        $args
+        ${blacklist_arg} \\
+        ${known_fusions_arg} \\
+        ${cytobands_arg} \\
+        ${protein_domains_arg} \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

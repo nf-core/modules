@@ -32,10 +32,10 @@ process ANGSD_DOCOUNTS {
     angsd \\
         -nThreads ${task.cpus} \\
         -doCounts 1 \\
-        $args \\
+        ${args} \\
         -bam bamlist.txt \\
         -out ${prefix} \\
-        $minq
+        ${minq}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

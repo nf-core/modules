@@ -20,8 +20,8 @@ process ATAQV_MKARV {
     def args = task.ext.args ?: ''
     """
     mkarv \\
-        $args \\
-        --concurrency $task.cpus \\
+        ${args} \\
+        --concurrency ${task.cpus} \\
         --force \\
         ./html/ \\
         jsons/*

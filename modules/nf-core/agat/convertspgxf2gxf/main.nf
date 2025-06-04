@@ -11,21 +11,21 @@ process AGAT_CONVERTSPGXF2GXF {
     tuple val(meta), path(gxf)
 
     output:
-    tuple val(meta), path("*.agat.gff") , emit: output_gff
-    tuple val(meta), path("*.log")      , emit: log
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.agat.gff"), emit: output_gff
+    tuple val(meta), path("*.log")     , emit: log
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     agat_convert_sp_gxf2gxf.pl \\
-        --gxf $gxf \\
+        --gxf ${gxf} \\
         --output ${prefix}.agat.gff \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
