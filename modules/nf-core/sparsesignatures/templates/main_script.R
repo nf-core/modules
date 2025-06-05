@@ -5,8 +5,9 @@ sapply(pkgs, require, character.only = TRUE)
 
 parse_args <- function(x) {
   # Remove brackets
-  x <- str_remove_all(x, "\\\\[|\\\\]")  
-
+  x = gsub("\\\\[","",x)
+  x = gsub("\\\\]","",x)
+ 
   # Split into key:value pairs
   args_list = unlist(strsplit(x, ", (?=[^)]*(?:\\\\(|\$))", perl=TRUE))
 
