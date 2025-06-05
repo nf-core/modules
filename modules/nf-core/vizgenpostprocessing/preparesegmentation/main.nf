@@ -42,6 +42,10 @@ process VIZGENPOSTPROCESSING_PREPARESEGMENTATION {
     """
 
     stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "VPT is unavailable via Conda. Please use Docker / Singularity / Apptainer / Podman instead."
+    }
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}
