@@ -27,66 +27,42 @@ input:
         description: ktab files from the program FastK
         pattern: "*.ktab*"
 output:
-  - filled_gc_plot_png:
+  - filled_gc_plot:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.fi.png":
+          pattern: "*.fi.{png,pdf}"
+      - "*.fi.{png,pdf}":
           type: file
-          description: A filled GC content plot in PNG format
-          pattern: "*.fi.png"
-  - filled_gc_plot_pdf:
+          description: |
+            A filled GC content plot in PNG or PDF format
+          pattern: "*.fi.{png,pdf}"
+  - line_gc_plot:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.fi.pdf":
+          pattern: "*.ln.{png,pdf}"
+      - "*.ln.{png,pdf}":
           type: file
-          description: A filled GC content plot in PDF format
-          pattern: "*.fi.pdf"
-  - line_gc_plot_png:
+          description: |
+            A filled GC content plot in PNG or PDF format
+          pattern: "*.ln.{png,pdf}"
+  - stacked_gc_plot:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.ln.png":
-          type: file
-          description: A line GC content plot in PNG format
-          pattern: "*.ln.png"
-  - line_gc_plot_pdf:
-      - meta:
+          pattern: "*.st.{png,pdf}"
+      - "*.st.{png,pdf}":
           type: map
           description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.ln.pdf":
-          type: file
-          description: A line GC content plot in PDF format
-          pattern: "*.ln.pdf"
-  - stacked_gc_plot_png:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.st.png":
-          type: file
-          description: A stacked GC content plot in PNG format
-          pattern: "*.st.png"
-  - stacked_gc_plot_pdf:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.st.pdf":
-          type: file
-          description: A stacked GC content plot in PDF format
-          pattern: "*.st.pdf"
+            A stacked GC content plot in PNG or PDF format
+          pattern: "*.st.{png,pdf}"
   - versions:
       - versions.yml:
           type: file

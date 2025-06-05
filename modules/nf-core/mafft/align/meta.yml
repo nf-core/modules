@@ -30,6 +30,9 @@ input:
         description: FASTA file containing the sequences to align. May be gzipped or
           uncompressed.
         pattern: "*.{fa,fasta}{.gz,}"
+        ontologies:
+          - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - meta2:
         type: map
         description: |
@@ -40,6 +43,9 @@ input:
         description: FASTA file containing sequences to align to the sequences in `fasta`
           using `--add`. May be gzipped or uncompressed.
         pattern: "*.{fa,fasta}{.gz,}"
+        ontologies:
+          - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - meta3:
         type: map
         description: |
@@ -50,6 +56,9 @@ input:
         description: FASTA file containing sequences to align to the sequences in `fasta`
           using `--addfragments`. May be gzipped or uncompressed.
         pattern: "*.{fa,fasta}{.gz,}"
+        ontologies:
+          - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - meta4:
         type: map
         description: |
@@ -60,6 +69,9 @@ input:
         description: FASTA file containing sequences to align to the sequences in `fasta`
           using `--addfull`. May be gzipped or uncompressed.
         pattern: "*.{fa,fasta}{.gz,}"
+        ontologies:
+          - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - meta5:
         type: map
         description: |
@@ -70,6 +82,9 @@ input:
         description: FASTA file containing sequences to align to the sequences in `fasta`
           using `--addprofile`. May be gzipped or uncompressed.
         pattern: "*.{fa,fasta}{.gz,}"
+        ontologies:
+          - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - meta6:
         type: map
         description: |
@@ -80,6 +95,9 @@ input:
         description: FASTA file containing sequences to align to the sequences in `fasta`
           using `--addlong`. May be gzipped or uncompressed.
         pattern: "*.{fa,fasta}{.gz,}"
+        ontologies:
+          - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - compress:
         type: boolean
         description: Flag representing whether the output MSA should be compressed.
@@ -96,11 +114,17 @@ output:
           type: file
           description: Aligned sequences in FASTA format. May be gzipped or uncompressed.
           pattern: "*.fas{.gz,}"
+          ontologies:
+            - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
+            - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
+            - edam: http://edamontology.org/format_1984 # FASTA-ALN
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@MillironX"
 maintainers:
