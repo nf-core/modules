@@ -4,8 +4,8 @@ process FGBIO_COLLECTDUPLEXSEQMETRICS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d6/d65e7c77d89e7e443384d17a94ffe31fe988b05bc7d695f2a75beaf502721925/data':
-        'community.wave.seqera.io/library/fgbio_r-ggplot2:cf2b9a5308d77b67' }"
+        'oras://community.wave.seqera.io/library/fgbio:2.5.21--1afc8befe439164b' :
+        'community.wave.seqera.io/library/fgbio:2.5.21--368dab1b4f308243' }"
 
     input:
     tuple val(meta), path(grouped_bam)

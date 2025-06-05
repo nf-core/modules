@@ -4,8 +4,8 @@ process FGBIO_GROUPREADSBYUMI {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/87/87626ef674e2f19366ae6214575a114fe80ce598e796894820550731706a84be/data' :
-        'community.wave.seqera.io/library/fgbio:2.4.0--913bad9d47ff8ddc' }"
+        'oras://community.wave.seqera.io/library/fgbio:2.5.21--1afc8befe439164b' :
+        'community.wave.seqera.io/library/fgbio:2.5.21--368dab1b4f308243' }"
 
     input:
     tuple val(meta), path(bam)
@@ -14,6 +14,7 @@ process FGBIO_GROUPREADSBYUMI {
     output:
     tuple val(meta), path("*.bam")         , emit: bam
     tuple val(meta), path("*histogram.txt"), emit: histogram
+	tuple val(meta), path("*.grouped-read-metrics.txt"), emit: read_metrics
     path "versions.yml"                    , emit: versions
 
     when:
@@ -44,7 +45,9 @@ process FGBIO_GROUPREADSBYUMI {
         $args \\
         -i $bam \\
         -o ${prefix}.bam \\
-        -f ${prefix}_histogram.txt
+        -f ${prefix}_histogram.txt \\
+		--grouping-metrics ${prefix}.grouped-read-metrics.txt
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
