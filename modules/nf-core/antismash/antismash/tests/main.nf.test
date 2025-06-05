@@ -52,23 +52,21 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                            path(process.out.gbk_results.get(0).get(1).get(0)).text.contains("##antiSMASH-Data-START##"),
-                            path(process.out.gbk_input.get(0).get(1).get(0)).text.contains("##antiSMASH-Data-END##"),
-                            path(process.out.zip.get(0).get(1)).exists(),
-                            path(process.out.html.get(0).get(1)).text.contains("https://antismash.secondarymetabolites.org/"),
-                            path(process.out.json_sideloading.get(0).get(1)).text.contains("NZ_CP069563.1"),
-                            path(process.out.log.get(0).get(1)).text.contains("antiSMASH status: SUCCESS"),
-                            process.out.html_accessory_files,
-                            path(process.out.versions[0]).yaml,
-                            file(process.out.versions[0]).name,
-                        ).match()
-                    }
-                )
-            }
+                    path(process.out.gbk_results.get(0).get(1).get(0)).text.contains("##antiSMASH-Data-START##"),
+                    path(process.out.gbk_input.get(0).get(1).get(0)).text.contains("##antiSMASH-Data-END##"),
+                    path(process.out.zip.get(0).get(1)).exists(),
+                    path(process.out.html.get(0).get(1)).text.contains("https://antismash.secondarymetabolites.org/"),
+                    path(process.out.json_sideloading.get(0).get(1)).text.contains("NZ_CP069563.1"),
+                    path(process.out.log.get(0).get(1)).text.contains("antiSMASH status: SUCCESS"),
+                    process.out.html_accessory_files,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match()}
+            )
         }
+    }
 
     test("antismash - bacteroides_fragilis - genome - stub") {
-
         options "-stub"
 
         when {
@@ -85,9 +83,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.versions[0]).name,
-                    ).match()
-                }
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match()}
             )
         }
     }
