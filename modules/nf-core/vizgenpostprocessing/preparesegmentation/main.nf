@@ -10,8 +10,8 @@ process VIZGENPOSTPROCESSING_PREPARESEGMENTATION {
     val(images_regex)
 
     output:
-    tuple val(meta), path("*/*.json"), emit: segmentation_files
-    path "versions.yml"              , emit: versions
+    tuple val(meta), path("${prefix}/*.json"), emit: segmentation_files
+    path "versions.yml"                               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
