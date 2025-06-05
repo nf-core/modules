@@ -3,9 +3,9 @@ process DIAMOND_BLASTX {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/diamond:2.1.8--h43eeafb_0' :
-        'biocontainers/diamond:2.1.8--h43eeafb_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/diamond:2.1.12--h077b44d_0'
+        : 'biocontainers/diamond:diamond:2.1.12--h077b44d_0'}"
 
     input:
     tuple val(meta) , path(fasta)
