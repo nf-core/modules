@@ -10,8 +10,8 @@ process QUARTONOTEBOOK {
     label 'process_low'
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/25/25d0a9decefd5d369b8f9b8c934640bd61493df2c95c39b0c580e765e0d2a644/data'
-        : 'community.wave.seqera.io/library/quarto_jupyter_matplotlib_papermill_r-rmarkdown:95c6620495eabcd1'}"
+        ? 'oras://community.wave.seqera.io/library/jupyter_matplotlib_papermill_quarto_r-rmarkdown:594810c8fdc3353b'
+        : 'community.wave.seqera.io/library/jupyter_matplotlib_papermill_quarto_r-rmarkdown:6d15193ce3dfc665'}"
 
     input:
     tuple val(meta), path(notebook)
