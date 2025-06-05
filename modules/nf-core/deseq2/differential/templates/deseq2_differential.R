@@ -68,6 +68,17 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.nam
     )
 }
 
+#
+#' Turn “null” or empty strings into actual NULL
+#'
+#' @param x Input option
+#'
+#' @return NULL or x
+#'
+nullify <- function(x) {
+  if (is.character(x) && (tolower(x) == "null" || x == "")) NULL else x
+}
+
 ################################################
 ################################################
 ## PARSE PARAMETERS FROM NEXTFLOW             ##
@@ -87,6 +98,8 @@ opt <- list(
     contrast_variable = '$contrast_variable',
     reference_level = '$reference',
     target_level = '$target',
+    contrast_string    = "$comparison",             # Optional full (complex) contrast expression comparison
+    formula            = "$formula",              # User-specified formula
     blocking_variables = NULL,
     control_genes_file = '$control_genes_file',
     transcript_lengths_file = '$transcript_lengths_file',
@@ -112,7 +125,8 @@ opt <- list(
     cores = 1,
     vs_blind = TRUE,
     vst_nsub = 1000,
-    round_digits = NULL
+    round_digits = NULL,
+    seed = 1
 )
 opt_types <- lapply(opt, class)
 
@@ -131,13 +145,23 @@ for ( ao in names(args_opt)){
         opt[[ao]] <- args_opt[[ao]]
     }
 }
+
+set.seed(opt\$seed)
+
 if ( ! is.null(opt\$round_digits)){
     opt\$round_digits <- as.numeric(opt\$round_digits)
 }
 
-# Check if required parameters have been provided
+# If there is no option supplied, convert string "null" to NULL
+keys <- c("formula", "contrast_string", "contrast_variable", "reference_level", "target_level")
+opt[keys] <- lapply(opt[keys], nullify)
 
-required_opts <- c('contrast_variable', 'reference_level', 'target_level', 'output_prefix')
+# Check if required parameters have been provided
+if (is_valid_string(opt\$formula)) {
+    required_opts <- c('output_prefix', 'contrast_string')
+} else {
+    required_opts <- c('contrast_variable', 'reference_level', 'target_level', 'output_prefix')
+}
 missing <- required_opts[!unlist(lapply(opt[required_opts], is_valid_string)) | !required_opts %in% names(opt)]
 
 if (length(missing) > 0){
@@ -218,48 +242,48 @@ if (length(missing_samples) > 0) {
 ## CHECK CONTRAST SPECIFICATION               ##
 ################################################
 ################################################
+if (! is_valid_string(opt\$formula)) {
+    contrast_variable <- make.names(opt\$contrast_variable)
+    blocking.vars <- c()
 
-contrast_variable <- make.names(opt\$contrast_variable)
-blocking.vars <- c()
-
-if (!contrast_variable %in% colnames(sample.sheet)) {
-    stop(
-        paste0(
-        'Chosen contrast variable \"',
-        contrast_variable,
-        '\" not in sample sheet'
-        )
-    )
-} else if (any(!c(opt\$reflevel, opt\$treatlevel) %in% sample.sheet[[contrast_variable]])) {
-    stop(
-        paste(
-        'Please choose reference and treatment levels that are present in the',
-        contrast_variable,
-        'column of the sample sheet'
-        )
-    )
-} else if (is_valid_string(opt\$blocking_variables)) {
-    blocking.vars = make.names(unlist(strsplit(opt\$blocking_variables, split = ';')))
-    if (!all(blocking.vars %in% colnames(sample.sheet))) {
-        missing_block <- paste(blocking.vars[! blocking.vars %in% colnames(sample.sheet)], collapse = ',')
+    if (!contrast_variable %in% colnames(sample.sheet)) {
         stop(
-            paste(
-                'Blocking variables', missing_block,
-                'do not correspond to sample sheet columns.'
+            paste0(
+            'Chosen contrast variable \"',
+            contrast_variable,
+            '\" not in sample sheet'
             )
         )
+    } else if (any(!c(opt\$reflevel, opt\$treatlevel) %in% sample.sheet[[contrast_variable]])) {
+        stop(
+            paste(
+            'Please choose reference and treatment levels that are present in the',
+            contrast_variable,
+            'column of the sample sheet'
+            )
+        )
+    } else if (is_valid_string(opt\$blocking_variables)) {
+        blocking.vars = make.names(unlist(strsplit(opt\$blocking_variables, split = ';')))
+        if (!all(blocking.vars %in% colnames(sample.sheet))) {
+            missing_block <- paste(blocking.vars[! blocking.vars %in% colnames(sample.sheet)], collapse = ',')
+            stop(
+                paste(
+                    'Blocking variables', missing_block,
+                    'do not correspond to sample sheet columns.'
+                )
+            )
+        }
     }
+
+    # Optionally, subset to only the samples involved in the contrast
+    if (opt\$subset_to_contrast_samples){
+        sample_selector <- sample.sheet[[contrast_variable]] %in% c(opt\$target_level, opt\$reference_level)
+        selected_samples <- sample.sheet[sample_selector, opt\$sample_id_col]
+        count.table <- count.table[, selected_samples]
+        sample.sheet <- sample.sheet[selected_samples, ]
+    }
+
 }
-
-# Optionally, subset to only the samples involved in the contrast
-
-if (opt\$subset_to_contrast_samples){
-    sample_selector <- sample.sheet[[contrast_variable]] %in% c(opt\$target_level, opt\$reference_level)
-    selected_samples <- sample.sheet[sample_selector, opt\$sample_id_col]
-    count.table <- count.table[, selected_samples]
-    sample.sheet <- sample.sheet[selected_samples, ]
-}
-
 # Optionally, remove samples with specified values in a given field (probably
 # don't use this as well as the above)
 
@@ -281,22 +305,30 @@ if ((is_valid_string(opt\$exclude_samples_col)) && (is_valid_string(opt\$exclude
 # Now specify the model. Use cell-means style so we can be explicit with the
 # contrasts
 
-model <- '~ 0'
+    if (is_valid_string(opt\$formula)) {
+        message("Using user-specified formula: ", opt\$formula)
+        user_f  <- as.formula(opt\$formula)
+        model_f <- update(user_f, ~ 0 + .)
+        model   <- paste(as.character(model_f), collapse = " ")
+    }  else {
+    model <- '~ 0'
 
-if (is_valid_string(opt\$blocking_variables)) {
-    model <- paste(model, paste(blocking.vars, collapse = ' + '), sep=' + ')
+    if (is_valid_string(opt\$blocking_variables)) {
+        model <- paste(model, paste(blocking.vars, collapse = ' + '), sep=' + ')
+    }
+
+    # Make sure all the appropriate variables are factors
+
+    for (v in c(blocking.vars, contrast_variable)) {
+        sample.sheet[[v]] <- as.factor(sample.sheet[[v]])
+    }
+
+    # Variable of interest goes last, see
+    # https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#multi-factor-designs
+
+    model <- paste(model, contrast_variable, sep = ' + ')
 }
-
-# Make sure all the appropriate variables are factors
-
-for (v in c(blocking.vars, contrast_variable)) {
-    sample.sheet[[v]] <- as.factor(sample.sheet[[v]])
-}
-
-# Variable of interest goes last, see
-# https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#multi-factor-designs
-
-model <- paste(model, contrast_variable, sep = ' + ')
+message("Final design formula: ", model)
 
 ################################################
 ################################################
@@ -348,6 +380,36 @@ dds <- DESeq(
     parallel=TRUE, BPPARAM=MulticoreParam(opt\$cores)
 )
 
+if (!is.null(opt\$contrast_string)) {
+    coef_names <- resultsNames(dds)
+    if (opt\$contrast_string %in% coef_names) {
+        comp.results <- results(
+            dds,
+            name               = opt\$contrast_string,
+            lfcThreshold       = opt\$lfc_threshold,
+            altHypothesis      = opt\$alt_hypothesis,
+            independentFiltering = opt\$independent_filtering,
+            alpha              = opt\$alpha,
+            pAdjustMethod      = opt\$p_adjust_method,
+            minmu              = opt\$minmu
+        )
+        if (opt\$shrink_lfc) {
+            comp.results <- lfcShrink(
+                dds,
+                type = 'ashr',
+                coef = opt\$contrast_string
+            )
+        }
+    } else {
+        stop(
+            sprintf(
+                "Contrast '%s' not in design. Available coefficients: %s",
+                opt\$contrast_string,
+                paste(coef_names, collapse = ", ")
+            )
+        )
+    }
+} else {
 comp.results <-
     results(
         dds,
@@ -372,6 +434,7 @@ if (opt\$shrink_lfc){
         )
     )
 }
+}
 
 # See https://support.bioconductor.org/p/97676/
 
@@ -387,8 +450,14 @@ if (opt\$transcript_lengths_file != ''){
 ################################################
 ################################################
 
-contrast.name <-
-    paste(opt\$target_level, opt\$reference_level, sep = "_vs_")
+if (is_valid_string(opt\$contrast_string)) {
+    # in formula mode we require a --contrast_string
+    contrast.name <- opt\$contrast_string
+} else {
+    # default two-level mode
+    contrast.name <- paste(opt\$target_level, opt\$reference_level, sep = "_vs_")
+}
+
 cat("Saving results for ", contrast.name, " ...\n", sep = "")
 
 # Differential expression table- note very limited rounding for consistency of
