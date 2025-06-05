@@ -38,7 +38,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test' ], // meta map
-                       file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data//genomics/homo_sapiens/cooler/merge/toy/toy.symm.upper.balanced.2.cool', checkIfExists: true)
+                       file(params.modules_testdata_base_path + '/genomics/homo_sapiens/cooler/merge/toy/toy.symm.upper.balanced.2.cool', checkIfExists: true)
                 ]
                 """
             }
