@@ -4,7 +4,7 @@ process FGBIO_CALLMOLECULARCONSENSUSREADS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/fgbio:2.5.21--1afc8befe439164b' :
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b4/b4047e3e517b57fae311eab139a12f0887d898b7da5fceeb2a1029c73b9e3904/data' :
         'community.wave.seqera.io/library/fgbio:2.5.21--368dab1b4f308243' }"
 
     input:
