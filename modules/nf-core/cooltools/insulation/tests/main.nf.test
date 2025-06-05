@@ -9,13 +9,13 @@ nextflow_process {
     tag "cooltools"
     tag "cooltools/insulation"
 
-    test("sarscov2 - bam") {
+    test("homo_sapiens - bam") {
 
         when {
             process {
                 """
                 input[0] = [ [ id:'test' ], // meta map
-                       file("https://github.com/open2c/cooltools/raw/master/tests/data/CN.mm9.1000kb.cool", checkIfExists: true)
+                       file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data//genomics/homo_sapiens/cooler/merge/toy/toy.symm.upper.balanced.2.cool', checkIfExists: true)
                 ]
                 """
             }
@@ -30,7 +30,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - bam - stub") {
+    test("homo_sapiens - bam - stub") {
 
         options "-stub"
 
@@ -38,7 +38,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test' ], // meta map
-                       file("https://github.com/open2c/cooltools/raw/master/tests/data/CN.mm9.1000kb.cool", checkIfExists: true)
+                       file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data//genomics/homo_sapiens/cooler/merge/toy/toy.symm.upper.balanced.2.cool', checkIfExists: true)
                 ]
                 """
             }
