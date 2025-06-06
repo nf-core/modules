@@ -47,9 +47,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.segmentation_files[0][1]).exists() },
-                { assert path(process.out.segmentation_files[0][1]).json.containsKey('input_args') },
-                { assert path(process.out.versions[0]).yaml }
+                { assert snapshot(
+                    file(process.out.segmentation_files[0][1]).name, // Algorithm JSON file is not stable as it contains a timestamp
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() }
             )
         }
     }
