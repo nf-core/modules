@@ -1,0 +1,88 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "rundbcan_cazymeannotation"
+description: CAZyme annotation module for the dbcan pipeline. This module is used
+  to annotate carbohydrate-active enzymes (CAZymes) from genomic data using the dbCAN
+  annotation tool.
+keywords:
+  - dbCAN
+  - download
+  - CAZyme
+  - CAZyme gene Cluster
+  - genomes
+tools:
+  - "dbcan":
+      description: "Standalone version of dbCAN annotation tool for automated CAZyme
+        annotation."
+      homepage: "https://bcb.unl.edu/dbCAN2/"
+      documentation: "https://run-dbcan.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/bcb-unl/run_dbcan"
+      doi: "10.1093/nar/gkad328"
+      licence: ["GPL v3-or-later"]
+      identifier: biotools:dbcan
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - input_raw_data:
+        type: file
+        description: FASTA file for protein sequences.
+        pattern: "*.{fasta,fa,faa}"
+        ontologies:
+          - edam: "http://edamontology.org/data_2044" # Sequence
+          - edam: "http://edamontology.org/format_1929" # FASTA
+  - - dbcan_db:
+        type: directory
+        description: Path to the dbCAN database directory.
+output:
+  - cazyme_annotation:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_overview.tsv:
+          type: file
+          description: |
+            TSV file containing the results of dbCAN CAZyme annotation.
+  - dbcanhmm_results:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_dbCAN_hmm_results.tsv:
+          type: file
+          description: |
+            TSV file containing the detailed dbCAN HMM results for CAZyme annotation.
+  - dbcansub_results:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_dbCANsub_hmm_results.tsv:
+          type: file
+          description: |
+            TSV file containing the detailed dbCAN subfamily results for CAZyme annotation.
+  - dbcandiamond_results:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_diamond.out:
+          type: file
+          description: |
+            TSV file containing the detailed dbCAN diamond results for CAZyme annotation.
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@Xinpeng021001"
+maintainers:
+  - "@Xinpeng021001"
