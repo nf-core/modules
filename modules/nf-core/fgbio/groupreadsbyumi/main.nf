@@ -14,7 +14,7 @@ process FGBIO_GROUPREADSBYUMI {
     output:
     tuple val(meta), path("*.bam")         , emit: bam
     tuple val(meta), path("*histogram.txt"), emit: histogram
-	tuple val(meta), path("*.grouped-read-metrics.txt"), emit: read_metrics
+	tuple val(meta), path("*grouped-read-metrics.txt"), emit: read_metrics
     path "versions.yml"                    , emit: versions
 
     when:
@@ -46,7 +46,7 @@ process FGBIO_GROUPREADSBYUMI {
         -i $bam \\
         -o ${prefix}.bam \\
         -f ${prefix}_histogram.txt \\
-		--grouping-metrics ${prefix}.grouped-read-metrics.txt
+		--grouping-metrics ${prefix}_grouped-read-metrics.txt
 
 
     cat <<-END_VERSIONS > versions.yml
@@ -61,6 +61,7 @@ process FGBIO_GROUPREADSBYUMI {
     """
     touch ${prefix}.bam
     touch ${prefix}_histogram.txt
+    touch ${prefix}_.grouped-read-metrics.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
