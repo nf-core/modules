@@ -1,0 +1,53 @@
+nextflow_process {
+
+    name "Test Process OSFCLIENT_FETCH"
+    script "../main.nf"
+    process "OSFCLIENT_FETCH"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "osfclient"
+    tag "osfclient/fetch"
+
+    test("download") {
+        when {
+            process {
+                """                
+                input[0] = '56uf7'
+                input[1] = 'osfstorage/emu-default-db-input/seq2taxid.map'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("download - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = '56uf7'
+                input[1] = 'osfstorage/emu-default-db-input/seq2taxid.map'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
