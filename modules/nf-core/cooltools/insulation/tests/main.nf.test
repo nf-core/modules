@@ -14,7 +14,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test' ], // meta map
+                input[0] = [ [ id:'test' ],
                        file(modules_testdata_base_path + '/genomics/homo_sapiens/cooler/merge/toy/toy.symm.upper.balanced.2.cool', checkIfExists: true)
                 ]
                 """
@@ -37,7 +37,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test' ], // meta map
+                input[0] = [ [ id:'test' ],
                        file(params.modules_testdata_base_path + '/genomics/homo_sapiens/cooler/merge/toy/toy.symm.upper.balanced.2.cool', checkIfExists: true)
                 ]
                 """
