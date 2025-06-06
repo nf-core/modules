@@ -21,11 +21,8 @@ parse_args <- function(x) {
 
 opt = list(
     prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
-    genome = "GRCh37",
+    genome = "NULL",
     K = "2:10",
-    background_signature = "NULL",
-    beta = "NULL",
-    normalize_counts = "TRUE",
     nmf_runs = "10",
     iterations = "30",
     max_iterations_lasso = "10000",
@@ -36,9 +33,9 @@ opt = list(
     lambda_values_alpha = "c(0.00, 0.01, 0.05, 0.10)",
     lambda_values_beta = "c(0.01, 0.05, 0.1, 0.2)",
     lambda_rate_alpha = "0",
-    seed = "NULL",
-    verbose = "TRUE"
+    seed = "NULL"
 )
+
 args_opt = parse_args('$task.ext.args')
 for ( ao in names(args_opt)) opt[[ao]] = args_opt[[ao]]
 
@@ -52,7 +49,7 @@ if (is.null(num_procs_string)) {
 } else if (num_procs_string == "all") {
     n_procs <- Inf
 } else {
-    n_procs <- eval(parse(text = num_proc_string))
+    n_procs <- as.integer(opt[["num_processes"]])
 }
 
 
@@ -123,7 +120,6 @@ cv_out = SparseSignatures::nmfLassoCV(
   K = eval(parse(text=opt[["K"]])),
   starting_beta = starting_betas,
   background_signature = background,
-  normalize_counts = as.logical(opt[["normalize_counts"]]),
   nmf_runs = as.integer(opt[["nmf_runs"]]),
   lambda_values_alpha = eval(parse(text=opt[["lambda_values_alpha"]])),
   lambda_values_beta = eval(parse(text=opt[["lambda_values_beta"]])),
@@ -133,8 +129,7 @@ cv_out = SparseSignatures::nmfLassoCV(
   iterations = as.integer(opt[["iterations"]]),
   max_iterations_lasso = as.integer(opt[["max_iterations_lasso"]]),
   num_processes = n_procs,
-  seed = seed_val,
-  verbose = as.logical(opt[["verbose"]])
+  seed = seed_val
 )
 
 str(cv_out)
@@ -174,15 +169,12 @@ print(paste("MIN K =", min_K))
 nmf_Lasso_out = SparseSignatures::nmfLasso(
   x = mut_counts,
   K = min_K,
-  beta = eval(parse(text=opt[["beta"]])),
   background_signature = background,
-  normalize_counts = as.logical(opt[["normalize_counts"]]),
   lambda_rate_alpha = eval(parse(text=opt[["lambda_rate_alpha"]])),
   lambda_rate_beta = min_Lambda_beta,
   iterations = as.integer(opt[["iterations"]]),
   max_iterations_lasso = as.integer(opt[["max_iterations_lasso"]]),
-  seed = seed_val,
-  verbose = as.logical(opt[["verbose"]])
+  seed = seed_val
 )
 
 saveRDS(object = nmf_Lasso_out, file =  paste0(opt[["prefix"]], "_nmf_Lasso_out.rds"))
