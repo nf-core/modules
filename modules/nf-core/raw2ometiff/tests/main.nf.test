@@ -1,0 +1,73 @@
+// nf-core modules test raw2ometiff
+nextflow_process {
+
+    name "Test Process RAW2OMETIFF"
+    script "../main.nf"
+    process "RAW2OMETIFF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "raw2ometiff"
+    tag "untar"
+
+    test("raw2ometiff - zarr") {
+        setup {
+            run ("UNTAR") {
+               script "../../untar/main.nf"
+               process {
+                    """
+                    input[0] = Channel.fromList([
+                        tuple([ id:'test'], // meta map
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/lsmquant/test_data/zarr.tar', checkIfExists: true))
+                    ])
+                    """
+               }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] =  UNTAR.out.untar
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.tiff[0][1].toString().endsWith(".tiff")
+                  assert process.out.versions[0].toString().endsWith("versions.yml")},
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+    }
+
+
+    test("raw2ometiff - zarr - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.fromList([
+                        tuple([ id:'test'], // meta map
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/lsmquant/test_data/zarr.zip', checkIfExists: true))
+                    ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.tiff[0][1].toString().endsWith(".tiff")
+                  assert process.out.versions[0].toString().endsWith("versions.yml")},
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+
+    }
+
+}
