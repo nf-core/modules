@@ -31,7 +31,7 @@ process SAMTOOLS_FASTQ {
     samtools \\
         fastq \\
         $args \\
-        --threads ${task.cpus-1} \\
+        --threads ${task.cpus} \\
         -0 ${prefix}_other.fastq.gz \\
         $input \\
         $output
@@ -50,7 +50,7 @@ process SAMTOOLS_FASTQ {
     """
     ${output}
     echo | gzip > ${prefix}_other.fastq.gz
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
