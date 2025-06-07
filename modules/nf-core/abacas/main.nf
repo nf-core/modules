@@ -28,7 +28,7 @@ process ABACAS {
         ${args} \\
         -o ${prefix}
 
-    sort "${prefix}.bin" > "${prefix}.bin.tmp" && mv "${prefix}.bin.tmp" "${prefix}.bin"
+    sort "${prefix}.bin" > "${prefix}.bin.tmp" && mv "${prefix}.bin.tmp" "${prefix}.bin" # Needs to be sorted for consistency
     mv nucmer.delta ${prefix}.nucmer.delta
     mv nucmer.filtered.delta ${prefix}.nucmer.filtered.delta
     mv nucmer.tiling ${prefix}.nucmer.tiling
