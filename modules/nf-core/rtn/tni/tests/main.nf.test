@@ -11,6 +11,7 @@ nextflow_process {
 
     test("network inference and filtering without optional channels") {
         when {
+            config "./nextflow.config1"
             process {
                 """
                 input[0] = [
@@ -40,6 +41,7 @@ nextflow_process {
 
     test("network inference and filtering with optional channels") {
         when {
+            config "./nextflow.config1"
             process {
                 """
                 input[0] = [
@@ -121,7 +123,7 @@ nextflow_process {
                 { assert file(process.out.tni_bootstrap[0][1]).exists() },
                 { assert file(process.out.tni_filtered[0][1]).exists() },
                 { assert file(process.out.versions[0]).exists() },
-                { assert process.stdout.contains('Nb permutations          : 10') } // the default value is 10
+                { assert process.stdout.contains('Nb permutations          : 10') }, // the default value is 10
                 { assert process.stdout.contains('P-value cut off          : 0.001') } // the default value is 1e-04
             )
         }
