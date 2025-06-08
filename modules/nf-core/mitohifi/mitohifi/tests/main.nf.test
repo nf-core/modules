@@ -1,0 +1,118 @@
+nextflow_process {
+
+    name "Test Process MITOHIFI_MITOHIFI"
+    script "../main.nf"
+    process "MITOHIFI_MITOHIFI"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mitohifi"
+    tag "mitohifi/mitohifi"
+
+    test("mitohifi - mitohifi - deilephila_porcellus - contigs mode") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [[id:"ilDeiPorc1"],
+                    file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/ilDeiPorc1.contigs.fa", checkIfExists: true)
+                ])
+                input[1] = Channel.of(file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.fasta", checkIfExists: true))
+                input[2] = Channel.of(file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.gb", checkIfExists: true))
+                input[3] = Channel.of('c')
+                input[4] = Channel.of(5)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fasta,
+                    process.out.stats,
+                    process.out.gb,
+                    process.out.gff,
+                    process.out.contigs_annotations,
+                    process.out.coverage_plot,
+                    process.out.final_mitogenome_annotation,
+                    process.out.final_mitogenome_coverage,
+                    process.out.shared_genes,
+                    process.out.contigs_annotations,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("mitohifi - mitohifi - deilephila_porcellus - reads mode") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [[id:"ilDeiPorc1"],
+                    file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/ilDeiPorc1.HiFi.reads.fa", checkIfExists: true)
+                ])
+                input[1] = Channel.of(file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.fasta", checkIfExists: true))
+                input[2] = Channel.of(file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.gb", checkIfExists: true))
+                input[3] = Channel.of('r')
+                input[4] = Channel.of(5)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fasta,
+                    process.out.stats,
+                    process.out.gb,
+                    process.out.gff,
+                    process.out.contigs_annotations,
+                    process.out.coverage_plot,
+                    process.out.final_mitogenome_annotation,
+                    process.out.final_mitogenome_coverage,
+                    process.out.shared_genes,
+                    process.out.contigs_annotations,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("mitohifi - mitohifi - deilephila_porcellus - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [[id:"ilDeiPorc1"],
+                    file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/ilDeiPorc1.contigs.fa", checkIfExists: true)
+                ])
+                input[1] = Channel.of(file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.fasta", checkIfExists: true))
+                input[2] = Channel.of(file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.gb", checkIfExists: true))
+                input[3] = Channel.of('c')
+                input[4] = Channel.of(5)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
