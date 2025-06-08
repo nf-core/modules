@@ -108,6 +108,9 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           fetch-depth: 0
+      - name: test cuda
+        run: |
+          nvidia-smi -L
       - name: Run nf-test Action
         uses: ./.github/actions/nf-test-action
         env:
@@ -124,7 +127,7 @@ jobs:
   confirm-pass-gpu:
     runs-on:
       - runs-on=${{ github.run_id }}-confirm-pass-gpu
-      - runner=4cpu-linux-x64
+      - runner=2cpu-linux-x64
       - image=ubuntu22-full-x64
     needs: [nf-test-gpu]
     if: always()

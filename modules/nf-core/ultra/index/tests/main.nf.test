@@ -1,0 +1,83 @@
+nextflow_process {
+
+    name "Test Process ULTRA_INDEX"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "ULTRA_INDEX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ultra"
+    tag "ultra/index"
+    tag "gnu"
+    tag "gnu/sort"
+
+    test("ultra_index") {
+        setup {
+            run("GNU_SORT") {
+                script "../../../gnu/sort/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists:true)
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            params {
+                gnu_sort_args = '-k1,1 -k4,4n'
+                ultra_index_args = '--disable_infer'
+            }
+            process {
+                """
+                input[0] = [
+                    [id: "test"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
+                ]
+                input[1] = GNU_SORT.out.sorted
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.database,
+                    process.out.pickle[0][1].collect { file(it).name },
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("ultra_index -- stub") {
+        options "-stub"
+        when {
+            params {
+                gnu_sort_args = ''
+                ultra_index_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [id: "test"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
+                ]
+                input[1] = [[], []]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}

@@ -1,0 +1,175 @@
+---
+name: "links"
+description: |
+  LINKS is a genomics application for scaffolding genome assemblies with long reads,
+  such as those produced by Oxford Nanopore Technologies Ltd. 
+  It can be used to scaffold high-quality draft genome assemblies with any long sequences 
+  (eg. ONT reads, PacBio reads, other draft genomes, etc). 
+  It is also used to scaffold contig pairs linked by ARCS/ARKS.
+  This module is for LINKS >=2.0.0 and does not support MPET input.
+keywords:
+  - scaffold
+  - long-reads
+  - genomics
+tools:
+  - "links":
+      description: "Long Interval Nucleotide K-mer Scaffolder"
+      homepage: "https://www.bcgsc.ca/resources/software/links"
+      documentation: "https://github.com/bcgsc/LINKS"
+      tool_dev_url: "https://github.com/bcgsc/LINKS"
+      doi: "10.1186/s13742-015-0076-3"
+      licence: ["GPL v3"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - assembly:
+        type: file
+        description: (Multi-)fasta file containing the draft assembly
+        pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - reads:
+        type: file
+        description: fastq file(s) containing the long reads to be used for scaffolding
+        pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
+
+output:
+  - log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - "*.log":
+          type: file
+          description: text file; Logs execution time / errors / pairing stats.
+          pattern: "*.log"
+  - pairing_distribution:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - "*.pairing_distribution.csv":
+          type: file
+          description: |
+            comma-separated file; 1st column is the calculated distance
+            for each pair (template) with reads that assembled logically
+            within the same contig. 2nd column is the number of pairs at
+            that distance.
+          pattern: "*.pairing_distribution.csv"
+  - pairing_issues:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - "*.pairing_issues":
+          type: file
+          description: |
+            text file; Lists all pairing issues encountered between contig
+            pairs and illogical/out-of-bounds pairing.
+          pattern: "*.pairing_issues"
+  - scaffolds_csv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - "*.scaffolds":
+          type: file
+          description: comma-separated file; containing the new scaffold(s)
+          pattern: "*.scaffolds"
+  - scaffolds_fasta:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - "*.scaffolds.fa":
+          type: file
+          description: fasta file of the new scaffold sequence
+          pattern: "*.scaffolds.fa"
+  - bloom:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - "*.bloom":
+          type: file
+          description: |
+            Bloom filter created by shredding the -f input
+            into k-mers of size -k
+          pattern: "*.bloom"
+  - scaffolds_graph:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - "*.gv":
+          type: file
+          description: |
+            scaffold graph (for visualizing merges), can be rendered 
+            in neato, graphviz, etc
+          pattern: "*.gv"
+  - assembly_correspondence:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - "*.assembly_correspondence.tsv":
+          type: file
+          description: |
+            correspondence file lists the scaffold ID,
+            contig ID, original_name, #linking kmer pairs,
+            links ratio, gap or overlap
+          pattern: "*.assembly_correspondence.tsv"
+  - simplepair_checkpoint:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - "*.simplepair_checkpoint.tsv":
+          type: file
+          description: checkpoint file, contains info to rebuild datastructure for .gv graph
+          pattern: "*.simplepair_checkpoint.tsv"
+  - tigpair_checkpoint:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - "*.tigpair_checkpoint.tsv":
+          type: file
+          description: |
+            if -b BASNAME.tigpair_checkpoint.tsv is present, 
+            LINKS will skip the kmer pair extraction and contig pairing stages.
+            Delete this file to force LINKS to start at the beginning.
+            This file can be used to: 
+            1) quickly test parameters (-l min. links / -a min. links ratio), 
+            2) quickly recover from crash,
+            3) explore very large kmer spaces,
+            4) scaffold with output of ARCS
+          pattern: "*.tigpair_checkpoint.tsv"
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@nschan"
+maintainers:
+  - "@nschan"
