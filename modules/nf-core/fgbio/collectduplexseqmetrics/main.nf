@@ -26,7 +26,7 @@ process FGBIO_COLLECTDUPLEXSEQMETRICS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def intervals = interval_list ? "--intervals ${bed}" : ""
+    def intervals = interval_list ? "--intervals ${interval_list}" : ""
     def mem_gb = 8
 
     if (!task.memory) {
