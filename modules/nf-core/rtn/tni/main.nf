@@ -1,5 +1,4 @@
 process RTN_TNI {
-    debug true
     tag "$expression_matrix"
     label 'process_medium'
 

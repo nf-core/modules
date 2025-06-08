@@ -164,6 +164,7 @@ rtn.version <- as.character(packageVersion('RTN'))
 writeLines(
   c(
     '"${task.process}":',
+      paste('    r-base:', r.version),
       paste('    bioconductor-rtn:', rtn.version)
   ),
   'versions.yml')
