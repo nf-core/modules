@@ -1,0 +1,65 @@
+nextflow_process {
+
+    name "Test Process TINC"
+    script "../main.nf"
+    process "TINC"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "tinc"
+
+    test("tinc - rds") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'test', tumour_sample:'HCC1395_HCC1395T', normal_sample:'HCC1395_HCC1395N' ],
+                    file('/Users/lucreziavaleriani/Desktop/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_cna.rds', checkIfExists: true),
+                    file('/Users/lucreziavaleriani/Desktop/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_driver.rds', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.rds,
+                    process.out.plot_rds,
+                    process.out.plot_pdf,
+                    process.out.tinc_csv,
+                    process.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+    test("tinc - rds - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', tumour_sample:'HCC1395_HCC1395T', normal_sample:'HCC1395_HCC1395N' ],
+                    file('/Users/lucreziavaleriani/Desktop/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_cna.rds', checkIfExists: true),
+                    file('/Users/lucreziavaleriani/Desktop/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_driver.rds', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+}
