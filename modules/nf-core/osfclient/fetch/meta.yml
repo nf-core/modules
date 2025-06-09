@@ -26,10 +26,15 @@ input:
         description: File to fetch from the project
 output:
   - download_files:
-      - "${outname}":
-          type: file
-          description: Downloaded file
-          pattern: "*"
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - "${outname}":
+        type: file
+        description: Downloaded file
+        pattern: "*"
   - versions:
       - "versions.yml":
           type: file
