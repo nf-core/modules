@@ -79,9 +79,9 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
     }
 
     /*
-    * Generate fasta index if not supplied for bwameth workflow or picard collecthsmetrics tool
+    * Generate fasta index if not supplied for bwameth workflow or Picard CollectHsMetrics tool
     */
-    if (params.aligner == 'bwameth' | params.run_picard_collecthsmetrics) {
+    if (params.aligner == 'bwameth' | params.collecthsmetrics) {
         // already exising fasta index
         if (fasta_index) {
             ch_fasta_index = Channel.value(file(fasta_index, checkIfExists: true))

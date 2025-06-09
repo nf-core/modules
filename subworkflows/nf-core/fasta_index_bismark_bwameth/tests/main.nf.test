@@ -134,12 +134,12 @@ nextflow_workflow {
         }
     }
 
-    test("Params: bismark | download bismark index (bowtie2) | run_picard_collecthsmetrics") {
+    test("Params: bismark | download bismark index (bowtie2) | collecthsmetrics") {
 
         when {
             params {
-                aligner = "bismark"
-                run_picard_collecthsmetrics = true
+                aligner          = "bismark"
+                collecthsmetrics = true
             }
             workflow {
                 """
@@ -255,12 +255,12 @@ nextflow_workflow {
         }
     }
 
-    test("Params: bwameth | generate fasta index | download bwameth index | run_picard_collecthsmetrics") {
+    test("Params: bwameth | generate fasta index | download bwameth index | collecthsmetrics") {
 
         when {
             params {
-                aligner = "bwameth"
-                run_picard_collecthsmetrics = true
+                aligner          = "bwameth"
+                collecthsmetrics = true
             }
             workflow {
                 """
