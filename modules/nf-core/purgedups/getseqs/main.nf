@@ -4,8 +4,8 @@ process PURGEDUPS_GETSEQS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/purge_dups:1.2.6--h7132678_0':
-        'biocontainers/purge_dups:1.2.6--h7132678_0' }"
+        'https://depot.galaxyproject.org/singularity/purge_dups:1.2.6--py39h7132678_1':
+        'biocontainers/purge_dups:1.2.6--py39h7132678_1' }"
 
     input:
     tuple val(meta), path(assembly), path(bed)
@@ -21,6 +21,7 @@ process PURGEDUPS_GETSEQS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.2.6' // WARN: Incorrect version printed inside the container, please check this if bumping version
     """
     get_seqs \\
         $args \\
@@ -30,7 +31,20 @@ process PURGEDUPS_GETSEQS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        purgedups: \$( purge_dups -h |& sed '3!d; s/.*: //' )
+        purgedups: $VERSION
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.2.6' // WARN: Incorrect version printed inside the container, please check this if bumping version
+    """
+    touch "${prefix}.hap.fa"
+    touch "${prefix}.purged.fa"
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        purgedups: $VERSION
     END_VERSIONS
     """
 }

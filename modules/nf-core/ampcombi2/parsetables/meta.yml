@@ -83,7 +83,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${meta.id}/:
+      - ${prefix}/:
           type: directory
           description: The output directory that contains the summary output and related
             alignment files for one sample.
@@ -94,7 +94,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${meta.id}/contig_gbks/:
+      - ${prefix}/contig_gbks/:
           type: directory
           description: The output subdirectory that contains the gbk files containing
             the AMP hits for each sample.
@@ -105,7 +105,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${meta.id}/${meta.id}_mmseqs_matches.tsv:
+      - ${prefix}/${prefix}_mmseqs_matches.tsv:
           type: file
           description: An alignment file containing the results from the MMseqs2 alignment
             step done on all AMP hits.
@@ -118,7 +118,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${meta.id}/${meta.id}_ampcombi.tsv:
+      - ${prefix}/${prefix}_ampcombi.tsv:
           type: file
           description: A file containing the summary report of all predicted AMP hits
             from all AMP tools given as input, the corresponding taxonomic and functional
@@ -132,7 +132,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${meta.id}/${meta.id}_amp.faa:
+      - ${prefix}/${prefix}_amp.faa:
           type: file
           description: A fasta file containing the amino acid sequences of all predicted
             AMP hits.
@@ -145,7 +145,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${meta.id}/${meta.id}_ampcombi.log:
+      - ${prefix}/${prefix}_ampcombi.log:
           type: file
           description: A log file that captures the standard output per sample in a log
             file. Can be activated by `--log`.
