@@ -51,7 +51,7 @@ process RAGTAG_SCAFFOLD {
         ${arg_skip} \\
         ${arg_hard_skip} \\
         ${args} \\
-        2> >( tee ${prefix}.stderr.log >&2 ) \\
+        2>| >( tee ${prefix}.stderr.log >&2 ) \\
         | tee ${prefix}.stdout.log
 
     mv ${prefix}/ragtag.scaffold.fasta ${prefix}.fasta
