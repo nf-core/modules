@@ -29,9 +29,10 @@ process SAMTOOLS_AMPLICONCLIP {
     def stats   = save_clipstats   ? "-f ${prefix}.clipstats.txt"               : ""
     if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
+    # Note: --threads value represents *additional* CPUs to allocate (total CPUs = 1 + --threads).
     samtools \\
         ampliconclip \\
-        --threads ${task.cpus} \\
+        --threads ${task.cpus-1} \\
         $args \\
         $rejects \\
         $stats \\
