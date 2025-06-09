@@ -1,0 +1,104 @@
+nextflow_process {
+
+    name "Test Process GEMMA_LMM"
+    script "../main.nf"
+    process "GEMMA_LMM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gemma"
+    tag "gemma/lmm"
+
+    test("gwas - vcf - pheno") {
+        setup {
+            run("GEMMA_KINSHIPMATRIX") {
+                script "../../kinshipmatrix/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:false ],
+                        file("https://raw.githubusercontent.com/genetics-statistics/GEMMA/master/example/mouse_hs1940.geno.txt.gz")
+                    ]
+                    input[1] = [
+                        [ id:'test', single_end:false ],
+                        file("https://raw.githubusercontent.com/genetics-statistics/GEMMA/master/example/mouse_hs1940.pheno.txt")
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file("https://raw.githubusercontent.com/genetics-statistics/GEMMA/master/example/mouse_hs1940.geno.txt.gz")
+                ]
+                input[1] = [
+                    [ id:'test', single_end:false ],
+                    file("https://raw.githubusercontent.com/genetics-statistics/GEMMA/master/example/mouse_hs1940.pheno.txt")
+                ]
+                input[2] = [
+                    [ id:'test', single_end:false ],
+                    file("https://raw.githubusercontent.com/genetics-statistics/GEMMA/refs/heads/master/example/mouse_hs1940.anno.txt")
+                ]
+                input[3] = GEMMA_KINSHIPMATRIX.out.matrix
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert process.out.matrix.size() == 1
+            // Add more specific assertions here
+        }
+    }
+
+    test("gwas - vcf - pheno - stub") {
+        options "-stub"
+
+        setup {
+            run("GEMMA_KINSHIPMATRIX") {
+                script "../../kinshipmatrix/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:false ],
+                        file("https://raw.githubusercontent.com/genetics-statistics/GEMMA/master/example/mouse_hs1940.geno.txt.gz")
+                    ]
+                    input[1] = [
+                        [ id:'test', single_end:false ],
+                        file("https://raw.githubusercontent.com/genetics-statistics/GEMMA/master/example/mouse_hs1940.pheno.txt")
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file("https://raw.githubusercontent.com/genetics-statistics/GEMMA/master/example/mouse_hs1940.geno.txt.gz")
+                ]
+                input[1] = [
+                    [ id:'test', single_end:false ],
+                    file("https://raw.githubusercontent.com/genetics-statistics/GEMMA/master/example/mouse_hs1940.pheno.txt")
+                ]
+                input[2] = [
+                    [ id:'test', single_end:false ],
+                    file("https://raw.githubusercontent.com/genetics-statistics/GEMMA/refs/heads/master/example/mouse_hs1940.anno.txt")
+                ]
+                input[3] = GEMMA_KINSHIPMATRIX.out.matrix
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            // Add assertions for stub outputs
+        }
+    }
+}
