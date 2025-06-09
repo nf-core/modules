@@ -14,9 +14,9 @@ process EMU_ABUNDANCE {
     output:
     tuple val(meta), path("${prefix}_rel-abundance.tsv")                , emit: report
     tuple val(meta), path("${prefix}_read-assignment-distributions.tsv"), emit: assignment_report, optional: true
-    tuple val(meta), path("${prefix}_emu_alignments.sam")               , emit: samfile, optional: true
-    tuple val(meta), path("${prefix}_unclassified_mapped.fasta")        , emit: unclassified_fa, optional: true
-    tuple val(meta), path("${prefix}_unmapped.fasta")                   , emit: unmapped_fa, optional: true
+    tuple val(meta), path("${prefix}_emu_alignments.sam")               , emit: samfile          , optional: true
+    tuple val(meta), path("${prefix}_unclassified_mapped.fasta")        , emit: unclassified_fa  , optional: true
+    tuple val(meta), path("${prefix}_unmapped.fasta")                   , emit: unmapped_fa      , optional: true
     path "versions.yml"                                                 , emit: versions
 
     when:
@@ -49,6 +49,10 @@ process EMU_ABUNDANCE {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_rel-abundance.tsv
+    touch ${prefix}_read-assignment-distributions.tsv
+    touch ${prefix}_emu_alignments.sam
+    touch ${prefix}_unclassified_mapped.fasta
+    touch ${prefix}_unmapped.fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

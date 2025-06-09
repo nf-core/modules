@@ -48,11 +48,10 @@ nextflow_process {
                     process.out.report,
                     process.out.assignment_report,
                     process.out.samfile,
-                    process.out.versions
-                ).match() },
-    // Match files unclassified_mapped.fasta and unmapped.fasta as they are empty with this test case
-                { assert file(process.out.unclassified_fa[0][1]).exists() },
-                { assert file(process.out.unmapped_fa[0][1]).exists() }
+                    process.out.unclassified_fa,
+                    process.out.unmapped_fa,
+                    process.out.versions,
+                ).match() }
             )
         }
     }
