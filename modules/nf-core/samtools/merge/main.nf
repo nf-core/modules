@@ -30,6 +30,7 @@ process SAMTOOLS_MERGE {
     def file_type = input_files instanceof List ? input_files[0].getExtension() : input_files.getExtension()
     def reference = fasta ? "--reference ${fasta}" : ""
     """
+    # Note: --threads value represents *additional* CPUs to allocate (total CPUs = 1 + --threads).
     samtools \\
         merge \\
         --threads ${task.cpus-1} \\

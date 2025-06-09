@@ -23,6 +23,7 @@ process SAMTOOLS_DEPTH {
     def prefix = task.ext.prefix ?: "${meta1.id}"
     def positions = intervals ? "-b ${intervals}" : ""
     """
+    # Note: --threads value represents *additional* CPUs to allocate (total CPUs = 1 + --threads).
     samtools \\
         depth \\
         --threads ${task.cpus-1} \\

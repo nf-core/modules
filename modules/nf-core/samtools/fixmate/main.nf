@@ -28,6 +28,7 @@ process SAMTOOLS_FIXMATE {
                     "bam"
     if ("$input" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
+    # Note: --threads value represents *additional* CPUs to allocate (total CPUs = 1 + --threads).
     samtools \\
         fixmate  \\
         $args \\
