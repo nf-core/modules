@@ -10,14 +10,11 @@ nextflow_process {
     tag "modules_nfcore"
     tag "midas"
     tag "midas/run"
-    tag "midas/build"
-    tag "untar"
 
     /* // MIDAS BUILD not working due to phyeco.hmm not present
     test("sarscov2 - fastq - db - genes") {
         setup {
             run ("UNTAR") {
-                script "../../../untar/main.nf"
                 process {
                     """
                     input[0] = [
@@ -28,7 +25,6 @@ nextflow_process {
                 }
             }
             run ("MIDAS_BUILD") {
-                script "../../build/main.nf"
                 process {
                     """
                     input[0] = UNTAR.out.untar
