@@ -9,7 +9,7 @@ process ABACAS {
 
     input:
     tuple val(meta), path(scaffold)
-    path  fasta
+    tuple val(meta2), path(fasta)
 
     output:
     tuple val(meta), path("${prefix}.*"), emit: results
@@ -28,10 +28,33 @@ process ABACAS {
         ${args} \\
         -o ${prefix}
 
+    sort "${prefix}.bin" > "${prefix}.bin.tmp" && mv "${prefix}.bin.tmp" "${prefix}.bin" # Needs to be sorted for consistency
     mv nucmer.delta ${prefix}.nucmer.delta
     mv nucmer.filtered.delta ${prefix}.nucmer.filtered.delta
     mv nucmer.tiling ${prefix}.nucmer.tiling
     mv unused_contigs.out ${prefix}.unused.contigs.out
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        abacas: \$(echo \$(abacas.pl -v 2>&1) | sed 's/^.*ABACAS.//; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    prefix   = task.ext.prefix ?: "${meta.id}.abacas"
+    """
+    touch ${prefix}.abacas.MULTIFASTA.fa
+    touch ${prefix}.abacas.crunch
+    touch ${prefix}.abacas.fasta
+    touch ${prefix}.abacas.gaps
+    touch ${prefix}.abacas.gaps.tab
+    touch ${prefix}.abacas.tab
+
+    touch ${prefix}.nucmer.delta
+    touch ${prefix}.nucmer.filtered.delta
+    touch ${prefix}.nucmer.tiling
+    touch ${prefix}.unused.contigs.out
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         abacas: \$(echo \$(abacas.pl -v 2>&1) | sed 's/^.*ABACAS.//; s/ .*\$//')
