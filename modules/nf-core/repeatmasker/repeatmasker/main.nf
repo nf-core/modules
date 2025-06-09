@@ -25,7 +25,7 @@ process REPEATMASKER_REPEATMASKER {
     def args    = task.ext.args     ?: ''
     prefix      = task.ext.prefix   ?: "${meta.id}"
     def lib_arg = lib               ? "-lib $lib"   : ''
-    out_fasta = fasta.getBaseName(fasta.name.endsWith('.gz') ? 1 : 0)
+    def out_fasta = fasta.getBaseName(fasta.name.endsWith('.gz') ? 1 : 0)
 
     """
     RepeatMasker \\
