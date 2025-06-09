@@ -28,10 +28,11 @@ process SAMTOOLS_FASTQ {
         meta.single_end ? "-1 ${prefix}_1.fastq.gz -s ${prefix}_singleton.fastq.gz" :
         "-1 ${prefix}_1.fastq.gz -2 ${prefix}_2.fastq.gz -s ${prefix}_singleton.fastq.gz"
     """
+    # Note: --threads value represents *additional* CPUs to allocate (total CPUs = 1 + --threads).
     samtools \\
         fastq \\
         $args \\
-        --threads ${task.cpus} \\
+        --threads ${task.cpus-1} \\
         -0 ${prefix}_other.fastq.gz \\
         $input \\
         $output
