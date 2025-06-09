@@ -72,7 +72,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - $prefix:
+      - ${prefix}:
           type: file
           description: The per locus coverage with no partition.
           pattern: "${sample_id}"
@@ -95,7 +95,7 @@ output:
       - ${prefix}.${partitions_output}_interval_statistics:
           type: file
           description: The statistics for PARTITION_GROUP library, aggregated by interval.
-          pattern: "${sample_id}.interval_statistics"
+          pattern: "${sample_id}_interval_statistics"
   - coverage_counts:
       - meta:
           type: map
@@ -105,7 +105,7 @@ output:
       - ${prefix}.${partitions_output}_cumulative_coverage_counts:
           type: file
           description: Contains the histogram of loci with depth larger than x.
-          pattern: "${sample_id}.interval_statistics"
+          pattern: "${sample_id}_cumulative_coverage_counts"
   - coverage_proportions:
       - meta:
           type: map
@@ -116,7 +116,7 @@ output:
           type: file
           description: Contains the normalized histogram of loci with depth larger than
             x.
-          pattern: "${sample_id}.interval_statistics"
+          pattern: "${sample_id}_cumulative_coverage_proportions"
   - interval_summary:
       - meta:
           type: map
@@ -126,11 +126,7 @@ output:
       - ${prefix}.${partitions_output}_interval_summary:
           type: file
           description: The summary for PARTITION_GROUP library, aggregated by interval.
-          pattern: "${sample_id}.interval_summary"
-      - _summary:
-          type: file
-          description: The summary for PARTITION_GROUP library, aggregated by interval.
-          pattern: "${sample_id}.interval_summary"
+          pattern: "${sample_id}_interval_summary"
   - versions:
       - versions.yml:
           type: file
