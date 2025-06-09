@@ -75,6 +75,13 @@ process CNVKIT_BATCH {
         tumor_out = ""
     }
 
+    // tumor_only mode and no reference
+    // generate a "flat" reference which assumes equal coverage
+    // by passing '--normal' without any files
+    if (!reference_exists){
+        normal_args = normal_args ?: "--normal"
+    }
+
     def target_args = targets && !reference_exists ? "--targets ${targets}" : ""
     def reference_args = reference ? "--reference ${reference}" : ""
 
