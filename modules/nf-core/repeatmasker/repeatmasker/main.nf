@@ -50,6 +50,7 @@ process REPEATMASKER_REPEATMASKER {
     prefix          = task.ext.prefix       ?: "${meta.id}"
     def args        = task.ext.args         ?: ''
     def touch_gff   = args.contains('-gff') ? "touch ${prefix}.gff" : ''
+
     """
     touch ${prefix}.masked
     touch ${prefix}.out
