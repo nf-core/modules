@@ -29,20 +29,18 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.results[0][1].collect {
-                        file(it).name in [
-                            "test.abacas.nucmer.delta", // Full path present in file
-                            "test.abacas.unused.contigs.out", // Empty file
-                            "test.abacas.nucmer.filtered.delta" // Full path present in file
-                        ] ? file(it).name : it
-                    },
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
-                ).match()}
-            )
+            assert process.success
+            assert snapshot(
+                process.out.results[0][1].collect {
+                    file(it).name in [
+                        "test.abacas.nucmer.delta", // Full path present in file
+                        "test.abacas.unused.contigs.out", // Empty file
+                        "test.abacas.nucmer.filtered.delta" // Full path present in file
+                    ] ? file(it).name : it
+                },
+                process.out.versions,
+                path(process.out.versions[0]).yaml
+            ).match()
         }
     }
 
@@ -68,14 +66,12 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.results,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
-                ).match() }
-            )
+            assert process.success
+            assert snapshot(
+                process.out.results,
+                process.out.versions,
+                path(process.out.versions[0]).yaml
+            ).match()
         }
     }
 
