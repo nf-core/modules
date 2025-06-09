@@ -50,9 +50,10 @@ process SAMTOOLS_VIEW {
         }
     }
     """
+    # Note: --threads value represents *additional* CPUs to allocate (total CPUs = 1 + --threads).
     samtools \\
         view \\
-        --threads ${task.cpus} \\
+        --threads ${task.cpus-1} \\
         ${reference} \\
         ${readnames} \\
         $args \\
