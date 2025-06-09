@@ -28,7 +28,7 @@ process FCSGX_FETCHDB {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        fcs_gx: \$( gx --help | sed '/build/!d; s/.*:v//; s/-.*//' )
+        fcsgx: \$( gx --help | sed '/build/!d; s/.*:v//; s/-.*//' )
     END_VERSIONS
     """
 
@@ -40,7 +40,7 @@ process FCSGX_FETCHDB {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        fcs_gx: \$( gx --help | sed '/build/!d; s/.*:v//; s/-.*//' )
+        fcsgx: \$( gx --help | sed '/build/!d; s/.*:v//; s/-.*//' )
     END_VERSIONS
     """
 }
