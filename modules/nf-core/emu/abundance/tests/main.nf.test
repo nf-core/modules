@@ -48,8 +48,8 @@ nextflow_process {
                     process.out.report,
                     process.out.assignment_report,
                     process.out.samfile,
-                    process.out.unclassified_fa,
-                    process.out.unmapped_fa,
+                    file(process.out.unclassified_fa[0][1]).name,
+                    file(process.out.unmapped_fa[0][1]).name,
                     process.out.versions,
                 ).match() }
             )
