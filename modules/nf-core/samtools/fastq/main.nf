@@ -28,6 +28,7 @@ process SAMTOOLS_FASTQ {
         meta.single_end ? "-1 ${prefix}_1.fastq.gz -s ${prefix}_singleton.fastq.gz" :
         "-1 ${prefix}_1.fastq.gz -2 ${prefix}_2.fastq.gz -s ${prefix}_singleton.fastq.gz"
     """
+    # Note: --threads value represents *additional* CPUs to allocate (total CPUs = 1 + --threads).
     samtools \\
         fastq \\
         $args \\
@@ -50,7 +51,7 @@ process SAMTOOLS_FASTQ {
     """
     ${output}
     echo | gzip > ${prefix}_other.fastq.gz
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
