@@ -13,8 +13,11 @@ nextflow_process {
         when {
             process {
                 """                
-                input[0] = '56uf7'
-                input[1] = 'osfstorage/emu-default-db-input/seq2taxid.map'
+                input[0] = [ 
+                    [ id: '74vtp' ],
+                    '74vtp', 
+                    'osfstorage/LJAF_Proposal_Cover_Sheet_and_Summary.docx' 
+                ]
                 """
             }
         }
@@ -34,9 +37,12 @@ nextflow_process {
 
         when {
             process {
-                """
-                input[0] = '56uf7'
-                input[1] = 'osfstorage/emu-default-db-input/seq2taxid.map'
+                """                
+                input[0] = [ 
+                    [ id: '74vtp' ],
+                    '74vtp', 
+                    'osfstorage/LJAF_Proposal_Cover_Sheet_and_Summary.docx' 
+                ]
                 """
             }
         }
