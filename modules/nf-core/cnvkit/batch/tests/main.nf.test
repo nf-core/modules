@@ -155,6 +155,36 @@ nextflow_process {
         }
     }
 
+    test("cnvkit batch tumouronly mode, no reference - bam") {
+
+        config "./batch_tumouronly.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true),
+                    []
+                ]
+                input[1] = [[:],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
+                input[2] = [[:],[]]
+                input[3] = [[:],[]]
+                input[4] = [[:],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/reference_chr21.cnn', checkIfExists: true)]
+                input[5] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+
+    }
+
     test("cnvkit batch germline mode - cram") {
 
         when {
