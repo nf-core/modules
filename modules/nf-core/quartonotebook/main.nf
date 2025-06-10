@@ -100,6 +100,7 @@ process QUARTONOTEBOOK {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    # Fix Quarto for Apptainer (see https://community.seqera.io/t/confusion-over-why-a-tool-works-in-docker-but-fails-in-singularity-when-the-installation-doesnt-differ-i-e-using-wave-micromamba/1244)
     ENV_QUARTO=/opt/conda/etc/conda/activate.d/quarto.sh
     set +u
     if [ -z "\${QUARTO_DENO}" ] && [ -f "\${ENV_QUARTO}" ]; then
