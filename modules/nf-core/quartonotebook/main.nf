@@ -100,6 +100,13 @@ process QUARTONOTEBOOK {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    ENV_QUARTO=/opt/conda/etc/conda/activate.d/quarto.sh
+    set +u
+    if [ -z "\${QUARTO_DENO}" ] && [ -f "\${ENV_QUARTO}" ]; then
+        source "\${ENV_QUARTO}"
+    fi
+    set -u
+
     touch ${prefix}.html
 
     cat <<-END_VERSIONS > versions.yml
