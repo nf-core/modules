@@ -25,6 +25,8 @@ input:
         type: string
         description: Source URL to be downloaded
         pattern: "{http,https}*"
+        ontologies:
+          - edam: "http://edamontology.org/data_1052" # URL
 output:
   - downloaded_file:
       - meta:
@@ -36,11 +38,14 @@ output:
           type: file
           description: Downloaded file from source
           pattern: "*.*"
+          ontologies: []
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@JoseEspinosa"
   - "@leoisl"

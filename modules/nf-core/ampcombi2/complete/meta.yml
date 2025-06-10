@@ -32,6 +32,8 @@ input:
         description: The path to the list of files corresponding to each sample as generated
           by ampcombi2/parsetables.
         pattern: "[*_ampcombi.tsv, *_ampcombi.tsv]"
+        ontologies: 
+          - edam: "http://edamontology.org/format_3475" # TSV
 output:
   - tsv:
       - Ampcombi_summary.tsv:
@@ -39,17 +41,22 @@ output:
           description: A file containing the complete AMPcombi summaries from all processed
             samples.
           pattern: "*.tsv"
+          ontologies: 
+            - edam: "http://edamontology.org/format_3475" # TSV
   - log:
       - Ampcombi_complete.log:
           type: file
           description: A log file that captures the standard output for the entire process
             in a log file. Can be activated by `--log`.
           pattern: "*.log"
+          ontologies: []
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies: 
+            - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@darcy220606"
 maintainers:

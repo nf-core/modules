@@ -55,7 +55,8 @@ output:
         '*.abacas.tab', '*.abacas.unused.contigs.out',
         '*.abacas.MULTIFASTA.fa' ]
       pattern: "${prefix}.*"
-      ontologies: []
+      ontologies:
+        - edam: "http://edamontology.org/format_3750" # YAML
 - versions:
   - versions.yml:
       type: file

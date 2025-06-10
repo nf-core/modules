@@ -31,33 +31,40 @@ input:
         description: |
           antismash/outputs/html/css folder which is being created during the antiSMASH database downloading step. These files are normally downloaded by download-antismash-databases itself, and must be retrieved by the user by manually running the command with conda or a standalone installation of antiSMASH. Therefore we do not recommend using this module for production pipelines, but rather require users to specify their own local copy of the antiSMASH database in pipelines.
         pattern: "css"
+        ontologies: []
   - - database_detection:
         type: directory
         description: |
           antismash/detection folder which is being created during the antiSMASH database downloading step. These files are normally downloaded by download-antismash-databases itself, and must be retrieved by the user by manually running the command with conda or a standalone installation of antiSMASH. Therefore we do not recommend using this module for production pipelines, but rather require users to specify their own local copy of the antiSMASH database in pipelines.
         pattern: "detection"
+        ontologies: []
   - - database_modules:
         type: directory
         description: |
           antismash/modules folder which is being created during the antiSMASH database downloading step. These files are normally downloaded by download-antismash-databases itself, and must be retrieved by the user by manually running the command with conda or a standalone installation of antiSMASH. Therefore we do not recommend using this module for production pipelines, but rather require users to specify their own local copy of the antiSMASH database in pipelines.
         pattern: "modules"
+        ontologies: []
 output:
   - database:
       - antismash_db:
           type: directory
           description: Download directory for antiSMASH databases
           pattern: "antismash_db"
+          ontologies: []
   - antismash_dir:
       - antismash_dir:
           type: directory
           description: |
             antismash installation folder which is being modified during the antiSMASH database downloading step. The modified files are normally downloaded by download-antismash-databases itself, and must be retrieved by the user by manually running the command with conda or a standalone installation of antiSMASH. Therefore we do not recommend using this module for production pipelines, but rather require users to specify their own local copy of the antiSMASH database and installation folder in pipelines.
           pattern: "antismash_dir"
+          ontologies: []
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@jasmezz"
 maintainers:
