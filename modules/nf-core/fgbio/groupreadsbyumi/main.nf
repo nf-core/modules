@@ -12,10 +12,10 @@ process FGBIO_GROUPREADSBYUMI {
     val(strategy)
 
     output:
-    tuple val(meta), path("*.bam")         , emit: bam
-    tuple val(meta), path("*histogram.txt"), emit: histogram
+    tuple val(meta), path("*.bam")            , emit: bam
+    tuple val(meta), path("*histogram.txt")   , emit: histogram
     tuple val(meta), path("*read-metrics.txt"), emit: read_metrics
-    path "versions.yml"                    , emit: versions
+    path "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
