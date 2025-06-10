@@ -58,10 +58,13 @@ process QUARTONOTEBOOK {
         params_cmd = dumpParamsYaml(nb_params)
         render_args = "--execute-params params.yml"
     }
+    ( params_cmd ?
     """
-    # Dump .params.yml heredoc (section will be empty if parametrization is disabled)
+    # Dump .params.yml heredoc (if applicable)
     ${indentCodeBlock(params_cmd, 4)}
-
+    """ : "")
+    <<
+    """
     # Create output directory
     mkdir artifacts
 
