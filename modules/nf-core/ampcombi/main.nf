@@ -1,14 +1,3 @@
-def deprecation_message = """
-WARNING: This module has been deprecated.
-
-Reason:
-This module is no longer recommended for use to parse results from antimicrobial tools.
-It is recommended to use ampcombi v.0.2.2 submodules instead:
-- nf-core/modules/ampcombi2/parse_tables
-- nf-core/modules/ampcombi2/complete
-- nf-core/modules/ampcombi2/cluster
-
-"""
 process AMPCOMBI {
     tag "$meta.id"
     label 'process_medium'
@@ -28,21 +17,32 @@ process AMPCOMBI {
     tuple val(meta), path("${meta.id}/*diamond_matches.txt"), emit: txt
     tuple val(meta), path("${meta.id}/*ampcombi.csv")       , emit: csv
     tuple val(meta), path("${meta.id}/*amp.faa")            , emit: faa
-    tuple val(meta), path("AMPcombi_summary.csv")           , optional:true, emit: summary_csv
-    tuple val(meta), path("AMPcombi_summary.html")          , optional:true, emit: summary_html
-    tuple val(meta), path("*.log")                          , optional:true, emit: log
-    tuple val(meta), path("amp_ref_database/")              , optional:true, emit: results_db
-    tuple val(meta), path("amp_ref_database/*.dmnd")        , optional:true, emit: results_db_dmnd
-    tuple val(meta), path("amp_ref_database/*.clean.fasta") , optional:true, emit: results_db_fasta
-    tuple val(meta), path("amp_ref_database/*.tsv")         , optional:true, emit: results_db_tsv
+    tuple val(meta), path("AMPcombi_summary.csv")           , emit: summary_csv     , optional:true
+    tuple val(meta), path("AMPcombi_summary.html")          , emit: summary_html    , optional:true
+    tuple val(meta), path("*.log")                          , emit: log             , optional:true
+    tuple val(meta), path("amp_ref_database/")              , emit: results_db      , optional:true
+    tuple val(meta), path("amp_ref_database/*.dmnd")        , emit: results_db_dmnd , optional:true
+    tuple val(meta), path("amp_ref_database/*.clean.fasta") , emit: results_db_fasta, optional:true
+    tuple val(meta), path("amp_ref_database/*.tsv")         , emit: results_db_tsv  , optional:true
     path "versions.yml"                                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    assert true: deprecation_message
-    def args = task.ext.args ?: ''
+    def deprecation_message = """
+    WARNING: This module has been deprecated.
+
+    Reason:
+    This module is no longer recommended for use to parse results from antimicrobial tools.
+    It is recommended to use ampcombi v.0.2.2 submodules instead:
+    - nf-core/modules/ampcombi2/parse_tables
+    - nf-core/modules/ampcombi2/complete
+    - nf-core/modules/ampcombi2/cluster
+
+    """
+    assert false: deprecation_message
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def db = opt_amp_db? "--amp_database $opt_amp_db": ""
     """
@@ -51,7 +51,7 @@ process AMPCOMBI {
         --sample_list ${prefix} \\
         ${db} \\
         --faa ${faa_input} \\
-        $args \\
+        ${args} \\
         --log True \\
         --threads ${task.cpus} \\
 
@@ -61,9 +61,19 @@ process AMPCOMBI {
     END_VERSIONS
     """
     stub:
-    def args = task.ext.args ?: ''
+    def deprecation_message = """
+    WARNING: This module has been deprecated.
+
+    Reason:
+    This module is no longer recommended for use to parse results from antimicrobial tools.
+    It is recommended to use ampcombi v.0.2.2 submodules instead:
+    - nf-core/modules/ampcombi2/parse_tables
+    - nf-core/modules/ampcombi2/complete
+    - nf-core/modules/ampcombi2/cluster
+
+    """
+    assert false: deprecation_message
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def db = opt_amp_db? "--amp_database $opt_amp_db": ""
 
     """
     mkdir -p ${prefix}
