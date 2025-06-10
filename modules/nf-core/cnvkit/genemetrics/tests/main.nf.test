@@ -58,4 +58,28 @@ nextflow_process {
         }
     }
 
+    test("test-cnvkit-genemetrics-without-cns -- stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ],
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cnr/test2.paired_end.sorted.cnr', checkIfExists: true),
+				    []
+				]
+
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(
+                process.out,
+                path(process.out.versions[0]).yaml
+            ).match()
+        }
+    }
+
 }

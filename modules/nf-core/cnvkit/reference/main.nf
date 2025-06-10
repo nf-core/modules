@@ -20,18 +20,29 @@ process CNVKIT_REFERENCE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: targets.BaseName
 
     """
     cnvkit.py \\
         reference \\
-        --fasta $fasta \\
-        --targets $targets \\
-        --antitargets $antitargets \\
+        --fasta ${fasta} \\
+        --targets ${targets} \\
+        --antitargets ${antitargets} \\
         --output ${prefix}.reference.cnn \\
-        $args
+        ${args}
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        cnvkit: \$(cnvkit.py version | sed -e "s/cnvkit v//g")
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: targets.BaseName
+
+    """
+    touch ${prefix}.reference.cnn
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         cnvkit: \$(cnvkit.py version | sed -e "s/cnvkit v//g")

@@ -91,4 +91,32 @@ nextflow_process {
         }
     }
 
+    test("test-cnvkit-access-multiple-exclude -- stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id: "test" ],
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+				]
+				input[1] = [
+				    [ id:'test' ],
+				    [
+				        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.antitarget.bed', checkIfExists: true)
+				    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(
+                process.out,
+                path(process.out.versions[0]).yaml
+            ).match()
+        }
+    }
 }
