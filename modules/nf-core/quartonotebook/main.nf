@@ -105,6 +105,7 @@ process QUARTONOTEBOOK {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         quarto: \$(quarto -v)
+        papermill: \$(papermill --version | cut -f1 -d' ')
     END_VERSIONS
     """
 }
