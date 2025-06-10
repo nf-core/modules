@@ -17,10 +17,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'test', tumour_sample: 'HCC1395_HCC1395T' ], 
-                        file('/Users/vvvirgy/Desktop/tmp/HCC1395_WXS_TUMOUREVO/formatter/vcf2cnaqc/HCC1395_WXS/HCC1395/HCC1395_HCC1395T/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_snv.rds'), 
-                        file('/Users/vvvirgy/Desktop/tmp/HCC1395_WXS_TUMOUREVO/formatter/cna2cnaqc/HCC1395_WXS/HCC1395/HCC1395_HCC1395T/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_cna.rds')
-                        // file(params.modules_testdata_base_path + 'delete_me/cnaqc/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_snv.rds', checkIfExists: true), 
-                        // file(params.modules_testdata_base_path + 'delete_me/cnaqc/HCC1395_HCC1395T/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_cna.rds', checkIfExists: true)            
+                        file(params.modules_testdata_base_path + 'delete_me/cnaqc/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_snv.rds', checkIfExists: true), 
+                        file(params.modules_testdata_base_path + 'delete_me/cnaqc/HCC1395_HCC1395T/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_cna.rds', checkIfExists: true)            
                 ]
                 """
             }
@@ -51,10 +49,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'test', tumour_sample: 'HCC1395_HCC1395T' ], 
-                        file('/Users/vvvirgy/Desktop/tmp/HCC1395_WXS_TUMOUREVO/formatter/vcf2cnaqc/HCC1395_WXS/HCC1395/HCC1395_HCC1395T/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_snv.rds'), 
-                        file('/Users/vvvirgy/Desktop/tmp/HCC1395_WXS_TUMOUREVO/formatter/cna2cnaqc/HCC1395_WXS/HCC1395/HCC1395_HCC1395T/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_cna.rds')
-                        // file(params.modules_testdata_base_path + 'delete_me/cnaqc/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_snv.rds', checkIfExists: true), 
-                        // file(params.modules_testdata_base_path + 'delete_me/cnaqc/HCC1395_HCC1395T/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_cna.rds', checkIfExists: true)            
+                        file(params.modules_testdata_base_path + 'delete_me/cnaqc/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_snv.rds', checkIfExists: true), 
+                        file(params.modules_testdata_base_path + 'delete_me/cnaqc/HCC1395_HCC1395T/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_cna.rds', checkIfExists: true)            
                 ]
                 """
             }
