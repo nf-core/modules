@@ -166,8 +166,8 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
                     stat_column: 'adj.P.Val', stat_cardinality: '<='
                 ],
                 'propd' : [
-                    fc_column: 'lfc', fc_cardinality: '>=',
-                    stat_column: 'weighted_connectivity', stat_cardinality: '>='
+                    fc_column: 'LFC', fc_cardinality: '>=',
+                    stat_column: 'rcDdis', stat_cardinality: '>='
                 ]
             ]
             filter_input: [meta + filter_meta, results]

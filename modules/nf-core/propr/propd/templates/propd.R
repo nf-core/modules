@@ -51,84 +51,106 @@ read_delim_flexible <- function(file, header = TRUE, row.names = 1, check.names 
     )
 }
 
-#' Get genewise table with logfold changes and connectivity information
+#' Function to calculate gene-wise differential statistics from pair-wise statistics
 #'
-#' This function calculates the logfold changes of genes with respect to the reference set,
-#' which is dynamically defined as the set of genes that are significantly proportional to
-#' each target gene. Note that the output table will only contain genes that are significantly
-#' proportional to at least one other gene.
+#' @param res_pairwise: propr object containing pair-wise statistics, most important ones being:
+#' - lrm1: log-ratio mean of the first group
+#' - lrm2: log-ratio mean of the second group
+#' - lrm: overall log-ratio mean
+#' @param FDR_threshold: false discovery rate of the pair to define significantly connected (differentially proportional) pairs, default is 0.01
 #'
-#' @param results Data frame with significant pairs
-#' @return Data frame with the following columns:
-#'  - lfc = overall logfold change of the gene with respect to the reference set
-#'  - lfc_error = median average deviation of the logfold changes -> this reflects the error
-#'  - connectivity = size of the reference set -> this also reflects the connectivity of the gene
-#   - weighted_connectivity = this reflects the weighted connectivity of the gene, so the lower
-#'      the theta the closer to 1 full connectivity. One can also interpret this as the accumulated
-#'      between group variance of the gene (as the theta values reflects the between group variance
-#'      vs within group variance).
-get_genewise_information=function(res,cut=0.01){
+#' @return: a matrix containing gene-wise statistics with the following columns:
+#' - Nsig: Number of significant connections for each gene. That is, the number of significant pairs in which the gene is involved.
+#' - LFC: Log Fold Change of the gene (conventional strategy), using the geometric mean all other genes as a reference
+#' - lrmD: Log Ratio Mean Difference of the gene. Equivalent to the LFC, but using a subset of genes as reference (only the ones that are significantly connected to the gene).
+#' - rcDdis: Indicates significance of a gene based on the number of significant connections (ratio-based statistic). It is calculated from the reverse cumulative degree distribution.
+#'           It should be interpreted as the probability of having at least so many connections (equivalent to pval in deseq2/limma)
+get_genewise_information=function(res_pairwise, FDR_threshold=0.01){
 
+    num_genes = ncol(res_pairwise@counts) # Extract total number of genes from the count matrix (columns are genes)
+    res_genewise = matrix(0, num_genes,4) # Initialize a matrix to store gene-wise statistics
 
-    D=ncol(res@counts)
-    M=matrix(0,D,4)
-    colnames(M)=c("rcDdis","Nsig","lrmD","LFC")
-    rownames(M)=colnames(res@counts)
-    print("preparing matrices")
-    pset=which(res@results[,"FDR"]<cut) #only significant pairs
-    re1=prepmat(pset,D, res) #transform pairwise table to DxD matrix #TODO: Ask Ionas if its ok to pass res as an argument
+    colnames(res_genewise) = c("Nsig", "LFC", "lrmD", "rcDdis") # Define column names for the gene-wise statistics matrix
+    rownames(res_genewise) = colnames(res_pairwise@counts) # Set gene names as row names of the gene-wise matrix
 
-    aset=c(1:nrow(res@results)) #for LFC we need all pairs
-    re2=prepmat(aset,D, res)
+    print("Preparing matrices")
+    sig_pairs_index = which(res_pairwise@results[,"FDR"] < FDR_threshold) # Select the index of significant pairs (FDR < cut)
+    lrm_diff_sig = prepmat(sig_pairs_index, num_genes, res_pairwise) # Calculate the log-ratio mean difference matrix for significant pairs
 
-    print("calculating")
-    all=c(1:D)
-    for (g in 1:D){
-        M[g,"Nsig"]=length(which(res@results[pset,1]==g | res@results[pset,2]==g))
+    all_pairs_index = c(1:nrow(res_pairwise@results)) #for LFC we need all pairs
+    lrm_diff_all = prepmat(all_pairs_index, num_genes, res_pairwise) # Calculate the log-ratio mean difference matrix for all pairs
 
-        set1=which(all<g)
-        set2=which(all>g)
-        M[g,"LFC"]=mean(c(re2[set1,g],-re2[set2,g]))/log(2) #numerator and denominator of lrm swap for genes > g, so lrm2-lrm1
+    print("Calculating gene-wise statistics")
+    all = c(1:num_genes)
 
-        set=which(re1[all,g]!=0)
-        M[g,"lrmD"]=median(c(re1[intersect(set1,set),g],-re1[intersect(set2,set),g]))/log(2) #divide by log2 to get base 2 log
+    # Compute gene-wise statistics
+    for (gene_index in 1:num_genes){
+        # Nsig (Number of significant connections): for each gene, count how many times it appears (as partner or pair) in the subset of significant pairs
+        sig_connections = length(which(res_pairwise@results[sig_pairs_index,1] == gene_index | res_pairwise@results[sig_pairs_index,2] == gene_index))
+        res_genewise[gene_index,"Nsig"] = sig_connections
+
+        # LFC: conventional Log Fold Change (taking the geometric mean of ALL genes as reference)
+
+        pair_genes = which(all < gene_index) # Genes with index < gene_index are considered as "pair" genes
+        partner_genes = which(all > gene_index) # Genes with index > gene_index are considered as "partner" genes
+
+        # Compute the LFC of each gene as the mean of the log-ratio mean differences of all pairs involving that gene.
+        lfc_all = mean(c(lrm_diff_all[pair_genes,gene_index], -lrm_diff_all[partner_genes,gene_index]))/log(2)
+        res_genewise[gene_index,"LFC"] = lfc_all #numerator and denominator of lrm swap for genes > g, so lrm2-lrm1
+
+        set_significant = which(lrm_diff_sig[,gene_index] != 0) # Get the indices of the genes that share a significant connection with the current gene
+
+        # lrmD: LFC but taking only the subset of significantly connected genes as a reference
+        lrmD = median(c(intersect(pair_genes, set_significant), -lrm_diff_sig[intersect(partner_genes, set_significant), gene_index]))/log(2) #divide by log2 to get base 2 log
+        res_genewise[gene_index,"lrmD"]=median(c(lrm_diff_sig[intersect(pair_genes,set_significant),gene_index],lrm_diff_sig[intersect(partner_genes,set_significant),gene_index]))/log(2)
 
     }
+    # rcDis (significance of connectivity value): represents the probability of having at least so many connections
+    connect_degrees = sort(unique(res_genewise[,"Nsig"]),decreasing=TRUE) # Sort the unique degrees of connectivity in descending order
 
-    deg=sort(unique(M[,"Nsig"]),decreasing=TRUE)
-    cl=0
-    for (i in 1:length(deg)){
-        dset=which(M[,"Nsig"]==deg[i])
-        cl=cl+length(dset)
-        M[dset,"rcDdis"]=cl/D
+    cum_sum = 0
+    for (degree in 1:length(connect_degrees)){ # for each value of connectivity
+        dset = which(res_genewise[,"Nsig"] == connect_degrees[degree]) # Get the indices of genes with the current degree of connectivity
+        cum_sum = cum_sum + length(dset) # Cumulative count of genes with the current (or less) degree of connectivity
+        res_genewise[dset,"rcDdis"] = cum_sum/num_genes # Divide the cumulative count by the total number of genes to get the probability of having at least so many connections
     }
 
-    ind=order(M[,"rcDdis"])
-    M=M[ind,]
-    return(M)
+    ind = order(res_genewise[,"rcDdis"])
+    res_genwise = res_genewise[ind,]
+    return(res_genewise)
 
 }
 
-#this function takes a set of pairs and returns a DxD matrix of lrm1-lrm2:
-prepmat=function(subs,D, res){
+#' Function to return a reshaped log-ratio mean difference matrix from pair-wise statistics
+#'
+#' @param res_pairwise: propr object containing pair-wise statistics, most important ones being:
+#' - lrm1: log-ratio mean of the first group
+#' - lrm2: log-ratio mean of the second group
+#' - lrm: overall log-ratio mean
+#' @param pairs_index: index of the pairs to consider (significant or all)
+#' @param num_genes: total number of genes (columns in the count matrix)
+#'
+#' @return: a genes x genes matrix of log-ratio mean differences (lrm1 - lrm2) for the specified pairs
+prepmat = function(pairs_index, num_genes, res_pairwise){
 
-    pset=subs
+    gene_names = colnames(res_pairwise@counts) # Extract gene names from the count matrix
 
-    mat1=matrix(0,D,D)
-    rownames(mat1)=colnames(res@counts)
-    colnames(mat1)=colnames(res@counts)
-    mat2=matrix(0,D,D)
-    rownames(mat2)=colnames(res@counts)
-    colnames(mat2)=colnames(res@counts)
-    pa=matrix("",length(pset),2)
-    pa[,1]=colnames(res@counts)[res@results[pset,1]]
-    pa[,2]=colnames(res@counts)[res@results[pset,2]]
+    # Initialize two matrices (genes x genes) to store the log-ratio means for group
+    mat1 = mat2 = matrix(0, num_genes, num_genes)
+    rownames(mat1)= rownames(mat2) = gene_names
+    colnames(mat1)= colnames(mat2) = gene_names
 
-    mat1[pa]=res@results[pset,"lrm1"] #this puts values below the diagonal because of index ordering pa[,1]>pa[,2] in propr
-    mat2[pa]=res@results[pset,"lrm2"]
-    re=mat1-mat2
-    re[upper.tri(re)]=t(re)[upper.tri(re)] #make matrix symmetric
-    return(re)
+    pa = matrix("",length(pairs_index), 2) # Empty matrix to store gene names for significant pairs
+    pa[,1] = gene_names[res_pairwise@results[pairs_index,1]] # Extract gene names for the Partner column of the significant / all pairs
+    pa[,2] = gene_names[res_pairwise@results[pairs_index,2]] # Extract gene names for the Pair column of the significant / all pairs
+
+    # Pairs in propr object appear only once (Partner < Pair), this takes care of that to produce a symmetric matrix
+    mat1[pa] = res_pairwise@results[pairs_index,"lrm1"] # Only values below the diagonal are filled, the rest is 0
+    mat2[pa] = res_pairwise@results[pairs_index,"lrm2"] # Same for group 2
+    lrm_diff = mat1 - mat2
+    lrm_diff[upper.tri(lrm_diff)] = t(lrm_diff)[upper.tri(lrm_diff)] # Make matrix symmetric
+
+    return(lrm_diff)
 }
 
 #' Plot genewise information
@@ -452,8 +474,7 @@ if (opt\$permutation == 0) {
 
         # parse genewise information from pairwise results
 
-        results_genewise <- get_genewise_information(pd, cut=0.01) # TODO: Ask Ionas if the value should be provided by the user
-    }
+        results_genewise <- get_genewise_information(pd, FDR_threshold=opt\$fdr)}
 
 } else {
 
@@ -543,8 +564,7 @@ if (opt\$permutation == 0) {
         )
 
         # parse genewise information from pairwise results
-
-        results_genewise <- get_genewise_information(pd, cut=0.01) # TODO: Ask Ionas if the value should be provided by the user
+        results_genewise <- get_genewise_information(pd, FDR_threshold=opt\$fdr)
     }
 }
 
@@ -579,14 +599,13 @@ if (!theta_cutoff) {
 
     results_genewise <- data.frame(
         'features_id_col' = character(0),
-        recDdis = numeric(0),
         Nsig = numeric(0),
+        LFC = numeric(0),
         lrmD = numeric(0),
-        LFC = numeric(0)
+        rcDdis = numeric(0)
     )
-    colnames(results_genewise) <- c(opt\$features_id_col, 'recDdis', 'Nsig', 'lrmD', 'LFC')
+    colnames(results_genewise) <- c(opt\$features_id_col, "Nsig", "LFC", "lrmD", "rcDdis")
 }
-
 ################################################
 ################################################
 ## Generate outputs                           ##
@@ -628,7 +647,8 @@ write.table(
     results_genewise,
     file      = paste0(opt\$prefix, '.propd.genewise.tsv'),
     col.names = TRUE,
-    row.names = FALSE,
+    #row.names = FALSE,
+    row.names = TRUE,
     sep       = '\\t',
     quote     = FALSE
 )
