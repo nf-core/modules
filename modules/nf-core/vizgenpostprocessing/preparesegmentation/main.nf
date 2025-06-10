@@ -10,7 +10,7 @@ process VIZGENPOSTPROCESSING_PREPARESEGMENTATION {
     val(images_regex)
 
     output:
-    tuple val(meta), path("*/*.json"), emit: segmentation_files
+    tuple val(meta), path("${prefix}/*.json"), emit: segmentation_files
     path "versions.yml"                               , emit: versions
 
     when:
@@ -22,7 +22,7 @@ process VIZGENPOSTPROCESSING_PREPARESEGMENTATION {
         error "VPT is unavailable via Conda. Please use Docker / Singularity / Apptainer / Podman instead."
     }
     def args   = task.ext.args   ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}
 
@@ -46,7 +46,7 @@ process VIZGENPOSTPROCESSING_PREPARESEGMENTATION {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "VPT is unavailable via Conda. Please use Docker / Singularity / Apptainer / Podman instead."
     }
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}
     touch ${prefix}/algorithm_specification.json
