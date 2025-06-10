@@ -58,6 +58,15 @@ input:
         description: Genome index file needed for CRAM conversion when the genome file
           was compressed with the BGZF algorithm.
         pattern: "*.gzi"
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - dict:
+        type: file
+        description: Samtools dictionary of the genome file.
+        pattern: "*.dict"
 output:
   - axt_gz:
       - meta:
@@ -79,6 +88,16 @@ output:
           type: file
           description: Pairwise alignment in BAM format (optional)
           pattern: "*.bam"
+  - bed_gz:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.bed.gz":
+          type: file
+          description: Gzipped pairwise alignment in BED format (optional)
+          pattern: "*.bed.gz"
   - blast_gz:
       - meta:
           type: map

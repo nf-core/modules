@@ -26,6 +26,9 @@ input:
         type: file
         description: Input sequences in FASTA format.
         pattern: "*.{fa,fna,fasta}"
+        ontologies:
+          - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - meta2:
         type: map
         description: |
@@ -38,6 +41,8 @@ input:
           MAGUS will construct its own guide tree. If empty, `fasttree` is used as a
           default.
         pattern: "*.{dnd,tree}"
+        ontologies:
+          - edam: http://edamontology.org/format_2006 # PHYLOGENETIC TREE
   - - compress:
         type: boolean
         description: Flag representing whether the output MSA should be compressed.
@@ -57,10 +62,16 @@ output:
             output file may or may not be gzipped, depending on the value supplied to
             `compress`.
           pattern: "*.aln{.gz,}"
+          ontologies:
+            - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
+            - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
+            - edam: http://edamontology.org/format_1984 # FASTA-ALN
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@lrauschning"
