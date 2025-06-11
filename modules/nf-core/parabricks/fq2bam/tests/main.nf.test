@@ -114,7 +114,7 @@ nextflow_process {
 				    [
 				        file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz', checkIfExists: true)
 				    ],
-                    '@RGtID:footLB:lib1tPL:bartSM:sampletPU:unit1'
+                    "@RG\tID:Seq01p\tSM:Seq01\tPL:ILLUMINA\tPI:330"
 				])
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
@@ -243,7 +243,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ],
-                    '@RGtID:footLB:lib1tPL:bartSM:sampletPU:unit1'
+                    "@RG\tID:Seq01p\tSM:Seq01\tPL:ILLUMINA\tPI:330"
                 ]
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
