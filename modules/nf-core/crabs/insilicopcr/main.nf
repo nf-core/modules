@@ -11,7 +11,7 @@ process CRABS_INSILICOPCR {
     tuple val(meta), path(crabsdb)
 
     output:
-    tuple val(meta), path("*.insilicopcr.txt"), emit: txt
+    tuple val(meta), path("${prefix}.txt"), emit: txt
     path "versions.yml"                       , emit: versions
 
     when:
@@ -19,7 +19,7 @@ process CRABS_INSILICOPCR {
 
     script:
     def args    = task.ext.args ?: ''
-    def prefix  = task.ext.prefix ?: "${meta.id}"
+    def prefix  = task.ext.prefix ?: "${meta.id}.insilicopcr"
     def version_cmd    = "\$(crabs --help 2>/dev/null | grep 'CRABS |' | sed 's/.*CRABS | v\\([0-9.]*\\).*/\\1/')"
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         version_cmd    = '1.0.7'
@@ -27,7 +27,7 @@ process CRABS_INSILICOPCR {
     """
     crabs --in-silico-pcr \\
         --input ${crabsdb} \\
-        --output ${prefix}.insilicopcr.txt \\
+        --output ${prefix}.txt \\
         --threads ${task.cpus} \\
         ${args}
 
