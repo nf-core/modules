@@ -1,5 +1,3 @@
-include { dumpParamsYaml ; indentCodeBlock } from "./parametrize"
-
 // NB: You'll likely want to override this with a container containing all
 // required dependencies for your analyses. Or use wave to build the container
 // for you from the environment.yml You'll at least need Quarto itself,
@@ -15,7 +13,7 @@ process QUARTONOTEBOOK {
 
     input:
     tuple val(meta), path(notebook)
-    val parameters
+    tuple val(use_parameters), val(parameters)
     path input_files
     path extensions
 
@@ -33,35 +31,26 @@ process QUARTONOTEBOOK {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def parametrize = task.ext.parametrize == null ? true : task.ext.parametrize
-    def implicit_params = task.ext.implicit_params == null ? true : task.ext.implicit_params
-    def meta_params = task.ext.meta_params == null ? true : task.ext.meta_params
-
+    // implicit parameters can be overwritten by supplying a value with parameters
+    def notebook_parameters = [
+        cpus: task.cpus,
+        artifact_dir: "artifacts",
+        input_dir: "./",
+    ] + (parameters ?: [:])
     // Dump parameters to yaml file.
     // Using a YAML file over using the CLI params because
     //  - No issue with escaping
     //  - Allows passing nested maps instead of just single values
     //  - Allows running with the language-agnostic `--execute-params`
-    def params_cmd = ""
-    def render_args = ""
-    if (parametrize) {
-        nb_params = [:]
-        if (implicit_params) {
-            nb_params["cpus"] = task.cpus
-            nb_params["artifact_dir"] = "artifacts"
-            nb_params["input_dir"] = "./"
-        }
-        if (meta_params) {
-            nb_params["meta"] = meta
-        }
-        nb_params += parameters
-        params_cmd = dumpParamsYaml(nb_params)
-        render_args = "--execute-params params.yml"
-    }
-    ( params_cmd ?
+    def yamlBuilder = new groovy.yaml.YamlBuilder()
+    yamlBuilder(notebook_parameters)
+    def yaml_content = yamlBuilder.toString().tokenize('\n').join("\n    ")
+    def render_args = use_parameters? "--execute-params params.yml" : ""
+    ( use_parameters ?
     """
-    # Dump .params.yml heredoc (if applicable)
-    ${indentCodeBlock(params_cmd, 4)}
+    cat <<- END_YAML_PARAMS > params.yml
+    ${yaml_content}
+    END_YAML_PARAMS
     """ : "")
     <<
     """
