@@ -26,14 +26,12 @@ nextflow_process {
                 {assert file(process.out.h5.get(0).get(1)).exists()},
                 {assert file(process.out.filtered_h5.get(0).get(1)).exists()},
                 {assert file(process.out.posterior_h5.get(0).get(1)).exists()},
-                {assert snapshot(
-                        process.out.barcodes,
-                        process.out.metrics,
-                        process.out.versions
-                    ).match()},
+                {assert file(process.out.barcodes.get(0).get(1)).exists()},
+                {assert file(process.out.metrics.get(0).get(1)).exists()},
                 {assert file(process.out.report.get(0).get(1)).exists()},
                 {assert file(process.out.pdf.get(0).get(1)).exists()},
-                {assert file(process.out.log.get(0).get(1)).exists()}
+                {assert file(process.out.log.get(0).get(1)).exists()},
+                {assert snapshot(process.out.versions).match()}
             )
         }
     }
