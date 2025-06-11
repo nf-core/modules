@@ -18,7 +18,7 @@ process CELLBENDER_REMOVEBACKGROUND {
     tuple val(meta), path("${prefix}_posterior.h5")     , emit: posterior_h5
     tuple val(meta), path("${prefix}_cell_barcodes.csv"), emit: barcodes
     tuple val(meta), path("${prefix}_metrics.csv")      , emit: metrics
-    tuple val(meta), path("${prefix}_report.html")      , emit: report
+    tuple val(meta), path("${prefix}_report.html")      , emit: report, optional: true
     tuple val(meta), path("${prefix}.pdf")              , emit: pdf
     tuple val(meta), path("${prefix}.log")              , emit: log
     tuple val(meta), path("ckpt.tar.gz")                , emit: checkpoint
