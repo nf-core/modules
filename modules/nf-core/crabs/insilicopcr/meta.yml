@@ -35,7 +35,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.insilicopcr.txt":
+      - "${prefix}.txt":
           type: file
           description: Extracted amplicon regions
           pattern: "*.insilicopcr.txtt"
