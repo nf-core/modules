@@ -15,10 +15,10 @@ process ANNOTSV_ANNOTSV {
     tuple val(meta5), path(gene_transcripts)
 
     output:
-    tuple val(meta), path("*.tsv")              , emit: tsv
-    tuple val(meta), path("*.unannotated.tsv")  , emit: unannotated_tsv, optional: true
-    tuple val(meta), path("*.vcf")              , emit: vcf, optional: true
-    path "versions.yml"                         , emit: versions
+    tuple val(meta), path("*.tsv")            , emit: tsv
+    tuple val(meta), path("*.unannotated.tsv"), emit: unannotated_tsv, optional: true
+    tuple val(meta), path("*.vcf")            , emit: vcf            , optional: true
+    path "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,10 +27,10 @@ process ANNOTSV_ANNOTSV {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def cand_genes = candidate_genes ? "-candidateGenesFile ${candidate_genes}" : ""
+    def cand_genes     = candidate_genes          ? "-candidateGenesFile ${candidate_genes}"              : ""
     def small_variants = candidate_small_variants ? "-candidateSnvIndelFiles ${candidate_small_variants}" : ""
-    def fp_snv = false_positive_snv ? "-snvIndelFiles ${false_positive_snv}" : ""
-    def transcripts = gene_transcripts ? "-txFile ${gene_transcripts}" : ""
+    def fp_snv         = false_positive_snv       ? "-snvIndelFiles ${false_positive_snv}"                : ""
+    def transcripts    = gene_transcripts         ? "-txFile ${gene_transcripts}"                         : ""
 
     """
     AnnotSV \\
@@ -52,7 +52,7 @@ process ANNOTSV_ANNOTSV {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def create_vcf = args.contains("-vcf 1") ? "touch ${prefix}.vcf" : ""
