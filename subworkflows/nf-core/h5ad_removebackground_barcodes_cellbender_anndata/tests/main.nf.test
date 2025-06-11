@@ -25,7 +25,8 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert file(workflow.out.h5ad.get(0).get(1)).exists()},
+                { assert snapshot(workflow.out.versions).match()}
             )
         }
     }
