@@ -7,13 +7,12 @@ process PARABRICKS_FQ2BAM {
     container "nvcr.io/nvidia/clara/clara-parabricks:4.4.0-1"
 
     input:
-    tuple val(meta) , path(reads)
+    tuple val(meta) , path(reads), val(readgroup)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(index)
     tuple val(meta4), path(interval_file)
     tuple val(meta5), path(known_sites)
     val(output_fmt) // either bam or cram
-    val(readgroup) // readgroup information, e.g. '@RGtID:footLB:lib1tPL:bartSM:sampletPU:unit1'
 
     output:
     tuple val(meta), path("*.bam")                  , emit: bam              , optional:true

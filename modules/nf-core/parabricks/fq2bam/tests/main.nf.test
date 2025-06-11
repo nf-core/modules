@@ -68,7 +68,8 @@ nextflow_process {
 				    [ id:'test', single_end:true ], // meta map
 				    [
 				        file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz', checkIfExists: true)
-				    ]
+				    ],
+                    ''
 				])
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
@@ -78,7 +79,6 @@ nextflow_process {
                 input[3] = [ [], [] ]
                 input[4] = [ [], [] ]
                 input[5] = 'bam'
-                input[6] = ''
                 """
             }
         }
@@ -113,7 +113,8 @@ nextflow_process {
 				    [ id:'test', single_end:true ], // meta map
 				    [
 				        file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz', checkIfExists: true)
-				    ]
+				    ],
+                    '@RGtID:footLB:lib1tPL:bartSM:sampletPU:unit1'
 				])
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
@@ -123,7 +124,6 @@ nextflow_process {
                 input[3] = [ [], [] ]
                 input[4] = [ [], [] ]
                 input[5] = 'bam'
-                input[6] = '@RGtID:footLB:lib1tPL:bartSM:sampletPU:unit1'
                 """
             }
         }
@@ -155,7 +155,8 @@ nextflow_process {
 				    [ id:'test', single_end:true ], // meta map
 				    [
 				        file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz', checkIfExists: true)
-				    ]
+				    ],
+                    ''
 				])
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
@@ -165,7 +166,6 @@ nextflow_process {
                 input[3] = [ [], [] ]
                 input[4] = [ [], [] ]
                 input[5] = 'bam'
-                input[6] = ''
                 """
             }
         }
@@ -197,7 +197,8 @@ nextflow_process {
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
-                    ]
+                    ],
+                    ''
                 ]
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
@@ -207,7 +208,6 @@ nextflow_process {
                 input[3] = [ [], [] ]
                 input[4] = [ [], [] ]
                 input[5] = 'bam'
-                input[6] = ''
                 """
             }
         }
@@ -242,7 +242,8 @@ nextflow_process {
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
-                    ]
+                    ],
+                    '@RGtID:footLB:lib1tPL:bartSM:sampletPU:unit1'
                 ]
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
@@ -252,7 +253,6 @@ nextflow_process {
                 input[3] = [ [], [] ]
                 input[4] = [ [], [] ]
                 input[5] = 'bam'
-                input[6] = '@RGtID:footLB:lib1tPL:bartSM:sampletPU:unit1'
                 """
             }
         }
@@ -286,7 +286,8 @@ nextflow_process {
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
-                    ]
+                    ],
+                    ''
                 ]
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
@@ -328,14 +329,14 @@ nextflow_process {
                     [ id:'test', single_end:true ], // meta map
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
-                    ]
+                    ],
+                    ''
                 ]
                 input[1] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                 input[2] = BWA_INDEX_CRAM.out.index
                 input[3] = [ [], [] ]
                 input[4] = [ [], [] ]
                 input[5] = 'cram'
-                input[6] = ''
                 """
             }
         }
@@ -373,7 +374,8 @@ nextflow_process {
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
-                    ]
+                    ],
+                    ''
                 ]
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
@@ -383,7 +385,6 @@ nextflow_process {
                 input[3] = [ [], [] ]
                 input[4] = [ [], [] ]
                 input[5] = 'cram'
-                input[6] = ''
                 """
             }
         }
