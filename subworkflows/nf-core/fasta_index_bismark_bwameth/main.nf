@@ -7,10 +7,12 @@ include { SAMTOOLS_FAIDX            } from '../../../modules/nf-core/samtools/fa
 workflow FASTA_INDEX_BISMARK_BWAMETH {
 
     take:
-    fasta         // channel: [ val(meta), [ fasta ] ]
-    fasta_index   // channel: [ val(meta), [ fasta index ] ]
-    bismark_index // channel: [ val(meta), [ bismark index ] ]
-    bwameth_index // channel: [ val(meta), [ bwameth index ] ]
+    fasta                          // channel: [ val(meta), [ fasta ] ]
+    fasta_index                    // channel: [ val(meta), [ fasta index ] ]
+    bismark_index                  // channel: [ val(meta), [ bismark index ] ]
+    bwameth_index                  // channel: [ val(meta), [ bwameth index ] ]
+    aligner                        // string: aligner name
+    collecthsmetrics               // boolean: whether to run picard collecthsmetrics
 
     main:
 
@@ -31,7 +33,7 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
     }
 
     // Aligner: bismark or bismark_hisat
-    if( params.aligner =~ /bismark/ ){
+    if( aligner =~ /bismark/ ){
         /*
          * Generate bismark index if not supplied
          */
@@ -55,7 +57,7 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
     }
 
     // Aligner: bwameth
-    else if ( params.aligner == 'bwameth' ){
+    else if ( aligner == 'bwameth' ){
         /*
          * Generate bwameth index if not supplied
          */
@@ -81,7 +83,7 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
     /*
     * Generate fasta index if not supplied for bwameth workflow or picard collecthsmetrics tool
     */
-    if (params.aligner == 'bwameth' | params.run_picard_collecthsmetrics) {
+    if (aligner == 'bwameth' | collecthsmetrics) {
         // already exising fasta index
         if (fasta_index) {
             ch_fasta_index = Channel.value(file(fasta_index, checkIfExists: true))
