@@ -25,8 +25,7 @@ adata.write_h5ad("${prefix}.h5ad")
 versions = {
     "${task.process}": {
         "python": platform.python_version(),
-        "cellbender": cellbender.__version__,
-        "anndata": ad.__version__,
+        "cellbender": cellbender.__version__
     }
 }
 
