@@ -14,9 +14,9 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_custom_emptydrops_filter_matrix_5k.h5ad", checkIfExists: true),
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_raw_matrix_5k.h5ad", checkIfExists: true),
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/intermediates/SAMN14430799_raw_matrix_5k_cellbender.h5", checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679759_filtered_matrix.h5ad', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679759_raw_matrix.h5ad', checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/intermediates/SRR28679759_cellbender.h5", checkIfExists: true)
                 ]
                 """
             }
@@ -36,9 +36,9 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_custom_emptydrops_filter_matrix_5k.h5ad", checkIfExists: true),
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_raw_matrix_5k.h5ad", checkIfExists: true),
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/intermediates/SAMN14430799_raw_matrix_5k_cellbender.h5", checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679759_filtered_matrix.h5ad', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679759_raw_matrix.h5ad', checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/intermediates/SRR28679759_cellbender.h5", checkIfExists: true)
                 ]
                 """
             }
