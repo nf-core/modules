@@ -53,8 +53,6 @@ nextflow_process {
 
     test("SRR389222 - fastq - se") {
 
-        config './nextflow.config'
-
         when {
             params {
                 module_args = '--low-memory'
@@ -97,8 +95,6 @@ nextflow_process {
     }
 
     test("SRR389222 - fastq - se - rg") {
-
-        config './nextflow.config'
 
         when {
             params {
@@ -185,7 +181,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--low-memory'
+                module_args = '--low-memory --bwa-options="-K #"'
                 // Ref: https://forums.developer.nvidia.com/t/problem-with-gpu/256825/6
                 // Parabricks’s fq2bam requires 24GB of memory.
                 // Using --low-memory for testing
@@ -230,7 +226,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--low-memory'
+                module_args = '--low-memory --bwa-options="-K #"'
                 // Ref: https://forums.developer.nvidia.com/t/problem-with-gpu/256825/6
                 // Parabricks’s fq2bam requires 24GB of memory.
                 // Using --low-memory for testing
