@@ -6,8 +6,8 @@ process CELLBENDER_REMOVEBACKGROUND {
     conda "${moduleDir}/environment.yml"
     container "${ task.ext.use_gpu ? 'us.gcr.io/broad-dsde-methods/cellbender:0.3.2' :
         workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/cellbender_webcolors:25a137ec5e8341f2':
-        'community.wave.seqera.io/library/cellbender_webcolors:9cfb55914fc5dcea' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/eb/ebcf140f995f79fcad5c17783622e000550ff6f171771f9fc4233484ee6f63cf/data':
+        'community.wave.seqera.io/library/cellbender_webcolors:156d413fdfc16cdb' }"
 
     input:
     tuple val(meta), path(h5ad)
