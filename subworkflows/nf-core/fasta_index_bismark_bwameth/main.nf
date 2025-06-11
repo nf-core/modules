@@ -86,7 +86,7 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
     if (aligner == 'bwameth' | collecthsmetrics) {
         // already exising fasta index
         if (fasta_index) {
-            ch_fasta_index = Channel.value(file(fasta_index, checkIfExists: true))
+            ch_fasta_index = Channel.value(file(fasta_index, checkIfExists: true)).map{ index -> [ [:], index ]}
         } else {
             SAMTOOLS_FAIDX(
                 ch_fasta,
