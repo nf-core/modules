@@ -13,6 +13,7 @@ process PARABRICKS_FQ2BAM {
     tuple val(meta4), path(interval_file)
     tuple val(meta5), path(known_sites)
     val(output_fmt) // either bam or cram
+    val(readgroup) // readgroup information, e.g. '@RGtID:footLB:lib1tPL:bartSM:sampletPU:unit1'
 
     output:
     tuple val(meta), path("*.bam")                  , emit: bam              , optional:true
@@ -35,7 +36,7 @@ process PARABRICKS_FQ2BAM {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def in_fq_command = meta.single_end ? "--in-se-fq $reads" : "--in-fq $reads"
+    def in_fq_command = readgroup ? (meta.single_end ? "--in-se-fq $reads $readgroup" : "--in-fq $reads $readgroup") : (meta.single_end ? "--in-se-fq $reads" : "--in-fq $reads")
     def extension = "$output_fmt"
 
     def known_sites_command = known_sites ? (known_sites instanceof List ? known_sites.collect { "--knownSites $it" }.join(' ') : "--knownSites ${known_sites}") : ""

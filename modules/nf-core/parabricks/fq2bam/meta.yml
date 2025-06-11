@@ -62,6 +62,9 @@ input:
         type: string
         description: Output format for the alignment. Options are 'bam' or 'cram'
         pattern: "{bam,cram}"
+  - - readgroup:
+        type: string
+        description: Readgroup information as string in the format `@RG\tID:group1\tSM:sample1\tPL:illumina\tLB:lib1\tPU:unit1`
 output:
   - bam:
       - meta:
