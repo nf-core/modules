@@ -20,14 +20,14 @@ process AMULETY_BALMPAIRED {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     TRANSFORMERS_CACHE="./cache" amulety \\
         balm-paired \\
-        $args \\
-        $tsv \\
-        $chain \\
+        ${args} \\
+        ${tsv} \\
+        ${chain} \\
         ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
@@ -37,7 +37,6 @@ process AMULETY_BALMPAIRED {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tsv
