@@ -243,7 +243,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ],
-                    "@RGtID:sample_1tLB:lib1tPL:bartSM:sample_1tPU:unit1"
+                    '"@RG\tID:ReadGroup1\tSM:SampleName\tPL:Illumina\tLB:Library.fa"'
                 ]
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
