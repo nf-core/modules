@@ -20,8 +20,8 @@ process PICARD_BEDTOINTERVALLIST {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args       = task.ext.args     ?: ''
+    def prefix     = task.ext.prefix   ?: "${meta.id}"
     def args_file = arguments_file ? "--arguments_file ${arguments_file}" : ""
     def avail_mem = 3072
     if (!task.memory) {
