@@ -35,6 +35,7 @@ process CELLBENDER_REMOVEBACKGROUND {
     TMPDIR=. cellbender remove-background \
         ${args} \
         --cpu-threads ${task.cpus} \
+        --estimator-multiple-cpu \
         ${use_gpu} \
         --input ${h5ad} \
         --output ${prefix}.h5
@@ -56,7 +57,7 @@ process CELLBENDER_REMOVEBACKGROUND {
     touch "${prefix}_report.html"
     touch "${prefix}.pdf"
     touch "${prefix}.log"
-    touch "ckpt.tar.gz"
+    echo "" | gzip > ckpt.tar.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
