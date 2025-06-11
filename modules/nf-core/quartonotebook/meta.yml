@@ -32,7 +32,11 @@ input:
         type: file
         description: The Quarto notebook to be rendered.
         pattern: "*.{qmd}"
-  - - parameters:
+  - - use_parameters:
+        type: boolean
+        description: |
+          Whether to use notebook parameters for rendering.
+    - parameters:
         type: map
         description: |
           Groovy map with notebook parameters which will be passed to Quarto to
