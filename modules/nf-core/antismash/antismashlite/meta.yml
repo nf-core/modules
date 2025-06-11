@@ -34,6 +34,10 @@ input:
         type: file
         description: nucleotide sequence file (annotated)
         pattern: "*.{gbk, gb, gbff, genbank, embl, fasta, fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+          - edam: "http://edamontology.org/format_1936" # GenBank
+          - edam: "http://edamontology.org/format_1927" # EMBL
   - - databases:
         type: directory
         description: |
@@ -61,6 +65,8 @@ output:
           type: file
           description: Output of ClusterBlast algorithm
           pattern: "clusterblast/*_c*.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Text
   - html_accessory_files:
       - meta:
           type: map
@@ -81,6 +87,8 @@ output:
           type: file
           description: Tables with MIBiG hits in HTML format
           pattern: "knownclusterblast/region*/ctg*.html"
+          ontologies:
+            - edam: "http://edamontology.org/format_2331" # HTML
   - knownclusterblast_dir:
       - meta:
           type: map
@@ -101,6 +109,8 @@ output:
           type: file
           description: Tables with MIBiG hits
           pattern: "knownclusterblast/*_c*.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Text
   - svg_files_clusterblast:
       - meta:
           type: map
@@ -112,6 +122,8 @@ output:
           description: SVG images showing the % identity of the aligned hits against their
             queries
           pattern: "svg/clusterblast*.svg"
+          ontologies:
+            - edam: "http://edamontology.org/format_3604" # SVG
   - svg_files_knownclusterblast:
       - meta:
           type: map
@@ -123,6 +135,8 @@ output:
           description: SVG images showing the % identity of the aligned hits against their
             queries
           pattern: "svg/knownclusterblast*.svg"
+          ontologies:
+            - edam: "http://edamontology.org/format_3604" # SVG
   - gbk_input:
       - meta:
           type: map
@@ -134,6 +148,8 @@ output:
           description: Nucleotide sequence and annotations in GenBank format; converted
             from input file
           pattern: "*.gbk"
+          ontologies:
+            - edam: "http://edamontology.org/format_1936" # GenBank
   - json_results:
       - meta:
           type: map
@@ -145,6 +161,8 @@ output:
           description: Nucleotide sequence and annotations in JSON format; converted from
             GenBank file (gbk_input)
           pattern: "*.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464" # JSON
   - log:
       - meta:
           type: map
@@ -156,6 +174,8 @@ output:
           description: Contains all the logging output that antiSMASH produced during
             its run
           pattern: "*.log"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Text
   - zip:
       - meta:
           type: map
@@ -166,6 +186,8 @@ output:
           type: file
           description: Contains a compressed version of the output folder in zip format
           pattern: "*.zip"
+          ontologies:
+            - edam: "http://edamontology.org/format_3987" # ZIP
   - gbk_results:
       - meta:
           type: map
@@ -177,6 +199,8 @@ output:
           description: Nucleotide sequence and annotations in GenBank format; one file
             per antiSMASH hit
           pattern: "*region*.gbk"
+          ontologies:
+            - edam: "http://edamontology.org/format_1936" # GenBank
   - clusterblastoutput:
       - meta:
           type: map
@@ -188,6 +212,8 @@ output:
           description: Raw BLAST output of known clusters previously predicted by antiSMASH
             using the built-in ClusterBlast algorithm
           pattern: "clusterblastoutput.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Text
   - html:
       - meta:
           type: map
@@ -198,6 +224,8 @@ output:
           type: file
           description: Graphical web view of results in HTML format
           patterN: "index.html"
+          ontologies:
+            - edam: "http://edamontology.org/format_2331" # HTML
   - knownclusterblastoutput:
       - meta:
           type: map
@@ -208,6 +236,8 @@ output:
           type: file
           description: Raw BLAST output of known clusters of the MIBiG database
           pattern: "knownclusterblastoutput.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Text
   - json_sideloading:
       - meta:
           type: map
@@ -219,11 +249,14 @@ output:
           description: Sideloaded annotations of protoclusters and/or subregions (see
             antiSMASH documentation "Annotation sideloading")
           pattern: "regions.js"
+          ontologies: []
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@jasmezz"
 maintainers:
