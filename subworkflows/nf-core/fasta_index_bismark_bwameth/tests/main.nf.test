@@ -46,9 +46,6 @@ nextflow_workflow {
     test("Params: bismark | generate bismark index (bowtie2)") {
 
         when {
-            params {
-                aligner = "bismark"
-            }
             workflow {
                 """
                 input[0] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.gz', checkIfExists: true)
@@ -56,7 +53,7 @@ nextflow_workflow {
                 input[2] = [] // bismark_index
                 input[3] = [] // bwameth_index
                 input[4] = "bismark" // aligner
-                input[5] = false // run_picard_collecthsmetrics
+                input[5] = false // collecthsmetrics
                 """
             }
         }
@@ -78,9 +75,6 @@ nextflow_workflow {
     test("Params: bismark_hisat | download bismark index (hisat2)") {
 
         when {
-            params {
-                aligner = "bismark_hisat"
-            }
             workflow {
                 """
                 input[0] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.gz', checkIfExists: true)
@@ -88,7 +82,7 @@ nextflow_workflow {
                 input[2] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Hisat2_Index.tar.gz', checkIfExists: true)
                 input[3] = [] // bwameth_index
                 input[4] = "bismark_hisat" // aligner
-                input[5] = false // run_picard_collecthsmetrics
+                input[5] = false // collecthsmetrics
                 """
             }
         }
@@ -110,9 +104,6 @@ nextflow_workflow {
     test("Params: bismark_hisat | generate bismark index (hisat2)") {
 
         when {
-            params {
-                aligner = "bismark_hisat"
-            }
             workflow {
                 """
                 input[0] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.gz', checkIfExists: true)
@@ -120,7 +111,7 @@ nextflow_workflow {
                 input[2] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Hisat2_Index.tar.gz', checkIfExists: true)
                 input[3] = [] // bwameth_index
                 input[4] = "bismark_hisat" // aligner
-                input[5] = false // run_picard_collecthsmetrics
+                input[5] = false // collecthsmetrics
                 """
             }
         }
@@ -139,13 +130,9 @@ nextflow_workflow {
         }
     }
 
-    test("Params: bismark | download bismark index (bowtie2) | run_picard_collecthsmetrics") {
+    test("Params: bismark | download bismark index (bowtie2) | collecthsmetrics") {
 
         when {
-            params {
-                aligner = "bismark"
-                run_picard_collecthsmetrics = true
-            }
             workflow {
                 """
                 input[0] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.gz', checkIfExists: true)
@@ -153,7 +140,7 @@ nextflow_workflow {
                 input[2] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Bowtie2_Index.tar.gz', checkIfExists: true)
                 input[3] = [] // bwameth_index
                 input[4] = "bismark" // aligner
-                input[5] = true // run_picard_collecthsmetrics
+                input[5] = true // collecthsmetrics
                 """
             }
         }
@@ -175,9 +162,6 @@ nextflow_workflow {
     test("Params: bwameth | download fasta index | download bwameth index") {
 
         when {
-            params {
-                aligner = "bwameth"
-            }
             workflow {
                 """
                 input[0] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.gz', checkIfExists: true)
@@ -185,7 +169,7 @@ nextflow_workflow {
                 input[2] = [] // bismark index
                 input[3] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Bwameth_Index.tar.gz', checkIfExists: true)
                 input[4] = "bwameth" // aligner
-                input[5] = false // run_picard_collecthsmetrics
+                input[5] = false // collecthsmetrics
                 """
             }
         }
@@ -207,9 +191,6 @@ nextflow_workflow {
     test("Params: bwameth | generate fasta index | download bwameth index") {
 
         when {
-            params {
-                aligner = "bwameth"
-            }
             workflow {
                 """
                 input[0] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.gz', checkIfExists: true)
@@ -217,7 +198,7 @@ nextflow_workflow {
                 input[2] = [] // bismark index
                 input[3] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Bwameth_Index.tar.gz', checkIfExists: true)
                 input[4] = "bwameth" // aligner
-                input[5] = false // run_picard_collecthsmetrics
+                input[5] = false // collecthsmetrics
                 """
             }
         }
@@ -239,9 +220,6 @@ nextflow_workflow {
     test("Params: bwameth | generate fasta index | generate bwameth index") {
 
         when {
-            params {
-                aligner = "bwameth"
-            }
             workflow {
                 """
                 input[0] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.gz', checkIfExists: true)
@@ -249,7 +227,7 @@ nextflow_workflow {
                 input[2] = [] // bismark index
                 input[3] = [] // bwameth index
                 input[4] = "bwameth" // aligner
-                input[5] = false // run_picard_collecthsmetrics
+                input[5] = false // collecthsmetrics
                 """
             }
         }
@@ -268,13 +246,9 @@ nextflow_workflow {
         }
     }
 
-    test("Params: bwameth | generate fasta index | download bwameth index | run_picard_collecthsmetrics") {
+    test("Params: bwameth | generate fasta index | download bwameth index | collecthsmetrics") {
 
         when {
-            params {
-                aligner = "bwameth"
-                run_picard_collecthsmetrics = true
-            }
             workflow {
                 """
                 input[0] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.gz', checkIfExists: true)
@@ -282,7 +256,7 @@ nextflow_workflow {
                 input[2] = [] // bismark index
                 input[3] = file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Bwameth_Index.tar.gz', checkIfExists: true)
                 input[4] = "bwameth" // aligner
-                input[5] = true // run_picard_collecthsmetrics
+                input[5] = true // collecthsmetrics
                 """
             }
         }
