@@ -239,7 +239,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ],
-                    ""@RG\tID:C6DYLANXX.CHC892N.1\tPU:1\tSM:CHC892_CHC892N\tLB:CHC892N\tDS:/nfsmounts/igenomes/Homo_sapiens/GATK/GRCh38/Sequence/WholeGenomeFasta/Homo_sapiens_assembly38.fasta\tPL:ILLUMINA""
+                    ""@RG\tID:ERR5069949.2151832.1\tLB:lib1\tPL:bar\tSM:sample\tPU:ERR5069949.2151832.1""
                 ]
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
