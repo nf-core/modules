@@ -19,7 +19,7 @@ process CRABS_INSILICOPCR {
 
     script:
     def args    = task.ext.args ?: ''
-    def prefix  = task.ext.prefix ?: "${meta.id}.insilicopcr"
+    prefix  = task.ext.prefix ?: "${meta.id}.insilicopcr"
     def version_cmd    = "\$(crabs --help 2>/dev/null | grep 'CRABS |' | sed 's/.*CRABS | v\\([0-9.]*\\).*/\\1/')"
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         version_cmd    = '1.0.7'
