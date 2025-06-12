@@ -4,8 +4,8 @@ process RUNDBCAN_EASYSUBSTRATE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/dbcan:5.1.1--pyhdfd78af_0' :
-        'biocontainers/dbcan:5.1.1--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/dbcan:5.1.2--pyhdfd78af_0' :
+        'biocontainers/dbcan:5.1.2--pyhdfd78af_0' }"
 
     input:
     tuple val(meta),  path(input_raw_data)
@@ -42,7 +42,7 @@ process RUNDBCAN_EASYSUBSTRATE {
         --output_dir . \\
         --input_gff ${input_gff} \\
         --gff_type ${gff_type} \\
-        ${args} || true
+        ${args}
 
     mv overview.tsv             ${prefix}_overview.tsv
     mv dbCAN_hmm_results.tsv    ${prefix}_dbCAN_hmm_results.tsv
