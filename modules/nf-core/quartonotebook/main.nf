@@ -31,8 +31,9 @@ process QUARTONOTEBOOK {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // implicit parameters can be overwritten by supplying a value with parameters
+    // Implicit parameters can be overwritten by supplying a value with parameters
     def notebook_parameters = [
+        meta: meta,
         cpus: task.cpus,
         artifact_dir: "artifacts",
         input_dir: "./",
