@@ -13,17 +13,17 @@ process QUARTONOTEBOOK {
 
     input:
     tuple val(meta), path(notebook)
-    tuple val(use_parameters), val(parameters)
+    val(parameters)
     path input_files
     path extensions
 
     output:
-    tuple val(meta), path("*.html"), emit: html
+    tuple val(meta), path("*.html")     , emit: html
     tuple val(meta), path("${notebook}"), emit: notebook
-    tuple val(meta), path("artifacts/*"), emit: artifacts, optional: true
-    tuple val(meta), path("params.yml"), emit: params_yaml, optional: true
-    tuple val(meta), path("_extensions"), emit: extensions, optional: true
-    path "versions.yml", emit: versions
+    tuple val(meta), path("artifacts/*"), emit: artifacts  , optional: true
+    tuple val(meta), path("params.yml") , emit: params_yaml, optional: true
+    tuple val(meta), path("_extensions"), emit: extensions , optional: true
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,25 +36,20 @@ process QUARTONOTEBOOK {
         meta: meta,
         cpus: task.cpus,
         artifact_dir: "artifacts",
-        input_dir: "./",
     ] + (parameters ?: [:])
-    // Dump parameters to yaml file.
-    // Using a YAML file over using the CLI params because
+    // Parse parameters through a YAML file, which is better than CLI because:
     //  - No issue with escaping
     //  - Allows passing nested maps instead of just single values
     //  - Allows running with the language-agnostic `--execute-params`
     def yamlBuilder = new groovy.yaml.YamlBuilder()
     yamlBuilder(notebook_parameters)
     def yaml_content = yamlBuilder.toString().tokenize('\n').join("\n    ")
-    def render_args = use_parameters? "--execute-params params.yml" : ""
-    ( use_parameters ?
     """
+    # Dump parameters to yaml file
     cat <<- END_YAML_PARAMS > params.yml
     ${yaml_content}
     END_YAML_PARAMS
-    """ : "")
-    <<
-    """
+
     # Create output directory
     mkdir artifacts
 
@@ -79,8 +74,8 @@ process QUARTONOTEBOOK {
     # Render notebook
     quarto render \\
         ${notebook} \\
-        ${render_args} \\
         ${args} \\
+        --execute-params params.yml \\
         --output ${prefix}.html
 
     cat <<-END_VERSIONS > versions.yml

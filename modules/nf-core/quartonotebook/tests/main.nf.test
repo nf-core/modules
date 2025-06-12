@@ -17,7 +17,7 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'generic/notebooks/quarto/quarto_r.qmd', checkIfExists: true) // Notebook
                 ]
-                input[1] = [false, [:]] // Parameters
+                input[1] = [:] // Parameters
                 input[2] = [] // Input files
                 input[3] = [] // Extensions
                 """
@@ -47,7 +47,7 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'generic/notebooks/quarto/quarto_python.qmd', checkIfExists: true) // Notebook
                 ]
-                input[1] = [false, [:]] // Parameters
+                input[1] = [:] // Parameters
                 input[2] = [] // Input files
                 input[3] = [] // Extensions
                 """
@@ -77,7 +77,7 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'generic/notebooks/quarto/quarto_r.qmd', checkIfExists: true) // Notebook
                 ]
-                input[1] = [true, [input_filename: "hello.txt", n_iter: 12]] // parameters
+                input[1] = [input_filename: "hello.txt", n_iter: 12] // Parameters
                 input[2] = file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true) // Input files
                 input[3] = [] // Extensions
                 """
@@ -108,7 +108,7 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'generic/notebooks/quarto/quarto_python.qmd', checkIfExists: true) // Notebook
                 ]
-                input[1] = [true, [input_filename: "hello.txt", n_iter: 12]] // parameters
+                input[1] = [input_filename: "hello.txt", n_iter: 12] // Parameters
                 input[2] = file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true) // Input files
                 input[3] = [] // Extensions
                 """
@@ -139,7 +139,7 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'generic/notebooks/rmarkdown/rmarkdown_notebook.Rmd', checkIfExists: true) // notebook
                 ]
-                input[1] = [true, [input_filename: "hello.txt", n_iter: 12]] // parameters
+                input[1] = [input_filename: "hello.txt", n_iter: 12] // Parameters
                 input[2] = file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true) // Input files
                 input[3] = [] // Extensions
                 """
@@ -170,7 +170,7 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'generic/notebooks/jupyter/ipython_notebook.ipynb', checkIfExists: true) // notebook
                 ]
-                input[1] = [true, [input_filename: "hello.txt", n_iter: 12]] // parameters
+                input[1] = [input_filename: "hello.txt", n_iter: 12] // Parameters
                 input[2] = file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true) // Input files
                 input[3] = [] // Extensions
                 """
@@ -203,7 +203,7 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'generic/notebooks/quarto/quarto_r.qmd', checkIfExists: true) // Notebook
                 ]
-                input[1] = [false, [:]] // Parameters
+                input[1] = [:] // Parameters
                 input[2] = [] // Input files
                 input[3] = [] // Extensions
                 """
