@@ -93,6 +93,7 @@ nextflow_process {
                     process.out.params_yaml
                 ).match() },
                 { assert path(process.out.html[0][1]).readLines().any { it.contains('Hello World 1') } },
+                { assert path(process.out.params_yaml[0][1]).readLines().any { it.contains('meta:') } },
             )
         }
 
@@ -123,6 +124,7 @@ nextflow_process {
                     process.out.params_yaml
                 ).match() },
                 { assert path(process.out.html[0][1]).readLines().any { it.contains('Hello World 1') } },
+                { assert path(process.out.params_yaml[0][1]).readLines().any { it.contains('meta:') } },
             )
         }
 
@@ -153,6 +155,7 @@ nextflow_process {
                     process.out.params_yaml
                 ).match() },
                 { assert path(process.out.html[0][1]).readLines().any { it.contains('Hello World 1') } },
+                { assert path(process.out.params_yaml[0][1]).readLines().any { it.contains('meta:') } },
             )
         }
 
@@ -183,6 +186,7 @@ nextflow_process {
                     process.out.params_yaml
                 ).match() },
                 { assert path(process.out.html[0][1]).readLines().any { it.contains('Hello World') } },
+                { assert path(process.out.params_yaml[0][1]).readLines().any { it.contains('meta:') } },
             )
         }
 
