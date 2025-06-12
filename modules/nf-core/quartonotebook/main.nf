@@ -1,5 +1,3 @@
-include { dumpParamsYaml ; indentCodeBlock } from "./parametrize"
-
 // NB: You'll likely want to override this with a container containing all
 // required dependencies for your analyses. Or use wave to build the container
 // for you from the environment.yml You'll at least need Quarto itself,
@@ -15,17 +13,17 @@ process QUARTONOTEBOOK {
 
     input:
     tuple val(meta), path(notebook)
-    val parameters
+    val(parameters)
     path input_files
     path extensions
 
     output:
-    tuple val(meta), path("*.html"), emit: html
-    tuple val(meta), path("${notebook}"), emit: notebook
-    tuple val(meta), path("artifacts/*"), emit: artifacts, optional: true
-    tuple val(meta), path("params.yml"), emit: params_yaml, optional: true
-    tuple val(meta), path("_extensions"), emit: extensions, optional: true
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.html")                               , emit: html
+    tuple val(meta), path(notebook)                               , emit: notebook
+    tuple val(meta), path("params.yml")                           , emit: params_yaml
+    tuple val(meta), path("${notebook_parameters.artifact_dir}/*"), emit: artifacts  , optional: true
+    tuple val(meta), path("_extensions")                          , emit: extensions , optional: true
+    path "versions.yml"                                           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,40 +31,27 @@ process QUARTONOTEBOOK {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def parametrize = task.ext.parametrize == null ? true : task.ext.parametrize
-    def implicit_params = task.ext.implicit_params == null ? true : task.ext.implicit_params
-    def meta_params = task.ext.meta_params == null ? true : task.ext.meta_params
-
-    // Dump parameters to yaml file.
-    // Using a YAML file over using the CLI params because
+    // Implicit parameters can be overwritten by supplying a value with parameters
+    notebook_parameters = [
+        meta: meta,
+        cpus: task.cpus,
+        artifact_dir: "artifacts",
+    ] + (parameters ?: [:])
+    // Parse parameters through a YAML file, which is better than CLI because:
     //  - No issue with escaping
     //  - Allows passing nested maps instead of just single values
     //  - Allows running with the language-agnostic `--execute-params`
-    def params_cmd = ""
-    def render_args = ""
-    if (parametrize) {
-        nb_params = [:]
-        if (implicit_params) {
-            nb_params["cpus"] = task.cpus
-            nb_params["artifact_dir"] = "artifacts"
-            nb_params["input_dir"] = "./"
-        }
-        if (meta_params) {
-            nb_params["meta"] = meta
-        }
-        nb_params += parameters
-        params_cmd = dumpParamsYaml(nb_params)
-        render_args = "--execute-params params.yml"
-    }
-    ( params_cmd ?
+    def yamlBuilder = new groovy.yaml.YamlBuilder()
+    yamlBuilder(notebook_parameters)
+    def yaml_content = yamlBuilder.toString().tokenize('\n').join("\n    ")
     """
-    # Dump .params.yml heredoc (if applicable)
-    ${indentCodeBlock(params_cmd, 4)}
-    """ : "")
-    <<
-    """
+    # Dump parameters to yaml file
+    cat <<- END_YAML_PARAMS > params.yml
+    ${yaml_content}
+    END_YAML_PARAMS
+
     # Create output directory
-    mkdir artifacts
+    mkdir "${notebook_parameters.artifact_dir}"
 
     # Set environment variables needed for Quarto rendering
     export XDG_CACHE_HOME="./.xdg_cache_home"
@@ -89,8 +74,8 @@ process QUARTONOTEBOOK {
     # Render notebook
     quarto render \\
         ${notebook} \\
-        ${render_args} \\
         ${args} \\
+        --execute-params params.yml \\
         --output ${prefix}.html
 
     cat <<-END_VERSIONS > versions.yml
@@ -102,6 +87,12 @@ process QUARTONOTEBOOK {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    // Implicit parameters can be overwritten by supplying a value with parameters
+    notebook_parameters = [
+        meta: meta,
+        cpus: task.cpus,
+        artifact_dir: "artifacts",
+    ] + (parameters ?: [:])
     """
     # Fix Quarto for Apptainer (see https://community.seqera.io/t/confusion-over-why-a-tool-works-in-docker-but-fails-in-singularity-when-the-installation-doesnt-differ-i-e-using-wave-micromamba/1244)
     # Note: This is needed in the stub for `quarto -v` to work.
@@ -113,6 +104,7 @@ process QUARTONOTEBOOK {
     set -u
 
     touch ${prefix}.html
+    touch params.yml
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
