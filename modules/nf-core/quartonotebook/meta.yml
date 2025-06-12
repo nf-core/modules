@@ -74,7 +74,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`.
-      - artifacts/*:
+      - ${notebook_parameters.artifact_dir}/*:
           type: file
           description: Artifacts generated during report rendering.
           pattern: "*"
