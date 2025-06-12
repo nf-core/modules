@@ -13,7 +13,7 @@ process TRUST4 {
     path(vdj_reference)
     val(cell_barcode_read)
     val(umi_read)
-    path(barcode_whitelist)
+    tuple val(meta1), path(barcode_whitelist)
 
     output:
     tuple val(meta), path("*.tsv")                  , emit: tsv
