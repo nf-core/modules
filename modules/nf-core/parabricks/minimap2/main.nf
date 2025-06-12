@@ -16,7 +16,7 @@ process PARABRICKS_MINIMAP2 {
     output:
     tuple val(meta), path("*.bam")                  , emit: bam              , optional:true
     tuple val(meta), path("*.bai")                  , emit: bai              , optional:true
-    tuple val(meta), path("*.cram")                 , emit: bam              , optional:true
+    tuple val(meta), path("*.cram")                 , emit: cram             , optional:true
     tuple val(meta), path("*.crai")                 , emit: crai             , optional:true
     tuple val(meta), path("*.table")                , emit: bqsr_table       , optional:true
     tuple val(meta), path("*_qc_metrics")           , emit: qc_metrics       , optional:true
