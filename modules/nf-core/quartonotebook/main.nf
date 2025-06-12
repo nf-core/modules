@@ -18,12 +18,12 @@ process QUARTONOTEBOOK {
     path extensions
 
     output:
-    tuple val(meta), path("*.html")     , emit: html
-    tuple val(meta), path("${notebook}"), emit: notebook
-    tuple val(meta), path("artifacts/*"), emit: artifacts  , optional: true
-    tuple val(meta), path("params.yml") , emit: params_yaml, optional: true
-    tuple val(meta), path("_extensions"), emit: extensions , optional: true
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.html")                               , emit: html
+    tuple val(meta), path("${notebook}")                          , emit: notebook
+    tuple val(meta), path("${notebook_parameters.artifact_dir}/*"), emit: artifacts
+    tuple val(meta), path("params.yml")                           , emit: params_yaml
+    tuple val(meta), path("_extensions")                          , emit: extensions , optional: true
+    path "versions.yml"                                           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,7 +32,7 @@ process QUARTONOTEBOOK {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     // Implicit parameters can be overwritten by supplying a value with parameters
-    def notebook_parameters = [
+    notebook_parameters = [
         meta: meta,
         cpus: task.cpus,
         artifact_dir: "artifacts",
@@ -51,7 +51,7 @@ process QUARTONOTEBOOK {
     END_YAML_PARAMS
 
     # Create output directory
-    mkdir artifacts
+    mkdir "${notebook_parameters.artifact_dir}"
 
     # Set environment variables needed for Quarto rendering
     export XDG_CACHE_HOME="./.xdg_cache_home"
