@@ -2,7 +2,6 @@ nextflow_process {
 
     name "Test Process FORCE_CUBE"
     script "../main.nf"
-    config "./nextflow.config"
     process "FORCE_CUBE"
 
     tag "modules"
@@ -13,10 +12,6 @@ nextflow_process {
     test("force-cube - gpkg") {
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
-
             process {
                 """
                 input[0] = file(params.modules_testdata_base_path + "earth_sciences/vector/gpkg/crete.gpkg")
@@ -29,10 +24,15 @@ nextflow_process {
         }
 
         then {
-            def stable_name = getAllFilesFromDir(outputDir, relative:true, includeDir: true)
+            def mask_files = process.out.masks[0]
+            def mask_paths = mask_files.collect {
+                def mask_file = file(it)
+                "${mask_file.getParentFile().getName()}/${mask_file.name}"
+            }
+
             assertAll(
                 { assert process.success },
-                { assert snapshot(stable_name,
+                { assert snapshot(mask_paths,
                     process.out.versions).match() }
             )
         }
@@ -44,10 +44,6 @@ nextflow_process {
         config "./nextflow.shp.config"
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
-
             process {
                 """
                 input[0] = file(params.modules_testdata_base_path + "/earth_sciences/vector/shp/denmark.shp")
@@ -60,10 +56,15 @@ nextflow_process {
         }
 
         then {
-            def stable_name = getAllFilesFromDir(outputDir, relative:true, includeDir: true)
+            def mask_files = process.out.masks[0]
+            def mask_paths = mask_files.collect {
+                def mask_file = file(it)
+                "${mask_file.getParentFile().getName()}/${mask_file.name}"
+            }
+
             assertAll(
                 { assert process.success },
-                { assert snapshot(stable_name,
+                { assert snapshot(mask_paths,
                     process.out.versions).match() }
             )
         }
@@ -75,10 +76,6 @@ nextflow_process {
         options "-stub"
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
-
             process {
                 """
                 input[0] = file(params.modules_testdata_base_path + "earth_sciences/vector/gpkg/crete.gpkg")
@@ -91,10 +88,15 @@ nextflow_process {
         }
 
         then {
-            def stable_name = getAllFilesFromDir(outputDir, relative:true, includeDir: true)
+            def mask_files = process.out.masks[0]
+            def mask_paths = mask_files.collect {
+                def mask_file = file(it)
+                "${mask_file.getParentFile().getName()}/${mask_file.name}"
+            }
+
             assertAll(
                 { assert process.success },
-                { assert snapshot(stable_name,
+                { assert snapshot(mask_paths,
                     process.out.versions).match() }
             )
         }
