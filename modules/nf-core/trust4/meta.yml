@@ -24,25 +24,35 @@ input:
         type: file
         description: BAM file from bulk or single-cell RNA-seq data
         pattern: "*.bam"
+        ontologies: []
     - reads:
         type: file
         description: List of input FastQ files of size 1 and 2 for single-end and paired-end
           data, respectively
+        ontologies: []
   - - fasta:
         type: file
         description: Path to the fasta file coordinate and sequence of V/D/J/C genes
+        ontologies: []
   - - vdj_reference:
         type: file
         description: reference file of V/D/J genes
+        ontologies: []
   - - cell_barcode_read:
         type: string
         description: Read containing cell barcode (either R1 or R2)
   - - umi_read:
         type: string
         description: Read containing umi barcode (either R1 or R2)
-  - - barcode_whitelist:
+  - - meta1:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]
+    - barcode_whitelist:
         type: file
         description: BarocdeWhitelist file
+        ontologies: []
 output:
   - tsv:
       - meta:
@@ -54,6 +64,8 @@ output:
           type: file
           description: tsv files created by TRUST4
           pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   - airr_files:
       - meta:
           type: map
@@ -64,6 +76,8 @@ output:
           type: file
           description: TRUST4 results in AIRR format
           pattern: "*_airr.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   - airr_tsv:
       - meta:
           type: map
@@ -74,6 +88,8 @@ output:
           type: file
           description: TRUST4 results in AIRR format
           pattern: "*_airr.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   - report_tsv:
       - meta:
           type: map
@@ -84,6 +100,8 @@ output:
           type: file
           description: TRUST4 report in tsv format
           pattern: "*_report.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   - fasta:
       - meta:
           type: map
@@ -94,6 +112,7 @@ output:
           type: file
           description: Fasta files created by TRUST4
           pattern: "*.fa"
+          ontologies: []
   - out:
       - meta:
           type: map
@@ -104,6 +123,7 @@ output:
           type: file
           description: Further report files
           pattern: "*.out"
+          ontologies: []
   - fq:
       - meta:
           type: map
@@ -114,6 +134,8 @@ output:
           type: file
           description: Fastq files created by TRUST4
           pattern: "*.fq"
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
   - outs:
       - meta:
           type: map
@@ -123,11 +145,14 @@ output:
       - "**":
           type: file
           description: outputt files
+          ontologies: []
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mapo9, @Joaodemeirelles"
 maintainers:
