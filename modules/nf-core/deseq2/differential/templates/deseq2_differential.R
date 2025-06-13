@@ -152,7 +152,7 @@ if ( ! is.null(opt\$round_digits)){
 }
 
 # If there is no option supplied, convert string "null" to NULL
-keys <- c("formula", "contrast_string", "contrast_variable", "reference_level", "target_level", "seed")
+keys <- c("formula", "contrast_string", "contrast_variable", "reference_level", "target_level", "seed", "blocking_variable")
 opt[keys] <- lapply(opt[keys], nullify)
 
 if ( ! is.null(opt\$seed)){
@@ -257,7 +257,7 @@ if (! is_valid_string(opt\$formula)) {
             '\" not in sample sheet'
             )
         )
-    } else if (any(!c(opt\$reflevel, opt\$treatlevel) %in% sample.sheet[[contrast_variable]])) {
+    } else if (any(!c(opt\$reference_level, opt\$target_level) %in% sample.sheet[[contrast_variable]])) {
         stop(
             paste(
             'Please choose reference and treatment levels that are present in the',
