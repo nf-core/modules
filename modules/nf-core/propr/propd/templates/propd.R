@@ -221,6 +221,17 @@ plot_genewise_information <- function(results, output) {
     dev.off()
 }
 
+#' Calculate the significance threshold
+#'
+#' This function calculates the significance threshold for the genewise statistics (rcDdis)
+#' @param res_genewise Data frame with genewise information
+#' @return: rcDdis_sig_threshold The threshold for significance (equivalent to p-value threshold in deseq2/limma)
+get_significance_threshold <- function(res_genewise) {
+    # Define significant genes
+    meanset <- which(res_genewise[,"Nsig"] > mean(res_genewise[,"Nsig"]))  # Genes above average connectivity are significant
+    rcDdis_sig_threshold <- max(res_genewise[meanset, "rcDdis"])  # Threshold for significance
+    return(rcDdis_sig_threshold)
+}
 
 ################################################
 ################################################
@@ -606,6 +617,20 @@ if (!theta_cutoff) {
     )
     colnames(results_genewise) <- c(opt\$features_id_col, "Nsig", "LFC", "lrmD", "rcDdis")
 }
+
+# Add a column to the results_genewise indicating significance of the genewise statistics
+
+#calculate rcDdis significance threshold
+sig_threshold <- get_significance_threshold(results_genewise)
+# create a vector indicating significance of the genewise statistics: TRUE for significant, below threshold
+significance_vector <- results_genewise[, "rcDdis"] < sig_threshold
+
+# convert the vector to 0/1, where 0 is significant and 1 is not significant (to simulate probability-like values)
+significance_vector <- ifelse(significance_vector, 0, 1)
+
+# add the significance vector to the results_genewise data frame
+results_genewise <- cbind(results_genewise, significant = significance_vector)
+
 ################################################
 ################################################
 ## Generate outputs                           ##
