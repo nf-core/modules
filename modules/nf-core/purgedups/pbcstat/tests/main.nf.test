@@ -10,16 +10,14 @@ nextflow_process {
     tag "purgedups"
     tag "purgedups/pbcstat"
 
-    test("test-purgedups-pbcstat") {
-        
+    test("purgedups-pbcstat") {
+
         when {
             process {
                 """
-                input[0] = [
-				[ id:'test', single_end:false ], // meta map
-				file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.paf', checkIfExists: true)
+                input[0] = [[ id:'test' ],
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.paf', checkIfExists: true)
 				]
-
                 """
             }
         }
@@ -31,5 +29,25 @@ nextflow_process {
             )
         }
     }
-    
+
+    test("purgedups-pbcstat - stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [[ id:'test' ],
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.paf', checkIfExists: true)
+				]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
 }
