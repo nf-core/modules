@@ -9,7 +9,6 @@ keywords:
   - repertoire
 tools:
   - "mixcr":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "MiXCR is a universal software for fast and accurate analysis of raw T- or B- cell receptor repertoire sequencing data."
       homepage: "https://mixcr.com/"
       documentation: "https://mixcr.com/mixcr/reference/overview-analysis-overview/"
@@ -19,9 +18,7 @@ tools:
       identifier: "milaboratories/mixcr"
       args_id: "$args"
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
-  # Only when we have meta
   - reads:
       - meta:
           type: map
@@ -42,8 +39,8 @@ input:
       type: val
       description: Species used for analysis, e.g. `hsa`, `mouse`
   - license:
-      type: env
-      description: License key for MiXCR, stored as an env variable
+      type: secret
+      description: License key for MiXCR, input as a nextflow secret
 
 output:
   - clones:
