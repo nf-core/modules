@@ -34,15 +34,18 @@ input:
   - - vdj_reference:
         type: file
         description: reference file of V/D/J genes
+  - - barcode_whitelist:
+        type: file
+        description: BarocdeWhitelist file
   - - cell_barcode_read:
         type: string
         description: Read containing cell barcode (either R1 or R2)
   - - umi_read:
         type: string
         description: Read containing umi barcode (either R1 or R2)
-  - - barcode_whitelist:
-        type: file
-        description: BarocdeWhitelist file
+  - - read_format:
+        type: string
+        description: Specifies where in the read the barcodes and UMIs can be found.
 output:
   - tsv:
       - meta:
