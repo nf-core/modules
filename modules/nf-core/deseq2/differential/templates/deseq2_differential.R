@@ -126,7 +126,7 @@ opt <- list(
     vs_blind = TRUE,
     vst_nsub = 1000,
     round_digits = NULL,
-    seed = 1
+    seed = NULL
 )
 opt_types <- lapply(opt, class)
 
