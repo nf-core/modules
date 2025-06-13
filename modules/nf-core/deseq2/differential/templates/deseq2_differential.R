@@ -152,7 +152,7 @@ if ( ! is.null(opt\$round_digits)){
 }
 
 # If there is no option supplied, convert string "null" to NULL
-keys <- c("formula", "contrast_string", "contrast_variable", "reference_level", "target_level", "seed", "blocking_variable")
+keys <- c("formula", "contrast_string", "contrast_variable", "reference_level", "target_level", "seed", "blocking_variable", "transcript_lengths_file")
 opt[keys] <- lapply(opt[keys], nullify)
 
 if ( ! is.null(opt\$seed)){
@@ -355,7 +355,7 @@ dds <- DESeqDataSetFromMatrix(
 # Build in transcript lengths. Copying what tximport does here:
 # https://github.com/thelovelab/DESeq2/blob/6947d5bc629015fb8ffb2453a91b71665a164483/R/AllClasses.R#L409
 
-if (opt\$transcript_lengths_file != ''){
+if (!is.null(opt\$transcript_lengths_file)){
     lengths <-
         read_delim_flexible(
             file = opt\$transcript_lengths_file,
@@ -441,7 +441,7 @@ if (!is.null(opt\$contrast_string)) {
 
 # See https://support.bioconductor.org/p/97676/
 
-if (opt\$transcript_lengths_file != ''){
+if (!is.null(opt\$transcript_lengths_file)){
     size_factors = estimateSizeFactorsForMatrix(counts(dds) / assays(dds)[["avgTxLength"]])
 }else {
     size_factors = sizeFactors(dds)
