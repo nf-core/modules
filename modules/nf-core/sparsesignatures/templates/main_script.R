@@ -75,7 +75,7 @@ load_genome = function(genome, input_data) {
     if (genome == "GRCh37") {
         library(BSgenome.Hsapiens.1000genomes.hs37d5)
         bsg = BSgenome.Hsapiens.1000genomes.hs37d5::hs37d5
-        input_data[["chrom"]] = substring(input_data[["chrom"]], 4, 5)
+        input_data <- input_data %>% mutate(chrom = str_remove(chrom,"^chr"))
 
     } else if (genome == "GRCh38") {
         library(BSgenome.Hsapiens.UCSC.hg38)
