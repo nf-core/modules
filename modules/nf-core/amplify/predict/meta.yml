@@ -25,6 +25,8 @@ input:
         type: file
         description: amino acid sequences fasta
         pattern: "*.{fa,fa.gz,faa,faa.gz,fasta,fasta.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
   - - model_dir:
         type: directory
         description: Directory of where models are stored (optional)
@@ -40,11 +42,15 @@ output:
           description: amino acid sequences with prediction (AMP, non-AMP) and probability
             scores
           pattern: "*.{tsv}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@louperelo"
 maintainers:

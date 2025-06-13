@@ -20,15 +20,15 @@ process AMULETY_ANTIBERTA2 {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     TRANSFORMERS_CACHE="./cache" amulety \\
         antiberta2 \\
-        $args \\
+        ${args} \\
         --cache-dir ./cache \\
-        $tsv \\
-        $chain \\
+        ${tsv} \\
+        ${chain} \\
         ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
@@ -38,7 +38,6 @@ process AMULETY_ANTIBERTA2 {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tsv
