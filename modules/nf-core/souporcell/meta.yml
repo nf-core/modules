@@ -1,0 +1,68 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "souporcell"
+description: souporcell is a method for clustering mixed-genotype scRNAseq experiments by individual.
+keywords:
+  - clustering
+  - mixed-genotype
+  - genomics
+tools:
+  - "souporcell":
+      description: "Clustering scRNAseq by genotypes."
+      homepage: "https://github.com/wheaton5/souporcell"
+      documentation: "https://github.com/wheaton5/souporcell"
+      tool_dev_url: "https://github.com/wheaton5/souporcell"
+      doi: "10.1101/699637v1"
+      licence: ["MIT"]
+      identifier: biotools:souporcell
+
+## TODO nf-core: Add a description of all of the variables used as input
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+
+    - nucleic_acid_sequence_alignment:
+        # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
+        type: file
+        description: A BAM file containing single-cell RNA-seq alignments.
+        pattern: "*.bam"
+
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+
+    - identifier:
+        # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
+        type: file
+        description: A barcode or whitelist TSV file identifying individual cell barcodes.
+        pattern: "*.tsv"
+
+## TODO nf-core: Add a description of all of the variables used as output
+output:
+  - sequence_variations:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.{vcf}":
+          # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
+          type: file
+          description: sequence_variations file
+          pattern: "*.vcf"
+
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@seohyonkim"
+maintainers:
+  - "@seohyonkim"

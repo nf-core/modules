@@ -1,0 +1,78 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test souporcell
+nextflow_process {
+
+    name "Test Process SOUPORCELL"
+    script "../main.nf"
+    process "SOUPORCELL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "souporcell"
+
+    // TODO nf-core: Change the test name preferably indicating the test-data and file-format used
+    test("homo sapiens - bam and barcodes") {
+
+        // TODO nf-core: If you are created a test for a chained module
+        // (the module requires running more than one process to generate the required output)
+        // add the 'setup' method here.
+        // You can find more information about how to use a 'setup' method in the docs (https://nf-co.re/docs/contributing/modules#steps-for-creating-nf-test-for-chained-modules).
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/demultiplexing/barcodes.tsv', checkIfExists: true),
+                ]
+
+                input[1] = [
+                    [:],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+
+                input[2] = 2
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo sapience - bam and barcodes - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/demultiplexing/barcodes.tsv', checkIfExists: true),
+                ]
+
+                input[1] = [
+                    [:],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+
+                input[2] = 2
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+    }
+}
