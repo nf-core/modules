@@ -98,13 +98,17 @@ get_genewise_information=function(res_pairwise, FDR_threshold=0.01){
         lfc_all = mean(c(lrm_diff_all[pair_genes,gene_index], -lrm_diff_all[partner_genes,gene_index]))/log(2)
         res_genewise[gene_index,"LFC"] = lfc_all #numerator and denominator of lrm swap for genes > g, so lrm2-lrm1
 
-        set_significant = which(lrm_diff_sig[,gene_index] != 0) # Get the indices of the genes that share a significant connection with the current gene
-
         # lrmD: LFC but taking only the subset of significantly connected genes as a reference
-        lrmD = median(c(intersect(pair_genes, set_significant), -lrm_diff_sig[intersect(partner_genes, set_significant), gene_index]))/log(2) #divide by log2 to get base 2 log
-        res_genewise[gene_index,"lrmD"]=median(c(lrm_diff_sig[intersect(pair_genes,set_significant),gene_index],lrm_diff_sig[intersect(partner_genes,set_significant),gene_index]))/log(2)
 
+        set_significant = which(lrm_diff_sig[,gene_index] != 0) # Get the indices of the genes that share a significant connection with the current gene
+        # Divide the genes into two sets: pair genes (genes with index < gene_index) and partner genes (genes with index > gene_index)
+        pair_genes_sig = intersect(pair_genes, set_significant)
+        partner_genes_sig = intersect(partner_genes, set_significant)
+
+        lrmD = median(c(lrm_diff_sig[pair_genes_sig, gene_index] - lrm_diff_sig[partner_genes_sig, gene_index]))/log(2) #divide by log2 to get base 2 log
+        res_genewise[gene_index,"lrmD"]= lrmD
     }
+
     # rcDis (significance of connectivity value): represents the probability of having at least so many connections
     connect_degrees = sort(unique(res_genewise[,"Nsig"]),decreasing=TRUE) # Sort the unique degrees of connectivity in descending order
 
@@ -116,7 +120,7 @@ get_genewise_information=function(res_pairwise, FDR_threshold=0.01){
     }
 
     ind = order(res_genewise[,"rcDdis"])
-    res_genwise = res_genewise[ind,]
+    res_genewise = res_genewise[ind,]
     return(res_genewise)
 
 }
@@ -657,7 +661,7 @@ results_genewise <- as.data.frame(results_genewise)
 results_genewise <- results_genewise[order(
     results_genewise\$rcDdis,
     abs(results_genewise\$LFC),
-    decreasing = TRUE
+    decreasing = FALSE
 ),]
 
 if (!is.na(opt\$round_digits)) {
