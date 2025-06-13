@@ -198,7 +198,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
                 ],
                 'propd' : [
                     fc_column: 'LFC', fc_cardinality: '>=',
-                    stat_column: 'rcDdis', stat_cardinality: '>='
+                    stat_column: 'significant', stat_cardinality: '<='
                 ],
                 'dream' : [
                     fc_column: 'logFC', fc_cardinality: '>=',
