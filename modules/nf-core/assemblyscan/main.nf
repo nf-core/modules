@@ -18,10 +18,9 @@ process ASSEMBLYSCAN {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    assembly-scan $assembly > ${prefix}.json
+    assembly-scan ${assembly} > ${prefix}.json
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

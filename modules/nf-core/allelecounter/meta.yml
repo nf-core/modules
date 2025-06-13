@@ -23,17 +23,28 @@ input:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_3462" # CRAM
+          - edam: "http://edamontology.org/format_2573" # SAM
     - input_index:
         type: file
         description: BAM/CRAM/SAM index file
         pattern: "*.{bai,crai,sai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327" # BAI
+          - edam: "http://edamontology.org/format_3462" # CRAI
   - - loci:
         type: file
         description: loci file <CHR><tab><POS1>
         pattern: "*.{tsv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
   - - fasta:
         type: file
         description: Input genome fasta file. Required when passing CRAM files.
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
 output:
   - allelecount:
       - meta:
@@ -45,11 +56,14 @@ output:
           type: file
           description: Allele count file
           pattern: "*.{alleleCount}"
+          ontologies: []
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@fullama"
   - "@fbdtemme"
