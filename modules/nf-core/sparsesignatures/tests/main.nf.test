@@ -13,6 +13,11 @@ nextflow_process {
         config "./nextflow.config"
 
         when {
+
+            params {
+              module_args = '[genome:GRCh38, K:2:3, nmf_runs:3, iterations:5, max_iterations_lasso:80, cross_validation_repetitions:3, cross_validation_iterations:3, cross_validation_entries:0.01, lambda_values_alpha:c(0.00, 0.01), lambda_values_beta:c(0.01, 0.05), lambda_rate_alpha:0, num_processes:all, seed:42]'
+            }
+
             process {
                 """
                 input[0] = [
