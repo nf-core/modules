@@ -1,0 +1,106 @@
+nextflow_process {
+
+    name "Test Process FORCE_CUBE"
+    script "../main.nf"
+    process "FORCE_CUBE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "force"
+    tag "force/cube"
+
+    test("force-cube - gpkg") {
+
+        when {
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + "earth_sciences/vector/gpkg/crete.gpkg")
+                input[1] = file(params.modules_testdata_base_path + "earth_sciences/datacubes/datacube-definition.prj")
+                input[2] = []
+                input[3] = []
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            def mask_files = process.out.masks[0]
+            def mask_paths = mask_files.collect {
+                def mask_file = file(it)
+                "${mask_file.getParentFile().getName()}/${mask_file.name}"
+            }
+
+            assertAll(
+                { assert process.success },
+                { assert snapshot(mask_paths,
+                    process.out.versions).match() }
+            )
+        }
+
+    }
+
+    test("force-cube - shp") {
+
+        config "./nextflow.shp.config"
+
+        when {
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + "/earth_sciences/vector/shp/denmark.shp")
+                input[1] = file(params.modules_testdata_base_path + "/earth_sciences/datacubes/datacube-definition.prj")
+                input[2] = file(params.modules_testdata_base_path + "/earth_sciences/vector/shp/denmark.dbf")
+                input[3] = file(params.modules_testdata_base_path + "/earth_sciences/vector/shp/denmark.prj")
+                input[4] = file(params.modules_testdata_base_path + "/earth_sciences/vector/shp/denmark.shx")
+                """
+            }
+        }
+
+        then {
+            def mask_files = process.out.masks[0]
+            def mask_paths = mask_files.collect {
+                def mask_file = file(it)
+                "${mask_file.getParentFile().getName()}/${mask_file.name}"
+            }
+
+            assertAll(
+                { assert process.success },
+                { assert snapshot(mask_paths,
+                    process.out.versions).match() }
+            )
+        }
+
+    }
+
+    test("force-cube - gpkg - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + "earth_sciences/vector/gpkg/crete.gpkg")
+                input[1] = file(params.modules_testdata_base_path + "earth_sciences/datacubes/datacube-definition.prj")
+                input[2] = []
+                input[3] = []
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            def mask_files = process.out.masks[0]
+            def mask_paths = mask_files.collect {
+                def mask_file = file(it)
+                "${mask_file.getParentFile().getName()}/${mask_file.name}"
+            }
+
+            assertAll(
+                { assert process.success },
+                { assert snapshot(mask_paths,
+                    process.out.versions).match() }
+            )
+        }
+
+    }
+
+}
