@@ -21,7 +21,6 @@ process RAW2OMETIFF {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo ${zarr_dir}
     raw2ometiff \\
         ${zarr_dir} \\
         ${prefix}.ome.tiff \\

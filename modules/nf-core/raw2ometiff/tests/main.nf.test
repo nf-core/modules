@@ -18,7 +18,7 @@ nextflow_process {
                     """
                     input[0] = Channel.fromList([
                         tuple([ id:'test'], // meta map
-                        file('https://raw.githubusercontent.com/nf-core/test-datasets/lsmquant/test_data/zarr.tar', checkIfExists: true))
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/imaging/ome-zarr/zarr.tar', checkIfExists: true))
                     ])
                     """
                }
