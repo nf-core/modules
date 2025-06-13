@@ -10,8 +10,6 @@ nextflow_process {
 
     test("test notebook - [qmd:r]") {
 
-        config "./no-parametrization.config"
-
         when {
             process {
                 """
@@ -42,8 +40,6 @@ nextflow_process {
 
     test("test notebook - [qmd:python]") {
 
-        config "./no-parametrization.config"
-
         when {
             process {
                 """
@@ -51,7 +47,7 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'generic/notebooks/quarto/quarto_python.qmd', checkIfExists: true) // Notebook
                 ]
-                input[1] = [] // Parameters
+                input[1] = [:] // Parameters
                 input[2] = [] // Input files
                 input[3] = [] // Extensions
                 """
@@ -74,8 +70,6 @@ nextflow_process {
 
     test("test notebook - parametrized - [qmd:r]") {
 
-        config "./with-parametrization.config"
-
         when {
             process {
                 """
@@ -83,7 +77,7 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'generic/notebooks/quarto/quarto_r.qmd', checkIfExists: true) // Notebook
                 ]
-                input[1] = [input_filename: "hello.txt", n_iter: 12] // parameters
+                input[1] = [input_filename: "hello.txt", n_iter: 12] // Parameters
                 input[2] = file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true) // Input files
                 input[3] = [] // Extensions
                 """
@@ -99,14 +93,13 @@ nextflow_process {
                     process.out.params_yaml
                 ).match() },
                 { assert path(process.out.html[0][1]).readLines().any { it.contains('Hello World 1') } },
+                { assert path(process.out.params_yaml[0][1]).readLines().any { it.contains('meta:') } },
             )
         }
 
     }
 
     test("test notebook - parametrized - [qmd:python]") {
-
-        config "./with-parametrization.config"
 
         when {
             process {
@@ -115,7 +108,7 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'generic/notebooks/quarto/quarto_python.qmd', checkIfExists: true) // Notebook
                 ]
-                input[1] = [input_filename: "hello.txt", n_iter: 12] // parameters
+                input[1] = [input_filename: "hello.txt", n_iter: 12] // Parameters
                 input[2] = file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true) // Input files
                 input[3] = [] // Extensions
                 """
@@ -131,14 +124,13 @@ nextflow_process {
                     process.out.params_yaml
                 ).match() },
                 { assert path(process.out.html[0][1]).readLines().any { it.contains('Hello World 1') } },
+                { assert path(process.out.params_yaml[0][1]).readLines().any { it.contains('meta:') } },
             )
         }
 
     }
 
     test("test notebook - parametrized - [rmd]") {
-
-        config "./with-parametrization.config"
 
         when {
             process {
@@ -147,7 +139,7 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'generic/notebooks/rmarkdown/rmarkdown_notebook.Rmd', checkIfExists: true) // notebook
                 ]
-                input[1] = [input_filename: "hello.txt", n_iter: 12] // parameters
+                input[1] = [input_filename: "hello.txt", n_iter: 12] // Parameters
                 input[2] = file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true) // Input files
                 input[3] = [] // Extensions
                 """
@@ -163,14 +155,13 @@ nextflow_process {
                     process.out.params_yaml
                 ).match() },
                 { assert path(process.out.html[0][1]).readLines().any { it.contains('Hello World 1') } },
+                { assert path(process.out.params_yaml[0][1]).readLines().any { it.contains('meta:') } },
             )
         }
 
     }
 
     test("test notebook - parametrized - [ipynb]") {
-
-        config "./with-parametrization.config"
 
         when {
             process {
@@ -179,7 +170,7 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'generic/notebooks/jupyter/ipython_notebook.ipynb', checkIfExists: true) // notebook
                 ]
-                input[1] = [input_filename: "hello.txt", n_iter: 12] // parameters
+                input[1] = [input_filename: "hello.txt", n_iter: 12] // Parameters
                 input[2] = file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true) // Input files
                 input[3] = [] // Extensions
                 """
@@ -195,14 +186,13 @@ nextflow_process {
                     process.out.params_yaml
                 ).match() },
                 { assert path(process.out.html[0][1]).readLines().any { it.contains('Hello World') } },
+                { assert path(process.out.params_yaml[0][1]).readLines().any { it.contains('meta:') } },
             )
         }
 
     }
 
     test("test notebook - stub - [qmd:r]") {
-
-        config "./no-parametrization.config"
 
         options "-stub"
 
