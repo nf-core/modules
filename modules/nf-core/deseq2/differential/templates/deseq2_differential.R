@@ -146,15 +146,18 @@ for ( ao in names(args_opt)){
     }
 }
 
-set.seed(opt\$seed)
 
 if ( ! is.null(opt\$round_digits)){
     opt\$round_digits <- as.numeric(opt\$round_digits)
 }
 
 # If there is no option supplied, convert string "null" to NULL
-keys <- c("formula", "contrast_string", "contrast_variable", "reference_level", "target_level")
+keys <- c("formula", "contrast_string", "contrast_variable", "reference_level", "target_level", "seed")
 opt[keys] <- lapply(opt[keys], nullify)
+
+if ( ! is.null(opt\$seed)){
+    set.seed(opt\$seed)
+}
 
 # Check if required parameters have been provided
 if (is_valid_string(opt\$formula)) {
