@@ -14,7 +14,7 @@ process MIXCR {
     tuple val(meta), path(reads)
     val preset
     val species
-    env MI_LICENSE
+    val MI_LICENSE
 
     output:
     tuple val(meta), path("*clones*.tsv"), emit: clones
@@ -30,7 +30,12 @@ process MIXCR {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def java_mem = task.memory ? "-Xmx${task.memory.toGiga()}g" : ''
+    // secret is not required for the process to run, but it is required for the process to be run in GitHub actions or nf-core MegaTests
+    def license = secrets.MIXCR_TESTING_LICENSE ?
+        "export MI_LICENSE=$secrets.MIXCR_TESTING_LICENSE" :
+        "export MI_LICENSE=$MI_LICENSE"
     """
+    $license
     mixcr $java_mem analyze \\
         $preset \\
         --species $species \\
