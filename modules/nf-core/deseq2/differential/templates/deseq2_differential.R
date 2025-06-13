@@ -305,26 +305,26 @@ if ((is_valid_string(opt\$exclude_samples_col)) && (is_valid_string(opt\$exclude
 # Now specify the model. Use cell-means style so we can be explicit with the
 # contrasts
 
-    if (is_valid_string(opt\$formula)) {
-        message("Using user-specified formula: ", opt\$formula)
-        user_f  <- as.formula(opt\$formula)
-        model_f <- update(user_f, ~ 0 + .)
-        model   <- paste(as.character(model_f), collapse = " ")
-    }  else {
+if (is_valid_string(opt\$formula)) {
+    message("Using user-specified formula: ", opt\$formula)
+    user_f  <- as.formula(opt\$formula)
+    model_f <- update(user_f, ~ 0 + .)
+    model   <- paste(as.character(model_f), collapse = " ")
+}  else {
     model <- '~ 0'
 
     if (is_valid_string(opt\$blocking_variables)) {
         model <- paste(model, paste(blocking.vars, collapse = ' + '), sep=' + ')
-    }
+}
 
-    # Make sure all the appropriate variables are factors
+# Make sure all the appropriate variables are factors
 
     for (v in c(blocking.vars, contrast_variable)) {
         sample.sheet[[v]] <- as.factor(sample.sheet[[v]])
     }
 
-    # Variable of interest goes last, see
-    # https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#multi-factor-designs
+# Variable of interest goes last, see
+# https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#multi-factor-designs
 
     model <- paste(model, contrast_variable, sep = ' + ')
 }
@@ -410,30 +410,30 @@ if (!is.null(opt\$contrast_string)) {
         )
     }
 } else {
-comp.results <-
-    results(
-        dds,
-        lfcThreshold = opt\$lfc_threshold,
-        altHypothesis = opt\$alt_hypothesis,
-        independentFiltering = opt\$independent_filtering,
-        alpha = opt\$alpha,
-        pAdjustMethod = opt\$p_adjust_method,
-        minmu = opt\$minmu,
-        contrast = c(
-            contrast_variable,
-            c(opt\$target_level, opt\$reference_level)
+    comp.results <-
+        results(
+            dds,
+            lfcThreshold = opt\$lfc_threshold,
+            altHypothesis = opt\$alt_hypothesis,
+            independentFiltering = opt\$independent_filtering,
+            alpha = opt\$alpha,
+            pAdjustMethod = opt\$p_adjust_method,
+            minmu = opt\$minmu,
+            contrast = c(
+                contrast_variable,
+                c(opt\$target_level, opt\$reference_level)
+            )
         )
-    )
 
-if (opt\$shrink_lfc){
-    comp.results <- lfcShrink(dds,
-        type = 'ashr',
-        contrast = c(
-            contrast_variable,
-            c(opt\$target_level, opt\$reference_level)
+    if (opt\$shrink_lfc){
+        comp.results <- lfcShrink(dds,
+            type = 'ashr',
+            contrast = c(
+                contrast_variable,
+                c(opt\$target_level, opt\$reference_level)
+            )
         )
-    )
-}
+    }
 }
 
 # See https://support.bioconductor.org/p/97676/
