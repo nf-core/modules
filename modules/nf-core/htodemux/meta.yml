@@ -8,8 +8,7 @@ keywords:
   - single-cell
 tools:
   - "htodemux":
-      ## TODO nf-core: Add a description and other details for the software below
-      description: "A toolkit for quality control, analysis, and exploration of single cell RNA sequencing data. 'Seurat' aims to enable users to identify and interpret sources of heterogeneity from single cell transcriptomic measurements, and to integrate diverse types of single cell data. See Satija R, Farrell J, Gennert D, et al (2015) <doi:10.1038/nbt.3192>, Macosko E, Basu A, Satija R, et al (2015) <doi:10.1016/j.cell.2015.05.002>, and Butler A and Satija R (2017) <doi:10.1101/164889> for more details." #?????
+      description: "HTODemux is the demultiplexing module of Seurat, which demultiplex samples based on data from cell hashing."
       homepage: "https://satijalab.org/seurat/articles/hashing_vignette"
       documentation: "https://satijalab.org/seurat/reference/htodemux"
       tool_dev_url: "https://github.com/satijalab/seurat"
@@ -30,24 +29,27 @@ input:
         description: |
           A `.rds` file containing the seurat object. Assumes that the hash tag oligo (HTO) data has been added and normalized.
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
-  - bam:
-      #Only when we have meta
+  - csv:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      ## TODO nf-core: Delete / customise this example output
-      - "*.bam":
+      - "*.csv":
           type: file
-          description: Sorted BAM/CRAM/SAM file
-          pattern: "*.{bam,cram,sam}"
-          ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
-            - edam: "http://edamontology.org/format_2573" # CRAM
-            - edam: "http://edamontology.org/format_3462" # SAM
+          description: CSV's for the classification, assignment and parameters.
+          pattern: "*.csv"
+  - rds:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.rds":
+          type: file
+          description: SeuratObject saves as RDS.
+          pattern: "*.rds"
 
   - versions:
       - "versions.yml":
