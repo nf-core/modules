@@ -40,8 +40,12 @@ nextflow_process {
 
                 input[0] = [
                     [ id:'test'], // meta map
+<<<<<<< HEAD
                     file('/Users/luisheinzlmeier/Downloads/htodemux_hadge_process/htodemux.rds', checkIfExists: true),
 >>>>>>> 83d76b1b1 (push test)
+=======
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/htodemux.rds', checkIfExists: true),
+>>>>>>> 13a700cb5 (use uploaded test data set)
                 ]
                 """
             }
