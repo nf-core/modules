@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "souporcell"
-description: souporcell is a method for clustering mixed-genotype scRNAseq experiments by individual.
+description: souporcell is a method for clustering mixed-genotype scRNAseq
+  experiments by individual.
 keywords:
   - clustering
   - mixed-genotype
@@ -23,16 +23,21 @@ input:
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
 
-    - nucleic_acid_sequence_alignment:
+    - bam:
         type: file
-        description: A BAM file from cellranger containing single-cell RNA-seq alignments.
+        description: A BAM file from cellranger containing single-cell RNA-seq
+          alignments.
         pattern: "*.bam"
 
-    - barcode:
+        ontologies: []
+    - barcodes:
         type: file
-        description: A barcode or whitelist TSV file from cellranger identifying individual cell barcodes.
+        description: A barcode or whitelist TSV file from cellranger identifying
+          individual cell barcodes.
         pattern: "*.tsv"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
   - - meta2:
         type: map
         description: |
@@ -44,6 +49,7 @@ input:
         description: A reference fasta file.
         pattern: "*.fasta"
 
+        ontologies: []
   - - clusters:
         type: integer
         description: Number of clusters.
@@ -55,9 +61,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.{vcf}":
-          type: file
-          description: VCF file with inferred genotypes per cluster.
+          pattern: "test/*.vcf"
+      - test/*.vcf:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
           pattern: "test/*.vcf"
   - tsv:
       - meta:
@@ -65,16 +74,20 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.{tsv}":
-          type: file
-          description: Cell barcode assignments to clusters.
+          pattern: "test/*.tsv"
+      - test/*.tsv:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
           pattern: "test/*.tsv"
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
-
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@seohyonkim"
 maintainers:
