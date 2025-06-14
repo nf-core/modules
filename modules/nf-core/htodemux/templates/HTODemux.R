@@ -146,7 +146,7 @@ assignment <- hashtag[[paste0(opt\$assay, "_classification")]]
 assignment[[paste0(opt\$assay, "_classification")]][!assignment[[paste0(opt\$assay, "_classification")]] %in% c(donors, "Negative")] <- "Doublet"
 write.csv(assignment, paste0(opt\$prefix ,"_assignment_htodemux.csv"))
 write.csv(hashtag[[paste0(opt\$assay, "_classification.global")]], paste0(opt\$prefix ,"_classification_htodemux.csv"))
-saveRDS(hashtag, file = paste0(opt\$prefix ,"htodemux.rds"))
+saveRDS(hashtag, file = paste0(opt\$prefix ,"_htodemux.rds"))
 
 ################################################
 ################################################
