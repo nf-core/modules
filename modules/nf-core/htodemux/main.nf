@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 // TODO nf-core: If in doubt look at other nf-core/modules to see how we are doing things! :)
 //               https://github.com/nf-core/modules/tree/master/modules/nf-core/
@@ -18,10 +19,13 @@
 //               list (`[]`) instead of a file can be used to work around this issue.
 
 >>>>>>> 83d76b1b1 (push test)
+=======
+>>>>>>> 4e44bca20 (remove TODO's and try to solve singularity error)
 process HTODEMUX {
     tag "$meta.id"
     label 'process_low'
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -39,39 +43,42 @@ process HTODEMUX {
     path "versions.yml"                                        , emit: versions
 =======
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
+=======
+>>>>>>> 4e44bca20 (remove TODO's and try to solve singularity error)
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/r-seurat_r-seuratobject:b8b360a3ee6bdf5b':
+        'oras://community.wave.seqera.io/library/r-seurat_r-seuratobject:4c5a804804327d29':
         'community.wave.seqera.io/library/r-seurat_r-seuratobject:b11306d1bdc82827' }"
 
 
 
     // community.wave.seqera.io/library/r-seurat_r-seuratobject:b11306d1bdc82827
-    input:// TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
-    //               MUST be provided as an input via a Groovy Map called "meta".
-    //               This information may not be required in some instances e.g. indexing reference genome files:
-    //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
-    // TODO nf-core: Where applicable please provide/convert compressed files as input/output
-    //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-    //
+    input:
     tuple val(meta), path(seurat_object)
 
     output:
     tuple val(meta), path("*.csv")          , emit: csv
     tuple val(meta), path("*.rds")          , emit: rds
+<<<<<<< HEAD
     path "versions.yml"           , emit: versions
     // *.csv will create a list of different csv's
     // if you want to exit them in the next process then rather use a an own line
 >>>>>>> 83d76b1b1 (push test)
+=======
+    path "versions.yml"                     , emit: versions
+>>>>>>> 4e44bca20 (remove TODO's and try to solve singularity error)
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
     // THOdemoux function
+=======
+>>>>>>> 4e44bca20 (remove TODO's and try to solve singularity error)
     assay = task.ext.assay ?: "HTO"
 >>>>>>> 83d76b1b1 (push test)
     quantile = task.ext.quantile ?: "0.99"
@@ -80,6 +87,7 @@ process HTODEMUX {
     kfunc = task.ext.kfunc ?: "clara"
     nsamples = task.ext.nsamples ?: "100"
     seed = task.ext.seed ?: '42'
+<<<<<<< HEAD
 <<<<<<< HEAD
     verbose = task.ext.verbose ?: 'TRUE'
     prefix = task.ext.prefix ?: "${meta.id}"
@@ -96,17 +104,9 @@ process HTODEMUX {
 =======
 
     // other
+=======
+>>>>>>> 4e44bca20 (remove TODO's and try to solve singularity error)
     prefix = task.ext.prefix ?: "${meta.id}"
-
-    // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
-    //               If the software is unable to output a version number on the command-line then it can be manually specified
-    //               e.g. https://github.com/nf-core/modules/blob/master/modules/nf-core/homer/annotatepeaks/main.nf
-    //               Each software used MUST provide the software name and version number in the YAML version file (versions.yml)
-    // TODO nf-core: It MUST be possible to pass additional parameters to the tool as a command-line string via the "task.ext.args" directive
-    // TODO nf-core: If the tool supports multi-threading then you MUST provide the appropriate parameter
-    //               using the Nextflow "task" variable e.g. "--threads $task.cpus"
-    // TODO nf-core: Please replace the example samtools command below with your module's command
-    // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
 
     template 'HTODemux.R'
 
