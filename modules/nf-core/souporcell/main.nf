@@ -24,6 +24,7 @@ process SOUPORCELL {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def args = task.ext.args ?: ""
     """
+    mkdir -p temp
     export TMPDIR=./temp
     souporcell_pipeline.py \\
         -i $bam \\
