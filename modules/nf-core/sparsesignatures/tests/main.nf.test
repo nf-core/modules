@@ -15,14 +15,14 @@ nextflow_process {
         when {
 
             params {
-              module_args = '[genome:GRCh38, K:2:3, nmf_runs:3, iterations:5, max_iterations_lasso:80, cross_validation_repetitions:3, cross_validation_iterations:3, cross_validation_entries:0.01, lambda_values_alpha:c(0.00, 0.01), lambda_values_beta:c(0.01, 0.05), lambda_rate_alpha:0, num_processes:all, seed:42]'
+              module_args = '[genome:GRCh37, K:2:3, nmf_runs:3, iterations:5, max_iterations_lasso:80, cross_validation_repetitions:3, cross_validation_iterations:3, cross_validation_entries:0.01, lambda_values_alpha:c(0.00, 0.01), lambda_values_beta:c(0.01, 0.05), lambda_rate_alpha:0, num_processes:all, seed:42]'
             }
 
             process {
                 """
                 input[0] = [
                     [ id:'test'],
-                    file(params.modules_testdata_base_path + 'delete_me/sparsesignatures/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'delete_me/sparsesignatures/test_GRCh37/MSeq_Set06_joint_table.tsv', checkIfExists: true)
                 ]
                 """
             }
@@ -57,7 +57,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test'], // meta map
-                    file(params.modules_testdata_base_path + 'delete_me/sparsesignatures/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'delete_me/sparsesignatures/test_GRCh37/MSeq_Set06_joint_table.tsv', checkIfExists: true)
                 ]
                 """
             }
