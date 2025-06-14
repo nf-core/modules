@@ -4,8 +4,8 @@ process SOUPORCELL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/92/92c054bdfc9170bd58c09de480160923d35dd67008650733f3d03588520082b1/data' :
-        'community.wave.seqera.io/library/souporcell:2.5--2b23aea4d0753391' }"
+        'oras://community.wave.seqera.io/library/souporcell_gxx:9e4498a90e1d49fc' :
+        'community.wave.seqera.io/library/souporcell_gxx:9f443b06d1671e4e' }"
 
     input:
     tuple val(meta), path(bam), path(barcodes)
