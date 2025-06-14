@@ -25,10 +25,14 @@ input:
           e.g. `[ id:'sample1' ]`
 
     - nucleic_acid_sequence_alignment:
-        # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
         type: file
-        description: A BAM file containing single-cell RNA-seq alignments.
+        description: A BAM file from cellranger containing single-cell RNA-seq alignments.
         pattern: "*.bam"
+    
+    - identifier:
+        type: file
+        description: A barcode or whitelist TSV file from cellranger identifying individual cell barcodes.
+        pattern: "*.tsv"
 
   - - meta2:
         type: map
@@ -37,10 +41,13 @@ input:
           e.g. `[ id:'sample1' ]`
 
     - identifier:
-        # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
         type: file
-        description: A barcode or whitelist TSV file identifying individual cell barcodes.
-        pattern: "*.tsv"
+        description: A reference fasta file.
+        pattern: "*.fasta"
+
+    - clusters:
+        type: integer
+        description: Number of clusters.
 
 ## TODO nf-core: Add a description of all of the variables used as output
 output:
