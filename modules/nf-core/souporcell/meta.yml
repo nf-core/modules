@@ -16,7 +16,6 @@ tools:
       licence: ["MIT"]
       identifier: biotools:souporcell
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   - - meta:
         type: map
@@ -49,7 +48,6 @@ input:
         type: integer
         description: Number of clusters.
 
-## TODO nf-core: Add a description of all of the variables used as output
 output:
   - sequence_variations:
       - meta:
@@ -58,7 +56,6 @@ output:
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
       - "*.{vcf}":
-          # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
           type: file
           description: sequence_variations file
           pattern: "*.vcf"
