@@ -25,7 +25,7 @@ nextflow_process {
 
                 input[0] = [
                     [ id:'test'], // meta map
-                    file('/Users/luisheinzlmeier/Downloads/htodemux_hadge_process/htodemux.rds', checkIfExists: true),
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/htodemux.rds', checkIfExists: true),
                 ]
                 """
             }
