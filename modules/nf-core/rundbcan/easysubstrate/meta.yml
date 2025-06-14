@@ -1,0 +1,181 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "rundbcan_easysubstrate"
+description: Substrate annotation module for the dbcan pipeline. This module is used
+  to annotate carbohydrate-active enzymes (CAZymes) from genomic data using the dbCAN
+  annotation tool.
+keywords:
+  - dbCAN
+  - download
+  - CAZyme
+  - CAZyme gene Cluster
+  - genomes
+tools:
+  - "dbcan":
+      description: "Standalone version of dbCAN annotation tool for automated CAZyme
+        annotation."
+      homepage: "https://bcb.unl.edu/dbCAN2/"
+      documentation: "https://run-dbcan.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/bcb-unl/run_dbcan"
+      doi: "10.1093/nar/gkad328"
+      licence: ["GPL v3-or-later"]
+      identifier: biotools:dbcan
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1']`
+    - input_raw_data:
+        type: file
+        description: FASTA file for protein sequences.
+        pattern: "*.{fasta,fa,faa}"
+        ontologies:
+          - edam: "http://edamontology.org/data_2044" # Sequence
+          - edam: "http://edamontology.org/format_1929" # FASTA
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1']`
+    - input_gff:
+        type: file
+        description: GFF file for protein sequences.
+    - gff_type:
+        type: string
+        description: |
+          Type of GFF file. Options are `NCBI_prok`, `JGI`, `NCBI_euk`, and `prodigal`. This is used to parse the GFF file correctly.
+  - - dbcan_db:
+        type: directory
+        description: Path to the dbCAN database directory.
+
+output:
+  - cazyme_annotation:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_overview.tsv:
+          type: file
+          description: |
+            TSV file containing the results of dbCAN CAZyme annotation.
+  - dbcanhmm_results:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_dbCAN_hmm_results.tsv:
+          type: file
+          description: |
+            TSV file containing the detailed dbCAN HMM results for CAZyme annotation.
+  - dbcansub_results:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_dbCANsub_hmm_results.tsv:
+          type: file
+          description: |
+            TSV file containing the detailed dbCAN subfamily results for CAZyme annotation.
+  - dbcandiamond_results:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_diamond.out:
+          type: file
+          description: |
+            TSV file containing the detailed dbCAN diamond results for CAZyme annotation.
+  - cgc_gff:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_cgc.gff:
+          type: file
+          description: |
+            GFF file containing the CAZyme gene clusters (CGC) identified by dbCAN. This file is generated from the dbCAN annotation and contains the locations of CAZyme gene clusters in the genome.
+  - cgc_standard_out:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_cgc_standard_out.tsv:
+          type: file
+          description: |
+            Standard output file from dbCAN for CAZyme gene clusters (CGC) in a tabular format. This file summarizes the CAZyme gene clusters identified in the genome.
+  - diamond_out_tc:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_diamond.out.tc:
+          type: file
+          description: |
+            TSV file containing the diamond output for transporter annotation.
+  - tf_hmm_results:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_TF_hmm_results.tsv:
+          type: file
+          description: |
+            TSV file containing the results of Transcription factor.
+  - stp_hmm_results:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_STP_hmm_results.tsv:
+          type: file
+          description: |
+            TSV file containing the results of signaling transduction proteins (STP) annotation.
+  - total_cgc_info:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_total_cgc_info.tsv:
+          type: file
+          description: |
+            TSV file summarizing the total additional genes in the genome.
+  - substrate_prediction:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_substrate_prediction.tsv:
+          type: file
+          description: |
+            TSV file containing the substrate predictions based on the CGC annotations from dbCAN.
+  - synteny_pdf:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_synteny_pdf/:
+          type: directory
+          description: |
+            Directory containing the synteny plots in PDF format for the CAZyme gene clusters (CGC) identified by dbCAN. This directory will contain one or more PDF files showing the syntenic regions of the CGC in the genome.
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@Xinpeng021001"
+maintainers:
+  - "@Xinpeng021001"
