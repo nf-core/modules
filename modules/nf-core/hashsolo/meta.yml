@@ -1,0 +1,56 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "hashsolo"
+description: Probabilistic demultiplexing of cell hashing data
+keywords:
+  - anndata
+  - single-cell
+  - scanpy
+tools:
+  - "hashsolo":
+      description: "Probabilistic demultiplexing of cell hashing data."
+      homepage: "https://github.com/scverse/scanpy"
+      documentation: "https://scanpy.readthedocs.io/en/stable/generated/scanpy.external.pp.hashsolo.html"
+      tool_dev_url: "https://github.com/scverse/scanpy"
+      doi: "10.1186/s13059-017-1382-0"
+      licence: ["BSD-3"]
+      identifier: biotools:scanpy
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - input_h5ad:
+        type: file
+        description: The (annotated) data matrix of shape n_obs x n_vars. Rows correspond to cells and columns to genes.
+        pattern: "*.h5ad"
+  - - params:
+        type: map
+        description: Parameters for hashsolo.
+
+output:
+  - h5ad:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+          pattern: "*.h5ad"
+      - "*.h5ad":
+          type: file
+          description: |
+            AnnData file containing cluster feature, etc.
+          pattern: "*.h5ad"
+
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@seohyonkim"
+maintainers:
+  - "@seohyonkim"
