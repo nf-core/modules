@@ -16,7 +16,7 @@ if ('$init' != "NULL") {
     init = as.integer('$init')
 }
 nstarts = as.integer('$nstarts')
-kfunc = 'clara'
+kfunc = '$kfunc'
 nsamples = as.integer('$nsamples')
 seed = as.integer('$seed')
 verbose = as.logical('$verbose')
@@ -45,12 +45,8 @@ library(Seurat)
 hashtag <- readRDS(seuratObj)
 
 # Demultiplex cells based on HTO enrichment
-# zu einem int, boolean casten
-if (kfunc == "clara") {
-    hashtag <- HTODemux(hashtag, assay = assay, positive.quantile = quantile, init = init, nstarts = nstarts, kfunc = "clara", seed = seed, verbose = verbose)
-} else {
-    hashtag <- HTODemux(hashtag, assay = assay, positive.quantile = quantile, init = init, nstarts = nstarts, kfunc = "kmeans", seed = seed, verbose = verbose)
-}
+hashtag <- HTODemux(hashtag, assay = assay, positive.quantile = quantile, init = init, nstarts = nstarts, kfunc = kfunc, seed = seed, verbose = verbose)
+
 
 ################################################
 ################################################
