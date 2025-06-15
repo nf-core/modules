@@ -1,4 +1,4 @@
-process HASHSOLO {
+process SCANPY_HASHSOLO {
     tag "$meta.id"
     label 'process_medium'
 
@@ -29,7 +29,7 @@ process HASHSOLO {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        scanpy: "STUB"
-    END_VERSIONS
+        python: \$(python3 --version | cut -f 2 -d " ")
+        scanpy: \$(python3 -c "import scanpy; print(scanpy.__version__)")    END_VERSIONS
     """
 }
