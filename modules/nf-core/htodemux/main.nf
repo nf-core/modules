@@ -51,9 +51,10 @@ process HTODEMUX {
         'community.wave.seqera.io/library/r-seurat_r-seuratobject:b11306d1bdc82827' }"
 
     input:
-    tuple val(meta), path(seurat_object)
+    tuple val(meta), path(seurat_object), val(assay)
 
     output:
+<<<<<<< HEAD
     tuple val(meta), path("*.csv")          , emit: csv
     tuple val(meta), path("*.rds")          , emit: rds
 <<<<<<< HEAD
@@ -64,11 +65,19 @@ process HTODEMUX {
 =======
     path "versions.yml"                     , emit: versions
 >>>>>>> 4e44bca20 (remove TODO's and try to solve singularity error)
+=======
+    tuple val(meta), path("*params_htodemux.csv")              , emit: params
+    tuple val(meta), path("*assignment_htodemux.csv")          , emit: assignment
+    tuple val(meta), path("*classification_htodemux.csv")      , emit: classification
+    tuple val(meta), path("*_htodemux.rds")                    , emit: rds
+    path "versions.yml"                                        , emit: versions
+>>>>>>> da0d66277 (adopted the feedback from the review)
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -78,6 +87,8 @@ process HTODEMUX {
 >>>>>>> 4e44bca20 (remove TODO's and try to solve singularity error)
     assay = task.ext.assay ?: "HTO"
 >>>>>>> 83d76b1b1 (push test)
+=======
+>>>>>>> da0d66277 (adopted the feedback from the review)
     quantile = task.ext.quantile ?: "0.99"
     init = task.ext.init ?: "NULL"
     nstarts = task.ext.nstarts ?: "100"
@@ -93,6 +104,7 @@ process HTODEMUX {
     template 'HTODemux.R'
 
     stub:
+<<<<<<< HEAD
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_params_htodemux.csv
@@ -113,6 +125,8 @@ process HTODEMUX {
 
     stub:
     def args = task.ext.args ?: ''
+=======
+>>>>>>> da0d66277 (adopted the feedback from the review)
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
 <<<<<<< HEAD

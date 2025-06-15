@@ -3,6 +3,7 @@
 ################################################
 ################################################
 <<<<<<< HEAD
+<<<<<<< HEAD
 ## USE PARAMETERS FROM NEXTFLOW               ##
 ################################################
 ################################################
@@ -30,114 +31,35 @@ if (! file.exists(seuratObj)){
 
 =======
 ## Functions                                  ##
+=======
+## USE PARAMETERS FROM NEXTFLOW               ##
+>>>>>>> da0d66277 (adopted the feedback from the review)
 ################################################
 ################################################
 
-#' Check for Non-Empty, Non-Whitespace String
-#'
-#' This function checks if the input is non-NULL and contains more than just whitespace.
-#' It returns TRUE if the input is a non-empty, non-whitespace string, and FALSE otherwise.
-#'
-#' @param input A variable to check.
-#' @return A logical value: TRUE if the input is a valid, non-empty, non-whitespace string; FALSE otherwise.
-#' @examples
-#' is_valid_string("Hello World") # Returns TRUE
-#' is_valid_string("   ")         # Returns FALSE
-#' is_valid_string(NULL)          # Returns FALSE
-
-is_valid_string <- function(input) {
-    !is.null(input) && nzchar(trimws(input))
-}
-
-#' Parse out options from a string without recourse to optparse
-#'
-#' @param x Long-form argument list like --opt1 val1 --opt2 val2
-#'
-#' @return named list of options and values similar to optparse
-
-parse_args <- function(x){
-    args_list <- unlist(strsplit(x, ' ?--')[[1]])[-1]
-    args_vals <- lapply(args_list, function(x) scan(text=x, what='character', quiet = TRUE))
-
-    # Ensure the option vectors are length 2 (key/ value) to catch empty ones
-    args_vals <- lapply(args_vals, function(z){ length(z) <- 2; z})
-
-    parsed_args <- structure(lapply(args_vals, function(x) x[2]), names = lapply(args_vals, function(x) x[1]))
-    parsed_args[! is.na(parsed_args)]
-
-    # Convert recognized boolean strings to logical values
-    for (opt_name in names(parsed_args)) {
-        val <- parsed_args[[opt_name]]
-        if (is_valid_string(val)) {
-            val_lower <- tolower(val)
-            if (val_lower %in% c("true", "t", "yes", "y", "1")) {
-                parsed_args[[opt_name]] <- TRUE
-            } else if (val_lower %in% c("false", "f", "no", "n", "0")) {
-                parsed_args[[opt_name]] <- FALSE
-            }
-        }
-    }
-}
-
-################################################
-################################################
-## PARSE PARAMETERS FROM NEXTFLOW             ##
-################################################
-################################################
-
-# Set defaults and classes
-
-opt <- list(
-    seuratObj = '$seurat_object',
-    assay = 'HTO',
-    quantile = 0.99,
-    init = NULL,
-    nstarts = 100,
-    kfunc = 'clara',
-    nsamples = 100,
-    seed = 42,
-    verbose = TRUE,
-    prefix = '$prefix'
-)
-opt_types <- lapply(opt, class)
-
-# apply parameter overrides
-args_opt <- parse_args('$task.ext.args')
-for ( ao in names(args_opt)){
-    if (! ao %in% names(opt)){
-        stop(paste("Invalid option:", ao))
-    }else{
-
-        # Preserve classes from defaults where possible
-        if (! is.null(opt[[ao]])){
-            args_opt[[ao]] <- as(args_opt[[ao]], opt_types[[ao]])
-        }
-        opt[[ao]] <- args_opt[[ao]]
-    }
-}
-if ( ! is.null(opt\$init)){
-    opt\$init <- as.numeric(opt\$init)
-}
-
-# Check if required parameters have been provided
-required_opts <- c('seuratObj')
-missing <- required_opts[!unlist(lapply(opt[required_opts], is_valid_string)) | !required_opts %in% names(opt)]
-if (length(missing) > 0){
-    stop(paste("Missing required options:", paste(missing, collapse=', ')))
-}
-
-# check if the input path is a valid string
-if (! is_valid_string(opt[['seuratObj']])) {
-    stop(paste("Please provide", file_input), call. = FALSE)
-}
+# cast parameters from nextflow
+seuratObj = '$seurat_object'
+assay = '$assay'
+options(digits=5)
+quantile = as.double('$quantile')
+init = '$init'
+nstarts = as.integer('$nstarts')
+kfunc = 'clara'
+nsamples = as.integer('$nsamples')
+seed = as.integer('$seed')
+verbose = as.logical('$verbose')
+prefix = '$prefix'
 
 # check if the file exists
-if (! file.exists(opt[['seuratObj']])){
-    stop(paste0('Value of ', file_input, ': ', opt[[file_input]], ' is not a valid file'))
+if (! file.exists(seuratObj)){
+    stop(paste0(seuratObj, ' is not a valid file'))
 }
 
+<<<<<<< HEAD
 
 >>>>>>> df971f6e6 (add template)
+=======
+>>>>>>> da0d66277 (adopted the feedback from the review)
 ################################################
 ################################################
 ## Finish loading libraries                   ##
@@ -154,6 +76,7 @@ library(Seurat)
 
 # Loading Seurat object
 <<<<<<< HEAD
+<<<<<<< HEAD
 hashtag <- readRDS(seuratObj)
 
 # Demultiplex cells based on HTO enrichment
@@ -161,12 +84,16 @@ hashtag <- HTODemux(hashtag, assay = assay, positive.quantile = quantile, init =
 
 =======
 hashtag <- readRDS(opt\$seuratObj)
+=======
+hashtag <- readRDS(seuratObj)
+>>>>>>> da0d66277 (adopted the feedback from the review)
 
 # Demultiplex cells based on HTO enrichment
-if (opt\$kfunc == "clara") {
-    hashtag <- HTODemux(hashtag, assay = opt\$assay, positive.quantile = opt\$quantile, init = opt\$init, nstarts = opt\$nstarts, kfunc = "clara", seed = opt\$seed, verbose = opt\$verbose)
+# zu einem int, boolean casten
+if (kfunc == "clara") {
+    hashtag <- HTODemux(hashtag, assay = assay, positive.quantile = quantile, init = init, nstarts = nstarts, kfunc = "clara", seed = seed, verbose = verbose)
 } else {
-    hashtag <- HTODemux(hashtag, assay = opt\$assay, positive.quantile = opt\$quantile, init = opt\$init, nstarts = opt\$nstarts, kfunc = "kmeans", seed = opt\$seed, verbose = opt\$verbose)
+    hashtag <- HTODemux(hashtag, assay = assay, positive.quantile = quantile, init = init, nstarts = nstarts, kfunc = "kmeans", seed = seed, verbose = verbose)
 }
 >>>>>>> df971f6e6 (add template)
 
@@ -177,6 +104,7 @@ if (opt\$kfunc == "clara") {
 ################################################
 
 # create a data frame to save the used parameters in a csv file
+<<<<<<< HEAD
 <<<<<<< HEAD
 if (is.null(init)) {
   init <- "NULL"
@@ -197,16 +125,20 @@ write.csv(hashtag[[paste0(assay, "_classification.global")]], paste0(prefix ,"_c
 saveRDS(hashtag, file = paste0(prefix ,"_htodemux.rds"))
 =======
 if (is.null(opt\$init)) {
+=======
+if (is.null(init)) {
+>>>>>>> da0d66277 (adopted the feedback from the review)
   init <- "NULL"
 }
 
 Argument <- c("seuratObject", "quantile", "kfunc", "nstarts", "nsamples", "seed", "init", "assay", "verbose")
-Value <- c(opt\$seuratObj, opt\$quantile, opt\$kfunc, opt\$nstarts, opt\$nsamples, opt\$seed, init, opt\$assay, opt\$verbose)
+Value <- c(seuratObj, quantile, kfunc, nstarts, nsamples, seed, init, assay, verbose)
 params <- data.frame(Argument, Value)
 
-write.csv(params, paste0(opt\$prefix ,"_params_htodemux.csv"))
+write.csv(params, paste0(prefix ,"_params_htodemux.csv"))
 
 # create csv files to save the results from HTODemux()
+<<<<<<< HEAD
 donors <- rownames(hashtag[[opt\$assay]])
 assignment <- hashtag[[paste0(opt\$assay, "_classification")]]
 assignment[[paste0(opt\$assay, "_classification")]][!assignment[[paste0(opt\$assay, "_classification")]] %in% c(donors, "Negative")] <- "Doublet"
@@ -218,6 +150,14 @@ saveRDS(hashtag, file = paste0(opt\$prefix ,"htodemux.rds"))
 =======
 saveRDS(hashtag, file = paste0(opt\$prefix ,"_htodemux.rds"))
 >>>>>>> 37633daa7 (add stub)
+=======
+donors <- rownames(hashtag[[assay]])
+assignment <- hashtag[[paste0(assay, "_classification")]]
+assignment[[paste0(assay, "_classification")]][!assignment[[paste0(assay, "_classification")]] %in% c(donors, "Negative")] <- "Doublet"
+write.csv(assignment, paste0(prefix ,"_assignment_htodemux.csv"))
+write.csv(hashtag[[paste0(assay, "_classification.global")]], paste0(prefix ,"_classification_htodemux.csv"))
+saveRDS(hashtag, file = paste0(prefix ,"_htodemux.rds"))
+>>>>>>> da0d66277 (adopted the feedback from the review)
 
 ################################################
 ################################################
