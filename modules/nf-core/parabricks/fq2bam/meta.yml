@@ -24,6 +24,9 @@ input:
         type: file
         description: fastq.gz files
         pattern: "*.fastq.gz"
+    - readgroup:
+        type: string
+        description: Readgroup information as string in the format `@RG\tID:group1\tSM:sample1\tPL:illumina\tLB:lib1\tPU:unit1`
   - - meta2:
         type: map
         description: |

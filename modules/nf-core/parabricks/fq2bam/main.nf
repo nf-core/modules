@@ -7,7 +7,7 @@ process PARABRICKS_FQ2BAM {
     container "nvcr.io/nvidia/clara/clara-parabricks:4.4.0-1"
 
     input:
-    tuple val(meta) , path(reads)
+    tuple val(meta) , path(reads), val(readgroup)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(index)
     tuple val(meta4), path(interval_file)
@@ -35,7 +35,7 @@ process PARABRICKS_FQ2BAM {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def in_fq_command = meta.single_end ? "--in-se-fq $reads" : "--in-fq $reads"
+    def in_fq_command = readgroup ? (meta.single_end ? "--in-se-fq $reads '$readgroup'" : "--in-fq $reads '$readgroup'") : (meta.single_end ? "--in-se-fq $reads" : "--in-fq $reads")
     def extension = "$output_fmt"
 
     def known_sites_command = known_sites ? (known_sites instanceof List ? known_sites.collect { "--knownSites $it" }.join(' ') : "--knownSites ${known_sites}") : ""
