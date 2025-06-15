@@ -11,9 +11,9 @@ process HTODEMUX {
     tuple val(meta), path(seurat_object), val(assay)
 
     output:
-    tuple val(meta), path("*params_htodemux.csv")              , emit: params
-    tuple val(meta), path("*assignment_htodemux.csv")          , emit: assignment
-    tuple val(meta), path("*classification_htodemux.csv")      , emit: classification
+    tuple val(meta), path("*_params_htodemux.csv")             , emit: params
+    tuple val(meta), path("*_assignment_htodemux.csv")         , emit: assignment
+    tuple val(meta), path("*_classification_htodemux.csv")     , emit: classification
     tuple val(meta), path("*_htodemux.rds")                    , emit: rds
     path "versions.yml"                                        , emit: versions
 
