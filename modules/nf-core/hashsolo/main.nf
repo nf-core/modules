@@ -20,20 +20,7 @@ process HASHSOLO {
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
-
-    """
-    mkdir -p test
-
-    python3 ${moduleDir}/hashsolo.py \\
-        --input ${input_h5ad} \\
-        --output test/${prefix}_hashsolo.h5ad \\
-        --params '${params}'
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        scanpy: \$(python3 -c "import scanpy as sc; print(sc.__version__)")
-    END_VERSIONS
-    """
+    template('hashsolo.py')
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
