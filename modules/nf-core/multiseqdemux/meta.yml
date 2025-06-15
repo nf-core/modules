@@ -1,0 +1,61 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "multiseqdemux"
+description: Identify singlets, doublets and negative cells from multiplexing experiments. Annotate singlets by tags.
+keywords:
+  - demultiplexing
+  - hashing-based deconvoltion
+  - single-cell
+tools:
+  - "multiseqdemux":
+      description: "MULTIseqDemux is the demultiplexing module of Seurat, which demultiplex samples based on data from cell hashing."
+      homepage: "https://satijalab.org/seurat/reference/multiseqdemux"
+      documentation: "https://satijalab.org/seurat/reference/multiseqdemux"
+      tool_dev_url: "https://github.com/satijalab/seurat"
+      doi: "10.1038/s41592-019-0433-8"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - seurat_object:
+        type: file
+        description: |
+          A `.rds` file containing the seurat object. Assumes that the hash tag oligo (HTO) data has been added and normalized.
+
+output:
+  - csv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.csv":
+          type: file
+          description: CSV's for the results and parameters.
+          pattern: "*.csv"
+  - rds:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.rds":
+          type: file
+          description: SeuratObject saves as RDS.
+          pattern: "*.rds"
+
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@LuisHeinzlmeier"
+maintainers:
+  - "@LuisHeinzlmeier"
