@@ -1,13 +1,15 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "hashsolo"
+name: "SCANPY_HASHSOLO"
 description: Probabilistic demultiplexing of cell hashing data
 keywords:
   - anndata
   - single-cell
+  - hashing
+  - demultiplexing
   - scanpy
 tools:
-  - "hashsolo":
-      description: "Probabilistic demultiplexing of cell hashing data."
+  - "scanpy":
+      description: "Single-cell analysis in Python. Scales to >100M cells."
       homepage: "https://github.com/scverse/scanpy"
       documentation: "https://scanpy.readthedocs.io/en/stable/generated/scanpy.external.pp.hashsolo.html"
       tool_dev_url: "https://github.com/scverse/scanpy"
