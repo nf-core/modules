@@ -10,6 +10,8 @@ nextflow_process {
 
     test("generated h5ad") {
 
+        config "./nextflow.config"
+
         when {
             process {
                 """
@@ -18,8 +20,6 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hashsolo_anndata.h5ad', checkIfExists: true),
                     ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
                 ]
-
-                input[1] = '' // pass nothing
                 """
             }
         }
@@ -36,6 +36,7 @@ nextflow_process {
     test("generated h5ad - stub") {
 
         options "-stub"
+        config "./nextflow.config"
 
         when {
             process {
@@ -44,8 +45,6 @@ nextflow_process {
                     [ id: 'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hashsolo_anndata.h5ad', checkIfExists: true),
                 ]
-
-                input[1] = '' // pass nothing
                 """
             }
         }
