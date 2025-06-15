@@ -27,6 +27,11 @@ input:
           correspond to cells and columns to genes.
         pattern: "*.h5ad"
         ontologies: []
+    - cell_hashing_collumns:
+        type: list
+        description: |
+          List of cell hashing columns to use for demultiplexing.
+          e.g. `['hash_1', 'hash_2']`
   - - params:
         type: map
         description: Parameters for hashsolo.

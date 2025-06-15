@@ -8,7 +8,7 @@ process HASHSOLO {
         'community.wave.seqera.io/library/scanpy:1.11.2--cc70dffaa98ddb98' }"
 
     input:
-    tuple val(meta), path(input_h5ad)
+    tuple val(meta), path(input_h5ad), val(cell_hashing_collumns)
     val params
 
     output:

@@ -12,5 +12,5 @@ except json.JSONDecodeError:
     params = {}
 
 adata = sc.read_h5ad("${input_h5ad}")
-sce.pp.hashsolo(adata, "${params}")
+sce.pp.hashsolo(adata, "${cell_hashing_columns}","${params}")
 adata.write("test/${prefix}_hashsolo.h5ad")
