@@ -1,0 +1,56 @@
+nextflow_process {
+
+    name "Test Process RUNDBCAN_DATABASE"
+    script "../main.nf"
+    process "RUNDBCAN_DATABASE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "rundbcan"
+    tag "rundbcan/database"
+
+    test("rundbcan - database - basic") {
+
+        when {
+            process {
+                """
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert path(process.out.dbcan_db.get(0)).exists()
+            assert path(process.out.versions[0]).exists()
+            assertAll(
+                { assert snapshot(
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+    test("rundbcan - database - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    file(process.out.dbcan_db.get(0)).name,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}
