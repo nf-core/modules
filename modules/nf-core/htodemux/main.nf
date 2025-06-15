@@ -86,6 +86,7 @@ process HTODEMUX {
     seed = task.ext.seed ?: '42'
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     verbose = task.ext.verbose ?: 'TRUE'
     prefix = task.ext.prefix ?: "${meta.id}"
 
@@ -103,6 +104,9 @@ process HTODEMUX {
     // other
 =======
 >>>>>>> 4e44bca20 (remove TODO's and try to solve singularity error)
+=======
+    verbose = task.ext.verbose ?: 'TRUE'
+>>>>>>> 65d5301bf (add verbose and params to stub)
     prefix = task.ext.prefix ?: "${meta.id}"
 
     template 'HTODemux.R'
@@ -112,10 +116,14 @@ process HTODEMUX {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     touch ${prefix}.bam
 >>>>>>> 83d76b1b1 (push test)
 =======
+=======
+    touch ${prefix}_params_htodemux.csv
+>>>>>>> 65d5301bf (add verbose and params to stub)
     touch ${prefix}_assignment_htodemux.csv
     touch ${prefix}_classification_htodemux.csv
     touch ${prefix}_htodemux.rds
