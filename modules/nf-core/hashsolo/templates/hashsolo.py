@@ -4,6 +4,9 @@ import os
 import platform
 import yaml
 
+os.environ["MPLCONFIGDIR"] = "./tmp/mpl"
+os.environ["NUMBA_CACHE_DIR"] = "./tmp/numba"
+
 import scanpy as sc
 import scanpy.external as sce
 
