@@ -32,26 +32,39 @@ input:
           Name of the Hashtag assay, usually called "HTO" by default. Use the custom name if the assay has been named differently.
 
 output:
-  - csv:
+
+  - params:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.csv":
+      - "*_params_multiseqdemux.csv":
           type: file
-          description: CSV's for the results and parameters.
-          pattern: "*.csv"
+          description: The used parameters to call MULTIseqDemux in the R-Script.
+          pattern: "_params_multiseqdemux.csv"
+
+  - results:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_res_multiseqdemux.csv":
+          type: file
+          description: Resuls of MULTIseqDemux.
+          pattern: "_res_multiseqdemux.csv"
+
   - rds:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.rds":
+      - "*_multiseqdemux.rds":
           type: file
-          description: SeuratObject saves as RDS.
-          pattern: "*.rds"
+          description: SeuratObject saved as RDS.
+          pattern: "_multiseqdemux.rds"
 
   - versions:
       - "versions.yml":
