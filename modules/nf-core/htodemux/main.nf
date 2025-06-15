@@ -26,6 +26,7 @@ process HTODEMUX {
     kfunc = task.ext.kfunc ?: "clara"
     nsamples = task.ext.nsamples ?: "100"
     seed = task.ext.seed ?: '42'
+    verbose = task.ext.verbose ?: 'TRUE'
     prefix = task.ext.prefix ?: "${meta.id}"
 
     template 'HTODemux.R'
@@ -34,6 +35,7 @@ process HTODEMUX {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    touch ${prefix}_params_htodemux.csv
     touch ${prefix}_assignment_htodemux.csv
     touch ${prefix}_classification_htodemux.csv
     touch ${prefix}_htodemux.rds

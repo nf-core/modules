@@ -37,6 +37,19 @@ parse_args <- function(x){
 
     parsed_args <- structure(lapply(args_vals, function(x) x[2]), names = lapply(args_vals, function(x) x[1]))
     parsed_args[! is.na(parsed_args)]
+
+    # Convert recognized boolean strings to logical values
+    for (opt_name in names(parsed_args)) {
+        val <- parsed_args[[opt_name]]
+        if (is_valid_string(val)) {
+            val_lower <- tolower(val)
+            if (val_lower %in% c("true", "t", "yes", "y", "1")) {
+                parsed_args[[opt_name]] <- TRUE
+            } else if (val_lower %in% c("false", "f", "no", "n", "0")) {
+                parsed_args[[opt_name]] <- FALSE
+            }
+        }
+    }
 }
 
 ################################################
@@ -45,9 +58,6 @@ parse_args <- function(x){
 ################################################
 ################################################
 
-# I've defined these in a single array like this so that we could go back to an
-# optparse-driven method in future with module bin/ directories, rather than
-# the template
 # Set defaults and classes
 
 opt <- list(
@@ -59,6 +69,7 @@ opt <- list(
     kfunc = 'clara',
     nsamples = 100,
     seed = 42,
+    verbose = TRUE,
     prefix = '$prefix'
 )
 opt_types <- lapply(opt, class)
@@ -118,9 +129,9 @@ hashtag <- readRDS(opt\$seuratObj)
 
 # Demultiplex cells based on HTO enrichment
 if (opt\$kfunc == "clara") {
-    hashtag <- HTODemux(hashtag, assay = opt\$assay, positive.quantile = opt\$quantile, init = opt\$init, nstarts = opt\$nstarts, kfunc = "clara", seed = opt\$seed)
+    hashtag <- HTODemux(hashtag, assay = opt\$assay, positive.quantile = opt\$quantile, init = opt\$init, nstarts = opt\$nstarts, kfunc = "clara", seed = opt\$seed, verbose = opt\$verbose)
 } else {
-    hashtag <- HTODemux(hashtag, assay = opt\$assay, positive.quantile = opt\$quantile, init = opt\$init, nstarts = opt\$nstarts, kfunc = "kmeans", seed = opt\$seed)
+    hashtag <- HTODemux(hashtag, assay = opt\$assay, positive.quantile = opt\$quantile, init = opt\$init, nstarts = opt\$nstarts, kfunc = "kmeans", seed = opt\$seed, verbose = opt\$verbose)
 }
 
 ################################################
@@ -134,8 +145,8 @@ if (is.null(opt\$init)) {
   init <- "NULL"
 }
 
-Argument <- c("seuratObject", "quantile", "kfunc", "nstarts", "nsamples", "seed", "init", "assay")
-Value <- c(opt\$seuratObj, opt\$quantile, opt\$kfunc, opt\$nstarts, opt\$nsamples, opt\$seed, init, opt\$assay)
+Argument <- c("seuratObject", "quantile", "kfunc", "nstarts", "nsamples", "seed", "init", "assay", "verbose")
+Value <- c(opt\$seuratObj, opt\$quantile, opt\$kfunc, opt\$nstarts, opt\$nsamples, opt\$seed, init, opt\$assay, opt\$verbose)
 params <- data.frame(Argument, Value)
 
 write.csv(params, paste0(opt\$prefix ,"_params_htodemux.csv"))
@@ -161,7 +172,7 @@ writeLines(
     c(
         '"${task.process}":',
         paste('    r-base:', r.version),
-        paste('    bioconductor-deseq2:', seurat.version)
+        paste('    seurat:', seurat.version)
     ),
 'versions.yml')
 
