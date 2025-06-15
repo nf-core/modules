@@ -17,6 +17,7 @@ init = NULL
 if ('$init' != "NULL") {
     init = as.integer('$init')
 }
+<<<<<<< HEAD
 nstarts = as.integer('$nstarts')
 kfunc = '$kfunc'
 nsamples = as.integer('$nsamples')
@@ -43,6 +44,8 @@ assay = '$assay'
 options(digits=5)
 quantile = as.double('$quantile')
 init = '$init'
+=======
+>>>>>>> efeebfaa0 (local tests passed)
 nstarts = as.integer('$nstarts')
 kfunc = 'clara'
 nsamples = as.integer('$nsamples')
