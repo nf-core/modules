@@ -37,7 +37,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*params_htodemux.csv":
+      - "*_params_htodemux.csv":
           type: file
           description: The used parameters to call HTODemux in the R-Script.
           pattern: "params_htodemux.csv"
@@ -48,7 +48,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*assignment_htodemux.csv":
+      - "*_assignment_htodemux.csv":
           type: file
           description: Assignment results.
           pattern: "assignment_htodemux.csv"
@@ -59,7 +59,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*classification_htodemux.csv":
+      - "*_classification_htodemux.csv":
           type: file
           description: Classification results.
           pattern: "classification_htodemux.csv"
