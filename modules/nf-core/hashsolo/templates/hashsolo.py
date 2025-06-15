@@ -12,7 +12,7 @@ except json.JSONDecodeError:
     params = {}
 
 adata = sc.read_h5ad("${input_h5ad}")
-columns = "${cell_hashing_columns}"[1:-1].split(", ")
+columns = "${cell_hashing_columns.join(' ')}".split()
 columns_str = [str(x) for x in columns]
 sce.pp.hashsolo(adata, columns_str,"${params}")
 adata.write("test/${prefix}_hashsolo.h5ad")
