@@ -70,10 +70,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.rds":
+      - "*_htodemux.rds":
           type: file
           description: SeuratObject saved as RDS.
-          pattern: "*.rds"
+          pattern: "htodemux.rds"
 
   - versions:
       - "versions.yml":
