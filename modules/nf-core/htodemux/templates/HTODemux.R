@@ -47,7 +47,7 @@ init = '$init'
 =======
 >>>>>>> efeebfaa0 (local tests passed)
 nstarts = as.integer('$nstarts')
-kfunc = 'clara'
+kfunc = '$kfunc'
 nsamples = as.integer('$nsamples')
 seed = as.integer('$seed')
 verbose = as.logical('$verbose')
@@ -85,6 +85,7 @@ hashtag <- readRDS(seuratObj)
 # Demultiplex cells based on HTO enrichment
 hashtag <- HTODemux(hashtag, assay = assay, positive.quantile = quantile, init = init, nstarts = nstarts, kfunc = kfunc, seed = seed, verbose = verbose)
 
+<<<<<<< HEAD
 =======
 hashtag <- readRDS(opt\$seuratObj)
 =======
@@ -99,6 +100,8 @@ if (kfunc == "clara") {
     hashtag <- HTODemux(hashtag, assay = assay, positive.quantile = quantile, init = init, nstarts = nstarts, kfunc = "kmeans", seed = seed, verbose = verbose)
 }
 >>>>>>> df971f6e6 (add template)
+=======
+>>>>>>> fd64ed70a (adopted feedback of second review)
 
 ################################################
 ################################################
