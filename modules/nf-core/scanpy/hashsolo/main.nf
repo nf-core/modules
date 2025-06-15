@@ -30,6 +30,7 @@ process SCANPY_HASHSOLO {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python3 --version | cut -f 2 -d " ")
-        scanpy: \$(python3 -c "import scanpy; print(scanpy.__version__)")    END_VERSIONS
+        scanpy: \$(python3 -c "import scanpy; print(scanpy.__version__)")
+    END_VERSIONS
     """
 }
