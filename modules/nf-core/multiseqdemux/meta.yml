@@ -4,7 +4,7 @@ name: "multiseqdemux"
 description: Identify singlets, doublets and negative cells from multiplexing experiments. Annotate singlets by tags.
 keywords:
   - demultiplexing
-  - hashing-based deconvoltion
+  - hashing-based deconvolution
   - single-cell
 tools:
   - "multiseqdemux":
@@ -26,6 +26,10 @@ input:
         type: file
         description: |
           A `.rds` file containing the seurat object. Assumes that the hash tag oligo (HTO) data has been added and normalized.
+    - assay:
+        type: string
+        description: |
+          Name of the Hashtag assay, usually called "HTO" by default. Use the custom name if the assay has been named differently.
 
 output:
   - csv:

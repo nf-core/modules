@@ -8,13 +8,16 @@ process MULTISEQDEMUX {
         'community.wave.seqera.io/library/r-seurat_r-seuratobject:b11306d1bdc82827' }"
 
     input:
-    tuple val(meta), path(seurat_object)
+    tuple val(meta), path(seurat_object), val(assay)
 
     output:
-    tuple val(meta), path("*.csv")          , emit: csv
-    tuple val(meta), path("*.rds")          , emit: rds
-    path "versions.yml"                     , emit: versions
+    tuple val(meta), path("*_params_multiseqdemux.csv")       , emit: params
+    tuple val(meta), path("*_res_multiseqdemux.csv")          , emit: results
+    tuple val(meta), path("*_multiseqdemux.rds")              , emit: rds
+    path "versions.yml"                                       , emit: versions
 
+
+"_res_multiseqdemux.csv"
     when:
     task.ext.when == null || task.ext.when
 
@@ -26,13 +29,11 @@ process MULTISEQDEMUX {
     qrangeTo = task.ext.qrangeTo ?: "0.9"
     qrangeBy = task.ext.qrangeBy ?: "0.05"
     verbose = task.ext.verbose ?: 'TRUE'
-    assay = task.ext.assay ?: 'HTO'
     prefix = task.ext.prefix ?: "${meta.id}"
 
     template 'MultiSeqDemux.R'
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_params_multiseqdemux.csv
