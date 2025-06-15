@@ -8,18 +8,19 @@ process HTODEMUX {
         'community.wave.seqera.io/library/r-seurat_r-seuratobject:b11306d1bdc82827' }"
 
     input:
-    tuple val(meta), path(seurat_object)
+    tuple val(meta), path(seurat_object), val(assay)
 
     output:
-    tuple val(meta), path("*.csv")          , emit: csv
-    tuple val(meta), path("*.rds")          , emit: rds
-    path "versions.yml"                     , emit: versions
+    tuple val(meta), path("*params_htodemux.csv")              , emit: params
+    tuple val(meta), path("*assignment_htodemux.csv")          , emit: assignment
+    tuple val(meta), path("*classification_htodemux.csv")      , emit: classification
+    tuple val(meta), path("*_htodemux.rds")                    , emit: rds
+    path "versions.yml"                                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    assay = task.ext.assay ?: "HTO"
     quantile = task.ext.quantile ?: "0.99"
     init = task.ext.init ?: "NULL"
     nstarts = task.ext.nstarts ?: "100"
@@ -32,7 +33,6 @@ process HTODEMUX {
     template 'HTODemux.R'
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_params_htodemux.csv

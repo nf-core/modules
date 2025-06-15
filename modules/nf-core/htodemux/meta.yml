@@ -4,7 +4,7 @@ name: "htodemux"
 description: Demultiplex samples based on data from cell hashing.
 keywords:
   - demultiplexing
-  - hashing-based deconvoltion
+  - hashing-based deconvolution
   - single-cell
 tools:
   - "htodemux":
@@ -26,18 +26,44 @@ input:
         type: file
         description: |
           A `.rds` file containing the seurat object. Assumes that the hash tag oligo (HTO) data has been added and normalized.
-
+    - assay:
+        type: string
+        description: |
+          Name of the Hashtag assay, usually called "HTO" by default. Use the custom name if the assay has been named differently.
 output:
-  - csv:
+  - params:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.csv":
+      - "*params_htodemux.csv":
           type: file
-          description: CSV's for the classification, assignment and parameters.
-          pattern: "*.csv"
+          description: The used parameters to call HTODemux in the R-Script.
+          pattern: "params_htodemux.csv"
+
+  - assignment:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*assignment_htodemux.csv":
+          type: file
+          description: Assignment results.
+          pattern: "assignment_htodemux.csv"
+
+  - classification:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*classification_htodemux.csv":
+          type: file
+          description: Classification results.
+          pattern: "classification_htodemux.csv"
+
   - rds:
       - meta:
           type: map
@@ -46,7 +72,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.rds":
           type: file
-          description: SeuratObject saves as RDS.
+          description: SeuratObject saved as RDS.
           pattern: "*.rds"
 
   - versions:
