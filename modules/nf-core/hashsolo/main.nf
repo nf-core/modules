@@ -4,8 +4,8 @@ process HASHSOLO {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ba/baee2c1ee0f6cd0b6a18a6c71bad03370139a77e53cad06464b065f795d52cd0/data':
-        'community.wave.seqera.io/library/pyyaml_scanpy:a3a797e09552fddc' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/16/168ecbbe27ccef766741ccbf937b0d2675be2e19b0565035e0719f1e9ea5ee95/data':
+        'community.wave.seqera.io/library/python_pyyaml_scanpy:b5509a698e9aae25' }"
 
     input:
     tuple val(meta), path(input_h5ad), val(cell_hashing_columns)
