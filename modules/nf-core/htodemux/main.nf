@@ -39,6 +39,7 @@ process HTODEMUX {
     tuple val(meta), path("*_params_htodemux.csv")             , emit: params
     tuple val(meta), path("*_assignment_htodemux.csv")         , emit: assignment
     tuple val(meta), path("*_classification_htodemux.csv")     , emit: classification
+<<<<<<< HEAD
     tuple val(meta), path("*_htodemux.rds")                    , emit: rds
     path "versions.yml"                                        , emit: versions
 =======
@@ -69,6 +70,8 @@ process HTODEMUX {
     tuple val(meta), path("*params_htodemux.csv")              , emit: params
     tuple val(meta), path("*assignment_htodemux.csv")          , emit: assignment
     tuple val(meta), path("*classification_htodemux.csv")      , emit: classification
+=======
+>>>>>>> 5d23ec64b (add _ to the output paths)
     tuple val(meta), path("*_htodemux.rds")                    , emit: rds
     path "versions.yml"                                        , emit: versions
 >>>>>>> da0d66277 (adopted the feedback from the review)
