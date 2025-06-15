@@ -235,6 +235,9 @@ nextflow_workflow {
         }
     }
     test ("test_fastq_align_dragmap_SE"){
+
+        tag "arm_failure"
+
         setup {
             run("DRAGMAP_HASHTABLE") {
                 script "../../../../modules/nf-core/dragmap/hashtable/main.nf"
@@ -269,6 +272,9 @@ nextflow_workflow {
         }
     }
     test ("test_fastq_align_dragmap_PE"){
+
+        tag "arm_failure"
+
         setup {
             run("DRAGMAP_HASHTABLE") {
                 script "../../../../modules/nf-core/dragmap/hashtable/main.nf"
@@ -333,6 +339,7 @@ nextflow_workflow {
         }
     }
     test ("test_fastq_align_snapaligner_PE"){
+        tag "arm_failure"
         setup {
             run("SNAPALIGNER_INDEX") {
                 script "../../../../modules/nf-core/snapaligner/index/main.nf"
