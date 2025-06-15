@@ -4,8 +4,8 @@ process HASHSOLO {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/scanpy:1.7.2--a1d7faa43565aad8':
-        'community.wave.seqera.io/library/scanpy:1.7.2--6a3f856cf6e8b3fa' }"
+        'oras://community.wave.seqera.io/library/scanpy:1.11.2--e1f13faeaff34e5b':
+        'community.wave.seqera.io/library/scanpy:1.11.2--cc70dffaa98ddb98' }"
 
     input:
     tuple val(meta), path(input_h5ad)
