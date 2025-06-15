@@ -16,7 +16,7 @@ nextflow_process {
                 input[0] = [
                     [ id: 'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hashsolo_anndata.h5ad', checkIfExists: true),
-                    ["Hash1", "Hash2", "Hash3"]
+                    ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
                 ]
 
                 input[1] = '' // pass nothing
