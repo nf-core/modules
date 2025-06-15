@@ -11,7 +11,10 @@ seuratObj = '$seurat_object'
 assay = '$assay'
 options(digits=5)
 quantile = as.double('$quantile')
-init = '$init'
+init = NULL
+if ('$init' != "NULL") {
+    init = as.integer('$init')
+}
 nstarts = as.integer('$nstarts')
 kfunc = 'clara'
 nsamples = as.integer('$nsamples')
