@@ -25,7 +25,6 @@ process HASHSOLO {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p test
     touch ${prefix}.h5ad
 
     cat <<-END_VERSIONS > versions.yml
