@@ -24,9 +24,11 @@ input:
         type: file
         description: fastq.gz files
         pattern: "*.fastq.gz"
-    - readgroup:
-        type: string
-        description: Readgroup information as string in the format `@RG\tID:group1\tSM:sample1\tPL:illumina\tLB:lib1\tPU:unit1`
+    - rg_map:
+        type: map
+        description: |
+          Groovy Map containing readgroup information
+          e.g. [ SM:'NA12878', LB:'Solexa-272222', PL:'illumina', ID_PU:'H0164ALXX140820:2:1101:10003:23460' ]
   - - meta2:
         type: map
         description: |
