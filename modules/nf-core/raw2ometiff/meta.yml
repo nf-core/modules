@@ -29,16 +29,16 @@ input:
           - edam: "http://edamontology.org/format_3915"
           
 output:
-  - tiff:
+  - ometiff:
     - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1']`
-    - "*.tiff":
+    - "*.ome.tiff":
         type: file
         description: OME-TIFF pyramid
-        pattern: "*.{tiff}"
+        pattern: "*.ome.tiff"
         ontologies:
           - edam: "http://edamontology.org/format_3727"
 

@@ -11,8 +11,8 @@ process RAW2OMETIFF {
     tuple val(meta), path(zarr_dir)
 
     output:
-    tuple val(meta), path("*.tiff"), emit: tiff
-    path "versions.yml"            ,  emit: versions
+    tuple val(meta), path("*.ome.tiff"), emit: ometiff
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,7 +38,7 @@ process RAW2OMETIFF {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.tiff
+    touch ${prefix}.ome.tiff
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
