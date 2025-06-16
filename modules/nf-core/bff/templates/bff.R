@@ -2,52 +2,42 @@
 
 ################################################
 ################################################
+## Fucntions                                  ##
+################################################
+################################################
+
+# Helper function for NULL condition
+null_if <- function(x, val = "NULL") if (x == val) NULL else x
+
+################################################
+################################################
 ## USE PARAMETERS FROM NEXTFLOW               ##
 ################################################
 ################################################
 
-# check fileHto
-
-parser <- ArgumentParser("Parameters for BFF")
-parser$add_argument("--fileHto", help="Path to file HTO count matrix.")
-parser$add_argument("--methods", help='A vector of one or more calling methods to use.', default="combined_bff")
-parser$add_argument("--methodsForConsensus", help='By default, a consensus call will be generated using all methods', default=NULL)
-parser$add_argument("--cellbarcodeWhitelist", help='A vector of expected cell barcodes. This allows reporting on the total set of expected barcodes, not just those in the filtered count matrix',default=NULL)
-parser$add_argument("--metricsFile", help='If provided, summary metrics will be written to this file.', default="metrics_cell_hash_r.csv")
-parser$add_argument("--doTSNE", help='If true, tSNE will be run on the resulting hashing calls after each caller.', default=TRUE)
-parser$add_argument("--preprocess_bff", help='If given, the PreProcess function by CellHashR is executed', action="store_true")
-parser$add_argument("--barcodeWhitelist", help='A vector of barcode names to retain, used for preprocessing step', default=NULL)
-parser$add_argument("--doHeatmap", help='f true, Seurat::HTOHeatmap will be run on the results of each caller.', default=TRUE)
-parser$add_argument("--perCellSaturation", help='An optional dataframe with the columns cellbarcode and saturation',default=NULL)
-parser$add_argument("--majorityConsensusThreshold", help='This applies to calculating a consensus call when multiple algorithms are used',default=NULL)
-parser$add_argument("--chemistry", help='This string is passed to EstimateMultipletRate. Should be either 10xV2 or 10xV3.', default="10xV3")
-parser$add_argument("--callerDisagreementThreshold", help='If provided, the agreement rate will be calculated between each caller and the simple majority call, ignoring discordant and no-call cells.',default=NULL)
-
-
-
 # cast parameters from nextflow
-hto_matrix = '$hto_matrix'
-methods = '$methods' #COMBINED, RAW, CLUSTER
-methodsForConsensus = 'NULL' #RAW, CLUSTER
 
+# input parameters
+hto_matrix <- '$hto_matrix'
+methods <- '$methods' # COMBINED, RAW, CLUSTER
+preprocessing <- '$preprocessing' #    preprocess_bff = task.ext.preprocess_bff ?: "FALSE"
 
-assay = '$assay'
-options(digits=5)
-quantile = as.double('$quantile')
-init = NULL
-if ('$init' != "NULL") {
-    init = as.integer('$init')
-}
-nstarts = as.integer('$nstarts')
-kfunc = '$kfunc'
-nsamples = as.integer('$nsamples')
-seed = as.integer('$seed')
-verbose = as.logical('$verbose')
-prefix = '$prefix'
+# ext.args
+methodsForConsensus <- null_if('$methodsForConsensus')  # NULL, RAW, CLUSTER
+cellbarcodeWhitelist <- null_if('$cellbarcodeWhitelist')
+prefix <- 'prefix'
+metricsFile <- paste0(prefix, "_metrics_bff.csv")
+doTSNE <- as.logical('$doTSNE')
+barcodeWhitelist <- null_if('$barcodeWhitelist')
+doHeatmap <- as.logical('$doHeatmap')
+perCellSaturation <- null_if('$perCellSaturation')
+majorityConsensusThreshold <- null_if('$majorityConsensusThreshold')
+chemistry <- '$chemistry'
+callerDisagreementThreshold <- null_if('$callerDisagreementThreshold')
 
 # check if the file exists
-if (! file.exists(seuratObj)){
-    stop(paste0(seuratObj, ' is not a valid file'))
+if (! file.exists(hto_matrix)){
+    stop(paste0(hto_matrix, ' is not a valid file'))
 }
 
 ################################################
@@ -56,7 +46,13 @@ if (! file.exists(seuratObj)){
 ################################################
 ################################################
 
+library(DropletUtils)
 library(Seurat)
+library(cellhashR)
+library(here)
+library(dplyr)
+library(ggplot2)
+library(argparse)
 
 ################################################
 ################################################
