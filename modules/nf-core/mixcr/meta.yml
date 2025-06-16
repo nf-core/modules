@@ -8,38 +8,35 @@ keywords:
   - repertoire
 tools:
   - "mixcr":
-      description: "MiXCR is a universal software for fast and accurate analysis of raw T- or B- cell receptor repertoire sequencing data."
+      description: "MiXCR is a universal software for fast and accurate analysis of 
+        raw T- or B- cell receptor repertoire sequencing data."
       homepage: "https://mixcr.com/"
       documentation: "https://mixcr.com/mixcr/reference/overview-analysis-overview/"
       tool_dev_url: "https://github.com/milaboratory/mixcr"
-      doi: ""
-      licence: "Copyright (c) 2014-2024, MiLaboratories Inc. All Rights Reserved"
-      identifier: "milaboratories/mixcr"
+      doi: "10.1038/nmeth.3364"
+      licence: ["Copyright (c) 2014-2024, MiLaboratories Inc. All Rights Reserved"]
+      identifier: biotools:MiXCR
       args_id: "$args"
 
 input:
-  - reads:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', ]`
-      - fastqs:
-          type: file
-          description: |
-            Input FASTQ files containing TCR/BCR repertoire sequencing data.
-          pattern: "*.{fastq.gz,fastq,fq,fq.gz}"
-          ontologies:
-            - edam: "http://edamontology.org/format_1930" 
-  - preset:
-      type: val
-      description: Argument passed to `mixcr analyze` to specify the analysis preset
-  - species:
-      type: val
-      description: Species used for analysis, e.g. `hsa`, `mouse`
-  - license:
-      type: secret
-      description: License key for MiXCR, input as a nextflow secret
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - fastqs:
+        type: file
+        description: |
+          Input FASTQ files containing TCR/BCR repertoire sequencing data.
+        pattern: "*.{fastq.gz,fastq,fq,fq.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1930" 
+  - - preset:
+        type: string
+        description: Argument passed to `mixcr analyze` to specify the analysis preset.
+  - - species:
+        type: string
+        description: Species used for analysis
+        enum: ['hsa', 'mouse']
 
 output:
   - clones:
