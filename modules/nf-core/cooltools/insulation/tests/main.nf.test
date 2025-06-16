@@ -12,10 +12,13 @@ nextflow_process {
     test("homo_sapiens - bam") {
 
         when {
+            params {
+                modules_testdata_base_path = "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/"
+            }
             process {
                 """
                 input[0] = [ [ id:'test' ],
-                       file(modules_testdata_base_path + '/genomics/homo_sapiens/cooler/merge/toy/toy.symm.upper.balanced.2.cool', checkIfExists: true)
+                       file(params.modules_testdata_base_path + '/genomics/homo_sapiens/cooler/merge/toy/toy.symm.upper.balanced.2.cool', checkIfExists: true)
                 ]
                 """
             }
@@ -35,6 +38,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                modules_testdata_base_path = "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/"
+            }
             process {
                 """
                 input[0] = [ [ id:'test' ],
