@@ -1,15 +1,13 @@
-process MIXCR {
+process MIXCR_ANALYZE {
     tag "$meta.id"
     label 'process_medium'
 
     secret 'MI_LICENSE'
-    // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
-    conda "${moduleDir}/environment.yml"
-    // container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-    //     'https://depot.galaxyproject.org/singularity/mixcr:4.7.0--hdfd78af_0':
-    //     'biocontainers/mixcr:4.7.0--hdfd78af_0' }"
 
-    container 'ghcr.io/milaboratory/mixcr/mixcr:4.7.0-164-develop'
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'ghcr.io/milaboratory/mixcr/mixcr:4.7.0-164-develop':
+        'ghcr.io/milaboratory/mixcr/mixcr:4.7.0-164-develop' }"
 
     input:
     tuple val(meta), path(reads)
