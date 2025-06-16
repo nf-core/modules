@@ -1,12 +1,13 @@
 nextflow_process {
 
-    name "Test Process MIXCR"
+    name "Test Process MIXCR_ANALYZE"
     script "../main.nf"
     process "MIXCR_ANALYZE"
 
     tag "modules"
     tag "modules_nfcore"
     tag "mixcr"
+    tag "mixcr_analyze"
 
     test("10xgenomics vdj - fastq") {
         when {

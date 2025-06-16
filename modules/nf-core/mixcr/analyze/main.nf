@@ -38,7 +38,7 @@ process MIXCR_ANALYZE {
         $prefix
 
     cat <<-END_VERSIONS > versions.yml
-    "$task.process":
+    "${task.process}":
         mixcr: \$(mixcr -v 2>&1 | sed -n '1p' | sed -E 's/MiXCR v([0-9\\.]+).*/\1/' || true)
     END_VERSIONS
     """
@@ -54,7 +54,7 @@ process MIXCR_ANALYZE {
     touch ${prefix}.report.txt
 
     cat <<-END_VERSIONS > versions.yml
-    "$task.process":
+    "${task.process}":
         mixcr: \$(mixcr -v 2>&1 | sed -n '1p' | sed -E 's/MiXCR v([0-9\\.]+).*/\1/' || true)
     END_VERSIONS
     """

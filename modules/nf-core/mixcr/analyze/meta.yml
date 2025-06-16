@@ -1,13 +1,13 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "mixcr"
+name: "mixcr_analyze"
 description: "MiXCR is a universal software for fast and accurate analysis of raw T- or B- cell receptor repertoire sequencing data."
 keywords:
   - TCR
   - BCR
   - repertoire
 tools:
-  - "mixcr":
+  - mixcr:
       description: "MiXCR is a universal software for fast and accurate analysis of 
         raw T- or B- cell receptor repertoire sequencing data."
       homepage: "https://mixcr.com/"
@@ -17,12 +17,12 @@ tools:
       licence: ["Copyright (c) 2014-2024, MiLaboratories Inc. All Rights Reserved"]
       identifier: biotools:MiXCR
       args_id: "$args"
-
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
     - fastqs:
         type: file
         description: |
@@ -37,54 +37,44 @@ input:
         type: string
         description: Species used for analysis
         enum: ['hsa', 'mouse']
-
 output:
   - clones:
       - meta:
           type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - "clones.tsv":
+          description: Groovy Map containing sample information
+      - "*clones*.tsv":
           type: file
           description: Clonotype abundance files
           pattern: "*clones*.tsv"
   - reports:
       - meta:
           type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - "reports.txt":
+          description: Groovy Map containing sample information
+      - "*.txt":
           type: file
           description: MixCR performance reports
           pattern: "*.txt"
   - clns:
       - meta:
           type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - ".clns":
+          description: Groovy Map containing sample information
+      - "*.clns":
           type: file
           description: Clone assembly intermediate file
           pattern: "*.clns"
   - vdjca:
       - meta:
           type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - ".vdjca":
+          description: Groovy Map containing sample information
+      - "*.vdjca":
           type: file
           description: Clone alignment intermediate file
           pattern: "*.vdjca"
   - versions:
-      - "versions.yml":
+      - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
-
 authors:
   - "@derrik-gratz"
 maintainers:
