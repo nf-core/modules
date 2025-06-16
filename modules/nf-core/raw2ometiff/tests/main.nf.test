@@ -17,7 +17,7 @@ nextflow_process {
                     """
                     input[0] = Channel.fromList([
                         tuple([ id:'test'], // meta map
-                        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/imaging/ome-zarr/zarr.tar', checkIfExists: true))
+                        file(params.modules_testdata_base_path + 'imaging/ome-zarr/zarr.tar', checkIfExists: true))
                     ])
                     """
                }
@@ -35,9 +35,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.tiff[0][1].toString().endsWith(".tiff")
-                  assert process.out.versions[0].toString().endsWith("versions.yml")},
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(process.out.versions,
+                file(process.out.tiff[0][1]).name).match() }
             )
         }
     }
@@ -52,7 +51,7 @@ nextflow_process {
                 """
                 input[0] = Channel.fromList([
                         tuple([ id:'test'], // meta map
-                        file('https://raw.githubusercontent.com/nf-core/test-datasets/lsmquant/test_data/zarr.zip', checkIfExists: true))
+                        file(params.modules_testdata_base_path + 'imaging/ome-zarr/zarr.tar', checkIfExists: true))
                     ])
                 """
             }
@@ -61,9 +60,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.tiff[0][1].toString().endsWith(".tiff")
-                  assert process.out.versions[0].toString().endsWith("versions.yml")},
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(process.out.versions,
+                file(process.out.tiff[0][1]).name).match() }
             )
         }
 
