@@ -67,7 +67,7 @@ nextflow_process {
 				    [
 				        file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz', checkIfExists: true)
 				    ],
-                    ''
+                    []
 				])
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
@@ -110,7 +110,10 @@ nextflow_process {
 				    [
 				        file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz', checkIfExists: true)
 				    ],
-                    '"@RG\\tID:ERR5069949.2151832.1\\tLB:lib1\\tPL:bar\\tSM:sample\\tPU:ERR5069949.2151832.1"'
+                    [ SM:'NA12878', 
+                      LB:'Solexa-272222',
+                      PL:'illumina',
+                      ID_PU:'H0164ALXX140820:2:1101:10003:23460' ]
 				])
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
@@ -152,7 +155,7 @@ nextflow_process {
 				    [
 				        file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz', checkIfExists: true)
 				    ],
-                    ''
+                    []
 				])
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
@@ -194,7 +197,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ],
-                    ''
+                    []
                 ]
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
@@ -239,7 +242,10 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ],
-                    '"@RG\\tID:ERR5069949.2151832.1\\tLB:lib1\\tPL:bar\\tSM:sample\\tPU:ERR5069949.2151832.1"'
+                    [ SM:'NA12878', 
+                      LB:'Solexa-272222',
+                      PL:'illumina',
+                      ID_PU:'H0164ALXX140820:2:1101:10003:23460' ]
                 ]
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
@@ -283,7 +289,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ],
-                    ''
+                    []
                 ]
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
@@ -325,7 +331,7 @@ nextflow_process {
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                     ],
-                    ''
+                    []
                 ]
                 input[1] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                 input[2] = BWA_INDEX_CRAM.out.index
@@ -370,7 +376,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ],
-                    ''
+                    []
                 ]
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map

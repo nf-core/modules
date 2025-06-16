@@ -7,7 +7,7 @@ process PARABRICKS_FQ2BAM {
     container "nvcr.io/nvidia/clara/clara-parabricks:4.4.0-1"
 
     input:
-    tuple val(meta) , path(reads), val(readgroup)
+    tuple val(meta) , path(reads), val(rg_map)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(index)
     tuple val(meta4), path(interval_file)
@@ -35,8 +35,13 @@ process PARABRICKS_FQ2BAM {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def in_fq_command = readgroup ? (meta.single_end ? "--in-se-fq $reads $readgroup" : "--in-fq $reads $readgroup") : (meta.single_end ? "--in-se-fq $reads" : "--in-fq $reads")
+    def in_fq_command = meta.single_end ? "--in-se-fq $reads" : "--in-fq $reads"
     def extension = "$output_fmt"
+
+    def rg_sample_cmd    = rg_map.SM    ? "--read-group-sm ${rg_map.SM}"           : ""
+    def rg_library_cmd   = rg_map.LB    ? "--read-group-lb ${rg_map.LB}"           : ""
+    def rg_platform_cmd  = rg_map.PL    ? "--read-group-pl ${rg_map.PL}"           : "" 
+    def rg_id_prefix_cmd = rg_map.ID_PU ? "--read-group-id-prefix ${rg_map.ID_PU}" : ""
 
     def known_sites_command = known_sites ? (known_sites instanceof List ? known_sites.collect { "--knownSites $it" }.join(' ') : "--knownSites ${known_sites}") : ""
     def known_sites_output_cmd = known_sites ? "--out-recal-file ${prefix}.table" : ""
@@ -51,6 +56,10 @@ process PARABRICKS_FQ2BAM {
         fq2bam \\
         --ref \$INDEX \\
         $in_fq_command \\
+        $rg_sample_cmd \\
+        $rg_library_cmd \\
+        $rg_platform_cmd \\
+        $rg_id_prefix_cmd \\
         --out-bam ${prefix}.${extension} \\
         $known_sites_command \\
         $known_sites_output_cmd \\
