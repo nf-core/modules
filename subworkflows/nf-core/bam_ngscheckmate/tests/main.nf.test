@@ -132,14 +132,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(
-                    file(workflow.out.corr_matrix[0][1]).name,
-                    file(workflow.out.matched[0][1]).name,
-                    file(workflow.out.all[0][1]).name,
-                    // workflow.out.vcf.collect {meta, vcf -> path(vcf).vcf.variantsMD5 },
-                    file(workflow.out.pdf[0][1]).name,
-                    workflow.out.versions
-                    ).match()}
+                { assert snapshot(workflow.out).match()}
             )
         }
     }
