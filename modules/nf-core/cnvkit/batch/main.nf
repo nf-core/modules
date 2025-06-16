@@ -41,7 +41,7 @@ process CNVKIT_BATCH {
     def tumor_out = tumor_cram ? tumor.BaseName + ".bam" : "${tumor}"
 
     // tumor_only mode does not need fasta & target
-    // instead it requires a pre-computed reference.cnn which is built from fasta & target
+    // instead a pre-computed reference.cnn may be supplied which is built from fasta & target
     def (normal_out, normal_args, fasta_args) = ["", "", ""]
     def fai_reference = fasta_fai ? "--fai-reference ${fasta_fai}" : ""
 
@@ -78,7 +78,7 @@ process CNVKIT_BATCH {
     // tumor_only mode and no reference
     // generate a "flat" reference which assumes equal coverage
     // by passing '--normal' without any files
-    if (!reference_exists){
+    if (!reference_exists & !normal_exists & tumor_exists) {
         normal_args = normal_args ?: "--normal"
     }
 
@@ -126,6 +126,42 @@ process CNVKIT_BATCH {
     """
     touch ${targets.simpleName}.antitarget.bed
     touch ${targets.simpleName}.target.bed
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ${versions}
+    END_VERSIONS
+    """
+
+    stub:
+    def tumor_exists = tumor ? true : false
+    def normal_exists = normal ? true : false
+    def reference_exists = reference ? true : false
+
+    // identify BED naming pattern
+    def bed_prefix = reference_exists ? reference.BaseName : targets ? targets.BaseName : ""
+    def bed_suffix = reference_exists ? "-tmp.bed" : ".bed"
+
+    // execute samtools only when cram files are input, cnvkit runs natively on bam but is prohibitively slow
+    def tumor_cram = tumor_exists && tumor.Extension == "cram" ? true : false
+    def normal_cram = normal_exists && normal.Extension == "cram" ? true : false
+
+    def out_base_name = tumor_exists ? tumor.BaseName : normal.BaseName
+
+    def versions = normal_cram || tumor_cram ?
+        "samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')\n        cnvkit: \$(cnvkit.py version | sed -e 's/cnvkit v//g')" :
+        "cnvkit: \$(cnvkit.py version | sed -e 's/cnvkit v//g')"
+    """
+    touch ${bed_prefix}.antitarget${bed_suffix}
+    touch ${bed_prefix}.target${bed_suffix}
+    touch "reference.cnn"
+
+    touch ${out_base_name}.antitargetcoverage.cnn
+    touch ${out_base_name}.bintest.cns
+    touch ${out_base_name}.call.cns
+    touch ${out_base_name}.cnr
+    touch ${out_base_name}.cns
+    touch ${out_base_name}.targetcoverage.cnn
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
