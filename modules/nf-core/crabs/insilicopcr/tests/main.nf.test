@@ -1,0 +1,89 @@
+nextflow_process {
+
+    name "Test Process CRABS_INSILICOPCR"
+    script "../main.nf"
+    process "CRABS_INSILICOPCR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "crabs"
+    tag "crabs/insilicopcr"
+    tag "crabs/import"
+
+    setup {
+        run("CRABS_IMPORT") {
+            script "../../import/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path +'genomics/sarscov2/genome/genome-ena.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'accession2taxid' ], // meta map
+                    file(params.modules_testdata_base_path +'genomics/prokaryotes/metagenome/taxonomy/accession2taxid/nucl_gb.accession2taxid', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'names' ], // meta map
+                    file(params.modules_testdata_base_path +'genomics/prokaryotes/metagenome/taxonomy/taxdmp/names.dmp', checkIfExists: true)
+                ]
+                input[3] = [
+                    [ id:'nodes' ], // meta map
+                    file(params.modules_testdata_base_path +'genomics/prokaryotes/metagenome/taxonomy/taxdmp/nodes.dmp', checkIfExists: true)
+                ]
+                input[4] = 'embl' // import format
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - fasta") {
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                module_args = '--forward GA --reverse CG'
+            }
+            process {
+                """
+                input[0] = CRABS_IMPORT.output.crabsdb // use the output from CRABS_IMPORT or CRABS_MERGE
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = CRABS_IMPORT.output.crabsdb // use the output from CRABS_IMPORT
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+}
