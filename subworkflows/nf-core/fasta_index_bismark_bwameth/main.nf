@@ -7,12 +7,12 @@ include { SAMTOOLS_FAIDX            } from '../../../modules/nf-core/samtools/fa
 workflow FASTA_INDEX_BISMARK_BWAMETH {
 
     take:
-    fasta                          // channel: [ val(meta), [ fasta ] ]
-    fasta_index                    // channel: [ val(meta), [ fasta index ] ]
-    bismark_index                  // channel: [ val(meta), [ bismark index ] ]
-    bwameth_index                  // channel: [ val(meta), [ bwameth index ] ]
-    aligner                        // string: aligner name
-    collecthsmetrics               // boolean: whether to run picard collecthsmetrics
+    fasta            // channel: [ val(meta), [ fasta ] ]
+    fasta_index      // channel: [ val(meta), [ fasta index ] ]
+    bismark_index    // channel: [ val(meta), [ bismark index ] ]
+    bwameth_index    // channel: [ val(meta), [ bwameth index ] ]
+    aligner          // string: bismark, bismark_hisat or bwameth
+    collecthsmetrics // boolean: whether to run picard collecthsmetrics
 
     main:
 
@@ -22,15 +22,20 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
     ch_bwameth_index = Channel.empty()
     ch_versions      = Channel.empty()
 
-    if (fasta.toString().endsWith('.gz')) {
-        GUNZIP (
-            [ [:], file(fasta, checkIfExists: true) ]
-        )
-        ch_fasta    = GUNZIP.out.gunzip
-        ch_versions = ch_versions.mix(GUNZIP.out.versions)
-    } else {
-        ch_fasta    = Channel.value([[:], file(fasta, checkIfExists: true)])
-    }
+    // Check if fasta file is gzipped and decompress if needed
+    fasta
+        .branch {
+            gzipped: it[1].toString().endsWith('.gz')
+            unzipped: true
+        }
+        .set { ch_fasta_branched }
+
+    GUNZIP (
+        ch_fasta_branched.gzipped.ifEmpty([])
+    )
+
+    ch_fasta    = ch_fasta_branched.unzipped.mix(GUNZIP.out.gunzip)
+    ch_versions = ch_versions.mix(GUNZIP.out.versions)
 
     // Aligner: bismark or bismark_hisat
     if( aligner =~ /bismark/ ){
@@ -38,15 +43,20 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
          * Generate bismark index if not supplied
          */
         if (bismark_index) {
-            if (bismark_index.toString().endsWith('.gz')) {
-                UNTAR (
-                    [ [:], file(bismark_index, checkIfExists: true) ]
-                )
-                ch_bismark_index = UNTAR.out.untar
-                ch_versions      = ch_versions.mix(UNTAR.out.versions)
-            } else {
-                ch_bismark_index = Channel.value([[:], file(bismark_index, checkIfExists: true)])
-            }
+            // Handle channel-based bismark index
+            bismark_index
+                .branch {
+                    gzipped: it[1].toString().endsWith('.gz')
+                    unzipped: true
+                }
+                .set { ch_bismark_index_branched }
+
+            UNTAR (
+                ch_bismark_index_branched.gzipped.ifEmpty([])
+            )
+
+            ch_bismark_index = ch_bismark_index_branched.unzipped.mix(UNTAR.out.untar)
+            ch_versions      = ch_versions.mix(UNTAR.out.versions)
         } else {
             BISMARK_GENOMEPREPARATION (
                 ch_fasta
@@ -62,15 +72,20 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
          * Generate bwameth index if not supplied
          */
         if (bwameth_index) {
-            if (bwameth_index.toString().endsWith('.gz')) {
-                UNTAR (
-                    [ [:], file(bwameth_index, checkIfExists: true) ]
-                )
-                ch_bwameth_index = UNTAR.out.untar
-                ch_versions      = ch_versions.mix(UNTAR.out.versions)
-            } else {
-                ch_bwameth_index = Channel.value([[:], file(bwameth_index, checkIfExists: true)])
-            }
+            // Handle channel-based bwameth index
+            bwameth_index
+                .branch {
+                    gzipped: it[1].toString().endsWith('.gz')
+                    unzipped: true
+                }
+                .set { ch_bwameth_index_branched }
+
+            UNTAR (
+                ch_bwameth_index_branched.gzipped.ifEmpty([])
+            )
+
+            ch_bwameth_index = ch_bwameth_index_branched.unzipped.mix(UNTAR.out.untar)
+            ch_versions      = ch_versions.mix(UNTAR.out.versions)
         } else {
             BWAMETH_INDEX (
                 ch_fasta
@@ -86,12 +101,12 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
     if (aligner == 'bwameth' | collecthsmetrics) {
         // already exising fasta index
         if (fasta_index) {
-            ch_fasta_index = Channel.value(file(fasta_index, checkIfExists: true)).map{ index -> [ [:], index ]}
+            ch_fasta_index = fasta_index
         } else {
             SAMTOOLS_FAIDX(
                 ch_fasta,
                 [[:], []],
-                false // No sizes generation
+                false
             )
             ch_fasta_index = SAMTOOLS_FAIDX.out.fai
             ch_versions    = ch_versions.mix(SAMTOOLS_FAIDX.out.versions)
