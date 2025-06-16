@@ -40,7 +40,7 @@ process MULTISEQDEMUX {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        multiseqdemux: \$(Rscript -e "library(Seurat); cat(as.character(packageVersion('Seurat')))")
+        r-seurat: \$(Rscript -e "library(Seurat); cat(as.character(packageVersion('Seurat')))")
         r-base: \$(Rscript -e "cat(strsplit(R.version[['version.string']], ' ')[[1]][3])")
     END_VERSIONS
     """
