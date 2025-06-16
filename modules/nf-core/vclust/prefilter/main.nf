@@ -5,7 +5,7 @@ process VCLUST_PREFILTER {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/vclust:1.3.1--py313h9ee0642_0':
-        'quay.io/biocontainers/vclust:1.3.1--py313h9ee0642_0' }"
+        'biocontainers/vclust:1.3.1--py313h9ee0642_0' }"
 
     input:
     tuple val(meta), path(fasta)
