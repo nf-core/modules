@@ -44,6 +44,8 @@ process MMSEQS_EASYCLUSTER {
     """
 
     touch ${prefix}.tsv
+    touch ${prefix}_rep_seq.fasta
+    touch ${prefix}_all_seqs.fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

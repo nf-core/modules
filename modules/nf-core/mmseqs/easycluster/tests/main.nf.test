@@ -10,19 +10,40 @@ nextflow_process {
     tag "mmseqs"
     tag "mmseqs/easycluster"
 
-    test("Should cluster an mmseqs database") {
+    test("mmseqs/easycluster - sarscov2 - proteome") {
 
         when {
             process {
                 """
                 input[0] = [
 				    [ id:'test', single_end:false ], // meta map
-				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
 				]
                 """
             }
         }
 
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+    }
+
+    test("mmseqs/easycluster - sarscov2 - proteome - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
+				]
+                """
+            }
+        }
 
         then {
             assertAll(
