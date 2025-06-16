@@ -8,7 +8,7 @@ process BFF {
         'biocontainers/r-seurat:3.0.2--r36h0357c0b_0' }"
 
     input:
-    tuple val(meta), path(hto_matrix), val(methodsForConsensus), val(preprocess_bff)
+    tuple val(meta), path(hto_matrix), val(methods), val(preprocessing)
 
     output:
     tuple val(meta), path("*_assignment_bff.csv")       , emit: results
@@ -19,40 +19,17 @@ process BFF {
     task.ext.when == null || task.ext.when
 
     script:
+    methodsForConsensus = task.ext.methodsForConsensus ?: "NULL" // NULL, RAW OR CLUSTER
+    cellbarcodeWhitelist = task.ext.cellbarcodeWhitelist ?: "NULL"
     prefix = task.ext.prefix ?: "${meta.id}"
 
-
-    bff = "True"
-    rna_matrix_bff = "raw"
-    hto_matrix_bff = "raw"
-    assignmentOutBff = "bff"
-    bff_preprocess = "True"
-    methods = "combined_bff"
-    methodsForConsensus = 'NULL'
-    cellbarcodeWhitelist = 'NULL'
-    metricsFile = 'metrics_bff.csv'
-    doTSNE = "True"
-    doHeatmap = "True"
-    perCellSaturation = 'NULL'
-    majorityConsensusThreshold = 'NULL'
-    chemistry = "10xV3"
-    callerDisagreementThreshold = 'NULL'
-    preprocess_bff = "FALSE"
-    barcodeWhitelist = 'NULL'
-
-
-            def run_preprocess = preprocess_bff != 'False' ? " --preprocess_bff" : ''
-        """
-        mkdir bff_${sampleId}
-        bff.R --fileHto hto_data --methods $methods --methodsForConsensus $methodsForConsensus \
-        --cellbarcodeWhitelist $cellbarcodeWhitelist --metricsFile bff_${sampleId}_$metricsFile \
-        --doTSNE $doTSNE --doHeatmap $doHeatmap --perCellSaturation $perCellSaturation --majorityConsensusThreshold $majorityConsensusThreshold \
-        --chemistry $chemistry --callerDisagreementThreshold $callerDisagreementThreshold --outputdir bff_${sampleId} \
-        --assignmentOutBff $assignmentOutBff ${run_preprocess} --barcodeWhitelist $barcodeWhitelist
-        """
-
-
-
+    doTSNE = task.ext.doTSNE ?: "TRUE"
+    barcodeWhitelist = task.ext.barcodeWhitelist ?: "NULL"
+    doHeatmap = task.ext.doHeatmap ?: "TRUE"
+    perCellSaturation = task.ext.perCellSaturation ?: "NULL"
+    majorityConsensusThreshold = task.ext.majorityConsensusThreshold ?: "NULL"
+    chemistry = task.ext.chemistry ?: "10xV3"
+    callerDisagreementThreshold = task.ext.callerDisagreementThreshold ?: "NULL"
 
     template bff.R
 
