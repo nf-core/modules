@@ -27,7 +27,7 @@ process MMSEQS_EASYCLUSTER {
     mmseqs \\
         easy-cluster \\
         ${sequence} \\
-        ${prefix}.tsv \\
+        ${prefix} \\
         tmp1 \\
         $args \\
         --threads ${task.cpus}
