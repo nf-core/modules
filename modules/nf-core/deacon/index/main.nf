@@ -19,7 +19,7 @@ process DEACON_INDEX {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${fasta.baseName}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     deacon \\
         index \\

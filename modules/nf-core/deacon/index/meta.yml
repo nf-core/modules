@@ -8,6 +8,7 @@ keywords:
   - genome
   - reference
   - minimizer
+  - decontamination
 tools:
   - "deacon":
       description: "Fast alignment-free sequence filter"
@@ -27,7 +28,7 @@ input:
     - fasta:
         type: file
         description: Input genome fasta file
-        pattern: "*.{fasta,fa,fas,fna}"
+        pattern: "*.{fasta,fasta.gz,fas,fas.gz,fa,fa.gz,fna,fna.gz}"
         ontologies:
           - edam: "http://edamontology.org/data_2044" # Sequence
           - edam: "http://edamontology.org/format_1929" # FASTA
