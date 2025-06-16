@@ -15,6 +15,10 @@ nextflow_process {
         config './nextflow.config'
 
         when {
+            params {
+                module_args = '--low-memory'
+                // Using --low-memory for testing
+            }
             process {
                 """
                 input[0] = [
@@ -50,6 +54,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
@@ -84,6 +91,10 @@ nextflow_process {
         config './nextflow.config'
 
         when {
+            params {
+                module_args = '--low-memory'
+                // Using --low-memory for testing
+            }
             process {
                 """
                 input[0] = [
@@ -119,6 +130,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
@@ -153,6 +167,10 @@ nextflow_process {
         config './nextflow.config'
 
         when {
+            params {
+                module_args = '--low-memory'
+                // Using --low-memory for testing
+            }
             process {
                 """
                 input[0] = [
@@ -188,6 +206,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
@@ -222,6 +243,10 @@ nextflow_process {
         config './nextflow.config'
 
         when {
+            params {
+                module_args = '--low-memory'
+                // Using --low-memory for testing
+            }
             process {
                 """
                 input[0] = [
@@ -257,6 +282,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
