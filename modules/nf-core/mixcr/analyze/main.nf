@@ -55,6 +55,7 @@ process MIXCR_ANALYZE {
     touch ${prefix}.clones_TRA.tsv
     touch ${prefix}.clones_TRB.tsv
     touch ${prefix}.clns
+    touch ${prefix}.vdjca
     touch ${prefix}.report.txt
 
     cat <<-END_VERSIONS > versions.yml
