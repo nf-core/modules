@@ -70,7 +70,7 @@ runs:
       if: env.MIXCR_TESTING_LICENSE != '' 
       shell: bash
       run: |
-        nextflow secrets set MIXCR_TESTING_LICENSE $MIXCR_TESTING_LICENSE
+        nextflow secrets set MI_LICENSE $MIXCR_TESTING_LICENSE
 
       # TODO Skip failing conda tests and document their failures
       # https://github.com/nf-core/modules/issues/7017
