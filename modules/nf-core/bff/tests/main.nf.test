@@ -1,3 +1,5 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test bff
 nextflow_process {
 
     name "Test Process BFF"
@@ -8,18 +10,16 @@ nextflow_process {
     tag "modules_nfcore"
     tag "bff"
 
-    def testDataPath = "/Users/luisheinzlmeier/Desktop/test_data/hto"
-
+    def testDataPath =
     test("hto_matrix - combined - preprocessing") {
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test'], // meta map
-                    "$testDataPath",
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto', checkIfExists: true),
                     "COMBINED",
                     "TRUE"
-
                 ]
                 """
             }
@@ -39,7 +39,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test'], // meta map
-                    "$testDataPath",
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto', checkIfExists: true),
                     "RAW",
                     "TRUE"
                 ]
@@ -62,7 +62,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test'], // meta map
-                    "$testDataPath",
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto', checkIfExists: true),
                     "COMBINED",
                     "FALSE"
                 ]
