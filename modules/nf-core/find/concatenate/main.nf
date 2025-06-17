@@ -29,9 +29,9 @@ process FIND_CONCATENATE {
 
     // Use input file ending as default
     // get file extensions, if extension is .gz then get the second to last extension as well
-    file_extensions = files_in.collect { in_file -> in_file.name - in_file.getBaseName(in_file.name.endsWith('.gz') ? 2 : 1) }.toSet()
+    file_extensions = files_in.collect { in_file -> in_file.name - in_file.getBaseName(in_file.name.endsWith('.gz') ? 2 : 1) }
 
-    // Use input file ending as default
+    // Use input file ending as default for output file
     prefix = task.ext.prefix ?: "${meta.id}${file_extensions[0]}"
 
     if (files_in.any{ file -> file.toString().endsWith('.gz')} && !files_in.every{ file -> file.toString().endsWith('.gz') }) {
@@ -39,9 +39,9 @@ process FIND_CONCATENATE {
     }
 
     in_zip = files_in[0].toString().endsWith('.gz')
-    out_zip = task.ext.prefix ? task.ext.prefix.endsWith('.gz') : false
+    out_zip = task.ext.prefix ? task.ext.prefix.endsWith('.gz') : file_extensions[0].endsWith('.gz')
 
-    out_fname = in_zip && out_zip ? prefix : prefix.endsWith(".gz") ? prefix.replace('.gz', '') : prefix
+    out_fname = in_zip && out_zip ? prefix : prefix.endsWith('.gz') ? prefix.replace('.gz', '') : prefix
 
     cmd1 = in_zip && !out_zip ? "pigz -cd -p ${task.cpus}" : "cat"
     cmd2 = !in_zip && out_zip ? "pigz -p ${task.cpus} ${args} ${out_fname}" : ""

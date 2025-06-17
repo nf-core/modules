@@ -33,12 +33,13 @@ input:
 output:
   - file_out:
       - meta:
-          type: file
-          description: Concatenated file. Will be gzipped if file_out ends with ".gz"
-          pattern: "${file_out}"
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - ${prefix}:
           type: file
-          description: Concatenated file. Will be gzipped if file_out ends with ".gz"
+          description: Concatenated file. Will be gzipped if ${prefix} ends with ".gz" or inputs are gzipped, will be uncompressed otherwise.
           pattern: "${file_out}"
   - versions:
       - versions.yml:
