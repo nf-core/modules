@@ -33,12 +33,11 @@ process HASHEDDROPS {
     round                    = task.ext.round                 ?: "TRUE"       // Logical scalar indicating whether to check for non-integer values in m and, if present, round them for ambient profile estimation.
     byRank                   = task.ext.byRank                ?: "NULL"       // An integer scalar parametrizing an alternative method for identifying assumed empty droplets. If set, this is used to redefine lower and any specified value for lower is ignored.
     isCellFDR                = task.ext.isCellFDR             ?: "0.01"       // Threshold to filter the cells.
-    runEmptyDrops            = task.ext.runEmptyDrops         ?: "TRUE"       // Executes emptyDrops function only when desired, recommended only for raw data.
     gene_col                 = task.ext.gene_col              ?: "2"          // Specify which column of genes.tsv or features.tsv to use for gene names; default is 2.
 
     // hashedDrops Parameters
-    ignore_hashedDrops       = task.ext.ignore_hashedDrops    ?: "NULL"       // A numeric scalar specifying the lower bound on the total UMI count, at or below which barcodes will be ignored.
-    alpha_hashedDrops        = task.ext.alpha_hashedDrops     ?: "NULL"       // A numeric scalar specifying the scaling parameter for the Dirichlet-multinomial sampling scheme.
+    ignore       = task.ext.ignore    ?: "NULL"       // A numeric scalar specifying the lower bound on the total UMI count, at or below which barcodes will be ignored.
+    alpha        = task.ext.alpha     ?: "NULL"       // A numeric scalar specifying the scaling parameter for the Dirichlet-multinomial sampling scheme.
     ambient                  = task.ext.ambient               ?: "TRUE"       // Whether to use the relative abundance of each HTO in the ambient solution from emptyDrops, set TRUE only when test_ambient is TRUE.
     minProp                  = task.ext.minProp               ?: "0.05"       // Numeric scalar to be used to infer the ambient profile when ambient=NULL.
     pseudoCount              = task.ext.pseudoCount           ?: "5"          // A numeric scalar specifying the minimum pseudo-count when computing logfold changes.

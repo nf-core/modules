@@ -34,8 +34,8 @@ rna_matrix <- '$rna_matrix'
 lower <- as.numeric('$lower')
 niters <- as.numeric('$niters')
 testAmbient <- string_to_logical('$testAmbient')
-ignore_hashedDrops <- string_to_null('$ignore_hashedDrops')
-alpha_hashedDrops <- string_to_null('$alpha_hashedDrops')
+ignore <- string_to_null('$ignore')
+alpha <- string_to_null('$alpha')
 round <- string_to_logical('$round')
 byRank <- string_to_null('$byRank')
 isCellFDR <- as.numeric('$isCellFDR')
@@ -208,11 +208,11 @@ saveRDS(emptyDrops_out,file = paste0(prefix, "_emptyDrops.rds"))
 
 #--------- save hashedDrops() results ---------#
 
-write.csv(params, paste0(prefix, "params_hasheddrops.csv"))
-write.csv(hashedDrops_out,paste0(prefix,"results_hasheddrops.csv"))
-saveRDS(hashedDrops_out,file = paste0(prefix,"hasheddrops.rds"))
+write.csv(params, paste0(prefix, "_params_hasheddrops.csv"))
+write.csv(hashedDrops_out,paste0(prefix,"_results_hasheddrops.csv"))
+saveRDS(hashedDrops_out,file = paste0(prefix,"_hasheddrops.rds"))
 
-png(paste0(prefix, "plot_hasheddrops.png"))
+png(paste0(prefix, "_plot_hasheddrops.png"))
 if (sum(is.na(hashedDrops_out\$LogFC2)) != length(hashedDrops_out\$LogFC2)) {
 
     colors <- ifelse(hashedDrops_out\$Confident,
@@ -227,9 +227,12 @@ if (sum(is.na(hashedDrops_out\$LogFC2)) != length(hashedDrops_out\$LogFC2)) {
     xlab = "Log-fold change between best and second HTO",
     ylab = "Log-fold change between second HTO and ambient"
     )
+}else{
 
-    dev.off()
+    plot.new()
 }
+
+dev.off()
 
 ################################################
 ################################################
