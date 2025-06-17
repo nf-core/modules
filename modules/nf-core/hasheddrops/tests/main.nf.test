@@ -7,18 +7,30 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "hasheddrops"
-
+    tag "untar"
 
 // file(params.modules_testdata_base_path + '/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/htodemux.rds', checkIfExists: true)
         test("hto_matrix - runEmptyDrops:false - rna_matrix") {
+
+        setup {
+            run("UNTAR") {
+                script "modules/nf-core/untar/main.nf"
+            input:
+            Channel.of(
+                [ [], file(params.modules_testdata_base_path + "/.../hto.tar.gz") ],
+                [ [], file(params.modules_testdata_base_path + "/.../rna.tar.gz") ]
+            )
+            }
+        }
+
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test'], // meta map
-                    "/Users/luisheinzlmeier/Desktop/test_data/hto",
+                    UNTAR.out.untar[0].map{ meta, files -> files },
                     "FALSE",
-                    "/Users/luisheinzlmeier/Desktop/test_data/rna",
+                    UNTAR.out.untar[1].map{ meta, files -> files },
                 ]
                 """
             }
