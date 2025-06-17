@@ -24,18 +24,22 @@ process FIND_CONCATENATE {
     // |-----------|------------|----------|----------|
     // | gzipped   | gzipped    | cat      |          |
     // | ungzipped | ungzipped  | cat      |          |
-    // | gzipped   | ungzipped  | zcat     |          |
+    // | gzipped   | ungzipped  | pigz     |          |
     // | ungzipped | gzipped    | cat      | pigz     |
 
     // Use input file ending as default
-    prefix = task.ext.prefix ?: "${meta.id}"
+    // get file extensions, if extension is .gz then get the second to last extension as well
+    file_extensions = files_in.collect { in_file -> in_file.name - in_file.getBaseName(in_file.name.endsWith('.gz') ? 2 : 1) }.toSet()
+
+    // Use input file ending as default
+    prefix = task.ext.prefix ?: "${meta.id}${file_extensions[0]}"
 
     if (files_in.any{ file -> file.toString().endsWith('.gz')} && !files_in.every{ file -> file.toString().endsWith('.gz') }) {
         error("All files provided to this module must either be gzipped (and have the .gz extension) or unzipped (and not have the .gz extension). A mix of both is not allowed.")
     }
 
     in_zip = files_in[0].toString().endsWith('.gz')
-    out_zip = prefix.endsWith('.gz')
+    out_zip = task.ext.prefix ? task.ext.prefix.endsWith('.gz') : false
 
     out_fname = in_zip && out_zip ? prefix : prefix.endsWith(".gz") ? prefix.replace('.gz', '') : prefix
 
@@ -54,6 +58,7 @@ process FIND_CONCATENATE {
     "${task.process}":
         find: \$( find --version | sed '1!d; s/.* //' )
         pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
+        coreutils: \$( cat --version | sed '1!d; s/.* //' )
     END_VERSIONS
     """
 
@@ -71,6 +76,7 @@ process FIND_CONCATENATE {
     "${task.process}":
         find: \$( find --version | sed '1!d; s/.* //' )
         pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
+        coreutils: \$( cat --version | sed '1!d; s/.* //' )
     END_VERSIONS
     """
 }
