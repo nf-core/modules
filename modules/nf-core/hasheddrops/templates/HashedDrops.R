@@ -46,6 +46,9 @@ lower <- as.numeric('$lower')
 niters <- as.numeric('$niters')
 testAmbient <- string_to_logical('$testAmbient')
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> e8f913290 (test work)
 ignore <- string_to_null('$ignore')
 alpha <- string_to_null('$alpha')
 round <- string_to_logical('$round')
@@ -332,6 +335,7 @@ saveRDS(emptyDrops_out,file = paste0(prefix, "_emptyDrops.rds"))
 #--------- save hashedDrops() results ---------#
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 write.csv(params, paste0(prefix, "_params_hasheddrops.csv"))
 write.csv(hashedDrops_out,paste0(prefix,"_results_hasheddrops.csv"))
 saveRDS(hashedDrops_out,file = paste0(prefix,"_hasheddrops.rds"))
@@ -351,8 +355,13 @@ if (sum(is.na(hashedDrops_out\$LogFC2)) != length(hashedDrops_out\$LogFC2)) {
 write.csv(params, paste0(prefix, "params_hasheddrops.csv"))
 write.csv(hashedDrops_out,paste0(prefix,"results_hasheddrops.csv"))
 saveRDS(hashedDrops_out,file = paste0(prefix,"hasheddrops.rds"))
+=======
+write.csv(params, paste0(prefix, "_params_hasheddrops.csv"))
+write.csv(hashedDrops_out,paste0(prefix,"_results_hasheddrops.csv"))
+saveRDS(hashedDrops_out,file = paste0(prefix,"_hasheddrops.rds"))
+>>>>>>> e8f913290 (test work)
 
-png(paste0(prefix, "plot_hasheddrops.png"))
+png(paste0(prefix, "_plot_hasheddrops.png"))
 if (sum(is.na(hashedDrops_out\$LogFC2)) != length(hashedDrops_out\$LogFC2)) {
 
     colors <- ifelse(hashedDrops_out\$Confident,
@@ -374,6 +383,7 @@ if (sum(is.na(hashedDrops_out\$LogFC2)) != length(hashedDrops_out\$LogFC2)) {
     ylab = "Log-fold change between second HTO and ambient"
     )
 <<<<<<< HEAD
+<<<<<<< HEAD
 }else{
 
     plot.new()
@@ -382,11 +392,19 @@ if (sum(is.na(hashedDrops_out\$LogFC2)) != length(hashedDrops_out\$LogFC2)) {
 dev.off()
 
 =======
+=======
+}else{
+>>>>>>> e8f913290 (test work)
 
-    dev.off()
+    plot.new()
 }
 
+<<<<<<< HEAD
 >>>>>>> 11d1bc9b0 (save changes)
+=======
+dev.off()
+
+>>>>>>> e8f913290 (test work)
 ################################################
 ################################################
 ## VERSIONS FILE                              ##
