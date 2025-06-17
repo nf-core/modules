@@ -50,7 +50,7 @@ process FIND_CONCATENATE {
     while IFS= read -r -d \$'\\0' file; do
             ${cmd1} \$file \\
                 >> ${out_fname}
-        done < <( find to_concatenate/ -mindepth 1 -print0 | sort )
+        done < <( find to_concatenate/ -mindepth 1 -print0 | sort -z)
 
     ${cmd2}
 
