@@ -10,6 +10,16 @@
 string_to_null <- function(x, val = "NULL") if (x == val) NULL else x
 null_to_string <- function(x, val = "NULL") if (is.null(x)) val else x
 
+string_to_logical <- function(input) {
+  if (input == "FALSE") {
+    FALSE
+  } else if (input == "TRUE") {
+    TRUE
+  } else {
+    stop(paste0(input, " is not a valid logical. Use 'FALSE' or 'TRUE'."))
+  }
+}
+
 ################################################
 ################################################
 ## USE PARAMETERS FROM NEXTFLOW               ##
@@ -23,25 +33,30 @@ hto_matrix <- '$hto_matrix'
 rna_matrix <- '$rna_matrix'
 lower <- as.numeric('$lower')
 niters <- as.numeric('$niters')
-testAmbient <- as.logical('$testAmbient')
+testAmbient <- string_to_logical('$testAmbient')
 ignore_hashedDrops <- string_to_null('$ignore_hashedDrops')
 alpha_hashedDrops <- string_to_null('$alpha_hashedDrops')
-round <- as.logical('$round')
+round <- string_to_logical('$round')
 byRank <- string_to_null('$byRank')
 isCellFDR <- as.numeric('$isCellFDR')
-ambient <- as.logical('$ambient')
+ambient <- string_to_logical('$ambient')
 minProp <- as.numeric('$minProp')
 pseudoCount <- as.numeric('$pseudoCount')
-constantAmbient <- as.logical('$constantAmbient')
+constantAmbient <- string_to_logical('$constantAmbient')
 doubletNmads <- as.numeric('$doubletNmads')
 doubletMin <- as.numeric('$doubletMin')
-doubletMixture <- as.logical('$doubletMixture')
+doubletMixture <- string_to_logical('$doubletMixture')
 confidentNmads <- as.numeric('$confidentNmads')
 confidentMin <- as.numeric('$confidentMin')
 combinations <- string_to_null('$combinations')
-runEmptyDrops <-  as.logical('$runEmptyDrops')
+runEmptyDrops <- string_to_logical('$runEmptyDrops')
 gene_col <- as.numeric('$gene_col')
 prefix <- '$prefix'
+
+print("------------------------")
+print('$runEmptyDrops')
+print(runEmptyDrops)
+print("------------------------")
 
 # check if the file exists
 if (! file.exists(hto_matrix)){
@@ -69,9 +84,13 @@ hto <- Read10X(data.dir = hto_matrix, gene.column = gene_col)
 #is.cell <- NULL
 
 # determine hto_input and ambient_input
+print("some output:: ")
+print(runEmptyDrops)
 if (runEmptyDrops) {
 
     rna <- Read10X(data.dir = rna_matrix, gene.column = gene_col)
+
+    #print(rna)
 
     emptyDrops_out <- emptyDrops(
     rna,
@@ -83,6 +102,8 @@ if (runEmptyDrops) {
     round = round,
     by.rank = byRank
     )
+
+    #print(emptyDrops_out)
 
     # which droplets are actual cells
     is.cell <- emptyDrops_out\$FDR <= isCellFDR
@@ -218,14 +239,14 @@ if (sum(is.na(hashedDrops_out\$LogFC2)) != length(hashedDrops_out\$LogFC2)) {
 
 r.version <- paste(R.version[['major']],R.version[['minor']], sep = ".")
 seurat.version <- as.character(packageVersion('Seurat'))
-cellhashR.version <- as.character(packageVersion('cellhashR'))
+dropletutils.version <- as.character(packageVersion('DropletUtils'))
 
 writeLines(
     c(
         '"${task.process}":',
         paste('    r-base:', r.version),
         paste('    r-seurat:', seurat.version),
-        paste('    cellhashR:', cellhashR.version)
+        paste('    dropletutils:', dropletutils.version)
     ),
 'versions.yml')
 

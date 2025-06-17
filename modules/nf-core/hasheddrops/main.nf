@@ -5,7 +5,7 @@ process HASHEDDROPS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/dropletutils-scripts_r-seurat:5ab8681306ba44a9':
+        'oras://community.wave.seqera.io/library/bioconductor-dropletutils_r-seurat:3cbdf18d48cd0cfa':
         'community.wave.seqera.io/library/bioconductor-dropletutils_r-seurat:e1dff3a0fb7c5920' }"
 
     input:
@@ -18,7 +18,7 @@ process HASHEDDROPS {
     tuple val(meta), path("*_results_hasheddrops.csv")     , emit: results
     tuple val(meta), path("*_hasheddrops.rds")             , emit: rds
     tuple val(meta), path("*_plot_hasheddrops.png")        , emit: plot
-    tuple val(meta), path("*_params_hasheddrops.csv")      , emit: params
+    tuple val(meta), path("*_params_hasheddrops.csv")     , emit: params
     path "versions.yml"                                    , emit: versions
 
     when:
@@ -27,7 +27,7 @@ process HASHEDDROPS {
     script:
 
     // emptyDrops Parameters
-    lower                    = task.ext.lower                 ?: "100"        // A numeric scalar specifying the lower bound on the total UMI count, at or below which all barcodes are assumed to correspond to empty droplets.
+    lower                    = task.ext.lower                 ?: "10"        // A numeric scalar specifying the lower bound on the total UMI count, at or below which all barcodes are assumed to correspond to empty droplets.
     niters                   = task.ext.niters                ?: "10000"      // An integer scalar specifying the number of iterations to use for the Monte Carlo p-value calculations.
     testAmbient              = task.ext.testAmbient           ?: "TRUE"       // A logical scalar indicating whether results should be returned for barcodes with totals less than or equal to lower.
     round                    = task.ext.round                 ?: "TRUE"       // Logical scalar indicating whether to check for non-integer values in m and, if present, round them for ambient profile estimation.
@@ -70,7 +70,7 @@ process HASHEDDROPS {
     "${task.process}":
         r-base: \$(Rscript -e "cat(strsplit(R.version[['version.string']], ' ')[[1]][3])")
         r-seurat: \$(Rscript -e "library(Seurat); cat(as.character(packageVersion('Seurat')))")
-        cellhashR: \$(Rscript -e "library(cellhashR); cat(as.character(packageVersion('cellhashR')))")
+        cdropletutils: \$(Rscript -e "library(DropletUtils); cat(as.character(packageVersion('DropletUtils')))")
     END_VERSIONS
     """
 }

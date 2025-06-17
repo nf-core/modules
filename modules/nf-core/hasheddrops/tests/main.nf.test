@@ -33,16 +33,14 @@ nextflow_process {
 
     }
 
-
-
-    test("hto_matrix - runEmptyDrops:true - rna_matrix:false") {
+    test("hto_matrix - runEmptyDrops:true - rna_matrix") {
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test'], // meta map
                     "/Users/luisheinzlmeier/Desktop/test_data/hto",
-                    "TRUE",
+                    "FALSE",
                     "/Users/luisheinzlmeier/Desktop/test_data/rna",
                 ]
                 """
@@ -58,9 +56,7 @@ nextflow_process {
 
     }
 
-
-
-    test("hto_matrix - runEmptyDrops - rna_matrix") {
+    test("hto_matrix - runEmptyDrops - rna_matrix - stub ") {
 
         options "-stub"
 
