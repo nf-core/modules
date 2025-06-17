@@ -11,6 +11,9 @@ string_to_null <- function(x, val = "NULL") if (x == val) NULL else x
 null_to_string <- function(x, val = "NULL") if (is.null(x)) val else x
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b6a7e9106 (some changes)
 string_to_logical <- function(input) {
   if (input == "FALSE") {
     FALSE
@@ -21,8 +24,11 @@ string_to_logical <- function(input) {
   }
 }
 
+<<<<<<< HEAD
 =======
 >>>>>>> 11d1bc9b0 (save changes)
+=======
+>>>>>>> b6a7e9106 (some changes)
 ################################################
 ################################################
 ## USE PARAMETERS FROM NEXTFLOW               ##
@@ -39,6 +45,7 @@ rna_matrix <- '$rna_matrix'
 lower <- as.numeric('$lower')
 niters <- as.numeric('$niters')
 testAmbient <- string_to_logical('$testAmbient')
+<<<<<<< HEAD
 ignore <- string_to_null('$ignore')
 alpha <- string_to_null('$alpha')
 round <- string_to_logical('$round')
@@ -71,26 +78,36 @@ rna_matrix <- '$rna_matrix'
 lower <- as.numeric('$lower')
 niters <- as.numeric('$niters')
 testAmbient <- as.logical('$testAmbient')
+=======
+>>>>>>> b6a7e9106 (some changes)
 ignore_hashedDrops <- string_to_null('$ignore_hashedDrops')
 alpha_hashedDrops <- string_to_null('$alpha_hashedDrops')
-round <- as.logical('$round')
+round <- string_to_logical('$round')
 byRank <- string_to_null('$byRank')
 isCellFDR <- as.numeric('$isCellFDR')
-ambient <- as.logical('$ambient')
+ambient <- string_to_logical('$ambient')
 minProp <- as.numeric('$minProp')
 pseudoCount <- as.numeric('$pseudoCount')
-constantAmbient <- as.logical('$constantAmbient')
+constantAmbient <- string_to_logical('$constantAmbient')
 doubletNmads <- as.numeric('$doubletNmads')
 doubletMin <- as.numeric('$doubletMin')
-doubletMixture <- as.logical('$doubletMixture')
+doubletMixture <- string_to_logical('$doubletMixture')
 confidentNmads <- as.numeric('$confidentNmads')
 confidentMin <- as.numeric('$confidentMin')
 combinations <- string_to_null('$combinations')
-runEmptyDrops <-  as.logical('$runEmptyDrops')
+runEmptyDrops <- string_to_logical('$runEmptyDrops')
 gene_col <- as.numeric('$gene_col')
 prefix <- '$prefix'
 
+<<<<<<< HEAD
 >>>>>>> 11d1bc9b0 (save changes)
+=======
+print("------------------------")
+print('$runEmptyDrops')
+print(runEmptyDrops)
+print("------------------------")
+
+>>>>>>> b6a7e9106 (some changes)
 # check if the file exists
 if (! file.exists(hto_matrix)){
     stop(paste0(hto_matrix, ' is not a valid file'))
@@ -126,19 +143,29 @@ hto <- Read10X(data.dir = hto_matrix, gene.column = gene_col)
 
 # determine hto_input and ambient_input
 <<<<<<< HEAD
+<<<<<<< HEAD
 print("some output:: ")
 print(runEmptyDrops)
 =======
 >>>>>>> 11d1bc9b0 (save changes)
+=======
+print("some output:: ")
+print(runEmptyDrops)
+>>>>>>> b6a7e9106 (some changes)
 if (runEmptyDrops) {
 
     rna <- Read10X(data.dir = rna_matrix, gene.column = gene_col)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     #print(rna)
 
 =======
 >>>>>>> 11d1bc9b0 (save changes)
+=======
+    #print(rna)
+
+>>>>>>> b6a7e9106 (some changes)
     emptyDrops_out <- emptyDrops(
     rna,
     lower = lower,
@@ -151,6 +178,9 @@ if (runEmptyDrops) {
     )
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> b6a7e9106 (some changes)
     #print(emptyDrops_out)
 
     # which droplets are actual cells
@@ -366,10 +396,14 @@ dev.off()
 r.version <- paste(R.version[['major']],R.version[['minor']], sep = ".")
 seurat.version <- as.character(packageVersion('Seurat'))
 <<<<<<< HEAD
+<<<<<<< HEAD
 dropletutils.version <- as.character(packageVersion('DropletUtils'))
 =======
 cellhashR.version <- as.character(packageVersion('cellhashR'))
 >>>>>>> 11d1bc9b0 (save changes)
+=======
+dropletutils.version <- as.character(packageVersion('DropletUtils'))
+>>>>>>> b6a7e9106 (some changes)
 
 writeLines(
     c(
@@ -377,10 +411,14 @@ writeLines(
         paste('    r-base:', r.version),
         paste('    r-seurat:', seurat.version),
 <<<<<<< HEAD
+<<<<<<< HEAD
         paste('    dropletutils:', dropletutils.version)
 =======
         paste('    cellhashR:', cellhashR.version)
 >>>>>>> 11d1bc9b0 (save changes)
+=======
+        paste('    dropletutils:', dropletutils.version)
+>>>>>>> b6a7e9106 (some changes)
     ),
 'versions.yml')
 

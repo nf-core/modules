@@ -60,9 +60,7 @@ nextflow_process {
 
     }
 
-
-
-    test("hto_matrix - runEmptyDrops:true - rna_matrix:false") {
+    test("hto_matrix - runEmptyDrops:true - rna_matrix") {
         when {
             process {
                 """
@@ -74,7 +72,7 @@ nextflow_process {
                 input[0] = [
                     [ id:'test'], // meta map
                     "/Users/luisheinzlmeier/Desktop/test_data/hto",
-                    "TRUE",
+                    "FALSE",
                     "/Users/luisheinzlmeier/Desktop/test_data/rna",
                 ]
 >>>>>>> 11d1bc9b0 (save changes)
@@ -136,6 +134,7 @@ nextflow_process {
 
     }
 
+<<<<<<< HEAD
     test("hto_matrix - runEmptyDrops:true - rna_matrix - stub") {
 
         options "-stub"
@@ -168,6 +167,9 @@ nextflow_process {
 
     test("hto_matrix - runEmptyDrops - rna_matrix") {
 >>>>>>> a916275c7 (improvements)
+=======
+    test("hto_matrix - runEmptyDrops - rna_matrix - stub ") {
+>>>>>>> b6a7e9106 (some changes)
 
         options "-stub"
 
