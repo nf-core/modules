@@ -34,6 +34,7 @@ string_to_logical <- function(input) {
 # hashedDrops parameters
 hto_matrix <- '$hto_matrix'
 <<<<<<< HEAD
+<<<<<<< HEAD
 rna_matrix <- '$rna_matrix'
 lower <- as.numeric('$lower')
 niters <- as.numeric('$niters')
@@ -64,6 +65,9 @@ print("------------------------")
 
 =======
 hto_matrix <- '$rna_matrix'
+=======
+rna_matrix <- '$rna_matrix'
+>>>>>>> a916275c7 (improvements)
 lower <- as.numeric('$lower')
 niters <- as.numeric('$niters')
 testAmbient <- as.logical('$testAmbient')
@@ -100,10 +104,14 @@ if (! file.exists(hto_matrix)){
 
 library(Seurat)  # for Read10X()
 <<<<<<< HEAD
+<<<<<<< HEAD
 library(DropletUtils) # for hashedDrops() and emptyDrops()
 =======
 library(cellhashR) # for hashedDrops() and emptyDrops()
 >>>>>>> 11d1bc9b0 (save changes)
+=======
+library(DropletUtils) # for hashedDrops() and emptyDrops()
+>>>>>>> a916275c7 (improvements)
 
 ################################################
 ################################################
@@ -153,12 +161,17 @@ if (runEmptyDrops) {
         ambient_input <- metadata(emptyDrops_out)\$ambient
 =======
     # which droplets are actual cells
-    is.cell <- emptyDrops_out$FDR <= isCellFDR
+    is.cell <- emptyDrops_out\$FDR <= isCellFDR
     hto_input <- hto[, which(is.cell)]
 
+<<<<<<< HEAD
     if (ambient == TRUE) {
         ambient_input <- metadata(emptyDrops_out)$ambient
 >>>>>>> 11d1bc9b0 (save changes)
+=======
+    if (ambient) {
+        ambient_input <- metadata(emptyDrops_out)\$ambient
+>>>>>>> a916275c7 (improvements)
     } else {
         ambient_input <- NULL
     }
@@ -257,10 +270,14 @@ png(paste0(prefix, "_emptyDrops.png"))
 if(runEmptyDrops){
     colors <- ifelse(is.cell, "red", "black")
 <<<<<<< HEAD
+<<<<<<< HEAD
     plot(emptyDrops_out\$Total, -emptyDrops_out\$LogProb, col = colors, xlab = "Total UMI count", ylab = "-Log Probability")
 =======
     plot(emptyDrops_out$Total, -emptyDrops_out$LogProb, col = colors, xlab = "Total UMI count", ylab = "-Log Probability")
 >>>>>>> 11d1bc9b0 (save changes)
+=======
+    plot(emptyDrops_out\$Total, -emptyDrops_out\$LogProb, col = colors, xlab = "Total UMI count", ylab = "-Log Probability")
+>>>>>>> a916275c7 (improvements)
 }else{
     plot.new()
 
@@ -293,18 +310,23 @@ write.csv(params, paste0(prefix, "params_hasheddrops.csv"))
 write.csv(hashedDrops_out,paste0(prefix,"results_hasheddrops.csv"))
 saveRDS(hashedDrops_out,file = paste0(prefix,"hasheddrops.rds"))
 
-png(paste0(args$outputdir, "/", "plot_hasheddrops.png"))
-if (sum(is.na(hashedDrops_out$LogFC2)) != length(hashedDrops_out$LogFC2)) {
+png(paste0(prefix, "plot_hasheddrops.png"))
+if (sum(is.na(hashedDrops_out\$LogFC2)) != length(hashedDrops_out\$LogFC2)) {
 
-    colors <- ifelse(hashedDrops_out$Confident,
+    colors <- ifelse(hashedDrops_out\$Confident,
     "black",
-    ifelse(hashedDrops_out$Doublet, "red", "grey")
+    ifelse(hashedDrops_out\$Doublet, "red", "grey")
     )
 
     plot(
+<<<<<<< HEAD
     hashedDrops_out$LogFC,
     hashedDrops_out$LogFC2,
 >>>>>>> 11d1bc9b0 (save changes)
+=======
+    hashedDrops_out\$LogFC,
+    hashedDrops_out\$LogFC2,
+>>>>>>> a916275c7 (improvements)
     col = colors,
     xlab = "Log-fold change between best and second HTO",
     ylab = "Log-fold change between second HTO and ambient"

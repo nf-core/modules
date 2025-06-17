@@ -1,8 +1,12 @@
 process HASHEDDROPS {
 <<<<<<< HEAD
+<<<<<<< HEAD
     debug true
 =======
 >>>>>>> 11d1bc9b0 (save changes)
+=======
+    debug true
+>>>>>>> a916275c7 (improvements)
     tag "$meta.id"
     label 'process_low'
 
@@ -13,8 +17,12 @@ process HASHEDDROPS {
         'community.wave.seqera.io/library/bioconductor-dropletutils_r-seurat:e1dff3a0fb7c5920' }"
 =======
         'oras://community.wave.seqera.io/library/dropletutils-scripts_r-seurat:5ab8681306ba44a9':
+<<<<<<< HEAD
         'community.wave.seqera.io/library/dropletutils-scripts_r-seurat:c400653ea0a86a0d' }"
 >>>>>>> 11d1bc9b0 (save changes)
+=======
+        'community.wave.seqera.io/library/bioconductor-dropletutils_r-seurat:e1dff3a0fb7c5920' }"
+>>>>>>> a916275c7 (improvements)
 
     input:
     tuple val(meta), path(hto_matrix), val(runEmptyDrops), path(rna_matrix)
