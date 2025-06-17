@@ -111,7 +111,7 @@ hashedDrops_out <- hashedDrops(
   doublet.min = doubletMin,
   doublet.mixture = doubletMixture,
   confident.nmads = confidentNmads,
-  confident.min = confidenMin,
+  confident.min = confidentMin,
   combinations = combinations
 )
 
@@ -140,7 +140,7 @@ Argument <- c(
   "doubletMin",
   "doubletMixture",
   "confidentNmads",
-  "confidenMin",
+  "confidentMin",
   "combinations"
 )
 
@@ -162,7 +162,7 @@ Value <- c(
   doubletMin,
   doubletMixture,
   confidentNmads,
-  confidenMin,
+  confidentMin,
   null_to_string(combinations)
 )
 
