@@ -27,7 +27,6 @@ nextflow_process {
             assertAll(
                 { assert !process.success },
                 { assert process.stdout.toString().contains("All files provided to this module must either be gzipped (and have the .gz extension) or unzipped (and not have the .gz extension). A mix of both is not allowed.") },
-                { assert snapshot(process.out.versions).match() }
             )
         }
     }
@@ -52,7 +51,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                         process.out,
-                        process.out.versions
+                        process.out.versions,
+                        path(process.out.versions[0]).yaml
                     ).match()
                 },
             )
@@ -84,7 +84,8 @@ nextflow_process {
                 { assert snapshot(
                     lines[0..5],
                     lines.size(),
-                    process.out.versions
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
                     ).match()
                 }
             )
@@ -114,7 +115,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                         process.out,
-                        process.out.versions
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
                     ).match()
                 },
             )
@@ -145,7 +147,8 @@ nextflow_process {
                 { assert snapshot(
                     lines[0..5],
                     lines.size(),
-                    process.out.versions
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
                     ).match()
                 }
             )
@@ -174,7 +177,8 @@ nextflow_process {
                 { assert snapshot(
                     lines[0..5],
                     lines.size(),
-                    process.out.versions
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
                     ).match()
                 }
             )

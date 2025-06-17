@@ -69,6 +69,7 @@ process FIND_CONCATENATE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
+        find: \$( find --version | sed '1!d; s/.* //' )
         pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
     END_VERSIONS
     """
