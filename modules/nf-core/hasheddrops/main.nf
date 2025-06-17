@@ -1,12 +1,20 @@
 process HASHEDDROPS {
+<<<<<<< HEAD
     debug true
+=======
+>>>>>>> 11d1bc9b0 (save changes)
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+<<<<<<< HEAD
         'oras://community.wave.seqera.io/library/bioconductor-dropletutils_r-seurat:3cbdf18d48cd0cfa':
         'community.wave.seqera.io/library/bioconductor-dropletutils_r-seurat:e1dff3a0fb7c5920' }"
+=======
+        'oras://community.wave.seqera.io/library/dropletutils-scripts_r-seurat:5ab8681306ba44a9':
+        'community.wave.seqera.io/library/dropletutils-scripts_r-seurat:c400653ea0a86a0d' }"
+>>>>>>> 11d1bc9b0 (save changes)
 
     input:
     tuple val(meta), path(hto_matrix), val(runEmptyDrops), path(rna_matrix)
@@ -27,17 +35,30 @@ process HASHEDDROPS {
     script:
 
     // emptyDrops Parameters
+<<<<<<< HEAD
     lower                    = task.ext.lower                 ?: "10"        // A numeric scalar specifying the lower bound on the total UMI count, at or below which all barcodes are assumed to correspond to empty droplets.
+=======
+    lower                    = task.ext.lower                 ?: "100"        // A numeric scalar specifying the lower bound on the total UMI count, at or below which all barcodes are assumed to correspond to empty droplets.
+>>>>>>> 11d1bc9b0 (save changes)
     niters                   = task.ext.niters                ?: "10000"      // An integer scalar specifying the number of iterations to use for the Monte Carlo p-value calculations.
     testAmbient              = task.ext.testAmbient           ?: "TRUE"       // A logical scalar indicating whether results should be returned for barcodes with totals less than or equal to lower.
     round                    = task.ext.round                 ?: "TRUE"       // Logical scalar indicating whether to check for non-integer values in m and, if present, round them for ambient profile estimation.
     byRank                   = task.ext.byRank                ?: "NULL"       // An integer scalar parametrizing an alternative method for identifying assumed empty droplets. If set, this is used to redefine lower and any specified value for lower is ignored.
     isCellFDR                = task.ext.isCellFDR             ?: "0.01"       // Threshold to filter the cells.
+<<<<<<< HEAD
     gene_col                 = task.ext.gene_col              ?: "2"          // Specify which column of genes.tsv or features.tsv to use for gene names; default is 2.
 
     // hashedDrops Parameters
     ignore       = task.ext.ignore    ?: "NULL"       // A numeric scalar specifying the lower bound on the total UMI count, at or below which barcodes will be ignored.
     alpha        = task.ext.alpha     ?: "NULL"       // A numeric scalar specifying the scaling parameter for the Dirichlet-multinomial sampling scheme.
+=======
+    runEmptyDrops            = task.ext.runEmptyDrops         ?: "TRUE"       // Executes emptyDrops function only when desired, recommended only for raw data.
+    gene_col                 = task.ext.gene_col              ?: "2"          // Specify which column of genes.tsv or features.tsv to use for gene names; default is 2.
+
+    // hashedDrops Parameters
+    ignore_hashedDrops       = task.ext.ignore_hashedDrops    ?: "NULL"       // A numeric scalar specifying the lower bound on the total UMI count, at or below which barcodes will be ignored.
+    alpha_hashedDrops        = task.ext.alpha_hashedDrops     ?: "NULL"       // A numeric scalar specifying the scaling parameter for the Dirichlet-multinomial sampling scheme.
+>>>>>>> 11d1bc9b0 (save changes)
     ambient                  = task.ext.ambient               ?: "TRUE"       // Whether to use the relative abundance of each HTO in the ambient solution from emptyDrops, set TRUE only when test_ambient is TRUE.
     minProp                  = task.ext.minProp               ?: "0.05"       // Numeric scalar to be used to infer the ambient profile when ambient=NULL.
     pseudoCount              = task.ext.pseudoCount           ?: "5"          // A numeric scalar specifying the minimum pseudo-count when computing logfold changes.
@@ -69,7 +90,11 @@ process HASHEDDROPS {
     "${task.process}":
         r-base: \$(Rscript -e "cat(strsplit(R.version[['version.string']], ' ')[[1]][3])")
         r-seurat: \$(Rscript -e "library(Seurat); cat(as.character(packageVersion('Seurat')))")
+<<<<<<< HEAD
         cdropletutils: \$(Rscript -e "library(DropletUtils); cat(as.character(packageVersion('DropletUtils')))")
+=======
+        cellhashR: \$(Rscript -e "library(cellhashR); cat(as.character(packageVersion('cellhashR')))")
+>>>>>>> 11d1bc9b0 (save changes)
     END_VERSIONS
     """
 }

@@ -10,6 +10,7 @@
 string_to_null <- function(x, val = "NULL") if (x == val) NULL else x
 null_to_string <- function(x, val = "NULL") if (is.null(x)) val else x
 
+<<<<<<< HEAD
 string_to_logical <- function(input) {
   if (input == "FALSE") {
     FALSE
@@ -20,6 +21,8 @@ string_to_logical <- function(input) {
   }
 }
 
+=======
+>>>>>>> 11d1bc9b0 (save changes)
 ################################################
 ################################################
 ## USE PARAMETERS FROM NEXTFLOW               ##
@@ -30,6 +33,7 @@ string_to_logical <- function(input) {
 
 # hashedDrops parameters
 hto_matrix <- '$hto_matrix'
+<<<<<<< HEAD
 rna_matrix <- '$rna_matrix'
 lower <- as.numeric('$lower')
 niters <- as.numeric('$niters')
@@ -58,6 +62,31 @@ print('$runEmptyDrops')
 print(runEmptyDrops)
 print("------------------------")
 
+=======
+hto_matrix <- '$rna_matrix'
+lower <- as.numeric('$lower')
+niters <- as.numeric('$niters')
+testAmbient <- as.logical('$testAmbient')
+ignore_hashedDrops <- string_to_null('$ignore_hashedDrops')
+alpha_hashedDrops <- string_to_null('$alpha_hashedDrops')
+round <- as.logical('$round')
+byRank <- string_to_null('$byRank')
+isCellFDR <- as.numeric('$isCellFDR')
+ambient <- as.logical('$ambient')
+minProp <- as.numeric('$minProp')
+pseudoCount <- as.numeric('$pseudoCount')
+constantAmbient <- as.logical('$constantAmbient')
+doubletNmads <- as.numeric('$doubletNmads')
+doubletMin <- as.numeric('$doubletMin')
+doubletMixture <- as.logical('$doubletMixture')
+confidentNmads <- as.numeric('$confidentNmads')
+confidentMin <- as.numeric('$confidentMin')
+combinations <- string_to_null('$combinations')
+runEmptyDrops <-  as.logical('$runEmptyDrops')
+gene_col <- as.numeric('$gene_col')
+prefix <- '$prefix'
+
+>>>>>>> 11d1bc9b0 (save changes)
 # check if the file exists
 if (! file.exists(hto_matrix)){
     stop(paste0(hto_matrix, ' is not a valid file'))
@@ -70,7 +99,11 @@ if (! file.exists(hto_matrix)){
 ################################################
 
 library(Seurat)  # for Read10X()
+<<<<<<< HEAD
 library(DropletUtils) # for hashedDrops() and emptyDrops()
+=======
+library(cellhashR) # for hashedDrops() and emptyDrops()
+>>>>>>> 11d1bc9b0 (save changes)
 
 ################################################
 ################################################
@@ -84,14 +117,20 @@ hto <- Read10X(data.dir = hto_matrix, gene.column = gene_col)
 #is.cell <- NULL
 
 # determine hto_input and ambient_input
+<<<<<<< HEAD
 print("some output:: ")
 print(runEmptyDrops)
+=======
+>>>>>>> 11d1bc9b0 (save changes)
 if (runEmptyDrops) {
 
     rna <- Read10X(data.dir = rna_matrix, gene.column = gene_col)
 
+<<<<<<< HEAD
     #print(rna)
 
+=======
+>>>>>>> 11d1bc9b0 (save changes)
     emptyDrops_out <- emptyDrops(
     rna,
     lower = lower,
@@ -103,6 +142,7 @@ if (runEmptyDrops) {
     by.rank = byRank
     )
 
+<<<<<<< HEAD
     #print(emptyDrops_out)
 
     # which droplets are actual cells
@@ -111,6 +151,14 @@ if (runEmptyDrops) {
 
     if (ambient) {
         ambient_input <- metadata(emptyDrops_out)\$ambient
+=======
+    # which droplets are actual cells
+    is.cell <- emptyDrops_out$FDR <= isCellFDR
+    hto_input <- hto[, which(is.cell)]
+
+    if (ambient == TRUE) {
+        ambient_input <- metadata(emptyDrops_out)$ambient
+>>>>>>> 11d1bc9b0 (save changes)
     } else {
         ambient_input <- NULL
     }
@@ -132,7 +180,11 @@ hashedDrops_out <- hashedDrops(
   doublet.min = doubletMin,
   doublet.mixture = doubletMixture,
   confident.nmads = confidentNmads,
+<<<<<<< HEAD
   confident.min = confidentMin,
+=======
+  confident.min = confidenMin,
+>>>>>>> 11d1bc9b0 (save changes)
   combinations = combinations
 )
 
@@ -161,7 +213,11 @@ Argument <- c(
   "doubletMin",
   "doubletMixture",
   "confidentNmads",
+<<<<<<< HEAD
   "confidentMin",
+=======
+  "confidenMin",
+>>>>>>> 11d1bc9b0 (save changes)
   "combinations"
 )
 
@@ -183,7 +239,11 @@ Value <- c(
   doubletMin,
   doubletMixture,
   confidentNmads,
+<<<<<<< HEAD
   confidentMin,
+=======
+  confidenMin,
+>>>>>>> 11d1bc9b0 (save changes)
   null_to_string(combinations)
 )
 
@@ -196,7 +256,11 @@ write.csv(params, paste0(prefix ,"_params_hasheddrops.csv"))
 png(paste0(prefix, "_emptyDrops.png"))
 if(runEmptyDrops){
     colors <- ifelse(is.cell, "red", "black")
+<<<<<<< HEAD
     plot(emptyDrops_out\$Total, -emptyDrops_out\$LogProb, col = colors, xlab = "Total UMI count", ylab = "-Log Probability")
+=======
+    plot(emptyDrops_out$Total, -emptyDrops_out$LogProb, col = colors, xlab = "Total UMI count", ylab = "-Log Probability")
+>>>>>>> 11d1bc9b0 (save changes)
 }else{
     plot.new()
 
@@ -208,6 +272,7 @@ saveRDS(emptyDrops_out,file = paste0(prefix, "_emptyDrops.rds"))
 
 #--------- save hashedDrops() results ---------#
 
+<<<<<<< HEAD
 write.csv(params, paste0(prefix, "_params_hasheddrops.csv"))
 write.csv(hashedDrops_out,paste0(prefix,"_results_hasheddrops.csv"))
 saveRDS(hashedDrops_out,file = paste0(prefix,"_hasheddrops.rds"))
@@ -223,10 +288,28 @@ if (sum(is.na(hashedDrops_out\$LogFC2)) != length(hashedDrops_out\$LogFC2)) {
     plot(
     hashedDrops_out\$LogFC,
     hashedDrops_out\$LogFC2,
+=======
+write.csv(params, paste0(prefix, "params_hasheddrops.csv"))
+write.csv(hashedDrops_out,paste0(prefix,"results_hasheddrops.csv"))
+saveRDS(hashedDrops_out,file = paste0(prefix,"hasheddrops.rds"))
+
+png(paste0(args$outputdir, "/", "plot_hasheddrops.png"))
+if (sum(is.na(hashedDrops_out$LogFC2)) != length(hashedDrops_out$LogFC2)) {
+
+    colors <- ifelse(hashedDrops_out$Confident,
+    "black",
+    ifelse(hashedDrops_out$Doublet, "red", "grey")
+    )
+
+    plot(
+    hashedDrops_out$LogFC,
+    hashedDrops_out$LogFC2,
+>>>>>>> 11d1bc9b0 (save changes)
     col = colors,
     xlab = "Log-fold change between best and second HTO",
     ylab = "Log-fold change between second HTO and ambient"
     )
+<<<<<<< HEAD
 }else{
 
     plot.new()
@@ -234,6 +317,12 @@ if (sum(is.na(hashedDrops_out\$LogFC2)) != length(hashedDrops_out\$LogFC2)) {
 
 dev.off()
 
+=======
+
+    dev.off()
+}
+
+>>>>>>> 11d1bc9b0 (save changes)
 ################################################
 ################################################
 ## VERSIONS FILE                              ##
@@ -242,14 +331,22 @@ dev.off()
 
 r.version <- paste(R.version[['major']],R.version[['minor']], sep = ".")
 seurat.version <- as.character(packageVersion('Seurat'))
+<<<<<<< HEAD
 dropletutils.version <- as.character(packageVersion('DropletUtils'))
+=======
+cellhashR.version <- as.character(packageVersion('cellhashR'))
+>>>>>>> 11d1bc9b0 (save changes)
 
 writeLines(
     c(
         '"${task.process}":',
         paste('    r-base:', r.version),
         paste('    r-seurat:', seurat.version),
+<<<<<<< HEAD
         paste('    dropletutils:', dropletutils.version)
+=======
+        paste('    cellhashR:', cellhashR.version)
+>>>>>>> 11d1bc9b0 (save changes)
     ),
 'versions.yml')
 
