@@ -659,8 +659,8 @@ if (nrow(results_genewise) > 0) {
 # save main results - genewise
 results_genewise <- as.data.frame(results_genewise)
 results_genewise <- results_genewise[order(
-    results_genewise\$rcDdis,
-    abs(results_genewise\$LFC),
+    results_genewise\$rcDdis, # sort by increasing rcDdis (from most significant to least significant)
+    -abs(results_genewise\$LFC), # sort by decreasing absolute LFC (from most to least differential)
     decreasing = FALSE
 ),]
 
@@ -676,7 +676,6 @@ write.table(
     results_genewise,
     file      = paste0(opt\$prefix, '.propd.genewise.tsv'),
     col.names = TRUE,
-    #row.names = FALSE,
     row.names = TRUE,
     sep       = '\\t',
     quote     = FALSE
