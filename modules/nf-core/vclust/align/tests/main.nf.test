@@ -52,12 +52,14 @@ nextflow_process {
         }
 
         then {
+            def sorted_alignment = path(process.out.aln[0][1]).csv(sep:"\t").sort() // even when sorted snapshot's don't match, table to big for readable snapshot
             assertAll(
                 { assert process.success },
                 { assert snapshot(
                     process.out.txt,
                     process.out.ids,
-                    file(process.out.aln[0][1]).readLines()[0],
+                    sorted_alignment.columnNames,
+                    sorted_alignment.rowCount,
                     process.out.versions).match()
                 }
             )
