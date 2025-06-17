@@ -5,7 +5,7 @@ process COOLTOOLS_INSULATION {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cooltools:0.7.0--py39hec7c8de_1' :
-        'biocontainers/cooltools:0.7.0--py39hec7c8de_1' }"
+        'biocontainers/cooltools:0.71--py39hec7c8de_1' }"
 
     input:
     tuple val(meta), path(cool)
