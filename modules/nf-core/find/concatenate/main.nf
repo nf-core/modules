@@ -11,7 +11,7 @@ process FIND_CONCATENATE {
     tuple val(meta), path(files_in, stageAs: 'to_concatenate/*', arity: '1..*')
 
     output:
-    tuple val(meta), path("${prefix}*"), emit: file_out
+    tuple val(meta), path("${prefix}"), emit: file_out
     path "versions.yml", emit: versions
 
     when:
