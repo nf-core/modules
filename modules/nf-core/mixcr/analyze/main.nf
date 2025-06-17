@@ -9,6 +9,10 @@ process MIXCR_ANALYZE {
         'ghcr.io/milaboratory/mixcr/mixcr:4.7.0':
         'ghcr.io/milaboratory/mixcr/mixcr:4.7.0' }"
 
+    containerOptions "${ workflow.containerEngine == 'singularity' ?
+        '-B \$HOME' :
+        '' }"
+
     input:
     tuple val(meta), path(reads)
     val preset
