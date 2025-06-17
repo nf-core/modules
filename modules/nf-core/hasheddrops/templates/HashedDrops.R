@@ -194,10 +194,14 @@ hashedDrops_out <- hashedDrops(
   doublet.mixture = doubletMixture,
   confident.nmads = confidentNmads,
 <<<<<<< HEAD
+<<<<<<< HEAD
   confident.min = confidentMin,
 =======
   confident.min = confidenMin,
 >>>>>>> 11d1bc9b0 (save changes)
+=======
+  confident.min = confidentMin,
+>>>>>>> c4a644d14 (typos)
   combinations = combinations
 )
 
@@ -227,10 +231,14 @@ Argument <- c(
   "doubletMixture",
   "confidentNmads",
 <<<<<<< HEAD
+<<<<<<< HEAD
   "confidentMin",
 =======
   "confidenMin",
 >>>>>>> 11d1bc9b0 (save changes)
+=======
+  "confidentMin",
+>>>>>>> c4a644d14 (typos)
   "combinations"
 )
 
@@ -253,10 +261,14 @@ Value <- c(
   doubletMixture,
   confidentNmads,
 <<<<<<< HEAD
+<<<<<<< HEAD
   confidentMin,
 =======
   confidenMin,
 >>>>>>> 11d1bc9b0 (save changes)
+=======
+  confidentMin,
+>>>>>>> c4a644d14 (typos)
   null_to_string(combinations)
 )
 
