@@ -6,8 +6,8 @@ process MIXCR_ANALYZE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'ghcr.io/milaboratory/mixcr/mixcr:4.7.0-164-develop':
-        'ghcr.io/milaboratory/mixcr/mixcr:4.7.0-164-develop' }"
+        'ghcr.io/milaboratory/mixcr/mixcr:4.7.0':
+        'ghcr.io/milaboratory/mixcr/mixcr:4.7.0' }"
 
     input:
     tuple val(meta), path(reads)
