@@ -44,6 +44,12 @@ input:
         ontologies:
           - edam: "http://edamontology.org/format_2330" # TXT
           - edam: "http://edamontology.org/format_2082" # MATRIX
+  - - save_alignment:
+        type: boolean
+        default: false
+        description: |
+          Save the pairwise alignments to a blast-like file.
+        pattern: "*.aln.tsv"
 
 output:
   - tsv :
@@ -70,6 +76,17 @@ output:
           pattern: "*.ids.tsv"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
+  - aln:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.aln.tsv":
+          type: file
+          description: |
+            File similar to the BLASTn tabular output file,
+            includes information on each local alignment between two genomes.
 
   - versions:
       - "versions.yml":

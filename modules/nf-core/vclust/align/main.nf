@@ -25,7 +25,7 @@ process VCLUST_ALIGN {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def filter_argument = filter ? "--filter ${filter}" : ''
-    def save_alignment_option = save_alignment ? "--out-aln ${prefix}.aln.tsv" : ''
+    save_alignment_option = save_alignment ? "--out-aln ${prefix}.aln.tsv" : ''
     """
     vclust \\
         align \\
