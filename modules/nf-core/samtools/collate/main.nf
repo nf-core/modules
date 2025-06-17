@@ -43,4 +43,20 @@ process SAMTOOLS_COLLATE {
         samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def extension = args.contains("--output-fmt sam") ? "sam" :
+                    args.contains("--output-fmt bam") ? "bam" :
+                    args.contains("--output-fmt cram") ? "cram" :
+                    "bam"
+    """
+    touch ${prefix}.${extension}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
+    END_VERSIONS
+    """
 }
