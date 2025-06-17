@@ -2,7 +2,8 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "vizgenpostprocessing_runsegmentationontile"
 description: |
-  The module runs the segmentation algorithm on a specific tile using Vizgen's post-processing tool.
+  The module runs the segmentation algorithm on a specific tile using Vizgen's
+  post-processing tool.
 keywords:
   - vpt
   - vizgen
@@ -16,6 +17,7 @@ tools:
       documentation: "https://vizgen.github.io/vizgen-postprocessing"
       tool_dev_url: "https://github.com/Vizgen/vizgen-postprocessing"
       licence: ["Apache-2.0"]
+      identifier: ""
 
 input:
   - - meta:
@@ -55,7 +57,7 @@ input:
           as directory name only (not full path).
 
 output:
-  - segmentated_tile:
+  - segmented_tile:
       - meta:
           type: map
           description: |
@@ -63,8 +65,8 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "${prefix}/result_tiles/*.parquet":
           type: file
-          description: Parquet file containing the segmentation results for the tile.
-          pattern: "*.parquet"
+          description: |
+            Parquet file containing the segmentation results for the specified tile.
   - versions:
       - "versions.yml":
           type: file

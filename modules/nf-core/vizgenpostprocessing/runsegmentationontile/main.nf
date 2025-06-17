@@ -5,9 +5,9 @@ process VIZGENPOSTPROCESSING_RUNSEGMENTATIONONTILE {
     container 'ghcr.io/wehi-soda-hub/vizgen-postprocessing_container:v0.1.1'
 
     input:
-    tuple val(meta), path(input_images), path(algorithm_specification), val(tile_index)
-    path(algorithm_json)
-    path(custom_weights) // Optional, for custom weights (must be defined in algorithm_json)
+    tuple val(meta), path(input_images), path(segmentation_params), val(tile_index)
+    path(algorithm_json) // Not passed as an arg; defined in segmentation parameters
+    path(custom_weights) // Optional; also defined in segmentation parameters
 
     output:
     tuple val(meta), path("${prefix}/result_tiles/*.parquet"), emit: segmented_tile
@@ -27,7 +27,7 @@ process VIZGENPOSTPROCESSING_RUNSEGMENTATIONONTILE {
     vpt --verbose \\
         run-segmentation-on-tile \\
         $args \\
-        --input-segmentation-parameters $segmentation_spec \\
+        --input-segmentation-parameters $segmentation_params \\
         --tile-index $tile_index
 
     cat <<-END_VERSIONS > versions.yml

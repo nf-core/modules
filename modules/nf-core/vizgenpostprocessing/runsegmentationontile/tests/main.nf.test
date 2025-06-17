@@ -7,12 +7,12 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "vizgenpostprocessing"
+    tag "vizgenpostprocessing/preparesegmentation"
     tag "vizgenpostprocessing/runsegmentationontile"
 
     test("nuclei - json, images") {
 
         setup {
-
             run("VIZGENPOSTPROCESSING_PREPARESEGMENTATION") {
                 script "../../preparesegmentation/main.nf"
                 params {
@@ -54,7 +54,7 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ],
                     testDir,
-                    VIZGENPOSTPROCESSING_PREPARESEGMENTATION.out.segmentation_files[0][1] // Algorithm specification file from preparesegmentation
+                    VIZGENPOSTPROCESSING_PREPARESEGMENTATION.out.segmentation_files[0][1], // Segmentation parameters
                     0 // Tile index
                 ]
                 input[1] = file('https://raw.githubusercontent.com/Vizgen/vpt-plugin-cellpose2/refs/heads/develop/example_analysis_algorithm/cellpose2_nuclei.json', checkIfExists: true)
@@ -82,13 +82,13 @@ nextflow_process {
                 testDir = file("tmpdir", type: 'dir')
                 testDir.mkdir()
 
-                algorithmSpec = file("algorithm_specification.json")
-                algorithmSpec.text = '{}'
+                segmentationParams = file("algorithm_specification.json")
+                segmentationParams.text = '{}'
 
                 input[0] = [
                     [ id:'test' ],
                     testDir,
-                    algorithmSpec,
+                    segmentationParams,
                     0 // Tile index
                 ]
                 input[1] = file('https://raw.githubusercontent.com/Vizgen/vpt-plugin-cellpose2/refs/heads/develop/example_analysis_algorithm/cellpose2_nuclei.json', checkIfExists: true)
