@@ -17,8 +17,8 @@ nextflow_process {
                 script "modules/nf-core/untar/main.nf"
             input:
             Channel.of(
-                [ [], file(params.modules_testdata_base_path + "/.../hto.tar.gz") ],
-                [ [], file(params.modules_testdata_base_path + "/.../rna.tar.gz") ]
+                [ [id: 'hto'], file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz") ],
+                [ [id: 'rna'], file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/rna.tar.gz") ]
             )
             }
         }
@@ -26,12 +26,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test'], // meta map
-                    UNTAR.out.untar[0].map{ meta, files -> files },
-                    "FALSE",
-                    UNTAR.out.untar[1].map{ meta, files -> files },
-                ]
+                input[0] = UNTAR.out.untar.filter{ meta, _f -> meta.id == 'hto' }
+                                       .combine(UNTAR.out.untar.filter{ meta, _f -> meta.id == 'rna' }
+                                       .map{ _meta_hto, hto, _meta_rna, rna -> [[id: 'test], hto, "FALSE", rna] }
                 """
             }
         }
