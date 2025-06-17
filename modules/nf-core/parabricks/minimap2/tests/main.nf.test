@@ -236,8 +236,6 @@ nextflow_process {
 
     test("homo_sapiens - bam - cram") {
 
-        config './nextflow.config'
-
         when {
             params {
                 module_args = '--low-memory'
