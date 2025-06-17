@@ -20,7 +20,7 @@ null_to_string <- function(x, val = "NULL") if (is.null(x)) val else x
 
 # hashedDrops parameters
 hto_matrix <- '$hto_matrix'
-hto_matrix <- '$rna_matrix'
+rna_matrix <- '$rna_matrix'
 lower <- as.numeric('$lower')
 niters <- as.numeric('$niters')
 testAmbient <- as.logical('$testAmbient')
@@ -55,7 +55,7 @@ if (! file.exists(hto_matrix)){
 ################################################
 
 library(Seurat)  # for Read10X()
-library(cellhashR) # for hashedDrops() and emptyDrops()
+library(DropletUtils) # for hashedDrops() and emptyDrops()
 
 ################################################
 ################################################
@@ -85,11 +85,11 @@ if (runEmptyDrops) {
     )
 
     # which droplets are actual cells
-    is.cell <- emptyDrops_out$FDR <= isCellFDR
+    is.cell <- emptyDrops_out\$FDR <= isCellFDR
     hto_input <- hto[, which(is.cell)]
 
-    if (ambient == TRUE) {
-        ambient_input <- metadata(emptyDrops_out)$ambient
+    if (ambient) {
+        ambient_input <- metadata(emptyDrops_out)\$ambient
     } else {
         ambient_input <- NULL
     }
@@ -175,7 +175,7 @@ write.csv(params, paste0(prefix ,"_params_hasheddrops.csv"))
 png(paste0(prefix, "_emptyDrops.png"))
 if(runEmptyDrops){
     colors <- ifelse(is.cell, "red", "black")
-    plot(emptyDrops_out$Total, -emptyDrops_out$LogProb, col = colors, xlab = "Total UMI count", ylab = "-Log Probability")
+    plot(emptyDrops_out\$Total, -emptyDrops_out\$LogProb, col = colors, xlab = "Total UMI count", ylab = "-Log Probability")
 }else{
     plot.new()
 
@@ -191,17 +191,17 @@ write.csv(params, paste0(prefix, "params_hasheddrops.csv"))
 write.csv(hashedDrops_out,paste0(prefix,"results_hasheddrops.csv"))
 saveRDS(hashedDrops_out,file = paste0(prefix,"hasheddrops.rds"))
 
-png(paste0(args$outputdir, "/", "plot_hasheddrops.png"))
-if (sum(is.na(hashedDrops_out$LogFC2)) != length(hashedDrops_out$LogFC2)) {
+png(paste0(prefix, "plot_hasheddrops.png"))
+if (sum(is.na(hashedDrops_out\$LogFC2)) != length(hashedDrops_out\$LogFC2)) {
 
-    colors <- ifelse(hashedDrops_out$Confident,
+    colors <- ifelse(hashedDrops_out\$Confident,
     "black",
-    ifelse(hashedDrops_out$Doublet, "red", "grey")
+    ifelse(hashedDrops_out\$Doublet, "red", "grey")
     )
 
     plot(
-    hashedDrops_out$LogFC,
-    hashedDrops_out$LogFC2,
+    hashedDrops_out\$LogFC,
+    hashedDrops_out\$LogFC2,
     col = colors,
     xlab = "Log-fold change between best and second HTO",
     ylab = "Log-fold change between second HTO and ambient"

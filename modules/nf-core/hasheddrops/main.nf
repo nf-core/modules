@@ -1,11 +1,12 @@
 process HASHEDDROPS {
+    debug true
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'oras://community.wave.seqera.io/library/dropletutils-scripts_r-seurat:5ab8681306ba44a9':
-        'community.wave.seqera.io/library/dropletutils-scripts_r-seurat:c400653ea0a86a0d' }"
+        'community.wave.seqera.io/library/bioconductor-dropletutils_r-seurat:e1dff3a0fb7c5920' }"
 
     input:
     tuple val(meta), path(hto_matrix), val(runEmptyDrops), path(rna_matrix)
