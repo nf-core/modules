@@ -26,7 +26,7 @@ input:
         type: file
         description: Vector file (either shapefile geometry or geopackage) defining the area of interest.
         pattern: "*.{shp,gpkg}"
-  - - tmp/datacube-definition.prj:
+  - - datacube_definition:
         type: file
         description: Datacube file in FORCE format defining the properties of the targeted datacube.
         pattern: "*.{prj}"

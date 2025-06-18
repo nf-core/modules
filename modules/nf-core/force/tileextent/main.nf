@@ -6,7 +6,7 @@ process FORCE_TILEEXTENT {
 
     input:
     path aoi
-    path "tmp/datacube-definition.prj"
+    path(datacube_definition, stageAs: "tmp/datacube-definition.prj")
     path shapefile_dbf
     path shapefile_prj
     path shapefile_shx
