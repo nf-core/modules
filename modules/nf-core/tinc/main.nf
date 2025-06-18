@@ -36,7 +36,7 @@ process TINC {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bioconductor-r-tinc:
+        bioconductor-rtinc: \$(Rscript -e "library(TINC); cat(as.character(packageVersion('TINC')))")
     END_VERSIONS
     """
 }

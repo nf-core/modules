@@ -13,6 +13,11 @@ nextflow_process {
         config "./nextflow.config"
 
         when {
+
+            params {
+                module_args = '[normal_contamination_level:3]'
+            }
+
             process {
                 """                
                 input[0] = [
