@@ -57,6 +57,16 @@ output:
           type: file
           description: A text file containing the tag family size counts
           pattern: "*.txt"
+  - read_metrics:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*read-metrics.txt":
+          type: file
+          description: A text file containing the read count metrics from grouping
+          pattern: "*.txt"
   - versions:
       - versions.yml:
           type: file
