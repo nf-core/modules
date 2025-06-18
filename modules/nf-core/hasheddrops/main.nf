@@ -1,86 +1,76 @@
-// TODO nf-core: If in doubt look at other nf-core/modules to see how we are doing things! :)
-//               https://github.com/nf-core/modules/tree/master/modules/nf-core/
-//               You can also ask for help via your pull request or on the #modules channel on the nf-core Slack workspace:
-//               https://nf-co.re/join
-// TODO nf-core: A module file SHOULD only define input and output files as command-line parameters.
-//               All other parameters MUST be provided using the "task.ext" directive, see here:
-//               https://www.nextflow.io/docs/latest/process.html#ext
-//               where "task.ext" is a string.
-//               Any parameters that need to be evaluated in the context of a particular sample
-//               e.g. single-end/paired-end data MUST also be defined and evaluated appropriately.
-// TODO nf-core: Software that can be piped together SHOULD be added to separate module files
-//               unless there is a run-time, storage advantage in implementing in this way
-//               e.g. it's ok to have a single module for bwa to output BAM instead of SAM:
-//                 bwa mem | samtools view -B -T ref.fasta
-// TODO nf-core: Optional inputs are not currently supported by Nextflow. However, using an empty
-//               list (`[]`) instead of a file can be used to work around this issue.
-
 process HASHEDDROPS {
+    debug true
     tag "$meta.id"
     label 'process_low'
 
-    // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'biocontainers/YOUR-TOOL-HERE' }"
+        'oras://community.wave.seqera.io/library/bioconductor-dropletutils_r-seurat:3cbdf18d48cd0cfa':
+        'community.wave.seqera.io/library/bioconductor-dropletutils_r-seurat:e1dff3a0fb7c5920' }"
 
-    input:// TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
-    //               MUST be provided as an input via a Groovy Map called "meta".
-    //               This information may not be required in some instances e.g. indexing reference genome files:
-    //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
-    // TODO nf-core: Where applicable please provide/convert compressed files as input/output
-    //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-    tuple val(meta), path(bam)
+    input:
+    tuple val(meta), path(hto_matrix), val(runEmptyDrops), path(rna_matrix)
 
     output:
-    // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*.bam"), emit: bam
-    // TODO nf-core: List additional required output channels/values here
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*_emptyDrops.png")              , emit: empty_drops_plot
+    tuple val(meta), path("*_emptyDrops.csv")              , emit: empty_drops_csv
+    tuple val(meta), path("*_emptyDrops.rds")              , emit: empty_drops_rds
+    tuple val(meta), path("*_results_hasheddrops.csv")     , emit: results
+    tuple val(meta), path("*_hasheddrops.rds")             , emit: rds
+    tuple val(meta), path("*_plot_hasheddrops.png")        , emit: plot
+    tuple val(meta), path("*_params_hasheddrops.csv")      , emit: params
+    path "versions.yml"                                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
-    //               If the software is unable to output a version number on the command-line then it can be manually specified
-    //               e.g. https://github.com/nf-core/modules/blob/master/modules/nf-core/homer/annotatepeaks/main.nf
-    //               Each software used MUST provide the software name and version number in the YAML version file (versions.yml)
-    // TODO nf-core: It MUST be possible to pass additional parameters to the tool as a command-line string via the "task.ext.args" directive
-    // TODO nf-core: If the tool supports multi-threading then you MUST provide the appropriate parameter
-    //               using the Nextflow "task" variable e.g. "--threads $task.cpus"
-    // TODO nf-core: Please replace the example samtools command below with your module's command
-    // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
-    """
-    hasheddrops \\
-        $args \\
-        -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        $bam
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hasheddrops: \$(hasheddrops --version)
-    END_VERSIONS
-    """
+    // emptyDrops Parameters
+    lower                    = task.ext.lower                 ?: "10"        // A numeric scalar specifying the lower bound on the total UMI count, at or below which all barcodes are assumed to correspond to empty droplets.
+    niters                   = task.ext.niters                ?: "10000"      // An integer scalar specifying the number of iterations to use for the Monte Carlo p-value calculations.
+    testAmbient              = task.ext.testAmbient           ?: "TRUE"       // A logical scalar indicating whether results should be returned for barcodes with totals less than or equal to lower.
+    round                    = task.ext.round                 ?: "TRUE"       // Logical scalar indicating whether to check for non-integer values in m and, if present, round them for ambient profile estimation.
+    byRank                   = task.ext.byRank                ?: "NULL"       // An integer scalar parametrizing an alternative method for identifying assumed empty droplets. If set, this is used to redefine lower and any specified value for lower is ignored.
+    isCellFDR                = task.ext.isCellFDR             ?: "0.01"       // Threshold to filter the cells.
+    gene_col                 = task.ext.gene_col              ?: "2"          // Specify which column of genes.tsv or features.tsv to use for gene names; default is 2.
+
+    // hashedDrops Parameters
+    ignore       = task.ext.ignore    ?: "NULL"       // A numeric scalar specifying the lower bound on the total UMI count, at or below which barcodes will be ignored.
+    alpha        = task.ext.alpha     ?: "NULL"       // A numeric scalar specifying the scaling parameter for the Dirichlet-multinomial sampling scheme.
+    ambient                  = task.ext.ambient               ?: "TRUE"       // Whether to use the relative abundance of each HTO in the ambient solution from emptyDrops, set TRUE only when test_ambient is TRUE.
+    minProp                  = task.ext.minProp               ?: "0.05"       // Numeric scalar to be used to infer the ambient profile when ambient=NULL.
+    pseudoCount              = task.ext.pseudoCount           ?: "5"          // A numeric scalar specifying the minimum pseudo-count when computing logfold changes.
+    constantAmbient          = task.ext.constantAmbient       ?: "FALSE"      // Logical scalar indicating whether a constant level of ambient contamination should be used to estimate LogFC2 for all cells.
+    doubletNmads             = task.ext.doubletNmads          ?: "3"          // A numeric scalar specifying the number of median absolute deviations (MADs) to use to identify doublets.
+    doubletMin               = task.ext.doubletMin            ?: "2"          // A numeric scalar specifying the minimum threshold on the log-fold change to use to identify doublets.
+    doubletMixture           = task.ext.doubletMixture        ?: "FALSE"      // Logical scalar indicating whether to use a 2-component mixture model to identify doublets.
+    confidentNmads           = task.ext.confidentNmads        ?: "3"          // A numeric scalar specifying the number of MADs to use to identify confidently assigned singlets.
+    confidentMin             = task.ext.confidentMin          ?: "2"          // A numeric scalar specifying the minimum threshold on the log-fold change to use to identify singlets.
+    combinations             = task.ext.combinations          ?: "NULL"       // An integer matrix specifying valid combinations of HTOs. Each row corresponds to a single sample and specifies the indices of rows in x corresponding to the HTOs used to label that sample.
+
+    // others
+    prefix                   = task.ext.prefix                ?: "${meta.id}" // Prefix name for output files.
+
+    template 'HashedDrops.R'
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // TODO nf-core: A stub section should mimic the execution of the original module as best as possible
-    //               Have a look at the following examples:
-    //               Simple example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bcftools/annotate/main.nf#L47-L63
-    //               Complex example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bedtools/split/main.nf#L38-L54
     """
-    
-    touch ${prefix}.bam
+    touch ${prefix}_emptyDrops.png
+    touch ${prefix}_emptyDrops.csv
+    touch ${prefix}_emptyDrops.rds
+    touch ${prefix}_results_hasheddrops.csv
+    touch ${prefix}_hasheddrops.rds
+    touch ${prefix}_plot_hasheddrops.png
+    touch ${prefix}_params_hasheddrops.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        hasheddrops: \$(hasheddrops --version)
+        r-base: \$(Rscript -e "cat(strsplit(R.version[['version.string']], ' ')[[1]][3])")
+        r-seurat: \$(Rscript -e "library(Seurat); cat(as.character(packageVersion('Seurat')))")
+        cdropletutils: \$(Rscript -e "library(DropletUtils); cat(as.character(packageVersion('DropletUtils')))")
     END_VERSIONS
     """
 }
+
