@@ -6,8 +6,8 @@ process MIXCR_ANALYZE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'ghcr.io/milaboratory/mixcr/mixcr:4.7.0':
-        'ghcr.io/milaboratory/mixcr/mixcr:4.7.0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7d/7dccca2db544d708a462b2ba49117b41e32141d8eb46f4dbc8730e210d2cdbae/data':
+        'community.wave.seqera.io/library/mixcr:4.7.0--bb57944ca92aeb74' }"  //ghcr.io/milaboratory/mixcr/mixcr:4.7.0
 
     containerOptions "${ workflow.containerEngine == 'singularity' ?
         '-B \$HOME' :
