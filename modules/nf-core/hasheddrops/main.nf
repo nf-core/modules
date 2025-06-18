@@ -11,14 +11,14 @@ process HASHEDDROPS {
     tuple val(meta), path(hto_matrix), val(runEmptyDrops), path(rna_matrix)
 
     output:
-    tuple val(meta), path("*_emptyDrops.png")              , emit: empty_drops_plot
-    tuple val(meta), path("*_emptyDrops.csv")              , emit: empty_drops_csv
-    tuple val(meta), path("*_emptyDrops.rds")              , emit: empty_drops_rds
-    tuple val(meta), path("*_results_hasheddrops.csv")     , emit: results
-    tuple val(meta), path("*_hasheddrops.rds")             , emit: rds
-    tuple val(meta), path("*_plot_hasheddrops.png")        , emit: plot
-    tuple val(meta), path("*_params_hasheddrops.csv")      , emit: params
-    path "versions.yml"                                    , emit: versions
+    tuple val(meta), path("*_emptyDrops.png")          , emit: empty_drops_plot
+    tuple val(meta), path("*_emptyDrops.csv")          , emit: empty_drops_csv
+    tuple val(meta), path("*_emptyDrops.rds")          , emit: empty_drops_rds
+    tuple val(meta), path("*_results_hasheddrops.csv") , emit: results
+    tuple val(meta), path("*_hasheddrops.rds")         , emit: rds
+    tuple val(meta), path("*_plot_hasheddrops.png")    , emit: plot
+    tuple val(meta), path("*_params_hasheddrops.csv")  , emit: params
+    path "versions.yml"                                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,7 +26,7 @@ process HASHEDDROPS {
     script:
 
     // emptyDrops Parameters
-    lower           = task.ext.lower           ?: "10"         // A numeric scalar specifying the lower bound on the total UMI count, at or below which all barcodes are assumed to correspond to empty droplets.
+    lower           = task.ext.lower           ?: "100"        // A numeric scalar specifying the lower bound on the total UMI count, at or below which all barcodes are assumed to correspond to empty droplets.
     niters          = task.ext.niters          ?: "10000"      // An integer scalar specifying the number of iterations to use for the Monte Carlo p-value calculations.
     testAmbient     = task.ext.testAmbient     ?: "TRUE"       // A logical scalar indicating whether results should be returned for barcodes with totals less than or equal to lower.
     round           = task.ext.round           ?: "TRUE"       // Logical scalar indicating whether to check for non-integer values in m and, if present, round them for ambient profile estimation.
