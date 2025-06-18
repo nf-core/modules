@@ -12,7 +12,7 @@ process COOLTOOLS_INSULATION {
 
     output:
     tuple val(meta), path("*tsv"), emit:tsv
-    tuple val(meta), path("*.bw"), optional: true, emit: bigwig
+    tuple val(meta), path("*.bw"), emit: bigwig, optional: true
     path("versions.yml"), emit:versions
 
     when:
