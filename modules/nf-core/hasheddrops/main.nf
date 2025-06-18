@@ -1,5 +1,4 @@
 process HASHEDDROPS {
-    debug true
     tag "$meta.id"
     label 'process_low'
 

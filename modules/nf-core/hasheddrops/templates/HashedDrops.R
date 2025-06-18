@@ -53,11 +53,6 @@ runEmptyDrops <- string_to_logical('$runEmptyDrops')
 gene_col <- as.numeric('$gene_col')
 prefix <- '$prefix'
 
-print("------------------------")
-print('$runEmptyDrops')
-print(runEmptyDrops)
-print("------------------------")
-
 # check if the file exists
 if (! file.exists(hto_matrix)){
     stop(paste0(hto_matrix, ' is not a valid file'))
@@ -84,13 +79,9 @@ hto <- Read10X(data.dir = hto_matrix, gene.column = gene_col)
 #is.cell <- NULL
 
 # determine hto_input and ambient_input
-print("some output:: ")
-print(runEmptyDrops)
 if (runEmptyDrops) {
 
     rna <- Read10X(data.dir = rna_matrix, gene.column = gene_col)
-
-    #print(rna)
 
     emptyDrops_out <- emptyDrops(
     rna,
@@ -102,8 +93,6 @@ if (runEmptyDrops) {
     round = round,
     by.rank = byRank
     )
-
-    #print(emptyDrops_out)
 
     # which droplets are actual cells
     is.cell <- emptyDrops_out\$FDR <= isCellFDR
