@@ -18,7 +18,7 @@ process HASHEDDROPS {
     tuple val(meta), path("*_results_hasheddrops.csv")     , emit: results
     tuple val(meta), path("*_hasheddrops.rds")             , emit: rds
     tuple val(meta), path("*_plot_hasheddrops.png")        , emit: plot
-    tuple val(meta), path("*_params_hasheddrops.csv")     , emit: params
+    tuple val(meta), path("*_params_hasheddrops.csv")      , emit: params
     path "versions.yml"                                    , emit: versions
 
     when:

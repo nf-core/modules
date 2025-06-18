@@ -9,8 +9,7 @@ nextflow_process {
     tag "hasheddrops"
     tag "untar"
 
-// file(params.modules_testdata_base_path + '/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/htodemux.rds', checkIfExists: true)
-        test("hto_matrix - runEmptyDrops:false - rna_matrix") {
+    test("hto_matrix - runEmptyDrops:false - rna_matrix") {
 
         setup {
             run("UNTAR") {
@@ -46,15 +45,27 @@ nextflow_process {
     }
 
     test("hto_matrix - runEmptyDrops:true - rna_matrix") {
+
+        setup {
+            run("UNTAR") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of(
+                        [ [id: 'hto'], file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz") ],
+                        [ [id: 'rna'], file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/rna.tar.gz") ]
+                    )
+                    """
+                }
+            }
+        }
+
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test'], // meta map
-                    "/Users/luisheinzlmeier/Desktop/test_data/hto",
-                    "FALSE",
-                    "/Users/luisheinzlmeier/Desktop/test_data/rna",
-                ]
+                input[0] = UNTAR.out.untar.filter{ meta, _f -> meta.id == 'hto' }
+                                        .combine(UNTAR.out.untar.filter{ meta, _f -> meta.id == 'rna' })
+                                        .map{ _meta_hto, hto, _meta_rna, rna -> [[id: 'test'], hto, "TRUE", rna] }
                 """
             }
         }
@@ -68,19 +79,30 @@ nextflow_process {
 
     }
 
-    test("hto_matrix - runEmptyDrops - rna_matrix - stub ") {
+    test("hto_matrix - runEmptyDrops:true - rna_matrix - stub") {
 
         options "-stub"
+
+        setup {
+            run("UNTAR") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of(
+                        [ [id: 'hto'], file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz") ],
+                        [ [id: 'rna'], file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/rna.tar.gz") ]
+                    )
+                    """
+                }
+            }
+        }
 
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test'], // meta map
-                    "/Users/luisheinzlmeier/Desktop/test_data/hto",
-                    "TRUE",
-                    "/Users/luisheinzlmeier/Desktop/test_data/rna",
-                ]
+                input[0] = UNTAR.out.untar.filter{ meta, _f -> meta.id == 'hto' }
+                                        .combine(UNTAR.out.untar.filter{ meta, _f -> meta.id == 'rna' })
+                                        .map{ _meta_hto, hto, _meta_rna, rna -> [[id: 'test'], hto, "TRUE", rna] }
                 """
             }
         }
