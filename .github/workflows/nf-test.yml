@@ -161,6 +161,7 @@ jobs:
         continue-on-error: ${{ runner.arch == 'ARM64' }}
         uses: ./.github/actions/nf-test-action
         env:
+          METASPACE_API_KEY: ${{ secrets.METASPACE_API_KEY }}
           SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
           SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
           SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
