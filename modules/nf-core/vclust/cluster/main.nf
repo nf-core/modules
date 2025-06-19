@@ -8,8 +8,11 @@ process VCLUST_CLUSTER {
         'biocontainers/vclust:1.3.1--py313h9ee0642_0' }"
 
     input:
-    tuple val(meta), path(ani)
+    tuple val(meta), path(tsv)
     tuple val(meta2), path(ids)
+    val tani
+    val gani
+    val ani
 
     output:
     tuple val(meta), path("*.tsv"), emit: clusters
@@ -22,11 +25,18 @@ process VCLUST_CLUSTER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def tani_command = tani ? "--tani ${tani}" : ''
+    def gani_command = gani ? "--gani ${gani}" : ''
+    def ani_command = ani ? "--ani ${ani}" : ''
+
+    def metric_command = tani_command + gani_command + ani_command ?: '--ani 0.95'
+
     """
     vclust \\
         cluster \\
         $args \\
-        -i ${ani} \\
+        ${metric_command} \\
+        -i ${tsv} \\
         --ids ${ids} \\
         -o ${prefix}.cluster.tsv 2>&1 | tee ${prefix}.log
 

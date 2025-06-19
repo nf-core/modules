@@ -33,6 +33,9 @@ nextflow_process {
                 """
                 input[0] = VCLUST_ALIGN.out.tsv
                 input[1] = VCLUST_ALIGN.out.ids
+                input[2] = []
+                input[3] = []
+                input[4] = []
                 """
             }
         }
@@ -40,7 +43,32 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert path(process.out.log.get(0).get(1)).getText().contains("Loading pairwise distances from")},
+                { assert snapshot(process.out.clusters).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - tsv - ani 0.7 ") {
+
+        when {
+            process {
+                """
+                input[0] = VCLUST_ALIGN.out.tsv
+                input[1] = VCLUST_ALIGN.out.ids
+                input[2] = []
+                input[3] = []
+                input[4] = '0.7'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.log.get(0).get(1)).getText().contains("ani 0.7")},
+                { assert snapshot(process.out.clusters).match() }
             )
         }
 
@@ -55,6 +83,9 @@ nextflow_process {
                 """
                 input[0] = VCLUST_ALIGN.out.tsv
                 input[1] = VCLUST_ALIGN.out.ids
+                input[2] = []
+                input[3] = []
+                input[4] = []
                 """
             }
         }
