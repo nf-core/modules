@@ -2,7 +2,7 @@ process VIZGENPOSTPROCESSING_RUNSEGMENTATIONONTILE {
     tag "$meta.id"
     label 'process_medium'
 
-    container 'ghcr.io/wehi-soda-hub/vizgen-postprocessing_container:v0.1.1'
+    container 'nf-core/vizgen-postprocessing_container:v0.1.1'
 
     input:
     tuple val(meta), path(input_images), path(segmentation_params), val(tile_index)
