@@ -1,0 +1,61 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "mcstaging_macsima2mc"
+description: Staging module for MCMICRO transforming MACSima data sets for being registered with ASHLAR in MCMICRO.
+keywords:
+  - imaging
+  - ome-tif
+  - mcmicro
+  - staging
+  - spatial-omics
+  - macsima
+tools:
+  - "mcstaging":
+      description: "Staging modules for MCMICRO"
+      homepage: "https://github.com/SchapiroLabor/macsima2mc"
+      documentation: "https://github.com/SchapiroLabor/macsima2mc/README.md"
+      tool_dev_url: "https://github.com/SchapiroLabor/macsima2mc"
+      licence: ["BSD-3-Clause"]
+      identifier: ""
+
+input:
+  # Only when we have meta
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+
+    - input_dir:
+        type: directory
+        description: Absolute path to the the parent folder of the raw tiles, whose name follows the pattern X_Cycle_N,where N represents the cycle number
+        pattern: "*Cycle*"
+
+    - output_dir:
+        type: string
+        description: Absolute path to the directory in which the outputs will be saved. If the output directory doesn't exist it will be created.
+
+
+output:
+  - out_dir:
+      #Only when we have meta
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - '${output_dir}/*':
+          type: list
+          description: Absolute path to the directory in which the outputs will be saved. If the output directory doesn't exist it will be created. Each directory contains subdirectorires with each well-rack-roi-exp combination. Each well-rack-roi-exp combination contains a markers.csv table that contains a row per channel/image with the following information; cycle number, channel number, channel name, corresponding background channel, exposure time and the instruction to remove or not the channel when applying the nf-core module Backsub.
+
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@EfraMP"
+maintainers:
+  - "@EfraMP"
+  - "@VictorDidier"
