@@ -11,8 +11,8 @@ process MOBSTER {
     tuple val(meta), path(rds_join)
 
     output:
-    tuple val(meta), path("*_mobster_st_fit.rds")      , emit: mobster_rds
-    tuple val(meta), path("*_mobster_st_best_fit.rds") , emit: mobster_best_rds
+    tuple val(meta), path("*_mobster_st_fit.rds")       , emit: mobster_rds
+    tuple val(meta), path("*_mobster_st_best_fit.rds")  , emit: mobster_best_rds
     tuple val(meta), path("*_plots.rds")                , emit: mobster_plots_rds
     tuple val(meta), path("*_REPORT_plots_mobster.rds") , emit: mobster_report_rds
     tuple val(meta), path("*_REPORT_plots_mobster.pdf") , emit: mobster_report_pdf
@@ -40,6 +40,9 @@ process MOBSTER {
     "${task.process}":
         CNAqc: \$(Rscript -e 'library(CNAqc); sessionInfo()\$otherPkgs\$CNAqc\$Version')
         mobster: \$(Rscript -e 'library(mobster); sessionInfo()\$otherPkgs\$mobster\$Version')
+        dplyr: \$(Rscript -e 'library(dplyr); sessionInfo()\$otherPkgs\$dplyr\$Version')
+        ggplot2: \$(Rscript -e 'library(ggplot2); sessionInfo()\$otherPkgs\$ggplot2\$Version')
+        cli: \$(Rscript -e 'library(cli); sessionInfo()\$otherPkgs\$cli\$Version')
     END_VERSIONS
     """
 }
