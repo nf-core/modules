@@ -25,7 +25,7 @@ input:
         description: Input fasta file containing query sequences
         pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1929
   - - meta2:
         type: map
         description: |
@@ -62,7 +62,7 @@ output:
           description: File containing blastp hits
           pattern: "*.{blast}"
           ontologies:
-            - edam: http://edamontology.org/format_3836 # BLAST XML v2 results format
+            - edam: http://edamontology.org/format_3836
   - xml:
       - meta:
           type: map
@@ -74,7 +74,7 @@ output:
           description: File containing blastp hits
           pattern: "*.{xml}"
           ontologies:
-            - edam: http://edamontology.org/format_2332 # XML
+            - edam: http://edamontology.org/format_2332
   - txt:
       - meta:
           type: map
@@ -108,7 +108,7 @@ output:
           description: File containing aligned reads in SAM format
           pattern: "*.{sam}"
           ontologies:
-            - edam: http://edamontology.org/format_2573 # SAM
+            - edam: http://edamontology.org/format_2573
   - tsv:
       - meta:
           type: map
@@ -120,7 +120,7 @@ output:
           description: Tab separated file containing taxonomic classification of hits
           pattern: "*.{tsv}"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   - paf:
       - meta:
           type: map
@@ -148,8 +148,8 @@ output:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
-          ontologies: 
-              - edam: http://edamontology.org/format_3750 # YAML
+          ontologies:
+            - edam: http://edamontology.org/format_3750
 authors:
   - "@spficklin"
   - "@jfy133"
