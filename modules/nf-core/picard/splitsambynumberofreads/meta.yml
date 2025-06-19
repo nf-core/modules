@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "picard_splitsambynumberofreads"
 description: write your description here
@@ -24,7 +23,6 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-
     - bam:
         type: file
         description: BAM/SAM file
@@ -33,23 +31,17 @@ input:
           - edam: "http://edamontology.org/format_2572" # BAM
           - edam: "http://edamontology.org/format_3462" # SAM
 
-    - split_to_N_reads:
+  - - split_to_N_reads:
         type: string
         description: |
           Split to have approximately N reads per output file.
           The actual number of reads per output file will vary by no more than the number of output files * (the maximum number of reads with the same queryname - 1).
           Incompatible with `split_to_N_files`
-
-    - split_to_N_files:
+  - - split_to_N_files:
         type: file
         description: |
           Split to N files.
           `Incompatible with split_to_N_files`
-
-    - arguments_file:
-        type: file
-        description: "optional picard arguments file"
-        pattern: "*.{txt,list,args,arguments}"
 
 output:
   - bam:
@@ -58,20 +50,28 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.bam":
-          type: file
-          description: split BAM/SAM files
+          pattern: "*.{bam,sam}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+            - edam: "http://edamontology.org/format_3462" # SAM
+
+      - picardsplit/*.bam:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
           pattern: "*.{bam,sam}"
           ontologies:
             - edam: "http://edamontology.org/format_2572" # BAM
             - edam: "http://edamontology.org/format_3462" # SAM
 
   - versions:
-      - "versions.yml":
+      - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
-
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Y-Pei"
 maintainers:
