@@ -25,7 +25,7 @@ input:
         description: Input fasta file
         pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_1929
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - taxonmap:
         type: file
         description: Optional mapping file of NCBI protein accession numbers to taxon
@@ -60,7 +60,7 @@ output:
           description: File containing software versions
           pattern: "versions.yml"
           ontologies:
-            - edam: http://edamontology.org/format_3750
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@spficklin"
 maintainers:
