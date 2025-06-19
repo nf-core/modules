@@ -34,13 +34,13 @@ input:
   - - split_to_N_reads:
         type: string
         description: |
-          Split to have approximately N reads per output file.
+          Split to have approximately N reads per output file, e.g. `4000000`.
           The actual number of reads per output file will vary by no more than the number of output files * (the maximum number of reads with the same queryname - 1).
           Incompatible with `split_to_N_files`
   - - split_to_N_files:
         type: file
         description: |
-          Split to N files.
+          Split to N files, e.g. `3`.
           `Incompatible with split_to_N_files`
 
 output:
