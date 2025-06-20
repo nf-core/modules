@@ -2,8 +2,8 @@ process PYCLONEVI {
     tag "$meta.id"
     label "process_low"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pyclone-vi%3A0.1.3--pyhca03a8a_0' :
-        'biocontainers/pyclone-vi:0.1.3--pyhca03a8a_0' }"
+        'https://depot.galaxyproject.org/singularity/pyclone-vi:0.1.6--pyhdfd78af_0' :
+        'biocontainers/pyclone-vi:0.1.6--pyhdfd78af_0' }"
 
 
     input:
