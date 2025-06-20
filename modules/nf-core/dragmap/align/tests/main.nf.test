@@ -184,7 +184,7 @@ nextflow_process {
                     file(process.out.bam[0][1]).name,
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
                     process.out.versions,
-F
+                    path(process.out.versions[0]).yaml
                 ).match() }
             )
         }
