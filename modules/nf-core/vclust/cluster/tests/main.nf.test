@@ -45,7 +45,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.log.get(0).get(1)).getText().contains("ani 0.7")},
-                { assert snapshot(process.out.clusters).match() }
+                { assert snapshot(
+                    process.out.clusters,
+                    process.out.versions
+                    ).match() }
             )
         }
 
@@ -70,7 +73,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.log.get(0).get(1)).getText().contains("tani 0.89")},
-                { assert snapshot(process.out.clusters).match() }
+                { assert snapshot(
+                    process.out.clusters,
+                    process.out.versions
+                    ).match() }
             )
         }
 
@@ -95,7 +101,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.log.get(0).get(1)).getText().contains("gani 0.78")},
-                { assert snapshot(process.out.clusters).match() }
+                { assert snapshot(
+                    process.out.clusters,
+                    process.out.versions
+                    ).match() }
             )
         }
 
