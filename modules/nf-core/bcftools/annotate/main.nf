@@ -22,16 +22,16 @@ process BCFTOOLS_ANNOTATE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args ?: ''
-    def prefix  = task.ext.prefix ?: "${meta.id}"
-    def header_file = header_lines ? "--header-lines ${header_lines}" : ''
+    def args    = task.ext.args    ?: ''
+    def prefix  = task.ext.prefix  ?: "${meta.id}"
+    def header_file = header_lines ? "--header-lines ${header_lines}"   : ''
     def annotations_file = annotations ? "--annotations ${annotations}" : ''
     def rename_chrs_file = rename_chrs ? "--rename-chrs ${rename_chrs}" : ''
     def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
-                    args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
+                    args.contains("--output-type u") || args.contains("-Ou") ? "bcf"    :
                     args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
-                    args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
-                    "vcf"
+                    args.contains("--output-type v") || args.contains("-Ov") ? "vcf"    :
+                    "vcf.gz"
     def index_command = !index ? "bcftools index $input" : ''
 
     if ("$input" == "${prefix}.${extension}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
@@ -55,18 +55,19 @@ process BCFTOOLS_ANNOTATE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
-                    args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
+                    args.contains("--output-type u") || args.contains("-Ou") ? "bcf"    :
                     args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
-                    args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
-                    "vcf"
+                    args.contains("--output-type v") || args.contains("-Ov") ? "vcf"    :
+                    "vcf.gz"
+
     def index_extension = args.contains("--write-index=tbi") || args.contains("-W=tbi") ? "tbi" :
-                        args.contains("--write-index=csi") || args.contains("-W=csi") ? "csi" :
-                        args.contains("--write-index") || args.contains("-W") ? "csi" :
+                        args.contains("--write-index=csi")   || args.contains("-W=csi") ? "csi" :
+                        args.contains("--write-index")       || args.contains("-W")     ? "csi" :
                         ""
-    def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
+    def create_cmd   = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
     def create_index = extension.endsWith(".gz") && index_extension.matches("csi|tbi") ? "touch ${prefix}.${extension}.${index_extension}" : ""
 
     if ("$input" == "${prefix}.${extension}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"

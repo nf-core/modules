@@ -14,23 +14,28 @@ process BCFTOOLS_CALL {
     path(samples)
 
     output:
-    tuple val(meta), path("*.gz") , emit: vcf
-    tuple val(meta), path("*.tbi"), emit: tbi, optional: true
-    tuple val(meta), path("*.csi"), emit: csi, optional: true
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.{vcf,vcf.gz,bcf,bcf.gz}"), emit: vcf
+    tuple val(meta), path("*.tbi")                    , emit: tbi, optional: true
+    tuple val(meta), path("*.csi")                    , emit: csi, optional: true
+    path "versions.yml"                               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def regions_file  = regions ? "--regions-file ${regions}" : ""
+    def regions_file = regions ? "--regions-file ${regions}" : ""
     def targets_file = targets ? "--targets-file ${targets}" : ""
-    def samples_file =  samples ? "--samples-file ${samples}" : ""
+    def samples_file = samples ? "--samples-file ${samples}" : ""
+    def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
+                    args.contains("--output-type u") || args.contains("-Ou") ? "bcf"    :
+                    args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
+                    args.contains("--output-type v") || args.contains("-Ov") ? "vcf"    :
+                    "vcf.gz"
     """
     bcftools view \\
-        --output ${prefix}.vcf.gz \\
+        --output ${prefix}.${extension} \\
         ${regions_file} \\
         ${targets_file} \\
         ${samples_file} \\
@@ -45,20 +50,29 @@ process BCFTOOLS_CALL {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def stub_index = args.contains("--write-index=tbi") || args.contains("-W=tbi") ? "tbi" :
-                     args.contains("--write-index=csi") || args.contains("-W=csi") ? "csi" :
-                     args.contains("--write-index")     || args.contains("-W") ? "csi" :
-                     ""
-    def create_index = stub_index.matches("csi|tbi") ? "touch ${prefix}.vcf.gz.${stub_index}" : ""
+    def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
+                    args.contains("--output-type u") || args.contains("-Ou") ? "bcf"    :
+                    args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
+                    args.contains("--output-type v") || args.contains("-Ov") ? "vcf"    :
+                    "vcf.gz"
+
+    def index_extension = args.contains("--write-index=tbi") || args.contains("-W=tbi") ? "tbi" :
+                        args.contains("--write-index=csi")   || args.contains("-W=csi") ? "csi" :
+                        args.contains("--write-index")       || args.contains("-W")     ? "csi" :
+                        ""
+    def create_cmd   = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
+    def create_index = extension.endsWith(".gz") && index_extension.matches("csi|tbi") ? "touch ${prefix}.${extension}.${index_extension}" : ""
+
+    if ("$vcf" == "${prefix}.${extension}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
-    echo "" | gzip > ${prefix}.vcf.gz
+    ${create_cmd} ${prefix}.${extension}
     ${create_index}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
+        bcftools: \$( bcftools --version |& sed '1!d; s/^.*bcftools //' )
     END_VERSIONS
     """
 }

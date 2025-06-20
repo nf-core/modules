@@ -23,11 +23,11 @@ process BCFTOOLS_VIEW {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def regions_file  = regions ? "--regions-file ${regions}" : ""
+    def regions_file = regions ? "--regions-file ${regions}" : ""
     def targets_file = targets ? "--targets-file ${targets}" : ""
-    def samples_file =  samples ? "--samples-file ${samples}" : ""
+    def samples_file = samples ? "--samples-file ${samples}" : ""
     def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
                     args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
                     args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :

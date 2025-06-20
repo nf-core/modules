@@ -11,14 +11,13 @@ process BCFTOOLS_SPLIT {
     tuple val(meta), path(vcf), path(tbi)
 
     output:
-    tuple val(meta), path("*.vcf.gz")   , emit: split_vcf
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.vcf.gz"), emit: split_vcf
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """

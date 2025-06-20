@@ -18,8 +18,8 @@ process BCFTOOLS_CONSENSUS {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args    = task.ext.args    ?: ''
+    def prefix  = task.ext.prefix  ?: "${meta.id}"
     def masking = mask ? "-m $mask" : ""
     """
     cat $fasta \\
@@ -37,9 +37,7 @@ process BCFTOOLS_CONSENSUS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def masking = mask ? "-m $mask" : ""
     """
     touch ${prefix}.fa
 

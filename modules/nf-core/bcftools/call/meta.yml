@@ -55,10 +55,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.gz":
+      - "*.{vcf,vcf.gz,bcf,bcf.gz}":
           type: file
-          description: VCF normalized output file
-          pattern: "*.{vcf.gz}"
+          description: VCF output file
+          pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
   - tbi:
       - meta:
           type: map
