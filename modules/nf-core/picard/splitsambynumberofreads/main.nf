@@ -4,8 +4,8 @@ process PICARD_SPLITSAMBYNUMBEROFREADS {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/picard:3.3.0--hdfd78af_0'
-        : 'biocontainers/picard:3.3.0--hdfd78af_0'}"
+        ? 'https://depot.galaxyproject.org/singularity/picard:3.4.0--hdfd78af_0'
+        : 'biocontainers/picard:3.4.0--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(bam)
@@ -55,7 +55,7 @@ process PICARD_SPLITSAMBYNUMBEROFREADS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        picard: \$(picard SplitSamByNumberOfReads --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:n)
+        picard: \$(echo \$(picard PositionBasedDownsampleSam --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
     END_VERSIONS
     """
 
@@ -80,11 +80,11 @@ process PICARD_SPLITSAMBYNUMBEROFREADS {
     }
     """
     mkdir picardsplit
-    touch picardsplit/${prefix}.bam
+    touch picardsplit/${prefix}_0001.bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        picard: \$(picard SplitSamByNumberOfReads --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
+        picard: \$(echo \$(picard PositionBasedDownsampleSam --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
     END_VERSIONS
     """
 }
