@@ -1,1 +1,1 @@
-FROM quay.io/nfcore/force:3.8.01
+FROM davidfrantz/force:3.8.01
