@@ -17,7 +17,7 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test' ]
+          e.g. [ id:'test', single_end:false ]
     - assembly:
         type: file
         description: FASTA, GenBank or EMBL formatted file
@@ -37,7 +37,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test' ]
+            e.g. [ id:'test', single_end:false ]
       - "*.txt":
           type: file
           description: Tab-delimited report of results
