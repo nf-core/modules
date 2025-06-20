@@ -1,0 +1,31 @@
+nextflow_process {
+
+    name "Test Process MOBSTER"
+    script "../main.nf"
+    process "MOBSTER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mobster"
+
+    test("Should run without failures") {
+        when {
+            params {
+                // outdir = "tests/results"
+            }
+            process {
+                """
+                meta = [ id : "test" ]
+                joinCNAqc_rds = file(params.modules_testdata_base_path + "delete_me/mobster/HCC1395_WXS_HCC1395_multi_cnaqc_ALL.rds", checkIfExists: true)
+                input[0] = tuple(meta, joinCNAqc_rds)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+        }
+
+    }
+
+}
