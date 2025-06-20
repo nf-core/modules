@@ -11,8 +11,8 @@ process BCFTOOLS_INDEX {
     tuple val(meta), path(vcf)
 
     output:
-    tuple val(meta), path("*.csi"), emit: csi, optional:true
-    tuple val(meta), path("*.tbi"), emit: tbi, optional:true
+    tuple val(meta), path("*.csi"), optional:true, emit: csi
+    tuple val(meta), path("*.tbi"), optional:true, emit: tbi
     path "versions.yml"           , emit: versions
 
     when:
@@ -20,6 +20,7 @@ process BCFTOOLS_INDEX {
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     bcftools \\
@@ -36,9 +37,9 @@ process BCFTOOLS_INDEX {
 
     stub:
     def args = task.ext.args ?: ''
-    def extension = args.contains("--tbi") || args.contains("-t") ?
-        "tbi" :
-        "csi"
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def extension = args.contains("--tbi") || args.contains("-t") ? "tbi" :
+                    "csi"
     """
     touch ${vcf}.${extension}
 

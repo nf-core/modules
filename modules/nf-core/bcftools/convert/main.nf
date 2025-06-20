@@ -13,16 +13,16 @@ process BCFTOOLS_CONVERT {
     path(bed)
 
     output:
-    tuple val(meta), path("*.vcf.gz")   , emit: vcf_gz , optional:true
-    tuple val(meta), path("*.vcf")      , emit: vcf    , optional:true
-    tuple val(meta), path("*.bcf.gz")   , emit: bcf_gz , optional:true
-    tuple val(meta), path("*.bcf")      , emit: bcf    , optional:true
-    tuple val(meta), path("*.hap.gz")   , emit: hap    , optional:true
-    tuple val(meta), path("*.legend.gz"), emit: legend , optional:true
-    tuple val(meta), path("*.samples")  , emit: samples, optional:true
-    tuple val(meta), path("*.tbi")      , emit: tbi    , optional:true
-    tuple val(meta), path("*.csi")      , emit: csi    , optional:true
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.vcf.gz"),      optional:true , emit: vcf_gz
+    tuple val(meta), path("*.vcf")   ,      optional:true , emit: vcf
+    tuple val(meta), path("*.bcf.gz"),      optional:true , emit: bcf_gz
+    tuple val(meta), path("*.bcf")   ,      optional:true , emit: bcf
+    tuple val(meta), path("*.hap.gz"),      optional:true , emit: hap
+    tuple val(meta), path("*.legend.gz"),   optional:true , emit: legend
+    tuple val(meta), path("*.samples")  ,   optional:true , emit: samples
+    tuple val(meta), path("*.tbi")      ,   optional:true , emit: tbi
+    tuple val(meta), path("*.csi")      ,   optional:true , emit: csi
+    path "versions.yml",                                    emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,7 +31,7 @@ process BCFTOOLS_CONVERT {
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def regions   = bed   ? "--regions-file $bed" : ""
+    def regions   = bed ? "--regions-file $bed" : ""
     def reference = fasta ?  "--fasta-ref $fasta" : ""
     def extension = args.contains("--output-type b")   || args.contains("-Ob") ? "bcf.gz" :
                     args.contains("--output-type u")   || args.contains("-Ou") ? "bcf" :
@@ -64,9 +64,9 @@ process BCFTOOLS_CONVERT {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def extension = args.contains("--output-type b")   || args.contains("-Ob") ? "bcf.gz" :
-                    args.contains("--output-type u")   || args.contains("-Ou") ? "bcf"    :
+                    args.contains("--output-type u")   || args.contains("-Ou") ? "bcf" :
                     args.contains("--output-type z")   || args.contains("-Oz") ? "vcf.gz" :
-                    args.contains("--output-type v")   || args.contains("-Ov") ? "vcf"    :
+                    args.contains("--output-type v")   || args.contains("-Ov") ? "vcf" :
                     args.contains("--haplegendsample") || args.contains("-h")  ? "hap.gz" :
                     "vcf.gz"
 
