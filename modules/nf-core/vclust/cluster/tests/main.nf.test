@@ -119,7 +119,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.failed },
-                { assert process.errorReport.contains("ERROR: The metric must be specified with metric.")}
+                { assert process.errorReport.contains("ERROR: The metric must be specified.")}
             )
         }
 

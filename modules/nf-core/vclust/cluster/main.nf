@@ -33,7 +33,7 @@ process VCLUST_CLUSTER {
     def metric_command = metric ? "--metric ${metric} " : ''
     def tgani_command = tani_command + gani_command + ani_command ?: ''
 
-    if ( !metric_command ) error "ERROR: The metric must be specified with metric."
+    if ( !metric_command ) error "ERROR: The metric must be specified."
     if ( !tgani_command ) error "ERROR: At least one of the ani thresholds must be specified: --tani, --gani, --ani."
     if ( !tgani_command.contains("--${metric}")) error "ERROR: The metric '${metric}' must have an associated threshold."
 
@@ -62,12 +62,11 @@ process VCLUST_CLUSTER {
     def metric_command = metric ? "--metric ${metric}" : ''
     def tgani_command = tani_command + gani_command + ani_command ?: ''
 
-    if ( !metric_command ) error "ERROR: The metric must be specified with metric."
+    if ( !metric_command ) error "ERROR: The metric must be specified."
     if ( !tgani_command ) error "ERROR: At least one of the ani thresholds must be specified: --tani, --gani, --ani."
     if ( !tgani_command.contains("${metric}")) error "ERROR: The metric '${metric}' must have an associated threshold."
 
     """
-
     touch ${prefix}.clusters.tsv
     touch ${prefix}.log
 
