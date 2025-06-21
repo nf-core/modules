@@ -1,0 +1,63 @@
+name: scanpy_scrublet
+description: Detect doublets in single-cell RNA-seq data using Scrublet via Scanpy
+keywords:
+  - scrublet
+  - doublet-detection
+  - scanpy
+  - single-cell
+tools:
+  - scanpy:
+      description: Single-Cell Analysis in Python
+      homepage: https://scanpy.readthedocs.io
+      documentation: https://scanpy.readthedocs.io/en/stable/api.html#doublet-detection
+      tool_dev_url: https://github.com/scverse/scanpy
+      doi: 10.1186/s13059-017-1382-0
+      licence: ["BSD-3-Clause"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - h5ad:
+      type: file
+      description: AnnData object in h5ad format
+      pattern: "*.{h5ad}"
+  - batch_col:
+      type: string
+      description: |
+        Optional column name in adata.obs containing batch information
+        If provided and contains multiple batches, will be used as batch_key parameter
+
+output:
+  - h5ad:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.h5ad":
+          type: file
+          description: AnnData object with doublets removed
+          pattern: "*.h5ad"
+  - predictions:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.pkl":
+          type: file
+          description: Pickle file containing doublet predictions
+          pattern: "*.pkl"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@nictru"
+maintainers:
+  - "@nictru"
