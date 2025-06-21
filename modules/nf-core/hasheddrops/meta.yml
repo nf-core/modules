@@ -26,6 +26,8 @@ input:
         type: file
         description: |
           Directory that contains the HTO matrix in a 10X format.
+        ontologies:
+          - edam: "http://edamontology.org/data_3917" # count matrix
     - runEmptyDrops:
         type: boolean
         description: |
@@ -34,6 +36,8 @@ input:
         type: file
         description: |
           Path to RNA count matrix, which is only uses if runEmptyDrops == "TRUE".
+        ontologies:
+          - edam: "http://edamontology.org/data_3917" # count matrix
 
 output:
   - empty_drops_plot:
