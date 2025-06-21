@@ -40,7 +40,7 @@ process VCLUST_CLUSTER {
     """
     vclust \\
         cluster \\
-        $args \\
+        ${args} \\
         ${metric_command} \\
         ${tgani_command} \\
         -i ${tsv} \\
