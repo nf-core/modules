@@ -38,16 +38,6 @@ output:
           type: file
           description: TSV file
           pattern: "*.tsv"
-  - cnn:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.cnn":
-          type: file
-          description: CNN file
-          pattern: "*.cnn"
   - versions:
       - versions.yml:
           type: file
