@@ -12,16 +12,16 @@ process SCANPY_PCA {
     val key_added
 
     output:
-    tuple val(meta), path("${prefix}.h5ad"), emit: h5ad
-    path "X_${prefix}.pkl"                 , emit: obsm
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), path("*.h5ad"), emit: h5ad
+    path "X_*.pkl", emit: obsm
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
-    if ("${prefix}.h5ad" == "${h5ad}") {
+    if ("${h5ad}" == "${prefix}.h5ad") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
     template('pca.py')

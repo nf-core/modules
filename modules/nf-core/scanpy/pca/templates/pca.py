@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
 
 import os
-import platform
 
+os.environ["MPLCONFIGDIR"] = "./tmp/mpl"
 os.environ["NUMBA_CACHE_DIR"] = "./tmp/numba"
-os.environ["MPLCONFIGDIR"] = "./tmp/matplotlib"
 
 import scanpy as sc
 import numpy as np
 import pandas as pd
+import platform
 import yaml
-
 from threadpoolctl import threadpool_limits
 threadpool_limits(int("${task.cpus}"))
 sc.settings.n_jobs = int("${task.cpus}")
+
 
 adata = sc.read_h5ad("${h5ad}")
 prefix = "${prefix}"
@@ -34,8 +34,7 @@ df.to_pickle(f"X_{prefix}.pkl")
 versions = {
     "${task.process}": {
         "python": platform.python_version(),
-        "scanpy": sc.__version__,
-        "pandas": pd.__version__
+        "scanpy": sc.__version__
     }
 }
 
