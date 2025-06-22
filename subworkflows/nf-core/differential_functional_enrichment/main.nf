@@ -70,9 +70,9 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
 
     // GSEA uses meta.variable, so only keep contrasts where meta.variable is present
     ch_contrasts_transposed = ch_contrasts.transpose()
-    .filter { meta, contrastMap, variable, reference, target, formula, comparison ->
-        variable?.trim()
-    }
+        .filter { meta, contrastMap, variable, reference, target, formula, comparison ->
+            variable?.trim()
+        }
 
     ch_input_for_gsea = ch_input
         .filter{ it[4] == 'gsea' }
