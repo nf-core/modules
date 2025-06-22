@@ -12,7 +12,8 @@ keywords:
   - phage
 tools:
   - "vclust":
-      description: "Fast and accurate tool for calculating ANI and clustering virus
+      description: |
+        "Fast and accurate tool for calculating ANI and clustering virus
         genomes and metagenomes."
       homepage: "https://afproject.org/vclust/"
       documentation: "https://github.com/refresh-bio/vclust/wiki"
@@ -49,6 +50,7 @@ input:
         type: string
         description: |
           Similarity metric for clustering choices: 'tani','gani' or 'ani'
+        pattern: "tani|gani|ani"
   - - tani:
         type: float
         description: |

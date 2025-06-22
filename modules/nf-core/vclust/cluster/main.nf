@@ -68,7 +68,7 @@ process VCLUST_CLUSTER {
 
     """
     touch ${prefix}.clusters.tsv
-    touch ${prefix}.log
+    echo "${metric_command} ${tgani_command}" > ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
