@@ -13,8 +13,8 @@ process SCANPY_PCA {
 
     output:
     tuple val(meta), path("*.h5ad"), emit: h5ad
-    path "X_*.pkl", emit: obsm
-    path "versions.yml", emit: versions
+    path "X_*.pkl"                 , emit: obsm
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
