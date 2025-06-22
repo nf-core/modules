@@ -33,6 +33,9 @@ input:
         type: file
         description: Database in FASTA format
         pattern: "*.fasta"
+  - - db_type:
+        type: string
+        description: Type of database to use, either 'gene' or 'mlst'
 output:
   - gene_results:
       - meta:
