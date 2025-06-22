@@ -13,8 +13,8 @@ process SCANPY_SCRUBLET {
 
     output:
     tuple val(meta), path("*.h5ad"), emit: h5ad
-    tuple val(meta), path("*.pkl"), emit: predictions
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.pkl") , emit: predictions
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
