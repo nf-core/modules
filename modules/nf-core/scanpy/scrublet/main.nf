@@ -21,10 +21,16 @@ process SCANPY_SCRUBLET {
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
+    if ("${h5ad}" == "${prefix}.h5ad") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     template('scrublet.py')
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
+    if ("${h5ad}" == "${prefix}.h5ad") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
     export MPLCONFIGDIR=./tmp/mpl
     export NUMBA_CACHE_DIR=./tmp/numba
