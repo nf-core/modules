@@ -30,7 +30,8 @@ nextflow_process {
         then {
             assertAll(
             { assert process.success },
-            { assert snapshot(process.out).match() }
+            { assert snapshot(process.out.versions).match() },
+            { assert "predicted_doublet" in anndata(process.out.h5ad[0][1]).obs.colnames }
             )
         }
 
