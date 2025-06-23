@@ -48,10 +48,11 @@ process DRAGONFLYE {
     def args      = task.ext.args   ?: ''
     def args_list = args.tokenize()
 
-    assembler_name = args_list[args_list.indexOf('--assembler')+1] ?: 'flye'
+    assembler_name = args_list.contains("--assembler") ? args_list[args_list.indexOf('--assembler')+1] : 'flye'
 
     """
     touch ${prefix}.fa
+    touch ${prefix}.reoriented.fa
     touch dragonflye.log
     touch ${assembler_name}.fasta
     touch ${assembler_name}-unpolished.gfa

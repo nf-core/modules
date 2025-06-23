@@ -10,7 +10,6 @@ nextflow_process {
     tag "dragonflye"
 
     test("Dragonflye with miniasm") {
-        tag "test"
         when {
             params {
                 modules_testdata_base_path = 'https://raw.githubusercontent.com/nf-core/test-datasets/bacass/'
@@ -109,6 +108,8 @@ nextflow_process {
     }
 
     test("Dragonflye hybrid -- stub") {
+        options "-stub"
+        tag "stub"
         when {
             params {
                 modules_testdata_base_path = 'https://raw.githubusercontent.com/nf-core/test-datasets/bacass/'
@@ -140,6 +141,8 @@ nextflow_process {
     }
 
     test("Dragonflye no assembler -- stub") {
+        options "-stub"
+        tag "stub"
         when {
             params {
                 modules_testdata_base_path = 'https://raw.githubusercontent.com/nf-core/test-datasets/bacass/'
