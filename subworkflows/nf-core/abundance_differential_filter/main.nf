@@ -46,6 +46,8 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
             [ meta_for_diff, [ 'fc_threshold': fc_threshold, 'stat_threshold': stat_threshold ]]
         contrasts_for_norm:
             [ meta_with_method, variable, reference, target ]
+        contrasts_for_norm_with_formula:
+            [ meta_with_method, variable, reference, target, formula, comparison ]
         // these are optional files
         // return empty file if not available
         transcript_length:
@@ -87,14 +89,14 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // LIMMA_NORM directly. It internally runs normalization + DE analysis.
 
     LIMMA_NORM(
-        norm_inputs.contrasts_for_norm.filter{it[0].differential_method == 'limma'},
+        norm_inputs.contrasts_for_norm_with_formula.filter{it[0].differential_method == 'limma'},
         norm_inputs.samples_and_matrix.filter{it[0].differential_method == 'limma'}
     )
 
     ch_versions = ch_versions.mix(LIMMA_NORM.out.versions.first())
 
     LIMMA_DIFFERENTIAL(
-        inputs.contrasts_for_diff.filter{ it[0].differential_method == 'limma' },
+        inputs.contrasts_for_diff_with_formula.filter{ it[0].differential_method == 'limma' },
         inputs.samples_and_matrix.filter{ it[0].differential_method == 'limma' }
     )
 
@@ -197,8 +199,8 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
                     stat_column: 'adj.P.Val', stat_cardinality: '<='
                 ],
                 'propd' : [
-                    fc_column: 'lfc', fc_cardinality: '>=',
-                    stat_column: 'weighted_connectivity', stat_cardinality: '>='
+                    fc_column: 'LFC', fc_cardinality: '>=',
+                    stat_column: 'significant', stat_cardinality: '<='
                 ],
                 'dream' : [
                     fc_column: 'logFC', fc_cardinality: '>=',
