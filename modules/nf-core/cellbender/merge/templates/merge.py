@@ -5,7 +5,7 @@ import platform
 import anndata as ad
 import cellbender
 from cellbender.remove_background.downstream import load_anndata_from_input_and_output
-import yaml
+from ruamel.yaml import YAML
 
 adata = ad.read_h5ad("${filtered}")
 
@@ -22,12 +22,8 @@ adata.write_h5ad("${prefix}.h5ad")
 
 # Versions
 
-versions = {
-    "${task.process}": {
-        "python": platform.python_version(),
-        "cellbender": cellbender.__version__
-    }
-}
+versions = {"${task.process}": {"python": platform.python_version(), "cellbender": cellbender.__version__}}
 
+yaml = YAML(typ="safe")
 with open("versions.yml", "w") as f:
     yaml.dump(versions, f)
