@@ -9,8 +9,8 @@ nextflow_process {
     tag "modules_nfcore"
     tag "dragonflye"
 
-
     test("Dragonflye with miniasm") {
+        tag "test"
         when {
             params {
                 modules_testdata_base_path = 'https://raw.githubusercontent.com/nf-core/test-datasets/bacass/'
@@ -33,10 +33,10 @@ nextflow_process {
             assert snapshot(
                 process.out.raw_contigs,
                 process.out.gfa,
-                file(process.out.contigs[0][1]).name, // MD5sum not reproducible (contig order)
+                process.out.contigs[0][1].collect{ file(it).name }, // MD5sum not reproducible (contig order)
                 file(process.out.log[0][1]).name, // MD5sum not reproducible (timestamp)
                 process.out.versions,
-                path(process.out.versions[0][1]).yaml
+                path(process.out.versions[0]).yaml
             ).match()
         }
 
@@ -64,10 +64,10 @@ nextflow_process {
             assert snapshot(
                 process.out.raw_contigs,
                 process.out.gfa,
-                file(process.out.contigs[0][1]).name, // MD5sum not reproducible (contig order)
+                process.out.contigs[0][1].collect{ file(it).name }, // MD5sum not reproducible (contig order)
                 file(process.out.log[0][1]).name, // MD5sum not reproducible (timestamp)
                 process.out.versions,
-                path(process.out.versions[0][1]).yaml
+                path(process.out.versions[0]).yaml
             ).match()
         }
 
@@ -99,10 +99,10 @@ nextflow_process {
             assert snapshot(
                 process.out.raw_contigs,
                 process.out.gfa,
-                file(process.out.contigs[0][1]).name, // MD5sum not reproducible (contig order)
+                process.out.contigs[0][1].collect{ file(it).name }, // MD5sum not reproducible (contig order)
                 file(process.out.log[0][1]).name, // MD5sum not reproducible (timestamp)
                 process.out.versions,
-                path(process.out.versions[0][1]).yaml
+                path(process.out.versions[0]).yaml
             ).match()
         }
 
@@ -133,7 +133,7 @@ nextflow_process {
             assert process.success
             assert snapshot(
                 process.out,
-                path(process.out.versions[0][1]).yaml
+                path(process.out.versions[0]).yaml
             ).match()
         }
 
@@ -161,7 +161,7 @@ nextflow_process {
             assert process.success
             assert snapshot(
                 process.out,
-                path(process.out.versions[0][1]).yaml
+                path(process.out.versions[0]).yaml
             ).match()
         }
 
