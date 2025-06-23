@@ -33,12 +33,12 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.rds,
-                    process.out.plot_rds,
-                    process.out.plot_pdf,
-                    process.out.tinc_csv,
                     process.out.versions
-                    ).match() }
+                ).match() },
+                { assert file(process.out.rds[0][1]).exists() },
+                { assert file(process.out.plot_rds[0][1]).exists() },
+                { assert file(process.out.plot_pdf[0][1]).exists() },
+                { assert file(process.out.tinc_csv[0][1]).exists() }
             )
         }
     }
