@@ -30,7 +30,12 @@ input:
         pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_1930"
-  - - reference_dir:
+  - - reference_name:
+        type: string
+        description: |
+          Name of the reference to align against and thus remove mapped reads to.
+          Typically corresponds
+    - reference_dir:
         type: directory
         description: |
           Directory containing index file(s) corresponding to the preferred aligner (bowtie2 short reads or minimap for long reads).
@@ -38,11 +43,6 @@ input:
           indices AND explicitly specify `--aligner bowtie2`
         ontologies:
           - edam: "http://edamontology.org/data_1049"
-  - - reference_name:
-        type: string
-        description: |
-          Name of the reference to align against and thus remove mapped reads to.
-          Typically corresponds
 
 output:
   - fastq:
