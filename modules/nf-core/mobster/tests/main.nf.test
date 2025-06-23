@@ -8,11 +8,8 @@ nextflow_process {
     tag "modules_nfcore"
     tag "mobster"
 
-    test("Should run without failures") {
+    test("test rds input") {
         when {
-            params {
-                // outdir = "tests/results"
-            }
             process {
                 """
                 meta = [ id : "test" ]
@@ -23,9 +20,71 @@ nextflow_process {
         }
 
         then {
-            assert process.success
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test rds input - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                meta = [ id : "test" ]
+                joinCNAqc_rds = file(params.modules_testdata_base_path + "delete_me/mobster/HCC1395_WXS_HCC1395_multi_cnaqc_ALL.rds", checkIfExists: true)
+                input[0] = tuple(meta, joinCNAqc_rds)
+                """
+            }
         }
 
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+
+    test("test csv input") {
+        when {
+            process {
+                """
+                meta = [ id : "test" ]
+                joinCNAqc_rds = file(params.modules_testdata_base_path + "delete_me/mobster/HCC1395_WXS_HCC1395_joint_table.csv", checkIfExists: true)
+                input[0] = tuple(meta, joinCNAqc_rds)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test csv input - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                meta = [ id : "test" ]
+                joinCNAqc_rds = file(params.modules_testdata_base_path + "delete_me/mobster/HCC1395_WXS_HCC1395_joint_table.csv", checkIfExists: true)
+                input[0] = tuple(meta, joinCNAqc_rds)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
     }
 
 }
