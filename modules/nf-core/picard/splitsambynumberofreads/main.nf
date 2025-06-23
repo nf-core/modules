@@ -51,7 +51,7 @@ process PICARD_SPLITSAMBYNUMBEROFREADS {
         ${args} \\
         --INPUT ${bam} \\
         --OUTPUT picardsplit \\
-        --OUT_PREFIX ${prefix}.bam
+        --OUT_PREFIX ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
