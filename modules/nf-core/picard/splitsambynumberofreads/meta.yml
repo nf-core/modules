@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "picard_splitsambynumberofreads"
-description: write your description here
+description: Splits a SAM/BAM/CRAM file to multiple files. This tool splits the input query-grouped SAM/BAM/CRAM file into multiple files while maintaining the sort order. This can be used to split a large unmapped input in order to parallelize alignment.
 keywords:
   - split
   - parallel
@@ -8,6 +8,7 @@ keywords:
   - subset
   - downsample
   - sam
+  - cram
 tools:
   - "picard":
       description: "Splits a SAM or BAM file to multiple BAMs by number of reads."
@@ -25,20 +26,35 @@ input:
           e.g. `[ id:'sample1' ]`
     - bam:
         type: file
-        description: BAM/SAM file
-        pattern: "*.{bam,sam}"
+        description: BAM/SAM/CRAM file
+        pattern: "*.{bam,sam,cram}"
         ontologies:
           - edam: "http://edamontology.org/format_2572" # BAM
-          - edam: "http://edamontology.org/format_3462" # SAM
-
+          - edam: "http://edamontology.org/format_2573" # SAM
+          - edam: "http://edamontology.org/format_3462" # CRAM
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: Reference fasta (optional - only required for CRAM input)
+        pattern: "*.{fasta,fa}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+    - fai:
+        type: file
+        description: FAI file (optional - only required for CRAM input)
+        pattern: "*.{fai}"
   - - split_to_N_reads:
-        type: string
+        type: integer
         description: |
           Split to have approximately N reads per output file, e.g. `4000000`.
           The actual number of reads per output file will vary by no more than the number of output files * (the maximum number of reads with the same queryname - 1).
           Incompatible with `split_to_N_files`
   - - split_to_N_files:
-        type: file
+        type: integer
         description: |
           Split to N files, e.g. `3`.
           `Incompatible with split_to_N_files`
@@ -50,20 +66,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*.{bam,sam}"
+      - "picardsplit/*.{bam,sam,cram}":
+          type: file
+          description: Split BAM files
+          pattern: "*.{bam,sam,cram}"
           ontologies:
             - edam: "http://edamontology.org/format_2572" # BAM
-            - edam: "http://edamontology.org/format_3462" # SAM
-
-      - picardsplit/*.bam:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-          pattern: "*.{bam,sam}"
-          ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
-            - edam: "http://edamontology.org/format_3462" # SAM
 
   - versions:
       - versions.yml:
