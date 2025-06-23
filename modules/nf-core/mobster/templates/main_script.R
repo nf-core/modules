@@ -64,23 +64,12 @@ run_mobster_fit = function(joint_table, descr) {
         dplyr::filter(VAF!=0) %>%
         dplyr::filter(karyotype=="1:1")
 
-mobster_fit(x = inp_tb,
-            K = eval(parse(text=opt[["K"]])),
-            # samples = as.integer(opt[["samples"]]),
-            # init = opt[["init"]],
-            tail = eval(parse(text=opt[["tail"]])),
-            # epsilon = as.numeric(opt[["epsilon"]]),
-            # maxIter = as.integer(opt[["maxIter"]]),
-            # fit.type = opt[["fit_type"]],
-            # seed = as.integer(opt[["seed"]]),
-            # model.selection = opt[["model_selection"]],
-            # trace = as.logical(opt[["trace"]]),
-            # parallel = as.logical(opt[["parallel"]]),
-            pi_cutoff = as.numeric(opt[["pi_cutoff"]]),
-            N_cutoff = as.integer(opt[["n_cutoff"]]),
-            # auto_setup = eval(parse(text=opt[["auto_setup"]])),
-            # silent = as.logical(opt[["silent"]]),
-            description = descr)
+    mobster_fit(x = inp_tb,
+                K = eval(parse(text=opt[["K"]])),
+                tail = eval(parse(text=opt[["tail"]])),
+                pi_cutoff = as.numeric(opt[["pi_cutoff"]]),
+                N_cutoff = as.integer(opt[["n_cutoff"]]),
+                description = descr)
 }
 
 lapply(samples, function(sample_name) {
