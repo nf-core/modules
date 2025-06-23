@@ -12,7 +12,6 @@ from threadpoolctl import threadpool_limits
 threadpool_limits(int("${task.cpus}"))
 sc.settings.n_jobs = int("${task.cpus}")
 
-
 adata = sc.read_h5ad("${h5ad}")
 prefix = "${prefix}"
 batch_col = "${batch_col}"
