@@ -32,6 +32,8 @@ process SCANPY_SCRUBLET {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
     """
+    # These are needed to prevent errors during import of scanpy
+    # when using singularity/apptainer
     export MPLCONFIGDIR=./tmp/mpl
     export NUMBA_CACHE_DIR=./tmp/numba
 
