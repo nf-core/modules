@@ -2,6 +2,8 @@
 
 import os
 
+# These are needed to prevent errors during import of scanpy
+# when using singularity/apptainer
 os.environ["MPLCONFIGDIR"] = "./tmp/mpl"
 os.environ["NUMBA_CACHE_DIR"] = "./tmp/numba"
 
