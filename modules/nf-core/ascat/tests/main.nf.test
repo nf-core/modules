@@ -196,7 +196,7 @@ nextflow_process {
                 input[1] = [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/ascat/G1000_alleles_hg38_chr21.txt', checkIfExists: true)]
                 input[2] = [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/ascat/G1000_loci_hg38_chr21.txt', checkIfExists: true)]
                 input[3] = []
-                input[4] = [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)]
+                input[4] = [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)]
                 input[5] = [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/ascat/GC_G1000_hg38_21.txt', checkIfExists: true)]
                 input[6] = [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/ascat/RT_G1000_hg38_21.txt', checkIfExists: true)]
                 """
