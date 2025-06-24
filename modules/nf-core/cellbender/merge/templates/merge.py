@@ -40,7 +40,12 @@ adata.write_h5ad("${prefix}.h5ad")
 
 # Versions
 
-versions = {"${task.process}": {"python": platform.python_version(), "cellbender": cellbender.__version__}}
+versions = {
+    "${task.process}": {
+        "python": platform.python_version(),
+        "cellbender": cellbender.__version__
+    }
+}
 
 with open("versions.yml", "w") as f:
     f.write(format_yaml_like(versions))

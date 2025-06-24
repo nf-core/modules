@@ -4,8 +4,8 @@ process CELLBENDER_MERGE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/eb/ebcf140f995f79fcad5c17783622e000550ff6f171771f9fc4233484ee6f63cf/data':
-        'community.wave.seqera.io/library/cellbender_webcolors:156d413fdfc16cdb' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c4/c472f392e7bbfc26dca0088c3bd2349aad10f41b002d1288f6b5958c0951d8df/data':
+        'community.wave.seqera.io/library/cellbender_python_webcolors:286b10a91af05a58' }"
 
     input:
     tuple val(meta), path(filtered), path(unfiltered), path(cellbender_h5)
@@ -29,6 +29,7 @@ process CELLBENDER_MERGE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
+        python: \$(python3 -c 'import platform; print(platform.python_version())')
         cellbender: \$(cellbender --version)
     END_VERSIONS
     """
