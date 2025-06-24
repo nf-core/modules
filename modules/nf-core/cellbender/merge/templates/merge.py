@@ -22,6 +22,6 @@ adata.write_h5ad("${prefix}.h5ad")
 # Versions
 # Versions
 with open("versions.yml", "w") as f:
-    f.write(f'"${task.process}":\n')
+    f.write('"${task.process}":\n')
     f.write(f'    python: "{platform.python_version()}"\n')
     f.write(f'    cellbender: "{cellbender.__version__}"\n')
