@@ -4,8 +4,8 @@ process COOLER_DUMP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cooler:0.10.2--pyhdfd78af_0' :
-        'biocontainers/cooler:0.10.2--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/cooler:0.10.3--pyhdfd78af_0' :
+        'biocontainers/cooler:0.10.3--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(cool), val(resolution)
@@ -18,14 +18,14 @@ process COOLER_DUMP {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = resolution ? "::/resolutions/$resolution" : ""
+    def suffix = resolution      ? "::/resolutions/$resolution" : ""
     """
     cooler dump \\
-        $args \\
+        ${args} \\
         -o ${prefix}.bedpe \\
-        $cool$suffix
+        ${cool}${suffix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -34,7 +34,6 @@ process COOLER_DUMP {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bedpe
