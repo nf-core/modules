@@ -51,12 +51,20 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
+                VIZGENPOSTPROCESSING_PREPARESEGMENTATION.out.segmentation_files
+                    .flatten()
+                    .last()
+                    .set { segmentation_params_ch }
+
+                Channel.of([
                     [ id:'test' ],
                     file("tmpdir", type: 'dir'),
-                    VIZGENPOSTPROCESSING_PREPARESEGMENTATION.out.segmentation_files[0][1], // Segmentation parameters
-                    0 // Tile index
-                ]
+                ])
+                .combine(segmentation_params_ch) // segmentation params JSON file
+                .combine(Channel.of(0)) // tile_index
+                .set { seg_input_ch }
+
+                input[0] = seg_input_ch
                 input[1] = file('https://raw.githubusercontent.com/Vizgen/vpt-plugin-cellpose2/refs/heads/develop/example_analysis_algorithm/cellpose2_nuclei.json', checkIfExists: true)
                 input[2] = []
                 """
