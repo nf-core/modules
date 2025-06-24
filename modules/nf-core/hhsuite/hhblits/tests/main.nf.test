@@ -39,32 +39,6 @@ nextflow_process {
         }
     }
 
-    test("multiplesequencealign - setoxin - fas") {
-
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + '../../multiplesequencealign/testdata/setoxin.ref', checkIfExists: true)
-                ]
-                input[1] = UNTAR.out.untar
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert path(process.out.hhr[0][1]).text.contains('F1R383_DANRE/124-372') },
-                { assert snapshot(
-                    process.out.versions.collect { path(it).yaml }
-                    ).match()}
-            )
-        }
-
-    }
-
     test("multiplesequencealign - setoxin - a3m") {
 
         when {
@@ -88,17 +62,14 @@ nextflow_process {
 
     }
 
-    test("multiplesequencealign - setoxin - fas - stub") {
+    test("multiplesequencealign - setoxin - a3m - stub") {
 
         options "-stub"
 
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + '../../multiplesequencealign/testdata/setoxin.ref', checkIfExists: true)
-                ]
+                input[0] = HHSUITE_REFORMAT.out.msa
                 input[1] = UNTAR.out.untar
                 """
             }

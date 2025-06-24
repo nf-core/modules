@@ -8,7 +8,7 @@ process HHSUITE_HHBLITS {
         'biocontainers/hhsuite:3.3.0--py311pl5321h9f068be_13' }"
 
     input:
-    tuple val(meta) , path(a3m)
+    tuple val(meta) , path(aln)
     tuple val(meta2), path(hh_db)
 
     output:
@@ -21,11 +21,11 @@ process HHSUITE_HHBLITS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def is_compressed = a3m.getExtension() == "gz" ? true : false
-    def a3m_name = is_compressed ? a3m.getBaseName() : a3m
+    def is_compressed = aln.getExtension() == "gz" ? true : false
+    def aln_name = is_compressed ? aln.getBaseName() : aln
     """
     if [ "${is_compressed}" == "true" ]; then
-        gzip -c -d ${a3m} > ${a3m_name}
+        gzip -c -d ${aln} > ${aln_name}
     fi
 
     file=\$(find ${hh_db}/ -type f -name '*_cs219.ffdata' | head -n 1)
@@ -35,7 +35,7 @@ process HHSUITE_HHBLITS {
     hhblits \\
         $args \\
         -cpu $task.cpus \\
-        -i ${a3m_name} \\
+        -i ${aln_name} \\
         -d ${hh_db}/\$db_name \\
         -o ${prefix}.hhr
 

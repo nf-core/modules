@@ -23,10 +23,9 @@ input:
           e.g. `[ id:'sample1' ]`
     - a3m:
         type: file
-        description: Input multiple sequence alignment file in fasta, a2m or a3m format
-        pattern: "*.{fas,fas.gz,fasta,fasta.gz,faa,faa.gz,a2m,a2m.gz,a3m,a3m.gz}"
+        description: Input multiple sequence alignment file in a2m or a3m format
+        pattern: "*.{a2m,a2m.gz,a3m,a3m.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_1984" # FASTA-aln
           - edam: "http://edamontology.org/format_3281" # A2M
   - - meta2:
         type: map
