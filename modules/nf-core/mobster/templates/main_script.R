@@ -96,7 +96,13 @@ lapply(samples, function(sample_name) {
 f = file("versions.yml","w")
 cnaqc_version = sessionInfo()\$otherPkgs\$CNAqc\$Version
 mobster_version = sessionInfo()\$otherPkgs\$mobster\$Version
+cli_version = sessionInfo()\$otherPkgs\$cli\$Version
+dplyr_version = sessionInfo()\$otherPkgs\$dplyr\$Version
+ggplot2_version = sessionInfo()\$otherPkgs\$ggplot2\$Version
 writeLines(paste0('"', "$task.process", '"', ":"), f)
 writeLines(paste("    CNAqc:", cnaqc_version), f)
 writeLines(paste("    mobster:", mobster_version), f)
+writeLines(paste("    cli:", cli_version), f)
+writeLines(paste("    dplyr:", dplyr_version), f)
+writeLines(paste("    ggplot2:", ggplot2_version), f)
 close(f)
