@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 
 import os
-import platform
 
+# These are needed to prevent errors during import of scanpy
+# when using singularity/apptainer
+os.environ["MPLCONFIGDIR"] = "./tmp/mpl"
 os.environ["NUMBA_CACHE_DIR"] = "./tmp/numba"
-os.environ["MPLCONFIGDIR"] = "./tmp/matplotlib"
 
 import scanpy as sc
 import numpy as np
 import pandas as pd
+import platform
 import yaml
 
 from threadpoolctl import threadpool_limits
@@ -31,11 +33,11 @@ df = pd.DataFrame(adata.obsm[key_added], index=adata.obs_names)
 df.to_pickle(f"X_{prefix}.pkl")
 
 # Versions
+
 versions = {
     "${task.process}": {
         "python": platform.python_version(),
-        "scanpy": sc.__version__,
-        "pandas": pd.__version__
+        "scanpy": sc.__version__
     }
 }
 

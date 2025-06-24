@@ -1,18 +1,17 @@
 nextflow_process {
 
     name "Test Process SCANPY_PCA"
-    script "modules/local/scanpy/pca/main.nf"
+    script "../main.nf"
     process "SCANPY_PCA"
 
     tag "modules"
-    tag "modules_local"
+    tag "modules_nfcore"
+    tag "scanpy"
+    tag "scanpy/pca"
 
     test("Should run without failures") {
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = Channel.of([
@@ -40,9 +39,6 @@ nextflow_process {
         options '-stub'
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = Channel.of([

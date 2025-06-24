@@ -12,9 +12,9 @@ process SCANPY_PCA {
     val key_added
 
     output:
-    tuple val(meta), path("${prefix}.h5ad"), emit: h5ad
-    path "X_${prefix}.pkl", emit: obsm
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.h5ad"), emit: h5ad
+    tuple val(meta), path("*.pkl") , emit: obsm
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,7 +28,12 @@ process SCANPY_PCA {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}_pca"
+    if ("${prefix}.h5ad" == "${h5ad}") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
+    # These are needed to prevent errors during import of scanpy
+    # when using singularity/apptainer
     export MPLCONFIGDIR=./tmp/mpl
     export NUMBA_CACHE_DIR=./tmp/numba
 
