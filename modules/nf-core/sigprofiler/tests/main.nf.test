@@ -1,0 +1,76 @@
+nextflow_process {
+
+    name "Test Process SIGPROFILER"
+    script "../main.nf"
+    process "SIGPROFILER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "sigprofiler"
+
+    test("test_sigprofiler_single_sample") {
+        
+        config "./nextflow.config"
+
+        when {
+
+            params {
+              module_args = '[genome:GRCh38, input_type:matrix, context_type:96, minimum_signatures:1, maximum_signatures:2, nmf_replicates:10, min_nmf_iterations:10, max_nmf_iterations:100, nmf_test_conv:100, volume:./, get_all_signature_matrices:False, make_decomposition_plots:False ]'
+            }
+            
+            process {
+                """
+                input[0] = [
+                    [ id:'test', dataset: 'HCC1395' ], 
+                    file(params.modules_testdata_base_path + 'delete_me/sparsesignatures/test_GRCh38/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            def (meta, resultDirs) = process.out.sigprofiler_results[0]
+            
+            assertAll( 
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions
+                ).match() },
+                {
+                    // Directory existence check
+                    resultDirs.each { dir ->
+                        def file = new File(dir.toString())
+                        assert file.exists() && file.isDirectory()
+                        
+                    } 
+                }  
+            )
+        }
+
+    }
+
+    test("test_sigprofiler - single_sample - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """ 
+                input[0] = [
+                    [ id:'test', dataset: 'HCC1395' ], 
+                    file(params.modules_testdata_base_path + 'delete_me/sparsesignatures/test_GRCh38/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
+              ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
