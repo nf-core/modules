@@ -12,6 +12,38 @@ nextflow_process {
     tag "affy/justrma"
     tag "untar"
 
+    test("RNAseq - Feature Counts - formula + comparison contrast string - interaction") {
+        config "./nextflow.interaction.config"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    'id': 'genotype_WT_KO_treatment_Control_Treated',
+                    'formula': '~ genotype * treatment',
+                    'comparison': 'genotypeWT.treatmentTreated' // should be a 'make.names() string'
+                ])
+                .map {
+                    tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                }
+
+                input[1] = Channel.of([
+                    [ id: 'test' ],
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/metadata.tsv", checkIfExists: true),
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/counts.tsv", checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.model, process.out.versions).match() }
+            )
+        }
+    }
+
     test("test_limma_differential") {
 
         config "./nextflow.config"
@@ -54,7 +86,7 @@ nextflow_process {
                 )
                 input[0] = Channel.of(['id': 'diagnosis_normal_uremia', 'variable': 'diagnosis', 'reference': 'normal', 'target': 'uremia'])
                     .map{
-                        tuple(it, it.variable, it.reference, it.target)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 input[1] =  ch_samplesheet
                     .join(AFFY_JUSTRMA.out.expression)
@@ -69,6 +101,68 @@ nextflow_process {
                 { assert path(process.out.session_info[0][1]).getText().contains("limma_3.58.1") },
                 { assert path(process.out.results[0][1]).getText().contains("1007_s_at\t-0.2775254") },
                 { assert path(process.out.results[0][1]).getText().contains("1053_at\t-0.071547786") }
+            )
+        }
+
+    }
+
+    test("test_limma_differential - with formula and with complex contrasts") {
+
+        config "./nextflow.config"
+
+        setup {
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: 'test'],
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751_RAW.tar", checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+            run("AFFY_JUSTRMA") {
+                script "../../../affy/justrma/main.nf"
+                process {
+                    """
+                    ch_samplesheet = Channel.of([
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true)
+                        ]
+                    )
+                    input[0] = ch_samplesheet.join(UNTAR.out.untar)
+                    input[1] = [[],[]]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                ch_samplesheet = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true)
+                    ]
+                )
+                input[0] = Channel.of(['id': 'diagnosis_normal_uremia', 'formula': '~ diagnosis', 'comparison': 'diagnosisuremia'])
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                    }
+                input[1] =  ch_samplesheet
+                    .join(AFFY_JUSTRMA.out.expression)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.model, process.out.versions).match() },
+                { assert path(process.out.session_info[0][1]).getText().contains("limma_3.58.1") },
+                { assert path(process.out.results[0][1]).getText().contains("1007_s_at\t-0.27752") },
+                { assert path(process.out.results[0][1]).getText().contains("1053_at\t-0.0715477") }
             )
         }
 
@@ -116,7 +210,7 @@ nextflow_process {
                 )
                 input[0] = Channel.of(['id': 'diagnosis_normal_uremia', 'variable': 'diagnosis', 'reference': 'normal', 'target': 'uremia'])
                     .map{
-                        tuple(it, it.variable, it.reference, it.target)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 input[1] =  ch_samplesheet
                     .join(AFFY_JUSTRMA.out.expression)
@@ -179,7 +273,7 @@ nextflow_process {
                 )
                 input[0] = Channel.of(['id': 'diagnosis_normal_uremia', 'variable': 'diagnosis', 'reference': 'normal', 'target': 'uremia'])
                     .map{
-                        tuple(it, it.variable, it.reference, it.target)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 input[1] =  ch_samplesheet
                     .join(AFFY_JUSTRMA.out.expression)
