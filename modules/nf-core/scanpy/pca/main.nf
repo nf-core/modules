@@ -12,9 +12,9 @@ process SCANPY_PCA {
     val key_added
 
     output:
-    tuple val(meta), path("*.h5ad"), emit: h5ad
-    tuple val(meta), path("*.pkl") , emit: obsm
-    path "versions.yml"            , emit: versions
+    tuple val(meta), path("*.h5ad") , emit: h5ad
+    tuple val(meta), path("X_*.pkl"), emit: obsm
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
