@@ -20,21 +20,18 @@ tools:
       doi: "10.1038/s41588-020-0675-5"
       licence: ["GPL-3.0"]
       identifier: biotools:mobster
-
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-
     - rds_join:
         type: file
         description: Either a .rds object of class mCNAqc or a .csv mutations table
         pattern: "*.{rds,csv}"
-        ontology:
+        ontologies:
           - edam: "http://edamontology.org/format_3752" # csv
-
 output:
   - mobster_rds:
       - meta:
@@ -86,7 +83,7 @@ output:
           type: file
           description: Final report plots as a .pdf file
           pattern: "*_REPORT_plots_mobster.pdf"
-          ontology:
+          ontologies:
             - edam: "http://edamontology.org/format_3508" # pdf
   - mobster_report_png:
       - meta:
@@ -98,14 +95,13 @@ output:
           type: file
           description: Final report plots as a .png file
           pattern: "*_REPORT_plots_mobster.png"
-          ontology:
+          ontologies:
             - edam: "http://edamontology.org/format_3603" # png
   - versions:
       - "versions.yml":
           type: file
           description: File containing software versions
           pattern: "versions.yml"
-
 authors:
   - "@elena-buscaroli"
 maintainers:
