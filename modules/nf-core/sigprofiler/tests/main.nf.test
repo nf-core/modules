@@ -15,14 +15,14 @@ nextflow_process {
         when {
 
             params {
-              module_args = '[genome:GRCh38, input_type:matrix, context_type:96, minimum_signatures:1, maximum_signatures:2, nmf_replicates:10, min_nmf_iterations:10, max_nmf_iterations:100, nmf_test_conv:100, volume:./, get_all_signature_matrices:False, make_decomposition_plots:False ]'
+              module_args = "[genome:GRCh38, input_type:matrix, context_type:'96,ID', minimum_signatures:1, maximum_signatures:2, nmf_replicates:10, min_nmf_iterations:10, max_nmf_iterations:100, nmf_test_conv:100, volume:./, get_all_signature_matrices:False, make_decomposition_plots:False ]"
             }
             
             process {
                 """
                 input[0] = [
                     [ id:'test', dataset: 'HCC1395' ], 
-                    file(params.modules_testdata_base_path + 'delete_me/sparsesignatures/test_GRCh38/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/sigprofiler/test_GRCh38/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
                 ]
                 """
             }
@@ -58,7 +58,7 @@ nextflow_process {
                 """ 
                 input[0] = [
                     [ id:'test', dataset: 'HCC1395' ], 
-                    file(params.modules_testdata_base_path + 'delete_me/sparsesignatures/test_GRCh38/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/sigprofiler/test_GRCh38/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
               ]
                 """
             }

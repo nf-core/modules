@@ -1,15 +1,26 @@
 #!/usr/bin/env python
 
-def parse_args(x):
-    x = x.replace("[","")
-    x = x.replace("]","")
+# Parse arguments
 
-    args_list = x.split(", ")
-    parsed_args = {i.split(":")[0]:i.split(":")[1] for i in args_list if i.split(":")[1] is not None}
+import shlex
+
+def parse_args(x):
+    x = x.strip("[]")
+    lexer = shlex.shlex(x, posix=True)
+    lexer.whitespace = ','
+    lexer.whitespace_split = True
+    lexer.commenters = ''
+
+    parsed_args = {}
+    for item in lexer:
+        if ':' not in item:
+            continue
+        key, val = item.split(':', 1)
+        parsed_args[key.strip()] = val.strip().strip("'").strip('"')
     return parsed_args
 
 opt = dict()
-opt["prefix"] = "$task.ext.prefix" if "$task.ext.prefix" == None else "$meta.id"
+opt["prefix"] = "${task.ext.prefix ?: meta.id}"
 opt["dataset"] = "${task.ext.dataset ?: meta.dataset}"
 
 opt.update({
@@ -24,13 +35,18 @@ opt.update({
     "nmf_test_conv": 10000,
     "seeds": "random",
     "volume": "./",
-    "get_all_signature_matrices": "True",
-    "make_decomposition_plots": "True"
+    "get_all_signature_matrices": True,
+    "make_decomposition_plots": True
     })
 
-args_opt = parse_args("$task.ext.args")
+args_opt = parse_args("${task.ext.args ?: ''}")
 for ao_k, ao_v in args_opt.items():
-    opt[ao_k] = ao_v
+    if ao_k in {"minimum_signatures", "maximum_signatures", "nmf_replicates", "min_nmf_iterations", "max_nmf_iterations", "nmf_test_conv"}:
+        opt[ao_k] = int(ao_v)
+    elif ao_k in {"get_all_signature_matrices", "make_decomposition_plots"}:
+        opt[ao_k] = ao_v.lower() == "true"
+    else:
+        opt[ao_k] = ao_v
 
 
 # Script
