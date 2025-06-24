@@ -4,7 +4,6 @@ import platform
 
 import anndata as ad
 import cellbender
-import yaml
 from cellbender.remove_background.downstream import load_anndata_from_input_and_output
 
 adata = ad.read_h5ad("${filtered}")
@@ -23,6 +22,3 @@ adata.write_h5ad("${prefix}.h5ad")
 # Versions
 
 versions = {"${task.process}": {"python": platform.python_version(), "cellbender": cellbender.__version__}}
-
-with open("versions.yml", "w") as f:
-    yaml.dump(versions, f)
