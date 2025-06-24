@@ -27,9 +27,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([
-                            [id: "test_run_proseg"]
-                        ]).combine(UNZIP.out.unzipped_archive.map { it[1] } + "/transcripts.csv.gz")
+                input[0] = UNZIP.out.unzipped_archive.map{ meta, filepath -> 
+                    [meta, filepath + "/Xenium_Prime_Mouse_Ileum_tiny_outs/transcripts.csv.gz"]
+                }
                 input[1] = 'xenium'
                 """
             }
@@ -62,7 +62,7 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                             [id: "test_run_proseg"]
-                        ]).combine(UNZIP.out.unzipped_archive.map { it[1] } + "/transcripts.csv.gz")
+                        ]).combine(UNZIP.out.unzipped_archive.map { it[1] + "/" + } + "/transcripts.csv.gz")
                 input[1] = 'xenium'
                 """
             }

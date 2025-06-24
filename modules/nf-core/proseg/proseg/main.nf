@@ -3,7 +3,7 @@ process PROSEG {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container 'docker.io/ruijintracyyang/proseg:v1.0'
+    container 'ruijintracyyang/proseg:v1.0'
 
     input:
     tuple val(meta), path(transcripts)
