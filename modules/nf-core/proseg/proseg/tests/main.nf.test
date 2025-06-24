@@ -1,0 +1,78 @@
+nextflow_process {
+
+    name "Test Process PROSEG"
+    script "../main.nf"
+    process "PROSEG"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "proseg"
+    tag "segmentation"
+    tag "cell_segmentation"
+
+
+    setup {
+            run("UNZIP") {
+                script "modules/nf-core/unzip/main.nf"
+                process {
+                    """
+                    input[0] = [[], file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialxe/Xenium_Prime_Mouse_Ileum_tiny_outs.zip', checkIfExists: true)]
+                    """
+                }
+            }
+    }
+
+    test("proseg - transcripts.csv") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                            [id: "test_run_proseg"],
+                        ]).combine(UNZIP.out.unzipped_archive.map { it[1] } + "/transcripts.csv")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert file(process.out.expected_counts.get(0).get(1).find { file(it).name == 'expected-counts.csv.gz' }).exists() },
+                { assert file(process.out.cell_metadata.get(0).get(1).find { file(it).name == 'cell-metadata.csv.gz' }).exists() },
+                { assert file(process.out.transcript_metadata.get(0).get(1).find { file(it).name == 'transcript-metadata.csv.gz' }).exists() },
+                // { assert file(process.out.gene_metadata.get(0).get(1).find { file(it).name == 'gene-metadata.csv.gz' }).exists() },
+                // { assert file(process.out.rates.get(0).get(1).find { file(it).name == 'rates.csv.gz' }).exists() },
+                { assert file(process.out.cell_polygons.get(0).get(1).find { file(it).name == 'cell-polygons.geojson.gz' }).exists() },
+                { assert file(process.out.union_cell_polygons.get(0).get(1).find { file(it).name == 'union_cell_polygons.geojson.gz' }).exists() },
+                { assert file(process.out.cell_polygons_layers.get(0).get(1).find { file(it).name == 'cell-polygons-layers.geojson.gz' }).exists() },
+                // { assert file(process.out.cell-hulls.get(0).get(1).find { file(it).name == 'cell-hulls.geojson.gz' }).exists() },
+            )
+        }
+
+    }
+
+    test("proseg stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                            [id: "test_run_proseg"],
+                        ]).combine(UNZIP.out.unzipped_archive.map { it[1] } + "/transcripts.csv")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

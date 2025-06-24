@@ -1,0 +1,69 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "proseg"
+description: write your description here
+keywords:
+  - segmentation
+  - spatial
+  - transcriptomics
+tools:
+  - "proseg":
+      description: "Proseg (probabilistic segmentation) is a cell segmentation method for in situ spatial transcriptomics."
+      homepage: "https://github.com/dcjones/proseg"
+      documentation: "https://github.com/dcjones/proseg"
+      tool_dev_url: "https://github.com/dcjones/proseg"
+      doi: "10.1038/s41592-025-02697-0"
+      licence: "GPLv3"
+
+input:
+  - transcript-metadata:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "transcript-metadata.csv.gz":
+          type: file
+          description: Transcript ids, genes, revised positions, assignment probability, etc.
+          pattern: "*transcript-metadata.csv.gz"
+  - cell-polygons:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "cell-polygons.geojson.gz":
+          type: file
+          description: "Path to the cell polygons file."
+          path: "*cell-polygons.geojson.gz"
+
+output:
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - baysor-transcript-metadata:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "baysor-transcript-metadata.csv":
+          type: file
+          description: Transcript ids, genes, revised positions, assignment probability, etc.
+          pattern: "*baysor-transcript-metadata.csv"
+  - baysor-cell-polygons:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "baysor-cell-polygons.geojson":
+          type: file
+          description: "Path to the cell polygons file."
+          path: "*baysor-cell-polygons.geojson"
+
+authors:
+  - "@derrik-gratz"
+maintainers:
+  - "@derrik-gratz"
