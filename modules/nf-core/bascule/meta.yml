@@ -1,0 +1,90 @@
+name: "bascule"
+description: Detecting mutational signatures and clustering via Bayesian inference and a reference catalogue
+keywords:
+  - genomics
+  - cancer
+  - cosmic
+  - mutational-signatures
+  - clustering
+  - non-negative-matrix-factorization
+  - variational-inference
+tools:
+  - "bascule":
+      description: |
+        BASCULE is a Bayesian model to fit multiple signature types from multiple patients, leveraging a
+        pre-existing catalogue of known signatures such as COSMIC. BASCULE searches for known signatures
+        from the input catalogue as well as for new signatures that outside the catalogue, accounting for
+        hidden structure in the input data (e.g., distinct tumour types). Moreover, bascule performs tensor
+        clustering to retrieve latent groups in the input cohort from the exposures of multiple signature
+        types jointly
+      homepage: https://caravagnalab.github.io/bascule/
+      documentation: https://caravagnalab.github.io/bascule/
+      tool_dev_url: https://github.com/caravagnalab/bascule/
+      doi: "10.1101/2024.09.16.613266"
+      licence: ["GPL-3.0"]
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - count_matrices:
+        type: directory
+        description: Folder with all input counts matrices
+        pattern: "**.csv"
+        ontologies:
+          - edam: "http://edamontology.org/format_3752" # csv
+output:
+  - bascule_rds:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.rds":
+          type: file
+          description: Final bascule fit as an .rds object
+          pattern: "*.rds"
+  - bascule_plots_rds:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_plot.rds":
+          type: file
+          description: Final plots as an .rds object
+          pattern: "*.rds"
+  - bascule_plots_pdf:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_plot.pdf":
+          type: file
+          description: Final plots as a .pdf object
+          pattern: "*.pdf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3508" # pdf
+  - bascule_plots_png:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_plot.rds":
+          type: file
+          description: Final plots as an .png object
+          pattern: "*.png"
+          ontologies:
+            - edam: "http://edamontology.org/format_3603" # png
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@elena-buscaroli"
+maintainers:
+  - "@elena-buscaroli"
