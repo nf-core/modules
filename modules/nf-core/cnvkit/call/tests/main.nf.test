@@ -16,20 +16,20 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
+				    [ id:'test' ],
 				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cnr/test2.paired_end.sorted.cns', checkIfExists: true),
 				    []
 				]
-
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
+            assert process.success
+            assert snapshot(
+                process.out,
+                path(process.out.versions[0]).yaml
+            ).match()
         }
     }
 
@@ -39,20 +39,20 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
+				    [ id:'test' ],
 				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cnr/test2.paired_end.sorted.cns', checkIfExists: true),
 				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true)
 				]
-
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
+            assert process.success
+            assert snapshot(
+                process.out,
+                path(process.out.versions[0]).yaml
+            ).match()
         }
     }
 
@@ -63,7 +63,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
+				    [ id:'test' ],
 				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cnr/test2.paired_end.sorted.cns', checkIfExists: true),
 				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true)
 				]
@@ -73,10 +73,11 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
+            assert process.success
+            assert snapshot(
+                process.out,
+                path(process.out.versions[0]).yaml
+            ).match()
         }
     }
 
