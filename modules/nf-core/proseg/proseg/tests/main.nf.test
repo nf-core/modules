@@ -28,8 +28,9 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of([
-                            [id: "test_run_proseg"],
-                        ]).combine(UNZIP.out.unzipped_archive.map { it[1] } + "/transcripts.csv")
+                            [id: "test_run_proseg"]
+                        ]).combine(UNZIP.out.unzipped_archive.map { it[1] } + "/transcripts.csv.gz")
+                input[1] = 'xenium'
                 """
             }
         }
@@ -60,8 +61,9 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of([
-                            [id: "test_run_proseg"],
-                        ]).combine(UNZIP.out.unzipped_archive.map { it[1] } + "/transcripts.csv")
+                            [id: "test_run_proseg"]
+                        ]).combine(UNZIP.out.unzipped_archive.map { it[1] } + "/transcripts.csv.gz")
+                input[1] = 'xenium'
                 """
             }
         }
