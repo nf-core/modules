@@ -30,19 +30,15 @@ input:
         type: file
         description: joint tsv file with validated mutations by CNAqc
         pattern: "*.{tsv}"
-  - - genome_path:
-        type: path
-        description: path to the reference genome
-        
 output:
-   - sigprofiler_results:
+  - sigprofiler_results:
     - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
     - "results/*":
-        type: folter
+        type: directory
         description: folder with saved results tool output
         pattern: "results/*"
   - versions:
