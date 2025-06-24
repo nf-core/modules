@@ -1,5 +1,5 @@
 nextflow_process {
-    name 'Test Process CELLBENDER_REMOVEBACKGROUND'
+    name 'Test Process CELLBENDER_REMOVEBACKGROUND on GPU'
     script '../main.nf'
     process 'CELLBENDER_REMOVEBACKGROUND'
 
@@ -7,6 +7,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "cellbender/removebackground"
     tag "cellbender"
+    tag "gpu"
 
     test("test_cellbender_removebackground") {
         config './epochs.config'
