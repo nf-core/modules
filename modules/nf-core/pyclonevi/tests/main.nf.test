@@ -50,7 +50,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test'],
-                    [ file(params.modules_testdata_base_path + 'delete_me/pyclonevi/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true) ],
+                    file(params.modules_testdata_base_path + 'delete_me/pyclonevi/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
                     [ 'HCC1395_HCC1395T']
                 ]
                 """
