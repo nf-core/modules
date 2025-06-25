@@ -19,14 +19,14 @@ input:
         type: map
         description: |
           Groovy Map containing sample information.
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test' ]
     - input:
         type: file
-        description: BAM/CRAM file from alignment
+        description: BAM/CRAM file(s) from alignment
         pattern: "*.{bam,cram}"
     - input_index:
         type: file
-        description: BAI/CRAI file from alignment
+        description: BAI/CRAI file(s) from alignment
         pattern: "*.{bai,crai}"
     - intervals:
         type: file

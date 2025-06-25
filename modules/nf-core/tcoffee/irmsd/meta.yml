@@ -30,6 +30,11 @@ input:
         type: file
         description: |
           Multiple Sequence Alignment File
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
+          - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
+          - edam: http://edamontology.org/format_1984 # FASTA-ALN
   - - meta2:
         type: map
         description: |
@@ -39,10 +44,14 @@ input:
         type: file
         description: |
           Template file
+        ontologies:
+          - edam: http://edamontology.org/format_1476 # PDB
     - structures:
         type: file
         description: |
           Structure file
+        ontologies:
+          - edam: http://edamontology.org/format_1476 # PDB
 output:
   - irmsd:
       - meta:
@@ -53,11 +62,13 @@ output:
       - ${prefix}.irmsd:
           type: file
           description: File containing the irmsd of the alignment
-          pattern: "*"
+          ontologies: []
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@luisas"
