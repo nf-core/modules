@@ -18,36 +18,36 @@ process STARE {
     tuple val(meta8), path(existing_abc)    
 
     output:
-    tuple val(meta), path("${prefix}/Gene_TF_matrices/${prefix}_TF_Gene_Affinities.txt") , emit: affinities
-    path "versions.yml"                                                                  , emit: versions
+    tuple val(meta), path("${meta.id}/Gene_TF_matrices/${meta.id}_TF_Gene_Affinities.txt") , emit: affinities
+    path "versions.yml"                                                                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def path_bed_file       = bed_file       ? "--bed_file ${bed_file}"             : ""
-    def path_exclude_bed    = exclude_bed    ? "--exclude_bed ${exclude_bed}"       : ""
-    def path_genes          = genes          ? "--genes ${genes}"                   : ""
-    def path_contact_folder = contact_folder ? "--contact_folder ${contact_folder}" : ""
-    def path_existing_abc   = existing_abc   ? "--existing_abc ${existing_abc}"     : ""
+    def path_bed_file       = bed_file       ? "-b ${bed_file}"       : ""
+    def path_exclude_bed    = exclude_bed    ? "-x ${exclude_bed}"    : ""
+    def path_genes          = genes          ? "-u ${genes}"          : ""
+    def path_contact_folder = contact_folder ? "-f ${contact_folder}" : ""
+    def path_existing_abc   = existing_abc   ? "-r ${existing_abc}"   : ""
 
     """
     STARE.sh \\
         ${args} \\
-        --annotation ${annotation} \\
-        --genome ${genome} \\
-        --psem ${psem} \\
-        --output ${prefix} \\
-        --cores ${task.cpus} \\
+        -a ${annotation} \\
+        -g ${genome} \\
+        -p ${psem} \\
+        -o ${meta.id} \\
+        -c ${task.cpus} \\
         ${path_bed_file} \\
         ${path_exclude_bed} \\
         ${path_genes} \\
         ${path_contact_folder} \\
         ${path_existing_abc}
 
+    gunzip -f ${meta.id}/Gene_TF_matrices/${meta.id}_TF_Gene_Affinities.txt.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -57,7 +57,6 @@ process STARE {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
 
     def path_bed_file       = bed_file       ? "--bed_file ${bed_file}"             : ""
     def path_exclude_bed    = exclude_bed    ? "--exclude_bed ${exclude_bed}"       : ""
@@ -66,7 +65,7 @@ process STARE {
     def path_existing_abc   = existing_abc   ? "--existing_abc ${existing_abc}"     : ""
     
     """
-    touch ${prefix}.bam
+    touch ${meta.id}/Gene_TF_matrices/${meta.id}_TF_Gene_Affinities.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
