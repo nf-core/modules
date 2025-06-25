@@ -12,11 +12,11 @@ process BASCULE {
     tuple val(meta), path(count_matrices)  // count_matrices = folder with .csv files
 
     output:
-    tuple val(meta), path("*_fit_bascule.rds")      , emit: bascule_rds
+    tuple val(meta), path("*_fit_bascule.rds")  , emit: bascule_rds
     tuple val(meta), path("*_plots_bascule.rds"), emit: bascule_plots_rds
     tuple val(meta), path("*_plots_bascule.pdf"), emit: bascule_plots_pdf
     tuple val(meta), path("*_plots_bascule.png"), emit: bascule_plots_png
-    path "versions.yml"                 , emit: versions
+    path "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,9 +28,10 @@ process BASCULE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
 
-    touch ${prefix}.rds
-    touch ${prefix}_plots.rds
-    touch ${prefix}_plots.pdf
+    touch ${prefix}_fit_bascule.rds
+    touch ${prefix}_plots_bascule.rds
+    touch ${prefix}_plots_bascule.pdf
+    touch ${prefix}_plots_bascule.png
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

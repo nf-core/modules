@@ -30,10 +30,8 @@ input:
           e.g. `[ id:'sample1' ]`
     - count_matrices:
         type: directory
-        description: Folder with all input counts matrices
-        pattern: "**.csv"
-        ontologies:
-          - edam: "http://edamontology.org/format_3752" # csv
+        description: Folder with all input counts matrices generated with SigProfilerMatrixGenerator
+        pattern: "counts_matrices/"
 output:
   - bascule_rds:
       - meta:
@@ -41,30 +39,30 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.rds":
+      - "*_fit_bascule.rds":
           type: file
           description: Final bascule fit as an .rds object
-          pattern: "*.rds"
+          pattern: "*_fit_bascule.rds"
   - bascule_plots_rds:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*_plot.rds":
+      - "*_plots_bascule.rds":
           type: file
           description: Final plots as an .rds object
-          pattern: "*.rds"
+          pattern: "*_plots_bascule.rds"
   - bascule_plots_pdf:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*_plot.pdf":
+      - "*_plots_bascule.pdf":
           type: file
           description: Final plots as a .pdf object
-          pattern: "*.pdf"
+          pattern: "*_plots_bascule.pdf"
           ontologies:
             - edam: "http://edamontology.org/format_3508" # pdf
   - bascule_plots_png:
@@ -73,10 +71,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*_plot.rds":
+      - "*_plots_bascule.png":
           type: file
           description: Final plots as an .png object
-          pattern: "*.png"
+          pattern: "*_plots_bascule.png"
           ontologies:
             - edam: "http://edamontology.org/format_3603" # png
   - versions:
