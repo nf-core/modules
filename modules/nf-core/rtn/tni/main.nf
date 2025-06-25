@@ -5,8 +5,8 @@ process RTN_TNI {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bioconductor-rtn:2.26.0--r43hdfd78af_0':
-        'biocontainers/bioconductor-rtn:2.26.0--r43hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/96/96979cd0715edeb5d68ebbd19a353760298ebf53bf729d3b68764b2bb00683f7/data':
+        'community.wave.seqera.io/library/bioconductor-rtn:2.30.0--71b797cd8b2d56b3' }"
 
     input:
     tuple val(meta), path(expression_matrix)
