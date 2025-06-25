@@ -14,6 +14,7 @@ process SCANPY_FILTER {
     val min_counts_gene
     val min_counts_cell
     val max_mito_percentage
+    val symbol_col
 
     output:
     tuple val(meta), path("*.h5ad"), emit: h5ad
@@ -24,7 +25,6 @@ process SCANPY_FILTER {
 
     script:
     prefix     = task.ext.prefix ?: "${meta.id}_filtered"
-    symbol_col = task.ext.symbol_col ?: "index"
     if ("${prefix}.h5ad" == "${h5ad}") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }

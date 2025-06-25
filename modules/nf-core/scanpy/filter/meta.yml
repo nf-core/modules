@@ -44,6 +44,9 @@ input:
   - - max_mito_percentage:
         type: integer
         description: Maximum percentage of mitochondrial genes per cell
+  - - symbol_col:
+        type: string
+        description: Column name of the gene symbols in the `var` of the AnnData object. Use `index` if the gene symbols are the row names.
 
 output:
   - h5ad:
