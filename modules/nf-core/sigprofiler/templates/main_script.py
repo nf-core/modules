@@ -1,8 +1,12 @@
 #!/usr/bin/env python
 
-# Parse arguments
-
 import shlex
+import os
+import shutil
+import pandas as pd
+import multiprocessing
+import subprocess
+from importlib.metadata import version
 
 def parse_args(x):
     x = x.strip("[]")
@@ -10,7 +14,6 @@ def parse_args(x):
     lexer.whitespace = ','
     lexer.whitespace_split = True
     lexer.commenters = ''
-
     parsed_args = {}
     for item in lexer:
         if ':' not in item:
@@ -18,6 +21,8 @@ def parse_args(x):
         key, val = item.split(':', 1)
         parsed_args[key.strip()] = val.strip().strip("'").strip('"')
     return parsed_args
+
+# Default options
 
 opt = dict()
 opt["prefix"] = "${task.ext.prefix ?: meta.id}"
@@ -36,27 +41,23 @@ opt.update({
     "seeds": "random",
     "volume": "./",
     "get_all_signature_matrices": True,
-    "make_decomposition_plots": True
+    "make_decomposition_plots": True,
+    "download_genome_sigprofiler": True,
+    "genome_installed_path": ""
     })
 
+# Parse extra args
 args_opt = parse_args("${task.ext.args ?: ''}")
 for ao_k, ao_v in args_opt.items():
     if ao_k in {"minimum_signatures", "maximum_signatures", "nmf_replicates", "min_nmf_iterations", "max_nmf_iterations", "nmf_test_conv"}:
         opt[ao_k] = int(ao_v)
-    elif ao_k in {"get_all_signature_matrices", "make_decomposition_plots"}:
+    elif ao_k in {"get_all_signature_matrices", "make_decomposition_plots", "download_genome_sigprofiler"}:
         opt[ao_k] = ao_v.lower() == "true"
     else:
         opt[ao_k] = ao_v
 
 
 # Script
-import os
-import shutil
-import pandas as pd
-import multiprocessing
-import subprocess
-from importlib.metadata import version
-
 
 def process_tsv_join(tsv_list):
     patients_tsv = tsv_list.split()
@@ -90,10 +91,18 @@ if __name__ == '__main__':
     processed = input_processing(data, dataset_id, genome)
     processed.to_csv(f"{input_path}/input_data.txt", sep="\t", index=False)
 
-    # Install genome
-    install_genome = f"SigProfilerMatrixGenerator install {genome} -v {opt['volume']}"
-    subprocess.run(install_genome, shell=True)
-    
+    # Conditionally install genome or use provided path
+    if opt.get("download_genome_sigprofiler", True):
+        print(f"Installing genome {genome} via SigProfilerMatrixGenerator...")
+        install_genome = f"SigProfilerMatrixGenerator install {genome} -v {opt['volume']}"
+        subprocess.run(install_genome, shell=True)
+    else:
+        if not opt.get("genome_installed_path"):
+            raise ValueError("download_genome_sigprofiler is False but no genome_installed_path was provided.")
+        print(f"Using pre-installed genome at: {opt['genome_installed_path']}")
+        opt["volume"] = opt["genome_installed_path"]
+
+
     # Mutation counts matrix generation
     generate_count_matrix = (
         f"SigProfilerMatrixGenerator matrix_generator "
@@ -129,19 +138,19 @@ if __name__ == '__main__':
         context_type = context_types[key]
 
         sigprofilerextractor_run = (
-            "SigProfilerExtractor sigprofilerextractor "
-            "--reference_genome " + genome + " "
-            "--context_type " + context_type + " "
-            "--minimum_signatures " + str(opt["minimum_signatures"]) + " "
-            "--maximum_signatures " + str(opt["maximum_signatures"]) + " "
-            "--nmf_replicates " + str(opt["nmf_replicates"]) + " "
-            "--seeds " + str(opt["seeds"]) + " "
-            "--min_nmf_iterations " + str(opt["min_nmf_iterations"]) + " "
-            "--max_nmf_iterations " + str(opt["max_nmf_iterations"]) + " "
-            "--nmf_test_conv " + str(opt["nmf_test_conv"]) + " "
-            "--get_all_signature_matrices " + str(opt["get_all_signature_matrices"]) + " "
-            "--make_decomposition_plots " + str(opt["make_decomposition_plots"]) + " "
-            "matrix " + output_dir + " " + full_path
+            f"SigProfilerExtractor sigprofilerextractor "
+            f"--reference_genome  {genome} "
+            f"--context_type {context_type} "
+            f"--minimum_signatures {opt["minimum_signatures"]} "
+            f"--maximum_signatures {opt["maximum_signatures"]} "
+            f"--nmf_replicates {opt["nmf_replicates"]} "
+            f"--seeds {opt["seeds"]} "
+            f"--min_nmf_iterations {opt["min_nmf_iterations"]} "
+            f"--max_nmf_iterations {opt["max_nmf_iterations"]} "
+            f"--nmf_test_conv {opt["nmf_test_conv"]} "
+            f"--get_all_signature_matrices {opt["get_all_signature_matrices"]} "
+            f"--make_decomposition_plots {opt["make_decomposition_plots"]} "
+            f"matrix {output_dir} {full_path}"
         )  
         subprocess.run(sigprofilerextractor_run, shell=True)
                                                                 
