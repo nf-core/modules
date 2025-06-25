@@ -22,14 +22,11 @@ process HHSUITE_REFORMAT {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def is_compressed = aln.name.endsWith(".gz")
-    def aln_name = aln.name
-    if (is_compressed) {
-        aln_name = aln.name.replace(".gz", "")
-    }
+    def is_compressed = aln.getExtension() == "gz" ? true : false
+    def aln_name = is_compressed ? aln.getBaseName() : aln
     """
-    if [ "$is_compressed" == "true" ]; then
-        gzip -c -d $aln > $aln_name
+    if [ "${is_compressed}" == "true" ]; then
+        gzip -c -d ${aln} > ${aln_name}
     fi
 
     reformat.pl \\
