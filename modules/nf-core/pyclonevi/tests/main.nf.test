@@ -17,9 +17,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test'], // meta map
-                    [ file(params.modules_testdata_base_path + 'delete_me/pyclonevi/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true) ],
-                    [ 'HCC1395_HCC1395T'] // tumour_samples
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/pyclonevi/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
+                    [ 'HCC1395_HCC1395T' ]
                 ]
                 """
             }
@@ -29,11 +29,13 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.ctree_input,
-                    process.out.pyclone_input,
-                    process.out.pyclone_all_fits,
-                    process.out.pyclone_best_fit,
-                    process.out.versions).match() }
+                    process.out.versions
+                ).match() },
+                { assert file(process.out.ctree_input[0][1]).exists() },
+                { assert file(process.out.pyclone_input[0][1][0]).exists() },
+                { assert file(process.out.pyclone_input[0][1][1]).exists() },
+                { assert file(process.out.pyclone_all_fits[0][1]).exists() },
+                { assert file(process.out.pyclone_best_fit[0][1]).exists() }
             )
         }
 
@@ -47,9 +49,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test'], // meta map
+                    [ id:'test'],
                     [ file(params.modules_testdata_base_path + 'delete_me/pyclonevi/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true) ],
-                    [ 'HCC1395_HCC1395T'] // tumour_samples
+                    [ 'HCC1395_HCC1395T']
                 ]
                 """
             }
