@@ -1,11 +1,10 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "hhsuite_reformat"
-description: Reformat a Multiple Sequence Alignment (MSA) file
+name: "hhsuite_hhsearch"
+description: Sensitive protein sequence searching based on the pairwise alignment
+  of hidden Markov models (HMMs)
 keywords:
-  - reformat
-  - MSA
-  - hhsuite
+  - sensitive search
+  - HMM
   - alignment
 tools:
   - "hhsuite":
@@ -24,32 +23,37 @@ input:
           e.g. `[ id:'sample1' ]`
     - aln:
         type: file
-        description: Input MSA file
-        pattern: "*.{fa,fasta,fas,a2m,a3m,sto,psi,clu,fa.gz,fasta.gz,fas.gz,a2m.gz,a3m.gz,sto.gz,psi.gz,clu.gz}"
-  - - informat:
-        type: string
-        description: Format of the input MSA file
-        enum: ["fas", "a2m", "a3m", "sto", "psi", "clu"]
-  - - outformat:
-        type: string
-        description: Format of the output MSA file
-        enum: ["fas", "a2m", "a3m", "sto", "psi", "clu"]
+        description: Input multiple sequence alignment file in a2m or a3m format
+        pattern: "*.{a2m,a2m.gz,a3m,a3m.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3281" # A2M
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - hh_db:
+        type: directory
+        description: Input hhsuite formatted database
+        pattern: "*/"
 output:
-  - msa:
+  - hhr:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "${prefix}.${outformat}.gz":
+      - "*.hhr":
           type: file
-          description: Gzipped reformatted output MSA file
-          pattern: "*.{fas.gz,a2m.gz,a3m.gz,sto.gz,psi.gz,clu.gz}"
+          description: Human-readable result file in a custom text format designed by the HH-suite
+          pattern: "*.hhr"
   - versions:
-      - "versions.yml":
+      - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@vagkaratzas"
 maintainers:
