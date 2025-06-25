@@ -4,6 +4,8 @@ process YTE {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
+
+    // TODO: update container to 1.9.0
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'oras://community.wave.seqera.io/library/yte:1.5.4--2466971526dcd2a8':
         'community.wave.seqera.io/library/yte:1.5.4--36d16ca4bab836c1' }"
@@ -24,10 +26,11 @@ process YTE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def mapping_cmd = map_file ? "${map_file}" : "${map}".collect { k, v -> "${k}=${v}" }.join(' ')
+    // Use map_file if provided, otherwise use map to create key=value pairs for mapping command
+    def mapping_cmd = map_file ? "--variable-file ${map_file}" : "--variables " + map.collect { k, v -> "${k}=${v}" }.join(' ')
     VERSION = "1.5.4" // WARN: Version information not provided by tool on CLI. Please update this string when bumping
     """
-    yte < ${template} ${mapping_cmd} > ${prefix}.yaml
+    yte ${mapping_cmd} < ${template} > ${prefix}.yaml
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
