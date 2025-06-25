@@ -1,0 +1,84 @@
+name: "cnaqc"
+description: Quality control of copy number data from bulk WGS assays
+keywords:
+  - WGS
+  - copy number
+  - quality control
+tools:
+  - "cnaqc":
+      description: "Copy number quality control"
+      homepage: "https://caravagnalab.github.io/CNAqc/"
+      documentation: "https://caravagnalab.github.io/CNAqc/"
+      tool_dev_url: "https://github.com/caravagnalab/CNAqc"
+      licence: ["GPL v3-or-later"]
+      identifier: ""
+input:
+  # Only when we have meta
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', tumour_sample:'tumour_sample1_name' ]`
+    - snv_rds:
+        type: file
+        description: R object with mutation data
+        pattern: "*.rds"
+    - cna_rds:
+        type: file
+        description: R object with copy number data
+        pattern: "*.rds"
+output:
+  - qc_rds:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', tumour_sample:'tumour_sample1_name' ]`
+      - "*_qc.rds":
+          type: file
+          description: R object containing quality control results for the sample
+          pattern: "*{_qc.rds}"
+  - plot_rds:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', tumour_sample:'tumour_sample1_name' ]`
+      - "*_data_plot.rds":
+          type: file
+          description: R object containing plots of the CNA statistics for the sample
+          pattern: "*{_data_plot.rds}"
+      - "*_qc_plot.rds":
+          type: file
+          description: R object containing plots of the quality control results for the
+            sample
+          pattern: "*{_qc_plot.rds}"
+  - plot_pdf_data:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', tumour_sample:'tumour_sample1_name' ]`
+      - "*_data.pdf":
+          type: file
+          description: plots of the CNA statistics for the sample
+          pattern: "*{_data.pdf}"
+  - plot_pdf_qc:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', tumour_sample:'tumour_sample1_name' ]`
+      - "*_qc.pdf":
+          type: file
+          description: plots of the quality control results for the sample
+          pattern: "*{_qc.pdf}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@vvvirgy"
+maintainers:
+  - "@vvvirgy"
