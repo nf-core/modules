@@ -12,10 +12,10 @@ process BASCULE {
     tuple val(meta), path(count_matrices)  // count_matrices = folder with .csv files
 
     output:
-    tuple val(meta), path("*.rds")      , emit: bascule_rds
-    tuple val(meta), path("*_plots.rds"), emit: bascule_plots_rds
-    tuple val(meta), path("*_plots.pdf"), emit: bascule_plots_pdf
-    tuple val(meta), path("*_plots.png"), emit: bascule_plots_png
+    tuple val(meta), path("*_fit_bascule.rds")      , emit: bascule_rds
+    tuple val(meta), path("*_plots_bascule.rds"), emit: bascule_plots_rds
+    tuple val(meta), path("*_plots_bascule.pdf"), emit: bascule_plots_pdf
+    tuple val(meta), path("*_plots_bascule.png"), emit: bascule_plots_png
     path "versions.yml"                 , emit: versions
 
     when:
@@ -34,7 +34,10 @@ process BASCULE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bascule: \$(bascule --version)
+        bascule: \$(Rscript -e 'library(bascule); sessionInfo()\$otherPkgs\$bascule\$Version')
+        cli: \$(Rscript -e 'library(cli); sessionInfo()\$otherPkgs\$cli\$Version')
+        ggplot2: \$(Rscript -e 'library(ggplot2); sessionInfo()\$otherPkgs\$ggplot2\$Version')
+        tidyverse: \$(Rscript -e 'library(tidyverse); sessionInfo()\$otherPkgs\$tidyverse\$Version')
     END_VERSIONS
     """
 }
