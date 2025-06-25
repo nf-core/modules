@@ -126,13 +126,13 @@ nextflow_process {
             )
         }
     }
-    test("scenario_multisample") {
+    test("normal_multisample") {
 
         when {
             process {
                 """
                 input[0] = VARLOCIRAPTOR_PREPROCESS_NORMAL.out.bcf.concat(VARLOCIRAPTOR_PREPROCESS_TUMOR.out.bcf).collect().map{meta1,vcf1,meta2,vcf2->[meta1,[vcf1,vcf2],[]]}
-                input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/varlociraptor/scenario.yml', checkIfExists:true))
+                input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/varlociraptor/normal.yml', checkIfExists:true))
                 input[2] = ["normal","normal"]
                 """
             }
@@ -156,8 +156,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = VARLOCIRAPTOR_PREPROCESS_NORMAL.out.bcf.combine(VARLOCIRAPTOR_PREPROCESS_TUMOR.out.bcf).collect().map{meta1,vcf1,meta2,vcf2->[meta1,vcf1,vcf2]}
-                input[1] = []
+                input[0] = VARLOCIRAPTOR_PREPROCESS_NORMAL.out.bcf.combine(VARLOCIRAPTOR_PREPROCESS_TUMOR.out.bcf).collect().map{meta_normal,vcf_normal,meta_tumor,vcf_tumor->[meta_normal,vcf_normal,vcf_tumor]}
+                input[1] = file('https://raw.githubusercontent.com/nf-core/test-datasets/8992b14f21c038ab3846f321c3f1b15353f04082/data/genomics/homo_sapiens/illumina/varlociraptor/tn_with_priors.yml')
+                // Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/varlociraptor/tn_with_priors.yml', checkIfExists:true))
                 input[2] = [ "normal", "tumor" ]
                 """
             }
