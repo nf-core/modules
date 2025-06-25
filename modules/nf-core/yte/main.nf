@@ -10,6 +10,8 @@ process YTE {
 
     input:
     tuple val(meta), path(template)
+    path(map_file)
+    val(map)
 
     output:
     tuple val(meta), path("*.yaml"), emit: rendered
@@ -21,9 +23,11 @@ process YTE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+
+    def mapping_cmd = map_file ? "${map_file}" : "${map}".collect { k, v -> "${k}=${v}" }.join(' ')
     VERSION = "1.5.4" // WARN: Version information not provided by tool on CLI. Please update this string when bumping
     """
-    yte < ${template} > ${prefix}.yaml
+    yte < ${template} ${mapping_cmd} > ${prefix}.yaml
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

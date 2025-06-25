@@ -19,6 +19,8 @@ nextflow_process {
                     [ id:'no_template' ], // meta map
                     file(params.modules_testdata_base_path + 'generic/config/config_test.datavzrd.yaml', checkIfExists: true)
                 ]
+                input[1] = []
+                input[2] = [ 'key1': 'value1', 'key2': 'value2' ] // map
                 """
             }
         }
@@ -43,6 +45,8 @@ nextflow_process {
                     [ id:'no_template' ], // meta map
                     file(params.modules_testdata_base_path + 'generic/config/config_test.datavzrd.yaml', checkIfExists: true)
                 ]
+                input[1] = []
+                input[2] = [ 'key1': 'value1', 'key2': 'value2' ] // map
                 """
             }
         }
