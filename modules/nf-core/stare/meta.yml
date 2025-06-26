@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "stare"
-description: "Framework that scores enhancer–gene interactions using the Activity-By-Contact model and derives transcription factor affinities on gene level"
+description: "Framework that scores enhancer–gene interactions using the Activity-By-Contact
+  model and derives transcription factor affinities on gene level"
 keywords:
   - enhancer
   - tf_affinity
@@ -10,7 +10,8 @@ keywords:
   - gene_regulation
 tools:
   - "stare":
-      description: "Score enhancer–gene interactions with ABC and compute TF-gene affinity matrices"
+      description: "Score enhancer–gene interactions with ABC and compute TF-gene affinity
+        matrices"
       homepage: "https://github.com/SchulzLab/STARE"
       documentation: "https://stare.readthedocs.io/en/latest/Main.html"
       tool_dev_url: "https://github.com/SchulzLab/STARE"
@@ -26,8 +27,10 @@ input:
           e.g. `[ id:'sample1' ]`
     - annotation:
         type: file
-        description: "Gene annotation file in GTF format (e.g. Gencode); full annotation recommended for ABC scoring"  
+        description: "Gene annotation file in GTF format (e.g. Gencode); full annotation
+          recommended for ABC scoring"
         pattern: "*.gtf"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -35,8 +38,9 @@ input:
           e.g. `[ id:'sample1' ]`
     - genome:
         type: file
-        description: "Genome FASTA file in RefSeq format"  
+        description: "Genome FASTA file in RefSeq format"
         pattern: "*.{fa,fasta}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -44,8 +48,10 @@ input:
           e.g. `[ id:'sample1' ]`
     - psem:
         type: file
-        description: "Position Specific Energy Matrix or Count Matrix in transfac format; converted automatically to PSEM using sequence background from bed_file"  
+        description: "Position Specific Energy Matrix or Count Matrix in transfac format;
+          converted automatically to PSEM using sequence background from bed_file"
         pattern: "*.transfac"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -53,9 +59,11 @@ input:
           e.g. `[ id:'sample1' ]`
     - bed_file:
         type: file
-        description: "BED file with non-overlapping candidate regions; optional—if omitted runs in promoter-mode around TSS"  
+        description: "BED file with non-overlapping candidate regions; optional—if omitted
+          runs in promoter-mode around TSS"
         pattern: "*.bed"
         optional: true
+        ontologies: []
   - - meta5:
         type: map
         description: |
@@ -63,9 +71,10 @@ input:
           e.g. `[ id:'sample1' ]`
     - exclude_bed:
         type: file
-        description: "BED file with regions to exclude; overlapping regions are discarded"  
+        description: "BED file with regions to exclude; overlapping regions are discarded"
         pattern: "*.bed"
         optional: true
+        ontologies: []
   - - meta6:
         type: map
         description: |
@@ -73,9 +82,11 @@ input:
           e.g. `[ id:'sample1' ]`
     - genes:
         type: file
-        description: "File listing gene IDs or symbols to restrict output; optional"  
+        description: "File listing gene IDs or symbols to restrict output; optional"
         pattern: "*.{txt,tsv}"
         optional: true
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
   - - meta7:
         type: map
         description: |
@@ -83,7 +94,8 @@ input:
           e.g. `[ id:'sample1' ]`
     - contact_folder:
         type: directory
-        description: "Directory of gzipped chromatin contact files per chromosome; set to false to use distance-based estimate"  
+        description: "Directory of gzipped chromatin contact files per chromosome; set
+          to false to use distance-based estimate"
         optional: true
   - - meta8:
         type: map
@@ -92,10 +104,13 @@ input:
           e.g. `[ id:'sample1' ]`
     - existing_abc:
         type: file
-        description: "Precomputed ABC‐scoring file (must contain Ensembl ID, PeakID, intergenicScore columns) to reuse interactions"  
+        description: "Precomputed ABC‐scoring file (must contain Ensembl ID, PeakID,
+          intergenicScore columns) to reuse interactions"
         pattern: "*.txt.gz"
         optional: true
 
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
 output:
   - affinities:
       - meta:
@@ -103,16 +118,20 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "${prefix}/Gene_TF_matrices/${prefix}_TF_Gene_Affinities.txt":
-          type: file
-          description: "Transcription factor–gene affinity matrix"  
+          pattern: "${prefix}/Gene_TF_matrices/${prefix}_TF_Gene_Affinities.txt"
+      - ${meta.id}/Gene_TF_matrices/${meta.id}_TF_Gene_Affinities.txt:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
           pattern: "${prefix}/Gene_TF_matrices/${prefix}_TF_Gene_Affinities.txt"
   - versions:
-      - "versions.yml":
+      - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
-
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@LeonHafner"
 maintainers:
