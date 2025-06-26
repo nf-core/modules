@@ -9,11 +9,13 @@ nextflow_process {
     tag "bascule"
 
     test("test bascule") {
+        config "./nextflow.config"
         when {
             process {
                 """
                 meta = [ id : "test" ]
-                count_matrices = file(params.modules_testdata_base_path + "delete_me/bascule/counts_matrices", checkIfExists: true)
+                // count_matrices = file(params.modules_testdata_base_path + "delete_me/bascule/counts_matrices/", checkIfExists: true)
+                count_matrices = file("/Users/elenab/GitHub/test-datasets/data/delete_me/bascule/counts_matrices", checkIfExists: true)
                 input[0] = tuple(meta, count_matrices)
                 """
             }
@@ -28,12 +30,14 @@ nextflow_process {
     }
 
     test("test bascule - stub") {
+        config "./nextflow.config"
         options "-stub"
         when {
             process {
                 """
                 meta = [ id : "test" ]
-                count_matrices = file(params.modules_testdata_base_path + "delete_me/bascule/counts_matrices", checkIfExists: true)
+                // count_matrices = file(params.modules_testdata_base_path + "delete_me/bascule/counts_matrices/", checkIfExists: true)
+                count_matrices = file("/Users/elenab/GitHub/test-datasets/data/delete_me/bascule/counts_matrices", checkIfExists: true)
                 input[0] = tuple(meta, count_matrices)
                 """
             }

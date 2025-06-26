@@ -11,10 +11,10 @@ parse_args = function(x) {
     x_splt = strsplit(x, split=":")[[1]]
     c(x_splt[1],  paste(x_splt[2:length(x_splt)], collapse=":"))
   })
-  
+
   # Ensure the option vectors are length 2 (key/ value) to catch empty ones
   args_vals = lapply(args_vals, function(z){ length(z) = 2; z})
-  
+
   parsed_args = structure(lapply(args_vals, function(x) x[2]), names = lapply(args_vals, function(x) x[1]))
   parsed_args[! is.na(parsed_args)]
 }
@@ -25,15 +25,18 @@ opt = list(
 args_opt = parse_args('$task.ext.args')
 for ( ao in names(args_opt)) opt[[ao]] = args_opt[[ao]]
 
-
 # Script
-
 library(bascule)
-library(tidyverse)
 library(ggplot2)
+library(reticulate)
+library(tidyverse)
 
-# counts_folder = "~/GitHub/test-datasets/data/delete_me/bascule/counts_matrices/"
-counts_folder = "$count_matrices"
+print(py_discover_config())
+print(py_config())
+print(system("which python"))
+print(system("which python3"))
+
+counts_folder = "$counts_matrices"
 
 counts_all = lapply(list.files(counts_folder, full.names=TRUE), function(file_id) {
   read.csv(file_id, sep="\t") %>% column_to_rownames(var="MutationType") %>%
@@ -46,21 +49,15 @@ types_names = names(counts_all)
 # keep only samples present in all events types
 samples_list = lapply(types_names, function(i) {
   tibble(counts_id=i, samples=rownames(counts_all[[i]]))
-}) %>% bind_rows() %>% 
-  group_by(samples) %>% 
-  summarise(n_types=n()) %>% 
-  filter(n_types == !!n_types) %>% 
+}) %>% bind_rows() %>%
+  group_by(samples) %>%
+  summarise(n_types=n()) %>%
+  filter(n_types == !!n_types) %>%
   pull(samples) %>% as.character()
 
 counts = lapply(counts_all, function(count_i) count_i[samples_list,])
 
-# k_list = 0:5
-# reference_cat = list("HCC1395_WXS.DBS78.all"=COSMIC_dbs,
-#                      "HCC1395_WXS.ID83.all"=COSMIC_indels,
-#                      "HCC1395_WXS.SBS96.all"=COSMIC_sbs_filt)
-# keep_sigs=c("SBS1","SBS5")
-# cluster = 5
-# cutoff = 0.8
+reference_cat = eval(parse(text=opt[["reference_cat"]]))
 
 # reorder columns
 counts = lapply(types_names, function(type_id) {
@@ -68,24 +65,28 @@ counts = lapply(types_names, function(type_id) {
     counts[[type_id]][,colnames(reference_cat[[type_id]])]
 }) %>% setNames(types_names)
 
-x = fit(counts=counts, 
-        k_list=opt[["k_list"]], 
-        reference_cat=opt[["reference_cat"]],
-        keep_sigs=opt[["keep_sigs"]],
-        store_fits=TRUE)
+py = import("pybascule")
+print(py)
+
+x = fit(counts=counts,
+        k_list=eval(parse(text=opt[["k_list"]])),
+        reference_cat=reference_cat,
+        keep_sigs=eval(parse(text=opt[["keep_sigs"]])),
+        store_fits=TRUE,
+        py=py)
 
 x = refine_denovo_signatures(x)
 
 clustering = FALSE
 if (length(samples_list) > 1) {
   clustering = TRUE
-  x = fit_clustering(x, cluster=opt[["cluster"]])
-  x = merge_clusters(x, cutoff=opt[["cutoff"]])
+  x = fit_clustering(x, cluster=as.integer(opt[["cluster"]]))
+  x = merge_clusters(x, cutoff=as.numeric(opt[["cutoff"]]))
 }
 
-x = convert_dn_names(x, cutoff=opt[["cutoff"]])
+x = convert_dn_names(x, cutoff=as.numeric(opt[["cutoff"]]))
 
-# Plots 
+# Plots
 
 pl_signatures = plot_signatures(x)
 pl_exposures = plot_exposures(x)
@@ -112,12 +113,12 @@ ggplot2::ggsave(plot=figure, filename=paste0(opt[["prefix"]], "_plots_bascule.pn
 # version export
 f = file("versions.yml","w")
 bascule_version = sessionInfo()\$otherPkgs\$bascule\$Version
-cli_version = sessionInfo()\$otherPkgs\$cli\$Version
-tidyverse_version = sessionInfo()\$otherPkgs\$tidyverse\$Version
 ggplot2_version = sessionInfo()\$otherPkgs\$ggplot2\$Version
+reticulate_version = sessionInfo()\$otherPkgs\$reticulate\$Version
+tidyverse_version = sessionInfo()\$otherPkgs\$tidyverse\$Version
 writeLines(paste0('"', "$task.process", '"', ":"), f)
 writeLines(paste("    bascule:", bascule_version), f)
-writeLines(paste("    cli:", cli_version), f)
 writeLines(paste("    ggplot2:", ggplot2_version), f)
+writeLines(paste("    reticulate:", reticulate_version), f)
 writeLines(paste("    tidyverse:", tidyverse_version), f)
 close(f)

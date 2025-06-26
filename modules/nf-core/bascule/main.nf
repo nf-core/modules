@@ -2,14 +2,13 @@ process BASCULE {
     tag "$meta.id"
     label 'process_low'
 
-    // TODO add bioconda package and containers
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'biocontainers/YOUR-TOOL-HERE' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c4/c46a35446e5fc41efe84d4962b1900fdb7dda26333fb0a44ecb7c521dcda1ba6/data':
+        'community.wave.seqera.io/library/pybascule_r-bascule_python_r-ggplot2_pruned:797049b34cb704fc' }"
 
     input:
-    tuple val(meta), path(count_matrices)  // count_matrices = folder with .csv files
+    tuple val(meta), path(counts_matrices)  // counts_matrices = folder with .csv files
 
     output:
     tuple val(meta), path("*_fit_bascule.rds")  , emit: bascule_rds
@@ -36,8 +35,8 @@ process BASCULE {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         bascule: \$(Rscript -e 'library(bascule); sessionInfo()\$otherPkgs\$bascule\$Version')
-        cli: \$(Rscript -e 'library(cli); sessionInfo()\$otherPkgs\$cli\$Version')
         ggplot2: \$(Rscript -e 'library(ggplot2); sessionInfo()\$otherPkgs\$ggplot2\$Version')
+        reticulate: \$(Rscript -e 'library(reticulate); sessionInfo()\$otherPkgs\$reticulate\$Version')
         tidyverse: \$(Rscript -e 'library(tidyverse); sessionInfo()\$otherPkgs\$tidyverse\$Version')
     END_VERSIONS
     """
