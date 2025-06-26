@@ -42,7 +42,7 @@ nextflow_process {
                 input[1] = [GUNZIP_GENOME.out.gunzip]
                 input[2] = [
                     [ id:'test', single_end:false ],
-                    file("/raven/u/lhafner/nf-core/modules_testing/data/motifs.psem", checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/delete_me/stare/motifs.psem", checkIfExists: true),
                 ]
                 input[3] = [[], []]
                 input[4] = [[], []]
