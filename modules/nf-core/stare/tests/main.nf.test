@@ -44,11 +44,11 @@ nextflow_process {
                     [ id:'test', single_end:false ],
                     file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/delete_me/stare/motifs.psem", checkIfExists: true),
                 ]
-                input[3] = Channel.from([[[], []]])
-                input[4] = Channel.from([[[], []]])
-                input[5] = Channel.from([[[], []]])
-                input[6] = Channel.from([[[], []]])
-                input[7] = Channel.from([[[], []]])
+                input[3] = [[:], []]
+                input[4] = [[:], []]
+                input[5] = [[:], []]
+                input[6] = [[:], []]
+                input[7] = [[:], []]
                 """
             }
         }
@@ -98,11 +98,11 @@ nextflow_process {
                     [ id:'test', single_end:false ],
                     file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/stare/motifs.psem", checkIfExists: true),
                 ]
-                input[3] = Channel.from([[[], []]])
-                input[4] = Channel.from([[[], []]])
-                input[5] = Channel.from([[[], []]])
-                input[6] = Channel.from([[[], []]])
-                input[7] = Channel.from([[[], []]])
+                input[3] = [[:], []]
+                input[4] = [[:], []]
+                input[5] = [[:], []]
+                input[6] = [[:], []]
+                input[7] = [[:], []]
                 """
             }
         }
