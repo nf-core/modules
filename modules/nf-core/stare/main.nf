@@ -56,13 +56,6 @@ process STARE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-
-    def path_bed_file       = bed_file       ? "-b ${bed_file}"       : ""
-    def path_exclude_bed    = exclude_bed    ? "-x ${exclude_bed}"    : ""
-    def path_genes          = genes          ? "-u ${genes}"          : ""
-    def path_contact_folder = contact_folder ? "-f ${contact_folder}" : ""
-    def path_existing_abc   = existing_abc   ? "-r ${existing_abc}"   : ""
     
     """
     mkdir -p ${meta.id}/Gene_TF_matrices
