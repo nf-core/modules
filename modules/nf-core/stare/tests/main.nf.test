@@ -18,7 +18,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test', single_end:false ],
-                        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/genome/chr19.filtered.gtf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.filtered.gtf.gz', checkIfExists: true),
                     ]
                     """
                 }
@@ -29,7 +29,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test', single_end:false ],
-                        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/genome/chr19.fa.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.fa.gz', checkIfExists: true),
                     ]
                     """
                 }
@@ -38,11 +38,11 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [GUNZIP_ANNOTATION.out.gunzip]
-                input[1] = [GUNZIP_GENOME.out.gunzip]
+                input[0] = GUNZIP_ANNOTATION.out.gunzip
+                input[1] = GUNZIP_GENOME.out.gunzip
                 input[2] = [
                     [ id:'test', single_end:false ],
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/delete_me/stare/motifs.psem", checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/stare/motifs.psem', checkIfExists: true),
                 ]
                 input[3] = [[:], []]
                 input[4] = [[:], []]
@@ -72,7 +72,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test', single_end:false ],
-                        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/genome/chr19.filtered.gtf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.filtered.gtf.gz', checkIfExists: true),
                     ]
                     """
                 }
@@ -83,7 +83,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test', single_end:false ],
-                        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/genome/chr19.fa.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.fa.gz', checkIfExists: true),
                     ]
                     """
                 }
@@ -92,11 +92,11 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [GUNZIP_ANNOTATION.out.gunzip]
-                input[1] = [GUNZIP_GENOME.out.gunzip]
+                input[0] = GUNZIP_ANNOTATION.out.gunzip
+                input[1] = GUNZIP_GENOME.out.gunzip
                 input[2] = [
                     [ id:'test', single_end:false ],
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/stare/motifs.psem", checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/stare/motifs.psem', checkIfExists: true),
                 ]
                 input[3] = [[:], []]
                 input[4] = [[:], []]
