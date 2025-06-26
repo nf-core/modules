@@ -37,11 +37,14 @@ nextflow_process {
                 """
             }
             params {
-                arriba          = true
-                starfusion      = true
-                fusioncatcher   = true
-                no_cosmic       = true
-                outdir          = "$outputDir"
+                arriba                     = true
+                starfusion                 = true
+                fusioncatcher              = true
+                no_cosmic                  = true
+                outdir                     = "$outputDir"
+                fusionreport_download_args = '--no-cosmic'
+                fusionreport_detect_args   = {params.no_cosmic} ? "--no-cosmic" : ""
+                fusionreport_detect_args2  = "--export csv"
             }
         }
 
@@ -95,11 +98,14 @@ nextflow_process {
                 """
             }
         params {
-                arriba          = true
-                starfusion      = true
-                fusioncatcher   = true
-                no_cosmic       = true
-                outdir          = "$outputDir"
+                arriba                     = true
+                starfusion                 = true
+                fusioncatcher              = true
+                no_cosmic                  = true
+                outdir                     = "$outputDir"
+                fusionreport_download_args = '--no-cosmic'
+                fusionreport_detect_args   = {params.no_cosmic} ? "--no-cosmic" : ""
+                fusionreport_detect_args2  = "--export csv"
             }
         }
 
@@ -110,6 +116,4 @@ nextflow_process {
             )
         }
     }
-
-
 }
