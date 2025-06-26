@@ -51,7 +51,7 @@ process STARE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        STARE: \$(STARE.sh --version | cut -f3 -d" ")
+        stare: \$(STARE.sh --version | cut -f3 -d" ")
     END_VERSIONS
     """
 
