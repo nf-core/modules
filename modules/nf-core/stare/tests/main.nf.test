@@ -18,7 +18,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test', single_end:false ],
-                        file('https://raw.githubusercontent.com/LeonHafner/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/genome/chr1/genome.gtf', checkIfExists: true),
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/genome/chr19.filtered.gtf.gz', checkIfExists: true),
                     ]
                     """
                 }
@@ -29,7 +29,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test', single_end:false ],
-                        file('https://raw.githubusercontent.com/LeonHafner/test-datasets/modules/data/genomics/homo_sapiens/genome/chr1/genome.fasta.gz', checkIfExists: true),
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/genome/chr19.fa.gz', checkIfExists: true),
                     ]
                     """
                 }
@@ -44,11 +44,11 @@ nextflow_process {
                     [ id:'test', single_end:false ],
                     file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/delete_me/stare/motifs.psem", checkIfExists: true),
                 ]
-                input[3] = [[], []]
-                input[4] = [[], []]
-                input[5] = [[], []]
-                input[6] = [[], []]
-                input[7] = [[], []]
+                input[3] = Channel.from([[[], []]])
+                input[4] = Channel.from([[[], []]])
+                input[5] = Channel.from([[[], []]])
+                input[6] = Channel.from([[[], []]])
+                input[7] = Channel.from([[[], []]])
                 """
             }
         }
@@ -72,7 +72,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test', single_end:false ],
-                        file('https://raw.githubusercontent.com/LeonHafner/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/genome/chr1/genome.gtf', checkIfExists: true),
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/genome/chr19.filtered.gtf.gz', checkIfExists: true),
                     ]
                     """
                 }
@@ -83,7 +83,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test', single_end:false ],
-                        file('https://raw.githubusercontent.com/LeonHafner/test-datasets/modules/data/genomics/homo_sapiens/genome/chr1/genome.fasta.gz', checkIfExists: true),
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/genome/chr19.fa.gz', checkIfExists: true),
                     ]
                     """
                 }
@@ -96,13 +96,13 @@ nextflow_process {
                 input[1] = [GUNZIP_GENOME.out.gunzip]
                 input[2] = [
                     [ id:'test', single_end:false ],
-                    file("/raven/u/lhafner/nf-core/modules_testing/data/motifs.psem", checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/stare/motifs.psem", checkIfExists: true),
                 ]
-                input[3] = [[], []]
-                input[4] = [[], []]
-                input[5] = [[], []]
-                input[6] = [[], []]
-                input[7] = [[], []]
+                input[3] = Channel.from([[[], []]])
+                input[4] = Channel.from([[[], []]])
+                input[5] = Channel.from([[[], []]])
+                input[6] = Channel.from([[[], []]])
+                input[7] = Channel.from([[[], []]])
                 """
             }
         }

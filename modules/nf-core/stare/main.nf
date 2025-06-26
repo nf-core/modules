@@ -15,7 +15,7 @@ process STARE {
     tuple val(meta5), path(exclude_bed)
     tuple val(meta6), path(genes)
     tuple val(meta7), path(contact_folder)
-    tuple val(meta8), path(existing_abc)    
+    tuple val(meta8), path(existing_abc)
 
     output:
     tuple val(meta), path("${meta.id}/Gene_TF_matrices/${meta.id}_TF_Gene_Affinities.txt") , emit: affinities
@@ -58,13 +58,14 @@ process STARE {
     stub:
     def args = task.ext.args ?: ''
 
-    def path_bed_file       = bed_file       ? "--bed_file ${bed_file}"             : ""
-    def path_exclude_bed    = exclude_bed    ? "--exclude_bed ${exclude_bed}"       : ""
-    def path_genes          = genes          ? "--genes ${genes}"                   : ""
-    def path_contact_folder = contact_folder ? "--contact_folder ${contact_folder}" : ""
-    def path_existing_abc   = existing_abc   ? "--existing_abc ${existing_abc}"     : ""
+    def path_bed_file       = bed_file       ? "-b ${bed_file}"       : ""
+    def path_exclude_bed    = exclude_bed    ? "-x ${exclude_bed}"    : ""
+    def path_genes          = genes          ? "-u ${genes}"          : ""
+    def path_contact_folder = contact_folder ? "-f ${contact_folder}" : ""
+    def path_existing_abc   = existing_abc   ? "-r ${existing_abc}"   : ""
     
     """
+    mkdir -p ${meta.id}/Gene_TF_matrices
     touch ${meta.id}/Gene_TF_matrices/${meta.id}_TF_Gene_Affinities.txt
 
     cat <<-END_VERSIONS > versions.yml
