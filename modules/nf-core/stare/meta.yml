@@ -30,7 +30,8 @@ input:
         description: "Gene annotation file in GTF format (e.g. Gencode); full annotation
           recommended for ABC scoring"
         pattern: "*.gtf"
-        ontologies: []
+        ontologies:
+          - bioontology: http://edamontology.org/format_2306 # GTF
   - - meta2:
         type: map
         description: |
@@ -40,7 +41,8 @@ input:
         type: file
         description: "Genome FASTA file in RefSeq format"
         pattern: "*.{fa,fasta}"
-        ontologies: []
+        ontologies:
+          - bioontology: http://edamontology.org/format_1929 # FASTA
   - - meta3:
         type: map
         description: |
@@ -63,7 +65,8 @@ input:
           runs in promoter-mode around TSS"
         pattern: "*.bed"
         optional: true
-        ontologies: []
+        ontologies:
+          - ucsc: https://genome.ucsc.edu/FAQ/FAQformat#format1 # BED
   - - meta5:
         type: map
         description: |
@@ -74,7 +77,8 @@ input:
         description: "BED file with regions to exclude; overlapping regions are discarded"
         pattern: "*.bed"
         optional: true
-        ontologies: []
+        ontologies:
+          - ucsc: https://genome.ucsc.edu/FAQ/FAQformat#format1 # BED
   - - meta6:
         type: map
         description: |
