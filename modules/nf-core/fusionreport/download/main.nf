@@ -11,6 +11,9 @@ process FUSIONREPORT_DOWNLOAD {
     tuple val(meta), path("fusion_report_db"), emit: fusionreport_ref
     path "versions.yml"                      , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     meta = [id: 'fusion_report_db']
     def args = task.ext.args ?: ''
