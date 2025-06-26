@@ -7,22 +7,42 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "stare"
+    tag "gunzip"
 
     test("testing stare") {
+
+        setup {
+            run("GUNZIP", alias: "GUNZIP_ANNOTATION") {
+                script "../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:false ],
+                        file('https://raw.githubusercontent.com/LeonHafner/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/genome/chr1/genome.gtf', checkIfExists: true),
+                    ]
+                    """
+                }
+            }
+            run("GUNZIP", alias: "GUNZIP_GENOME") {
+                script "../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:false ],
+                        file('https://raw.githubusercontent.com/LeonHafner/test-datasets/modules/data/genomics/homo_sapiens/genome/chr1/genome.fasta.gz', checkIfExists: true),
+                    ]
+                    """
+                }
+            }
+        }
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test', single_end:false ],
-                    file(params.modules_testdata_base_path + 'placeholder', checkIfExists: true),
-                ]
-                input[1] = [
-                    [ id:'test', single_end:false ],
-                    file(params.modules_testdata_base_path + 'placeholder', checkIfExists: true),
-                ]
+                input[0] = [GUNZIP_ANNOTATION.out.gunzip]
+                input[1] = [GUNZIP_GENOME.out.gunzip]
                 input[2] = [
                     [ id:'test', single_end:false ],
-                    file(params.modules_testdata_base_path + 'placeholder', checkIfExists: true),
+                    file("/raven/u/lhafner/nf-core/modules_testing/data/motifs.psem", checkIfExists: true),
                 ]
                 input[3] = [[], []]
                 input[4] = [[], []]
@@ -45,20 +65,38 @@ nextflow_process {
 
         options "-stub"
 
+        setup {
+            run("GUNZIP", alias: "GUNZIP_ANNOTATION") {
+                script "../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:false ],
+                        file('https://raw.githubusercontent.com/LeonHafner/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/genome/chr1/genome.gtf', checkIfExists: true),
+                    ]
+                    """
+                }
+            }
+            run("GUNZIP", alias: "GUNZIP_GENOME") {
+                script "../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:false ],
+                        file('https://raw.githubusercontent.com/LeonHafner/test-datasets/modules/data/genomics/homo_sapiens/genome/chr1/genome.fasta.gz', checkIfExists: true),
+                    ]
+                    """
+                }
+            }
+        }
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test', single_end:false ],
-                    file(params.modules_testdata_base_path + 'placeholder', checkIfExists: true),
-                ]
-                input[1] = [
-                    [ id:'test', single_end:false ],
-                    file(params.modules_testdata_base_path + 'placeholder', checkIfExists: true),
-                ]
+                input[0] = [GUNZIP_ANNOTATION.out.gunzip]
+                input[1] = [GUNZIP_GENOME.out.gunzip]
                 input[2] = [
                     [ id:'test', single_end:false ],
-                    file(params.modules_testdata_base_path + 'placeholder', checkIfExists: true),
+                    file("/raven/u/lhafner/nf-core/modules_testing/data/motifs.psem", checkIfExists: true),
                 ]
                 input[3] = [[], []]
                 input[4] = [[], []]
