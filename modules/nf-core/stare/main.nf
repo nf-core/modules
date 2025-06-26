@@ -54,7 +54,6 @@ process STARE {
     """
 
     stub:
-    
     """
     mkdir -p ${meta.id}/Gene_TF_matrices
     touch ${meta.id}/Gene_TF_matrices/${meta.id}_TF_Gene_Affinities.txt
