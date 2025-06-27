@@ -44,7 +44,7 @@ opt.update({
     "make_decomposition_plots": True,
     "download_genome_sigprofiler": True,
     "genome_installed_path": ""
-    })
+})
 
 # Parse extra args
 args_opt = parse_args("${task.ext.args ?: ''}")
