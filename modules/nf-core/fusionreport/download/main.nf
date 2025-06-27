@@ -4,8 +4,8 @@ process FUSIONREPORT_DOWNLOAD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d9/d99b7576d14caafd0494d6e2c1453edd161a933ccb62940701074128d3718bc5/data' :
-        'community.wave.seqera.io/library/fusion-report_openpyxl:77a2ba7e76ae0694'}"
+        'oras://community.wave.seqera.io/library/fusion-report_openpyxl:259f7aae0143f3de' :
+        'community.wave.seqera.io/library/fusion-report_openpyxl:2c905d97bc689731'}"
 
     output:
     tuple val(meta), path("fusion_report_db"), emit: fusionreport_ref

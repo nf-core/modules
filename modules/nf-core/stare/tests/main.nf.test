@@ -1,0 +1,113 @@
+nextflow_process {
+
+    name "Test Process STARE"
+    script "../main.nf"
+    process "STARE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "stare"
+    tag "gunzip"
+
+    test("testing stare") {
+
+        setup {
+            run("GUNZIP", alias: "GUNZIP_ANNOTATION") {
+                script "../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.filtered.gtf.gz', checkIfExists: true),
+                    ]
+                    """
+                }
+            }
+            run("GUNZIP", alias: "GUNZIP_GENOME") {
+                script "../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.fa.gz', checkIfExists: true),
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = [[:], [], [], []]
+                input[1] = GUNZIP_ANNOTATION.out.gunzip
+                input[2] = GUNZIP_GENOME.out.gunzip
+                input[3] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/stare/motifs.psem', checkIfExists: true),
+                ]
+                input[4] = [[:], []]
+                input[5] = [[:], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("testing stare - stub") {
+
+        options "-stub"
+
+        setup {
+            run("GUNZIP", alias: "GUNZIP_ANNOTATION") {
+                script "../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.filtered.gtf.gz', checkIfExists: true),
+                    ]
+                    """
+                }
+            }
+            run("GUNZIP", alias: "GUNZIP_GENOME") {
+                script "../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.fa.gz', checkIfExists: true),
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = [[:], [], [], []]
+                input[1] = GUNZIP_ANNOTATION.out.gunzip
+                input[2] = GUNZIP_GENOME.out.gunzip
+                input[3] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/stare/motifs.psem', checkIfExists: true),
+                ]
+                input[4] = [[:], []]
+                input[5] = [[:], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
