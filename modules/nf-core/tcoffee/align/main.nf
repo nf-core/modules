@@ -4,7 +4,7 @@ process TCOFFEE_ALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/t-coffee_tmalign_pigz:f861f2f8f266c2fe':
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/75/75830929ed209853ab621dafcc4105618eba02408a731e4fd4aeee94ada424bc/data':
         'community.wave.seqera.io/library/t-coffee_tmalign_pigz:be7dac2ae6aba380' }"
 
     input:
