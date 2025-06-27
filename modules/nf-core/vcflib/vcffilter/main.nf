@@ -4,7 +4,7 @@ process VCFLIB_VCFFILTER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/vcflib:1.0.14--4965eb2349288eb5':
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fc/fc33d59c090cef123aca26ae17fbddbd596640304d8325cbd5816229fa2c05ee/data':
         'community.wave.seqera.io/library/vcflib:1.0.14--cc8ffb2c1a080797' }"
 
     input:
