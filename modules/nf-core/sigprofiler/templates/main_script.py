@@ -85,7 +85,6 @@ if __name__ == '__main__':
 
     if not os.path.exists(input_path):
             os.mkdir(input_path)
-    
 
     data = process_tsv_join(tsv_list)
     processed = input_processing(data, dataset_id, genome)
