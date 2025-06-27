@@ -36,7 +36,7 @@ process NAIL_SEARCH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        nail: \$(echo \$(nail --version 2>&1) )
+        nail: \$(echo \$(nail --version 2>&1) | sed 's/^.*nail\\w*//' )
     END_VERSIONS
     """
 
