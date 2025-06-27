@@ -4,8 +4,8 @@ process MOBSTER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-ba99151f85012475e44f3f1d2537912d5b69cf40:2b2850df76b35c8b35e75cf13dce31428d2977d4-0':
-        'biocontainers/mulled-v2-ba99151f85012475e44f3f1d2537912d5b69cf40:2b2850df76b35c8b35e75cf13dce31428d2977d4-0' }"
+        'oras://community.wave.seqera.io/library/r-cnaqc_r-mobster_r-cli_r-dplyr_r-ggplot2:9f1d68529fc936de':
+        'community.wave.seqera.io/library/r-cnaqc_r-mobster_r-cli_r-dplyr_r-ggplot2:96c0dbada588b39a' }"
 
     input:
     tuple val(meta), path(rds_join)
@@ -34,7 +34,7 @@ process MOBSTER {
     touch ${prefix}_plots.rds
     touch ${prefix}_REPORT_plots_mobster.rds
     touch ${prefix}_REPORT_plots_mobster.pdf
-    touch ${prefix}_REPORT_plots_mobster.ng
+    touch ${prefix}_REPORT_plots_mobster.png
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
