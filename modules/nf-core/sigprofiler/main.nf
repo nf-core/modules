@@ -27,7 +27,7 @@ process SIGPROFILER {
 
     """
     mkdir -p results
-    echo "stub output" > results/dummy.txt
+    touch results/dummy.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
