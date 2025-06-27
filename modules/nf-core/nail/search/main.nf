@@ -22,9 +22,9 @@ process NAIL_SEARCH {
     task.ext.when == null || task.ext.when
 
     script:
-    def args      = task.ext.args ?: ''
-    prefix        = task.ext.prefix ?: "${meta.id}"
-    def alignment = write_align ? "--ali-out ${prefix}.ali" : ''
+    def args  = task.ext.args ?: ''
+    prefix    = task.ext.prefix ?: "${meta.id}"
+    alignment = write_align ? "--ali-out ${prefix}.ali" : '' // no def here due to current Nextflow bug; cause: Variable `prefix` already defined in the process scope
     """
     nail search \\
         $args \\
@@ -36,7 +36,7 @@ process NAIL_SEARCH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        nail: \$(echo \$(nail --version 2>&1) | sed 's/^.*nail\\w*//' )
+        nail: \$(echo \$(nail --version 2>&1) )
     END_VERSIONS
     """
 
