@@ -2,6 +2,9 @@ name: fusionreport
 description: fusionreport
 keywords:
   - sort
+  - RNA-seq
+  - fusion report
+  - detect
 tools:
   - fusionreport:
       description: Tool for parsing outputs from fusion detection tools
@@ -9,43 +12,140 @@ tools:
       documentation: https://matq007.github.io/fusion-report/#/
       doi: "10.1101/011650"
       licence: ["GPL v3"]
+      identifier: ""
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reference:
-      type: path
-      description: Path to fusionreport references
-      pattern: "*"
-  - arriba_fusions:
-      type: path
-      description: File
-      pattern: "*.fusions.tsv"
-  - starfusion_fusions:
-      type: path
-      description: File containing fusions from STARfusion
-      pattern: "*.starfusion.fusion_predictions.tsv"
-  - fusioncatcher_fusions:
-      type: path
-      description: File containing fusions from fusioncatcher
-      pattern: "*.fusions.tsv"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - arriba_fusions:
+        type: file
+        description: File
+        pattern: "*.fusions.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+    - starfusion_fusions:
+        type: file
+        description: File containing fusions from STARfusion
+        pattern: "*.starfusion.fusion_predictions.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+    - fusioncatcher_fusions:
+        type: file
+        description: File containing fusions from fusioncatcher
+        pattern: "*.fusions.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - fusionreport_ref:
+        type: directory
+        description: File
+        pattern: "fusion_report_db"
+  - - tools_cutoff:
+        type: integer
+        description: Discard fusions detected by less than $tools_cutoff tools both for display in fusionreport html index and to consider in fusioninspector.
 
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - fusion_list:
-      type: file
-      description: File containing the summary of all fusions fed-in
-      pattern: "*.tsv"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+      - "*fusionreport.tsv":
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  - fusion_list_filtered:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+      - "*fusionreport_filtered.tsv":
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   - report:
-      type: file
-      description: HTML files
-      pattern: "*.html"
-
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*.index.html"
+          ontologies:
+            - edam: "http://edamontology.org/format_2331" # HTML
+      - "*index.html":
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*.index.html"
+          ontologies:
+            - edam: "http://edamontology.org/format_2331" # HTML
+  - html:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*_*.html"
+          ontologies:
+            - edam: "http://edamontology.org/format_2331" # HTML
+      - "*_*.html":
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*_*.html"
+          ontologies:
+            - edam: "http://edamontology.org/format_2331" # HTML
+  - csv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*.csv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3752" # CSV
+      - "*.csv":
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*.csv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3752" # CSV
+  - json:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464" # JSON
+      - "*.json":
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464" # JSON
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@praveenraj2018, @rannick"
