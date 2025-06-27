@@ -11,8 +11,8 @@ process SIGPROFILER {
     tuple val(meta), path(tsv_list, stageAs: '*.tsv')
     
     output:
-    tuple val(meta), path("results/*"),    emit: sigprofiler_results
-    path "versions.yml",                   emit: versions
+    tuple val(meta), path("results/*"), emit: sigprofiler_results
+    path "versions.yml",                emit: versions
 
     when:
     task.ext.when == null || task.ext.when
