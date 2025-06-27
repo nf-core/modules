@@ -6,6 +6,7 @@ keywords:
   - reformat
   - MSA
   - hhsuite
+  - alignment
 tools:
   - "hhsuite":
       description: "HH-suite3 for fast remote homology detection and deep protein annotation"
@@ -20,7 +21,7 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
+          e.g. `[ id:'sample1' ]`
     - aln:
         type: file
         description: Input MSA file
@@ -39,7 +40,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1' ]`
       - "${prefix}.${outformat}.gz":
           type: file
           description: Gzipped reformatted output MSA file

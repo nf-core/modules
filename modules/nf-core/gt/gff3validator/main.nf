@@ -25,7 +25,7 @@ process GT_GFF3VALIDATOR {
         gff3validator \\
         "$gff3" \\
         > "${prefix}.stdout" \\
-        2> >(tee "${prefix}.stderr" >&2) \\
+        2>| >(tee "${prefix}.stderr" >&2) \\
         || echo "Errors from gt-gff3validator printed to ${prefix}.error.log"
 
     if grep -q "input is valid GFF3" "${prefix}.stdout"; then
