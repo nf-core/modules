@@ -33,7 +33,7 @@ library(mobster)
 library(dplyr)
 library(ggplot2)
 
-patientID = description = "$meta.patient"
+description = "$meta.patient"
 samples = strsplit(x="$meta.tumour_sample", ",") %>% unlist()  # list of samples
 
 ## read mCNAqc object
