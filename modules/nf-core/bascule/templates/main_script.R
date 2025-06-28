@@ -31,11 +31,6 @@ library(ggplot2)
 library(reticulate)
 library(tidyverse)
 
-print(py_discover_config())
-print(py_config())
-print(system("which python"))
-print(system("which python3"))
-
 counts_folder = "$counts_matrices"
 
 counts_all = lapply(list.files(counts_folder, full.names=TRUE), function(file_id) {
@@ -65,8 +60,12 @@ counts = lapply(types_names, function(type_id) {
     counts[[type_id]][,colnames(reference_cat[[type_id]])]
 }) %>% setNames(types_names)
 
+
+# create conda env
+# print(conda_list(conda = "auto"))
+# print(py_config())
+
 py = import("pybascule")
-print(py)
 
 x = fit(counts=counts,
         k_list=eval(parse(text=opt[["k_list"]])),
