@@ -4,8 +4,8 @@ process BASCULE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c4/c46a35446e5fc41efe84d4962b1900fdb7dda26333fb0a44ecb7c521dcda1ba6/data':
-        'community.wave.seqera.io/library/pybascule_r-bascule_python_r-ggplot2_pruned:797049b34cb704fc' }"
+        'oras://community.wave.seqera.io/library/r-bascule_compilers_python_r-ggplot2_pruned:51342d731abb95e0':
+        'community.wave.seqera.io/library/r-bascule_compilers_python_r-ggplot2_pruned:00e043c5dd0fe33f' }"
 
     input:
     tuple val(meta), path(counts_matrices)  // counts_matrices = folder with .csv files
