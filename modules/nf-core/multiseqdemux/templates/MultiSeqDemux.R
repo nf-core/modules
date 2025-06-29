@@ -8,13 +8,12 @@
 
 # cast parameters from nextflow
 seuratObj = '$seurat_object'
-options(digits=5)
-quantile = as.double('$quantile')
+quantile = as.numeric('$quantile')
 autoThresh = as.logical('$autoThresh')
 maxiter = as.integer('$maxiter')
-qrangeFrom = as.double('$qrangeFrom')
-qrangeTo = as.double('$qrangeTo')
-qrangeBy = as.double('$qrangeBy')
+qrangeFrom = as.numeric('$qrangeFrom')
+qrangeTo = as.numeric('$qrangeTo')
+qrangeBy = as.numeric('$qrangeBy')
 verbose = as.logical('$verbose')
 assay ='$assay'
 prefix = '$prefix'
