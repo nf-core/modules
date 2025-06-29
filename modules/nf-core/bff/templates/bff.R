@@ -7,7 +7,7 @@
 ################################################
 
 # Helper function for NULL condition
-string_to_null <- function(x, val = "NULL") if (x == val) NULL else x
+string_to_null <- function(x, val = "null") if (x == val) NULL else x
 null_to_string <- function(x, val = "NULL") if (is.null(x)) val else x
 
 ################################################
