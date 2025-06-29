@@ -10,7 +10,7 @@
 seuratObj = '$seurat_object'
 quantile = as.numeric('$quantile')
 autoThresh = as.logical('$autoThresh')
-maxiter = as.integer('$maxiter')
+maxiter = as.numeric('$maxiter')
 qrangeFrom = as.numeric('$qrangeFrom')
 qrangeTo = as.numeric('$qrangeTo')
 qrangeBy = as.numeric('$qrangeBy')
