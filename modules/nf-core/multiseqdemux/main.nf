@@ -11,23 +11,23 @@ process MULTISEQDEMUX {
     tuple val(meta), path(seurat_object), val(assay)
 
     output:
-    tuple val(meta), path("*_params_multiseqdemux.csv")       , emit: params
-    tuple val(meta), path("*_res_multiseqdemux.csv")          , emit: results
-    tuple val(meta), path("*_multiseqdemux.rds")              , emit: rds
-    path "versions.yml"                                       , emit: versions
+    tuple val(meta), path("*_params_multiseqdemux.csv"), emit: params
+    tuple val(meta), path("*_res_multiseqdemux.csv")   , emit: results
+    tuple val(meta), path("*_multiseqdemux.rds")       , emit: rds
+    path "versions.yml"                                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    quantile = task.ext.assay ?: "0.7"
-    autoThresh = task.ext.autoThresh ?: "TRUE"
-    maxiter = task.ext.maxiter ?: "5"
-    qrangeFrom = task.ext.qrangeFrom ?: "0.1"
-    qrangeTo = task.ext.qrangeTo ?: "0.9"
-    qrangeBy = task.ext.qrangeBy ?: "0.05"
-    verbose = task.ext.verbose ?: 'TRUE'
-    prefix = task.ext.prefix ?: "${meta.id}"
+    quantile   = task.ext.assay      ?: 0.7          // The quantile to use for classification
+    autoThresh = task.ext.autoThresh ?: true         // Whether to perform automated threshold finding to define the best quantile
+    maxiter    = task.ext.maxiter    ?: 5            // Maximum number of iterations if autoThresh is true
+    qrangeFrom = task.ext.qrangeFrom ?: 0.1          // A range of possible quantile values to try if autoThresh is true
+    qrangeTo   = task.ext.qrangeTo   ?: 0.9          // A range of possible quantile values to try if autoThresh is true
+    qrangeBy   = task.ext.qrangeBy   ?: 0.05         // A range of possible quantile values to try if autoThresh is true
+    verbose    = task.ext.verbose    ?: true         // Prints the output
+    prefix     = task.ext.prefix     ?: "${meta.id}" // Prefix name for the file containing the output of MULTI-Seq Demux object
 
     template 'MultiSeqDemux.R'
 
