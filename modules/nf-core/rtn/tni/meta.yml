@@ -4,6 +4,7 @@ description: Uses the RTN R package for transcriptional regulatory network infer
   (TNI).
 keywords:
   - regulatory network
+  - network inference
   - transcriptomics
   - transcription factors
 tools:
@@ -26,6 +27,18 @@ input:
     - expression_matrix:
         type: file
         description: expression matrix in TSV format
+        pattern: "*.tsv"
+  - - tfs:
+        type: file
+        description: file containing gene names for transcription factors, one per line
+        pattern: "*.tsv"
+  - - sampleAnnotation:
+        type: file
+        description: file containing sample annotation
+        pattern: "*.tsv"
+  - - geneAnnotation:
+        type: file
+        description: file containing gene annotation
         pattern: "*.tsv"
 output:
   - tni:
