@@ -7,6 +7,7 @@
 ################################################
 
 # Helper function for NULL condition
+string_to_null_or_numeric <- function(x, val = "null") if (x == val) NULL else as.numeric(x)
 string_to_null <- function(x, val = "null") if (x == val) NULL else x
 null_to_string <- function(x, val = "NULL") if (is.null(x)) val else x
 
@@ -24,10 +25,10 @@ rna_matrix <- '$rna_matrix'
 lower <- as.numeric('$lower')
 niters <- as.numeric('$niters')
 testAmbient <- as.logical('$testAmbient')
-ignore <- string_to_null('$ignore')
-alpha <- string_to_null('$alpha')
+ignore <- string_to_null_or_numeric('$ignore')
+alpha <- string_to_null_or_numeric('$alpha')
 round <- as.logical('$round')
-byRank <- string_to_null('$byRank')
+byRank <- string_to_null_or_numeric('$byRank')
 isCellFDR <- as.numeric('$isCellFDR')
 ambient <- as.logical('$ambient')
 minProp <- as.numeric('$minProp')
