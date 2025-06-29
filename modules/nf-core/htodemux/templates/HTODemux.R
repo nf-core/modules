@@ -18,16 +18,15 @@ null_to_string <- function(x, val = "NULL") if (is.null(x)) val else x
 # cast parameters from nextflow
 seuratObj = '$seurat_object'
 assay = '$assay'
-options(digits=5)
-quantile = as.double('$quantile')
+quantile = as.numeric('$quantile')
 init = NULL
 if ('$init' != 'null') {
-    init = as.integer('$init')
+    init = as.numeric('$init')
 }
-nstarts = as.integer('$nstarts')
+nstarts = as.numeric('$nstarts')
 kfunc = '$kfunc'
-nsamples = as.integer('$nsamples')
-seed = as.integer('$seed')
+nsamples = as.numeric('$nsamples')
+seed = as.numeric('$seed')
 verbose = as.logical('$verbose')
 prefix = '$prefix'
 
