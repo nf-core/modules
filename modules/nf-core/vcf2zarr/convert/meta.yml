@@ -1,24 +1,20 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "vcf2zarr_convert"
-## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: Convert VCF data to the VCF Zarr specification reliably, in parallel or distributed over a cluster
 keywords:
-  - sort
-  - example
-  - genomics
+  - vcf
+  - zarr
+  - convert
 tools:
   - "vcf2zarr":
-      ## TODO nf-core: Add a description and other details for the software below
       description: "Convert bioinformatics data to Zarr"
       homepage: "https://sgkit-dev.github.io/bio2zarr/"
       documentation: "https://sgkit-dev.github.io/bio2zarr/"
       tool_dev_url: "https://github.com/sgkit-dev/bio2zarr"
-      doi: ""
       licence: ["Apache-2.0"]
       identifier: biotools:bio2zarr
 
-## TODO nf-core: Add a description of all of the variables used as input
 input:
   # Only when we have meta
   - - meta:
@@ -27,34 +23,28 @@ input:
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
 
-    ## TODO nf-core: Delete / customise this example input
-    - bam:
+    - vcf:
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
+        description: Input VCF file
+        pattern: "*.{vcf,vcf.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
-          - edam: "http://edamontology.org/format_2573" # CRAM
-          - edam: "http://edamontology.org/format_3462" # SAM
 
-## TODO nf-core: Add a description of all of the variables used as output
+        - edam: "http://edamontology.org/format_3016"
+
 output:
-  - bam:
+  - zarr:
       #Only when we have meta
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      ## TODO nf-core: Delete / customise this example output
-      - "*.bam":
-          type: file
-          description: Sorted BAM/CRAM/SAM file
-          pattern: "*.{bam,cram,sam}"
+      - "*.zarr":
+          type: directory
+          description: Output Zarr store
+          pattern: "*.{zarr}"
           ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
-            - edam: "http://edamontology.org/format_2573" # CRAM
-            - edam: "http://edamontology.org/format_3462" # SAM
+          - edam: "http://edamontology.org/format_3915"
 
   - versions:
       - "versions.yml":
