@@ -7,18 +7,8 @@
 ################################################
 
 # Helper function for NULL condition
-string_to_null <- function(x, val = "NULL") if (x == val) NULL else x
+string_to_null <- function(x, val = "null") if (x == val) NULL else x
 null_to_string <- function(x, val = "NULL") if (is.null(x)) val else x
-
-string_to_logical <- function(input) {
-  if (input == "FALSE") {
-    FALSE
-  } else if (input == "TRUE") {
-    TRUE
-  } else {
-    stop(paste0(input, " is not a valid logical. Use 'FALSE' or 'TRUE'."))
-  }
-}
 
 ################################################
 ################################################
@@ -33,23 +23,23 @@ hto_matrix <- '$hto_matrix'
 rna_matrix <- '$rna_matrix'
 lower <- as.numeric('$lower')
 niters <- as.numeric('$niters')
-testAmbient <- string_to_logical('$testAmbient')
+testAmbient <- as.logical('$testAmbient')
 ignore <- string_to_null('$ignore')
 alpha <- string_to_null('$alpha')
-round <- string_to_logical('$round')
+round <- as.logical('$round')
 byRank <- string_to_null('$byRank')
 isCellFDR <- as.numeric('$isCellFDR')
-ambient <- string_to_logical('$ambient')
+ambient <- as.logical('$ambient')
 minProp <- as.numeric('$minProp')
 pseudoCount <- as.numeric('$pseudoCount')
-constantAmbient <- string_to_logical('$constantAmbient')
+constantAmbient <- as.logical('$constantAmbient')
 doubletNmads <- as.numeric('$doubletNmads')
 doubletMin <- as.numeric('$doubletMin')
-doubletMixture <- string_to_logical('$doubletMixture')
+doubletMixture <- as.logical('$doubletMixture')
 confidentNmads <- as.numeric('$confidentNmads')
 confidentMin <- as.numeric('$confidentMin')
 combinations <- string_to_null('$combinations')
-runEmptyDrops <- string_to_logical('$runEmptyDrops')
+runEmptyDrops <- as.logical('$runEmptyDrops')
 gene_col <- as.numeric('$gene_col')
 prefix <- '$prefix'
 
