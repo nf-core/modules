@@ -8,7 +8,7 @@ process PICARD_SPLITSAMBYNUMBEROFREADS {
         'biocontainers/picard:3.4.0--hdfd78af_0'}"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(input)
     tuple val(meta2), path(fasta), path(fai)
     val split_to_N_reads
     val split_to_N_files
