@@ -4,8 +4,8 @@ process KALLISTOBUSTOOLS_COUNT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/kb-python:0.28.2--pyhdfd78af_2' :
-        'biocontainers/kb-python:0.28.2--pyhdfd78af_2' }"
+        'https://depot.galaxyproject.org/singularity/kb-python:0.29.1--pyhdfd78af_0' :
+        'biocontainers/kb-python:0.29.1--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -13,6 +13,7 @@ process KALLISTOBUSTOOLS_COUNT {
     path  t2g
     path  t1c
     path  t2c
+    path  whitelist
     val   technology
     val   workflow_mode
 
@@ -25,11 +26,12 @@ process KALLISTOBUSTOOLS_COUNT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args ?: ''
-    def prefix  = task.ext.prefix ?: "${meta.id}"
-    def cdna    = t1c ? "-c1 $t1c" : ''
-    def intron  = t2c ? "-c2 $t2c" : ''
-    def memory  = task.memory.toGiga() - 1
+    def args      = task.ext.args ?: ''
+    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def cdna      = t1c ? "-c1 $t1c" : ''
+    def intron    = t2c ? "-c2 $t2c" : ''
+    def whitelist = whitelist ? "-w $whitelist" : ''
+    def memory    = task.memory.toGiga() - 1
     """
     kb \\
         count \\
@@ -38,6 +40,7 @@ process KALLISTOBUSTOOLS_COUNT {
         -g $t2g \\
         $cdna \\
         $intron \\
+        $whitelist \\
         -x $technology \\
         --workflow $workflow_mode \\
         $args \\
