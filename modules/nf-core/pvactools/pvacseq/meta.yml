@@ -1,0 +1,285 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "pvactools_pvacseq"
+description: A cancer immunotherapy pipeline for identifying and prioritizing neoantigens from a VCF file.
+keywords:
+  - neoantigen
+  - cancer
+  - immunotherapy
+  - genomics
+tools:
+  - "pvacseq":
+      description: "A cancer immunotherapy pipeline for identifying and prioritizing neoantigens from a VCF file."
+      homepage: "https://pvactools.readthedocs.io/en/latest/pvacseq.html"
+      documentation: "https://pvactools.readthedocs.io/en/latest/pvacseq.html"
+      tool_dev_url: "https://github.com/griffithlab/pVACtools"
+      doi: "10.1186/s13073-016-0264-5"
+      licence: ["BSD 3-Clause Clear License"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - sample_name:
+        type: string
+        description: |
+          The name of the tumor sample being processed.
+    - hla:
+        type: string
+        description: |
+          Name of the allele to use for epitope prediction.
+          Multiple alleles can be specified using a comma-
+          separated list.
+    - vcf:
+        type: file
+        description: A VEP-annotated single- or multi-sample VCF containing
+          genotype, transcript, Wildtype protein sequence, and
+          Frameshift protein sequence information.The VCF may be
+          gzipped (requires tabix index).
+        pattern: "*.{vcf,vcf.gz}"
+  - - algorithms:
+        type: string
+        description: |
+          The epitope prediction algorithms to use. Multiple
+          prediction algorithms can be specified, separated by
+          spaces.
+  - - iedb:
+        type: file
+        description: IEDB install directory for local MHC binding prediction tools.
+        pattern: "*/"
+        optional: true
+  - - blastp_path:
+        type: file
+        description: Path to BLASTP binary (if using reference proteome similarity).
+        pattern: "*"
+        optional: true
+  - - genes_of_interest:
+        type: file
+        description: File listing genes of interest (optional).
+        pattern: "*"
+        optional: true
+  - - peptide_fasta:
+        type: file
+        description: Custom peptide FASTA file for reference proteome similarity step to find matches
+          instead of blastp (optional).
+        pattern: "*.{fa,fasta}"
+        optional: true
+  - - phased_proximal_variants_vcf:
+        type: file
+        description: A VCF with phased proximal variant information. Must
+          be gzipped and tabix indexed (optional).
+        pattern: "*.{vcf.gz}"
+        optional: true
+
+output:
+  - mhc_i_intermediate_tsv:
+      - "*.tsv":
+          type: file
+          description: Intermediate TSV with pVACseq MHC Class I predictions
+          pattern: "**/MHC_Class_I/*.tsv"
+
+  - mhc_i_chunks:
+      - "*.tsv_*":
+          type: file
+          description: Chunked intermediate files for MHC Class I processing
+          pattern: "**/MHC_Class_I/*.tsv_*"
+
+  - mhc_i_fasta:
+      - "*.fasta":
+          type: file
+          description: A fasta file with mutant and wildtype peptide subsequences for all processable variant-transcript combinations.
+          pattern: "**/MHC_Class_I/*.fasta"
+
+  - mhc_i_net_chop_fasta:
+      - "*.net_chop.fa":
+          type: file
+          description: A fasta file with mutant and wildtype peptide subsequences specific for use in running the net_chop tool.
+          pattern: "**/MHC_Class_I/*.net_chop.fa"
+
+  - mhc_i_all_epitopes:
+      - "*.all_epitopes.tsv":
+          type: file
+          description: All predicted MHC Class I neoantigen epitopes
+          pattern: "**/MHC_Class_I/*.all_epitopes.tsv"
+
+  - mhc_i_filtered:
+      - "*.filtered.tsv":
+          type: file
+          description: Filtered MHC Class I neoantigen predictions
+          pattern: "**/MHC_Class_I/*.filtered.tsv"
+
+  - mhc_i_all_epitopes_aggregated:
+      - "*.all_epitopes.aggregated.tsv":
+          type: file
+          description: Aggregated MHC Class I epitope predictions
+          pattern: "**/MHC_Class_I/*.all_epitopes.aggregated.tsv"
+
+  - mhc_i_reference_matches:
+      - "*.all_epitopes.aggregated.tsv.reference_matches":
+          type: file
+          description: A file outlining details of reference proteome matches (optional)
+          pattern: "**/MHC_Class_I/*.aggregated.tsv.reference_matches"
+
+  - mhc_i_metrics:
+      - "*.all_epitopes.aggregated.metrics.json":
+          type: file
+          description: JSON metrics with detailed information about the predicted epitopes, formatted for pVACview.
+          pattern: "**/MHC_Class_I/*.metrics.json"
+
+  - mhc_i_r_files:
+      - "*.R":
+          type: file
+          description: pVACview R Shiny application files
+          pattern: "**/MHC_Class_I/*.R"
+
+  - mhc_i_www:
+      - "*":
+          type: file
+          description: Directory containing image files for pVACview.
+          pattern: "**/MHC_Class_I/www/*"
+
+  - mhc_i_log:
+      - "*":
+          type: file
+          description: Log files for MHC Class I processing
+          pattern: "**/MHC_Class_I/log/*"
+
+  - mhc_ii_intermediate_tsv:
+      - "*.tsv":
+          type: file
+          description: Intermediate TSV with pVACseq MHC Class II predictions
+          pattern: "**/MHC_Class_II/*.tsv"
+
+  - mhc_ii_chunks:
+      - "*.tsv_*":
+          type: file
+          description: Chunked intermediate files for MHC Class II processing
+          pattern: "**/MHC_Class_II/*.tsv_*"
+
+  - mhc_ii_fasta:
+      - "*.fasta":
+          type: file
+          description: A fasta file with mutant and wildtype peptide subsequences for all processable variant-transcript combinations.
+          pattern: "**/MHC_Class_II/*.fasta"
+
+  - mhc_ii_net_chop_fasta:
+      - "*.net_chop.fa":
+          type: file
+          description: A fasta file with mutant and wildtype peptide subsequences specific for use in running the net_chop tool.
+          pattern: "**/MHC_Class_II/*.net_chop.fa"
+
+  - mhc_ii_all_epitopes:
+      - "*.all_epitopes.tsv":
+          type: file
+          description: All predicted MHC Class II neoantigen epitopes
+          pattern: "**/MHC_Class_II/*.all_epitopes.tsv"
+
+  - mhc_ii_filtered:
+      - "*.filtered.tsv":
+          type: file
+          description: Filtered MHC Class II neoantigen predictions
+          pattern: "**/MHC_Class_II/*.filtered.tsv"
+
+  - mhc_ii_all_epitopes_aggregated:
+      - "*.all_epitopes.aggregated.tsv":
+          type: file
+          description: Aggregated MHC Class II epitope predictions
+          pattern: "**/MHC_Class_II/*.all_epitopes.aggregated.tsv"
+
+  - mhc_ii_reference_matches:
+      - "*.all_epitopes.aggregated.tsv.reference_matches":
+          type: file
+          description: A file outlining details of reference proteome matches (optional)
+          pattern: "**/MHC_Class_II/*.aggregated.tsv.reference_matches"
+
+  - mhc_ii_metrics:
+      - "*.all_epitopes.aggregated.metrics.json":
+          type: file
+          description: JSON metrics with detailed information about the predicted epitopes, formatted for pVACview.
+          pattern: "**/MHC_Class_II/*.metrics.json"
+
+  - mhc_ii_r_files:
+      - "*.R":
+          type: file
+          description: pVACview R Shiny application files
+          pattern: "**/MHC_Class_II/*.R"
+
+  - mhc_ii_www:
+      - "*":
+          type: file
+          description: Directory containing image files for pVACview.
+          pattern: "**/MHC_Class_II/www/*"
+
+  - mhc_ii_log:
+      - "*":
+          type: file
+          description: Log files for MHC Class II processing
+          pattern: "**/MHC_Class_II/log/*"
+
+  - combined_fasta:
+      - "*.fasta":
+          type: file
+          description: A fasta file with mutant and wildtype peptide subsequences for all processable variant-transcript combinations.
+          pattern: "**/combined/*.fasta"
+
+  - combined_net_chop_fasta:
+      - "*.net_chop.fa":
+          type: file
+          description: A fasta file with mutant and wildtype peptide subsequences specific for use in running the net_chop tool.
+          pattern: "**/combined/*.net_chop.fa"
+
+  - combined_all_epitopes:
+      - "*.all_epitopes.tsv":
+          type: file
+          description: All predicted MHC Class I and MHC Class II neoantigen epitopes
+          pattern: "**/combined/*.all_epitopes.tsv"
+
+  - combined_filtered:
+      - "*.filtered.tsv":
+          type: file
+          description: Filtered MHC Class I and MHC Class II neoantigen predictions
+          pattern: "**/combined/*.filtered.tsv"
+
+  - combined_all_epitopes_aggregated:
+      - "*.all_epitopes.aggregated.tsv":
+          type: file
+          description: Aggregated MHC Class I and MHC Class II epitope predictions
+          pattern: "**/combined/*.all_epitopes.aggregated.tsv"
+
+  - combined_reference_matches:
+      - "*.all_epitopes.aggregated.tsv.reference_matches":
+          type: file
+          description: A file outlining details of reference proteome matches (optional)
+          pattern: "**/combined/*.aggregated.tsv.reference_matches"
+
+  - combined_metrics:
+      - "*.all_epitopes.aggregated.metrics.json":
+          type: file
+          description: JSON metrics with detailed information about the predicted epitopes, formatted for pVACview.
+          pattern: "**/combined/*.metrics.json"
+
+  - combined_r_files:
+      - "*.R":
+          type: file
+          description: pVACview R Shiny application files
+          pattern: "**/combined/*.R"
+
+  - combined_www:
+      - "*":
+          type: file
+          description: Directory containing image files for pVACview.
+          pattern: "**/combined/www/*"
+
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@KondratievaOlesya"
+maintainers:
+  - "@KondratievaOlesya"
