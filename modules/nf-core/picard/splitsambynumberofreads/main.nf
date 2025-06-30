@@ -52,7 +52,7 @@ process PICARD_SPLITSAMBYNUMBEROFREADS {
         ${reference} \\
         ${args_file} \\
         ${args} \\
-        --INPUT ${bam} \\
+        --INPUT ${input} \\
         --OUTPUT picardsplit \\
         --OUT_PREFIX ${prefix}
 
