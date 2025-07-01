@@ -1,79 +1,69 @@
-// nextflow_process {
+nextflow_process {
 
-//     name "Test Process PROSEG_TO_BAYSOR"
-//     script "../main.nf"
-//     process "PROSEG_TO_BAYSOR"
+    name "Test Process PROSEG_TO_BAYSOR"
+    script "../main.nf"
+    process "PROSEG_TO_BAYSOR"
 
-//     tag "modules"
-//     tag "modules_nfcore"
-//     tag "proseg"
-//     tag "segmentation"
-//     tag "cell_segmentation"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "proseg"
+    tag "segmentation"
+    tag "cell_segmentation"
 
 
-//     setup {
-//             run("UNZIP") {
-//                 script "modules/nf-core/unzip/main.nf"
-//                 process {
-//                     """
-//                     input[0] = [[], file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialxe/Xenium_Prime_Mouse_Ileum_tiny_outs.zip', checkIfExists: true)]
-//                     """
-//                 }
-//             }
-//             run("PROSEG") {
-//                 script "modules/nf-core/proseg/proseg/main.nf"
-//                 process {
-//                     """
-//                     input[0] = UNZIP.out.unzipped_archive.map{ meta, filepath -> 
-//                         [meta, filepath + "/Xenium_Prime_Mouse_Ileum_tiny_outs/transcripts.csv.gz"]
-//                     }
-//                     input[1] = 'xenium'
-//                     """
-//                 }
-//             }
-//     }
+    setup {
+            process {
+                """
+                input[0] = [
+                    [id: "test_run_proseg"],
+                    file("${params.modules_testdata_base_path}/spatialomics/spatial_gene_expression.csv", checkIfExists: true)
+                ]
+                input[1] = 'xenium'
+                """
+            }
+    }
 
-//     test("proseg-to-baysor - transcripts.csv") {
+    test("proseg-to-baysor - transcripts.csv") {
 
-//         when {
-//             process {
-//                 """
-//                 input[0] = PROSEG.out.cell_polygons
-//                 input[1] = PROSEG.out.transcript_metadata
-//                 """
-//             }
-//         }
+        when {
+            process {
+                """
+                input[0] = PROSEG.out.cell_polygons
+                input[1] = PROSEG.out.transcript_metadata
+                """
+            }
+        }
 
-//         then {
-//             assertAll(
-//                 { assert process.success },
-//                 { assert snapshot(process.out).match() },
-//                 { assert file(process.out.baysor_cell_polygons.get(0).get(1).find { file(it).name == 'test_run_proseg_baysor_cell_polygons.geojson' }).exists() },
-//                 { assert file(process.out.baysor_transcript_metadata.get(0).get(1).find { file(it).name == 'test_run_proseg_baysor-transcript-metadata.csv' }).exists() },
-//             )
-//         }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert file(process.out.baysor_cell_polygons.get(0).get(1).find { file(it).name == 'test_run_proseg_baysor_cell_polygons.geojson' }).exists() },
+                { assert file(process.out.baysor_transcript_metadata.get(0).get(1).find { file(it).name == 'test_run_proseg_baysor-transcript-metadata.csv' }).exists() },
+            )
+        }
 
-//     }
+    }
 
-//     test("proseg-to-baysor stub") {
+    test("proseg-to-baysor stub") {
 
-//         options "-stub"
+        options "-stub"
 
-//         when {
-//             process {
-//                 """
-//                 input[0] = PROSEG.out.cell_polygons
-//                 input[1] = PROSEG.out.transcript_metadata
-//                 """
-//             }
-//         }
+        when {
+            process {
+                """
+                input[0] = PROSEG.out.cell_polygons
+                input[1] = PROSEG.out.transcript_metadata
+                """
+            }
+        }
 
-//         then {
-//             assertAll(
-//                 { assert process.success },
-//                 { assert snapshot(process.out).match() }
-//             )
-//         }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
 
-//     }
-// }
+    }
+}
