@@ -14,7 +14,7 @@ process DASTOOL_SCAFFOLDS2BIN {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/das_tool:1.1.3--r41hdfd78af_0' :
-        'biocontainers/das_tool:1.1.3--r41hdfd78af_0' }"
+        'biocontainers/das_tool:1.1.5--r41hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
