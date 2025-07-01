@@ -29,8 +29,9 @@ for ( ao in names(args_opt)) opt[[ao]] = args_opt[[ao]]
 # Load packages
 
 library(ctree)
-library(VIBER)
 library(mobster)
+library(VIBER)
+library(cli)
 library(dplyr)
 library(ggplot2)
 
@@ -159,14 +160,14 @@ if ( grepl(".rds\$", tolower("$ctree_input")) ) {
 
 if (do_fit & !is.null(trees)) {
     ctree_output = paste0("ctree_", subclonal_tool)
-    if (!dir.exists(outdir)) dir.create(outdir, recursive=T)
+    if (outdir != "" & !dir.exists(outdir)) dir.create(outdir, recursive=T)
 
     # plot the best tree
     top_phylo = plot(trees[[1]])
 
     # save rds and plots
-    saveRDS(object=trees, file=paste0(outdir, "$prefix", "_", ctree_output, ".rds"))
-    saveRDS(object=top_phylo, file=paste0(outdir, "$prefix", "_", ctree_output, "_plots.rds"))
+    saveRDS(object=trees, file=paste0(outdir, opt[["prefix"]], "_", ctree_output, ".rds"))
+    saveRDS(object=top_phylo, file=paste0(outdir, opt[["prefix"]], "_", ctree_output, "_plots.rds"))
 
     # save report plot
     phylos = ggplot2::ggplot()
@@ -179,9 +180,9 @@ if (do_fit & !is.null(trees)) {
 
     report_fig = ggpubr::ggarrange(plotlist=list(ccf, info_transfer, top_phylo, clone_size, phylos), nrow=3, ncol=2)
 
-    saveRDS(object=report_fig, file=paste0(outdir, "$prefix", "_REPORT_plots_", ctree_output, ".rds"))
-    ggplot2::ggsave(plot=report_fig, filename=paste0(outdir, "$prefix", "_REPORT_plots_", ctree_output, ".pdf"), height=297, width=210, units="mm", dpi=200)
-    ggplot2::ggsave(plot=report_fig, filename=paste0(outdir, "$prefix", "_REPORT_plots_", ctree_output, ".png"), height=297, width=210, units="mm", dpi=200)
+    saveRDS(object=report_fig, file=paste0(outdir, opt[["prefix"]], "_REPORT_plots_", ctree_output, ".rds"))
+    ggplot2::ggsave(plot=report_fig, filename=paste0(outdir, opt[["prefix"]], "_REPORT_plots_", ctree_output, ".pdf"), height=297, width=210, units="mm", dpi=200)
+    ggplot2::ggsave(plot=report_fig, filename=paste0(outdir, opt[["prefix"]], "_REPORT_plots_", ctree_output, ".png"), height=297, width=210, units="mm", dpi=200)
 }
 
 

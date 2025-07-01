@@ -4,8 +4,8 @@ process CTREE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-ba99151f85012475e44f3f1d2537912d5b69cf40:2b2850df76b35c8b35e75cf13dce31428d2977d4-0':
-        'biocontainers/mulled-v2-ba99151f85012475e44f3f1d2537912d5b69cf40:2b2850df76b35c8b35e75cf13dce31428d2977d4-0' }"
+        'oras://community.wave.seqera.io/library/r-ctree_r-mobster_r-viber_r-cli_pruned:660fb0bfa4d8d4ac':
+        'community.wave.seqera.io/library/r-ctree_r-mobster_r-viber_r-cli_pruned:48299db4104e296b' }"
 
     input:
         tuple val(meta), path(ctree_input)
@@ -28,6 +28,15 @@ process CTREE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
 
+    # outputs for mobster rds input
+    mkdir HCC1395_HCC1395T/
+    touch HCC1395_HCC1395T/${prefix}_ctree_mobster.rds
+    touch HCC1395_HCC1395T/${prefix}_ctree_mobster_plots.rds
+    touch HCC1395_HCC1395T/${prefix}_REPORT_plots_ctree_mobster.rds
+    touch HCC1395_HCC1395T/${prefix}_REPORT_plots_ctree_mobster.pdf
+    touch HCC1395_HCC1395T/${prefix}_REPORT_plots_ctree_mobster.png
+
+    # outputs for pyclonevi tsv input
     touch ${prefix}_ctree_pyclonevi.rds
     touch ${prefix}_ctree_pyclonevi_plots.rds
     touch ${prefix}_REPORT_plots_ctree_pyclonevi.rds
