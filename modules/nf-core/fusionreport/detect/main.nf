@@ -1,11 +1,11 @@
-process FUSIONREPORT {
+process FUSIONREPORT_DETECT {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d9/d99b7576d14caafd0494d6e2c1453edd161a933ccb62940701074128d3718bc5/data' :
-        'community.wave.seqera.io/library/fusion-report_openpyxl:77a2ba7e76ae0694'}"
+        'oras://community.wave.seqera.io/library/fusion-report_beautifulsoup4_click_colorlog_pruned:353260d00d0da0ec' :
+        'community.wave.seqera.io/library/fusion-report_beautifulsoup4_click_colorlog_pruned:78488bd99166aa9a'}"
 
     input:
     tuple val(meta), path(arriba_fusions), path(starfusion_fusions), path(fusioncatcher_fusions)
