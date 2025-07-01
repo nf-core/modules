@@ -7,8 +7,8 @@ process PROSEG_TO_BAYSOR {
     // }
     // conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'ruijintracyyang/proseg:v1.0':
-        'ruijintracyyang/proseg:v1.0' }"
+        'ghcr.io/derrik-gratz/proseg:v2.0.5':
+        'ghcr.io/derrik-gratz/proseg:v2.0.5' }"
 
     input:
     tuple val(meta), path(transcript_metadata)

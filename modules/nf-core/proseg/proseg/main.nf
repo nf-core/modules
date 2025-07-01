@@ -3,7 +3,9 @@ process PROSEG {
     label 'process_medium'
 
     // conda "${moduleDir}/environment.yml"
-    container 'ruijintracyyang/proseg:v1.0'
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'ghcr.io/derrik-gratz/proseg:v2.0.5':
+        'ghcr.io/derrik-gratz/proseg:v2.0.5' }"
 
     input:
     tuple val(meta), path(transcripts)
