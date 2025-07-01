@@ -5,14 +5,14 @@ process PROSEG_TO_BAYSOR {
     // if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
     //     error "proseg module does not support Conda. Please use Docker / Singularity / Podman instead."
     // }
-    conda "${moduleDir}/environment.yml"
+    // conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'ruijintracyyang/proseg:v1.0':
         'ruijintracyyang/proseg:v1.0' }"
 
     input:
     tuple val(meta), path(transcript_metadata)
-    tuple val(meta), path(cell_polygons)
+    tuple val(meta2), path(cell_polygons)
 
     output:
     tuple val(meta), path("*baysor-cell-polygons.geojson")  , emit: baysor_cell_polygons

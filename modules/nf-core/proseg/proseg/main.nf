@@ -2,7 +2,7 @@ process PROSEG {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "${moduleDir}/environment.yml"
+    // conda "${moduleDir}/environment.yml"
     container 'ruijintracyyang/proseg:v1.0'
 
     input:
