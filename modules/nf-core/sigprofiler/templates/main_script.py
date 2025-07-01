@@ -52,7 +52,10 @@ for ao_k, ao_v in args_opt.items():
     if ao_k in {"minimum_signatures", "maximum_signatures", "nmf_replicates", "min_nmf_iterations", "max_nmf_iterations", "nmf_test_conv"}:
         opt[ao_k] = int(ao_v)
     elif ao_k in {"get_all_signature_matrices", "make_decomposition_plots", "download_genome_sigprofiler"}:
-        opt[ao_k] = ao_v.lower() == "true"
+        val = ao_v.lower()
+        if val not in {"true", "false"}:
+            raise ValueError(f"Invalid value for '{ao_k}': expected 'true' or 'false', got '{ao_v}'")
+        opt[ao_k] = val == "true"
     else:
         opt[ao_k] = ao_v
 
@@ -93,23 +96,22 @@ if __name__ == '__main__':
     # Conditionally install genome or use provided path
     if opt.get("download_genome_sigprofiler", True):
         print(f"Installing genome {genome} via SigProfilerMatrixGenerator...")
-        install_genome = f"SigProfilerMatrixGenerator install {genome} -v {opt['volume']}"
+        install_genome = f"SigProfilerMatrixGenerator install {genome} -v {opt["volume"]}"
         subprocess.run(install_genome, shell=True)
     else:
         if not opt.get("genome_installed_path"):
             raise ValueError("download_genome_sigprofiler is False but no genome_installed_path was provided.")
         print(f"Using pre-installed genome at: {opt['genome_installed_path']}")
-        opt["volume"] = opt["genome_installed_path"]
+        opt["volume"] 
 
 
     # Mutation counts matrix generation
     generate_count_matrix = (
         f"SigProfilerMatrixGenerator matrix_generator "
-        f"-v {opt['volume']} "
-        f"{dataset_id} {genome} {input_path}"
+        f"{dataset_id} {genome} {input_path} --volume {opt["volume"]}"
     )  
     subprocess.run(generate_count_matrix, shell=True)
-
+    
     matrix_files = {
             "SBS96": os.path.join("output", "SBS", f"{dataset_id}.SBS96.all"),
             "DBS78": os.path.join("output", "DBS", f"{dataset_id}.DBS78.all"),
