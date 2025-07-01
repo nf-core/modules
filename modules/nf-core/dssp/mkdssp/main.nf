@@ -4,15 +4,15 @@ process DSSP_MKDSSP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d4/d47606b41c3a33a667486f98cdbfde7602c8e476bb78eae78d9bf6c86bec5c7b/data':
-        'community.wave.seqera.io/library/dssp:4.4.11--d5cd36c6e251360d' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0c/0c9b17fef652145b415471b727cdfd9ed18025bc3551cf296b227f6bafd8a5a1/data':
+        'community.wave.seqera.io/library/dssp:4.5.3--019c84afbb8c3190' }"
 
     input:
     tuple val(meta), path(pdb)
 
     output:
-    tuple val(meta), path("*.{dssp,mmcif}"), emit: dssp
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), path("*.dssp"), emit: dssp
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,7 +29,7 @@ process DSSP_MKDSSP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        dssp: \$(dssp --version |& sed '1!d ; s/dssp //')
+        dssp: \$(mkdssp --version |& sed '1!d ; s/mkdssp version  //')
     END_VERSIONS
     """
 
@@ -41,7 +41,7 @@ process DSSP_MKDSSP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        dssp: \$(dssp --version |& sed '1!d ; s/dssp //')
+        dssp: \$(mkdssp --version |& sed '1!d ; s/mkdssp version  //')
     END_VERSIONS
     """
 }
