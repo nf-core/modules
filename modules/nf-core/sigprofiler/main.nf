@@ -9,6 +9,7 @@ process SIGPROFILER {
 
     input:
     tuple val(meta), path(tsv_list, stageAs: '*.tsv')
+    path(genome_installed_path)  //optional
     
     output:
     tuple val(meta), path("results/*"), emit: sigprofiler_results
@@ -26,8 +27,8 @@ process SIGPROFILER {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    mkdir -p results
-    touch results/dummy.txt
+    mkdir -p results/SBS96/SBS96/
+    touch results/SBS96/SBS96/Samples.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
