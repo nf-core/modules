@@ -42,8 +42,8 @@ nextflow_process {
                     assert nacho_qc_png.get(0).get(1).size() == 16
                     assert nacho_qc_txt.get(0).get(1).size() == 2
                     assert snapshot(
-                        nacho_qc_reports.get(0).get(1).collect { file(it).name }, //undeterministic .html mqc files
-                        nacho_qc_png.get(0).get(1).collect { file(it).name },     //undeterministic .png mqc files
+                        nacho_qc_reports.get(0).get(1).collect { file(it).name }, //indeterministic .html mqc files
+                        nacho_qc_png.get(0).get(1).collect { file(it).name },     //indeterministic .png mqc files
                         nacho_qc_txt.get(0).get(1),                               //stable .txt mqc files
                         versions
                     ).match() }
@@ -85,8 +85,8 @@ nextflow_process {
                     assert nacho_qc_png.get(0).get(1).size() == 16
                     assert nacho_qc_txt.get(0).get(1).size() == 2
                     assert snapshot(
-                        nacho_qc_reports.get(0).get(1).collect { file(it).name }, //undeterministic .html mqc files
-                        nacho_qc_png.get(0).get(1).collect { file(it).name },     //undeterministic .png mqc files
+                        nacho_qc_reports.get(0).get(1).collect { file(it).name }, //indeterministic .html mqc files
+                        nacho_qc_png.get(0).get(1).collect { file(it).name },     //indeterministic .png mqc files
                         nacho_qc_txt.get(0).get(1),                               //stable .txt mqc files
                         versions
                     ).match() }

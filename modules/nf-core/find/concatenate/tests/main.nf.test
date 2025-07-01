@@ -1,0 +1,185 @@
+nextflow_process {
+
+    name "Test Process FIND_CONCATENATE"
+    script "../main.nf"
+    process "FIND_CONCATENATE"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "find"
+    tag "find/concatenate"
+
+    test("test_mixed_input") {
+        when {
+            process {
+                """
+                input[0] =
+                    [
+                        [ id:'test', single_end:true ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true)
+                        ]
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.stdout.toString().contains("All files provided to this module must either be gzipped (and have the .gz extension) or unzipped (and not have the .gz extension). A mix of both is not allowed.") },
+            )
+        }
+    }
+
+    test("test_cat_unzipped_unzipped") {
+        when {
+            process {
+                """
+                input[0] =
+                    [
+                        [ id:'test', single_end:true ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.sizes', checkIfExists: true)
+                        ]
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out,
+                        process.out.versions,
+                        path(process.out.versions[0]).yaml
+                    ).match()
+                },
+            )
+        }
+    }
+
+
+    test("test_cat_zipped_zipped") {
+        when {
+            process {
+                """
+                input[0] =
+                    [
+                        [ id:'test', single_end:true ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true)
+                        ]
+                    ]
+                """
+            }
+        }
+        then {
+            def lines = path(process.out.file_out.get(0).get(1)).linesGzip
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    lines[0..5],
+                    lines.size(),
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test_cat_zipped_unzipped") {
+        config './nextflow_zipped_unzipped.config'
+
+        when {
+            process {
+                """
+                input[0] =
+                    [
+                        [ id:'test', single_end:true ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true)
+                        ]
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match()
+                },
+            )
+        }
+
+    }
+
+    test("test_cat_unzipped_zipped") {
+        config './nextflow_unzipped_zipped.config'
+        when {
+            process {
+                """
+                input[0] =
+                    [
+                        [ id:'test', single_end:true ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.sizes', checkIfExists: true)
+                        ]
+                    ]
+                """
+            }
+        }
+        then {
+            def lines = path(process.out.file_out.get(0).get(1)).linesGzip
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    lines[0..5],
+                    lines.size(),
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test_cat_one_file_unzipped_zipped") {
+        config './nextflow_unzipped_zipped.config'
+        when {
+            process {
+                """
+                input[0] =
+                    [
+                        [ id:'test', single_end:true ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                        ]
+                    ]
+                """
+            }
+        }
+        then {
+            def lines = path(process.out.file_out.get(0).get(1)).linesGzip
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    lines[0..5],
+                    lines.size(),
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match()
+                }
+            )
+        }
+    }
+}

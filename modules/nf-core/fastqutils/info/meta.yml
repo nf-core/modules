@@ -1,0 +1,53 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "fastqutils_info"
+description: Performs quality control of FASTQ files
+keywords:
+  - sort
+  - example
+  - genomics
+tools:
+  - "fastqutils":
+      description: "Validation and manipulation of FASTQ files, scRNA-seq barcode pre-processing and UMI quantification."
+      homepage: "https://github.com/nunofonseca/fastq_utils"
+      documentation: "https://github.com/nunofonseca/fastq_utils"
+      tool_dev_url: "https://github.com/nunofonseca/fastq_utils"
+      licence: ["GPL v3"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively.
+        pattern: "*.{fastq,fastq.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_25722"
+          - edam: "http://edamontology.org/format_2573"
+          - edam: "http://edamontology.org/format_3462"
+
+output:
+  - info:
+      - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.txt":
+          type: file
+          description: Contains info if process ran successfully
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+  # The tool will throw errors upon broken fastq files
+
+authors:
+  - "@famosab"
+maintainers:
+  - "@famosab"

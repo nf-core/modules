@@ -100,8 +100,8 @@ export_codon_coverage_tables <- function(sample_name, df.ls, annotation.df) {
 #' @param sample_name string specifying the sample name associated with the BAM file
 #' @param cds_coverage dataframe produced by the riboWaltz cds_coverage function with P-sites counts over the entire CDS of transcripts
 #' @param cds_window_coverage dataframe produced by the riboWaltz cds_coverage function with P-sites counts over the defined CDS window of transcripts using the start_nts and stop_nts params
-#' @param exclude_start number of nucleotides from start codon that were excluded when defining the CDS window for counting (provide same calue as start_nts param)
-#' @param exclude_stop number of nucleotides from stop codon that were excluded when defining the CDS window for counting (provide same calue as stop_nts param)
+#' @param exclude_start number of nucleotides from start codon that were excluded when defining the CDS window for counting (provide same value as start_nts param)
+#' @param exclude_stop number of nucleotides from stop codon that were excluded when defining the CDS window for counting (provide same value as stop_nts param)
 #'
 #' @return This function does not return a value. It creates and saves two TSV files to disk.
 
@@ -119,7 +119,7 @@ export_cds_coverage_tables <- function(sample_name, cds_coverage, cds_window_cov
 #' Export plots read-length distribution of reads used for P-site offset identification produced by the `riboWaltz::rlength_distr` function
 #'
 #' @param sample_name string specifying the sample name associated with the BAM file
-#' @param df_list dataframe list containig data for all samples
+#' @param df_list dataframe list containing data for all samples
 #'
 #' @return This function does not return a value. It creates and saves a PDF file to disk.
 
@@ -556,7 +556,7 @@ lapply(sample_name.ls, save_metaprofile_psite_plot, df.ls = filtered_psite.ls, a
 # Codon usage
 lapply(names(filtered_psite.ls), plot_codon_usage, psite_info_ls = filtered_psite.ls, frequency_normalization = opt\$frequency_normalization)
 
-message("riboWaltz analysis succesfully completed!")
+message("riboWaltz analysis successfully completed!")
 
 # =========
 # Export versions

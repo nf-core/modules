@@ -4,8 +4,8 @@ process METABAT2_METABAT2 {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/metabat2:2.15--h986a166_1' :
-        'biocontainers/metabat2:2.15--h986a166_1' }"
+        'https://depot.galaxyproject.org/singularity/metabat2:2.17--hd498684_0' :
+        'biocontainers/metabat2:2.17--hd498684_0' }"
 
     input:
     tuple val(meta), path(fasta), path(depth)
@@ -24,15 +24,16 @@ process METABAT2_METABAT2 {
     script:
     def args             = task.ext.args   ?: ''
     def prefix           = task.ext.prefix ?: "${meta.id}"
-    def decompress_depth = depth           ? "gzip -d -f $depth"    : ""
-    def depth_file       = depth           ? "-a ${depth.baseName}" : ""
+    def clean_depth      = depth.toString() - ~/\.gz$/
+    def decompress_depth = (depth && depth.toString() != clean_depth) ? "gzip -d -f $depth" : ""
+    def depth_input      = depth ? "-a ${clean_depth}" : ""
     """
     $decompress_depth
 
     metabat2 \\
-        $args \\
+        ${args} \\
         -i $fasta \\
-        $depth_file \\
+        ${depth_input} \\
         -t $task.cpus \\
         --saveCls \\
         -o ${prefix}

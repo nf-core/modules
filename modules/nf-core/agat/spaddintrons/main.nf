@@ -4,8 +4,8 @@ process AGAT_SPADDINTRONS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/agat:1.4.0--pl5321hdfd78af_0':
-        'biocontainers/agat:1.4.0--pl5321hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/agat:1.4.2--pl5321hdfd78af_0':
+        'biocontainers/agat:1.4.2--pl5321hdfd78af_0' }"
 
     input:
     tuple val(meta), path(gff)
@@ -19,16 +19,16 @@ process AGAT_SPADDINTRONS {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def config_param = config ? "--config $config" : ""
-    def prefix = meta.id ?: gff.getBaseName()
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def config_param = config ? "--config ${config}" : ""
     output = "${prefix}.intron.gff"
     """
     agat_sp_add_introns.pl \\
-        --gff $gff \\
-        $config_param \\
-        --out $output \\
-        $args
+        --gff ${gff} \\
+        ${config_param} \\
+        --out ${output} \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -37,8 +37,7 @@ process AGAT_SPADDINTRONS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = meta.id ?: gff.getBaseName()
+    def prefix = task.ext.prefix ?: "${meta.id}"
     output = "${prefix}.intron.gff"
     """
     touch ${output}

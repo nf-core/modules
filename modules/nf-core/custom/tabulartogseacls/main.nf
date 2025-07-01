@@ -40,7 +40,18 @@ process CUSTOM_TABULARTOGSEACLS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bash: \$(echo \$(bash --version | grep -Eo 'version [[:alnum:].]+' | sed 's/version //'))
+        awk: \$(mawk -W version | head -n 1 | awk '{print  \$2}')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.cls
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        awk: \$(mawk -W version | head -n 1 | awk '{print  \$2}')
+    END_VERSIONS
+    """
+
 }

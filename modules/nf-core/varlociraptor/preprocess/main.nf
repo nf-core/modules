@@ -13,27 +13,35 @@ process VARLOCIRAPTOR_PREPROCESS {
     tuple val(meta3), path(fai)
 
     output:
-    tuple val(meta), path("*.bcf.gz"), emit: bcf_gz, optional: true
-    tuple val(meta), path("*.vcf.gz"), emit: vcf_gz, optional: true
-    tuple val(meta), path("*.bcf")   , emit: bcf   , optional: true
-    tuple val(meta), path("*.vcf")   , emit: vcf   , optional: true
-    path "versions.yml"              , emit: versions
+    tuple val(meta), path("*.bcf"), emit: bcf
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}.vcf.gz"
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def alignment_properties_json = alignment_json ? "--alignment-properties ${alignment_json}" : ""
     """
     varlociraptor preprocess variants \\
-        $fasta \\
-        $alignment_properties_json \\
-        --bam $bam \\
-        --candidates $candidates \\
+        ${fasta} \\
+        ${alignment_properties_json} \\
+        --bam ${bam} \\
+        --candidates ${candidates} \\
         ${args} \\
-        > ${prefix}
+        --output ${prefix}.bcf
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        varlociraptor: \$(echo \$(varlociraptor --version 2>&1) | sed 's/^.*varlociraptor //; s/:.*\$//' )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

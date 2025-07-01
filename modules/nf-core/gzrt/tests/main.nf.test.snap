@@ -1,72 +1,154 @@
 {
-    "Run gzrt on 30 paired-end reads - fastq.gz": {
+    "Run gzrt on test2_1_corrupted single-end - fastq.gz": {
         "content": [
             {
                 "0": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test-single",
+                            "single_end": true
                         },
-                        "test_recovered.fastq.gz:md5,5eca10f954656478b5af96868222eec4"
+                        "test-single_recovered.fastq.gz:md5,6bc7d0b6304039eadba7321d21e7b2c9"
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,b9467d4cb860eb2941a2078a3dd3cf41"
+                    "versions.yml:md5,6d1e28b8a8043e3cba67606c7acdc676"
                 ],
-                "fastqrecovered": [
+                "recovered": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test-single",
+                            "single_end": true
                         },
-                        "test_recovered.fastq.gz:md5,5eca10f954656478b5af96868222eec4"
+                        "test-single_recovered.fastq.gz:md5,6bc7d0b6304039eadba7321d21e7b2c9"
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,b9467d4cb860eb2941a2078a3dd3cf41"
+                    "versions.yml:md5,6d1e28b8a8043e3cba67606c7acdc676"
                 ]
             }
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.1"
+            "nextflow": "24.10.3"
         },
-        "timestamp": "2024-12-15T13:49:10.174131"
+        "timestamp": "2024-12-24T11:23:22.53088"
     },
-    "Run gzrt on 30 paired-end reads - fastq.gz - stub": {
+    "Run gzrt on test2_1_corrupted single-end - fastq.gz - stub": {
         "content": [
             {
                 "0": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test-single-stub",
+                            "single_end": true
                         },
-                        "test_recovered.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "test-single-stub_recovered.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,b9467d4cb860eb2941a2078a3dd3cf41"
+                    "versions.yml:md5,6d1e28b8a8043e3cba67606c7acdc676"
                 ],
-                "fastqrecovered": [
+                "recovered": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test-single-stub",
+                            "single_end": true
                         },
-                        "test_recovered.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "test-single-stub_recovered.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,b9467d4cb860eb2941a2078a3dd3cf41"
+                    "versions.yml:md5,6d1e28b8a8043e3cba67606c7acdc676"
                 ]
             }
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.1"
+            "nextflow": "24.10.3"
         },
-        "timestamp": "2024-12-15T13:49:20.410351"
+        "timestamp": "2024-12-24T11:24:13.88887"
+    },
+    "Run gzrt on test2_1_corrupted and test2_2 paired-end - fastq.gz - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test-paired-stub",
+                            "single_end": false
+                        },
+                        [
+                            "test-paired-stub_recovered_1.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "test-paired-stub_recovered_2.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        ]
+                    ]
+                ],
+                "1": [
+                    "versions.yml:md5,6d1e28b8a8043e3cba67606c7acdc676"
+                ],
+                "recovered": [
+                    [
+                        {
+                            "id": "test-paired-stub",
+                            "single_end": false
+                        },
+                        [
+                            "test-paired-stub_recovered_1.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "test-paired-stub_recovered_2.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        ]
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,6d1e28b8a8043e3cba67606c7acdc676"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.3"
+        },
+        "timestamp": "2024-12-24T11:24:58.632197"
+    },
+    "Run gzrt on test2_1_corrupted and test2_2 paired-end - fastq.gz": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test-paired",
+                            "single_end": false
+                        },
+                        [
+                            "test-paired_recovered_1.fastq.gz:md5,6bc7d0b6304039eadba7321d21e7b2c9",
+                            "test-paired_recovered_2.fastq.gz:md5,641919946a0e572ca7483f6e54476f3b"
+                        ]
+                    ]
+                ],
+                "1": [
+                    "versions.yml:md5,6d1e28b8a8043e3cba67606c7acdc676"
+                ],
+                "recovered": [
+                    [
+                        {
+                            "id": "test-paired",
+                            "single_end": false
+                        },
+                        [
+                            "test-paired_recovered_1.fastq.gz:md5,6bc7d0b6304039eadba7321d21e7b2c9",
+                            "test-paired_recovered_2.fastq.gz:md5,641919946a0e572ca7483f6e54476f3b"
+                        ]
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,6d1e28b8a8043e3cba67606c7acdc676"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.3"
+        },
+        "timestamp": "2024-12-24T11:23:40.906933"
     }
 }

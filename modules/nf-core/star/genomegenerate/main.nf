@@ -4,8 +4,8 @@ process STAR_GENOMEGENERATE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b4/b425bc2a95806d878993f9a66dae3ae80ac2dafff4c208c5ae01b7a90a32fa91/data' :
-        'community.wave.seqera.io/library/star_samtools_htslib_gawk:10c6e8c834460019' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/26/268b4c9c6cbf8fa6606c9b7fd4fafce18bf2c931d1a809a0ce51b105ec06c89d/data' :
+        'community.wave.seqera.io/library/htslib_samtools_star_gawk:ae438e9a604351a4' }"
 
     input:
     tuple val(meta), path(fasta)

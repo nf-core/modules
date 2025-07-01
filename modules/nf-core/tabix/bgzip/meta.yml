@@ -40,7 +40,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${output}.gzi:
+      - "*.gzi":
           type: file
           description: Optional gzip index file for compressed inputs
           pattern: "*.gzi"

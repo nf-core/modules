@@ -28,7 +28,7 @@ input:
         type: file
         description: |
           Count matrix, where rows = variables or genes, columns = samples or cells.
-          This matrix should not contain zeros. Otherwise, they will be first replaced by the minimun value.
+          This matrix should not contain zeros. Otherwise, they will be first replaced by the minimum value.
           You may want to handle the zeros with a different method beforehand.
         pattern: "*.{csv,tsv}"
 output:
@@ -45,6 +45,12 @@ output:
             columns = samples or cells.
           pattern: "*.logratio.tsv"
   - session_info:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing additional information.
+            meta.id can be used to name the output files.
+            [id: 'test', ...]
       - "*.R_sessionInfo.log":
           type: file
           description: dump of R SessionInfo

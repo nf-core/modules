@@ -7,9 +7,34 @@ nextflow_process {
 
     tag "modules"
     tag "modules_nfcore"
+    tag "gunzip"
     tag "metabat2"
     tag "metabat2/metabat2"
     tag "metabat2/jgisummarizebamcontigdepths"
+
+    setup {
+        run("METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS") {
+            script "../../jgisummarizebamcontigdepths/main.nf"
+            process {
+                """
+                input[0] = [
+                                [id: 'test', single_end: false],
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                            ]
+                """
+            }
+        }
+
+        run("GUNZIP") {
+            script "../../../gunzip/main.nf"
+            process {
+                """
+                input[0] = METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS.out.depth
+                """
+            }
+        }
+    }
 
     test("sarscov2 - genome - fasta") {
 
@@ -36,21 +61,6 @@ nextflow_process {
 
     test("sarscov2 - genome - fasta - depths") {
 
-        setup {
-            run("METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS") {
-                script "../../jgisummarizebamcontigdepths/main.nf"
-                process {
-                    """
-                    input[0] = [
-                                    [id: 'test', single_end: false],
-                                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
-                                ]
-                    """
-                }
-            }
-        }
-
         when {
             process {
                 """
@@ -58,6 +68,28 @@ nextflow_process {
                             .fromPath(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                             .map { it -> [[ id:'test', single_end:false ], it] }
                             .join(METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS.out.depth)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(file(process.out.membership[0][1]).name).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - genome - fasta - depths uncompressed") {
+
+        when {
+            process {
+                """
+                input[0] = Channel
+                            .fromPath(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                            .map { it -> [[ id:'test', single_end:false ], it] }
+                            .join(GUNZIP.out.gunzip)
                 """
             }
         }

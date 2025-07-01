@@ -1,5 +1,10 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
 dependencies:
-  - bioconda::hmtnote=0.7.2
+  - conda-forge::python=3.6 # Locked with the container
+  - conda-forge::pip=21.3.1
+  - pip:
+      - hmtnote==0.7.2

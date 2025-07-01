@@ -1,0 +1,122 @@
+nextflow_process {
+
+    name "Test Process GPROFILER2_GOST"
+    script "../main.nf"
+    process "GPROFILER2_GOST"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gprofiler"
+    tag "gprofiler_gost"
+    tag "gost"
+    tag "gprofiler2/gost"
+    tag "gprofiler2"
+
+    test("test") {
+
+        when {
+            params{
+                gprofiler2_significant                 = true
+                gprofiler2_measure_underrepresentation = false
+                gprofiler2_correction_method           = "gSCS"
+                gprofiler2_evcodes                     = false
+                gprofiler2_max_qval                    = 0.05
+                gprofiler2_domain_scope                = "annotated"
+                gprofiler2_min_diff                    = 1
+                report_round_digits                    = 4
+                gprofiler2_palette_name                = "Blues"
+                differential_feature_id_column         = "gene_id"
+                gprofiler2_token                       = null
+                gprofiler2_organism                    = "mmusculus"
+                gprofiler2_background_column           = null
+                gprofiler2_sources                     = null
+
+                module_args = [
+                    "--significant \"${params.gprofiler2_significant}\"",
+                    "--measure_underrepresentation \"${params.gprofiler2_measure_underrepresentation}\"",
+                    "--correction_method \"${params.gprofiler2_correction_method}\"",
+                    "--evcodes \"${params.gprofiler2_evcodes}\"",
+                    "--pval_threshold \"${params.gprofiler2_max_qval}\"",
+                    "--domain_scope ${params.gprofiler2_domain_scope}",
+                    "--min_diff \"${params.gprofiler2_min_diff}\"",
+                    "--round_digits ${params.report_round_digits}",
+                    "--palette_name \"${params.gprofiler2_palette_name}\"",
+                    ((params.differential_feature_id_column == null) ? '' : "--de_id_column \"${params.differential_feature_id_column}\""),
+                    ((params.gprofiler2_token == null) ? '' : "--token \"${params.gprofiler2_token}\""),
+                    ((params.gprofiler2_organism == null) ? '' : "--organism \"${params.gprofiler2_organism}\""),
+                    ((params.gprofiler2_background_column == null) ? '' : "--background_column \"${params.gprofiler2_background_column}\""),
+                    ((params.gprofiler2_sources == null) ? '' : "--sources \"${params.gprofiler2_sources}\"")
+                ].join(' ').trim()
+            }
+            process {
+                """
+                input[0] = [
+                    ['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/Condition_genotype_WT_KO.deseq2.results_filtered.tsv", checkIfExists: true)
+                ]
+                input[1] = [
+                    ['id': 'test'],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt", checkIfExists: true)
+                ]
+                input[2] = [
+                    ['id': 'test'],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/study.filtered.tsv", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(
+                    process.out.all_enrich,
+                    process.out.sub_enrich,
+                    file(process.out.plot_png[0][1]).name, //assert unstable file
+                    process.out.sub_plot[0][1].collect{ file(it).name }, //assert unstable file
+                    process.out.filtered_gmt,
+                    process.out.session_info.collect{ meta,session_info -> file(session_info).name }, //assert unstable file
+                    process.out.versions,
+                    process.out.plot_html.collect{ meta,html -> file(html).name }, //assert unstable file
+                    process.out.rds.collect{ meta,rds -> file(rds).name } //assert unstable file
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("stub") {
+
+        options "-stub"
+
+        when {
+            params{
+                module_args = null
+            }
+            process {
+                """
+                input[0] = [
+                    ['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/Condition_genotype_WT_KO.deseq2.results_filtered.tsv", checkIfExists: true)
+                ]
+                input[1] = [
+                    ['id': 'test'],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/gene_set_analysis/mh.all.v2022.1.Mm.symbols.gmt", checkIfExists: true)
+                ]
+                input[2] = [
+                    ['id': 'test'],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/study.filtered.tsv", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

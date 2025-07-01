@@ -522,7 +522,7 @@ sink()
 ################################################
 ################################################
 
-r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
+r.version <- paste(R.version[['major']],R.version[['minor']], sep = ".")
 deseq2.version <- as.character(packageVersion('DESeq2'))
 
 writeLines(

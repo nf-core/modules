@@ -38,7 +38,7 @@ process TRIMMOMATIC {
         $reads \\
         $output \\
         $qual_trim \\
-        $args 2> >(tee ${prefix}_out.log >&2)
+        $args 2>| >(tee ${prefix}_out.log >&2)
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -52,9 +52,9 @@ process TRIMMOMATIC {
     if (meta.single_end) {
         output_command = "echo '' | gzip > ${prefix}.SE.paired.trim.fastq.gz"
     } else {
-        output_command  = "echo '' | gzip > ${prefix}.paired.trim_1.fastq.gz"
-        output_command  = "echo '' | gzip > ${prefix}.paired.trim_2.fastq.gz"
-        output_command += "echo '' | gzip > ${prefix}.unpaired.trim_1.fastq.gz"
+        output_command  = "echo '' | gzip > ${prefix}.paired.trim_1.fastq.gz\n"
+        output_command += "echo '' | gzip > ${prefix}.paired.trim_2.fastq.gz\n"
+        output_command += "echo '' | gzip > ${prefix}.unpaired.trim_1.fastq.gz\n"
         output_command += "echo '' | gzip > ${prefix}.unpaired.trim_2.fastq.gz"
     }
 

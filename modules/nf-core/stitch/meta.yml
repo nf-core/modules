@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "stitch"
 description: "STITCH is an R program for reference panel free, read aware, low coverage
   sequencing genotype imputation. STITCH runs on a set of samples with sequencing
@@ -40,11 +39,11 @@ input:
         description: |
           Text file with the path to the cram files to use in imputation, one per line. Since the cram files are staged to the working directory for the process, this file should just contain the file names without any pre-pending path.
         pattern: "*.txt"
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing information about the set of positions to run the imputation over
-          e.g. `[ id:'test' ]`
+    - samplename:
+        type: file
+        description: (Optional) File with list of samples names in the same order as in bamlist to impute.
+          One file per line.
+        pattern: "*.{txt}"
     - posfile:
         type: file
         description: |
@@ -73,7 +72,7 @@ input:
         description: Number of generations since founding of the population to use for
           imputation. Refer to the documentation for the `--nGen` argument of STITCH
           for more information.
-  - - meta3:
+  - - meta2:
         type: map
         description: |
           Groovy Map containing information about the reference genome used
