@@ -29,7 +29,7 @@ process DSSP_MKDSSP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        dssp: \$(mkdssp --version |& sed '1!d ; s/mkdssp version  //')
+        dssp: \$(mkdssp --version | sed -n 's/^mkdssp version //p')
     END_VERSIONS
     """
 
@@ -41,7 +41,7 @@ process DSSP_MKDSSP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        dssp: \$(mkdssp --version |& sed '1!d ; s/mkdssp version  //')
+        dssp: \$(mkdssp --version | sed -n 's/^mkdssp version //p')
     END_VERSIONS
     """
 }
