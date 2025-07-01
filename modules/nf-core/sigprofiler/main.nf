@@ -20,7 +20,6 @@ process SIGPROFILER {
 
     script:
     template "main_script.py"
-   
 
     stub:
     def args   = task.ext.args   ?: ''
