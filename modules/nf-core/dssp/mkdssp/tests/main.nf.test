@@ -9,15 +9,16 @@ nextflow_process {
     tag "dssp"
     tag "dssp/mkdssp"
 
-    test("proteomics - pdb") {
+    test("proteomics - pdb - dssp") {
 
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'proteomics/pdb/1tim.pdb', checkIfExists: true)
                 ]
+                input[1] = "dssp"
                 """
             }
         }
@@ -31,7 +32,30 @@ nextflow_process {
 
     }
 
-    test("proteomics - pdb - stub") {
+    test("proteomics - pdb - mmcif") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/pdb/1tim.pdb', checkIfExists: true)
+                ]
+                input[1] = "mmcif"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("proteomics - pdb - dssp - stub") {
 
         options "-stub"
 
@@ -39,9 +63,10 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'proteomics/pdb/1tim.pdb', checkIfExists: true)
                 ]
+                input[1] = "dssp"
                 """
             }
         }

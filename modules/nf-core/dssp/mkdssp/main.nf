@@ -9,10 +9,11 @@ process DSSP_MKDSSP {
 
     input:
     tuple val(meta), path(pdb)
+    val(format)
 
     output:
-    tuple val(meta), path("*.dssp"), emit: dssp
-    path "versions.yml"            , emit: versions
+    tuple val(meta), path("*.{dssp,mmcif}"), emit: dssp
+    path "versions.yml"                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,9 +24,9 @@ process DSSP_MKDSSP {
     """
     mkdssp \\
         $args \\
-        --output-format=dssp \\
+        --output-format=${format} \\
         ${pdb} \\
-        ${prefix}.dssp
+        ${prefix}.${format}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -37,7 +38,7 @@ process DSSP_MKDSSP {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.dssp
+    touch ${prefix}.${format}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
