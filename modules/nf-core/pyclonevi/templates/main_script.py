@@ -22,6 +22,7 @@ import sys
 import pandas as pd
 import os
 import subprocess
+import numpy as np
 
 #input data preprocessing
 def create_pyclone_input(input_data, patient_id, output_data):
@@ -53,19 +54,24 @@ def pyclone_ctree(joint, best_fit, ctree_input):
     ## Caluclate number of mutations per cluster and add to the subset orginal df_output dataframe
 
     df_output_small = df_output[['mutation_id','sample_id','cluster_id','cellular_prevalence']]
+    df_output_small['cluster_id'] = 'C' + df_output_small['cluster_id'].astype(str)
     df_output_small['nMuts'] = df_output_small.groupby('cluster_id')['mutation_id'].transform('nunique')
 
+    ## Create cluster table
+    df_clusters =df_output_small[['sample_id','cellular_prevalence','cluster_id']].drop_duplicates().pivot(index='sample_id', columns='cluster_id', values='cellular_prevalence')
     ## Find the clonal cluster and add the colum 'is.clonal' to identify it
 
     samples = df_output_small['sample_id'].unique()
-    top_clusters = 0
+    top_clusters = []
     for s in samples:
-        ind = df_output_small[df_output_small['sample_id']==s]['cellular_prevalence'].idxmax()
-        top_cluster = df_output_small.loc[ind,'cluster_id']
-        if (top_clusters != top_cluster):
-            top_clusters = top_cluster
+       max_values=df_clusters.loc[s].max()
+       indexes = np.where(df_clusters.loc[s] == max_values)[0]
+       top_clusters.append(list(df_clusters.columns[indexes]))
+    top_clusters_all = [item for sublist in top_clusters for item in sublist]
 
-    i = df_output_small[df_output_small['cluster_id']==top_clusters].index
+    clonal_cluster=max(set(top_clusters_all), key=top_clusters_all.count)
+
+    i = df_output_small[df_output_small['cluster_id']==clonal_cluster].index
 
     df_output_small['is.clonal'] = "F"
     df_output_small.loc[i,'is.clonal'] = "T"
