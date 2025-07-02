@@ -4,8 +4,8 @@ process VCFLIB_VCFBREAKMULTI {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/61/61442a6401d3dad42fc9645a00a4575420d306d345a9e9d694d031cf1b3f383f/data':
-        'community.wave.seqera.io/library/vcflib:1.0.12--2281750e7717b014' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fc/fc33d59c090cef123aca26ae17fbddbd596640304d8325cbd5816229fa2c05ee/data':
+        'community.wave.seqera.io/library/vcflib:1.0.14--cc8ffb2c1a080797' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
@@ -18,16 +18,20 @@ process VCFLIB_VCFBREAKMULTI {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.0.12' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def args    = task.ext.args   ?: ''
+    def args2   = task.ext.args2  ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}.breakmulti"
+    def VERSION = '1.0.14' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+
+    if ( "$vcf" == "${prefix}.vcf.gz" ) {
+        error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    }
 
     """
     vcfbreakmulti \\
         $vcf \\
         $args \\
-        | bgzip -c $args2 > ${prefix}.breakmulti.vcf.gz
+        | bgzip -c $args2 > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -36,10 +40,15 @@ process VCFLIB_VCFBREAKMULTI {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.0.12' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def prefix  = task.ext.prefix ?: "${meta.id}.breakmulti"
+    def VERSION = '1.0.14' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+
+    if ( "$vcf" == "${prefix}.vcf.gz" ) {
+        error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    }
+
     """
-    echo | gzip > ${prefix}.breakmulti.vcf.gz
+    echo | gzip > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
