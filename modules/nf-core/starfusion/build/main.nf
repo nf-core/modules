@@ -1,6 +1,7 @@
 process STARFUSION_BUILD {
     tag "$meta.id"
     label 'process_high'
+    stageInMode 'copy'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -12,8 +13,9 @@ process STARFUSION_BUILD {
     tuple val(meta2), path(gtf)
     path fusion_annot_lib
     val dfam_species
-    val dfam_version
-    val pfam_version
+    path pfam_url
+    path dfam_urls, arity: '5'
+    path annot_filter_url
 
     output:
     tuple val(meta), path("${prefix}_genome_lib_build_dir"), emit: reference
@@ -26,23 +28,15 @@ process STARFUSION_BUILD {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    wget http://ftp.ebi.ac.uk/pub/databases/Pfam/releases/Pfam${pfam_version}/Pfam-A.hmm.gz --no-check-certificate
-    wget https://www.dfam.org/releases/Dfam_${dfam_version}/infrastructure/dfamscan/${dfam_species}_dfam.hmm --no-check-certificate
-    wget https://www.dfam.org/releases/Dfam_${dfam_version}/infrastructure/dfamscan/${dfam_species}_dfam.hmm.h3f --no-check-certificate
-    wget https://www.dfam.org/releases/Dfam_${dfam_version}/infrastructure/dfamscan/${dfam_species}_dfam.hmm.h3i --no-check-certificate
-    wget https://www.dfam.org/releases/Dfam_${dfam_version}/infrastructure/dfamscan/${dfam_species}_dfam.hmm.h3m --no-check-certificate
-    wget https://www.dfam.org/releases/Dfam_${dfam_version}/infrastructure/dfamscan/${dfam_species}_dfam.hmm.h3p --no-check-certificate
-    gunzip Pfam-A.hmm.gz && hmmpress Pfam-A.hmm
-    wget https://data.broadinstitute.org/Trinity/CTAT_RESOURCE_LIB/AnnotFilterRule.pm -O AnnotFilterRule.pm --no-check-certificate
-
+    gunzip ${pfam_url} && hmmpress Pfam-A.hmm
 
     prep_genome_lib.pl \\
         --genome_fa $fasta \\
         --gtf $gtf \\
-        --dfam_db ${dfam_species}_dfam.hmm \\
+        --dfam_db *_dfam.hmm \\
         --pfam_db Pfam-A.hmm \\
         --fusion_annot_lib $fusion_annot_lib \\
-        --annot_filter_rule AnnotFilterRule.pm \\
+        --annot_filter_rule ${annot_filter_url} \\
         --CPU $task.cpus \\
         --output_dir ${prefix}_genome_lib_build_dir \\
         ${args}
