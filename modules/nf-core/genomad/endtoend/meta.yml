@@ -41,6 +41,16 @@ output:
           type: file
           description: Combined classification scores for each contig/scaffold/chromosome
           pattern: "*_aggregated_classification.tsv"
+  - marker_classification:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_marker_classification/*_marker_classification.tsv":
+          type: file
+          description: Marker-based classification scores when --disable-nn-classification is used
+          pattern: "*_marker_classification.tsv"
   - taxonomy:
       - meta:
           type: map
