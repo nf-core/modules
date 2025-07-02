@@ -3,9 +3,7 @@ process SOUPORCELL {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/souporcell_gxx:9e4498a90e1d49fc' :
-        'community.wave.seqera.io/library/souporcell_gxx:9f443b06d1671e4e' }"
+    container "docker.io/nicotru/souporcell:0.0.4"
 
     input:
     tuple val(meta), path(bam), path(barcodes)
