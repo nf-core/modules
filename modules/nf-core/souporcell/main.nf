@@ -3,7 +3,7 @@ process SOUPORCELL {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "docker.io/nicotru/souporcell:0.0.4"
+    container "docker.io/nicotru/souporcell:0.0.5"
 
     input:
     tuple val(meta), path(bam), path(barcodes)
