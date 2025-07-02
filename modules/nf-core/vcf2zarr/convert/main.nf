@@ -22,8 +22,8 @@ process VCF2ZARR_CONVERT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     vcf2zarr \\
-        $args \\
         convert \\
+        $args \\
         --worker-processes $task.cpus \\
         $vcf \\
         ${prefix}.zarr
