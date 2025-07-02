@@ -11,7 +11,7 @@ process VCF2ZARR_CONVERT {
     tuple val(meta), path(vcf)
 
     output:
-    tuple val(meta), path("*.zarr"), emit: zarr
+    tuple val(meta), path("*.vcz"), emit: vcz
     path "versions.yml"           , emit: versions
 
     when:
@@ -26,7 +26,7 @@ process VCF2ZARR_CONVERT {
         $args \\
         --worker-processes $task.cpus \\
         $vcf \\
-        ${prefix}.zarr
+        ${prefix}.vcz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -40,7 +40,7 @@ process VCF2ZARR_CONVERT {
     """
     echo $args
 
-    mkdir ${prefix}.zarr
+    mkdir ${prefix}.vcz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

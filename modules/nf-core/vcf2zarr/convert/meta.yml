@@ -32,17 +32,17 @@ input:
         - edam: "http://edamontology.org/format_3016"
 
 output:
-  - zarr:
+  - vcz:
       #Only when we have meta
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.zarr":
+      - "*.vcz":
           type: directory
-          description: Output Zarr store
-          pattern: "*.{zarr}"
+          description: Output VCF Zarr store
+          pattern: "*.{vcz}"
           ontologies:
           - edam: "http://edamontology.org/format_3915"
 
