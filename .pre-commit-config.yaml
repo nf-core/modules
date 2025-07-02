@@ -1,13 +1,4 @@
 repos:
-  - repo: local
-    hooks:
-      - id: conda-env-sorter
-        name: Sort dependencies in conda environment files.
-        entry: ./.github/scripts/conda_env_sorter.py
-        language: python
-        files: environment
-        types: [yaml]
-        additional_dependencies: ["ruamel.yaml"]
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: "v4.0.0-alpha.8"
     hooks:
@@ -36,7 +27,7 @@ repos:
 
   # use ruff for python files
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.12.0
+    rev: v0.12.1
     hooks:
       - id: ruff
         files: \.py$
