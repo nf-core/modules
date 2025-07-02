@@ -27,6 +27,10 @@ process SCANPY_HASHSOLO {
     """
     touch ${prefix}.h5ad
 
+    # Prevent failures during scanpy import
+    export MPLCONFIGDIR=./tmp/mpl
+    export NUMBA_CACHE_DIR=./tmp/numba
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python3 --version | cut -f 2 -d " ")
