@@ -15,7 +15,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ], // meta map
                     file('https://raw.githubusercontent.com/Gaius-Augustus/BRAKER/f58479fe5bb13a9e51c3ca09cb9e137cab3b8471/example/genome.fa', checkIfExists: true)
                 ]
                 input[1] = file('http://topaz.gatech.edu/GeneMark/Braker/RNAseq.bam', checkIfExists: true)
@@ -53,7 +53,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                 ]
                 input[1] = []
