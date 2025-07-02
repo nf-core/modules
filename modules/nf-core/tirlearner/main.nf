@@ -4,8 +4,8 @@ process TIRLEARNER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/tir-learner:3.0.3--hdfd78af_0':
-        'biocontainers/tir-learner:3.0.3--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/tir-learner:3.0.7--hdfd78af_0':
+        'biocontainers/tir-learner:3.0.7--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -39,8 +39,7 @@ process TIRLEARNER {
         -t $task.cpus \\
         -o $prefix \\
         $args \\
-        &> >(tee "${prefix}.log" 2>&1) \\
-        || echo "TIR-Learner failed! See ${prefix}.log"
+        &> >(tee "${prefix}.log" 2>&1)
 
     mv "${prefix}/TIR-Learner-Result/TIR-Learner_FinalAnn.fa"           "${prefix}.fa"              || echo "TIR-Learner failed to find TIRs. See ${prefix}.log"
     mv "${prefix}/TIR-Learner-Result/TIR-Learner_FinalAnn.gff3"         "${prefix}.gff3"            || echo "TIR-Learner failed to find TIRs. See ${prefix}.log"
