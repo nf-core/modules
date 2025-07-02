@@ -2,6 +2,7 @@ process VIZGENPOSTPROCESSING_RUNSEGMENTATIONONTILE {
     tag "$meta.id"
     label 'process_medium'
 
+    conda "${moduleDir}/environment.yml"
     container 'nf-core/vizgen-postprocessing_container:v0.1.1'
 
     input:
@@ -17,10 +18,6 @@ process VIZGENPOSTPROCESSING_RUNSEGMENTATIONONTILE {
     task.ext.when == null || task.ext.when
 
     script:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "VPT is unavailable via Conda. Please use Docker / Singularity / Apptainer / Podman instead."
-    }
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
@@ -38,10 +35,6 @@ process VIZGENPOSTPROCESSING_RUNSEGMENTATIONONTILE {
     """
 
     stub:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "VPT is unavailable via Conda. Please use Docker / Singularity / Apptainer / Podman instead."
-    }
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
