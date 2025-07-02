@@ -29,10 +29,6 @@ nextflow_process {
                 { assert process.success },
 
                 { assert snapshot(
-                    process.out.qc_rds, 
-                    process.out.plot_rds, 
-                    process.out.plot_pdf_data, 
-                    process.out.plot_pdf_qc, 
                     process.out.versions
                     ).match() }, 
                     // Check nondeterministic files exist
