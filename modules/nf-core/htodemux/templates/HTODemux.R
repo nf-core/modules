@@ -2,6 +2,15 @@
 
 ################################################
 ################################################
+## Fucntions                                  ##
+################################################
+################################################
+
+# Helper function for NULL condition
+null_to_string <- function(x, val = "NULL") if (is.null(x)) val else x
+
+################################################
+################################################
 ## USE PARAMETERS FROM NEXTFLOW               ##
 ################################################
 ################################################
@@ -9,16 +18,15 @@
 # cast parameters from nextflow
 seuratObj = '$seurat_object'
 assay = '$assay'
-options(digits=5)
-quantile = as.double('$quantile')
+quantile = as.numeric('$quantile')
 init = NULL
-if ('$init' != "NULL") {
-    init = as.integer('$init')
+if ('$init' != 'null') {
+    init = as.numeric('$init')
 }
-nstarts = as.integer('$nstarts')
+nstarts = as.numeric('$nstarts')
 kfunc = '$kfunc'
-nsamples = as.integer('$nsamples')
-seed = as.integer('$seed')
+nsamples = as.numeric('$nsamples')
+seed = as.numeric('$seed')
 verbose = as.logical('$verbose')
 prefix = '$prefix'
 
@@ -55,12 +63,8 @@ hashtag <- HTODemux(hashtag, assay = assay, positive.quantile = quantile, init =
 ################################################
 
 # create a data frame to save the used parameters in a csv file
-if (is.null(init)) {
-  init <- "NULL"
-}
-
 Argument <- c("seuratObject", "quantile", "kfunc", "nstarts", "nsamples", "seed", "init", "assay", "verbose")
-Value <- c(seuratObj, quantile, kfunc, nstarts, nsamples, seed, init, assay, verbose)
+Value <- c(seuratObj, quantile, kfunc, nstarts, nsamples, seed, null_to_string(init), assay, verbose)
 params <- data.frame(Argument, Value)
 
 write.csv(params, paste0(prefix ,"_params_htodemux.csv"))
@@ -86,7 +90,7 @@ writeLines(
     c(
         '"${task.process}":',
         paste('    r-base:', r.version),
-        paste('    seurat:', seurat.version)
+        paste('    r-seurat:', seurat.version)
     ),
 'versions.yml')
 
