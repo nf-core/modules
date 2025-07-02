@@ -1,0 +1,56 @@
+nextflow_process {
+
+    name "Test Process COOLTOOLS_INSULATION"
+    script "../main.nf"
+    process "COOLTOOLS_INSULATION"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cooltools"
+    tag "cooltools/insulation"
+
+    test("homo_sapiens - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ],
+                       file(params.modules_testdata_base_path + '/genomics/homo_sapiens/cooler/merge/toy/toy.symm.upper.balanced.2.cool', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ],
+                       file(params.modules_testdata_base_path + '/genomics/homo_sapiens/cooler/merge/toy/toy.symm.upper.balanced.2.cool', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
