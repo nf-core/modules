@@ -35,26 +35,35 @@ input:
         type: file
         description: List of target taxa to evaluate used in MaltExtract
         pattern: "*.txt"
+        ontologies: 
+          - edam: "http://edamontology.org/format_2330" # Plain text
   - - filter:
         type: string
         description: The filter mode used in MaltExtract
         pattern: "def_anc|default|scan|ancient|crawl"
+        ontologies: []
 output:
   - json:
       - results/heatmap_overview_Wevid.json:
           type: file
           description: Candidate summary heatmap in MultiQC compatible JSON format
           pattern: "heatmap_overview_Wevid.json"
+          ontologies: 
+            - edam: "http://edamontology.org/format_3464" # JSON
   - summary_pdf:
       - results/heatmap_overview_Wevid.pdf:
           type: file
           description: Candidate summary heatmap in PDF format
           pattern: "heatmap_overview_Wevid.pdf"
+          ontologies: 
+            - edam: "http://edamontology.org/format_3508" # PDF
   - tsv:
       - results/heatmap_overview_Wevid.tsv:
           type: file
           description: Candidate summary heatmap in TSV format
           pattern: "heatmap_overview_Wevid.tsv"
+          ontologies: 
+            - edam: "http://edamontology.org/format_3475" # TSV
   - candidate_pdfs:
       - results/pdf_candidate_profiles/:
           type: directory
@@ -65,6 +74,8 @@ output:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies: 
+            - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@jfy133"
 maintainers:
