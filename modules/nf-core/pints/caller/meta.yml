@@ -27,14 +27,14 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - bams:
+    - bam:
         type: file
-        description: One or more BAM files
+        description: One BAM file
         pattern: "*.{bam}"
-    - bais:
-        type: file
-        description: Corresponding BAM file indexes
-        pattern: "*.bam.bai"
+    - chr_name:
+        type: string
+        description: Name of the chr in the fasta to run against
+        pattern: "chr7"
   - - assay_type:
         type: string
         description: Assay type
@@ -45,10 +45,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_divergent_peaks.bed":
+      - "*_1_divergent_peaks.bed":
           type: file
           description: Divergent TREs
-          pattern: "*_divergent_peaks.bed"
+          pattern: "*_1_divergent_peaks.bed"
           optional: true
   - bidirectional_TREs:
       - meta:
@@ -56,10 +56,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_bidirectional_peaks.bed":
+      - "*_1_bidirectional_peaks.bed":
           type: file
           description: Divergent TREs and convergent TREs
-          pattern: "*_bidirectional_peaks.bed"
+          pattern: "*_1_bidirectional_peaks.bed"
           optional: true
   - unidirectional_TREs:
       - meta:
@@ -67,10 +67,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_unidirectional_peaks.bed":
+      - "*_1_unidirectional_peaks.bed":
           type: file
           description: Unidirectional TREs, maybe lncRNAs transcribed from enhancers (e-lncRNAs)
-          pattern: "*_unidirectional_peaks.bed"
+          pattern: "*_1_unidirectional_peaks.bed"
           optional: true
   - peakcalling_log:
       - meta:
