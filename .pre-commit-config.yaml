@@ -8,6 +8,15 @@ repos:
         files: environment
         types: [yaml]
         additional_dependencies: ["ruamel.yaml"]
+      - id: nextflow-lint
+        name: Lint Nextflow scripts and fix formatting
+        entry: nextflow lint
+        language: system
+        files: '\.nf$|nextflow\.config$'
+        args: ["-format", "-sort-declarations", "-spaces", "4", "-harshil-alignment", "-output", "concise"]
+        pass_filenames: true
+        # FIXME Throws `ERROR ~ Unexpected error [ConcurrentModificationException]`
+        require_serial: true
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: "v4.0.0-alpha.8"
     hooks:
