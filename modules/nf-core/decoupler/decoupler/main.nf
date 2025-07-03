@@ -26,8 +26,8 @@ process DECOUPLER {
 
     stub:
     """
-    touch mlm_estimate_decoupler.tsv
-    touch mlm_pvals_decoupler.tsv
-    touch versions.yml
+    touch ${task.ext.prefix}_estimate_decoupler.tsv
+    touch ${task.ext.prefix}_pvals_decoupler.tsv
+    touch ${task.ext.prefix}_plot_decoupler.png
     """
 }
