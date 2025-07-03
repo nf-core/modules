@@ -15,6 +15,8 @@ numba.config.DISABLE_CACHE = True
 import pandas as pd
 import scanpy as sc
 import decoupler as dc
+import matplotlib.pyplot as plt
+
 
 methods = ['aucell', 'gsea', 'gsva', 'mdt', 'mlm', 'ora', 'udt',
     'ulm', 'viper', 'wmean', 'wsum']
@@ -101,7 +103,13 @@ results = dc.decouple(
 )
 
 for result in results:
-    results[result].to_csv(result + "__decoupler.tsv", sep="\t")
+    # Save table
+    results[result].to_csv("${task.ext.prefix}" + "_" + result + "_decoupler.tsv", sep="\t")
+    contrast_name = results[result].index[0]
+    plt.figure(figsize=(8, 6))
+    dc.plot_barplot(results[result], contrast_name , top=25, vertical=False)
+    plt.savefig("${task.ext.prefix}" + "_" + result + "_decoupler_plot.png", dpi=300, bbox_inches='tight')
+    plt.close()
 
 ## VERSIONS FILE
 with open('versions.yml', 'a') as version_file:
