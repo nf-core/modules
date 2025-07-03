@@ -17,43 +17,43 @@ process PVACTOOLS_PVACSEQ {
     path phased_proximal_variants_vcf              // VCF of phased proximal variants
 
     output:
-    tuple val(meta),path("${prefix}/MHC_Class_I/${sample_name}.tsv")                                           , optional: true, emit: mhc_i_intermediate_tsv
-    tuple val(meta),path("${prefix}/MHC_Class_I/${sample_name}.tsv_*")                                         , optional: true, emit: mhc_i_chunks
-    tuple val(meta),path("${prefix}/MHC_Class_I/${sample_name}.fasta")                                         , optional: true, emit: mhc_i_fasta
-    tuple val(meta),path("${prefix}/MHC_Class_I/${sample_name}.net_chop.fa")                                   , optional: true, emit: mhc_i_net_chop_fasta
-    tuple val(meta),path("${prefix}/MHC_Class_I/${sample_name}.all_epitopes.tsv")                              , optional: true, emit: mhc_i_all_epitopes
-    tuple val(meta),path("${prefix}/MHC_Class_I/${sample_name}.filtered.tsv")                                  , optional: true, emit: mhc_i_filtered
-    tuple val(meta),path("${prefix}/MHC_Class_I/${sample_name}.all_epitopes.aggregated.tsv")                   , optional: true, emit: mhc_i_all_epitopes_aggregated
-    tuple val(meta),path("${prefix}/MHC_Class_I/${sample_name}.all_epitopes.aggregated.tsv.reference_matches") , optional: true, emit: mhc_i_reference_matches
-    tuple val(meta),path("${prefix}/MHC_Class_I/${sample_name}.all_epitopes.aggregated.metrics.json")          , optional: true, emit: mhc_i_metrics
-    tuple val(meta),path("${prefix}/MHC_Class_I/*.R")                                                          , optional: true, emit: mhc_i_r_files
-    tuple val(meta),path("${prefix}/MHC_Class_I/www/*")                                                        , optional: true, emit: mhc_i_www
-    tuple val(meta),path("${prefix}/MHC_Class_I/log/*")
+    tuple val(meta), path("${prefix}/MHC_Class_I/${sample_name}.tsv")                                           , optional: true, emit: mhc_i_intermediate_tsv
+    tuple val(meta), path("${prefix}/MHC_Class_I/${sample_name}.tsv_*")                                         , optional: true, emit: mhc_i_chunks
+    tuple val(meta), path("${prefix}/MHC_Class_I/${sample_name}.fasta")                                         , optional: true, emit: mhc_i_fasta
+    tuple val(meta), path("${prefix}/MHC_Class_I/${sample_name}.net_chop.fa")                                   , optional: true, emit: mhc_i_net_chop_fasta
+    tuple val(meta), path("${prefix}/MHC_Class_I/${sample_name}.all_epitopes.tsv")                              , optional: true, emit: mhc_i_all_epitopes
+    tuple val(meta), path("${prefix}/MHC_Class_I/${sample_name}.filtered.tsv")                                  , optional: true, emit: mhc_i_filtered
+    tuple val(meta), path("${prefix}/MHC_Class_I/${sample_name}.all_epitopes.aggregated.tsv")                   , optional: true, emit: mhc_i_all_epitopes_aggregated
+    tuple val(meta), path("${prefix}/MHC_Class_I/${sample_name}.all_epitopes.aggregated.tsv.reference_matches") , optional: true, emit: mhc_i_reference_matches
+    tuple val(meta), path("${prefix}/MHC_Class_I/${sample_name}.all_epitopes.aggregated.metrics.json")          , optional: true, emit: mhc_i_metrics
+    tuple val(meta), path("${prefix}/MHC_Class_I/*.R")                                                          , optional: true, emit: mhc_i_r_files
+    tuple val(meta), path("${prefix}/MHC_Class_I/www")                                                          , optional: true, emit: mhc_i_www
+    tuple val(meta), path("${prefix}/MHC_Class_I/log")                                                          , optional: true, emit: mhc_i_log
 
-    tuple val(meta),path("${prefix}/MHC_Class_II/${sample_name}.tsv")                                          , optional: true, emit: mhc_ii_intermediate_tsv
-    tuple val(meta),path("${prefix}/MHC_Class_II/${sample_name}.tsv_*")                                        , optional: true, emit: mhc_ii_chunks
-    tuple val(meta),path("${prefix}/MHC_Class_II/${sample_name}.fasta")                                        , optional: true, emit: mhc_ii_fasta
-    tuple val(meta),path("${prefix}/MHC_Class_II/${sample_name}.net_chop.fa")                                  , optional: true, emit: mhc_ii_net_chop_fasta
-    tuple val(meta),path("${prefix}/MHC_Class_II/${sample_name}.all_epitopes.tsv")                             , optional: true, emit: mhc_ii_all_epitopes
-    tuple val(meta),path("${prefix}/MHC_Class_II/${sample_name}.filtered.tsv")                                 , optional: true, emit: mhc_ii_filtered
-    tuple val(meta),path("${prefix}/MHC_Class_II/${sample_name}.all_epitopes.aggregated.tsv")                  , optional: true, emit: mhc_ii_all_epitopes_aggregated
-    tuple val(meta),path("${prefix}/MHC_Class_II/${sample_name}.all_epitopes.aggregated.tsv.reference_matches"), optional: true, emit: mhc_ii_reference_matches
-    tuple val(meta),path("${prefix}/MHC_Class_II/${sample_name}.all_epitopes.aggregated.metrics.json")         , optional: true, emit: mhc_ii_metrics
-    tuple val(meta),path("${prefix}/MHC_Class_II/*.R")                                                         , optional: true, emit: mhc_ii_r_files
-    tuple val(meta),path("${prefix}/MHC_Class_II/www/*")                                                       , optional: true, emit: mhc_ii_www
-    tuple val(meta),path("${prefix}/MHC_Class_II/log/*")                                                       , optional: true, emit: mhc_ii_log
+    tuple val(meta), path("${prefix}/MHC_Class_II/${sample_name}.tsv")                                          , optional: true, emit: mhc_ii_intermediate_tsv
+    tuple val(meta), path("${prefix}/MHC_Class_II/${sample_name}.tsv_*")                                        , optional: true, emit: mhc_ii_chunks
+    tuple val(meta), path("${prefix}/MHC_Class_II/${sample_name}.fasta")                                        , optional: true, emit: mhc_ii_fasta
+    tuple val(meta), path("${prefix}/MHC_Class_II/${sample_name}.net_chop.fa")                                  , optional: true, emit: mhc_ii_net_chop_fasta
+    tuple val(meta), path("${prefix}/MHC_Class_II/${sample_name}.all_epitopes.tsv")                             , optional: true, emit: mhc_ii_all_epitopes
+    tuple val(meta), path("${prefix}/MHC_Class_II/${sample_name}.filtered.tsv")                                 , optional: true, emit: mhc_ii_filtered
+    tuple val(meta), path("${prefix}/MHC_Class_II/${sample_name}.all_epitopes.aggregated.tsv")                  , optional: true, emit: mhc_ii_all_epitopes_aggregated
+    tuple val(meta), path("${prefix}/MHC_Class_II/${sample_name}.all_epitopes.aggregated.tsv.reference_matches"), optional: true, emit: mhc_ii_reference_matches
+    tuple val(meta), path("${prefix}/MHC_Class_II/${sample_name}.all_epitopes.aggregated.metrics.json")         , optional: true, emit: mhc_ii_metrics
+    tuple val(meta), path("${prefix}/MHC_Class_II/*.R")                                                         , optional: true, emit: mhc_ii_r_files
+    tuple val(meta), path("${prefix}/MHC_Class_II/www")                                                         , optional: true, emit: mhc_ii_www
+    tuple val(meta), path("${prefix}/MHC_Class_II/log")                                                         , optional: true, emit: mhc_ii_log
 
-    tuple val(meta),path("${prefix}/combined/${sample_name}.fasta")                                            , optional: true, emit: combined_fasta
-    tuple val(meta),path("${prefix}/combined/${sample_name}.net_chop.fa")                                      , optional: true, emit: combined_net_chop_fasta
-    tuple val(meta),path("${prefix}/combined/${sample_name}.all_epitopes.tsv")                                 , optional: true, emit: combined_all_epitopes
-    tuple val(meta),path("${prefix}/combined/${sample_name}.filtered.tsv")                                     , optional: true, emit: combined_filtered
-    tuple val(meta),path("${prefix}/combined/${sample_name}.all_epitopes.aggregated.tsv")                      , optional: true, emit: combined_all_epitopes_aggregated
-    tuple val(meta),path("${prefix}/combined/${sample_name}.all_epitopes.aggregated.tsv.reference_matches")    , optional: true, emit: combined_reference_matches
-    tuple val(meta),path("${prefix}/combined/${sample_name}.all_epitopes.aggregated.metrics.json")             , optional: true, emit: combined_metrics
-    tuple val(meta),path("${prefix}/combined/*.R")                                                             , optional: true, emit: combined_r_files
-    tuple val(meta),path("${prefix}/combined/www/*")                                                           , optional: true, emit: combined_www
+    tuple val(meta), path("${prefix}/combined/${sample_name}.fasta")                                            , optional: true, emit: combined_fasta
+    tuple val(meta), path("${prefix}/combined/${sample_name}.net_chop.fa")                                      , optional: true, emit: combined_net_chop_fasta
+    tuple val(meta), path("${prefix}/combined/${sample_name}.all_epitopes.tsv")                                 , optional: true, emit: combined_all_epitopes
+    tuple val(meta), path("${prefix}/combined/${sample_name}.filtered.tsv")                                     , optional: true, emit: combined_filtered
+    tuple val(meta), path("${prefix}/combined/${sample_name}.all_epitopes.aggregated.tsv")                      , optional: true, emit: combined_all_epitopes_aggregated
+    tuple val(meta), path("${prefix}/combined/${sample_name}.all_epitopes.aggregated.tsv.reference_matches")    , optional: true, emit: combined_reference_matches
+    tuple val(meta), path("${prefix}/combined/${sample_name}.all_epitopes.aggregated.metrics.json")             , optional: true, emit: combined_metrics
+    tuple val(meta), path("${prefix}/combined/*.R")                                                             , optional: true, emit: combined_r_files
+    tuple val(meta), path("${prefix}/combined/www")                                                             , optional: true, emit: combined_www
 
-    path "versions.yml"                                                                                        , emit: versions
+    path "versions.yml"                                                                                         , emit: versions
     when:
     task.ext.when == null || task.ext.when
 
