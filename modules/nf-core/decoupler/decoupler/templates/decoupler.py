@@ -18,9 +18,6 @@ import decoupler as dc
 import matplotlib.pyplot as plt
 
 
-methods = ['aucell', 'gsea', 'gsva', 'mdt', 'mlm', 'ora', 'udt',
-    'ulm', 'viper', 'wmean', 'wsum']
-
 mat = pd.read_csv("${mat}", sep="\t", index_col=0)
 net = pd.read_csv("${net}", sep="\t")
 
@@ -33,6 +30,7 @@ def parse_ext_args(args_string: str):
       --contrast <str> (optional, e.g., treatment_vs_control)
       --column <str> (Column name to use for transposition; default: log2FoldChange)
       --ensembl_ids <str> (TRUE to convert ENSEMBL IDs to gene symbols, FALSE to skip)
+      --methods <str> (Comma-separated list of methods to use (e.g., 'mlm,ulm'))
     """
     if args_string == "null":
         args_string = ""
@@ -42,6 +40,7 @@ def parse_ext_args(args_string: str):
     parser.add_argument("--transpose", type=str, default="FALSE", help="Transpose DESeq2 data if TRUE")
     parser.add_argument("--column", type=str, default="log2FoldChange", help="Column name to use for transposition")
     parser.add_argument("--ensembl_ids", type=str, default="FALSE", help="Convert ENSEMBL IDs to gene symbols if TRUE")
+    parser.add_argument("--methods", type=str, default = "ulm", help="Comma-separated list of methods to use (e.g., 'mlm,ulm')")
     return parser.parse_args(args_list)
 
 def parse_gtf(gtf_file: str):
@@ -77,6 +76,7 @@ def parse_gtf(gtf_file: str):
 # Parse external arguments
 raw_args = "${task.ext.args}"
 parsed_args = parse_ext_args(raw_args)
+methods = [m.strip() for m in parsed_args.methods.split(",") if m.strip()]
 
 if parsed_args.ensembl_ids.upper() == "TRUE":
     try:
@@ -99,6 +99,7 @@ parsedargs['min_n'] = parsed_args.min_n
 results = dc.decouple(
     mat=mat,
     net=net,
+    methods=methods,
     **parsedargs
 )
 
