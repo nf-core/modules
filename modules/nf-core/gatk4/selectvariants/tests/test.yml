@@ -1,0 +1,8 @@
+- name: gatk4 selectvariants test_gatk4_selectvariants
+  command: nextflow run ./tests/main.nf -entry test_gatk4_selectvariants -c ./tests/nextflow.config
+  tags:
+    - gatk4
+    - gatk4/selectvariants
+  files:
+    - path: output/gatk4/test.vcf
+      md5sum: REPLACE_WITH_REAL_MD5

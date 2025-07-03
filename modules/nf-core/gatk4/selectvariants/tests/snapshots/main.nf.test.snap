@@ -1,0 +1,38 @@
+{
+    "Should run GATK4 SelectVariants": {
+        "content": [
+            {
+                "vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.vcf.gz:md5,<vcf_md5_sum>",
+                        "test.vcf.gz.tbi:md5,<tbi_md5_sum>"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,<versions_md5_sum>"
+                ]
+            }
+        ],
+        "timestamp": "2024-01-01T00:00:00+0000"
+    },
+    "Should run without failing": {
+        "content": [
+            {
+                "0": [
+                    "test"
+                ],
+                "1": [
+                    "test.vcf"
+                ],
+                "2": [
+                    "test.vcf.idx"
+                ]
+            }
+        ],
+        "timestamp": "2024-01-01T00:00:00+0000"
+    }
+}
+
