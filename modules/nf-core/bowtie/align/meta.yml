@@ -45,10 +45,8 @@ input:
 output:
   bam:
     - - meta:
-          type: file
-          description: Output BAM file containing read alignments
-          pattern: "*.{bam}"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*.bam":
           type: file
           description: Output BAM file containing read alignments
@@ -56,10 +54,8 @@ output:
           ontologies: []
   log:
     - - meta:
-          type: file
-          description: Output BAM file containing read alignments
-          pattern: "*.{bam}"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*.out":
           type: file
           description: Log file
@@ -67,10 +63,8 @@ output:
           ontologies: []
   fastq:
     - - meta:
-          type: file
-          description: Output BAM file containing read alignments
-          pattern: "*.{bam}"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*fastq.gz":
           type: file
           description: Unaligned FastQ files

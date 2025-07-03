@@ -31,12 +31,8 @@ input:
 output:
   matches:
     - - meta:
-          type: file
-          description: Tab-delimited file, with a row per sequence, and columns representing
-            functional drug classes
-          pattern: "*.summary_matches.txt"
-          ontologies:
-            - edam: "http://edamontology.org/format_2330" # Textual format
+          type: map
+          description: Groovy Map containing sample information
       - "*.summary_matches.txt":
           type: file
           description: Tab-delimited file, with a row per sequence, and columns representing
@@ -46,12 +42,8 @@ output:
             - edam: "http://edamontology.org/format_2330" # Textual format
   partials:
     - - meta:
-          type: file
-          description: Tab-delimited file, with a row per sequence, and columns representing
-            functional drug classes
-          pattern: "*.summary_matches.txt"
-          ontologies:
-            - edam: "http://edamontology.org/format_2330" # Textual format
+          type: map
+          description: Groovy Map containing sample information
       - "*.summary_partials.txt":
           type: file
           description: Tab-delimited file, with a row per sequence, and columns representing
@@ -61,12 +53,8 @@ output:
             - edam: "http://edamontology.org/format_2330" # Textual format
   virulence:
     - - meta:
-          type: file
-          description: Tab-delimited file, with a row per sequence, and columns representing
-            functional drug classes
-          pattern: "*.summary_matches.txt"
-          ontologies:
-            - edam: "http://edamontology.org/format_2330" # Textual format
+          type: map
+          description: Groovy Map containing sample information
       - "*.summary_virulence.txt":
           type: string
           description: Tab-delimited file, with a row per sequence, and columns representing
@@ -76,12 +64,8 @@ output:
             - edam: "http://edamontology.org/format_2330" # Textual format
   out:
     - - meta:
-          type: file
-          description: Tab-delimited file, with a row per sequence, and columns representing
-            functional drug classes
-          pattern: "*.summary_matches.txt"
-          ontologies:
-            - edam: "http://edamontology.org/format_2330" # Textual format
+          type: map
+          description: Groovy Map containing sample information
       - "*.amrfinder.out":
           type: string
           description: raw output from AMRFinder plus (per sequence)
@@ -90,12 +74,8 @@ output:
             - edam: "http://edamontology.org/format_2330" # Textual format
   txt:
     - - meta:
-          type: file
-          description: Tab-delimited file, with a row per sequence, and columns representing
-            functional drug classes
-          pattern: "*.summary_matches.txt"
-          ontologies:
-            - edam: "http://edamontology.org/format_2330" # Textual format
+          type: map
+          description: Groovy Map containing sample information
       - "*.abritamr.txt":
           type: string
           description: Tab-delimited file, combining non-empty summary files

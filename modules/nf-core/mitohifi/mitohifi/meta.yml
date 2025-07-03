@@ -56,10 +56,8 @@ output:
           ontologies: []
   stats:
     - - meta:
-          type: file
-          description: Mitochondrial sequence
-          pattern: "*.{fasta,fa}"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*contigs_stats.tsv":
           type: file
           description: Contigs statistics
@@ -68,10 +66,8 @@ output:
             - edam: http://edamontology.org/format_3475 # TSV
   gb:
     - - meta:
-          type: file
-          description: Mitochondrial sequence
-          pattern: "*.{fasta,fa}"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*gb":
           type: file
           description: Genome annotation in case mitofinder was used
@@ -79,10 +75,8 @@ output:
           ontologies: []
   gff:
     - - meta:
-          type: file
-          description: Mitochondrial sequence
-          pattern: "*.{fasta,fa}"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*gff":
           type: file
           description: Genome annotation in case mitos was used
@@ -90,10 +84,8 @@ output:
           ontologies: []
   all_potential_contigs:
     - - meta:
-          type: file
-          description: Mitochondrial sequence
-          pattern: "*.{fasta,fa}"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*all_potential_contigs.fa":
           type: file
           description: Contains sequences of all potential contigs
@@ -101,10 +93,8 @@ output:
           ontologies: []
   contigs_annotations:
     - - meta:
-          type: file
-          description: Mitochondrial sequence
-          pattern: "*.{fasta,fa}"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*contigs_annotations.png":
           type: file
           description: Graphical representation of annotated genes and tRNAs
@@ -112,40 +102,32 @@ output:
           ontologies: []
   contigs_circularization:
     - - meta:
-          type: file
-          description: Mitochondrial sequence
-          pattern: "*.{fasta,fa}"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*contigs_circularization":
           type: directory
           description: Contains circularization reports
           pattern: "*contigs_circularization"
   contigs_filtering:
     - - meta:
-          type: file
-          description: Mitochondrial sequence
-          pattern: "*.{fasta,fa}"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*contigs_filtering":
           type: directory
           description: Contains files with initial blast matches
           pattern: "*contigs_filtering"
   coverage_mapping:
     - - meta:
-          type: file
-          description: Mitochondrial sequence
-          pattern: "*.{fasta,fa}"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*coverage_mapping":
           type: directory
           description: Contains statistics on coverage mapping
           pattern: "*coverage_mapping"
   coverage_plot:
     - - meta:
-          type: file
-          description: Mitochondrial sequence
-          pattern: "*.{fasta,fa}"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*coverage_plot.png":
           type: file
           description: Read coverage plot for mitochondrial contigs
@@ -153,10 +135,8 @@ output:
           ontologies: []
   final_mitogenome_annotation:
     - - meta:
-          type: file
-          description: Mitochondrial sequence
-          pattern: "*.{fasta,fa}"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*final_mitogenome.annotation.png":
           type: file
           description: Graphical representation of annotated genes for the final mito
@@ -165,20 +145,16 @@ output:
           ontologies: []
   final_mitogenome_choice:
     - - meta:
-          type: file
-          description: Mitochondrial sequence
-          pattern: "*.{fasta,fa}"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*final_mitogenome_choice":
           type: directory
           description: Files with potential contigs clusterings and alignments
           pattern: "*final_mitogenome_choice"
   final_mitogenome_coverage:
     - - meta:
-          type: file
-          description: Mitochondrial sequence
-          pattern: "*.{fasta,fa}"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*final_mitogenome.coverage.png":
           type: file
           description: Graphical representation of reads coverage plot for the final
@@ -187,30 +163,24 @@ output:
           ontologies: []
   potential_contigs:
     - - meta:
-          type: file
-          description: Mitochondrial sequence
-          pattern: "*.{fasta,fa}"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*potential_contigs":
           type: directory
           description: Files with sequences and annotations of the potential contigs
           pattern: "*potential_contigs"
   reads_mapping_and_assembly:
     - - meta:
-          type: file
-          description: Mitochondrial sequence
-          pattern: "*.{fasta,fa}"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*reads_mapping_and_assembly":
           type: directory
           description: Read mapping files for run from the raw reads
           pattern: "*reads_mapping_and_assembly"
   shared_genes:
     - - meta:
-          type: file
-          description: Mitochondrial sequence
-          pattern: "*.{fasta,fa}"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*shared_genes.tsv":
           type: directory
           description: Report on genes shared with the reference genome

@@ -37,11 +37,8 @@ input:
 output:
   fastq:
     - - meta:
-          type: file
-          description: Unaligned FastQ files
-          pattern: "*.fastq.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - "*_outs/outs/fastq_path/**/*.fastq.gz":
           type: file
           description: Unaligned FastQ files
@@ -50,11 +47,8 @@ output:
             - edam: http://edamontology.org/format_3989 # GZIP format
   undetermined_fastq:
     - - meta:
-          type: file
-          description: Unaligned FastQ files
-          pattern: "*.fastq.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - "*_outs/outs/fastq_path/Undetermined*.fastq.gz":
           type: file
           description: Undetermined FastQ files
@@ -63,33 +57,24 @@ output:
             - edam: http://edamontology.org/format_3989 # GZIP format
   reports:
     - - meta:
-          type: file
-          description: Unaligned FastQ files
-          pattern: "*.fastq.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - "*_outs/outs/fastq_path/Reports":
           type: directory
           description: Reports
           pattern: "Reports"
   stats:
     - - meta:
-          type: file
-          description: Unaligned FastQ files
-          pattern: "*.fastq.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - "*_outs/outs/fastq_path/Stats":
           type: directory
           description: Stats
           pattern: "Stats"
   interop:
     - - meta:
-          type: file
-          description: Unaligned FastQ files
-          pattern: "*.fastq.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - "*_outs/outs/interop_path/*.bin":
           type: file
           description: InterOp files

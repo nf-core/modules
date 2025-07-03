@@ -111,12 +111,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.{bam,sam}"
       - "*.{bam,sam}":
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+          type: file
+          description: BAM/SAM file
           pattern: "*.{bam,sam}"
   logs:
     - - meta:
@@ -124,12 +121,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.{bam,sam}"
       - "*.log":
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+          type: file
+          description: Log file
           pattern: "elprep-*.log"
   metrics:
     - - meta:
@@ -137,12 +131,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.{bam,sam}"
       - "*.metrics.txt":
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+          type: file
+          description: Metrics file
           pattern: "*.{metrics.txt}"
   recall:
     - - meta:
@@ -150,12 +141,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.{bam,sam}"
       - "*.recall":
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+          type: file
+          description: Recall file
           pattern: "*.{recall}"
   gvcf:
     - - meta:
@@ -163,12 +151,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.{bam,sam}"
       - "*.vcf.gz":
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+          type: file
+          description: VCF file
           pattern: "*.{vcf.gz}"
   table:
     - - meta:
@@ -176,12 +161,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.{bam,sam}"
       - "*.table":
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+          type: file
+          description: Table
           pattern: "*.{table}"
   activity_profile:
     - - meta:
@@ -189,12 +171,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.{bam,sam}"
       - "*.activity_profile.igv":
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+          type: file
+          description: Activity profile
           pattern: "*.{activity_profile.igv}"
   assembly_regions:
     - - meta:
@@ -202,12 +181,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.{bam,sam}"
       - "*.assembly_regions.igv":
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+          type: file
+          description: Assembly regions
           pattern: "*.{assembly_regions.igv}"
   versions:
     - versions.yml:

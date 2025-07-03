@@ -16,8 +16,7 @@ tools:
 input:
   - - meta:
         type: map
-        description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-          ]
+        description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
     - filelist:
         type: file
         description: List of all the files you want to compare, they have to be all
@@ -29,8 +28,7 @@ output:
   report_html:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - "*NanoComp-report.html":
           type: file
           description: Summary of all collected statistics
@@ -39,8 +37,7 @@ output:
   lengths_violin_html:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - "*NanoComp_lengths_violin.html":
           type: file
           description: Violin plot of the sequence lengths
@@ -49,8 +46,7 @@ output:
   log_length_violin_html:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - "*NanoComp_log_length_violin.html":
           type: file
           description: Violin plot of the sequence lengths, log function applied
@@ -59,8 +55,7 @@ output:
   n50_html:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - "*NanoComp_N50.html":
           type: file
           description: Bar plot of N50 sequence length per sample
@@ -69,8 +64,7 @@ output:
   number_of_reads_html:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - "*NanoComp_number_of_reads.html":
           type: file
           description: Bar plot of number of reads per sample
@@ -79,8 +73,7 @@ output:
   overlay_histogram_html:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - "*NanoComp_OverlayHistogram.html":
           type: file
           description: Histogram of all read lengths per sample
@@ -89,8 +82,7 @@ output:
   overlay_histogram_normalized_html:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - "*NanoComp_OverlayHistogram_Normalized.html":
           type: file
           description: Normalized histogram of all read lengths per sample
@@ -99,8 +91,7 @@ output:
   overlay_log_histogram_html:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - "*NanoComp_OverlayLogHistogram.html":
           type: file
           description: Histogram of all read lengths per sample, log function applied
@@ -109,8 +100,7 @@ output:
   overlay_log_histogram_normalized_html:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - "*NanoComp_OverlayLogHistogram_Normalized.html":
           type: file
           description: Normalized histogram of all read lengths per sample, log function
@@ -120,8 +110,7 @@ output:
   total_throughput_html:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - "*NanoComp_total_throughput.html":
           type: file
           description: Barplot comparing throughput in bases
@@ -130,8 +119,7 @@ output:
   quals_violin_html:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - "*NanoComp_quals_violin.html":
           type: file
           description: Violin plot of base qualities, only for bam, fastq and sequencing
@@ -141,8 +129,7 @@ output:
   overlay_histogram_identity_html:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - "*NanoComp_OverlayHistogram_Identity.html":
           type: file
           description: Histogram of perfect reference identity, only for bam input
@@ -151,8 +138,7 @@ output:
   overlay_histogram_phredscore_html:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - "*NanoComp_OverlayHistogram_PhredScore.html":
           type: file
           description: Histogram of phred scores, only for bam input
@@ -161,8 +147,7 @@ output:
   percent_identity_violin_html:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - "*NanoComp_percentIdentity_violin.html":
           type: file
           description: Violin plot comparing perfect reference identity, only for bam
@@ -172,8 +157,7 @@ output:
   active_pores_over_time_html:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - "*NanoComp_ActivePoresOverTime.html":
           type: file
           description: Scatter plot of active pores over time, only for sequencing summary
@@ -183,8 +167,7 @@ output:
   cumulative_yield_plot_gigabases_html:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - "*NanoComp_CumulativeYieldPlot_Gigabases.html":
           type: file
           description: Scatter plot of cumulative yield, only for sequencing summary
@@ -194,8 +177,7 @@ output:
   sequencing_speed_over_time_html:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - "*NanoComp_sequencing_speed_over_time.html":
           type: file
           description: Scatter plot of sequencing speed over time, only for sequencing
@@ -205,8 +187,7 @@ output:
   stats_txt:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - "*NanoStats.txt":
           type: file
           description: txt file with basic statistics

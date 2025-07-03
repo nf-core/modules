@@ -48,14 +48,20 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.ktab*": {}
+      - "*.ktab*":
+          type: file
+          description: FastK ktab file
+          pattern: "*.ktab"
   prof:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.{prof,pidx}*": {}
+      - "*.{prof,pidx}*":
+          type: file
+          description: FastK prof file
+          pattern: "*.{prof,pidx}"
   versions:
     - versions.yml:
         type: file

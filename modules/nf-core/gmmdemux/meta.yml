@@ -58,35 +58,55 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - barcodes.tsv.gz: {}
+      - barcodes.tsv.gz:
+          type: file
+          description: |
+            barcodes tsv file with removed cell-hashing-identifiable multiplets
+          pattern: "barcodes.tsv.gz"
   matrix:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - matrix.mtx.gz: {}
+      - matrix.mtx.gz:
+          type: file
+          description: |
+            matrix mtx.tsv file with removed cell-hashing-identifiable multiplets
+          pattern: "matrix.mtx.gz"
   features:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - features.tsv.gz: {}
+      - features.tsv.gz:
+          type: file
+          description: |
+            features tsv file with removed cell-hashing-identifiable multiplets
+          pattern: "features.tsv.gz"
   classification_report:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - GMM_*.csv: {}
+      - GMM_*.csv:
+          type: file
+          description: |
+            full or simplified classification report
+          pattern: "GMM_*.csv"
   config_report:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - GMM_*.config: {}
+      - GMM_*.config:
+          type: file
+          description: |
+            Configuration report mapping the results obtained by the tool to the respective names of the HTOs in the classification report.
+          pattern: "GMM_*.csv"
   summary_report:
     - - meta:
           type: map

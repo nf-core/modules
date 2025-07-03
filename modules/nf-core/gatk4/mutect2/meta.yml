@@ -93,11 +93,8 @@ input:
 output:
   vcf:
     - - meta:
-          type: file
-          description: compressed vcf file
-          pattern: "*.vcf.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: A Groovy map containing sample information
       - "*.vcf.gz":
           type: file
           description: compressed vcf file
@@ -106,11 +103,8 @@ output:
             - edam: http://edamontology.org/format_3989 # GZIP format
   tbi:
     - - meta:
-          type: file
-          description: compressed vcf file
-          pattern: "*.vcf.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: A Groovy map containing sample information
       - "*.tbi":
           type: file
           description: Index of vcf file
@@ -118,11 +112,8 @@ output:
           ontologies: []
   stats:
     - - meta:
-          type: file
-          description: compressed vcf file
-          pattern: "*.vcf.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: A Groovy map containing sample information
       - "*.stats":
           type: file
           description: Stats file that pairs with output vcf file
@@ -130,11 +121,8 @@ output:
           ontologies: []
   f1r2:
     - - meta:
-          type: file
-          description: compressed vcf file
-          pattern: "*.vcf.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: A Groovy map containing sample information
       - "*.f1r2.tar.gz":
           type: file
           description: file containing information to be passed to LearnReadOrientationModel

@@ -41,14 +41,20 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.ktab*": {}
+      - "*.ktab*":
+          type: file
+          description: A sorted table of all canonical k‑mers along with their counts.
+          pattern: "*.ktab"
   prof:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.{prof,pidx}*": {}
+      - "*.{prof,pidx}*":
+          type: file
+          description: A k‑mer count profile of each sequence in the input data set.
+          pattern: "*.prof"
   versions:
     - versions.yml:
         type: file

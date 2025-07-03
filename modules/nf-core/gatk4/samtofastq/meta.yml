@@ -29,11 +29,8 @@ input:
 output:
   fastq:
     - - meta:
-          type: file
-          description: converted fastq file
-          pattern: "*.fastq"
-          ontologies:
-            - edam: http://edamontology.org/format_1930 # FASTQ
+          type: map
+          description: A Groovy map containing sample information
       - "*.fastq.gz":
           type: file
           description: converted fastq file

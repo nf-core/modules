@@ -35,7 +35,7 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - ${prefix}_rel-abundance.tsv:
-          type: map
+          type: file
           description: Output file containing relative abundances for reads
           pattern: "*{.tsv}"
   assignment_report:
@@ -45,7 +45,7 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - ${prefix}_read-assignment-distributions.tsv:
-          type: map
+          type: file
           description: Output file with read assignment distributions.
           pattern: "*{.tsv}"
   samfile:
@@ -55,7 +55,7 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - ${prefix}_emu_alignments.sam:
-          type: map
+          type: file
           description: Sam alignment file
           pattern: "*{.sam}"
   unclassified_fa:
@@ -65,7 +65,7 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - ${prefix}_unclassified_mapped.fasta:
-          type: map
+          type: file
           description: Output file with unclassified sequences
           pattern: "*{.fasta}"
   unmapped_fa:
@@ -75,7 +75,7 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - ${prefix}_unmapped.fasta:
-          type: map
+          type: file
           description: Output file with unmapped sequences
           pattern: "*{.fasta}"
   versions:

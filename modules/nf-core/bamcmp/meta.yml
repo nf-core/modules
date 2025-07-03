@@ -43,11 +43,8 @@ input:
 output:
   primary_filtered_bam:
     - - meta:
-          type: file
-          description: Bam file containing the reads which align better to the primary
-            genome.
-          pattern: "*.{bam,cram,sam}"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - ${prefix}.bam:
           type: file
           description: Bam file containing the reads which align better to the primary
@@ -56,11 +53,8 @@ output:
           ontologies: []
   contamination_bam:
     - - meta:
-          type: file
-          description: Bam file containing the reads which align better to the primary
-            genome.
-          pattern: "*.{bam,cram,sam}"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - ${prefix2}.bam:
           type: file
           description: Bam file containing the reads which align better to the contaminant

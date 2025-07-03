@@ -32,11 +32,8 @@ input:
 output:
   stats_txt:
     - - meta:
-          type: file
-          description: Output of Statistics execution
-          pattern: "*.{txt}"
-          ontologies:
-            - edam: "http://edamontology.org/format_2330" # Plain text
+          type: map
+          description: Groovy Map containing sample information
       - "*.txt":
           type: file
           description: Output of Statistics execution

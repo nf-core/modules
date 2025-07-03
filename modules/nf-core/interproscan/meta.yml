@@ -36,11 +36,8 @@ input:
 output:
   tsv:
     - - meta:
-          type: file
-          description: Tab separated file containing with detailed hits
-          pattern: "*.{tsv}"
-          ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+          type: map
+          description: Groovy Map containing sample information
       - "*.tsv":
           type: file
           description: Tab separated file containing with detailed hits
@@ -49,11 +46,8 @@ output:
             - edam: http://edamontology.org/format_3475 # TSV
   xml:
     - - meta:
-          type: file
-          description: Tab separated file containing with detailed hits
-          pattern: "*.{tsv}"
-          ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+          type: map
+          description: Groovy Map containing sample information
       - "*.xml":
           type: file
           description: XML file containing with detailed hits
@@ -62,11 +56,8 @@ output:
             - edam: http://edamontology.org/format_2332 # XML
   gff3:
     - - meta:
-          type: file
-          description: Tab separated file containing with detailed hits
-          pattern: "*.{tsv}"
-          ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+          type: map
+          description: Groovy Map containing sample information
       - "*.gff3":
           type: file
           description: GFF3 file containing with detailed hits
@@ -75,11 +66,8 @@ output:
             - edam: http://edamontology.org/format_1975 # GFF3
   json:
     - - meta:
-          type: file
-          description: Tab separated file containing with detailed hits
-          pattern: "*.{tsv}"
-          ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+          type: map
+          description: Groovy Map containing sample information
       - "*.json":
           type: file
           description: JSON file containing with detailed hits

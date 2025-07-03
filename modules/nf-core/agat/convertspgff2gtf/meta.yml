@@ -32,11 +32,8 @@ input:
 output:
   output_gtf:
     - - meta:
-          type: file
-          description: Annotation file in GTF format
-          pattern: "*.{gtf}"
-          ontologies:
-            - edam: "http://edamontology.org/format_2306" # GTF
+          type: map
+          description: Groovy Map containing sample information
       - "*.agat.gtf":
           type: file
           description: Annotation file in GTF format
@@ -45,11 +42,8 @@ output:
             - edam: "http://edamontology.org/format_2306" # GTF
   log:
     - - meta:
-          type: file
-          description: Annotation file in GTF format
-          pattern: "*.{gtf}"
-          ontologies:
-            - edam: "http://edamontology.org/format_2306" # GTF
+          type: map
+          description: Groovy Map containing sample information
       - "*.log":
           type: file
           description: Log file of the conversion process

@@ -19,8 +19,7 @@ tools:
 input:
   - - meta:
         type: map
-        description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-          ]
+        description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
     - bam:
         type: file
         description: BAM file
@@ -35,8 +34,7 @@ output:
   runtime_log:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - results_*/Runtime_log.txt:
           type: file
           description: Log file with a summary of command lines used and timestamps.
@@ -45,8 +43,7 @@ output:
   fragmisincorporation_plot:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - results_*/Fragmisincorporation_plot.pdf:
           type: file
           description: A pdf file that displays both fragmentation and misincorporation
@@ -56,8 +53,7 @@ output:
   length_plot:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - results_*/Length_plot.pdf:
           type: file
           description: A pdf file that displays length distribution of singleton reads
@@ -68,8 +64,7 @@ output:
   misincorporation:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - results_*/misincorporation.txt:
           type: file
           description: Contains a table with occurrences for each type of mutations
@@ -79,8 +74,7 @@ output:
   lgdistribution:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - results_*/lgdistribution.txt:
           type: file
           description: Contains a table with read length distributions per strand.
@@ -89,8 +83,7 @@ output:
   dnacomp:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - results_*/dnacomp.txt:
           type: file
           description: Contains a table of the reference genome base composition per
@@ -100,8 +93,7 @@ output:
   stats_out_mcmc_hist:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - results_*/Stats_out_MCMC_hist.pdf:
           type: file
           description: A MCMC histogram for the damage parameters and log likelihood.
@@ -110,8 +102,7 @@ output:
   stats_out_mcmc_iter:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - results_*/Stats_out_MCMC_iter.csv:
           type: file
           description: Values for the damage parameters and log likelihood in each MCMC
@@ -122,8 +113,7 @@ output:
   stats_out_mcmc_trace:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - results_*/Stats_out_MCMC_trace.pdf:
           type: file
           description: A MCMC trace plot for the damage parameters and log likelihood.
@@ -132,8 +122,7 @@ output:
   stats_out_mcmc_iter_summ_stat:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - results_*/Stats_out_MCMC_iter_summ_stat.csv:
           type: file
           description: Summary statistics for the damage parameters estimated posterior
@@ -144,8 +133,7 @@ output:
   stats_out_mcmc_post_pred:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - results_*/Stats_out_MCMC_post_pred.pdf:
           type: file
           description: Empirical misincorporation frequency and posterior predictive
@@ -155,8 +143,7 @@ output:
   stats_out_mcmc_correct_prob:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - results_*/Stats_out_MCMC_correct_prob.csv:
           type: file
           description: Position specific probability of a C->T and G->A misincorporation
@@ -167,8 +154,7 @@ output:
   dnacomp_genome:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - results_*/dnacomp_genome.csv:
           type: file
           description: Contains the global reference genome base composition (computed
@@ -179,8 +165,7 @@ output:
   rescaled:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - results_*/*rescaled.bam:
           type: file
           description: Rescaled BAM file, where likely post-mortem damaged bases have
@@ -190,8 +175,7 @@ output:
   pctot_freq:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - results_*/5pCtoT_freq.txt:
           type: file
           description: Contains frequencies of Cytosine to Thymine mutations per position
@@ -201,8 +185,7 @@ output:
   pgtoa_freq:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - results_*/3pGtoA_freq.txt:
           type: file
           description: Contains frequencies of Guanine to Adenine mutations per position
@@ -212,8 +195,7 @@ output:
   fasta:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - results_*/*.fasta:
           type: file
           description: Alignments in a FASTA file, only if flagged by -d.
@@ -222,8 +204,7 @@ output:
   folder:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false]
       - "*/":
           type: directory
           description: Folder created when --plot-only, --rescale and --stats-only flags

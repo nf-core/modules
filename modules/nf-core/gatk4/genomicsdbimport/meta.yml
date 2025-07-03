@@ -68,10 +68,8 @@ input:
 output:
   genomicsdb:
     - - meta:
-          type: directory
-          description: Directory containing the files that compose the genomicsdb workspace,
-            this is only output for create mode, as update changes an existing db
-          pattern: "*/$prefix"
+          type: map
+          description: A Groovy map containing sample information
       - $prefix:
           type: directory
           description: Directory containing the files that compose the genomicsdb workspace,
@@ -79,10 +77,8 @@ output:
           pattern: "*/$prefix"
   updatedb:
     - - meta:
-          type: directory
-          description: Directory containing the files that compose the genomicsdb workspace,
-            this is only output for create mode, as update changes an existing db
-          pattern: "*/$prefix"
+          type: map
+          description: A Groovy map containing sample information
       - $updated_db:
           type: directory
           description: Directory containing the files that compose the updated genomicsdb
@@ -91,10 +87,8 @@ output:
           pattern: "same/path/as/wspace"
   intervallist:
     - - meta:
-          type: directory
-          description: Directory containing the files that compose the genomicsdb workspace,
-            this is only output for create mode, as update changes an existing db
-          pattern: "*/$prefix"
+          type: map
+          description: A Groovy map containing sample information
       - "*.interval_list":
           type: file
           description: File containing the intervals used to generate the genomicsdb,

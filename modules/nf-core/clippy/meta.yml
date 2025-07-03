@@ -37,11 +37,8 @@ input:
 output:
   peaks:
     - - meta:
-          type: file
-          description: BED file of peaks called by Clippy
-          pattern: "*_broadPeaks.bed.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - "*_Peaks.bed":
           type: file
           description: BED file of peaks called by Clippy
@@ -50,11 +47,8 @@ output:
             - edam: http://edamontology.org/format_3989 # GZIP format
   summits:
     - - meta:
-          type: file
-          description: BED file of peaks called by Clippy
-          pattern: "*_broadPeaks.bed.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - "*_Summits.bed":
           type: file
           description: BED file of peak summits called by Clippy
@@ -63,11 +57,8 @@ output:
             - edam: http://edamontology.org/format_3989 # GZIP format
   intergenic_gtf:
     - - meta:
-          type: file
-          description: BED file of peaks called by Clippy
-          pattern: "*_broadPeaks.bed.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - "*_intergenic_regions.gtf":
           type: file
           description: GTF file of intergenic regions

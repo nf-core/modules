@@ -61,10 +61,8 @@ input:
 output:
   sam:
     - - meta:
-          type: file
-          description: Output SAM file containing read alignments
-          pattern: "*.sam"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*.sam":
           type: file
           description: Output SAM file containing read alignments
@@ -72,10 +70,8 @@ output:
           ontologies: []
   bam:
     - - meta:
-          type: file
-          description: Output SAM file containing read alignments
-          pattern: "*.sam"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*.bam":
           type: file
           description: Output BAM file containing read alignments
@@ -83,10 +79,8 @@ output:
           ontologies: []
   cram:
     - - meta:
-          type: file
-          description: Output SAM file containing read alignments
-          pattern: "*.sam"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*.cram":
           type: file
           description: Output CRAM file containing read alignments
@@ -94,10 +88,8 @@ output:
           ontologies: []
   csi:
     - - meta:
-          type: file
-          description: Output SAM file containing read alignments
-          pattern: "*.sam"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*.csi":
           type: file
           description: Output SAM/BAM index for large inputs
@@ -105,10 +97,8 @@ output:
           ontologies: []
   crai:
     - - meta:
-          type: file
-          description: Output SAM file containing read alignments
-          pattern: "*.sam"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*.crai":
           type: file
           description: Output CRAM index
@@ -116,10 +106,8 @@ output:
           ontologies: []
   log:
     - - meta:
-          type: file
-          description: Output SAM file containing read alignments
-          pattern: "*.sam"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*.log":
           type: file
           description: Alignment log
@@ -127,10 +115,8 @@ output:
           ontologies: []
   fastq:
     - - meta:
-          type: file
-          description: Output SAM file containing read alignments
-          pattern: "*.sam"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*fastq.gz":
           type: file
           description: Unaligned FastQ files

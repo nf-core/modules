@@ -32,11 +32,8 @@ input:
 output:
   fastq:
     - - meta:
-          type: file
-          description: Demultiplexed sample FASTQ files
-          pattern: "**_S*_L00?_R?_00?.fastq.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - output/**_S[1-9]*_R?_00?.fastq.gz:
           type: file
           description: Demultiplexed sample FASTQ files
@@ -45,11 +42,8 @@ output:
             - edam: http://edamontology.org/format_3989 # GZIP format
   fastq_idx:
     - - meta:
-          type: file
-          description: Demultiplexed sample FASTQ files
-          pattern: "**_S*_L00?_R?_00?.fastq.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - output/**_S[1-9]*_I?_00?.fastq.gz:
           type: file
           description: Optional demultiplexed index FASTQ files
@@ -58,11 +52,8 @@ output:
             - edam: http://edamontology.org/format_3989 # GZIP format
   undetermined:
     - - meta:
-          type: file
-          description: Demultiplexed sample FASTQ files
-          pattern: "**_S*_L00?_R?_00?.fastq.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - output/**Undetermined_S0*_R?_00?.fastq.gz:
           type: file
           description: Optional undetermined sample FASTQ files
@@ -71,11 +62,8 @@ output:
             - edam: http://edamontology.org/format_3989 # GZIP format
   undetermined_idx:
     - - meta:
-          type: file
-          description: Demultiplexed sample FASTQ files
-          pattern: "**_S*_L00?_R?_00?.fastq.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - output/**Undetermined_S0*_I?_00?.fastq.gz:
           type: file
           description: Optional undetermined index FASTQ files
@@ -84,11 +72,8 @@ output:
             - edam: http://edamontology.org/format_3989 # GZIP format
   reports:
     - - meta:
-          type: file
-          description: Demultiplexed sample FASTQ files
-          pattern: "**_S*_L00?_R?_00?.fastq.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - output/Reports:
           type: file
           description: Demultiplexing Reports
@@ -96,11 +81,8 @@ output:
           ontologies: []
   stats:
     - - meta:
-          type: file
-          description: Demultiplexed sample FASTQ files
-          pattern: "**_S*_L00?_R?_00?.fastq.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - output/Stats:
           type: file
           description: Statistics files
@@ -108,11 +90,8 @@ output:
           ontologies: []
   interop:
     - - meta:
-          type: file
-          description: Demultiplexed sample FASTQ files
-          pattern: "**_S*_L00?_R?_00?.fastq.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - InterOp/*.bin:
           type: file
           description: Interop files

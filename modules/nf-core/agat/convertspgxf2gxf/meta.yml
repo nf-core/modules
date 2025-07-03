@@ -32,11 +32,8 @@ input:
 output:
   output_gff:
     - - meta:
-          type: file
-          description: Cleaned annotation file in GFF3 format
-          pattern: "*.{gff}"
-          ontologies:
-            - edam: "http://edamontology.org/format_1975" # GFF3
+          type: map
+          description: Groovy Map containing sample information
       - "*.agat.gff":
           type: file
           description: Cleaned annotation file in GFF3 format
@@ -45,11 +42,8 @@ output:
             - edam: "http://edamontology.org/format_1975" # GFF3
   log:
     - - meta:
-          type: file
-          description: Cleaned annotation file in GFF3 format
-          pattern: "*.{gff}"
-          ontologies:
-            - edam: "http://edamontology.org/format_1975" # GFF3
+          type: map
+          description: Groovy Map containing sample information
       - "*.log":
           type: file
           description: Log file of the conversion process

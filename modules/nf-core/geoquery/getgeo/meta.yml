@@ -25,10 +25,8 @@ input:
 output:
   rds:
     - - meta:
-          type: file
-          description: R object containing GEO data
-          pattern: "*.rds"
-          ontologies: []
+          type: map
+          description: A Groovy map containing sample information
       - "*.rds":
           type: file
           description: R object containing GEO data
@@ -36,10 +34,8 @@ output:
           ontologies: []
   expression:
     - - meta:
-          type: file
-          description: R object containing GEO data
-          pattern: "*.rds"
-          ontologies: []
+          type: map
+          description: A Groovy map containing sample information
       - "*matrix.tsv":
           type: file
           description: TSV-format expression matrix
@@ -48,10 +44,8 @@ output:
             - edam: http://edamontology.org/format_3475 # TSV
   annotation:
     - - meta:
-          type: file
-          description: R object containing GEO data
-          pattern: "*.rds"
-          ontologies: []
+          type: map
+          description: A Groovy map containing sample information
       - "*annotation.tsv":
           type: file
           description: TSV-format annotation file

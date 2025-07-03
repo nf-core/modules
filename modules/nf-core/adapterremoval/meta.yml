@@ -36,15 +36,8 @@ input:
 output:
   singles_truncated:
     - - meta:
-          type: file
-          description: |
-            Adapter trimmed FastQ files of either single-end reads, or singleton
-            'orphaned' reads from merging of paired-end data (i.e., one of the pair
-            was lost due to filtering thresholds).
-          pattern: "*.truncated.fastq.gz"
-          ontologies:
-            - edam: "http://edamontology.org/format_1930" # FASTQ
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - ${prefix}.truncated.fastq.gz:
           type: file
           description: |
@@ -57,15 +50,8 @@ output:
             - edam: http://edamontology.org/format_3989 # GZIP format
   discarded:
     - - meta:
-          type: file
-          description: |
-            Adapter trimmed FastQ files of either single-end reads, or singleton
-            'orphaned' reads from merging of paired-end data (i.e., one of the pair
-            was lost due to filtering thresholds).
-          pattern: "*.truncated.fastq.gz"
-          ontologies:
-            - edam: "http://edamontology.org/format_1930" # FASTQ
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - ${prefix}.discarded.fastq.gz:
           type: file
           description: |
@@ -77,15 +63,8 @@ output:
             - edam: http://edamontology.org/format_3989 # GZIP format
   paired_truncated:
     - - meta:
-          type: file
-          description: |
-            Adapter trimmed FastQ files of either single-end reads, or singleton
-            'orphaned' reads from merging of paired-end data (i.e., one of the pair
-            was lost due to filtering thresholds).
-          pattern: "*.truncated.fastq.gz"
-          ontologies:
-            - edam: "http://edamontology.org/format_1930" # FASTQ
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - ${prefix}.pair{1,2}.truncated.fastq.gz:
           type: file
           description: |
@@ -97,15 +76,8 @@ output:
             - edam: "http://edamontology.org/format_1930" # FASTQ
   collapsed:
     - - meta:
-          type: file
-          description: |
-            Adapter trimmed FastQ files of either single-end reads, or singleton
-            'orphaned' reads from merging of paired-end data (i.e., one of the pair
-            was lost due to filtering thresholds).
-          pattern: "*.truncated.fastq.gz"
-          ontologies:
-            - edam: "http://edamontology.org/format_1930" # FASTQ
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - ${prefix}.collapsed.fastq.gz:
           type: file
           description: |
@@ -117,15 +89,8 @@ output:
             - edam: http://edamontology.org/format_3989 # GZIP format
   collapsed_truncated:
     - - meta:
-          type: file
-          description: |
-            Adapter trimmed FastQ files of either single-end reads, or singleton
-            'orphaned' reads from merging of paired-end data (i.e., one of the pair
-            was lost due to filtering thresholds).
-          pattern: "*.truncated.fastq.gz"
-          ontologies:
-            - edam: "http://edamontology.org/format_1930" # FASTQ
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - ${prefix}.collapsed.truncated.fastq.gz:
           type: file
           description: |
@@ -137,15 +102,8 @@ output:
             - edam: http://edamontology.org/format_3989 # GZIP format
   paired_interleaved:
     - - meta:
-          type: file
-          description: |
-            Adapter trimmed FastQ files of either single-end reads, or singleton
-            'orphaned' reads from merging of paired-end data (i.e., one of the pair
-            was lost due to filtering thresholds).
-          pattern: "*.truncated.fastq.gz"
-          ontologies:
-            - edam: "http://edamontology.org/format_1930" # FASTQ
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - ${prefix}.paired.fastq.gz:
           type: file
           description: |
@@ -156,15 +114,8 @@ output:
             - edam: http://edamontology.org/format_3989 # GZIP format
   settings:
     - - meta:
-          type: file
-          description: |
-            Adapter trimmed FastQ files of either single-end reads, or singleton
-            'orphaned' reads from merging of paired-end data (i.e., one of the pair
-            was lost due to filtering thresholds).
-          pattern: "*.truncated.fastq.gz"
-          ontologies:
-            - edam: "http://edamontology.org/format_1930" # FASTQ
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - "*.settings":
           type: file
           description: AdapterRemoval log file

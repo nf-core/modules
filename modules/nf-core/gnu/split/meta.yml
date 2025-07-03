@@ -34,7 +34,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*split*": {}
+      - "*split*":
+          type: file
+          description: Split files
+          pattern: "*split*"
   versions:
     - versions.yml:
         type: file

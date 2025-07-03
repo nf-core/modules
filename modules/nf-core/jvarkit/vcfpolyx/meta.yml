@@ -35,8 +35,15 @@ input:
         description: Groovy Map containing reference genome information for vcf
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
         ontologies: []
-    - tbi: {}
-    - regions_file: {}
+    - tbi:
+        type: file
+        description: Alternative VCF file index
+        pattern: "*.tbi"
+        ontologies: []
+    - regions_file:
+        type: file
+        description: Regions file
+        ontologies: []
   - - meta2:
         type: map
         description: |

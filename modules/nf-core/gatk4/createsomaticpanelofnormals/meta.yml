@@ -58,11 +58,8 @@ input:
 output:
   vcf:
     - - meta:
-          type: file
-          description: panel of normal as compressed vcf file
-          pattern: "*.vcf.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: A Groovy map containing sample information
       - "*.vcf.gz":
           type: file
           description: panel of normal as compressed vcf file
@@ -71,11 +68,8 @@ output:
             - edam: http://edamontology.org/format_3989 # GZIP format
   tbi:
     - - meta:
-          type: file
-          description: panel of normal as compressed vcf file
-          pattern: "*.vcf.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: A Groovy map containing sample information
       - "*.tbi":
           type: file
           description: Tabix index of vcf file

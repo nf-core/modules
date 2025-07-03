@@ -40,11 +40,8 @@ input:
 output:
   outs:
     - - meta:
-          type: file
-          description: Files containing the outputs of Cell Ranger, see official 10X
-            Genomics documentation for a complete list
-          pattern: "${meta.id}/outs/*"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "**/outs/**":
           type: file
           description: Files containing the outputs of Cell Ranger, see official 10X

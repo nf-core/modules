@@ -29,10 +29,8 @@ input:
 output:
   aligned_fasta:
     - - meta:
-          type: file
-          description: Multiple sequence alignment produced in FASTA format
-          pattern: "*.{afa}"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*.afa":
           type: file
           description: Multiple sequence alignment produced in FASTA format
@@ -40,10 +38,8 @@ output:
           ontologies: []
   phyi:
     - - meta:
-          type: file
-          description: Multiple sequence alignment produced in FASTA format
-          pattern: "*.{afa}"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*.phyi":
           type: file
           description: Multiple sequence alignment produced in PHYLIP interleaved format
@@ -51,10 +47,8 @@ output:
           ontologies: []
   phys:
     - - meta:
-          type: file
-          description: Multiple sequence alignment produced in FASTA format
-          pattern: "*.{afa}"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*.phys":
           type: file
           description: Multiple sequence alignment produced in PHYLIP sequential format
@@ -62,10 +56,8 @@ output:
           ontologies: []
   clustalw:
     - - meta:
-          type: file
-          description: Multiple sequence alignment produced in FASTA format
-          pattern: "*.{afa}"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*.clw":
           type: file
           description: Multiple sequence alignment produced in ClustalW format without
@@ -74,10 +66,8 @@ output:
           ontologies: []
   html:
     - - meta:
-          type: file
-          description: Multiple sequence alignment produced in FASTA format
-          pattern: "*.{afa}"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*.html":
           type: file
           description: Multiple sequence alignment produced in HTML format
@@ -85,10 +75,8 @@ output:
           ontologies: []
   msf:
     - - meta:
-          type: file
-          description: Multiple sequence alignment produced in FASTA format
-          pattern: "*.{afa}"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*.msf":
           type: file
           description: GCG Multiple Sequence File (MSF) alignment format (similar to
@@ -97,10 +85,8 @@ output:
           ontologies: []
   tree:
     - - meta:
-          type: file
-          description: Multiple sequence alignment produced in FASTA format
-          pattern: "*.{afa}"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*.tree":
           type: file
           description: NJ or UPGMA tree in Newick format produced from a multiple sequence

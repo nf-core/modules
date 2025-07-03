@@ -36,10 +36,8 @@ input:
 output:
   nwk:
     - - meta:
-          type: file
-          description: Final phylogeny in Newick format
-          pattern: "*.nwk"
-          ontologies: []
+          type: map
+          description: A Groovy map containing sample information
       - "*.nwk":
           type: file
           description: Final phylogeny in Newick format
@@ -47,10 +45,8 @@ output:
           ontologies: []
   stats:
     - - meta:
-          type: file
-          description: Final phylogeny in Newick format
-          pattern: "*.nwk"
-          ontologies: []
+          type: map
+          description: A Groovy map containing sample information
       - "*_stat.txt":
           type: file
           description: A text file with the statistics of the phylogeny
@@ -58,10 +54,8 @@ output:
           ontologies: []
   matrix:
     - - meta:
-          type: file
-          description: Final phylogeny in Newick format
-          pattern: "*.nwk"
-          ontologies: []
+          type: map
+          description: A Groovy map containing sample information
       - "*.matrix.phy":
           type: file
           description: Optional; the distance matrix in Phylip matrix format; it is
@@ -71,10 +65,8 @@ output:
           ontologies: []
   bootstrap:
     - - meta:
-          type: file
-          description: Final phylogeny in Newick format
-          pattern: "*.nwk"
-          ontologies: []
+          type: map
+          description: A Groovy map containing sample information
       - "*.bootstrap":
           type: file
           description: A file containing all bootstrap trees in Newick format; it is

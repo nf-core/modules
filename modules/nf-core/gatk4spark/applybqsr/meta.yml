@@ -63,12 +63,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.{bam}"
       - ${prefix}.bam:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+          type: file
+          description: BAM file
           pattern: "*.{bam}"
   cram:
     - - meta:
@@ -76,12 +73,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.{bam}"
       - ${prefix}.cram:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+          type: file
+          description: CRAM file
           pattern: "*.{cram}"
   versions:
     - versions.yml:

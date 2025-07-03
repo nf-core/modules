@@ -62,9 +62,8 @@ input:
 output:
   bam:
     - - meta:
-          type: file
-          description: Output BAM file containing read alignments
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*.bam":
           type: file
           description: Output BAM file containing read alignments
@@ -84,9 +83,8 @@ output:
             - edam: "http://edamontology.org/format_3462" # CRAM
   csi:
     - - meta:
-          type: file
-          description: Output BAM file containing read alignments
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*.csi":
           type: file
           description: Optional index file for BAM file
@@ -94,9 +92,8 @@ output:
           ontologies: []
   crai:
     - - meta:
-          type: file
-          description: Output BAM file containing read alignments
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*.crai":
           type: file
           description: Optional index file for CRAM file

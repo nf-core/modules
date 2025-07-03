@@ -97,12 +97,8 @@ input:
 output:
   full_alignment:
     - - meta:
-          type: file
-          description: Fasta a fasta file of all positions contained in the VCF files
-            i.e. including ref calls
-          pattern: ".fasta.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - fullAlignment.fasta.gz:
           type: file
           description: Fasta a fasta file of all positions contained in the VCF files
@@ -112,12 +108,8 @@ output:
             - edam: http://edamontology.org/format_3989 # GZIP format
   info_txt:
     - - meta:
-          type: file
-          description: Fasta a fasta file of all positions contained in the VCF files
-            i.e. including ref calls
-          pattern: ".fasta.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - info.txt:
           type: file
           description: Information about the run
@@ -125,12 +117,8 @@ output:
           ontologies: []
   snp_alignment:
     - - meta:
-          type: file
-          description: Fasta a fasta file of all positions contained in the VCF files
-            i.e. including ref calls
-          pattern: ".fasta.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - snpAlignment.fasta.gz:
           type: file
           description: A fasta file of just SNP positions with samples only
@@ -139,12 +127,8 @@ output:
             - edam: http://edamontology.org/format_3989 # GZIP format
   snp_genome_alignment:
     - - meta:
-          type: file
-          description: Fasta a fasta file of all positions contained in the VCF files
-            i.e. including ref calls
-          pattern: ".fasta.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - snpAlignmentIncludingRefGenome.fasta.gz:
           type: file
           description: A fasta file of just SNP positions with reference genome
@@ -153,12 +137,8 @@ output:
             - edam: http://edamontology.org/format_3989 # GZIP format
   snpstatistics:
     - - meta:
-          type: file
-          description: Fasta a fasta file of all positions contained in the VCF files
-            i.e. including ref calls
-          pattern: ".fasta.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - snpStatistics.tsv:
           type: file
           description: Some basic statistics about the SNP calls of each sample
@@ -167,12 +147,8 @@ output:
             - edam: http://edamontology.org/format_3475 # TSV
   snptable:
     - - meta:
-          type: file
-          description: Fasta a fasta file of all positions contained in the VCF files
-            i.e. including ref calls
-          pattern: ".fasta.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - snpTable.tsv:
           type: file
           description: Basic SNP table of combined positions taken from each VCF file
@@ -181,12 +157,8 @@ output:
             - edam: http://edamontology.org/format_3475 # TSV
   snptable_snpeff:
     - - meta:
-          type: file
-          description: Fasta a fasta file of all positions contained in the VCF files
-            i.e. including ref calls
-          pattern: ".fasta.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - snpTableForSnpEff.tsv:
           type: file
           description: Input file for SnpEff
@@ -195,12 +167,8 @@ output:
             - edam: http://edamontology.org/format_3475 # TSV
   snptable_uncertainty:
     - - meta:
-          type: file
-          description: Fasta a fasta file of all positions contained in the VCF files
-            i.e. including ref calls
-          pattern: ".fasta.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - snpTableWithUncertaintyCalls.tsv:
           type: file
           description: Same as above, but with lower case characters indicating uncertain
@@ -210,12 +178,8 @@ output:
             - edam: http://edamontology.org/format_3475 # TSV
   structure_genotypes:
     - - meta:
-          type: file
-          description: Fasta a fasta file of all positions contained in the VCF files
-            i.e. including ref calls
-          pattern: ".fasta.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - structureGenotypes.tsv:
           type: file
           description: Input file for STRUCTURE
@@ -224,12 +188,8 @@ output:
             - edam: http://edamontology.org/format_3475 # TSV
   structure_genotypes_nomissing:
     - - meta:
-          type: file
-          description: Fasta a fasta file of all positions contained in the VCF files
-            i.e. including ref calls
-          pattern: ".fasta.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - structureGenotypes_noMissingData-Columns.tsv:
           type: file
           description: Alternate input file for STRUCTURE
@@ -238,12 +198,8 @@ output:
             - edam: http://edamontology.org/format_3475 # TSV
   json:
     - - meta:
-          type: file
-          description: Fasta a fasta file of all positions contained in the VCF files
-            i.e. including ref calls
-          pattern: ".fasta.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+          type: map
+          description: Groovy Map containing sample information
       - MultiVCFAnalyzer.json:
           type: file
           description: Summary statistics in MultiQC JSON format

@@ -33,10 +33,8 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
           pattern: "*.txt"
       - ${prefix}.txt:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+          type: file
+          description: test file
           pattern: "*.txt"
   versions:
     - versions.yml:

@@ -37,11 +37,8 @@ input:
 output:
   gff:
     - - meta:
-          type: file
-          description: Output gff3 file with introns
-          pattern: "*.gff"
-          ontologies:
-            - edam: "http://edamontology.org/format_1975" # GFF
+          type: map
+          description: Groovy Map containing sample information
       - ${output}:
           type: file
           description: Output gff3 file with introns

@@ -29,10 +29,8 @@ input:
 output:
   bed:
     - - meta:
-          type: file
-          description: Genome segmentation at a fixed resolution as a BED file.
-          pattern: "*.bed"
-          ontologies: []
+          type: map
+          description: Groovy Map containing sample information
       - "*.bed":
           type: file
           description: Genome segmentation at a fixed resolution as a BED file.

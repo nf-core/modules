@@ -33,11 +33,8 @@ input:
 output:
   tsv:
     - - meta:
-          type: file
-          description: Annotation file in TSV format
-          pattern: "*.{gtf}"
-          ontologies:
-            - edam: http://edamontology.org/format_2306 # GTF
+          type: map
+          description: Groovy Map containing sample information
       - "*.tsv":
           type: file
           description: Annotation file in TSV format

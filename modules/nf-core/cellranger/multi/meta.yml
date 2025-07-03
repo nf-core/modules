@@ -168,11 +168,8 @@ input:
 output:
   config:
     - - meta:
-          type: file
-          description: The resolved Cellranger multi config used for analysis
-          pattern: "cellranger_multi_config.csv"
-          ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+          type: map
+          description: Groovy Map containing sample information
       - cellranger_multi_config.csv:
           type: file
           description: The resolved Cellranger multi config used for analysis
@@ -181,11 +178,8 @@ output:
             - edam: http://edamontology.org/format_3752 # CSV
   outs:
     - - meta:
-          type: file
-          description: The resolved Cellranger multi config used for analysis
-          pattern: "cellranger_multi_config.csv"
-          ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+          type: map
+          description: Groovy Map containing sample information
       - "**/outs/**":
           type: file
           description: Files containing the outputs of Cell Ranger
