@@ -22,6 +22,7 @@ input:
         type: file
         description: BAM/CRAM/SAM file or pairs formatted reads file
         pattern: "*.{bam,cram,sam,pairs.gz}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -31,13 +32,15 @@ input:
         type: file
         description: Reference sequence file
         pattern: "*.{fasta,fna,fa}"
+        ontologies: []
     - fai:
         type: file
         description: Reference sequence index file
         pattern: "*.{fai}"
+        ontologies: []
 output:
-  - pretext:
-      - meta:
+  pretext:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -46,11 +49,14 @@ output:
           type: file
           description: pretext map
           pattern: "*.pretext"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@marrip"
   - "@getrudeln"

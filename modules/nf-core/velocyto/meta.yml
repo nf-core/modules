@@ -48,23 +48,28 @@ input:
         type: file
         description: Valid barcodes file, to filter the bam
         pattern: "*.tsv.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
     - bam:
         type: file
         description: Sorted BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - sorted_bam:
         type: file
         description: Cell sorted BAM/CRAM/SAM file generated with `samtools sort -t
           CB -O BAM -o cellsorted_possorted_genome_bam.bam possorted_genome_bam.bam`
         pattern: "*.bam"
-  - - gtf:
-        type: file
-        description: genome annotation file
-        pattern: "*.gtf"
+        ontologies: []
+  - gtf:
+      type: file
+      description: genome annotation file
+      pattern: "*.gtf"
+      ontologies: []
 output:
   #Only when we have meta
-  - loom:
-      - meta:
+  loom:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -73,15 +78,21 @@ output:
           type: file
           description: Loom file with counts divided in spliced/unspliced/ambiguous.
           pattern: "*.loom"
+          ontologies:
+            - edam: http://edamontology.org/format_3913 # Loom
       - "*.velocyto.log":
           type: file
           description: Loom file with counts divided in spliced/unspliced/ambiguous.
           pattern: "*.loom"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3913 # Loom
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@tucano"
 maintainers:

@@ -32,9 +32,10 @@ input:
         type: file
         description: Transcript assembly in fasta format
         pattern: "*.{fsa,fa,fasta,fsa.gz,fa.gz,fasta.gz}"
+        ontologies: []
 output:
-  - dropset:
-      - meta:
+  dropset:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -43,8 +44,8 @@ output:
           type: directory
           description: Directory containing dropped transcripts and associated files
           pattern: "dropset"
-  - okayset:
-      - meta:
+  okayset:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,11 +54,13 @@ output:
           type: directory
           description: Directory containing included transcripts and associated files
           pattern: "okayset"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@GallVp"
 maintainers:

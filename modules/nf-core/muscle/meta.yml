@@ -25,84 +25,101 @@ input:
         type: file
         description: Input sequences for alignment must be in FASTA format
         pattern: "*.{fasta,fa,fna}"
+        ontologies: []
 output:
-  - aligned_fasta:
-      - meta:
+  aligned_fasta:
+    - - meta:
           type: file
           description: Multiple sequence alignment produced in FASTA format
           pattern: "*.{afa}"
+          ontologies: []
       - "*.afa":
           type: file
           description: Multiple sequence alignment produced in FASTA format
           pattern: "*.{afa}"
-  - phyi:
-      - meta:
+          ontologies: []
+  phyi:
+    - - meta:
           type: file
-          description: Multiple sequence alignment produced in PHYLIP interleaved format
-          pattern: "*.{phyi}"
+          description: Multiple sequence alignment produced in FASTA format
+          pattern: "*.{afa}"
+          ontologies: []
       - "*.phyi":
           type: file
           description: Multiple sequence alignment produced in PHYLIP interleaved format
           pattern: "*.{phyi}"
-  - phys:
-      - meta:
+          ontologies: []
+  phys:
+    - - meta:
           type: file
-          description: Multiple sequence alignment produced in PHYLIP sequential format
-          pattern: "*.{phys}"
+          description: Multiple sequence alignment produced in FASTA format
+          pattern: "*.{afa}"
+          ontologies: []
       - "*.phys":
           type: file
           description: Multiple sequence alignment produced in PHYLIP sequential format
           pattern: "*.{phys}"
-  - clustalw:
-      - meta:
+          ontologies: []
+  clustalw:
+    - - meta:
           type: file
-          description: Multiple sequence alignment produced in ClustalW format without
-            base/residue numbering
-          pattern: "*.{clw}"
+          description: Multiple sequence alignment produced in FASTA format
+          pattern: "*.{afa}"
+          ontologies: []
       - "*.clw":
           type: file
           description: Multiple sequence alignment produced in ClustalW format without
             base/residue numbering
           pattern: "*.{clw}"
-  - html:
-      - meta:
+          ontologies: []
+  html:
+    - - meta:
           type: file
-          description: Multiple sequence alignment produced in HTML format
-          pattern: "*.{html}"
+          description: Multiple sequence alignment produced in FASTA format
+          pattern: "*.{afa}"
+          ontologies: []
       - "*.html":
           type: file
           description: Multiple sequence alignment produced in HTML format
           pattern: "*.{html}"
-  - msf:
-      - meta:
+          ontologies: []
+  msf:
+    - - meta:
           type: file
-          description: GCG Multiple Sequence File (MSF) alignment format (similar to CLUSTALW)
-          pattern: "*.{msf}"
+          description: Multiple sequence alignment produced in FASTA format
+          pattern: "*.{afa}"
+          ontologies: []
       - "*.msf":
           type: file
-          description: GCG Multiple Sequence File (MSF) alignment format (similar to CLUSTALW)
+          description: GCG Multiple Sequence File (MSF) alignment format (similar to
+            CLUSTALW)
           pattern: "*.{msf}"
-  - tree:
-      - meta:
+          ontologies: []
+  tree:
+    - - meta:
           type: file
-          description: NJ or UPGMA tree in Newick format produced from a multiple sequence
-            alignment
-          pattern: "*.{tree}"
+          description: Multiple sequence alignment produced in FASTA format
+          pattern: "*.{afa}"
+          ontologies: []
       - "*.tree":
           type: file
           description: NJ or UPGMA tree in Newick format produced from a multiple sequence
             alignment
           pattern: "*.{tree}"
-  - log:
-      - "*.log":
-          type: file
-          description: Log file of MUSCLE run
-          pattern: "*{.log}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  log:
+    - "*.log":
+        type: file
+        description: Log file of MUSCLE run
+        pattern: "*{.log}"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@MGordon"
 maintainers:

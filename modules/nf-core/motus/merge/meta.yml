@@ -28,42 +28,52 @@ input:
         description: |
           List of output files (more than one) from motus profile,
           or a single directory containing motus output files.
-  - - db:
-        type: directory
-        description: |
-          mOTUs database downloaded by `motus downloadDB`
-          pattern: "db_mOTU/"
-  - - profile_version_yml:
-        type: file
-        description: |
-          A single versions.yml file output from motus/profile. motus/merge cannot reconstruct
-          this itself without having the motus database present and configured with the tool
-          so here we take it from what is already reported by the upstream module.
-        pattern: "versions.yml"
+        ontologies: []
+  - db:
+      type: directory
+      description: |
+        mOTUs database downloaded by `motus downloadDB`
+        pattern: "db_mOTU/"
+  - profile_version_yml:
+      type: file
+      description: |
+        A single versions.yml file output from motus/profile. motus/merge cannot reconstruct
+        this itself without having the motus database present and configured with the tool
+        so here we take it from what is already reported by the upstream module.
+      pattern: "versions.yml"
+      ontologies:
+        - edam: http://edamontology.org/format_3750 # YAML
 output:
-  - txt:
-      - meta:
+  txt:
+    - - meta:
           type: file
           description: OTU table in txt format, if BIOM format not requested
           pattern: "*.txt"
+          ontologies: []
       - "*.txt":
           type: file
           description: OTU table in txt format, if BIOM format not requested
           pattern: "*.txt"
-  - biom:
-      - meta:
+          ontologies: []
+  biom:
+    - - meta:
           type: file
-          description: OTU table in biom format, if BIOM format requested
-          pattern: "*.biom"
+          description: OTU table in txt format, if BIOM format not requested
+          pattern: "*.txt"
+          ontologies: []
       - "*.biom":
           type: file
           description: OTU table in biom format, if BIOM format requested
           pattern: "*.biom"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3746 # BIOM format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

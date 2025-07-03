@@ -29,12 +29,14 @@ input:
     - assembly:
         type: file
         description: assembly fasta file
-  - - gxdb:
-        type: file
-        description: The NCBI GenBank database to search against.
+        ontologies: []
+  - gxdb:
+      type: file
+      description: The NCBI GenBank database to search against.
+      ontologies: []
 output:
-  - fcs_gx_report:
-      - meta:
+  fcs_gx_report:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,8 +46,9 @@ output:
           description: Report containing the contig identifier and recommended action
             (EXCLUDE, TRIM, FIX, REVIEW)
           pattern: "*.fcs_gx_report.txt"
-  - taxonomy_report:
-      - meta:
+          ontologies: []
+  taxonomy_report:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,11 +58,14 @@ output:
           description: Report containing the contig identifier and mapped contaminant
             species
           pattern: "*.taxonomy.rpt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@tillenglert"
 maintainers:

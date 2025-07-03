@@ -24,9 +24,11 @@ input:
         description: |
           List of input FastQ files of size 2; i.e., paired-end data.
         pattern: "*.{fa,fasta,fastq,fq,fa.gz,fasta.gz,fastq.gz,fq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
 output:
-  - merged_reads:
-      - meta:
+  merged_reads:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,8 +37,10 @@ output:
           type: file
           description: fastq file merged reads
           pattern: "*.{fa,fasta,fastq,fq,fa.gz,fasta.gz,fastq.gz,fq.gz}"
-  - unstitched_read1:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+  unstitched_read1:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,8 +49,10 @@ output:
           type: file
           description: fastq file unstitched read 1
           pattern: "*.{fa,fasta,fastq,fq,fa.gz,fasta.gz,fastq.gz,fq.gz}"
-  - unstitched_read2:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+  unstitched_read2:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,11 +61,15 @@ output:
           type: file
           description: fastq file unstitched read 2
           pattern: "*.{fa,fasta,fastq,fq,fa.gz,fasta.gz,fastq.gz,fq.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@charlotteanne"
   - "@jsh58"

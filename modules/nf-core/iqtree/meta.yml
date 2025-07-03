@@ -25,87 +25,101 @@ input:
         description: "One or more input alignment file in PHYLIP, FASTA, NEXUS, CLUSTAL
           or MSF format or a directory of such files (-s)"
         pattern: "*.{fasta,fas,fa,mfa,phy,aln,nex,nexus,msf}"
+        ontologies: []
     - tree:
         type: file
         description: "File containing one or multiple phylogenetic trees (-t): - Single
           tree used e.g. as starting tree for tree search - Set of trees used e.g. for
           distance computation, consensus tree construction"
         pattern: "*.{tre,tree,treefile,newick,nwk,nex,nexus}"
-  - - tree_te:
-        type: file
-        description: "File containing single phylogenetic tree (-te) Use cases: - fixed
-          user tree to skip tree search - ancestral sequence reconstruction"
-        pattern: "*.{tre,tree,treefile,newick,nwk,nex,nexus}"
-  - - lmclust:
-        type: file
-        description: NEXUS file containing taxon clusters for quartet mapping analysis
-          (-lmclust)
-        pattern: "*.nex{us}"
-  - - mdef:
-        type: file
-        description: NEXUS model file defining new models (-mdef)
-        pattern: "*.nex{us}"
-  - - partitions_equal:
-        type: file
-        description: Partition file for edge-equal partition model, all partitions share
-          same set of branch lengths (-q)
-        pattern: "*.{nex,nexus,tre,tree,treefile}"
-  - - partitions_proportional:
-        type: file
-        description: Partition file for edge-equal partition model, all partitions share
-          same set of branch lengths (-spp)
-        pattern: "*.{nex,nexus,tre,tree,treefile}"
-  - - partitions_unlinked:
-        type: file
-        description: Partition file for edge-equal partition model, all partitions share
-          same set of branch lengths (-sp)
-        pattern: "*.{nex,nexus,tre,tree,treefile}"
-  - - guide_tree:
-        type: file
-        description: File containing guide tree for inference of site frequency profiles
-          (-ft)
-        pattern: "*.{nex,nexus,tre,tree,treefile}"
-  - - sitefreq_in:
-        type: file
-        description: Site frequency file (-fs)
-        pattern: "*.sitefreq"
-  - - constraint_tree:
-        type: file
-        description: File containing opological constraint tree in NEWICK format. The
-          constraint tree can be a multifurcating tree and need not to include all taxa.
-          (-g)
-        pattern: "*.{nwk,newick}"
-  - - trees_z:
-        type: file
-        description: File containing a set of trees for which log-likelihoods should
-          be computed (-z)
-  - - suptree:
-        type: file
-        description: File containing input “target” tree, support values are extracted
-          from trees passed via -t, and mapped onto the target tree (-sup)
-  - - trees_rf:
-        type: file
-        description: "File containing a second tree set (-rf). Used for computing the
-          distance to the primary tree set (`tree`)"
-        pattern: "*.{tre,tree,treefile,newick,nwk,nex,nexus}"
+        ontologies: []
+  - tree_te:
+      type: file
+      description: "File containing single phylogenetic tree (-te) Use cases: - fixed
+        user tree to skip tree search - ancestral sequence reconstruction"
+      pattern: "*.{tre,tree,treefile,newick,nwk,nex,nexus}"
+      ontologies: []
+  - lmclust:
+      type: file
+      description: NEXUS file containing taxon clusters for quartet mapping analysis
+        (-lmclust)
+      pattern: "*.nex{us}"
+      ontologies: []
+  - mdef:
+      type: file
+      description: NEXUS model file defining new models (-mdef)
+      pattern: "*.nex{us}"
+      ontologies: []
+  - partitions_equal:
+      type: file
+      description: Partition file for edge-equal partition model, all partitions share
+        same set of branch lengths (-q)
+      pattern: "*.{nex,nexus,tre,tree,treefile}"
+      ontologies: []
+  - partitions_proportional:
+      type: file
+      description: Partition file for edge-equal partition model, all partitions share
+        same set of branch lengths (-spp)
+      pattern: "*.{nex,nexus,tre,tree,treefile}"
+      ontologies: []
+  - partitions_unlinked:
+      type: file
+      description: Partition file for edge-equal partition model, all partitions share
+        same set of branch lengths (-sp)
+      pattern: "*.{nex,nexus,tre,tree,treefile}"
+      ontologies: []
+  - guide_tree:
+      type: file
+      description: File containing guide tree for inference of site frequency profiles
+        (-ft)
+      pattern: "*.{nex,nexus,tre,tree,treefile}"
+      ontologies: []
+  - sitefreq_in:
+      type: file
+      description: Site frequency file (-fs)
+      pattern: "*.sitefreq"
+      ontologies: []
+  - constraint_tree:
+      type: file
+      description: File containing opological constraint tree in NEWICK format. The
+        constraint tree can be a multifurcating tree and need not to include all taxa.
+        (-g)
+      pattern: "*.{nwk,newick}"
+      ontologies: []
+  - trees_z:
+      type: file
+      description: File containing a set of trees for which log-likelihoods should be
+        computed (-z)
+      ontologies: []
+  - suptree:
+      type: file
+      description: File containing input “target” tree, support values are extracted
+        from trees passed via -t, and mapped onto the target tree (-sup)
+      ontologies: []
+  - trees_rf:
+      type: file
+      description: "File containing a second tree set (-rf). Used for computing the
+        distance to the primary tree set (`tree`)"
+      pattern: "*.{tre,tree,treefile,newick,nwk,nex,nexus}"
+      ontologies: []
 output:
-  - phylogeny:
-      - meta:
+  phylogeny:
+    - - meta:
           type: file
           description: A phylogeny in Newick format
           pattern: "*.{treefile}"
+          ontologies: []
       - "*.treefile":
           type: file
           description: A phylogeny in Newick format
           pattern: "*.{treefile}"
-  - report:
-      - meta:
+          ontologies: []
+  report:
+    - - meta:
           type: file
-          description: |
-            Main report file containing computational
-            results as well as a textual visualization
-            of the final tree
-          pattern: "*.{iqtree}"
+          description: A phylogeny in Newick format
+          pattern: "*.{treefile}"
+          ontologies: []
       - "*.iqtree":
           type: file
           description: |
@@ -113,243 +127,260 @@ output:
             results as well as a textual visualization
             of the final tree
           pattern: "*.{iqtree}"
-  - mldist:
-      - meta:
+          ontologies: []
+  mldist:
+    - - meta:
           type: file
-          description: |
-            File containing the pairwise maximum
-            likelihood distances as a matrix
-          pattern: "*.{mldist}"
+          description: A phylogeny in Newick format
+          pattern: "*.{treefile}"
+          ontologies: []
       - "*.mldist":
           type: file
           description: |
             File containing the pairwise maximum
             likelihood distances as a matrix
           pattern: "*.{mldist}"
-  - lmap_svg:
-      - meta:
+          ontologies: []
+  lmap_svg:
+    - - meta:
           type: file
-          description: |
-            File containing likelihood mapping analysis
-            results in .svg format (-lmap/-lmclust)
-          pattern: "*.lmap.svg"
+          description: A phylogeny in Newick format
+          pattern: "*.{treefile}"
+          ontologies: []
       - "*.lmap.svg":
           type: file
           description: |
             File containing likelihood mapping analysis
             results in .svg format (-lmap/-lmclust)
           pattern: "*.lmap.svg"
-  - lmap_eps:
-      - meta:
+          ontologies: []
+  lmap_eps:
+    - - meta:
           type: file
-          description: |
-            File containing likelihood mapping analysis
-            results in .eps format (-lmap/-lmclust)
-          pattern: "*.lmap.eps"
+          description: A phylogeny in Newick format
+          pattern: "*.{treefile}"
+          ontologies: []
       - "*.lmap.eps":
           type: file
           description: |
             File containing likelihood mapping analysis
             results in .eps format (-lmap/-lmclust)
           pattern: "*.lmap.eps"
-  - lmap_quartetlh:
-      - meta:
+          ontologies: []
+  lmap_quartetlh:
+    - - meta:
           type: file
-          description: |
-            File containing quartet log-likelihoods (-wql)
-          pattern: "*.lmap.quartetlh"
+          description: A phylogeny in Newick format
+          pattern: "*.{treefile}"
+          ontologies: []
       - "*.lmap.quartetlh":
           type: file
           description: |
             File containing quartet log-likelihoods (-wql)
           pattern: "*.lmap.quartetlh"
-  - sitefreq_out:
-      - meta:
+          ontologies: []
+  sitefreq_out:
+    - - meta:
           type: file
-          description: |
-            File containing site frequency profiles (-ft)
-          pattern: "*.sitefreq"
+          description: A phylogeny in Newick format
+          pattern: "*.{treefile}"
+          ontologies: []
       - "*.sitefreq":
           type: file
           description: |
             File containing site frequency profiles (-ft)
           pattern: "*.sitefreq"
-  - bootstrap:
-      - meta:
+          ontologies: []
+  bootstrap:
+    - - meta:
           type: file
-          description: |
-            File containing all bootstrap trees (-wbt/-wbtl)
-          pattern: "*.ufboot"
+          description: A phylogeny in Newick format
+          pattern: "*.{treefile}"
+          ontologies: []
       - "*.ufboot":
           type: file
           description: |
             File containing all bootstrap trees (-wbt/-wbtl)
           pattern: "*.ufboot"
-  - state:
-      - meta:
+          ontologies: []
+  state:
+    - - meta:
           type: file
-          description: |
-            File containing ancestral sequences for all
-            nodes of the tree by empirical Bayesian method (-asr)
-          pattern: "*.{state}"
+          description: A phylogeny in Newick format
+          pattern: "*.{treefile}"
+          ontologies: []
       - "*.state":
           type: file
           description: |
             File containing ancestral sequences for all
             nodes of the tree by empirical Bayesian method (-asr)
           pattern: "*.{state}"
-  - contree:
-      - meta:
+          ontologies: []
+  contree:
+    - - meta:
           type: file
-          description: |
-            File containing consensus tree (-con/-bb)
-          pattern: "*.{contree}"
+          description: A phylogeny in Newick format
+          pattern: "*.{treefile}"
+          ontologies: []
       - "*.contree":
           type: file
           description: |
             File containing consensus tree (-con/-bb)
           pattern: "*.{contree}"
-  - nex:
-      - meta:
+          ontologies: []
+  nex:
+    - - meta:
           type: file
-          description: |
-            File containing consensus network (-net/-bb)
-          pattern: "*.{nex}"
+          description: A phylogeny in Newick format
+          pattern: "*.{treefile}"
+          ontologies: []
       - "*.nex":
           type: file
           description: |
             File containing consensus network (-net/-bb)
           pattern: "*.{nex}"
-  - splits:
-      - meta:
+          ontologies: []
+  splits:
+    - - meta:
           type: file
-          description: |
-            File containing consensus network in star-dot format (-wsplits)
-          pattern: "*.{splits}"
+          description: A phylogeny in Newick format
+          pattern: "*.{treefile}"
+          ontologies: []
       - "*.splits":
           type: file
           description: |
             File containing consensus network in star-dot format (-wsplits)
           pattern: "*.{splits}"
-  - suptree:
-      - meta:
+          ontologies: []
+  suptree:
+    - - meta:
           type: file
-          description: |
-            File containing tree with assigned support
-            values based on supplied "target" tree (-sup)
-          pattern: "*.{suptree}"
+          description: A phylogeny in Newick format
+          pattern: "*.{treefile}"
+          ontologies: []
       - "*.suptree":
           type: file
           description: |
             File containing tree with assigned support
             values based on supplied "target" tree (-sup)
           pattern: "*.{suptree}"
-  - alninfo:
-      - meta:
+          ontologies: []
+  alninfo:
+    - - meta:
           type: file
-          description: |
-            File containing alignment site statistics (-alninfo)
-          pattern: "*.{alninfo}"
+          description: A phylogeny in Newick format
+          pattern: "*.{treefile}"
+          ontologies: []
       - "*.alninfo":
           type: file
           description: |
             File containing alignment site statistics (-alninfo)
           pattern: "*.{alninfo}"
-  - partlh:
-      - meta:
+          ontologies: []
+  partlh:
+    - - meta:
           type: file
-          description: |
-            File containing partition log-likelihoods (-wpl)
-          pattern: "*.{partlh}"
+          description: A phylogeny in Newick format
+          pattern: "*.{treefile}"
+          ontologies: []
       - "*.partlh":
           type: file
           description: |
             File containing partition log-likelihoods (-wpl)
           pattern: "*.{partlh}"
-  - siteprob:
-      - meta:
+          ontologies: []
+  siteprob:
+    - - meta:
           type: file
-          description: |
-            File containing site posterior probabilities (-wspr/-wspm/-wspmr)
-          pattern: "*.{siteprob}"
+          description: A phylogeny in Newick format
+          pattern: "*.{treefile}"
+          ontologies: []
       - "*.siteprob":
           type: file
           description: |
             File containing site posterior probabilities (-wspr/-wspm/-wspmr)
           pattern: "*.{siteprob}"
-  - sitelh:
-      - meta:
+          ontologies: []
+  sitelh:
+    - - meta:
           type: file
-          description: |
-            File containing site log-likelihoods (-wsl/-wslr/-wslm/-wslmr)
-          pattern: "*.{sitelh}"
+          description: A phylogeny in Newick format
+          pattern: "*.{treefile}"
+          ontologies: []
       - "*.sitelh":
           type: file
           description: |
             File containing site log-likelihoods (-wsl/-wslr/-wslm/-wslmr)
           pattern: "*.{sitelh}"
-  - treels:
-      - meta:
+          ontologies: []
+  treels:
+    - - meta:
           type: file
-          description: |
-            File containing all locally optimal trees (-wt)
-          pattern: "*.{treels}"
+          description: A phylogeny in Newick format
+          pattern: "*.{treefile}"
+          ontologies: []
       - "*.treels":
           type: file
           description: |
             File containing all locally optimal trees (-wt)
           pattern: "*.{treels}"
-  - rate:
-      - meta:
+          ontologies: []
+  rate:
+    - - meta:
           type: file
-          description: |
-            File containing inferred site-specific
-            evolutionary rates (-wsr)
-          pattern: "*.{rate}"
+          description: A phylogeny in Newick format
+          pattern: "*.{treefile}"
+          ontologies: []
       - "*.rate  ":
           type: file
           description: |
             File containing inferred site-specific
             evolutionary rates (-wsr)
           pattern: "*.{rate}"
-  - mlrate:
-      - meta:
+          ontologies: []
+  mlrate:
+    - - meta:
           type: file
-          description: |
-            File containing site-specific substitution
-            rates determined by maximum likelihood (--mlrate)
-          pattern: "*.{mlrate}"
+          description: A phylogeny in Newick format
+          pattern: "*.{treefile}"
+          ontologies: []
       - "*.mlrate":
           type: file
           description: |
             File containing site-specific substitution
             rates determined by maximum likelihood (--mlrate)
           pattern: "*.{mlrate}"
-  - exch_matrix:
-      - meta:
+          ontologies: []
+  exch_matrix:
+    - - meta:
           type: file
-          description: File containing the exchangeability matrix obtained from the optimization
-            (--link-exchange-rates)
-          pattern: "GTRPMIX.nex"
+          description: A phylogeny in Newick format
+          pattern: "*.{treefile}"
+          ontologies: []
       - GTRPMIX.nex:
           type: file
-          description: File containing the exchangeability matrix obtained from the optimization
-            (--link-exchange-rates)
+          description: File containing the exchangeability matrix obtained from the
+            optimization (--link-exchange-rates)
           pattern: "GTRPMIX.nex"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: file
-          description: Log file of entire run
-          pattern: "*.{log}"
+          description: A phylogeny in Newick format
+          pattern: "*.{treefile}"
+          ontologies: []
       - "*.log":
           type: file
           description: Log file of entire run
           pattern: "*.{log}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@avantonder"
   - "@aunderwo"

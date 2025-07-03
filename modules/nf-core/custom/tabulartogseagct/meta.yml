@@ -22,9 +22,12 @@ input:
         description: Tabular (e.g. TSV or CSV file) containing a numeric matrix with
           features (e.g. genes) by row and samples by column.
         pattern: "*.{tsv,csv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3752 # CSV
 output:
-  - gct:
-      - meta:
+  gct:
+    - - meta:
           type: map
           description: |
             Groovy Map containing matrix information
@@ -33,11 +36,14 @@ output:
           type: file
           description: GCT format version of input TSV
           pattern: "*.{gct}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@pinin4fjords"
 maintainers:

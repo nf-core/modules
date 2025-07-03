@@ -26,9 +26,10 @@ input:
         description: Foldcomp compressed protein structure(s) (also works with folder
           input)
         pattern: "*{*,*.fcz}"
+        ontologies: []
 output:
-  - pdb:
-      - meta:
+  pdb:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,10 +39,13 @@ output:
           description: |
             Either single protein structure (if input was file) or folder with all decompressed protein structures (if input was directory)
           pattern: "{*_pdb,*.pdb,*.cif}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@vagkaratzas"

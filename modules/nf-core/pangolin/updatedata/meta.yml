@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: pangolin_updatedata
 description: Phylogenetic Assignment of Named Global Outbreak LINeages
@@ -18,21 +17,24 @@ tools:
       identifier: biotools:pangolin_cov-lineages
 
 input:
-  - - dbname:
-        type: string
-        description: Name of directory to store the most recent pangolin dataset.
+  - dbname:
+      type: string
+      description: Name of directory to store the most recent pangolin dataset.
 output:
-  - db:
-      - "${prefix}":
-          type: file
-          description: Directory containing downloaded data with directory naming being
-            the user provided dbname or prefix.
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  db:
+    - ${prefix}:
+        type: file
+        description: Directory containing downloaded data with directory naming being
+          the user provided dbname or prefix.
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Joon-Klaps"
 maintainers:

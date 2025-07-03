@@ -26,14 +26,17 @@ input:
         type: file
         description: PLINK binary biallelic genotype table file
         pattern: "*.{bed}"
+        ontologies: []
     - bim:
         type: file
         description: PLINK extended MAP file
         pattern: "*.{bim}"
+        ontologies: []
     - fam:
         type: file
         description: PLINK sample information file
         pattern: "*.{fam}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -44,6 +47,7 @@ input:
         type: file
         description: VCF format input file
         pattern: "*.{vcf} | *{vcf.gz}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -54,6 +58,7 @@ input:
         type: file
         description: BCF format input file
         pattern: "*.{bcf}"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -64,10 +69,11 @@ input:
         type: file
         description: randomly selected snp identifiers, used to calculate linkage disequilibrium
         pattern: "*.{txt}"
+        ontologies: []
 output:
   #Only when we have meta
-  - ld:
-      - meta:
+  ld:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -76,8 +82,9 @@ output:
           type: file
           description: |
             The output of a linkage disequilibrium analysis in PLINK typically includes a table showing variant pairs and their associated LD values, often expressed as R².
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -86,8 +93,9 @@ output:
           type: file
           description: |
             Log file of the ld process
-  - nosex:
-      - meta:
+          ontologies: []
+  nosex:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -96,11 +104,14 @@ output:
           type: file
           description: |
             Ambiguous sex ID file
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@davidebag"
 maintainers:

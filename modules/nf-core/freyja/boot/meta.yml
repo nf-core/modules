@@ -32,24 +32,32 @@ input:
         type: file
         description: File containing identified variants in a gff-like format
         pattern: "*.variants.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
     - depths:
         type: file
         description: File containing depth of the variants
         pattern: "*.depth.tsv"
-  - - repeats:
-        type: integer
-        description: Number of bootstrap repeats to perform
-  - - barcodes:
-        type: file
-        description: File containing lineage defining barcodes
-        pattern: "*barcodes.csv"
-  - - lineages_meta:
-        type: file
-        description: File containing lineage metadata that correspond to barcodes
-        pattern: "*lineages.json"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  - repeats:
+      type: integer
+      description: Number of bootstrap repeats to perform
+  - barcodes:
+      type: file
+      description: File containing lineage defining barcodes
+      pattern: "*barcodes.csv"
+      ontologies:
+        - edam: http://edamontology.org/format_3752 # CSV
+  - lineages_meta:
+      type: file
+      description: File containing lineage metadata that correspond to barcodes
+      pattern: "*lineages.json"
+      ontologies:
+        - edam: http://edamontology.org/format_3464 # JSON
 output:
-  - lineages:
-      - meta:
+  lineages:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -59,22 +67,28 @@ output:
           description: a csv file that includes the lineages present and their corresponding
             abundances
           pattern: "*lineages.csv"
-  - summarized:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  summarized:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*summarized.csv":
           type: file
-          description: a csv file that includes the lineages present but summarized by
-            constellation and their corresponding abundances
+          description: a csv file that includes the lineages present but summarized
+            by constellation and their corresponding abundances
           pattern: "*summarized.csv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Joon-Klaps"
 maintainers:

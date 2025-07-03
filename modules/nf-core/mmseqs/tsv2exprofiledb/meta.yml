@@ -18,24 +18,26 @@ tools:
       licence: ["GPL v3"]
       identifier: biotools:mmseqs
 input:
-  - - database:
+  - database:
+      type: directory
+      description: |
+        Directory containing the database to be indexed
+      pattern: "*"
+output:
+  db_exprofile:
+    - database:
         type: directory
         description: |
-          Directory containing the database to be indexed
+          Directory containing the expandable profile database
         pattern: "*"
-output:
-  - db_exprofile:
-      - database:
-          type: directory
-          description: |
-            Directory containing the expandable profile database
-          pattern: "*"
-  - versions:
-      - versions.yml:
-          type: file
-          description: |
-            File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: |
+          File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@JoseEspinosa"
 maintainers:

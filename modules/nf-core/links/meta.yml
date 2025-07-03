@@ -1,4 +1,3 @@
----
 name: "links"
 description: |
   LINKS is a genomics application for scaffolding genome assemblies with long reads,
@@ -31,6 +30,7 @@ input:
         type: file
         description: (Multi-)fasta file containing the draft assembly
         pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -41,9 +41,11 @@ input:
         description: fastq file(s) containing the long reads to be used for scaffolding
         pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
 
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
 output:
-  - log:
-      - meta:
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -52,8 +54,9 @@ output:
           type: file
           description: text file; Logs execution time / errors / pairing stats.
           pattern: "*.log"
-  - pairing_distribution:
-      - meta:
+          ontologies: []
+  pairing_distribution:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -66,8 +69,10 @@ output:
             within the same contig. 2nd column is the number of pairs at
             that distance.
           pattern: "*.pairing_distribution.csv"
-  - pairing_issues:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  pairing_issues:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -78,8 +83,9 @@ output:
             text file; Lists all pairing issues encountered between contig
             pairs and illogical/out-of-bounds pairing.
           pattern: "*.pairing_issues"
-  - scaffolds_csv:
-      - meta:
+          ontologies: []
+  scaffolds_csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -88,8 +94,9 @@ output:
           type: file
           description: comma-separated file; containing the new scaffold(s)
           pattern: "*.scaffolds"
-  - scaffolds_fasta:
-      - meta:
+          ontologies: []
+  scaffolds_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -98,8 +105,9 @@ output:
           type: file
           description: fasta file of the new scaffold sequence
           pattern: "*.scaffolds.fa"
-  - bloom:
-      - meta:
+          ontologies: []
+  bloom:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -110,8 +118,9 @@ output:
             Bloom filter created by shredding the -f input
             into k-mers of size -k
           pattern: "*.bloom"
-  - scaffolds_graph:
-      - meta:
+          ontologies: []
+  scaffolds_graph:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -122,8 +131,9 @@ output:
             scaffold graph (for visualizing merges), can be rendered 
             in neato, graphviz, etc
           pattern: "*.gv"
-  - assembly_correspondence:
-      - meta:
+          ontologies: []
+  assembly_correspondence:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -135,18 +145,23 @@ output:
             contig ID, original_name, #linking kmer pairs,
             links ratio, gap or overlap
           pattern: "*.assembly_correspondence.tsv"
-  - simplepair_checkpoint:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  simplepair_checkpoint:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1']`
       - "*.simplepair_checkpoint.tsv":
           type: file
-          description: checkpoint file, contains info to rebuild datastructure for .gv graph
+          description: checkpoint file, contains info to rebuild datastructure for .gv
+            graph
           pattern: "*.simplepair_checkpoint.tsv"
-  - tigpair_checkpoint:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  tigpair_checkpoint:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -163,12 +178,16 @@ output:
             3) explore very large kmer spaces,
             4) scaffold with output of ARCS
           pattern: "*.tigpair_checkpoint.tsv"
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nschan"
 maintainers:

@@ -23,25 +23,32 @@ input:
         type: file
         description: FASTQ/FASTA file
         pattern: "*.{fq,fq.gz,fa,fa.gz}"
-  - - filter_list:
-        type: file
-        description: BED file or a text file with a list of sequence names
-        pattern: "*.{bed,lst}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - filter_list:
+      type: file
+      description: BED file or a text file with a list of sequence names
+      pattern: "*.{bed,lst}"
+      ontologies: []
 output:
-  - sequences:
-      - meta:
+  sequences:
+    - - meta:
           type: file
           description: FASTQ/FASTA file
           pattern: "*.{fq.gz,fa.gz}"
+          ontologies: []
       - "*.gz":
           type: file
           description: FASTQ/FASTA file
           pattern: "*.{fq.gz,fa.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sidorov-si"
 maintainers:

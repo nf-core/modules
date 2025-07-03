@@ -29,13 +29,15 @@ input:
           the output bam file from motus profile.
           Or the intermediate mgc read counts table.
         pattern: "*.{fastq,fq,fasta,fa,fastq.gz,fq.gz,fasta.gz,fa.gz,.bam,.mgc}"
-  - - db:
-        type: directory
-        description: |
-          mOTUs database downloaded by `motus downloadDB`
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - db:
+      type: directory
+      description: |
+        mOTUs database downloaded by `motus downloadDB`
 output:
-  - out:
-      - meta:
+  out:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,8 +46,9 @@ output:
           type: file
           description: Results with taxonomic classification of each read
           pattern: "*.out"
-  - bam:
-      - meta:
+          ontologies: []
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,8 +57,9 @@ output:
           type: file
           description: Optional intermediate sorted BAM file from BWA
           pattern: "*.{bam}"
-  - mgc:
-      - meta:
+          ontologies: []
+  mgc:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,8 +68,9 @@ output:
           type: file
           description: Optional intermediate mgc read count table file saved with `-M`.
           pattern: "*.{mgc}"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -74,11 +79,14 @@ output:
           type: file
           description: Standard error logging file containing summary statistics
           pattern: "*.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jianhong"
 maintainers:

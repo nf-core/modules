@@ -25,25 +25,31 @@ input:
         type: file
         description: A VCF or JSON file containing called structural variants
         pattern: "*.{vcf,json}"
+        ontologies:
+          - edam: http://edamontology.org/format_3464 # JSON
     - variants_index:
         type: file
         description: The index for the VCF file
         pattern: "*.tbi"
+        ontologies: []
     - reads:
         type: file
         description: BAM or CRAM file(s) to genotype against. These should be specified
           inside the `manifest`
         pattern: "*.{bam,cram}"
+        ontologies: []
     - reads_index:
         type: file
         description: The index/indices for the BAM/CRAM file(s)
         pattern: "*.{bai,crai}"
+        ontologies: []
     - manifest:
         type: file
         description: |
           A tab separated file containing information on the BAM/CRAM files.
           This information can be generated using paragraph/idxdepth.
           More information can be found here: https://github.com/Illumina/paragraph#sample-manifest
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -54,6 +60,7 @@ input:
         description: The reference FASTA file used to generate the VCF and BAM/CRAM
           files
         pattern: "*.{fa,fasta,fna}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -63,9 +70,10 @@ input:
         type: file
         description: The index of the reference FASTA file
         pattern: "*.fai"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -74,8 +82,10 @@ output:
           type: file
           description: The genotyped VCF file in BGZIP format
           pattern: "*.vcf.gz"
-  - json:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -84,11 +94,15 @@ output:
           type: file
           description: The genotyped JSON file in GZIP format
           pattern: "*.json.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

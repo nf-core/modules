@@ -18,13 +18,13 @@ tools:
       identifier: ""
 
 input:
-  - - db_zenodo_id:
-        type: integer
-        description: Zenodo ID of the CheckM2 database to download
+  - db_zenodo_id:
+      type: integer
+      description: Zenodo ID of the CheckM2 database to download
 
 output:
-  - database:
-      - meta:
+  database:
+    - - meta:
           type: map
           description: |
             Groovy Map containing database information
@@ -33,10 +33,13 @@ output:
           type: file
           description: CheckM2 database file
           pattern: "checkm2_db_v*.dmnd"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@dialvarezs"

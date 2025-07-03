@@ -26,6 +26,8 @@ input:
         type: file
         description: Read counts in hdf5 or tsv format.
         pattern: "*.{hdf5,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
   - - meta2:
         type: map
         description: |
@@ -35,9 +37,10 @@ input:
         type: file
         description: Panel of normals file hdf5 or tsv format.
         pattern: "*.{hdf5}"
+        ontologies: []
 output:
-  - standardized:
-      - meta:
+  standardized:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -46,8 +49,10 @@ output:
           type: file
           description: Standardized copy ratios file.
           pattern: "*.{tsv}"
-  - denoised:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  denoised:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -56,11 +61,15 @@ output:
           type: file
           description: Denoised copy ratios file
           pattern: "*.{tsv}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ramprasadn"
 maintainers:

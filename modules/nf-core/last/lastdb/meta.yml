@@ -25,9 +25,11 @@ input:
         description: >
           Sequence file in FASTA or FASTQ format. May be compressed with gzip.
         pattern: "*.{fasta,fasta.gz,fastq,fastq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
 output:
-  - index:
-      - meta:
+  index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -36,11 +38,13 @@ output:
           type: directory
           description: directory containing the files of the LAST index
           pattern: "lastdb/"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@charles-plessy"
 maintainers:

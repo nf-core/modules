@@ -34,9 +34,10 @@ input:
         type: file
         description: optional - a bed file with regions to define the mappability off
         pattern: "*.bed"
+        ontologies: []
 output:
-  - wig:
-      - meta:
+  wig:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,8 +46,9 @@ output:
           type: file
           description: genmap wig mappability file
           pattern: "*.wig"
-  - bedgraph:
-      - meta:
+          ontologies: []
+  bedgraph:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,8 +57,9 @@ output:
           type: file
           description: genmap bedgraph mappability file
           pattern: "*.bedgraph"
-  - txt:
-      - meta:
+          ontologies: []
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -65,8 +68,9 @@ output:
           type: file
           description: genmap text mappability file
           pattern: "*.txt"
-  - csv:
-      - meta:
+          ontologies: []
+  csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -75,11 +79,15 @@ output:
           type: file
           description: genmap csv mappability file
           pattern: "*.csv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jianhong"
   - "@nvnieuwk"

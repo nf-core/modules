@@ -33,25 +33,28 @@ input:
         type: file
         description: Input genome assembly file in FASTA format
         pattern: "*.{fa,fasta,fna}"
-  - - gxdb:
-        type: directory
-        description: Directory containing the FCS-GX database
-  - - ramdisk_path:
-        type: string
-        description: Path to RAM disk for improved performance (optional)
+        ontologies: []
+  - gxdb:
+      type: directory
+      description: Directory containing the FCS-GX database
+  - ramdisk_path:
+      type: string
+      description: Path to RAM disk for improved performance (optional)
 
 output:
-  - fcsgx_report:
-      - meta:
+  fcsgx_report:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.fcs_gx_report.txt":
           type: file
-          description: Final contamination report with contaminant cleaning actions. Interpreted by gx clean genome to separate cleaned sequences from contaminants.
-  - taxonomy_report:
-      - meta:
+          description: Final contamination report with contaminant cleaning actions.
+            Interpreted by gx clean genome to separate cleaned sequences from contaminants.
+          ontologies: []
+  taxonomy_report:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -60,8 +63,9 @@ output:
           type: file
           description: Intermediate report with assigned taxonomies to individual sequences.
           pattern: "*.taxonomy.rpt"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -70,8 +74,9 @@ output:
           type: file
           description: FCSGX log file
           pattern: "*.summary.txt"
-  - hits:
-      - meta:
+          ontologies: []
+  hits:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -80,11 +85,15 @@ output:
           type: file
           description: Save intermediate alignments
           pattern: "*.hits.tsv.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@tillenglert"
   - "@mahesh-panchal"

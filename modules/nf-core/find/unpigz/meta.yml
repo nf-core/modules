@@ -32,9 +32,11 @@ input:
         description: List of gzipped files to decompress
         pattern: "*.gz"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
 output:
-  - file_out:
-      - meta:
+  file_out:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,11 +47,14 @@ output:
           description: |
             Files that have been decompressed
           pattern: "*"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Biowilko"
 maintainers:

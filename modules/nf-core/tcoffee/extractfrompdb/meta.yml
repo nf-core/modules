@@ -23,9 +23,10 @@ input:
     - pdb:
         type: file
         description: Input pdb to be reformatted
+        ontologies: []
 output:
-  - formatted_pdb:
-      - meta:
+  formatted_pdb:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -34,10 +35,13 @@ output:
           type: file
           description: Formatted pdb file
           pattern: "*"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@luisas"

@@ -77,6 +77,7 @@ input:
         type: file
         description: BAM/CRAM/SAM files
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -86,9 +87,10 @@ input:
         type: file
         description: Reference genome file
         pattern: "*.{fasta,fa,fna}"
+        ontologies: []
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -97,8 +99,9 @@ output:
           type: file
           description: Sorted and duplicate marked BAM file
           pattern: "*.bam"
-  - cram:
-      - meta:
+          ontologies: []
+  cram:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -107,8 +110,9 @@ output:
           type: file
           description: Sorted and duplicate marked CRAM file
           pattern: "*.cram"
-  - csi:
-      - meta:
+          ontologies: []
+  csi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -117,8 +121,9 @@ output:
           type: file
           description: Sorted and duplicate marked BAM index file
           pattern: "*.csi"
-  - crai:
-      - meta:
+          ontologies: []
+  crai:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -127,8 +132,9 @@ output:
           type: file
           description: Sorted and duplicate marked CRAM index file
           pattern: "*.crai"
-  - metrics:
-      - meta:
+          ontologies: []
+  metrics:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -137,11 +143,14 @@ output:
           type: file
           description: Duplicate metrics file
           pattern: "*.metrics"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@matthdsm"
 maintainers:

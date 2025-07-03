@@ -24,14 +24,15 @@ input:
         type: file
         description: FASTA file containing one or more consensus sequences
         pattern: "*.{fasta,fa}"
-  - - dataset:
-        type: directory
-        description: Path containing the dataset files obtained by running nextclade
-          dataset get
-        pattern: "*"
+        ontologies: []
+  - dataset:
+      type: directory
+      description: Path containing the dataset files obtained by running nextclade dataset
+        get
+      pattern: "*"
 output:
-  - csv:
-      - meta:
+  csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,8 +41,10 @@ output:
           type: file
           description: CSV file containing nextclade results
           pattern: "*.{csv}"
-  - csv_errors:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  csv_errors:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,8 +53,9 @@ output:
           type: file
           description: CSV file containing errors from nextclade results
           pattern: "*.{errors.csv}"
-  - csv_insertions:
-      - meta:
+          ontologies: []
+  csv_insertions:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -60,8 +64,9 @@ output:
           type: file
           description: CSV file containing insertions from nextclade results
           pattern: "*.{insertions.csv}"
-  - tsv:
-      - meta:
+          ontologies: []
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -70,8 +75,10 @@ output:
           type: file
           description: TSV file containing nextclade results
           pattern: "*.{tsv}"
-  - json:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -80,8 +87,10 @@ output:
           type: file
           description: JSON file containing nextclade results
           pattern: "*.{json}"
-  - json_auspice:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  json_auspice:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -90,8 +99,9 @@ output:
           type: file
           description: Auspice JSON V2 containing nextclade results
           pattern: "*.{tree.json}"
-  - ndjson:
-      - meta:
+          ontologies: []
+  ndjson:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -100,8 +110,9 @@ output:
           type: file
           description: newline-delimited JSON file containing nextclade results
           pattern: "*.{ndjson}"
-  - fasta_aligned:
-      - meta:
+          ontologies: []
+  fasta_aligned:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -110,8 +121,9 @@ output:
           type: file
           description: FASTA file containing aligned sequences from nextclade results
           pattern: "*.{aligned.fasta}"
-  - fasta_translation:
-      - meta:
+          ontologies: []
+  fasta_translation:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -120,8 +132,9 @@ output:
           type: file
           description: FASTA file containing aligned peptides from nextclade results
           pattern: "*.{_translation.}*.{fasta}"
-  - nwk:
-      - meta:
+          ontologies: []
+  nwk:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -130,11 +143,14 @@ output:
           type: file
           description: NWK file containing nextclade results
           pattern: "*.{nwk}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@antunderwood"
   - "@drpatelh"

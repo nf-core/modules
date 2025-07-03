@@ -1,4 +1,3 @@
----
 name: nacho_normalize
 description: |
   NACHO (NAnostring quality Control dasHbOard) is developed for NanoString nCounter data.
@@ -36,6 +35,7 @@ input:
         description: |
           List of RCC files for all samples, which are direct outputs from NanoString runs
         pattern: "*.RCC"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -47,37 +47,43 @@ input:
         description: |
           Comma-separated file with 3 columns: RCC_FILE, RCC_FILE_NAME, and SAMPLE_ID
 
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
 output:
-  - normalized_counts:
-      - meta:
+  normalized_counts:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "normalized_counts.tsv":
+      - normalized_counts.tsv:
           type: file
           description: |
             Tab-separated file with gene normalized counts for the samples
           pattern: "normalized_counts.tsv"
-
-  - normalized_counts_wo_HK:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  normalized_counts_wo_HK:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "normalized_counts_wo_HKnorm.tsv":
+      - normalized_counts_wo_HKnorm.tsv:
           type: file
           description: |
             Tab-separated file with gene normalized counts for the samples, without housekeeping genes.
           pattern: "normalized_counts_wo_HKnorm.tsv"
-  - versions:
-      - "versions.yml":
-          type: file
-          description: |
-            File containing software versions
-          pattern: "versions.yml"
-
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: |
+          File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@alanmmobbs93"
 maintainers:

@@ -25,19 +25,22 @@ input:
         type: file
         description: |
           Results with taxonomic classification of each read from Kaiju
+        ontologies: []
     - kraken:
         type: file
         description: |
           Results with taxonomic classification of each read from Kraken
         pattern: "*.{tsv}"
-  - - db:
-        type: directory
-        description: |
-          List containing the database and nodes files for Kaiju
-          e.g. [ 'database.fmi', 'nodes.dmp' ]
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  - db:
+      type: directory
+      description: |
+        List containing the database and nodes files for Kaiju
+        e.g. [ 'database.fmi', 'nodes.dmp' ]
 output:
-  - merged:
-      - meta:
+  merged:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,11 +50,15 @@ output:
           description: Results with merged taxonomic classification of each read based
             on the given strategy '1', '2', 'lca' [default] or 'lowest'
           pattern: "*.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Joon-Klaps"
 maintainers:

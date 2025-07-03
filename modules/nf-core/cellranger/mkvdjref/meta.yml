@@ -22,34 +22,39 @@ tools:
       licence: ["10x Genomics EULA"]
       identifier: ""
 input:
-  - - fasta:
-        type: file
-        description: Reference genome FASTA file (optional)
-        pattern: "*.{fasta,fa}"
-  - - gtf:
-        type: file
-        description: Reference genome GTF file (optional)
-        pattern: "*.gtf"
-  - - seqs:
-        type: file
-        description: Reference genome FASTA file from the 10X Genomics fetch-imgt workflow
-          (optional)
-        pattern: "*.{fasta,fa}"
-  - - reference_name:
-        type: string
-        description: The name to give the new reference folder, e.g. `my_vdj_ref`. This
-          flag is required
-        pattern: str
+  - fasta:
+      type: file
+      description: Reference genome FASTA file (optional)
+      pattern: "*.{fasta,fa}"
+      ontologies: []
+  - gtf:
+      type: file
+      description: Reference genome GTF file (optional)
+      pattern: "*.gtf"
+      ontologies: []
+  - seqs:
+      type: file
+      description: Reference genome FASTA file from the 10X Genomics fetch-imgt workflow
+        (optional)
+      pattern: "*.{fasta,fa}"
+      ontologies: []
+  - reference_name:
+      type: string
+      description: The name to give the new reference folder, e.g. `my_vdj_ref`. This
+        flag is required
+      pattern: str
 output:
-  - reference:
-      - ${reference_name}:
-          type: directory
-          description: Folder containing all the reference indices needed by Cell Ranger
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software version
-          pattern: "versions.yml"
+  reference:
+    - ${reference_name}:
+        type: directory
+        description: Folder containing all the reference indices needed by Cell Ranger
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software version
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ggabernet"
   - "@klkeys"

@@ -32,10 +32,12 @@ input:
           ("normal" here is just a semantic issue, these BAMs could be from tumor or any other kind of tissue). If a
           tumor BAM file is provided, exactly one normal (germline) BAM must be provided.
         pattern: "*.{bam}"
+        ontologies: []
     - normal_bais:
         type: file
         description: BAM index file or files corresponding to the provided normal_bams
         pattern: "*.{bai}"
+        ontologies: []
     - tumor_bam:
         type: file
         description: |
@@ -43,10 +45,12 @@ input:
           their somatic state (present in tumor only, present in normal only, present in both, etc). Note that if a
           tumor BAM file is provided, exactly one normal BAM must be provided.
         pattern: "*.{bam}"
+        ontologies: []
     - tumor_bai:
         type: file
         description: Optional. BAM index file corresponding to provided tumor_bam
         pattern: "*.{bai}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -55,6 +59,7 @@ input:
     - fasta:
         type: file
         description: Input genome fasta file
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -64,8 +69,8 @@ input:
         type: directory
         description: Directory containing biscuit genome index
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -74,11 +79,14 @@ output:
           type: file
           description: vcf file with methylation information
           pattern: "*.{vcf.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@njspix"
 maintainers:

@@ -13,6 +13,7 @@ tools:
       tool_dev_url: "https://github.com/wdecoster/STRdust"
       doi: "10.1101/gr.279265.124 "
       licence: ["MIT"]
+      identifier: ""
 
 input:
   - - meta:
@@ -56,6 +57,7 @@ input:
         type: file
         description: Index of reference genome
         pattern: "*.{fai,gzi}"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -66,9 +68,10 @@ input:
         description: BED file containing STR regions to genotype (optional)
         pattern: "*.bed"
 
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -79,8 +82,10 @@ output:
             Called tandem repeats as VCF file.
             Sorted if `--sorted` command line argument was specified.
           pattern: "*.vcf.gz"
-  - tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -91,13 +96,15 @@ output:
             Index of output VCF.
             Output only if VCF is sorted (i.e. `--sorted` was specified).
           pattern: "*.tbi"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Schmytzi"
 maintainers:

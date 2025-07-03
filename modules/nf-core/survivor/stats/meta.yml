@@ -24,18 +24,19 @@ input:
         type: file
         description: VCF file to filter
         pattern: "*.{vcf}"
-  - - minsv:
-        type: integer
-        description: Min SV size (-1 to disable)
-  - - maxsv:
-        type: integer
-        description: Max SV size (-1 to disable)
-  - - minnumreads:
-        type: integer
-        description: Min number of reads support [RE flag (-1 to disable)]
+        ontologies: []
+  - minsv:
+      type: integer
+      description: Min SV size (-1 to disable)
+  - maxsv:
+      type: integer
+      description: Max SV size (-1 to disable)
+  - minnumreads:
+      type: integer
+      description: Min number of reads support [RE flag (-1 to disable)]
 output:
-  - stats:
-      - meta:
+  stats:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,11 +45,14 @@ output:
           type: file
           description: File containing statistics given input VCF file
           pattern: "*.{stats}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@kubranarci"
 maintainers:

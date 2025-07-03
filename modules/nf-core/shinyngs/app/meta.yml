@@ -25,14 +25,17 @@ input:
         type: file
         description: |
           CSV-format sample sheet with sample metadata
+        ontologies: []
     - feature_meta:
         type: file
         description: |
           TSV-format feature (e.g. gene) metadata
+        ontologies: []
     - assay_files:
         type: file
         description: |
           List of TSV-format matrix files representing different measures for the same samples (e.g. raw and normalised).
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -42,16 +45,19 @@ input:
         type: file
         description: |
           CSV-format file with four columns identifying the sample sheet variable, reference level, treatment level, and optionally a comma-separated list of covariates used as blocking factors.
+        ontologies: []
     - differential_results:
         type: file
         description: |
           List of TSV-format differential analysis outputs, one per row of the contrasts file
-  - - contrast_stats_assay:
-        type: file
-        description: contrast statistics
+        ontologies: []
+  - contrast_stats_assay:
+      type: file
+      description: contrast statistics
+      ontologies: []
 output:
-  - app:
-      - meta:
+  app:
+    - - meta:
           type: map
           description: |
             Groovy Map containing information on experiment.
@@ -61,16 +67,22 @@ output:
           description: |
             The mini R script required build an application from data.rds.
           pattern: "app/app.R"
+          ontologies:
+            - edam: http://edamontology.org/format_3999 # R script
       - "*/app.R":
           type: file
           description: |
             The mini R script required build an application from data.rds.
           pattern: "app/app.R"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3999 # R script
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@pinin4fjords"
 maintainers:

@@ -30,14 +30,15 @@ input:
           gzipped)
         pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
 
-  - - input_type:
-        type: string
-        description: Sequencing technology for reads - either "hifi" for PacBio HiFi
-          reads or "ont" for Oxford Nanopore reads.
+        ontologies: []
+  - input_type:
+      type: string
+      description: Sequencing technology for reads - either "hifi" for PacBio HiFi reads
+        or "ont" for Oxford Nanopore reads.
 
 output:
-  - contigs:
-      - meta:
+  contigs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,8 +48,9 @@ output:
           description: |
             Gzipped fasta file containing the assembled contigs from the input
             reads.
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -56,11 +58,14 @@ output:
       - "*.metaMDBG.log":
           type: file
           description: Log file describing the metaMDBG run.
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@prototaxites"
 maintainers:

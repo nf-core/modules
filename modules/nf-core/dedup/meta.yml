@@ -28,9 +28,10 @@ input:
         type: file
         description: BAM/SAM file
         pattern: "*.{bam,sam}"
+        ontologies: []
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,8 +40,9 @@ output:
           type: file
           description: Deduplicated BAM file
           pattern: "*_rmdup.bam"
-  - json:
-      - meta:
+          ontologies: []
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,8 +51,10 @@ output:
           type: file
           description: JSON file for MultiQC
           pattern: "*.json"
-  - hist:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  hist:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -59,8 +63,9 @@ output:
           type: file
           description: Histogram data of amount of deduplication
           pattern: "*.hist"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -69,11 +74,14 @@ output:
           type: file
           description: Dedup log information
           pattern: "*log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

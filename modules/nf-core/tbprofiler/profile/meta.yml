@@ -24,9 +24,10 @@ input:
         type: file
         description: FASTQ file
         pattern: "*.{fastq.gz,fq.gz}"
+        ontologies: []
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,8 +36,9 @@ output:
           type: file
           description: BAM file with alignment details
           pattern: "*.bam"
-  - csv:
-      - meta:
+          ontologies: []
+  csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,8 +47,10 @@ output:
           type: file
           description: Optional CSV formatted result file of resistance and strain type
           pattern: "*.csv"
-  - json:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,8 +59,10 @@ output:
           type: file
           description: JSON formatted result file of resistance and strain type
           pattern: "*.json"
-  - txt:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -65,8 +71,9 @@ output:
           type: file
           description: Optional text file of resistance and strain type
           pattern: "*.txt"
-  - vcf:
-      - meta:
+          ontologies: []
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -75,11 +82,14 @@ output:
           type: file
           description: VCF with variant info again reference genomes
           pattern: "*.vcf"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@rpetit3"
 maintainers:

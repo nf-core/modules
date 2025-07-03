@@ -24,9 +24,10 @@ input:
         type: file
         description: Nucleotide or protein sequences in FASTA format
         pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
+        ontologies: []
 output:
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,8 +36,10 @@ output:
           type: file
           description: SISTR serovar prediction
           pattern: "*.{tsv}"
-  - allele_fasta:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  allele_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,8 +48,9 @@ output:
           type: file
           description: FASTA file destination of novel cgMLST alleles
           pattern: "*.{fasta}"
-  - allele_json:
-      - meta:
+          ontologies: []
+  allele_json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,8 +59,10 @@ output:
           type: file
           description: Allele sequences and info to JSON
           pattern: "*.{json}"
-  - cgmlst_csv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  cgmlst_csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -65,11 +71,15 @@ output:
           type: file
           description: CSV file destination for cgMLST allelic profiles
           pattern: "*.{csv}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@rpetit3"
 maintainers:

@@ -27,9 +27,11 @@ input:
         type: file
         description: The output file created by kmcp search
         pattern: "*.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
 output:
-  - result:
-      - meta:
+  result:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,11 +40,15 @@ output:
           type: file
           description: Output file in gzipped format
           pattern: "*.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sofstam"
 maintainers:

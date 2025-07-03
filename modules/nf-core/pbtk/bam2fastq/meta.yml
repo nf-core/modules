@@ -26,13 +26,15 @@ input:
         type: file
         description: PacBio BAM file
         pattern: "*.bam"
+        ontologies: []
     - pbi:
         type: file
         description: PacBio BAM file index (.pbi)
         pattern: "*.pbi"
+        ontologies: []
 output:
-  - fastq:
-      - meta:
+  fastq:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -41,11 +43,15 @@ output:
           type: file
           description: Gzipped FASTQ file
           pattern: "*.fastq.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mbeavitt"
   - "@gallvp"

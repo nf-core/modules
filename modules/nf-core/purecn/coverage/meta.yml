@@ -28,17 +28,20 @@ input:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - bai:
         type: file
         description: BAM index file
         pattern: "*.{bai}"
-  - - intervals:
-        type: file
-        description: Annotated targets optimized for copy number calling
-        pattern: "*.txt"
+        ontologies: []
+  - intervals:
+      type: file
+      description: Annotated targets optimized for copy number calling
+      pattern: "*.txt"
+      ontologies: []
 output:
-  - txt:
-      - meta:
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,8 +50,10 @@ output:
           type: file
           description: Intervals coverage file
           pattern: "*.txt.gz"
-  - png:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  png:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -59,8 +64,9 @@ output:
             GC-normalized intervals coverage plot.
             Generated only when GC-normalization is enabled.
           pattern: "*.png"
-  - loess_qc_txt:
-      - meta:
+          ontologies: []
+  loess_qc_txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -71,8 +77,9 @@ output:
             GC-normalized intervals coverage metrics.
             Generated only when GC-normalization is enabled.
           pattern: "*_loess_qc.txt"
-  - loess_txt:
-      - meta:
+          ontologies: []
+  loess_txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -83,11 +90,15 @@ output:
             GC-normalized intervals coverage file.
             Generated only when GC-normalization is enabled.
           pattern: "*_loess.txt.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@aldosr"
   - "@lbeltrame"

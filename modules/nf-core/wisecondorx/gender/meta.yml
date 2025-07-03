@@ -24,6 +24,7 @@ input:
         type: file
         description: Single sample NPZ file (from which to determine the gender)
         pattern: "*.npz"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -33,18 +34,21 @@ input:
         type: file
         description: Reference NPZ file
         pattern: "*.npz"
+        ontologies: []
 output:
-  - gender:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  gender:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

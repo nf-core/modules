@@ -23,13 +23,15 @@ input:
         type: file
         description: Compressed VCF file
         pattern: "*.{.vcf.gz,vcf}"
+        ontologies: []
     - tbi:
         type: file
         description: Index of VCF file
         pattern: "*.vcf.gz.tbi"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,11 +40,15 @@ output:
           type: file
           description: Compressed VCF file
           pattern: "*.vcf.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@lucpen"
 maintainers:

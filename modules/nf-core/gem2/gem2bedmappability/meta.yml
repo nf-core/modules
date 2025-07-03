@@ -25,6 +25,7 @@ input:
         type: file
         description: The mappability file created from the index
         pattern: "*.mappability"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -33,9 +34,10 @@ input:
         type: file
         description: The index of the reference FASTA
         pattern: "*.gem"
+        ontologies: []
 output:
-  - bedgraph:
-      - meta:
+  bedgraph:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,8 +46,9 @@ output:
           type: file
           description: The resulting bedgraph file
           pattern: "*.bg"
-  - sizes:
-      - meta:
+          ontologies: []
+  sizes:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,11 +57,14 @@ output:
           type: file
           description: The chromosome sizes
           pattern: "*.sizes"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

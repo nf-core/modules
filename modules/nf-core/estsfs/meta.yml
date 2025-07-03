@@ -25,17 +25,20 @@ input:
         type: file
         description: config file for est-sfs
         pattern: "*.txt"
+        ontologies: []
     - data:
         type: file
         description: input data file for est-sfs
         pattern: "*.txt"
+        ontologies: []
     - seed:
         type: file
         description: text file containing random number seed
         pattern: "*.txt"
+        ontologies: []
 output:
-  - sfs_out:
-      - meta:
+  sfs_out:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,8 +47,9 @@ output:
           type: file
           description: output file consists of the comma-separated estimated uSFS vector
           pattern: "*.txt"
-  - pvalues_out:
-      - meta:
+          ontologies: []
+  pvalues_out:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,15 +59,13 @@ output:
           description: this file contains the estimated ancestral state probabilities
             for each site
           pattern: "*.txt"
-      - ues_out:
-          type: file
-          description: this file contains the estimated ancestral state probabilities
-            for each site
-          pattern: "*.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@BioInf2305"

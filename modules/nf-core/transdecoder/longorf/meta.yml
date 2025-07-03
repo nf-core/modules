@@ -27,9 +27,10 @@ input:
         type: file
         description: fasta file
         pattern: "*.{fasta}"
+        ontologies: []
 output:
-  - pep:
-      - meta:
+  pep:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,8 +40,9 @@ output:
           description: all ORFs meeting the minimum length criteria, regardless of coding
             potential. file
           pattern: "*.{pep}"
-  - gff3:
-      - meta:
+          ontologies: []
+  gff3:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,8 +51,9 @@ output:
           type: file
           description: positions of all ORFs as found in the target transcripts. file
           pattern: "*.{gff3}"
-  - cds:
-      - meta:
+          ontologies: []
+  cds:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -59,8 +62,9 @@ output:
           type: file
           description: the nucleotide coding sequence for all detected ORFs. file
           pattern: "*{cds}"
-  - dat:
-      - meta:
+          ontologies: []
+  dat:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -69,15 +73,18 @@ output:
           type: file
           description: nucleotide frequencies
           pattern: "*{dat}"
-  - folder:
-      - ${output_dir_name}:
-          type: directory
-          description: contains all the files from the run
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  folder:
+    - ${output_dir_name}:
+        type: directory
+        description: contains all the files from the run
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Danilo2771"
 maintainers:

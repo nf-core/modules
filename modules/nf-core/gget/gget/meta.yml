@@ -28,9 +28,10 @@ input:
         type: file
         description: |
           Optional input files which can be specified for certain tools. This is mostly used to supply a FASTA file for gget muscle.
+        ontologies: []
 output:
-  - files:
-      - meta:
+  files:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,8 +39,9 @@ output:
       - "*[!versions.yml][!${prefix}.${extension}]*":
           type: file
           description: File containing output of gget command.
-  - output:
-      - meta:
+          ontologies: []
+  output:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -48,11 +50,16 @@ output:
           type: file
           description: File containing output of gget command (-o for most gget tools).
           pattern: "*.{json,csv}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@adamrtalbot"
 maintainers:

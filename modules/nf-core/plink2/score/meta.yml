@@ -24,21 +24,25 @@ input:
         type: file
         description: PLINK 2 binary genotype table
         pattern: "*.{pgen}"
+        ontologies: []
     - psam:
         type: file
         description: PLINK 2 sample information file
         pattern: "*.{psam}"
+        ontologies: []
     - pvar:
         type: file
         description: PLINK 2 variant information file
         pattern: "*.{pvar}"
-  - - scorefile:
-        type: file
-        description: A text file containing variant identifiers and weights
-        pattern: "*.{scores,txt,scorefile}"
+        ontologies: []
+  - scorefile:
+      type: file
+      description: A text file containing variant identifiers and weights
+      pattern: "*.{scores,txt,scorefile}"
+      ontologies: []
 output:
-  - score:
-      - meta:
+  score:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,11 +51,14 @@ output:
           type: file
           description: A text file containing sample scores, in plink 2 .sscore format
           pattern: "*.{sscore}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nebfield"
 maintainers:

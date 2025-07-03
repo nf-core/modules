@@ -23,48 +23,54 @@ input:
         type: file
         description: AnnData file containing unfiltered data (with empty droplets)
         pattern: "*.h5ad"
+        ontologies: []
 output:
-  - h5:
-      - meta:
+  h5:
+    - - meta:
           type: file
-          description: Full count matrix as an h5 file, with background RNA removed. This
-            file contains all the original droplet barcodes.
+          description: Full count matrix as an h5 file, with background RNA removed.
+            This file contains all the original droplet barcodes.
           pattern: "*.h5"
+          ontologies: []
       - ${prefix}.h5:
           type: file
-          description: Full count matrix as an h5 file, with background RNA removed. This
-            file contains all the original droplet barcodes.
+          description: Full count matrix as an h5 file, with background RNA removed.
+            This file contains all the original droplet barcodes.
           pattern: "*.h5"
-  - filtered_h5:
-      - meta:
+          ontologies: []
+  filtered_h5:
+    - - meta:
           type: file
-          description: |
-            Full count matrix as an h5 file, with background RNA removed. This file contains only the droplet barcodes which were determined to have a > 50% posterior probability of containing cells.
+          description: Full count matrix as an h5 file, with background RNA removed.
+            This file contains all the original droplet barcodes.
           pattern: "*.h5"
+          ontologies: []
       - ${prefix}_filtered.h5:
           type: file
           description: |
             Full count matrix as an h5 file, with background RNA removed. This file contains only the droplet barcodes which were determined to have a > 50% posterior probability of containing cells.
           pattern: "*.h5"
-  - posterior_h5:
-      - meta:
+          ontologies: []
+  posterior_h5:
+    - - meta:
           type: file
-          description: |
-            The full posterior probability of noise counts. This is not normally used downstream.
+          description: Full count matrix as an h5 file, with background RNA removed.
+            This file contains all the original droplet barcodes.
           pattern: "*.h5"
+          ontologies: []
       - ${prefix}_posterior.h5:
           type: file
           description: |
             The full posterior probability of noise counts. This is not normally used downstream.
           pattern: "*.h5"
-  - barcodes:
-      - meta:
+          ontologies: []
+  barcodes:
+    - - meta:
           type: file
-          description: |
-            CSV file containing all the droplet barcodes which were determined to have a > 50% posterior probability of containing cells. |
-            Barcodes are written in plain text. This information is also contained in each of the above outputs, |
-            but is included as a separate output for convenient use in certain downstream applications.
-          pattern: "*.csv"
+          description: Full count matrix as an h5 file, with background RNA removed.
+            This file contains all the original droplet barcodes.
+          pattern: "*.h5"
+          ontologies: []
       - ${prefix}_cell_barcodes.csv:
           type: file
           description: |
@@ -72,64 +78,81 @@ output:
             Barcodes are written in plain text. This information is also contained in each of the above outputs, |
             but is included as a separate output for convenient use in certain downstream applications.
           pattern: "*.csv"
-  - metrics:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  metrics:
+    - - meta:
           type: file
-          description: |
-            Metrics describing the run, potentially to be used to flag problematic runs |
-            when using CellBender as part of a large-scale automated pipeline.
-          pattern: "*.csv"
+          description: Full count matrix as an h5 file, with background RNA removed.
+            This file contains all the original droplet barcodes.
+          pattern: "*.h5"
+          ontologies: []
       - ${prefix}_metrics.csv:
           type: file
           description: |
             Metrics describing the run, potentially to be used to flag problematic runs |
             when using CellBender as part of a large-scale automated pipeline.
           pattern: "*.csv"
-  - report:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  report:
+    - - meta:
           type: file
-          description: |
-            HTML report including plots and commentary, along with any warnings or suggestions for improved parameter settings.
-          pattern: "*.html"
+          description: Full count matrix as an h5 file, with background RNA removed.
+            This file contains all the original droplet barcodes.
+          pattern: "*.h5"
+          ontologies: []
       - ${prefix}_report.html:
           type: file
           description: |
             HTML report including plots and commentary, along with any warnings or suggestions for improved parameter settings.
           pattern: "*.html"
-  - pdf:
-      - meta:
+          ontologies: []
+  pdf:
+    - - meta:
           type: file
-          description: PDF file that provides a standard graphical summary of the inference
-            procedure.
-          pattern: "*.pdf"
+          description: Full count matrix as an h5 file, with background RNA removed.
+            This file contains all the original droplet barcodes.
+          pattern: "*.h5"
+          ontologies: []
       - ${prefix}.pdf:
           type: file
           description: PDF file that provides a standard graphical summary of the inference
             procedure.
           pattern: "*.pdf"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: file
-          description: Log file produced by the cellbender remove-background run.
-          pattern: "*.log"
+          description: Full count matrix as an h5 file, with background RNA removed.
+            This file contains all the original droplet barcodes.
+          pattern: "*.h5"
+          ontologies: []
       - ${prefix}.log:
           type: file
           description: Log file produced by the cellbender remove-background run.
           pattern: "*.log"
-  - checkpoint:
-      - meta:
+          ontologies: []
+  checkpoint:
+    - - meta:
           type: file
-          description: Checkpoint file which contains the trained model and the full posterior.
-          pattern: "*.ckpt"
+          description: Full count matrix as an h5 file, with background RNA removed.
+            This file contains all the original droplet barcodes.
+          pattern: "*.h5"
+          ontologies: []
       - ckpt.tar.gz:
           type: file
-          description: Checkpoint file which contains the trained model and the full posterior.
+          description: Checkpoint file which contains the trained model and the full
+            posterior.
           pattern: "*.ckpt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software version
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software version
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nictru"
 maintainers:

@@ -14,28 +14,33 @@ tools:
       licence: ["BSD-3-Clause"]
       identifier: ""
 input:
-  - - fasta:
-        type: file
-        description: Genome assembly FASTA file or folder containing FASTA files (uncompressed).
-        pattern: "*.{fasta,fa}"
-  - - chromsizes:
-        type: file
-        description: Path to a chromsizes file.
-  - - enzyme:
-        type: string
-        description: Name of restriction enzyme. e.g. CviQI.
-        documentation: http://biopython.org/DIST/docs/cookbook/Restriction.html
+  - fasta:
+      type: file
+      description: Genome assembly FASTA file or folder containing FASTA files (uncompressed).
+      pattern: "*.{fasta,fa}"
+      ontologies: []
+  - chromsizes:
+      type: file
+      description: Path to a chromsizes file.
+      ontologies: []
+  - enzyme:
+      type: string
+      description: Name of restriction enzyme. e.g. CviQI.
+      documentation: http://biopython.org/DIST/docs/cookbook/Restriction.html
 output:
-  - bed:
-      - "*.bed":
-          type: file
-          description: A genome segmentation of restriction fragments as a BED file.
-          pattern: "*.{bed}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  bed:
+    - "*.bed":
+        type: file
+        description: A genome segmentation of restriction fragments as a BED file.
+        pattern: "*.{bed}"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jianhong"
 maintainers:

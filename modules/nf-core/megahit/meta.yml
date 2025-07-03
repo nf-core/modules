@@ -35,14 +35,16 @@ input:
         description: |
           A single or list of input FastQ files for single-end or R1 of paired-end library(s),
           respectively in gzipped or uncompressed FASTQ or FASTA format.
+        ontologies: []
     - reads2:
         type: file
         description: |
           A single or list of input FastQ files for R2 of paired-end library(s),
           respectively in gzipped or uncompressed FASTQ or FASTA format.
+        ontologies: []
 output:
-  - contigs:
-      - meta:
+  contigs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -51,8 +53,10 @@ output:
           type: file
           description: Final final contigs result of the assembly in FASTA format.
           pattern: "*.contigs.fa.gz"
-  - k_contigs:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  k_contigs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -61,8 +65,10 @@ output:
           type: file
           description: Contigs assembled from the de Bruijn graph of order-K
           pattern: "k*.contigs.fa.gz"
-  - addi_contigs:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  addi_contigs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -72,8 +78,10 @@ output:
           description: Contigs assembled after iteratively removing local low coverage
             unitigs in the de Bruijn graph of order-K
           pattern: "k*.addi.fa.gz"
-  - local_contigs:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  local_contigs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -82,19 +90,23 @@ output:
           type: file
           description: Contigs of the locally assembled contigs for k=K
           pattern: "k*.local.fa.gz"
-  - kfinal_contigs:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  kfinal_contigs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - intermediate_contigs/k*.final.contigs.fa.gz:
           type: file
-          description: Stand-alone contigs for k=K; if local assembly is turned on, the
-            file will be empty
+          description: Stand-alone contigs for k=K; if local assembly is turned on,
+            the file will be empty
           pattern: "k*.final.contigs.fa.gz"
-  - log:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -103,11 +115,14 @@ output:
           type: file
           description: Log file containing statistics of the assembly output
           pattern: "*.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

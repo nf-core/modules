@@ -31,9 +31,10 @@ input:
     - fasta:
         type: file
         description: Input genome fasta file
+        ontologies: []
 output:
-  - index:
-      - meta:
+  index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -42,11 +43,13 @@ output:
           type: directory
           description: Bismark genome index directory
           pattern: "BismarkIndex"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@phue"
 maintainers:

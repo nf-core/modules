@@ -31,6 +31,7 @@ input:
         type: file
         description: Assembly to be scaffolded
         pattern: "*.{fasta,fasta.gz,fa,fa.gz}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -40,6 +41,7 @@ input:
         type: file
         description: Reference assembly
         pattern: "*.{fasta,fasta.gz,fa,fa.gz}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -49,6 +51,7 @@ input:
         type: file
         description: list of target sequences to ignore
         pattern: "*.txt"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -58,14 +61,16 @@ input:
         type: file
         description: list of query sequences to leave unplaced
         pattern: "*.txt"
+        ontologies: []
     - hard_skip:
         type: file
         description: list of query headers to leave unplaced and exclude from 'chr0'
           ('-C')
         pattern: "*.txt"
+        ontologies: []
 output:
-  - corrected_assembly:
-      - meta:
+  corrected_assembly:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -74,8 +79,9 @@ output:
           type: file
           description: FASTA file containing the patched assembly
           pattern: "*.fasta"
-  - corrected_agp:
-      - meta:
+          ontologies: []
+  corrected_agp:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -84,8 +90,9 @@ output:
           type: file
           description: agp file defining how corrected_assembly is built
           pattern: "*.agp"
-  - corrected_stats:
-      - meta:
+          ontologies: []
+  corrected_stats:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -95,11 +102,14 @@ output:
           description: Statistics on the scaffold
           pattern: "*.stats"
 
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nschan"
 maintainers:

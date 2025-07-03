@@ -16,16 +16,20 @@ tools:
         # There is no input. This module downloads a pre-built taxonomy database for use with Krona Tools.
       identifier: biotools:krona
 output:
-  - db:
-      - taxonomy/taxonomy.tab:
-          type: file
-          description: A TAB separated file that contains a taxonomy database.
-          pattern: "*.{tab}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  db:
+    - taxonomy/taxonomy.tab:
+        type: file
+        description: A TAB separated file that contains a taxonomy database.
+        pattern: "*.{tab}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mjakobs"
 maintainers:

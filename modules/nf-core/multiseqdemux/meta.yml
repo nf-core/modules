@@ -1,14 +1,15 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "multiseqdemux"
-description: Identify singlets, doublets and negative cells from multiplexing experiments. Annotate singlets by tags.
+description: Identify singlets, doublets and negative cells from multiplexing experiments.
+  Annotate singlets by tags.
 keywords:
   - demultiplexing
   - hashing-based deconvolution
   - single-cell
 tools:
   - "multiseqdemux":
-      description: "MULTIseqDemux is the demultiplexing module of Seurat, which demultiplex samples based on data from cell hashing."
+      description: "MULTIseqDemux is the demultiplexing module of Seurat, which demultiplex
+        samples based on data from cell hashing."
       homepage: "https://satijalab.org/seurat/reference/multiseqdemux"
       documentation: "https://satijalab.org/seurat/reference/multiseqdemux"
       tool_dev_url: "https://github.com/satijalab/seurat"
@@ -26,15 +27,15 @@ input:
         type: file
         description: |
           A `.rds` file containing the seurat object. Assumes that the hash tag oligo (HTO) data has been added and normalized.
+        ontologies: []
     - assay:
         type: string
         description: |
           Name of the Hashtag assay, usually called "HTO" by default. Use the custom name if the assay has been named differently.
 
 output:
-
-  - params:
-      - meta:
+  params:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,8 +45,10 @@ output:
           description: The used parameters to call MULTIseqDemux in the R-Script.
           pattern: "_params_multiseqdemux.csv"
 
-  - results:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,8 +58,10 @@ output:
           description: Resuls of MULTIseqDemux.
           pattern: "_res_multiseqdemux.csv"
 
-  - rds:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  rds:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -66,12 +71,15 @@ output:
           description: SeuratObject saved as RDS.
           pattern: "_multiseqdemux.rds"
 
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@LuisHeinzlmeier"
 maintainers:

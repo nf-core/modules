@@ -18,21 +18,24 @@ tools:
       identifier: "biotools:ncbi_fcs"
 
 input:
-  - - manifest:
-        type: file
-        description: URL to a FCXGX database
-        pattern: "https://ftp*.manifest"
+  - manifest:
+      type: file
+      description: URL to a FCXGX database
+      pattern: "https://ftp*.manifest"
 
+      ontologies: []
 output:
-  - database:
-      - $prefix:
-          type: directory
-          description: A directory containing an FCSGX database
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  database:
+    - $prefix:
+        type: directory
+        description: A directory containing an FCSGX database
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mahesh-panchal"
 maintainers:

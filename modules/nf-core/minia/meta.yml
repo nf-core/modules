@@ -23,9 +23,10 @@ input:
         type: file
         description: Input reads in FastQ format
         pattern: "*.{fastq.gz, fastq}"
+        ontologies: []
 output:
-  - contigs:
-      - meta:
+  contigs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -34,8 +35,9 @@ output:
           type: file
           description: The assembled contigs
           pattern: "*.contigs.fa"
-  - unitigs:
-      - meta:
+          ontologies: []
+  unitigs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,8 +46,9 @@ output:
           type: file
           description: The assembled unitigs
           pattern: "*.unitigs.fa"
-  - h5:
-      - meta:
+          ontologies: []
+  h5:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,11 +57,14 @@ output:
           type: file
           description: Minia output h5 file
           pattern: "*{.h5}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@drpatelh"
   - "@kevinmenden"

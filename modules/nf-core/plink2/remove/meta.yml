@@ -22,44 +22,50 @@ input:
           e.g. [ id:'test' ]
     - plink_genotype_file:
         type: file
-        description: PLINK binary genotype table file or PLINK 2 binary genotype table file
+        description: PLINK binary genotype table file or PLINK 2 binary genotype table
+          file
         pattern: "*.{bed,pgen}"
+        ontologies: []
     - plink_variant_file:
         type: file
         description: PLINK extended MAP file or PLINK 2 variant information file
         pattern: "*.{bim,pvar}"
+        ontologies: []
     - plink_sample_file:
         type: file
         description: PLINK sample information file or PLINK 2 sample information file
         pattern: "*.{fam,psam}"
-  - - sample_exclude_list:
-        type: file
-        description: List of samples to exclude
-        ontologies:
-          - edam: "http://edamontology.org/data_0971"
+        ontologies: []
+  - sample_exclude_list:
+      type: file
+      description: List of samples to exclude
+      ontologies:
+        - edam: "http://edamontology.org/data_0971"
 output:
-  - remove_bim:
-      - meta:
+  remove_bim:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
       - "*.bim":
           type: file
-          description: PLINK extended MAP file 
+          description: PLINK extended MAP file
           pattern: "*.bim"
-  - remove_bed:
-      - meta:
+          ontologies: []
+  remove_bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
       - "*.bed":
           type: file
-          description: PLINK binary genotype table file 
+          description: PLINK binary genotype table file
           pattern: "*.bed"
-  - remove_fam:
-      - meta:
+          ontologies: []
+  remove_fam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -68,8 +74,9 @@ output:
           type: file
           description: PLINK sample information file
           pattern: "*.fam"
-  - remove_pgen:
-      - meta:
+          ontologies: []
+  remove_pgen:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -78,8 +85,9 @@ output:
           type: file
           description: PLINK 2 binary genotype table file
           pattern: "*.{pgen}"
-  - remove_psam:
-      - meta:
+          ontologies: []
+  remove_psam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -88,8 +96,9 @@ output:
           type: file
           description: PLINK 2 sample information file
           pattern: "*.{psam}"
-  - remove_pvar:
-      - meta:
+          ontologies: []
+  remove_pvar:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -98,11 +107,14 @@ output:
           type: file
           description: PLINK 2 variant information file
           pattern: "*.{pvar}"
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@RuthEberhardt"
 maintainers:

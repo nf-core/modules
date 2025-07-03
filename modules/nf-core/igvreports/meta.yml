@@ -27,15 +27,18 @@ input:
         type: file
         description: |
           VCF, BED, MAF, BEDPE, or generic tab delimited file of genomic variant sites
+        ontologies: []
     - tracks:
         type: file
         description: |
           List of any set of files of the types that IGV can display,
           eg BAM/CRAM, GTF/GFF, VCF, BED, etc
+        ontologies: []
     - tracks_indices:
         type: file
         description: |
           List of indices for the tracks
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -45,29 +48,35 @@ input:
         type: file
         description: Reference fasta file
         pattern: "*.{fasta,fa}"
+        ontologies: []
     - fai:
         type: file
         description: Reference fasta file index
         pattern: "*.{fai}"
+        ontologies: []
 output:
-  - report:
-      - meta:
+  report:
+    - - meta:
           type: file
           description: |
             html report  with a table of genomic sites and an embedded
             IGV genome browser for viewing data for each site
           pattern: "*.{html}"
+          ontologies: []
       - "*.html":
           type: file
           description: |
             html report  with a table of genomic sites and an embedded
             IGV genome browser for viewing data for each site
           pattern: "*.{html}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@souljamie"
 maintainers:

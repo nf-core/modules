@@ -29,14 +29,15 @@ input:
           genomes or longer contigs as nucleotide or protein sequences (fasta) or fragmented
           metagenomic reads (fastq)
         pattern: "*.{fasta}"
-  - - hmm_model:
-        type: string
-        description: name of custom hidden markov model to be used [pre-defined class_a,
-          class_b_1_2, class_b_3, class_c, class_d_1, class_d_2, qnr, tet_efflux, tet_rpg,
-          tet_enzyme]
+        ontologies: []
+  - hmm_model:
+      type: string
+      description: name of custom hidden markov model to be used [pre-defined class_a,
+        class_b_1_2, class_b_3, class_c, class_d_1, class_d_2, qnr, tet_efflux, tet_rpg,
+        tet_enzyme]
 output:
-  - log:
-      - meta:
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,8 +46,9 @@ output:
           type: file
           description: log file
           pattern: "*.{log}"
-  - txt:
-      - meta:
+          ontologies: []
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,8 +57,9 @@ output:
           type: file
           description: analysis summary text file
           pattern: "*.{txt}"
-  - hmm:
-      - meta:
+          ontologies: []
+  hmm:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -65,8 +68,9 @@ output:
           type: file
           description: output from hmmsearch (both single gene annotations + contigs)
           pattern: "*.{out}"
-  - hmm_genes:
-      - meta:
+          ontologies: []
+  hmm_genes:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -75,8 +79,9 @@ output:
           type: file
           description: output from hmmsearch (single gene annotations only)
           pattern: "retrieved-*.{out}"
-  - orfs:
-      - meta:
+          ontologies: []
+  orfs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -85,8 +90,9 @@ output:
           type: file
           description: open reading frames (ORFs)
           pattern: "*.{fasta}"
-  - orfs_amino:
-      - meta:
+          ontologies: []
+  orfs_amino:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -95,8 +101,9 @@ output:
           type: file
           description: protein translation of open reading frames (ORFs)
           pattern: "*.{fasta}"
-  - contigs:
-      - meta:
+          ontologies: []
+  contigs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -105,8 +112,9 @@ output:
           type: file
           description: (complete) contigs that passed the final full-length classification
           pattern: "*.{fasta}"
-  - contigs_pept:
-      - meta:
+          ontologies: []
+  contigs_pept:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -116,19 +124,21 @@ output:
           description: parts of the contigs that passed the final classification step
             that aligned with the HMM, as amino acid sequences
           pattern: "*.{fasta}"
-  - filtered:
-      - meta:
+          ontologies: []
+  filtered:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - ${prefix}/predictedGenes/*filtered.fasta:
           type: file
-          description: sequences that passed the final classification step, but only the
-            parts that where predicted by the HMM to be part of the gene
+          description: sequences that passed the final classification step, but only
+            the parts that where predicted by the HMM to be part of the gene
           pattern: "*.{fasta}"
-  - filtered_pept:
-      - meta:
+          ontologies: []
+  filtered_pept:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -138,8 +148,9 @@ output:
           description: sequences from filtered.fasta, translated in the same frame as
             the gene is predicted to be located
           pattern: "*.{fasta}"
-  - fragments:
-      - meta:
+          ontologies: []
+  fragments:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -149,8 +160,10 @@ output:
           description: All quality controlled retrieved fragments that were classified
             as positive, together with its read-pair, gathered in two files
           pattern: "*.{fastq}"
-  - trimmed:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+  trimmed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -159,8 +172,9 @@ output:
           type: file
           description: The quality controlled retrieved fragments from each input file.
           pattern: "*.{fasta}"
-  - spades:
-      - meta:
+          ontologies: []
+  spades:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -169,8 +183,8 @@ output:
           type: directory
           description: The output from the SPAdes assembly
           pattern: "spades_assembly"
-  - metagenome:
-      - meta:
+  metagenome:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -179,8 +193,9 @@ output:
           type: file
           description: The FASTQ to FASTA converted input files from metagenomic reads.
           pattern: "*.{fasta}"
-  - tmp:
-      - meta:
+          ontologies: []
+  tmp:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -190,11 +205,14 @@ output:
           description: The from FASTQ to FASTA converted input files and their translated
             input sequences. Are only saved if option --store-peptides is used.
           pattern: "*.{fasta}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@louperelo"
 maintainers:

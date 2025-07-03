@@ -26,13 +26,20 @@ input:
         description: library fastq file containing the sgRNA and gene name or count
           table containing the sgRNA and number of reads to per sample
         pattern: "*.{fq,fastq,fastq.gz,fq.gz,csv,txt,tsv}"
-  - - library:
-        type: file
-        description: library file containing the sgRNA and gene name
-        pattern: "*.{csv,txt,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_3752 # CSV
+          - edam: http://edamontology.org/format_3475 # TSV
+  - library:
+      type: file
+      description: library file containing the sgRNA and gene name
+      pattern: "*.{csv,txt,tsv}"
+      ontologies:
+        - edam: http://edamontology.org/format_3752 # CSV
+        - edam: http://edamontology.org/format_3475 # TSV
 output:
-  - count:
-      - meta:
+  count:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -41,8 +48,9 @@ output:
           type: file
           description: File containing read counts
           pattern: "*.countsummary.txt"
-  - norm:
-      - meta:
+          ontologies: []
+  norm:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -51,11 +59,14 @@ output:
           type: file
           description: File containing normalized read counts
           pattern: "*.count_normalized.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@LaurenceKuhl"
 maintainers:

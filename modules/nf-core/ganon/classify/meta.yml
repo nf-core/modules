@@ -28,13 +28,16 @@ input:
         type: file
         description: Single or paired FASTQ files, optionally gzipped
         pattern: "*.{fq,fq.gz,fastq,fastq.gz}"
-  - - db:
-        type: file
-        description: Ganon database files from build or build-custom
-        pattern: "*.{ibf,tax}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - db:
+      type: file
+      description: Ganon database files from build or build-custom
+      pattern: "*.{ibf,tax}"
+      ontologies: []
 output:
-  - tre:
-      - meta:
+  tre:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -43,8 +46,9 @@ output:
           type: file
           description: Full ganon report file
           pattern: "*.tre"
-  - report:
-      - meta:
+          ontologies: []
+  report:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,19 +57,21 @@ output:
           type: file
           description: Plain ganon report file with only targets with match
           pattern: "*.rep"
-  - one:
-      - meta:
+          ontologies: []
+  one:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.one":
           type: file
-          description: Information about a single (best) match of a given read after EM
-            or LCA algorithms
+          description: Information about a single (best) match of a given read after
+            EM or LCA algorithms
           pattern: "*.one"
-  - all:
-      - meta:
+          ontologies: []
+  all:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -74,8 +80,9 @@ output:
           type: file
           description: Information of all matches to a given read
           pattern: "*.all"
-  - unc:
-      - meta:
+          ontologies: []
+  unc:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -84,8 +91,9 @@ output:
           type: file
           description: List of all reads without a hit
           pattern: "*.unc"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -94,11 +102,14 @@ output:
           type: file
           description: Text file containing console output from ganon classify
           pattern: "*.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

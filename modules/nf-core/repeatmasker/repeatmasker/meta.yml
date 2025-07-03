@@ -31,15 +31,15 @@ input:
         pattern: "*.{fasta,fa,fas,fsa,faa,fna}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
-  - - lib:
-        type: file
-        description: Custom library (e.g. from another species)
-        pattern: "*.{fasta,fa,fas,fsa,faa,fna}"
-        ontologies:
-          - edam: http://edamontology.org/format_1929 # FASTA
+  - lib:
+      type: file
+      description: Custom library (e.g. from another species)
+      pattern: "*.{fasta,fa,fas,fsa,faa,fna}"
+      ontologies:
+        - edam: http://edamontology.org/format_1929 # FASTA
 output:
-  - masked:
-      - meta:
+  masked:
+    - - meta:
           type: file
           description: Masked fasta
           pattern: "*.{masked}"
@@ -49,47 +49,47 @@ output:
           description: Masked fasta
           pattern: "*.{masked}"
           ontologies: []
-  - out:
-      - meta:
+  out:
+    - - meta:
           type: file
-          description: Out file
-          pattern: "*.{out}"
+          description: Masked fasta
+          pattern: "*.{masked}"
           ontologies: []
       - ${prefix}.out:
           type: file
           description: Out file
           pattern: "*.{out}"
           ontologies: []
-  - tbl:
-      - meta:
+  tbl:
+    - - meta:
           type: file
-          description: tbl file
-          pattern: "*.{tbl}"
+          description: Masked fasta
+          pattern: "*.{masked}"
           ontologies: []
       - ${prefix}.tbl:
           type: file
           description: tbl file
           pattern: "*.{tbl}"
           ontologies: []
-  - gff:
-      - meta:
+  gff:
+    - - meta:
           type: file
-          description: GFF file
-          pattern: "*.{gff}"
-          ontologies:
-            - edam: http://edamontology.org/format_2305
+          description: Masked fasta
+          pattern: "*.{masked}"
+          ontologies: []
       - ${prefix}.gff:
           type: file
           description: GFF file
           pattern: "*.{gff}"
           ontologies:
             - edam: http://edamontology.org/format_2305
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@kherronism"
   - "@gallvp"

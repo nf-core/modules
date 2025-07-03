@@ -21,18 +21,22 @@ input:
         type: file
         description: A histogram files from the program FastK
         pattern: "*.hist"
+        ontologies: []
     - fastk_ktab:
         type: file
         description: Histogram ktab files from the program FastK (option -t)
         pattern: "*.ktab*"
+        ontologies: []
     - assembly:
         type: file
         description: Genome (primary) assembly files (fasta format)
         pattern: ".fasta"
+        ontologies: []
     - haplotigs:
         type: file
         description: Assembly haplotigs (fasta format)
         pattern: ".fasta"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -43,6 +47,7 @@ input:
         description: trio maternal histogram ktab files from the program FastK (option
           -t)
         pattern: "*.ktab*"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -53,9 +58,10 @@ input:
         description: trio paternal histogram ktab files from the program FastK (option
           -t)
         pattern: "*.ktab*"
+        ontologies: []
 output:
-  - stats:
-      - meta:
+  stats:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,8 +70,9 @@ output:
           type: file
           description: Assembly statistics file
           pattern: "*.completeness.stats"
-  - bed:
-      - meta:
+          ontologies: []
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -74,8 +81,9 @@ output:
           type: file
           description: Assembly only kmer positions not supported by reads in bed format
           pattern: "*_only.bed"
-  - assembly_qv:
-      - meta:
+          ontologies: []
+  assembly_qv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -84,8 +92,9 @@ output:
           type: file
           description: "error and qv table for each scaffold of the assembly"
           pattern: "*.qv"
-  - spectra_cn_fl:
-      - meta:
+          ontologies: []
+  spectra_cn_fl:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -94,8 +103,9 @@ output:
           type: file
           description: "Unstacked copy number spectra filled plot in PNG or PDF format"
           pattern: "*.spectra-cn.fl.{png,pdf}"
-  - spectra_cn_ln:
-      - meta:
+          ontologies: []
+  spectra_cn_ln:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -104,8 +114,9 @@ output:
           type: file
           description: "Unstacked copy number spectra line plot in PNG or PDF format"
           pattern: "*.spectra-cn.ln.{png,pdf}"
-  - spectra_cn_st:
-      - meta:
+          ontologies: []
+  spectra_cn_st:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -114,8 +125,9 @@ output:
           type: file
           description: "Stacked copy number spectra line plot in PNG or PDF format"
           pattern: "*.spectra-cn.st.{png,pdf}"
-  - qv:
-      - meta:
+          ontologies: []
+  qv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -124,8 +136,9 @@ output:
           type: file
           description: "error and qv of each assembly as a whole"
           pattern: "*.qv"
-  - spectra_asm_fl:
-      - meta:
+          ontologies: []
+  spectra_asm_fl:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -134,8 +147,9 @@ output:
           type: file
           description: "Unstacked assembly spectra filled plot in PNG or PDF format"
           pattern: "*.spectra-asm.fl.{png,pdf}"
-  - spectra_asm_ln:
-      - meta:
+          ontologies: []
+  spectra_asm_ln:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -144,8 +158,9 @@ output:
           type: file
           description: "Unstacked assembly spectra line plot in PNG or PDF format"
           pattern: "*.spectra-asm.ln.{png,pdf}"
-  - spectra_asm_st:
-      - meta:
+          ontologies: []
+  spectra_asm_st:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -154,8 +169,9 @@ output:
           type: file
           description: "Stacked assembly spectra line plot in PNG or PDF format"
           pattern: "*.spectra-asm.st.{png,pdf}"
-  - phased_block_bed:
-      - meta:
+          ontologies: []
+  phased_block_bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -164,8 +180,9 @@ output:
           type: file
           description: Assembly kmer positions separated by block in bed format
           pattern: "*.phased.block.bed"
-  - phased_block_stats:
-      - meta:
+          ontologies: []
+  phased_block_stats:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -174,8 +191,9 @@ output:
           type: file
           description: phased assembly statistics file
           pattern: "*.phased.block.stats"
-  - continuity_N:
-      - meta:
+          ontologies: []
+  continuity_N:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -184,8 +202,9 @@ output:
           type: file
           description: "Stacked assembly N continuity plot in PNG or PDF format"
           pattern: "*.continuity.N.{png,pdf}"
-  - block_N:
-      - meta:
+          ontologies: []
+  block_N:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -194,8 +213,9 @@ output:
           type: file
           description: "Stacked assembly N continuity by block plot in PNG or PDF format"
           pattern: "*.block.N.{png,pdf}"
-  - block_blob:
-      - meta:
+          ontologies: []
+  block_blob:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -204,8 +224,9 @@ output:
           type: file
           description: "Stacked assembly block plot in PNG or PDF format"
           pattern: "*.block.blob.{png,pdf}"
-  - hapmers_blob:
-      - meta:
+          ontologies: []
+  hapmers_blob:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -214,11 +235,14 @@ output:
           type: file
           description: "Stacked assembly hapmers block plot in PNG or PDF format"
           pattern: "*.hapmers.blob.{png,pdf}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mahesh-panchal"
   - "@yumisims"

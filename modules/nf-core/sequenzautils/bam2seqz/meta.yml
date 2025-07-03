@@ -27,21 +27,25 @@ input:
         type: file
         description: BAM file from the reference/normal sample
         pattern: "*.{bam}"
+        ontologies: []
     - tumourbam:
         type: file
         description: BAM file from the tumour sample
         pattern: "*.{bam}"
-  - - fasta:
-        type: file
-        description: Reference FASTA file
-        pattern: "*.{fasta}"
-  - - wigfile:
-        type: file
-        description: GC content wiggle file
-        pattern: "*.{wig.gz}"
+        ontologies: []
+  - fasta:
+      type: file
+      description: Reference FASTA file
+      pattern: "*.{fasta}"
+      ontologies: []
+  - wigfile:
+      type: file
+      description: GC content wiggle file
+      pattern: "*.{wig.gz}"
+      ontologies: []
 output:
-  - seqz:
-      - meta:
+  seqz:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,11 +54,14 @@ output:
           type: file
           description: Seqz file
           pattern: "*.{seqz.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@kaurravneet4123"
 maintainers:

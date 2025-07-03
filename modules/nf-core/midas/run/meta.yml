@@ -24,6 +24,7 @@ input:
         type: file
         description: Reads in FASTQ format
         pattern: "*.{fastq.gz}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -33,13 +34,14 @@ input:
         type: file
         description: A database formatted for MIDAS
         pattern: "*.{db}"
-  - - mode:
-        type: string
-        description: The mode to run MIDAS is
-        pattern: "*"
+        ontologies: []
+  - mode:
+      type: string
+      description: The mode to run MIDAS is
+      pattern: "*"
 output:
-  - results:
-      - meta:
+  results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -48,11 +50,14 @@ output:
           type: file
           description: A directory of results from MIDAS run
           pattern: "*"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@rpetit3"
 maintainers:

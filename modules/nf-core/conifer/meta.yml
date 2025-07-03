@@ -23,12 +23,14 @@ input:
         type: file
         description: |
           Raw Kraken2 standard output file
-  - - kraken_taxon_db:
-        type: file
-        description: Kraken2 taxo.k2d database file
+        ontologies: []
+  - kraken_taxon_db:
+      type: file
+      description: Kraken2 taxo.k2d database file
+      ontologies: []
 output:
-  - score:
-      - meta:
+  score:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,11 +40,14 @@ output:
           description: |
             Conifer report file containing confidence scores of Kraken2 classified reads.
           pattern: "*.score"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@icaromsc"
   - "@rpetit3"

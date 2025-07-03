@@ -44,20 +44,23 @@ input:
         description: |
           A fasta file containing RNA or transcript sequences
         pattern: "*.{fasta,fa}"
+        ontologies: []
 output:
-  - rnacofold_csv:
-      - meta:
+  rnacofold_csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.csv":
           type: file
-          description: The CSV Output of RNAcofold that has the predicted structure and
-            energies
+          description: The CSV Output of RNAcofold that has the predicted structure
+            and energies
           pattern: "*.{csv}"
-  - rnacofold_ps:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  rnacofold_ps:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -67,11 +70,14 @@ output:
           description: The text Output of RNAfold that contains the predicted secondary
             structure in postscript format
           pattern: "*.{ps}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@kokul-atx"
 maintainers:

@@ -33,6 +33,7 @@ input:
         description: |
           List of RCC files for all samples, which are direct outputs from NanoString runs
         pattern: "*.RCC"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -43,9 +44,11 @@ input:
         pattern: "*.csv"
         description: |
           Comma-separated file with 3 columns: RCC_FILE, RCC_FILE_NAME, and SAMPLE_ID
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
 output:
-  - nacho_qc_reports:
-      - meta:
+  nacho_qc_reports:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,8 +58,9 @@ output:
           description: |
             HTML report
           pattern: "*.html"
-  - nacho_qc_png:
-      - meta:
+          ontologies: []
+  nacho_qc_png:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -66,8 +70,9 @@ output:
           description: |
             Output PNG files
           pattern: "*_mqc.png"
-  - nacho_qc_txt:
-      - meta:
+          ontologies: []
+  nacho_qc_txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -77,12 +82,15 @@ output:
           description: |
             Plain text reports
           pattern: "*_mqc.txt"
-  - versions:
-      - "versions.yml":
-          type: file
-          description: |
-            File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: |
+          File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@alanmmobbs93"
 maintainers:

@@ -36,18 +36,21 @@ input:
         type: file
         description: microRNA sequencing data
         pattern: "*.{fastq,fastq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
     - mirtrace_config:
         type: file
         description: (Optional) CSV with list of FASTQ files to process with one entry
           per row. No headers. Each row consists of the following columns "FASTQ file
           path, id, adapter, PHRED-ASCII-offset".
-  - - mirtrace_species:
-        type: string
-        description: Target species in microRNA sequencing data (miRbase encoding, e.g.
-          “hsa” for Homo sapiens)
+        ontologies: []
+  - mirtrace_species:
+      type: string
+      description: Target species in microRNA sequencing data (miRbase encoding, e.g.
+        “hsa” for Homo sapiens)
 output:
-  - html:
-      - meta:
+  html:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -56,8 +59,9 @@ output:
           type: file
           description: HTML file
           pattern: "*.{html}"
-  - json:
-      - meta:
+          ontologies: []
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -66,8 +70,10 @@ output:
           type: file
           description: JSON file
           pattern: "*.{json}"
-  - tsv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -76,19 +82,22 @@ output:
           type: file
           description: TSV file
           pattern: "*.{tsv}"
-  - all_fa:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  all_fa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - qc_passed_reads.all.collapsed/*.{fa,fasta}:
           type: file
-          description: QC-passed reads in FASTA file. Identical reads are collapsed. Entries
-            are sorted by abundance.
+          description: QC-passed reads in FASTA file. Identical reads are collapsed.
+            Entries are sorted by abundance.
           pattern: "*.{fa,fasta}"
-  - rnatype_unknown_fa:
-      - meta:
+          ontologies: []
+  rnatype_unknown_fa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -98,11 +107,14 @@ output:
           description: Unknown RNA type QC-passed reads in FASTA file. Identical reads
             are collapsed. Entries are sorted by abundance.
           pattern: "*.{fa,fasta}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@atrigila"
 maintainers:

@@ -22,6 +22,7 @@ input:
     - counts:
         type: file
         description: Contains count data of repetitive regions.
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -30,9 +31,10 @@ input:
     - ref:
         type: file
         description: An input nucleotide fasta file.
+        ontologies: []
 output:
-  - intervals:
-      - meta:
+  intervals:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,11 +42,14 @@ output:
       - ${output}:
           type: file
           description: intervals
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@DLBPointon"
 maintainers:

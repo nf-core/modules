@@ -27,28 +27,28 @@ input:
           The VCF files to be merged
           Gzipped VCF files are not supported: https://github.com/fritzsedlazeck/SURVIVOR/issues/158
         pattern: "*.vcf"
-  - - max_distance_breakpoints:
-        type: integer
-        description: Max distance between breakpoints (0-1 percent of length, 1- number
-          of bp)
-  - - min_supporting_callers:
-        type: integer
-        description: Minimum number of supporting caller
-  - - account_for_type:
-        type: integer
-        description: Take the type into account (1==yes, else no)
-  - - account_for_sv_strands:
-        type: integer
-        description: Take the strands of SVs into account (1==yes, else no)
-  - - estimate_distanced_by_sv_size:
-        type: integer
-        description: Estimate distance based on the size of SV (1==yes, else no)
-  - - min_sv_size:
-        type: integer
-        description: Minimum size of SVs to be taken into account
+  - max_distance_breakpoints:
+      type: integer
+      description: Max distance between breakpoints (0-1 percent of length, 1- number
+        of bp)
+  - min_supporting_callers:
+      type: integer
+      description: Minimum number of supporting caller
+  - account_for_type:
+      type: integer
+      description: Take the type into account (1==yes, else no)
+  - account_for_sv_strands:
+      type: integer
+      description: Take the strands of SVs into account (1==yes, else no)
+  - estimate_distanced_by_sv_size:
+      type: integer
+      description: Estimate distance based on the size of SV (1==yes, else no)
+  - min_sv_size:
+      type: integer
+      description: Minimum size of SVs to be taken into account
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -57,11 +57,14 @@ output:
           type: file
           description: The merged VCF file
           pattern: "*.vcf"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

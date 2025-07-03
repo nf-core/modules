@@ -28,59 +28,67 @@ input:
         type: file
         description: MSA or distance matrix in Phylip format
         pattern: "*"
+        ontologies: []
     - initial_tree:
         type: file
         description: Initial tree
+        ontologies: []
 output:
-  - nwk:
-      - meta:
+  nwk:
+    - - meta:
           type: file
           description: Final phylogeny in Newick format
           pattern: "*.nwk"
+          ontologies: []
       - "*.nwk":
           type: file
           description: Final phylogeny in Newick format
           pattern: "*.nwk"
-  - stats:
-      - meta:
+          ontologies: []
+  stats:
+    - - meta:
           type: file
-          description: A text file with the statistics of the phylogeny
-          pattern: "*_stat.txt"
+          description: Final phylogeny in Newick format
+          pattern: "*.nwk"
+          ontologies: []
       - "*_stat.txt":
           type: file
           description: A text file with the statistics of the phylogeny
           pattern: "*_stat.txt"
-  - matrix:
-      - meta:
+          ontologies: []
+  matrix:
+    - - meta:
           type: file
-          description: Optional; the distance matrix in Phylip matrix format; it is generated
-            if the -O option is passed in ext.args, although the provided file name will
-            be overwritten
-          pattern: "*.matrix.phy"
+          description: Final phylogeny in Newick format
+          pattern: "*.nwk"
+          ontologies: []
       - "*.matrix.phy":
           type: file
-          description: Optional; the distance matrix in Phylip matrix format; it is generated
-            if the -O option is passed in ext.args, although the provided file name will
-            be overwritten
+          description: Optional; the distance matrix in Phylip matrix format; it is
+            generated if the -O option is passed in ext.args, although the provided
+            file name will be overwritten
           pattern: "*.matrix.phy"
-  - bootstrap:
-      - meta:
+          ontologies: []
+  bootstrap:
+    - - meta:
           type: file
-          description: A file containing all bootstrap trees in Newick format; it is generated
-            if the -B option is passed in ext.args (and bootstrap is used), although the
-            provided file name will be overwritten
-          pattern: "*.bootstrap"
+          description: Final phylogeny in Newick format
+          pattern: "*.nwk"
+          ontologies: []
       - "*.bootstrap":
           type: file
-          description: A file containing all bootstrap trees in Newick format; it is generated
-            if the -B option is passed in ext.args (and bootstrap is used), although the
-            provided file name will be overwritten
+          description: A file containing all bootstrap trees in Newick format; it is
+            generated if the -B option is passed in ext.args (and bootstrap is used),
+            although the provided file name will be overwritten
           pattern: "*.bootstrap"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@itrujnara"
 maintainers:

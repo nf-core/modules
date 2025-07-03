@@ -24,6 +24,7 @@ input:
         type: file
         description: The reference genome
         pattern: "*.{fasta,fna,fa}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -33,6 +34,7 @@ input:
         type: file
         description: The index of the reference genome
         pattern: "*.fai"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -43,15 +45,16 @@ input:
         description: A text file containing the parameters to be used for the simulation.
           Gets automatically generated using defaults when this is not supplied
         pattern: "*.txt"
-  - - snp_mutation_frequency:
-        type: float
-        description: The SNP mutation frequency in the output VCF (0-1)
-  - - sim_reads:
-        type: integer
-        description: Whether or not to simulate reads (1==yes, else no)
+        ontologies: []
+  - snp_mutation_frequency:
+      type: float
+      description: The SNP mutation frequency in the output VCF (0-1)
+  - sim_reads:
+      type: integer
+      description: Whether or not to simulate reads (1==yes, else no)
 output:
-  - parameters:
-      - meta:
+  parameters:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -60,8 +63,9 @@ output:
           type: file
           description: The created parameters file
           pattern: "*.txt"
-  - vcf:
-      - meta:
+          ontologies: []
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -70,8 +74,9 @@ output:
           type: file
           description: A VCF containing the simulated variants
           pattern: "*.vcf"
-  - bed:
-      - meta:
+          ontologies: []
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -80,8 +85,9 @@ output:
           type: file
           description: A BED file of the simulated structural variants
           pattern: "*.bed"
-  - fasta:
-      - meta:
+          ontologies: []
+  fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -90,8 +96,9 @@ output:
           type: file
           description: A Fasta file file containing the variants from the output VCF
           pattern: "*.fasta"
-  - insertions:
-      - meta:
+          ontologies: []
+  insertions:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -100,11 +107,14 @@ output:
           type: file
           description: A Fasta file file containing insertion sequences
           pattern: "*.insertions.fa"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

@@ -13,27 +13,29 @@ tools:
       licence: ["Apache Software License"]
       identifier: ""
 input:
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-  - - accessions:
-        type: file
-        description: List of accessions (one per line) to download
-        pattern: "*.txt"
-  - - taxids:
-        type: file
-        description: List of taxids (one per line) to download
-        pattern: "*.txt"
-  - - groups:
-        type: string
-        description: NCBI taxonomic groups to download. Can be a comma-separated list.
-          Options are ['all', 'archaea', 'bacteria', 'fungi', 'invertebrate', 'metagenomes',
-          'plant', 'protozoa', 'vertebrate_mammalian', 'vertebrate_other', 'viral']
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - accessions:
+      type: file
+      description: List of accessions (one per line) to download
+      pattern: "*.txt"
+      ontologies: []
+  - taxids:
+      type: file
+      description: List of taxids (one per line) to download
+      pattern: "*.txt"
+      ontologies: []
+  - groups:
+      type: string
+      description: NCBI taxonomic groups to download. Can be a comma-separated list.
+        Options are ['all', 'archaea', 'bacteria', 'fungi', 'invertebrate', 'metagenomes',
+        'plant', 'protozoa', 'vertebrate_mammalian', 'vertebrate_other', 'viral']
 output:
-  - gbk:
-      - meta:
+  gbk:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -42,8 +44,10 @@ output:
           type: file
           description: GenBank format of the genomic sequence(s) in the assembly
           pattern: "*_genomic.gbff.gz"
-  - fna:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  fna:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -52,8 +56,10 @@ output:
           type: file
           description: FASTA format of the genomic sequence(s) in the assembly.
           pattern: "*_genomic.fna.gz"
-  - rm:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  rm:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -62,8 +68,10 @@ output:
           type: file
           description: RepeatMasker output for eukaryotes.
           pattern: "*_rm.out.gz"
-  - features:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  features:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -73,8 +81,10 @@ output:
           description: Tab-delimited text file reporting locations and attributes for
             a subset of annotated features
           pattern: "*_feature_table.txt.gz"
-  - gff:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  gff:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -83,30 +93,36 @@ output:
           type: file
           description: Annotation of the genomic sequence(s) in GFF3 format
           pattern: "*_genomic.gff.gz"
-  - faa:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  faa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*_protein.faa.gz":
           type: file
-          description: FASTA format of the accessioned protein products annotated on the
-            genome assembly.
+          description: FASTA format of the accessioned protein products annotated on
+            the genome assembly.
           pattern: "*_protein.faa.gz"
-  - gpff:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  gpff:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*_protein.gpff.gz":
           type: file
-          description: GenPept format of the accessioned protein products annotated on
-            the genome assembly.
+          description: GenPept format of the accessioned protein products annotated
+            on the genome assembly.
           pattern: "*_protein.gpff.gz"
-  - wgs_gbk:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  wgs_gbk:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -115,19 +131,23 @@ output:
           type: file
           description: GenBank flat file format of the WGS master for the assembly
           pattern: "*_wgsmaster.gbff.gz"
-  - cds:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  cds:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*_cds_from_genomic.fna.gz":
           type: file
-          description: FASTA format of the nucleotide sequences corresponding to all CDS
-            features annotated on the assembly
+          description: FASTA format of the nucleotide sequences corresponding to all
+            CDS features annotated on the assembly
           pattern: "*_cds_from_genomic.fna.gz"
-  - rna:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  rna:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -137,30 +157,35 @@ output:
           description: FASTA format of accessioned RNA products annotated on the genome
             assembly
           pattern: "*_rna.fna.gz"
-  - rna_fna:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  rna_fna:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*_rna_from_genomic.fna.gz":
           type: file
-          description: FASTA format of the nucleotide sequences corresponding to all RNA
-            features annotated on the assembly
+          description: FASTA format of the nucleotide sequences corresponding to all
+            RNA features annotated on the assembly
           pattern: "*_rna_from_genomic.fna.gz"
-  - report:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  report:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*_assembly_report.txt":
           type: file
-          description: Tab-delimited text file reporting the name, role and sequence accession.version
-            for objects in the assembly
+          description: Tab-delimited text file reporting the name, role and sequence
+            accession.version for objects in the assembly
           pattern: "*_assembly_report.txt"
-  - stats:
-      - meta:
+          ontologies: []
+  stats:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -169,11 +194,14 @@ output:
           type: file
           description: Tab-delimited text file reporting statistics for the assembly
           pattern: "*_assembly_stats.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@rpetit3"
 maintainers:

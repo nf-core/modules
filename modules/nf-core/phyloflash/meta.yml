@@ -25,16 +25,17 @@ input:
         type: file
         description: Channel containing single or paired-end reads
         pattern: "*.{fastq.gz,fq.gz}"
-  - - silva_db:
-        type: directory
-        description: Folder containing SILVA database
-  - - univec_db:
-        type: directory
-        description: Folder containing UniVec database
-        pattern: "UniVec"
+        ontologies: []
+  - silva_db:
+      type: directory
+      description: Folder containing SILVA database
+  - univec_db:
+      type: directory
+      description: Folder containing UniVec database
+      pattern: "UniVec"
 output:
-  - results:
-      - meta:
+  results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -43,11 +44,13 @@ output:
           type: directory
           description: Folder containing the results of phyloFlash analysis
           pattern: "${prefix}*"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@abhi18av"
 maintainers:

@@ -23,29 +23,35 @@ input:
         type: file
         description: fasta file with protein sequences
         pattern: "*.{fasta}"
+        ontologies: []
     - paramfile:
         type: file
         description: MaxQuant parameter file
-  - - raw:
-        type: file
-        description: raw files with mass spectra
-        pattern: "*.{raw,RAW,Raw}"
+        ontologies: []
+  - raw:
+      type: file
+      description: raw files with mass spectra
+      pattern: "*.{raw,RAW,Raw}"
+      ontologies: []
 output:
-  - maxquant_txt:
-      - meta:
+  maxquant_txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}/*.txt":
+      - ${prefix}/*.txt:
           type: file
           description: tables with peptides and protein information
           pattern: "*.{txt}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software version
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software version
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@veitveit"
 maintainers:

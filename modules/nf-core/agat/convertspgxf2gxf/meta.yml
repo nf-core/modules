@@ -30,8 +30,8 @@ input:
           - edam: "http://edamontology.org/format_1975" # GFF3
           - edam: "http://edamontology.org/format_2306" # GTF
 output:
-  - output_gff:
-      - meta:
+  output_gff:
+    - - meta:
           type: file
           description: Cleaned annotation file in GFF3 format
           pattern: "*.{gff}"
@@ -43,26 +43,26 @@ output:
           pattern: "*.{gff}"
           ontologies:
             - edam: "http://edamontology.org/format_1975" # GFF3
-  - log:
-      - meta:
+  log:
+    - - meta:
           type: file
-          description: Log file of the conversion process
-          pattern: "*.{log}"
-          ontologies: 
-            - edam: "http://edamontology.org/format_2330" # Textual format
+          description: Cleaned annotation file in GFF3 format
+          pattern: "*.{gff}"
+          ontologies:
+            - edam: "http://edamontology.org/format_1975" # GFF3
       - "*.log":
           type: file
           description: Log file of the conversion process
           pattern: "*.{log}"
-          ontologies: 
+          ontologies:
             - edam: "http://edamontology.org/format_2330" # Textual format
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies: 
-            - edam: "http://edamontology.org/format_3750" # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@toniher"
 maintainers:

@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "fcsgx_cleangenome"
-description: Runs FCS-GX (Foreign Contamination Screen - Genome eXtractor) to
-  remove foreign contamination from genome assemblies
+description: Runs FCS-GX (Foreign Contamination Screen - Genome eXtractor) to remove
+  foreign contamination from genome assemblies
 keywords:
   - genome
   - assembly
@@ -30,21 +30,26 @@ input:
         type: file
         description: Input genome assembly file in FASTA format
         pattern: "*.{fa,fasta,fna}"
+        ontologies: []
     - fcsgx_report:
         type: file
-        description: Final contamination report with contaminant cleaning actions. Generated using FCSGX_RUNGX
+        description: Final contamination report with contaminant cleaning actions. Generated
+          using FCSGX_RUNGX
+        ontologies: []
 output:
-  - cleaned:
-      - meta:
+  cleaned:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.cleaned.fasta":
           type: file
-          description: The fasta file after cleaning, where sequences annotated as ACTION_EXCLUDE or ACTION_TRIM are excluded
-  - contaminants:
-      - meta:
+          description: The fasta file after cleaning, where sequences annotated as ACTION_EXCLUDE
+            or ACTION_TRIM are excluded
+          ontologies: []
+  contaminants:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -52,11 +57,14 @@ output:
       - "*.contaminants.fasta":
           type: file
           description: Sequences annotated as ACTION_EXCLUDE which are marked as contaminants.
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mahesh-panchal"
   - "@LaurenHuet"

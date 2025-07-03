@@ -22,6 +22,7 @@ input:
         type: file
         description: VCF file
         pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -31,6 +32,7 @@ input:
         type: file
         description: Reference genome fasta file
         pattern: "*.{fasta,fa}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -40,9 +42,10 @@ input:
         type: file
         description: Reference genome dictionary file
         pattern: "*.{dict}"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -51,11 +54,14 @@ output:
           type: file
           description: Sorted VCF file
           pattern: "*.{vcf}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ramprasadn"
 maintainers:

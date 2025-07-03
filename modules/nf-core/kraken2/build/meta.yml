@@ -27,13 +27,12 @@ input:
         type: directory
         description: contains required files to build the database
         pattern: "*/"
-  - - cleaning:
-        type: boolean
-        description: activate or deactivate (true or false) cleaning of intermediate
-          files
+  - cleaning:
+      type: boolean
+      description: activate or deactivate (true or false) cleaning of intermediate files
 output:
-  - db:
-      - meta:
+  db:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -42,11 +41,13 @@ output:
           type: directory
           description: contains the database that can be used to perform taxonomic classification
           pattern: "*/"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@alxndrdiaz"
 maintainers:

@@ -22,13 +22,17 @@ input:
         description: |
           Optional. List of FastQ files of short reads (paired-end data) that will be used to polish the draft genome.
         pattern: "*.fastq.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
     - longreads:
         type: file
         description: Input Nanopore FASTQ file
         pattern: "*.fastq.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
 output:
-  - contigs:
-      - meta:
+  contigs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -37,8 +41,9 @@ output:
           type: file
           description: The final assembly produced by Dragonflye
           pattern: "*.fa"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,8 +52,9 @@ output:
           type: file
           description: Full log file for bug reporting
           pattern: "dragonflye.log"
-  - raw_contigs:
-      - meta:
+          ontologies: []
+  raw_contigs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -57,8 +63,9 @@ output:
           type: file
           description: Raw assembly produced by the assembler (Flye, Miniasm, or Raven)
           pattern: "{flye,miniasm,raven}.fasta"
-  - gfa:
-      - meta:
+          ontologies: []
+  gfa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -67,8 +74,9 @@ output:
           type: file
           description: Assembly graph produced by Miniasm, or Raven
           pattern: "{flye,miniasm,raven}-unpolished.gfa"
-  - txt:
-      - meta:
+          ontologies: []
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -77,11 +85,14 @@ output:
           type: file
           description: Assembly information output by Flye
           pattern: "flye-info.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@rpetit3"
 maintainers:

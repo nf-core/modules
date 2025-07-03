@@ -22,9 +22,10 @@ input:
     - bam:
         type: file
         description: List containing 1 or more bam files
+        ontologies: []
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -33,8 +34,9 @@ output:
           type: file
           description: Merged BAM file
           pattern: "*.bam"
-  - bam_index:
-      - meta:
+          ontologies: []
+  bam_index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -43,8 +45,9 @@ output:
           type: file
           description: BAM index file
           pattern: "*"
-  - checksum:
-      - meta:
+          ontologies: []
+  checksum:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,11 +56,14 @@ output:
           type: file
           description: Checksum file
           pattern: "*"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@matthdsm"
 maintainers:

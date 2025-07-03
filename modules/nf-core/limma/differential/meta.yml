@@ -39,10 +39,12 @@ input:
           should be used to derive the target samples
     - formula:
         type: string
-        description: (Optional, requires comparison if used) R formula string used for modeling, e.g. '~ treatment'.
+        description: (Optional, requires comparison if used) R formula string used for
+          modeling, e.g. '~ treatment'.
     - comparison:
         type: string
-        description: (Optional, mandatory if formula is used) Literal string passed to `limma::makeContrasts`, e.g. 'treatmentmCherry'.
+        description: (Optional, mandatory if formula is used) Literal string passed
+          to `limma::makeContrasts`, e.g. 'treatmentmCherry'.
   - - meta2:
         type: map
         description: |
@@ -51,73 +53,104 @@ input:
     - samplesheet:
         type: file
         description: Sample sheet file
+        ontologies: []
     - intensities:
         type: file
         description: |
           Raw TSV or CSV format expression matrix with probes by row and samples
           by column
+        ontologies: []
 output:
-  - results:
-      - meta:
+  results:
+    - - meta:
           type: file
           description: TSV-format table of differential expression information as output
             by Limma
           pattern: "*.limma.results.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
       - "*.limma.results.tsv":
           type: file
           description: TSV-format table of differential expression information as output
             by Limma
           pattern: "*.limma.results.tsv"
-  - md_plot:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  md_plot:
+    - - meta:
           type: file
-          description: Limma mean difference plot
-          pattern: "*.mean_difference.png"
+          description: TSV-format table of differential expression information as output
+            by Limma
+          pattern: "*.limma.results.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
       - "*.limma.mean_difference.png":
           type: file
           description: Limma mean difference plot
           pattern: "*.mean_difference.png"
-  - rdata:
-      - meta:
+          ontologies: []
+  rdata:
+    - - meta:
           type: file
-          description: Serialised MArrayLM object
-          pattern: "*.MArrayLM.limma.rds"
+          description: TSV-format table of differential expression information as output
+            by Limma
+          pattern: "*.limma.results.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
       - "*.MArrayLM.limma.rds":
           type: file
           description: Serialised MArrayLM object
           pattern: "*.MArrayLM.limma.rds"
-  - model:
-      - meta:
+          ontologies: []
+  model:
+    - - meta:
           type: file
-          description: TXT-format limma model
-          pattern: "*.limma.model.tsv"
+          description: TSV-format table of differential expression information as output
+            by Limma
+          pattern: "*.limma.results.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
       - "*.limma.model.txt":
           type: file
           description: TXT-format limma model
           pattern: "*.limma.model.tsv"
-  - session_info:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  session_info:
+    - - meta:
           type: file
-          description: dump of R SessionInfo
-          pattern: "*.log"
+          description: TSV-format table of differential expression information as output
+            by Limma
+          pattern: "*.limma.results.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
       - "*.R_sessionInfo.log":
           type: file
           description: dump of R SessionInfo
           pattern: "*.log"
-  - normalised_counts:
-      - meta:
+          ontologies: []
+  normalised_counts:
+    - - meta:
           type: file
-          description: normalised TSV format expression matrix with probes by row and samples by column
-          pattern: "*.normalised_counts.tsv"
+          description: TSV-format table of differential expression information as output
+            by Limma
+          pattern: "*.limma.results.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
       - "*.normalised_counts.tsv":
           type: file
-          description: normalised TSV format expression matrix with probes by row and samples by column
+          description: normalised TSV format expression matrix with probes by row and
+            samples by column
           pattern: "*.normalised_counts.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@pinin4fjords"
 maintainers:

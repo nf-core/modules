@@ -24,8 +24,8 @@ input:
         type: string
         description: Name of the NCBI BLAST database to be downloaded
 output:
-  - db:
-      - meta:
+  db:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -34,11 +34,13 @@ output:
           type: directory
           description: Output directory containing blast database files
           pattern: "*"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@toniher"
 maintainers:

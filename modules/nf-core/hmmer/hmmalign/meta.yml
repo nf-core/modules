@@ -25,13 +25,16 @@ input:
         type: file
         description: Amino acid or nucleotide gzipped compressed fasta file
         pattern: "*.{fna.gz,faa.gz,fasta.gz,fa.gz}"
-  - - hmm:
-        type: file
-        description: A gzipped HMM file
-        pattern: "*.hmm.gz"
+        ontologies: []
+  - hmm:
+      type: file
+      description: A gzipped HMM file
+      pattern: "*.hmm.gz"
+      ontologies:
+        - edam: http://edamontology.org/format_3989 # GZIP format
 output:
-  - sto:
-      - meta:
+  sto:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,11 +43,15 @@ output:
           type: file
           description: Multiple alignment in gzipped Stockholm format
           pattern: "*.sto.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@erikrikarddaniel"
   - "@jfy133"

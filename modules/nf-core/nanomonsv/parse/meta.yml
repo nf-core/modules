@@ -32,13 +32,15 @@ input:
         type: file
         description: Aligned BAM file
         pattern: "*.{bam}"
+        ontologies: []
     - bai:
         type: file
         description: BAM index file
         pattern: "*.{bai}"
+        ontologies: []
 output:
-  - insertions:
-      - meta:
+  insertions:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,8 +49,9 @@ output:
           type: file
           description: Gzipped BED file containing reads supporting insertions
           pattern: "*.{bed.gz}"
-  - insertions_index:
-      - meta:
+          ontologies: []
+  insertions_index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -57,8 +60,9 @@ output:
           type: file
           description: Index for gzipped BED file containing reads supporting insertions
           pattern: "*.{bed.gz.tbi}"
-  - deletions:
-      - meta:
+          ontologies: []
+  deletions:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -67,8 +71,9 @@ output:
           type: file
           description: Gzipped BED file containing reads supporting deletions
           pattern: "*.{bed.gz}"
-  - deletions_index:
-      - meta:
+          ontologies: []
+  deletions_index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -77,8 +82,9 @@ output:
           type: file
           description: Index for gzipped BED file containing reads supporting deletions
           pattern: "*.{bed.gz.tbi}"
-  - rearrangements:
-      - meta:
+          ontologies: []
+  rearrangements:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -87,8 +93,9 @@ output:
           type: file
           description: Gzipped BED file containing reads supporting rearrangements
           pattern: "*.{bed.gz}"
-  - rearrangements_index:
-      - meta:
+          ontologies: []
+  rearrangements_index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -97,8 +104,9 @@ output:
           type: file
           description: Index for gzipped BED file containing reads supporting rearrangements
           pattern: "*.{bed.gz.tbi}"
-  - bp_info:
-      - meta:
+          ontologies: []
+  bp_info:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -107,8 +115,9 @@ output:
           type: file
           description: Gzipped BED file containing breakpoint info
           pattern: "*.{bed.gz}"
-  - bp_info_index:
-      - meta:
+          ontologies: []
+  bp_info_index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -117,11 +126,14 @@ output:
           type: file
           description: Index for gzipped BED file containing breakpoint info
           pattern: "*.{bed.gz.tbi}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@awgymer"
 maintainers:

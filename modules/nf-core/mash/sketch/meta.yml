@@ -26,9 +26,10 @@ input:
     - reads:
         type: file
         description: List of input paired-end FastQ files
+        ontologies: []
 output:
-  - mash:
-      - meta:
+  mash:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -37,8 +38,9 @@ output:
           type: file
           description: Sketch output
           pattern: "*.{mash}"
-  - stats:
-      - meta:
+          ontologies: []
+  stats:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,11 +49,14 @@ output:
           type: file
           description: Sketch statistics
           pattern: "*.{mash_stats}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@thanhleviet"
 maintainers:

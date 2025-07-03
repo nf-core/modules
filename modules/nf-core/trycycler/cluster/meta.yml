@@ -25,12 +25,14 @@ input:
     - contigs:
         type: file
         description: Contigs file
+        ontologies: []
     - reads:
         type: file
         description: Long-read FASTQ file, optionally gzip compressed
+        ontologies: []
 output:
-  - cluster_dir:
-      - meta:
+  cluster_dir:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,11 +40,13 @@ output:
       - "*":
           type: directory
           description: Output directory containing clustering results
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@watsonar"
 maintainers:

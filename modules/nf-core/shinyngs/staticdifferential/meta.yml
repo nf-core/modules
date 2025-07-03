@@ -25,6 +25,7 @@ input:
     - differential_result:
         type: file
         description: statistic differential results
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -35,18 +36,21 @@ input:
         type: file
         description: |
           CSV or TSV-format sample sheet with sample metadata
+        ontologies: []
     - feature_meta:
         type: file
         description: |
           CSV or TSV-format feature (e.g. gene) metadata
+        ontologies: []
     - assay_file:
         type: file
         description: |
           CSV or TSV matrix file to use alongside differential statistics in
           interpretation. Usually a normalised form.
+        ontologies: []
 output:
-  - volcanos_png:
-      - meta:
+  volcanos_png:
+    - - meta:
           type: map
           description: |
             Groovy Map containing contrast information
@@ -56,8 +60,9 @@ output:
           description: |
             Meta-keyed tuple containing a PNG output for a volcano plot built from
             the differential result table.
-  - volcanos_html:
-      - meta:
+          ontologies: []
+  volcanos_html:
+    - - meta:
           type: map
           description: |
             Groovy Map containing contrast information
@@ -67,11 +72,14 @@ output:
           description: |
             Meta-keyed tuple containing an HTML output for a volcano plot built
             from the differential result table.
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@pinin4fjords"
 maintainers:

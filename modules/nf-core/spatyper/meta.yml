@@ -23,17 +23,20 @@ input:
         type: file
         description: FASTA assembly file
         pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
-  - - repeats:
-        type: file
-        description: spa repeat sequences in FASTA format (Optional)
-        pattern: "*.{fasta}"
-  - - repeat_order:
-        type: file
-        description: spa types and order of repeats (Optional)
-        pattern: "*.{txt}"
+        ontologies: []
+  - repeats:
+      type: file
+      description: spa repeat sequences in FASTA format (Optional)
+      pattern: "*.{fasta}"
+      ontologies: []
+  - repeat_order:
+      type: file
+      description: spa types and order of repeats (Optional)
+      pattern: "*.{txt}"
+      ontologies: []
 output:
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -42,11 +45,15 @@ output:
           type: file
           description: Tab-delimited results
           pattern: "*.{tsv}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@rpetit3"
 maintainers:

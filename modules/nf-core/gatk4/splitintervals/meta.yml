@@ -23,6 +23,7 @@ input:
     - intervals:
         type: file
         description: Interval file
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -32,6 +33,7 @@ input:
         type: file
         description: Reference FASTA
         pattern: "*.{fa,fasta}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -41,6 +43,7 @@ input:
         type: file
         description: Reference FASTA index
         pattern: "*.fai"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -50,9 +53,10 @@ input:
         type: file
         description: Reference sequence dictionary
         pattern: "*.dict"
+        ontologies: []
 output:
-  - split_intervals:
-      - meta:
+  split_intervals:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,17 +68,13 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test' ]
           pattern: "*.interval_list"
-      - s:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test' ]
-          pattern: "*.interval_list"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
   - "@ramprasadn"

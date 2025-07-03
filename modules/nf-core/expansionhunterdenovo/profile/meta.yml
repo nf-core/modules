@@ -26,10 +26,12 @@ input:
         type: file
         description: BAM/CRAM file
         pattern: "*.{bam,cram}"
+        ontologies: []
     - alignment_index:
         type: file
         description: Index of the BAM/CRAM file
         pattern: "*.{bai,crai}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -39,6 +41,7 @@ input:
         type: file
         description: The FASTA reference file
         pattern: "*.{fasta,fa}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -48,9 +51,10 @@ input:
         type: file
         description: The index of the FASTA reference file
         pattern: "*.fai"
+        ontologies: []
 output:
-  - locus_tsv:
-      - meta:
+  locus_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -59,8 +63,10 @@ output:
           type: file
           description: The locus TSV file
           pattern: "*.tsv"
-  - motif_tsv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  motif_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -69,8 +75,10 @@ output:
           type: file
           description: The motif TSV file
           pattern: "*.tsv"
-  - str_profile:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  str_profile:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -79,11 +87,15 @@ output:
           type: file
           description: The JSON file containing the STR profile
           pattern: "*.json"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

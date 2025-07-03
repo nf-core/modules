@@ -36,12 +36,13 @@ input:
         type: file
         description: Text file containing multiple UIDs. Cannot be used at the same
           time as uid.
-  - - database:
-        type: string
-        description: Value must be a valid Entrez database name ('assembly', etc).
+        ontologies: []
+  - database:
+      type: string
+      description: Value must be a valid Entrez database name ('assembly', etc).
 output:
-  - xml:
-      - meta:
+  xml:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,11 +51,15 @@ output:
           type: file
           description: Query result in XML format
           pattern: "*.xml"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_2332 # XML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@alxndrdiaz"
 maintainers:

@@ -25,18 +25,21 @@ input:
         type: file
         description: phased VCF file with a GT FORMAT subfield with no missing alleles
         pattern: "*.{vcf,vcf.gz}"
-  - - map:
-        type: file
-        description: genetic map with cM units in PLINK format
-        pattern: "*.{map,map.gz,map.zip}"
-  - - exclude:
-        type: file
-        description: text file containing samples one sample per line to be excluded
-          from the analysis
-        pattern: "*.*"
+        ontologies: []
+  - map:
+      type: file
+      description: genetic map with cM units in PLINK format
+      pattern: "*.{map,map.gz,map.zip}"
+      ontologies: []
+  - exclude:
+      type: file
+      description: text file containing samples one sample per line to be excluded from
+        the analysis
+      pattern: "*.*"
+      ontologies: []
 output:
-  - hbd:
-      - meta:
+  hbd:
+    - - meta:
           type: map
           description: |
             Groovy Map containing cohort information
@@ -45,8 +48,10 @@ output:
           type: file
           description: contains HBD segments within individuals
           pattern: "*.hbd.gz"
-  - ibd:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  ibd:
+    - - meta:
           type: map
           description: |
             Groovy Map containing cohort information
@@ -55,8 +60,10 @@ output:
           type: file
           description: contains IBD segments shared between individuals
           pattern: "*.ibd.gz"
-  - log:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing cohort information
@@ -67,11 +74,14 @@ output:
             parameters the number of markers the number of samples the number of output
             HBD and IBD segments and the mean number of HBD and IBD segments per sample
           pattern: "*.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ashotmarg"
 maintainers:

@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "rundbcan_database"
 description: command from run_dbcan to prepare the database for dbCAN annotation.
@@ -10,7 +9,8 @@ keywords:
   - genomes
 tools:
   - "run_dbcan":
-      description: "Standalone version of dbCAN annotation tool for automated CAZyme annotation."
+      description: "Standalone version of dbCAN annotation tool for automated CAZyme
+        annotation."
       homepage: "https://bcb.unl.edu/dbCAN2/"
       documentation: "https://run-dbcan.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/bcb-unl/run_dbcan"
@@ -19,17 +19,19 @@ tools:
       identifier: biotools:dbcan
 
 output:
-  - dbcan_db:
-      - dbcan_db:
-          type: directory
-          description: Download directory for dbCAN databases
-          pattern: "dbcan_db"
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  dbcan_db:
+    - dbcan_db:
+        type: directory
+        description: Download directory for dbCAN databases
+        pattern: "dbcan_db"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Xinpeng021001"
 maintainers:

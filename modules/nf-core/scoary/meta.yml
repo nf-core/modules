@@ -23,17 +23,22 @@ input:
         type: file
         description: A presence/absence matrix of genes in the pan-genome
         pattern: "*.csv"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
     - traits:
         type: file
         description: A CSV file containing trait information per-sample
         pattern: "*.csv"
-  - - tree:
-        type: file
-        description: A Newick formatted tree for phylogenetic analyses
-        pattern: "*.{dnd,nwk,treefile}"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+  - tree:
+      type: file
+      description: A Newick formatted tree for phylogenetic analyses
+      pattern: "*.{dnd,nwk,treefile}"
+      ontologies: []
 output:
-  - csv:
-      - meta:
+  csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -42,11 +47,15 @@ output:
           type: file
           description: Gene associations in a CSV file per trait
           pattern: "*.csv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@rpetit3"
 maintainers:

@@ -22,24 +22,30 @@ input:
         type: file
         description: wig file
         pattern: "*.{wig}"
-  - - sizes:
-        type: file
-        description: Chromosome sizes file
+        ontologies: []
+  - sizes:
+      type: file
+      description: Chromosome sizes file
+      ontologies: []
 output:
-  - bw:
-      - meta:
+  bw:
+    - - meta:
           type: file
           description: bigwig file
           pattern: "*.{bw}"
+          ontologies: []
       - "*.bw":
           type: file
           description: bigwig file
           pattern: "*.{bw}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jianhong"
   - "@projectoriented"

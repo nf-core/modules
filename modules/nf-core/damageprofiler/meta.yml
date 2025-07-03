@@ -33,28 +33,29 @@ input:
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
         ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
-            - edam: "http://edamontology.org/format_3462" # CRAM
-            - edam: "http://edamontology.org/format_2573" # SAM
-  - - fasta:
-        type: file
-        description: OPTIONAL FASTA reference file
-        pattern: "*.{fasta,fna,fa}"
-        ontologies:
-            - edam: "http://edamontology.org/format_1332" # FASTA
-  - - fai:
-        type: file
-        description: OPTIONAL FASTA index file from samtools faidx
-        pattern: "*.{fai}"
-        ontologies:
-            - edam: "http://edamontology.org/format_1332" # Tabix
-  - - specieslist:
-        type: file
-        description: OPTIONAL text file with list of target reference headers
-        pattern: "*.{txt}"
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_3462" # CRAM
+          - edam: "http://edamontology.org/format_2573" # SAM
+  - fasta:
+      type: file
+      description: OPTIONAL FASTA reference file
+      pattern: "*.{fasta,fna,fa}"
+      ontologies:
+        - edam: "http://edamontology.org/format_1332" # FASTA
+  - fai:
+      type: file
+      description: OPTIONAL FASTA index file from samtools faidx
+      pattern: "*.{fai}"
+      ontologies:
+        - edam: "http://edamontology.org/format_1332" # Tabix
+  - specieslist:
+      type: file
+      description: OPTIONAL text file with list of target reference headers
+      pattern: "*.{txt}"
+      ontologies: []
 output:
-  - results:
-      - meta:
+  results:
+    - - meta:
           type: directory
           description: DamageProfiler results directory
           pattern: "*/*"
@@ -62,11 +63,13 @@ output:
           type: directory
           description: DamageProfiler results directory
           pattern: "*/*"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

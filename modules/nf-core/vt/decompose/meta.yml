@@ -24,13 +24,15 @@ input:
         type: file
         description: The VCF file to decompose
         pattern: "*.vcf(.gz)?"
+        ontologies: []
     - intervals:
         type: file
         description: The intervals of the variants of decompose
         pattern: "*.bed"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,11 +41,15 @@ output:
           type: file
           description: The decomposed VCF file
           pattern: "*.vcf.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

@@ -24,9 +24,11 @@ input:
         type: file
         description: Variation graph in GFA format
         pattern: "*.{gfa}"
+        ontologies:
+          - edam: http://edamontology.org/format_3975 # GFA 1
 output:
-  - gfa:
-      - meta:
+  gfa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,8 +37,10 @@ output:
           type: file
           description: Non-redundant variation graph in GFA 1.0 format
           pattern: "*.{gfa}"
-  - affixes:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3975 # GFA 1
+  affixes:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,11 +49,14 @@ output:
           type: file
           description: Shared affixes in tab-separated values (TSV) text format
           pattern: "*.{txt}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@heuermh"
 maintainers:

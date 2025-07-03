@@ -23,10 +23,12 @@ input:
         type: file
         description: CSV file with cell by feature table
         pattern: "*.{csv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
 output:
   #Only when we have meta
-  - csv:
-      - meta:
+  csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,8 +37,10 @@ output:
           type: file
           description: Sorted CSV file
           pattern: "*.{csv}"
-  - h5ad:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  h5ad:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,11 +49,14 @@ output:
           type: file
           description: Sorted H5AD file
           pattern: "*.{h5ad}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@luiskuhn"
 maintainers:

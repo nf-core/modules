@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "catpack_summarise"
 description: Summarises results from CAT/BAT/RAT classification steps
@@ -28,7 +27,8 @@ input:
 
     - classification:
         type: file
-        description: CAT/BAT/RAT classification table annotated with official names (from CAT_pack addnames)
+        description: CAT/BAT/RAT classification table annotated with official names
+          (from CAT_pack addnames)
         pattern: "*.txt"
         ontologies:
           - edam: "http://edamontology.org/format_3475"
@@ -40,14 +40,16 @@ input:
 
     - contigs:
         type: file
-        description: Optional nucleotide FASTA file containing long DNA sequences such as contigs that were classified (only if classification table is from CAT_pack contigs)
+        description: Optional nucleotide FASTA file containing long DNA sequences such
+          as contigs that were classified (only if classification table is from CAT_pack
+          contigs)
         pattern: "*.{fasta,fna,fa,fas}"
         ontologies:
           - edam: "http://edamontology.org/format_1929"
 
 output:
-  - txt:
-      - meta:
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -60,12 +62,14 @@ output:
           ontologies:
             - edam: "http://edamontology.org/format_3475"
 
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

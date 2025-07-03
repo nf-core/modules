@@ -22,27 +22,33 @@ input:
         type: file
         description: The depth evidence file
         pattern: "*.rd.txt.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
     - depth_evidence_index:
         type: file
         description: The index of the depth evidence file
         pattern: "*.rd.txt.gz.tbi"
-  - - fasta:
-        type: file
-        description: Reference FASTA file needed when the input is a CRAM file
-        pattern: "*.{fasta,fa}"
-  - - fasta_fai:
-        type: file
-        description: Index of the reference FASTA file needed when the input is a CRAM
-          file
-        pattern: "*.fai"
-  - - dict:
-        type: file
-        description: Sequence dictionary of the reference FASTA file needed when the
-          input is a CRAM file
-        pattern: "*.dict"
+        ontologies: []
+  - fasta:
+      type: file
+      description: Reference FASTA file needed when the input is a CRAM file
+      pattern: "*.{fasta,fa}"
+      ontologies: []
+  - fasta_fai:
+      type: file
+      description: Index of the reference FASTA file needed when the input is a CRAM
+        file
+      pattern: "*.fai"
+      ontologies: []
+  - dict:
+      type: file
+      description: Sequence dictionary of the reference FASTA file needed when the input
+        is a CRAM file
+      pattern: "*.dict"
+      ontologies: []
 output:
-  - condensed_evidence:
-      - meta:
+  condensed_evidence:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -51,8 +57,10 @@ output:
           type: file
           description: The condensed depth evidence
           pattern: "*.rd.txt.gz"
-  - condensed_evidence_index:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  condensed_evidence_index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -61,11 +69,14 @@ output:
           type: file
           description: The condensed depth evidence
           pattern: "*.rd.txt.gz.tbi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

@@ -31,16 +31,18 @@ input:
         type: file
         description: One or more BAM files
         pattern: "*.{bam}"
+        ontologies: []
     - bais:
         type: file
         description: Corresponding BAM file indexes
         pattern: "*.bam.bai"
-  - - assay_type:
-        type: string
-        description: Assay type
+        ontologies: []
+  - assay_type:
+      type: string
+      description: Assay type
 output:
-  - divergent_TREs:
-      - meta:
+  divergent_TREs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,8 +52,9 @@ output:
           description: Divergent TREs
           pattern: "*_divergent_peaks.bed"
           optional: true
-  - bidirectional_TREs:
-      - meta:
+          ontologies: []
+  bidirectional_TREs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -61,19 +64,22 @@ output:
           description: Divergent TREs and convergent TREs
           pattern: "*_bidirectional_peaks.bed"
           optional: true
-  - unidirectional_TREs:
-      - meta:
+          ontologies: []
+  unidirectional_TREs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*_unidirectional_peaks.bed":
           type: file
-          description: Unidirectional TREs, maybe lncRNAs transcribed from enhancers (e-lncRNAs)
+          description: Unidirectional TREs, maybe lncRNAs transcribed from enhancers
+            (e-lncRNAs)
           pattern: "*_unidirectional_peaks.bed"
           optional: true
-  - peakcalling_log:
-      - meta:
+          ontologies: []
+  peakcalling_log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -82,11 +88,14 @@ output:
           type: file
           description: Peakcalling log for debugging purposes
           pattern: "peakcalling_*.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@edmundmiller"
 maintainers:

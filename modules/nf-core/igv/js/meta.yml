@@ -29,13 +29,15 @@ input:
         type: file
         description: Sorted BAM/CRAM file
         pattern: "*.{bam,cram}"
+        ontologies: []
     - index:
         type: file
         description: Index of sorted BAM/CRAM file
         pattern: "*.{bai,crai}"
+        ontologies: []
 output:
-  - browser:
-      - meta:
+  browser:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,8 +46,9 @@ output:
           type: file
           description: Genome browser HTML file
           pattern: "*.{html}"
-  - align_files:
-      - meta:
+          ontologies: []
+  align_files:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,8 +57,9 @@ output:
           type: file
           description: Copy of the input sorted BAM/CRAM file
           pattern: "*.{bam,cram}"
-  - index_files:
-      - meta:
+          ontologies: []
+  index_files:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,11 +68,14 @@ output:
           type: file
           description: Copy of the input index of sorted BAM/CRAM file
           pattern: "*.{bai,crai}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mirpedrol"
 maintainers:

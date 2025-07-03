@@ -30,8 +30,8 @@ input:
           Could be a directory or a tar of the directory
         ontologies: []
 output:
-  - fastq:
-      - meta:
+  fastq:
+    - - meta:
           type: file
           description: Demultiplexed sample FASTQ files
           pattern: "**_S*_L00?_R?_00?.fastq.gz"
@@ -43,11 +43,11 @@ output:
           pattern: "**_S*_L00?_R?_00?.fastq.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
-  - fastq_idx:
-      - meta:
+  fastq_idx:
+    - - meta:
           type: file
-          description: Optional demultiplexed index FASTQ files
-          pattern: "**_S*_L00?_I?_00?.fastq.gz"
+          description: Demultiplexed sample FASTQ files
+          pattern: "**_S*_L00?_R?_00?.fastq.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
       - output/**_S[1-9]*_I?_00?.fastq.gz:
@@ -56,11 +56,11 @@ output:
           pattern: "**_S*_L00?_I?_00?.fastq.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
-  - undetermined:
-      - meta:
+  undetermined:
+    - - meta:
           type: file
-          description: Optional undetermined sample FASTQ files
-          pattern: "Undetermined_S0_L00?_R?_00?.fastq.gz"
+          description: Demultiplexed sample FASTQ files
+          pattern: "**_S*_L00?_R?_00?.fastq.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
       - output/**Undetermined_S0*_R?_00?.fastq.gz:
@@ -69,11 +69,11 @@ output:
           pattern: "Undetermined_S0_L00?_R?_00?.fastq.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
-  - undetermined_idx:
-      - meta:
+  undetermined_idx:
+    - - meta:
           type: file
-          description: Optional undetermined index FASTQ files
-          pattern: "Undetermined_S0_L00?_I?_00?.fastq.gz"
+          description: Demultiplexed sample FASTQ files
+          pattern: "**_S*_L00?_R?_00?.fastq.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
       - output/**Undetermined_S0*_I?_00?.fastq.gz:
@@ -82,14 +82,13 @@ output:
           pattern: "Undetermined_S0_L00?_I?_00?.fastq.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
-  - reports:
-      - meta:
+  reports:
+    - - meta:
           type: file
-          description: Demultiplexing Reports
-          pattern: "Reports/*.{csv,xml}"
+          description: Demultiplexed sample FASTQ files
+          pattern: "**_S*_L00?_R?_00?.fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
-            - edam: http://edamontology.org/format_2332 # XML
+            - edam: http://edamontology.org/format_3989 # GZIP format
       - output/Reports:
           type: file
           description: Demultiplexing Reports
@@ -97,35 +96,37 @@ output:
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
             - edam: http://edamontology.org/format_2332 # XML
-  - logs:
-      - meta:
+  logs:
+    - - meta:
           type: file
-          description: Log files
-          pattern: "Logs/*.{log,txt}"
-          ontologies: []
+          description: Demultiplexed sample FASTQ files
+          pattern: "**_S*_L00?_R?_00?.fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
       - output/Logs:
           type: file
           description: Log files
           pattern: "Logs/*.{log,txt}"
           ontologies: []
-  - interop:
-      - meta:
+  interop:
+    - - meta:
           type: file
-          description: Interop files
-          pattern: "*.{bin}"
-          ontologies: []
+          description: Demultiplexed sample FASTQ files
+          pattern: "**_S*_L00?_R?_00?.fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
       - "**/InterOp/*.bin":
           type: file
           description: Interop files
           pattern: "*.{bin}"
           ontologies: []
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: http://edamontology.org/format_3750 # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@matthdsm"
 maintainers:

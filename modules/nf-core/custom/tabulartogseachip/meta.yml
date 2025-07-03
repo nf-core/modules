@@ -23,6 +23,8 @@ input:
           Tabular (NOTE that for the moment it only works for TSV file) containing a column with the
           features ids, and another column with the features symbols.
         pattern: "*.{tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
   - - id:
         type: string
         description: The name of the column containing feature ids
@@ -30,8 +32,8 @@ input:
         type: string
         description: The name of the column containing feature symbols
 output:
-  - chip:
-      - meta:
+  chip:
+    - - meta:
           type: map
           description: Groovy Map containing metadata e.g. [ id:'test', ... ]
       - "*.chip":
@@ -41,11 +43,14 @@ output:
             documentation at
             https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats
           pattern: "*.chip"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@pinin4fjords"
   - "@suzannejin"

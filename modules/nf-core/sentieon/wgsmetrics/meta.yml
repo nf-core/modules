@@ -22,10 +22,12 @@ input:
         type: file
         description: Sorted BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - bai:
         type: file
         description: Index of th sorted BAM/CRAM/SAM file
         pattern: "*.{bai,crai,sai}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -35,6 +37,7 @@ input:
         type: file
         description: Genome fasta file
         pattern: "*.{fa,fasta}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -44,6 +47,7 @@ input:
         type: file
         description: Index of the genome fasta file
         pattern: "*.fai"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -52,23 +56,27 @@ input:
     - intervals_list:
         type: file
         description: intervals
+        ontologies: []
 output:
-  - wgs_metrics:
-      - meta:
+  wgs_metrics:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
       - "*.txt":
           type: file
-          description: File containing the information about mean base quality score for
-            each sequencing cycle
+          description: File containing the information about mean base quality score
+            for each sequencing cycle
           pattern: "*.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ramprasadn"
 maintainers:

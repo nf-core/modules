@@ -23,9 +23,11 @@ input:
         description: |
           Input FastQ files of size 1 or 2 for single-end and paired-end data, respectively.
         pattern: "*.fastq.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
 output:
-  - trimmed_reads:
-      - meta:
+  trimmed_reads:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -34,8 +36,10 @@ output:
           type: file
           description: The trimmed/modified paired end fastq reads
           pattern: "*.paired.trim*.fastq.gz"
-  - unpaired_reads:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  unpaired_reads:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,8 +48,10 @@ output:
           type: file
           description: The trimmed/modified unpaired end fastq reads
           pattern: "*.unpaired.trim_*.fastq.gz"
-  - trim_log:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  trim_log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,8 +60,9 @@ output:
           type: file
           description: trimmomatic log file, from the trim_log parameter
           pattern: "*.log"
-  - out_log:
-      - meta:
+          ontologies: []
+  out_log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,8 +71,9 @@ output:
           type: file
           description: log of output from the standard out
           pattern: "*.log"
-  - summary:
-      - meta:
+          ontologies: []
+  summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -74,11 +82,14 @@ output:
           type: file
           description: trimmomatic summary file of surviving and dropped reads
           pattern: "*.summary"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@alyssa-ab"
 maintainers:

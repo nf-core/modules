@@ -22,13 +22,15 @@ input:
         type: file
         description: A histogram files from the program FastK
         pattern: "*.hist"
+        ontologies: []
     - fastk_ktab:
         type: file
         description: ktab files from the program FastK
         pattern: "*.ktab*"
+        ontologies: []
 output:
-  - filled_gc_plot:
-      - meta:
+  filled_gc_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,35 +41,39 @@ output:
           description: |
             A filled GC content plot in PNG or PDF format
           pattern: "*.fi.{png,pdf}"
-  - line_gc_plot:
-      - meta:
+          ontologies: []
+  line_gc_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.ln.{png,pdf}"
+          pattern: "*.fi.{png,pdf}"
       - "*.ln.{png,pdf}":
           type: file
           description: |
             A filled GC content plot in PNG or PDF format
           pattern: "*.ln.{png,pdf}"
-  - stacked_gc_plot:
-      - meta:
+          ontologies: []
+  stacked_gc_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.st.{png,pdf}"
+          pattern: "*.fi.{png,pdf}"
       - "*.st.{png,pdf}":
           type: map
           description: |
             A stacked GC content plot in PNG or PDF format
           pattern: "*.st.{png,pdf}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mahesh-panchal"
 maintainers:

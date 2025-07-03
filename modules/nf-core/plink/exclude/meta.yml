@@ -21,21 +21,25 @@ input:
         type: file
         description: PLINK binary biallelic genotype table
         pattern: "*.{bed}"
+        ontologies: []
     - bim:
         type: file
         description: PLINK extended MAP file
         pattern: "*.{bim}"
+        ontologies: []
     - fam:
         type: file
         description: PLINK sample information file
         pattern: "*.{fam}"
+        ontologies: []
     - variants:
         type: file
         description: A text file containing variant identifiers to remove (one per line)
         pattern: "*.{txt}"
+        ontologies: []
 output:
-  - bed:
-      - meta:
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,8 +48,9 @@ output:
           type: file
           description: PLINK binary biallelic genotype table file
           pattern: "*.{bed}"
-  - bim:
-      - meta:
+          ontologies: []
+  bim:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,8 +59,9 @@ output:
           type: file
           description: PLINK extended MAP file
           pattern: "*.{bim}"
-  - fam:
-      - meta:
+          ontologies: []
+  fam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,11 +70,14 @@ output:
           type: file
           description: PLINK sample information file
           pattern: "*.{fam}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@atrigila"
 maintainers:

@@ -31,14 +31,15 @@ input:
         type: file
         description: Sequences to be sorted in FASTA format
         pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
-  - - sort_arg:
-        type: string
-        description: Argument to provide to sort algorithm. Sort by abundance with --sortbysize
-          or by sequence length with --sortbylength.
-        enum: ["--sortbysize", "--sortbylength"]
+        ontologies: []
+  - sort_arg:
+      type: string
+      description: Argument to provide to sort algorithm. Sort by abundance with --sortbysize
+        or by sequence length with --sortbylength.
+      enum: ["--sortbysize", "--sortbylength"]
 output:
-  - fasta:
-      - meta:
+  fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,11 +48,14 @@ output:
           type: file
           description: Sorted FASTA file
           pattern: "*.{fasta}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mirpedrol"
 maintainers:

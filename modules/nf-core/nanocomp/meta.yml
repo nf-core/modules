@@ -23,9 +23,11 @@ input:
         description: List of all the files you want to compare, they have to be all
           the same filetype (either fastq, fasta, bam or Nanopore sequencing summary)
         pattern: "*.{fastq,fq,fna,ffn,faa,frn,fa,fasta,txt,bam}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
 output:
-  - report_html:
-      - meta:
+  report_html:
+    - - meta:
           type: map
           description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
             ]
@@ -33,8 +35,9 @@ output:
           type: file
           description: Summary of all collected statistics
           pattern: "*NanoComp-report.html"
-  - lengths_violin_html:
-      - meta:
+          ontologies: []
+  lengths_violin_html:
+    - - meta:
           type: map
           description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
             ]
@@ -42,8 +45,9 @@ output:
           type: file
           description: Violin plot of the sequence lengths
           pattern: "*NanoComp_lengths_violin.html"
-  - log_length_violin_html:
-      - meta:
+          ontologies: []
+  log_length_violin_html:
+    - - meta:
           type: map
           description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
             ]
@@ -51,8 +55,9 @@ output:
           type: file
           description: Violin plot of the sequence lengths, log function applied
           pattern: "*NanoComp_log_length_violin.html"
-  - n50_html:
-      - meta:
+          ontologies: []
+  n50_html:
+    - - meta:
           type: map
           description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
             ]
@@ -60,8 +65,9 @@ output:
           type: file
           description: Bar plot of N50 sequence length per sample
           pattern: "*NanoComp_N50.html"
-  - number_of_reads_html:
-      - meta:
+          ontologies: []
+  number_of_reads_html:
+    - - meta:
           type: map
           description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
             ]
@@ -69,8 +75,9 @@ output:
           type: file
           description: Bar plot of number of reads per sample
           pattern: "*NanoComp_number_of_reads.html"
-  - overlay_histogram_html:
-      - meta:
+          ontologies: []
+  overlay_histogram_html:
+    - - meta:
           type: map
           description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
             ]
@@ -78,8 +85,9 @@ output:
           type: file
           description: Histogram of all read lengths per sample
           pattern: "*NanoComp_OverlayHistogram.html"
-  - overlay_histogram_normalized_html:
-      - meta:
+          ontologies: []
+  overlay_histogram_normalized_html:
+    - - meta:
           type: map
           description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
             ]
@@ -87,8 +95,9 @@ output:
           type: file
           description: Normalized histogram of all read lengths per sample
           pattern: "*NanoComp_OverlayHistogram_Normalized.html"
-  - overlay_log_histogram_html:
-      - meta:
+          ontologies: []
+  overlay_log_histogram_html:
+    - - meta:
           type: map
           description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
             ]
@@ -96,8 +105,9 @@ output:
           type: file
           description: Histogram of all read lengths per sample, log function applied
           pattern: "*NanoComp_OverlayLogHistogram.html"
-  - overlay_log_histogram_normalized_html:
-      - meta:
+          ontologies: []
+  overlay_log_histogram_normalized_html:
+    - - meta:
           type: map
           description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
             ]
@@ -106,8 +116,9 @@ output:
           description: Normalized histogram of all read lengths per sample, log function
             applied
           pattern: "*NanoComp_OverlayLogHistogram_Normalized.html"
-  - total_throughput_html:
-      - meta:
+          ontologies: []
+  total_throughput_html:
+    - - meta:
           type: map
           description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
             ]
@@ -115,8 +126,9 @@ output:
           type: file
           description: Barplot comparing throughput in bases
           pattern: "*NanoComp_total_throughput.html"
-  - quals_violin_html:
-      - meta:
+          ontologies: []
+  quals_violin_html:
+    - - meta:
           type: map
           description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
             ]
@@ -125,8 +137,9 @@ output:
           description: Violin plot of base qualities, only for bam, fastq and sequencing
             summary input
           pattern: "*NanoComp_quals_violin.html"
-  - overlay_histogram_identity_html:
-      - meta:
+          ontologies: []
+  overlay_histogram_identity_html:
+    - - meta:
           type: map
           description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
             ]
@@ -134,8 +147,9 @@ output:
           type: file
           description: Histogram of perfect reference identity, only for bam input
           pattern: "*NanoComp_OverlayHistogram_Identity.html"
-  - overlay_histogram_phredscore_html:
-      - meta:
+          ontologies: []
+  overlay_histogram_phredscore_html:
+    - - meta:
           type: map
           description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
             ]
@@ -143,8 +157,9 @@ output:
           type: file
           description: Histogram of phred scores, only for bam input
           pattern: "*NanoComp_OverlayHistogram_PhredScore.html"
-  - percent_identity_violin_html:
-      - meta:
+          ontologies: []
+  percent_identity_violin_html:
+    - - meta:
           type: map
           description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
             ]
@@ -153,8 +168,9 @@ output:
           description: Violin plot comparing perfect reference identity, only for bam
             input
           pattern: "*NanoComp_percentIdentity_violin.html"
-  - active_pores_over_time_html:
-      - meta:
+          ontologies: []
+  active_pores_over_time_html:
+    - - meta:
           type: map
           description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
             ]
@@ -163,17 +179,20 @@ output:
           description: Scatter plot of active pores over time, only for sequencing summary
             input
           pattern: "*NanoComp_ActivePoresOverTime.html"
-  - cumulative_yield_plot_gigabases_html:
-      - meta:
+          ontologies: []
+  cumulative_yield_plot_gigabases_html:
+    - - meta:
           type: map
           description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
             ]
       - "*NanoComp_CumulativeYieldPlot_Gigabases.html":
           type: file
-          description: Scatter plot of cumulative yield, only for sequencing summary input
+          description: Scatter plot of cumulative yield, only for sequencing summary
+            input
           pattern: "*NanoComp_CumulativeYieldPlot_Gigabases.html"
-  - sequencing_speed_over_time_html:
-      - meta:
+          ontologies: []
+  sequencing_speed_over_time_html:
+    - - meta:
           type: map
           description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
             ]
@@ -182,8 +201,9 @@ output:
           description: Scatter plot of sequencing speed over time, only for sequencing
             summary input
           pattern: "*NanoComp_sequencing_speed_over_time.html"
-  - stats_txt:
-      - meta:
+          ontologies: []
+  stats_txt:
+    - - meta:
           type: map
           description: Groovy Map containing sample information e.g. [ id:'test', single_end:false
             ]
@@ -191,11 +211,14 @@ output:
           type: file
           description: txt file with basic statistics
           pattern: "*NanoStats.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@paulwolk"
 maintainers:

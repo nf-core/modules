@@ -22,6 +22,7 @@ input:
         type: file
         description: multiple sequence alignment, Stockholm or other formats
         pattern: "*"
+        ontologies: []
     - fmask_rf:
         type: boolean
         description: Flag to output optional file with final mask of non-gap RF len
@@ -42,13 +43,14 @@ input:
         type: boolean
         description: Flag to output optional file with PP-based 0/1 mask of full aln
           len
-  - - maskfile:
-        type: file
-        description: mask file, see program documentation
-        pattern: "*"
+  - maskfile:
+      type: file
+      description: mask file, see program documentation
+      pattern: "*"
+      ontologies: []
 output:
-  - maskedaln:
-      - meta:
+  maskedaln:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -57,41 +59,57 @@ output:
           type: file
           description: Masked alignment in gzipped Stockholm format
           pattern: "*.sthlm.gz"
-  - fmask_rf:
-      - "*.fmask-rf.gz":
-          type: file
-          description: File with final mask of non-gap RF len
-          pattern: "*.fmask-rf.gz"
-  - fmask_all:
-      - "*.fmask-all.gz":
-          type: file
-          description: File with final mask of full aln len
-          pattern: "*.fmask-all.gz"
-  - gmask_rf:
-      - "*.gmask-rf.gz":
-          type: file
-          description: File with gap-based 0/1 mask of non-gap RF len
-          pattern: "*.gmask-rf.gz"
-  - gmask_all:
-      - "*.gmask-all.gz":
-          type: file
-          description: File with gap-based 0/1 mask of full aln len
-          pattern: "*.gmask-all.gz"
-  - pmask_rf:
-      - "*.pmask-rf.gz":
-          type: file
-          description: File with PP-based 0/1 mask of non-gap RF len
-          pattern: "*.pmask-rf.gz"
-  - pmask_all:
-      - "*.pmask-all.gz":
-          type: file
-          description: File with PP-based 0/1 mask of full aln len
-          pattern: "*.pmask-all.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  fmask_rf:
+    - "*.fmask-rf.gz":
+        type: file
+        description: File with final mask of non-gap RF len
+        pattern: "*.fmask-rf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
+  fmask_all:
+    - "*.fmask-all.gz":
+        type: file
+        description: File with final mask of full aln len
+        pattern: "*.fmask-all.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
+  gmask_rf:
+    - "*.gmask-rf.gz":
+        type: file
+        description: File with gap-based 0/1 mask of non-gap RF len
+        pattern: "*.gmask-rf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
+  gmask_all:
+    - "*.gmask-all.gz":
+        type: file
+        description: File with gap-based 0/1 mask of full aln len
+        pattern: "*.gmask-all.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
+  pmask_rf:
+    - "*.pmask-rf.gz":
+        type: file
+        description: File with PP-based 0/1 mask of non-gap RF len
+        pattern: "*.pmask-rf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
+  pmask_all:
+    - "*.pmask-all.gz":
+        type: file
+        description: File with PP-based 0/1 mask of full aln len
+        pattern: "*.pmask-all.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@erikrikarddaniel"
 maintainers:

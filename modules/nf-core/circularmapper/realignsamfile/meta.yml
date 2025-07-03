@@ -28,6 +28,7 @@ input:
         type: file
         description: BAM/SAM file
         pattern: "*.{bam,sam}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -36,6 +37,7 @@ input:
     - fasta:
         type: file
         description: Input elongated genome fasta
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -55,9 +57,10 @@ input:
         type: file
         description: File listing the chromosomes that were elongated
         pattern: "*_elongated"
+        ontologies: []
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -66,11 +69,14 @@ output:
           type: file
           description: Realigned BAM file
           pattern: "*.bam"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@shyama-mama"
   - "@jbv2"

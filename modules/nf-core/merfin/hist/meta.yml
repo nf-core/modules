@@ -31,6 +31,7 @@ input:
         type: file
         description: Genome assembly in FASTA; uncompressed, gz compressed [REQUIRED]
         pattern: "*.{fasta, fasta.gz}"
+        ontologies: []
   - - meta1:
         type: map
         description: |
@@ -40,23 +41,26 @@ input:
         type: file
         description: K-mer database produced from raw reads using Meryl [REQUIRED]
         pattern: "*.{meryl_db}"
-  - - lookup_table:
-        type: file
-        description: Input vector of k-mer probabilities (obtained by genomescope2 with
-          parameter --fitted_hist) [OPTIONAL]
-        pattern: "lookup_table.txt"
-  - - seqmers:
-        type: file
-        description: Input for pre-built sequence meryl db. By default, the sequence
-          meryl db will be generated from the input genome assembly [OPTIONAL]
-        pattern: "*.{meryl_db}"
-  - - peak:
-        type: float
-        description: Input to hard set copy 1 and infer multiplicity to copy number.
-          Can be calculated using genomescope2 [REQUIRED]
+        ontologies: []
+  - lookup_table:
+      type: file
+      description: Input vector of k-mer probabilities (obtained by genomescope2 with
+        parameter --fitted_hist) [OPTIONAL]
+      pattern: "lookup_table.txt"
+      ontologies: []
+  - seqmers:
+      type: file
+      description: Input for pre-built sequence meryl db. By default, the sequence meryl
+        db will be generated from the input genome assembly [OPTIONAL]
+      pattern: "*.{meryl_db}"
+      ontologies: []
+  - peak:
+      type: float
+      description: Input to hard set copy 1 and infer multiplicity to copy number. Can
+        be calculated using genomescope2 [REQUIRED]
 output:
-  - hist:
-      - meta:
+  hist:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -69,8 +73,9 @@ output:
             expanded  copies. Closer to 0 means the expected and found k-mers are well
             balanced, 1:1.
           pattern: "*.{hist}"
-  - log_stderr:
-      - meta:
+          ontologies: []
+  log_stderr:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -80,11 +85,14 @@ output:
           description: Log (stderr) of hist tool execution. The QV and QV* metrics are
             reported at the end.
           pattern: "*.{hist.stderr.log}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@rodtheo"
 maintainers:

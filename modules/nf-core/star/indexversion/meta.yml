@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "star_indexversion"
 description: Get the minimal allowed index version from STAR
@@ -18,18 +17,21 @@ tools:
       identifier: biotools:star
 
 output:
-  - index_version:
-      - "*.txt":
-          type: file
-          description: File with the minimal index version
-          pattern: "*.txt"
+  index_version:
+    - "*.txt":
+        type: file
+        description: File with the minimal index version
+        pattern: "*.txt"
 
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

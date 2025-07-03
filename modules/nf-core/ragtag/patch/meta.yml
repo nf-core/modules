@@ -26,6 +26,7 @@ input:
         type: file
         description: Target assembly
         pattern: "*.{fasta,fasta.gz}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -35,6 +36,7 @@ input:
         type: file
         description: Query assembly
         pattern: "*.{fasta,fasta.gz}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -44,6 +46,7 @@ input:
         type: file
         description: list of target sequences to ignore
         pattern: "*.txt"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -53,9 +56,10 @@ input:
         type: file
         description: list of query sequences to ignore
         pattern: "*.txt"
+        ontologies: []
 output:
-  - patch_fasta:
-      - meta:
+  patch_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,8 +68,9 @@ output:
           type: file
           description: FASTA file containing the patched assembly
           pattern: "*.patch.fasta"
-  - patch_agp:
-      - meta:
+          ontologies: []
+  patch_agp:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -74,8 +79,9 @@ output:
           type: file
           description: AGP file defining how ragtag.patch.fasta is built
           pattern: "*.patch.agp"
-  - patch_components_fasta:
-      - meta:
+          ontologies: []
+  patch_components_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -85,8 +91,9 @@ output:
           description: The split target assembly and the renamed query assembly combined
             into one FASTA file. This file contains all components in ragtag.patch.agp
           pattern: "*.comps.fasta"
-  - assembly_alignments:
-      - meta:
+          ontologies: []
+  assembly_alignments:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -95,8 +102,9 @@ output:
           type: file
           description: Assembly alignment files
           pattern: "*.ragtag.patch.asm.*"
-  - target_splits_agp:
-      - meta:
+          ontologies: []
+  target_splits_agp:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -105,8 +113,9 @@ output:
           type: file
           description: An AGP file defining how the target assembly was split at gaps
           pattern: "*.ctg.agp"
-  - target_splits_fasta:
-      - meta:
+          ontologies: []
+  target_splits_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -115,8 +124,9 @@ output:
           type: file
           description: FASTA file containing the target assembly split at gaps
           pattern: "*.ctg.fasta"
-  - qry_rename_agp:
-      - meta:
+          ontologies: []
+  qry_rename_agp:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -125,8 +135,9 @@ output:
           type: file
           description: An AGP file defining the new names for query sequences
           pattern: "*.rename.agp"
-  - qry_rename_fasta:
-      - meta:
+          ontologies: []
+  qry_rename_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -135,8 +146,9 @@ output:
           type: file
           description: A FASTA file with the original query sequence, but with new names
           pattern: "*.rename.fasta"
-  - stderr:
-      - meta:
+          ontologies: []
+  stderr:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -145,11 +157,14 @@ output:
           type: file
           description: Standard error logging for all external RagTag commands
           pattern: "*.patch.err"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nschan"
 maintainers:

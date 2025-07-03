@@ -21,12 +21,14 @@ input:
     - sam:
         type: file
         description: pair file
-  - - chromsizes:
-        type: file
-        description: chromosome size file
+        ontologies: []
+  - chromsizes:
+      type: file
+      description: chromosome size file
+      ontologies: []
 output:
-  - flip:
-      - meta:
+  flip:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,11 +37,14 @@ output:
           type: file
           description: output file of flip
           pattern: "*.{flip.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jianhong"
 maintainers:
