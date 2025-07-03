@@ -90,7 +90,7 @@ if parsed_args.ensembl_ids.upper() == "TRUE":
         sys.exit(1)
 
 if parsed_args.transpose.upper() == "TRUE":
-    mat = mat[[parsed_args.column]].T.rename(index={parsed_args.column: "${meta.contrast}"})
+    mat = mat[[parsed_args.column]].T.rename(index={parsed_args.column: "${meta.id}"})
 
 parsedargs = {'args': {}}
 parsedargs['min_n'] = parsed_args.min_n
