@@ -113,5 +113,4 @@ for result in results:
 
 ## VERSIONS FILE
 with open('versions.yml', 'a') as version_file:
-    version_file.write('"${task.process}":' + "\\n")
-    version_file.write("\tdecoupler-py: " + dc.__version__ + "\\n")
+    version_file.write("decoupler-py: " + dc.__version__ + "\\n")
