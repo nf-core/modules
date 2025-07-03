@@ -14,6 +14,7 @@ tools:
       documentation: "https://bio-formats.readthedocs.io/en/stable/users/index.html"
       tool_dev_url: "https://github.com/ome/bioformats"
       licence: ["GNU General Public License v2.0"]
+      identifier: ""
 
 input:
   - - meta:
@@ -21,10 +22,10 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test' ]
-  - - image:
+    - image:
         type: file
         description: Path to image file containing OME metadata
-
+        ontologies: []
 output:
   - xml:
       - meta:
@@ -44,6 +45,8 @@ output:
           description: File containing software versions
           pattern: "versions.yml"
 
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@AlexBarbera"
 maintainers:
