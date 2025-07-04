@@ -1,17 +1,21 @@
 process STARFUSION_BUILD {
     tag "$meta.id"
     label 'process_high'
+    stageInMode 'copy'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/be/bed86145102fdf7e381e1a506a4723676f98b4bbe1db5085d02213cef18525c9/data' :
-        'community.wave.seqera.io/library/dfam_hmmer_minimap2_star-fusion:aa3a8e3951498552'}"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/75/75d085bf2a8e40c6693b357800eef0f9568f661226d0888339bc77f7852234bb/data' :
+        'community.wave.seqera.io/library/dfam_hmmer_minimap2_star-fusion:e285bb3eb373b9a7'}"
 
     input:
     tuple val(meta), path(fasta)
     tuple val(meta2), path(gtf)
     path fusion_annot_lib
     val dfam_species
+    path pfam_url
+    path dfam_urls, arity: '5'
+    path annot_filter_url
 
     output:
     tuple val(meta), path("${prefix}_genome_lib_build_dir"), emit: reference
@@ -23,25 +27,32 @@ process STARFUSION_BUILD {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.15.1' // WARN: This is the actual version of the STAR-FUSION, but version information of tool is not updated and prints '1.15.0'
     """
+    gunzip ${pfam_url} && hmmpress Pfam-A.hmm
+
     prep_genome_lib.pl \\
         --genome_fa $fasta \\
         --gtf $gtf \\
-        --dfam_db ${dfam_species} \\
-        --pfam_db current \\
+        --dfam_db *_dfam.hmm \\
+        --pfam_db Pfam-A.hmm \\
         --fusion_annot_lib $fusion_annot_lib \\
+        --annot_filter_rule ${annot_filter_url} \\
         --CPU $task.cpus \\
         --output_dir ${prefix}_genome_lib_build_dir \\
         ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        STAR-Fusion: \$(STAR-Fusion --version 2>&1 | grep -i 'version' | sed 's/STAR-Fusion version: //')
+        gunzip: \$(echo \$(gunzip --version 2>&1) | sed 's/^.*(gzip) //; s/ Copyright.*\$//')
+        hmmer: \$(echo \$(hmmpress -h | grep HMMER | sed 's/# HMMER //' | sed 's/ .*//' 2>&1))
+        STAR-Fusion: $VERSION
     END_VERSIONS
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.15.1' // WARN: This is the actual version of the STAR-FUSION, but version information of tool is not updated and prints '1.15.0'
     """
     mkdir -p ${prefix}_genome_lib_build_dir
 
@@ -128,7 +139,9 @@ process STARFUSION_BUILD {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        STAR-Fusion: \$(STAR-Fusion --version 2>&1 | grep -i 'version' | sed 's/STAR-Fusion version: //')
+        gunzip: \$(echo \$(gunzip --version 2>&1) | sed 's/^.*(gzip) //; s/ Copyright.*\$//')
+        hmmer: \$(echo \$(hmmpress -h | grep HMMER | sed 's/# HMMER //' | sed 's/ .*//' 2>&1))
+        STAR-Fusion: $VERSION
     END_VERSIONS
     """
 
