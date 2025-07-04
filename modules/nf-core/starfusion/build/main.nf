@@ -27,6 +27,7 @@ process STARFUSION_BUILD {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.15.1' // WARN: This is the actual version of the STAR-FUSION, but version information of tool is not updated and prints '1.15.0'
     """
     gunzip ${pfam_url} && hmmpress Pfam-A.hmm
 
@@ -45,12 +46,13 @@ process STARFUSION_BUILD {
     "${task.process}":
         gunzip: \$(echo \$(gunzip --version 2>&1) | sed 's/^.*(gzip) //; s/ Copyright.*\$//')
         hmmer: \$(echo \$(hmmpress -h | grep HMMER | sed 's/# HMMER //' | sed 's/ .*//' 2>&1))
-        STAR-Fusion: \$(STAR-Fusion --version 2>&1 | grep -i 'version' | sed 's/STAR-Fusion version: //')
+        STAR-Fusion: $VERSION
     END_VERSIONS
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.15.1' // WARN: This is the actual version of the STAR-FUSION, but version information of tool is not updated and prints '1.15.0'
     """
     mkdir -p ${prefix}_genome_lib_build_dir
 
@@ -139,7 +141,7 @@ process STARFUSION_BUILD {
     "${task.process}":
         gunzip: \$(echo \$(gunzip --version 2>&1) | sed 's/^.*(gzip) //; s/ Copyright.*\$//')
         hmmer: \$(echo \$(hmmpress -h | grep HMMER | sed 's/# HMMER //' | sed 's/ .*//' 2>&1))
-        STAR-Fusion: \$(STAR-Fusion --version 2>&1 | grep -i 'version' | sed 's/STAR-Fusion version: //')
+        STAR-Fusion: $VERSION
     END_VERSIONS
     """
 
