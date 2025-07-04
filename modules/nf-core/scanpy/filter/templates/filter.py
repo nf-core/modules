@@ -20,7 +20,7 @@ prefix = "${prefix}"
 symbol_col = "${symbol_col}"
 
 if symbol_col != "index" and symbol_col not in adata.var.columns:
-    raise ValueError(f"Column '{symbol_col}' not found in adata.var")
+    raise ValueError(f"Column '{symbol_col}' not found in adata.var: '{adata.var.columns}'")
 
 symbol_series = adata.var.index if symbol_col == "index" else adata.var[symbol_col]
 adata.var["mt"] = symbol_series.str.lower().str.startswith("mt-")
