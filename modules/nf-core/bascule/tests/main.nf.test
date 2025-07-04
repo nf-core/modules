@@ -14,8 +14,8 @@ nextflow_process {
             process {
                 """
                 meta = [ id : "test" ]
-                count_matrices = file("/Users/elenab/GitHub/test-datasets/data/delete_me/bascule/counts_matrices", checkIfExists: false)
-                // count_matrices = file(params.modules_testdata_base_path + "delete_me/bascule/counts_matrices/", checkIfExists: false)
+                // count_matrices = file(params.modules_testdata_base_path + "delete_me/bascule/counts_matrices.tar.gz", checkIfExists: false)
+                count_matrices = file("https://raw.githubusercontent.com/elena-buscaroli/test-datasets/modules/data/delete_me/bascule/counts_matrices.tar.gz", checkIfExists: false)
                 input[0] = tuple(meta, count_matrices)
                 """
             }
@@ -33,25 +33,26 @@ nextflow_process {
         }
     }
 
-    // test("test bascule - stub") {
-    //     config "./nextflow.config"
-    //     options "-stub"
-    //     when {
-    //         process {
-    //             """
-    //             meta = [ id : "test" ]
-    //             count_matrices = file(params.modules_testdata_base_path + "delete_me/bascule/counts_matrices/", checkIfExists: false)
-    //             input[0] = tuple(meta, count_matrices)
-    //             """
-    //         }
-    //     }
+    test("test bascule - stub") {
+        config "./nextflow.config"
+        options "-stub"
+        when {
+            process {
+                """
+                meta = [ id : "test" ]
+                count_matrices = file("https://raw.githubusercontent.com/elena-buscaroli/test-datasets/modules/data/delete_me/bascule/counts_matrices.tar.gz", checkIfExists: false)
+                // count_matrices = file(params.modules_testdata_base_path + "delete_me/bascule/counts_matrices.tar.gz", checkIfExists: false)
+                input[0] = tuple(meta, count_matrices)
+                """
+            }
+        }
 
-    //     then {
-    //         assertAll(
-    //             { assert process.success },
-    //             { assert snapshot(process.out).match() }
-    //         )
-    //     }
-    // }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
 
 }

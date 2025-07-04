@@ -31,7 +31,8 @@ library(ggplot2)
 library(reticulate)
 library(tidyverse)
 
-counts_folder = "$counts_matrices"
+untar("$counts_matrices", verbose=TRUE)
+counts_folder = gsub(".tar.gz", "", "$counts_matrices")
 
 counts_all = lapply(list.files(counts_folder, full.names=TRUE), function(file_id) {
   read.csv(file_id, sep="\t") %>% column_to_rownames(var="MutationType") %>%
@@ -40,6 +41,7 @@ counts_all = lapply(list.files(counts_folder, full.names=TRUE), function(file_id
 
 n_types = length(counts_all)
 types_names = names(counts_all)
+
 
 # keep only samples present in all events types
 samples_list = lapply(types_names, function(i) {

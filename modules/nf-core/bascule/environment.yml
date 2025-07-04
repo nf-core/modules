@@ -1,13 +1,13 @@
 channels:
-- conda-forge
-- bioconda
+  - conda-forge
+  - bioconda
 dependencies:
-- bioconda::r-bascule=1.0.1
-- conda-forge::compilers=1.9.0
-- conda-forge::python=3.8.20
-- conda-forge::r-ggplot2=3.5.2
-- conda-forge::r-reticulate=1.42.0
-- conda-forge::r-tidyverse=2.0.0
-- pip
-- pip:
-  - pybascule==1.0.1
+  - anaconda::pip=24.2
+  - bioconda::r-bascule=1.0.1
+  - conda-forge::compilers=1.9.0
+  - conda-forge::python=3.8.20
+  - conda-forge::r-ggplot2=3.5.2
+  - conda-forge::r-reticulate=1.42.0
+  - conda-forge::r-tidyverse=2.0.0
+  - pip:
+    - pybascule==1.0.1
