@@ -39,7 +39,8 @@ input:
           Path to the matrix file (e.g. gene/protein expression, etc.).
           Should be in in tab-separated format (`*.tab`)
         pattern: "*.tsv"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
   - - net:
         type: file
         description: |
@@ -47,7 +48,8 @@ input:
           expression matrix to a process/component (e.g. gene set,
           transcription factor, kinase, etc.)
         pattern: "*.tsv"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
   - - gtf:
         type: file
         description: |
@@ -61,38 +63,54 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:‘test’, single_end ]
-      - "*estimate__decoupler.tsv":
-          type: file
+          pattern: "*estimate_decoupler.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+      - "*estimate_decoupler.tsv":
+          type: map
           description: |
-            The file containing the estimation results of the enrichment(s)
-          pattern: "*estimate__decoupler.tsv"
-          ontologies: []
+            Groovy Map containing sample information
+            e.g. [ id:‘test’, single_end ]
+          pattern: "*estimate_decoupler.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   - dc_pvals:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:‘test’, single_end ]
-      - "*pvals__decoupler.tsv":
-          type: file
+          pattern: "*pvals_decoupler.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+      - "*pvals_decoupler.tsv":
+          type: map
           description: |
-            The file containing the p-value associated to the estimation
-            results of the enrichment(s)
-          pattern: "*pvals__decoupler.tsv"
-          ontologies: []
-      - s:
-          type: file
+            Groovy Map containing sample information
+            e.g. [ id:‘test’, single_end ]
+          pattern: "*pvals_decoupler.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  - png:
+      - meta:
+          type: map
           description: |
-            The file containing the p-value associated to the estimation
-            results of the enrichment(s)
-          pattern: "*pvals__decoupler.tsv"
-          ontologies: []
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*decoupler_plot.png"
+      - "*decoupler_plot.png":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*decoupler_plot.png"
   - versions:
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@gabora"
   - "@vicpaton"
