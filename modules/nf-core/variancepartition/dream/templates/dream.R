@@ -181,6 +181,9 @@ if (!is.null(opt\$contrast_string)) {
                         lfc = opt\$lfc, confint = opt\$confint)
 }
 
+results\$gene_id <- rownames(results)
+results <- results[, c("gene_id", setdiff(names(results), "gene_id"))]
+
 # Export topTable results
 write.table(results, file = paste(opt\$output_prefix, 'dream.results.tsv', sep = '.'),
             col.names = TRUE, row.names = FALSE, sep = '\t', quote = FALSE )
