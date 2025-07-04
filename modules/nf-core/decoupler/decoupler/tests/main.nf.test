@@ -14,12 +14,12 @@ nextflow_process {
 
         when {
             params {
-                module_args = "--min_n 2 --transpose TRUE --ensembl_ids TRUE"
+                module_args = "--min_n 2 --transpose TRUE --ensembl_ids TRUE --methods mlm"
             }
             process {
                 """
                 input[0] = [
-                    ['id':'SRP254919', 'method_differential':'deseq2', 'contrast':'treatment_mCherry_hND6_'],
+                    ['id':'treatment_mCherry_hND6', 'method_differential':'deseq2'],
                     file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/treatment_mCherry_hND6_.deseq2.results.tsv", checkIfExists: true)
                 ]
                 input[1] = [
@@ -33,13 +33,19 @@ nextflow_process {
     then {
     def estimateFiles = process.out.dc_estimate[0][1].collect { path(it) }
     def pvalsFiles = process.out.dc_pvals[0][1].collect { path(it) }
+    def pngFiles = process.out.png
 
         assertAll(
             { assert process.success },
             { estimateFiles.each { f -> assert f.exists() } },
             { pvalsFiles.each { f -> assert f.exists() } },
+            { pngFiles.each { f ->
+                assert path(f).exists()
+                assert path(f).size() > 0                    // File is not empty
+                assert path(f).name.endsWith('.png')         // Correct extension
+            }},
             { estimateFiles.each { f -> assert f.getText().contains("Androgen") } }
-        )
+                    )
     }
     }
 
@@ -65,15 +71,31 @@ nextflow_process {
         }
 
         then {
-        def estimateFiles = process.out.dc_estimate[0][1].collect { path(it) }
-        def pvalsFiles = process.out.dc_pvals[0][1].collect { path(it) }
+            def estimateFiles = process.out.dc_estimate[0][1].collect { path(it) }
+            def pvalsFiles = process.out.dc_pvals[0][1].collect { path(it) }
+            def pngFiles = process.out.png
 
-        assertAll(
-            { assert process.success },
-            { estimateFiles.each { f -> assert f.exists() } },
-            { pvalsFiles.each { f -> assert f.exists() } }
-        )
+            // Debug output
+            println "=== DEBUG INFO ==="
+            println "estimateFiles type: ${estimateFiles.getClass()}"
+            println "estimateFiles[0] type: ${estimateFiles[0].getClass()}"
+            println "pngFiles type: ${pngFiles.getClass()}"
+            println "pngFiles[0] type: ${pngFiles[0].getClass()}"
+            println "PNG files: ${pngFiles}"
 
+            assertAll(
+                { assert process.success },
+                { estimateFiles.each { f -> assert f.exists() } },
+                { pvalsFiles.each { f -> assert f.exists() } },
+                { pngFiles.each { f ->
+                    println "Testing PNG file: ${f} (type: ${f.getClass()})"
+                    assert path(f).exists()  // Keep the path() wrapper for now
+                    assert path(f).size() > 0
+                    assert path(f).name.endsWith('.png')
+                    assert path(f).name.contains('decoupler')
+                }},
+                { estimateFiles.each { f -> assert f.getText().contains("Androgen") } }
+            )
         }
     }
 
