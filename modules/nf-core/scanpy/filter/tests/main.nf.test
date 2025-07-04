@@ -41,6 +41,66 @@ nextflow_process {
 
     }
 
+    test("Should run with a different symbol column") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                        [ id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679756_filtered_matrix.h5ad', checkIfExists: true)
+                    ]
+                )
+                input[1] = 20
+                input[2] = 20
+                input[3] = 50
+                input[4] = 50
+                input[5] = 50
+                input[6] = 'symbols'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml,
+                ).match() }
+            )
+        }
+
+    }
+
+    test("Should fail with a non-existent symbol column") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                        [ id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679756_filtered_matrix.h5ad', checkIfExists: true)
+                    ]
+                )
+                input[1] = 20
+                input[2] = 20
+                input[3] = 50
+                input[4] = 50
+                input[5] = 50
+                input[6] = 'non_existent_column'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert !process.success }
+            )
+        }
+
+    }
+
     test("Should run without failures - stub") {
 
         options '-stub'
