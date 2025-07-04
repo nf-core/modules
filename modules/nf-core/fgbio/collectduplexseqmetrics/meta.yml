@@ -36,15 +36,17 @@ input:
           present on all reads (usually set by GroupReadsByUmi and has been sorted with
           SortBam into TemplateCoordinate order.
         pattern: "*.bam"
-  - - interval_list:
-        type: file
-        description: Calculation of metrics may be restricted to a set of regions using
-          the --intervals parameter. The file format is descripted here
-          https://samtools.github.io/htsjdk/javadoc/htsjdk/index.html?htsjdk/samtools/util/Interval.html
-        pattern: "*.{tsv|txt|interval_list}"
+        ontologies: []
+  - interval_list:
+      type: file
+      description: Calculation of metrics may be restricted to a set of regions using
+        the --intervals parameter. The file format is descripted here
+        https://samtools.github.io/htsjdk/javadoc/htsjdk/index.html?htsjdk/samtools/util/Interval.html
+      pattern: "*.{tsv|txt|interval_list}"
+      ontologies: []
 output:
-  - family_sizes:
-      - meta:
+  family_sizes:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,51 +56,57 @@ output:
           description: Metrics on the frequency of different types of families of different
             sizes
           pattern: "*.txt"
-  - duplex_family_sizes:
-      - meta:
+          ontologies: []
+  duplex_family_sizes:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
       - "**.duplex_family_sizes.txt":
           type: file
-          description: Metrics on the frequency of duplex tag families by the number of
-            observations from each strand
+          description: Metrics on the frequency of duplex tag families by the number
+            of observations from each strand
           pattern: "*.txt"
-  - duplex_yield_metrics:
-      - meta:
+          ontologies: []
+  duplex_yield_metrics:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
       - "**.duplex_yield_metrics.txt":
           type: file
-          description: Summary QC metrics produced using 5%, 10%, 15%...100% of the data
+          description: Summary QC metrics produced using 5%, 10%, 15%...100% of the
+            data
           pattern: "*.txt"
-  - umi_counts:
-      - meta:
+          ontologies: []
+  umi_counts:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
       - "**.umi_counts.txt":
           type: file
-          description: Metrics on the frequency of observations of UMIs within reads and
-            tag families
+          description: Metrics on the frequency of observations of UMIs within reads
+            and tag families
           pattern: "*.txt"
-  - duplex_qc:
-      - meta:
+          ontologies: []
+  duplex_qc:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
       - "**.duplex_qc.pdf":
           type: file
-          description: A series of plots generated from the preceding metrics files for
-            visualization
+          description: A series of plots generated from the preceding metrics files
+            for visualization
           pattern: "*.pdf"
-  - duplex_umi_counts:
-      - meta:
+          ontologies: []
+  duplex_umi_counts:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -108,11 +116,14 @@ output:
           description: Metrics on the frequency of observations of duplex UMIs within
             reads and tag families.
           pattern: "*.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@georgiakes"
 maintainers:

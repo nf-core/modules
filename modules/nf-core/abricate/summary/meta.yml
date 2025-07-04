@@ -27,8 +27,8 @@ input:
           - edam: "http://edamontology.org/format_1936" # GenBank
           - edam: "http://edamontology.org/format_2204" # EMBL format (XML)
 output:
-  - report:
-      - meta:
+  report:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,13 +39,13 @@ output:
           pattern: "*.{txt}"
           ontologies:
             - edam: "http://edamontology.org/format_2330" # Textual format
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: "http://edamontology.org/format_3750" # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@rpetit3"
 maintainers:

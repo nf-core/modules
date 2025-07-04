@@ -26,19 +26,23 @@ input:
         type: file
         description: Tumor or metastatic sample, BAM, SAM or CRAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - tumorbai:
         type: file
         description: Index of the tumor or metastatic sample
         pattern: "*.{bai,crai,sai}"
+        ontologies: []
     - normalbam:
         type: file
         description: Control (or normal) of matching tumor/metastatic sample, BAM, SAM
           or CRAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - normalbai:
         type: file
         description: Index
         pattern: "*.{bai,crai,sai}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -49,6 +53,7 @@ input:
         type: file
         description: FASTA file
         pattern: "*.{fasta|fa}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -59,6 +64,7 @@ input:
         type: file
         description: Index of FASTA file
         pattern: "*.{fai}"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -67,8 +73,11 @@ input:
           e.g. [ id:'bwa' ]
     - bwa_index:
         type: file
-        description: BWA genome index files. Note that this tool requires the bwa index files to be of the format `prefix.suffix.amb`, where `prefix.suffix` is the full name of the fasta file, not just the prefix.
+        description: BWA genome index files. Note that this tool requires the bwa index
+          files to be of the format `prefix.suffix.amb`, where `prefix.suffix` is the
+          full name of the fasta file, not just the prefix.
         pattern: "Directory containing BWA index *.{amb,ann,bwt,pac,sa}"
+        ontologies: []
   - - meta5:
         type: map
         description: |
@@ -79,6 +88,8 @@ input:
         type: file
         description: VCF file including dbSNP variants
         pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
   - - meta6:
         type: map
         description: |
@@ -89,6 +100,7 @@ input:
         type: file
         description: Index of VCF file including dbSNP variants
         pattern: "*.vcf.gz.tbi"
+        ontologies: []
   - - meta7:
         type: map
         description: |
@@ -99,9 +111,11 @@ input:
         type: file
         description: Targeted intervals. Accepts BED file or Samtools-style string
         pattern: "*.bed|*.txt|*.tab"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
-  - sv:
-      - meta:
+  sv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -110,8 +124,10 @@ output:
           type: file
           description: Filtered SVs for tumor only cases
           pattern: "*.vcf.gz"
-  - indel:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  indel:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -120,8 +136,10 @@ output:
           type: file
           description: Filtered Indels for tumor only cases
           pattern: "*.vcf.gz"
-  - germ_indel:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  germ_indel:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -130,8 +148,10 @@ output:
           type: file
           description: Germline filtered Indels for tumor/normal paired samples
           pattern: "*.vcf.gz"
-  - germ_sv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  germ_sv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -140,8 +160,10 @@ output:
           type: file
           description: Germline filtered SVs for tumor/normal paired samples
           pattern: "*.vcf.gz"
-  - som_indel:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  som_indel:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -150,8 +172,10 @@ output:
           type: file
           description: Somatic filtered Indels for tumor/normal paired samples
           pattern: "*.vcf.gz"
-  - som_sv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  som_sv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -160,8 +184,10 @@ output:
           type: file
           description: Somatic filtered SVs for tumor/normal paired samples
           pattern: "*.vcf.gz"
-  - unfiltered_sv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  unfiltered_sv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -170,8 +196,10 @@ output:
           type: file
           description: Unfiltered SVs for tumor only cases
           pattern: "*.vcf.gz"
-  - unfiltered_indel:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  unfiltered_indel:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -180,8 +208,10 @@ output:
           type: file
           description: Unfiltered Indels for tumor only cases
           pattern: "*.vcf.gz"
-  - unfiltered_germ_indel:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  unfiltered_germ_indel:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -190,8 +220,10 @@ output:
           type: file
           description: Unfiltered germline Indels for tumor/normal paired samples
           pattern: "*.vcf.gz"
-  - unfiltered_germ_sv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  unfiltered_germ_sv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -200,8 +232,10 @@ output:
           type: file
           description: Unfiltered germline SVs for tumor/normal paired samples
           pattern: "*.vcf.gz"
-  - unfiltered_som_indel:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  unfiltered_som_indel:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -210,8 +244,10 @@ output:
           type: file
           description: Unfiltered somatic Indels for tumor/normal paired samples
           pattern: "*.vcf.gz"
-  - unfiltered_som_sv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  unfiltered_som_sv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -220,18 +256,10 @@ output:
           type: file
           description: Unfiltered somatic SVs for tumor/normal paired samples
           pattern: "*.vcf.gz"
-  - raw_calls:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test' ]
-      - "*.bps.txt.gz":
-          type: file
-          description: Raw, unfiltered variants
-          pattern: "*.txt.gz"
-  - discordants:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  discordants:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -241,8 +269,22 @@ output:
           description: Information on all clusters of discordant reads identified with
             2+ reads
           pattern: "*.txt.gz"
-  - log:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  raw_calls:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.bps.txt.gz":
+          type: file
+          description: Raw, unfiltered variants
+          pattern: "*.txt.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -251,11 +293,15 @@ output:
           type: file
           description: Log file
           pattern: "*.txt.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@kubranarci"
 maintainers:

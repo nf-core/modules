@@ -26,9 +26,10 @@ input:
         type: file
         description: PAF alignment file
         pattern: "*.paf"
+        ontologies: []
 output:
-  - stat:
-      - meta:
+  stat:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -37,8 +38,9 @@ output:
           type: file
           description: PacBio Statistic file
           pattern: "*.PB.stat"
-  - basecov:
-      - meta:
+          ontologies: []
+  basecov:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,11 +49,14 @@ output:
           type: file
           description: PacBio Base coverage file
           pattern: "*.PB.base.cov"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mahesh-panchal"
 maintainers:

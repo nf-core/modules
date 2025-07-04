@@ -24,21 +24,22 @@ input:
         description: |
           List of input FastQ files of size 1 and 2 for single-end and
           paired-end data, respectively.
-  - - names_to_filter:
-        type: string
-        description: |
-          String containing names of reads to filter out of the fastq files.
-  - - output_format:
-        type: string
-        description: |
-          String with the format of the output file, e.g. fastq.gz, fasta, fasta.bz2
-  - - interleaved_output:
-        type: boolean
-        description: |
-          Whether to produce an interleaved fastq output file
+        ontologies: []
+  - names_to_filter:
+      type: string
+      description: |
+        String containing names of reads to filter out of the fastq files.
+  - output_format:
+      type: string
+      description: |
+        String with the format of the output file, e.g. fastq.gz, fasta, fasta.bz2
+  - interleaved_output:
+      type: boolean
+      description: |
+        Whether to produce an interleaved fastq output file
 output:
-  - reads:
-      - meta:
+  reads:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,8 +48,9 @@ output:
           type: file
           description: The trimmed/modified fastq reads
           pattern: "*${output_format}"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -57,11 +59,14 @@ output:
           type: file
           description: filterbyname.sh log file
           pattern: "*.filterbyname.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@tokarevvasily"
   - "@sppearce"

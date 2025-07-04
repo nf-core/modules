@@ -24,13 +24,16 @@ input:
         type: file
         description: VCF/TAB file annotated with vep
         pattern: "*.{vcf,tab,tsv,txt}"
-  - - feature_file:
-        type: file
-        description: File containing features on separate lines. To be used with --filter
-          option.
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  - feature_file:
+      type: file
+      description: File containing features on separate lines. To be used with --filter
+        option.
+      ontologies: []
 output:
-  - output:
-      - meta:
+  output:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,11 +42,15 @@ output:
           type: file
           description: VCF/TAB file
           pattern: "*.{vcf,tab,txt,tsv}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ramprasadn"
 maintainers:

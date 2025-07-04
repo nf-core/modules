@@ -24,9 +24,10 @@ input:
         type: file
         description: A single fasta file to be split.
         pattern: "*.{fasta}"
+        ontologies: []
 output:
-  - bed:
-      - meta:
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,11 +36,14 @@ output:
           type: file
           description: The output bed which summarised locations of cuts
           pattern: "*.{bed}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@DLBPointon"
 maintainers:

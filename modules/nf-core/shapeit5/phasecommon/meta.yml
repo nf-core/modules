@@ -26,15 +26,18 @@ input:
           Target dataset in VCF/BCF format defined at all variable positions.
           The file could possibly be without GT field (for efficiency reasons a file containing only the positions is recommended).
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+        ontologies: []
     - input_index:
         type: file
         description: Index file of the input VCF/BCF file containing genotype likelihoods.
         pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
+        ontologies: []
     - pedigree:
         type: file
         description: |
           Pedigree information in the following format: offspring father mother.
         pattern: "*.{txt, tsv}"
+        ontologies: []
     - region:
         type: string
         description: |
@@ -50,10 +53,12 @@ input:
         type: file
         description: Reference panel of haplotypes in VCF/BCF format.
         pattern: "*.{vcf.gz,bcf.gz}"
+        ontologies: []
     - reference_index:
         type: file
         description: Index file of the Reference panel file.
         pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -63,10 +68,12 @@ input:
         type: file
         description: Scaffold of haplotypes in VCF/BCF format.
         pattern: "*.{vcf.gz,bcf.gz}"
+        ontologies: []
     - scaffold_index:
         type: file
         description: Index file of the scaffold file.
         pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -76,9 +83,10 @@ input:
         type: file
         description: File containing the genetic map.
         pattern: "*.gmap"
+        ontologies: []
 output:
-  - phased_variant:
-      - meta:
+  phased_variant:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -87,11 +95,14 @@ output:
           type: file
           description: Phased variant dataset in VCF/BCF format.
           pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@LouisLeNezet"
 maintainers:

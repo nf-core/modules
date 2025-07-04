@@ -24,26 +24,31 @@ input:
         type: file
         description: target VCF input file to be imputed and or phased
         pattern: "*.{vcf,vcf.gz}"
-  - - refpanel:
-        type: file
-        description: target reference panel
-  - - genmap:
-        type: file
-        description: a PLINK format genetic map with cM units
-        pattern: "*.{map,map.gz,map.zip}"
-  - - exclsamples:
-        type: file
-        description: text file containing samples one sample per line to be excluded
-          from the analysis
-        pattern: "*.*"
-  - - exclmarkers:
-        type: file
-        description: text file containing markers one marker per line to be excluded
-          from the analysis
-        pattern: "*.*"
+        ontologies: []
+  - refpanel:
+      type: file
+      description: target reference panel
+      ontologies: []
+  - genmap:
+      type: file
+      description: a PLINK format genetic map with cM units
+      pattern: "*.{map,map.gz,map.zip}"
+      ontologies: []
+  - exclsamples:
+      type: file
+      description: text file containing samples one sample per line to be excluded from
+        the analysis
+      pattern: "*.*"
+      ontologies: []
+  - exclmarkers:
+      type: file
+      description: text file containing markers one marker per line to be excluded from
+        the analysis
+      pattern: "*.*"
+      ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,8 +58,10 @@ output:
           description: bgzip compressed VCF file that contains phased non missing genotypes
             for all non reference samples
           pattern: "*.vcf.gz"
-  - log:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,11 +71,14 @@ output:
           description: a summary of the analysis that includes the Beagle version, the
             command line arguments, and compute time.
           pattern: "*.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ashotmarg"
 maintainers:

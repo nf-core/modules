@@ -1,6 +1,6 @@
----
 name: "bamutil_clipoverlap"
-description: clips overlapping read pairs. When two mates overlap, this tool will clip the record's whose clipped region would have the lowest average quality.
+description: clips overlapping read pairs. When two mates overlap, this tool will
+  clip the record's whose clipped region would have the lowest average quality.
 keywords:
   - bam
   - clipping
@@ -8,7 +8,8 @@ keywords:
   - bamUtil
 tools:
   - "bamutil":
-      description: "Programs that perform operations on SAM/BAM files, all built into a single executable, bam."
+      description: "Programs that perform operations on SAM/BAM files, all built into
+        a single executable, bam."
       homepage: "https://genome.sph.umich.edu/wiki/BamUtil"
       documentation: "https://genome.sph.umich.edu/wiki/BamUtil:_clipOverlap"
       tool_dev_url: "https://github.com/statgen/bamUtil"
@@ -27,9 +28,10 @@ input:
         description: Coordinate/ReadName sorted BAM/SAM/uncompressedBAM file
         pattern: "*.{bam,sam,ubam}"
 
+        ontologies: []
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,8 +40,9 @@ output:
           type: file
           description: Coordinate/ReadName sorted BAM/SAM/uncompressedBAM file
           pattern: "*.{bam}"
-  - stats_log:
-      - meta:
+          ontologies: []
+  stats_log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -48,12 +51,15 @@ output:
           type: file
           description: basic overlap statistics when unabled with --stats
           pattern: "*.{log}"
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Y-Pei"
 maintainers:

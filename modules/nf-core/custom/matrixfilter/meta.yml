@@ -23,6 +23,7 @@ input:
           Raw TSV or CSV format abundance matrix with features (e.g.
           genes) by row and observations (e.g. samples) by column. All rownames
           from the sample sheet should be present in the columns.
+        ontologies: []
   - - samplesheet_meta:
         type: map
         description: |
@@ -35,9 +36,10 @@ input:
           provided this is used to infer minimum passing samples from group sizes
           present (see grouping_variable), but also to validate matrix columns.
           If not provided, all numeric columns are selected.
+        ontologies: []
 output:
-  - filtered:
-      - meta:
+  filtered:
+    - - meta:
           type: map
           description: |
             Groovy Map containing information on experiment.
@@ -46,8 +48,10 @@ output:
           type: file
           description: Filtered version of input matrix
           pattern: "*.filtered.tsv"
-  - tests:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  tests:
+    - - meta:
           type: map
           description: |
             Groovy Map containing information on experiment.
@@ -56,8 +60,10 @@ output:
           type: file
           description: Boolean matrix with pass/ fail status for each test on each feature
           pattern: "*.tests.tsv"
-  - session_info:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  session_info:
+    - - meta:
           type: map
           description: |
             Groovy Map containing information on experiment.
@@ -66,11 +72,14 @@ output:
           type: file
           description: Log file containing R session information
           pattern: "*.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@pinin4fjords"
 maintainers:

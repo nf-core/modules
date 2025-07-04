@@ -26,6 +26,7 @@ input:
         type: file
         description: Input bed file
         pattern: "*.bed"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -35,25 +36,26 @@ input:
         type: file
         description: Sequence dictionary
         pattern: "*.dict"
+        ontologies: []
 output:
-  - interval_list:
-      - meta:
+  interval_list:
+    - - meta:
           type: file
           description: gatk interval list file
           pattern: "*.interval_list"
+          ontologies: []
       - "*.interval_list":
           type: file
           description: gatk interval list file
           pattern: "*.interval_list"
-      - _list:
-          type: file
-          description: gatk interval list file
-          pattern: "*.interval_list"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@kevinmenden"
   - "@ramprasadn"

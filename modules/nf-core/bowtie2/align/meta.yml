@@ -28,6 +28,7 @@ input:
         description: |
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -37,6 +38,7 @@ input:
         type: file
         description: Bowtie2 genome index files
         pattern: "*.ebwt"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -46,84 +48,88 @@ input:
         type: file
         description: Bowtie2 genome fasta file
         pattern: "*.fasta"
-  - - save_unaligned:
-        type: boolean
-        description: |
-          Save reads that do not map to the reference (true) or discard them (false)
-          (default: false)
-  - - sort_bam:
-        type: boolean
-        description: use samtools sort (true) or samtools view (false)
-        pattern: "true or false"
+        ontologies: []
+  - save_unaligned:
+      type: boolean
+      description: |
+        Save reads that do not map to the reference (true) or discard them (false)
+        (default: false)
+  - sort_bam:
+      type: boolean
+      description: use samtools sort (true) or samtools view (false)
+      pattern: "true or false"
 output:
-  - sam:
-      - meta:
-          type: file
-          description: Output SAM file containing read alignments
-          pattern: "*.sam"
+  sam:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.sam":
           type: file
           description: Output SAM file containing read alignments
           pattern: "*.sam"
-  - bam:
-      - meta:
-          type: file
-          description: Output BAM file containing read alignments
-          pattern: "*.bam"
+          ontologies: []
+  bam:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.bam":
           type: file
           description: Output BAM file containing read alignments
           pattern: "*.bam"
-  - cram:
-      - meta:
-          type: file
-          description: Output CRAM file containing read alignments
-          pattern: "*.cram"
+          ontologies: []
+  cram:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.cram":
           type: file
           description: Output CRAM file containing read alignments
           pattern: "*.cram"
-  - csi:
-      - meta:
-          type: file
-          description: Output SAM/BAM index for large inputs
-          pattern: "*.csi"
+          ontologies: []
+  csi:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.csi":
           type: file
           description: Output SAM/BAM index for large inputs
           pattern: "*.csi"
-  - crai:
-      - meta:
-          type: file
-          description: Output CRAM index
-          pattern: "*.crai"
+          ontologies: []
+  crai:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.crai":
           type: file
           description: Output CRAM index
           pattern: "*.crai"
-  - log:
-      - meta:
-          type: file
-          description: Alignment log
-          pattern: "*.log"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.log":
           type: file
           description: Alignment log
           pattern: "*.log"
-  - fastq:
-      - meta:
-          type: file
-          description: Unaligned FastQ files
-          pattern: "*.fastq.gz"
+          ontologies: []
+  fastq:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*fastq.gz":
           type: file
           description: Unaligned FastQ files
           pattern: "*.fastq.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@joseespinosa"
   - "@drpatelh"

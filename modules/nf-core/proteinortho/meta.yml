@@ -31,39 +31,52 @@ input:
         description: Input fasta files (proteomes or transcriptomes), at least 2 are
           needed
         pattern: "*.{fa,fasta,faa,fna,fn}"
+        ontologies: []
 output:
-  - orthologgroups:
-      - meta:
+  orthologgroups:
+    - - meta:
           type: file
           description: Orthology table
           pattern: "*.proteinortho.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
       - ${meta.id}.proteinortho.tsv:
           type: file
           description: Orthology table
           pattern: "*.proteinortho.tsv"
-  - orthologgraph:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  orthologgraph:
+    - - meta:
           type: file
-          description: Orthology graph
-          pattern: "*.proteinortho-graph"
+          description: Orthology table
+          pattern: "*.proteinortho.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
       - ${meta.id}.proteinortho-graph:
           type: file
           description: Orthology graph
           pattern: "*.proteinortho-graph"
-  - blastgraph:
-      - meta:
+          ontologies: []
+  blastgraph:
+    - - meta:
           type: file
-          description: BLAST graph
-          pattern: "*.blast-graph"
+          description: Orthology table
+          pattern: "*.proteinortho.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
       - ${meta.id}.blast-graph:
           type: file
           description: BLAST graph
           pattern: "*.blast-graph"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@pmjklemm"
 maintainers:

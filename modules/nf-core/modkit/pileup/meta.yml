@@ -23,10 +23,12 @@ input:
         type: file
         description: Sorted BAM/CRAM file
         pattern: "*.{bam,cram}"
+        ontologies: []
     - bai:
         type: file
         description: Associated index file for BAM
         pattern: "*.bai"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -37,10 +39,12 @@ input:
         description: Reference sequence in FASTA format. Required for motif (e.g. CpG)
           filtering
         pattern: "*.fasta"
+        ontologies: []
     - fai:
         type: file
         description: Associated index file for FASTA
         pattern: "*.fai"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -51,9 +55,10 @@ input:
         description: BED file that will restrict threshold estimation and pileup results
           to positions overlapping intervals in the file
         pattern: "*.bed"
+        ontologies: []
 output:
-  - bed:
-      - meta:
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -62,8 +67,9 @@ output:
           type: file
           description: bedMethyl output file(s)
           pattern: "*.bed"
-  - bedgraph:
-      - meta:
+          ontologies: []
+  bedgraph:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -72,8 +78,9 @@ output:
           type: file
           description: bedgraph output files
           pattern: "*.bedgraph"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -82,11 +89,14 @@ output:
           type: file
           description: File for debug logs to be written to
           pattern: "*.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Michal-Babins"
   - "@fellen31"

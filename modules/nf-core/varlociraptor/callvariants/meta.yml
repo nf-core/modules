@@ -25,20 +25,24 @@ input:
         type: file
         description: Sorted VCF/BCF file (list)
         pattern: "*.{bcf,vcf,vcf.gz}"
+        ontologies: []
     - tumor_vcf:
         type: file
         description: Sorted VCF/BCF file (optional)
         pattern: "*.{bcf,bcf.gz,vcf,vcf.gz}"
-  - - scenario:
-        type: file
-        description: Yaml file containing scenario information (optional)
-        pattern: "*.{yml,yaml}"
-  - - scenario_sample_name:
-        type: string
-        description: Sample name for the scenario
+        ontologies: []
+  - scenario:
+      type: file
+      description: Yaml file containing scenario information (optional)
+      pattern: "*.{yml,yaml}"
+      ontologies:
+        - edam: http://edamontology.org/format_3750 # YAML
+  - scenario_sample_name:
+      type: string
+      description: Sample name for the scenario
 output:
-  - bcf:
-      - meta:
+  bcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,11 +51,14 @@ output:
           type: file
           description: BCF file containing sample observations
           pattern: "*.bcf"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@FriederikeHanssen"
 maintainers:

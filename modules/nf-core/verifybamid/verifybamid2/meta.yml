@@ -27,34 +27,41 @@ input:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - bai:
         type: file
         description: BAI/CRAI/CSI index file
         pattern: "*.{bai,crai,csi}"
+        ontologies: []
   - - svd_ud:
         type: file
         description: .UD matrix file from SVD result of genotype matrix
         pattern: "*.UD"
+        ontologies: []
     - svd_mu:
         type: file
         description: .mu matrix file of genotype matrix
         pattern: "*.mu"
+        ontologies: []
     - svd_bed:
         type: file
         description: .Bed file for markers used in this analysis,format(chr\tpos-1\tpos\trefAllele\taltAllele)[Required]
         pattern: "*.bed"
-  - - refvcf:
-        type: file
-        description: Reference panel VCF with genotype information, for generation of
-          .UD .mu .bed files [Optional]
-        pattern: "*.vcf"
-  - - references:
-        type: file
-        description: reference file [Required]
-        pattern: "*.fasta"
+        ontologies: []
+  - refvcf:
+      type: file
+      description: Reference panel VCF with genotype information, for generation of
+        .UD .mu .bed files [Optional]
+      pattern: "*.vcf"
+      ontologies: []
+  - references:
+      type: file
+      description: reference file [Required]
+      pattern: "*.fasta"
+      ontologies: []
 output:
-  - log:
-      - meta:
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -63,8 +70,9 @@ output:
           type: file
           description: Detailed summary of the VerifyBamId2 results
           pattern: "*.log"
-  - ud:
-      - meta:
+          ontologies: []
+  ud:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -73,8 +81,9 @@ output:
           type: file
           description: .UD matrix file from customized reference vcf input
           pattern: "*.UD"
-  - bed:
-      - meta:
+          ontologies: []
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -83,30 +92,33 @@ output:
           type: file
           description: .Bed file from customized reference marker vcf input
           pattern: "*.bed"
-  - mu:
-      - meta:
+          ontologies: []
+  mu:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.mu":
           type: file
-          description: .mu matrix file of genotype matrix from customized reference vcf
-            input
+          description: .mu matrix file of genotype matrix from customized reference
+            vcf input
           pattern: "*.mu"
-  - self_sm:
-      - meta:
+          ontologies: []
+  self_sm:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.selfSM":
           type: file
-          description: Shares the same format as legacy VB1 and the key information FREEMIX
-            indicates the estimated contamination level.
+          description: Shares the same format as legacy VB1 and the key information
+            FREEMIX indicates the estimated contamination level.
           pattern: "*.selfSM"
-  - ancestry:
-      - meta:
+          ontologies: []
+  ancestry:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -115,11 +127,14 @@ output:
           type: file
           description: Ancestry information
           pattern: "*.Ancestry"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@manifestoso"
 maintainers:

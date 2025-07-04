@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "htodemux"
 description: Demultiplex samples based on data from cell hashing.
@@ -8,7 +7,8 @@ keywords:
   - single-cell
 tools:
   - "htodemux":
-      description: "HTODemux is the demultiplexing module of Seurat, which demultiplex samples based on data from cell hashing."
+      description: "HTODemux is the demultiplexing module of Seurat, which demultiplex
+        samples based on data from cell hashing."
       homepage: "https://satijalab.org/seurat/articles/hashing_vignette"
       documentation: "https://satijalab.org/seurat/reference/htodemux"
       tool_dev_url: "https://github.com/satijalab/seurat"
@@ -26,13 +26,14 @@ input:
         type: file
         description: |
           A `.rds` file containing the seurat object. Assumes that the hash tag oligo (HTO) data has been added and normalized.
+        ontologies: []
     - assay:
         type: string
         description: |
           Name of the Hashtag assay, usually called "HTO" by default. Use the custom name if the assay has been named differently.
 output:
-  - params:
-      - meta:
+  params:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -42,8 +43,10 @@ output:
           description: The used parameters to call HTODemux in the R-Script.
           pattern: "params_htodemux.csv"
 
-  - assignment:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  assignment:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,8 +56,10 @@ output:
           description: Assignment results.
           pattern: "assignment_htodemux.csv"
 
-  - classification:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  classification:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,8 +69,10 @@ output:
           description: Classification results.
           pattern: "classification_htodemux.csv"
 
-  - rds:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  rds:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -75,12 +82,15 @@ output:
           description: SeuratObject saved as RDS.
           pattern: "htodemux.rds"
 
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@LuisHeinzlmeier"
 maintainers:

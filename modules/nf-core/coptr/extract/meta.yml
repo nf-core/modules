@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "coptr_extract"
 description: Computes the coverage map along the reference genome
@@ -31,25 +30,28 @@ input:
           - edam: "http://edamontology.org/format_2572"
 
 output:
-  - coverage:
-      - meta:
+  coverage:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.pkl":
           type: file
-          description: Python pickle (pkl) file containing coverage along the reference genome
+          description: Python pickle (pkl) file containing coverage along the reference
+            genome
           pattern: "*.{pkl}"
           ontologies:
             - edam: "http://edamontology.org/format_4002"
 
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ramirobarrantes"
 maintainers:

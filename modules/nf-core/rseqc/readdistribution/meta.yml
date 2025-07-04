@@ -24,25 +24,31 @@ input:
         type: file
         description: the alignment in bam format
         pattern: "*.{bam}"
-  - - bed:
-        type: file
-        description: a bed file for the reference gene model
-        pattern: "*.{bed}"
+        ontologies: []
+  - bed:
+      type: file
+      description: a bed file for the reference gene model
+      pattern: "*.{bed}"
+      ontologies: []
 output:
-  - txt:
-      - meta:
+  txt:
+    - - meta:
           type: file
           description: the read distribution report
           pattern: "*.read_distribution.txt"
+          ontologies: []
       - "*.read_distribution.txt":
           type: file
           description: the read distribution report
           pattern: "*.read_distribution.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@drpatelh"
   - "@kevinmenden"

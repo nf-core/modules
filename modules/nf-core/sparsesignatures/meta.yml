@@ -36,9 +36,11 @@ input:
         type: file
         description: joint tsv file with validated mutations by CNAqc
         pattern: "*.{tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
-  - signatures_mutCounts_rds:
-      - meta:
+  signatures_mutCounts_rds:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,38 +49,44 @@ output:
           type: file
           description: File containing mutational counts across samples/patients
           pattern: "*{_mut_counts.rds}"
-  - signatures_cv_rds:
-      - meta: 
+          ontologies: []
+  signatures_cv_rds:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*_cv_means_mse.rds": 
+      - "*_cv_means_mse.rds":
           type: file
           description: File containing cross-validation results
           pattern: "*{_cv_means_mse.rds}"
-  - signatures_bestConf_rds:
-      - meta:
+          ontologies: []
+  signatures_bestConf_rds:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*_best_params_config.rds": 
+      - "*_best_params_config.rds":
           type: file
-          description: File containing best parameters configuration (numer of signatures (K) and lambda)
+          description: File containing best parameters configuration (numer of signatures
+            (K) and lambda)
           pattern: "*{_best_params_config.rds}"
-  - signatures_nmfOut_rds:
-      - meta: 
+          ontologies: []
+  signatures_nmfOut_rds:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
       - "*_nmf_Lasso_out.rds":
           type: file
-          description: File containing the results of nmf LASSO fit (signatures and exposures)
+          description: File containing the results of nmf LASSO fit (signatures and
+            exposures)
           pattern: "*{_nmf_Lasso_out.rds}"
-  - signatures_plot_rds:
-      - meta: 
+          ontologies: []
+  signatures_plot_rds:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -87,8 +95,9 @@ output:
           type: file
           description: File containig the data to generate plots
           pattern: "*{_plot_all.rds}"
-  - signatures_plot_pdf:
-      - meta: 
+          ontologies: []
+  signatures_plot_pdf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -97,15 +106,17 @@ output:
           type: file
           description: File containing the generated plots
           pattern: "*{_plot_all.pdf}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Katerina10-cloud"
   - "@elena-buscaroli"
 maintainers:
   - "@Katerina10-cloud"
   - "@elena-buscaroli"
-  

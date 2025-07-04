@@ -49,8 +49,8 @@ input:
         pattern: "*{.tc_lib,*_lib}"
         ontologies: []
 output:
-  - tcs:
-      - meta:
+  tcs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -60,8 +60,8 @@ output:
           description: The msa represented in tcs format, prepended with TCS scores
           pattern: "*.tcs"
           ontologies: []
-  - scores:
-      - meta:
+  scores:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -71,12 +71,12 @@ output:
           description: a file containing the score of the alignment in csv format
           pattern: "*.scores"
           ontologies: []
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: http://edamontology.org/format_3750 # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@alessiovignoli"

@@ -1,5 +1,6 @@
 name: "gzrt"
-description: gzrecover is a program that will attempt to extract any readable data out of a gzip file that has been corrupted
+description: gzrecover is a program that will attempt to extract any readable data
+  out of a gzip file that has been corrupted
 keywords:
   - corrupted
   - fastq
@@ -29,25 +30,27 @@ input:
           - edam: "http://edamontology.org/format_3989"
 
 output:
-  - recovered:
-      - meta:
+  recovered:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "${prefix}*.fastq.gz":
+      - ${prefix}*.fastq.gz:
           type: file
           description: Recovered FASTQ.gz files
           pattern: "*.{gz}"
           ontologies:
             - edam: "http://edamontology.org/format_3989"
 
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mazzalab"
 maintainers:

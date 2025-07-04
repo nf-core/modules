@@ -6,11 +6,13 @@ keywords:
   - doublets
 tools:
   - scvitools:
-      description: "A scalable toolkit for probabilistic modeling applied to single-cell omics data"
+      description: "A scalable toolkit for probabilistic modeling applied to single-cell
+        omics data"
       homepage: "https://scvi-tools.org"
       documentation: "https://docs.scvi-tools.org/en/stable/"
       tool_dev_url: "https://github.com/scverse/scvi-tools"
       licence: ["MIT"]
+      identifier: ""
 
 input:
   - - meta:
@@ -24,9 +26,10 @@ input:
         description: H5AD anndata object
         pattern: "*.h5ad"
 
+        ontologies: []
 output:
-  - h5ad:
-      - meta:
+  h5ad:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -36,8 +39,9 @@ output:
           description: H5AD anndata object without doublets
           pattern: "*.h5ad"
 
-  - predictions:
-      - meta:
+          ontologies: []
+  predictions:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,12 +51,15 @@ output:
           description: pandas dataframe containing the doublet classification
           pattern: "*.pkl"
 
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@LeonHafner"
 maintainers:

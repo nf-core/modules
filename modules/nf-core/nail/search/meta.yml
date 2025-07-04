@@ -9,8 +9,8 @@ keywords:
   - protein
 tools:
   - "nail":
-      description: "Profile Hidden Markov Model (pHMM) biological sequence alignment\
-        \ tool"
+      description: "Profile Hidden Markov Model (pHMM) biological sequence alignment
+        tool"
       homepage: "https://github.com/TravisWheelerLab/nail"
       documentation: "https://github.com/TravisWheelerLab/nail"
       tool_dev_url: "https://github.com/TravisWheelerLab/nail"
@@ -41,55 +41,53 @@ input:
         pattern: "*.{fasta,fa,fna}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
-  - - write_align:
-        type: boolean
-        description: Flag to save optional alignment output. Specify with 'true' to
-          save.
+  - write_align:
+      type: boolean
+      description: Flag to save optional alignment output. Specify with 'true' to save.
 output:
-  - output:
-      - meta:
+  output:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.{txt}"
       - ${prefix}.txt:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.{txt}"
-  - target_summary:
-      - meta:
+  target_summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "results.tbl"
       - ${prefix}.tbl:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "results.tbl"
-  - alignments:
-      - meta:
+  alignments:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.ali"
       - ${prefix}.ali:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.ali"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@vagkaratzas"
 maintainers:

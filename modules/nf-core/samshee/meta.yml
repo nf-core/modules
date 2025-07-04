@@ -7,7 +7,8 @@ keywords:
   - bcl2fastq
 tools:
   - samshee:
-      description: A schema-agnostic parser and writer for illumina® sample sheets v2 and similar documents.
+      description: A schema-agnostic parser and writer for illumina® sample sheets v2
+        and similar documents.
       homepage: https://github.com/lit-regensburg/samshee
       documentation: https://github.com/lit-regensburg/samshee/blob/main/README.md
       tool_dev_url: https://github.com/lit-regensburg/samshee
@@ -23,12 +24,14 @@ input:
         type: file
         description: "illumina v2 samplesheet"
         pattern: "*.{csv}"
-  - - file_schema_validator:
-        type: string
-        description: "Optional JSON file used additional samplesheet validation settings"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+  - file_schema_validator:
+      type: string
+      description: "Optional JSON file used additional samplesheet validation settings"
 output:
-  - samplesheet:
-      - meta:
+  samplesheet:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -36,11 +39,14 @@ output:
       - "*_formatted.csv":
           type: file
           description: "illumina v2 samplesheet"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software version
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software version
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nschcolnicov"
 maintainers:

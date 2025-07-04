@@ -23,23 +23,28 @@ input:
         type: file
         description: A VCF with called variants to benchmark against the standard
         pattern: "*.{vcf}"
+        ontologies: []
     - truth_vcf:
         type: file
         description: A standard VCF to compare against
         pattern: "*.{vcf}"
+        ontologies: []
     - bed:
         type: file
         description: A BED file specifying regions to be included in the analysis (optional)
         pattern: "*.bed"
+        ontologies: []
     - wittyer_config:
         type: file
         description: |
           Config file in json format used to specify per variant type settings.
           Used in place of include bed arguments. (optional)
         pattern: "*.json"
+        ontologies:
+          - edam: http://edamontology.org/format_3464 # JSON
 output:
-  - report:
-      - meta:
+  report:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -48,8 +53,10 @@ output:
           type: file
           description: Detailed per-sample-pair, per-svtype, per-bin stats
           pattern: "*.json"
-  - bench_vcf:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  bench_vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -58,8 +65,10 @@ output:
           type: file
           description: Updated query and truth entries merged into one file
           pattern: "*.vcf.gz"
-  - bench_vcf_tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  bench_vcf_tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -68,11 +77,14 @@ output:
           type: file
           description: Index of merged query and truth entries VCF file
           pattern: "*.vcf.gz.tbi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@famosab"
 maintainers:

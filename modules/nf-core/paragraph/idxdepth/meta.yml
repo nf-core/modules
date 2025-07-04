@@ -24,10 +24,12 @@ input:
         type: file
         description: BAM/CRAM file
         pattern: "*.{bam,cram}"
+        ontologies: []
     - input_index:
         type: file
         description: Index of the BAM/CRAM file
         pattern: "*.{bai,crai}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -37,6 +39,7 @@ input:
         type: file
         description: Reference genome FASTA
         pattern: "*.{fasta,fna,fa}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -46,20 +49,23 @@ input:
         type: file
         description: Index of the reference genome FASTA
         pattern: "*.fai"
+        ontologies: []
 output:
-  - depth:
-      - meta:
+  depth:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.json":
           type: file
-          description: A JSON file containing depth, depth variance, read length and other
-            parameters
+          description: A JSON file containing depth, depth variance, read length and
+            other parameters
           pattern: "*.json"
-  - binned_depth:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  binned_depth:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -69,11 +75,15 @@ output:
           description: A TSV file containing the binned normalized depth. Can only be
             calculated for CRAM files
           pattern: "*.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

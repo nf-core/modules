@@ -28,6 +28,7 @@ input:
           List of input FastQ files for paired-end data.
           Reads should be grouped by pairs.
           For example, [ [R1_1.fastq.gz, R2_1.fastq.gz], [R1_2.fastq.gz, R2_2.fastq.gz] ]
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -42,6 +43,7 @@ input:
         type: file
         description: |
           File mapping transcripts to genes. It can be either a two-column TSV file for a standard transcriptomic index containing the transcript-to-gene ID mapping information, or a three-column TSV file for an augmented transcriptomic index with the third column representing the splicing status of each transcript.
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -60,10 +62,11 @@ input:
         type: file
         description: |
           File containing a list of cell barcodes to use for cell filtering. Set as empty ('[]') unless 'cell_filter' is set to 'unfiltered-pl' or 'explicit-pl'.
-  - - resolution:
-        type: string
-        description: |
-          UMI resolution (https://alevin-fry.readthedocs.io/en/latest/quant.html). Possible values are 'cr-like', 'cr-like-em', 'parsimony', 'parsimony-em', 'parsimony-gene', and 'parsimony-gene-em'.
+        ontologies: []
+  - resolution:
+      type: string
+      description: |
+        UMI resolution (https://alevin-fry.readthedocs.io/en/latest/quant.html). Possible values are 'cr-like', 'cr-like-em', 'parsimony', 'parsimony-em', 'parsimony-gene', and 'parsimony-gene-em'.
   - - meta4:
         type: map
         description: |
@@ -74,8 +77,8 @@ input:
         description: Folder containing the existing mapping results. It must be generated
           by simpleaf or alevin-fry, and contain the mapping file named map.rad.
 output:
-  - map:
-      - meta:
+  map:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -86,22 +89,25 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-  - quant:
-      - meta:
+  quant:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "simpleaf/af_map"
       - ${prefix}/af_quant:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@fmalmeida"
   - "@maxulysse"

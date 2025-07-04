@@ -29,10 +29,12 @@ input:
           Target dataset in VCF/BCF format defined at all variable positions.
           The file could possibly be without GT field (for efficiency reasons a file containing only the positions is recommended).
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+        ontologies: []
     - input_index:
         type: file
         description: Index file of the input VCF/BCF file containing genotype likelihoods.
         pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
+        ontologies: []
     - region:
         type: string
         description: |
@@ -42,17 +44,18 @@ input:
         type: file
         description: File containing the genetic map.
         pattern: "*.gmap"
-  - - model:
-        type: string
-        description: |
-          Algorithm model to use:
-          "recursive": Recursive algorithm
-          "sequential": Sequential algorithm (Recommended)
-          "uniform-number-variants": Experimental. Uniform the number of variants in the sequential algorithm
-        pattern: "{recursive,sequential,uniform-number-variants}"
+        ontologies: []
+  - model:
+      type: string
+      description: |
+        Algorithm model to use:
+        "recursive": Recursive algorithm
+        "sequential": Sequential algorithm (Recommended)
+        "uniform-number-variants": Experimental. Uniform the number of variants in the sequential algorithm
+      pattern: "{recursive,sequential,uniform-number-variants}"
 output:
-  - chunk_chr:
-      - meta:
+  chunk_chr:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -62,11 +65,14 @@ output:
           description: Tab delimited output txt file containing buffer and imputation
             regions.
           pattern: "*.{txt}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@louislenezet"
 maintainers:

@@ -23,12 +23,13 @@ input:
         description: |
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
-  - - kvalue:
-        type: integer
-        description: An integer value of k to use as the k-mer value.
+        ontologies: []
+  - kvalue:
+      type: integer
+      description: An integer value of k to use as the k-mer value.
 output:
-  - meryl_db:
-      - meta:
+  meryl_db:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -37,11 +38,13 @@ output:
           type: directory
           description: A Meryl k-mer database
           pattern: "*.meryl"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mahesh-panchal"
 maintainers:

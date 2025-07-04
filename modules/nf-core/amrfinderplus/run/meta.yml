@@ -26,15 +26,16 @@ input:
         pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_1929" # FASTA
-  - - db:
-        type: file
-        description: A compressed tarball of the AMRFinderPlus database to query
-        pattern: "*.tar.gz"
-        ontologies: 
-          - edam: "http://edamontology.org/format_3981" # TAR format
+  - db:
+      type: file
+      description: A compressed tarball of the AMRFinderPlus database to query
+      pattern: "*.tar.gz"
+      ontologies:
+        - edam: "http://edamontology.org/format_3981" # TAR format
+        - edam: http://edamontology.org/format_3989 # GZIP format
 output:
-  - report:
-      - meta:
+  report:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,8 +46,8 @@ output:
           pattern: "*.tsv"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
-  - mutation_report:
-      - meta:
+  mutation_report:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -57,23 +58,23 @@ output:
           pattern: "*-mutations.tsv"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: "http://edamontology.org/format_3750" # YAML
-  - tool_version:
-      - VER:
-          type: string
-          description: The version of the tool in string format (useful for downstream
-            tools such as hAMRronization)
-  - db_version:
-      - DBVER:
-          type: string
-          description: The version of the used database in string format (useful for downstream
-            tools such as hAMRronization)
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+  tool_version:
+    - VER:
+        type: string
+        description: The version of the tool in string format (useful for downstream
+          tools such as hAMRronization)
+  db_version:
+    - DBVER:
+        type: string
+        description: The version of the used database in string format (useful for downstream
+          tools such as hAMRronization)
 authors:
   - "@rpetit3"
   - "@louperelo"

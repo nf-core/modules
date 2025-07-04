@@ -1,5 +1,6 @@
 name: immunedeconv
-description: Perform immune cell deconvolution using RNA-seq data and various computational methods.
+description: Perform immune cell deconvolution using RNA-seq data and various computational
+  methods.
 keywords:
   - Immune Deconvolution
   - RNA-seq
@@ -14,6 +15,7 @@ tools:
       homepage: https://github.com/icbi-lab/immunedeconv
       documentation: https://icbi-lab.github.io/immunedeconv/
       licence: ["GPL-2"]
+      identifier: biotools:immunedeconv
 input:
   - - meta:
         type: map
@@ -24,18 +26,20 @@ input:
         type: file
         description: Input matrix with genes in rows and samples in columns.
         pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
     - method:
         type: string
         description: The deconvolution method to use (e.g., 'CIBERSORT', 'EPIC', 'xCell').
     - function:
         type: string
         description: The specific function from immunedeconv to execute for analysis.
-  - - gene_symbol_col:
-        type: string
-        description: Column name for gene symbols in the matrix input file.
+  - gene_symbol_col:
+      type: string
+      description: Column name for gene symbols in the matrix input file.
 output:
-  - deconv_table:
-      - meta:
+  deconv_table:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,8 +48,10 @@ output:
           type: file
           description: Results table containing deconvolution data.
           pattern: "*.deconvolution_results.tsv"
-  - deconv_plots:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  deconv_plots:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,11 +60,14 @@ output:
           type: file
           description: Visualization plots generated during deconvolution.
           pattern: "*.png"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@grst"
   - "@nschcolnicov"

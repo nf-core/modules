@@ -26,18 +26,22 @@ input:
         type: file
         description: VCF/GVCF file to query
         pattern: "*.{gvcf,vcf}.gz"
+        ontologies: []
     - truth_vcf:
         type: file
         description: gold standard VCF file
         pattern: "*.{gvcf,vcf}.gz"
+        ontologies: []
     - regions_bed:
         type: file
         description: Sparse regions to restrict the analysis to
         pattern: "*.bed"
+        ontologies: []
     - targets_bed:
         type: file
         description: Dense regions to restrict the analysis to
         pattern: "*.bed"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -47,6 +51,7 @@ input:
         type: file
         description: FASTA file of the reference genome
         pattern: "*.{fa,fasta}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -56,6 +61,7 @@ input:
         type: file
         description: The index of the reference FASTA
         pattern: "*.fai"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -66,6 +72,7 @@ input:
         description: False positive / confident call regions. Calls outside these regions
           will be labelled as UNK.
         pattern: "*.{bed,bed.gz}"
+        ontologies: []
   - - meta5:
         type: map
         description: |
@@ -75,6 +82,8 @@ input:
         type: file
         description: Stratification file list in TSV format
         pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
   - - meta6:
         type: map
         description: |
@@ -85,9 +94,10 @@ input:
         description: One or more BED files used for stratification (these should be
           referenced in the stratification TSV)
         pattern: "*.bed"
+        ontologies: []
 output:
-  - summary_csv:
-      - meta:
+  summary_csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -96,8 +106,10 @@ output:
           type: file
           description: A CSV file containing the summary of the benchmarking
           pattern: "*.summary.csv"
-  - roc_all_csv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  roc_all_csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -106,8 +118,10 @@ output:
           type: file
           description: A CSV file containing ROC values for all variants
           pattern: "*.roc.all.csv.gz"
-  - roc_indel_locations_csv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  roc_indel_locations_csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -116,8 +130,10 @@ output:
           type: file
           description: A CSV file containing ROC values for all indels
           pattern: "*.roc.Locations.INDEL.csv.gz"
-  - roc_indel_locations_pass_csv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  roc_indel_locations_pass_csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -127,8 +143,10 @@ output:
           description: A CSV file containing ROC values for all indels that passed all
             filters
           pattern: "*.roc.Locations.INDEL.PASS.csv.gz"
-  - roc_snp_locations_csv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  roc_snp_locations_csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -137,18 +155,23 @@ output:
           type: file
           description: A CSV file containing ROC values for all SNPs
           pattern: "*.roc.Locations.SNP.csv.gz"
-  - roc_snp_locations_pass_csv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  roc_snp_locations_pass_csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.roc.Locations.SNP.PASS.csv.gz":
           type: file
-          description: A CSV file containing ROC values for all SNPs that passed all filters
+          description: A CSV file containing ROC values for all SNPs that passed all
+            filters
           pattern: "*.roc.Locations.SNP.PASS.csv.gz"
-  - extended_csv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  extended_csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -157,8 +180,10 @@ output:
           type: file
           description: A CSV file containing extended info of the benchmarking
           pattern: "*.extended.csv"
-  - runinfo:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  runinfo:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -167,8 +192,10 @@ output:
           type: file
           description: A JSON file containing the benchmarking metrics
           pattern: "*.metrics.json.gz"
-  - metrics_json:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  metrics_json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -177,8 +204,10 @@ output:
           type: file
           description: A JSON file containing the run info
           pattern: "*.runinfo.json"
-  - vcf:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -187,8 +216,10 @@ output:
           type: file
           description: An annotated VCF
           pattern: "*.vcf.gz"
-  - tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -197,11 +228,14 @@ output:
           type: file
           description: The index of the annotated VCF
           pattern: "*.tbi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

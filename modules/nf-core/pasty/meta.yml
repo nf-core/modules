@@ -23,9 +23,10 @@ input:
         type: file
         description: An assembly in FASTA format
         pattern: "*.{fasta,fasta.gz,fna,fna.gz,fa,fa.gz}"
+        ontologies: []
 output:
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -34,8 +35,10 @@ output:
           type: file
           description: A tab-delimited file with the predicted serogroup
           pattern: "*.tsv"
-  - blast:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  blast:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,8 +47,10 @@ output:
           type: file
           description: A tab-delimited file of all blast hits
           pattern: "*.blastn.tsv"
-  - details:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  details:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,11 +59,15 @@ output:
           type: file
           description: A tab-delimited file with details for each serogroup
           pattern: "*.details.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@rpetit3"
 maintainers:

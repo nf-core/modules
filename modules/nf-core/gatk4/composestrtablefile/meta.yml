@@ -18,29 +18,36 @@ tools:
       licence: ["Apache-2.0"]
       identifier: ""
 input:
-  - - fasta:
-        type: file
-        description: FASTA reference file
-        pattern: "*.{fasta,fa}"
-  - - fasta_fai:
-        type: file
-        description: index of the FASTA reference file
-        pattern: "*.fai"
-  - - dict:
-        type: file
-        description: Sequence dictionary of the FASTA reference file
-        pattern: "*.dict"
+  - fasta:
+      type: file
+      description: FASTA reference file
+      pattern: "*.{fasta,fa}"
+      ontologies: []
+  - fasta_fai:
+      type: file
+      description: index of the FASTA reference file
+      pattern: "*.fai"
+      ontologies: []
+  - dict:
+      type: file
+      description: Sequence dictionary of the FASTA reference file
+      pattern: "*.dict"
+      ontologies: []
 output:
-  - str_table:
-      - "*.zip":
-          type: file
-          description: A zipped folder containing the STR table files
-          pattern: "*.zip"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  str_table:
+    - "*.zip":
+        type: file
+        description: A zipped folder containing the STR table files
+        pattern: "*.zip"
+        ontologies:
+          - edam: http://edamontology.org/format_3987 # ZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

@@ -25,13 +25,15 @@ input:
         type: file
         description: idXML identification file
         pattern: "*.idXML"
+        ontologies: []
     - fasta:
         type: file
         description: Input sequence database in FASTA format
         pattern: "*.fasta"
+        ontologies: []
 output:
-  - indexed_idxml:
-      - meta:
+  indexed_idxml:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,11 +42,14 @@ output:
           type: file
           description: Refreshed idXML identification file
           pattern: "*.idXML"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jonasscheid"
 maintainers:

@@ -26,27 +26,31 @@ input:
         type: file
         description: Sorted BAM file
         pattern: "*.bam"
+        ontologies: []
     - bai:
         type: file
         description: BAI index of the input BAM file
         pattern: "*.bam.bai"
+        ontologies: []
     - bedpe:
         type: file
         description: BEDPE file of primer pair locations
         pattern: "*.bed"
+        ontologies: []
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information `[ id:'sample1']`
       - "*.primerclipped.bam":
           type: file
-          description: Sorted BAM file containing clipped query sequences according to
-            the given primer pair locations
+          description: Sorted BAM file containing clipped query sequences according
+            to the given primer pair locations
           pattern: "*.primerclipped.bam"
-  - bai:
-      - meta:
+          ontologies: []
+  bai:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information `[ id:'sample1']`
@@ -54,11 +58,14 @@ output:
           type: file
           description: "BAI index of the output BAM file"
           pattern: "*.primerclipped.bam.bai"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@krannich479"
 maintainers:

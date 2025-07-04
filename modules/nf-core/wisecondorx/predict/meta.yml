@@ -24,6 +24,7 @@ input:
         type: file
         description: An NPZ file created with WisecondorX convert
         pattern: "*.npz"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -33,6 +34,7 @@ input:
         type: file
         description: A reference NPZ file created with WisecondorX newref
         pattern: "*.npz"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -43,9 +45,10 @@ input:
         description: OPTIONAL - A BED file containing blacklist regions (used mainly
           when the reference is small)
         pattern: "*.bed"
+        ontologies: []
 output:
-  - aberrations_bed:
-      - meta:
+  aberrations_bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -57,76 +60,78 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*_aberrations.bed"
-  - bins_bed:
-      - meta:
+  bins_bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*_bins.bed"
+          pattern: "*_aberrations.bed"
       - "*_bins.bed":
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*_bins.bed"
-  - segments_bed:
-      - meta:
+  segments_bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*_segments.bed"
+          pattern: "*_aberrations.bed"
       - "*_segments.bed":
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*_segments.bed"
-  - chr_statistics:
-      - meta:
+  chr_statistics:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*_chr_statistics.txt"
+          pattern: "*_aberrations.bed"
       - "*_statistics.txt":
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*_chr_statistics.txt"
-  - chr_plots:
-      - meta:
+  chr_plots:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "[!genome_wide]*.png"
+          pattern: "*_aberrations.bed"
       - "[!genome_wide]*.png":
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "[!genome_wide]*.png"
-  - genome_plot:
-      - meta:
+  genome_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "genome_wide.png"
+          pattern: "*_aberrations.bed"
       - genome_wide.png:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "genome_wide.png"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

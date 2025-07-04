@@ -1,9 +1,8 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - ome
   - conda-forge
   - bioconda
+
 dependencies:
-  - "ome::raw2ometiff=0.7.1"
-  - "conda-forge::blosc=1.21.6"
+  - conda-forge::blosc=1.21.6
+  - ome::raw2ometiff=0.7.1

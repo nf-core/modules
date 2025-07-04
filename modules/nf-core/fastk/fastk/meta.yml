@@ -22,9 +22,10 @@ input:
         description: |
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
+        ontologies: []
 output:
-  - hist:
-      - meta:
+  hist:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -33,31 +34,34 @@ output:
           type: file
           description: Histogram of k-mers
           pattern: "*.hist"
-  - ktab:
-      - meta:
+          ontologies: []
+  ktab:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - '*.ktab*", hidden: true':
+      - "*.ktab*":
           type: file
           description: A sorted table of all canonical k‑mers along with their counts.
           pattern: "*.ktab"
-  - prof:
-      - meta:
+  prof:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - '*.{prof,pidx}*", hidden: true':
+      - "*.{prof,pidx}*":
           type: file
           description: A k‑mer count profile of each sequence in the input data set.
           pattern: "*.prof"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mahesh-panchal"
 maintainers:

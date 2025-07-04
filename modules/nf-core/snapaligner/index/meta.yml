@@ -24,32 +24,40 @@ input:
     - fasta:
         type: file
         description: Input genome fasta file
+        ontologies: []
     - altcontigfile:
         type: file
         description: Optional file with a list of alt contig names, one per line.
+        ontologies: []
     - nonaltcontigfile:
         type: file
         description: Optional file that contains a list of contigs (one per line) that
           will not be marked ALT regardless of size.
+        ontologies: []
     - altliftoverfile:
         type: file
         description: Optional file containing ALT-to-REF mappings (SAM format). e.g.,
           hs38DH.fa.alt from bwa-kit.
+        ontologies: []
 output:
-  - index:
-      - meta:
+  index:
+    - - meta:
           type: file
           description: SNAP genome index files
           pattern: "{Genome,GenomeIndex,GenomeIndexHash,OverflowTable}"
+          ontologies: []
       - snap/*:
           type: file
           description: SNAP genome index files
           pattern: "{Genome,GenomeIndex,GenomeIndexHash,OverflowTable}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@matthdsm"
 maintainers:

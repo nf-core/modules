@@ -26,25 +26,26 @@ input:
         pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
-  - - taxonmap:
-        type: file
-        description: Optional mapping file of NCBI protein accession numbers to taxon
-          ids (gzip compressed), required for taxonomy functionality.
-        pattern: "*.gz"
-        ontologies: []
-  - - taxonnodes:
-        type: file
-        description: Optional NCBI taxonomy nodes.dmp file, required for taxonomy functionality.
-        pattern: "*.dmp"
-        ontologies: []
-  - - taxonnames:
-        type: file
-        description: Optional NCBI taxonomy names.dmp file, required for taxonomy functionality.
-        pattern: "*.dmp"
-        ontologies: []
+  - taxonmap:
+      type: file
+      description: Optional mapping file of NCBI protein accession numbers to taxon
+        ids (gzip compressed), required for taxonomy functionality.
+      pattern: "*.gz"
+      ontologies:
+        - edam: http://edamontology.org/format_3989 # GZIP format
+  - taxonnodes:
+      type: file
+      description: Optional NCBI taxonomy nodes.dmp file, required for taxonomy functionality.
+      pattern: "*.dmp"
+      ontologies: []
+  - taxonnames:
+      type: file
+      description: Optional NCBI taxonomy names.dmp file, required for taxonomy functionality.
+      pattern: "*.dmp"
+      ontologies: []
 output:
-  - db:
-      - meta:
+  db:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,13 +55,13 @@ output:
           description: File of the indexed DIAMOND database
           pattern: "*.dmnd"
           ontologies: []
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: http://edamontology.org/format_3750 # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@spficklin"
 maintainers:

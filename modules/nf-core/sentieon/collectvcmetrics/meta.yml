@@ -26,10 +26,12 @@ input:
         type: file
         description: Sorted VCF file [required]
         pattern: "*.vcf"
+        ontologies: []
     - tbi:
         type: file
         description: VCF index file [required]
         pattern: "*.vcf{,.gz}.tbi"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -39,10 +41,12 @@ input:
         type: file
         description: dbsnp VCF file [required]
         pattern: "*.vcf{,.gz}"
+        ontologies: []
     - dbsnp_tbi:
         type: file
         description: dbsnp VCF index file [required]
         pattern: "*.vcf{,.gz}.tbi"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -52,6 +56,7 @@ input:
         type: file
         description: Genome fasta file [required]
         pattern: "*.{fa,fasta}"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -61,6 +66,7 @@ input:
         type: file
         description: Index of the genome fasta file [required]
         pattern: "*.fai"
+        ontologies: []
   - - meta5:
         type: map
         description: |
@@ -70,9 +76,10 @@ input:
         type: file
         description: BED file of genome regions to draw coverage from
         pattern: "*.bed"
+        ontologies: []
 output:
-  - metrics:
-      - meta:
+  metrics:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -82,8 +89,9 @@ output:
           description: |
             Metrics file from VCF
           pattern: "*.variant_calling_detail_metrics"
-  - summary:
-      - meta:
+          ontologies: []
+  summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -93,11 +101,14 @@ output:
           description: |
             Summary of VCF metrics
           pattern: "*.collectvcmetrics.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@adamrtalbot"
 maintainers:

@@ -33,18 +33,21 @@ input:
         type: file
         description: PLINK 2 binary genotype table
         pattern: "*.{pgen}"
+        ontologies: []
     - psam:
         type: file
         description: PLINK 2 sample information file
         pattern: "*.{psam}"
+        ontologies: []
     - pvar:
         type: file
         description: PLINK 2 variant information file
         pattern: "*.{pvar}"
 
+        ontologies: []
 output:
-  - evecfile:
-      - meta:
+  evecfile:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,34 +57,36 @@ output:
           description: |
             Groovy Map containing sample information
           pattern: "*.eigenvec"
-  - evfile:
-      - meta:
+  evfile:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-          pattern: "*.eigenval"
+          pattern: "*.eigenvec"
       - "*.eigenval":
           type: map
           description: |
             Groovy Map containing sample information
           pattern: "*.eigenval"
-  - logfile:
-      - meta:
+  logfile:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-          pattern: "*.log"
+          pattern: "*.eigenvec"
       - "*.log":
           type: map
           description: |
             Groovy Map containing sample information
           pattern: "*.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: |
-            File containing the version of the program
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: |
+          File containing the version of the program
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@bruno-ariano"
 maintainers:

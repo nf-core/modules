@@ -24,9 +24,10 @@ input:
     - fasta:
         type: file
         description: Input genome fasta file
+        ontologies: []
 output:
-  - bigwig:
-      - meta:
+  bigwig:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,11 +36,14 @@ output:
           type: file
           description: bigwig file containing the mappability of the genome
           pattern: "*.bw"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sppearce"
   - "@adamrtalbot"

@@ -98,14 +98,14 @@ input:
         ontologies:
           - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
           - edam: http://edamontology.org/format_1929 # FASTA
-  - - compress:
-        type: boolean
-        description: Flag representing whether the output MSA should be compressed.
-          Set to true to enable/false to disable compression. Compression is done using
-          pigz, and is multithreaded.
+  - compress:
+      type: boolean
+      description: Flag representing whether the output MSA should be compressed. Set
+        to true to enable/false to disable compression. Compression is done using pigz,
+        and is multithreaded.
 output:
-  - fas:
-      - meta:
+  fas:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -118,13 +118,13 @@ output:
             - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
             - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
             - edam: http://edamontology.org/format_1984 # FASTA-ALN
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: http://edamontology.org/format_3750 # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@MillironX"
 maintainers:

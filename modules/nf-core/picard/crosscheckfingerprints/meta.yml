@@ -27,23 +27,28 @@ input:
         type: file
         description: List containing 1 or more bam/vcf files or a file containing filepaths
         pattern: "*.{bam,vcf,vcf.gz,txt,fofn}"
+        ontologies: []
     - input1_index:
         type: file
         description: List containing 1 or more bam/vcf files indexes
         pattern: "*.{bai,csi,crai,tbi}"
+        ontologies: []
     - input2:
         type: file
         description: Optional list containing 1 or more bam/vcf files or a file containing
           filepaths
         pattern: "*.{bam,vcf,vcf.gz,txt,fofn}"
+        ontologies: []
     - input2_index:
         type: file
         description: List containing 1 or more bam/vcf files indexes
         pattern: "*.{bai,csi,crai,tbi}"
+        ontologies: []
     - haplotype_map:
         type: file
         description: Haplotype map file
         pattern: "*.{txt,vcf,vcf.gz}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -53,9 +58,10 @@ input:
         type: file
         description: Reference genome file
         pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+        ontologies: []
 output:
-  - crosscheck_metrics:
-      - meta:
+  crosscheck_metrics:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,11 +70,14 @@ output:
           type: file
           description: Metrics created by crosscheckfingerprints
           pattern: "*.{crosscheck_metrics.txt}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@matthdsm"
 maintainers:

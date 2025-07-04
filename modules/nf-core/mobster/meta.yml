@@ -33,8 +33,8 @@ input:
         ontologies:
           - edam: "http://edamontology.org/format_3752" # csv
 output:
-  - mobster_rds:
-      - meta:
+  mobster_rds:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -43,8 +43,9 @@ output:
           type: file
           description: Full mobster fit as an .rds object
           pattern: "*_mobster_st_fit.rds"
-  - mobster_best_rds:
-      - meta:
+          ontologies: []
+  mobster_best_rds:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,8 +54,9 @@ output:
           type: file
           description: Best mobster fit as an .rds object
           pattern: "*_mobster_st_best_fit.rds"
-  - mobster_plots_rds:
-      - meta:
+          ontologies: []
+  mobster_plots_rds:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -63,8 +65,9 @@ output:
           type: file
           description: Final plots as an .rds object
           pattern: "*_plots.rds"
-  - mobster_report_rds:
-      - meta:
+          ontologies: []
+  mobster_report_rds:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -73,8 +76,9 @@ output:
           type: file
           description: Final report plots as an .rds object
           pattern: "*_REPORT_plots_mobster.rds"
-  - mobster_report_pdf:
-      - meta:
+          ontologies: []
+  mobster_report_pdf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -85,8 +89,8 @@ output:
           pattern: "*_REPORT_plots_mobster.pdf"
           ontologies:
             - edam: "http://edamontology.org/format_3508" # pdf
-  - mobster_report_png:
-      - meta:
+  mobster_report_png:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -97,11 +101,13 @@ output:
           pattern: "*_REPORT_plots_mobster.png"
           ontologies:
             - edam: "http://edamontology.org/format_3603" # png
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@elena-buscaroli"
 maintainers:

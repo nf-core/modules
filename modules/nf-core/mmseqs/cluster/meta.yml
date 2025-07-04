@@ -27,9 +27,10 @@ input:
     - db_input:
         type: file
         description: Input database
+        ontologies: []
 output:
-  - db_cluster:
-      - meta:
+  db_cluster:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -37,11 +38,14 @@ output:
       - ${prefix}/:
           type: file
           description: a clustered MMseqs2 database used for clustering
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Joon-Klaps"
 maintainers:

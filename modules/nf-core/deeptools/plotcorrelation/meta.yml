@@ -27,19 +27,20 @@ input:
           compressed matrix file produced by
           mutlibamsummary or multibigwigsummary
         pattern: "*.{npz}"
-  - - method:
-        type: string
-        description: |
-          Correlation coefficient to use for heatmap or scatterplot generation
-        pattern: "{spearman,pearson}"
-  - - plot_type:
-        type: string
-        description: |
-          Type of output plot to display sample correlation
-        pattern: "{heatmap,scatterplot}"
+        ontologies: []
+  - method:
+      type: string
+      description: |
+        Correlation coefficient to use for heatmap or scatterplot generation
+      pattern: "{spearman,pearson}"
+  - plot_type:
+      type: string
+      description: |
+        Type of output plot to display sample correlation
+      pattern: "{heatmap,scatterplot}"
 output:
-  - pdf:
-      - meta:
+  pdf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,8 +50,9 @@ output:
           description: |
             Output figure containing resulting plot
           pattern: "*.{plotCorrelation.pdf}"
-  - matrix:
-      - meta:
+          ontologies: []
+  matrix:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -60,11 +62,14 @@ output:
           description: |
             Tab-separated file containing a matrix of pairwise correlations
           pattern: "*.{plotCorrelation.mat.tab}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@tamara-hodgetts"
   - "@chris-cheshire"

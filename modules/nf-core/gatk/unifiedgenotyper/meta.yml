@@ -26,10 +26,12 @@ input:
         type: file
         description: Sorted and indexed BAM/CRAM/SAM file
         pattern: "*.bam"
+        ontologies: []
     - bai:
         type: file
         description: BAM index file
         pattern: "*.bai"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -39,6 +41,7 @@ input:
         type: file
         description: Reference file used to generate BAM file
         pattern: ".{fasta,fa,fna}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -48,6 +51,7 @@ input:
         type: file
         description: Index of reference file used to generate BAM file
         pattern: ".fai"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -57,6 +61,7 @@ input:
         type: file
         description: GATK dict file for reference
         pattern: ".dict"
+        ontologies: []
   - - meta5:
         type: map
         description: |
@@ -66,6 +71,7 @@ input:
         type: file
         description: Bed file with the genomic regions included in the library (optional)
         pattern: "*.intervals"
+        ontologies: []
   - - meta6:
         type: map
         description: |
@@ -76,6 +82,7 @@ input:
         description: Tab-separated file containing fraction of contamination in sequencing
           data (per sample) to aggressively remove
         pattern: "*"
+        ontologies: []
   - - meta7:
         type: map
         description: |
@@ -85,6 +92,7 @@ input:
         type: file
         description: VCF file containing known sites (optional)
         pattern: "*"
+        ontologies: []
   - - meta8:
         type: map
         description: |
@@ -94,9 +102,10 @@ input:
         type: file
         description: Comparison VCF file (optional)
         pattern: "*"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -105,11 +114,15 @@ output:
           type: file
           description: VCF file containing called variants
           pattern: "*.vcf.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ilight1542"
   - "@jfy133"

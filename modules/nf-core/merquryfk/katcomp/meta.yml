@@ -21,21 +21,25 @@ input:
         type: file
         description: A histogram files from the program FastK
         pattern: "*.hist"
+        ontologies: []
     - fastk1_ktab:
         type: file
         description: Histogram ktab files from the program FastK (option -t)
         pattern: "*.ktab*"
+        ontologies: []
     - fastk2_hist:
         type: file
         description: A histogram files from the program FastK
         pattern: "*.hist"
+        ontologies: []
     - fastk2_ktab:
         type: file
         description: Histogram ktab files from the program FastK (option -t)
         pattern: "*.ktab*"
+        ontologies: []
 output:
-  - filled:
-      - meta:
+  filled:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -46,35 +50,40 @@ output:
           description: |
             Comparison of Kmers between sample 1 and 2 in filled PNG or PDF format.
           pattern: "*.fi.{png,pdf}"
-  - line:
-      - meta:
+          ontologies: []
+  line:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.ln.{png,pdf}"
+          pattern: "*.fi.{png,pdf}"
       - "*.ln.{png,pdf}":
           type: file
           description: |
             Comparison of Kmers between sample 1 and 2 in line PNG or PDF format.
           pattern: "*.ln.{png,pdf}"
-  - stacked:
-      - meta:
+          ontologies: []
+  stacked:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.st.{png,pdf}"
+          pattern: "*.fi.{png,pdf}"
       - "*.st.{png,pdf}":
           type: file
           description: |
             Comparison of Kmers between sample 1 and 2 in stacked PNG or PDF format.
           pattern: "*.st.{png,pdf}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mahesh-panchal"
 maintainers:

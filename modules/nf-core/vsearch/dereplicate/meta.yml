@@ -27,33 +27,39 @@ input:
         type: file
         description: Sequences to be sorted in FASTA format
         pattern: "*.{fasta,fa,fasta.gz,fa.gz,.fna,.fna.gz}"
+        ontologies: []
 output:
-  - fasta:
-      - meta:
+  fasta:
+    - - meta:
           type: map
           description: Groovy Map containing sample information e.g. [ id:'test' ]`
       - "*.derep.fasta":
           type: file
           description: dereplicated fasta
           pattern: "*.fasta"
-  - clustering:
-      - meta:
+          ontologies: []
+  clustering:
+    - - meta:
           type: map
           description: Groovy Map containing sample information e.g. [ id:'test' ]`
       - "*.derep.uc":
           type: file
           description: dereplicated derep.uc file
           pattern: "*.uc"
-  - log:
-      - "*.derep.log":
-          type: file
-          description: a log file of the run
-          pattern: "*.derep.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  log:
+    - "*.derep.log":
+        type: file
+        description: a log file of the run
+        pattern: "*.derep.log"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@chriswyatt1"
 maintainers:

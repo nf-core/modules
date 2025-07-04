@@ -27,13 +27,15 @@ input:
           VCF/BCF files containing genotype probabilities (GP field).
           The files should be ordered by genomic position.
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+        ontologies: []
     - input_list_index:
         type: file
         description: VCF/BCF files index.
         pattern: "*.csi"
+        ontologies: []
 output:
-  - merged_variants:
-      - meta:
+  merged_variants:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,22 +46,14 @@ output:
             Output VCF/BCF file for the merged regions.
             Phased information (HS field) is updated accordingly for the full region.
           pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-  - index:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.tbi":
-          type: file
-          description: |
-            Index file for the merged VCF/BCF file.
-          pattern: "*.tbi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@louislenezet"
 maintainers:

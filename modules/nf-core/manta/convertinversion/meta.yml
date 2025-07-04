@@ -25,6 +25,8 @@ input:
         type: file
         description: VCF file produces by Manta
         pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
   - - meta2:
         type: map
         description: |
@@ -34,9 +36,10 @@ input:
         type: file
         description: The reference fasta file
         pattern: "*.{fasta,fa,fna}"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,8 +48,10 @@ output:
           type: file
           description: VCF file with reformatted inversions
           pattern: "*.vcf.gz"
-  - tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,11 +60,14 @@ output:
           type: file
           description: TBI file produces by Manta
           pattern: "*.vcf.gz.tbi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@FriederikeHanssen"
 maintainers:

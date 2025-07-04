@@ -8,9 +8,9 @@ keywords:
   - substrings
 tools:
   - "jellyfish":
-      description: "Jellyfish is a tool for fast, memory-efficient counting of k-mers\
-        \ in DNA. A k-mer is a substring of length k, and counting the occurrences of\
-        \ all such substrings is a central step in many analyses of DNA sequence"
+      description: "Jellyfish is a tool for fast, memory-efficient counting of k-mers
+        in DNA. A k-mer is a substring of length k, and counting the occurrences of
+        all such substrings is a central step in many analyses of DNA sequence"
       homepage: "https://github.com/gmarcais/Jellyfish"
       documentation: "https://github.com/gmarcais/Jellyfish/blob/master/doc/Readme.md"
       tool_dev_url: "https://github.com/gmarcais/Jellyfish"
@@ -29,17 +29,17 @@ input:
         pattern: "*.{fasta,fa,fna,faa}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
-  - - kmer_length:
-        type: integer
-        description: k-mer size to use
-  - - size:
-        type: string
-        description: |
-          Specifies the memory hash size (in bytes) to allocate for the k-mer counting hash table (e.g., '100M').
-          A mean estimation could be carried with this formula: 'genome size + (genome size * coverage * kmer-length * error rate)'
+  - kmer_length:
+      type: integer
+      description: k-mer size to use
+  - size:
+      type: string
+      description: |
+        Specifies the memory hash size (in bytes) to allocate for the k-mer counting hash table (e.g., '100M').
+        A mean estimation could be carried with this formula: 'genome size + (genome size * coverage * kmer-length * error rate)'
 output:
-  - jf:
-      - meta:
+  jf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -48,11 +48,14 @@ output:
           type: file
           description: Jellyfish binary k-mer database
           pattern: "*.jf"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@vagkaratzas"
 maintainers:

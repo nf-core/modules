@@ -28,22 +28,27 @@ input:
         type: file
         description: Sorted BAM/CRAM file(s)
         pattern: "*.{bam,cram}"
+        ontologies: []
     - bai:
         type: file
         description: Index of sorted BAM/CRAM file(s)
         pattern: "*.{bai,crai,csi}"
+        ontologies: []
     - snps:
         type: file
         description: VCF file with SNPs (and INDELs)
         pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
     - svs:
         type: file
         description: VCF file with SVs
         pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
     - mods:
         type: file
         description: modcall-generated VCF with modifications
         pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -53,6 +58,7 @@ input:
         type: file
         description: Reference fasta file
         pattern: "*.fasta"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -62,9 +68,10 @@ input:
         type: file
         description: Reference fai index
         pattern: "*.fai"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -73,11 +80,15 @@ output:
           type: file
           description: Compressed VCF file with phased variants
           pattern: "*.vcf.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@fellen31"
 maintainers:

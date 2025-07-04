@@ -26,10 +26,12 @@ input:
         type: file
         description: Input VCF/BCF file containing genotype likelihoods.
         pattern: "*.{vcf.gz,bcf.gz}"
+        ontologies: []
     - input_index:
         type: file
         description: Index file of the input VCF/BCF file containing genotype likelihoods.
         pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
+        ontologies: []
     - samples_file:
         type: file
         description: |
@@ -38,6 +40,8 @@ input:
           Sample names that are not present are assumed to have ploidy 2 (diploids).
           GLIMPSE does NOT handle the use of sex (M/F) instead of ploidy.
         pattern: "*.{txt,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
     - input_region:
         type: string
         description: Target region used for imputation, including left and right buffers
@@ -51,17 +55,20 @@ input:
         type: file
         description: Reference panel of haplotypes in VCF/BCF format.
         pattern: "*.{vcf.gz,bcf.gz}"
+        ontologies: []
     - reference_index:
         type: file
         description: Index file of the Reference panel file.
         pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
+        ontologies: []
     - map:
         type: file
         description: File containing the genetic map.
         pattern: "*.gmap"
+        ontologies: []
 output:
-  - phased_variants:
-      - meta:
+  phased_variants:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -73,11 +80,14 @@ output:
             imputed dosages (DS field), best guess genotypes (GT field),
             sampled haplotypes in the last (max 16) main iterations (HS field) and info-score.
           pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@louislenezet"
 maintainers:

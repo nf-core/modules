@@ -23,9 +23,10 @@ input:
         type: file
         description: The reference fasta file
         pattern: "*.fasta"
+        ontologies: []
 output:
-  - reference_dict:
-      - meta:
+  reference_dict:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -34,11 +35,14 @@ output:
           type: file
           description: picard dictionary file
           pattern: "*.{dict}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sateeshperi"
   - "@mjcipriano"

@@ -25,6 +25,7 @@ input:
         type: file
         description: VCF with repeat expansions
         pattern: "*.{vcf.gz,vcf}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -34,9 +35,11 @@ input:
         type: file
         description: json file with repeat expansion sites to genotype
         pattern: "*.{json}"
+        ontologies:
+          - edam: http://edamontology.org/format_3464 # JSON
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: Annotated VCF file
           pattern: "*.{vcf.gz}"
@@ -44,20 +47,22 @@ output:
           type: map
           description: Annotated VCF file
           pattern: "*.{vcf.gz}"
-  - tbi:
-      - meta:
+  tbi:
+    - - meta:
           type: map
-          description: Index of the annotated VCF file
-          pattern: "*.{vcf.gz.tbi}"
+          description: Annotated VCF file
+          pattern: "*.{vcf.gz}"
       - "*.vcf.gz.tbi":
           type: map
           description: Index of the annotated VCF file
           pattern: "*.{vcf.gz.tbi}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ljmesi"
 maintainers:

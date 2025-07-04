@@ -25,14 +25,17 @@ input:
         type: file
         description: PLINK binary biallelic genotype table file
         pattern: "*.{bed}"
+        ontologies: []
     - bim:
         type: file
         description: PLINK extended MAP file
         pattern: "*.{bim}"
+        ontologies: []
     - fam:
         type: file
         description: PLINK sample information file
         pattern: "*.{fam}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -43,6 +46,7 @@ input:
         type: file
         description: Variant calling file (vcf)
         pattern: "*.{vcf}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -53,6 +57,7 @@ input:
         type: file
         description: PLINK variant information + sample ID + genotype call binary file
         pattern: "*.{bcf}"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -65,9 +70,10 @@ input:
           can be read from the third column with the --pheno option or from a specific
           column with the --pheno-name option
         pattern: "*.{phe}"
+        ontologies: []
 output:
-  - assoc:
-      - meta:
+  assoc:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -76,8 +82,9 @@ output:
           type: file
           description: PLINK GWAS association file
           pattern: "*.{assoc}"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -86,8 +93,9 @@ output:
           type: file
           description: PLINK GWAS association log file
           pattern: "*.{log}"
-  - nosex:
-      - meta:
+          ontologies: []
+  nosex:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -97,11 +105,14 @@ output:
           description: PLINK GWAS association file that retains phenotypes for samples
             with ambiguous sex. Produced with the option --allow-no-sex
           pattern: "*.{nosex}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@LorenzoS96"
 maintainers:

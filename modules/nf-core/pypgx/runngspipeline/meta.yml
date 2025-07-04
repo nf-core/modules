@@ -26,21 +26,26 @@ input:
         type: file
         description: BGZIP compressed VCF file with SNVs/indels. Output of pypgx/createinputvcf.
         pattern: "*.{vcf.gz}"
+        ontologies: []
     - tbi:
         type: file
         description: VCF tabix index.
         pattern: "*.{vcf.gz.tbi}"
+        ontologies: []
     - coverage:
         type: file
         description: ZIP compressed file with depth of coverage information. Output
           of pypgx/preparedepthofcoverage. Coverage information is only required when
           running the module on a pharmacogene with known structural variants.
         pattern: "*.{zip}"
+        ontologies:
+          - edam: http://edamontology.org/format_3987 # ZIP format
     - control_stats:
         type: file
         description: ZIP compressed file with control statistics. Output of pypgx/computecontrolstatistics.
           Control statistics are only required when running the module on a pharmacogene
           with known structural variants.
+        ontologies: []
     - pgx_gene:
         type: string
         description: Pharmacogene to genotype/phenotype. A list of supported genes is
@@ -54,27 +59,30 @@ input:
         type: directory
         description: Path to the pypgx resource bundle (https://github.com/sbslee/pypgx-bundle).
 output:
-  - results:
-      - meta:
+  results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - "*pypgx_output/results.zip":
           type: file
-          description: Main output file of the pipeline in ZIP format, containing a table
-            with star-alleles per sample and CNV calls where applicable.
-  - cnv_calls:
-      - meta:
+          description: Main output file of the pipeline in ZIP format, containing a
+            table with star-alleles per sample and CNV calls where applicable.
+          ontologies: []
+  cnv_calls:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - "*pypgx_output/cnv-calls.zip":
           type: file
-          description: Optional output file in ZIP format, containing CNV calls per sample.
-  - consolidated_variants:
-      - meta:
+          description: Optional output file in ZIP format, containing CNV calls per
+            sample.
+          ontologies: []
+  consolidated_variants:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -83,11 +91,14 @@ output:
           type: file
           description: Output file in ZIP format, containing a consolidated (and phased)
             VCF file.
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jorisvansteenbrugge"
 maintainers:

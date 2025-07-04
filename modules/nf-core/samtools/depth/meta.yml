@@ -25,6 +25,7 @@ input:
         type: file
         description: sorted BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -34,24 +35,29 @@ input:
         type: file
         description: list of positions or regions in specified bed file
         pattern: "*.{bed}"
+        ontologies: []
 output:
-  - tsv:
-      - meta1:
+  tsv:
+    - - meta1:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.tsv":
           type: file
-          description: The output of samtools depth has three columns - the name of the
-            contig or chromosome, the position and the number of reads aligned at that
-            position
+          description: The output of samtools depth has three columns - the name of
+            the contig or chromosome, the position and the number of reads aligned at
+            that position
           pattern: "*.{tsv}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@louperelo"
   - "@nevinwu"

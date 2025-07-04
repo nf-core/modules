@@ -26,21 +26,23 @@ input:
     - input:
         type: file
         description: Text file, possibly gzip file
+        ontologies: []
 output:
-  - split:
-      - meta:
+  split:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ' "*split*" ':
+      - "*split*":
           type: file
           description: Split files
           pattern: "*split*"
-  - versions:
-      - versions.yml:
-          type: file
-          description: The split files
+  versions:
+    - versions.yml:
+        type: file
+        description: The split files
+        ontologies: []
 authors:
   - "@k1sauce"
 maintainers:

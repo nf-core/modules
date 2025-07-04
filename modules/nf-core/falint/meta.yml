@@ -26,8 +26,8 @@ input:
         pattern: "*.fasta"
         ontologies: []
 output:
-  - success_log:
-      - meta:
+  success_log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing file information
@@ -37,8 +37,8 @@ output:
           description: Log file for successful validation
           pattern: "*.success.log"
           ontologies: []
-  - error_log:
-      - meta:
+  error_log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing file information
@@ -48,13 +48,13 @@ output:
           description: Log file for failed validation
           pattern: "*.error.log"
           ontologies: []
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: http://edamontology.org/format_3750 # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@gallvp"
 maintainers:

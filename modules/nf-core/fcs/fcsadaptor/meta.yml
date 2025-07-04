@@ -30,8 +30,8 @@ input:
         description: assembly fasta file
         ontologies: []
 output:
-  - cleaned_assembly:
-      - meta:
+  cleaned_assembly:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -41,8 +41,8 @@ output:
           description: Cleaned assembly in fasta format
           pattern: "*.{cleaned_sequences.fa.gz}"
           ontologies: []
-  - adaptor_report:
-      - meta:
+  adaptor_report:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -52,8 +52,8 @@ output:
           description: Report of identified adaptors
           pattern: "*.{fcs_adaptor_report.txt}"
           ontologies: []
-  - log:
-      - meta:
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -63,8 +63,8 @@ output:
           description: Log file
           pattern: "*.{fcs_adaptor.log}"
           ontologies: []
-  - pipeline_args:
-      - meta:
+  pipeline_args:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -74,8 +74,8 @@ output:
           description: Run arguments
           pattern: "*.{pipeline_args.yaml}"
           ontologies: []
-  - skipped_trims:
-      - meta:
+  skipped_trims:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -85,13 +85,13 @@ output:
           description: Skipped trim information
           pattern: "*.{skipped_trims.jsonl}"
           ontologies: []
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: http://edamontology.org/format_3750 # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@d4straub"
 maintainers:

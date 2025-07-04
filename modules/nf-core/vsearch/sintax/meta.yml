@@ -25,25 +25,34 @@ input:
         type: file
         description: Query sequences in FASTA or FASTQ format
         pattern: "*.{fasta,fa,fna,faa,fastq,fq}"
-  - - db:
-        type: file
-        description: Reference database file in FASTA or UDB format
-        pattern: "*"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - db:
+      type: file
+      description: Reference database file in FASTA or UDB format
+      pattern: "*"
+      ontologies: []
 output:
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: file
           description: Results written to tab-delimited file
           pattern: "*.{tsv}"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
       - "*.tsv":
           type: file
           description: Results written to tab-delimited file
           pattern: "*.{tsv}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jtangrot"
 maintainers:

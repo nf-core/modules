@@ -29,12 +29,13 @@ input:
         type: file
         description: fasta file
         pattern: "*.{fasta,fna,fa}"
-  - - db:
-        type: directory
-        description: Directory pointing to checkV database
+        ontologies: []
+  - db:
+      type: directory
+      description: Directory pointing to checkV database
 output:
-  - quality_summary:
-      - meta:
+  quality_summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,8 +46,9 @@ output:
             main modules (contamination, completeness, complete genomes) with overall
             quality of contigs
           pattern: "${prefix}/quality_summary.tsv"
-  - completeness:
-      - meta:
+          ontologies: []
+  completeness:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,8 +57,9 @@ output:
           type: file
           description: CheckV's detailed overview table on estimating completeness
           pattern: "${prefix}/completeness.tsv"
-  - contamination:
-      - meta:
+          ontologies: []
+  contamination:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -65,8 +68,9 @@ output:
           type: file
           description: CheckV's detailed overview table on estimating contamination
           pattern: "${prefix}/contamination.tsv"
-  - complete_genomes:
-      - meta:
+          ontologies: []
+  complete_genomes:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -76,8 +80,9 @@ output:
           description: CheckV's detailed overview table on the identified putative complete
             genomes
           pattern: "${prefix}/complete_genomes.tsv"
-  - proviruses:
-      - meta:
+          ontologies: []
+  proviruses:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -86,8 +91,9 @@ output:
           type: file
           description: CheckV's extracted proviruses contigs
           pattern: "${prefix}/proviruses.fna"
-  - viruses:
-      - meta:
+          ontologies: []
+  viruses:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -96,11 +102,14 @@ output:
           type: file
           description: CheckV's extracted virus contigs
           pattern: "${prefix}/viruses.fna"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Joon-Klaps"
 maintainers:

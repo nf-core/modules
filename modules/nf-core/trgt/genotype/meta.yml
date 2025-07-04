@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "trgt_genotype"
 description: Tandem repeat genotyping from PacBio HiFi data
@@ -15,6 +14,7 @@ tools:
       doi: "10.1038/s41587-023-02057-3"
       licence:
         ["Pacific Biosciences Software License (https://github.com/PacificBiosciences/trgt/blob/main/LICENSE.md)"]
+      identifier: ""
 
 input:
   - - meta:
@@ -26,13 +26,16 @@ input:
         type: file
         description: Sorted BAM file
         pattern: "*.bam"
+        ontologies: []
     - bai:
         type: file
         description: "Index of the BAM file"
         pattern: "*.bam"
+        ontologies: []
     - karyotype:
         type: string
-        description: "Karyotype of the sample. Either XX or XY. Defaults to XX if not given"
+        description: "Karyotype of the sample. Either XX or XY. Defaults to XX if not
+          given"
         enum:
           - XX
           - XY
@@ -45,6 +48,7 @@ input:
         type: file
         description: "FASTA reference file"
         pattern: "*.{fasta,fa,fna}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -54,6 +58,7 @@ input:
         type: file
         description: "Index for FASTA file"
         pattern: "*.fai"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -64,9 +69,10 @@ input:
         description: "BED file with repeat coordinates"
         pattern: "*.bed"
 
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -75,8 +81,10 @@ output:
           type: file
           description: "VCF file with repeat genotypes"
           pattern: "*.vcf.gz"
-  - bam:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -85,12 +93,15 @@ output:
           type: file
           description: BAM file with pieces of reads aligning to repeats
           pattern: "*.spanning.bam"
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Schmytzi"
   - "@fellen31"

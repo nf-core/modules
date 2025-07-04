@@ -28,20 +28,23 @@ input:
         type: file
         description: BAM/BED/GFF/VCF file
         pattern: "*.{bam,bed,gff,vcf}"
+        ontologies: []
     - input_B:
         type: file
         description: One or more BAM/BED/GFF/VCF file
         pattern: "*.{bam,bed,gff,vcf}"
-  - - genome_file:
-        type: file
-        description: |
-          Optional reference genome 2 column file that defines the expected chromosome order
-          in the input files for use with the -sorted option.
-          When `genome_file` is provided, `-sorted` option is added to the command.
-        pattern: "*.{fai,txt,chromsizes}"
+        ontologies: []
+  - genome_file:
+      type: file
+      description: |
+        Optional reference genome 2 column file that defines the expected chromosome order
+        in the input files for use with the -sorted option.
+        When `genome_file` is provided, `-sorted` option is added to the command.
+      pattern: "*.{fai,txt,chromsizes}"
+      ontologies: []
 output:
-  - bed:
-      - meta:
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,11 +53,14 @@ output:
           type: file
           description: File containing coverage of sequence alignments
           pattern: "*.bed"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@priyanka-surana"
 maintainers:

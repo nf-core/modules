@@ -22,14 +22,16 @@ input:
         type: file
         description: BED/BEDGRAPH
         pattern: "*.{bed|bedGraph}"
-  - - genome_file:
-        type: file
-        description: |
-          Optional reference genome 2 column file that defines the expected chromosome order.
-        pattern: "*.{fai,txt,chromsizes}"
+        ontologies: []
+  - genome_file:
+      type: file
+      description: |
+        Optional reference genome 2 column file that defines the expected chromosome order.
+      pattern: "*.{fai,txt,chromsizes}"
+      ontologies: []
 output:
-  - sorted:
-      - meta:
+  sorted:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,11 +40,14 @@ output:
           type: file
           description: Sorted output file
           pattern: "*.${extension}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@edmundmiller"
   - "@sruthipsuresh"
