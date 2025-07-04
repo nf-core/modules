@@ -6,6 +6,8 @@ nextflow_process {
     tag "modules"
     tag "modules_local"
     tag "fusioninspector"
+    tag "starfusion/build"
+    tag "modules_nfcore"
 
     test("FUSIONINSPECTOR") {
         config './nextflow.config'
@@ -16,16 +18,25 @@ nextflow_process {
                 process {
                     """
                     input[0] = [
-                        [ id:'minigenome fasta' ],
-                        file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/master/minigenome.fa")
+                        [ id:'minigenome_fasta' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa')
                     ]
                     input[1] = [
-                        [ id:'minigenome gtf' ],
-                        file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/master/minigenome.gtf")
+                        [ id:'minigenome_gtf' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf')
                     ]
 
-                    input[2] = file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/master/CTAT_HumanFusionLib.mini.dat.gz")
-                    input[3] = "human"
+                    input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/CTAT_HumanFusionLib.mini.dat.gz')
+                    input[3] = "homo_sapiens"
+                    input[4] = "http://ftp.ebi.ac.uk/pub/databases/Pfam/releases/Pfam37.4/Pfam-A.hmm.gz"
+                    input[5] = [
+                        "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm",
+                        "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3f",
+                        "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3i",
+                        "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3m",
+                        "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3p"
+                    ]
+                    input[6] = "https://data.broadinstitute.org/Trinity/CTAT_RESOURCE_LIB/AnnotFilterRule.pm"
                     """
                 }
             }
@@ -44,70 +55,21 @@ nextflow_process {
                         file("https://github.com/FusionInspector/FusionInspector/raw/master/test/fusion_targets.A.txt")
                     ]
                 ]
-                input[1] = STARFUSION_BUILD.out.reference.map { it[1] }
+                input[1] = STARFUSION_BUILD.out.reference
                 """
             }
         }
 
         then {
-
-            def unstableFiles = [
-                "test.bed",
-                "test.consolidated.bam",
-                "test.consolidated.bam.bai",
-                "test.junction_reads.bam",
-                "test.junction_reads.bam.bai",
-                "test.spanning_reads.bam",
-                "Log.final.out",
-                "Log.out",
-                "microH.dat",
-                "test.fusion_preds.coalesced.summary",
-                "test.fusion_preds.coalesced.summary.EMadj",
-                "test.fusion_preds.coalesced.summary.min_frag_thresh",
-                "test.fusion_preds.coalesced.summary.wSpliceInfo",
-                "test.fusion_preds.coalesced.summary.wSpliceInfo.post_blast_filter",
-                "test.fusion_preds.coalesced.summary.wSpliceInfo.post_blast_filter.post_promisc_filter",
-                "test.fusion_preds.coalesced.summary.fusion_junction_reads_acc",
-                "test.fusion_preds.coalesced.summary.fusion_spanning_reads_acc",
-                "test.post_blast_and_promiscuity_filter",
-                "test.post_blast_and_promiscuity_filter.EMadj",
-                "test.post_blast_and_promiscuity_filter.EMadj.FFPM",
-                "test.post_blast_and_promiscuity_filter.EMadj.FFPM.wMicroH",
-                "test.post_blast_and_promiscuity_filter.EMadj.FFPM.wMicroH.annotated",
-                "test.post_blast_and_promiscuity_filter.EMadj.FFPM.wMicroH.annotated.coding_effect",
-                "test.star.cSorted.dupsMarked.bam",
-                "test.star.cSorted.dupsMarked.bam.bai",
-                "test.star.cSorted.dupsMarked.bam.fusion_junction_info",
-                "test.star.cSorted.dupsMarked.bam.fusion_spanning_info",
-                "test.star.cSorted.dupsMarked.bam.read_align_counts",
-                "test.star.cSorted.dupsMarked.bam.read_align_counts.idx",
-                "test.star.cSorted.dupsMarked.bam.spanning_reads_want.idx",
-                "test.star.sortedByCoord.out.bam",
-                "test.star.sortedByCoord.out.bam.bai",
-                "test.fusion_preds.coalesced.summary.EMadj.min_frag_thresh",
-                "test.fusion_preds.coalesced.summary.fusion_junction_read_accs",
-                "test.fusion_preds.coalesced.summary.fusion_spanning_read_accs",
-                "test.fusion_preds.coalesced.summary.EMadj.min_frag_thresh.wSpliceInfo",
-                "test.fusion_preds.coalesced.summary.EMadj.min_frag_thresh.wSpliceInfo.post_blast_filter",
-                "test.fusion_preds.coalesced.summary.EMadj.min_frag_thresh.wSpliceInfo.post_blast_filter.post_promisc_filter"
-            ]
-
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.tsv[0][1]).name,
-                    process.out.tsv_coding_effect,  // TODO: These files do not seem to be produced. Consult Annick.
-                    process.out.out_gtf,            // TODO: These files do not seem to be produced. Consult Annick.
-                    file(process.out.log[0][1]).name,
-                    file(process.out.html[0][1]).name,
-                    file(process.out.abridged_tsv[0][1]).name,
-                    file(process.out.igv_inputs[0][1]).listFiles().findAll { file -> !unstableFiles.contains(file.name) },
-                    file(process.out.fi_workdir[0][1]).listFiles().findAll { file -> !unstableFiles.contains(file.name) },
-                    file(process.out.igv_inputs[0][1]).list().findAll { file -> !unstableFiles.contains(file) },
-                    file(process.out.fi_workdir[0][1]).list().findAll { file -> !unstableFiles.contains(file) },
-                    process.out.chckpts_dir,
+                    process.out.tsv,
+                    process.out.out_gtf,
+                    process.out.abridged_tsv,
+                    process.out.log,
                     process.out.versions
-                    ).match() }
+                ).match() }
             )
         }
 
@@ -128,7 +90,7 @@ nextflow_process {
                         file("https://github.com/FusionInspector/FusionInspector/raw/master/test/fusion_targets.A.txt")
                     ]
                 ]
-                input[1] = []
+                input[1] = [[id:'minigenome_refs'],[]]
                 """
             }
         }
