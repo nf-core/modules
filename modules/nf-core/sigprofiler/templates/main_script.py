@@ -26,7 +26,6 @@ def parse_args(x):
 
 opt = dict()
 opt["prefix"] = "${task.ext.prefix ?: meta.id}"
-opt["dataset"] = "${task.ext.dataset ?: meta.dataset}"
 
 opt.update({
     "genome": "",
@@ -67,8 +66,8 @@ def process_tsv_join(tsv_list):
     tables = [pd.read_csv(p, sep='\t', dtype=str) for p in patients_tsv]
     return pd.concat(tables, ignore_index=True)
 
-def input_processing(data, dataset_id, genome):
-    new_columns = {'Project': dataset_id, 'Genome': genome, 'Type': "SOMATIC", 'mut_type': "SNP"}
+def input_processing(data, prefix, genome):
+    new_columns = {'Project': prefix, 'Genome': genome, 'Type': "SOMATIC", 'mut_type': "SNP"}
     df = data.assign(**new_columns)
     df['chr'] = df['chr'].astype(str).str[3:]
     df = df.rename(columns={'Indiv': 'Sample', 'chr': 'chrom', 'from': 'pos_start', 'to': 'pos_end'})
@@ -77,20 +76,18 @@ def input_processing(data, dataset_id, genome):
     
 if __name__ == '__main__':
 
-    dataset_id = opt["dataset"]
     prefix = opt["prefix"]
     genome = opt["genome"]
     input_type = opt["input_type"]
     context_types = opt["context_type"].split(",")
     tsv_list = "${tsv_list.join(' ')}"
 
-    input_path = os.path.join(dataset_id)
-
+    input_path = os.path.join(prefix)
     if not os.path.exists(input_path):
             os.mkdir(input_path)
 
     data = process_tsv_join(tsv_list)
-    processed = input_processing(data, dataset_id, genome)
+    processed = input_processing(data, prefix, genome)
     processed.to_csv(f"{input_path}/input_data.txt", sep="\t", index=False)
 
     # Conditionally install genome or use provided path
@@ -108,14 +105,14 @@ if __name__ == '__main__':
     # Mutation counts matrix generation
     generate_count_matrix = (
         f"SigProfilerMatrixGenerator matrix_generator "
-        f"{dataset_id} {genome} {input_path} --volume {opt["volume"]}"
+        f"{prefix} {genome} {input_path} --volume {opt["volume"]}"
     )  
     subprocess.run(generate_count_matrix, shell=True)
     
     matrix_files = {
-            "SBS96": os.path.join("output", "SBS", f"{dataset_id}.SBS96.all"),
-            "DBS78": os.path.join("output", "DBS", f"{dataset_id}.DBS78.all"),
-            "ID83": os.path.join("output", "ID", f"{dataset_id}.ID83.all")
+            "SBS96": os.path.join("output", "SBS", f"{prefix}.SBS96.all"),
+            "DBS78": os.path.join("output", "DBS", f"{prefix}.DBS78.all"),
+            "ID83": os.path.join("output", "ID", f"{prefix}.ID83.all")
     }
 
     context_types = {
@@ -128,7 +125,7 @@ if __name__ == '__main__':
     # Run SigProfilerExtractor for each mutation type
 
     for key, matrix_path in matrix_files.items():
-        full_path = os.path.join(dataset_id, matrix_path)
+        full_path = os.path.join(prefix, matrix_path)
 
         if not os.path.isfile(full_path):
             continue  # Skip this mutation type
@@ -164,6 +161,7 @@ if __name__ == '__main__':
 
     dest_dir = "results/"
     shutil.copytree(source_dir, "results", dirs_exist_ok=True)
+
 
      # Write version
     SigProfilerMatrixGenerator_version = version("SigProfilerMatrixGenerator")

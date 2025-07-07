@@ -29,7 +29,7 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1', dataset: 'dataset_id' ]`
+          e.g. `[ id:'sample1' ]`
     - tsv_list:
         type: file
         description: joint tsv file with validated mutations by CNAqc
@@ -43,7 +43,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', dataset: 'dataset_id' ]`
+            e.g. `[ id:'sample' ]`
       - "results/*":
           type: directory
           description: folder with saved results tool output

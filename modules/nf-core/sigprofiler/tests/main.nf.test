@@ -16,12 +16,13 @@ nextflow_process {
 
             params {
               module_args = "[genome:GRCh38, download_genome_sigprofiler:True, volume:./, input_type:matrix, context_type:'96,ID', minimum_signatures:1, maximum_signatures:2, nmf_replicates:10, min_nmf_iterations:10, max_nmf_iterations:100, nmf_test_conv:100, get_all_signature_matrices:False, make_decomposition_plots:False ]"
+
             }
             
             process {
                 """
                 input[0] = [
-                    [ id:'test', dataset: 'HCC1395' ], 
+                    [ id:'test' ], 
                     file(params.modules_testdata_base_path + 'delete_me/sigprofiler/test_GRCh38/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
                 ]                
                 input[1] = []
@@ -44,7 +45,7 @@ nextflow_process {
                         def file = new File(dir.toString())
                         assert file.exists() && file.isDirectory()
                         
-                    } 
+                    }  
                 }  
             )
         }
@@ -59,7 +60,7 @@ nextflow_process {
             process {
                 """ 
                 input[0] = [
-                    [ id:'test', dataset: 'HCC1395' ], 
+                    [ id:'test' ], 
                     file(params.modules_testdata_base_path + 'delete_me/sigprofiler/test_GRCh38/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
                 ] 
                 input[1] = []
