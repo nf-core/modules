@@ -26,28 +26,36 @@ input:
         type: file
         description: Imputed dataset file obtain after phasing.
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+        ontologies: []
     - estimate_index:
         type: file
         description: Index file for the imputed dataset file.
+        ontologies: []
     - truth:
         type: file
         description: Validation dataset called at the same positions as the imputed
           file.
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+        ontologies: []
     - truth_index:
         type: file
         description: Index file for the truth file.
+        ontologies: []
     - freq:
         type: file
         description: File containing allele frequencies at each site.
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+        ontologies: []
     - freq_index:
         type: file
         description: Index file for the allele frequencies file.
+        ontologies: []
     - samples:
         type: file
         description: List of samples to process, one sample ID per line.
         pattern: "*.{txt,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
     - region:
         type: string
         description: Target region used for imputation, including left and right buffers
@@ -63,6 +71,8 @@ input:
         description: Alternative to frequency bins, group bins are user defined, provided
           in a file.
         pattern: "*.{txt,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
     - bins:
         type: string
         description: |
@@ -91,8 +101,8 @@ input:
           If FORMAT/DP is missing and –min_val_dp > 0, the program exits with an error.
           Set to zero to have no filter of if using –gt-validation
 output:
-  - errors_cal:
-      - meta:
+  errors_cal:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -102,8 +112,10 @@ output:
           description: Calibration correlation errors between imputed dosages (in MAF
             bins) and highly-confident genotype.
           pattern: "*.errors.cal.txt.gz"
-  - errors_grp:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  errors_grp:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -113,8 +125,10 @@ output:
           description: Groups correlation errors between imputed dosages (in MAF bins)
             and highly-confident genotype.
           pattern: "*.errors.grp.txt.gz"
-  - errors_spl:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  errors_spl:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -124,44 +138,54 @@ output:
           description: Samples correlation errors between imputed dosages (in MAF bins)
             and highly-confident genotype.
           pattern: "*.errors.spl.txt.gz"
-  - rsquare_grp:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  rsquare_grp:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.rsquare.grp.txt.gz":
           type: file
-          description: Groups r-squared correlation between imputed dosages (in MAF bins)
-            and highly-confident genotype.
+          description: Groups r-squared correlation between imputed dosages (in MAF
+            bins) and highly-confident genotype.
           pattern: "*.rsquare.grp.txt.gz"
-  - rsquare_spl:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  rsquare_spl:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.rsquare.spl.txt.gz":
           type: file
-          description: Samples r-squared correlation between imputed dosages (in MAF bins)
-            and highly-confident genotype.
+          description: Samples r-squared correlation between imputed dosages (in MAF
+            bins) and highly-confident genotype.
           pattern: "*.rsquare.spl.txt.gz"
-  - rsquare_per_site:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  rsquare_per_site:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*_r2_sites.txt.gz":
           type: file
-          description: Variant r-squared correlation between imputed dosages (in MAF bins)
-            and highly-confident genotype.
+          description: Variant r-squared correlation between imputed dosages (in MAF
+            bins) and highly-confident genotype.
           pattern: "_r2_sites.txt.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions.
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions.
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@louislenezet"
 maintainers:

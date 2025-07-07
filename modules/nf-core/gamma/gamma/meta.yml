@@ -24,13 +24,15 @@ input:
         type: file
         description: FASTA file
         pattern: "*.{fa,fasta}"
-  - - db:
-        type: file
-        description: Database in FASTA format
-        pattern: "*.{fa,fasta}"
+        ontologies: []
+  - db:
+      type: file
+      description: Database in FASTA format
+      pattern: "*.{fa,fasta}"
+      ontologies: []
 output:
-  - gamma:
-      - meta:
+  gamma:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,8 +41,9 @@ output:
           type: file
           description: GAMMA file with annotated gene matches
           pattern: "*.{gamma}"
-  - psl:
-      - meta:
+          ontologies: []
+  psl:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,8 +52,9 @@ output:
           type: file
           description: PSL file with all gene matches found
           pattern: "*.{psl}"
-  - gff:
-      - meta:
+          ontologies: []
+  gff:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -59,8 +63,9 @@ output:
           type: file
           description: GFF file
           pattern: "*.{gff}"
-  - fasta:
-      - meta:
+          ontologies: []
+  fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -69,11 +74,14 @@ output:
           type: file
           description: multifasta file of the gene matches
           pattern: "*.{fasta}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sateeshperi"
   - "@rastanton"

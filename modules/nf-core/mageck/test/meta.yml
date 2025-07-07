@@ -29,9 +29,11 @@ input:
           sgRNA name (1st column), target gene (2nd column)
           and read counts in each sample.
         pattern: "*.{txt,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
-  - gene_summary:
-      - meta:
+  gene_summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -42,8 +44,9 @@ output:
             Gene summary file describing the fitness score
             and associated p-values.
           pattern: "*.{gene_summary.txt}"
-  - sgrna_summary:
-      - meta:
+          ontologies: []
+  sgrna_summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,8 +57,9 @@ output:
             sgRNA summary file describing the sgRNA and
             associated gene
           pattern: "*.{sgrna_summary.txt}"
-  - r_script:
-      - meta:
+          ontologies: []
+  r_script:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -66,11 +70,15 @@ output:
             R script allowing to output plots
             from main hit genes
           pattern: "*.R"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3999 # R script
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@LaurenceKuhl"
 maintainers:

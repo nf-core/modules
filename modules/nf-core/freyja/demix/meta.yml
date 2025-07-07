@@ -25,21 +25,29 @@ input:
         type: file
         description: File containing identified variants in a gff-like format
         pattern: "*.variants.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
     - depths:
         type: file
         description: File containing depth of the variants
         pattern: "*.depth.tsv"
-  - - barcodes:
-        type: file
-        description: File containing lineage defining barcodes
-        pattern: "*barcodes.csv"
-  - - lineages_meta:
-        type: file
-        description: File containing lineage metadata that correspond to barcodes
-        pattern: "*lineages.json"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  - barcodes:
+      type: file
+      description: File containing lineage defining barcodes
+      pattern: "*barcodes.csv"
+      ontologies:
+        - edam: http://edamontology.org/format_3752 # CSV
+  - lineages_meta:
+      type: file
+      description: File containing lineage metadata that correspond to barcodes
+      pattern: "*lineages.json"
+      ontologies:
+        - edam: http://edamontology.org/format_3464 # JSON
 output:
-  - demix:
-      - meta:
+  demix:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,11 +57,15 @@ output:
           description: a tsv file that includes the lineages present, their corresponding
             abundances, and summarization by constellation
           pattern: "*.demix.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Joon-Klaps"
 maintainers:

@@ -17,23 +17,25 @@ tools:
       identifier: biotools:getorganelle
 
 input:
-  - - organelle_type:
-        type: string
-        description: |
-          Type of database, esp. embplant_pt (embryophyta plant plastome), other_pt (non-embryophyta plant plastome), embplant_mt (plant mitochondrion), embplant_nr (plant nuclear ribosomal RNA), animal_mt (animal mitochondrion), and fungus_mt (fungus mitochondrion), fungus_nr (fungus nuclear ribosomal RNA)
+  - organelle_type:
+      type: string
+      description: |
+        Type of database, esp. embplant_pt (embryophyta plant plastome), other_pt (non-embryophyta plant plastome), embplant_mt (plant mitochondrion), embplant_nr (plant nuclear ribosomal RNA), animal_mt (animal mitochondrion), and fungus_mt (fungus mitochondrion), fungus_nr (fungus nuclear ribosomal RNA)
 output:
-  - db:
-      - organelle_type:
+  db:
+    - - organelle_type:
           type: string
           description: |
             Type of database, esp. embplant_pt (embryophyta plant plastome), other_pt (non-embryophyta plant plastome), embplant_mt (plant mitochondrion), embplant_nr (plant nuclear ribosomal RNA), animal_mt (animal mitochondrion), and fungus_mt (fungus mitochondrion), fungus_nr (fungus nuclear ribosomal RNA)
       - getorganelle:
           type: directory
           description: Downloaded database for GetOrganelle
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@erinyoung"
