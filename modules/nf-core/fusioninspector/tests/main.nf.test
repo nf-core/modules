@@ -69,7 +69,7 @@ nextflow_process {
                     file(process.out.tsv[0][1]).name,
                     process.out.out_gtf,
                     file(process.out.abridged_tsv[0][1]).name,
-                    process.out.log,
+                    file(process.out.log[0][1]).name,
                     process.out.versions
                 ).match() }
             )
