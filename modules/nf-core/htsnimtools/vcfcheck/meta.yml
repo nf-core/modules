@@ -25,10 +25,12 @@ input:
         type: file
         description: The query VCF file
         pattern: "*.{vcf,vcf.gz,bcf}"
+        ontologies: []
     - tbi:
         type: file
         description: The index of the query VCF file
         pattern: "*.{tbi}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -38,13 +40,15 @@ input:
         type: file
         description: The background VCF file
         pattern: "*.{vcf,vcf.gz,bcf}"
+        ontologies: []
     - background_tbi:
         type: file
         description: The index of the background VCF file
         pattern: "*.{tbi}"
+        ontologies: []
 output:
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,11 +58,15 @@ output:
           description: A tab-delimited file comparing the variant count of each region
             in the query VCF and background VCF
           pattern: "*.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

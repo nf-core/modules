@@ -13,6 +13,7 @@ tools:
       tool_dev_url: "https://github.com/motu-tool/mOTUs"
       doi: "10.1186/s40168-022-01410-z"
       licence: ["GPL v3"]
+      identifier: ""
 
 input:
   - - meta:
@@ -24,14 +25,16 @@ input:
         type: file
         description: Long read file to convert, can be fasta(.gz) or fastq(.gz)
         pattern: "*.{gz}"
-  - - db:
-        type: directory
-        description: |
-          mOTUs database downloaded by `motus downloadDB`
-          pattern: "db_mOTU/"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
+  - db:
+      type: directory
+      description: |
+        mOTUs database downloaded by `motus downloadDB`
+        pattern: "db_mOTU/"
 output:
-  - out:
-      - meta:
+  out:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,12 +43,16 @@ output:
           type: file
           description: converted file (gzipped), ready to be used by motus profile
           pattern: "*.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sofstam"
 maintainers:

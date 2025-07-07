@@ -24,11 +24,13 @@ input:
         description: |
           List containing 2 or more vcf files
           e.g. [ 'file1.vcf', 'file2.vcf' ]
+        ontologies: []
     - tbis:
         type: file
         description: |
           List containing the tbi index files corresponding to the vcfs input files
           e.g. [ 'file1.vcf.tbi', 'file2.vcf.tbi' ]
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -39,6 +41,7 @@ input:
         description: "(Optional) The fasta reference file (only necessary for the `--gvcf
           FILE` parameter)"
         pattern: "*.{fasta,fa}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -49,6 +52,7 @@ input:
         description: "(Optional) The fasta reference file index (only necessary for
           the `--gvcf FILE` parameter)"
         pattern: "*.fai"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -58,9 +62,10 @@ input:
         type: file
         description: "(Optional) The bed regions to merge on"
         pattern: "*.bed"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -69,8 +74,9 @@ output:
           type: file
           description: merged output file
           pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
-  - index:
-      - meta:
+          ontologies: []
+  index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -79,11 +85,14 @@ output:
           type: file
           description: index of merged output
           pattern: "*.{csi,tbi}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@joseespinosa"
   - "@drpatelh"
