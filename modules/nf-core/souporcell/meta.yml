@@ -55,8 +55,8 @@ input:
         description: Number of clusters.
 
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -68,8 +68,8 @@ output:
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
           pattern: "test/*.vcf"
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -81,7 +81,7 @@ output:
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
           pattern: "test/*.tsv"
-  - versions:
+  versions:
       - versions.yml:
           type: file
           description: File containing software versions
