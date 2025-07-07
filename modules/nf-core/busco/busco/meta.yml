@@ -26,26 +26,28 @@ input:
         type: file
         description: Nucleic or amino acid sequence file in FASTA format.
         pattern: "*.{fasta,fna,fa,fasta.gz,fna.gz,fa.gz}"
-  - - mode:
-        type: string
-        description: The mode to run Busco in. One of genome, proteins, or transcriptome
-        pattern: "{genome,proteins,transcriptome}"
-  - - lineage:
-        type: string
-        description: The BUSCO lineage to use, or "auto", "auto_prok" or "auto_euk"
-          to automatically select lineage
-  - - busco_lineages_path:
-        type: directory
-        description: Path to local BUSCO lineages directory.
-  - - config_file:
-        type: file
-        description: Path to BUSCO config file.
-  - - clean_intermediates:
-        type: boolean
-        description: Flag to remove intermediate files.
+        ontologies: []
+  - mode:
+      type: string
+      description: The mode to run Busco in. One of genome, proteins, or transcriptome
+      pattern: "{genome,proteins,transcriptome}"
+  - lineage:
+      type: string
+      description: The BUSCO lineage to use, or "auto", "auto_prok" or "auto_euk" to
+        automatically select lineage
+  - busco_lineages_path:
+      type: directory
+      description: Path to local BUSCO lineages directory.
+  - config_file:
+      type: file
+      description: Path to BUSCO config file.
+      ontologies: []
+  - clean_intermediates:
+      type: boolean
+      description: Flag to remove intermediate files.
 output:
-  - batch_summary:
-      - meta:
+  batch_summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,8 +56,9 @@ output:
           type: file
           description: Summary of all sequence files analyzed
           pattern: "*-busco.batch_summary.txt"
-  - short_summaries_txt:
-      - meta:
+          ontologies: []
+  short_summaries_txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,8 +67,9 @@ output:
           type: file
           description: Short Busco summary in plain text format
           pattern: "short_summary.*.txt"
-  - short_summaries_json:
-      - meta:
+          ontologies: []
+  short_summaries_json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -74,8 +78,10 @@ output:
           type: file
           description: Short Busco summary in JSON format
           pattern: "short_summary.*.json"
-  - log:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -84,8 +90,9 @@ output:
           type: file
           description: BUSCO main log
           pattern: "*-busco.log"
-  - full_table:
-      - meta:
+          ontologies: []
+  full_table:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -94,8 +101,10 @@ output:
           type: file
           description: Full BUSCO results table
           pattern: "full_table.tsv"
-  - missing_busco_list:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  missing_busco_list:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -104,8 +113,10 @@ output:
           type: file
           description: List of missing BUSCOs
           pattern: "missing_busco_list.tsv"
-  - single_copy_proteins:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  single_copy_proteins:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -114,8 +125,9 @@ output:
           type: file
           description: Fasta file of single copy proteins (transcriptome mode)
           pattern: "single_copy_proteins.faa"
-  - seq_dir:
-      - meta:
+          ontologies: []
+  seq_dir:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -124,8 +136,8 @@ output:
           type: directory
           description: BUSCO sequence directory
           pattern: "busco_sequences"
-  - translated_dir:
-      - meta:
+  translated_dir:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -135,8 +147,8 @@ output:
           description: Six frame translations of each transcript made by the transcriptome
             mode
           pattern: "translated_dir"
-  - busco_dir:
-      - meta:
+  busco_dir:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -145,18 +157,19 @@ output:
           type: directory
           description: BUSCO lineage specific output
           pattern: "*-busco"
-  - downloaded_lineages:
-      - meta:
+  downloaded_lineages:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "busco_downloads/lineages/*":
+      - busco_downloads/lineages/*:
           type: directory
-          description: Lineages downloaded by BUSCO when running the analysis, for example bacteria_odb12
+          description: Lineages downloaded by BUSCO when running the analysis, for example
+            bacteria_odb12
           pattern: "busco_downloads/lineages/*"
-  - single_copy_faa:
-      - meta:
+  single_copy_faa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -165,8 +178,9 @@ output:
           type: file
           description: Single copy .faa sequence files
           pattern: "*-busco/*/run_*/busco_sequences/single_copy_busco_sequences/*.faa"
-  - single_copy_fna:
-      - meta:
+          ontologies: []
+  single_copy_fna:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -175,11 +189,14 @@ output:
           type: file
           description: Single copy .fna sequence files
           pattern: "*-busco/*/run_*/busco_sequences/single_copy_busco_sequences/*.fna"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@priyanka-surana"
   - "@charles-plessy"

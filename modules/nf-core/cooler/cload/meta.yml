@@ -23,18 +23,21 @@ input:
     - pairs:
         type: file
         description: Path to contacts (i.e. read pairs) file.
+        ontologies: []
     - index:
         type: file
         description: Path to index file of the contacts.
+        ontologies: []
     - cool_bin:
         type: integer
         description: Bins size in bp
-  - - chromsizes:
-        type: file
-        description: Path to a chromsizes file.
+  - chromsizes:
+      type: file
+      description: Path to a chromsizes file.
+      ontologies: []
 output:
-  - cool:
-      - meta:
+  cool:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -43,15 +46,19 @@ output:
           type: file
           description: Output COOL file path
           pattern: "*.cool"
+          ontologies: []
       - cool_bin:
           type: file
           description: Output COOL file path
           pattern: "*.cool"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jianhong"
   - "@muffato"

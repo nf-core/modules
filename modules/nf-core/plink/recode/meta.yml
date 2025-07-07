@@ -24,17 +24,20 @@ input:
         type: file
         description: PLINK binary biallelic genotype table file
         pattern: "*.{bed}"
+        ontologies: []
     - bim:
         type: file
         description: PLINK extended MAP file
         pattern: "*.{bim}"
+        ontologies: []
     - fam:
         type: file
         description: PLINK sample information file
         pattern: "*.{fam}"
+        ontologies: []
 output:
-  - ped:
-      - meta:
+  ped:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,19 +47,21 @@ output:
           description: PLINK/MERLIN/Haploview text pedigree + genotype table file. Produced
             by the default "--recode" or by "--recode 12".
           pattern: "*.{ped}"
-  - map:
-      - meta:
+          ontologies: []
+  map:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.map":
           type: file
-          description: PLINK text fileset variant information file. Produced by the default
-            "--recode" or by "--recode 12".
+          description: PLINK text fileset variant information file. Produced by the
+            default "--recode" or by "--recode 12".
           pattern: "*.{map}"
-  - txt:
-      - meta:
+          ontologies: []
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -66,29 +71,33 @@ output:
           description: Text file. Produced by "--recode 23". Can only be used in a file
             with only one sample.
           pattern: "*.{txt}"
-  - raw:
-      - meta:
+          ontologies: []
+  raw:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.raw":
           type: file
-          description: Additive + dominant component file. Produced by "--recode AD" or
-            "--recode A".
+          description: Additive + dominant component file. Produced by "--recode AD"
+            or "--recode A".
           pattern: "*.{raw}"
-  - traw:
-      - meta:
+          ontologies: []
+  traw:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.traw":
           type: file
-          description: Variant-major additive component file. Produced by "--recode A-transpose".
+          description: Variant-major additive component file. Produced by "--recode
+            A-transpose".
           pattern: "*.{traw}"
-  - beagledat:
-      - meta:
+          ontologies: []
+  beagledat:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -97,8 +106,9 @@ output:
           type: file
           description: BEAGLE file
           pattern: "*.{beagle.dat}"
-  - chrdat:
-      - meta:
+          ontologies: []
+  chrdat:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -107,8 +117,9 @@ output:
           type: file
           description: chr file
           pattern: "*.{chr-*.dat}"
-  - chrmap:
-      - meta:
+          ontologies: []
+  chrmap:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -117,8 +128,9 @@ output:
           type: file
           description: chr map file
           pattern: "*.{chr-*.map}"
-  - geno:
-      - meta:
+          ontologies: []
+  geno:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -127,8 +139,9 @@ output:
           type: file
           description: BIMBAM genotype file. Produced by "--recode bimbam".
           pattern: "*.{recode.geno.txt}"
-  - pheno:
-      - meta:
+          ontologies: []
+  pheno:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -137,8 +150,9 @@ output:
           type: file
           description: BIMBAM phenotype file. Produced by "--recode bimbam".
           pattern: "*.{recode.pheno.txt}"
-  - pos:
-      - meta:
+          ontologies: []
+  pos:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -147,8 +161,9 @@ output:
           type: file
           description: BIMBAM variant position file. Produced by "--recode bimbam".
           pattern: "*.{recode.pos.txt}"
-  - phase:
-      - meta:
+          ontologies: []
+  phase:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -157,8 +172,9 @@ output:
           type: file
           description: fastPHASE format. Produced by "--recode fastphase".
           pattern: "*.{recode.phase.inp}"
-  - info:
-      - meta:
+          ontologies: []
+  info:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -167,8 +183,9 @@ output:
           type: file
           description: Haploview map file. Produced by "--recode HV".
           pattern: "*.{info}"
-  - lgen:
-      - meta:
+          ontologies: []
+  lgen:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -177,8 +194,9 @@ output:
           type: file
           description: PLINK long-format genotype file. Produced by "--recode lgen".
           pattern: "*.{lgen}"
-  - list:
-      - meta:
+          ontologies: []
+  list:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -187,8 +205,9 @@ output:
           type: file
           description: Genotype list file. Produced by "--recode list".
           pattern: "*.{list}"
-  - gen:
-      - meta:
+          ontologies: []
+  gen:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -197,8 +216,9 @@ output:
           type: file
           description: Oxford genotype file format. Produced by "--recode oxford".
           pattern: "*.{gen}"
-  - gengz:
-      - meta:
+          ontologies: []
+  gengz:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -207,8 +227,9 @@ output:
           type: file
           description: Compressed Oxford genotype file format
           pattern: "*.{gen.gz}"
-  - sample:
-      - meta:
+          ontologies: []
+  sample:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -217,8 +238,9 @@ output:
           type: file
           description: Oxford sample information file. Produced by "--recode oxford".
           pattern: "*.{sample}"
-  - rlist:
-      - meta:
+          ontologies: []
+  rlist:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -227,8 +249,9 @@ output:
           type: file
           description: Rare genotype list file. Produced by "--recode rlist".
           pattern: "*.{rlist}"
-  - strctin:
-      - meta:
+          ontologies: []
+  strctin:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -237,8 +260,9 @@ output:
           type: file
           description: Structure-format file. Produced by "--recode structure".
           pattern: "*.{strct_in}"
-  - tped:
-      - meta:
+          ontologies: []
+  tped:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -247,8 +271,9 @@ output:
           type: file
           description: Transposed text PED file. Produced by "--recode transpose".
           pattern: "*.{tped}"
-  - tfam:
-      - meta:
+          ontologies: []
+  tfam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -257,8 +282,9 @@ output:
           type: file
           description: Transposed text FAM file. Produced by "--recode transpose".
           pattern: "*.{tfam}"
-  - vcf:
-      - meta:
+          ontologies: []
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -267,22 +293,26 @@ output:
           type: file
           description: Variant calling file (VCF). Produced by "--recode vcf".
           pattern: "*.{vcf}"
-  - vcfgz:
-      - meta:
+          ontologies: []
+  vcfgz:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.vcf.gz":
           type: file
-          description: Compressed variant calling file (VCF). Produced by "--recode vcf
-            bgz".
+          description: Compressed variant calling file (VCF). Produced by "--recode
+            vcf bgz".
           pattern: "*.{vcf.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@atrigila"
 maintainers:
