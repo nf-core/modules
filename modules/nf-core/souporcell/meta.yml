@@ -55,39 +55,36 @@ input:
         description: Number of clusters.
 
 output:
-    - vcf:
-        - - meta:
-              type: map
-              description: |
-                Groovy Map containing sample information
-                e.g. `[ id:'sample1' ]`
-              pattern: "test/*.vcf"
-          - test/*.vcf:
-              type: map
-              description: |
-                Groovy Map containing sample information
-                e.g. `[ id:'sample1' ]`
-            pattern: "test/*.vcf"
-    - tsv:
-        - - meta:
-              type: map
-              description: |
-                Groovy Map containing sample information
-                e.g. `[ id:'sample1' ]`
-              pattern: "test/*.tsv"
-          - test/*.tsv:
-              type: map
-              description: |
-                Groovy Map containing sample information
-                e.g. `[ id:'sample1' ]`
-              pattern: "test/*.tsv"
-    - versions:
-          - versions.yml:
-              type: file
-              description: File containing software versions
-              pattern: "versions.yml"
-              ontologies:
-                - edam: http://edamontology.org/format_3750 # YAML
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - vcf:
+          type: file
+          description: VCF file containing genotype information
+          pattern: "*.vcf"
+          ontologies: []
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - tsv:
+          type: file
+          description: TSV file containing clustering results
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@seohyonkim"
 maintainers:
