@@ -20,16 +20,18 @@ tools:
       identifier: biotools:pharokka
 
 output:
-  - pharokka_db:
-      - ${prefix}/:
-          type: directory
-          description: Directory pointing to Pharokka's database
-          pattern: "${prefix}/"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  pharokka_db:
+    - ${prefix}/:
+        type: directory
+        description: Directory pointing to Pharokka's database
+        pattern: "${prefix}/"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@CarsonJM"
 maintainers:

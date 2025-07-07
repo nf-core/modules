@@ -21,13 +21,15 @@ input:
         type: file
         description: A histogram files from the program FastK
         pattern: "*.hist"
+        ontologies: []
     - fastk_ktab:
         type: file
         description: ktab files from the program FastK
         pattern: "*.ktab*"
+        ontologies: []
 output:
-  - filled_ploidy_plot:
-      - meta:
+  filled_ploidy_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -36,8 +38,9 @@ output:
           type: file
           description: A filled ploidy plot in or PDF format
           pattern: "*.fi.{png,pdf}"
-  - line_ploidy_plot:
-      - meta:
+          ontologies: []
+  line_ploidy_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -46,8 +49,9 @@ output:
           type: file
           description: A line ploidy plot in PNG or PDF format
           pattern: "*.ln.{png,pdf}"
-  - stacked_ploidy_plot:
-      - meta:
+          ontologies: []
+  stacked_ploidy_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -56,11 +60,14 @@ output:
           type: file
           description: A stacked ploidy plot in PNG or PDFformat
           pattern: "*.st.{png,pdf}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mahesh-panchal"
 maintainers:

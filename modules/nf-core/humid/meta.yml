@@ -27,6 +27,8 @@ input:
         type: file
         description: Fastq file(s) to deduplicate
         pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
   - - meta2:
         type: map
         description: |
@@ -35,9 +37,10 @@ input:
     - umi_file:
         type: file
         description: UMI file
+        ontologies: []
 output:
-  - log:
-      - meta:
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -46,8 +49,9 @@ output:
           type: file
           description: Log file of humid, containing progress and errors
           pattern: "*.log"
-  - dedup:
-      - meta:
+          ontologies: []
+  dedup:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -56,8 +60,10 @@ output:
           type: file
           description: Deduplicated Fastq file(s)
           pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
-  - annotated:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+  annotated:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -66,8 +72,10 @@ output:
           type: file
           description: Annotated Fastq file(s)
           pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
-  - stats:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+  stats:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -76,11 +84,13 @@ output:
           type: directory
           description: Directory containing statistics file, use for multiqc.
           pattern: "${prefix}/"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Joon-Klaps"
 maintainers:
