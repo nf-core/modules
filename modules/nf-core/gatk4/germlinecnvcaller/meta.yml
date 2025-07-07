@@ -26,11 +26,14 @@ input:
         type: file
         description: One or more count TSV files created with gatk/collectreadcounts
         pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
     - intervals:
         type: file
         description: Optional - A bed file containing the intervals to include in the
           process
         pattern: "*.bed"
+        ontologies: []
     - ploidy:
         type: directory
         description: Directory containing ploidy calls produced by determinegermlinecontigploidy
@@ -42,8 +45,8 @@ input:
           cohort mode
         pattern: "*-cnv-model/*-model"
 output:
-  - cohortcalls:
-      - meta:
+  cohortcalls:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,8 +56,8 @@ output:
           description: Tar gzipped directory containing calls produced by germlinecnvcaller
             case mode
           pattern: "*-cnv-model/*-calls"
-  - cohortmodel:
-      - meta:
+  cohortmodel:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,8 +67,8 @@ output:
           description: Optional - Tar gzipped directory containing the model produced
             by germlinecnvcaller cohort mode
           pattern: "*-cnv-model/*-model"
-  - casecalls:
-      - meta:
+  casecalls:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -75,11 +78,13 @@ output:
           description: Tar gzipped directory containing calls produced by germlinecnvcaller
             case mode
           pattern: "*-cnv-calls/*-calls"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ryanjameskennedy"
   - "@ViktorHy"

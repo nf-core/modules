@@ -26,9 +26,10 @@ input:
         description: Protein structure(s) in PDB or CIF format to compress (also works
           with folder input)
         pattern: "*.{pdb,cif}"
+        ontologies: []
 output:
-  - fcz:
-      - meta:
+  fcz:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,11 +39,14 @@ output:
           description: |
             Either single compressed protein structure (if input was file) or folder with all compressed protein structures (if input was directory)
           pattern: "{*_fcz,*.fcz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@vagkaratzas"
 maintainers:
