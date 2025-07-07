@@ -9,7 +9,7 @@ nextflow_process {
     tag "starfusion/build"
     tag "modules_nfcore"
 
-    test("FUSIONINSPECTOR") {
+    test("FUSIONINSPECTOR - test") {
         config './nextflow.config'
 
         setup {
@@ -63,10 +63,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert file(process.out.tsv[0][1]).getText().contains("THRA--AC090627.1\t72\t83\t72.00\t80.15") },
+                { assert file(process.out.abridged_tsv[0][1]).getText().contains("THRA--AC090627.1\t72\t83\t72.00\t80.15") },
                 { assert snapshot(
-                    process.out.tsv,
+                    file(process.out.tsv[0][1]).name,
                     process.out.out_gtf,
-                    process.out.abridged_tsv,
+                    file(process.out.abridged_tsv[0][1]).name,
                     process.out.log,
                     process.out.versions
                 ).match() }
@@ -75,7 +77,7 @@ nextflow_process {
 
     }
 
-    test("FUSIONINSPECTOR stub") {
+    test("FUSIONINSPECTOR - test - stub") {
         options "-stub"
         when {
             process {
