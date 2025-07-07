@@ -39,68 +39,68 @@ input:
         pattern: "*"
 
 output:
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*FusionInspector.fusions.tsv":
+      - "FusionInspector.fusions.tsv":
           type: file
-          description: Genome resource path
-          pattern: "*"
-  - out_gtf:
-      - meta:
+          description: FusionInspector output TSV file
+          pattern: "*.tsv"
+  out_gtf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "fi_workdir/*gtf":
+      - "fi_workdir/gtf":
           type: file
-          description: Genome resource path
-          pattern: "*.{gtf}"
-  - log:
-      - meta:
+          description: GTF output file
+          pattern: "*.gtf"
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*FusionInspector.log":
-          type: file
-          description: FusionInspector log file
-          pattern: "*.{log}"
-  - html:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*html":
-          type: file
-          description: HTML files
-          pattern: "*.{html}"
-  - abridged_tsv:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*abridged.tsv":
+      - "FusionInspector.log":
           type: file
           description: FusionInspector log file
-          pattern: "*.{tsv}"
-  - igv_inputs:
-      - meta:
+          pattern: "*.log"
+  html:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.html":
+          type: file
+          description: HTML output files
+          pattern: "*.html"
+  abridged_tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.abridged.tsv":
+          type: file
+          description: Abridged TSV output file
+          pattern: "*.tsv"
+  igv_inputs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "IGV_inputs":
           type: directory
-          description: FusionInspector log file
-          pattern: "*"
-  - fi_workdir:
-      - meta:
+          description: IGV inputs directory
+          pattern: "IGV_inputs"
+  fi_workdir:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -108,24 +108,22 @@ output:
       - "fi_workdir":
           type: directory
           description: FusionInspector work directory
-          pattern: "*"
-  - chckpts_dir:
-      - meta:
+          pattern: "fi_workdir"
+  chckpts_dir:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "chckpts_dir":
           type: directory
-          description: FusionInspector work directory
-          pattern: "*"
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: http://edamontology.org/format_3750 # YAML
+          description: Checkpoints directory
+          pattern: "chckpts_dir"
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 authors:
   - "@rannick"
   - "@delfiterradas"
