@@ -27,12 +27,13 @@ input:
         type: file
         description: FASTA file containing phage contigs/scaffolds/chromosomes
         pattern: "*.{fasta,fna,fa}"
-  - - iphop_db:
-        type: directory
-        description: Directory pointing to iPHoP database
+        ontologies: []
+  - iphop_db:
+      type: directory
+      description: Directory pointing to iPHoP database
 output:
-  - iphop_genus:
-      - meta:
+  iphop_genus:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -42,8 +43,10 @@ output:
           description: File containing integrated host predictions at genus level, with
             a minimum score defined by the `--min_score` argument
           pattern: "Host_prediction_to_genus_m*.csv"
-  - iphop_genome:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  iphop_genome:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,8 +56,10 @@ output:
           description: File containing integrated host predictions at host genome level,
             with a minimum score defined by the `--min_score` argument
           pattern: "Host_prediction_to_genome_m*.csv"
-  - iphop_detailed_output:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  iphop_detailed_output:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -63,11 +68,15 @@ output:
           type: file
           description: File containing each phage's top 5 hits via each method
           pattern: "Detailed_output_by_tool.csv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@CarsonJM"
 maintainers:

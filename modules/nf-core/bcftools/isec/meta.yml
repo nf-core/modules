@@ -33,22 +33,23 @@ input:
           List containing the tbi index files corresponding to the vcf/bcf input files
           e.g. [ 'file1.vcf.tbi', 'file2.vcf.tbi' ]
 output:
-  - results:
-      - meta:
+  results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - '${prefix}", type: "dir':
+      - ${prefix}:
           type: directory
-          description: Folder containing the set operations results perform on the vcf
-            files
+          description: Folder containing the set operations results perform on the vcf files
           pattern: "${prefix}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@joseespinosa"
   - "@drpatelh"
