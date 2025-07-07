@@ -11,7 +11,6 @@ nextflow_process {
     tag "picard/splitsambynumberofreads"
 
     test("sarscov2 - bam, [], split_to_N_reads, [], []") {
-
         when {
             process {
                 """
@@ -31,7 +30,6 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out).match() }
-                // See https://nf-co.re/docs/contributing/tutorials/nf-test_assertions for more information and examples.
             )
         }
 
@@ -147,7 +145,6 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out).match() }
-                // See https://nf-co.re/docs/contributing/tutorials/nf-test_assertions for more information and examples.
             )
         }
 
@@ -160,7 +157,6 @@ nextflow_process {
         when {
             process {
                 """
-
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.recalibrated.sorted.cram', checkIfExists: true),
