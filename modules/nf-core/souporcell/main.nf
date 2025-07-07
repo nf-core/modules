@@ -13,8 +13,8 @@ process SOUPORCELL {
     val(clusters)
 
     output:
-    tuple val(meta), path("test/*.vcf"), emit: vcf
-    tuple val(meta), path("test/*.tsv"), emit: tsv
+    tuple val(meta), path("*/*.vcf"), emit: vcf
+    tuple val(meta), path("*/*.tsv"), emit: tsv
     path "versions.yml", emit: versions
 
     when:
@@ -43,12 +43,11 @@ process SOUPORCELL {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     mkdir -p ${prefix}
 
-    touch ${prefix}/fake.vcf
-    touch ${prefix}/fake.tsv
+    touch ${prefix}/cluster_genotypes.vcf
+    touch ${prefix}/clusters.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
