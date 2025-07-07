@@ -1,0 +1,188 @@
+nextflow_process {
+    name "Test Process STARFUSION_BUILD"
+    script "../main.nf"
+    process "STARFUSION_BUILD"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "starfusion"
+    tag "starfusion/build"
+    tag "fusioninspector"
+
+    test("STARFUSION_BUILD - human - minigenome") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'minigenome_fasta' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa')
+                ]
+                input[1] = [
+                    [ id:'minigenome_gtf' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf')
+                ]
+
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/CTAT_HumanFusionLib.mini.dat.gz')
+                input[3] = "homo_sapiens"
+                input[4] = "http://ftp.ebi.ac.uk/pub/databases/Pfam/releases/Pfam37.4/Pfam-A.hmm.gz"
+                input[5] = [
+                    "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm",
+                    "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3f",
+                    "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3i",
+                    "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3m",
+                    "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3p"
+                ]
+                input[6] = "https://data.broadinstitute.org/Trinity/CTAT_RESOURCE_LIB/AnnotFilterRule.pm"
+                """
+            }
+        }
+
+        then {
+            def outputDir = file(process.out.reference[0][1])
+            assert snapshot(
+                path(process.out.reference[0][1]).resolve("AnnotFilterRule.pm"),
+                file("$outputDir/blast_pairs.dat.gz").name,
+                file("$outputDir/blast_pairs.idx").name,
+                file("$outputDir/__chkpts/annotfiltrule_cp.ok").name,
+                file("$outputDir/__chkpts/blast_pairs.idx.ok").name,
+                file("$outputDir/__chkpts/cp_gene_blast_pairs.ok").name,
+                file("$outputDir/__chkpts/cp_pfam_dat.ok").name,
+                file("$outputDir/__chkpts/cp_ref_annot_cdna.ok").name,
+                file("$outputDir/__chkpts/fusion_annot_lib.cp.ok").name,
+                file("$outputDir/__chkpts/_fusion_annot_lib.idx.ok").name,
+                file("$outputDir/__chkpts/index_pfam_hits.ok").name,
+                file("$outputDir/__chkpts/index_ref_annot_cdna.ok").name,
+                file("$outputDir/__chkpts/makeblastdb.ok").name,
+                file("$outputDir/__chkpts/mm2_genome_idx.ok").name,
+                file("$outputDir/__chkpts/mm2.splice_bed.ok").name,
+                file("$outputDir/__chkpts/_prot_info_db.ok").name,
+                file("$outputDir/__chkpts/ref_annot.cdsplus.dfam_masked.fa.cp.ok").name,
+                file("$outputDir/__chkpts/ref_annot.cdsplus.dfam_masked.fa.idx.ok").name,
+                file("$outputDir/__chkpts/ref_annot.gtf.gene_spans.ok").name,
+                file("$outputDir/__chkpts/ref_annot.gtf.mini.sortu.ok").name,
+                file("$outputDir/__chkpts/ref_annot.gtf.ok").name,
+                file("$outputDir/__chkpts/ref_genome_fai.ok").name,
+                file("$outputDir/__chkpts/ref_genome.fa.ok").name,
+                file("$outputDir/__chkpts/trans.blast.dat.cp.ok").name,
+                file("$outputDir/__chkpts/trans.blast.dat.index.ok").name,
+                file("$outputDir/__chkpts/validate_ctat_genome_lib.ok").name,
+                path(process.out.reference[0][1]).resolve("fusion_annot_lib.gz"),
+                file("$outputDir/fusion_annot_lib.idx").name,
+                file("$outputDir/pfam_domains.dbm").name,
+                file("$outputDir/PFAM.domtblout.dat.gz").name,
+                file("$outputDir/ref_annot.cdna.fa").name,
+                file("$outputDir/ref_annot.cdna.fa.idx").name,
+                file("$outputDir/ref_annot.cds").name,
+                file("$outputDir/ref_annot.cdsplus.fa").name,
+                file("$outputDir/ref_annot.cdsplus.fa.idx").name,
+                path(process.out.reference[0][1]).resolve("ref_annot.gtf"),
+                file("$outputDir/ref_annot.gtf.gene_spans").name,
+                path(process.out.reference[0][1]).resolve("ref_annot.gtf.mini.sortu"),
+                path(process.out.reference[0][1]).resolve("ref_annot.gtf.mm2.splice.bed"),
+                file("$outputDir/ref_annot.pep").name,
+                file("$outputDir/ref_annot.prot_info.dbm").name,
+                path(process.out.reference[0][1]).resolve("ref_genome.fa"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.fai"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.mm2"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.ndb"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.nhr"),
+                file("$outputDir/ref_genome.fa.nin").name,
+                file("$outputDir/ref_genome.fa.njs").name,
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.not"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.nsq"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.ntf"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.nto"),
+                file("$outputDir/ref_genome.fa.star.idx").name,
+                file("$outputDir/ref_genome.fa.star.idx/build.ok").name,
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/chrLength.txt"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/chrNameLength.txt"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/chrName.txt"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/chrStart.txt"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/exonGeTrInfo.tab"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/exonInfo.tab"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/geneInfo.tab"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/Genome"),
+                file("$outputDir/ref_genome.fa.star.idx/genomeParameters.txt").name,
+                file("$outputDir/ref_genome.fa.star.idx/Log.out").name,
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/SA"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/SAindex"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/sjdbInfo.txt"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/sjdbList.fromGTF.out.tab"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/sjdbList.out.tab"),
+                path(process.out.reference[0][1]).resolve("ref_genome.fa.star.idx/transcriptInfo.tab"),
+                path(process.out.reference[0][1]).resolve("trans.blast.align_coords.align_coords.dat"),
+                file("$outputDir/trans.blast.align_coords.align_coords.dbm").name,
+                path(process.out.reference[0][1]).resolve("trans.blast.dat.gz"),
+                process.out.versions
+            ).match()
+        }
+    }
+
+    test("STARFUSION_BUILD - human - minigenome - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'minigenome_fasta' ],
+                    file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/master/minigenome.fa")
+                ]
+                input[1] = [
+                    [ id:'minigenome_gtf' ],
+                    file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/master/minigenome.gtf")
+                ]
+
+                input[2] = file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/master/CTAT_HumanFusionLib.mini.dat.gz")
+                input[3] = "homo_sapiens"
+                input[4] = "http://ftp.ebi.ac.uk/pub/databases/Pfam/releases/Pfam37.4/Pfam-A.hmm.gz"
+                input[5] = [
+                    "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm",
+                    "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3f",
+                    "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3i",
+                    "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3m",
+                    "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3p"
+                ]
+                input[6] = "https://data.broadinstitute.org/Trinity/CTAT_RESOURCE_LIB/AnnotFilterRule.pm"
+                """
+            }
+        }
+
+        then {
+            assert snapshot(process.out).match()
+        }
+    }
+
+    test("STARFUSION_BUILD - stub - fail") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'minigenome_fasta' ],
+                    file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/master/minigenome.fa")
+                ]
+                input[1] = [
+                    [ id:'minigenome_gtf' ],
+                    file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/master/minigenome.gtf")
+                ]
+
+                input[2] = file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/master/CTAT_HumanFusionLib.mini.dat.gz")
+                input[3] = "homo_sapiens"
+                input[4] = "http://ftp.ebi.ac.uk/pub/databases/Pfam/releases/Pfam37.4/Pfam-A.hmm.gz"
+                input[5] = [
+                    "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm",
+                    "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3f",
+                    "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3i",
+                    "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3m"
+                ]
+                input[6] = "https://data.broadinstitute.org/Trinity/CTAT_RESOURCE_LIB/AnnotFilterRule.pm"
+                """
+            }
+        }
+
+        then {
+            assert process.failed
+        }
+    }
+}

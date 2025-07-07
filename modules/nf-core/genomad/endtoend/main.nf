@@ -4,8 +4,8 @@ process GENOMAD_ENDTOEND {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/genomad:1.7.4--pyhdfd78af_0':
-        'biocontainers/genomad:1.7.4--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/genomad:1.11.0--pyhdfd78af_0':
+        'biocontainers/genomad:1.11.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta) , path(fasta)
@@ -13,6 +13,7 @@ process GENOMAD_ENDTOEND {
 
     output:
     tuple val(meta), path("*_aggregated_classification/*_aggregated_classification.tsv")    , emit: aggregated_classification   , optional: true
+    tuple val(meta), path("*_marker_classification/*_marker_classification.tsv")            , emit: marker_classification       , optional: true
     tuple val(meta), path("*_annotate/*_taxonomy.tsv")                                      , emit: taxonomy
     tuple val(meta), path("*_find_proviruses/*_provirus.tsv")                               , emit: provirus
     tuple val(meta), path("*_score_calibration/*_compositions.tsv")                         , emit: compositions                , optional: true
@@ -63,6 +64,7 @@ process GENOMAD_ENDTOEND {
     mkdir ${filename}_find_proviruses
     touch ${filename}_find_proviruses/${filename}_provirus.tsv
     mkdir ${filename}_marker_classification
+    touch ${filename}_marker_classification/${filename}_marker_classification.tsv
     mkdir ${filename}_nn_classification
     mkdir ${filename}_score_calibration
     touch ${filename}_score_calibration/${filename}_calibrated_aggregated_classification.tsv

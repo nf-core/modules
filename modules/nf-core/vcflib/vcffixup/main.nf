@@ -4,8 +4,8 @@ process VCFLIB_VCFFIXUP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vcflib:1.0.3--hecb563c_1':
-        'biocontainers/vcflib:1.0.3--hecb563c_1' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fc/fc33d59c090cef123aca26ae17fbddbd596640304d8325cbd5816229fa2c05ee/data':
+        'community.wave.seqera.io/library/vcflib:1.0.14--cc8ffb2c1a080797' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
@@ -18,13 +18,20 @@ process VCFLIB_VCFFIXUP {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.0.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def args    = task.ext.args   ?: ''
+    def args2   = task.ext.args2  ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}.fixed"
+    def VERSION = '1.0.14' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+
+    if ( "$vcf" == "${prefix}.vcf.gz" ) {
+        error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    }
 
     """
     vcffixup \\
-        $vcf | bgzip -c $args > ${prefix}_fixed.vcf.gz
+        $args \\
+        $vcf \\
+        | bgzip -c $args2 > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -33,10 +40,15 @@ process VCFLIB_VCFFIXUP {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.0.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def prefix  = task.ext.prefix ?: "${meta.id}.fixed"
+    def VERSION = '1.0.14' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+
+    if ( "$vcf" == "${prefix}.vcf.gz" ) {
+        error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    }
+
     """
-    touch ${prefix}.fixup.vcf.gz
+    echo | gzip > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

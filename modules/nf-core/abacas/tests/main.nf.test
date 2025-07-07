@@ -8,39 +8,71 @@ nextflow_process {
     tag "modules_nfcore"
     tag "abacas"
 
-    test("sarscov2 [scaffolds_fasta] [genome_fasta]") {
+    test("sarscov2 - scaffolds_fasta - genome_fasta") {
 
         when {
+            params {
+                abacas_args = '-m -p nucmer'
+            }
             process {
                 """
-                input[0] = [ [ id:'test', single_end:false ], // meta map
-                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/scaffolds.fasta', checkIfExists: true)
-                           ]
-                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/scaffolds.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'fasta' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.results[0][1].findAll {
-                    file(it).name != "test.abacas.bin" &&
-                    file(it).name != "test.abacas.nucmer.delta" &&
-                    file(it).name != "test.abacas.unused.contigs.out" &&
-                    file(it).name != "test.abacas.nucmer.filtered.delta"  }).match()},
-                { assert file(process.out.results[0][1].find {
-                    file(it).name == "test.abacas.bin" }).exists() },
-                { assert file(process.out.results[0][1].find {
-                    file(it).name == "test.abacas.nucmer.delta" }).exists() },
-                { assert file(process.out.results[0][1].find {
-                    file(it).name == "test.abacas.unused.contigs.out" }).exists() },
-                { assert file(process.out.results[0][1].find {
-                    file(it).name == "test.abacas.nucmer.filtered.delta" }).exists() },
-                { assert snapshot(process.out.versions).match("versions") }
-            )
+            assert process.success
+            assert snapshot(
+                process.out.results[0][1].collect {
+                    file(it).name in [
+                        "test.abacas.nucmer.delta", // Full path present in file
+                        "test.abacas.unused.contigs.out", // Empty file
+                        "test.abacas.nucmer.filtered.delta" // Full path present in file
+                    ] ? file(it).name : it
+                },
+                process.out.versions,
+                path(process.out.versions[0]).yaml
+            ).match()
+        }
+    }
+
+    test("sarscov2 - scaffolds_fasta - genome_fasta -- stub") {
+        options "-stub"
+
+        when {
+            params {
+                abacas_args = '-m -p nucmer'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/scaffolds.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'fasta' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
         }
 
+        then {
+            assert process.success
+            assert snapshot(
+                process.out.results,
+                process.out.versions,
+                path(process.out.versions[0]).yaml
+            ).match()
+        }
     }
 
 }

@@ -4,8 +4,8 @@ process BCFTOOLS_CONCAT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bcftools:1.20--h8b25389_0':
-        'biocontainers/bcftools:1.20--h8b25389_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5acacb55c52bec97c61fd34ffa8721fce82ce823005793592e2a80bf71632cd0/data':
+        'community.wave.seqera.io/library/bcftools:1.21--4335bec1d7b44d11' }"
 
     input:
     tuple val(meta), path(vcfs), path(tbi)
@@ -29,6 +29,7 @@ process BCFTOOLS_CONCAT {
                 args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
                 args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
                 "vcf"
+    def input = vcfs.sort{it.toString()}.join(" ")
     """
     ${create_input_index}
 
@@ -36,7 +37,7 @@ process BCFTOOLS_CONCAT {
         --output ${prefix}.${extension} \\
         $args \\
         --threads $task.cpus \\
-        ${vcfs}
+        ${input}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

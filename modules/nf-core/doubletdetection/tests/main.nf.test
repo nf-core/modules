@@ -13,28 +13,28 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                     [id: 'test'],
-                     file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_custom_emptydrops_filter_matrix.h5ad", checkIfExists: true)
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/scrnaseq/h5ad/SRR28679759_filtered_matrix.h5ad", checkIfExists: true)
                 ]
                 """
             }
         }
 
         then {
-            def mb = 1024 * 1024
-            def kb = 1024
             assertAll(
                 { assert process.success },
 
-                // Only check if output exists, as phenotype supports no random seeding:
+                // Only check if output exists and has constant size,
+                // as phenotype supports no random seeding:
                 // https://github.com/jacoblevine/PhenoGraph/issues/16
                 { assert path(process.out.h5ad.get(0).get(1)).exists() },
                 { assert path(process.out.predictions.get(0).get(1)).exists() },
 
-                { assert path(process.out.h5ad.get(0).get(1)).size() > 30 * mb },
-                { assert path(process.out.predictions.get(0).get(1)).size() > 50 * kb },
-
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    process.out.versions,
+                    path(process.out.h5ad.get(0).get(1)).size(),
+                    path(process.out.predictions.get(0).get(1)).size()
+                ).match() }
             )
         }
 
@@ -48,8 +48,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                     [id: 'test'],
-                     file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_custom_emptydrops_filter_matrix.h5ad", checkIfExists: true)
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/scrnaseq/h5ad/SRR28679759_filtered_matrix.h5ad", checkIfExists: true)
                 ]
                 """
             }
