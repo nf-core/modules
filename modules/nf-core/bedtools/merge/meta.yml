@@ -23,9 +23,10 @@ input:
         type: file
         description: Input BED file
         pattern: "*.{bed}"
+        ontologies: []
 output:
-  - bed:
-      - meta:
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -34,11 +35,14 @@ output:
           type: file
           description: Overlapped bed file with combined features
           pattern: "*.{bed}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@edmundmiller"
   - "@sruthipsuresh"

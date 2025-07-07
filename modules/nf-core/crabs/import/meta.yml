@@ -28,6 +28,7 @@ input:
         type: file
         description: In-house sequencing data
         pattern: "*.{fa,fasta}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -37,6 +38,7 @@ input:
         type: file
         description: Linking accession numbers to taxonomic IDs
         pattern: "*.accession2taxid"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -44,8 +46,10 @@ input:
           e.g. `[ id:'sample1' ]`
     - names:
         type: file
-        description: Containing information about the phylogenetic name associated with each taxonomic ID
+        description: Containing information about the phylogenetic name associated with
+          each taxonomic ID
         pattern: "*.dmp"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -55,13 +59,15 @@ input:
         type: file
         description: Containing information how taxonomic IDs are linked
         pattern: "*.dmp"
-  - - import_format:
-        type: string
-        description: Name of the repository from which the data was downloaded, i.e., BOLD, EMBL, GreenGenes, MIDORI, MITOFISH, NCBI, SILVA, or UNITE.
-        choices: ["bold", "embl", "greengenes", "midori", "mitofish", "ncbi", "silva", "unite"]
+        ontologies: []
+  - import_format:
+      type: string
+      description: Name of the repository from which the data was downloaded, i.e.,
+        BOLD, EMBL, GreenGenes, MIDORI, MITOFISH, NCBI, SILVA, or UNITE.
+      choices: ["bold", "embl", "greengenes", "midori", "mitofish", "ncbi", "silva", "unite"]
 output:
-  - crabsdb:
-      - meta:
+  crabsdb:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -70,11 +76,14 @@ output:
           type: file
           description: Reverse complemented Sequence
           pattern: "*.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@famosab"
   - "@a4000"

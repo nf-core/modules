@@ -65,8 +65,8 @@ input:
         description: bin files produced during a previous Hifiasm run
         ontologies: []
 output:
-  - raw_unitigs:
-      - meta:
+  raw_unitigs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -75,8 +75,10 @@ output:
           type: file
           description: Raw unitigs
           pattern: "*.r_utg.gfa"
-  - bin_files:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3975 # GFA 1
+  bin_files:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -91,8 +93,9 @@ output:
             initial results, which are the most computationally-expensive
             steps.
           pattern: "*.bin"
-  - processed_unitigs:
-      - meta:
+          ontologies: []
+  processed_unitigs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -101,8 +104,10 @@ output:
           type: file
           description: Processed unitigs
           pattern: "*.p_utg.gfa"
-  - primary_contigs:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3975 # GFA 1
+  primary_contigs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -111,8 +116,9 @@ output:
           type: file
           description: Contigs representing the primary assembly
           pattern: "${prefix}.{p_ctg,bp.p_ctg,hic.p_ctg}.gfa"
-  - alternate_contigs:
-      - meta:
+          ontologies: []
+  alternate_contigs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -121,13 +127,13 @@ output:
           type: file
           description: Contigs representing the alternative assembly
           pattern: "${prefix}.{a_ctg,hic.a_ctg}.gfa"
-  - hap1_contigs:
-      - meta:
+          ontologies: []
+  hap1_contigs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "${prefix}.*.hap1.p_ctg.gfa"
       - ${prefix}.*.hap1.p_ctg.gfa:
           type: file
           description: |
@@ -138,13 +144,13 @@ output:
             between contigs. In trio mode, they are fully phased paternal contigs
             all originating from a single parental haplotype.
           pattern: "${prefix}.*.hap1.p_ctg.gfa"
-  - hap2_contigs:
-      - meta:
+          ontologies: []
+  hap2_contigs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "${prefix}.*.hap2.p_ctg.gfa"
       - ${prefix}.*.hap2.p_ctg.gfa:
           type: file
           description: |
@@ -155,8 +161,9 @@ output:
             between contigs. In trio mode, they are fully phased paternal contigs
             all originating from a single parental haplotype.
           pattern: "${prefix}.*.hap2.p_ctg.gfa"
-  - corrected_reads:
-      - meta:
+          ontologies: []
+  corrected_reads:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -167,8 +174,10 @@ output:
             If option --write-ec specified, a gzipped fasta file containing the error corrected
             reads produced by the hifiasm error correction module
           pattern: "*.ec.fa.gz"
-  - read_overlaps:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  read_overlaps:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -179,23 +188,26 @@ output:
             If option --write-paf specified, a gzipped paf file describing the overlaps
             among all error-corrected reads
           pattern: "*.ovlp.paf.gz"
-  - log:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.stderr.log"
       - ${prefix}.stderr.log:
           type: file
           description: Stderr log
           pattern: "*.stderr.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
           ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sidorov-si"
   - "@scorreard"
