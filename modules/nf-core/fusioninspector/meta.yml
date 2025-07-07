@@ -2,6 +2,9 @@ name: fusioninspector
 description: Validation of Fusion Transcript Predictions
 keywords:
   - fusioninspector
+  - fusion
+  - RNA-seq
+  - fastq
 tools:
   - fusioninspector:
       description: Validation of Fusion Transcript Predictions
@@ -9,33 +12,120 @@ tools:
       documentation: https://github.com/FusionInspector/FusionInspector/wiki
       tool_dev_url: https://github.com/FusionInspector/FusionInspector
       doi: 10.1101/2021.08.02.454639"
-      licence: https://github.com/FusionInspector/FusionInspector/blob/master/LICENSE.txt
+      licence: ["BSD-3-Clause"]
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: FASTQ file
-      pattern: "*.{fastq*}"
-  - reference:
-      type: directory
-      description: Path to ctat references
-      pattern: "*"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: FASTQ file
+        pattern: "*.{fastq*}"
+    - fusion_list:
+        type: file
+        description: Fusion targets list
+        pattern: "*.{txt}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reference:
+        type: directory
+        description: Path to CTAT references
+        pattern: "*"
 
 output:
+  - tsv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*FusionInspector.fusions.tsv":
+          type: file
+          description: Genome resource path
+          pattern: "*"
+  - out_gtf:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "fi_workdir/*gtf":
+          type: file
+          description: Genome resource path
+          pattern: "*.{gtf}"
+  - log:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*FusionInspector.log":
+          type: file
+          description: FusionInspector log file
+          pattern: "*.{log}"
+  - html:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*html":
+          type: file
+          description: HTML files
+          pattern: "*.{html}"
+  - abridged_tsv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*abridged.tsv":
+          type: file
+          description: FusionInspector log file
+          pattern: "*.{tsv}"
+  - igv_inputs:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "IGV_inputs":
+          type: directory
+          description: FusionInspector log file
+          pattern: "*"
+  - fi_workdir:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "fi_workdir":
+          type: directory
+          description: FusionInspector work directory
+          pattern: "*"
+  - chckpts_dir:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "chckpts_dir":
+          type: directory
+          description: FusionInspector work directory
+          pattern: "*"
   - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - reference:
-      type: directory
-      description: Genome resource path
-      pattern: "*"
-
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@rannick"
   - "@delfiterradas"
