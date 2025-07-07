@@ -28,27 +28,33 @@ input:
           List of input FastQ (Illumina or PacBio CCS reads) files
           of size 1 and 2 for single-end and paired-end data,
           respectively. This input data type is required.
+        ontologies: []
     - pacbio:
         type: file
         description: |
           List of input PacBio CLR FastQ files of size 1.
+        ontologies: []
     - nanopore:
         type: file
         description: |
           List of input FastQ files of size 1, originating from Oxford Nanopore technology.
-  - - yml:
-        type: file
-        description: |
-          Path to yml file containing read information.
-          The raw FASTQ files listed in this YAML file MUST be supplied to the respective illumina/pacbio/nanopore input channel(s) _in addition_ to this YML.
-          File entries in this yml must contain only the file name and no paths.
-        pattern: "*.{yml,yaml}"
-  - - hmm:
-        type: file
-        description: File or directory with amino acid HMMs for Spades HMM-guided mode.
+        ontologies: []
+  - yml:
+      type: file
+      description: |
+        Path to yml file containing read information.
+        The raw FASTQ files listed in this YAML file MUST be supplied to the respective illumina/pacbio/nanopore input channel(s) _in addition_ to this YML.
+        File entries in this yml must contain only the file name and no paths.
+      pattern: "*.{yml,yaml}"
+      ontologies:
+        - edam: http://edamontology.org/format_3750 # YAML
+  - hmm:
+      type: file
+      description: File or directory with amino acid HMMs for Spades HMM-guided mode.
+      ontologies: []
 output:
-  - scaffolds:
-      - meta:
+  scaffolds:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -60,8 +66,8 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.fa.gz"
-  - contigs:
-      - meta:
+  contigs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -73,8 +79,8 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.fa.gz"
-  - transcripts:
-      - meta:
+  transcripts:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -86,8 +92,8 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.fa.gz"
-  - gene_clusters:
-      - meta:
+  gene_clusters:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -99,48 +105,51 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.fa.gz"
-  - gfa:
-      - meta:
+  gfa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.gfa.gz"
+          pattern: "*.fa.gz"
       - "*.assembly.gfa.gz":
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.gfa.gz"
-  - warnings:
-      - meta:
+  warnings:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
+          pattern: "*.fa.gz"
       - "*.warnings.log":
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-  - log:
-      - meta:
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*.spades.log"
+          pattern: "*.fa.gz"
       - "*.spades.log":
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.spades.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@JoseEspinosa"
   - "@drpatelh"

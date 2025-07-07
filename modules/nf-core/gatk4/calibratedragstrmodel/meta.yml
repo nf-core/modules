@@ -30,30 +30,37 @@ input:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - bam_index:
         type: file
         description: index of the BAM/CRAM/SAM file
         pattern: "*.{bai,crai,sai}"
-  - - fasta:
-        type: file
-        description: The reference FASTA file
-        pattern: "*.{fasta,fa}"
-  - - fasta_fai:
-        type: file
-        description: The index of the reference FASTA file
-        pattern: "*.fai"
-  - - dict:
-        type: file
-        description: The sequence dictionary of the reference FASTA file
-        pattern: "*.dict"
-  - - strtablefile:
-        type: file
-        description: The StrTableFile zip folder of the reference FASTA file
-        pattern: "*.zip"
+        ontologies: []
+  - fasta:
+      type: file
+      description: The reference FASTA file
+      pattern: "*.{fasta,fa}"
+      ontologies: []
+  - fasta_fai:
+      type: file
+      description: The index of the reference FASTA file
+      pattern: "*.fai"
+      ontologies: []
+  - dict:
+      type: file
+      description: The sequence dictionary of the reference FASTA file
+      pattern: "*.dict"
+      ontologies: []
+  - strtablefile:
+      type: file
+      description: The StrTableFile zip folder of the reference FASTA file
+      pattern: "*.zip"
+      ontologies:
+        - edam: http://edamontology.org/format_3987 # ZIP format
 output:
   #Only when we have meta
-  - dragstr_model:
-      - meta:
+  dragstr_model:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -62,11 +69,14 @@ output:
           type: file
           description: The DragSTR model
           pattern: "*.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

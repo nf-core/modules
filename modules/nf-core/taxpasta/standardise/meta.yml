@@ -26,22 +26,22 @@ input:
         type: file
         description: profiler output file (mandatory)
         pattern: "*"
-  - - profiler:
-        type: string
-        description: Name of the profiler used to generate the profile (mandatory)
-        pattern: "bracken|centrifuge|diamond|ganon|kaiju|kmcp|kraken2|krakenuniq|megan6|metaphlan|motus"
-  - - format:
-        type: string
-        description: Type of output file to be generated
-        pattern: "tsv|csv|ods|xlsx|arrow|parquet|biom"
-  - - taxonomy:
-        type: directory
-        description: Directory containing at a minimum nodes.dmp and names.dmp files
-          (optional)
-        pattern: "*/"
+        ontologies: []
+  - profiler:
+      type: string
+      description: Name of the profiler used to generate the profile (mandatory)
+      pattern: "bracken|centrifuge|diamond|ganon|kaiju|kmcp|kraken2|krakenuniq|megan6|metaphlan|motus"
+  - format:
+      type: string
+      description: Type of output file to be generated
+      pattern: "tsv|csv|ods|xlsx|arrow|parquet|biom"
+  - taxonomy:
+      type: directory
+      description: Directory containing at a minimum nodes.dmp and names.dmp files (optional)
+      pattern: "*/"
 output:
-  - standardised_profile:
-      - meta:
+  standardised_profile:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,11 +50,17 @@ output:
           type: file
           description: Standardised taxonomic profile
           pattern: "*.{tsv,csv,arrow,parquet,biom}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3746 # BIOM format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Midnighter"
 maintainers:

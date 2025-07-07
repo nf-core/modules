@@ -24,9 +24,10 @@ input:
         type: file
         description: Histogram of coverage
         pattern: "*.stat"
+        ontologies: []
 output:
-  - cutoff:
-      - meta:
+  cutoff:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,8 +36,9 @@ output:
           type: file
           description: Cutoff file
           pattern: "*.cutoffs"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,11 +47,14 @@ output:
           type: file
           description: Log file
           pattern: ".calcuts.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mahesh-panchal"
 maintainers:

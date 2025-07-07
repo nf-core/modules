@@ -18,23 +18,27 @@ tools:
       licence: ["GPL-3.0"]
       identifier: ""
 input:
-  - - fasta:
-        type: file
-        description: Path to reference genome.
-        pattern: "*.fasta"
-  - - output:
-        type: string
-        description: Name of output MSI scan to write.
+  - fasta:
+      type: file
+      description: Path to reference genome.
+      pattern: "*.fasta"
+      ontologies: []
+  - output:
+      type: string
+      description: Name of output MSI scan to write.
 output:
-  - scan:
-      - output_path:
-          type: file
-          description: Path to output MSI scan file.
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  scan:
+    - output_path:
+        type: file
+        description: Path to output MSI scan file.
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@adamrtalbot"
 maintainers:
