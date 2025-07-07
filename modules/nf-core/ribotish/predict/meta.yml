@@ -26,10 +26,12 @@ input:
         type: file
         description: Sorted riboseq BAM file(s)
         pattern: "*.{bam}"
+        ontologies: []
     - bai_ribo:
         type: file
         description: Index for sorted riboseq bam file(s)
         pattern: "*.{bai}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -39,10 +41,12 @@ input:
         type: file
         description: Sorted TI-Seq BAM file(s)
         pattern: "*.{bam}"
+        ontologies: []
     - bai_ti:
         type: file
         description: Index for sorted TI-Seq BAM file(s)
         pattern: "*.{bai}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -53,11 +57,13 @@ input:
         description: |
           Fasta-format sequence file for reference sequences used in the bam file
         pattern: "*.gtf"
+        ontologies: []
     - gtf:
         type: file
         description: |
           GTF-format annotation file for reference sequences used in the bam file
         pattern: "*.gtf"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -67,6 +73,7 @@ input:
         description: |
           3-column (transID<tab>start<tab>tstop) candidate ORFs file
         pattern: "*.txt"
+        ontologies: []
   - - meta5:
         type: map
         description: |
@@ -77,6 +84,8 @@ input:
         description: |
           Input P-site offset parameter files for riboseq bam files
         pattern: "*.py"
+        ontologies:
+          - edam: http://edamontology.org/format_3996 # Python script
   - - meta6:
         type: map
         description: |
@@ -87,9 +96,11 @@ input:
         description: |
           Input P-site offset parameter files for TI-seq bam files
         pattern: "*.py"
+        ontologies:
+          - edam: http://edamontology.org/format_3996 # Python script
 output:
-  - predictions:
-      - meta:
+  predictions:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -99,8 +110,9 @@ output:
           description: |
             txt file all possible ORF results that fit the thresholds
           pattern: "*.{txt}"
-  - all:
-      - meta:
+          ontologies: []
+  all:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -110,8 +122,9 @@ output:
           description: |
             txt file similar to the predictions but do not use FDR (q-value) cutoff
           pattern: "*.{txt}"
-  - transprofile:
-      - meta:
+          ontologies: []
+  transprofile:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -123,11 +136,15 @@ output:
             python dict format, recording non-zero read counts at different
             positions on transcript.
           pattern: "*.{py}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3996 # Python script
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@pinin4fjords"
 maintainers:

@@ -25,37 +25,42 @@ input:
         type: file
         description: The input VCF to scatter
         pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+        ontologies: []
     - tbi:
         type: file
         description: Optional index of the input VCF
         pattern: "*.tbi"
-  - - sites_per_chunk:
-        type: integer
-        description: |
-          How many variants should be in each output file
-          Either this or `scatter` or `scatter_file` have to be given
-  - - scatter:
-        type: string
-        description: |
-          A comma delimited list of regions to scatter into
-          Either this or `sites_per_chunk` or `scatter_file` have to be given
-  - - scatter_file:
-        type: file
-        description: |
-          A file containing a region on each line with an optional second column containing the filename
-          Either this or `sites_per_chunk` or `scatter` have to be given
-  - - regions:
-        type: file
-        description: Optional file containing the regions to work on
-        pattern: "*.bed"
-  - - targets:
-        type: file
-        description: Optional file containing the regions to work on (but streams instead
-          of index-jumping)
-        pattern: "*.bed"
-output:
+        ontologies: []
+  - sites_per_chunk:
+      type: integer
+      description: |
+        How many variants should be in each output file
+        Either this or `scatter` or `scatter_file` have to be given
   - scatter:
-      - meta:
+      type: string
+      description: |
+        A comma delimited list of regions to scatter into
+        Either this or `sites_per_chunk` or `scatter_file` have to be given
+  - scatter_file:
+      type: file
+      description: |
+        A file containing a region on each line with an optional second column containing the filename
+        Either this or `sites_per_chunk` or `scatter` have to be given
+      ontologies: []
+  - regions:
+      type: file
+      description: Optional file containing the regions to work on
+      pattern: "*.bed"
+      ontologies: []
+  - targets:
+      type: file
+      description: Optional file containing the regions to work on (but streams instead
+        of index-jumping)
+      pattern: "*.bed"
+      ontologies: []
+output:
+  scatter:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,8 +69,9 @@ output:
           type: file
           description: The resulting files of the scattering
           pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
-  - tbi:
-      - meta:
+          ontologies: []
+  tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -74,8 +80,9 @@ output:
           type: file
           description: Alternative VCF file index
           pattern: "*.tbi"
-  - csi:
-      - meta:
+          ontologies: []
+  csi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -84,11 +91,14 @@ output:
           type: file
           description: Default VCF file index
           pattern: "*.csi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

@@ -27,26 +27,31 @@ input:
         type: file
         description: (Mandatory) BAM/CRAM files
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - bais:
         type: file
         description: (Mandatory) BAM/CRAM index files
         pattern: "*.{bai}"
+        ontologies: []
     - bamlist:
         type: file
-        description: (Optional) File with list of BAM/CRAM files to impute.
-          One file per line.
+        description: (Optional) File with list of BAM/CRAM files to impute. One file
+          per line.
         pattern: "*.{txt}"
+        ontologies: []
     - samplename:
         type: file
-        description: (Optional) File with list of samples names in the same order as in bamlist to impute.
-          One file per line.
+        description: (Optional) File with list of samples names in the same order as
+          in bamlist to impute. One file per line.
         pattern: "*.{txt}"
+        ontologies: []
     - reference_haplotype_file:
         type: file
         description: (Mandatory) Reference haplotype file in IMPUTE format (file with
           no header and no rownames, one row per SNP, one column per reference haplotype,
           space separated, values must be 0 or 1)
         pattern: "*.{hap.gz}"
+        ontologies: []
     - reference_legend_file:
         type: file
         description: (Mandatory) Reference haplotype legend file in IMPUTE format (file
@@ -54,6 +59,7 @@ input:
           in 1 based coordinates, a0 for the reference allele, and a1 for the alternate
           allele).
         pattern: "*.{legend.gz}"
+        ontologies: []
     - posfile:
         type: file
         description: (Optional) File with positions of where to impute, lining up one-to-one
@@ -61,6 +67,7 @@ input:
           col 1 = chromosome, col 2 = physical position (sorted from smallest to largest),
           col 3 = reference base, col 4 = alternate base. Bases are capitalized.
         pattern: "*.{txt}"
+        ontologies: []
     - phasefile:
         type: file
         description: (Optional) File with truth phasing results. Supersedes genfile
@@ -70,17 +77,19 @@ input:
           or 0|1. Note therefore this file has one more row than posfile which has no
           header.
         pattern: "*.{txt}"
+        ontologies: []
     - genfile:
         type: file
-        description: (Optional) Path to gen file with high coverage results.
-          Empty for no genfile. If both genfile and phasefile are given, only phasefile
-          is used, as genfile (unphased genotypes) is derivative to phasefile
-          (phased genotypes). File has a header row with a name for each sample,
-          matching what is found in the bam file. Each subject is then a tab seperated
-          column, with 0 = hom ref, 1 = het, 2 = hom alt and NA indicating missing genotype,
-          with rows corresponding to rows of the posfile.
-          Note therefore this file has one more row than posfile which has no header [default \"\"]
+        description: (Optional) Path to gen file with high coverage results. Empty for
+          no genfile. If both genfile and phasefile are given, only phasefile is used,
+          as genfile (unphased genotypes) is derivative to phasefile (phased genotypes).
+          File has a header row with a name for each sample, matching what is found
+          in the bam file. Each subject is then a tab seperated column, with 0 = hom
+          ref, 1 = het, 2 = hom alt and NA indicating missing genotype, with rows corresponding
+          to rows of the posfile. Note therefore this file has one more row than posfile
+          which has no header [default \"\"]
         pattern: "*.{txt}"
+        ontologies: []
     - chr:
         type: string
         description: (Mandatory) What chromosome to run. Should match BAM headers.
@@ -107,6 +116,7 @@ input:
           genetic map in cM. If no file included, rate is based on physical distance
           and expected rate (expRate).
         pattern: "*.{txt.gz}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -116,20 +126,22 @@ input:
         type: file
         description: (Optional) File with reference genome.
         pattern: "*.{txt.gz}"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.vcf.gz":
           type: file
-          description: VCF file with both SNP annotation information and per-sample genotype
-            information.
+          description: VCF file with both SNP annotation information and per-sample
+            genotype information.
           pattern: "*.{vcf.gz}"
-  - tbi:
-      - meta:
+          ontologies: []
+  tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -138,30 +150,28 @@ output:
           type: file
           description: TBI file of the VCF.
           pattern: "*.{vcf.gz.tbi}"
-  - rdata:
-      - meta:
+          ontologies: []
+  rdata:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - 'RData", type: "dir':
-          type: directory
-          description: Optional directory path to prepared RData file with reference objects
-            (useful with --save_prepared_reference=TRUE).
-  - plots:
-      - meta:
+      - RData: {}
+  plots:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - 'plots", type: "dir':
-          type: directory
-          description: Optional directory path to save plots.
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+      - plots: {}
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@atrigila"
 maintainers:

@@ -28,6 +28,7 @@ input:
     - db_query:
         type: file
         description: Query database
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -36,9 +37,10 @@ input:
     - db_target:
         type: file
         description: Target database
+        ontologies: []
 output:
-  - db_search:
-      - meta:
+  db_search:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -46,11 +48,13 @@ output:
       - ${prefix}/:
           type: directory
           description: an MMseqs2 database with search results
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Joon-Klaps"
 maintainers:

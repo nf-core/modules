@@ -30,21 +30,25 @@ input:
         type: file
         description: BAM/CRAM file
         pattern: "*.{bam,cram}"
+        ontologies: []
     - bai:
         type: file
         description: BAM/CRAM index file
         pattern: "*.{bai,crai}"
-  - - fasta:
-        type: file
-        description: Input genome fasta file
-        pattern: "*.{fasta,fa}"
-  - - fai:
-        type: file
-        description: FASTA index file
-        pattern: "*.{fai}"
+        ontologies: []
+  - fasta:
+      type: file
+      description: Input genome fasta file
+      pattern: "*.{fasta,fa}"
+      ontologies: []
+  - fai:
+      type: file
+      description: FASTA index file
+      pattern: "*.{fai}"
+      ontologies: []
 output:
-  - txt:
-      - meta:
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,11 +57,14 @@ output:
           type: file
           description: Text file containing methylation bias
           pattern: "*.{txt}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@phue"
 maintainers:

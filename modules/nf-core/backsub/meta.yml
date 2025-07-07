@@ -27,6 +27,7 @@ input:
         type: file
         description: Multi-channel image file
         pattern: "*.{tif,tiff}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -37,9 +38,11 @@ input:
         description: Marker file with channel names, exposure times, and specified background
           to subtract (and remove to exclude channels from output)
         pattern: "*.csv"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
 output:
-  - backsub_tif:
-      - meta:
+  backsub_tif:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -48,8 +51,9 @@ output:
           type: file
           description: Background corrected pyramidal ome.tif
           pattern: "*.{tif}"
-  - markerout:
-      - meta2:
+          ontologies: []
+  markerout:
+    - - meta2:
           type: map
           description: |
             Groovy Map containing sample information
@@ -58,11 +62,15 @@ output:
           type: file
           description: Marker file adjusted to match the background corrected image
           pattern: "*.{csv}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@kbestak"
 maintainers:

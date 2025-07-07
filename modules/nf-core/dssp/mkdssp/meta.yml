@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "dssp_mkdssp"
 description: |
@@ -31,13 +30,13 @@ input:
         pattern: "*.pdb"
         ontologies:
           - edam: "http://edamontology.org/format_1476" # PDB
-  - - format:
-        type: string
-        description: Format for the output file
-        enum: ["dssp", "mmcif"]
+  - format:
+      type: string
+      description: Format for the output file
+      enum: ["dssp", "mmcif"]
 output:
-  - dssp:
-      - meta:
+  dssp:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,13 +48,13 @@ output:
           ontologies:
             - edam: "http://edamontology.org/format_1454" # dssp
             - edam: "http://edamontology.org/format_1477" # mmCIF
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: "http://edamontology.org/format_3750" # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@vagkaratzas"
 maintainers:

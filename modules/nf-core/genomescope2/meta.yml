@@ -24,9 +24,10 @@ input:
         type: file
         description: A K-mer histogram file
         pattern: "*.hist"
+        ontologies: []
 output:
-  - linear_plot_png:
-      - meta:
+  linear_plot_png:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,8 +36,9 @@ output:
           type: file
           description: A genomescope2 linear plot in PNG format
           pattern: "*_linear_plot.png"
-  - transformed_linear_plot_png:
-      - meta:
+          ontologies: []
+  transformed_linear_plot_png:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,8 +47,9 @@ output:
           type: file
           description: A genomescope2 transformed linear plot in PNG format
           pattern: "*_transformed_linear_plot.png"
-  - log_plot_png:
-      - meta:
+          ontologies: []
+  log_plot_png:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,8 +58,9 @@ output:
           type: file
           description: A genomescope2 log plot in PNG format
           pattern: "*_log_plot.png"
-  - transformed_log_plot_png:
-      - meta:
+          ontologies: []
+  transformed_log_plot_png:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -65,8 +69,9 @@ output:
           type: file
           description: A genomescope2 transformed log plot in PNG format
           pattern: "*_transformed_log_plot.png"
-  - model:
-      - meta:
+          ontologies: []
+  model:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -75,8 +80,9 @@ output:
           type: file
           description: Genomescope2 model fit summary
           pattern: "*_model.txt"
-  - summary:
-      - meta:
+          ontologies: []
+  summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -85,8 +91,9 @@ output:
           type: file
           description: Genomescope2 histogram summary
           pattern: "*_summary.txt"
-  - lookup_table:
-      - meta:
+          ontologies: []
+  lookup_table:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -95,8 +102,9 @@ output:
           type: file
           description: Fitted histogram lookup table
           pattern: "*_lookup_table.txt"
-  - fitted_histogram_png:
-      - meta:
+          ontologies: []
+  fitted_histogram_png:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -105,11 +113,14 @@ output:
           type: file
           description: A genomescope2 fitted histogram plot in PNG format
           pattern: "*_fitted_hist.png"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mahesh-panchal"
 maintainers:

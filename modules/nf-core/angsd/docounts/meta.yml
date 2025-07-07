@@ -40,8 +40,8 @@ input:
         pattern: "*"
         ontologies: []
 output:
-  - depth_sample:
-      - meta:
+  depth_sample:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -51,8 +51,8 @@ output:
           description: Distribution of sequencing depths
           pattern: "*.depthSample"
           ontologies: []
-  - depth_global:
-      - meta:
+  depth_global:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -62,8 +62,8 @@ output:
           description: Distribution of sequencing depths
           pattern: "*.depthGlobal"
           ontologies: []
-  - qs:
-      - meta:
+  qs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -73,8 +73,8 @@ output:
           description: Distribution of scores
           pattern: "*.qs"
           ontologies: []
-  - pos:
-      - meta:
+  pos:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -85,8 +85,9 @@ output:
           pattern: "*.pos.gz"
           ontologies:
             - edam: "http://edamontology.org/format_3675" # Compressed file
-  - counts:
-      - meta:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  counts:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -95,9 +96,10 @@ output:
           type: file
           description: Various types of statistics (related to pos.gz)
           pattern: "*.counts.gz"
-          ontologies: []
-  - icounts:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  icounts:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -107,14 +109,15 @@ output:
           description: Internal format for dumping binary single chrs. Useful for ANGSD
             contamination
           pattern: "*.icnts.gz"
-          ontologies: []
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
           ontologies:
-            - edam: "http://edamontology.org/format_3750" # YAML
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@jfy133"
 maintainers:

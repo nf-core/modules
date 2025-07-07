@@ -23,13 +23,15 @@ input:
         type: file
         description: BED/GFF/VCF
         pattern: "*.{bed|gff|vcf}"
+        ontologies: []
     - intervals2:
         type: file
         description: BED/GFF/VCF
         pattern: "*.{bed|gff|vcf}"
+        ontologies: []
 output:
-  - bed:
-      - meta:
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,11 +40,14 @@ output:
           type: file
           description: File containing the difference between the two sets of features
           patters: "*.bed"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sidorov-si"
 maintainers:

@@ -1,5 +1,6 @@
 name: "rtgtools_svdecompose"
-description: The svdecompose tool of RTG tools. It is used to decompose structural variants to BNDs
+description: The svdecompose tool of RTG tools. It is used to decompose structural
+  variants to BNDs
 keywords:
   - svdecompose
   - structural
@@ -33,8 +34,8 @@ input:
         ontologies:
           - edam: "http://edamontology.org/format_3616"
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,9 +45,10 @@ output:
           description: A VCF file with SVTYPE BND variants
           pattern: "*.vcf.gz"
           ontologies:
-          - edam: "http://edamontology.org/format_3016"
-  - index:
-      - meta:
+            - edam: "http://edamontology.org/format_3016"
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -56,12 +58,14 @@ output:
           description: Index of VCF file with SVTYPE BND variants
           pattern: "*.vcf.gz.tbi"
           ontologies:
-          - edam: "http://edamontology.org/format_3616"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+            - edam: "http://edamontology.org/format_3616"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@kubranarci"
 maintainers:

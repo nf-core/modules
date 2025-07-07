@@ -25,9 +25,10 @@ input:
         description: A tiff file containing gridlines as produced by Molecular Cartography
           imaging.
         pattern: "*.{tif,tiff}"
+        ontologies: []
 output:
-  - tiff:
-      - meta:
+  tiff:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -37,11 +38,14 @@ output:
           description: A tiff file with gridlines filled based on consecutive gaussian
             blurring.
           pattern: "*.{tiff}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ViriatoII"
   - "@flowuenne"

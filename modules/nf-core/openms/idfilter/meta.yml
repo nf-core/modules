@@ -26,13 +26,15 @@ input:
         type: file
         description: Peptide-spectrum matches.
         pattern: "*.{idXML,consensusXML}"
+        ontologies: []
     - filter_file:
         type: file
         description: Optional idXML file to filter on/out peptides or proteins
         patter: "*.{idXML,fasta}"
+        ontologies: []
 output:
-  - filtered:
-      - meta:
+  filtered:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -41,11 +43,14 @@ output:
           type: file
           description: Filtered peptide-spectrum matches.
           pattern: "*.{idXML,consensusXML}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jonasscheid"
 maintainers:

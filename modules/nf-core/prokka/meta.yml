@@ -21,15 +21,18 @@ input:
         type: file
         description: |
           FASTA file to be annotated. Has to contain at least a non-empty string dummy value.
-  - - proteins:
-        type: file
-        description: FASTA file of trusted proteins to first annotate from (optional)
-  - - prodigal_tf:
-        type: file
-        description: Training file to use for Prodigal (optional)
+        ontologies: []
+  - proteins:
+      type: file
+      description: FASTA file of trusted proteins to first annotate from (optional)
+      ontologies: []
+  - prodigal_tf:
+      type: file
+      description: Training file to use for Prodigal (optional)
+      ontologies: []
 output:
-  - gff:
-      - meta:
+  gff:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,8 +41,9 @@ output:
           type: file
           description: annotation in GFF3 format, containing both sequences and annotations
           pattern: "*.{gff}"
-  - gbk:
-      - meta:
+          ontologies: []
+  gbk:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -48,8 +52,9 @@ output:
           type: file
           description: annotation in GenBank format, containing both sequences and annotations
           pattern: "*.{gbk}"
-  - fna:
-      - meta:
+          ontologies: []
+  fna:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -58,8 +63,9 @@ output:
           type: file
           description: nucleotide FASTA file of the input contig sequences
           pattern: "*.{fna}"
-  - faa:
-      - meta:
+          ontologies: []
+  faa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -68,19 +74,21 @@ output:
           type: file
           description: protein FASTA file of the translated CDS sequences
           pattern: "*.{faa}"
-  - ffn:
-      - meta:
+          ontologies: []
+  ffn:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - ${prefix}/*.ffn:
           type: file
-          description: nucleotide FASTA file of all the prediction transcripts (CDS, rRNA,
-            tRNA, tmRNA, misc_RNA)
+          description: nucleotide FASTA file of all the prediction transcripts (CDS,
+            rRNA, tRNA, tmRNA, misc_RNA)
           pattern: "*.{ffn}"
-  - sqn:
-      - meta:
+          ontologies: []
+  sqn:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -89,19 +97,21 @@ output:
           type: file
           description: an ASN1 format "Sequin" file for submission to Genbank
           pattern: "*.{sqn}"
-  - fsa:
-      - meta:
+          ontologies: []
+  fsa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - ${prefix}/*.fsa:
           type: file
-          description: nucleotide FASTA file of the input contig sequences, used by "tbl2asn"
-            to create the .sqn file
+          description: nucleotide FASTA file of the input contig sequences, used by
+            "tbl2asn" to create the .sqn file
           pattern: "*.{fsa}"
-  - tbl:
-      - meta:
+          ontologies: []
+  tbl:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -110,8 +120,9 @@ output:
           type: file
           description: feature Table file, used by "tbl2asn" to create the .sqn file
           pattern: "*.{tbl}"
-  - err:
-      - meta:
+          ontologies: []
+  err:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -120,8 +131,9 @@ output:
           type: file
           description: unacceptable annotations - the NCBI discrepancy report.
           pattern: "*.{err}"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -130,8 +142,9 @@ output:
           type: file
           description: contains all the output that Prokka produced during its run
           pattern: "*.{log}"
-  - txt:
-      - meta:
+          ontologies: []
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -140,8 +153,9 @@ output:
           type: file
           description: statistics relating to the annotated features found
           pattern: "*.{txt}"
-  - tsv:
-      - meta:
+          ontologies: []
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -150,11 +164,15 @@ output:
           type: file
           description: tab-separated file of all features (locus_tag,ftype,len_bp,gene,EC_number,COG,product)
           pattern: "*.{tsv}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@rpetit3"
 maintainers:

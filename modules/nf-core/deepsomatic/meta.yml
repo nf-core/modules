@@ -1,9 +1,9 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "deepsomatic"
 description: DeepSomatic is an extension of deep learning-based variant caller DeepVariant
-  that takes aligned reads (in BAM or CRAM format) from tumor and normal data, produces pileup
-  image tensors from them, classifies each tensor using a convolutional neural network, and
-  finally reports somatic variants in a standard VCF or gVCF file.
+  that takes aligned reads (in BAM or CRAM format) from tumor and normal data, produces
+  pileup image tensors from them, classifies each tensor using a convolutional neural
+  network, and finally reports somatic variants in a standard VCF or gVCF file.
 keywords:
   - variant calling
   - machine learning
@@ -28,18 +28,22 @@ input:
         type: file
         description: BAM/CRAM file
         pattern: "*.bam/cram"
+        ontologies: []
     - index_normal:
         type: file
         description: Index of BAM/CRAM file
         pattern: "*.bai/crai"
+        ontologies: []
     - input_tumor:
         type: file
         description: BAM/CRAM file
         pattern: "*.bam/cram"
+        ontologies: []
     - index_tumor:
         type: file
         description: Index of BAM/CRAM file
         pattern: "*.bai/crai"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -48,6 +52,7 @@ input:
     - intervals:
         type: file
         description: file containing intervals
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -57,6 +62,7 @@ input:
         type: file
         description: The reference fasta file
         pattern: "*.fasta"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -66,6 +72,7 @@ input:
         type: file
         description: Index of reference fasta file
         pattern: "*.fai"
+        ontologies: []
   - - meta5:
         type: map
         description: |
@@ -76,52 +83,61 @@ input:
         description: GZI index of reference fasta file
         pattern: "*.gzi"
 
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "${prefix}.vcf.gz":
+      - ${prefix}.vcf.gz:
           type: file
           description: Compressed VCF file
           pattern: "*.vcf.gz"
-  - vcf_tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  vcf_tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "${prefix}.vcf.gz.tbi":
+      - ${prefix}.vcf.gz.tbi:
           type: file
           description: Index of compressed VCF file
           pattern: "*.vcf.gz.tbi"
-  - gvcf:
-      - meta:
+          ontologies: []
+  gvcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "${prefix}.g.vcf.gz":
+      - ${prefix}.g.vcf.gz:
           type: file
           description: Compressed GVCF file
           pattern: "*.g.vcf.gz"
-  - gvcf_tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  gvcf_tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "${prefix}.g.vcf.gz.tbi":
+      - ${prefix}.g.vcf.gz.tbi:
           type: file
           description: Index of compressed Genotyped VCF file
           pattern: "*.g.vcf.gz.tbi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@vaxyzek"
 maintainers:

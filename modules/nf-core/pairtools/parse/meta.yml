@@ -22,12 +22,14 @@ input:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
-  - - chromsizes:
-        type: file
-        description: chromosome size file
+        ontologies: []
+  - chromsizes:
+      type: file
+      description: chromosome size file
+      ontologies: []
 output:
-  - pairsam:
-      - meta:
+  pairsam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -36,8 +38,9 @@ output:
           type: file
           description: parsed pair file
           pattern: "*.{pairsam.gz}"
-  - stat:
-      - meta:
+          ontologies: []
+  stat:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -46,11 +49,14 @@ output:
           type: file
           description: stats of the pairs
           pattern: "*.{pairsam.stat}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jianhong"
 maintainers:

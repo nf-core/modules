@@ -27,9 +27,10 @@ input:
         type: file
         description: Sequences to cluster in FASTA format
         pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+        ontologies: []
 output:
-  - aln:
-      - meta:
+  aln:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,8 +39,10 @@ output:
           type: file
           description: Results in pairwise alignment format
           pattern: "*.aln.gz"
-  - biom:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  biom:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -48,19 +51,23 @@ output:
           type: file
           description: Results in an OTU table in the biom version 1.0 file format
           pattern: "*.biom.gz"
-  - mothur:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  mothur:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
       - "*.mothur.tsv.gz":
           type: file
-          description: Results in an OTU table in the mothur ’shared’ tab-separated plain
-            text file format
+          description: Results in an OTU table in the mothur ’shared’ tab-separated
+            plain text file format
           pattern: "*.mothur.tsv.gz"
-  - otu:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  otu:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -70,8 +77,10 @@ output:
           description: Results in an OTU table in the classic tab-separated plain text
             format
           pattern: "*.otu.tsv.gz"
-  - bam:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -80,8 +89,9 @@ output:
           type: file
           description: Results written in bam format
           pattern: "*.bam"
-  - out:
-      - meta:
+          ontologies: []
+  out:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -90,8 +100,10 @@ output:
           type: file
           description: Results in tab-separated output, columns defined by user
           pattern: "*.out.tsv.gz"
-  - blast:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  blast:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -100,8 +112,10 @@ output:
           type: file
           description: Tab delimited results in blast-like tabular format
           pattern: "*.blast.tsv.gz"
-  - uc:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  uc:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -110,8 +124,10 @@ output:
           type: file
           description: Tab delimited results in a uclust-like format with 10 columns
           pattern: "*.uc.gz"
-  - centroids:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  centroids:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -120,8 +136,10 @@ output:
           type: file
           description: Centroid sequences in FASTA format
           pattern: "*.centroids.fasta.gz"
-  - clusters:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  clusters:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -130,8 +148,10 @@ output:
           type: file
           description: Clustered sequences in FASTA format
           pattern: "*.clusters.fasta*.gz"
-  - profile:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  profile:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -140,8 +160,10 @@ output:
           type: file
           description: Profile of the clustering results
           pattern: "*.profile.txt.gz"
-  - msa:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  msa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -150,11 +172,15 @@ output:
           type: file
           description: Multiple sequence alignment of the centroids
           pattern: "*.msa.fasta.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mirpedrol"
 maintainers:

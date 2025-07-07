@@ -29,15 +29,17 @@ input:
           SAM files (produced from alignments to the MetaPHlAn marker database) and
           intermediate bowtie2 alignment files (bowtie2out)
         pattern: "*.{fastq.gz, fasta, fasta.gz, sam, bowtie2out.txt}"
-  - - metaphlan_db:
-        type: file
-        description: |
-          Directory containing pre-downloaded and uncompressed MetaPhlAn3 database downloaded from: http://cmprod1.cibio.unitn.it/biobakery3/metaphlan_databases/.
-          Note that you will also need to specify `--index` and the database version name (e.g. 'mpa_v31_CHOCOPhlAn_201901') in your module.conf ext.args for METAPHLAN3_METAPHLAN3!
-        pattern: "*/"
+        ontologies: []
+  - metaphlan_db:
+      type: file
+      description: |
+        Directory containing pre-downloaded and uncompressed MetaPhlAn3 database downloaded from: http://cmprod1.cibio.unitn.it/biobakery3/metaphlan_databases/.
+        Note that you will also need to specify `--index` and the database version name (e.g. 'mpa_v31_CHOCOPhlAn_201901') in your module.conf ext.args for METAPHLAN3_METAPHLAN3!
+      pattern: "*/"
+      ontologies: []
 output:
-  - profile:
-      - meta:
+  profile:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -46,8 +48,9 @@ output:
           type: file
           description: Tab-separated output file of the predicted taxon relative abundances
           pattern: "*.{txt}"
-  - biom:
-      - meta:
+          ontologies: []
+  biom:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -57,8 +60,10 @@ output:
           description: General-use format for representing biological sample by observation
             contingency tables
           pattern: "*.{biom}"
-  - bt2out:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3746 # BIOM format
+  bt2out:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -67,11 +72,14 @@ output:
           type: file
           description: Bowtie2 output file
           pattern: "*.{bowtie2out.txt}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@MGordon09"
 maintainers:

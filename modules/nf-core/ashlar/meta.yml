@@ -22,15 +22,18 @@ input:
         type: file
         description: Overlapping tile image data in formats from most commercial microscopes
         pattern: "*.{ome.tiff,ome.tif,rcpnl,btf,nd2,tiff,tif,czi}"
-  - - opt_dfp:
-        type: file
-        description: Optional dark field image data
-  - - opt_ffp:
-        type: file
-        description: Optional flat field image data
+        ontologies: []
+  - opt_dfp:
+      type: file
+      description: Optional dark field image data
+      ontologies: []
+  - opt_ffp:
+      type: file
+      description: Optional flat field image data
+      ontologies: []
 output:
-  - tif:
-      - meta:
+  tif:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,11 +42,14 @@ output:
           type: file
           description: A pyramidal, tiled OME-TIFF file created from input images.
           pattern: "*.ome.tif"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@RobJY"
   - "@jmuhlich"

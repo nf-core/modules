@@ -25,9 +25,11 @@ input:
         type: file
         description: The VCF file containing structural variants
         pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
 output:
-  - counts:
-      - meta:
+  counts:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -36,11 +38,15 @@ output:
           type: file
           description: A tab-delimited file containing the counts of the SV types
           pattern: "*.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

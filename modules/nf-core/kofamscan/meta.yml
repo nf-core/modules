@@ -25,38 +25,47 @@ input:
         type: file
         description: Input fasta file containing query sequences
         pattern: "*.{fa,fasta}"
-  - - profiles:
-        type: directory
-        description: Directory containing the Profiles database
-        pattern: "*"
-  - - ko_list:
-        type: file
-        description: File containing list of KO entries with their data
-        pattern: "*.{fa,fasta}"
+        ontologies: []
+  - profiles:
+      type: directory
+      description: Directory containing the Profiles database
+      pattern: "*"
+  - ko_list:
+      type: file
+      description: File containing list of KO entries with their data
+      pattern: "*.{fa,fasta}"
+      ontologies: []
 output:
-  - txt:
-      - meta:
+  txt:
+    - - meta:
           type: file
           description: Application-specific text file with hits information
           pattern: "*.{txt}"
+          ontologies: []
       - "*.txt":
           type: file
           description: Application-specific text file with hits information
           pattern: "*.{txt}"
-  - tsv:
-      - meta:
+          ontologies: []
+  tsv:
+    - - meta:
           type: file
-          description: Tab separated file containing with detailed hits
-          pattern: "*.{tsv}"
+          description: Application-specific text file with hits information
+          pattern: "*.{txt}"
+          ontologies: []
       - "*.tsv":
           type: file
           description: Tab separated file containing with detailed hits
           pattern: "*.{tsv}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@toniher"
 maintainers:

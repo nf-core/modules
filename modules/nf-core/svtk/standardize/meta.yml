@@ -25,6 +25,8 @@ input:
         type: file
         description: A gzipped VCF file to be standardized
         pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
   - - meta2:
         type: map
         description: |
@@ -32,11 +34,13 @@ input:
           e.g. [ id:'test2' ]
     - fai:
         type: file
-        description: Optional fasta index file that specifies the contigs to be used in the VCF header (defaults to all contigs of GRCh37)
+        description: Optional fasta index file that specifies the contigs to be used
+          in the VCF header (defaults to all contigs of GRCh37)
         pattern: "*.fai"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,11 +49,15 @@ output:
           type: file
           description: A gzipped version of the standardized VCF file
           pattern: "*.vcf.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

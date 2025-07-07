@@ -24,9 +24,11 @@ input:
         type: file
         description: Input ONT file
         pattern: "*.{fastq,fastq.gz,fq,fq.gz,txt,txt.gz,bam}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
 output:
-  - report_data:
-      - meta:
+  report_data:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,8 +37,9 @@ output:
           type: file
           description: Report data emitted from toulligqc
           pattern: "*.data"
-  - report_html:
-      - meta:
+          ontologies: []
+  report_html:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,8 +48,9 @@ output:
           type: file
           description: Report data in html format
           pattern: "*.html"
-  - plots_html:
-      - meta:
+          ontologies: []
+  plots_html:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,8 +59,9 @@ output:
           type: file
           description: Plots emitted in html format
           pattern: "*.html"
-  - plotly_js:
-      - meta:
+          ontologies: []
+  plotly_js:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -65,11 +70,14 @@ output:
           type: file
           description: Plots emitted from toulligqc
           pattern: "plotly.min.js"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Salome-Brunon"
 maintainers:

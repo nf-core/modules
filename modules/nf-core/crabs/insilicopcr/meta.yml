@@ -28,22 +28,26 @@ input:
         type: file
         description: CRABSDB to conduct in silico PCR on
         pattern: "*.txt"
+        ontologies: []
 output:
-  - txt:
-      - meta:
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "${prefix}.txt":
+      - ${prefix}.txt:
           type: file
           description: Extracted amplicon regions
           pattern: "*.insilicopcr.txtt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@famosab"
   - "@a4000"

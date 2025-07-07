@@ -9,10 +9,10 @@ keywords:
   - quality control
 tools:
   - "rnaquast":
-      description: "rnaQUAST is a tool for evaluating RNA-Seq assemblies using reference\
-        \ genome and gene database. In addition, rnaQUAST is also capable of estimating\
-        \ gene database coverage by raw reads and de novo quality assessment using third-party\
-        \ software."
+      description: "rnaQUAST is a tool for evaluating RNA-Seq assemblies using reference
+        genome and gene database. In addition, rnaQUAST is also capable of estimating
+        gene database coverage by raw reads and de novo quality assessment using third-party
+        software."
       homepage: "https://github.com/ablab/rnaquast"
       documentation: "https://github.com/ablab/rnaquast"
       tool_dev_url: "https://github.com/ablab/rnaquast"
@@ -57,8 +57,8 @@ input:
           - edam: http://edamontology.org/format_2305 # GFF
           - edam: http://edamontology.org/format_2306 # GTF
 output:
-  - results:
-      - meta:
+  results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -70,11 +70,13 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "${prefix}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@vagkaratzas"
 maintainers:

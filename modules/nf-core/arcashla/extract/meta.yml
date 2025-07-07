@@ -26,11 +26,11 @@ input:
         description: BAM file. If the BAM file is not indexed, this tool will run samtools
           index before extracting reads.
         pattern: "*.bam"
-        ontologies: 
+        ontologies:
           - edam: "http://edamontology.org/format_2572" # BAM
 output:
-  - extracted_reads_fastq:
-      - meta:
+  extracted_reads_fastq:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,16 +39,17 @@ output:
           type: file
           description: FASTQ file(s) containing chromosome 6 reads and related HLA sequences
           pattern: "*.fq.gz"
-          ontologies: 
+          ontologies:
             - edam: "http://edamontology.org/format_1930" # FASTQ
-  - log:
-      - "*.log":
-          type: file
-          description: Log file for run summary
-          pattern: "*.log"
-          ontologies: []
-  - intermediate_sam:
-      - meta:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  log:
+    - "*.log":
+        type: file
+        description: Log file for run summary
+        pattern: "*.log"
+        ontologies: []
+  intermediate_sam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -57,10 +58,10 @@ output:
           type: file
           description: Optional intermediate SAM file
           pattern: "*.sam"
-          ontologies: 
+          ontologies:
             - edam: "http://edamontology.org/format_2573" # SAM
-  - intermediate_bam:
-      - meta:
+  intermediate_bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -69,10 +70,10 @@ output:
           type: file
           description: Optional intermediate BAM file
           pattern: "*.bam"
-          ontologies: 
+          ontologies:
             - edam: "http://edamontology.org/format_2572" # BAM
-  - intermediate_sorted_bam:
-      - meta:
+  intermediate_sorted_bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -81,15 +82,15 @@ output:
           type: file
           description: Optional intermediate sorted BAM file
           pattern: "*.sorted.bam"
-          ontologies: 
+          ontologies:
             - edam: "http://edamontology.org/format_2572" # BAM
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies: 
-            - edam: "http://edamontology.org/format_3750" # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@christopher-mohr"
 maintainers:

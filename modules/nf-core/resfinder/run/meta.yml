@@ -29,19 +29,22 @@ input:
         type: file
         description: fastq file(s)
         pattern: "*.{fastq,fq}{.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
     - fasta:
         type: file
         description: fasta file
         pattern: "*.{fa,fna}"
-  - - db_point:
-        type: directory
-        description: database directory containing known point mutations
-  - - db_res:
-        type: directory
-        description: database directory containing known resistance genes
+        ontologies: []
+  - db_point:
+      type: directory
+      description: database directory containing known point mutations
+  - db_res:
+      type: directory
+      description: database directory containing known resistance genes
 output:
-  - json:
-      - meta:
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,8 +53,10 @@ output:
           type: file
           description: CGE standardized json file
           pattern: "*.json"
-  - disinfinder_kma:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  disinfinder_kma:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -60,8 +65,8 @@ output:
           type: directory
           description: directory holding kma results
           pattern: "disinfinder_kma"
-  - pheno_table_species:
-      - meta:
+  pheno_table_species:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -70,8 +75,10 @@ output:
           type: file
           description: table with species specific AMR phenotypes
           pattern: "pheno_table_species.tsv"
-  - pheno_table:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  pheno_table:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -80,8 +87,10 @@ output:
           type: file
           description: table with all AMR phenotypes
           pattern: "pheno_table.tsv"
-  - pointfinder_kma:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  pointfinder_kma:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -90,8 +99,8 @@ output:
           type: directory
           description: directory holding kma results
           pattern: "pointfinder_kma"
-  - pointfinder_prediction:
-      - meta:
+  pointfinder_prediction:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -101,19 +110,21 @@ output:
           description: tab separated table; 1 is given to a predicted resistance against
             an antibiotic class, 0 is given to not resistance detected
           pattern: "PointFinder_prediction.txt"
-  - pointfinder_results:
-      - meta:
+          ontologies: []
+  pointfinder_results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - PointFinder_results.txt:
           type: file
-          description: tab separated table with predicted point mutations leading to antibiotic
-            resistance
+          description: tab separated table with predicted point mutations leading to
+            antibiotic resistance
           pattern: "PointFinder_results.txt"
-  - pointfinder_table:
-      - meta:
+          ontologies: []
+  pointfinder_table:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -122,8 +133,9 @@ output:
           type: file
           description: predicted point mutations grouped into genes to which they belong
           pattern: "PointFinder_table.txt"
-  - resfinder_hit_in_genome_seq:
-      - meta:
+          ontologies: []
+  resfinder_hit_in_genome_seq:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -133,8 +145,9 @@ output:
           description: fasta sequence of resistance gene hits found in the input data
             (query)
           pattern: "ResFinder_Hit_in_genome_seq.fsa"
-  - resfinder_blast:
-      - meta:
+          ontologies: []
+  resfinder_blast:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -143,8 +156,8 @@ output:
           type: directory
           description: directory holding blast results
           pattern: "resfinder_kma"
-  - resfinder_kma:
-      - meta:
+  resfinder_kma:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -153,18 +166,20 @@ output:
           type: directory
           description: directory holding kma results
           pattern: "resfinder_kma"
-  - resfinder_resistance_gene_seq:
-      - meta:
+  resfinder_resistance_gene_seq:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - ResFinder_Resistance_gene_seq.fsa:
           type: file
-          description: fasta sequence of resistance gene hits found in the database (reference)
+          description: fasta sequence of resistance gene hits found in the database
+            (reference)
           pattern: "ResFinder_Resistance_gene_seq.fsa"
-  - resfinder_results_table:
-      - meta:
+          ontologies: []
+  resfinder_results_table:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -173,8 +188,9 @@ output:
           type: file
           description: predicted resistance genes grouped by antibiotic class
           pattern: "ResFinder_results_table.txt"
-  - resfinder_results_tab:
-      - meta:
+          ontologies: []
+  resfinder_results_tab:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -183,8 +199,9 @@ output:
           type: file
           description: tab separated table with predicted resistance genes
           pattern: "ResFinder_results_tab.txt"
-  - resfinder_results:
-      - meta:
+          ontologies: []
+  resfinder_results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -194,11 +211,14 @@ output:
           description: predicted resistance genes grouped by antibiotic class and hit
             alignments to reference resistance genes
           pattern: "ResFinder_results.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@marrip"
 maintainers:

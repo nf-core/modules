@@ -25,24 +25,28 @@ input:
         description: |
           The vcf file to be inspected.
           e.g. 'file.vcf'
+        ontologies: []
     - index:
         type: file
         description: |
           The tab index for the VCF file to be inspected.
           e.g. 'file.tbi'
-  - - regions:
-        type: file
-        description: |
-          Optionally, restrict the operation to regions listed in this file.
-          e.g. 'file.vcf'
-  - - targets:
-        type: file
-        description: |
-          Optionally, restrict the operation to regions listed in this file (doesn't rely upon index files)
-          e.g. 'file.vcf'
+        ontologies: []
+  - regions:
+      type: file
+      description: |
+        Optionally, restrict the operation to regions listed in this file.
+        e.g. 'file.vcf'
+      ontologies: []
+  - targets:
+      type: file
+      description: |
+        Optionally, restrict the operation to regions listed in this file (doesn't rely upon index files)
+        e.g. 'file.vcf'
+      ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -51,8 +55,9 @@ output:
           type: file
           description: VCF normalized output file
           pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
-  - tbi:
-      - meta:
+          ontologies: []
+  tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -61,8 +66,9 @@ output:
           type: file
           description: Alternative VCF file index
           pattern: "*.tbi"
-  - csi:
-      - meta:
+          ontologies: []
+  csi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -71,11 +77,14 @@ output:
           type: file
           description: Default VCF file index
           pattern: "*.csi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@eweizy"
 maintainers:

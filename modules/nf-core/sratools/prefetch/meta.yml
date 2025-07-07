@@ -22,36 +22,35 @@ input:
         type: string
         description: >
           A string denoting an SRA id.
-  - - ncbi_settings:
-        type: file
-        description: >
-          An NCBI user settings file.
-        pattern: "*.mkfg"
-  - - certificate:
-        type: file
-        description: >
-          Path to a JWT cart file used to access protected dbGAP data on SRA using the
-          sra-toolkit
-        pattern: "*.cart"
+  - ncbi_settings:
+      type: file
+      description: >
+        An NCBI user settings file.
+      pattern: "*.mkfg"
+      ontologies: []
+  - certificate:
+      type: file
+      description: >
+        Path to a JWT cart file used to access protected dbGAP data on SRA using the
+        sra-toolkit
+      pattern: "*.cart"
+      ontologies: []
 output:
-  - sra:
-      - meta:
+  sra:
+    - - meta:
           type: map
           description: >
             Groovy Map containing sample information e.g. [ id:'test', single_end:false
             ]
           pattern: "*/*.sra"
-      - "id, type: 'dir":
-          type: map
-          description: >
-            Groovy Map containing sample information e.g. [ id:'test', single_end:false
-            ]
-          pattern: "*/*.sra"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+      - id: {}
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Midnighter"
 maintainers:

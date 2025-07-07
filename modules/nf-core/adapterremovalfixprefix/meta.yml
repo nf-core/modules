@@ -24,11 +24,11 @@ input:
         type: file
         description: FASTQ file from AdapterRemoval2
         pattern: "*.{fq.gz,fastq.gz}"
-        ontologies: 
+        ontologies:
           - edam: "http://edamontology.org/format_1930" # FASTQ
 output:
-  - fixed_fastq:
-      - meta:
+  fixed_fastq:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -37,15 +37,15 @@ output:
           type: file
           description: FASTQ file with fixed read prefixes for DeDup
           pattern: "*.{fq.gz}"
-          ontologies: 
+          ontologies:
             - edam: "http://edamontology.org/format_1930" # FASTQ
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies: 
-            - edam: "http://edamontology.org/format_3750" # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@jfy133"
 maintainers:

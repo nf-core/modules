@@ -17,21 +17,24 @@ tools:
       licence: ["MIT"]
       identifier: biotools:busco
 input:
-  - - lineage:
-        type: string
-        description: The BUSCO lineage to use, or "auto", "auto_prok" or "auto_euk"
-          to automatically select lineage
+  - lineage:
+      type: string
+      description: The BUSCO lineage to use, or "auto", "auto_prok" or "auto_euk" to
+        automatically select lineage
 output:
-  - download_dir:
-      - busco_downloads:
-          type: file
-          description: Directory with busco database
-          pattern: "busco_downloads"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  download_dir:
+    - busco_downloads:
+        type: file
+        description: Directory with busco database
+        pattern: "busco_downloads"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@zachary-foster"
 maintainers:

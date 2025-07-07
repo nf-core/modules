@@ -24,27 +24,32 @@ input:
         description: aligned query sequences in any supported format including phylip
           and fasta, may be gzipped
         pattern: "*"
+        ontologies: []
     - referencealn:
         type: file
         description: reference alignment in any supported format including phylip and
           fasta, may be gzipped
         pattern: "*"
+        ontologies: []
     - referencetree:
         type: file
         description: newick file containing the reference tree in which query sequences
           will be placed
         pattern: "*"
-  - - bfastfile:
-        type: file
-        description: file argument to the --bfast parameter
-        pattern: "*"
-  - - binaryfile:
-        type: file
-        description: file argument to the --binary parameter
-        pattern: "*"
+        ontologies: []
+  - bfastfile:
+      type: file
+      description: file argument to the --bfast parameter
+      pattern: "*"
+      ontologies: []
+  - binaryfile:
+      type: file
+      description: file argument to the --binary parameter
+      pattern: "*"
+      ontologies: []
 output:
-  - epang:
-      - meta:
+  epang:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -52,8 +57,8 @@ output:
       - ./.:
           type: directory
           description: directory in which EPA-NG was run
-  - jplace:
-      - meta:
+  jplace:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -62,16 +67,21 @@ output:
           type: file
           description: gzipped file with placement information
           pattern: "*.jplace.gz"
-  - log:
-      - "*.epa_info.log":
-          type: file
-          description: log file from placement
-          pattern: "*.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  log:
+    - "*.epa_info.log":
+        type: file
+        description: log file from placement
+        pattern: "*.log"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@erikrikarddaniel"
 maintainers:

@@ -24,13 +24,14 @@ input:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,sam}"
-  - - sort_order:
-        type: string
-        description: Picard sort order type
-        pattern: "unsorted|queryname|coordinate|duplicate|unknown"
+        ontologies: []
+  - sort_order:
+      type: string
+      description: Picard sort order type
+      pattern: "unsorted|queryname|coordinate|duplicate|unknown"
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,11 +40,14 @@ output:
           type: file
           description: Sorted BAM/CRAM/SAM file
           pattern: "*.{bam}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

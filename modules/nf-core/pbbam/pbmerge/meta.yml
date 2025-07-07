@@ -24,9 +24,10 @@ input:
         type: file
         description: BAM files to merge
         pattern: "*.bam"
+        ontologies: []
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,8 +36,9 @@ output:
           type: file
           description: The merged bam file
           pattern: "*.bam"
-  - pbi:
-      - meta:
+          ontologies: []
+  pbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,11 +47,14 @@ output:
           type: file
           description: BAM Pacbio index file
           pattern: "*.bam.pbi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sguizard"
 maintainers:

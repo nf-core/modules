@@ -27,9 +27,10 @@ input:
         type: file
         description: FASTA file
         pattern: "*.{fasta,fa,fna}"
+        ontologies: []
 output:
-  - elfasta:
-      - meta:
+  elfasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -41,21 +42,25 @@ output:
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
           pattern: "*.elfasta"
-  - log:
-      - meta:
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
+          pattern: "*.elfasta"
       - logs/elprep/elprep*:
           type: file
           description: ELFasta log file
           pattern: "*.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

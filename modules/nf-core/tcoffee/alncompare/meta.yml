@@ -45,8 +45,8 @@ input:
           - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
           - edam: http://edamontology.org/format_1984 # FASTA-ALN
 output:
-  - scores:
-      - meta:
+  scores:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -56,13 +56,13 @@ output:
           description: a file containing the score of the alignment
           pattern: "*.scores"
           ontologies: []
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: http://edamontology.org/format_3750 # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@l-mansouri"
   - "@luisas"

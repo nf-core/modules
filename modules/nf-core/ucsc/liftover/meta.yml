@@ -20,13 +20,16 @@ input:
         type: file
         description: Browser Extensible Data (BED) file
         pattern: "*.{bed}"
-  - - chain:
-        type: file
-        description: Chain file
-        pattern: "*.{chain,chain.gz}"
+        ontologies: []
+  - chain:
+      type: file
+      description: Chain file
+      pattern: "*.{chain,chain.gz}"
+      ontologies:
+        - edam: http://edamontology.org/format_3982 # CHAIN
 output:
-  - lifted:
-      - meta:
+  lifted:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,8 +38,9 @@ output:
           type: file
           description: BED file containing successfully lifted variants
           pattern: "*.{lifted.bed}"
-  - unlifted:
-      - meta:
+          ontologies: []
+  unlifted:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,11 +49,14 @@ output:
           type: file
           description: BED file containing variants that couldn't be lifted
           pattern: "*.{unlifted.bed}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software version
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software version
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nebfield"
 maintainers:

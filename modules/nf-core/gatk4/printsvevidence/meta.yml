@@ -30,29 +30,35 @@ input:
         description: The evidence files created by CollectSVEvidence. They all need
           to be of the same type to print the SV evidence.
         pattern: "*.{pe,sr,baf,rd}.txt(.gz)"
+        ontologies: []
     - evidence_indices:
         type: file
         description: The indices of the evidence files created by CollectSVEvidence
         pattern: "*.{pe,sr,baf,rd}.txt(.gz).tbi"
-  - - bed:
-        type: file
-        description: An optional BED file
-        pattern: "*.bed"
-  - - fasta:
-        type: file
-        description: An optional reference FASTA file
-        pattern: "*.{fa,fasta}"
-  - - fasta_fai:
-        type: file
-        description: An optional reference FASTA file index
-        pattern: "*.fai"
-  - - dict:
-        type: file
-        description: The mandatory sequence dictionary file
-        pattern: "*.dict"
+        ontologies: []
+  - bed:
+      type: file
+      description: An optional BED file
+      pattern: "*.bed"
+      ontologies: []
+  - fasta:
+      type: file
+      description: An optional reference FASTA file
+      pattern: "*.{fa,fasta}"
+      ontologies: []
+  - fasta_fai:
+      type: file
+      description: An optional reference FASTA file index
+      pattern: "*.fai"
+      ontologies: []
+  - dict:
+      type: file
+      description: The mandatory sequence dictionary file
+      pattern: "*.dict"
+      ontologies: []
 output:
-  - printed_evidence:
-      - meta:
+  printed_evidence:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -62,22 +68,26 @@ output:
           description: The output file containing the discordant read pairs or the soft
             clipped reads
           pattern: "*.{pe,sr,baf,rd}.txt.gz"
-  - printed_evidence_index:
-      - meta:
+          ontologies: []
+  printed_evidence_index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.txt.gz.tbi":
           type: file
-          description: The index file of the output compressed text file containing the
-            discordant read pairs or the soft clipped reads
+          description: The index file of the output compressed text file containing
+            the discordant read pairs or the soft clipped reads
           pattern: "*.{pe,sr,baf,rd}.txt.gz.tbi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

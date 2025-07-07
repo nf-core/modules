@@ -26,6 +26,7 @@ input:
         type: file
         description: BAM/CRAM/SAM file(s)
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -36,9 +37,10 @@ input:
         description: Reference genome FASTA file
         pattern: "*.{fa,fasta,fna}"
         optional: true
+        ontologies: []
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,8 +49,9 @@ output:
           type: file
           description: Sorted BAM file
           pattern: "*.{bam}"
-  - cram:
-      - meta:
+          ontologies: []
+  cram:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -57,8 +60,9 @@ output:
           type: file
           description: Sorted CRAM file
           pattern: "*.{cram}"
-  - crai:
-      - meta:
+          ontologies: []
+  crai:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -67,8 +71,9 @@ output:
           type: file
           description: CRAM index file (optional)
           pattern: "*.crai"
-  - csi:
-      - meta:
+          ontologies: []
+  csi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -77,11 +82,14 @@ output:
           type: file
           description: BAM index file (optional)
           pattern: "*.csi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@drpatelh"
   - "@ewels"

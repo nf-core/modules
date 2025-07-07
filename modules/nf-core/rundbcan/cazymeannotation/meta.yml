@@ -33,12 +33,12 @@ input:
         ontologies:
           - edam: "http://edamontology.org/data_2044" # Sequence
           - edam: "http://edamontology.org/format_1929" # FASTA
-  - - dbcan_db:
-        type: directory
-        description: Path to the dbCAN database directory.
+  - dbcan_db:
+      type: directory
+      description: Path to the dbCAN database directory.
 output:
-  - cazyme_annotation:
-      - meta:
+  cazyme_annotation:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,8 +47,9 @@ output:
           type: file
           description: |
             TSV file containing the results of dbCAN CAZyme annotation.
-  - dbcanhmm_results:
-      - meta:
+          ontologies: []
+  dbcanhmm_results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -57,31 +58,36 @@ output:
           type: file
           description: |
             TSV file containing the detailed dbCAN HMM results for CAZyme annotation.
-  - dbcansub_results:
-      - meta:
+          ontologies: []
+  dbcansub_results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
+            e.g. `[ id:'sample1']`
       - ${prefix}_dbCANsub_hmm_results.tsv:
           type: file
           description: |
             TSV file containing the detailed dbCAN subfamily results for CAZyme annotation.
-  - dbcandiamond_results:
-      - meta:
+          ontologies: []
+  dbcandiamond_results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
+            e.g. `[ id:'sample1']`
       - ${prefix}_diamond.out:
           type: file
           description: |
             TSV file containing the detailed dbCAN diamond results for CAZyme annotation.
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Xinpeng021001"
 maintainers:

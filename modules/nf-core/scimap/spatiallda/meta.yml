@@ -31,9 +31,11 @@ input:
         description: Phenotyped CSV file, it must contain the columns, sampleID, X,
           Y and Phenotype.
         pattern: "*.{csv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
 output:
-  - spatial_lda_output:
-      - meta:
+  spatial_lda_output:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -42,19 +44,22 @@ output:
           type: file
           description: File with the motifs detected from SpatialLDA
           pattern: "*.{csv}"
-  - composition_plot:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  composition_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.png":
           type: file
-          description: Plot with the motif composition and the cell type composition of
-            motifs.
+          description: Plot with the motif composition and the cell type composition
+            of motifs.
           pattern: "*.{png}"
-  - motif_location_plot:
-      - meta:
+          ontologies: []
+  motif_location_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -63,11 +68,14 @@ output:
           type: file
           description: Plot with the locations of the motifs.
           pattern: "*.{html}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@migueLib"
   - "@chiarasch"

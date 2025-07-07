@@ -35,7 +35,6 @@ input:
         description: All the output files from GTDB-Tk
         pattern: "*"
         ontologies: []
-
     - gtdbtk_prefix:
         type: string
         description: |
@@ -43,7 +42,6 @@ input:
           this defaults to "${meta.id}".
         pattern: "*"
         ontologies: []
-
   - - meta2:
         type: map
         description: |
@@ -73,8 +71,8 @@ input:
           - edam: http://edamontology.org/format_3989 # GZIP format
 
 output:
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -85,18 +83,19 @@ output:
 
       - "*.ncbi.tsv":
           type: map
-          description: TSV map for input genomes, mapping GTDB classification taxonomy to NCBI taxonomic lineages
+          description: TSV map for input genomes, mapping GTDB classification taxonomy
+            to NCBI taxonomic lineages
           pattern: "*.ncbi.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475
 
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: http://edamontology.org/format_3750 # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@prototaxites"
 maintainers:

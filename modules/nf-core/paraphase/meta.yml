@@ -25,10 +25,12 @@ input:
         type: file
         description: Sorted BAM file
         pattern: "*.bam"
+        ontologies: []
     - bai:
         type: file
         description: Index of BAM file
         pattern: "*.bai"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -38,6 +40,7 @@ input:
         type: file
         description: The reference fasta file
         pattern: "*.fasta"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -47,9 +50,11 @@ input:
         type: file
         description: Config file
         pattern: "*.yaml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 output:
-  - json:
-      - meta:
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -58,8 +63,10 @@ output:
           type: file
           description: Summary of haplotype and variant calls
           pattern: "*.paraphase.json"
-  - bam:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -68,8 +75,9 @@ output:
           type: file
           description: (re)aligned BAM file
           pattern: "*.paraphase.bam"
-  - bai:
-      - meta:
+          ontologies: []
+  bai:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -78,8 +86,9 @@ output:
           type: file
           description: Index of (re)aligned BAM file
           pattern: "*.paraphase.bam.bai"
-  - vcf:
-      - meta:
+          ontologies: []
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -88,8 +97,10 @@ output:
           type: file
           description: compressed VCF file(s) per gene
           pattern: "*.vcf.gz"
-  - vcf_index:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  vcf_index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -98,11 +109,14 @@ output:
           type: file
           description: compressed VCF file index
           pattern: "*.vcf.gz.{tbi,csi}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@fellen31"
 maintainers:

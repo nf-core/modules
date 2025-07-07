@@ -26,30 +26,36 @@ input:
           Target dataset in VCF/BCF format defined at all variable positions.
           The file could possibly be without GT field (for efficiency reasons a file containing only the positions is recommended).
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+        ontologies: []
     - input_index:
         type: file
         description: Index file for the input VCF/BCF file.
+        ontologies: []
     - region:
         type: string
         description: |
           Target region, usually a full chromosome (e.g. chr20:1000000-2000000 or chr20).
           For chrX, please treat PAR and non-PAR regions as different choromosome in order to avoid mixing ploidy.
 output:
-  - chunk_chr:
-      - meta:
+  chunk_chr:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.txt":
           type: file
-          description: Tab delimited output txt file containing buffer and imputation regions.
+          description: Tab delimited output txt file containing buffer and imputation
+            regions.
           pattern: "*.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@louislenezet"
 maintainers:

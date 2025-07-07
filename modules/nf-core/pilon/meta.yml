@@ -25,6 +25,7 @@ input:
         type: file
         description: FASTA of the input genome
         pattern: "*.{fasta}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -34,22 +35,24 @@ input:
         type: file
         description: BAM file of reads aligned to the input genome
         pattern: "*.{bam}"
+        ontologies: []
     - bai:
         type: file
         description: BAI file (BAM index) of BAM reads aligned to the input genome
         pattern: "*.{bai}"
-  - - pilon_mode:
-        type: string
-        description: Indicates the type of bam file used (frags for paired-end sequencing
-          of DNA fragments, such as Illumina paired-end reads of fragment size <1000bp,
-          jumps for paired sequencing data of larger insert size, such as Illumina mate
-          pair libraries, typically of insert size >1000bp, unpaired for unpaired sequencing
-          reads, bam will automatically classify the BAM as one of the three types above
-          (version 1.17 and higher).
-        enum: ["frags", "jumps", "unpaired", "bam"]
+        ontologies: []
+  - pilon_mode:
+      type: string
+      description: Indicates the type of bam file used (frags for paired-end sequencing
+        of DNA fragments, such as Illumina paired-end reads of fragment size <1000bp,
+        jumps for paired sequencing data of larger insert size, such as Illumina mate
+        pair libraries, typically of insert size >1000bp, unpaired for unpaired sequencing
+        reads, bam will automatically classify the BAM as one of the three types above
+        (version 1.17 and higher).
+      enum: ["frags", "jumps", "unpaired", "bam"]
 output:
-  - improved_assembly:
-      - meta:
+  improved_assembly:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -58,8 +61,9 @@ output:
           type: file
           description: fasta file, improved assembly
           pattern: "*.{fasta}"
-  - vcf:
-      - meta:
+          ontologies: []
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -68,19 +72,21 @@ output:
           type: file
           description: Pilon variant output
           pattern: "*.{vcf}"
-  - change_record:
-      - meta:
+          ontologies: []
+  change_record:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.change":
           type: file
-          description: file containing a space-delimited record of every change made in
-            the assembly as instructed by the --fix option
+          description: file containing a space-delimited record of every change made
+            in the assembly as instructed by the --fix option
           pattern: "*.{change}"
-  - tracks_bed:
-      - meta:
+          ontologies: []
+  tracks_bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -90,8 +96,9 @@ output:
           description: files that may be viewed in genome browsers such as IGV, GenomeView,
             and other applications that support these formats
           pattern: "*.{bed}"
-  - tracks_wig:
-      - meta:
+          ontologies: []
+  tracks_wig:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -101,11 +108,14 @@ output:
           description: files that may be viewed in genome browsers such as IGV, GenomeView,
             and other applications that support these formats
           pattern: "*.{wig}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@scorreard"
 maintainers:

@@ -14,21 +14,25 @@ tools:
       documentation: https://github.com/ncbi/sra-tools/wiki
       tool_dev_url: https://github.com/ncbi/sra-tools
       licence: ["Public Domain"]
+      identifier: ""
 input:
-  - - ids:
-        type: string
-        description: List of id settings
+  - ids:
+      type: string
+      description: List of id settings
 output:
-  - ncbi_settings:
-      - "*.mkfg":
-          type: file
-          description: An NCBI user settings file.
-          pattern: "*.mkfg"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  ncbi_settings:
+    - "*.mkfg":
+        type: file
+        description: An NCBI user settings file.
+        pattern: "*.mkfg"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Midnighter"
 maintainers:

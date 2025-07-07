@@ -26,14 +26,17 @@ input:
         description: One or two BAM files. Supply two BAM files to run Vardict in paired
           mode.
         pattern: "*.bam"
+        ontologies: []
     - bais:
         type: file
         description: Index/indices of the BAM file(s)
         pattern: "*.bai"
+        ontologies: []
     - bed:
         type: file
         description: BED with the regions of interest
         pattern: "*.bed"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -43,6 +46,7 @@ input:
         type: file
         description: FASTA of the reference genome
         pattern: "*.{fa,fasta}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -52,9 +56,10 @@ input:
         type: file
         description: The index of the FASTA of the reference genome
         pattern: "*.fai"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -63,11 +68,15 @@ output:
           type: file
           description: VCF file output
           pattern: "*.vcf.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

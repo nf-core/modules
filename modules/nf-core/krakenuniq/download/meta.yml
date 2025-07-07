@@ -17,21 +17,23 @@ tools:
       licence: ["MIT"]
       identifier: biotools:KrakenUniq
 input:
-  - - pattern:
-        type: string
-        description: Pattern indicating what type of NCBI data to download. See KrakenUniq
-          documnation for possibilities.
+  - pattern:
+      type: string
+      description: Pattern indicating what type of NCBI data to download. See KrakenUniq
+        documnation for possibilities.
 output:
-  - output:
-      - ${pattern}/:
-          type: directory
-          description: Directory containing downloaded data with directory naming being
-            the user provided pattern.
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  output:
+    - ${pattern}/:
+        type: directory
+        description: Directory containing downloaded data with directory naming being
+          the user provided pattern.
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

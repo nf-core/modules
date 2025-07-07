@@ -21,12 +21,12 @@ input:
     - meryl_db:
         type: directory
         description: Meryl k-mer database
-  - - kvalue:
-        type: integer
-        description: An integer value of k to use as the k-mer value.
+  - kvalue:
+      type: integer
+      description: An integer value of k to use as the k-mer value.
 output:
-  - hist:
-      - meta:
+  hist:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,11 +35,14 @@ output:
           type: file
           description: Histogram of k-mers
           pattern: "*.hist"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mahesh-panchal"
 maintainers:

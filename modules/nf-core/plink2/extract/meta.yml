@@ -24,21 +24,25 @@ input:
         type: file
         description: PLINK 2 binary genotype table
         pattern: "*.{pgen}"
+        ontologies: []
     - psam:
         type: file
         description: PLINK 2 sample information file
         pattern: "*.{psam}"
+        ontologies: []
     - pvar:
         type: file
         description: PLINK 2 variant information file
         pattern: "*.{pvar}"
+        ontologies: []
     - variants:
         type: file
         description: A text file containing variant identifiers to keep (one per line)
         pattern: "*.{keep}"
+        ontologies: []
 output:
-  - extract_pgen:
-      - meta:
+  extract_pgen:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,18 +51,21 @@ output:
           type: file
           description: PLINK 2 binary genotype table, containing extracted variants
           pattern: "*.{pgen}"
-  - extract_psam:
-      - meta:
+          ontologies: []
+  extract_psam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.psam":
           type: file
-          description: PLINK 2 sample information file associated with the extracted data
+          description: PLINK 2 sample information file associated with the extracted
+            data
           pattern: "*.{psam}"
-  - extract_pvar:
-      - meta:
+          ontologies: []
+  extract_pvar:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -67,11 +74,14 @@ output:
           type: file
           description: PLINK 2 variant information file, containing extracted variants
           pattern: "*.{pvar.zst}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nebfield"
 maintainers:

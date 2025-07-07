@@ -26,6 +26,7 @@ input:
         description: One fasta file or a list of multiple fasta files to perform president
           on. Has to be uncompressed!
         pattern: "*.{fasta,fas,fa,fna,ffn,faa,mpfa,frn}"
+        ontologies: []
   - - meta2:
         type: map
         description: Groovy Map containing information about the reference genome
@@ -33,67 +34,76 @@ input:
         type: file
         description: Fasta of a reference genome. Has to be uncompressed!
         pattern: "*.{fasta,fas,fa,fna,ffn,faa,mpfa,frn}"
-  - - compress:
-        type: boolean
-        description: Set to "true" if fasta output should be compressed
+        ontologies: []
+  - compress:
+      type: boolean
+      description: Set to "true" if fasta output should be compressed
 output:
-  - valid_fasta:
-      - meta:
+  valid_fasta:
+    - - meta:
           type: file
           description: Fasta file containing sequences which passed the qc ("valid.fasta").
             If true is set on the "compress" input value, the file is gz-compressed.
           pattern: "*.{fasta.gz, fasta}"
+          ontologies: []
       - ${prefix}_valid.fasta*:
           type: file
           description: Fasta file containing sequences which passed the qc ("valid.fasta").
             If true is set on the "compress" input value, the file is gz-compressed.
           pattern: "*.{fasta.gz, fasta}"
+          ontologies: []
       - id_fasta:
           type: file
           description: Fasta file containing sequences which passed the qc ("valid.fasta").
             If true is set on the "compress" input value, the file is gz-compressed.
           pattern: "*.{fasta.gz, fasta}"
-  - invalid_fasta:
-      - meta:
+          ontologies: []
+  invalid_fasta:
+    - - meta:
           type: file
-          description: Fasta file containing sequences which didn't pass the qc ("invalid.fasta").
-            If true is set on the "compress" input value, the files are gz-compressed.
-          pattern: "*_invalid.{fasta.gz, fasta}"
+          description: Fasta file containing sequences which passed the qc ("valid.fasta").
+            If true is set on the "compress" input value, the file is gz-compressed.
+          pattern: "*.{fasta.gz, fasta}"
+          ontologies: []
       - ${prefix}_invalid.fasta*:
           type: file
           description: Fasta file containing sequences which didn't pass the qc ("invalid.fasta").
             If true is set on the "compress" input value, the files are gz-compressed.
           pattern: "*_invalid.{fasta.gz, fasta}"
-      - id_fasta:
+          ontologies: []
+  report:
+    - - meta:
           type: file
-          description: Fasta file containing sequences which didn't pass the qc ("invalid.fasta").
-            If true is set on the "compress" input value, the files are gz-compressed.
-          pattern: "*_invalid.{fasta.gz, fasta}"
-  - report:
-      - meta:
-          type: file
-          description: Report with some information for every sample, like statistic values.
-            See docs for details
-          pattern: "*.tsv"
+          description: Fasta file containing sequences which passed the qc ("valid.fasta").
+            If true is set on the "compress" input value, the file is gz-compressed.
+          pattern: "*.{fasta.gz, fasta}"
+          ontologies: []
       - "*.tsv":
           type: file
-          description: Report with some information for every sample, like statistic values.
-            See docs for details
+          description: Report with some information for every sample, like statistic
+            values. See docs for details
           pattern: "*.tsv"
-  - log:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  log:
+    - - meta:
           type: file
-          description: Log file of president
-          pattern: "*.log"
+          description: Fasta file containing sequences which passed the qc ("valid.fasta").
+            If true is set on the "compress" input value, the file is gz-compressed.
+          pattern: "*.{fasta.gz, fasta}"
+          ontologies: []
       - "*.log":
           type: file
           description: Log file of president
           pattern: "*.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@paulwolk"
 maintainers:
