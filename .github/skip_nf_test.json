@@ -89,8 +89,6 @@
         "modules/nf-core/svtk/rdtest2vcf",
         "modules/nf-core/svtk/standardize",
         "modules/nf-core/universc",
-        "modules/nf-core/vizgenpostprocessing/preparesegmentation",
-        "modules/nf-core/vizgenpostprocessing/runsegmentationontile",
         "modules/nf-core/vt/decompose",
         "modules/nf-core/wittyer",
         "modules/nf-core/xeniumranger/import-segmentation",
@@ -104,9 +102,10 @@
         "subworkflows/nf-core/fastq_align_bamcmp_bwa",
         "subworkflows/nf-core/fastq_align_bwa"
     ],
-    "docker": ["modules/nf-core/parabricks", 
-               "modules/nf-core/sparsesignatures",
-               "subworkflows/nf-core/deepvariant/tests/equality"
+    "docker": [
+        "modules/nf-core/parabricks",
+        "modules/nf-core/sparsesignatures",
+        "subworkflows/nf-core/deepvariant/tests/equality"
     ],
     "singularity": [
         "modules/nf-core/bases2fastq",
