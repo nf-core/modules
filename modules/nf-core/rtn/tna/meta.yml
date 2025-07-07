@@ -1,0 +1,120 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "rtn_tna"
+description: Uses the RTN R package for transcription network analysis (TNA)
+keywords:
+  - regulatory network
+  - transcriptomics
+  - transcription factors
+tools:
+  - "rtn":
+      description: "RTN: Reconstruction of Transcriptional regulatory Networks and analysis
+        of regulons"
+      homepage: "https://www.bioconductor.org/packages/release/bioc/html/RTN.html"
+      documentation: "https://www.bioconductor.org/packages/release/bioc/vignettes/RTN/inst/doc/RTN.html"
+      tool_dev_url: "https://www.bioconductor.org/packages/release/bioc/html/RTN.html"
+      doi: "10.1038/ncomms3464"
+      licence: ["Artistic-2.0"]
+      identifier: biotools:rtn
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - tni_object:
+        type: file
+        description: TNI object from the RTN R package
+        pattern: "*.rds"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - degs:
+        type: file
+        description: TSV file with DEGs names
+        pattern: "*.tsv"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - degs_log2:
+        type: file
+        description: A TSV with genes and differential expression levels (usually in
+          log2)
+        pattern: "*.tsv"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - degs_annotation:
+        type: file
+        description: An optional TSV with gene anottation mapped to the DEGs
+        pattern: "*.tsv"
+output:
+  - tna_object:
+      - meta:
+          type: file
+          description: RDS R Object with the TNA object
+          pattern: "tna.rds"
+      - tna.rds:
+          type: file
+          description: RDS R Object with the TNA object
+          pattern: "tna.rds"
+  - mra_object:
+      - meta:
+          type: file
+          description: TSV file with DEGs names
+          pattern: "*.tsv"
+      - mra.rds:
+          type: file
+          description: TSV file with DEGs names
+          pattern: "*.tsv"
+  - gsea1_object:
+      - meta:
+          type: file
+          description: RDS R Object with the GSEA1 object
+          pattern: "gsea1.rds"
+      - gsea1.rds:
+          type: file
+          description: RDS R Object with the GSEA1 object
+          pattern: "gsea1.rds"
+  - gsea1_plot:
+      - meta:
+          type: file
+          description: PDF file with the GSEA1 plot
+          pattern: "gsea1_plot.pdf"
+      - gsea1_plot.pdf:
+          type: file
+          description: PDF file with the GSEA1 plot
+          pattern: "gsea1_plot.pdf"
+  - gsea2_object:
+      - meta:
+          type: file
+          description: RDS R Object with the GSEA2 object
+          pattern: "gsea2.rds"
+      - gsea2.rds:
+          type: file
+          description: RDS R Object with the GSEA2 object
+          pattern: "gsea2.rds"
+  - gsea2_plot:
+      - meta:
+          type: file
+          description: PDF file with the GSEA2 plot
+          pattern: "gsea2_plot.pdf"
+      - gsea2_plot.pdf:
+          type: file
+          description: PDF file with the GSEA2 plot
+          pattern: "gsea2_plot.pdf"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@mribeirodantas"
+maintainers:
+  - "@mribeirodantas"

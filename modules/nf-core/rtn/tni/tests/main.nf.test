@@ -9,14 +9,18 @@ nextflow_process {
     tag "rtn"
     tag "rtn/tni"
 
-    test("musmusculus tni expression matrix") {
+    test("network inference and filtering without optional channels") {
         when {
+            config "./nextflow.config1"
             process {
                 """
                 input[0] = [
                   [id:'test'],
-                  file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/salmon.merged.gene_counts_length_scaled.tsv', checkIfExists: true)
+                  file(params.modules_testdata_base_path + 'delete_me/rtn/expData.tsv', checkIfExists: true)
                 ]
+                input[1] = file(params.modules_testdata_base_path + 'delete_me/rtn/tfs.tsv', checkIfExists: true)
+                input[2] = []
+                input[3] = []
                 """
             }
         }
@@ -35,15 +39,18 @@ nextflow_process {
 
     }
 
-    test("musmusculus tni expression matrix with --tfs ENSG00000125798,ENSG00000125816") {
+    test("network inference and filtering with optional channels") {
         when {
-        config "./nextflow.config2"
+            config "./nextflow.config1"
             process {
                 """
                 input[0] = [
                   [id:'test'],
-                  file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/salmon.merged.gene_counts_length_scaled.tsv', checkIfExists: true)
+                  file(params.modules_testdata_base_path + 'delete_me/rtn/expData.tsv', checkIfExists: true)
                 ]
+                input[1] = file(params.modules_testdata_base_path + 'delete_me/rtn/tfs_symbol.tsv', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'delete_me/rtn/sample_annotation.tsv', checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + 'delete_me/rtn/gene_annotation.tsv', checkIfExists: true)
                 """
             }
         }
@@ -56,21 +63,24 @@ nextflow_process {
                 { assert file(process.out.tni_bootstrap[0][1]).exists() },
                 { assert file(process.out.tni_filtered[0][1]).exists() },
                 { assert file(process.out.versions[0]).exists() },
-                { assert process.stdout.contains('TFs                      : ENSG00000125798,ENSG00000125816') }
+                { assert process.stdout.contains('Nb permutations          : 10') } // the default value is 10
             )
         }
 
     }
 
-    test("musmusculus tni expression matrix with --n_permutations 12 and --tfs ENSG00000125798,ENSG00000125816") {
+    test("network inference and filtering with optional channels with --n_params 12") {
         when {
-        config "./nextflow.config3"
+            config "./nextflow.config2"
             process {
                 """
                 input[0] = [
                   [id:'test'],
-                  file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/salmon.merged.gene_counts_length_scaled.tsv', checkIfExists: true)
+                  file(params.modules_testdata_base_path + 'delete_me/rtn/expData.tsv', checkIfExists: true)
                 ]
+                input[1] = file(params.modules_testdata_base_path + 'delete_me/rtn/tfs_symbol.tsv', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'delete_me/rtn/sample_annotation.tsv', checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + 'delete_me/rtn/gene_annotation.tsv', checkIfExists: true)
                 """
             }
         }
@@ -83,24 +93,24 @@ nextflow_process {
                 { assert file(process.out.tni_bootstrap[0][1]).exists() },
                 { assert file(process.out.tni_filtered[0][1]).exists() },
                 { assert file(process.out.versions[0]).exists() },
-                { assert process.stdout.contains('Nb permutations          : 12') },
-                { assert process.stdout.contains('TFs                      : ENSG00000125798,ENSG00000125816') }
+                { assert process.stdout.contains('Nb permutations          : 12') } // the default value is 10
             )
         }
 
     }
 
-    test("musmusculus tni expression matrix - stub") {
-
-        options "-stub"
-
+    test("network inference and filtering with optional channels with --p_value_cutoff 1e-3") {
         when {
+            config "./nextflow.config3"
             process {
                 """
                 input[0] = [
                   [id:'test'],
-                  file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/salmon.merged.gene_counts_length_scaled.tsv', checkIfExists: true)
+                  file(params.modules_testdata_base_path + 'delete_me/rtn/expData.tsv', checkIfExists: true)
                 ]
+                input[1] = file(params.modules_testdata_base_path + 'delete_me/rtn/tfs_symbol.tsv', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'delete_me/rtn/sample_annotation.tsv', checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + 'delete_me/rtn/gene_annotation.tsv', checkIfExists: true)
                 """
             }
         }
@@ -112,10 +122,11 @@ nextflow_process {
                 { assert file(process.out.tni_perm[0][1]).exists() },
                 { assert file(process.out.tni_bootstrap[0][1]).exists() },
                 { assert file(process.out.tni_filtered[0][1]).exists() },
-                { assert file(process.out.versions[0]).exists() }
+                { assert file(process.out.versions[0]).exists() },
+                { assert process.stdout.contains('Nb permutations          : 10') }, // the default value is 10
+                { assert process.stdout.contains('P-value cut off          : 0.001') } // the default value is 1e-04
             )
         }
 
     }
-
 }

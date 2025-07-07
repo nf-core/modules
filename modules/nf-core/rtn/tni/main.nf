@@ -1,6 +1,5 @@
 process RTN_TNI {
-    debug true
-    tag "{$expression_matrix.name}"
+    tag "$expression_matrix"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
@@ -10,7 +9,10 @@ process RTN_TNI {
 
     input:
     tuple val(meta), path(expression_matrix)
-
+    path tfs
+    path sampleAnnotation // Optional
+    path geneAnnotation   // Optional
+   
     output:
     tuple val(meta), path("tni.rds")               , emit: tni
     tuple val(meta), path("tni_permutated.rds")    , emit: tni_perm

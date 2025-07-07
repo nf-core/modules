@@ -1,5 +1,6 @@
 process {
+    debug = true
     withName: RTN_TNI {
-        ext.args = '--tfs ENSG00000125798,ENSG00000125816'
+        ext.args = '--n_permutations 12'
     }
 }

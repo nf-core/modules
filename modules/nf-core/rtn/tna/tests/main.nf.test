@@ -1,0 +1,70 @@
+nextflow_process {
+
+    name "Test Process RTN_TNA"
+    script "../main.nf"
+    process "RTN_TNA"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "rtn"
+    tag "rtn/tni"
+    tag "rtn/tna"
+
+    setup {
+        def content = "CYP24A1\nNNAT\nPHACTR3"
+        def DEGs = file("${workDir}/degs.tsv")
+        DEGs.text = content
+
+        run("RTN_TNI") {
+            script "../../../rtn/tni/main.nf"
+            process {
+                """
+                input[0] = [
+                  [id:'test'],
+                  file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/salmon.merged.gene_counts_length_scaled.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("musmusculus tna expression matrix - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = RTN_TNI.out.tni
+                input[1] = Channel.of([
+                    [ id:'test', single_end: true ], // meta map
+                    [ file("${workDir}/degs.tsv", checkIfExists: true) ]
+                ])
+                input[2] = Channel.of([
+                    [ id:'test', single_end: true ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/treatment_mCherry_hND6_.deseq2.results_filtered.tsv', checkIfExists: true) ]
+                ])
+                input[3] = Channel.of([
+                    [ id:'test', single_end: true ], // meta map
+                    [ ]
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.tna_object[0][1]).exists() },
+                { assert file(process.out.mra_object[0][1]).exists() },
+                { assert file(process.out.gsea1_object[0][1]).exists() },
+                { assert file(process.out.gsea1_plot[0][1]).exists() },
+                { assert file(process.out.gsea2_object[0][1]).exists() },
+                { assert file(process.out.gsea2_plot[0][1]).exists() },
+                { assert file(process.out.versions[0]).exists() }
+            )
+        }
+
+    }
+
+}
