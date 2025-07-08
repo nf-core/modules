@@ -29,40 +29,40 @@ input:
         pattern: "*.{fastq.gz,fastq,fq,fq.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_1930" 
-  - - preset:
-        type: string
-        description: Argument passed to `mixcr analyze` to specify the analysis preset.
-  - - species:
-        type: string
-        description: Species used for analysis
-        enum: ['hsa', 'mouse']
+  - preset:
+      type: string
+      description: Argument passed to `mixcr analyze` to specify the analysis preset.
+  - species:
+      type: string
+      description: Species used for analysis
+      enum: ['hsa', 'mouse']
 output:
-  - clones:
-      - meta:
+  clones:
+    - - meta:
           type: map
           description: Groovy Map containing sample information
       - "*clones*.tsv":
           type: file
           description: Clonotype abundance files
           pattern: "*clones*.tsv"
-  - reports:
-      - meta:
+  reports:
+    - - meta:
           type: map
           description: Groovy Map containing sample information
       - "*.txt":
           type: file
           description: MixCR performance reports
           pattern: "*.txt"
-  - clns:
-      - meta:
+  clns:
+    - - meta:
           type: map
           description: Groovy Map containing sample information
       - "*.clns":
           type: file
           description: Clone assembly intermediate file
           pattern: "*.clns"
-  - vdjca:
-      - meta:
+  vdjca:
+    - - meta:
           type: map
           description: Groovy Map containing sample information
       - "*.vdjca":
