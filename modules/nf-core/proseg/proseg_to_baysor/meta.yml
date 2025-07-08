@@ -19,37 +19,37 @@ input:
   - - meta:
         type: map
         description: Groovy Map containing sample information
-    - transcript_metadata.csv:
+    - transcript_metadata:
         type: file
         description: Transcript ids, genes, revised positions, assignment probability, etc.
         pattern: "*transcript-metadata.csv.gz"
   - - meta2:
         type: map
         description: Groovy Map containing sample information
-    - cell_polygons.geojson:
+    - cell_polygons:
         type: file
         description: "Path to the cell polygons file."
         pattern: "*cell-polygons.geojson.gz"
 
 output:
-  baysor_transcript_metadata:
-    - - meta:
-          type: map
-          description: Groovy Map containing sample information
-      - transcript_metadata.csv:
-          type: file
-          description: Transcript ids, genes, revised positions, assignment probability, etc.
-          pattern: "*baysor-transcript-metadata.csv"
   baysor_cell_polygons:
     - - meta:
           type: map
           description: Groovy Map containing sample information
-      - cell_polygons.geojson:
+      - '*baysor-cell-polygons.geojson':
           type: file
           description: "Path to the cell polygons file."
           pattern: "*baysor-cell-polygons.geojson"
+  baysor_transcript_metadata:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - '*baysor-transcript-metadata.csv':
+          type: file
+          description: Transcript ids, genes, revised positions, assignment probability, etc.
+          pattern: "*baysor-transcript-metadata.csv"
   versions:
-      - versions.yml:
+      - 'versions.yml':
           type: file
           description: File containing software versions
           pattern: "versions.yml"

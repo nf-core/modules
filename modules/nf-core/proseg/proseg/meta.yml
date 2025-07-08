@@ -24,20 +24,17 @@ input:
         type: file
         description: Transcript ids, genes, revised positions, assignment probability, etc.
         pattern: "*transcript-metadata.csv.gz"
-  - - meta2:
-        type: map
-        description: Groovy Map containing sample information
-    - cell_polygons.geojson:
-        type: file
-        description: Cell polygons file
-        pattern: "*cell-polygons.geojson.gz"
+  - mode:
+      type: string
+      description: Proseg preset mode
+      enum: ['xenium', 'merfish', 'cosmx']
 
 output:
   baysor_transcript_metadata:
       - - meta:
           type: map
           description: Groovy Map containing sample information
-        - transcript_metadata.csv:
+        - "*baysor-transcript-metadata.csv":
             type: file
             description: Transcript ids, genes, revised positions, assignment probability, etc.
             pattern: "*baysor-transcript-metadata.csv"
@@ -45,12 +42,12 @@ output:
       - - meta:
           type: map
           description: Groovy Map containing sample information
-        - cell_polygons.geojson:
+        - "*baysor-cell-polygons.geojson":
             type: file
             description: Adjusted cell polygons file
             pattern: "*baysor-cell-polygons.geojson"
   versions:
-      - versions.yml:
+      - "versions.yml":
           type: file
           description: File containing software versions
           pattern: "versions.yml"
