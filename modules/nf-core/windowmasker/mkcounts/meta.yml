@@ -21,9 +21,10 @@ input:
     - ref:
         type: file
         description: An input nucleotide fasta file.
+        ontologies: []
 output:
-  - counts:
-      - meta:
+  counts:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -32,11 +33,14 @@ output:
           type: file
           description: A file containing frequency counts of repetitive units.
           pattern: "*.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@DLBPointon"
 maintainers:

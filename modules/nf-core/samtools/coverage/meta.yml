@@ -25,10 +25,12 @@ input:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - input_index:
         type: file
         description: BAM/CRAM index file
         pattern: "*.{bai,crai}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -38,6 +40,7 @@ input:
         type: file
         description: Reference genome file
         pattern: "*.{fa,fasta}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -47,9 +50,10 @@ input:
         type: file
         description: Reference genome index file
         pattern: "*.fai"
+        ontologies: []
 output:
-  - coverage:
-      - meta:
+  coverage:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -59,11 +63,14 @@ output:
           description: Tabulated text containing the coverage at each position or region
             or an ASCII-art histogram (with --histogram).
           pattern: "*.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@LouisLeNezet"
 maintainers:

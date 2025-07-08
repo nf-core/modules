@@ -23,12 +23,14 @@ input:
     - reads:
         type: file
         description: FASTQ file(s) to demultiplex
-  - - barcode_file:
-        type: file
-        description: FASTQ file containing barcode sequences
+        ontologies: []
+  - barcode_file:
+      type: file
+      description: FASTQ file containing barcode sequences
+      ontologies: []
 output:
-  - fastq:
-      - meta:
+  fastq:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,29 +42,32 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*[!no_match].fastq.gz"
-  - no_match_fastq:
-      - meta:
+  no_match_fastq:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-          pattern: "*no_match.fastq.gz"
+          pattern: "*[!no_match].fastq.gz"
       - "*_no_match_*.fastq.gz":
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*no_match.fastq.gz"
-  - report:
-      - "*.log":
-          type: file
-          description: File containing demultiplexing log
-          pattern: "*.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  report:
+    - "*.log":
+        type: file
+        description: File containing demultiplexing log
+        pattern: "*.log"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@CharlotteAnne"
   - "@oscarwilkins"
