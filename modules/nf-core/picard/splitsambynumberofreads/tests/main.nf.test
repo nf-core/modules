@@ -1,15 +1,12 @@
 // nf-core modules test picard/splitsambynumberofreads
 nextflow_process {
-
     name "Test Process PICARD_SPLITSAMBYNUMBEROFREADS"
     script "../main.nf"
     process "PICARD_SPLITSAMBYNUMBEROFREADS"
-
     tag "modules"
     tag "modules_nfcore"
     tag "picard"
     tag "picard/splitsambynumberofreads"
-
     test("sarscov2 - bam, [], split_to_N_reads, [], []") {
         when {
             process {
@@ -25,24 +22,18 @@ nextflow_process {
                 """
             }
         }
-
         then {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
-
     test("sarscov2 - bam, [], split_to_N_reads, [], [] - stub") {
-
         options "-stub"
-
         when {
             process {
                 """
-
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
@@ -54,18 +45,14 @@ nextflow_process {
                 """
             }
         }
-
         then {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
-
     test("sarscov2 - bam, [], [], split_to_N_files, []") {
-
         when {
             process {
                 """
@@ -80,7 +67,6 @@ nextflow_process {
                 """
             }
         }
-
         then {
             assertAll(
                 { assert process.success },
@@ -88,17 +74,12 @@ nextflow_process {
                 // See https://nf-co.re/docs/contributing/tutorials/nf-test_assertions for more information and examples.
             )
         }
-
     }
-
     test("sarscov2 - bam, [], [], split_to_N_files, [] - stub") {
-
         options "-stub"
-
         when {
             process {
                 """
-
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
@@ -110,18 +91,15 @@ nextflow_process {
                 """
             }
         }
-
         then {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
     //// crams ////
     test("sarscov2 - cram, fasta, fai, [], split_to_N_reads, [], []") {
-
         when {
             process {
                 """
@@ -140,20 +118,15 @@ nextflow_process {
                 """
             }
         }
-
         then {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
-
     test("sarscov2 - cram, fasta, fai, [], split_to_N_reads, [], [] - stub") {
-
         options "-stub"
-
         when {
             process {
                 """
@@ -172,18 +145,14 @@ nextflow_process {
                 """
             }
         }
-
         then {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
-
     test("sarscov2 - cram, fasta, fai, [], [], split_to_N_files, []") {
-
         when {
             process {
                 """
@@ -202,7 +171,6 @@ nextflow_process {
                 """
             }
         }
-
         then {
             assertAll(
                 { assert process.success },
@@ -210,17 +178,12 @@ nextflow_process {
                 // See https://nf-co.re/docs/contributing/tutorials/nf-test_assertions for more information and examples.
             )
         }
-
     }
-
     test("sarscov2 - cram, fasta, fai, [], [], split_to_N_files, [] - stub") {
-
         options "-stub"
-
         when {
             process {
                 """
-
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.recalibrated.sorted.cram', checkIfExists: true),
@@ -236,13 +199,11 @@ nextflow_process {
                 """
             }
         }
-
         then {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
 }
