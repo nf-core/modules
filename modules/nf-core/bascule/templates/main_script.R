@@ -42,7 +42,6 @@ counts_all = lapply(list.files(counts_folder, full.names=TRUE), function(file_id
 n_types = length(counts_all)
 types_names = names(counts_all)
 
-
 # keep only samples present in all events types
 samples_list = lapply(types_names, function(i) {
   tibble(counts_id=i, samples=rownames(counts_all[[i]]))
@@ -63,10 +62,12 @@ counts = lapply(types_names, function(type_id) {
 }) %>% setNames(types_names)
 
 
-# create conda env
-# print(conda_list(conda = "auto"))
-# print(py_config())
-
+# set up reticulate
+## define micromamba binary as main conda binary
+options(reticulate.conda_binary=system("which micromamba", intern=TRUE))
+## define the python binary - not necessary if RETICULATE_PYTHON is defined
+# use_python(system("which python", intern=TRUE), required=TRUE)
+## load pybascule package
 py = import("pybascule")
 
 x = fit(counts=counts,
@@ -87,8 +88,7 @@ if (length(samples_list) > 1) {
 
 x = convert_dn_names(x, cutoff=as.numeric(opt[["cutoff"]]))
 
-# Plots
-
+# plots
 pl_signatures = plot_signatures(x)
 pl_exposures = plot_exposures(x)
 pl_centroids = plot_centroids(x)
