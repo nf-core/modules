@@ -17,25 +17,21 @@ tools:
 
 input:
   - transcript-metadata:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "transcript-metadata.csv.gz":
-          type: file
-          description: Transcript ids, genes, revised positions, assignment probability, etc.
-          pattern: "*transcript-metadata.csv.gz"
+      - - meta:
+              type: map
+              description: Groovy Map containing sample information
+        - "transcript-metadata.csv.gz":
+              type: file
+              description: Transcript ids, genes, revised positions, assignment probability, etc.
+              pattern: "*transcript-metadata.csv.gz"
   - cell-polygons:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "cell-polygons.geojson.gz":
-          type: file
-          description: "Path to the cell polygons file."
-          path: "*cell-polygons.geojson.gz"
+      - - meta:
+              type: map
+              description: Groovy Map containing sample information
+        - "cell-polygons.geojson.gz":
+              type: file
+              description: "Path to the cell polygons file."
+              path: "*cell-polygons.geojson.gz"
 
 output:
   - versions:
@@ -43,25 +39,21 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
   - baysor-transcript-metadata:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "baysor-transcript-metadata.csv":
-          type: file
-          description: Transcript ids, genes, revised positions, assignment probability, etc.
-          pattern: "*baysor-transcript-metadata.csv"
+      - - meta:
+              type: map
+              description: Groovy Map containing sample information
+        - "baysor-transcript-metadata.csv":
+              type: file
+              description: Transcript ids, genes, revised positions, assignment probability, etc.
+              pattern: "*baysor-transcript-metadata.csv"
   - baysor-cell-polygons:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "baysor-cell-polygons.geojson":
-          type: file
-          description: "Path to the cell polygons file."
-          path: "*baysor-cell-polygons.geojson"
+      - - meta:
+              type: map
+              description: Groovy Map containing sample information
+        - "baysor-cell-polygons.geojson":
+              type: file
+              description: "Path to the cell polygons file."
+              path: "*baysor-cell-polygons.geojson"
 
 authors:
   - "@derrik-gratz"

@@ -16,90 +16,72 @@ tools:
       licence: "GPLv3"
 
 input:
-  - transcripts:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*transcripts.csv.gz":
-          type: file
-          description: File containing preliminary assignments of transcripts to nuclei
-          pattern: "*transcripts.csv.gz"
-  - mode:
-      type: string
-      description: Preset modes for proseg
+    - - meta:
+            type: map
+            description: Groovy Map containing sample information
+      - transcripts:
+            type: file
+            description: File containing preliminary assignments of transcripts to nuclei
+            pattern: "*transcripts.csv.gz"
+    - mode:
+        type: string
+        description: Preset modes for proseg
 
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - cell-metadata:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "cell-metadata.csv.gz":
-          type: file
-          description: Cell centroids, volume, and other information
-          pattern: "*cell-metadata.csv.gz"
-  - transcript-metadata:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "transcript-metadata.csv.gz":
-          type: file
-          description: Transcript ids, genes, revised positions, assignment probability, etc.
-          pattern: "*transcript-metadata.csv.gz"
-  - cell-polygons:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "cell-polygons.geojson.gz":
-          type: file
-          description: "Path to the cell polygons file."
-          path: "*cell-polygons.geojson.gz"
-  - cell-polygons-layers:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "cell-polygons-layers.geojson.gz":
-          type: file
-          description: "Path to the cell polygons layers file."
-          path: "*cell-polygons-layers.geojson.gz"
-  - cell-polygons-layers:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "expected-counts.csv.gz":
-          type: file
-          description: "Path to the expected counts file."
-          path: "*expected-counts.csv.gz"
-  - union-cell-polygons:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "union-cell-polygons.geojson.gz":
-          type: file
-          description: "Path to the union cell polygons file."
-          path: "*union-cell-polygons.geojson.gz"
+    - versions:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+    - cell-metadata:
+        - - meta:
+                type: map
+                description: Groovy Map containing sample information
+          - "cell-metadata.csv.gz":
+                type: file
+                description: Cell centroids, volume, and other information
+                pattern: "*cell-metadata.csv.gz"
+    - transcript-metadata:
+        - - meta:
+                type: map
+                description: Groovy Map containing sample information
+          - "transcript-metadata.csv.gz":
+                type: file
+                description: Transcript ids, genes, revised positions, assignment probability, etc.
+                pattern: "*transcript-metadata.csv.gz"
+    - cell-polygons:
+        - - meta:
+                type: map
+                description: |
+                  Groovy Map containing sample information
+                  e.g. `[ id:'sample1', single_end:false ]`
+          - "cell-polygons.geojson.gz":
+                type: file
+                description: "Path to the cell polygons file."
+                path: "*cell-polygons.geojson.gz"
+    - cell-polygons-layers:
+        - - meta:
+                type: map
+                description: Groovy Map containing sample information
+          - "cell-polygons-layers.geojson.gz":
+                type: file
+                description: "Path to the cell polygons layers file."
+                path: "*cell-polygons-layers.geojson.gz"
+    - cell-polygons-layers:
+        - - meta:
+                type: map
+                description: Groovy Map containing sample information
+          - "expected-counts.csv.gz":
+                type: file
+                description: "Path to the expected counts file."
+                path: "*expected-counts.csv.gz"
+    - union-cell-polygons:
+        - - meta:
+                type: map
+                description: Groovy Map containing sample information
+          - "union-cell-polygons.geojson.gz":
+                type: file
+                description: "Path to the union cell polygons file."
+                path: "*union-cell-polygons.geojson.gz"
 
 authors:
   - "@derrik-gratz"
