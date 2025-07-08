@@ -14,7 +14,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/vdj/subsampled_5k_human_antiCMV_T_TBNK_connect_VDJ_S1_L001_R1_001.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + '/genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/vdj/subsampled_5k_human_antiCMV_T_TBNK_connect_VDJ_S1_L001_R2_001.fastq.gz', checkIfExists: true) ]
                 ]
                 input[1] = "10x-vdj-tcr"
@@ -30,7 +30,8 @@ nextflow_process {
                         process.out.clones,
                         // process.out.vdjca,
                         // process.out.clns,
-                        process.out.versions
+                        process.out.versions,
+                        path(process.out.versions[0]).yaml
                     ).match()
                 }
             )

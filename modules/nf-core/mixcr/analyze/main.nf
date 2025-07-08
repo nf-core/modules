@@ -20,10 +20,10 @@ process MIXCR_ANALYZE {
 
     output:
     tuple val(meta), path("*clones*.tsv"), emit: clones
-    tuple val(meta), path("*.txt"),        emit: reports
-    tuple val(meta), path("*.clns"),       emit: clns, optional: true
-    tuple val(meta), path("*.vdjca"),      emit: vdjca, optional: true
-    path "versions.yml",                   emit: versions
+    tuple val(meta), path("*.txt")       , emit: reports
+    tuple val(meta), path("*.clns")      , emit: clns, optional: true
+    tuple val(meta), path("*.vdjca")     , emit: vdjca, optional: true
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -48,10 +48,8 @@ process MIXCR_ANALYZE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mixcr -v 
     touch ${prefix}.clones_TRA.tsv
     touch ${prefix}.clones_TRB.tsv
     touch ${prefix}.clns
