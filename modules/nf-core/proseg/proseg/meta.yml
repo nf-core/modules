@@ -23,28 +23,60 @@ input:
         type: file
         description: Transcript ids, genes, revised positions, assignment probability, etc.
         pattern: "*transcript-metadata.csv.gz"
-  - - mode:
-        type: string
-        description: Proseg preset mode
-        enum: ['xenium', 'merfish', 'cosmx']
+  - mode:
+      type: string
+      description: Proseg preset mode
+      enum: ['xenium', 'merfish', 'cosmx']
 
 output:
-  baysor_transcript_metadata:
+  transcript_metadata:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "*baysor-transcript-metadata.csv":
+        - "*transcript-metadata.csv":
             type: file
             description: Transcript ids, genes, revised positions, assignment probability, etc.
-            pattern: "*baysor-transcript-metadata.csv"
-  baysor_cell_polygons:
+            pattern: "*transcript-metadata.csv"
+  cell_metadata:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "*baysor-cell-polygons.geojson":
+        - "*cell-metadata.csv.gz":
             type: file
-            description: Adjusted cell polygons file
-            pattern: "*baysor-cell-polygons.geojson"
+            description: Cell metadata file
+            pattern: "*cell-metadata.csv.gz"
+  cell_polygons:
+      - - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - "*cell-polygons.geojson.gz":
+            type: file
+            description: Cell polygons file
+            pattern: "*cell-polygons.geojson.gz"
+  cell_polygons_layers:
+      - - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - "cell-polygons-layers.geojson.gz":
+            type: file
+            description: Cell polygon layers file
+            pattern: "cell-polygons-layers.geojson.gz"
+  expected_counts:
+      - - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - "expected-counts.csv.gz":
+            type: file
+            description: Expected transcript counts file
+            pattern: "*expected-counts.csv.gz"
+  union_cell_polygons:
+      - - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - "union-cell-polygons.geojson.gz":
+            type: file
+            description: Union cell polygons file
+            pattern: "*union-cell-polygons.geojson.gz"
   versions:
       - "versions.yml":
           type: file
