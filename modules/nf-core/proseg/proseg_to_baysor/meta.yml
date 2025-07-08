@@ -1,7 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "proseg"
-description: write your description here
+name: "proseg_to_baysor"
+description: Convert proseg outputs to baysor format for import to Xenium explorer
 keywords:
   - segmentation
   - spatial
@@ -13,47 +13,46 @@ tools:
       documentation: "https://github.com/dcjones/proseg"
       tool_dev_url: "https://github.com/dcjones/proseg"
       doi: "10.1038/s41592-025-02697-0"
-      licence: "GPLv3"
+      licence: ["GPLv3"]
 
 input:
-  - transcript-metadata:
-      - - meta:
-              type: map
-              description: Groovy Map containing sample information
-        - "transcript-metadata.csv.gz":
-              type: file
-              description: Transcript ids, genes, revised positions, assignment probability, etc.
-              pattern: "*transcript-metadata.csv.gz"
-  - cell-polygons:
-      - - meta:
-              type: map
-              description: Groovy Map containing sample information
-        - "cell-polygons.geojson.gz":
-              type: file
-              description: "Path to the cell polygons file."
-              path: "*cell-polygons.geojson.gz"
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information
+    - transcript_metadata.csv:
+        type: file
+        description: Transcript ids, genes, revised positions, assignment probability, etc.
+        pattern: "*transcript-metadata.csv.gz"
+  - - meta2:
+        type: map
+        description: Groovy Map containing sample information
+    - cell_polygons.geojson:
+        type: file
+        description: "Path to the cell polygons file."
+        pattern: "*cell-polygons.geojson.gz"
 
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - baysor-transcript-metadata:
-      - - meta:
-              type: map
-              description: Groovy Map containing sample information
-        - "baysor-transcript-metadata.csv":
-              type: file
-              description: Transcript ids, genes, revised positions, assignment probability, etc.
-              pattern: "*baysor-transcript-metadata.csv"
-  - baysor-cell-polygons:
-      - - meta:
-              type: map
-              description: Groovy Map containing sample information
-        - "baysor-cell-polygons.geojson":
-              type: file
-              description: "Path to the cell polygons file."
-              path: "*baysor-cell-polygons.geojson"
+  baysor_transcript_metadata:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - transcript_metadata.csv:
+          type: file
+          description: Transcript ids, genes, revised positions, assignment probability, etc.
+          pattern: "*baysor-transcript-metadata.csv"
+  baysor_cell_polygons:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - cell_polygons.geojson:
+          type: file
+          description: "Path to the cell polygons file."
+          pattern: "*baysor-cell-polygons.geojson"
+  versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 
 authors:
   - "@derrik-gratz"
