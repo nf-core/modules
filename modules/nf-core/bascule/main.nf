@@ -21,6 +21,9 @@ process BASCULE {
     task.ext.when == null || task.ext.when
 
     script:
+    """
+    export RETICULATE_PYTHON=\$(type -p python3)
+    """
     template "main_script.R"
 
     stub:
