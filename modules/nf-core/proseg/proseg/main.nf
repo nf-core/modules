@@ -9,7 +9,7 @@ process PROSEG {
 
     input:
     tuple val(meta), path(transcripts)
-    val(mode)
+    val mode
 
     output: 
     tuple val(meta), path("transcript-metadata.csv.gz")     , emit: transcript_metadata
