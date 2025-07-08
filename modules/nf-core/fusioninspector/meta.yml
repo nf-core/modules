@@ -13,6 +13,7 @@ tools:
       tool_dev_url: https://github.com/FusionInspector/FusionInspector
       doi: 10.1101/2021.08.02.454639"
       licence: ["BSD-3-Clause"]
+      identifier: ""
 
 input:
   - - meta:
@@ -31,7 +32,7 @@ input:
         description: Fusion targets list
         pattern: "*.{txt}"
         ontologies:
-            - edam: "http://edamontology.org/format_2330" # Textual format
+          - edam: "http://edamontology.org/format_2330" # Textual format
   - - meta2:
         type: map
         description: |
@@ -49,7 +50,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "FusionInspector.fusions.tsv":
+      - "*FusionInspector.fusions.tsv":
           type: file
           description: FusionInspector output TSV file
           pattern: "*.tsv"
@@ -61,7 +62,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "fi_workdir/.gtf":
+      - fi_workdir/*.gtf:
           type: file
           description: GTF output file
           pattern: "*.gtf"
@@ -110,7 +111,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "IGV_inputs":
+      - IGV_inputs:
           type: directory
           description: IGV inputs directory
           pattern: "IGV_inputs"
@@ -120,7 +121,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "fi_workdir":
+      - fi_workdir:
           type: directory
           description: FusionInspector work directory
           pattern: "fi_workdir"
@@ -130,12 +131,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "chckpts_dir":
+      - chckpts_dir:
           type: directory
           description: Checkpoints directory
           pattern: "chckpts_dir"
   versions:
-    - "versions.yml":
+    - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
