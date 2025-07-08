@@ -29,9 +29,11 @@ input:
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
     - counts_matrices:
-        type: directory
+        type: file
         description: Folder with all input counts matrices generated with SigProfilerMatrixGenerator
-        pattern: "counts_matrices/"
+        pattern: "counts_matrices.tar.gz"
+        ontologies:
+          - edam: "http://edamontology.org/format_3989"
 output:
   - bascule_rds:
       - meta:
