@@ -4,8 +4,8 @@ process PROSEG {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c0/c0dcce070a1e7b921edd0254596eb6945f97c54e2be0fe3130e2d2678b3cfd42/data':
-        'community.wave.seqera.io/library/rust-proseg:2.0.4--6c02254be033edab' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/38/38ebf0dd1e071eb5a99fd220459c09625c1465c5491a3e2dab392bfbe8acb45f/data':
+        'community.wave.seqera.io/library/rust-proseg:2.0.5--dde937bdc1cf4715' }"
 
     input:
     tuple val(meta), path(transcripts)
