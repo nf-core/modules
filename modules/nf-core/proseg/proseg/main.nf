@@ -1,11 +1,11 @@
 process PROSEG {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_high'
 
-    // conda "${moduleDir}/environment.yml"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'ghcr.io/derrik-gratz/proseg:v2.0.5':
-        'ghcr.io/derrik-gratz/proseg:v2.0.5' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c0/c0dcce070a1e7b921edd0254596eb6945f97c54e2be0fe3130e2d2678b3cfd42/data':
+        'community.wave.seqera.io/library/rust-proseg:2.0.4--6c02254be033edab' }"
 
     input:
     tuple val(meta), path(transcripts)
