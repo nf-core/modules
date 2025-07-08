@@ -31,16 +31,16 @@ input:
 output:
   baysor_transcript_metadata:
       - - meta:
-          type: map
-          description: Groovy Map containing sample information
+            type: map
+            description: Groovy Map containing sample information
         - "*baysor-transcript-metadata.csv":
             type: file
             description: Transcript ids, genes, revised positions, assignment probability, etc.
             pattern: "*baysor-transcript-metadata.csv"
   baysor_cell_polygons:
       - - meta:
-          type: map
-          description: Groovy Map containing sample information
+            type: map
+            description: Groovy Map containing sample information
         - "*baysor-cell-polygons.geojson":
             type: file
             description: Adjusted cell polygons file
