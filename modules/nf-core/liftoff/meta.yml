@@ -30,22 +30,26 @@ input:
         type: file
         description: Target assembly in fasta format (can be gzipped)
         pattern: "*.{fa,fa.gz,fasta,fasta.gz,fas,fas.gz,fsa,fsa.gz}"
-  - - ref_fa:
-        type: file
-        description: Reference assembly in fasta format (can be gzipped)
-        pattern: "*.{fa,fa.gz,fasta,fasta.gz,fas,fas.gz,fsa,fsa.gz}"
-  - - ref_annotation:
-        type: file
-        description: Reference assembly annotations in gtf or gff3 format
-        pattern: "*.{gtf,gff3}"
-  - - ref_db:
-        type: file
-        description: |
-          Name of feature database; if not specified, the -g argument must
-          be provided and a database will be built automatically
+        ontologies: []
+  - ref_fa:
+      type: file
+      description: Reference assembly in fasta format (can be gzipped)
+      pattern: "*.{fa,fa.gz,fasta,fasta.gz,fas,fas.gz,fsa,fsa.gz}"
+      ontologies: []
+  - ref_annotation:
+      type: file
+      description: Reference assembly annotations in gtf or gff3 format
+      pattern: "*.{gtf,gff3}"
+      ontologies: []
+  - ref_db:
+      type: file
+      description: |
+        Name of feature database; if not specified, the -g argument must
+        be provided and a database will be built automatically
+      ontologies: []
 output:
-  - gff3:
-      - meta:
+  gff3:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,8 +58,9 @@ output:
           type: file
           description: Lifted annotations for the target assembly in gff3 format
           pattern: "*.gff3"
-  - polished_gff3:
-      - meta:
+          ontologies: []
+  polished_gff3:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,8 +69,9 @@ output:
           type: file
           description: Polished lifted annotations for the target assembly in gff3 format
           pattern: "*.polished.gff3"
-  - unmapped_txt:
-      - meta:
+          ontologies: []
+  unmapped_txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -74,11 +80,14 @@ output:
           type: file
           description: List of unmapped reference annotations
           pattern: "*.unmapped.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@GallVp"
 maintainers:

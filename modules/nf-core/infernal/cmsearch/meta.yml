@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "infernal_cmsearch"
 description: Search covariance models against a sequence database
@@ -8,7 +7,8 @@ keywords:
   - sequence search
 tools:
   - "infernal":
-      description: "Infernal is for searching DNA sequence databases for RNA structure and sequence similarities."
+      description: "Infernal is for searching DNA sequence databases for RNA structure
+        and sequence similarities."
       homepage: "http://eddylab.org/infernal/Userguide.pdf"
       documentation: "http://eddylab.org/infernal/Userguide.pdf"
       tool_dev_url: "https://github.com/EddyRivasLab/infernal"
@@ -35,20 +35,20 @@ input:
           against. Can be gzipped.
         ontologies:
           - edam: "http://edamontology.org/format_1929"
-  - - write_align:
-        type: boolean
-        description: |
-          Flag to save optional alignment output in Stockholm
-          format. Specify with 'true' to save.
-  - - write_target:
-        type: boolean
-        description: |
-          Flag to save optional per target summary in a tabular
-          format. Specify with 'true' to save.
+  - write_align:
+      type: boolean
+      description: |
+        Flag to save optional alignment output in Stockholm
+        format. Specify with 'true' to save.
+  - write_target:
+      type: boolean
+      description: |
+        Flag to save optional per target summary in a tabular
+        format. Specify with 'true' to save.
 
 output:
-  - output:
-      - meta:
+  output:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -59,20 +59,20 @@ output:
           pattern: "*.{txt.gz}"
           ontologies:
             - edam: "http://edamontology.org/data_3671"
-  - alignments:
-      - meta:
+  alignments:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*.sto.gz":
           type: file
           description: Optional multiple sequence alignment (MSA) in Stockholm format
           pattern: "*.{sto.gz}"
           ontologies:
             - edam: "http://edamontology.org/format_1961"
-  - target_summary:
-      - meta:
+  target_summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -83,13 +83,13 @@ output:
           pattern: "*.{tbl.gz}"
           ontologies:
             - edam: "http://edamontology.org/format_3475"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: "http://edamontology.org/format_3750"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750"
 
 authors:
   - "@prototaxites"
