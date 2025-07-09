@@ -28,8 +28,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                         process.out.clones,
-                        process.out.vdjca,
-                        process.out.clns,
+                        file(process.out.vdjca[0][1]).name,
+                        file(process.out.clns[0][1]).name,
                         process.out.versions,
                         path(process.out.versions[0]).yaml
                     ).match()
