@@ -17,7 +17,7 @@ nextflow_process {
                     [ id:'test' ],
                     [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/vdj/subsampled_5k_human_antiCMV_T_TBNK_connect_VDJ_S1_L001_R1_001.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + '/genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/vdj/subsampled_5k_human_antiCMV_T_TBNK_connect_VDJ_S1_L001_R2_001.fastq.gz', checkIfExists: true) ]
                 ]
-                input[1] = "10x-vdj-tcr"
+                input[1] = "10x-sc-xcr-vdj"
                 input[2] = "hsa"
                 """
             }
@@ -28,8 +28,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                         process.out.clones,
-                        // process.out.vdjca,
-                        // process.out.clns,
+                        process.out.vdjca,
+                        process.out.clns,
                         process.out.versions,
                         path(process.out.versions[0]).yaml
                     ).match()
@@ -50,7 +50,7 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                     [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/vdj/subsampled_5k_human_antiCMV_T_TBNK_connect_VDJ_S1_L001_R1_001.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + '/genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/vdj/subsampled_5k_human_antiCMV_T_TBNK_connect_VDJ_S1_L001_R2_001.fastq.gz', checkIfExists: true) ]
                 ]
-                input[1] = "10x-vdj-tcr"
+                input[1] = "10x-sc-xcr-vdj"
                 input[2] = "hsa"
                 """
             }
