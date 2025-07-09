@@ -72,17 +72,21 @@ process PICARD_SPLITSAMBYNUMBEROFREADS {
         split_arg = "--SPLIT_TO_N_READS ${split_to_N_reads}"
     }
     def avail_mem = 3072
+    def ext = input.name.tokenize('.')[-1]
+    if ( !['bam', 'cram', 'sam'].contains(ext) )
+        ext = 'bam'
     """
     mkdir picardsplit
+
     if echo "${split_to_N_files}" | grep -qE '^[1-9][0-9]*\$'; then
         i=1
         while [ \$i -le ${split_to_N_files} ]; do
             fname=\$(printf "%04d" \$i)
-            touch picardsplit/${prefix}_\${fname}.bam
+            touch picardsplit/${prefix}_\${fname}.${ext}
             i=\$((i + 1))
         done
     else
-        touch picardsplit/${prefix}_0001.bam
+        touch picardsplit/${prefix}_0001.${ext}
     fi
 
     cat <<-END_VERSIONS > versions.yml
