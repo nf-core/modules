@@ -9,6 +9,10 @@ process MIXCR_ANALYZE {
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7d/7dccca2db544d708a462b2ba49117b41e32141d8eb46f4dbc8730e210d2cdbae/data':
         'community.wave.seqera.io/library/mixcr:4.7.0--bb57944ca92aeb74' }"
 
+    containerOptions "${ workflow.containerEngine == 'singularity' ?
+        '-B \$HOME' :
+        '' }"
+    
     input:
     tuple val(meta), path(reads)
     val preset
@@ -30,7 +34,6 @@ process MIXCR_ANALYZE {
     def java_mem = task.memory ? "-Xmx${task.memory.toGiga()}g" : ''
     """
     mixcr $java_mem analyze \\
-        --use-local-temp \\
         $preset \\
         --species $species \\
         $args \\
