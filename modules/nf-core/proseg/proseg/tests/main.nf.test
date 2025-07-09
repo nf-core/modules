@@ -33,6 +33,7 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.transcript_metadata[0][1]).linesGzip[0],
                     path(process.out.cell_polygons[0][1]).linesGzip[0],
+                    process.out.versions,
                     path(process.out.versions[0]).yaml
                 ).match() }
             )
