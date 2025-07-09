@@ -1,0 +1,92 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "picard_splitsambynumberofreads"
+description: Splits a SAM/BAM/CRAM file to multiple files. This tool splits the
+  input query-grouped SAM/BAM/CRAM file into multiple files while maintaining
+  the sort order. This can be used to split a large unmapped input in order to
+  parallelize alignment.
+keywords:
+  - split
+  - parallel
+  - bam
+  - subset
+  - downsample
+  - sam
+  - cram
+tools:
+  - "picard":
+      description: "Splits a SAM or BAM file to multiple BAMs by number of reads."
+      homepage: "https://gatk.broadinstitute.org/hc/en-us/articles/360037064232-SplitSamByNumberOfReads-Picard"
+      documentation: "https://gatk.broadinstitute.org/hc/en-us/articles/360037064232-SplitSamByNumberOfReads-Picard"
+      tool_dev_url: "https://github.com/broadinstitute/picard"
+      licence: ["MIT"]
+      identifier: biotools:picard_tools
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - input:
+        type: file
+        description: BAM/SAM/CRAM file
+        pattern: "*.{bam,sam,cram}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_2573" # SAM
+          - edam: "http://edamontology.org/format_3462" # CRAM
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: Reference fasta (optional - only required for CRAM input)
+        pattern: "*.{fasta,fa}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+    - fai:
+        type: file
+        description: FAI file (optional - only required for CRAM input)
+        pattern: "*.{fai}"
+  - split_to_N_reads:
+      type: integer
+      description: |
+        Split to have approximately N reads per output file, e.g. `4000000`.
+        The actual number of reads per output file will vary by no more than the number of output files * (the maximum number of reads with the same queryname - 1).
+        Incompatible with `split_to_N_files`
+  - split_to_N_files:
+      type: integer
+      description: |
+        Split to N files, e.g. `3`.
+        `Incompatible with split_to_N_files`
+  - arguments_file:
+      type: file
+      description: "optional Picard arguments file"
+      pattern: "*.{txt,list,args,arguments}"
+
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "picardsplit/*.{bam,sam,cram}":
+          type: file
+          description: Split BAM files
+          pattern: "*.{bam,sam,cram}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@Y-Pei"
+maintainers:
+  - "@Y-Pei"
