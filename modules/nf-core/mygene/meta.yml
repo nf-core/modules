@@ -26,9 +26,12 @@ input:
           By default, the column name should be "gene_id", but this can be changed by
           using "--columname gene_id" in ext.args.
         pattern: "*.{csv,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
-  - gmt:
-      - meta:
+  gmt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,8 +41,9 @@ output:
           description: |
             Each row contains the GO id, a description, and a list of gene ids.
           pattern: "*.gmt"
-  - tsv:
-      - meta:
+          ontologies: []
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,11 +54,15 @@ output:
             (optional) A tsv file with the following columns:
             query, mygene_id, go_id, go_term, go_evidence, go_category, symbol, name, taxid
           pattern: "*.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@suzannejin"
 maintainers:

@@ -29,18 +29,21 @@ input:
         description: BED file describing where each contig was cut up (typically output
           from CONCOCT's cut_up_fasta.py)
         pattern: "*.bed"
+        ontologies: []
     - bamfiles:
         type: file
         description: A single or list of BAM files of reads mapped back to original
           contigs (prior cutting up)
         pattern: "*.bam"
+        ontologies: []
     - baifiles:
         type: file
         description: A single or list of BAM index files (.bai) corresponding to BAM
         pattern: "*.bam"
+        ontologies: []
 output:
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,11 +52,15 @@ output:
           type: file
           description: Contig coverage table
           pattern: "*.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

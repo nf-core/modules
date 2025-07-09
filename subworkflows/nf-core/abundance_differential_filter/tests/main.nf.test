@@ -421,7 +421,7 @@ nextflow_workflow {
                     file(testData.expression_test_data_dir + testData.abundance_file),
                     'propd',  // analysis method
                     1.5,      // FC threshold
-                    100       // stat (weighted connectivity) threshold
+                    0.05       // significance threshold (automatically given by propd, not necessary)
                 ])
 
                 input[0] = ch_input
@@ -561,7 +561,7 @@ nextflow_workflow {
                         file(testData.expression_test_data_dir + testData.abundance_file),
                         'propd',
                         1.5,       // FC threshold
-                        100        // stat (weighted connectivity) threshold
+                        0.05        // significant threshold (automatically given by propd, not necessary)
                     ]
                 )
 
