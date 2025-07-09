@@ -57,18 +57,18 @@ output:
     - - meta:
           type: map
           description: Groovy Map containing sample information
-      - "*.clns":
+      - "*.contigs.clns":
           type: file
           description: Clone assembly intermediate file
-          pattern: "*.clns"
+          pattern: "*.contigs.clns"
   vdjca:
     - - meta:
           type: map
           description: Groovy Map containing sample information
-      - "*.vdjca":
+      - "*.extended.vdjca":
           type: file
           description: Clone alignment intermediate file
-          pattern: "*.vdjca"
+          pattern: "*.extended.vdjca"
   - versions:
       - versions.yml:
           type: file

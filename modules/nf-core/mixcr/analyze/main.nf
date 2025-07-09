@@ -1,17 +1,13 @@
 process MIXCR_ANALYZE {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_high'
 
     secret 'MI_LICENSE'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7d/7dccca2db544d708a462b2ba49117b41e32141d8eb46f4dbc8730e210d2cdbae/data':
-        'community.wave.seqera.io/library/mixcr:4.7.0--bb57944ca92aeb74' }"  //ghcr.io/milaboratory/mixcr/mixcr:4.7.0
-
-    containerOptions "${ workflow.containerEngine == 'singularity' ?
-        '-B \$HOME' :
-        '' }"
+        'community.wave.seqera.io/library/mixcr:4.7.0--bb57944ca92aeb74' }"
 
     input:
     tuple val(meta), path(reads)
@@ -19,11 +15,11 @@ process MIXCR_ANALYZE {
     val species
 
     output:
-    tuple val(meta), path("*clones*.tsv"), emit: clones
-    tuple val(meta), path("*.txt")       , emit: reports
-    tuple val(meta), path("*.clns")      , emit: clns, optional: true
-    tuple val(meta), path("*.vdjca")     , emit: vdjca, optional: true
-    path "versions.yml"                  , emit: versions
+    tuple val(meta), path("*clones*.tsv")    , emit: clones
+    tuple val(meta), path("*.txt")           , emit: reports, optional: true
+    tuple val(meta), path("*.contigs.clns")  , emit: clns, optional: true
+    tuple val(meta), path("*.extended.vdjca"), emit: vdjca, optional: true
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,6 +30,7 @@ process MIXCR_ANALYZE {
     def java_mem = task.memory ? "-Xmx${task.memory.toGiga()}g" : ''
     """
     mixcr $java_mem analyze \\
+        --use-local-temp \\
         $preset \\
         --species $species \\
         $args \\
@@ -43,7 +40,7 @@ process MIXCR_ANALYZE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mixcr: \$(mixcr -v 2>&1 | sed -n '1p' | sed -E 's/MiXCR v([0-9\\.]+).*/\1/')
+        mixcr: \$(mixcr -v | sed -n '1p' | sed -E 's/MiXCR v([0-9\\.]+).*/\\1/')
     END_VERSIONS
     """
 
@@ -58,7 +55,7 @@ process MIXCR_ANALYZE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mixcr: \$(mixcr -v 2>&1 | sed -n '1p' | sed -E 's/MiXCR v([0-9\\.]+).*/\1/')
+        mixcr: \$(mixcr -v | sed -n '1p' | sed -E 's/MiXCR v([0-9\\.]+).*/\\1/')
     END_VERSIONS
     """
 }
