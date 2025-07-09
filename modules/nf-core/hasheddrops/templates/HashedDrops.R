@@ -2,7 +2,7 @@
 
 ################################################
 ################################################
-## Fucntions                                  ##
+## Functions                                  ##
 ################################################
 ################################################
 
@@ -20,38 +20,120 @@ string_to_logical <- function(input) {
   }
 }
 
+#' Check for Non-Empty, Non-Whitespace String
+#'
+#' This function checks if the input is non-NULL and contains more than just whitespace.
+#' It returns TRUE if the input is a non-empty, non-whitespace string, and FALSE otherwise.
+#'
+#' @param input A variable to check.
+#' @return A logical value: TRUE if the input is a valid, non-empty, non-whitespace string; FALSE otherwise.
+
+is_valid_string <- function(input) {
+    !is.null(input) && nzchar(trimws(input))
+}
+
+#' Parse out options from a string without recourse to optparse
+#'
+#' @param x Long-form argument list like --opt1 val1 --opt2 val2
+#'
+#' @return named list of options and values similar to optparse
+
+parse_args <- function(x){
+    args_list <- unlist(strsplit(x, ' ?--')[[1]])[-1]
+    args_vals <- lapply(args_list, function(x) scan(text=x, what='character', quiet = TRUE))
+
+    # Ensure the option vectors are length 2 (key/ value) to catch empty ones
+    args_vals <- lapply(args_vals, function(z){ length(z) <- 2; z})
+
+    parsed_args <- structure(lapply(args_vals, function(x) x[2]), names = lapply(args_vals, function(x) x[1]))
+    parsed_args[! is.na(parsed_args)]
+}
+
 ################################################
 ################################################
-## USE PARAMETERS FROM NEXTFLOW               ##
+## PARSE PARAMETERS FROM NEXTFLOW             ##
 ################################################
 ################################################
 
-# cast parameters from nextflow
+# Set defaults and classes
+opt <- list(
+    # File inputs
+    hto_matrix = '$hto_matrix',
+    rna_matrix = '$rna_matrix',
+    runEmptyDrops = TRUE,
 
-# hashedDrops parameters
-hto_matrix <- '$hto_matrix'
-rna_matrix <- '$rna_matrix'
-lower <- as.numeric('$lower')
-niters <- as.numeric('$niters')
-testAmbient <- string_to_logical('$testAmbient')
-ignore <- string_to_null('$ignore')
-alpha <- string_to_null('$alpha')
-round <- string_to_logical('$round')
-byRank <- string_to_null('$byRank')
-isCellFDR <- as.numeric('$isCellFDR')
-ambient <- string_to_logical('$ambient')
-minProp <- as.numeric('$minProp')
-pseudoCount <- as.numeric('$pseudoCount')
-constantAmbient <- string_to_logical('$constantAmbient')
-doubletNmads <- as.numeric('$doubletNmads')
-doubletMin <- as.numeric('$doubletMin')
-doubletMixture <- string_to_logical('$doubletMixture')
-confidentNmads <- as.numeric('$confidentNmads')
-confidentMin <- as.numeric('$confidentMin')
-combinations <- string_to_null('$combinations')
-runEmptyDrops <- string_to_logical('$runEmptyDrops')
-gene_col <- as.numeric('$gene_col')
-prefix <- '$prefix'
+    # emptyDrops Parameters
+    lower = 100,        # A numeric scalar specifying the lower bound on the total UMI count, at or below which all barcodes are assumed to correspond to empty droplets.
+    niters = 10000,     # An integer scalar specifying the number of iterations to use for the Monte Carlo p-value calculations.
+    testAmbient = TRUE, # A logical scalar indicating whether results should be returned for barcodes with totals less than or equal to lower.
+    round = TRUE,       # Logical scalar indicating whether to check for non-integer values in m and, if present, round them for ambient profile estimation.
+    byRank = NULL,      # An integer scalar parametrizing an alternative method for identifying assumed empty droplets. If set, this is used to redefine lower and any specified value for lower is ignored.
+    isCellFDR = 0.01,   # Threshold to filter the cells.
+    gene_col = 2,       # Specify which column of genes.tsv or features.tsv to use for gene names; default is 2.
+
+    # hashedDrops Parameters
+    ignore = NULL,         # A numeric scalar specifying the lower bound on the total UMI count, at or below which barcodes will be ignored.
+    alpha = NULL,          # A numeric scalar specifying the scaling parameter for the Dirichlet-multinomial sampling scheme.
+    ambient = TRUE,        # Whether to use the relative abundance of each HTO in the ambient solution from emptyDrops, set TRUE only when test_ambient is TRUE.
+    minProp = 0.05,        # Numeric scalar to be used to infer the ambient profile when ambient=NULL.
+    pseudoCount = 5,       # A numeric scalar specifying the minimum pseudo-count when computing logfold changes.
+    constantAmbient = FALSE, # Logical scalar indicating whether a constant level of ambient contamination should be used to estimate LogFC2 for all cells.
+    doubletNmads = 3,      # A numeric scalar specifying the number of median absolute deviations (MADs) to use to identify doublets.
+    doubletMin = 2,        # A numeric scalar specifying the minimum threshold on the log-fold change to use to identify doublets.
+    doubletMixture = FALSE, # Logical scalar indicating whether to use a 2-component mixture model to identify doublets.
+    confidentNmads = 3,    # A numeric scalar specifying the number of MADs to use to identify confidently assigned singlets.
+    confidentMin = 2,      # A numeric scalar specifying the minimum threshold on the log-fold change to use to identify singlets.
+    combinations = NULL,   # An integer matrix specifying valid combinations of HTOs. Each row corresponds to a single sample and specifies the indices of rows in x corresponding to the HTOs used to label that sample.
+
+    # others
+    prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix') # Prefix name for output files.
+)
+opt_types <- lapply(opt, class)
+
+# Apply parameter overrides
+args_opt <- parse_args('$task.ext.args')
+for ( ao in names(args_opt)){
+    if (! ao %in% names(opt)){
+        stop(paste("Invalid option:", ao))
+    }else{
+        # Handle special cases for NULL values and logicals
+        if (args_opt[[ao]] == "NULL") {
+            opt[[ao]] <- NULL
+        } else if (opt_types[[ao]] == "logical") {
+            opt[[ao]] <- string_to_logical(args_opt[[ao]])
+        } else if (! is.null(opt[[ao]])){
+            # Preserve classes from defaults where possible
+            opt[[ao]] <- as(args_opt[[ao]], opt_types[[ao]])
+        } else {
+            opt[[ao]] <- args_opt[[ao]]
+        }
+    }
+}
+
+# Set individual variables for backward compatibility and cleaner code
+hto_matrix <- opt$hto_matrix
+rna_matrix <- opt$rna_matrix
+runEmptyDrops <- opt$runEmptyDrops
+lower <- opt$lower
+niters <- opt$niters
+testAmbient <- opt$testAmbient
+round <- opt$round
+byRank <- opt$byRank
+isCellFDR <- opt$isCellFDR
+gene_col <- opt$gene_col
+ignore <- opt$ignore
+alpha <- opt$alpha
+ambient <- opt$ambient
+minProp <- opt$minProp
+pseudoCount <- opt$pseudoCount
+constantAmbient <- opt$constantAmbient
+doubletNmads <- opt$doubletNmads
+doubletMin <- opt$doubletMin
+doubletMixture <- opt$doubletMixture
+confidentNmads <- opt$confidentNmads
+confidentMin <- opt$confidentMin
+combinations <- opt$combinations
+prefix <- opt$prefix
 
 # check if the file exists
 if (! file.exists(hto_matrix)){
