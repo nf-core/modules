@@ -26,16 +26,14 @@ nextflow_process {
         }
 
         then {
+            def lines = path(process.out.transcript_metadata[0][1]).linesGzip.size()
             assertAll(
                 { assert process.success },
+                { assert snapshot(lines).match("test_transcript_metadata_linecount") },
                 { assert snapshot(
-                    process.out.transcript_metadata.collect { meta, files ->
-                        [meta, files.findAll { file(it).name.endsWith("transcript-metadata.csv.gz") }.collect { file(it).name }]
-                    },
-                    process.out.cell_polygons.collect { meta, files ->
-                        [meta, files.findAll { file(it).name.endsWith("cell-polygons.geojson.gz") }.collect { file(it).name }]
-                    },
-                    process.out.versions
+                    path(process.out.transcript_metadata[0][1]).linesGzip[0],
+                    path(process.out.cell_polygons[0][1]).linesGzip[0],
+                    path(process.out.versions[0]).yaml
                 ).match() }
             )
         }
