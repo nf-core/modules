@@ -65,16 +65,19 @@ nextflow_process {
 
                 input[0] = SYRI.out.syri
                 input[1] = [
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
-                    genome2_cleanid
+                    [],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                        genome2_cleanid
+                    ]
                 ]
 
                 input[2] = "#file	name	tags\\nquery   lw:1.5\\nreference  lw:1.5\\n"
-                input[3] = []
-                input[4] = []
-                input[5] = []
-                input[6] = []
-                input[7] = []
+                input[3] = [[],[]]
+                input[4] = [[],[]]
+                input[5] = [[],[]]
+                input[6] = [[],[]]
+                input[7] = [[],[]]
                 """
             }
         }
@@ -100,16 +103,19 @@ nextflow_process {
 
                 input[0] = SYRI.out.syri
                 input[1] = [
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
-                    genome2_cleanid
+                    [],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                        genome2_cleanid
+                    ]
                 ]
 
                 input[2] = "#file	name	tags\\nquery   lw:1.5\\nreference  lw:1.5\\n"
-                input[3] = []
-                input[4] = []
-                input[5] = []
-                input[6] = []
-                input[7] = []
+                input[3] = [[],[]]
+                input[4] = [[],[]]
+                input[5] = [[],[]]
+                input[6] = [[],[]]
+                input[7] = [[],[]]
                 """
             }
         }
