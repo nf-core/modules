@@ -84,15 +84,15 @@ for ( ao in names(args_opt)){
 
 # Check file inputs are valid
 
-if (! is_valid_string(opt$seurat_object)) {
+if (! is_valid_string(opt\$seurat_object)) {
     stop("Please provide seurat_object", call. = FALSE)
 }
 
-if (! file.exists(opt$seurat_object)){
-    stop(paste0('Value of seurat_object: ', opt$seurat_object, ' is not a valid file'))
+if (! file.exists(opt\$seurat_object)){
+    stop(paste0('Value of seurat_object: ', opt\$seurat_object, ' is not a valid file'))
 }
 
-if (! is_valid_string(opt$assay)) {
+if (! is_valid_string(opt\$assay)) {
     stop("Please provide assay", call. = FALSE)
 }
 
@@ -111,18 +111,18 @@ library(Seurat)
 ################################################
 
 # Loading Seurat object
-hashtag <- readRDS(opt$seurat_object)
+hashtag <- readRDS(opt\$seurat_object)
 
 # Demultiplex cells based on HTO enrichment
 hashtag <- HTODemux(hashtag,
-                   assay = opt$assay,
-                   positive.quantile = opt$quantile,
-                   init = opt$init,
-                   nstarts = opt$nstarts,
-                   kfunc = opt$kfunc,
-                   nsamples = opt$nsamples,
-                   seed = opt$seed,
-                   verbose = opt$verbose)
+                   assay = opt\$assay,
+                   positive.quantile = opt\$quantile,
+                   init = opt\$init,
+                   nstarts = opt\$nstarts,
+                   kfunc = opt\$kfunc,
+                   nsamples = opt\$nsamples,
+                   seed = opt\$seed,
+                   verbose = opt\$verbose)
 
 ################################################
 ################################################
@@ -131,21 +131,21 @@ hashtag <- HTODemux(hashtag,
 ################################################
 
 # create a data frame to save the used parameters in a csv file
-init_value <- if (is.null(opt$init)) "NULL" else opt$init
+init_value <- if (is.null(opt\$init)) "NULL" else opt\$init
 
 Argument <- c("seuratObject", "quantile", "kfunc", "nstarts", "nsamples", "seed", "init", "assay", "verbose")
-Value <- c(opt$seurat_object, opt$quantile, opt$kfunc, opt$nstarts, opt$nsamples, opt$seed, init_value, opt$assay, opt$verbose)
+Value <- c(opt\$seurat_object, opt\$quantile, opt\$kfunc, opt\$nstarts, opt\$nsamples, opt\$seed, init_value, opt\$assay, opt\$verbose)
 params <- data.frame(Argument, Value)
 
-write.csv(params, paste0(opt$output_prefix, "_params_htodemux.csv"))
+write.csv(params, paste0(opt\$output_prefix, "_params_htodemux.csv"))
 
 # create csv files to save the results from HTODemux()
-donors <- rownames(hashtag[[opt$assay]])
-assignment <- hashtag[[paste0(opt$assay, "_classification")]]
-assignment[[paste0(opt$assay, "_classification")]][!assignment[[paste0(opt$assay, "_classification")]] %in% c(donors, "Negative")] <- "Doublet"
-write.csv(assignment, paste0(opt$output_prefix, "_assignment_htodemux.csv"))
-write.csv(hashtag[[paste0(opt$assay, "_classification.global")]], paste0(opt$output_prefix, "_classification_htodemux.csv"))
-saveRDS(hashtag, file = paste0(opt$output_prefix, "_htodemux.rds"))
+donors <- rownames(hashtag[[opt\$assay]])
+assignment <- hashtag[[paste0(opt\$assay, "_classification")]]
+assignment[[paste0(opt\$assay, "_classification")]][!assignment[[paste0(opt\$assay, "_classification")]] %in% c(donors, "Negative")] <- "Doublet"
+write.csv(assignment, paste0(opt\$output_prefix, "_assignment_htodemux.csv"))
+write.csv(hashtag[[paste0(opt\$assay, "_classification.global")]], paste0(opt\$output_prefix, "_classification_htodemux.csv"))
+saveRDS(hashtag, file = paste0(opt\$output_prefix, "_htodemux.rds"))
 
 ################################################
 ################################################

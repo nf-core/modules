@@ -90,16 +90,16 @@ for ( ao in names(args_opt)){
 }
 
 # Set individual variables for backward compatibility and cleaner code
-seuratObj <- opt$seurat_object
-assay <- opt$assay
-quantile <- opt$quantile
-autoThresh <- opt$autoThresh
-maxiter <- opt$maxiter
-qrangeFrom <- opt$qrangeFrom
-qrangeTo <- opt$qrangeTo
-qrangeBy <- opt$qrangeBy
-verbose <- opt$verbose
-prefix <- opt$prefix
+seuratObj <- opt\$seurat_object
+assay <- opt\$assay
+quantile <- opt\$quantile
+autoThresh <- opt\$autoThresh
+maxiter <- opt\$maxiter
+qrangeFrom <- opt\$qrangeFrom
+qrangeTo <- opt\$qrangeTo
+qrangeBy <- opt\$qrangeBy
+verbose <- opt\$verbose
+prefix <- opt\$prefix
 
 # Configure output precision
 options(digits=5)
@@ -146,7 +146,7 @@ params <- data.frame(Argument, Value)
 write.csv(params, paste0(prefix ,"_params_multiseqdemux.csv"))
 
 # save the results from MULTIseqDemux()
-write.csv(hashtag$MULTI_ID, paste0(prefix , "_res_multiseqdemux.csv"))
+write.csv(hashtag\$MULTI_ID, paste0(prefix , "_res_multiseqdemux.csv"))
 saveRDS(hashtag, file = paste0(prefix ,"_multiseqdemux.rds"))
 
 ################################################
