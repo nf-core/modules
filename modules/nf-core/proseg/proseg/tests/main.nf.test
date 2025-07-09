@@ -29,12 +29,12 @@ nextflow_process {
             def lines = path(process.out.transcript_metadata[0][1]).linesGzip.size()
             assertAll(
                 { assert process.success },
-                { assert snapshot(lines).match("test_transcript_metadata_linecount") },
                 { assert snapshot(
-                    path(process.out.transcript_metadata[0][1]).linesGzip[0],
-                    path(process.out.cell_polygons[0][1]).linesGzip[0],
+                    lines,
                     process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    path(process.out.versions[0]).yaml,
+                    path(process.out.transcript_metadata[0][1]).linesGzip[0],
+                    path(process.out.cell_polygons[0][1]).linesGzip[0]
                 ).match() }
             )
         }
