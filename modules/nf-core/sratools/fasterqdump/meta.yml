@@ -23,20 +23,22 @@ input:
         type: directory
         description: Directory containing ETL data for the given SRA.
         pattern: "*/*.sra"
-  - - ncbi_settings:
-        type: file
-        description: >
-          An NCBI user settings file.
-        pattern: "*.mkfg"
-  - - certificate:
-        type: file
-        description: >
-          Path to a JWT cart file used to access protected dbGAP data on SRA using the
-          sra-toolkit
-        pattern: "*.cart"
+  - ncbi_settings:
+      type: file
+      description: >
+        An NCBI user settings file.
+      pattern: "*.mkfg"
+      ontologies: []
+  - certificate:
+      type: file
+      description: >
+        Path to a JWT cart file used to access protected dbGAP data on SRA using the
+        sra-toolkit
+      pattern: "*.cart"
+      ontologies: []
 output:
-  - reads:
-      - meta:
+  reads:
+    - - meta:
           type: map
           description: >
             Groovy Map containing sample information e.g. [ id:'test', single_end:false
@@ -45,11 +47,15 @@ output:
           type: file
           description: Extracted FASTQ file or files if the sequencing reads are paired-end.
           pattern: "*.fastq.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Midnighter"
 maintainers:

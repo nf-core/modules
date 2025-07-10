@@ -6,7 +6,8 @@ keywords:
   - transcriptomics
 tools:
   - scds:
-      description: scds is an in-silico doublet annotation tool for single cell RNA sequencing data
+      description: scds is an in-silico doublet annotation tool for single cell RNA
+        sequencing data
       homepage: https://www.bioconductor.org/packages/release/bioc/html/scds.html
       documentation: https://www.bioconductor.org/packages/release/bioc/vignettes/scds/inst/doc/scds.html
       tool_dev_url: https://github.com/kostkalab/scds
@@ -22,12 +23,14 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - rds:
         type: file
-        description: RDS file containing filtered data (without empty droplets) in SingleCellExperiment format
+        description: RDS file containing filtered data (without empty droplets) in SingleCellExperiment
+          format
         pattern: "*.rds"
 
+        ontologies: []
 output:
-  - rds:
-      - meta:
+  rds:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -36,8 +39,9 @@ output:
           type: file
           description: RDS file containing doublet scores in SingleCellExperiment format
           pattern: "*.rds"
-  - predictions:
-      - meta:
+          ontologies: []
+  predictions:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -46,12 +50,16 @@ output:
           type: file
           description: CSV file containing doublet scores
           pattern: "*.csv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software version
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software version
+        pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@cakirb"
 maintainers:

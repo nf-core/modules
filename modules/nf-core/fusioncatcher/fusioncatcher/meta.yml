@@ -1,14 +1,15 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "fusioncatcher_fusioncatcher"
-description: FusionCatcher searches for novel/known somatic fusion genes, translocations, and chimeras in RNA-seq data
+description: FusionCatcher searches for novel/known somatic fusion genes, translocations,
+  and chimeras in RNA-seq data
 keywords:
   - fusion
   - rna
   - fastq
 tools:
   - fusioncatcher:
-      description: FusionCatcher searches for novel/known somatic fusion genes, translocations, and chimeras in RNA-seq data
+      description: FusionCatcher searches for novel/known somatic fusion genes, translocations,
+        and chimeras in RNA-seq data
       homepage: https://github.com/ndaniel/fusioncatcher
       documentation: https://github.com/ndaniel/fusioncatcher/wiki
       tool_dev_url: https://github.com/ndaniel/fusioncatcher
@@ -35,9 +36,10 @@ input:
         type: file
         description: Directory containing fusioncatcher reference files
 
+        ontologies: []
 output:
-  - fusions:
-      - meta:
+  fusions:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -46,8 +48,9 @@ output:
           type: file
           description: The detected fusions in the input files
           pattern: "*.fusion-genes.txt"
-  - summary:
-      - meta:
+          ontologies: []
+  summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -56,8 +59,9 @@ output:
           type: file
           description: The generated summary
           pattern: "*.summary.txt"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -66,12 +70,15 @@ output:
           type: file
           description: The Fusioncatcher log
           pattern: "*.log"
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

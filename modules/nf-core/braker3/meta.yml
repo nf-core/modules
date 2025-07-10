@@ -1,0 +1,122 @@
+name: braker3
+description: |
+  Gene prediction in novel genomes using RNA-seq and protein homology information
+keywords:
+  - genome
+  - annotation
+  - braker
+  - gff
+  - gtf
+tools:
+  - braker3:
+      description: "BRAKER3 is a pipeline for fully automated prediction of protein
+        coding gene structures using protein and RNA-seq and protein homology information"
+      homepage: https://github.com/Gaius-Augustus/BRAKER
+      documentation: https://github.com/Gaius-Augustus/BRAKER
+      tool_dev_url: https://github.com/Gaius-Augustus/BRAKER
+      doi: "10.13140/RG.2.2.20047.36004"
+      licence: ["Artistic-1.0"]
+      identifier: biotools:braker3
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: Genome assembly fasta
+        pattern: "*.{fasta,fa,fas,faa,fna}"
+  - - bam:
+        type: file
+        description: BAM file of RNA-seq data to be passed to --bam
+        pattern: "*.bam"
+  - - rnaseq_sets_dirs:
+        type: file
+        description: Directories of RNA-seq data sets to be passed to --rnaseq_sets_dirs
+  - - rnaseq_sets_ids:
+        type: file
+        description: IDs of RNA-seq data sets to be passed to --rnaseq_sets_ids
+  - - proteins:
+        type: file
+        description: Protein evidence to be passed to --proteins
+        pattern: "*.{fasta,fa,fas,faa}"
+  - - hintsfile:
+        type: file
+        description: Hintsfile to be passed to --hintsfile
+        pattern: "*.{gff, gtf, gff3}"
+output:
+  - gtf:
+      - meta:
+          type: file
+          description: Gene transfer format file as output by BRAKER3
+          pattern: "*.{gtf}"
+      - $prefix/braker.gtf:
+          type: file
+          description: Gene transfer format file as output by BRAKER3
+          pattern: "*.{gtf}"
+  - cds:
+      - meta:
+          type: file
+          description: Coding sequence file as output by BRAKER3
+          pattern: "*.{codingseq}"
+      - $prefix/braker.codingseq:
+          type: file
+          description: Coding sequence file as output by BRAKER3
+          pattern: "*.{codingseq}"
+  - aa:
+      - meta:
+          type: file
+          description: Protein sequence file as output by BRAKER3
+          pattern: "*.{aa}"
+      - $prefix/braker.aa:
+          type: file
+          description: Protein sequence file as output by BRAKER3
+          pattern: "*.{aa}"
+  - log:
+      - meta:
+          type: file
+          description: BRAKER3 log file
+          pattern: "*.log"
+      - $prefix/braker.log:
+          type: file
+          description: BRAKER3 log file
+          pattern: "*.log"
+  - hintsfile:
+      - meta:
+          type: file
+          description: Hints file as output by BRAKER3
+          pattern: "*hintsfile.{gff}"
+      - $prefix/hintsfile.gff:
+          type: file
+          description: Hints file as output by BRAKER3
+          pattern: "*hintsfile.{gff}"
+  - gff3:
+      - meta:
+          type: file
+          description: GFF3 file as output by BRAKER3
+          pattern: "*.{gff3}"
+      - $prefix/braker.gff3:
+          type: file
+          description: GFF3 file as output by BRAKER3
+          pattern: "*.{gff3}"
+  - citations:
+      - meta:
+          type: file
+          description: BRAKER3 citations
+          pattern: "what-to-cite.txt"
+      - $prefix/what-to-cite.txt:
+          type: file
+          description: BRAKER3 citations
+          pattern: "what-to-cite.txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@kherronism"
+  - "@GallVp"
+maintainers:
+  - "@GallVp"

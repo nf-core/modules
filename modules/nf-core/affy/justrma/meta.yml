@@ -24,7 +24,7 @@ input:
         type: file
         description: |
           CSV or TSV format sample sheet with sample metadata and CEL file names
-        ontologies: 
+        ontologies:
           - edam: "http://edamontology.org/format_3752" # CSV
           - edam: "http://edamontology.org/format_3475" # TSV
     - celfiles_dir:
@@ -44,8 +44,8 @@ input:
           Optional description file in MIAME format
         ontologies: []
 output:
-  - rds:
-      - meta:
+  rds:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,8 +55,8 @@ output:
           description: Serialised ExpressionSet object
           pattern: "*.rds"
           ontologies: []
-  - expression:
-      - meta:
+  expression:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -65,10 +65,10 @@ output:
           type: file
           description: TSV-format intensity matrix
           pattern: "matrix.tsv"
-          ontologies: 
+          ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
-  - annotation:
-      - meta:
+  annotation:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -77,15 +77,15 @@ output:
           type: file
           description: TSV-format annotation table
           pattern: "*.annotation.tsv"
-          ontologies: 
+          ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies: 
-            - edam: "http://edamontology.org/format_3750" # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@pinin4fjords"
 maintainers:

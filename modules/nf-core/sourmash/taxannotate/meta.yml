@@ -32,12 +32,14 @@ input:
         description: |
           Mandatory table with signatures classified as belonging to any of the genomes
           in the sourmash database(s), result of `sourmash gather` command.
-  - - taxonomy:
-        type: file
-        description: One or more databases with lineages (in CSV format, Mandatory)
+        ontologies: []
+  - taxonomy:
+      type: file
+      description: One or more databases with lineages (in CSV format, Mandatory)
+      ontologies: []
 output:
-  - result:
-      - meta:
+  result:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,11 +51,14 @@ output:
             in the sourmash database(s) with an additional 'lineage' column
             containing the taxonomic information for each database match.
           pattern: "*{csv.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@vmikk"
   - "@taylorreiter"
