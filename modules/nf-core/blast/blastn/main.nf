@@ -10,6 +10,7 @@ process BLAST_BLASTN {
     input:
     tuple val(meta) , path(fasta)
     tuple val(meta2), path(db)
+    path(taxidlist)
 
     output:
     tuple val(meta), path('*.txt'), emit: txt
@@ -23,11 +24,14 @@ process BLAST_BLASTN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def is_compressed = fasta.getExtension() == "gz" ? true : false
     def fasta_name = is_compressed ? fasta.getBaseName() : fasta
+    def taxidlist_cmd = taxidlist ? "-taxidlist ${taxidlist}" : ""
 
     """
     if [ "${is_compressed}" == "true" ]; then
         gzip -c -d ${fasta} > ${fasta_name}
     fi
+
+    export BLASTDB=${db}
 
     DB=`find -L ./ -name "*.nal" | sed 's/\\.nal\$//'`
     if [ -z "\$DB" ]; then
@@ -39,6 +43,7 @@ process BLAST_BLASTN {
         -num_threads ${task.cpus} \\
         -db \$DB \\
         -query ${fasta_name} \\
+        ${taxidlist_cmd} \\
         ${args} \\
         -out ${prefix}.txt
 
