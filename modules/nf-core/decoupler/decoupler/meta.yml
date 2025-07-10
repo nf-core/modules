@@ -56,7 +56,6 @@ input:
         Annotation file in GTF format
       pattern: "*.gtf"
       ontologies: []
-
 output:
   dc_estimate:
     - - meta:
@@ -64,54 +63,48 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:‘test’, single_end ]
-          pattern: "*estimate_decoupler.tsv"
-          ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
       - "*estimate_decoupler.tsv":
-          type: map
+          type: file
           description: |
-            Groovy Map containing sample information
-            e.g. [ id:‘test’, single_end ]
+            The file containing the estimation results of the enrichment(s)
           pattern: "*estimate_decoupler.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
-  - dc_pvals:
-      - meta:
+  dc_pvals:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:‘test’, single_end ]
-          pattern: "*pvals_decoupler.tsv"
-          ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
       - "*pvals_decoupler.tsv":
+          type: file
+          description: |
+            The file containing the p-value associated to the estimation
+            results of the enrichment(s)
+          pattern: "*pvals_decoupler.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  png:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:‘test’, single_end ]
-          pattern: "*pvals_decoupler.tsv"
+      - "**decoupler_plot.png":
+          type: file
+          description: |
+            The file containing the plots associated to the estimation
+            results of the enrichment(s)
+          pattern: "*decoupler_plot.png"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
-  - png:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-          pattern: "*decoupler_plot.png"
-      - "*decoupler_plot.png":
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-          pattern: "*decoupler_plot.png"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: http://edamontology.org/format_3750 # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@gabora"
   - "@vicpaton"
