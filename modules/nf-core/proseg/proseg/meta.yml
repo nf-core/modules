@@ -1,0 +1,89 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "proseg"
+description: "Proseg (probabilistic segmentation) is a cell segmentation method for in situ spatial transcriptomics."
+keywords:
+  - segmentation
+  - spatial
+  - transcriptomics
+tools:
+  - "proseg":
+      description: "Proseg (probabilistic segmentation) is a cell segmentation method for in situ spatial transcriptomics."
+      homepage: "https://github.com/dcjones/proseg"
+      documentation: "https://github.com/dcjones/proseg"
+      tool_dev_url: "https://github.com/dcjones/proseg"
+      doi: "10.1038/s41592-025-02697-0"
+      licence: ["GPLv3"]
+
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information
+    - transcripts:
+        type: file
+        description: Transcript ids, genes, revised positions, assignment probability, etc.
+        pattern: "*transcript-metadata.csv.gz"
+  - mode:
+      type: string
+      description: Proseg preset mode
+      enum: ['xenium', 'merfish', 'cosmx']
+
+output:
+  transcript_metadata:
+      - - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - "transcript-metadata.csv.gz":
+            type: file
+            description: Transcript ids, genes, revised positions, assignment probability, etc.
+            pattern: "*transcript-metadata.csv"
+  cell_metadata:
+      - - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - "cell-metadata.csv.gz":
+            type: file
+            description: Cell metadata file
+            pattern: "*cell-metadata.csv.gz"
+  cell_polygons:
+      - - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - "cell-polygons.geojson.gz":
+            type: file
+            description: Cell polygons file
+            pattern: "*cell-polygons.geojson.gz"
+  cell_polygons_layers:
+      - - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - "cell-polygons-layers.geojson.gz":
+            type: file
+            description: Cell polygon layers file
+            pattern: "cell-polygons-layers.geojson.gz"
+  expected_counts:
+      - - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - "expected-counts.csv.gz":
+            type: file
+            description: Expected transcript counts file
+            pattern: "*expected-counts.csv.gz"
+  union_cell_polygons:
+      - - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - "union-cell-polygons.geojson.gz":
+            type: file
+            description: Union cell polygons file
+            pattern: "*union-cell-polygons.geojson.gz"
+  versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+
+authors:
+  - "@derrik-gratz"
+maintainers:
+  - "@derrik-gratz"
