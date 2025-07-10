@@ -11,13 +11,13 @@ string_to_null <- function(x, val = "NULL") if (x == val) NULL else x
 null_to_string <- function(x, val = "NULL") if (is.null(x)) val else x
 
 string_to_logical <- function(input) {
-  if (input == "FALSE") {
-    FALSE
-  } else if (input == "TRUE") {
-    TRUE
-  } else {
-    stop(paste0(input, " is not a valid logical. Use 'FALSE' or 'TRUE'."))
-  }
+    if (input == "FALSE") {
+        FALSE
+    } else if (input == "TRUE") {
+        TRUE
+    } else {
+        stop(paste0(input, " is not a valid logical. Use 'FALSE' or 'TRUE'."))
+    }
 }
 
 #' Check for Non-Empty, Non-Whitespace String
@@ -60,7 +60,7 @@ opt <- list(
     # File inputs
     hto_matrix = '$hto_matrix',
     rna_matrix = '$rna_matrix',
-    runEmptyDrops = TRUE,
+    runEmptyDrops = string_to_logical('$runEmptyDrops'),
 
     # emptyDrops Parameters
     lower = 100,        # A numeric scalar specifying the lower bound on the total UMI count, at or below which all barcodes are assumed to correspond to empty droplets.
@@ -91,7 +91,8 @@ opt <- list(
 opt_types <- lapply(opt, class)
 
 # Apply parameter overrides
-args_opt <- parse_args('$task.ext.args')
+args_string <- '$task.ext.args'
+args_opt <- if (is_valid_string(args_string)) parse_args(args_string) else list()
 for ( ao in names(args_opt)){
     if (! ao %in% names(opt)){
         stop(paste("Invalid option:", ao))
@@ -111,29 +112,29 @@ for ( ao in names(args_opt)){
 }
 
 # Set individual variables for backward compatibility and cleaner code
-hto_matrix <- opt$hto_matrix
-rna_matrix <- opt$rna_matrix
-runEmptyDrops <- opt$runEmptyDrops
-lower <- opt$lower
-niters <- opt$niters
-testAmbient <- opt$testAmbient
-round <- opt$round
-byRank <- opt$byRank
-isCellFDR <- opt$isCellFDR
-gene_col <- opt$gene_col
-ignore <- opt$ignore
-alpha <- opt$alpha
-ambient <- opt$ambient
-minProp <- opt$minProp
-pseudoCount <- opt$pseudoCount
-constantAmbient <- opt$constantAmbient
-doubletNmads <- opt$doubletNmads
-doubletMin <- opt$doubletMin
-doubletMixture <- opt$doubletMixture
-confidentNmads <- opt$confidentNmads
-confidentMin <- opt$confidentMin
-combinations <- opt$combinations
-prefix <- opt$prefix
+hto_matrix <- opt\$hto_matrix
+rna_matrix <- opt\$rna_matrix
+runEmptyDrops <- opt\$runEmptyDrops
+lower <- opt\$lower
+niters <- opt\$niters
+testAmbient <- opt\$testAmbient
+round <- opt\$round
+byRank <- opt\$byRank
+isCellFDR <- opt\$isCellFDR
+gene_col <- opt\$gene_col
+ignore <- opt\$ignore
+alpha <- opt\$alpha
+ambient <- opt\$ambient
+minProp <- opt\$minProp
+pseudoCount <- opt\$pseudoCount
+constantAmbient <- opt\$constantAmbient
+doubletNmads <- opt\$doubletNmads
+doubletMin <- opt\$doubletMin
+doubletMixture <- opt\$doubletMixture
+confidentNmads <- opt\$confidentNmads
+confidentMin <- opt\$confidentMin
+combinations <- opt\$combinations
+prefix <- opt\$prefix
 
 # check if the file exists
 if (! file.exists(hto_matrix)){
@@ -157,27 +158,24 @@ library(DropletUtils) # for hashedDrops() and emptyDrops()
 
 hto <- Read10X(data.dir = hto_matrix, gene.column = gene_col)
 
-# die bekomme ich mit runempty Drops
-#is.cell <- NULL
-
 # determine hto_input and ambient_input
 if (runEmptyDrops) {
 
     rna <- Read10X(data.dir = rna_matrix, gene.column = gene_col)
 
     emptyDrops_out <- emptyDrops(
-    rna,
-    lower = lower,
-    niters = niters,
-    test.ambient = testAmbient,
-    ignore = NULL,
-    alpha = alpha,
-    round = round,
-    by.rank = byRank
+        rna,
+        lower = lower,
+        niters = niters,
+        test.ambient = testAmbient,
+        ignore = NULL,
+        alpha = alpha,
+        round = round,
+        by.rank = byRank
     )
 
     # which droplets are actual cells
-    is.cell <- emptyDrops_out\$FDR <= isCellFDR
+    is.cell <- emptyDrops_out\$FDR <= isCellFDR & !is.na(emptyDrops_out\$FDR)
     hto_input <- hto[, which(is.cell)]
 
     if (ambient) {
@@ -194,17 +192,17 @@ if (runEmptyDrops) {
 }
 
 hashedDrops_out <- hashedDrops(
-  hto_input,
-  min.prop = minProp,
-  ambient = ambient_input,
-  pseudo.count = pseudoCount,
-  constant.ambient = constantAmbient,
-  doublet.nmads = doubletNmads,
-  doublet.min = doubletMin,
-  doublet.mixture = doubletMixture,
-  confident.nmads = confidentNmads,
-  confident.min = confidentMin,
-  combinations = combinations
+    hto_input,
+    min.prop = minProp,
+    ambient = ambient_input,
+    pseudo.count = pseudoCount,
+    constant.ambient = constantAmbient,
+    doublet.nmads = doubletNmads,
+    doublet.min = doubletMin,
+    doublet.mixture = doubletMixture,
+    confident.nmads = confidentNmads,
+    confident.min = confidentMin,
+    combinations = combinations
 )
 
 ################################################
@@ -215,47 +213,47 @@ hashedDrops_out <- hashedDrops(
 
 #----- saving parameters in a dataframe  ------#
 Argument <- c(
-  "hto_matrix",
-  "lower",
-  "niters",
-  "testAmbient",
-  "ignore",
-  "alpha",
-  "round",
-  "byRank",
-  "isCellFDR",
-  "ambient",
-  "minProp",
-  "pseudoCount",
-  "constantAmbient",
-  "doubletNmads",
-  "doubletMin",
-  "doubletMixture",
-  "confidentNmads",
-  "confidentMin",
-  "combinations"
+    "hto_matrix",
+    "lower",
+    "niters",
+    "testAmbient",
+    "ignore",
+    "alpha",
+    "round",
+    "byRank",
+    "isCellFDR",
+    "ambient",
+    "minProp",
+    "pseudoCount",
+    "constantAmbient",
+    "doubletNmads",
+    "doubletMin",
+    "doubletMixture",
+    "confidentNmads",
+    "confidentMin",
+    "combinations"
 )
 
 Value <- c(
-  hto_matrix,
-  lower,
-  niters,
-  testAmbient,
-  null_to_string(ignore),
-  null_to_string(alpha),
-  round,
-  null_to_string(byRank),
-  isCellFDR,
-  ambient,
-  null_to_string(minProp),
-  pseudoCount,
-  constantAmbient,
-  doubletNmads,
-  doubletMin,
-  doubletMixture,
-  confidentNmads,
-  confidentMin,
-  null_to_string(combinations)
+    hto_matrix,
+    lower,
+    niters,
+    testAmbient,
+    null_to_string(ignore),
+    null_to_string(alpha),
+    round,
+    null_to_string(byRank),
+    isCellFDR,
+    ambient,
+    null_to_string(minProp),
+    pseudoCount,
+    constantAmbient,
+    doubletNmads,
+    doubletMin,
+    doubletMixture,
+    confidentNmads,
+    confidentMin,
+    null_to_string(combinations)
 )
 
 params <- data.frame(Argument, Value)
@@ -270,7 +268,6 @@ if(runEmptyDrops){
     plot(emptyDrops_out\$Total, -emptyDrops_out\$LogProb, col = colors, xlab = "Total UMI count", ylab = "-Log Probability")
 }else{
     plot.new()
-
 }
 dev.off()
 
