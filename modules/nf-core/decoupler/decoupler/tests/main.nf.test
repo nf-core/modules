@@ -48,7 +48,7 @@ nextflow_process {
                     estimateFiles*.readLines().size(),
                     pvalsFiles*.readLines().size(),
                     process.out.versions
-            ).match("file_structure") }
+            ).match()}
         )
     }
     }
@@ -84,7 +84,15 @@ nextflow_process {
                 //{ assert snapshot(process.out).match() },
                 { estimateFiles.each { f -> assert f.exists() } },
                 { pvalsFiles.each { f -> assert f.exists() } },
-                { pngFiles.each { f -> assert f.exists() } }
+                { pngFiles.each { f -> assert f.exists() } },
+                { assert snapshot(
+                    estimateFiles*.getFileName().toString(),
+                    pvalsFiles*.getFileName().toString(),
+                    pngFiles*.getFileName().toString(),
+                    estimateFiles*.readLines().size(),
+                    pvalsFiles*.readLines().size(),
+                    process.out.versions
+            ).match()}
             )
         }
     }
