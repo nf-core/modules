@@ -13,8 +13,9 @@ process DECOUPLER {
     path(gtf)
 
     output:
-    tuple val(meta), path("*estimate__decoupler.tsv"), emit: dc_estimate
-    tuple val(meta), path("*pvals__decoupler.tsv"), emit: dc_pvals
+    tuple val(meta), path("*estimate_decoupler.tsv"), emit: dc_estimate
+    tuple val(meta), path("*pvals_decoupler.tsv"), emit: dc_pvals
+    tuple val(meta), path("*decoupler_plot.png"), emit: png
     path("versions.yml"), emit: versions
 
     when:
@@ -25,8 +26,9 @@ process DECOUPLER {
 
     stub:
     """
-    touch mlm_estimate__decoupler.tsv
-    touch mlm_pvals__decoupler.tsv
+    touch estimate_decoupler.tsv
+    touch pvals_decoupler.tsv
+    touch decoupler_plot.png
     touch versions.yml
     """
 }
