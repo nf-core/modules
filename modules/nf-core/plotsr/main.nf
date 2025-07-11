@@ -10,12 +10,12 @@ process PLOTSR {
     input:
     tuple val(meta), path(syri)
     tuple val(meta2), path(fastas)
-    val genomes
-    tuple val(meta3), path(bedpe)
-    tuple val(meta4), path(markers)
-    tuple val(meta5), path(tracks)
-    tuple val(meta6), path(chrord)
-    tuple val(meta7), path(chrname)
+    tuple val(meta3), path(genomes)
+    tuple val(meta4), path(bedpe)
+    tuple val(meta5), path(markers)
+    tuple val(meta6), path(tracks)
+    tuple val(meta7), path(chrord)
+    tuple val(meta8), path(chrname)
 
     output:
     tuple val(meta), path("*.png"), emit: png
@@ -28,19 +28,15 @@ process PLOTSR {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def syri_arg = syri instanceof List ? syri.collect { "--sr ${it}" }.join(' ') : "--sr ${syri}"
-    def genomes_txt = genomes.tokenize('\n').withIndex().collect { line, index -> index == 0 ? line : "${fastas[index - 1]}\t${line}" }.join('\\n')
     def bedpe_arg = bedpe ? "--bedpe ${bedpe}" : ''
     def markers_arg = markers ? "--markers ${markers}" : ''
     def tracks_arg = tracks ? "--tracks ${tracks}" : ''
     def chrord_arg = chrord ? "--chrord ${chrord}" : ''
     def chrname_arg = chrname ? "--chrname ${chrname}" : ''
     """
-    echo -e "${genomes_txt}" \\
-        > ${prefix}.genomes.txt
-
     plotsr \\
         ${syri_arg} \\
-        --genomes ${prefix}.genomes.txt \\
+        --genomes ${genomes} \\
         ${bedpe_arg} \\
         ${markers_arg} \\
         ${tracks_arg} \\
@@ -59,20 +55,16 @@ process PLOTSR {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def syri_arg = syri instanceof List ? syri.collect { "--sr ${it}" }.join(' ') : "--sr ${syri}"
-    def genomes_txt = genomes.tokenize('\n').withIndex().collect { line, index -> index == 0 ? line : "${fastas[index - 1]}\t${line}" }.join('\\n')
     def bedpe_arg = bedpe ? "--bedpe ${bedpe}" : ''
     def markers_arg = markers ? "--markers ${markers}" : ''
     def tracks_arg = tracks ? "--tracks ${tracks}" : ''
     def chrord_arg = chrord ? "--chrord ${chrord}" : ''
     def chrname_arg = chrname ? "--chrname ${chrname}" : ''
     """
-    echo -e "${genomes_txt}" \\
-        > ${prefix}.genomes.txt
-
     echo \\
     "plotsr \\
         ${syri_arg} \\
-        --genomes ${prefix}.genomes.txt \\
+        --genomes ${genomes} \\
         ${bedpe_arg} \\
         ${markers_arg} \\
         ${tracks_arg} \\
