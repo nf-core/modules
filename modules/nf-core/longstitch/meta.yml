@@ -30,6 +30,7 @@ input:
         type: file
         description: Draft assembly
         pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -39,296 +40,307 @@ input:
         type: file
         description: long reads
         pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
-  - - command:
-        type: string
-        description: |
-          Longstitch command to run. Valid options are:
-          ["run", "tigmint-ntLink-arks", "tigmint-ntLink", "ntLink-arks"]
-  - - span:
-        type: string
-        description: |
-          min number of spanning molecules to be considered correctly assembled.
-          Either span or genomesize need to be provided.
-  - - genomesize:
-        type: string
-        description: |
-          Expected genome size. Either span or genomesize need to be provided.
-  - - longmap:
-        type: string
-        description: |
-          Type of long-read (passed to minimap2). Valid options are:
-          [ "ont", "pb", "hifi" ]
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - command:
+      type: string
+      description: |
+        Longstitch command to run. Valid options are:
+        ["run", "tigmint-ntLink-arks", "tigmint-ntLink", "ntLink-arks"]
+  - span:
+      type: string
+      description: |
+        min number of spanning molecules to be considered correctly assembled.
+        Either span or genomesize need to be provided.
+  - genomesize:
+      type: string
+      description: |
+        Expected genome size. Either span or genomesize need to be provided.
+  - longmap:
+      type: string
+      description: |
+        Type of long-read (passed to minimap2). Valid options are:
+        [ "ont", "pb", "hifi" ]
 
 output:
-  - tigmint_ntLink_fasta:
-      - meta:
+  tigmint_ntLink_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*.tigmint-ntLink.fa"
       - "*.tigmint-ntLink.fa":
           type: file
           description: Fasta file after tigmint and ntLink
           pattern: "*.tigmint-ntLink.fa"
-  - tigmint_ntLink_arcs_fasta:
-      - meta:
+          ontologies: []
+  tigmint_ntLink_arcs_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*.tigmint-ntLink-arks.fa"
       - "*.tigmint-ntLink-arks.fa":
           type: file
           description: Fasta file after tigmint, ntLink and arcs+links
           pattern: "*.tigmint-ntLink-arks.fa"
-  - ntLink_arcs_fasta:
-      - meta:
+          ontologies: []
+  ntLink_arcs_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*.ntLink-arks.fa"
       - "*.ntLink-arks.fa":
           type: file
           description: Fasta file after ntLink and arcs+links
           pattern: "*.ntLink-arks.fa"
-  - scaffold_dot:
-      - meta:
+          ontologies: []
+  scaffold_dot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*k*.w*.z*.n*.scaffold.dot"
       - "*k*.w*.z*.n*.scaffold.dot":
           type: file
           description: Scaffold dot file
           pattern: "*k*.w*.z*.n*.scaffold.dot"
-  - links_scaffolds_dist_gv:
-      - meta:
+          ontologies: []
+  links_scaffolds_dist_gv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*k*.w*.z*.ntLink.scaffolds_*.dist.gv"
       - "*k*.w*.z*.ntLink.scaffolds_*.dist.gv":
           type: file
           description: ntLink scaffold distance gv file
           pattern: "*k*.w*.z*.ntLink.scaffolds_*.dist.gv"
-  - links_assembly_correspondence_tsv:
-      - meta:
+          ontologies: []
+  links_assembly_correspondence_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*k*.w*.z*.ntLink.scaffolds_*_l*.assembly_correspondence.tsv"
       - "*k*.w*.z*.ntLink.scaffolds_*_l*.assembly_correspondence.tsv":
           type: file
           description: ntLink assembly correspondance table
           pattern: "*k*.w*.z*.ntLink.scaffolds_*_l*.assembly_correspondence.tsv"
-  - links_gv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  links_gv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*k*.w*.z*.ntLink.scaffolds_*_l*.gv"
       - "*k*.w*.z*.ntLink.scaffolds_*_l*.gv":
           type: file
           description: Links graph
           pattern: "*k*.w*.z*.ntLink.scaffolds_*_l*.gv"
-  - links_log:
-      - meta:
+          ontologies: []
+  links_log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*k*.w*.z*.ntLink.scaffolds_*_l*.log"
       - "*k*.w*.z*.ntLink.scaffolds_*_l*.log":
           type: file
           description: Links logfile
           pattern: "*k*.w*.z*.ntLink.scaffolds_*_l*.log"
-  - links_scaffolds:
-      - meta:
+          ontologies: []
+  links_scaffolds:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*k*.w*.z*.ntLink.scaffolds_*_l*.scaffolds"
       - "*k*.w*.z*.ntLink.scaffolds_*_l*.scaffolds":
           type: file
           description: links scaffolds
           pattern: "*k*.w*.z*.ntLink.scaffolds_*_l*.scaffolds"
-  - links_scaffolds_fa:
-      - meta:
+          ontologies: []
+  links_scaffolds_fa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*k*.w*.z*.ntLink.scaffolds_*_l*.scaffolds.fa"
       - "*k*.w*.z*.ntLink.scaffolds_*_l*.scaffolds.fa":
           type: file
           description: links scaffolds fasta
           pattern: "*k*.w*.z*.ntLink.scaffolds_*_l*.scaffolds.fa"
-  - links_checkpoint_tsv:
-      - meta:
+          ontologies: []
+  links_checkpoint_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*k*.w*.z*.ntLink.scaffolds_*_l*.tigpair_checkpoint.tsv"
       - "*k*.w*.z*.ntLink.scaffolds_*_l*.*.tigpair_checkpoint.tsv":
           type: file
           description: tigpair checkpoint for links
           pattern: "*k*.w*.z*.ntLink.scaffolds_*_l*.tigpair_checkpoint.tsv"
-  - arcs_tsv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  arcs_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*k*.w*.z*.ntLink.scaffolds_*_main.tsv"
       - "*k*.w*.z*.ntLink.scaffolds_*_main.tsv":
           type: file
           description: arcs tsv file
           pattern: "*k*.w*.z*.ntLink.scaffolds_*_main.tsv"
-  - arcs_gv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  arcs_gv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*k*.w*.z*.ntLink.scaffolds_*_original.gv"
       - "*k*.w*.z*.ntLink.scaffolds_*_original.gv":
           type: file
           description: arcs graph
           pattern: "*k*.w*.z*.ntLink.scaffolds_*_original.gv"
-  - arcs_checkpoint_tsv:
-      - meta:
+          ontologies: []
+  arcs_checkpoint_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*k*.w*.z*.ntLink.scaffolds_*.tigpair_checkpoint.tsv"
       - "*k*.w*.z*.ntLink.scaffolds_*.tigpair_checkpoint.tsv":
           type: file
           description: tigpair checkpoint for arcs
           pattern: "*k*.w*.z*.ntLink.scaffolds_*.tigpair_checkpoint.tsv"
-  - arcs_scaffolds_fa:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  arcs_scaffolds_fa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*k*.w*.z*.ntLink.scaffolds.fa"
       - "*k*.w*.z*.ntLink.scaffolds.fa":
           type: file
           description: arcs scaffolds fasta
           pattern: "*k*.w*.z*.ntLink.scaffolds.fa"
-  - arcs_scaffolds_renamed:
-      - meta:
+          ontologies: []
+  arcs_scaffolds_renamed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*k*.w*.z*.ntLink.scaffolds.renamed.fa"
       - "*k*.w*.z*.ntLink.scaffolds.renamed.fa":
           type: file
           description: renamed arcs scaffolds fasta file
           pattern: "*k*.w*.z*.ntLink.scaffolds.renamed.fa"
-  - abyss_scaffolds_fa:
-      - meta:
+          ontologies: []
+  abyss_scaffolds_fa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*k*.w*.z*.stitch.abyss-scaffold.fa"
       - "*k*.w*.z*.stitch.abyss-scaffold.fa":
           type: file
           description: abyss scaffolds fasta file
           pattern: "*k*.w*.z*.stitch.abyss-scaffold.fa"
-  - stitch_path:
-      - meta:
+          ontologies: []
+  stitch_path:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*k*.w*.z*.stitch.path"
       - "*k*.w*.z*.stitch.path":
           type: file
           description: stitch paths
           pattern: "*k*.w*.z*.stitch.path"
-  - trimmed_scaffolds_agp:
-      - meta:
+          ontologies: []
+  trimmed_scaffolds_agp:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*k*.w*.z*.trimmed_scafs.agp"
       - "*k*.w*.z*.trimmed_scafs.agp":
           type: file
           description: trimmed scaffolds in agp format
           pattern: "*k*.w*.z*.trimmed_scafs.agp"
-  - trimmed_scaffolds_fasta:
-      - meta:
+          ontologies: []
+  trimmed_scaffolds_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*k*.w*.z*.trimmed_scafs.fa"
       - "*k*.w*.z*.trimmed_scafs.fa":
           type: file
           description: trimmed scaffolds in fasta format
           pattern: "*k*.w*.z*.trimmed_scafs.fa"
-  - trimmed_scaffolds_path:
-      - meta:
+          ontologies: []
+  trimmed_scaffolds_path:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*k*.w*.z*.trimmed_scafs.path"
       - "*k*.w*.z*.trimmed_scafs.path":
           type: file
           description: trimmed scaffolds path
           pattern: "*k*.w*.z*.trimmed_scafs.path"
-  - trimmed_scaffolds_tsv:
-      - meta:
+          ontologies: []
+  trimmed_scaffolds_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*k*.w*.z*.trimmed_scafs.tsv"
       - "*k*.w*.z*.trimmed_scafs.tsv":
           type: file
           description: trimmed scaffolds tsv
           pattern: "*k*.w*.z*.trimmed_scafs.tsv"
-  - verbose_mapping_tsv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  verbose_mapping_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*k*.w*.z*.verbose_mapping.tsv"
       - "*k*.w*.z*.verbose_mapping.tsv":
           type: file
           description: trimmed scaffolds mapping
           pattern: "*k*.w*.z*.verbose_mapping.tsv"
-  - tsv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-          pattern: "*.k*.w???.tsv"
       - "*.k*.w???.tsv":
           type: file
           description: scaffolding tsv file
           pattern: "*.k*.w???.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nschan"
 maintainers:

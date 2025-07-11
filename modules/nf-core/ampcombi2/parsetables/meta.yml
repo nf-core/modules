@@ -42,43 +42,42 @@ input:
         pattern: "[*amptool.tsv, *amptool.tsv]"
         ontologies:
           - edam: "http://edamontology.org/format_3475" # TSV
-  - - faa_input:
-        type: file
-        description: The path to the file corresponding to the respective protein fasta
-          files with '.faa' extension. File names have to contain the corresponding
-          sample name, i.e. sample_1.faa
-        pattern: "*.faa"
-        ontologies:
-          - edam: "http://edamontology.org/format_1929" # FASTA
-  - - gbk_input:
-        type: file
-        description: The path to the file corresponding to the respective annotated
-          files with either '.gbk' or '.gbff' extensions. File names must contain the
-          corresponding sample name, i.e. sample_1.faa where "sample_1" is the sample
-          name.
-        pattern: "*.gbk"
-        ontologies:
-          - edam: "http://edamontology.org/format_1936" # GenBank
-  - - opt_amp_db:
-        type: string
-        description: The name of the database to download and set up. This can either
-          be 'DRAMP', 'APD' or 'UniRef100'.
-        pattern: "DRAMP|APD|UniRef100"
-  - - opt_amp_db_dir:
-        type: directory
-        description: The path to the folder containing the fasta and tsv database files.
-        pattern: "path/to/amp_*_database"
-  - - opt_interproscan:
-        type: directory
-        description: A path to a file corresponding to the respective tsv files containing
-          protein classifications of the annotated CDSs. The file must be the raw output
-          from InterProScan.
-        pattern: "*.tsv"
-        ontologies:
-          - edam: "http://edamontology.org/format_3475" # TSV
+  - faa_input:
+      type: file
+      description: The path to the file corresponding to the respective protein fasta
+        files with '.faa' extension. File names have to contain the corresponding sample
+        name, i.e. sample_1.faa
+      pattern: "*.faa"
+      ontologies:
+        - edam: "http://edamontology.org/format_1929" # FASTA
+  - gbk_input:
+      type: file
+      description: The path to the file corresponding to the respective annotated files
+        with either '.gbk' or '.gbff' extensions. File names must contain the corresponding
+        sample name, i.e. sample_1.faa where "sample_1" is the sample name.
+      pattern: "*.gbk"
+      ontologies:
+        - edam: "http://edamontology.org/format_1936" # GenBank
+  - opt_amp_db:
+      type: string
+      description: The name of the database to download and set up. This can either
+        be 'DRAMP', 'APD' or 'UniRef100'.
+      pattern: "DRAMP|APD|UniRef100"
+  - opt_amp_db_dir:
+      type: directory
+      description: The path to the folder containing the fasta and tsv database files.
+      pattern: "path/to/amp_*_database"
+  - opt_interproscan:
+      type: directory
+      description: A path to a file corresponding to the respective tsv files containing
+        protein classifications of the annotated CDSs. The file must be the raw output
+        from InterProScan.
+      pattern: "*.tsv"
+      ontologies:
+        - edam: "http://edamontology.org/format_3475" # TSV
 output:
-  - sample_dir:
-      - meta:
+  sample_dir:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -88,8 +87,8 @@ output:
           description: The output directory that contains the summary output and related
             alignment files for one sample.
           pattern: "/*"
-  - contig_gbks:
-      - meta:
+  contig_gbks:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -99,8 +98,8 @@ output:
           description: The output subdirectory that contains the gbk files containing
             the AMP hits for each sample.
           pattern: "/*/contig_gbks"
-  - db_tsv:
-      - meta:
+  db_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -112,8 +111,8 @@ output:
           pattern: "/*/*_mmseqs_matches.tsv"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -122,12 +121,13 @@ output:
           type: file
           description: A file containing the summary report of all predicted AMP hits
             from all AMP tools given as input, the corresponding taxonomic and functional
-            classification from the alignment step and the estimated physiochemical properties.
+            classification from the alignment step and the estimated physiochemical
+            properties.
           pattern: "/*/*_ampcombi.tsv"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
-  - faa:
-      - meta:
+  faa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -139,19 +139,20 @@ output:
           pattern: "/*/*_amp.faa"
           ontologies:
             - edam: "http://edamontology.org/format_1929" # FASTA
-  - sample_log:
-      - meta:
+  sample_log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - ${prefix}/${prefix}_ampcombi.log:
           type: file
-          description: A log file that captures the standard output per sample in a log
-            file. Can be activated by `--log`.
+          description: A log file that captures the standard output per sample in a
+            log file. Can be activated by `--log`.
           pattern: "/*/*.log"
-  - full_log:
-      - meta:
+          ontologies: []
+  full_log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -161,20 +162,21 @@ output:
           description: A log file that captures the standard output for the entire process
             in a log file. Can be activated by `--log`.
           pattern: "Ampcombi_parse_tables.log"
-  - db:
-      - meta:
+          ontologies: []
+  db:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - amp_${opt_amp_db}_database/:
           type: directory
-          description: If the AMP reference database ID is not provided by the user using
-            the flag `--amp_database', by default the DRAMP database will be downloaded,
+          description: If the AMP reference database ID is not provided by the user
+            using the flag `--amp_database', by default the DRAMP database will be downloaded,
             filtered and stored in this folder.
           pattern: "/amp_*_database"
-  - db_txt:
-      - meta:
+  db_txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -186,8 +188,8 @@ output:
           pattern: "/amp_*_database/*.txt"
           ontologies:
             - edam: "http://edamontology.org/format_2330" # Textual format
-  - db_fasta:
-      - meta:
+  db_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -198,24 +200,25 @@ output:
           pattern: "/amp_*_database/*.fasta"
           ontologies:
             - edam: "http://edamontology.org/format_1929" # FASTA
-  - db_mmseqs:
-      - meta:
+  db_mmseqs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - amp_${opt_amp_db}_database/mmseqs2/:
           type: directory
-          description: As alignment to the reference database is carried out by MMseqs2, this directory
-            contains all the files generated by MMseqs2 on the fasta file of the database.
+          description: As alignment to the reference database is carried out by MMseqs2,
+            this directory contains all the files generated by MMseqs2 on the fasta
+            file of the database.
           pattern: "/amp_*_database/mmseqs2"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: "http://edamontology.org/format_3750" # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@darcy220606"
 maintainers:

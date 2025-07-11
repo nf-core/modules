@@ -22,16 +22,19 @@ input:
         type: file
         description: vcf file
         pattern: "*.{vcf}"
+        ontologies: []
     - fam:
         type: file
         description: PED file with family information
-  - - score_config:
-        type: file
-        description: rank model config file
-        pattern: "*.{ini}"
+        ontologies: []
+  - score_config:
+      type: file
+      description: rank model config file
+      pattern: "*.{ini}"
+      ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,11 +43,14 @@ output:
           type: file
           description: Output VCF file
           pattern: "*.{vcf}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ramprasadn"
 maintainers:

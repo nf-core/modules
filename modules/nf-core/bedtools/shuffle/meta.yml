@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "bedtools_shuffle"
-description: bedtools shuffle will randomly permute the genomic locations of a feature file among a genome defined in a genome file
+description: bedtools shuffle will randomly permute the genomic locations of a feature
+  file among a genome defined in a genome file
 keywords:
   - bed
   - shuffleBed
@@ -41,22 +41,23 @@ input:
         type: file
         description: Chromosome sizes file
         pattern: "*{.genome,.sizes,.txt,.fai}"
-  - - exclude_file:
-        type: file
-        description: BED file containing regions to exclude
-        pattern: "*.{bed}"
-        ontologies:
-          - edam: "http://edamontology.org/format_3003"
-  - - include_file:
-        type: file
-        description: BED file containing regions to include
-        pattern: "*.{bed}"
-        ontologies:
-          - edam: "http://edamontology.org/format_3003"
+        ontologies: []
+  - exclude_file:
+      type: file
+      description: BED file containing regions to exclude
+      pattern: "*.{bed}"
+      ontologies:
+        - edam: "http://edamontology.org/format_3003"
+  - include_file:
+      type: file
+      description: BED file containing regions to include
+      pattern: "*.{bed}"
+      ontologies:
+        - edam: "http://edamontology.org/format_3003"
 
 output:
-  - bed:
-      - meta:
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing interval information
@@ -68,12 +69,14 @@ output:
           ontologies:
             - edam: "http://edamontology.org/format_3003"
 
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@itrujnara"
 maintainers:
