@@ -86,8 +86,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
-                { assert file(process.out.png[0][1]).name }
+                { assert snapshot(
+                    process.out.versions,
+                    file(process.out.png[0][1]).name,
+                    path(process.out.versions[0]).yaml
+                ).match() }
             )
         }
 
