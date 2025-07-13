@@ -224,9 +224,6 @@ if (nrow(de.genes) > 0) {
     if (!is.null(sources)) {
         sources <-  strsplit(opt\$sources, split = ",")[[1]]
     }
-    if (!is.null(sources)) {
-        sources <-  strsplit(opt\$sources, split = ",")[[1]]
-    }
 
     if (!is.null(opt\$token)) {
 
