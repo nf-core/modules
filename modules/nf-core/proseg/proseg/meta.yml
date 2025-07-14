@@ -33,7 +33,7 @@ output:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "transcript-metadata.csv.gz":
+        - "outputs/*transcript-metadata.csv.gz":
             type: file
             description: Transcript ids, genes, revised positions, assignment probability, etc.
             pattern: "outputs/*transcript-metadata.csv"
@@ -41,7 +41,7 @@ output:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "cell-metadata.csv.gz":
+        - "outputs/*cell-metadata.csv.gz":
             type: file
             description: Cell metadata file
             pattern: "outputs/*cell-metadata.csv.gz"
@@ -49,7 +49,7 @@ output:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "cell-polygons.geojson.gz":
+        - "outputs/*cell-polygons.geojson.gz":
             type: file
             description: Cell polygons file
             pattern: "outputs/*cell-polygons.geojson.gz"
@@ -57,7 +57,7 @@ output:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "cell-polygons-layers.geojson.gz":
+        - "outputs/*cell-polygons-layers.geojson.gz":
             type: file
             description: Cell polygon layers file
             pattern: "outputs/*cell-polygons-layers.geojson.gz"
@@ -65,7 +65,7 @@ output:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "expected-counts.csv.gz":
+        - "outputs/*expected-counts.csv.gz":
             type: file
             description: Expected transcript counts file
             pattern: "outputs/*expected-counts.csv.gz"
