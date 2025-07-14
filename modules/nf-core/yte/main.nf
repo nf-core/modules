@@ -8,7 +8,7 @@ process YTE {
     // TODO: update container to 1.9.0
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'oras://community.wave.seqera.io/library/yte:1.5.4--2466971526dcd2a8':
-        'community.wave.seqera.io/library/yte:1.5.4--36d16ca4bab836c1' }"
+        'community.wave.seqera.io/library/pip_yte:93491093a59d72ba' }"
 
     input:
     tuple val(meta), path(template)
