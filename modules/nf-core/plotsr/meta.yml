@@ -1,0 +1,129 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "plotsr"
+description: Plotsr generates high-quality visualisation of synteny and
+  structural rearrangements between multiple genomes.
+keywords:
+  - genomics
+  - synteny
+  - rearrangements
+  - chromosome
+tools:
+  - "plotsr":
+      description: "Visualiser for structural annotations between multiple genomes"
+      homepage: "https://github.com/schneebergerlab/plotsr"
+      documentation: "https://github.com/schneebergerlab/plotsr"
+      tool_dev_url: "https://github.com/schneebergerlab/plotsr"
+      doi: "10.1093/bioinformatics/btac196"
+      licence: ["MIT"]
+      identifier: biotools:plotsr
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - syri:
+        type: file
+        description: Structural annotation mappings (syri.out) identified by SyRI
+        pattern: "*syri.out"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fastas:
+        type: list
+        description: Fasta files in the sequence specified by the `genomes` file
+        pattern: "*.{fasta,fa,fsa,faa}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - genomes:
+        type: string
+        description: |
+          A genomes.txt file including the header: #file	name	tags
+          and Fasta file names, title for the plot and plotsr configuration tags. As example is:
+          #file name  tags
+          genome.fasta  test  lw:1.5
+          genome2.fasta reference lw:1.5
+        pattern: "*.txt"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bedpe:
+        type: file
+        description: Structural annotation mappings in BEDPE format
+        pattern: "*.bedpe"
+        ontologies: []
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - markers:
+        type: file
+        description: File containing path to markers
+        pattern: "*.bed"
+        ontologies: []
+  - - meta6:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - tracks:
+        type: file
+        description: File listing paths and details for all tracks to be plotted
+        pattern: "*.txt"
+        ontologies: []
+  - - meta7:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - chrord:
+        type: file
+        description: |
+          File containing reference (first genome) chromosome IDs in the order in which they are to be plotted.
+          File requires one chromosome ID per line. Not compatible with --chr
+        pattern: "*.txt"
+        ontologies: []
+  - - meta8:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - chrname:
+        type: file
+        description: |
+          File containing reference (first genome) chromosome names to be used in the plot.
+          File needs to be a TSV with the chromosome ID in first column and chromosome name in the second.
+        pattern: "*.txt"
+        ontologies: []
+output:
+  png:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.png":
+          type: file
+          description: Synteny plot
+          pattern: "*.png"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@GallVp"
+maintainers:
+  - "@GallVp"

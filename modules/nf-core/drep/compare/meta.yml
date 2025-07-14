@@ -30,16 +30,15 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-    - '"fastas/*"':
+    - fastas/*:
         type: file
-        description: List of fasta files to compare
-        pattern: "*.{fasta,fa,fna,.fas}"
+        description: List of FASTA files to compare
+        pattern: "*.{fasta,fa,fna,fas}"
         ontologies:
-          - edam: "http://edamontology.org/data_1929"
-
+          - edam: http://edamontology.org/format_1929 # FASTA
 output:
-  - directory:
-      - meta:
+  directory:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -51,11 +50,13 @@ output:
           pattern: "${prefix}/"
           ontologies:
             - edam: "http://edamontology.org/data_1049"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:
