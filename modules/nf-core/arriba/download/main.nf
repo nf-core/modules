@@ -38,10 +38,10 @@ process ARRIBA_DOWNLOAD {
     stub:
     def arriba_version = '2.5.0'
     """
-    touch blacklist_hg38_GRCh38_v${arriba_version}.tsv.gz
+    echo | gzip > blacklist_hg38_GRCh38_v${arriba_version}.tsv.gz
     touch protein_domains_hg38_GRCh38_v${arriba_version}.gff3
     touch cytobands_hg38_GRCh38_v${arriba_version}.tsv
-    touch known_fusions_hg38_GRCh38_v${arriba_version}.tsv.gz
+    echo | gzip > known_fusions_hg38_GRCh38_v${arriba_version}.tsv.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
