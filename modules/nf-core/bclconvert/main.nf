@@ -8,14 +8,14 @@ process BCLCONVERT {
     tuple val(meta), path(samplesheet), path(run_dir)
 
     output:
-    tuple val(meta), path("output/**_S[1-9]*_R?_00?.fastq.gz")           , emit: fastq
-    tuple val(meta), path("output/**_S[1-9]*_I?_00?.fastq.gz")           , optional:true, emit: fastq_idx
-    tuple val(meta), path("output/**Undetermined_S0*_R?_00?.fastq.gz")   , optional:true, emit: undetermined
-    tuple val(meta), path("output/**Undetermined_S0*_I?_00?.fastq.gz")   , optional:true, emit: undetermined_idx
-    tuple val(meta), path("output/Reports")                              , emit: reports
-    tuple val(meta), path("output/Logs")                                 , emit: logs
-    tuple val(meta), path("**/InterOp/*.bin", includeInputs: true), emit: interop
-    path("versions.yml")                                          , emit: versions
+    tuple val(meta), path("output/**_S[1-9]*_R?_00?.fastq.gz")        , emit: fastq
+    tuple val(meta), path("output/**_S[1-9]*_I?_00?.fastq.gz")        , emit: fastq_idx       , optional:true
+    tuple val(meta), path("output/**Undetermined_S0*_R?_00?.fastq.gz"), emit: undetermined    , optional:true
+    tuple val(meta), path("output/**Undetermined_S0*_I?_00?.fastq.gz"), emit: undetermined_idx, optional:true
+    tuple val(meta), path("output/Reports")                           , emit: reports
+    tuple val(meta), path("output/Logs")                              , emit: logs
+    tuple val(meta), path("**/InterOp/*.bin", includeInputs: true)    , emit: interop         , optional:true
+    path("versions.yml")                                              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -67,4 +67,41 @@ process BCLCONVERT {
         bclconvert: \$(bcl-convert -V 2>&1 | head -n 1 | sed 's/^.*Version //')
     END_VERSIONS
     """
+
+    stub:
+    """
+    mkdir -p output/Reports
+    mkdir -p output/Logs
+    echo "" | gzip > output/Sample1_S1_L001_R1_001.fastq.gz
+    echo "" | gzip > output/Undetermined_S0_L001_R1_001.fastq.gz
+    touch output/Reports/Adapter_Cycle_Metrics.csv
+    touch output/Reports/Adapter_Metrics.csv
+    touch output/Reports/Demultiplex_Stats.csv
+    touch output/Reports/Demultiplex_Tile_Stats.csv
+    touch output/Reports/fastq_list.csv
+    touch output/Reports/Index_Hopping_Counts.csv
+    touch output/Reports/IndexMetricsOut.bin
+    touch output/Reports/Quality_Metrics.csv
+    touch output/Reports/Quality_Tile_Metrics.csv
+    touch output/Reports/RunInfo.xml
+    touch output/Reports/SampleSheet.csv
+    touch output/Reports/Top_Unknown_Barcodes.csv
+    touch output/Logs/Errors.log
+    touch output/Logs/FastqComplete.log
+    touch output/Logs/Info.log
+    touch output/Logs/Warnings.log
+    mkdir -p flowcell/InterOp
+    touch flowcell/InterOp/ControlMetricsOut.bin
+    touch flowcell/InterOp/CorrectedIntMetricsOut.bin
+    touch flowcell/InterOp/ErrorMetricsOut.bin
+    touch flowcell/InterOp/ExtractionMetricsOut.bin
+    touch flowcell/InterOp/IndexMetricsOut.bin
+    touch flowcell/InterOp/QMetricsOut.bin
+    touch flowcell/InterOp/TileMetricsOut.bin
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bclconvert: \$(bcl-convert -V 2>&1 | head -n 1 | sed 's/^.*Version //')
+    END_VERSIONS
+    """
+
 }
