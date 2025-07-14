@@ -28,22 +28,22 @@ input:
         pattern: "*.{fa,fsa,fasta}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
-  - - command:
-        type: string
-        description: Command to execute. One of [ 'head', 'tail' ]
-  - - lcv_filepath:
-        type: file
-        description: LCV file path. If not provided by setting it to [], the LCV file
-          packaged with the module will be used
-        pattern: "*.lcvs"
-        ontologies: []
-  - - buffer_size:
-        type: integer
-        description: Genome slice size (use negative or zero for non-buffer, i.e. treat
-          every whole chromosome)
+  - command:
+      type: string
+      description: Command to execute. One of [ 'head', 'tail' ]
+  - lcv_filepath:
+      type: file
+      description: LCV file path. If not provided by setting it to [], the LCV file
+        packaged with the module will be used
+      pattern: "*.lcvs"
+      ontologies: []
+  - buffer_size:
+      type: integer
+      description: Genome slice size (use negative or zero for non-buffer, i.e. treat
+        every whole chromosome)
 output:
-  - scan:
-      - meta:
+  scan:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,12 +53,13 @@ output:
           description: Head or tail file depending on the command
           pattern: "*.$command"
           ontologies: []
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@GallVp"
 maintainers:

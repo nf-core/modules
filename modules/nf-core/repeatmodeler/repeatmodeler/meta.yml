@@ -26,9 +26,10 @@ input:
         type: file
         description: RepeatModeler database files generated with REPEATMODELER_BUILDDATABASE
         pattern: "*"
+        ontologies: []
 output:
-  - fasta:
-      - meta:
+  fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -37,8 +38,9 @@ output:
           type: file
           description: Consensus repeat sequences
           pattern: "*.fa"
-  - stk:
-      - meta:
+          ontologies: []
+  stk:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,8 +49,9 @@ output:
           type: file
           description: Seed alignments
           pattern: "*.stk"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -57,11 +60,14 @@ output:
           type: file
           description: A summarized log of the run
           pattern: "*.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@GallVp"
 maintainers:

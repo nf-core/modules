@@ -1,4 +1,3 @@
----
 name: "plink2_filter"
 description: Filters plink bfiles or pfiles with filters such as maf or var
 keywords:
@@ -27,7 +26,8 @@ input:
           e.g. [ id:'test' ]
     - plink_genotype_file:
         type: file
-        description: PLINK binary genotype table file or PLINK 2 binary genotype table file
+        description: PLINK binary genotype table file or PLINK 2 binary genotype table
+          file
         pattern: "*.{bed,pgen}"
         ontologies:
           - edam: http://edamontology.org/format_3003
@@ -35,14 +35,27 @@ input:
         type: file
         description: PLINK extended MAP file or PLINK 2 variant information file
         pattern: "*.{bim,pvar}"
+        ontologies: []
     - plink_sample_file:
         type: file
         description: PLINK sample information file or PLINK 2 sample information file
         pattern: "*.{fam,psam}"
 
+        ontologies: []
 output:
-  - bed:
-      - meta:
+  bim:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bim":
+          type: file
+          description: PLINK extended map file
+          pattern: "*.bim"
+          ontologies: []
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,19 +66,8 @@ output:
           pattern: "*.bed"
           ontologies:
             - edam: http://edamontology.org/format_3003
-  - bim:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.bim":
-          type: file
-          description: PLINK extended map file
-          pattern: "*.bim"
-          ontologies: []
-  - fam:
-      - meta:
+  fam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -75,8 +77,8 @@ output:
           description: PLINK sample information file
           pattern: "*.fam"
           ontologies: []
-  - pgen:
-      - meta:
+  pgen:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -87,19 +89,8 @@ output:
           pattern: "*.pgen"
           ontologies:
             - edam: http://edamontology.org/format_3003
-  - pvar:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.pvar":
-          type: file
-          description: PLINK 2 variant information file
-          pattern: "*.pvar"
-          ontologies: []
-  - psam:
-      - meta:
+  psam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -109,13 +100,24 @@ output:
           description: PLINK 2 sample information file
           pattern: "*.psam"
           ontologies: []
-  - versions:
-      - versions.yml:
+  pvar:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.pvar":
           type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          description: PLINK 2 variant information file
+          pattern: "*.pvar"
           ontologies: []
-
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jodennehy"
 maintainers:
