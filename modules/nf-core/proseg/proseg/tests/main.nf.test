@@ -34,7 +34,10 @@ nextflow_process {
                     process.out.versions,
                     path(process.out.versions[0]).yaml,
                     path(process.out.transcript_metadata[0][1]).linesGzip[0],
-                    path(process.out.cell_polygons[0][1]).linesGzip[0]
+                    path(process.out.cell_metadata[0][1]).linesGzip[0],
+                    path(process.out.cell_polygons[0][1]).linesGzip[0],
+                    path(process.out.cell_polygons_layers[0][1]).linesGzip[0],
+                    path(process.out.expected_counts[0][1]).linesGzip[0]
                 ).match() }
             )
         }

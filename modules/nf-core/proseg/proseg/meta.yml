@@ -36,7 +36,7 @@ output:
         - "transcript-metadata.csv.gz":
             type: file
             description: Transcript ids, genes, revised positions, assignment probability, etc.
-            pattern: "*transcript-metadata.csv"
+            pattern: "outputs/*transcript-metadata.csv"
   cell_metadata:
       - - meta:
             type: map
@@ -44,7 +44,7 @@ output:
         - "cell-metadata.csv.gz":
             type: file
             description: Cell metadata file
-            pattern: "*cell-metadata.csv.gz"
+            pattern: "outputs/*cell-metadata.csv.gz"
   cell_polygons:
       - - meta:
             type: map
@@ -52,7 +52,7 @@ output:
         - "cell-polygons.geojson.gz":
             type: file
             description: Cell polygons file
-            pattern: "*cell-polygons.geojson.gz"
+            pattern: "outputs/*cell-polygons.geojson.gz"
   cell_polygons_layers:
       - - meta:
             type: map
@@ -60,7 +60,7 @@ output:
         - "cell-polygons-layers.geojson.gz":
             type: file
             description: Cell polygon layers file
-            pattern: "*cell-polygons-layers.geojson.gz"
+            pattern: "outputs/*cell-polygons-layers.geojson.gz"
   expected_counts:
       - - meta:
             type: map
@@ -68,15 +68,15 @@ output:
         - "expected-counts.csv.gz":
             type: file
             description: Expected transcript counts file
-            pattern: "*expected-counts.csv.gz"
-  union_cell_polygons:
+            pattern: "outputs/*expected-counts.csv.gz"
+  other_outputs:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "union-cell-polygons.geojson.gz":
+        - "outputs/*":
             type: file
-            description: Union cell polygons file
-            pattern: "*union-cell-polygons.geojson.gz"
+            description: Optional other outputs from Proseg as specified by the user in args.ext
+            pattern: "outputs/*"
   versions:
       - "versions.yml":
           type: file

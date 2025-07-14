@@ -12,13 +12,13 @@ process PROSEG {
     val mode
 
     output: 
-    tuple val(meta), path("*transcript-metadata.csv.gz")     , emit: transcript_metadata
-    tuple val(meta), path("*cell-metadata.csv.gz")           , emit: cell_metadata
-    tuple val(meta), path("*cell-polygons.geojson.gz")       , emit: cell_polygons
-    tuple val(meta), path("*cell-polygons-layers.geojson.gz"), emit: cell_polygons_layers
-    tuple val(meta), path("*expected-counts.csv.gz")         , emit: expected_counts
-    tuple val(meta), path("*union-cell-polygons.geojson.gz") , emit: union_cell_polygons
-    path "versions.yml"                                      , emit: versions
+    tuple val(meta), path("outputs/*transcript-metadata.csv.gz")     , emit: transcript_metadata
+    tuple val(meta), path("outputs/*cell-metadata.csv.gz")           , emit: cell_metadata
+    tuple val(meta), path("outputs/*cell-polygons.geojson.gz")       , emit: cell_polygons
+    tuple val(meta), path("outputs/*cell-polygons-layers.geojson.gz"), emit: cell_polygons_layers
+    tuple val(meta), path("outputs/*expected-counts.csv.gz")         , emit: expected_counts
+    tuple val(meta), path("outputs/*")                               , emit: other_outputs, optional: true
+    path "versions.yml"                                              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,11 +26,18 @@ process PROSEG {
     script:
     def preset = mode ? "--${mode}" : ''
     def args = task.ext.args ?: ''
+    def prefix =  task.ext.prefix ? "outputs/${task.ext.prefix}-" : "outputs/"
 
     """
+    mkdir outputs
     proseg \\
         ${preset} \\
         ${args} \\
+        --output-transcript-metadata ${prefix}transcript-metadata.csv.gz \\
+        --output-cell-metadata ${prefix}cell-metadata.csv.gz \\
+        --output-cell-polygons ${prefix}cell-polygons.geojson.gz \\
+        --output-cell-polygon-layers ${prefix}cell-polygons-layers.geojson.gz \\
+        --output-expected-counts ${prefix}expected-counts.csv.gz \\
         --nthreads ${task.cpus} \\
         ${transcripts}
 
@@ -42,12 +49,12 @@ process PROSEG {
 
     stub:
     """
-    touch cell-metadata.csv.gz
-    touch cell-polygons.geojson.gz
-    touch cell-polygons-layers.geojson.gz
-    touch expected-counts.csv.gz
-    touch transcript-metadata.csv.gz
-    touch union-cell-polygons.geojson.gz
+    mkdir outputs
+    touch outputs/cell-metadata.csv.gz
+    touch outputs/cell-polygons.geojson.gz
+    touch outputs/cell-polygons-layers.geojson.gz
+    touch outputs/expected-counts.csv.gz
+    touch outputs/transcript-metadata.csv.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
