@@ -25,7 +25,7 @@ output:
         type: string
         description: The blacklist removes recurrent alignment artifacts and transcripts
           which are present in healthy tissue
-        pattern: ".tsv.gz"
+        pattern: ".tsv"
   cytobands:
     - cytobands*${genome}*.tsv:
         type: file
@@ -45,7 +45,7 @@ output:
         type: file
         description: Arriba is more sensitive to those fusions to improve the detection
           rate of expected or highly relevant events, such as recurrent fusions
-        pattern: "*.tsv.gz"
+        pattern: "*.tsv"
         ontologies:
           - edam: http://edamontology.org/format_3989 # GZIP format
   versions:
