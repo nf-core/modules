@@ -21,7 +21,7 @@ input:
       description: hg38, hg19, GRCh38, GRCh37 for humans are accepted
 output:
   blacklist:
-    - blacklist*${genome}*.tsv.gz:
+    - blacklist*${genome}*.tsv:
         type: string
         description: The blacklist removes recurrent alignment artifacts and transcripts
           which are present in healthy tissue
@@ -41,7 +41,7 @@ output:
         pattern: "*.gff3"
         ontologies: []
   known_fusions:
-    - known_fusions*${genome}*.tsv.gz:
+    - known_fusions*${genome}*.tsv:
         type: file
         description: Arriba is more sensitive to those fusions to improve the detection
           rate of expected or highly relevant events, such as recurrent fusions
