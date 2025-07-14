@@ -15,7 +15,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'template' ], // meta map
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/1d7285ed7dea21f2d4079f7daa196b9f17bc6e85/data/generic/config/config_template.yte.yaml', checkIfExists: true)
+                    file(params.modules_testdata_base_path + "generic/config/config_template.yte.yaml", checkIfExists: true)
                 ]
                 input[1] = []
                 input[2] = [ 'sex': 'female' ] // map
@@ -41,7 +41,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'template' ], // meta map
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/1d7285ed7dea21f2d4079f7daa196b9f17bc6e85/data/generic/config/config_template.yte.yaml', checkIfExists: true)
+                    file(params.modules_testdata_base_path + "generic/config/config_template.yte.yaml", checkIfExists: true)
                 ]
                 input[1] = []
                 input[2] = [ 'sex': 'female' ] // map
@@ -68,9 +68,9 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'template' ], // meta map
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/1d7285ed7dea21f2d4079f7daa196b9f17bc6e85/data/generic/config/config_template.yte.yaml', checkIfExists: true)
+                    file(params.modules_testdata_base_path + "generic/config/config_template.yte.yaml", checkIfExists: true)
                 ]
-                input[1] = [file ('https://raw.githubusercontent.com/nf-core/test-datasets/811dd3fa80dbac64b14f07413ad78bb2bebe0323/data/generic/config/yte_map_file.yaml', checkIfExists: true)]
+                input[1] = file(params.modules_testdata_base_path + "generic/config/yte_map_file.yaml", checkIfExists: true)
                 input[2] = [] // map
                 """
             }
@@ -94,9 +94,9 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'template' ], // meta map
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/1d7285ed7dea21f2d4079f7daa196b9f17bc6e85/data/generic/config/config_template.yte.yaml', checkIfExists: true)
+                    file(params.modules_testdata_base_path + "generic/config/config_template.yte.yaml", checkIfExists: true)
                 ]
-                input[1] = [file ('https://raw.githubusercontent.com/nf-core/test-datasets/811dd3fa80dbac64b14f07413ad78bb2bebe0323/data/generic/config/yte_map_file.yaml', checkIfExists: true)]
+                input[1] = file(params.modules_testdata_base_path + "generic/config/yte_map_file.yaml", checkIfExists: true)
                 input[2] = [] // map
                 """
             }
