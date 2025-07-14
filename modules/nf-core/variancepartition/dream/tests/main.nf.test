@@ -39,7 +39,8 @@ nextflow_process {
     then {
         assertAll(
             { assert process.success },
-            { assert path(process.out.results[0][1]).getText().contains("logFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB\n0.8333") },
+            { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
+            { assert path(process.out.results[0][1]).getText().contains("0.8333") },
             { assert path(process.out.results[0][1]).getText().contains("13.5\t21.125\t4.40") },
             { assert snapshot(process.out.model, process.out.versions).match() }
         )
@@ -96,7 +97,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.results[0][1]).getText().contains("logFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB\n849.6666") },
+                { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
+                { assert path(process.out.results[0][1]).getText().contains("849.6666") },
                 { assert path(process.out.results[0][1]).getText().contains("1050\t549\t3.78") }
                 )
         }
@@ -127,7 +129,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.model, process.out.versions).match() },
-                { assert path(process.out.results[0][1]).getText().contains("logFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB\n2124\t549\t4.83") },
+                { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
+                { assert path(process.out.results[0][1]).getText().contains("2124\t549\t4.83") },
                 { assert path(process.out.results[0][1]).getText().contains("1707.33") }
                 )
         }
@@ -157,7 +160,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.model, process.out.versions).match() },
-                { assert path(process.out.results[0][1]).getText().contains("logFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB\n-95.6666") },
+                { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
+                { assert path(process.out.results[0][1]).getText().contains("-95.6666") },
                 { assert path(process.out.results[0][1]).getText().contains("1050\t549\t4.15") }
                 )
         }
