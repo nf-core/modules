@@ -11,7 +11,7 @@ process BFTOOLS_SHOWINF {
     tuple val(meta), path(image)
 
     output:
-    tuple val(meta), path("ome.xml"), emit: xml
+    tuple val(meta), path("*.xml"), emit: xml
     path "versions.yml", emit: versions
 
     when:
@@ -19,11 +19,12 @@ process BFTOOLS_SHOWINF {
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     showinf -nopix -no-upgrade -omexml-only \\
         $args \\
-        $image > 'ome.xml'
+        $image > ${prefix}.xml
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -33,9 +34,10 @@ process BFTOOLS_SHOWINF {
 
     stub:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    echo '<?xml version="1.0" encoding="UTF-8">' > 'ome.xml'
+    echo '<?xml version="1.0" encoding="UTF-8">' > ${prefix}.xml
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
