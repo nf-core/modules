@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "vcf2zarr_convert"
-description: Convert VCF data to the VCF Zarr specification reliably, in parallel or distributed over a cluster
+description: Convert VCF data to the VCF Zarr specification reliably, in
+  parallel or distributed over a cluster
 keywords:
   - vcf
   - zarr
@@ -29,12 +29,11 @@ input:
         description: Input VCF file
         pattern: "*.{vcf,vcf.gz}"
         ontologies:
-        - edam: "http://edamontology.org/format_3016"
+          - edam: "http://edamontology.org/format_3016"
 
 output:
-  - vcz:
-      #Only when we have meta
-      - meta:
+  vcz:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,14 +43,16 @@ output:
           description: Output VCF Zarr store
           pattern: "*.{vcz}"
           ontologies:
-          - edam: "http://edamontology.org/format_3915"
+            - edam: "http://edamontology.org/format_3915"
 
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@camlloyd"
 maintainers:
