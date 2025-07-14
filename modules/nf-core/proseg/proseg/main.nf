@@ -12,13 +12,13 @@ process PROSEG {
     val mode
 
     output: 
-    tuple val(meta), path("transcript-metadata.csv.gz")     , emit: transcript_metadata
-    tuple val(meta), path("cell-metadata.csv.gz")           , emit: cell_metadata
-    tuple val(meta), path("cell-polygons.geojson.gz")       , emit: cell_polygons
-    tuple val(meta), path("cell-polygons-layers.geojson.gz"), emit: cell_polygons_layers
-    tuple val(meta), path("expected-counts.csv.gz")         , emit: expected_counts
-    tuple val(meta), path("union-cell-polygons.geojson.gz") , emit: union_cell_polygons
-    path "versions.yml"                                     , emit: versions
+    tuple val(meta), path("*transcript-metadata.csv.gz")     , emit: transcript_metadata
+    tuple val(meta), path("*cell-metadata.csv.gz")           , emit: cell_metadata
+    tuple val(meta), path("*cell-polygons.geojson.gz")       , emit: cell_polygons
+    tuple val(meta), path("*cell-polygons-layers.geojson.gz"), emit: cell_polygons_layers
+    tuple val(meta), path("*expected-counts.csv.gz")         , emit: expected_counts
+    tuple val(meta), path("*union-cell-polygons.geojson.gz") , emit: union_cell_polygons
+    path "versions.yml"                                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
