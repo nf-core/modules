@@ -154,44 +154,16 @@ nextflow_process {
         }
     }
 
-    // test("tumor_normal") {
-
-    //     when {
-    //         process {
-    //             """
-    //             input[0] = VARLOCIRAPTOR_PREPROCESS_NORMAL.out.bcf.combine(VARLOCIRAPTOR_PREPROCESS_TUMOR.out.bcf).collect().map{meta_normal,vcf_normal,meta_tumor,vcf_tumor->[meta_normal,[vcf_normal,vcf_tumor]]}
-    //             input[1] = file('https://raw.githubusercontent.com/nf-core/test-datasets/8992b14f21c038ab3846f321c3f1b15353f04082/data/genomics/homo_sapiens/illumina/varlociraptor/tn_with_priors.yml')
-    //             // Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/varlociraptor/tn_with_priors.yml', checkIfExists:true))
-    //             input[2] = [ "normal", "tumor" ]
-    //             """
-    //         }
-    //     }
-    //     then {
-    //         assert process.success
-    //         assertAll(
-    //             { assert snapshot(
-    //                 file(process.out.bcf[0][1]).name,
-    //                 //path(process.out.bcf[0][1]).vcf.variantsMD5,
-    //                 // Error: BCF magic header info not found with current version of nf-test htjsk
-    //                 // Might be linked to https://github.com/samtools/htsjdk/issues/946 and block gzipped BCF
-    //                 process.out.versions,
-    //                 path(process.out.versions[0]).yaml
-    //             ).match() }
-    //         )
-    //     }
-    // }
-
-    test("tumor_normal - stub") {
+    test("normal_multisample - stub") {
 
         options '-stub'
 
         when {
             process {
                 """
-                input[0] = VARLOCIRAPTOR_PREPROCESS_NORMAL.out.bcf.combine(VARLOCIRAPTOR_PREPROCESS_TUMOR.out.bcf).collect().map{meta_normal,vcf_normal,meta_tumor,vcf_tumor->[meta_normal,[vcf_normal,vcf_tumor]]}
-                input[1] = file('https://raw.githubusercontent.com/nf-core/test-datasets/8992b14f21c038ab3846f321c3f1b15353f04082/data/genomics/homo_sapiens/illumina/varlociraptor/tn_with_priors.yml')
-                // Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/varlociraptor/tn_with_priors.yml', checkIfExists:true))
-                input[2] = [ "normal", "tumor" ]
+                input[0] = VARLOCIRAPTOR_PREPROCESS_NORMAL.out.bcf.concat(VARLOCIRAPTOR_PREPROCESS_TUMOR.out.bcf).collect().map{meta1,vcf1,meta2,vcf2->[meta1,[vcf1,vcf2]]}
+                input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/varlociraptor/scenario.yml', checkIfExists:true))
+                input[2] = ["normal","normal"]
                 """
             }
         }
