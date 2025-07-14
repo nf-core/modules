@@ -12,13 +12,14 @@ process PROSEG {
     val mode
 
     output: 
-    tuple val(meta), path("outputs/*transcript-metadata.csv.gz")     , emit: transcript_metadata
-    tuple val(meta), path("outputs/*cell-metadata.csv.gz")           , emit: cell_metadata
-    tuple val(meta), path("outputs/*cell-polygons.geojson.gz")       , emit: cell_polygons
-    tuple val(meta), path("outputs/*cell-polygons-layers.geojson.gz"), emit: cell_polygons_layers
-    tuple val(meta), path("outputs/*expected-counts.csv.gz")         , emit: expected_counts
-    tuple val(meta), path("outputs/*")                               , emit: other_outputs, optional: true
-    path "versions.yml"                                              , emit: versions
+    tuple val(meta), path("outputs/*transcript-metadata.csv.gz", arity: '1')     , emit: transcript_metadata
+    tuple val(meta), path("outputs/*cell-metadata.csv.gz", arity: '1')           , emit: cell_metadata
+    tuple val(meta), path("outputs/*cell-polygons.geojson.gz", arity: '1')       , emit: cell_polygons
+    tuple val(meta), path("outputs/*cell-polygons-layers.geojson.gz", arity: '1'), emit: cell_polygons_layers
+    tuple val(meta), path("outputs/*expected-counts.csv.gz", arity: '1')         , emit: expected_counts
+    // Proseg has lots of optional file outputs, this is a catch-all for additional files specified in args
+    tuple val(meta), path("outputs/*")                                           , emit: other_outputs, optional: true
+    path "versions.yml"                                                          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
