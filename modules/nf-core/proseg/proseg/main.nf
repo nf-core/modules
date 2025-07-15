@@ -18,7 +18,15 @@ process PROSEG {
     tuple val(meta), path("*cell-metadata.csv.gz", arity: '1')           , emit: cell_metadata
     tuple val(meta), path("*cell-polygons-layers.geojson.gz", arity: '1'), emit: cell_polygons_layers
     tuple val(meta), path("*expected-counts.csv.gz", arity: '1')         , emit: expected_counts
+    tuple val(meta), path("*maxpost_counts*", arity: '1')                , emit: maxpost_counts, optional: true
+    tuple val(meta), path("*output_rates*", arity: '1')                  , emit: output_rates, optional: true
+    tuple val(meta), path("*cell-hulls*", arity: '1')                    , emit: cell_hulls, optional: true
+    tuple val(meta), path("*gene-metadata*", arity: '1')                 , emit: gene_metadata, optional: true
+    tuple val(meta), path("*metagene-rates*", arity: '1')                , emit: metagene_rates, optional: true
+    tuple val(meta), path("*metagene-loadings*", arity: '1')             , emit: metagene_loadings, optional: true
+    tuple val(meta), path("*cell-voxels*", arity: '1')                   , emit: cell_voxels, optional: true
     path "versions.yml"                                                  , emit: versions
+
 
     when:
     task.ext.when == null || task.ext.when

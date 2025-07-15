@@ -36,7 +36,7 @@ output:
         - "*transcript-metadata.csv.gz":
             type: file
             description: Transcript ids, genes, revised positions, assignment probability, etc.
-            pattern: "outputs/*transcript-metadata.csv"
+            pattern: "*transcript-metadata.csv"
   cell_metadata:
       - - meta:
             type: map
@@ -44,7 +44,7 @@ output:
         - "*cell-metadata.csv.gz":
             type: file
             description: Cell metadata file
-            pattern: "outputs/*cell-metadata.csv.gz"
+            pattern: "*cell-metadata.csv.gz"
   cell_polygons:
       - - meta:
             type: map
@@ -52,7 +52,7 @@ output:
         - "*cell-polygons.geojson.gz":
             type: file
             description: Cell polygons file
-            pattern: "outputs/*cell-polygons.geojson.gz"
+            pattern: "*cell-polygons.geojson.gz"
   cell_polygons_layers:
       - - meta:
             type: map
@@ -60,12 +60,12 @@ output:
         - "*cell-polygons-layers.geojson.gz":
             type: file
             description: Cell polygon layers file
-            pattern: "outputs/*cell-polygons-layers.geojson.gz"
+            pattern: "*cell-polygons-layers.geojson.gz"
   expected_counts:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "outputs/*expected-counts.csv.gz":
+        - "*expected-counts.csv.gz":
             type: file
             description: Expected transcript counts file
             pattern: "outputs/*expected-counts.csv.gz"
@@ -73,18 +73,66 @@ output:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "outputs/*expected-counts.csv.gz":
+        - "*expected-counts.csv.gz":
             type: file
             description: Union cell polygons
             pattern: "*cell-polygons-union.csv.gz"
-  other_outputs:
+  maxpost_counts:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "*":
+        - "*maxpost-counts*":
             type: file
-            description: Optional other outputs from Proseg as specified by the user in args.ext
-            pattern: "outputs/*"
+            description: point estimate of counts per cell
+            pattern: "*maxpost-counts*"
+  output_rates:
+      - - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - "*output-rates*":
+            type: file
+            description: Estimated poisson expression rates for each cell
+            pattern: "*output-rates*"
+  cell_hulls:
+      - - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - "*cell-hulls*":
+            type: file
+            description: Cell convex hulls
+            pattern: "*cell-hulls*"
+  gene_metadata:
+      - - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - "*gene-metadata*":
+            type: file
+            description: gene metadata
+            pattern: "*gene-metadata*"
+  metagene_rates:
+      - - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - "*metagene-rates*":
+            type: file
+            description: metagene rates
+            pattern: "*metagene-rates*"
+  metagene_loadings:
+      - - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - "*metagene-loadings*":
+            type: file
+            description: metagene loadings
+            pattern: "*metagene-loadings*"
+  cell_voxels:
+      - - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - "*cell-voxels*":
+            type: file
+            description: table of each voxel in each cell
+            pattern: "*cell-voxels*"
   versions:
       - "versions.yml":
           type: file
