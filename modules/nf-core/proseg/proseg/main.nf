@@ -12,19 +12,19 @@ process PROSEG {
     val mode
 
     output: 
-    tuple val(meta), path("*transcript-metadata.csv.gz", arity: '1')     , emit: transcript_metadata
-    tuple val(meta), path("*cell-polygons-union.geojson.gz", arity: '1') , emit: union_cell_polygons 
-    tuple val(meta), path("*cell-polygons.geojson.gz", arity: '1')       , emit: cell_polygons
-    tuple val(meta), path("*cell-metadata.csv.gz", arity: '1')           , emit: cell_metadata
+    tuple val(meta), path("*transcript-metadata.csv.gz"     , arity: '1'), emit: transcript_metadata
+    tuple val(meta), path("*cell-polygons-union.geojson.gz" , arity: '1'), emit: union_cell_polygons 
+    tuple val(meta), path("*cell-polygons.geojson.gz"       , arity: '1'), emit: cell_polygons
+    tuple val(meta), path("*cell-metadata.csv.gz"           , arity: '1'), emit: cell_metadata
     tuple val(meta), path("*cell-polygons-layers.geojson.gz", arity: '1'), emit: cell_polygons_layers
-    tuple val(meta), path("*expected-counts.csv.gz", arity: '1')         , emit: expected_counts
-    tuple val(meta), path("*maxpost-counts*", arity: '1')                , emit: maxpost_counts, optional: true
-    tuple val(meta), path("*output-rates*", arity: '1')                  , emit: output_rates, optional: true
-    tuple val(meta), path("*cell-hulls*", arity: '1')                    , emit: cell_hulls, optional: true
-    tuple val(meta), path("*gene-metadata*", arity: '1')                 , emit: gene_metadata, optional: true
-    tuple val(meta), path("*metagene-rates*", arity: '1')                , emit: metagene_rates, optional: true
-    tuple val(meta), path("*metagene-loadings*", arity: '1')             , emit: metagene_loadings, optional: true
-    tuple val(meta), path("*cell-voxels*", arity: '1')                   , emit: cell_voxels, optional: true
+    tuple val(meta), path("*expected-counts.csv.gz"         , arity: '1'), emit: expected_counts
+    tuple val(meta), path("*maxpost-counts*"                            ), emit: maxpost_counts      , optional: true
+    tuple val(meta), path("*output-rates*"                              ), emit: output_rates        , optional: true
+    tuple val(meta), path("*cell-hulls*"                                ), emit: cell_hulls          , optional: true
+    tuple val(meta), path("*gene-metadata*"                             ), emit: gene_metadata       , optional: true
+    tuple val(meta), path("*metagene-rates*"                            ), emit: metagene_rates      , optional: true
+    tuple val(meta), path("*metagene-loadings*"                         ), emit: metagene_loadings   , optional: true
+    tuple val(meta), path("*cell-voxels*"                               ), emit: cell_voxels         , optional: true
     path "versions.yml"                                                  , emit: versions
 
 

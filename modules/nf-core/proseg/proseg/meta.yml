@@ -85,6 +85,7 @@ output:
             type: file
             description: point estimate of counts per cell
             pattern: "*maxpost-counts*"
+            optional: true
   output_rates:
       - - meta:
             type: map
@@ -93,6 +94,7 @@ output:
             type: file
             description: Estimated poisson expression rates for each cell
             pattern: "*output-rates*"
+            optional: true
   cell_hulls:
       - - meta:
             type: map
@@ -101,6 +103,7 @@ output:
             type: file
             description: Cell convex hulls
             pattern: "*cell-hulls*"
+            optional: true
   gene_metadata:
       - - meta:
             type: map
@@ -109,6 +112,7 @@ output:
             type: file
             description: gene metadata
             pattern: "*gene-metadata*"
+            optional: true
   metagene_rates:
       - - meta:
             type: map
@@ -117,6 +121,7 @@ output:
             type: file
             description: metagene rates
             pattern: "*metagene-rates*"
+            optional: true
   metagene_loadings:
       - - meta:
             type: map
@@ -125,6 +130,7 @@ output:
             type: file
             description: metagene loadings
             pattern: "*metagene-loadings*"
+            optional: true
   cell_voxels:
       - - meta:
             type: map
@@ -133,6 +139,7 @@ output:
             type: file
             description: table of each voxel in each cell
             pattern: "*cell-voxels*"
+            optional: true
   versions:
       - "versions.yml":
           type: file
