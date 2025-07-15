@@ -12,7 +12,3 @@ python -m pip install nf-core
 
 # Install pre-commit hooks
 pre-commit install --install-hooks
-
-# Install nf-test
-wget -qO- https://get.nf-test.com | bash
-sudo mv nf-test /usr/local/bin/nf-test
