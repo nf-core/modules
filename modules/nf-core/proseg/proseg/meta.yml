@@ -37,14 +37,14 @@ output:
             type: file
             description: Transcript ids, genes, revised positions, assignment probability, etc.
             pattern: "*transcript-metadata.csv"
-  cell_metadata:
+  union_cell_polygons:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "*cell-metadata.csv.gz":
+        - "*cell-polygons-union.geojson.gz":
             type: file
-            description: Cell metadata file
-            pattern: "*cell-metadata.csv.gz"
+            description: Union cell polygons
+            pattern: "*cell-polygons-union.geojson.gz"
   cell_polygons:
       - - meta:
             type: map
@@ -53,6 +53,14 @@ output:
             type: file
             description: Cell polygons file
             pattern: "*cell-polygons.geojson.gz"
+  cell_metadata:
+      - - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - "*cell-metadata.csv.gz":
+            type: file
+            description: Cell metadata file
+            pattern: "*cell-metadata.csv.gz"
   cell_polygons_layers:
       - - meta:
             type: map
@@ -69,14 +77,6 @@ output:
             type: file
             description: Expected transcript counts file
             pattern: "outputs/*expected-counts.csv.gz"
-  union_cell_polygons:
-      - - meta:
-            type: map
-            description: Groovy Map containing sample information
-        - "*expected-counts.csv.gz":
-            type: file
-            description: Union cell polygons
-            pattern: "*cell-polygons-union.csv.gz"
   maxpost_counts:
       - - meta:
             type: map
