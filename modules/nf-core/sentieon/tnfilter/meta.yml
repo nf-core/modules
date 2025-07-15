@@ -25,29 +25,38 @@ input:
         type: file
         description: compressed vcf file from tnhaplotyper2
         pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
     - vcf_tbi:
         type: file
         description: Tabix index of vcf file
         pattern: "*vcf.gz.tbi"
+        ontologies: []
     - stats:
         type: file
         description: Stats file that pairs with output vcf file
         pattern: "*vcf.gz.stats"
+        ontologies: []
     - contamination:
         type: file
         description: the location and file name of the file containing the contamination
           information produced by ContaminationModel.
         pattern: "*.contamination_data.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
     - segments:
         type: file
         description: the location and file name of the file containing the tumor segments
           information produced by ContaminationModel.
         pattern: "*.segments"
+        ontologies: []
     - orientation_priors:
         type: file
         description: the location and file name of the file containing the orientation
           bias information produced by OrientationBias.
         pattern: "*.orientation_data.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
   - - meta2:
         type: map
         description: |
@@ -57,6 +66,7 @@ input:
         type: file
         description: The reference fasta file
         pattern: "*.fasta"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -66,38 +76,51 @@ input:
         type: file
         description: Index of reference fasta file
         pattern: "*.fasta.fai"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: file
           description: file containing filtered tnhaplotyper2 calls.
           pattern: "*.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
       - "*.vcf.gz":
           type: file
           description: file containing filtered tnhaplotyper2 calls.
           pattern: "*.vcf.gz"
-  - vcf_tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tbi:
+    - - meta:
           type: file
-          description: tbi file that pairs with vcf.
-          pattern: "*.vcf.gz.tbi"
+          description: file containing filtered tnhaplotyper2 calls.
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
       - "*.vcf.gz.tbi":
           type: file
           description: tbi file that pairs with vcf.
           pattern: "*.vcf.gz.tbi"
-  - stats:
-      - meta:
+          ontologies: []
+  stats:
+    - - meta:
           type: file
-          description: file containing statistics of the tnfilter run.
-          pattern: "*.stats"
+          description: file containing filtered tnhaplotyper2 calls.
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
       - "*.vcf.gz.stats":
           type: file
           description: file containing statistics of the tnfilter run.
           pattern: "*.stats"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@asp8200"

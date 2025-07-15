@@ -24,34 +24,42 @@ input:
         type: file
         description: the alignment in bam format
         pattern: "*.{bam}"
-  - - bed:
-        type: file
-        description: a bed file for the reference gene model
-        pattern: "*.{bed}"
+        ontologies: []
+  - bed:
+      type: file
+      description: a bed file for the reference gene model
+      pattern: "*.{bed}"
+      ontologies: []
 output:
-  - pdf:
-      - meta:
+  pdf:
+    - - meta:
           type: file
           description: Junction saturation report
           pattern: "*.pdf"
+          ontologies: []
       - "*.pdf":
           type: file
           description: Junction saturation report
           pattern: "*.pdf"
-  - rscript:
-      - meta:
+          ontologies: []
+  rscript:
+    - - meta:
           type: file
-          description: Junction saturation R-script
-          pattern: "*.r"
+          description: Junction saturation report
+          pattern: "*.pdf"
+          ontologies: []
       - "*.r":
           type: file
           description: Junction saturation R-script
           pattern: "*.r"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@drpatelh"
   - "@kevinmenden"

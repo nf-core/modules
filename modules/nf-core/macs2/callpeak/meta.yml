@@ -22,65 +22,80 @@ input:
     - ipbam:
         type: file
         description: The ChIP-seq treatment file
+        ontologies: []
     - controlbam:
         type: file
         description: The control file
-  - - macs2_gsize:
-        type: string
-        description: Effective genome size. It can be 1.0e+9 or 1000000000, or shortcuts:'hs'
-          for human (2.7e9), 'mm' for mouse (1.87e9), 'ce' for C. elegans (9e7) and
-          'dm' for fruitfly (1.2e8)
+        ontologies: []
+  - macs2_gsize:
+      type: string
+      description: Effective genome size. It can be 1.0e+9 or 1000000000, or shortcuts:'hs'
+        for human (2.7e9), 'mm' for mouse (1.87e9), 'ce' for C. elegans (9e7) and 'dm'
+        for fruitfly (1.2e8)
 output:
-  - peak:
-      - meta:
+  peak:
+    - - meta:
           type: file
           description: BED file containing annotated peaks
           pattern: "*.gappedPeak,*.narrowPeak}"
+          ontologies: []
       - "*.{narrowPeak,broadPeak}":
           type: file
           description: BED file containing annotated peaks
           pattern: "*.gappedPeak,*.narrowPeak}"
-  - xls:
-      - meta:
+          ontologies: []
+  xls:
+    - - meta:
           type: file
-          description: xls file containing annotated peaks
-          pattern: "*.xls"
+          description: BED file containing annotated peaks
+          pattern: "*.gappedPeak,*.narrowPeak}"
+          ontologies: []
       - "*.xls":
           type: file
           description: xls file containing annotated peaks
           pattern: "*.xls"
-  - versions:
-      - versions.yml:
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software version
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+  gapped:
+    - - meta:
           type: file
-          description: File containing software version
-          pattern: "versions.yml"
-  - gapped:
-      - meta:
-          type: file
-          description: Optional BED file containing gapped peak
-          pattern: "*.gappedPeak"
+          description: BED file containing annotated peaks
+          pattern: "*.gappedPeak,*.narrowPeak}"
+          ontologies: []
       - "*.gappedPeak":
           type: file
           description: Optional BED file containing gapped peak
           pattern: "*.gappedPeak"
-  - bed:
-      - meta:
+          ontologies: []
+  bed:
+    - - meta:
           type: file
-          description: Optional BED file containing peak summits locations for every peak
-          pattern: "*.bed"
+          description: BED file containing annotated peaks
+          pattern: "*.gappedPeak,*.narrowPeak}"
+          ontologies: []
       - "*.bed":
           type: file
-          description: Optional BED file containing peak summits locations for every peak
+          description: Optional BED file containing peak summits locations for every
+            peak
           pattern: "*.bed"
-  - bdg:
-      - meta:
+          ontologies: []
+  bdg:
+    - - meta:
           type: file
-          description: Optional bedGraph files for input and treatment input samples
-          pattern: "*.bdg"
+          description: BED file containing annotated peaks
+          pattern: "*.gappedPeak,*.narrowPeak}"
+          ontologies: []
       - "*.bdg":
           type: file
           description: Optional bedGraph files for input and treatment input samples
           pattern: "*.bdg"
+          ontologies: []
 authors:
   - "@ntoda03"
   - "@JoseEspinosa"

@@ -43,10 +43,15 @@ process FCS_FCSADAPTOR {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def FCSADAPTOR_VERSION = '0.5.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
+    # To avoid permanentFail: See https://github.com/ncbi/fcs/issues/42
+    sed -E 's/^(>[^[:space:]]+).*/\\1/'  \\
+        <(gzip -cdf $assembly) \\
+        > ${prefix}.id.only.fasta
+
     av_screen_x \\
         -o output/ \\
         $args \\
-        $assembly
+        ${prefix}.id.only.fasta
 
     # compress and/or rename files with prefix
     num_contamination_lines=\$(cat "output/fcs_adaptor_report.txt" | wc -l)

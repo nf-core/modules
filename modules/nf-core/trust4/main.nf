@@ -2,17 +2,20 @@ process TRUST4 {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::trust4=1.0.13"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/trust4:1.0.13--h43eeafb_0':
-        'biocontainers/trust4:1.0.13--h43eeafb_0' }"
+        'https://depot.galaxyproject.org/singularity/trust4:1.1.5--h5ca1c30_0':
+        'biocontainers/trust4:1.1.5--h5ca1c30_0' }"
 
     input:
     tuple val(meta), path(bam), path(reads)
-    tuple val(meta2), path(fasta)
-    tuple val(meta3), path(vdj_reference)
-    tuple val(meta4), val(barcode_read)
-    tuple val(meta5), val(umi_read)
+    path(fasta)
+    path(vdj_reference)
+    path(barcode_whitelist)
+    val(cell_barcode_read)
+    val(umi_read)
+    val(read_format)
+    
 
     output:
     tuple val(meta), path("*.tsv")                  , emit: tsv
@@ -39,16 +42,17 @@ process TRUST4 {
     def (forward, reverse) = reads.collate(2).transpose()
     def paired_end_mode = reads && (meta.single_end == false) ? "-1 ${forward[0]} -2 ${reverse[0]}" : ''
     // read format is optional
-    def readFormat = params.read_format ? "--readFormat ${params.read_format}" : ''
+    def readFormat = read_format ? "--readFormat ${read_format}" : ''
+    // barcodeWhitelist is optional
+    def barcodeWhitelist  = barcode_whitelist ? "--barcodeWhitelist ${barcode_whitelist}" : ""
     // add barcode information if present
-    if (barcode_read) {
-        if (barcode_read == "R1") {
+    if (cell_barcode_read) {
+        if (cell_barcode_read == "R1") {
             barcode = "--barcode ${forward[0]}"
-        } else if (barcode_read == "R2") {
+        } else if (cell_barcode_read == "R2") {
             barcode = "--barcode ${reverse[0]}"
         }
-    }
-    else {
+    } else {
         barcode = ''
     }
     // add umi information if present
@@ -58,8 +62,7 @@ process TRUST4 {
         } else if (umi_read == "R2") {
             umi = "--UMI ${reverse[0]}"
         }
-    }
-    else {
+    } else {
         umi = ''
     }
 
@@ -75,6 +78,7 @@ process TRUST4 {
         -f ${fasta} \\
         -o ${prefix} \\
         ${reference} \\
+        ${barcodeWhitelist} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml

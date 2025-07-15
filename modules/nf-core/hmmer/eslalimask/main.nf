@@ -35,7 +35,6 @@ process HMMER_ESLALIMASK {
     def pmask_allarg = pmask_all ? "--pmask-all ${prefix}.pmask-all" : ""
     """
     esl-alimask \\
-        $args \\
         $fmask_rfarg \\
         $fmask_allarg \\
         $gmask_rfarg \\
@@ -43,14 +42,40 @@ process HMMER_ESLALIMASK {
         $pmask_rfarg \\
         $pmask_allarg \\
         -o ${prefix}.masked.sthlm \\
-        $unmaskedaln \\
-        $maskfile
+        $args $unmaskedaln $maskfile
 
     gzip ${prefix}.*mask*
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        hmmer/easel: \$(esl-reformat -h | grep -o '^# Easel [0-9.]*' | sed 's/^# Easel *//')
+        hmmer/easel: \$(esl-alimask -h | grep -o '^# Easel [0-9.]*' | sed 's/^# Easel *//')
+    END_VERSIONS
+    """
+
+    stub:
+
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def fmask_rfarg  = fmask_rf  ? "touch ${prefix}.fmask-rf"   : ""
+    def fmask_allarg = fmask_all ? "touch ${prefix}.fmask-all" : ""
+    def gmask_rfarg  = gmask_rf  ? "touch ${prefix}.gmask-rf"   : ""
+    def gmask_allarg = gmask_all ? "touch ${prefix}.gmask-all" : ""
+    def pmask_rfarg  = pmask_rf  ? "touch ${prefix}.pmask-rf"   : ""
+    def pmask_allarg = pmask_all ? "touch ${prefix}.pmask-all" : ""
+
+    """
+    touch ${prefix}.masked.sthlm
+    ${fmask_rfarg}
+    ${fmask_allarg}
+    ${gmask_rfarg}
+    ${gmask_allarg}
+    ${pmask_rfarg}
+    ${pmask_allarg}
+
+    gzip ${prefix}.*mask*
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        hmmer/easel: \$(esl-alimask -h | grep -o '^# Easel [0-9.]*' | sed 's/^# Easel *//')
     END_VERSIONS
     """
 }

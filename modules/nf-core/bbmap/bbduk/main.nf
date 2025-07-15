@@ -37,7 +37,7 @@ process BBMAP_BBDUK {
         &> ${prefix}.bbduk.log
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
+        bbmap: \$(bbversion.sh | grep -v "]")
     END_VERSIONS
     """
 
@@ -51,7 +51,7 @@ process BBMAP_BBDUK {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
+        bbmap: \$(bbversion.sh | grep -v "]")
     END_VERSIONS
     """
 }

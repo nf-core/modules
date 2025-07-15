@@ -27,19 +27,23 @@ input:
         type: file
         description: Variation graph in GFA format
         pattern: "*.{gfa}"
-  - - pb:
-        type: file
-        description: Optional snarls file (from vg snarls) to avoid recomputing. Usually
-          ends with "pb". See "vg snarls".
-        pattern: "*.{pb}"
-  - - gbwt:
-        type: file
-        description: Optional GBWT file (from vg gbwt) so to only consider alt traversals
-          that correspond to GBWT threads FILE.
-        pattern: "*.{gbwt}"
+        ontologies:
+          - edam: http://edamontology.org/format_3975 # GFA 1
+  - pb:
+      type: file
+      description: Optional snarls file (from vg snarls) to avoid recomputing. Usually
+        ends with "pb". See "vg snarls".
+      pattern: "*.{pb}"
+      ontologies: []
+  - gbwt:
+      type: file
+      description: Optional GBWT file (from vg gbwt) so to only consider alt traversals
+        that correspond to GBWT threads FILE.
+      pattern: "*.{gbwt}"
+      ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -48,11 +52,14 @@ output:
           type: file
           description: Variants in VCF format
           pattern: "*.{vcf}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@heuermh, @subwaystation"
 maintainers:
