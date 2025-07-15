@@ -27,14 +27,12 @@ nextflow_process {
         when {
             process {
                 """
-
                 input[0] = [
                     [ id:'test_sample' ], // meta map
-                    file("https://github.com/Clinical-Genomics/fusion-report/raw/master/tests/test_data/arriba.tsv"),
-                    file("https://github.com/Clinical-Genomics/fusion-report/raw/master/tests/test_data/starfusion.tsv"),
-                    file("https://github.com/Clinical-Genomics/fusion-report/raw/master/tests/test_data/fusioncatcher.txt")
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/arriba.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/starfusion.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/fusioncatcher.txt', checkIfExists: true)
                 ]
-
                 input[1] = FUSIONREPORT_DOWNLOAD.out.fusionreport_ref
                 input[2] = 1
                 """
@@ -86,18 +84,14 @@ nextflow_process {
         when {
             process {
                 """
-
                 input[0] = [
                     [ id:'test_sample' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/arriba.tsv', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/starfusion.tsv', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/fusioncatcher.txt', checkIfExists: true)
                 ]
-
                 input[1] = FUSIONREPORT_DOWNLOAD.out.fusionreport_ref
-
                 input[2] = 1
-
                 """
             }
         params {
