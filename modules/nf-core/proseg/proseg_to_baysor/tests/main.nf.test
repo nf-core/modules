@@ -45,13 +45,15 @@ nextflow_process {
             }
         }
         then {
+            def lines = file(process.out.baysor_transcript_metadata[0][1]).readLines().size()
             assertAll(
                 { assert process.success },
-                { assert file(process.out.baysor_cell_polygons[0][1]).exists() },
-                { assert file(process.out.baysor_transcript_metadata[0][1]).exists() },
                 { assert snapshot(
                     process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    path(process.out.versions[0]).yaml,
+                    "transcript metadata lines: $lines",
+                    "transcript metadata header: ${file(process.out.baysor_transcript_metadata[0][1]).readLines()[0]}",
+                    "cell_polygons - minimum file size > 5kb: ${file(process.out.baysor_cell_polygons[0][1]).length() >= 5000}"
                 ).match() }
             )
         }

@@ -33,7 +33,7 @@ output:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "outputs/*transcript-metadata.csv.gz":
+        - "*transcript-metadata.csv.gz":
             type: file
             description: Transcript ids, genes, revised positions, assignment probability, etc.
             pattern: "outputs/*transcript-metadata.csv"
@@ -41,7 +41,7 @@ output:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "outputs/*cell-metadata.csv.gz":
+        - "*cell-metadata.csv.gz":
             type: file
             description: Cell metadata file
             pattern: "outputs/*cell-metadata.csv.gz"
@@ -49,7 +49,7 @@ output:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "outputs/*cell-polygons.geojson.gz":
+        - "*cell-polygons.geojson.gz":
             type: file
             description: Cell polygons file
             pattern: "outputs/*cell-polygons.geojson.gz"
@@ -57,7 +57,7 @@ output:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "outputs/*cell-polygons-layers.geojson.gz":
+        - "*cell-polygons-layers.geojson.gz":
             type: file
             description: Cell polygon layers file
             pattern: "outputs/*cell-polygons-layers.geojson.gz"
@@ -69,11 +69,19 @@ output:
             type: file
             description: Expected transcript counts file
             pattern: "outputs/*expected-counts.csv.gz"
+  union_cell_polygons:
+      - - meta:
+            type: map
+            description: Groovy Map containing sample information
+        - "outputs/*expected-counts.csv.gz":
+            type: file
+            description: Union cell polygons
+            pattern: "*cell-polygons-union.csv.gz"
   other_outputs:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "outputs/*":
+        - "*":
             type: file
             description: Optional other outputs from Proseg as specified by the user in args.ext
             pattern: "outputs/*"
