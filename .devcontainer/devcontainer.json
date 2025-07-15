@@ -1,8 +1,14 @@
 {
     "name": "nfcore",
-    "image": "nfcore/gitpod:dev",
-    "remoteUser": "gitpod",
-    "runArgs": ["--privileged"],
+
+    //"image": "nfcore/devcontainer:latest",
+    "build": {
+        "dockerfile": "../Dockerfile",
+        "context": ".."
+    },
+    "remoteUser": "vscode",
+    "privileged": true,
+
     // Configure tool-specific properties.
     "customizations": {
         // Configure properties specific to VS Code.
