@@ -24,6 +24,7 @@ input:
         type: file
         description: maternal ktab files from the program FastK
         pattern: "*.ktab*"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -33,6 +34,7 @@ input:
         type: file
         description: paternal ktab files from the program FastK
         pattern: "*.ktab*"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -42,36 +44,29 @@ input:
         type: file
         description: child ktab files from the program FastK
         pattern: "*.ktab*"
+        ontologies: []
 output:
-  - mat_hap_ktab:
-      - meta:
+  mat_hap_ktab:
+    - - meta:
           type: map
           description: |
             Groovy Map containing maternal sample information
             e.g. [ id:'test', single_end:false ]
-      - '*${input_mat}.hap.ktab*", hidden: true':
-          type: map
-          description: |
-            FastK kmer table containing the maternal kmers
-            present in the child
-          pattern: "*${input_mat}.hap.ktab*"
-  - pat_hap_ktab:
-      - meta2:
+      - "*${input_mat}.hap.ktab*": {}
+  pat_hap_ktab:
+    - - meta2:
           type: map
           description: |
             Groovy Map containing paternal sample information
             e.g. [ id:'test', single_end:false ]
-      - '*${input_pat}.hap.ktab*", hidden: true':
-          type: map
-          description: |
-            FastK kmer table containing the paternal kmers
-            present in the child
-          pattern: "*${input_pat}.hap.ktab*"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+      - "*${input_pat}.hap.ktab*": {}
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@prototaxites"
   - "@yumisims"

@@ -24,12 +24,13 @@ input:
         description: pytor file containing partitions of read depth histograms using
           mean-shift method
         pattern: "*.{pytor}"
-  - - bin_sizes:
-        type: string
-        description: list of binsizes separated by space e.g. "1000 10000" and "1000"
+        ontologies: []
+  - bin_sizes:
+      type: string
+      description: list of binsizes separated by space e.g. "1000 10000" and "1000"
 output:
-  - pytor:
-      - meta:
+  pytor:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,11 +39,14 @@ output:
           type: file
           description: pytor files containing cnv calls
           pattern: "*.{pytor}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sima-r"
 maintainers:

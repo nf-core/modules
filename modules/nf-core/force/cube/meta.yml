@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "force_cube"
 description: |
@@ -24,40 +23,52 @@ tools:
       identifier: ""
 
 input:
-  - - aoi:
-        type: file
-        description: Vector file (either shapefile geometry or geopackage) defining the area of interest.
-        pattern: "*.{shp,gpkg}"
-  - - mask/datacube-definition.prj:
-        type: file
-        description: Datacube file in FORCE format defining the properties of the targeted datacube
-        pattern: "*.{prj}"
-  - - shapefile_dbf:
-        type: file
-        description: Optional attribute table for shapefiles. Required if aoi is a shapefile.
-        pattern: "*.{dbf}"
-  - - shapefile_prj:
-        type: file
-        description: Optional projection for shapefiles. Required if aoi is a shapefile.
-        pattern: "*.{prj}"
-  - - shapefile_shx:
-        type: file
-        description: Optional shape index for shapefiles. Required if aoi is a shapefile.
-        pattern: "*.{shx}"
+  - aoi:
+      type: file
+      description: Vector file (either shapefile geometry or geopackage) defining the
+        area of interest.
+      pattern: "*.{shp,gpkg}"
+      ontologies: []
+  - mask/datacube-definition.prj:
+      type: file
+      description: Datacube file in FORCE format defining the properties of the targeted
+        datacube
+      pattern: "*.{prj}"
+      ontologies: []
+  - shapefile_dbf:
+      type: file
+      description: Optional attribute table for shapefiles. Required if aoi is a shapefile.
+      pattern: "*.{dbf}"
+      ontologies: []
+  - shapefile_prj:
+      type: file
+      description: Optional projection for shapefiles. Required if aoi is a shapefile.
+      pattern: "*.{prj}"
+      ontologies: []
+  - shapefile_shx:
+      type: file
+      description: Optional shape index for shapefiles. Required if aoi is a shapefile.
+      pattern: "*.{shx}"
 
+      ontologies: []
 output:
-  - masks:
-      - mask/*/*.tif:
-          type: file
-          description: Binary analysis masks for every tile. Directory names indicate corresponding datacube tile. Pixel values indicate usable pixels in downstream analysis.
-          pattern: "*.tif"
+  masks:
+    - mask/*/*.tif:
+        type: file
+        description: Binary analysis masks for every tile. Directory names indicate
+          corresponding datacube tile. Pixel values indicate usable pixels in downstream
+          analysis.
+        pattern: "*.tif"
 
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Felix-Kummer"
 maintainers:
