@@ -17,3 +17,5 @@ RUN conda install --quiet --yes --update-all --name base \
 RUN chown -R vscode:vscode /usr/local/bin/ && \
     chown -R vscode:vscode /opt/conda && \
     chown -R vscode:vscode /workspaces/
+
+USER vscode
