@@ -8,7 +8,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "fastqdl"
 
-    test("fastqdl") {
+    test("fastqdl - run") {
 
         when {
             process {
@@ -31,7 +31,30 @@ nextflow_process {
 
     }
 
-    test("fastqdl - stub") {
+        test("fastqdl - experiment") {
+
+        when {
+            process {
+                """
+
+                input[0] = Channel.of([
+                    [ id:'test' ],
+                    'ERX4876079'
+                    ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("fastqdl - run - stub") {
 
         options "-stub"
 
@@ -42,6 +65,31 @@ nextflow_process {
                 input[0] = Channel.of ([
                     [ id:'test' ],
                     'ERR5069949'
+                    ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+test("fastqdl - experiment - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+
+                input[0] = Channel.of ([
+                    [ id:'test' ],
+                    'ERX4876079'
                     ])
                 """
             }
