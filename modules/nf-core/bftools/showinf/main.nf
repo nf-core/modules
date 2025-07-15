@@ -12,13 +12,13 @@ process BFTOOLS_SHOWINF {
 
     output:
     tuple val(meta), path("*.xml"), emit: xml
-    path "versions.yml", emit: versions
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
@@ -33,7 +33,7 @@ process BFTOOLS_SHOWINF {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
