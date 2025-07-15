@@ -30,29 +30,33 @@ input:
         type: file
         description: File(s) to be searched
 
-  - - pattern:
-        type: string
-        description: Regex pattern to search for
+        ontologies: []
+  - pattern:
+      type: string
+      description: Regex pattern to search for
 
-  - - compress:
-        type: boolean
-        description: Compress the output file using pigz
-        default: false
+  - compress:
+      type: boolean
+      description: Compress the output file using pigz
+      default: false
 
 output:
-  - txt:
-      - meta:
+  txt:
+    - - meta:
           type: map
           description: Groovy map containing sample information
       - "*.txt{.gz,}":
           type: file
           description: Output file containing the search results
           pattern: "*.txt{.gz,}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@itrujnara"
 maintainers:

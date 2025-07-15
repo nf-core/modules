@@ -35,10 +35,12 @@ input:
           - HAP/LEGEND/SAMPLE file: `--haplegendsample2vcf`
           - TSV file: `--tsv2vcf`
         pattern: "*.{gen,sample,g.vcf,hap,legend}{.gz,}"
+        ontologies: []
     - input_index:
         type: file
         description: (Optional) The index for the input files, if needed
         pattern: "*.bed"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -48,13 +50,15 @@ input:
         type: file
         description: (Optional) The reference fasta, only needed for gVCF conversion
         pattern: "*.{fa,fasta}"
-  - - bed:
-        type: file
-        description: (Optional) The BED file containing the regions for the VCF file
-        pattern: "*.bed"
+        ontologies: []
+  - bed:
+      type: file
+      description: (Optional) The BED file containing the regions for the VCF file
+      pattern: "*.bed"
+      ontologies: []
 output:
-  - vcf_gz:
-      - meta:
+  vcf_gz:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,8 +68,10 @@ output:
           description: VCF merged output file (bgzipped) => when `--output-type z` is
             used
           pattern: "*.vcf.gz"
-  - vcf:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -74,8 +80,9 @@ output:
           type: file
           description: VCF merged output file => when `--output-type v` is used
           pattern: "*.vcf"
-  - bcf_gz:
-      - meta:
+          ontologies: []
+  bcf_gz:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -85,8 +92,10 @@ output:
           description: BCF merged output file (bgzipped) => when `--output-type b` is
             used
           pattern: "*.bcf.gz"
-  - bcf:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  bcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -95,8 +104,9 @@ output:
           type: file
           description: BCF merged output file => when `--output-type u` is used
           pattern: "*.bcf"
-  - hap:
-      - meta:
+          ontologies: []
+  hap:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -105,8 +115,10 @@ output:
           type: file
           description: hap format used by IMPUTE2 and SHAPEIT
           pattern: "*.hap.gz"
-  - legend:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  legend:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -115,8 +127,10 @@ output:
           type: file
           description: legend format used by IMPUTE2 and SHAPEIT
           pattern: "*.legend.gz"
-  - samples:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  samples:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -125,8 +139,9 @@ output:
           type: file
           description: samples format used by IMPUTE2 and SHAPEIT
           pattern: "*.samples"
-  - tbi:
-      - meta:
+          ontologies: []
+  tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -135,8 +150,9 @@ output:
           type: file
           description: Alternative VCF file index
           pattern: "*.tbi"
-  - csi:
-      - meta:
+          ontologies: []
+  csi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -145,11 +161,14 @@ output:
           type: file
           description: Default VCF file index
           pattern: "*.csi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
   - "@ramprasadn"

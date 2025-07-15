@@ -31,7 +31,7 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
         .set { ch_fasta_branched }
 
     GUNZIP (
-        ch_fasta_branched.gzipped.ifEmpty([])
+        ch_fasta_branched.gzipped
     )
 
     ch_fasta    = ch_fasta_branched.unzipped.mix(GUNZIP.out.gunzip)
@@ -52,7 +52,7 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
                 .set { ch_bismark_index_branched }
 
             UNTAR (
-                ch_bismark_index_branched.gzipped.ifEmpty([])
+                ch_bismark_index_branched.gzipped
             )
 
             ch_bismark_index = ch_bismark_index_branched.unzipped.mix(UNTAR.out.untar)
@@ -81,7 +81,7 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
                 .set { ch_bwameth_index_branched }
 
             UNTAR (
-                ch_bwameth_index_branched.gzipped.ifEmpty([])
+                ch_bwameth_index_branched.gzipped
             )
 
             ch_bwameth_index = ch_bwameth_index_branched.unzipped.mix(UNTAR.out.untar)
@@ -98,7 +98,7 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
     /*
     * Generate fasta index if not supplied for bwameth workflow or picard collecthsmetrics tool
     */
-    if (aligner == 'bwameth' | collecthsmetrics) {
+    if (aligner == 'bwameth' || collecthsmetrics) {
         // already exising fasta index
         if (fasta_index) {
             ch_fasta_index = fasta_index
@@ -120,4 +120,3 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
     bwameth_index = ch_bwameth_index // channel: [ val(meta), [ bwameth index ] ]
     versions      = ch_versions      // channel: [ versions.yml ]
 }
-

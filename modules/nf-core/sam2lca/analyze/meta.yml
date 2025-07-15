@@ -26,17 +26,20 @@ input:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - bai:
         type: file
         description: BAM/CRAM/SAM index
         pattern: "*.{bai,.crai}"
-  - - database:
-        type: file
-        description: Directory containing the sam2lca database
-        pattern: "*"
+        ontologies: []
+  - database:
+      type: file
+      description: Directory containing the sam2lca database
+      pattern: "*"
+      ontologies: []
 output:
-  - csv:
-      - meta:
+  csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,8 +48,10 @@ output:
           type: file
           description: CSV file containing the sam2lca results
           pattern: "*.csv"
-  - json:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,8 +60,10 @@ output:
           type: file
           description: JSON file containing the sam2lca results
           pattern: "*.json"
-  - bam:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -66,11 +73,14 @@ output:
           description: Optional sorted BAM/CRAM/SAM file annotated with LCA taxonomic
             information
           pattern: "*.bam"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@maxibor"
 maintainers:
