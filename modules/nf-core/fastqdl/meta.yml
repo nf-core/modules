@@ -51,7 +51,6 @@ output:
           description: Tab-delimited file containing metadata for each Run
             downloaded
           pattern: "*-run-info.tsv"
-
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   runmergers:
@@ -65,7 +64,6 @@ output:
           description: Tab-delimited file merge information from
             --group-by-experiment or --group-by-sample
           pattern: "*-run-mergers.tsv"
-
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   versions:
@@ -73,7 +71,6 @@ output:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
-
         ontologies:
           - edam: http://edamontology.org/format_3750 # YAML
 authors:
