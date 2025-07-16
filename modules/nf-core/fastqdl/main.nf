@@ -40,7 +40,6 @@ process FASTQDL {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-
     echo "" | gzip > ${accession}.fastq.gz
     echo "" | gzip > ${accession}_1.fastq.gz
     echo "" | gzip > ${accession}_2.fastq.gz
