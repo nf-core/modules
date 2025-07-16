@@ -24,10 +24,10 @@ process FASTQDL {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     fastq-dl \\
-        $args \\
+        ${args} \\
         --prefix ${prefix} \\
-        --accession $accession \\
-        --cpus $task.cpus \\
+        --accession ${accession} \\
+        --cpus ${task.cpus} \\
         --outdir .
 
     cat <<-END_VERSIONS > versions.yml
