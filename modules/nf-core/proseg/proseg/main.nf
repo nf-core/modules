@@ -51,7 +51,7 @@ process PROSEG {
     """
 
     stub:
-    def prefix =  task.ext.prefix ? "${task.ext.prefix}" : ""
+    def prefix =  task.ext.prefix ?: "${meta.id}-"
     """
     echo | gzip > ${prefix}cell-metadata.csv.gz
     echo | gzip > ${prefix}cell-polygons.geojson.gz
