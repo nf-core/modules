@@ -33,7 +33,7 @@ output:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "*transcript-metadata*":
+        - "*transcript-metadata.{csv,csv.gz,parquet}":
             type: file
             description: Transcript ids, genes, revised positions, assignment probability, etc.
             pattern: "*transcript-metadata.{csv.gz,csv,parquet}"
@@ -60,7 +60,7 @@ output:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "*cell-metadata*":
+        - "*cell-metadata.{csv,csv.gz,parquet}":
             type: file
             description: Cell metadata file
             pattern: "*cell-metadata.{csv.gz,csv,parquet}"
@@ -79,7 +79,7 @@ output:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "*expected-counts*":
+        - "*expected-counts.{csv,csv.gz,parquet}":
             type: file
             description: Expected transcript counts file
             pattern: "*expected-counts.{csv.gz,csv,parquet}"
@@ -90,7 +90,7 @@ output:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "*maxpost-counts*":
+        - "*maxpost-counts.{csv,csv.gz,parquet}":
             type: file
             description: point estimate of counts per cell
             pattern: "*maxpost-counts.{csv.gz,csv,parquet}"
@@ -102,7 +102,7 @@ output:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "*output-rates*":
+        - "*output-rates.{csv,csv.gz,parquet}":
             type: file
             description: Estimated poisson expression rates for each cell
             pattern: "*output-rates.{csv.gz,csv,parquet}"
@@ -114,7 +114,7 @@ output:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "*cell-hulls*":
+        - "*cell-hulls.{csv,csv.gz,parquet}":
             type: file
             description: Cell convex hulls
             pattern: "*cell-hulls.{csv.gz,csv,parquet}"
@@ -126,7 +126,7 @@ output:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "*gene-metadata*":
+        - "*gene-metadata.{csv,csv.gz,parquet}":
             type: file
             description: gene metadata
             pattern: "*gene-metadata.{csv.gz,csv,parquet}"
@@ -138,7 +138,7 @@ output:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "*metagene-rates*":
+        - "*metagene-rates.{csv,csv.gz,parquet}":
             type: file
             description: metagene rates
             pattern: "*metagene-rates.{csv.gz,csv,parquet}"
@@ -150,7 +150,7 @@ output:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "*metagene-loadings*":
+        - "*metagene-loadings.{csv,csv.gz,parquet}":
             type: file
             description: metagene loadings
             pattern: "*metagene-loadings.{csv.gz,csv,parquet}"
@@ -162,7 +162,7 @@ output:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "*cell-voxels*":
+        - "*cell-voxels.{csv,csv.gz,parquet}":
             type: file
             description: table of each voxel in each cell
             pattern: "*cell-voxels.{csv.gz,csv,parquet}"
