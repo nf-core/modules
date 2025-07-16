@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import sys 
 import shlex
 import os
 import shutil
@@ -39,7 +40,6 @@ opt.update({
     "nmf_test_conv": 10000,
     "seeds": "random",
     "volume": "./",
-    "get_all_signature_matrices": True,
     "make_decomposition_plots": True,
     "download_genome_sigprofiler": True,
     "genome_installed_path": ""
@@ -50,7 +50,7 @@ args_opt = parse_args("${task.ext.args ?: ''}")
 for ao_k, ao_v in args_opt.items():
     if ao_k in {"minimum_signatures", "maximum_signatures", "nmf_replicates", "min_nmf_iterations", "max_nmf_iterations", "nmf_test_conv"}:
         opt[ao_k] = int(ao_v)
-    elif ao_k in {"get_all_signature_matrices", "make_decomposition_plots", "download_genome_sigprofiler"}:
+    elif ao_k in {"make_decomposition_plots", "download_genome_sigprofiler"}:
         val = ao_v.lower()
         if val not in {"true", "false"}:
             raise ValueError(f"Invalid value for '{ao_k}': expected 'true' or 'false', got '{ao_v}'")
@@ -82,13 +82,12 @@ if __name__ == '__main__':
     context_types = opt["context_type"].split(",")
     tsv_list = "${tsv_list.join(' ')}"
 
-    input_path = os.path.join(prefix)
-    if not os.path.exists(input_path):
-            os.mkdir(input_path)
+    if not os.path.exists(prefix):
+           os.mkdir(prefix)
 
     data = process_tsv_join(tsv_list)
     processed = input_processing(data, prefix, genome)
-    processed.to_csv(f"{input_path}/input_data.txt", sep="\t", index=False)
+    processed.to_csv(f"{prefix}/input_data.txt", sep="\t", index=False)
 
     # Conditionally install genome or use provided path
     if opt.get("download_genome_sigprofiler", True):
@@ -99,13 +98,13 @@ if __name__ == '__main__':
         if not opt.get("genome_installed_path"):
             raise ValueError("download_genome_sigprofiler is False but no genome_installed_path was provided.")
         print(f"Using pre-installed genome at: {opt['genome_installed_path']}")
-        opt["volume"] 
+        
 
 
     # Mutation counts matrix generation
     generate_count_matrix = (
         f"SigProfilerMatrixGenerator matrix_generator "
-        f"{prefix} {genome} {input_path} --volume {opt["volume"]}"
+        f"{prefix} {genome} {prefix} --volume {opt["volume"]}"
     )  
     subprocess.run(generate_count_matrix, shell=True)
     
@@ -115,7 +114,7 @@ if __name__ == '__main__':
             "ID83": os.path.join("output", "ID", f"{prefix}.ID83.all")
     }
 
-    context_types = {
+    context_type_map = {
         "SBS96": "96",
         "DBS78": "DINUC",
         "ID83": "ID"
@@ -125,15 +124,18 @@ if __name__ == '__main__':
     # Run SigProfilerExtractor for each mutation type
 
     for key, matrix_path in matrix_files.items():
-        full_path = os.path.join(prefix, matrix_path)
+        input_data_path = os.path.join(prefix, matrix_path)
 
-        if not os.path.isfile(full_path):
+        if not os.path.isfile(input_data_path):
             continue  # Skip this mutation type
 
-        print(f"Running SigProfilerExtractor on {key} using {full_path}")
+        print(f"Running SigProfilerExtractor on {key} using {input_data_path}")
 
         output_dir = f"results/{key}"
-        context_type = context_types[key]
+        context_type = context_type_map[key]
+
+        # Convert Python bools to lowercase strings 'true'/'false'
+        make_plots = str(opt["make_decomposition_plots"]).lower()
 
         sigprofilerextractor_run = (
             f"SigProfilerExtractor sigprofilerextractor "
@@ -146,12 +148,10 @@ if __name__ == '__main__':
             f"--min_nmf_iterations {opt["min_nmf_iterations"]} "
             f"--max_nmf_iterations {opt["max_nmf_iterations"]} "
             f"--nmf_test_conv {opt["nmf_test_conv"]} "
-            f"--get_all_signature_matrices {opt["get_all_signature_matrices"]} "
-            f"--make_decomposition_plots {opt["make_decomposition_plots"]} "
-            f"matrix {output_dir} {full_path}"
+            f"--make_decomposition_plots {make_plots} "
+            f"matrix {output_dir} {input_data_path}"
         )  
-        subprocess.run(sigprofilerextractor_run, shell=True)
-                                                                
+        subprocess.run(sigprofilerextractor_run, shell=True)                                                                
                             
     # save the output results
     source_dir = opt["prefix"]
@@ -166,9 +166,11 @@ if __name__ == '__main__':
      # Write version
     SigProfilerMatrixGenerator_version = version("SigProfilerMatrixGenerator")
     SigProfilerExtractor_version = version("SigProfilerExtractor")
+    python_version = ".".join(map(str, sys.version_info[:3]))
 
     with open('versions.yml', 'a') as f:
         f.write('"${task.process}":'+"\\n")
+        f.write("    python: "+python_version+"\\n")
         f.write("    SigProfilerMatrixGenerator: "+SigProfilerMatrixGenerator_version+"\\n")
         f.write("    SigProfilerExtractor: "+SigProfilerExtractor_version+"\\n")
 

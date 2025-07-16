@@ -12,8 +12,8 @@ process SIGPROFILER {
     path(genome_installed_path)  //optional
     
     output:
-    tuple val(meta), path("results/*"), emit: sigprofiler_results
-    path "versions.yml",                emit: versions
+    tuple val(meta), path("results/*")     , emit: sigprofiler_results
+    path "versions.yml"                    , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,6 +31,7 @@ process SIGPROFILER {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
+        python: \$(python3 -c 'import sys; print(".".join(map(str, sys.version_info[:3])))')
         sigprofilermatrixGenerator: \$(python3 -c "import SigProfilerMatrixGenerator as matGen; print(matGen.__version__)")
         sigprofilerextractor: \$(python3 -c "import SigProfilerExtractor as sig; print(sig.__version__)")
     END_VERSIONS

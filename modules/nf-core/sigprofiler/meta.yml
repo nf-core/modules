@@ -34,26 +34,28 @@ input:
         type: file
         description: joint tsv file with validated mutations by CNAqc
         pattern: "*.{tsv}"
+        ontologies: []
   - - genome_installed_path: 
         type: file
         description: path to installed reference genome (optional)
+        ontologies: []
 output:
-  - sigprofiler_results:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample' ]`
+  sigprofiler_results:
+    - -  meta:
+           type: map
+           description: Groovy Map containing sample information e.g. [ id:'test' ]
       - "results/*":
           type: directory
-          description: folder with saved results tool output
+          description: folder with saved output results
           pattern: "results/*"
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@kdavydzenka"
 maintainers:

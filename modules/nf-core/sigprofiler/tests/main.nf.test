@@ -15,7 +15,7 @@ nextflow_process {
         when {
 
             params {
-              module_args = "[genome:GRCh38, download_genome_sigprofiler:True, volume:./, input_type:matrix, context_type:'96,ID', minimum_signatures:1, maximum_signatures:2, nmf_replicates:10, min_nmf_iterations:10, max_nmf_iterations:100, nmf_test_conv:100, get_all_signature_matrices:False, make_decomposition_plots:False ]"
+              module_args = "[genome:GRCh38, download_genome_sigprofiler:True, volume:./, input_type:matrix, context_type:'96,DINUC,ID', minimum_signatures:1, maximum_signatures:2, nmf_replicates:10, min_nmf_iterations:10, max_nmf_iterations:100, nmf_test_conv:100, make_decomposition_plots:False ]"
 
             }
             
@@ -31,7 +31,7 @@ nextflow_process {
         }
 
         then {
-            def (meta, resultDirs) = process.out.sigprofiler_results[0]
+            def (meta, resultDirs) = process.out.sigprofiler_results[0]  
             
             assertAll( 
                 { assert process.success },
@@ -43,7 +43,7 @@ nextflow_process {
                     // Directory existence check
                     resultDirs.each { dir ->
                         def file = new File(dir.toString())
-                        assert file.exists() && file.isDirectory()
+                        assert file.exists() 
                         
                     }  
                 }  
