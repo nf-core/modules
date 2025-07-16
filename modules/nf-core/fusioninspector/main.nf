@@ -12,24 +12,24 @@ process FUSIONINSPECTOR {
     tuple val(meta2), path(reference)
 
     output:
-    tuple val(meta), path("*FusionInspector.fusions.tsv")   , emit: tsv
-    tuple val(meta), path("fi_workdir/*.gtf")               , emit: out_gtf, optional:true
-    tuple val(meta), path("*FusionInspector.log")           , emit: log
-    tuple val(meta), path("*html")                          , emit: html
-    tuple val(meta), path("*abridged.tsv")                  , emit: abridged_tsv
-    tuple val(meta), path("IGV_inputs")                     , emit: igv_inputs
-    tuple val(meta), path("fi_workdir")                     , emit: fi_workdir
-    tuple val(meta), path("chckpts_dir")                    , emit: chckpts_dir
-    path "versions.yml"                                     , emit: versions
+    tuple val(meta), path("*FusionInspector.fusions.tsv"), emit: tsv
+    tuple val(meta), path("fi_workdir/*.gtf")            , emit: out_gtf, optional:true
+    tuple val(meta), path("*FusionInspector.log")        , emit: log
+    tuple val(meta), path("*html")                       , emit: html
+    tuple val(meta), path("*abridged.tsv")               , emit: abridged_tsv
+    tuple val(meta), path("IGV_inputs")                  , emit: igv_inputs
+    tuple val(meta), path("fi_workdir")                  , emit: fi_workdir
+    tuple val(meta), path("chckpts_dir")                 , emit: chckpts_dir
+    path  "versions.yml"                                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def fasta = meta.single_end ? "--left_fq ${reads[0]}" : "--left_fq ${reads[0]} --right_fq ${reads[1]}"
-    def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
+    def fasta  = meta.single_end ? "--left_fq ${reads[0]}" : "--left_fq ${reads[0]} --right_fq ${reads[1]}"
+    def args   = task.ext.args   ?: ''
+    def args2  = task.ext.args2  ?: ''
     """
     FusionInspector \\
         --fusions $fusion_list \\
