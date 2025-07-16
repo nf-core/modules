@@ -1,55 +1,52 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-# # TODO nf-core: Add a description of the module and list keywords
 name: "rbt_vcfsplit"
-description: write your description here
+description: A tool for splitting VCF/BCF files into N equal chunks, including BND support 
 keywords:
   - sort
   - example
   - genomics
 tools:
-  ## TODO nf-core: Add a description and other details for the software below
   - "rbt":
       description: "A growing collection of fast and secure command line utilities for
-        dealing with NGS data implemented on top of Rust-Bio. "
-      homepage: "None"
-      documentation: "None"
+        dealing with NGS data implemented on top of Rust-Bio."
+      homepage: "https://github.com/rust-bio/rust-bio-tools"
+      documentation: "https://github.com/rust-bio/rust-bio-tools"
       tool_dev_url: "https://github.com/rust-bio/rust-bio-tools"
       doi: ""
       licence: ["MIT"]
       identifier: null
 
 input:
-  ### TODO nf-core: Add a description of all of the variables used as input
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - bam:
+    - vcf:
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
+        description: VCF file with variants to be split
+        pattern: "*.{vcf,bcf,vcf.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
-          - edam: "http://edamontology.org/format_2573" # CRAM
-          - edam: "http://edamontology.org/format_3462" # SAM
+          - edam: "http://edamontology.org/format_3016" # VCF
+          - edam: http://edamontology.org/format_3020 # BCF
+  - - numchunks:
+        type: integer
+        default: 15
+        description: |
+          Number of chunks to split the VCF file into. The default is 15.
 
 output:
-  ### TODO nf-core: Add a description of all of the variables used as output
-  bam:
+  bcfchunks:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.bam":
-          type: file
-          description: Sorted BAM/CRAM/SAM file
-          pattern: "*.{bam,cram,sam}"
+      - "*.bcf":
+          type: files
+          description: Chunks of the input VCF file, split into `numchunks` equal parts.
+          pattern: "*.bcf"
           ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
-            - edam: "http://edamontology.org/format_2573" # CRAM
-            - edam: "http://edamontology.org/format_3462" # SAM
+            - edam: http://edamontology.org/format_3020 # BCF
   versions:
     - "versions.yml":
         type: file

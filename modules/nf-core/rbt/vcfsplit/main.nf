@@ -12,7 +12,7 @@ process RBT_VCFSPLIT {
     val(numchunks)
 
     output:
-    tuple val(meta), path("*"), emit: bcfchunks
+    tuple val(meta), path("*.bcf"), emit: bcfchunks
     path "versions.yml"           , emit: versions
 
     when:
@@ -21,26 +21,28 @@ process RBT_VCFSPLIT {
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def chunks = task.ext.numchunks ? (task.ext.numchunks - 1) : 15
+    def chunks = numchunks ? (numchunks - 1) : 15
     """
-    rbt vcf-split ${vcf} ${prefix}{0..3}.bcf
+    rbt vcf-split \\
+        ${vcf} \\
+        ${prefix}.{0..${chunks}}.bcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        Rust-Bio-Tools: \$$(rbt --version | grep -o '[0-9.]\+')
+        Rust-Bio-Tools: \$(rbt --version | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/')
     END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def chunks = task.ext.numchunks ? (task.ext.numchunks - 1) : 15
+    def chunks = numchunks ? (numchunks - 1) : 15
+    def bcf_files = (0..chunks).collect { "${prefix}.${it}.bcf" }.join(' ')
     """
-    touch hell.bcf
+    touch ${bcf_files}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        Rust-Bio-Tools: \$(rbt --version | grep -o '[0-9.]\+')
+        Rust-Bio-Tools: \$(rbt --version | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/')
     END_VERSIONS
     """
 }
