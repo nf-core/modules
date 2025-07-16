@@ -26,10 +26,12 @@ input:
         type: file
         description: Input BAM file
         pattern: "*.bam"
+        ontologies: []
     - index:
         type: file
         description: BAM index file
         pattern: "*.bai"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -39,13 +41,15 @@ input:
         type: file
         description: Genome reference FASTA file
         pattern: "*.{fa,fasta}"
+        ontologies: []
     - fai:
         type: file
         description: Genome reference FASTA index file
         pattern: "*.{fa.fai,fasta.fai}"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,8 +58,9 @@ output:
           type: file
           description: VCF file with identified structural variants
           pattern: "*.{vcf.gz}"
-  - tbi:
-      - meta:
+          ontologies: []
+  tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,11 +69,14 @@ output:
           type: file
           description: The index of the BCF/VCF file
           pattern: "*.{vcf.gz.tbi}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@famosab"
   - "@poddarharsh15"

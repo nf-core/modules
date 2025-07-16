@@ -30,55 +30,49 @@ input:
         type: file
         description: One or a list of Nonpareil NPO files (From nonpareil/nonpareil)
         pattern: "*.{npo}"
+        ontologies: []
 output:
-  - json:
-      - meta:
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.json":
           type: file
-          description: Raw nonpareil data used for generating and plotting curves in JSON
-            format
+          description: Raw nonpareil data used for generating and plotting curves in
+            JSON format
           pattern: "*.json"
-  - tsv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - '*.tsv" ':
-          type: file
-          description: Raw nonpareil data used for generating and plotting curves in JSON
-            format
-          pattern: "*.tsv"
-  - csv:
-      - meta:
+      - "*.tsv": {}
+  csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - '*.csv" ':
-          type: file
-          description: Raw nonpareil data used for generating and plotting curves in JSON
-            format
-          pattern: "*.csv"
-  - pdf:
-      - meta:
+      - "*.csv": {}
+  pdf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - '*.pdf" ':
-          type: file
-          description: Plotted nonpareil curves in PDF format
-          pattern: "*.pdf"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+      - "*.pdf": {}
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

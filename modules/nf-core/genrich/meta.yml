@@ -26,33 +26,40 @@ input:
         description: Coordinate sorted BAM/SAM file from treatment sample or list of
           BAM/SAM files from biological replicates
         pattern: "*.{bam,sam}"
+        ontologies: []
     - control_bam:
         type: file
         description: Coordinate sorted BAM/SAM file from control sample or list of BAM/SAM
           files from control samples
         pattern: "*.{bam,sam}"
-  - - blacklist_bed:
-        type: file
-        description: Bed file containing genomic intervals to exclude from the analysis
-        pattern: "*.{bed}"
+        ontologies: []
+  - blacklist_bed:
+      type: file
+      description: Bed file containing genomic intervals to exclude from the analysis
+      pattern: "*.{bed}"
+      ontologies: []
 output:
-  - peak:
-      - meta:
+  peak:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.narrowPeak":
           type: file
-          description: Narrow peak file containing genomic intervals of significant enrichment
+          description: Narrow peak file containing genomic intervals of significant
+            enrichment
           pattern: "*.{narrowPeak}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-  - bedgraph_pvalues:
-      - meta:
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+  bedgraph_pvalues:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -61,12 +68,9 @@ output:
           type: file
           description: bedGraph file containing p/q values
           pattern: "*.{pvalues.bedGraph}"
-      - ues:
-          type: file
-          description: bedGraph file containing p/q values
-          pattern: "*.{pvalues.bedGraph}"
-  - bedgraph_pileup:
-      - meta:
+          ontologies: []
+  bedgraph_pileup:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -75,8 +79,9 @@ output:
           type: file
           description: bedGraph file containing pileups and p-values
           pattern: "*.{pileup.bedGraph}"
-  - bed_intervals:
-      - meta:
+          ontologies: []
+  bed_intervals:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -85,12 +90,9 @@ output:
           type: file
           description: Bed file containing annotated intervals
           pattern: "*.{intervals.bed}"
-      - s:
-          type: file
-          description: Bed file containing annotated intervals
-          pattern: "*.{intervals.bed}"
-  - duplicates:
-      - meta:
+          ontologies: []
+  duplicates:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -99,6 +101,7 @@ output:
           type: file
           description: Text output file containing intervals corresponding to PCR duplicates
           pattern: "*.{intervals.txt}"
+          ontologies: []
 authors:
   - "@JoseEspinosa"
   - "@samuelruizperez"
