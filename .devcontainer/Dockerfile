@@ -8,4 +8,3 @@ FROM ghcr.io/nextflow-io/training@sha256:97cce091b2c786f8fbd86f470e59d096dff546f
 RUN wget -qO- https://get.nf-test.com > install_nf_test.sh && \
     bash install_nf_test.sh && \
     mv nf-test "$HOME/.local/bin"
-
