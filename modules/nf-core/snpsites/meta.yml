@@ -12,31 +12,36 @@ tools:
       licence: ["GPL-3.0-or-later"]
       identifier: ""
 input:
-  - - alignment:
-        type: file
-        description: fasta alignment file
-        pattern: "*.{fasta,fas,fa,aln}"
+  - alignment:
+      type: file
+      description: fasta alignment file
+      pattern: "*.{fasta,fas,fa,aln}"
+      ontologies: []
 output:
-  - fasta:
-      - "*.fas":
-          type: file
-          description: Variant fasta file
-          pattern: "*.{fas}"
-  - constant_sites:
-      - "*.sites.txt":
-          type: file
-          description: Text file containing counts of constant sites
-          pattern: "*.{sites.txt}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-  - constant_sites_string:
-      - CONSTANT_SITES:
-          type: integer
-          description: Value with the number of constant sites
-          pattern: "*.{sites.txt}"
+  fasta:
+    - "*.fas":
+        type: file
+        description: Variant fasta file
+        pattern: "*.{fas}"
+        ontologies: []
+  constant_sites:
+    - "*.sites.txt":
+        type: file
+        description: Text file containing counts of constant sites
+        pattern: "*.{sites.txt}"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+  constant_sites_string:
+    - CONSTANT_SITES:
+        type: integer
+        description: Value with the number of constant sites
+        pattern: "*.{sites.txt}"
 authors:
   - "@avantonder"
 maintainers:

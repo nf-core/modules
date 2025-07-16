@@ -30,13 +30,14 @@ input:
         description: fasta file containing additional sequences for the existing checkv
           database
         pattern: "*.{fasta,fna,fa}"
-  - - db:
-        type: directory
-        description: directory pointing to existing checkV database to avoid redownloading
-          the database
+        ontologies: []
+  - db:
+      type: directory
+      description: directory pointing to existing checkV database to avoid redownloading
+        the database
 output:
-  - checkv_db:
-      - meta:
+  checkv_db:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,11 +45,13 @@ output:
       - ${prefix}/*:
           type: directory
           description: directory pointing to database
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Joon-Klaps"
 maintainers:

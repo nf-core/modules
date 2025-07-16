@@ -12,22 +12,26 @@ tools:
       licence: ["GPL-3.0-or-later"]
       identifier: ""
 input:
-  - - gtf:
-        type: file
-        description: GTF file
-        pattern: "*.{gtf}"
+  - gtf:
+      type: file
+      description: GTF file
+      pattern: "*.{gtf}"
+      ontologies: []
 output:
   #
-  - rrna_gtf:
-      - "*rrna_intervals.gtf":
-          type: file
-          description: GTF file with ribosomal RNA only
-          pattern: "*.{gtf}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  rrna_gtf:
+    - "*rrna_intervals.gtf":
+        type: file
+        description: GTF file with ribosomal RNA only
+        pattern: "*.{gtf}"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@rannick"
 maintainers:
