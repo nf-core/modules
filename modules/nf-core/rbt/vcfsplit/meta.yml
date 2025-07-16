@@ -1,5 +1,6 @@
 name: "rbt_vcfsplit"
-description: A tool for splitting VCF/BCF files into N equal chunks, including BND support
+description: A tool for splitting VCF/BCF files into N equal chunks, including BND
+  support
 keywords:
   - genomics
   - splitting
@@ -7,7 +8,7 @@ keywords:
   - BCF
   - variants
 tools:
-  - "rbt":
+  - rust-bio-tools:
       description: "A growing collection of fast and secure command line utilities for
         dealing with NGS data implemented on top of Rust-Bio."
       homepage: "https://github.com/rust-bio/rust-bio-tools"
@@ -15,7 +16,7 @@ tools:
       tool_dev_url: "https://github.com/rust-bio/rust-bio-tools"
       doi: ""
       licence: ["MIT"]
-      identifier: null
+      identifier: ""
 
 input:
   - - meta:
@@ -30,11 +31,9 @@ input:
         ontologies:
           - edam: "http://edamontology.org/format_3016" # VCF
           - edam: http://edamontology.org/format_3020 # BCF
-  - - numchunks:
-        type: integer
-        default: 15
-        description: |
-          Number of chunks to split the VCF file into. The default is 15.
+  - numchunks:
+      type: integer
+      description: Number of chunks to split the VCF file into. The default is 15.
 
 output:
   bcfchunks:
@@ -44,7 +43,7 @@ output:
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
       - "*.bcf":
-          type: files
+          type: file
           description: Chunks of the input VCF file, split into `numchunks` equal parts.
           pattern: "*.bcf"
           ontologies:
