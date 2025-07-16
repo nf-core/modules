@@ -4,8 +4,8 @@ process SVYNC {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/svync:0.1.2--h9ee0642_0':
-        'biocontainers/svync:0.1.2--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/svync:0.3.0--h9ee0642_0':
+        'biocontainers/svync:0.3.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi), path(config)
