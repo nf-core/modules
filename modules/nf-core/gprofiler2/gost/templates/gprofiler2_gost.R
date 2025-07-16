@@ -191,6 +191,7 @@ for (file_input in c('de_file')) {
 
 library(gprofiler2)
 library(ggplot2)
+library(yaml)
 
 ################################################
 ################################################
@@ -447,11 +448,19 @@ sink()
 r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
 gprofiler2.version <- as.character(packageVersion('gprofiler2'))
 ggplot2.version <- as.character(packageVersion('ggplot2'))
+gprofiler_data.version <- as.yaml(get_version_info())
+if (is.null(opt\$token) & !is.null(opt\$organism)) {
+    gprofiler_data.version <- as.yaml(get_version_info(opt\$organism))
+}
+# The YAML comes out a bit messy for the gprofiler data, not nested correctly
+# If we want to nest it correctly, need to use something like
+# yaml::write_yaml(list("GPROFILER"=list("ggplot"=2, "gpfo"=1, "gprofiler_data" = gprofiler2::get_version_info())), file='~/allviayaml2.yml')
 writeLines(
     c(
         '"$task.process":',
         paste('    r-ggplot2:', ggplot2.version),
-        paste('    r-gprofiler2:', gprofiler2.version)
+        paste('    r-gprofiler2:', gprofiler2.version),
+        paste('    gprofiler-data:',  gprofiler_data.version)
     ),
 'versions.yml')
 
