@@ -11,10 +11,10 @@ process FASTQDL {
     tuple val(meta), val(accession)
 
     output:
-    tuple val(meta), path("*.fastq.gz"), emit: fastq
-    tuple val(meta), path("*-run-info.tsv"), emit: runinfo
+    tuple val(meta), path("*.fastq.gz")       , emit: fastq
+    tuple val(meta), path("*-run-info.tsv")   , emit: runinfo
     tuple val(meta), path("*-run-mergers.tsv"), emit: runmergers, optional: true
-    path "versions.yml"          , emit: versions
+    path "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
