@@ -22,7 +22,7 @@ input:
     - transcripts:
         type: file
         description: Transcript ids, genes, revised positions, assignment probability, etc.
-        pattern: "*transcript-metadata.csv.gz"
+        pattern: "*transcript-metadata.{csv.gz,csv,parquet}"
   - mode:
       type: string
       description: Proseg preset mode
@@ -33,10 +33,13 @@ output:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "*transcript-metadata.csv.gz":
+        - "*transcript-metadata*":
             type: file
             description: Transcript ids, genes, revised positions, assignment probability, etc.
-            pattern: "*transcript-metadata.csv"
+            pattern: "*transcript-metadata.{csv.gz,csv,parquet}"
+            ontologies:
+              - edam: http://edamontology.org/format_3752 # CSV
+              - edam: http://edamontology.org/format_3989 # GZIP format
   union_cell_polygons:
       - - meta:
             type: map
@@ -57,10 +60,13 @@ output:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "*cell-metadata.csv.gz":
+        - "*cell-metadata*":
             type: file
             description: Cell metadata file
-            pattern: "*cell-metadata.csv.gz"
+            pattern: "*cell-metadata.{csv.gz,csv,parquet}"
+            ontologies:
+              - edam: http://edamontology.org/format_3752 # CSV
+              - edam: http://edamontology.org/format_3989 # GZIP format
   cell_polygons_layers:
       - - meta:
             type: map
@@ -73,10 +79,13 @@ output:
       - - meta:
             type: map
             description: Groovy Map containing sample information
-        - "*expected-counts.csv.gz":
+        - "*expected-counts*":
             type: file
             description: Expected transcript counts file
-            pattern: "outputs/*expected-counts.csv.gz"
+            pattern: "*expected-counts.{csv.gz,csv,parquet}"
+            ontologies:
+              - edam: http://edamontology.org/format_3752 # CSV
+              - edam: http://edamontology.org/format_3989 # GZIP format
   maxpost_counts:
       - - meta:
             type: map
@@ -84,8 +93,11 @@ output:
         - "*maxpost-counts*":
             type: file
             description: point estimate of counts per cell
-            pattern: "*maxpost-counts*"
+            pattern: "*maxpost-counts.{csv.gz,csv,parquet}"
             optional: true
+            ontologies:
+              - edam: http://edamontology.org/format_3752 # CSV
+              - edam: http://edamontology.org/format_3989 # GZIP format
   output_rates:
       - - meta:
             type: map
@@ -93,8 +105,11 @@ output:
         - "*output-rates*":
             type: file
             description: Estimated poisson expression rates for each cell
-            pattern: "*output-rates*"
+            pattern: "*output-rates.{csv.gz,csv,parquet}"
             optional: true
+            ontologies:
+              - edam: http://edamontology.org/format_3752 # CSV
+              - edam: http://edamontology.org/format_3989 # GZIP format
   cell_hulls:
       - - meta:
             type: map
@@ -102,8 +117,11 @@ output:
         - "*cell-hulls*":
             type: file
             description: Cell convex hulls
-            pattern: "*cell-hulls*"
+            pattern: "*cell-hulls.{csv.gz,csv,parquet}"
             optional: true
+            ontologies:
+              - edam: http://edamontology.org/format_3752 # CSV
+              - edam: http://edamontology.org/format_3989 # GZIP format
   gene_metadata:
       - - meta:
             type: map
@@ -111,8 +129,11 @@ output:
         - "*gene-metadata*":
             type: file
             description: gene metadata
-            pattern: "*gene-metadata*"
+            pattern: "*gene-metadata.{csv.gz,csv,parquet}"
             optional: true
+            ontologies:
+              - edam: http://edamontology.org/format_3752 # CSV
+              - edam: http://edamontology.org/format_3989 # GZIP format
   metagene_rates:
       - - meta:
             type: map
@@ -120,8 +141,11 @@ output:
         - "*metagene-rates*":
             type: file
             description: metagene rates
-            pattern: "*metagene-rates*"
+            pattern: "*metagene-rates.{csv.gz,csv,parquet}"
             optional: true
+            ontologies:
+              - edam: http://edamontology.org/format_3752 # CSV
+              - edam: http://edamontology.org/format_3989 # GZIP format
   metagene_loadings:
       - - meta:
             type: map
@@ -129,8 +153,11 @@ output:
         - "*metagene-loadings*":
             type: file
             description: metagene loadings
-            pattern: "*metagene-loadings*"
+            pattern: "*metagene-loadings.{csv.gz,csv,parquet}"
             optional: true
+            ontologies:
+              - edam: http://edamontology.org/format_3752 # CSV
+              - edam: http://edamontology.org/format_3989 # GZIP format
   cell_voxels:
       - - meta:
             type: map
@@ -138,13 +165,18 @@ output:
         - "*cell-voxels*":
             type: file
             description: table of each voxel in each cell
-            pattern: "*cell-voxels*"
+            pattern: "*cell-voxels.{csv.gz,csv,parquet}"
             optional: true
+            ontologies:
+              - edam: http://edamontology.org/format_3752 # CSV
+              - edam: http://edamontology.org/format_3989 # GZIP format
   versions:
       - "versions.yml":
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 
 authors:
   - "@derrik-gratz"

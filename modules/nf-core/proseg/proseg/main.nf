@@ -12,20 +12,20 @@ process PROSEG {
     val mode
 
     output: 
-    tuple val(meta), path("*transcript-metadata.csv.gz"     , arity: '1'), emit: transcript_metadata
-    tuple val(meta), path("*cell-polygons-union.geojson.gz" , arity: '1'), emit: union_cell_polygons 
-    tuple val(meta), path("*cell-polygons.geojson.gz"       , arity: '1'), emit: cell_polygons
-    tuple val(meta), path("*cell-metadata.csv.gz"           , arity: '1'), emit: cell_metadata
-    tuple val(meta), path("*cell-polygons-layers.geojson.gz", arity: '1'), emit: cell_polygons_layers
-    tuple val(meta), path("*expected-counts.csv.gz"         , arity: '1'), emit: expected_counts
-    tuple val(meta), path("*maxpost-counts*"                            ), emit: maxpost_counts      , optional: true
-    tuple val(meta), path("*output-rates*"                              ), emit: output_rates        , optional: true
-    tuple val(meta), path("*cell-hulls*"                                ), emit: cell_hulls          , optional: true
-    tuple val(meta), path("*gene-metadata*"                             ), emit: gene_metadata       , optional: true
-    tuple val(meta), path("*metagene-rates*"                            ), emit: metagene_rates      , optional: true
-    tuple val(meta), path("*metagene-loadings*"                         ), emit: metagene_loadings   , optional: true
-    tuple val(meta), path("*cell-voxels*"                               ), emit: cell_voxels         , optional: true
-    path "versions.yml"                                                  , emit: versions
+    tuple val(meta), path("*transcript-metadata.{csv,csv.gz,parquet}", arity: '1'), emit: transcript_metadata
+    tuple val(meta), path("*cell-polygons-union.geojson.gz"          , arity: '1'), emit: union_cell_polygons 
+    tuple val(meta), path("*cell-polygons.geojson.gz"                , arity: '1'), emit: cell_polygons
+    tuple val(meta), path("*cell-metadata.{csv,csv.gz,parquet}"      , arity: '1'), emit: cell_metadata
+    tuple val(meta), path("*cell-polygons-layers.geojson.gz"         , arity: '1'), emit: cell_polygons_layers
+    tuple val(meta), path("*expected-counts.{csv,csv.gz,parquet}"    , arity: '1'), emit: expected_counts
+    tuple val(meta), path("*maxpost-counts.{csv,csv.gz,parquet}"                 ), emit: maxpost_counts      , optional: true
+    tuple val(meta), path("*output-rates.{csv,csv.gz,parquet}"                   ), emit: output_rates        , optional: true
+    tuple val(meta), path("*cell-hulls.{csv,csv.gz,parquet}"                     ), emit: cell_hulls          , optional: true
+    tuple val(meta), path("*gene-metadata.{csv,csv.gz,parquet}"                  ), emit: gene_metadata       , optional: true
+    tuple val(meta), path("*metagene-rates.{csv,csv.gz,parquet}"                 ), emit: metagene_rates      , optional: true
+    tuple val(meta), path("*metagene-loadings.{csv,csv.gz,parquet}"              ), emit: metagene_loadings   , optional: true
+    tuple val(meta), path("*cell-voxels.{csv,csv.gz,parquet}"                    ), emit: cell_voxels         , optional: true
+    path "versions.yml"                                                           , emit: versions
 
 
     when:
@@ -34,14 +34,13 @@ process PROSEG {
     script:
     def preset = mode ? "--${mode}" : ''
     def args = task.ext.args ?: ''
-    def prefix =  task.ext.prefix ? "--output-path ${task.ext.prefix}" : ""
+    def prefix =  task.ext.prefix ?: "${meta.id}-"
 
     """
     proseg \\
         ${preset} \\
         ${args} \\
-        --output-union-cell-polygons cell-polygons-union.geojson.gz \\
-        ${prefix} \\
+        --output-union-cell-polygons ${prefix}cell-polygons-union.geojson.gz \\
         --nthreads ${task.cpus} \\
         ${transcripts}
 
@@ -52,13 +51,14 @@ process PROSEG {
     """
 
     stub:
+    def prefix =  task.ext.prefix ? "${task.ext.prefix}" : ""
     """
-    touch cell-metadata.csv.gz
-    touch cell-polygons.geojson.gz
-    touch cell-polygons-layers.geojson.gz
-    touch expected-counts.csv.gz
-    touch transcript-metadata.csv.gz
-    touch cell-polygons-union.geojson.gz
+    echo | gzip > ${prefix}cell-metadata.csv.gz
+    echo | gzip > ${prefix}cell-polygons.geojson.gz
+    echo | gzip > ${prefix}cell-polygons-layers.geojson.gz
+    echo | gzip > ${prefix}expected-counts.csv.gz
+    echo | gzip > ${prefix}transcript-metadata.csv.gz
+    echo | gzip > ${prefix}cell-polygons-union.geojson.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
