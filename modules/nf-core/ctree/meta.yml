@@ -63,22 +63,23 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "**REPORT_plots_ctree_{mobster,VIBER,pyclonevi}.rds":
+
+      - "**ctree_{mobster,VIBER,pyclonevi}_report.rds":
           type: file
           description: |
             Final report plots as an .rds object. The module outputs one file for each ctree object
-          pattern: "**REPORT_plots_ctree_{mobster,VIBER,pyclonevi}.rds"
+          pattern: "**ctree_{mobster,VIBER,pyclonevi}_report.rds"
   - ctree_report_pdf:
       - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "**REPORT_plots_ctree_{mobster,VIBER,pyclonevi}.pdf":
+      - "**ctree_{mobster,VIBER,pyclonevi}_report.pdf":
           type: file
           description: |
             Final report plots as a pdf object. The module outputs one file for each ctree object
-          pattern: "**REPORT_plots_ctree_{mobster,VIBER,pyclonevi}.pdf"
+          pattern: "**ctree_{mobster,VIBER,pyclonevi}_report.pdf"
           ontologies:
             - edam: "http://edamontology.org/format_3508" # pdf
   - ctree_report_png:
@@ -87,11 +88,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "**REPORT_plots_ctree_{mobster,VIBER,pyclonevi}.png":
+      - "**ctree_{mobster,VIBER,pyclonevi}_report.png":
           type: file
           description: |
             Final report plots as a png object. The module outputs one file for each ctree object
-          pattern: "**REPORT_plots_ctree_{mobster,VIBER,pyclonevi}.png"
+          pattern: "**ctree_{mobster,VIBER,pyclonevi}_report.png"
           ontologies:
             - edam: "http://edamontology.org/format_3603" # png
   - versions:

@@ -49,7 +49,6 @@ add_dummy_driver = function(input_table, variant_colname, is_driver_colname) {
         input_table = input_table %>% dplyr::mutate(!!is_driver_colname:=FALSE, !!variant_colname:=NA)
         add_driver = TRUE
     } else if (all(input_table[[is_driver_colname]]==FALSE)) {
-        # idx = which(input_table[["cluster"]] != "Tail")[1]
         add_driver = TRUE
     }
     if (add_driver) {
@@ -60,24 +59,20 @@ add_dummy_driver = function(input_table, variant_colname, is_driver_colname) {
 }
 
 initialize_ctree_obj_pyclone = function(ctree_input) {
-
     driver_cluster = unique(ctree_input[which(ctree_input["is.driver"]==TRUE),c("cluster")])
     # the CCF table must report CCF values for each cluster and sample
     # cluster | nMuts | is.driver | is.clonal | sample1 | sample2 | ...
     CCF_table = ctree_input %>%
         dplyr::select(sample_id, cluster, nMuts, is.driver, is.clonal, CCF) %>%
-
-    dplyr::mutate(is.driver=replace(is.driver, is.driver=="", "FALSE")) %>%
-    dplyr::mutate(is.driver=as.logical(is.driver)) %>%
-
-    dplyr::filter(cluster!="Tail") %>%
-    dplyr::mutate(cluster=as.character(cluster)) %>%
-
-    dplyr::group_by(cluster) %>%
-    dplyr::mutate(is.driver=any(is.driver)) %>%
-    dplyr::filter(any(CCF>0)) %>%
-    dplyr::ungroup() %>% unique() %>%
-    tidyr::pivot_wider(names_from="sample_id", values_from="CCF", values_fill=0)
+        dplyr::mutate(is.driver=replace(is.driver, is.driver=="", "FALSE")) %>%
+        dplyr::mutate(is.driver=as.logical(is.driver)) %>%
+        dplyr::filter(cluster!="Tail") %>%
+        dplyr::mutate(cluster=as.character(cluster)) %>%
+        dplyr::group_by(cluster) %>%
+        dplyr::mutate(is.driver=any(is.driver)) %>%
+        dplyr::filter(any(CCF>0)) %>%
+        dplyr::ungroup() %>% unique() %>%
+        tidyr::pivot_wider(names_from="sample_id", values_from="CCF", values_fill=0)
 
     # the driver table must contain patient and variant IDs and report clonality and driver status
     # patientID | variantID | is.driver | is.clonal | cluster | sample1 | sample2 | ...
@@ -103,9 +98,9 @@ initialize_ctree_obj_pyclone = function(ctree_input) {
     }
 
     ctree_init = list("CCF_table"=CCF_table,
-                        "drivers_table"=drivers_table,
-                        "samples"=samples,
-                        "patient"=patient)
+                      "drivers_table"=drivers_table,
+                      "samples"=samples,
+                      "patient"=patient)
     return(ctree_init)
 }
 
@@ -135,8 +130,7 @@ if ( grepl(".rds\$", tolower("$ctree_input")) ) {
         subclonal_tool = "mobster"
         sample_id = unique(best_fit[["data"]][["sample_id"]])
         outdir = paste0(sample_id, "/")
-
-    best_fit[["data"]] = add_dummy_driver(best_fit[["data"]], variant_colname="driver_label", is_driver_colname="is_driver")
+        best_fit[["data"]] = add_dummy_driver(best_fit[["data"]], variant_colname="driver_label", is_driver_colname="is_driver")
     }
 
     if (class(best_fit) %in% c("vb_bmm", "dbpmm") & do_fit) {
@@ -153,9 +147,9 @@ if ( grepl(".rds\$", tolower("$ctree_input")) ) {
     input_table = read.csv("$ctree_input", sep="\t")
     data_ctree = initialize_ctree_obj_pyclone(input_table)
     trees = ctrees(CCF_clusters = data_ctree[["CCF_table"]],
-                    drivers = data_ctree[["drivers_table"]],
-                    samples = data_ctree[["samples"]],
-                    patient = data_ctree[["patient"]])
+                   drivers = data_ctree[["drivers_table"]],
+                   samples = data_ctree[["samples"]],
+                   patient = data_ctree[["patient"]])
 }
 
 if (do_fit & !is.null(trees)) {
@@ -180,9 +174,9 @@ if (do_fit & !is.null(trees)) {
 
     report_fig = ggpubr::ggarrange(plotlist=list(ccf, info_transfer, top_phylo, clone_size, phylos), nrow=3, ncol=2)
 
-    saveRDS(object=report_fig, file=paste0(outdir, opt[["prefix"]], "_REPORT_plots_", ctree_output, ".rds"))
-    ggplot2::ggsave(plot=report_fig, filename=paste0(outdir, opt[["prefix"]], "_REPORT_plots_", ctree_output, ".pdf"), height=297, width=210, units="mm", dpi=200)
-    ggplot2::ggsave(plot=report_fig, filename=paste0(outdir, opt[["prefix"]], "_REPORT_plots_", ctree_output, ".png"), height=297, width=210, units="mm", dpi=200)
+    saveRDS(object=report_fig, file=paste0(outdir, opt[["prefix"]], "_", ctree_output, "_report.rds"))
+    ggplot2::ggsave(plot=report_fig, filename=paste0(outdir, opt[["prefix"]], "_", ctree_output, "_report.pdf"), height=297, width=210, units="mm", dpi=200)
+    ggplot2::ggsave(plot=report_fig, filename=paste0(outdir, opt[["prefix"]], "_", ctree_output, "_report.png"), height=297, width=210, units="mm", dpi=200)
 }
 
 
