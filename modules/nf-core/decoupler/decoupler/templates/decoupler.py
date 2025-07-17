@@ -15,9 +15,8 @@ numba.config.DISABLE_CACHE = True
 import pandas as pd
 import scanpy as sc
 import decoupler as dc
+import matplotlib.pyplot as plt
 
-methods = ['aucell', 'gsea', 'gsva', 'mdt', 'mlm', 'ora', 'udt',
-    'ulm', 'viper', 'wmean', 'wsum']
 
 mat = pd.read_csv("${mat}", sep="\t", index_col=0)
 net = pd.read_csv("${net}", sep="\t")
@@ -31,6 +30,7 @@ def parse_ext_args(args_string: str):
       --contrast <str> (optional, e.g., treatment_vs_control)
       --column <str> (Column name to use for transposition; default: log2FoldChange)
       --ensembl_ids <str> (TRUE to convert ENSEMBL IDs to gene symbols, FALSE to skip)
+      --methods <str> (Comma-separated list of methods to use (e.g., 'mlm,ulm'))
     """
     if args_string == "null":
         args_string = ""
@@ -40,6 +40,7 @@ def parse_ext_args(args_string: str):
     parser.add_argument("--transpose", type=str, default="FALSE", help="Transpose DESeq2 data if TRUE")
     parser.add_argument("--column", type=str, default="log2FoldChange", help="Column name to use for transposition")
     parser.add_argument("--ensembl_ids", type=str, default="FALSE", help="Convert ENSEMBL IDs to gene symbols if TRUE")
+    parser.add_argument("--methods", type=str, default = "ulm", help="Comma-separated list of methods to use (e.g., 'mlm,ulm')")
     return parser.parse_args(args_list)
 
 def parse_gtf(gtf_file: str):
@@ -75,6 +76,7 @@ def parse_gtf(gtf_file: str):
 # Parse external arguments
 raw_args = "${task.ext.args}"
 parsed_args = parse_ext_args(raw_args)
+methods = [m.strip() for m in parsed_args.methods.split(",") if m.strip()]
 
 if parsed_args.ensembl_ids.upper() == "TRUE":
     try:
@@ -88,7 +90,7 @@ if parsed_args.ensembl_ids.upper() == "TRUE":
         sys.exit(1)
 
 if parsed_args.transpose.upper() == "TRUE":
-    mat = mat[[parsed_args.column]].T.rename(index={parsed_args.column: "${meta.contrast}"})
+    mat = mat[[parsed_args.column]].T.rename(index={parsed_args.column: "${meta.id}"})
 
 parsedargs = {'args': {}}
 parsedargs['min_n'] = parsed_args.min_n
@@ -97,13 +99,20 @@ parsedargs['min_n'] = parsed_args.min_n
 results = dc.decouple(
     mat=mat,
     net=net,
+    methods=methods,
     **parsedargs
 )
 
 for result in results:
-    results[result].to_csv(result + "__decoupler.tsv", sep="\t")
+    # Save table
+    results[result].to_csv("${task.ext.prefix}" + "_" + result + "_decoupler.tsv", sep="\t")
+    contrast_name = results[result].index[0]
+    plt.figure(figsize=(8, 6))
+    dc.plot_barplot(results[result], contrast_name , top=25, vertical=False)
+    plt.savefig("${task.ext.prefix}" + "_" + result + "_decoupler_plot.png", dpi=300, bbox_inches='tight')
+    plt.close()
 
 ## VERSIONS FILE
 with open('versions.yml', 'a') as version_file:
     version_file.write('"${task.process}":' + "\\n")
-    version_file.write("\tdecoupler-py: " + dc.__version__ + "\\n")
+    version_file.write("decoupler-py: " + dc.__version__ + "\\n")
