@@ -1,5 +1,5 @@
 process BFTOOLS_SHOWINF {
-    tag '$meta.id'
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
