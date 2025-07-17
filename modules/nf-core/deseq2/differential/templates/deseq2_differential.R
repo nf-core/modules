@@ -383,59 +383,49 @@ dds <- DESeq(
     parallel=TRUE, BPPARAM=MulticoreParam(opt\$cores)
 )
 
+run_results <- function(...) {
+    results(
+        dds,
+        lfcThreshold         = opt\$lfc_threshold,
+        altHypothesis        = opt\$alt_hypothesis,
+        independentFiltering = opt\$independent_filtering,
+        alpha                = opt\$alpha,
+        pAdjustMethod        = opt\$p_adjust_method,
+        minmu                = opt\$minmu,
+        ...
+    )
+}
+
+run_shrink <- function(...) {
+    lfcShrink(
+        dds,
+        type = 'ashr',
+        ...
+    )
+}
+
 if (!is.null(opt\$contrast_string)) {
     coef_names <- resultsNames(dds)
-    if (opt\$contrast_string %in% coef_names) {
-        comp.results <- results(
-            dds,
-            name               = opt\$contrast_string,
-            lfcThreshold       = opt\$lfc_threshold,
-            altHypothesis      = opt\$alt_hypothesis,
-            independentFiltering = opt\$independent_filtering,
-            alpha              = opt\$alpha,
-            pAdjustMethod      = opt\$p_adjust_method,
-            minmu              = opt\$minmu
-        )
-        if (opt\$shrink_lfc) {
-            comp.results <- lfcShrink(
-                dds,
-                type = 'ashr',
-                coef = opt\$contrast_string
-            )
-        }
-    } else {
-        stop(
-            sprintf(
-                "Contrast '%s' not in design. Available coefficients: %s",
-                opt\$contrast_string,
-                paste(coef_names, collapse = ", ")
-            )
-        )
+    if (!(opt\$contrast_string %in% coef_names)) {
+        stop(sprintf(
+        "Contrast '%s' not in design. Available coefficients: %s",
+        opt\$contrast_string,
+        paste(coef_names, collapse = ", ")
+        ))
     }
-} else {
-    comp.results <-
-        results(
-            dds,
-            lfcThreshold = opt\$lfc_threshold,
-            altHypothesis = opt\$alt_hypothesis,
-            independentFiltering = opt\$independent_filtering,
-            alpha = opt\$alpha,
-            pAdjustMethod = opt\$p_adjust_method,
-            minmu = opt\$minmu,
-            contrast = c(
-                contrast_variable,
-                c(opt\$target_level, opt\$reference_level)
-            )
-        )
 
-    if (opt\$shrink_lfc){
-        comp.results <- lfcShrink(dds,
-            type = 'ashr',
-            contrast = c(
-                contrast_variable,
-                c(opt\$target_level, opt\$reference_level)
-            )
-        )
+    comp.results <- run_results(name = opt\$contrast_string)
+    if (opt\$shrink_lfc) {
+        comp.results <- run_shrink(coef = opt\$contrast_string)
+    }
+    } else {
+    contrast_var_tg_ref <- c(contrast_variable,
+                        opt\$target_level,
+                        opt\$reference_level)
+
+    comp.results <- run_results(contrast = contrast_var_tg_ref)
+    if (opt\$shrink_lfc) {
+        comp.results <- run_shrink(contrast = contrast_var_tg_ref)
     }
 }
 
