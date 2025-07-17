@@ -1,6 +1,5 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "kma_kma"
-
 description: Mapping raw reads directly against redundant databases via KMA alignment
 keywords:
   - fastq
@@ -38,26 +37,25 @@ input:
         type: file
         description: kma database file generated via kma_index
         pattern: "*.{comp.b,length.b,name,seq.b}"
-  - - interleaved:
-        type: boolean
-        description: use one interleaved fastq file (true) or two paired fastq files
-          (false)
-        pattern: "true or false"
+  - interleaved:
+      type: boolean
+      description: use one interleaved fastq file (true) or two paired fastq files (false)
+      pattern: "true or false"
 
 output:
-  - res:
-      - meta:
+  res:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.res":
           type: file
-          description: A result overview giving the most common statistics for each mapped
-            template.
+          description: A result overview giving the most common statistics for each
+            mapped template.
           pattern: "*.{res}"
-  - fsa:
-      - meta:
+  fsa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -66,8 +64,8 @@ output:
           type: file
           description: The consensus sequences drawn from the alignments.
           pattern: "*.{fsa}"
-  - aln:
-      - meta:
+  aln:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -76,20 +74,21 @@ output:
           type: file
           description: The consensus alignment of the reads against their template.
           pattern: "*.{aln}"
-  - frag:
-      - meta:
+  frag:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.frag.gz":
           type: file
-          description: Mapping information on each mapped read, where the columns are
+          description: |
+            Mapping information on each mapped read, where the columns are
             read, number of equally well mapping templates, mapping score, start position,
             end position (w.r.t. template), the chosen template.
           pattern: "*.{frag.gz}"
-  - matrix:
-      - meta:
+  matrix:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -99,8 +98,8 @@ output:
           description: Base counts on each position in each template, (only if -matrix
             is enabled).
           pattern: "*.{mat.gz}"
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -110,8 +109,8 @@ output:
           description: Compressed VCF file containing positions different from the template
             identified during KMA mapping against the reference database
           pattern: "*.{vcf.gz}"
-  - sam:
-      - meta:
+  sam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -121,23 +120,24 @@ output:
           description: SAM alignment file containing detailed mapping information from
             KMA mapping
           pattern: "*.{sam}"
-  - spa:
-      - meta:
+  spa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.spa":
           type: file
-          description: Text file containing the top scoring references. Note that kma
+          description: |
+            Text file containing the top scoring references. Note that kma
             (v1.4.15) can only use spare alignment if the kma index was also build with
             the sparse option.
           pattern: "*.{spa}"
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
 authors:
   - "@Krannich479"
