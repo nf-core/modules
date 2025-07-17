@@ -1,9 +1,9 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "varscan_somatic"
-description: VarScan2 is a tool for variant detection in massively parallel sequencing data.
-  It can detect SNPs, indels, and copy number variations in both somatic and germline samples.
-  It is particularly useful for analyzing tumor/normal sample pairs.
+description: VarScan2 is a tool for variant detection in massively parallel
+  sequencing data. It can detect SNPs, indels, and copy number variations in
+  both somatic and germline samples. It is particularly useful for analyzing
+  tumor/normal sample pairs.
 keywords:
   - variant calling
   - germline
@@ -43,8 +43,8 @@ input:
           - edam: "http://edamontology.org/format_3015" #
 
 output:
-  - vcf_snvs:
-      - meta:
+  vcf_snvs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,8 +55,9 @@ output:
           pattern: "*.vcf.gz"
           ontologies:
             - edam: "http://edamontology.org/format_3016" # VCF
-  - vcf_indels:
-      - meta:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  vcf_indels:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -67,13 +68,14 @@ output:
           pattern: "*.vcf.gz"
           ontologies:
             - edam: "http://edamontology.org/format_3016" # VCF
-
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@vmelichar"
 maintainers:
