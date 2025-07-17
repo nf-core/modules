@@ -26,9 +26,9 @@ process DECOUPLER {
 
     stub:
     """
-    touch estimate_decoupler.tsv
-    touch pvals_decoupler.tsv
-    touch decoupler_plot.png
+    touch ${task.ext.prefix}_estimate_decoupler.tsv
+    touch ${task.ext.prefix}_pvals_decoupler.tsv
+    touch ${task.ext.prefix}_decoupler_plot.png
     touch versions.yml
     """
 }
