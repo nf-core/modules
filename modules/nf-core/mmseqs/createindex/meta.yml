@@ -28,8 +28,8 @@ input:
           Directory containing the DB to be indexed
         pattern: "*"
 output:
-  - db_indexed:
-      - meta:
+  db_indexed:
+    - - meta:
           type: directory
           description: |
             Directory containing the DB and the generated indexes
@@ -39,12 +39,14 @@ output:
           description: |
             Directory containing the DB and the generated indexes
           pattern: "*"
-  - versions:
-      - versions.yml:
-          type: file
-          description: |
-            File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: |
+          File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@JoseEspinosa"
 maintainers:

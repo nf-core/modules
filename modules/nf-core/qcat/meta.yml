@@ -22,12 +22,13 @@ input:
         type: file
         description: |
           Non-demultiplexed fastq files
-  - - barcode_kit:
-        type: string
-        description: Barcode kit used for demultiplexing
+        ontologies: []
+  - barcode_kit:
+      type: string
+      description: Barcode kit used for demultiplexing
 output:
-  - reads:
-      - meta:
+  reads:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -36,11 +37,15 @@ output:
           type: file
           description: Demultiplexed fastq samples
           pattern: "*.fastq.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@yuukiiwa"
   - "@drpatelh"

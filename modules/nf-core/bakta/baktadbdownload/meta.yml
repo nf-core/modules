@@ -17,16 +17,18 @@ tools:
       licence: ["GPL v3"]
       identifier: biotools:bakta
 output:
-  - db:
-      - db*:
-          type: directory
-          description: BAKTA database directory
-          pattern: "db*/"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  db:
+    - db*:
+        type: directory
+        description: BAKTA database directory
+        pattern: "db*/"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
   - "@jasmezz"
