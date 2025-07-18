@@ -1,4 +1,28 @@
 {
+    "FUSIONINSPECTOR - test": {
+        "content": [
+            "test.FusionInspector.fusions.tsv",
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.gtf:md5,d523061bd8b443a014d4cca9406ec772"
+                ]
+            ],
+            "test.FusionInspector.fusions.abridged.tsv",
+            "FusionInspector.log",
+            [
+                "versions.yml:md5,7c9694f4a2d8edbd30fd9674566b764c"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.6"
+        },
+        "timestamp": "2025-07-07T13:48:15.295143368"
+    },
     "FUSIONINSPECTOR - test - stub": {
         "content": [
             {
@@ -54,25 +78,7 @@
                             "single_end": false
                         },
                         [
-                            "TrinityFusion.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "cytoBand.txt:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.ROI.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.bed.sorted.bed.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.bed.sorted.bed.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.consolidated.bam:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.consolidated.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.fa:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.fa.fai:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.fusion_inspector_web.json:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.gtf:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.igv.Pfam.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.igv.seqsimilar.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.junction_reads.bam:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.junction_reads.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.spanning_reads.bam:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.spanning_reads.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "tracks.json:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            
                         ]
                     ]
                 ],
@@ -83,56 +89,7 @@
                             "single_end": false
                         },
                         [
-                            "Log.final.out:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "Log.out:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "Log.progress.out:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "SJ.out.tab:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            [
-                                "exonGeTrInfo.tab:md5,d41d8cd98f00b204e9800998ecf8427e",
-                                "exonInfo.tab:md5,d41d8cd98f00b204e9800998ecf8427e",
-                                "geneInfo.tab:md5,d41d8cd98f00b204e9800998ecf8427e",
-                                "sjdbInfo.txt:md5,d41d8cd98f00b204e9800998ecf8427e",
-                                "sjdbList.fromGTF.out.tab:md5,d41d8cd98f00b204e9800998ecf8427e",
-                                "sjdbList.out.tab:md5,d41d8cd98f00b204e9800998ecf8427e",
-                                "transcriptInfo.tab:md5,d41d8cd98f00b204e9800998ecf8427e"
-                            ],
-                            "microH.dat:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "pipeliner.456.cmds:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "star_align.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.fa:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.fusion_preds.coalesced.summary:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.fusion_preds.coalesced.summary.EMadj:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.fusion_preds.coalesced.summary.EMadj.min_frag_thresh:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.fusion_preds.coalesced.summary.EMadj.min_frag_thresh.wSpliceInfo:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.fusion_preds.coalesced.summary.EMadj.min_frag_thresh.wSpliceInfo.post_blast_filter:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.fusion_preds.coalesced.summary.EMadj.min_frag_thresh.wSpliceInfo.post_blast_filter.info:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.fusion_preds.coalesced.summary.EMadj.min_frag_thresh.wSpliceInfo.post_blast_filter.post_promisc_filter:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.fusion_preds.coalesced.summary.EMadj.min_frag_thresh.wSpliceInfo.post_blast_filter.post_promisc_filter.info:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.fusion_preds.coalesced.summary.fusion_junction_read_accs:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.fusion_preds.coalesced.summary.fusion_spanning_read_accs:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.gtf:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.igv.Pfam.gff3:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.igv.seqsimilar.gff3:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.post_blast_and_promiscuity_filter:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.post_blast_and_promiscuity_filter.EMadj:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.post_blast_and_promiscuity_filter.EMadj.FFPM:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.post_blast_and_promiscuity_filter.EMadj.FFPM.wMicroH:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.post_blast_and_promiscuity_filter.EMadj.FFPM.wMicroH.annotated:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.post_blast_and_promiscuity_filter.EMadj.FFPM.wMicroH.annotated.coding_effect:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.star.cSorted.dupsMarked.bam:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.star.cSorted.dupsMarked.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.star.cSorted.dupsMarked.bam.failed_reads_during_span_analysis:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.star.cSorted.dupsMarked.bam.fusion_junc_reads.sam:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.star.cSorted.dupsMarked.bam.fusion_junction_info:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.star.cSorted.dupsMarked.bam.fusion_span_reads.sam:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.star.cSorted.dupsMarked.bam.fusion_spanning_info:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.star.cSorted.dupsMarked.bam.read_align_counts.idx:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.star.cSorted.dupsMarked.bam.read_align_counts.idx.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.star.cSorted.dupsMarked.bam.spanning_reads_want.idx:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.star.sortedByCoord.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.star.sortedByCoord.out.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.star.sortedByCoord.out.bam.bai.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.star.sortedByCoord.out.bam.ok:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            "test.gtf:md5,d41d8cd98f00b204e9800998ecf8427e"
                         ]
                     ]
                 ],
@@ -143,49 +100,7 @@
                             "single_end": false
                         },
                         [
-                            "EM_adj_counts.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "add_FFPM.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "add_splice_info.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "append_microH_info.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "blast_filter.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "coalesce_junc_n_span.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "cp_consol_bam.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "cp_contigs_file_workdir:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "cp_final.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "cp_gtf_file_workdir.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "cp_tracks_json.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "create_fi_igvjs.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "cytoband.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "filter_by_frag_threshs.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "final.abridged.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "fusion_annotator.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "fusion_coding_region_effect.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "fusion_contigs.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "fusion_reports_html.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "get_fusion_JUNCTION_reads_from_bam.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "get_fusion_SPANNING_reads_from_bam.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "index_consol_bam.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "init_EM_adj_counts.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "init_spanning_reads_bam.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "mark_dup_reads.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "mark_dups_reads.index.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "merged_contig_fai.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "merged_contig_gtf_to_bed.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "microH.dat.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "prep_igv_extract_junc_reads.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "prep_igv_junc_reads_bam.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "prep_igv_pfam_bed.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "prep_igv_pfam_gff3.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "prep_igv_seqsim_bed.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "prep_igv_seqsim_gff3.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "prep_spanning_reads.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "run_STAR.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "samtools_idx_junc_reads_bam.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "samtools_index_span_reads_bam.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "span_reads_acc.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.bed.bedsort.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.bed.bgzip.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.bed.tabix.ok:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            
                         ]
                     ]
                 ],
@@ -208,49 +123,7 @@
                             "single_end": false
                         },
                         [
-                            "EM_adj_counts.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "add_FFPM.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "add_splice_info.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "append_microH_info.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "blast_filter.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "coalesce_junc_n_span.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "cp_consol_bam.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "cp_contigs_file_workdir:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "cp_final.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "cp_gtf_file_workdir.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "cp_tracks_json.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "create_fi_igvjs.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "cytoband.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "filter_by_frag_threshs.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "final.abridged.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "fusion_annotator.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "fusion_coding_region_effect.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "fusion_contigs.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "fusion_reports_html.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "get_fusion_JUNCTION_reads_from_bam.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "get_fusion_SPANNING_reads_from_bam.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "index_consol_bam.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "init_EM_adj_counts.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "init_spanning_reads_bam.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "mark_dup_reads.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "mark_dups_reads.index.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "merged_contig_fai.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "merged_contig_gtf_to_bed.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "microH.dat.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "prep_igv_extract_junc_reads.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "prep_igv_junc_reads_bam.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "prep_igv_pfam_bed.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "prep_igv_pfam_gff3.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "prep_igv_seqsim_bed.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "prep_igv_seqsim_gff3.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "prep_spanning_reads.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "run_STAR.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "samtools_idx_junc_reads_bam.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "samtools_index_span_reads_bam.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "span_reads_acc.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.bed.bedsort.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.bed.bgzip.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.bed.tabix.ok:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            
                         ]
                     ]
                 ],
@@ -261,56 +134,7 @@
                             "single_end": false
                         },
                         [
-                            "Log.final.out:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "Log.out:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "Log.progress.out:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "SJ.out.tab:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            [
-                                "exonGeTrInfo.tab:md5,d41d8cd98f00b204e9800998ecf8427e",
-                                "exonInfo.tab:md5,d41d8cd98f00b204e9800998ecf8427e",
-                                "geneInfo.tab:md5,d41d8cd98f00b204e9800998ecf8427e",
-                                "sjdbInfo.txt:md5,d41d8cd98f00b204e9800998ecf8427e",
-                                "sjdbList.fromGTF.out.tab:md5,d41d8cd98f00b204e9800998ecf8427e",
-                                "sjdbList.out.tab:md5,d41d8cd98f00b204e9800998ecf8427e",
-                                "transcriptInfo.tab:md5,d41d8cd98f00b204e9800998ecf8427e"
-                            ],
-                            "microH.dat:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "pipeliner.456.cmds:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "star_align.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.fa:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.fusion_preds.coalesced.summary:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.fusion_preds.coalesced.summary.EMadj:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.fusion_preds.coalesced.summary.EMadj.min_frag_thresh:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.fusion_preds.coalesced.summary.EMadj.min_frag_thresh.wSpliceInfo:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.fusion_preds.coalesced.summary.EMadj.min_frag_thresh.wSpliceInfo.post_blast_filter:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.fusion_preds.coalesced.summary.EMadj.min_frag_thresh.wSpliceInfo.post_blast_filter.info:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.fusion_preds.coalesced.summary.EMadj.min_frag_thresh.wSpliceInfo.post_blast_filter.post_promisc_filter:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.fusion_preds.coalesced.summary.EMadj.min_frag_thresh.wSpliceInfo.post_blast_filter.post_promisc_filter.info:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.fusion_preds.coalesced.summary.fusion_junction_read_accs:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.fusion_preds.coalesced.summary.fusion_spanning_read_accs:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.gtf:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.igv.Pfam.gff3:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.igv.seqsimilar.gff3:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.post_blast_and_promiscuity_filter:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.post_blast_and_promiscuity_filter.EMadj:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.post_blast_and_promiscuity_filter.EMadj.FFPM:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.post_blast_and_promiscuity_filter.EMadj.FFPM.wMicroH:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.post_blast_and_promiscuity_filter.EMadj.FFPM.wMicroH.annotated:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.post_blast_and_promiscuity_filter.EMadj.FFPM.wMicroH.annotated.coding_effect:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.star.cSorted.dupsMarked.bam:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.star.cSorted.dupsMarked.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.star.cSorted.dupsMarked.bam.failed_reads_during_span_analysis:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.star.cSorted.dupsMarked.bam.fusion_junc_reads.sam:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.star.cSorted.dupsMarked.bam.fusion_junction_info:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.star.cSorted.dupsMarked.bam.fusion_span_reads.sam:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.star.cSorted.dupsMarked.bam.fusion_spanning_info:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.star.cSorted.dupsMarked.bam.read_align_counts.idx:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.star.cSorted.dupsMarked.bam.read_align_counts.idx.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.star.cSorted.dupsMarked.bam.spanning_reads_want.idx:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.star.sortedByCoord.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.star.sortedByCoord.out.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.star.sortedByCoord.out.bam.bai.ok:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.star.sortedByCoord.out.bam.ok:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            "test.gtf:md5,d41d8cd98f00b204e9800998ecf8427e"
                         ]
                     ]
                 ],
@@ -330,25 +154,7 @@
                             "single_end": false
                         },
                         [
-                            "TrinityFusion.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "cytoBand.txt:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.ROI.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.bed.sorted.bed.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.bed.sorted.bed.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.consolidated.bam:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.consolidated.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.fa:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.fa.fai:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.fusion_inspector_web.json:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.gtf:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.igv.Pfam.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.igv.seqsimilar.bed:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.junction_reads.bam:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.junction_reads.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.spanning_reads.bam:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.spanning_reads.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "tracks.json:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            
                         ]
                     ]
                 ],
@@ -388,30 +194,6 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-07-07T13:48:48.622592609"
-    },
-    "FUSIONINSPECTOR - test": {
-        "content": [
-            "test.FusionInspector.fusions.tsv",
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test.gtf:md5,d523061bd8b443a014d4cca9406ec772"
-                ]
-            ],
-            "test.FusionInspector.fusions.abridged.tsv",
-            "FusionInspector.log",
-            [
-                "versions.yml:md5,7c9694f4a2d8edbd30fd9674566b764c"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-07-07T13:48:15.295143368"
+        "timestamp": "2025-07-18T20:42:22.142466729"
     }
 }
