@@ -24,7 +24,6 @@ process VARSCAN_PROCESSSOMATIC {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     def vcf_basename = vcf.name.replaceAll(/\.gz$/, '')
     """
     #vcf_uncompressed=\$(basename "$vcf" .gz)
@@ -48,6 +47,7 @@ process VARSCAN_PROCESSSOMATIC {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    echo $args
 
     touch ${prefix}.Germline.vcf
     echo "test" > ${prefix}.Germline.vcf
