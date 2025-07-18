@@ -154,13 +154,15 @@ if __name__ == '__main__':
         subprocess.run(sigprofilerextractor_run, shell=True)                                                                
                             
     # save the output results
-    source_dir = opt["prefix"]
+    results_path = os.path.join(prefix, "results")
+    available = []
 
-    if not os.path.exists(source_dir):
-            os.mkdir(source_dir)
+    for result_type in ["SBS96", "ID83", "DBS78"]:
+        path = os.path.join(results_path, result_type)
+        if os.path.isdir(path):
+            available.append(result_type)
 
-    dest_dir = "results/"
-    shutil.copytree(source_dir, "results", dirs_exist_ok=True)
+    print(f"Available result types: {', '.join(available)}")
 
 
      # Write version

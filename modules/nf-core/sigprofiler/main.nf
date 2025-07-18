@@ -12,8 +12,10 @@ process SIGPROFILER {
     path(genome_installed_path)  //optional
     
     output:
-    tuple val(meta), path("results/*")     , emit: sigprofiler_results
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), path("results/SBS96/*")  , emit: sbs_results
+    tuple val(meta), path("results/ID83/*")   , emit: id_results, optional: true
+    tuple val(meta), path("results/DBS78/*")  , emit: dbs_results, optional: true 
+    path "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

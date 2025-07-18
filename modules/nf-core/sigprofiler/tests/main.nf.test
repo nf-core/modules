@@ -31,7 +31,7 @@ nextflow_process {
         }
 
         then {
-            def (meta, resultDirs) = process.out.sigprofiler_results[0]  
+            def (meta, resultDirs) = process.out.sbs_results[0] // or id_results[0]/dbs_results[0]  
             
             assertAll( 
                 { assert process.success },

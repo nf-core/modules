@@ -41,14 +41,32 @@ input:
       description: path to installed reference genome (optional)
       ontologies: []
 output:
-  sigprofiler_results:
+  sbs_results:
     - - meta:
           type: map
           description: Groovy Map containing sample information e.g. [ id:'test' ]
-      - "results/*":
+      - "results/SBS96/*":
           type: directory
           description: folder with saved output results
-          pattern: "results/*"
+          pattern: "results/SBS96/*"
+          ontologies: []
+  id_results:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test' ]
+      - "results/ID83/*":
+          type: directory
+          description: folder with saved output results
+          pattern: "results/ID83/*"
+          ontologies: []
+  dbs_results:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test' ]
+      - "results/DBS78/*":
+          type: directory
+          description: folder with saved output results
+          pattern: "results/DBS78/*"
           ontologies: []
   versions:
     - versions.yml:
