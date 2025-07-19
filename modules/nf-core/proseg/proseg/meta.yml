@@ -27,6 +27,18 @@ input:
       type: string
       description: Proseg preset mode
       enum: ['xenium', 'merfish', 'cosmx']
+  - - transcript_metadata_fmt:
+      type: string
+      description: Format of the transcript metadata file
+      enum: ['csv', 'csv.gz', 'parquet']
+    - cell_metadata_fmt:
+        type: file
+        description: Format of the cell metadata file
+        enum: ['csv', 'csv.gz', 'parquet']
+    - expected_counts_fmt:
+        type: file
+        description: Format of the expected counts file
+        enum: ['csv', 'csv.gz', 'parquet']
 
 output:
   transcript_metadata:

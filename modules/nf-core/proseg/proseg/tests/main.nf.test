@@ -21,6 +21,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + "spatial_omics/xenium/homo_sapiens/spatial_gene_expression.csv", checkIfExists: true)
                 ]
                 input[1] = 'xenium'
+                input[2] = ['csv.gz', 'csv.gz', 'csv.gz']
                 """
             }
         }
@@ -55,6 +56,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + "spatial_omics/xenium/homo_sapiens/spatial_gene_expression.csv", checkIfExists: true)
                 ]
                 input[1] = 'xenium'
+                input[2] = ['csv.gz', 'csv.gz', 'csv.gz']
                 """
             }
         }
