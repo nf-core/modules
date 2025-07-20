@@ -86,7 +86,7 @@ nullify <- function(x) {
 #' from the global `opt` list and the `dds` object. Use the `...` to supply the
 #' branch-specific argument (`name = …` or `contrast = …`).
 #'
-#' @param ... Additional arguments passed to `results()`, e.g. `name = opt$contrast_string`
+#' @param ... Additional arguments passed to `results()`, e.g. `name = opt\$contrast_string`
 #'   or `contrast = c(variable, target, reference)`.
 #' @return A `DESeqResults` object containing the differential expression test results.
 #'
@@ -108,7 +108,7 @@ run_results <- function(...) {
 #' (type = "ashr") and the `dds` object. Use the `...` to supply the branch-
 #' specific argument (`coef = …` or `contrast = …`).
 #'
-#' @param ... Additional arguments passed to `lfcShrink()`, e.g. `coef = opt$contrast_string`
+#' @param ... Additional arguments passed to `lfcShrink()`, e.g. `coef = opt\$contrast_string`
 #'   or `contrast = c(variable, target, reference)`.
 #' @return A `DESeqResults` object with shrunken log2 fold changes.
 run_shrink <- function(...) {
