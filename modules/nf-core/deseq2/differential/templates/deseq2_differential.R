@@ -462,15 +462,12 @@ if (!is.null(opt\$transcript_lengths_file)){
 ################################################
 ################################################
 
-if (is_valid_string(opt\$contrast_string)) {
-  # in formula mode we require a --contrast_string
-  contrast.name <- opt\$contrast_string
-} else {
-  # default two-level mode
-  contrast.name <- paste(opt\$target_level, opt\$reference_level, sep = "_vs_")
+# if no explicit contrast_string was given, synthesize a two‐level default
+if (! is_valid_string(opt\$contrast_string)) {
+  opt\$contrast_string <- paste(opt\$target_level, opt\$reference_level, sep = "_vs_")
 }
 
-cat("Saving results for ", contrast.name, " ...\n", sep = "")
+cat("Saving results for ", opt\$contrast_string, " ...\n", sep = "")
 
 # Differential expression table- note very limited rounding for consistency of
 # results
