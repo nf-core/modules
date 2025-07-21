@@ -14,7 +14,7 @@ import scanpy.external as sce
 adata = sc.read_h5ad("${input_h5ad}")
 columns = "${cell_hashing_columns.join(' ')}".split()
 columns_str = [str(x) for x in columns]
-sce.pp.hashsolo(adata, columns_str, priors=[float(prior) for prior in "${priors}".split(',')])
+sce.pp.hashsolo(adata, columns_str, priors=[float(prior) for prior in "${priors.join(',')}".split(',')])
 
 adata.write("${prefix}.h5ad")
 

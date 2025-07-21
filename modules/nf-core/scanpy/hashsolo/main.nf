@@ -9,6 +9,7 @@ process SCANPY_HASHSOLO {
 
     input:
     tuple val(meta), path(input_h5ad), val(cell_hashing_columns)
+    val(priors)
 
     output:
     tuple val(meta), path("*.h5ad"), emit: h5ad
@@ -19,7 +20,6 @@ process SCANPY_HASHSOLO {
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
-    priors = task.ext.priors ?: '0.01,0.8,0.19'
     template('hashsolo.py')
 
     stub:
