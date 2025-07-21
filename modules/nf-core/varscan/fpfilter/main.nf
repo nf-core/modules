@@ -32,6 +32,8 @@ process VARSCAN_FPFILTER {
         --filtered-file ${prefix}.varscan.fail.vcf \\
         $args
 
+    rm vcf_file
+
     gzip ${prefix}.varscan.pass.vcf
     gzip ${prefix}.varscan.fail.vcf
 

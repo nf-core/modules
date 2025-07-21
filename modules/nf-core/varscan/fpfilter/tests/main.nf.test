@@ -9,6 +9,9 @@ nextflow_process {
     tag "modules_nfcore"
     tag "varscan"
     tag "varscan/fpfilter"
+    tag "varscan/processsomatic"
+    tag "varscan/somatic"
+    tag "bamreadcount"
 
     test("human - mpileup") {
 
@@ -31,7 +34,11 @@ nextflow_process {
                 script "../../processsomatic/main.nf"
                 process {
                     """
-                    input[0] = VARSCAN_SOMATIC.out.vcf_snvs.collect{ meta, vcf -> [ meta, vcf ] }
+                    input[0] = VARSCAN_SOMATIC.out.vcf_snvs
+                        .map { meta, vcf ->
+                            def meta2 = [ id:'test', single_end:false ]
+                            tuple(meta2, vcf)
+                        }
                     """
                 }
             }
@@ -55,11 +62,11 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    VARSCAN_PROCESSSOMATIC.out.somatic_hc_vcf.collect{ meta, vcf -> vcf },
-                    BAMREADCOUNT.out.rc.collect{ meta, rc -> rc }
-                ]
+                input[0] = VARSCAN_PROCESSSOMATIC.out.somatic_hc_vcf
+                    .combine(BAMREADCOUNT.out.rc)
+                    .map { vcf_meta, vcf, rc_meta, rc ->
+                        tuple(vcf_meta, vcf, rc)
+                    }
                 """
             }
         }
@@ -69,6 +76,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(process.out).match() },
                 { assert snapshot(process.out.version).match("version") },
+                { assert path(process.out.pass_vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2") },
+                { assert path(process.out.fail_vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2") },
             )
         }
 
@@ -97,7 +106,6 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out).match() }
-                //TODO nf-core: Add all required assertions to verify the test output.
             )
         }
 
