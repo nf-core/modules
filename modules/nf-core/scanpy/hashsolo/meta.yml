@@ -1,0 +1,66 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "SCANPY_HASHSOLO"
+description: Probabilistic demultiplexing of cell hashing data
+keywords:
+  - anndata
+  - single-cell
+  - hashing
+  - demultiplexing
+  - scanpy
+tools:
+  - "scanpy":
+      description: "Single-cell analysis in Python. Scales to >100M cells."
+      homepage: "https://github.com/scverse/scanpy"
+      documentation: "https://scanpy.readthedocs.io/en/stable/generated/scanpy.external.pp.hashsolo.html"
+      tool_dev_url: "https://github.com/scverse/scanpy"
+      doi: "10.1186/s13059-017-1382-0"
+      licence: ["BSD-3"]
+      identifier: biotools:scanpy
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - input_h5ad:
+        type: file
+        description: The (annotated) data matrix of shape n_obs x n_vars. Rows
+          correspond to cells and columns to genes.
+        pattern: "*.h5ad"
+        ontologies: []
+    - cell_hashing_columns:
+        type: list
+        description: |
+          List of cell hashing columns to use for demultiplexing.
+          e.g. `['hash_1', 'hash_2']`
+  - priors:
+      type: list
+      description: |
+        List of priors to use
+
+output:
+  h5ad:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+          pattern: "*.h5ad"
+      - "*.h5ad":
+          type: file
+          description: |
+            AnnData file containing cluster feature, etc.
+          pattern: "*.h5ad"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@seohyonkim"
+maintainers:
+  - "@seohyonkim"
