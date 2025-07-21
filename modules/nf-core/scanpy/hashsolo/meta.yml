@@ -40,8 +40,8 @@ input:
         List of priors to use
 
 output:
-  - h5ad:
-      - meta:
+  h5ad:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,14 +53,13 @@ output:
             AnnData file containing cluster feature, etc.
           pattern: "*.h5ad"
           ontologies: []
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-
-          ontologies:
-            - edam: http://edamontology.org/format_3750 # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@seohyonkim"
 maintainers:
