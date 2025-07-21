@@ -34,6 +34,10 @@ input:
         description: |
           List of cell hashing columns to use for demultiplexing.
           e.g. `['hash_1', 'hash_2']`
+  - priors:
+      type: list
+      description: |
+        List of priors to use
 
 output:
   - h5ad:
