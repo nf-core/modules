@@ -28,8 +28,8 @@ input:
           - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
           - edam: http://edamontology.org/format_1929 # FASTA
 output:
-  - tree:
-      - meta:
+  tree:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,13 +40,13 @@ output:
           pattern: "*.{dnd}"
           ontologies:
             - edam: http://edamontology.org/format_2006 # PHYLOGENETIC TREE
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: http://edamontology.org/format_3750 # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@luisas"
   - "@JoseEspinosa"

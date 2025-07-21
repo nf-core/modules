@@ -23,12 +23,14 @@ input:
         description: sample_sheet file (either a Singular Genomics sample sheet, or
           a two column csv with Sample_Barcode and Sample_ID)
         pattern: "*.{csv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
     - fastqs_dir:
         type: directory
         description: "Input directory containing bgzipped (not gzip) FASTQ files"
 output:
-  - sample_fastq:
-      - meta:
+  sample_fastq:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -37,8 +39,9 @@ output:
           type: file
           description: Demultiplexed per-sample FASTQ files
           pattern: "${prefix}/*_R*.fastq.gz"
-  - metrics:
-      - meta:
+          ontologies: []
+  metrics:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -48,8 +51,9 @@ output:
           description: |
             Demultiplexing summary stats; control_reads_omitted failing_reads_omitted, total_templates
           pattern: "${prefix}/metrics.tsv"
-  - most_frequent_unmatched:
-      - meta:
+          ontologies: []
+  most_frequent_unmatched:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -59,8 +63,9 @@ output:
           description: |
             File containing approx. counts of barcodes that did not match the expected barcodes
           pattern: "${prefix}/most_frequence_unmatched.tsv"
-  - per_project_metrics:
-      - meta:
+          ontologies: []
+  per_project_metrics:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -69,8 +74,9 @@ output:
           type: file
           description: Summary metrics for samples in the same project
           pattern: "${prefix}/per_project_metrics.tsv"
-  - per_sample_metrics:
-      - meta:
+          ontologies: []
+  per_sample_metrics:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -79,8 +85,9 @@ output:
           type: file
           description: Summary metrics for each sample
           pattern: "${prefix}/per_sample_metrics.tsv"
-  - sample_barcode_hop_metrics:
-      - meta:
+          ontologies: []
+  sample_barcode_hop_metrics:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -91,11 +98,14 @@ output:
             File output for dual-indexed runs with barcodes which are unexpected combinations of
             expected barcodes e.g. expected barcodes = AA-TT/GG-CC and observed barcodes = AA-CC/GG-TT
           pattern: "${prefix}/sample_barcode_hop_metrics/tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nh13"
   - "@sam-white04"

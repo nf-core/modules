@@ -28,21 +28,21 @@ input:
         pattern: "*.{faa,fasta}"
         ontologies:
           - edam: "http://edamontology.org/format_1929" # FASTA
-  - - model:
-        type: string
-        description: Built-in model for AMP prediction
-        pattern: "{precursor,mature}"
-  - - min_length:
-        type: integer
-        description: Minimum protein length for which predictions will be generated
-        pattern: "[0-9]+"
-  - - min_probability:
-        type: float
-        description: Cut-off for AMP prediction
-        pattern: "[0-9].[0-9]+"
+  - model:
+      type: string
+      description: Built-in model for AMP prediction
+      pattern: "{precursor,mature}"
+  - min_length:
+      type: integer
+      description: Minimum protein length for which predictions will be generated
+      pattern: "[0-9]+"
+  - min_probability:
+      type: float
+      description: Cut-off for AMP prediction
+      pattern: "[0-9].[0-9]+"
 output:
-  - amps_faa:
-      - meta:
+  amps_faa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,8 +53,8 @@ output:
           pattern: "*.{faa}"
           ontologies:
             - edam: "http://edamontology.org/format_1929" # FASTA
-  - amps_tsv:
-      - meta:
+  amps_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -65,13 +65,13 @@ output:
           pattern: "*.tsv"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: "http://edamontology.org/format_3750" # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@jasmezz"
 maintainers:

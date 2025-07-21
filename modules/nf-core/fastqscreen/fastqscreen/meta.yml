@@ -29,50 +29,58 @@ input:
         description: |
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
-  - - database:
-        type: directory
-        description: fastq screen database folder containing config file and index folders
-        pattern: "FastQ_Screen_Genomes"
+        ontologies: []
+  - database:
+      type: directory
+      description: fastq screen database folder containing config file and index folders
+      pattern: "FastQ_Screen_Genomes"
 output:
-  - txt:
-      - meta:
+  txt:
+    - - meta:
           type: map
           description: Groovy Map containing sample information
       - "*.txt":
           type: file
           description: TXT file containing alignment statistics
           pattern: "*.txt"
-  - png:
-      - meta:
+          ontologies: []
+  png:
+    - - meta:
           type: map
           description: Groovy Map containing sample information
       - "*.png":
           type: file
           description: PNG file with graphical representation of alignments
           pattern: "*.png"
-  - html:
-      - meta:
+          ontologies: []
+  html:
+    - - meta:
           type: map
           description: Groovy Map containing sample information
       - "*.html":
           type: file
-          description: HTML file containing mapping results as a table and graphical representation
+          description: HTML file containing mapping results as a table and graphical
+            representation
           pattern: "*.html"
-  - fastq:
-      - meta:
+          ontologies: []
+  fastq:
+    - - meta:
           type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+          description: Groovy Map containing sample information
       - "*.fastq.gz":
           type: file
-          description: FastQ file containing reads that did not align to any database (optional)
+          description: FastQ file containing reads that did not align to any database
+            (optional)
           pattern: "*.fastq.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@snesic"
   - "@JPejovicApis"

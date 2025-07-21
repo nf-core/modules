@@ -25,13 +25,15 @@ input:
         description: |
           List of input paired end fastq files
         pattern: "*.{fastq,fq}.gz"
-  - - interleave:
-        type: boolean
-        description: |
-          Indicates whether the input paired reads are interleaved or not
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - interleave:
+      type: boolean
+      description: |
+        Indicates whether the input paired reads are interleaved or not
 output:
-  - merged:
-      - meta:
+  merged:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,8 +42,10 @@ output:
           type: file
           description: merged reads
           pattern: "*_merged.fastq"
-  - unmerged:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+  unmerged:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,8 +54,10 @@ output:
           type: file
           description: unmerged reads
           pattern: "*_unmerged.fastq"
-  - ihist:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+  ihist:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -60,16 +66,20 @@ output:
           type: file
           description: insert size histogram
           pattern: "*_ihist.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-  - log:
-      - "*.log":
-          type: file
-          description: log file containing stdout and stderr from bbmerge.sh
-          pattern: "*.log"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+  log:
+    - "*.log":
+        type: file
+        description: log file containing stdout and stderr from bbmerge.sh
+        pattern: "*.log"
+        ontologies: []
 authors:
   - "@guille0387"
 maintainers:
