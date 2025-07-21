@@ -41,14 +41,13 @@ if ( grepl(".rds\$", tolower("$rds_join")) ) {
     obj = readRDS("$rds_join")
     if (class(obj) == "m_cnaqc") {
         original = obj %>% get_sample(sample=samples, which_obj="original")
-        input_table = lapply(names(original),
-                                function(sample_name)
-                                original[[sample_name]] %>%
-                                    # keep only mutations on the diploid karyotype
-                                    CNAqc::subset_by_segment_karyotype("1:1") %>%
-                                    CNAqc::Mutations() %>%
-                                    dplyr::mutate(sample_id=sample_name)
-                                ) %>% dplyr::bind_rows()
+        input_table = lapply(names(original), function(sample_name) {
+            purity = original[[sample_name]][["purity"]]
+            original[[sample_name]] %>%
+                # keep only mutations on the diploid karyotypeCNAqc::subset_by_segment_karyotype("1:1") %>%
+                CNAqc::Mutations() %>%
+                dplyr::mutate(sample_id=sample_name, purity=purity)
+        }) %>% dplyr::bind_rows()
     } else {
         cli::cli_abort("Object of class {class($rds_join)} not supported.")
     }
@@ -58,11 +57,17 @@ if ( grepl(".rds\$", tolower("$rds_join")) ) {
 
 ## Function to run a single mobster fit
 run_mobster_fit = function(joint_table, descr) {
+    purity = unique(joint_table[["purity"]]) %>% as.numeric()
+
     # get input table for the single patient
     inp_tb = joint_table %>%
-        dplyr::filter(VAF < 1) %>%
-        dplyr::filter(VAF!=0) %>%
-        dplyr::filter(karyotype=="1:1")
+        dplyr::rowwise() %>%
+        dplyr::mutate(adj_VAF=VAF/purity) %>%
+        dplyr::ungroup() %>%
+        dplyr::filter(adj_VAF<1) %>%
+        dplyr::filter(adj_VAF>=0.05) %>%
+        dplyr::filter(karyotype=="1:1") %>% 
+        dplyr::select(-adj_VAF)
 
     mobster_fit(x = inp_tb,
                 K = eval(parse(text=opt[["K"]])),
@@ -75,7 +80,13 @@ run_mobster_fit = function(joint_table, descr) {
 lapply(samples, function(sample_name) {
 
     fit = run_mobster_fit(joint_table=input_table %>% dplyr::filter(sample_id == !!sample_name),
-                        descr=description)
+                          descr=description)
+    
+    if (any(fit[["fits.table"]][["tail"]])) {
+        evoparams = evolutionary_parameters(fit)
+        fit[["evolutionary_parameters"]] = evoparams
+        fit[["best"]][["evolutionary_parameters"]] = evoparams
+    }
 
     best_fit = fit[["best"]]
     plot_fit = plot(best_fit)
