@@ -1,0 +1,54 @@
+name: arriba_visualisation
+description: Arriba is a command-line tool for the detection of gene fusions from RNA-Seq data.
+keywords:
+  - visualisation
+  - arriba
+tools:
+  - arriba:
+      description: Fast and accurate gene fusion detection from RNA-Seq data
+      homepage: https://github.com/suhrig/arriba
+      documentation: https://arriba.readthedocs.io/en/latest/
+      tool_dev_url: https://github.com/suhrig/arriba
+      doi: "10.1101/gr.257246.119"
+      licence: ["MIT"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - bam:
+      type: file
+      description: BAM/CRAM/SAM file
+      pattern: "*.{bam,cram,sam}"
+  - bai:
+      type: file
+      description: BAMindex file
+      pattern: "*.{bai}"
+  - fusions:
+      type: file
+      description: Arriba fusions file
+      pattern: "*.{tsv}"
+  - gtf:
+      type: file
+      description: Annotation GTF file
+      pattern: "*.{gtf}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - pdf:
+      type: file
+      description: File contains fusions visualisation
+      pattern: "*.{pdf}"
+
+authors:
+  - "@rannick"
