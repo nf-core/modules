@@ -26,14 +26,11 @@ process VARSCAN_PROCESSSOMATIC {
     def args = task.ext.args ?: ''
     def vcf_basename = vcf.name.replaceAll(/\.gz$/, '')
     """
-    #vcf_uncompressed=\$(basename "$vcf" .gz)
+    gzip -fd $vcf
 
-    gzip -d $vcf
-
-    varscan processSomatic\\
+    varscan processSomatic \\
         $args \\
-        $vcf_basename \\
-
+        $vcf_basename
 
     gzip *.vcf
 
