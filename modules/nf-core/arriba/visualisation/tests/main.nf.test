@@ -44,6 +44,104 @@ nextflow_process {
         }
     }
 
+    test("ARRIBA_VISUALISATION - arriba test") {
+        config "./nextflow.config"
+        tag "test"
+
+        setup{
+
+            run("STAR_GENOMEGENERATE") {
+                script '../../../star/genomegenerate/main.nf'
+                process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test_fasta' ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                ])
+                input[1] = Channel.of([
+                    [ id:'test_gtf' ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
+                ])
+                """
+                }
+            }
+
+            run("STAR_ALIGN") {
+                script '../../../star/align/main.nf'
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id:'test', single_end:false ], // meta map
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ])
+                    input[1] = STAR_GENOMEGENERATE.out.index
+                    input[2] = Channel.of([
+                        [ id:'test_gtf' ],
+                        [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
+                    ])
+                    input[3] = false
+                    input[4] = 'illumina'
+                    input[5] = false
+                    """
+                }
+            }
+
+            run("ARRIBA_ARRIBA") {
+                script '../../arriba/main.nf'
+                process {
+                    """
+                    input[0] = STAR_ALIGN.out.sam
+                    input[1] = Channel.of([
+                        [ id:'test_fasta' ],
+                        [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                    ])
+                    input[2] = Channel.of([
+                        [ id:'test_gtf' ],
+                        [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
+                    ])
+                    input[3] = []
+                    input[4] = []
+                    input[5] = []
+                    input[6] = []
+                    """
+                }
+            }
+            run("ARRIBA_DOWNLOAD") {
+                script '../../download/main.nf'
+                process {
+                """
+                input[0] = 'GRCh38'
+                """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = ARRIBA_ARRIBA.out.fusions
+                input[1] = [
+                    [ id:'test_gtf' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                input[2] = ARRIBA_DOWNLOAD.out.protein_domains.map { protein_domains -> [[ id:'test_protein_domains' ], protein_domains] }
+                input[3] = ARRIBA_DOWNLOAD.out.cytobands.map { cytobands -> [[ id:'test_cytobands' ], cytobands] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(file(process.out.pdf[0][1]).length()) },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
+
     test("ARRIBA_VISUALISATION stub") {
 
         options "-stub"
