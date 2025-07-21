@@ -1,0 +1,30 @@
+name: Label new module/subworkflow issues with wishlist if no assignee
+on:
+  schedule:
+    - cron: "0 0 * * 0" # Once a week
+  workflow_dispatch:
+
+jobs:
+  assign_label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Assignees and Add Labels
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const labels = [];
+            const issueLabels = github.event.issue.labels.map(label => label.name);
+
+            if (github.event.issue.assignees.length > 0) {
+              pass;
+            } else if (!issueLabels.includes("new module") && !issueLabels.includes("new subworkflow")) {
+              labels.push("wishlist");
+            }
+
+            github.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: github.event.issue.number,
+              labels: labels
+            });
