@@ -25,8 +25,8 @@ input:
         description: One or more input graph files created with `vg/construct`
         pattern: "*.vg"
 output:
-  - xg:
-      - meta:
+  xg:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -36,21 +36,26 @@ output:
           description: File containing a succinct, queryable version of the input graph(s)
             or read for GCSA or distance indexing
           pattern: "*.xg"
-  - vg_index:
-      - meta:
+          ontologies: []
+  vg_index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.vgi":
           type: file
-          description: An index of the graph(s) created when `--index-sorted-vg` is supplied.
+          description: An index of the graph(s) created when `--index-sorted-vg` is
+            supplied.
           pattern: "*.vgi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

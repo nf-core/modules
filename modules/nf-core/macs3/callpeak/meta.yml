@@ -25,19 +25,21 @@ input:
     - ipbam:
         type: file
         description: The ChIP-seq treatment file
+        ontologies: []
     - controlbam:
         type: file
         description: The control file
-  - - macs3_gsize:
-        type: string
-        description: |
-          Effective genome size. It can be 1.0e+9 or 1000000000,
-          or shortcuts:'hs' for human (2,913,022,398), 'mm' for mouse
-          (2,652,783,500), 'ce' for C. elegans (100,286,401)
-          and 'dm' for fruitfly (142,573,017), Default:hs.
+        ontologies: []
+  - macs3_gsize:
+      type: string
+      description: |
+        Effective genome size. It can be 1.0e+9 or 1000000000,
+        or shortcuts:'hs' for human (2,913,022,398), 'mm' for mouse
+        (2,652,783,500), 'ce' for C. elegans (100,286,401)
+        and 'dm' for fruitfly (142,573,017), Default:hs.
 output:
-  - peak:
-      - meta:
+  peak:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -46,8 +48,9 @@ output:
           type: file
           description: BED file containing annotated peaks
           pattern: "*.gappedPeak,*.narrowPeak}"
-  - xls:
-      - meta:
+          ontologies: []
+  xls:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -56,13 +59,16 @@ output:
           type: file
           description: xls file containing annotated peaks
           pattern: "*.xls"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software version
-          pattern: "versions.yml"
-  - gapped:
-      - meta:
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software version
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+  gapped:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -71,18 +77,21 @@ output:
           type: file
           description: Optional BED file containing gapped peak
           pattern: "*.gappedPeak"
-  - bed:
-      - meta:
+          ontologies: []
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.bed":
           type: file
-          description: Optional BED file containing peak summits locations for every peak
+          description: Optional BED file containing peak summits locations for every
+            peak
           pattern: "*.bed"
-  - bdg:
-      - meta:
+          ontologies: []
+  bdg:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -91,6 +100,7 @@ output:
           type: file
           description: Optional bedGraph files for input and treatment input samples
           pattern: "*.bdg"
+          ontologies: []
 authors:
   - "@JoseEspinosa"
 maintainers:

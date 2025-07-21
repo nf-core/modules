@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "irescue"
 description: Quantification of transposable elements expression in scRNA-seq
@@ -8,7 +7,8 @@ keywords:
   - repeats
 tools:
   - "irescue":
-      description: "IRescue is a tool for uncertainty-aware quantification of transposable elements expression in scRNA-seq"
+      description: "IRescue is a tool for uncertainty-aware quantification of transposable
+        elements expression in scRNA-seq"
       homepage: "https://pypi.org/project/IRescue"
       documentation: "https://pypi.org/project/IRescue"
       tool_dev_url: "https://github.com/bodegalab/irescue"
@@ -28,26 +28,21 @@ input:
         pattern: "*.bam"
         ontologies:
           - edam: "http://edamontology.org/format_2572"
-  - - genome:
-        type: string
-        description: |
-          Genome assembly symbol. Not used when bed file is provided.
-          In this case, it can be any value or an empty string.
-  - - bed:
-        type: file
-        description: Bed file of repeats genomic coordinates (optional).
-        pattern: "*.bed"
-        ontologies:
-          - edam: "http://edamontology.org/format_3003"
+  - genome:
+      type: string
+      description: |
+        Genome assembly symbol. Not used when bed file is provided.
+        In this case, it can be any value or an empty string.
+  - bed:
+      type: file
+      description: Bed file of repeats genomic coordinates (optional).
+      pattern: "*.bed"
+      ontologies:
+        - edam: "http://edamontology.org/format_3003"
 
 output:
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-  - results:
-      - meta:
+  results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -56,8 +51,8 @@ output:
           type: directory
           description: Folder containing count matrices and logs
           pattern: "${prefix}"
-  - counts:
-      - meta:
+  counts:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -66,8 +61,8 @@ output:
           type: directory
           description: Folder containing count matrices
           pattern: "${prefix}/counts"
-  - log:
-      - meta:
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -76,8 +71,9 @@ output:
           type: file
           description: Text file containing run information
           pattern: "${prefix}/irescue.log"
-  - tmp:
-      - meta:
+          ontologies: []
+  tmp:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -89,6 +85,13 @@ output:
             if kept using the "--keeptmp" argument (optional).
           pattern: "${prefix}/tmp"
 
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@bepoli"
 maintainers:

@@ -23,10 +23,12 @@ input:
         type: file
         description: BAM file
         pattern: "*.bam"
+        ontologies: []
     - bai:
         type: file
         description: Index of BAM file
         pattern: "*.bai"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -36,9 +38,10 @@ input:
         type: file
         description: |
           Reference database in FASTA format
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,11 +50,14 @@ output:
           type: file
           description: VCF file containing called variants from CuteSV
           pattern: "*.vcf"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@christopher-hakkaart"
   - "@yuukiiwa"
