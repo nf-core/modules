@@ -23,13 +23,15 @@ input:
         type: file
         description: R object with mutation data
         pattern: "*.rds"
+        ontologies: []
     - cna_rds:
         type: file
         description: R object with copy number data
         pattern: "*.rds"
+        ontologies: []
 output:
-  - qc_rds:
-      - meta:
+  qc_rds:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,8 +40,9 @@ output:
           type: file
           description: R object containing quality control results for the sample
           pattern: "*{_qc.rds}"
-  - plot_rds:
-      - meta:
+          ontologies: []
+  plot_rds:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -48,13 +51,15 @@ output:
           type: file
           description: R object containing plots of the CNA statistics for the sample
           pattern: "*{_data_plot.rds}"
+          ontologies: []
       - "*_qc_plot.rds":
           type: file
-          description: R object containing plots of the quality control results for the
-            sample
+          description: R object containing plots of the quality control results for
+            the sample
           pattern: "*{_qc_plot.rds}"
-  - plot_pdf_data:
-      - meta:
+          ontologies: []
+  plot_pdf_data:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -63,8 +68,9 @@ output:
           type: file
           description: plots of the CNA statistics for the sample
           pattern: "*{_data.pdf}"
-  - plot_pdf_qc:
-      - meta:
+          ontologies: []
+  plot_pdf_qc:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -73,11 +79,14 @@ output:
           type: file
           description: plots of the quality control results for the sample
           pattern: "*{_qc.pdf}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@vvvirgy"
 maintainers:
