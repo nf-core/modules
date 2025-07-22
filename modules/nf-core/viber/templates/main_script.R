@@ -34,9 +34,10 @@ library(tidyverse)
 library(ggplot2)
 library(CNAqc)
 
-patientID = "$meta.patient"
+#patientID = "$meta.patient"
 samples = substr("$tumour_samples", 2, nchar("$tumour_samples")-1)
 samples = strsplit(samples, ", ")[[1]]
+print("$meta.patient")
 print("$tumour_samples")
 print("$rds_join")
 print(samples)
@@ -93,27 +94,13 @@ dplyr::rename_all(function(x) stringr::str_remove_all(x,"NV."))
 
 # Standard fit
 viber_K = as.integer(opt[["K"]])
-alpha0=as.numeric(opt[["alpha_0"]])
-a0=as.integer(opt[["a_0"]])
-b0=as.integer(opt[["b_0"]])
-maxiter=as.integer(opt[["maxIter"]])
-epsilon=as.numeric(opt[["epsilon_conv"]])
-sampls=as.integer(opt[["samples"]])
-qinit=opt[["q_init"]]
+
+
 message("Starting standard fit")
-print(viber_K)
-print(alpha0)
 st_fit = VIBER::variational_fit(nv, dp,
                                 K=viber_K,
                                 data=reads_data,
-                                alpha_0=alpha0,
-                                a_0=a0,
-                                b_0=b0,
-                                max_iter=maxiter,
-                                epsilon_conv=epsilon,
-                                samples=sampls,
-                                q_init=qinit,
-                                description=""
+                                description="$meta.patient"
                                 )
 message("End standard fit")
 best_fit = best_fit_heuristic = st_fit
