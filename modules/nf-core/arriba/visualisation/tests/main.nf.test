@@ -7,6 +7,10 @@ nextflow_process {
     tag "modules_nfcore"
     tag "arriba"
     tag "arriba/visualisation"
+    tag "star/align"
+    tag "star/genomegenerate"
+    tag "arriba/arriba"
+    tag "arriba/download"
 
     test("ARRIBA_VISUALISATION") {
 
@@ -46,7 +50,6 @@ nextflow_process {
 
     test("ARRIBA_VISUALISATION - arriba test") {
         config "./nextflow.config"
-        tag "test"
 
         setup{
 
