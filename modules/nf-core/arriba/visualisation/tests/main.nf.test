@@ -93,7 +93,7 @@ nextflow_process {
                 script '../../arriba/main.nf'
                 process {
                     """
-                    input[0] = STAR_ALIGN.out.sam
+                    input[0] = STAR_ALIGN.out.bam
                     input[1] = Channel.of([
                         [ id:'test_fasta' ],
                         [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
@@ -122,7 +122,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = ARRIBA_ARRIBA.out.fusions
+                input[0] = ARRIBA_ARRIBA.out.fusions.map { meta, fusions -> [ meta, [], [], fusions ] }
                 input[1] = [
                     [ id:'test_gtf' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)

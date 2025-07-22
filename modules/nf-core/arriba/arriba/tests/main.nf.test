@@ -60,7 +60,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = STAR_ALIGN.out.sam
+                input[0] = STAR_ALIGN.out.bam
                 input[1] = Channel.of([
                     [ id:'test_fasta' ],
                     [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
