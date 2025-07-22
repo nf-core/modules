@@ -66,6 +66,7 @@ run(
         "--localcores", "${task.cpus}",
         "--localmem", "${task.memory.toGiga()}",
         *shlex.split("""${args}"""),
+        *shlex.split("""${args2}"""),
     ],
     check=True,
 )

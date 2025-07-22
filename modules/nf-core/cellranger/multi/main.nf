@@ -40,6 +40,7 @@ process CELLRANGER_MULTI {
         error "CELLRANGER_MULTI module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     args   = task.ext.args   ?: ''
+    args2  = task.ext.args2  ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
     // if references + FASTQ are empty, then don't run corresponding analyses

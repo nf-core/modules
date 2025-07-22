@@ -21,6 +21,7 @@ process CELLRANGER_COUNT {
         error "CELLRANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     args = task.ext.args ?: ''
+    args2 = task.ext.args2 ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     template "cellranger_count.py"
 

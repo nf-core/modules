@@ -21,6 +21,7 @@ process CELLRANGER_VDJ {
         error "CELLRANGER_VDJ module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
+    def args2       = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference_name = reference.name
     """
@@ -31,7 +32,8 @@ process CELLRANGER_VDJ {
         --reference=$reference_name \\
         --localcores=${task.cpus} \\
         --localmem=${task.memory.toGiga()} \\
-        $args
+        $args \\
+        $args2
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -24,6 +24,7 @@ process CELLRANGER_MKFASTQ {
         error "CELLRANGER_MKFASTQ module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}" //run_dir (bcl) and id must be different because a folder is created with the id value
     """
     cellranger \\
@@ -33,7 +34,8 @@ process CELLRANGER_MKFASTQ {
         --csv=$csv \\
         --localcores=${task.cpus} \\
         --localmem=${task.memory.toGiga()} \\
-        $args
+        $args \\
+        $args2
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

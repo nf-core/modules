@@ -20,13 +20,15 @@ process CELLRANGER_MKGTF {
         error "CELLRANGER_MKGTF module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${gtf.baseName}.filtered"
     """
     cellranger \\
         mkgtf \\
         $gtf \\
         ${prefix}.gtf \\
-        $args
+        $args \\
+        $args2
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
