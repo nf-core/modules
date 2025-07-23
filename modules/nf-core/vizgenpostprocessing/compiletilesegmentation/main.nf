@@ -1,7 +1,6 @@
 process VIZGENPOSTPROCESSING_COMPILETILESEGMENTATION {
     tag "$meta.id"
     label 'process_single'
-    label 'process_high_memory'
 
     conda "${moduleDir}/environment.yml"
     container 'nf-core/vizgen-postprocessing_container:v0.1.1'
