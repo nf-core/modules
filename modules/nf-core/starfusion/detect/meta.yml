@@ -1,0 +1,56 @@
+name: starfusion
+description: Fast and Accurate Fusion Transcript Detection from RNA-Seq
+keywords:
+  - Fusion
+tools:
+  - star-fusion:
+      description: Fast and Accurate Fusion Transcript Detection from RNA-Seq
+      homepage: https://github.com/STAR-Fusion/STAR-Fusion
+      documentation: https://github.com/STAR-Fusion/STAR-Fusion/wiki
+      tool_dev_url: https://github.com/STAR-Fusion/STAR-Fusion/releases
+      doi: "10.1101/120295v1"
+      licence: ["GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - genome_lib:
+      type: path
+      description: STAR-fusion reference genome lib folder
+  - junction:
+      type: file
+      description: Chimeric junction output from STAR aligner
+      pattern: "*.{out.junction}"
+  - reference:
+      type: directory
+      description: Reference dir
+      pattern: "ctat_genome_lib_build_dir"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - version:
+      type: file
+      description: File containing software version
+      pattern: "*.{versions.yml}"
+  - fusions:
+      type: file
+      description: Fusion events from STAR-fusion
+      pattern: "*.{fusion_predictions.tsv}"
+  - abridged:
+      type: file
+      description: Fusion events from STAR-fusion
+      pattern: "*.{fusion.abridged.tsv}"
+  - coding_effect:
+      type: file
+      description: Fusion events from STAR-fusion
+      pattern: "*.{coding_effect.tsv}"
+
+authors:
+  - "@praveenraj2018"
