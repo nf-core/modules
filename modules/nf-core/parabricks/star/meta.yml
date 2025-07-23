@@ -1,0 +1,90 @@
+name: "parabricks_star"
+description: This tool is the equivalent of fq2bam for RNA-Seq samples,
+  receiving inputs in FASTQ format, performing alignment with the splice-aware STAR algorithm,
+  optionally marking of duplicate reads, and outputting an aligned BAM file ready for
+  variant and fusion calling.
+keywords:
+  - align
+  - star
+  - rna
+tools:
+  - "parabricks":
+      description: "NVIDIA Clara Parabricks GPU-accelerated genomics tools"
+      homepage: "https://www.nvidia.com/en-us/clara/genomics/"
+      documentation: "https://docs.nvidia.com/clara/parabricks/latest/index.html"
+      licence: ["custom"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: fastq.gz files
+        pattern: "*.fastq.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing fasta information
+    - fasta:
+        type: file
+        description: reference fasta file - must be unzipped
+        pattern: "*.fasta"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing index information
+    - index:
+        type: file
+        description: reference BWA index
+        pattern: "*.{amb,ann,bwt,pac,sa}"
+        ontologies: []
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing genome lib dir information
+    - genome_lib_dir:
+        type: directory
+        description: Path to a genome resource library directory. The indexing
+          required to run STAR should be completed by the user beforehand.
+        pattern: "*"
+        ontologies: []
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bam":
+          type: file
+          description: Sorted BAM file
+          pattern: "*.bam"
+          ontologies: []
+  bai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bai":
+          type: file
+          description: index corresponding to sorted BAM file
+          pattern: "*.bai"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@gburnett-nvidia"
+maintainers:
+  - "@gburnett-nvidia"
