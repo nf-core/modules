@@ -28,9 +28,10 @@ input:
         type: file
         description: Unaligned BAM or one or two gzipped FASTQ file(s)
         pattern: "*.{bam,fq.gz,fastq.gz}"
+        ontologies: []
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,8 +40,9 @@ output:
           type: file
           description: BAM file
           pattern: "*.bam"
-  - fq_pass:
-      - meta:
+          ontologies: []
+  fq_pass:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,8 +51,10 @@ output:
           type: file
           description: Trimmed and merged FASTQ
           pattern: "*.fq.gz"
-  - fq_fail:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  fq_fail:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -59,8 +63,10 @@ output:
           type: file
           description: Failed trimmed and merged FASTQs
           pattern: "*.fail.fq.gz"
-  - unmerged_r1_fq_pass:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  unmerged_r1_fq_pass:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -69,8 +75,10 @@ output:
           type: file
           description: Passed unmerged R1 FASTQs
           pattern: "*.r1.fq.gz"
-  - unmerged_r1_fq_fail:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  unmerged_r1_fq_fail:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -79,8 +87,10 @@ output:
           type: file
           description: Failed unmerged R1 FASTQs
           pattern: "*.r1.fail.fq.gz"
-  - unmerged_r2_fq_pass:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  unmerged_r2_fq_pass:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -89,8 +99,10 @@ output:
           type: file
           description: Passed unmerged R2 FASTQs
           pattern: "*.r2.fq.gz"
-  - unmerged_r2_fq_fail:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  unmerged_r2_fq_fail:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -99,8 +111,10 @@ output:
           type: file
           description: Failed unmerged R2 FASTQs
           pattern: "*.r2.fail.fq.gz"
-  - log:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -109,11 +123,14 @@ output:
           type: file
           description: Log file of command
           pattern: "*.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

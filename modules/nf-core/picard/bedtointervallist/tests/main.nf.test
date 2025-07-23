@@ -1,6 +1,4 @@
-
 nextflow_process {
-
     name "Test Process PICARD_BEDTOINTERVALLIST"
     script "../main.nf"
     process "PICARD_BEDTOINTERVALLIST"
@@ -24,7 +22,6 @@ nextflow_process {
 				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
 				]
 				input[2] = []
-
                 """
             }
         }
@@ -37,4 +34,34 @@ nextflow_process {
         }
     }
 
+    test("test-picard-bedtointervallist - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ], // meta map
+				    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true) ]
+				]
+				input[1] = [
+				    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
+				]
+				input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
 }

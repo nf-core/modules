@@ -27,9 +27,10 @@ input:
         type: file
         description: The input fasta file
         pattern: "*.{fsa,fa,fasta}"
+        ontologies: []
 output:
-  - explore_tsv:
-      - meta:
+  explore_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,8 +39,10 @@ output:
           type: file
           description: Telomeres and their frequencies in TSV format
           pattern: "*.tidk.explore.tsv"
-  - top_sequence:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  top_sequence:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,11 +53,14 @@ output:
             The most frequent telomere sequence if one or more
             sequences are identified by the toolkit
           pattern: "*.top.sequence.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@GallVp"
 maintainers:

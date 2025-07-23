@@ -2,11 +2,10 @@ process NAIL_SEARCH {
     tag "$meta.id"
     label 'process_medium'
 
-    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/nail:0.3.0--h4349ce8_1':
-        'biocontainers/nail:0.3.0--h4349ce8_1' }"
+        'https://depot.galaxyproject.org/singularity/nail:0.4.0--h4349ce8_0':
+        'biocontainers/nail:0.4.0--h4349ce8_0' }"
 
     input:
     tuple val(meta) , path(query)
@@ -23,10 +22,9 @@ process NAIL_SEARCH {
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args ?: ''
-    prefix      = task.ext.prefix ?: "${meta.id}"
-    alignment   = write_align ? "--ali-out ${prefix}.ali" : '' // no def here due to current Nextflow bug; cause: Variable `prefix` already defined in the process scope
-    def VERSION = '0.3.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def args  = task.ext.args ?: ''
+    prefix    = task.ext.prefix ?: "${meta.id}"
+    alignment = write_align ? "--ali-out ${prefix}.ali" : '' // no def here due to current Nextflow bug; cause: Variable `prefix` already defined in the process scope
     """
     nail search \\
         $args \\
@@ -38,14 +36,13 @@ process NAIL_SEARCH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        nail: $VERSION
+        nail: \$(echo \$(nail --version 2>&1) | sed 's/^.*nail\\w*//' )
     END_VERSIONS
     """
 
     stub:
-    def args    = task.ext.args ?: ''
-    prefix      = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '0.3.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def args = task.ext.args ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt
     touch ${prefix}.tbl
@@ -53,7 +50,7 @@ process NAIL_SEARCH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        nail: $VERSION
+        nail: \$(echo \$(nail --version 2>&1) | sed 's/^.*nail\\w*//' )
     END_VERSIONS
     """
 }

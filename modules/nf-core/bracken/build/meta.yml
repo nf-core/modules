@@ -28,30 +28,33 @@ input:
         description: A Kraken2 database directory
         pattern: "*/"
 output:
-  - db:
-      - meta:
+  db:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "kraken2db               , includeInputs: true":
+      - kraken2db:
           type: directory
-          description: A Kraken2 database directory with required bracken files in side
+          description: A Kraken2 database directory with required bracken files inside
           pattern: "*/"
-  - bracken_files:
-      - meta:
+  bracken_files:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - '${kraken2db}/database*", includeInputs: true':
+      - ${kraken2db}/database*:
           type: directory
           description: Bracken files required to extend the Kraken2 database
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          pattern: "*/"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

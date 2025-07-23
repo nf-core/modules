@@ -27,6 +27,7 @@ input:
         type: file
         description: One or multiple FASTA files of each bin
         pattern: "*.{fasta,fna,fa}"
+        ontologies: []
   - - dbmeta:
         type: map
         description: |
@@ -35,9 +36,10 @@ input:
     - db:
         type: file
         description: CheckM2 database
+        ontologies: []
 output:
-  - checkm2_output:
-      - meta:
+  checkm2_output:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -46,8 +48,8 @@ output:
           type: directory
           description: CheckM2 output directory
           pattern: "${prefix}/"
-  - checkm2_tsv:
-      - meta:
+  checkm2_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -56,10 +58,14 @@ output:
           type: file
           description: CheckM2 summary completeness statistics table
           pattern: "*.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@dialvarezs"

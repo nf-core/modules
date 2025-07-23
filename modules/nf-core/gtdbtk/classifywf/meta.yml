@@ -25,10 +25,11 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false,  assembler:'spades' ]
-    - '"bins/*"':
+    - bins/*:
         type: file
         description: A list of one or more bins in FASTA format for classification
         pattern: "*.{fasta,fna,fas,fa}{,.gz}"
+        ontologies: []
   - - db_name:
         type: string
         description: The name of the GTDB database to use.
@@ -38,115 +39,142 @@ input:
           Path to a directory containing a GDTB database, as uncompressed from from the 'full package' gtdbdtk_data.tar.gz file.
           You can give the 'release<version number>' directory here.
           Must contain the 'metadata' subdirectory
-        pattern: "release[0-9]+\/"
-  - - use_pplacer_scratch_dir:
-        type: boolean
-        description: Set to true to reduce pplacer memory usage by writing to disk (slower)
-  - - mash_db:
-        type: file
-        description: The local copy of the Mash sketch database used by GTDB-tk if `ani_screen`
-          mode is used (optional)
-        pattern: "*.msh"
+        pattern: "release[0-9]+/"
+        ontologies: []
+  - use_pplacer_scratch_dir:
+      type: boolean
+      description: Set to true to reduce pplacer memory usage by writing to disk (slower)
+  - mash_db:
+      type: file
+      description: The local copy of the Mash sketch database used by GTDB-tk if `ani_screen`
+        mode is used (optional)
+      pattern: "*.msh"
+      ontologies:
+        - edam: http://edamontology.org/format_3911 # msh
 output:
-  - summary:
-      - meta:
+  gtdb_outdir:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - gtdbtk.${prefix}.*.summary.tsv:
-          type: file
+            e.g. [ id:'test', single_end:false,  assembler:'spades' ]
+          pattern: "*"
+      - ${prefix}:
+          type: map
+          description: All files output by GTDB-Tk
+          pattern: "*"
+  summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false,  assembler:'spades' ]
+          pattern: "*"
+      - ${prefix}/classify/*.summary.tsv:
+          type: map
           description: A TSV summary file for the classification
           pattern: "*.{summary.tsv}"
-  - tree:
-      - meta:
+  tree:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - gtdbtk.${prefix}.*.classify.tree.gz:
-          type: file
-          description: NJ or UPGMA tree in Newick format produced from a multiple sequence
+            e.g. [ id:'test', single_end:false,  assembler:'spades' ]
+          pattern: "*"
+      - ${prefix}/classify/*.classify.tree:
+          type: map
+          description: |
+            Groovy Map NJ or UPGMA trees in Newick format produced from a multiple sequence
             alignment
-          pattern: "*.{classify.tree.gz}"
-  - markers:
-      - meta:
+          pattern: "*.{classify.tree}"
+  markers:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - gtdbtk.${prefix}.*.markers_summary.tsv:
-          type: file
+            e.g. [ id:'test', single_end:false,  assembler:'spades' ]
+          pattern: "*"
+      - ${prefix}/identify/*.markers_summary.tsv:
+          type: map
           description: A TSV summary file lineage markers used for the classification.
           pattern: "*.{markers_summary.tsv}"
-  - msa:
-      - meta:
+  msa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - gtdbtk.${prefix}.*.msa.fasta.gz:
-          type: file
+            e.g. [ id:'test', single_end:false,  assembler:'spades' ]
+          pattern: "*"
+      - ${prefix}/align/*.msa.fasta.gz:
+          type: map
           description: Multiple sequence alignments file.
           pattern: "*.{msa.fasta.gz}"
-  - user_msa:
-      - meta:
+  user_msa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - gtdbtk.${prefix}.*.user_msa.fasta.gz:
-          type: file
+            e.g. [ id:'test', single_end:false,  assembler:'spades' ]
+          pattern: "*"
+      - ${prefix}/align/*.user_msa.fasta.gz:
+          type: map
           description: Multiple sequence alignments file for the user-provided files.
           pattern: "*.{user_msa.fasta.gz}"
-  - filtered:
-      - meta:
+  filtered:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - gtdbtk.${prefix}.*.filtered.tsv:
-          type: file
-          description: A list of genomes with an insufficient number of amino acids in
-            MSA..
+            e.g. [ id:'test', single_end:false,  assembler:'spades' ]
+          pattern: "*"
+      - ${prefix}/align/*.filtered.tsv:
+          type: map
+          description: A list of genomes with an insufficient number of amino acids
+            in MSA
           pattern: "*.{filtered.tsv}"
-  - failed:
-      - meta:
+  failed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - gtdbtk.${prefix}.failed_genomes.tsv:
-          type: file
+            e.g. [ id:'test', single_end:false,  assembler:'spades' ]
+          pattern: "*"
+      - ${prefix}/identify/*.failed_genomes.tsv:
+          type: map
           description: A TSV summary of the genomes which GTDB-tk failed to classify.
           pattern: "*.{failed_genomes.tsv}"
-  - log:
-      - meta:
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - gtdbtk.${prefix}.log:
-          type: file
+            e.g. [ id:'test', single_end:false,  assembler:'spades' ]
+          pattern: "*"
+      - ${prefix}/${prefix}.log:
+          type: map
           description: GTDB-tk log file
           pattern: "*.{log}"
-  - warnings:
-      - meta:
+  warnings:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - gtdbtk.${prefix}.warnings.log:
-          type: file
+            e.g. [ id:'test', single_end:false,  assembler:'spades' ]
+          pattern: "*"
+      - ${prefix}/${prefix}.warnings.log:
+          type: map
           description: GTDB-tk warnings log file
           pattern: "*.{warnings.log}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@skrakau"
+  - "@prototaxites"
   - "@abhi18av"
 maintainers:
   - "@skrakau"
