@@ -24,6 +24,7 @@ process CELLRANGER_MULTI {
     path cmo_barcodes          , stageAs: "references/cmo/barcodes/*"
     path cmo_barcode_assignment, stageAs: "references/cmo/sample_barcode_assignment/*"
     path frna_sampleinfo       , stageAs: "references/frna/*"
+    path ocm_barcodes          , stageAs: "references/ocm/barcodes/*"
     val skip_renaming
 
     output:
@@ -61,6 +62,7 @@ process CELLRANGER_MULTI {
     include_cmo  = cmo_fastqs.first().getName() != 'fastqs' && cmo_barcodes            ? '[samples]'             : ''
     include_fb = (ab_fastqs.first().getName() != 'fastqs' || crispr_fastqs.first().getName() != 'fastqs') && fb_reference ? '[feature]' : ''
     include_frna = gex_frna_probeset_name && frna_sampleinfo                           ? '[samples]'             : ''
+    include_ocm  = ocm_barcodes                                                        ? '[samples]'             : ''
 
     gex_reference_path = include_gex ? "reference,./${gex_reference_name}" : ''
     fb_reference_path  = include_fb  ? "reference,./${fb_reference_name}"  : ''
@@ -82,6 +84,7 @@ process CELLRANGER_MULTI {
     // these references get appended directly to config file
     beam_csv_text  = include_beam && beam_control_panel.size() > 0 ? beam_control_panel : ''
     cmo_csv_text   = include_cmo  && cmo_barcodes.size() > 0       ? cmo_barcodes       : ''
+    ocm_csv_text   = include_ocm  && ocm_barcodes.size() > 0       ? ocm_barcodes       : ''
     frna_csv_text  = include_frna && frna_sampleinfo.size() > 0    ? frna_sampleinfo    : ''
 
     // the feature barcodes section get options for either CRISPR or antibody capture assays
