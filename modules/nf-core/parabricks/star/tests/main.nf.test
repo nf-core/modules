@@ -32,11 +32,26 @@ nextflow_process {
                     """
                 }
             }
+
+            run("BWA_INDEX") {
+                script "../../../bwa/index/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id:'test' ], // meta map
+                        file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                    ])
+                    """
+                }
+            }
         }
 
         when {
             params {
-                module_args = ''
+                module_args = '--low-memory'
+                // Ref: https://forums.developer.nvidia.com/t/problem-with-gpu/256825/6
+                // Parabricks’s fq2bam requires 24GB of memory.
+                // Using --low-memory for testing
             }
             process {
                 """
@@ -45,14 +60,11 @@ nextflow_process {
                     [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true) ]
                 ])
                 input[1] = Channel.of([
-                    [ id:'test_fasta' ],
-                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                    [ id:'test' ], // meta map
+                    file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
                 ])
-                input[2] = STAR_GENOMEGENERATE.out.index
-                input[3] = Channel.of([
-                    [ id:'test_gtf' ],
-                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
-                ])
+				input[2] = BWA_INDEX.out.index
+                input[3] = STAR_GENOMEGENERATE.out.index
                 """
             }
         }
@@ -61,20 +73,6 @@ nextflow_process {
             assertAll(
                 { assert process.success }
             )
-        }
-    }
-
-    setup {
-        run("BWA_INDEX") {
-            script "../../../bwa/index/main.nf"
-            process {
-                """
-                input[0] = Channel.of([
-                    [ id:'test' ], // meta map
-                    file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
-                ])
-                """
-            }
         }
     }
 }

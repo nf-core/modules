@@ -8,7 +8,9 @@ process PARABRICKS_STAR {
 
     input:
     tuple val(meta) , path(reads)
-    tuple val(meta2), path(genome_lib_dir)
+    tuple val(meta1), path(fasta)
+    tuple val(meta2), path(index)
+    tuple val(meta3), path(genome_lib_dir)
 
     output:
     tuple val(meta), path("*.bam")                  , emit: bam              , optional:true
@@ -30,8 +32,12 @@ process PARABRICKS_STAR {
 
     def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
     """
+    INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
+    cp $fasta \$INDEX
+
     pbrun \\
         rna_fq2bam  \\
+        --ref \$INDEX \\
         $in_fq_command \\
         --output-dir $prefix \\
         --genome-lib-dir ${genome_lib_dir} \\
