@@ -46,20 +46,12 @@ process VARSCAN_PROCESSSOMATIC {
     """
     echo $args
 
-    touch ${prefix}.Germline.vcf
-    echo "test" > ${prefix}.Germline.vcf
-    touch ${prefix}.Germline.hc.vcf
-    echo "test" > ${prefix}.Germline.hc.vcf
-    touch ${prefix}.Somatic.vcf
-    echo "test" > ${prefix}.Somatic.vcf
-    touch ${prefix}.Somatic.hc.vcf
-    echo "test" > ${prefix}.Somatic.hc.vcf
-    touch ${prefix}.LOH.vcf
-    echo "test" > ${prefix}.LOH.vcf
-    touch ${prefix}.LOH.hc.vcf
-    echo "test" > ${prefix}.LOH.hc.vcf
-
-    gzip ${prefix}.*.vcf
+    echo "" | gzip > ${prefix}.Germline.vcf.gz
+    echo "" | gzip > ${prefix}.Germline.hc.vcf.gz
+    echo "" | gzip > ${prefix}.Somatic.vcf.gz
+    echo "" | gzip > ${prefix}.Somatic.hc.vcf.gz
+    echo "" | gzip > ${prefix}.LOH.vcf.gz
+    echo "" | gzip > ${prefix}.LOH.hc.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
