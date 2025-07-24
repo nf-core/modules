@@ -3,6 +3,11 @@ nextflow_process {
     name "Test Process STARFUSION"
     script "../main.nf"
     process "STARFUSION"
+    tag "modules_nfcore"
+    tag "starfusion/build"
+    tag "starfusion"
+    tag "starfusion/detect"
+    tag "modules"
 
     setup {
         run("STARFUSION_BUILD") {

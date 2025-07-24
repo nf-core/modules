@@ -17,6 +17,9 @@ process STARFUSION {
     tuple val(meta), path("*.coding_effect.tsv")     , optional: true   , emit: coding_effect
     path "versions.yml"                                                 , emit: versions
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
     def fastq_arg = reads ? (meta.single_end ? "--left_fq ${reads[0]}" : "--left_fq ${reads[0]} --right_fq ${reads[1]}") : ""
