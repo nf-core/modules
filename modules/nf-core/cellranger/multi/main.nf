@@ -40,6 +40,10 @@ process CELLRANGER_MULTI {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "CELLRANGER_MULTI module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
+    // add mutually exclusive input checker
+    if ([ocm_barcodes, cmo_barcodes, frna_sampleinfo].count { it } >= 2) {
+        error "The ocm barcodes; cmo barcodes and frna probes are mutually exclusive features. Please use only one per sample, or reach out in slack in case it is really intended."
+    }
     args   = task.ext.args   ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
