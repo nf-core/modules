@@ -49,13 +49,8 @@ process VARSCAN_FPFILTER {
     """
     echo $args
 
-    touch ${prefix}.varscan.pass.vcf
-    echo "test" > ${prefix}.varscan.pass.vcf
-    touch ${prefix}.varscan.fail.vcf
-    echo "test" > ${prefix}.varscan.fail.vcf
-
-    gzip ${prefix}.varscan.pass.vcf
-    gzip ${prefix}.varscan.fail.vcf
+    echo "" | gzip > ${prefix}.varscan.pass.vcf.gz
+    echo "" | gzip > ${prefix}.varscan.fail.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
