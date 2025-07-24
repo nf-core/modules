@@ -1,0 +1,56 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+# # TODO nf-core: Add a description of the module and list keywords
+name: "vamb_bin"
+description: write your description here
+keywords:
+  - sort
+  - example
+  - genomics
+tools:
+  ## TODO nf-core: Add a description and other details for the software below
+  - "vamb":
+      description: "Variational autoencoder for metagenomic binning."
+      homepage: "https://vamb.readthedocs.io/en/latest"
+      documentation: "https://vamb.readthedocs.io/en/latest"
+      tool_dev_url: "https://github.com/RasmussenLab/vamb"
+      doi: ""
+      licence: ["MIT"]
+      identifier: biotools:vamb
+
+input:
+  # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[
+          id:'sample1' ]`
+    - sequence_alignment:
+        type: file
+        description: sequence_alignment file
+        pattern: "*.{bam}"
+        ontologies:
+          - edam: http://edamontology.org/data_0863 # Sequence alignment
+          - edam: http://edamontology.org/format_2572 # BAM
+  - - meta2:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[
+          id:'sample1' ]`
+    - nucleic_acid_sequence:
+        type: file
+        description: nucleic_acid_sequence file
+        pattern: "*.{fasta}"
+        ontologies:
+          - edam: http://edamontology.org/data_2977 # Nucleic acid sequence
+          - edam: http://edamontology.org/format_1929 # FASTA
+output:
+  # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: versions.yml
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@prototaxites"
+maintainers:
+  - "@prototaxites"
