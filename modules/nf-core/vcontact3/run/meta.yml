@@ -1,0 +1,62 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "vcontact3_run"
+description: "Run vContact3 for viral contig classification and taxonomic assignment."
+keywords:
+  - cluster
+  - virus
+  - phage
+  - taxonomy
+  - deduplication
+  - network
+  - contig
+  - scaffold
+tools:
+  ## TODO nf-core: Add a description and other details for the software below
+  - "vcontact3":
+      description: "Viral Contig Automatic Clustering and Taxonomy."
+      homepage: "https://bitbucket.org/MAVERICLab/vcontact3/src/master/README.md"
+      documentation: "https://bitbucket.org/MAVERICLab/vcontact3/src/master/README.md"
+      tool_dev_url: "https://bitbucket.org/MAVERICLab/vcontact3"
+      licence: ["GPL v3-or-later"]
+      identifier: biotools:vcontact3
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Input fasta file containing sequences for clustering & classification
+        pattern: "*.{fasta,fna,fa}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+
+output:
+  out:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}":
+          type: directory
+          description: Ouput directory containing vContact3 results will need to be more specific later
+          pattern: "*.{bam,cram,sam}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+            - edam: "http://edamontology.org/format_2573" # CRAM
+            - edam: "http://edamontology.org/format_3462" # SAM
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+authors:
+  - "@Joon-Klaps"
+maintainers:
+  - "@Joon-Klaps"

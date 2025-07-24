@@ -1,0 +1,98 @@
+
+// nf-core modules test vcontact3/run
+nextflow_process {
+
+    name "Test Process VCONTACT3_RUN"
+    script "../main.nf"
+    config './nextflow.config'
+    process "VCONTACT3_RUN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "vcontact3"
+    tag "vcontact3/run"
+
+    test("sarscov2 - contigs - nucleotide") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'test', single_end:false ], // meta2 map
+                    file('/workspace/modules/v230-eukar', checkIfExists: true),
+                ]
+                input[2] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - contigs - protein") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'test', single_end:false ], // meta2 map
+                    file('/workspace/modules/v230-eukar', checkIfExists: true),
+                ]
+                input[2] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'test', single_end:false ], // meta2 map
+                    file('/workspace/modules/test_database_eukaryotes', checkIfExists: true),
+                ]
+                input[2] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
