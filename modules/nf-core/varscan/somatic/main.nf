@@ -50,13 +50,8 @@ process VARSCAN_SOMATIC {
     """
     echo $args
 
-    touch ${prefix}.snvs.vcf
-    echo "test" > ${prefix}.snvs.vcf
-    touch ${prefix}.indels.vcf
-    echo "test" > ${prefix}.indels.vcf
-
-    gzip ${prefix}.snvs.vcf
-    gzip ${prefix}.indels.vcf
+    echo "" | gzip > ${prefix}.snvs.vcf.gz
+    echo "" | gzip > ${prefix}.indels.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
