@@ -5,7 +5,7 @@ process KMA_KMA {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/kma:1.5.0--h577a1d6_0':
-        'biocontainers/kma:1.5.0--h577a1d6_0' }"
+        'community.wave.seqera.io/library/kma:1.5.0--eb093e0381fb59ea' }"
 
     input:
     tuple val(meta), path(reads)
