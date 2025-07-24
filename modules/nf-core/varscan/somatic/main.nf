@@ -35,8 +35,8 @@ process VARSCAN_SOMATIC {
 
     rm normal_in tumour_in
 
-    gzip ${prefix}.snvs.vcf
-    gzip ${prefix}.indels.vcf
+    bgzip ${prefix}.snvs.vcf
+    bgzip ${prefix}.indels.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
