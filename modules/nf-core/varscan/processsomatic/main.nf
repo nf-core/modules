@@ -4,35 +4,36 @@ process VARSCAN_PROCESSSOMATIC {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/varscan:2.4.6--hdfd78af_0':
-        'biocontainers/varscan:2.4.6--hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/ed57a091507c62e990bbd08d532281d161d99f060316e0a991791f167d7b1daf/data':
+        'community.wave.seqera.io/library/htslib_varscan:24b3b3db2ca78de8' }"
 
     input:
     tuple val(meta), path(vcf)
 
     output:
-    tuple val(meta), path("*.Germline.vcf.gz"), emit: germline_vcf
+    tuple val(meta), path("*.Germline.vcf.gz")   , emit: germline_vcf
     tuple val(meta), path("*.Germline.hc.vcf.gz"), emit: germline_hc_vcf
-    tuple val(meta), path("*.Somatic.vcf.gz"), emit: somatic_vcf
-    tuple val(meta), path("*.Somatic.hc.vcf.gz"), emit: somatic_hc_vcf
-    tuple val(meta), path("*.LOH.vcf.gz"), emit: loh_vcf
-    tuple val(meta), path("*.LOH.hc.vcf.gz"), emit: loh_hc_vcf
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.Somatic.vcf.gz")    , emit: somatic_vcf
+    tuple val(meta), path("*.Somatic.hc.vcf.gz") , emit: somatic_hc_vcf
+    tuple val(meta), path("*.LOH.vcf.gz")        , emit: loh_vcf
+    tuple val(meta), path("*.LOH.hc.vcf.gz")     , emit: loh_hc_vcf
+    path "versions.yml"                          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def vcf_basename = vcf.name.replaceAll(/\.gz$/, '')
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def type = task.ext.type ?: ''
     """
     gzip -fd $vcf
 
     varscan processSomatic \\
         $args \\
-        $vcf_basename
+        ${prefix}.${type}.vcf
 
-    gzip *.vcf
+    bgzip *.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
