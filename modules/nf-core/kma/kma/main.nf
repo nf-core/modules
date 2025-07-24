@@ -4,7 +4,7 @@ process KMA_KMA {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/kma:1.5.0--h577a1d6_0':
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4f/4fc6c961562aef21c24b4f2330d9cd7e9bbda162b0d584a5cd5428e0b725e0d6/data':
         'community.wave.seqera.io/library/kma:1.5.0--eb093e0381fb59ea' }"
 
     input:
