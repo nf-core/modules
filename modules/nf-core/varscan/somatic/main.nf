@@ -11,9 +11,9 @@ process VARSCAN_SOMATIC {
     tuple val(meta), path(normal_mpileup), path(tumour_mpileup)
 
     output:
-    tuple val(meta), path("*.snvs.vcf.gz"), emit: vcf_snvs
+    tuple val(meta), path("*.snvs.vcf.gz")  , emit: vcf_snvs
     tuple val(meta), path("*.indels.vcf.gz"), emit: vcf_indels
-    path "versions.yml", emit: versions
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
