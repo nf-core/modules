@@ -4,7 +4,7 @@ process VARSCAN_SOMATIC {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/varscan:2.4.6--hdfd78af_0':
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/ed57a091507c62e990bbd08d532281d161d99f060316e0a991791f167d7b1daf/data':
         'community.wave.seqera.io/library/htslib_varscan:24b3b3db2ca78de8' }"
 
     input:
