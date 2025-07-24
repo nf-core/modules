@@ -25,6 +25,7 @@ process STARFUSION {
     def fastq_arg = reads ? (meta.single_end ? "--left_fq ${reads[0]}" : "--left_fq ${reads[0]} --right_fq ${reads[1]}") : ""
     def junction_arg =  junction ? "-J ${junction}" : ""
     def args = task.ext.args ?: ''
+    def VERSION = '1.15.1' // WARN: This is the actual version of the STAR-FUSION, but version information of tool is not updated and prints '1.15.0'
     """
     STAR-Fusion \\
         --genome_lib_dir $reference \\
@@ -41,7 +42,7 @@ process STARFUSION {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        STAR-Fusion: \$(STAR-Fusion --version 2>&1 | grep -i 'version' | sed 's/STAR-Fusion version: //')
+        STAR-Fusion: $VERSION
     END_VERSIONS
     """
 

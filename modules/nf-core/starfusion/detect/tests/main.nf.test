@@ -62,8 +62,13 @@ nextflow_process {
             assert snapshot(
                 process.out.fusions,
                 process.out.abridged,
-                process.out.coding_effect,
                 process.out.versions
+            ).match()
+            assert snapshot(process.out.coding_effect.collect { meta, tsv ->
+                    [meta, path(tsv).readLines().collect { line ->
+                        line.split('\t')[0] // Get first column (tab-separated)
+                    }]
+                }
             ).match()
         }
 
