@@ -154,6 +154,10 @@ if len("${include_frna}") > 0:
     with open("${frna_csv_text}") as input_conf:
         config_txt = config_txt + "\\n${include_frna}\\n" + input_conf.read() + "\\n"
 
+if len("${include_ocm}") > 0:
+    with open("${ocm_csv_text}") as input_conf:
+        config_txt = config_txt + "\\n${include_ocm}\\n" + input_conf.read() + "\\n"
+
 # Remove blank lines from config text
 config_txt = "\\n".join([line for line in config_txt.split("\\n") if line.strip() != ""])
 

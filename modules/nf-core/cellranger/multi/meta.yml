@@ -162,6 +162,13 @@ input:
       pattern: "*.csv"
       ontologies:
         - edam: http://edamontology.org/format_3752 # CSV
+  - ocm_barcodes:
+      type: file
+      description: A CSV file appended to the Cellranger multi config linking samples
+        to OCM IDs
+      pattern: "*.csv"
+      ontologies:
+        - edam: http://edamontology.org/format_3752 # CSV
   - skip_renaming:
       type: boolean
       description: Skip renaming
