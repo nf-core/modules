@@ -56,6 +56,7 @@ process GTDBTK_CLASSIFYWF {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         gtdbtk: \$(echo \$(gtdbtk --version 2>/dev/null) | sed "s/gtdbtk: version //; s/ Copyright.*//")
+        gtdb_db: \$(grep VERSION_DATA \$GTDBTK_DATA_PATH/metadata/metadata.txt | sed "s/VERSION_DATA=//")
     END_VERSIONS
     """
 
