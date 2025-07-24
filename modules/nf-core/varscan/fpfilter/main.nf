@@ -4,8 +4,8 @@ process VARSCAN_FPFILTER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/varscan:2.4.6--hdfd78af_0':
-        'biocontainers/varscan:2.4.6--hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/ed57a091507c62e990bbd08d532281d161d99f060316e0a991791f167d7b1daf/data':
+        'community.wave.seqera.io/library/htslib_varscan:24b3b3db2ca78de8' }"
 
     input:
     tuple val(meta), path(vcf), path(rc)
@@ -13,7 +13,7 @@ process VARSCAN_FPFILTER {
     output:
     tuple val(meta), path("*.pass.vcf.gz"), emit: pass_vcf
     tuple val(meta), path("*.fail.vcf.gz"), emit: fail_vcf
-    path "versions.yml", emit: versions
+    path "versions.yml"                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,8 +34,8 @@ process VARSCAN_FPFILTER {
 
     rm vcf_file
 
-    gzip ${prefix}.varscan.pass.vcf
-    gzip ${prefix}.varscan.fail.vcf
+    bgzip ${prefix}.varscan.pass.vcf
+    bgzip ${prefix}.varscan.fail.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
