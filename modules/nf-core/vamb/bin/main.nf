@@ -8,7 +8,7 @@ process VAMB_BIN {
         'biocontainers/vamb:5.0.4--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(assembly), path(abundance_tsv), path(taxonomy)
+    tuple val(meta), path(assembly), path(abundance_tsv), path(bams, stageAs: "bams/*"), path(taxonomy)
     val mode
 
     output:
@@ -32,21 +32,25 @@ process VAMB_BIN {
     if(mode == "taxvamb" & !taxonomy) {
         error("ERROR: Vamb is in taxvamb mode but no taxonomy file provided!")
     }
+    if(bams & abundance_tsv) {
+        error("ERROR: Both bams and abundance TSV supplied to Vamb!")
+    }
     if(!(mode in ["default", "taxvamb"])) {
         error("ERROR: Invalid mode input for vamb - must be either 'default' or 'taxvamb'!")
     }
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def depth_input = abundance_tsv ? "--abundance_tsv ${abundance_tsv}" : "bams/"
     """
     vamb bin \\
         ${mode} \\
         -p ${task.cpus} \\
         --outdir ${prefix}.vamb/ \\
         --fasta ${assembly} \\
-        --abundance_tsv ${abundance_tsv} \\
+        ${depth_input} \\
         ${args}
 
-    find ${prefix}.vamb/bins -name "*.fna" -exec gzip {} \;
+    find ${prefix}.vamb/bins -name "*.fna" -exec gzip {} \\;
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
