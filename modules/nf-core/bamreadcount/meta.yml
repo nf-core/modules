@@ -1,8 +1,10 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "bamreadcount"
-description: bam-readcount is a utility that runs on a BAM or CRAM file and generates low-level
-  information about sequencing data at specific nucleotide positions. Its outputs include observed bases,
-  readcounts, summarized mapping and base qualities, strandedness information, mismatch counts, and position within the reads.
+description: bam-readcount is a utility that runs on a BAM or CRAM file and
+  generates low-level information about sequencing data at specific nucleotide
+  positions. Its outputs include observed bases, readcounts, summarized mapping
+  and base qualities, strandedness information, mismatch counts, and position
+  within the reads.
 keywords:
   - BAM
   - CRAM
@@ -38,19 +40,19 @@ input:
         ontologies:
           - edam: "http://edamontology.org/format_2574" # BAM index
           - edam: "http://edamontology.org/format_2575" # CRAM index
-    - reference:
-        type: file
-        description: Reference genome FASTA file
-        pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
-        ontologies:
-          - edam: "http://edamontology.org/format_1922" # FASTA
-          - edam: "http://edamontology.org/format_3989" # GZIP format
-    - bed:
-        type: file
-        description: BED file with regions to analyze
-        pattern: "*.bed"
-        ontologies:
-          - edam: "http://edamontology.org/format_1920" # BED
+  - reference:
+      type: file
+      description: Reference genome FASTA file
+      pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+      ontologies:
+        - edam: "http://edamontology.org/format_1922" # FASTA
+        - edam: "http://edamontology.org/format_3989" # GZIP format
+  - bed:
+      type: file
+      description: BED file with regions to analyze
+      pattern: "*.bed"
+      ontologies:
+        - edam: "http://edamontology.org/format_1920" # BED
 
 output:
   rc:
@@ -63,6 +65,7 @@ output:
           type: file
           description: Readcount file with metrics
           pattern: "*.rc"
+          ontologies: []
   versions:
     - "versions.yml":
         type: file

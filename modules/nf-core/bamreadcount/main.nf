@@ -8,7 +8,9 @@ process BAMREADCOUNT {
         'biocontainers/bam-readcount:1.0.1--h9aeec6d_3' }"
 
     input:
-    tuple val(meta), path(bam), path(bai), path(reference), path(bed)
+    tuple val(meta), path(bam), path(bai)
+    path(reference)
+    path(bed)
 
     output:
     tuple val(meta), path("*.rc"), emit: rc
