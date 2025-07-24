@@ -5,7 +5,7 @@ process VARSCAN_SOMATIC {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/varscan:2.4.6--hdfd78af_0':
-        'biocontainers/varscan:2.4.6--hdfd78af_0' }"
+        'community.wave.seqera.io/library/htslib_varscan:24b3b3db2ca78de8' }"
 
     input:
     tuple val(meta), path(normal_mpileup), path(tumour_mpileup)
