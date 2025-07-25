@@ -1,0 +1,80 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "bamreadcount"
+description: bam-readcount is a utility that runs on a BAM or CRAM file and
+  generates low-level information about sequencing data at specific nucleotide
+  positions. Its outputs include observed bases, readcounts, summarized mapping
+  and base qualities, strandedness information, mismatch counts, and position
+  within the reads.
+keywords:
+  - BAM
+  - CRAM
+  - metrics
+  - genomics
+tools:
+  - "bamreadcount":
+      description: "bam-readcount generates metrics at single nucleotide positions."
+      homepage: "https://github.com/genome/bam-readcount/blob/master/README.md"
+      documentation: "https://github.com/genome/bam-readcount/blob/master/README.md"
+      tool_dev_url: "https://github.com/genome/bam-readcount"
+      doi: "10.21105/joss.03722"
+      licence: ["MIT"]
+      identifier: biotools:bam-readcount
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM file
+        pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_2573" # CRAM
+    - bai:
+        type: file
+        description: BAM/CRAM index file
+        pattern: "*.{bai,crai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2574" # BAM index
+          - edam: "http://edamontology.org/format_2575" # CRAM index
+  - reference:
+      type: file
+      description: Reference genome FASTA file
+      pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+      ontologies:
+        - edam: "http://edamontology.org/format_1922" # FASTA
+        - edam: "http://edamontology.org/format_3989" # GZIP format
+  - bed:
+      type: file
+      description: BED file with regions to analyze
+      pattern: "*.bed"
+      ontologies:
+        - edam: "http://edamontology.org/format_1920" # BED
+
+output:
+  rc:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.rc":
+          type: file
+          description: Readcount file with metrics
+          pattern: "*.rc"
+          ontologies: []
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+authors:
+  - "@vmelichar"
+maintainers:
+  - "@vmelichar"
