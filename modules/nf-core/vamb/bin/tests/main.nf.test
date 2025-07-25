@@ -112,10 +112,10 @@ nextflow_process {
                 { path(process.out.clusters_metadata.get(0).get(1)).exists()                 },
                 { path(process.out.clusters_unsplit.get(0).get(1)).exists()                  },
                 { path(process.out.latent_encoding.get(0).get(1)).exists()                   },
+                { path(process.out.composition.get(0).get(1)).exists()                       },
                 { path(process.out.log.get(0).get(1)).readLines().contains("Completed Vamb") },
                 { assert snapshot(
                     process.out.abundance,
-                    process.out.composition,
                     process.out.versions
                 ).match() }
             )
@@ -199,10 +199,10 @@ nextflow_process {
                 { path(process.out.clusters_metadata.get(0).get(1)).exists()                 },
                 { path(process.out.clusters_unsplit.get(0).get(1)).exists()                  },
                 { path(process.out.latent_encoding.get(0).get(1)).exists()                   },
+                { path(process.out.composition.get(0).get(1)).exists()                       },
                 { path(process.out.log.get(0).get(1)).readLines().contains("Completed Vamb") },
                 { assert snapshot(
                     process.out.abundance,
-                    process.out.composition,
                     process.out.versions
                 ).match() }
             )
@@ -316,10 +316,10 @@ nextflow_process {
                 { path(process.out.taxometer_results.get(0).get(1)).exists()                 },
                 { path(process.out.clusters_metadata.get(0).get(1)).exists()                 },
                 { path(process.out.clusters_unsplit.get(0).get(1)).exists()                  },
+                { path(process.out.composition.get(0).get(1)).exists()                       },
                 { path(process.out.log.get(0).get(1)).readLines().contains("Completed Vamb") },
                 { assert snapshot(
                     process.out.abundance,
-                    process.out.composition,
                     process.out.versions
                 ).match() }
             )
@@ -327,7 +327,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - bam - stub") {
+    test("mag contigs - bam - stub") {
 
         options "-stub"
         config "./nextflow_bam.config"
