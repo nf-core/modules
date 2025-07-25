@@ -26,7 +26,7 @@ process VARSCAN_PROCESSSOMATIC {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    gzip -fd $vcf
+    bgzip -d $vcf
 
     varscan processSomatic \\
         $args \\
