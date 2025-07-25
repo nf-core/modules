@@ -9,7 +9,6 @@ process VAMB_BIN {
 
     input:
     tuple val(meta), path(assembly), path(abundance_tsv), path(bams, stageAs: "bams/*"), path(taxonomy)
-    val mode
 
     output:
     tuple val(meta), path("${prefix}.vamb/bins/*.fna.gz")            , emit: bins             , optional: true
@@ -29,17 +28,12 @@ process VAMB_BIN {
     task.ext.when == null || task.ext.when
 
     script:
-    if(mode == "taxvamb" & !taxonomy) {
-        error("ERROR: Vamb is in taxvamb mode but no taxonomy file provided!")
-    }
     if(bams & abundance_tsv) {
         error("ERROR: Both bams and abundance TSV supplied to Vamb!")
     }
-    if(!(mode in ["default", "taxvamb"])) {
-        error("ERROR: Invalid mode input for vamb - must be either 'default' or 'taxvamb'!")
-    }
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def mode = taxonomy ? "taxvamb" : "default"
     def depth_input = abundance_tsv ? "--abundance_tsv ${abundance_tsv}" : "bams/"
     """
     vamb bin \\
@@ -59,14 +53,8 @@ process VAMB_BIN {
     """
 
     stub:
-    if(mode == "taxvamb" & !taxonomy) {
-        error("ERROR: Vamb is in taxvamb mode but no taxonomy file provided!")
-    }
-    if(abundance_tsv & bam_directory) {
-        error("ERROR: Both abundance_tsv and bam_directory supplied as input to Vamb - must choose only one!")
-    }
-    if(mode.intersect(["default", "taxvamb"].size() == 0)) {
-        error("ERROR: Invalid mode input for vamb - must be either 'default' or 'taxvamb'!")
+    if(bams & abundance_tsv) {
+        error("ERROR: Both bams and abundance TSV supplied to Vamb!")
     }
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"

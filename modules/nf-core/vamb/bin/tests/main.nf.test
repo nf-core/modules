@@ -95,8 +95,8 @@ nextflow_process {
                             checkIfExists: true
                         )
                     ]).combine(GAWK.out.output)
-                    .map { ref_meta, asm, reads_meta, tsv -> [reads_meta, asm, tsv, []] }
-                input[1] = "default"
+                    .map { ref_meta, asm, reads_meta, tsv -> [reads_meta, asm, tsv, [], []] }
+                    .transpose()
                 """
             }
         }
@@ -158,6 +158,7 @@ nextflow_process {
 
         when {
             params {
+                gawk_args2 = ""
                 vamb_args = "-e 5 -q 2 3 --minfasta 1 -o '' --seed 1" // Recommended parameters for testing in default mode
             }
             process {
@@ -169,8 +170,8 @@ nextflow_process {
                             checkIfExists: true
                         )
                     ]).combine(BOWTIE2_ALIGN.out.bam)
-                    .map { ref_meta, asm, reads_meta, bam -> [reads_meta, asm, [], bam] }
-                input[1] = "default"
+                    .map { ref_meta, asm, reads_meta, bam -> [reads_meta, asm, [], bam, []] }
+                    .transpose()
                 """
             }
         }
@@ -188,6 +189,49 @@ nextflow_process {
 
         options "-stub"
 
+        setup {
+            run("BOWTIE2_BUILD") {
+                script "../../../bowtie2/build/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: "ref"],
+                        file(
+                            "https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/mag/assemblies/SPAdes-test_minigut_contigs.fasta.gz",
+                            checkIfExists: true
+                        )
+                    ]
+                    """
+                }
+            }
+
+            run("BOWTIE2_ALIGN") {
+                script "../../../bowtie2/align/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [id: "test"],
+                        [
+                            file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/mag/test_data/test_minigut_R1.fastq.gz", checkIfExists: true),
+                            file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/mag/test_data/test_minigut_R2.fastq.gz", checkIfExists: true)
+                        ]
+                    ])
+                    input[1] = BOWTIE2_BUILD.out.index
+                    input[2] = [
+                        [id: "ref"],
+                        file(
+                            "https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/mag/assemblies/SPAdes-test_minigut_contigs.fasta.gz",
+                            checkIfExists: true
+                        )
+                    ]
+                    input[3] = false
+                    input[4] = true
+                    """
+                }
+            }
+
+        }
+
         when {
 
             params {
@@ -203,9 +247,9 @@ nextflow_process {
                             "https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/mag/assemblies/SPAdes-test_minigut_contigs.fasta.gz",
                             checkIfExists: true
                         )
-                    ]).combine(COVERM_CONTIG.out.coverage)
-                    .map { ref_meta, asm, reads_meta, tsv -> [reads_meta, asm, tsv, []] }
-                input[1] = "default"
+                    ]).combine(BOWTIE2_ALIGN.out.bam)
+                    .map { ref_meta, asm, reads_meta, bam -> [reads_meta, asm, [], bam, []] }
+                    .transpose()
                 """
             }
         }
