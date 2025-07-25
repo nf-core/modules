@@ -28,8 +28,8 @@ process VARSCAN_FPFILTER {
     varscan fpfilter \\
         vcf_file \\
         $rc \\
-        --output-file ${prefix}.varscan.pass.vcf \\
-        --filtered-file ${prefix}.varscan.fail.vcf \\
+        --output-file ${prefix}.pass.vcf \\
+        --filtered-file ${prefix}.fail.vcf \\
         $args
 
     rm vcf_file
