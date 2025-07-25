@@ -25,7 +25,6 @@ process VARSCAN_PROCESSSOMATIC {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def type = task.ext.type ?: ''
     """
     gzip -fd $vcf
 
