@@ -4,8 +4,8 @@ process COVERM_CONTIG {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/coverm:0.7.0--h07ea13f_0' :
-        'biocontainers/coverm:0.7.0--h07ea13f_0' }"
+        'https://depot.galaxyproject.org/singularity/coverm:0.7.0--hcb7b614_4' :
+        'biocontainers/coverm:0.7.0--hcb7b614_4' }"
 
     input:
     tuple val(meta), path(input)
