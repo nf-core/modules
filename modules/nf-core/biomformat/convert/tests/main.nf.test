@@ -14,10 +14,8 @@ nextflow_process {
 
     test("convert - to text") {
 
-        config "./to_text.config"
-
         setup {
-            run ("VSEARCH_CLUSTER") {
+            run ("VSEARCH_CLUSTER", alias: "VSEARCH_CLUSTER_BIOMOUT") {
 
                 script "../../../vsearch/cluster/main.nf"
                 process {
@@ -35,7 +33,7 @@ nextflow_process {
                 script "../../../gunzip/main.nf"
                 process {
                     """
-                    input[0] = VSEARCH_CLUSTER.out.biom
+                    input[0] = VSEARCH_CLUSTER_BIOMOUT.out.biom
                     """
                 }
             }
@@ -43,6 +41,10 @@ nextflow_process {
         }
 
         when {
+            params {
+                module_args = '--to-tsv'
+            }            
+
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
@@ -61,10 +63,8 @@ nextflow_process {
 
     test("convert - to json biom") {
 
-        config "./to_json_biom.config"
-
         setup {
-            run ("VSEARCH_CLUSTER") {
+            run ("VSEARCH_CLUSTER", alias: "VSEARCH_CLUSTER_TXTOUT") {
 
                 script "../../../vsearch/cluster/main.nf"
                 process {
@@ -82,7 +82,7 @@ nextflow_process {
                 script "../../../gunzip/main.nf"
                 process {
                     """
-                    input[0] = VSEARCH_CLUSTER.out.otu
+                    input[0] = VSEARCH_CLUSTER_TXTOUT.out.otu
                     """
                 }
             }
@@ -90,6 +90,10 @@ nextflow_process {
         }
 
         when {
+            params {
+                module_args = '--table-type="OTU table" --to-json'
+            }
+
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
