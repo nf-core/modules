@@ -49,8 +49,8 @@ process VARSCAN_FPFILTER {
     """
     echo $args
 
-    echo "" | gzip > ${prefix}.varscan.pass.vcf.gz
-    echo "" | gzip > ${prefix}.varscan.fail.vcf.gz
+    echo "" | gzip > ${prefix}.pass.vcf.gz
+    echo "" | gzip > ${prefix}.fail.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
