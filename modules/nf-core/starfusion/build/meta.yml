@@ -47,15 +47,29 @@ input:
   - dfam_species:
       type: string
       description: Dfam species name
+  - pfam_url:
+      type: file
+      description: "Path to Pfam database file"
+      ontologies:
+        - edam: "http://edamontology.org/data_1052" # URL
+  - dfam_urls:
+      type: file
+      description: "Path to Dfam HMM database files"
+      ontologies:
+        - edam: "http://edamontology.org/data_1052" # URL
+  - annot_filter_url:
+      type: file
+      description: "Path to annotation filter rule file"
+      ontologies:
+        - edam: "http://edamontology.org/data_1052" # URL
 output:
   reference:
     - - meta:
           type: map
           description: Metadata map
-      - ${prefix}_genome_lib_build_dir:
-          type: directory
-          description: Genome library build directory
-          pattern: "*_genome_lib_build_dir"
+      - ctat_genome_lib_build_dir:
+          type: file
+          description: "Directory containing the built STAR-fusion genome resource"
   versions:
     - versions.yml:
         type: file
