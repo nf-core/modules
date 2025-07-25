@@ -31,7 +31,7 @@ process VARSCAN_PROCESSSOMATIC {
 
     varscan processSomatic \\
         $args \\
-        ${prefix}.${type}.vcf
+        ${vcf_base_name}
 
     bgzip *.vcf
 
