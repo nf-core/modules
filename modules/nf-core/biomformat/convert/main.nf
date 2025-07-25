@@ -21,11 +21,12 @@ process BIOMFORMAT_CONVERT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def output = task.ext.args.contains("--to-tsv") ? "-o ${prefix}.txt" : "-o ${prefix}.biom" 
+    def output = task.ext.args.contains("--to-tsv") ? "${prefix}.txt" : "${prefix}.biom"
+    assert output != biom
     """
     biom convert \\
         -i $biom \\
-        $output \\
+        -o $output \\
         $args 
 
     cat <<-END_VERSIONS > versions.yml

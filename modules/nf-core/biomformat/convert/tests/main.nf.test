@@ -111,4 +111,26 @@ nextflow_process {
 
     }
 
+    test("fails on identical filenames") {
+
+        when {
+            params {
+                module_args = '-table-type="OTU table" --to-hdf5'
+            }            
+
+            process {
+                """
+                input[0] = GUNZIP_BIOMOUT.out.gunzip
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !process.success }
+            )
+        }
+
+    }
+
 }
