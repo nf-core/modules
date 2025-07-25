@@ -11,9 +11,6 @@ nextflow_process {
     tag "varscan/processsomatic"
     tag "varscan/somatic"
 
-    withName: 'VARSCAN_SOMATIC' {
-        ext.args = "--output-vcf 1"
-    }
 
     setup {
         run("VARSCAN_SOMATIC") {
