@@ -23,6 +23,8 @@ process HMMCOPY_READCOUNTER {
     def args    = task.ext.args ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
     def VERSION = '0.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+
+    // Note that piping the cram directly into the tool didn't work.
     def convert_cram = bam.Extension == "cram" ? "samtools view -T ${fasta} -h ${bam} -o temp.bam##idx##temp.bam.bai --write-index " : ""
     def input        = bam.Extension == "cram" ? "temp.bam" : "${bam}"
     def cleanup      = bam.Extension == "cram" ? "rm temp.bam{,.bai}" : ""
