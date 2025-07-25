@@ -102,7 +102,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    path(process.out.biom[0][1]).json.findAll{it.key != "date"}.toString(),
+                    path(process.out.biom[0][1]).json.findAll{it.key != "date"}.toString().md5(),
                     process.out.versions
                     ).match() 
                 }
