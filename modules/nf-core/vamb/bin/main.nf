@@ -32,8 +32,8 @@ process VAMB_BIN {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def mode = taxonomy ? "taxvamb" : "default"
-    def depth_input = abundance_tsv ? "--abundance_tsv ${abundance_tsv}" : "--bamdir bams/"
-    def tax_input = taxonomy ? "--taxonomy ${taxonomy}" : ""
+    depth_input = abundance_tsv ? "--abundance_tsv ${abundance_tsv}" : "--bamdir bams/"
+    tax_input = taxonomy ? "--taxonomy ${taxonomy}" : ""
     """
     vamb bin \\
         ${mode} \\
