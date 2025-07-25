@@ -64,35 +64,12 @@ output:
           pattern: "*.fna.gz"
           ontologies:
             - edam: http://edamontology.org/format_1929 # FASTA
-  taxometer_results:
-    - - meta:
-          type: map
-          description: Groovy Map containing sample information. e.g. `[
-            id:'sample1' ]`
-      - ${prefix}.vamb/results_taxometer.tsv:
-          type: file
-          description: |
-            TSV describing the refined taxonomic lineage of each contig, with headers
-            contigs\tpredictions\tscores
-          pattern: "*.tsv"
-          ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
-  taxvamb_pt_model:
-    - - meta:
-          type: map
-          description: Groovy Map containing sample information. e.g. `[
-            id:'sample1' ]`
-      - ${prefix}.vamb/predictor_model.pt:
-          type: file
-          description: PyTorch model for refining taxonomy predictions
-          pattern: "*.pt"
-          ontologies: []
   clusters_metadata:
     - - meta:
           type: map
           description: Groovy Map containing sample information. e.g. `[
             id:'sample1' ]`
-      - ${prefix}.vamb/vae_clusters_metadata.tsv:
+      - ${prefix}.vamb/vae*_clusters_metadata.tsv:
           type: file
           description: |
             TSV describing the metadata of the output bin clusters
@@ -104,7 +81,7 @@ output:
           type: map
           description: Groovy Map containing sample information. e.g. `[
             id:'sample1' ]`
-      - ${prefix}.vamb/vae_clusters_split.tsv:
+      - ${prefix}.vamb/vae*_clusters_split.tsv:
           type: file
           description: |
             TSV defining the output bin clusters if binsplitting enabled
@@ -116,10 +93,23 @@ output:
           type: map
           description: Groovy Map containing sample information. e.g. `[
             id:'sample1' ]`
-      - ${prefix}.vamb/vae_clusters_unsplit.tsv:
+      - ${prefix}.vamb/vae*_clusters_unsplit.tsv:
           type: file
           description: |
             TSV defining the output bin clusters without binsplitting
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  taxometer_results:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - ${prefix}.vamb/results_taxometer.tsv:
+          type: file
+          description: |
+            TSV describing the refined taxonomic lineage of each contig, with headers
+            contigs\tpredictions\tscores
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -135,16 +125,6 @@ output:
           pattern: "*.npz"
           ontologies:
             - edam: http://edamontology.org/format_4003 # Numpy
-  model:
-    - - meta:
-          type: map
-          description: Groovy Map containing sample information. e.g. `[
-            id:'sample1' ]`
-      - ${prefix}.vamb/model.pt:
-          type: file
-          description: PyTorch model for clustering contigs
-          pattern: "*.pt"
-          ontologies: []
   abundance:
     - - meta:
           type: map
