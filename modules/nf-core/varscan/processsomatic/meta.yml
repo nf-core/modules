@@ -3,7 +3,9 @@ name: "varscan_processsomatic"
 description: VarScan2 is a tool for variant detection in massively parallel
   sequencing data. It can detect SNPs, indels, and copy number variations in
   both somatic and germline samples. It is particularly useful for analyzing
-  tumor/normal sample pairs.
+  tumor/normal sample pairs. This subtool divides variants based on status
+  (germline, somatic, loss of heterozygosity) and confidence level (high-confidence
+  or not) and outputs them in separate VCF files.
 keywords:
   - variant calling
   - germline
