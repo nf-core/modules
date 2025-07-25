@@ -5,7 +5,7 @@ process HMMCOPY_READCOUNTER {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hmmcopy:0.1.1--h2e03b76_7' :
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b6/b656ae8c47699d1ae8f4d97995da8fda08aaed7a23d9b7078e034ff0981f7487/data' :
         'community.wave.seqera.io/library/hmmcopy_samtools:875db3767c6d4ea2' }"
 
     input:
