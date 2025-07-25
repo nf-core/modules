@@ -34,7 +34,7 @@ process CNVKIT_BATCH {
     def normal_exists = normal ? true : false
     def reference_exists = reference ? true : false
 
-    // execute samtools only when cram files are input, cnvkit runs natively on bam but is prohibitively slow
+    // execute samtools only when cram files are input, cnvkit runs natively on cram but is prohibitively slow
     def tumor_cram = tumor_exists && tumor.Extension == "cram" ? true : false
     def normal_cram = normal_exists && normal.Extension == "cram" ? true : false
 
@@ -142,7 +142,7 @@ process CNVKIT_BATCH {
     def bed_prefix = reference_exists ? reference.BaseName : targets ? targets.BaseName : ""
     def bed_suffix = reference_exists ? "-tmp.bed" : ".bed"
 
-    // execute samtools only when cram files are input, cnvkit runs natively on bam but is prohibitively slow
+    // execute samtools only when cram files are input, cnvkit runs natively on cram but is prohibitively slow
     def tumor_cram = tumor_exists && tumor.Extension == "cram" ? true : false
     def normal_cram = normal_exists && normal.Extension == "cram" ? true : false
 
