@@ -25,13 +25,12 @@ process VARSCAN_PROCESSSOMATIC {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def vcf_base_name = vcf.baseName
     """
     bgzip -d $vcf
 
     varscan processSomatic \\
         $args \\
-        ${vcf_base_name}
+        ${vcf.baseName}
 
     bgzip *.vcf
 
