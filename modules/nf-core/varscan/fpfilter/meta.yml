@@ -1,0 +1,80 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "varscan_fpfilter"
+description: VarScan2 is a tool for variant detection in massively parallel
+  sequencing data. It can detect SNPs, indels, and copy number variations in
+  both somatic and germline samples. It is particularly useful for analyzing
+  tumor/normal sample pairs. Subtool fpfilter is used to filter a set of
+  SNPs/indels based on coverage, reads, p-value, etc.
+keywords:
+  - variant calling
+  - germline
+  - somatic
+  - vcf
+  - variants
+  - genomics
+tools:
+  - "varscan":
+      description: "variant detection in massively parallel sequencing data"
+      homepage: "https://github.com/dkoboldt/varscan"
+      documentation: "https://dkoboldt.github.io/varscan/"
+      tool_dev_url: "https://github.com/dkoboldt/varscan"
+      doi: "10.1101/gr.129684.111"
+      licence: ["The Non-Profit Open Software License version 3.0 (NPOSL-3.0)"]
+      identifier: biotools:varscan
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - vcf:
+        type: file
+        description: VCF file
+        pattern: "*.vcf.gz"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
+          - edam: "http://edamontology.org/format_3989" # GZIP format
+    - rc:
+        type: file
+        description: Read counts file from bam-readcount
+        pattern: "*.rc"
+        ontologies: []
+output:
+  pass_vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.pass.vcf.gz":
+          type: file
+          description: VCF file with PASS variants
+          pattern: "*.pass.vcf.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  fail_vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.fail.vcf.gz":
+          type: file
+          description: VCF file with FAIL variants
+          pattern: "*.fail.vcf.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: versions.yml
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@vmelichar"
+maintainers:
+  - "@vmelichar"
