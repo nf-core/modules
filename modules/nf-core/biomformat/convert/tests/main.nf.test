@@ -12,33 +12,56 @@ nextflow_process {
     tag "biomformat"
     tag "biomformat/convert"
 
-    test("convert - to text") {
+    setup {
+        run ("VSEARCH_CLUSTER", alias: "VSEARCH_CLUSTER_BIOMOUT") {
 
-        setup {
-            run ("VSEARCH_CLUSTER", alias: "VSEARCH_CLUSTER_BIOMOUT") {
-
-                script "../../../vsearch/cluster/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test', single_end:false ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
-                    ]
-                    """
-                }
+            script "../../../vsearch/cluster/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                """
             }
-
-            run ("GUNZIP") {
-
-                script "../../../gunzip/main.nf"
-                process {
-                    """
-                    input[0] = VSEARCH_CLUSTER_BIOMOUT.out.biom
-                    """
-                }
-            }
-
         }
+
+        run ("GUNZIP", alias: "GUNZIP_BIOMOUT") {
+
+            script "../../../gunzip/main.nf"
+            process {
+                """
+                input[0] = VSEARCH_CLUSTER_BIOMOUT.out.biom
+                """
+            }
+        }
+
+        run ("VSEARCH_CLUSTER", alias: "VSEARCH_CLUSTER_TXTOUT") {
+
+            script "../../../vsearch/cluster/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        run ("GUNZIP", alias: "GUNZIP_TXTOUT") {
+
+            script "../../../gunzip/main.nf"
+            process {
+                """
+                input[0] = VSEARCH_CLUSTER_TXTOUT.out.otu
+                """
+            }
+        }
+
+    }
+
+    test("convert - to text") {
 
         when {
             params {
@@ -47,7 +70,7 @@ nextflow_process {
 
             process {
                 """
-                input[0] = GUNZIP.out.gunzip
+                input[0] = GUNZIP_BIOMOUT.out.gunzip
                 """
             }
         }
@@ -63,32 +86,6 @@ nextflow_process {
 
     test("convert - to json biom") {
 
-        setup {
-            run ("VSEARCH_CLUSTER", alias: "VSEARCH_CLUSTER_TXTOUT") {
-
-                script "../../../vsearch/cluster/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test', single_end:false ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
-                    ]
-                    """
-                }
-            }
-
-            run ("GUNZIP") {
-
-                script "../../../gunzip/main.nf"
-                process {
-                    """
-                    input[0] = VSEARCH_CLUSTER_TXTOUT.out.otu
-                    """
-                }
-            }
-
-        }
-
         when {
             params {
                 module_args = '--table-type="OTU table" --to-json'
@@ -96,7 +93,7 @@ nextflow_process {
 
             process {
                 """
-                input[0] = GUNZIP.out.gunzip
+                input[0] = GUNZIP_TXTOUT.out.gunzip
                 """
             }
         }
