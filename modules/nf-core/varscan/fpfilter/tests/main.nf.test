@@ -17,6 +17,9 @@ nextflow_process {
 
         run("VARSCAN_SOMATIC") {
             script "../../somatic/main.nf"
+            params {
+                somatic_args = "--output-vcf 1"
+            }
             process {
                 """
                 input[0] = [
@@ -60,6 +63,9 @@ nextflow_process {
     test("human - mpileup") {
 
         when {
+            params {
+                fpfilter_args = "--min-ref-avgrl 0 --min-var-avgrl 0"
+            }
             process {
                 """
                 input[0] = VARSCAN_PROCESSSOMATIC.out.somatic_hc_vcf
@@ -92,7 +98,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--min-ref-avgrl 0 --min-var-avgrl 0'
+                fpfilter_args = '--min-ref-avgrl 0 --min-var-avgrl 0'
             }
             process {
                 """
