@@ -30,7 +30,7 @@ input:
     - vcf:
         type: file
         description: VCF file
-        pattern: "*.vcf.gz"
+        pattern: "*.{snvs,indels}.vcf.gz"
         ontologies:
           - edam: "http://edamontology.org/format_3016" # VCF
           - edam: "http://edamontology.org/format_3989" # GZIP format
