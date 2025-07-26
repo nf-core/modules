@@ -25,9 +25,10 @@ process HMMCOPY_READCOUNTER {
     def VERSION = '0.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     // Note that piping the cram directly into the tool didn't work.
-    def convert_cram = bam.Extension == "cram" ? "samtools view -T ${fasta} -h ${bam} -o temp.bam##idx##temp.bam.bai --write-index " : ""
-    def input        = bam.Extension == "cram" ? "temp.bam" : "${bam}"
-    def cleanup      = bam.Extension == "cram" ? "rm temp.bam{,.bai}" : ""
+    def convert_cram     = bam.Extension == "cram" ? "samtools view -T ${fasta} -h ${bam} -o temp.bam##idx##temp.bam.bai --write-index " : ""
+    def input            = bam.Extension == "cram" ? "temp.bam" : "${bam}"
+    def cleanup          = bam.Extension == "cram" ? "rm temp.bam{,.bai}" : ""
+    def samtools_version = bam.Extension == "cram" ? "samtools: \$(samtools --version |& sed '1!d ; s/samtools //')" : ""
     """
     ${convert_cram}
 
@@ -40,17 +41,20 @@ process HMMCOPY_READCOUNTER {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         hmmcopy: $VERSION
+        $samtools_version
     END_VERSIONS
     """
     stub:
     def prefix  = task.ext.prefix ?: "${meta.id}"
     def VERSION = '0.1.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def samtools_version = bam.Extension == "cram" ? "samtools: \$(samtools --version |& sed '1!d ; s/samtools //')" : ""
     """
     touch ${prefix}.wig
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         hmmcopy: $VERSION
+        $samtools_version
     END_VERSIONS
     """
 }
