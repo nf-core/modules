@@ -1,6 +1,8 @@
 process KMA_KMA {
     tag "$meta.id"
     label 'process_medium'
+    // FIXME: https://github.com/nf-core/modules/pull/7251
+    errorStrategy { task.exitStatus in [0,95] ? 'ignore' : 'terminate' }  // ignore exitStatus=95
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
