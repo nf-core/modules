@@ -1,8 +1,6 @@
 process KMA_KMA {
     tag "$meta.id"
     label 'process_medium'
-    // FIXME: https://github.com/nf-core/modules/pull/7251
-    errorStrategy { task.exitStatus in [0,95] ? 'ignore' : 'terminate' }  // ignore exitStatus=95
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -56,12 +54,14 @@ process KMA_KMA {
         fi
     fi
 
+    # FIXME: https://github.com/nf-core/modules/pull/7251
+    # Run kma and handle exit code 95 as success
     kma \\
         ${read_command} \\
         -o ${prefix} \\
         -t_db \$INDEX_BASE \\
         $args \\
-        $sam_output
+        $sam_output || [ \$? -eq 95 ]
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
