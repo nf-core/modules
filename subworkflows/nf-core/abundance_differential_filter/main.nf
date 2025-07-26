@@ -114,7 +114,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // DESEQ2_NORM directly. It internally runs normalization + DE analysis.
 
     DESEQ2_NORM(
-        norm_inputs.contrasts_for_norm.filter{it[0].differential_method == 'deseq2'},
+        norm_inputs.contrasts_for_norm_with_formula.filter{it[0].differential_method == 'deseq2'},
         norm_inputs.samples_and_matrix.filter{it[0].differential_method == 'deseq2'},
         norm_inputs.control_features.filter{it[0].differential_method == 'deseq2'},
         norm_inputs.transcript_length.filter{it[0].differential_method == 'deseq2'}
@@ -123,7 +123,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     ch_versions = ch_versions.mix(DESEQ2_NORM.out.versions.first())
 
     DESEQ2_DIFFERENTIAL(
-        inputs.contrasts_for_diff.filter{it[0].differential_method == 'deseq2'},
+        inputs.contrasts_for_diff_with_formula.filter{it[0].differential_method == 'deseq2'},
         inputs.samples_and_matrix.filter{it[0].differential_method == 'deseq2'},
         inputs.control_features.filter{it[0].differential_method == 'deseq2'},
         inputs.transcript_length.filter{it[0].differential_method == 'deseq2'}
@@ -151,7 +151,7 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
 
     // DREAM only runs with formula
     dream_inputs = inputs.contrasts_for_diff_with_formula
-        .filter { meta, variable, reference, target, formula, comparison ->
+        .filter { meta, _variable, _reference, _target, formula, _comparison ->
             meta.differential_method == 'dream' && formula != null
         }
 
