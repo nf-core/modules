@@ -48,4 +48,16 @@ process SNPSIFT_SPLIT {
         """
     }
 
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${prefix}.chr1.vcf
+    touch ${prefix}.chr2.vcf
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        snpsift: \$( echo \$(SnpSift split -h 2>&1) | sed 's/^.*version //' | sed 's/(.*//' | sed 's/t//g' )
+    END_VERSIONS
+    """
 }

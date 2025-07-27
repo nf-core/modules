@@ -1,0 +1,46 @@
+name: Run when nf-test tests are skipped
+on:
+  push:
+    branches:
+      # https://docs.renovatebot.com/key-concepts/automerge/#branch-vs-pr-automerging
+      - "renovate/**" # branches Renovate creates
+    paths:
+      - "**/meta.yml"
+  pull_request:
+    branches: [master]
+    paths:
+      - "**/meta.yml"
+  merge_group:
+    types: [checks_requested]
+    branches: [master]
+
+jobs:
+  check-files:
+    runs-on: ubuntu-latest
+    outputs:
+      only-meta: ${{ steps.only-meta-check.outputs.only-meta }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3
+        id: changes
+        with:
+          filters: |
+            meta:
+              - '**/meta.yml'
+            other:
+              - '!**/meta.yml'
+      - name: Check if only meta files changed
+        id: only-meta-check
+        run: |
+          if [[ "${{ steps.changes.outputs.meta }}" == "true" && "${{ steps.changes.outputs.other }}" == "false" ]]; then
+            echo "only-meta=true" >> $GITHUB_OUTPUT
+          else
+            echo "only-meta=false" >> $GITHUB_OUTPUT
+          fi
+
+  confirm-pass-nf-test:
+    runs-on: ubuntu-latest
+    needs: check-files
+    if: needs.check-files.outputs.only-meta == 'true'
+    steps:
+      - run: 'echo "nf-test tests were skipped"'

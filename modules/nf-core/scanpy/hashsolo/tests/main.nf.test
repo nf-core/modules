@@ -1,0 +1,71 @@
+nextflow_process {
+
+    name "Test Process SCANPY_HASHSOLO"
+    script "../main.nf"
+    process "SCANPY_HASHSOLO"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hashsolo"
+    tag "scanpy/hashsolo"
+    tag "scanpy"
+
+    test("generated h5ad") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hashsolo_anndata.h5ad', checkIfExists: true),
+                    ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+                ]
+                input[1] = [0.01, 0.8, 0.19]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out,
+                        process.out.versions.collect { path(it).yaml }
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("generated h5ad - stub") {
+
+        options "-stub"
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hashsolo_anndata.h5ad', checkIfExists: true),
+                ]
+                input[1] = [0.01, 0.8, 0.19]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out,
+                        process.out.versions.collect { path(it).yaml }
+                    ).match() }
+            )
+        }
+
+    }
+
+}

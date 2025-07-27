@@ -4,8 +4,8 @@ process ANNDATA_BARCODES {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/anndata:0.10.9--d13580e4b297da7c':
-        'community.wave.seqera.io/library/anndata:0.10.9--1eab54e300e1e584' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fa/fa01776f530c0a0fe2b7d8d41009884040f75d175ff194641f846b215a1da8d6/data':
+        'community.wave.seqera.io/library/anndata_pandas_python_pyyaml:3f88bccf1cdade40' }"
 
     input:
     tuple val(meta), path(h5ad), path(barcodes)

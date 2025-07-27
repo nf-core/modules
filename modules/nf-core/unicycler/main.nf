@@ -4,8 +4,8 @@ process UNICYCLER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/unicycler:0.5.0--py312hc60241a_5' :
-        'biocontainers/unicycler:0.5.0--py312hc60241a_5' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2b/2b9f404e2169ea74161d63d24f55d6339dc98c3745bf2442e425d5a673617fca/data' :
+        'community.wave.seqera.io/library/unicycler:0.5.1--b9d21c454db1e56b' }"
 
     input:
     tuple val(meta), path(shortreads), path(longreads)

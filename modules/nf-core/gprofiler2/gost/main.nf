@@ -9,8 +9,8 @@ process GPROFILER2_GOST {
 
     input:
     tuple val(meta), path(de_file)
-    path(gmt_file)
-    path(background_file)
+    tuple val(meta2), path(gmt_file)
+    tuple val(meta3), path(background_file)
 
     output:
     tuple val(meta), path("*.gprofiler2.all_enriched_pathways.tsv")     , emit: all_enrich
@@ -43,7 +43,6 @@ process GPROFILER2_GOST {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        r-base: \$(echo \$(R --version 2>&1) | sed 's/^.*R version //; s/ .*\$//')
         r-ggplot2: \$(Rscript -e "library(ggplot2); cat(as.character(packageVersion('ggplot2')))")
         r-gprofiler2: \$(Rscript -e "library(gprofiler2); cat(as.character(packageVersion('gprofiler2')))")
     END_VERSIONS

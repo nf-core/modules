@@ -18,7 +18,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true)
                 ]
-                input[1] = [[],[]]
+                input[1] = [[],[],[]]
                 input[2] = [[],[]]
                 """
             }
@@ -33,7 +33,7 @@ nextflow_process {
 
     }
 
-    test("[bam, bai], fasta, []") {
+    test("[bam, bai], [fasta, fai], []") {
 
         when {
             process {
@@ -45,7 +45,8 @@ nextflow_process {
                 ]
                 input[1] = [
                     [ id: 'test_ref' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[2] = [[],[]]
                 """
@@ -61,7 +62,7 @@ nextflow_process {
 
     }
 
-    test("[bam, bai], fasta, bed") {
+    test("[bam, bai], [fasta, fai], bed") {
 
         when {
             process {
@@ -73,7 +74,8 @@ nextflow_process {
                 ]
                 input[1] = [
                     [ id: 'test_ref' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[2] = Channel.of('chr22\t0\t1000')
                     .collectFile(name: 'chr22.bed', newLine: true)
@@ -91,7 +93,7 @@ nextflow_process {
 
     }
 
-    test("[bam, bai], fasta, bed - traditional") {
+    test("[bam, bai], [fasta, fai], bed - traditional") {
 
         config "./nextflow.traditional.config"
 
@@ -105,7 +107,8 @@ nextflow_process {
                 ]
                 input[1] = [
                     [ id: 'test_ref' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[2] = Channel.of('chr22\t0\t1000')
                     .collectFile(name: 'chr22.bed', newLine: true)
@@ -123,7 +126,7 @@ nextflow_process {
 
     }
 
-    test("[bam, bai], fasta, bed - traditional, HP") {
+    test("[bam, bai], [fasta, fai], bed - traditional, HP") {
 
         config "./nextflow.traditional_hp.config"
 
@@ -137,7 +140,8 @@ nextflow_process {
                 ]
                 input[1] = [
                     [ id: 'test_ref' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[2] = Channel.of('chr22\t0\t1000')
                     .collectFile(name: 'chr22.bed', newLine: true)
@@ -155,7 +159,7 @@ nextflow_process {
 
     }
 
-    test("[bam, bai], fasta, bed - traditional, HP, bedgraph") {
+    test("[bam, bai], [fasta, fai], bed - traditional, HP, bedgraph") {
 
         config "./nextflow.traditional_hp_bedgraph.config"
 
@@ -169,7 +173,8 @@ nextflow_process {
                 ]
                 input[1] = [
                     [ id: 'test_ref' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[2] = Channel.of('chr22\t0\t1000')
                     .collectFile(name: 'chr22.bed', newLine: true)
@@ -199,7 +204,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true)
                 ]
-                input[1] = [[],[]]
+                input[1] = [[],[],[]]
                 input[2] = [[],[]]
                 """
             }
@@ -214,7 +219,7 @@ nextflow_process {
 
     }
 
-    test("[bam, bai], fasta, [] - stub") {
+    test("[bam, bai], [fasta, fai], [] - stub") {
 
         options "-stub"
 
@@ -228,7 +233,8 @@ nextflow_process {
                 ]
                 input[1] = [
                     [ id: 'test_ref' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[2] = [[],[]]
                 """
@@ -244,7 +250,7 @@ nextflow_process {
 
     }
 
-    test("[bam, bai], fasta, bed - stub") {
+    test("[bam, bai], [fasta, fai], bed - stub") {
 
         options "-stub"
 
@@ -258,7 +264,8 @@ nextflow_process {
                 ]
                 input[1] = [
                     [ id: 'test_ref' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[2] = Channel.of('chr22\t0\t1000')
                     .collectFile(name: 'chr22.bed', newLine: true)
@@ -276,7 +283,7 @@ nextflow_process {
 
     }
 
-    test("[bam, bai], fasta, bed - traditional - stub") {
+    test("[bam, bai], [fasta, fai], bed - traditional - stub") {
 
         config "./nextflow.traditional.config"
         options "-stub"
@@ -291,7 +298,8 @@ nextflow_process {
                 ]
                 input[1] = [
                     [ id: 'test_ref' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[2] = Channel.of('chr22\t0\t1000')
                     .collectFile(name: 'chr22.bed', newLine: true)
@@ -309,7 +317,7 @@ nextflow_process {
 
     }
 
-    test("[bam, bai], fasta, bed - traditional, HP - stub") {
+    test("[bam, bai], [fasta, fai], bed - traditional, HP - stub") {
 
         config "./nextflow.traditional_hp.config"
         options "-stub"
@@ -324,7 +332,8 @@ nextflow_process {
                 ]
                 input[1] = [
                     [ id: 'test_ref' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[2] = Channel.of('chr22\t0\t1000')
                     .collectFile(name: 'chr22.bed', newLine: true)
@@ -342,7 +351,7 @@ nextflow_process {
 
     }
 
-    test("[bam, bai], fasta, bed - traditional, HP, bedgraph - stub") {
+    test("[bam, bai], [fasta, fai], bed - traditional, HP, bedgraph - stub") {
 
         config "./nextflow.traditional_hp_bedgraph.config"
         options "-stub"
@@ -357,7 +366,8 @@ nextflow_process {
                 ]
                 input[1] = [
                     [ id: 'test_ref' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[2] = Channel.of('chr22\t0\t1000')
                     .collectFile(name: 'chr22.bed', newLine: true)

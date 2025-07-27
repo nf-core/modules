@@ -13,7 +13,7 @@ tools:
       homepage: https://github.com/bwa-mem2/bwa-mem2
       documentation: https://github.com/bwa-mem2/bwa-mem2#usage
       licence: ["MIT"]
-      identifier: ""
+      identifier: "biotools:bwa-mem2"
 input:
   - - meta:
         type: map
@@ -23,9 +23,12 @@ input:
     - fasta:
         type: file
         description: Input genome fasta file
+        ontologies:
+          - edam: "http://edamontology.org/data_2044" # Sequence
+          - edam: "http://edamontology.org/format_1929" # FASTA
 output:
-  - index:
-      - meta:
+  index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -34,11 +37,15 @@ output:
           type: file
           description: BWA genome index files
           pattern: "*.{0123,amb,ann,bwt.2bit.64,pac}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/data_3210" # Genome index
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@maxulysse"
 maintainers:

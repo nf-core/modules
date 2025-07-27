@@ -4,18 +4,18 @@
             [
                 [
                     {
-                        
+
                     },
                     "genome.fa:md5,923a0a268ad29fee3c3437d00f9970de"
                 ]
             ],
             [
-                
+
             ],
             [
                 [
                     {
-                        
+
                     },
                     [
                         [
@@ -43,7 +43,7 @@
                 ]
             ],
             [
-                
+
             ],
             [
                 "versions.yml:md5,b0160273bd1b3b049a2748c02496c6d1",
@@ -61,7 +61,7 @@
             [
                 [
                     {
-                        
+
                     },
                     "genome.fa:md5,923a0a268ad29fee3c3437d00f9970de"
                 ]
@@ -69,18 +69,18 @@
             [
                 [
                     {
-                        
+
                     },
                     "genome.fa.fai:md5,84f5b44c25877ac58b154706cc8bc451"
                 ]
             ],
             [
-                
+
             ],
             [
                 [
                     {
-                        
+
                     },
                     [
                         "genome.fa:md5,923a0a268ad29fee3c3437d00f9970de",
@@ -110,7 +110,7 @@
             [
                 [
                     {
-                        
+
                     },
                     "genome.fa:md5,923a0a268ad29fee3c3437d00f9970de"
                 ]
@@ -118,18 +118,18 @@
             [
                 [
                     {
-                        
+
                     },
                     "genome.fa.fai:md5,84f5b44c25877ac58b154706cc8bc451"
                 ]
             ],
             [
-                
+
             ],
             [
                 [
                     {
-                        
+
                     },
                     [
                         "genome.fa.bwameth.c2t:md5,e51d48ed28fa0c26e2f9c9f13d09403b",
@@ -158,18 +158,18 @@
             [
                 [
                     {
-                        
+
                     },
                     "genome.fa:md5,923a0a268ad29fee3c3437d00f9970de"
                 ]
             ],
             [
-                
+
             ],
             [
                 [
                     {
-                        
+
                     },
                     [
                         [
@@ -201,7 +201,7 @@
                 ]
             ],
             [
-                
+
             ],
             [
                 "versions.yml:md5,b0160273bd1b3b049a2748c02496c6d1",
@@ -214,23 +214,72 @@
         },
         "timestamp": "2024-12-13T18:04:54.292757645"
     },
-    "Params: bismark_hisat | download bismark index (hisat2)": {
+    "Params: bwameth | generate fasta index | download bwameth index | collecthsmetrics": {
         "content": [
             [
                 [
                     {
-                        
+
                     },
                     "genome.fa:md5,923a0a268ad29fee3c3437d00f9970de"
                 ]
             ],
             [
-                
+                [
+                    {
+
+                    },
+                    "genome.fa.fai:md5,84f5b44c25877ac58b154706cc8bc451"
+                ]
+            ],
+            [
+
             ],
             [
                 [
                     {
-                        
+
+                    },
+                    [
+                        "genome.fa:md5,923a0a268ad29fee3c3437d00f9970de",
+                        "genome.fa.bwameth.c2t:md5,e51d48ed28fa0c26e2f9c9f13d09403b",
+                        "genome.fa.bwameth.c2t.amb:md5,010a242c6764efb30141868a45d698b3",
+                        "genome.fa.bwameth.c2t.ann:md5,09b4db3d87a2d4dac9e10e807f377110",
+                        "genome.fa.bwameth.c2t.bwt:md5,4646f8ae6bd523b7f4106bbd32eff95e",
+                        "genome.fa.bwameth.c2t.pac:md5,a662d7add09698e25c8152fd2306ec66",
+                        "genome.fa.bwameth.c2t.sa:md5,4a1e905b828396a1909669bc9c573d8d"
+                    ]
+                ]
+            ],
+            [
+                "versions.yml:md5,b0160273bd1b3b049a2748c02496c6d1",
+                "versions.yml:md5,dfb3bc1adbc94d00aec14dad16eee3df",
+                "versions.yml:md5,ee0146f5d2942f9ff466bf275567515e"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.4"
+        },
+        "timestamp": "2025-04-15T11:09:44.719682704"
+    },
+    "Params: bismark_hisat | download bismark index (hisat2)": {
+        "content": [
+            [
+                [
+                    {
+
+                    },
+                    "genome.fa:md5,923a0a268ad29fee3c3437d00f9970de"
+                ]
+            ],
+            [
+
+            ],
+            [
+                [
+                    {
+
                     },
                     [
                         [
@@ -262,7 +311,7 @@
                 ]
             ],
             [
-                
+
             ],
             [
                 "versions.yml:md5,b0160273bd1b3b049a2748c02496c6d1",
@@ -280,21 +329,26 @@
             [
                 [
                     {
-                        
+
                     },
                     "genome.fa:md5,923a0a268ad29fee3c3437d00f9970de"
                 ]
             ],
             [
-                "/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai"
+                [
+                    {
+
+                    },
+                    "/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai"
+                ]
             ],
             [
-                
+
             ],
             [
                 [
                     {
-                        
+
                     },
                     [
                         "genome.fa:md5,923a0a268ad29fee3c3437d00f9970de",
@@ -313,28 +367,28 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.9.2",
+            "nf-test": "0.9.0",
             "nextflow": "24.10.2"
         },
-        "timestamp": "2024-12-13T18:05:04.769597102"
+        "timestamp": "2025-06-11T20:45:19.092285"
     },
     "Params: bismark | generate bismark index (bowtie2)": {
         "content": [
             [
                 [
                     {
-                        
+
                     },
                     "genome.fa:md5,923a0a268ad29fee3c3437d00f9970de"
                 ]
             ],
             [
-                
+
             ],
             [
                 [
                     {
-                        
+
                     },
                     [
                         [
@@ -362,7 +416,7 @@
                 ]
             ],
             [
-                
+
             ],
             [
                 "versions.yml:md5,dc24c245324a3b8a8328f1ed6abd3f7c",

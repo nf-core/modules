@@ -1,0 +1,52 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "wget"
+description: The non-interactive network downloader
+keywords:
+  - "wget"
+  - "download"
+  - "network"
+tools:
+  - "wget":
+      description: "wget is a free utility for non-interactive download of files from
+        the Web."
+      homepage: "https://www.gnu.org/software/wget/"
+      documentation: "https://www.gnu.org/software/wget/manual/wget.html"
+      licence: ["GPL"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - url:
+        type: string
+        description: URL to download
+        pattern: "^https?://*.*"
+
+output:
+  outfile:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.${suffix}:
+          type: file
+          description: Downloaded file
+          pattern: "*.*"
+
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@itrujnara"
+maintainers:
+  - "@itrujnara"

@@ -4,8 +4,8 @@ process VCFANNO {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vcfanno:0.3.5--h9ee0642_0':
-        'biocontainers/vcfanno:0.3.5--h9ee0642_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d6/d6a1af15acc0fbec648812e07ccb4c1c39a926f3a98031a50f51c5b859e543e1/data':
+        'community.wave.seqera.io/library/htslib_vcfanno:398cde9953538855' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi), path(specific_resources)
@@ -14,15 +14,18 @@ process VCFANNO {
     path resources
 
     output:
-    tuple val(meta), path("*.vcf")     , emit: vcf
-    path "versions.yml"                , emit: versions
+    tuple val(meta), path("*.vcf.gz")       , emit: vcf
+    tuple val(meta), path("*.vcf.gz.tbi")   , emit: tbi
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args    = task.ext.args ?: ''
+    def args2   = task.ext.args2 ?: ''
+    def args3   = task.ext.args3 ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}"
     def lua_cmd = lua ? "--lua ${lua}" : ""
     """
     vcfanno \\
@@ -31,7 +34,9 @@ process VCFANNO {
         ${lua_cmd} \\
         ${toml} \\
         ${vcf} \\
-        > ${prefix}.vcf
+        | bgzip ${args2} --threads ${task.cpus} \\
+        > ${prefix}.vcf.gz \\
+        && tabix ${args3} ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -42,7 +47,8 @@ process VCFANNO {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.vcf
+    touch ${prefix}.vcf.gz
+    touch ${prefix}.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

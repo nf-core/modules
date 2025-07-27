@@ -1,0 +1,247 @@
+nextflow_process {
+
+    name "Test Process METAPHLAN3_METAPHLAN3"
+    script "../main.nf"
+    process "METAPHLAN3_METAPHLAN3"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "metaphlan"
+    tag "untar"
+    tag "metaphlan3/metaphlan3"
+    tag "metaphlan3"
+    tag "samtools/view"
+    config "./nextflow.config"
+
+    setup {
+        run("UNTAR") {
+            script "../../../untar/main.nf"
+            process {
+            """
+            input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'delete_me/metaphlan_database.tar.gz', checkIfExists: true)
+            ]
+            """
+            }
+        }
+    }
+
+    test("metaphlan3 single-end") {
+
+        when {
+            params {
+                metaphlan_args = '--index mpa_v30_CHOCOPhlAn_201901 --add_viruses --bt2_ps very-sensitive-local'
+                samtools_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true)
+                ]
+                input[1] = UNTAR.out.untar.map{it[1]}
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert path(process.out.biom[0][1]).text.contains('"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"') },
+                { assert snapshot(
+                    process.out.bt2out,
+                    path(process.out.profile.get(0).get(1)).readLines()[2..-1].join('\n').md5(),
+                    process.out.versions
+                    ).match()}
+            )
+        }
+    }
+
+    test("metaphlan3 single-end stub") {
+        options "-stub"
+
+        when {
+            params {
+                metaphlan_args = '--index mpa_v30_CHOCOPhlAn_201901 --add_viruses --bt2_ps very-sensitive-local'
+                samtools_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true)
+                ]
+                input[1] = UNTAR.out.untar.map{it[1]}
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match()}
+            )
+        }
+    }
+
+    test("metaphlan3 paired end") {
+
+        when {
+            params {
+                metaphlan_args = '--index mpa_v30_CHOCOPhlAn_201901 --add_viruses --bt2_ps very-sensitive-local'
+                samtools_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true),
+                      file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists:true)]
+                ]
+                input[1] = UNTAR.out.untar.map{it[1]}
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert path(process.out.biom[0][1]).text.contains('"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"') },
+                { assert snapshot(
+                    process.out.bt2out,
+                    path(process.out.profile.get(0).get(1)).readLines()[2..-1].join('\n').md5(),
+                    process.out.versions
+                    ).match()}
+            )
+        }
+    }
+
+    test("metaphlan3 sam") {
+
+        setup {
+
+            run("SAMTOOLS_VIEW"){
+                script "../../../samtools/view/main.nf"
+                process {
+                """
+
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists:true),
+                    []
+                ])
+                input[1] = [[],[]]
+                input[2] = []
+                input[3] = []
+                """
+                }
+            }
+
+        }
+
+        when {
+            params {
+                 metaphlan_args = '--index mpa_v30_CHOCOPhlAn_201901 --add_viruses --bt2_ps very-sensitive-local'
+                 samtools_args = "--output-fmt sam"
+            }
+            process {
+                """
+                input[0] = SAMTOOLS_VIEW.out.sam
+                input[1] = UNTAR.out.untar.map{it[1]}
+                """
+            }
+        }
+        then {
+            assert process.success
+
+            // exclude first three lines of profile output file to prevent command being writen into snapshot
+            assertAll(
+                { assert path(process.out.biom[0][1]).text.contains('"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"') },
+                { assert snapshot(
+                    process.out.bt2out,
+                    path(process.out.profile.get(0).get(1)).readLines()[2..-1].join('\n').md5(),
+                    process.out.versions
+                    ).match()}
+            )
+        }
+    }
+
+    test("metaphlan3 sam stub") {
+        options "-stub"
+
+        setup {
+
+            run("SAMTOOLS_VIEW"){
+                script "../../../samtools/view/main.nf"
+                process {
+                """
+
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists:true),
+                    []
+                ])
+                input[1] = [[],[]]
+                input[2] = []
+                input[3] = []
+                """
+                }
+            }
+
+        }
+
+        when {
+            params {
+                 metaphlan_args = '--index mpa_v30_CHOCOPhlAn_201901 --add_viruses --bt2_ps very-sensitive-local'
+                 samtools_args = "--output-fmt sam"
+            }
+            process {
+                """
+                input[0] = SAMTOOLS_VIEW.out.sam
+                input[1] = UNTAR.out.untar.map{it[1]}
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match()}
+            )
+        }
+    }
+
+    test("metaphlan3 fasta") {
+
+        when {
+            params {
+                metaphlan_args = '--index mpa_v30_CHOCOPhlAn_201901 --add_viruses --bt2_ps very-sensitive-local'
+                samtools_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true)
+                ]
+                input[1] = UNTAR.out.untar.map{it[1]}
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert path(process.out.biom[0][1]).text.contains('"format": "Biological Observation Matrix 1.0.0","format_url": "http://biom-format.org","generated_by"') },
+                { assert snapshot(
+                    process.out.bt2out,
+                    path(process.out.profile.get(0).get(1)).readLines()[2..-1].join('\n').md5(),
+                    process.out.versions
+                    ).match()}
+            )
+        }
+    }
+
+}

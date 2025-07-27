@@ -1,11 +1,13 @@
 process CATPACK_PREPARE {
     tag "${meta.id}"
-    label 'process_low'
+    label 'process_medium'
+    label 'process_long'
+    label 'process_high_memory'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/cat:6.0.1--hdfd78af_0'
-        : 'biocontainers/cat:6.0.1--hdfd78af_0'}"
+        ? 'https://depot.galaxyproject.org/singularity/cat:6.0.1--hdfd78af_1'
+        : 'biocontainers/cat:6.0.1--hdfd78af_1'}"
 
     input:
     tuple val(meta), path(db_fasta)

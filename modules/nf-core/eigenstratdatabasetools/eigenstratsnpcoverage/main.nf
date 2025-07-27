@@ -34,4 +34,22 @@ process EIGENSTRATDATABASETOOLS_EIGENSTRATSNPCOVERAGE {
         eigenstratdatabasetools: \$(echo \$(eigenstrat_snp_coverage --version 2>&1) | sed 's/^.*eigenstrat_snp_coverage //' ))
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def json_file = ""
+    def matcher = args =~ /-j\s+(\S+)/
+    if (matcher.find()) {
+        json_file = matcher.group(1)
+    }
+    def json_cmd = json_file ? "touch ${json_file}" : ""
+    """
+    touch ${prefix}.tsv
+    $json_cmd
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        eigenstratdatabasetools: \$(echo \$(eigenstrat_snp_coverage --version 2>&1) | sed 's/^.*eigenstrat_snp_coverage //' ))
+    END_VERSIONS
+    """
 }

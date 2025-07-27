@@ -29,17 +29,26 @@
                 ]
             ],
             [
-                "stitch.chr21.vcf.gz"
+                "test_reads.vcf.gz"
             ],
             [
-                "versions.yml:md5,23ba0a3cec10c1bdb411b3e1f31b008e"
+                "versions.yml:md5,b55947a2088b8879167b09e9c5647d09"
+            ],
+            [
+                [
+                    "normal",
+                    "tumour"
+                ]
+            ],
+            [
+                "e41c51d08be2cdacd81fc8800cffb156"
             ]
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.3"
+            "nf-test": "0.9.1",
+            "nextflow": "24.10.4"
         },
-        "timestamp": "2024-10-22T20:16:19.412761604"
+        "timestamp": "2025-02-24T14:48:34.099650378"
     },
     "test_no_seed": {
         "content": [
@@ -71,17 +80,144 @@
                 ]
             ],
             [
-                "stitch.chr21.vcf.gz"
+                "test_reads.vcf.gz"
             ],
             [
-                "versions.yml:md5,23ba0a3cec10c1bdb411b3e1f31b008e"
+                "versions.yml:md5,b55947a2088b8879167b09e9c5647d09"
+            ],
+            [
+                [
+                    "normal",
+                    "tumour"
+                ]
             ]
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.3"
+            "nf-test": "0.9.1",
+            "nextflow": "24.10.4"
         },
-        "timestamp": "2024-10-22T18:49:25.941823568"
+        "timestamp": "2025-02-24T15:33:32.459786637"
+    },
+    "test_with_bam - bgen - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test_reads"
+                        },
+                        [
+                            "sample.1.input.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "sample.2.input.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test_reads"
+                        },
+                        [
+                            "EM.all.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "end.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "sampleNames.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "start.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "startEM.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test_reads"
+                        },
+                        [
+                            "alphaMat.chr21.all.s.1.png:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "alphaMat.chr21.normalized.s.1.png:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "hapSum.chr21.s.1.png:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "hapSum_log.chr21.s.1.png:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "metricsForPostImputationQC.chr21.sample.jpg:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "metricsForPostImputationQCChromosomeWide.chr21.sample.jpg:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "r2.chr21.goodonly.jpg:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "3": [
+                    
+                ],
+                "4": [
+                    [
+                        {
+                            "id": "test_reads"
+                        },
+                        "test_reads.bgen:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "5": [
+                    "versions.yml:md5,b55947a2088b8879167b09e9c5647d09"
+                ],
+                "bgen": [
+                    [
+                        {
+                            "id": "test_reads"
+                        },
+                        "test_reads.bgen:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "input": [
+                    [
+                        {
+                            "id": "test_reads"
+                        },
+                        [
+                            "sample.1.input.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "sample.2.input.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "plots": [
+                    [
+                        {
+                            "id": "test_reads"
+                        },
+                        [
+                            "alphaMat.chr21.all.s.1.png:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "alphaMat.chr21.normalized.s.1.png:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "hapSum.chr21.s.1.png:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "hapSum_log.chr21.s.1.png:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "metricsForPostImputationQC.chr21.sample.jpg:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "metricsForPostImputationQCChromosomeWide.chr21.sample.jpg:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "r2.chr21.goodonly.jpg:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "rdata": [
+                    [
+                        {
+                            "id": "test_reads"
+                        },
+                        [
+                            "EM.all.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "end.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "sampleNames.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "start.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "startEM.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "vcf": [
+                    
+                ],
+                "versions": [
+                    "versions.yml:md5,b55947a2088b8879167b09e9c5647d09"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.1",
+            "nextflow": "24.10.4"
+        },
+        "timestamp": "2025-02-24T15:35:53.412786874"
     },
     "test_two_stage_imputation": {
         "content": [
@@ -113,17 +249,198 @@
                 ]
             ],
             [
-                "stitch.chr21.vcf.gz"
+                "test_reads.vcf.gz"
             ],
             [
-                "versions.yml:md5,019f1127aacfb7d14a0c4ae3d740a07d"
+                "versions.yml:md5,eef9f03e8ecc018178523587971973d1"
+            ],
+            [
+                [
+                    "normal",
+                    "tumour"
+                ]
+            ],
+            [
+                "e41c51d08be2cdacd81fc8800cffb156"
             ]
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.3"
+            "nf-test": "0.9.1",
+            "nextflow": "24.10.4"
         },
-        "timestamp": "2024-10-22T20:14:01.151837306"
+        "timestamp": "2025-02-24T14:48:01.010813477"
+    },
+    "test_with_bam - vcf - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test_reads"
+                        },
+                        [
+                            "sample.1.input.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "sample.2.input.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test_reads"
+                        },
+                        [
+                            "EM.all.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "end.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "sampleNames.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "start.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "startEM.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test_reads"
+                        },
+                        [
+                            "alphaMat.chr21.all.s.1.png:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "alphaMat.chr21.normalized.s.1.png:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "hapSum.chr21.s.1.png:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "hapSum_log.chr21.s.1.png:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "metricsForPostImputationQC.chr21.sample.jpg:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "metricsForPostImputationQCChromosomeWide.chr21.sample.jpg:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "r2.chr21.goodonly.jpg:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "3": [
+                    [
+                        {
+                            "id": "test_reads"
+                        },
+                        "test_reads.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "4": [
+                    
+                ],
+                "5": [
+                    "versions.yml:md5,b55947a2088b8879167b09e9c5647d09"
+                ],
+                "bgen": [
+                    
+                ],
+                "input": [
+                    [
+                        {
+                            "id": "test_reads"
+                        },
+                        [
+                            "sample.1.input.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "sample.2.input.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "plots": [
+                    [
+                        {
+                            "id": "test_reads"
+                        },
+                        [
+                            "alphaMat.chr21.all.s.1.png:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "alphaMat.chr21.normalized.s.1.png:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "hapSum.chr21.s.1.png:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "hapSum_log.chr21.s.1.png:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "metricsForPostImputationQC.chr21.sample.jpg:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "metricsForPostImputationQCChromosomeWide.chr21.sample.jpg:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "r2.chr21.goodonly.jpg:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "rdata": [
+                    [
+                        {
+                            "id": "test_reads"
+                        },
+                        [
+                            "EM.all.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "end.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "sampleNames.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "start.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "startEM.chr21.RData:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "vcf": [
+                    [
+                        {
+                            "id": "test_reads"
+                        },
+                        "test_reads.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,b55947a2088b8879167b09e9c5647d09"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.1",
+            "nextflow": "24.10.4"
+        },
+        "timestamp": "2025-02-24T15:28:30.95530835"
+    },
+    "test_with_bam and renaming": {
+        "content": [
+            [
+                [
+                    "sample.1.input.chr21.RData",
+                    "sample.2.input.chr21.RData"
+                ]
+            ],
+            [
+                [
+                    "EM.all.chr21.RData",
+                    "end.chr21.RData",
+                    "endEM.chr21.RData",
+                    "sampleNames.chr21.RData",
+                    "start.chr21.RData",
+                    "startEM.chr21.RData"
+                ]
+            ],
+            [
+                [
+                    "alphaMat.chr21.all.s.1.png",
+                    "alphaMat.chr21.normalized.s.1.png",
+                    "hapSum.chr21.s.1.png",
+                    "hapSum_log.chr21.s.1.png",
+                    "metricsForPostImputationQC.chr21.sample.jpg",
+                    "metricsForPostImputationQCChromosomeWide.chr21.sample.jpg",
+                    "r2.chr21.goodonly.jpg"
+                ]
+            ],
+            [
+                "test_reads.vcf.gz"
+            ],
+            [
+                "versions.yml:md5,b55947a2088b8879167b09e9c5647d09"
+            ],
+            [
+                [
+                    "MySample1",
+                    "MySample2"
+                ]
+            ],
+            [
+                "e41c51d08be2cdacd81fc8800cffb156"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.1",
+            "nextflow": "24.10.4"
+        },
+        "timestamp": "2025-02-24T14:49:03.383069005"
     },
     "test_with_seed": {
         "content": [
@@ -155,16 +472,16 @@
                 ]
             ],
             [
-                "stitch.chr21.vcf.gz"
+                "test_reads.bgen"
             ],
             [
-                "versions.yml:md5,23ba0a3cec10c1bdb411b3e1f31b008e"
+                "versions.yml:md5,b55947a2088b8879167b09e9c5647d09"
             ]
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.3"
+            "nf-test": "0.9.1",
+            "nextflow": "24.10.4"
         },
-        "timestamp": "2024-10-22T18:59:46.592393397"
+        "timestamp": "2025-02-24T14:47:27.306454435"
     }
 }

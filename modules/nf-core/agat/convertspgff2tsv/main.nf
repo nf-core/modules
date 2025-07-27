@@ -18,13 +18,13 @@ process AGAT_CONVERTSPGFF2TSV {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     agat_convert_sp_gff2tsv.pl \\
-        --gff $gff \\
+        --gff ${gff} \\
         --output ${prefix}.tsv \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
