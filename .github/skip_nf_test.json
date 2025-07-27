@@ -9,6 +9,7 @@
         "modules/nf-core/basicpy",
         "modules/nf-core/bcl2fastq",
         "modules/nf-core/bclconvert",
+        "modules/nf-core/braker3",
         "modules/nf-core/celesta",
         "modules/nf-core/cellpose",
         "modules/nf-core/cellranger/count",
@@ -42,6 +43,8 @@
         "modules/nf-core/fastk/merge",
         "modules/nf-core/fcs/fcsadaptor",
         "modules/nf-core/fcs/fcsgx",
+        "modules/nf-core/force/cube",
+        "modules/nf-core/force/tileextent",
         "modules/nf-core/ganon/buildcustom",
         "modules/nf-core/ganon/classify",
         "modules/nf-core/ganon/report",
@@ -71,7 +74,6 @@
         "modules/nf-core/purgedups/calcuts",
         "modules/nf-core/purgedups/getseqs",
         "modules/nf-core/purgedups/purgedups",
-        "modules/nf-core/quartonotebook",
         "modules/nf-core/scimap/mcmicro",
         "modules/nf-core/scimap/spatiallda",
         "modules/nf-core/sentieon/bwaindex",
@@ -101,7 +103,11 @@
         "subworkflows/nf-core/fastq_align_bamcmp_bwa",
         "subworkflows/nf-core/fastq_align_bwa"
     ],
-    "docker": ["modules/nf-core/parabricks", "subworkflows/nf-core/deepvariant/tests/equality"],
+    "docker": [
+        "modules/nf-core/parabricks",
+        "modules/nf-core/sparsesignatures",
+        "subworkflows/nf-core/deepvariant/tests/equality"
+    ],
     "singularity": [
         "modules/nf-core/bases2fastq",
         "modules/nf-core/deepvariant/rundeepvariant",

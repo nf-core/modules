@@ -25,87 +25,97 @@ input:
         description: "One or more input alignment file in PHYLIP, FASTA, NEXUS, CLUSTAL
           or MSF format or a directory of such files (-s)"
         pattern: "*.{fasta,fas,fa,mfa,phy,aln,nex,nexus,msf}"
+        ontologies: []
     - tree:
         type: file
         description: "File containing one or multiple phylogenetic trees (-t): - Single
           tree used e.g. as starting tree for tree search - Set of trees used e.g. for
           distance computation, consensus tree construction"
         pattern: "*.{tre,tree,treefile,newick,nwk,nex,nexus}"
-  - - tree_te:
-        type: file
-        description: "File containing single phylogenetic tree (-te) Use cases: - fixed
-          user tree to skip tree search - ancestral sequence reconstruction"
-        pattern: "*.{tre,tree,treefile,newick,nwk,nex,nexus}"
-  - - lmclust:
-        type: file
-        description: NEXUS file containing taxon clusters for quartet mapping analysis
-          (-lmclust)
-        pattern: "*.nex{us}"
-  - - mdef:
-        type: file
-        description: NEXUS model file defining new models (-mdef)
-        pattern: "*.nex{us}"
-  - - partitions_equal:
-        type: file
-        description: Partition file for edge-equal partition model, all partitions share
-          same set of branch lengths (-q)
-        pattern: "*.{nex,nexus,tre,tree,treefile}"
-  - - partitions_proportional:
-        type: file
-        description: Partition file for edge-equal partition model, all partitions share
-          same set of branch lengths (-spp)
-        pattern: "*.{nex,nexus,tre,tree,treefile}"
-  - - partitions_unlinked:
-        type: file
-        description: Partition file for edge-equal partition model, all partitions share
-          same set of branch lengths (-sp)
-        pattern: "*.{nex,nexus,tre,tree,treefile}"
-  - - guide_tree:
-        type: file
-        description: File containing guide tree for inference of site frequency profiles
-          (-ft)
-        pattern: "*.{nex,nexus,tre,tree,treefile}"
-  - - sitefreq_in:
-        type: file
-        description: Site frequency file (-fs)
-        pattern: "*.sitefreq"
-  - - constraint_tree:
-        type: file
-        description: File containing opological constraint tree in NEWICK format. The
-          constraint tree can be a multifurcating tree and need not to include all taxa.
-          (-g)
-        pattern: "*.{nwk,newick}"
-  - - trees_z:
-        type: file
-        description: File containing a set of trees for which log-likelihoods should
-          be computed (-z)
-  - - suptree:
-        type: file
-        description: File containing input “target” tree, support values are extracted
-          from trees passed via -t, and mapped onto the target tree (-sup)
-  - - trees_rf:
-        type: file
-        description: "File containing a second tree set (-rf). Used for computing the
-          distance to the primary tree set (`tree`)"
-        pattern: "*.{tre,tree,treefile,newick,nwk,nex,nexus}"
+        ontologies: []
+  - tree_te:
+      type: file
+      description: "File containing single phylogenetic tree (-te) Use cases: - fixed
+        user tree to skip tree search - ancestral sequence reconstruction"
+      pattern: "*.{tre,tree,treefile,newick,nwk,nex,nexus}"
+      ontologies: []
+  - lmclust:
+      type: file
+      description: NEXUS file containing taxon clusters for quartet mapping analysis
+        (-lmclust)
+      pattern: "*.nex{us}"
+      ontologies: []
+  - mdef:
+      type: file
+      description: NEXUS model file defining new models (-mdef)
+      pattern: "*.nex{us}"
+      ontologies: []
+  - partitions_equal:
+      type: file
+      description: Partition file for edge-equal partition model, all partitions share
+        same set of branch lengths (-q)
+      pattern: "*.{nex,nexus,tre,tree,treefile}"
+      ontologies: []
+  - partitions_proportional:
+      type: file
+      description: Partition file for edge-equal partition model, all partitions share
+        same set of branch lengths (-spp)
+      pattern: "*.{nex,nexus,tre,tree,treefile}"
+      ontologies: []
+  - partitions_unlinked:
+      type: file
+      description: Partition file for edge-equal partition model, all partitions share
+        same set of branch lengths (-sp)
+      pattern: "*.{nex,nexus,tre,tree,treefile}"
+      ontologies: []
+  - guide_tree:
+      type: file
+      description: File containing guide tree for inference of site frequency profiles
+        (-ft)
+      pattern: "*.{nex,nexus,tre,tree,treefile}"
+      ontologies: []
+  - sitefreq_in:
+      type: file
+      description: Site frequency file (-fs)
+      pattern: "*.sitefreq"
+      ontologies: []
+  - constraint_tree:
+      type: file
+      description: File containing opological constraint tree in NEWICK format. The
+        constraint tree can be a multifurcating tree and need not to include all taxa.
+        (-g)
+      pattern: "*.{nwk,newick}"
+      ontologies: []
+  - trees_z:
+      type: file
+      description: File containing a set of trees for which log-likelihoods should be
+        computed (-z)
+      ontologies: []
+  - suptree:
+      type: file
+      description: File containing input “target” tree, support values are extracted
+        from trees passed via -t, and mapped onto the target tree (-sup)
+      ontologies: []
+  - trees_rf:
+      type: file
+      description: "File containing a second tree set (-rf). Used for computing the
+        distance to the primary tree set (`tree`)"
+      pattern: "*.{tre,tree,treefile,newick,nwk,nex,nexus}"
+      ontologies: []
 output:
-  - phylogeny:
-      - meta:
-          type: file
-          description: A phylogeny in Newick format
-          pattern: "*.{treefile}"
+  phylogeny:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.treefile":
           type: file
           description: A phylogeny in Newick format
           pattern: "*.{treefile}"
-  - report:
-      - meta:
-          type: file
-          description: |
-            Main report file containing computational
-            results as well as a textual visualization
-            of the final tree
-          pattern: "*.{iqtree}"
+          ontologies: []
+  report:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.iqtree":
           type: file
           description: |
@@ -113,243 +123,220 @@ output:
             results as well as a textual visualization
             of the final tree
           pattern: "*.{iqtree}"
-  - mldist:
-      - meta:
-          type: file
-          description: |
-            File containing the pairwise maximum
-            likelihood distances as a matrix
-          pattern: "*.{mldist}"
+          ontologies: []
+  mldist:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.mldist":
           type: file
           description: |
             File containing the pairwise maximum
             likelihood distances as a matrix
           pattern: "*.{mldist}"
-  - lmap_svg:
-      - meta:
-          type: file
-          description: |
-            File containing likelihood mapping analysis
-            results in .svg format (-lmap/-lmclust)
-          pattern: "*.lmap.svg"
+          ontologies: []
+  lmap_svg:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.lmap.svg":
           type: file
           description: |
             File containing likelihood mapping analysis
             results in .svg format (-lmap/-lmclust)
           pattern: "*.lmap.svg"
-  - lmap_eps:
-      - meta:
-          type: file
-          description: |
-            File containing likelihood mapping analysis
-            results in .eps format (-lmap/-lmclust)
-          pattern: "*.lmap.eps"
+          ontologies: []
+  lmap_eps:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.lmap.eps":
           type: file
           description: |
             File containing likelihood mapping analysis
             results in .eps format (-lmap/-lmclust)
           pattern: "*.lmap.eps"
-  - lmap_quartetlh:
-      - meta:
-          type: file
-          description: |
-            File containing quartet log-likelihoods (-wql)
-          pattern: "*.lmap.quartetlh"
+          ontologies: []
+  lmap_quartetlh:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.lmap.quartetlh":
           type: file
           description: |
             File containing quartet log-likelihoods (-wql)
           pattern: "*.lmap.quartetlh"
-  - sitefreq_out:
-      - meta:
-          type: file
-          description: |
-            File containing site frequency profiles (-ft)
-          pattern: "*.sitefreq"
+          ontologies: []
+  sitefreq_out:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.sitefreq":
           type: file
           description: |
             File containing site frequency profiles (-ft)
           pattern: "*.sitefreq"
-  - bootstrap:
-      - meta:
-          type: file
-          description: |
-            File containing all bootstrap trees (-wbt/-wbtl)
-          pattern: "*.ufboot"
+          ontologies: []
+  bootstrap:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.ufboot":
           type: file
           description: |
             File containing all bootstrap trees (-wbt/-wbtl)
           pattern: "*.ufboot"
-  - state:
-      - meta:
-          type: file
-          description: |
-            File containing ancestral sequences for all
-            nodes of the tree by empirical Bayesian method (-asr)
-          pattern: "*.{state}"
+          ontologies: []
+  state:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.state":
           type: file
           description: |
             File containing ancestral sequences for all
             nodes of the tree by empirical Bayesian method (-asr)
           pattern: "*.{state}"
-  - contree:
-      - meta:
-          type: file
-          description: |
-            File containing consensus tree (-con/-bb)
-          pattern: "*.{contree}"
+          ontologies: []
+  contree:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.contree":
           type: file
           description: |
             File containing consensus tree (-con/-bb)
           pattern: "*.{contree}"
-  - nex:
-      - meta:
-          type: file
-          description: |
-            File containing consensus network (-net/-bb)
-          pattern: "*.{nex}"
+          ontologies: []
+  nex:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.nex":
           type: file
           description: |
             File containing consensus network (-net/-bb)
           pattern: "*.{nex}"
-  - splits:
-      - meta:
-          type: file
-          description: |
-            File containing consensus network in star-dot format (-wsplits)
-          pattern: "*.{splits}"
+          ontologies: []
+  splits:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.splits":
           type: file
           description: |
             File containing consensus network in star-dot format (-wsplits)
           pattern: "*.{splits}"
-  - suptree:
-      - meta:
-          type: file
-          description: |
-            File containing tree with assigned support
-            values based on supplied "target" tree (-sup)
-          pattern: "*.{suptree}"
+          ontologies: []
+  suptree:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.suptree":
           type: file
           description: |
             File containing tree with assigned support
             values based on supplied "target" tree (-sup)
           pattern: "*.{suptree}"
-  - alninfo:
-      - meta:
-          type: file
-          description: |
-            File containing alignment site statistics (-alninfo)
-          pattern: "*.{alninfo}"
+          ontologies: []
+  alninfo:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.alninfo":
           type: file
           description: |
             File containing alignment site statistics (-alninfo)
           pattern: "*.{alninfo}"
-  - partlh:
-      - meta:
-          type: file
-          description: |
-            File containing partition log-likelihoods (-wpl)
-          pattern: "*.{partlh}"
+          ontologies: []
+  partlh:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.partlh":
           type: file
           description: |
             File containing partition log-likelihoods (-wpl)
           pattern: "*.{partlh}"
-  - siteprob:
-      - meta:
-          type: file
-          description: |
-            File containing site posterior probabilities (-wspr/-wspm/-wspmr)
-          pattern: "*.{siteprob}"
+          ontologies: []
+  siteprob:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.siteprob":
           type: file
           description: |
             File containing site posterior probabilities (-wspr/-wspm/-wspmr)
           pattern: "*.{siteprob}"
-  - sitelh:
-      - meta:
-          type: file
-          description: |
-            File containing site log-likelihoods (-wsl/-wslr/-wslm/-wslmr)
-          pattern: "*.{sitelh}"
+          ontologies: []
+  sitelh:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.sitelh":
           type: file
           description: |
             File containing site log-likelihoods (-wsl/-wslr/-wslm/-wslmr)
           pattern: "*.{sitelh}"
-  - treels:
-      - meta:
-          type: file
-          description: |
-            File containing all locally optimal trees (-wt)
-          pattern: "*.{treels}"
+          ontologies: []
+  treels:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.treels":
           type: file
           description: |
             File containing all locally optimal trees (-wt)
           pattern: "*.{treels}"
-  - rate:
-      - meta:
-          type: file
-          description: |
-            File containing inferred site-specific
-            evolutionary rates (-wsr)
-          pattern: "*.{rate}"
+          ontologies: []
+  rate:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.rate  ":
           type: file
           description: |
             File containing inferred site-specific
             evolutionary rates (-wsr)
           pattern: "*.{rate}"
-  - mlrate:
-      - meta:
-          type: file
-          description: |
-            File containing site-specific substitution
-            rates determined by maximum likelihood (--mlrate)
-          pattern: "*.{mlrate}"
+          ontologies: []
+  mlrate:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.mlrate":
           type: file
           description: |
             File containing site-specific substitution
             rates determined by maximum likelihood (--mlrate)
           pattern: "*.{mlrate}"
-  - exch_matrix:
-      - meta:
-          type: file
-          description: File containing the exchangeability matrix obtained from the optimization
-            (--link-exchange-rates)
-          pattern: "GTRPMIX.nex"
+          ontologies: []
+  exch_matrix:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - GTRPMIX.nex:
           type: file
-          description: File containing the exchangeability matrix obtained from the optimization
-            (--link-exchange-rates)
+          description: File containing the exchangeability matrix obtained from the
+            optimization (--link-exchange-rates)
           pattern: "GTRPMIX.nex"
-  - log:
-      - meta:
-          type: file
-          description: Log file of entire run
-          pattern: "*.{log}"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.log":
           type: file
           description: Log file of entire run
           pattern: "*.{log}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@avantonder"
   - "@aunderwo"

@@ -4,11 +4,11 @@ process PERBASE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/perbase:0.10.2--h15397dd_0':
-        'biocontainers/perbase:0.10.2--h15397dd_0' }"
+        'https://depot.galaxyproject.org/singularity/perbase:0.10.3--h15397dd_0':
+        'biocontainers/perbase:0.10.3--h15397dd_0' }"
 
     input:
-    tuple val(meta), path(bam), path(index)
+    tuple val(meta), path(bam), path(index), path(bed)
     tuple val(meta2), path(fasta), path(fai)
 
     output:
@@ -19,15 +19,17 @@ process PERBASE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args      = task.ext.args ?: ''
+    def prefix    = task.ext.prefix ?: "${meta.id}"
     def reference = fasta ? "--ref-fasta ${fasta}" : ""
+    def region    = bed   ? "--bed-file ${bed}"    : ""
     """
     perbase \\
         base-depth \\
         $bam \\
         $args \\
         $reference \\
+        $region \\
         --threads $task.cpus \\
         --bgzip \\
         --output ${prefix}.tsv.gz

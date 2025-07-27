@@ -25,10 +25,12 @@ input:
         type: file
         description: Single input BAM file.
         pattern: "*.bam"
+        ontologies: []
     - bai:
         type: file
         description: The BAI file for the input BAM file
         pattern: "*.bai"
+        ontologies: []
     - read_group_settings:
         type: file
         description: |
@@ -37,15 +39,17 @@ input:
           single/double identifier and the maximum cycle number
           of the sequencer. e.g. "RG1 single 100"
         pattern: "*.txt"
+        ontologies: []
     - blacklist:
         type: file
         description: |
           blacklist.txt (optional), A txt file with blacklisted read names
           that should be ignored and just written to file, each on a new line
         pattern: "*.txt"
+        ontologies: []
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,8 +58,9 @@ output:
           type: file
           description: A BAM file with suffix_mergedReads.bam
           pattern: "*_mergedReads.bam"
-  - txt:
-      - meta:
+          ontologies: []
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -65,11 +70,15 @@ output:
           description: A file listing all reads that were filtered out in the merging
             process with suffix_ignoredReads.txt.gz
           pattern: "*.txt.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@merszym"
 maintainers:

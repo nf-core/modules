@@ -1,0 +1,64 @@
+nextflow_process {
+
+    name "Test Process EIGSCIS"
+    script "../main.nf"
+    process "EIGSCIS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cooltools"
+    tag "cooltools/eigscis"
+
+    test("homo_sapiens - cool") {
+
+        when {
+            params {
+                modules_testdata_base_path = "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/"
+            }
+            process {
+                """
+                input[0] = [ [ id:'test' ],
+                       file(params.modules_testdata_base_path + '/genomics/homo_sapiens/cooler/merge/toy/toy.symm.upper.balanced.2.cool', checkIfExists: true)
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - cool - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                modules_testdata_base_path = "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/"
+            }
+            process {
+                """
+                input[0] = [ [ id:'test' ],
+                       file(params.modules_testdata_base_path + '/genomics/homo_sapiens/cooler/merge/toy/toy.symm.upper.balanced.2.cool', checkIfExists: true)
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

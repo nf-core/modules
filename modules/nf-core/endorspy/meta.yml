@@ -26,18 +26,21 @@ input:
         type: file
         description: output of samtools flagstat in a txt file, assumes no quality filtering
           nor duplicate removal performed
+        ontologies: []
     - stats_qualityfiltered:
         type: file
         description: output of samtools flagstat in a txt file, assumes some form of
           quality or length filtering has been performed, must be provided with at least
           one of the options -r or -d
+        ontologies: []
     - stats_deduplicated:
         type: file
         description: output of samtools flagstat in a txt file, whereby duplicate removal
           has been performed on the input reads
+        ontologies: []
 output:
-  - json:
-      - meta:
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -46,11 +49,15 @@ output:
           type: file
           description: file with the endogenous DNA calculation tailored for multiQC
           pattern: "*_mqc.json"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@aidaanva"
 maintainers:
