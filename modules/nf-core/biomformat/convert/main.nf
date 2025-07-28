@@ -11,9 +11,9 @@ process BIOMFORMAT_CONVERT {
     tuple val(meta), path(biom)
 
     output:
-    tuple val(meta), path("*.biom")        , optional: true, emit: biom
-    tuple val(meta), path("*.txt")         , optional: true, emit: txt
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), path("*.biom"), optional: true, emit: biom
+    tuple val(meta), path("*.txt") , optional: true, emit: txt
+    path "versions.yml"                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
