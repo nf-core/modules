@@ -11,16 +11,16 @@ process VAMB_BIN {
     tuple val(meta), path(assembly), path(abundance_tsv), path(bams, stageAs: "bams/*"), path(taxonomy)
 
     output:
-    tuple val(meta), path("${prefix}.vamb/bins/*.fna.gz")             , emit: bins             , optional: true
-    tuple val(meta), path("${prefix}.vamb/vae*_clusters_metadata.tsv"), emit: clusters_metadata
-    tuple val(meta), path("${prefix}.vamb/vae*_clusters_split.tsv")   , emit: clusters_split   , optional: true
-    tuple val(meta), path("${prefix}.vamb/vae*_clusters_unsplit.tsv") , emit: clusters_unsplit
-    tuple val(meta), path("${prefix}.vamb/results_taxometer.tsv")     , emit: taxometer_results, optional: true
-    tuple val(meta), path("${prefix}.vamb/latent.npz")                , emit: latent_encoding  , optional: true
-    tuple val(meta), path("${prefix}.vamb/abundance.npz")             , emit: abundance
-    tuple val(meta), path("${prefix}.vamb/composition.npz")           , emit: composition
-    tuple val(meta), path("${prefix}.vamb/log.txt")                   , emit: log
-    path "versions.yml"                                               , emit: versions
+    tuple val(meta), path("${prefix}/bins/*.fna.gz")             , emit: bins             , optional: true
+    tuple val(meta), path("${prefix}/vae*_clusters_metadata.tsv"), emit: clusters_metadata
+    tuple val(meta), path("${prefix}/vae*_clusters_split.tsv")   , emit: clusters_split   , optional: true
+    tuple val(meta), path("${prefix}/vae*_clusters_unsplit.tsv") , emit: clusters_unsplit
+    tuple val(meta), path("${prefix}/results_taxometer.tsv")     , emit: taxometer_results, optional: true
+    tuple val(meta), path("${prefix}/latent.npz")                , emit: latent_encoding  , optional: true
+    tuple val(meta), path("${prefix}/abundance.npz")             , emit: abundance
+    tuple val(meta), path("${prefix}/composition.npz")           , emit: composition
+    tuple val(meta), path("${prefix}/log.txt")                   , emit: log
+    path "versions.yml"                                          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,22 +29,22 @@ process VAMB_BIN {
     if(bams && abundance_tsv) {
         error("ERROR: Both bams and abundance TSV supplied to Vamb!")
     }
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
-    def mode = taxonomy ? "taxvamb" : "default"
+    def args    = task.ext.args ?: ''
+    prefix      = task.ext.prefix ?: "${meta.id}"
+    def mode    = taxonomy ? "taxvamb" : "default"
     depth_input = abundance_tsv ? "--abundance_tsv ${abundance_tsv}" : "--bamdir bams/"
-    tax_input = taxonomy ? "--taxonomy ${taxonomy}" : ""
+    tax_input   = taxonomy ? "--taxonomy ${taxonomy}" : ""
     """
     vamb bin \\
         ${mode} \\
         -p ${task.cpus} \\
-        --outdir ${prefix}.vamb/ \\
+        --outdir ${prefix}/ \\
         --fasta ${assembly} \\
         ${depth_input} \\
         ${tax_input} \\
         ${args}
 
-    find ${prefix}.vamb/bins -name "*.fna" -exec gzip {} \\;
+    find ${prefix}/bins -name "*.fna" -exec gzip {} \\;
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -57,23 +57,23 @@ process VAMB_BIN {
         error("ERROR: Both bams and abundance TSV supplied to Vamb!")
     }
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix   = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p ${prefix}.vamb/bins
+    mkdir -p ${prefix}/bins
 
-    echo "" | gzip > ${prefix}.vamb/bins/1.fna.gz
-    echo "" | gzip > ${prefix}.vamb/bins/2.fna.gz
+    echo "" | gzip > ${prefix}/bins/1.fna.gz
+    echo "" | gzip > ${prefix}/bins/2.fna.gz
 
-    touch ${prefix}.vamb/results_taxometer.tsv
-    touch ${prefix}.vamb/predictor_model.pt
-    touch ${prefix}.vamb/vae_clusters_metadata.tsv
-    touch ${prefix}.vamb/vae_clusters_split.tsv
-    touch ${prefix}.vamb/vae_clusters_unsplit.tsv
-    touch ${prefix}.vamb/latent.npz
-    touch ${prefix}.vamb/model.pt
-    touch ${prefix}.vamb/abundance.npz
-    touch ${prefix}.vamb/composition.npz
-    touch ${prefix}.vamb/log.txt
+    touch ${prefix}/results_taxometer.tsv
+    touch ${prefix}/predictor_model.pt
+    touch ${prefix}/vae_clusters_metadata.tsv
+    touch ${prefix}/vae_clusters_split.tsv
+    touch ${prefix}/vae_clusters_unsplit.tsv
+    touch ${prefix}/latent.npz
+    touch ${prefix}/model.pt
+    touch ${prefix}/abundance.npz
+    touch ${prefix}/composition.npz
+    touch ${prefix}/log.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

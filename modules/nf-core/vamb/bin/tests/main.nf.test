@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process VAMB_BIN"
     script "../main.nf"
     process "VAMB_BIN"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -15,8 +16,6 @@ nextflow_process {
     tag "subworkflows/mmseqs_contig_taxonomy"
 
     test("mag contigs - tsv") {
-
-        config "./nextflow_tsv.config"
 
         setup {
             run("BOWTIE2_BUILD") {
@@ -86,7 +85,9 @@ nextflow_process {
         when {
 
             params {
+                gawk_prefix = "test"
                 gawk_args2 = "'BEGIN { OFS = \"\\t\" } NR == 1 {print \"contigname\", \"test\"} NR > 1 {print \$0}'"
+                mmseqs_taxonomy_args = ""
                 // Recommended parameters for testing in default mode
                 vamb_args = "-e 5 -q 2 3 --minfasta 1 -o '' --seed 1"
             }
@@ -125,8 +126,6 @@ nextflow_process {
 
 
     test("mag contigs - bam") {
-
-        config "./nextflow_bam.config"
 
         setup {
             run("BOWTIE2_BUILD") {
@@ -175,6 +174,9 @@ nextflow_process {
 
             params {
                 // Recommended parameters for testing in default mode
+                gawk_args2 = ""
+                gawk_prefix = "test"
+                mmseqs_taxonomy_args = ""
                 vamb_args = "-e 5 -q 2 3 --minfasta 1 -o '' --seed 1"
             }
 
@@ -212,8 +214,6 @@ nextflow_process {
 
 
     test("mag contigs - bam - taxonomy") {
-
-        config "./nextflow_tax.config"
 
         setup {
             run("BOWTIE2_BUILD") {
@@ -330,7 +330,6 @@ nextflow_process {
     test("mag contigs - bam - stub") {
 
         options "-stub"
-        config "./nextflow_bam.config"
 
         setup {
             run("BOWTIE2_BUILD") {
@@ -378,6 +377,9 @@ nextflow_process {
         when {
 
             params {
+                gawk_prefix = "test"
+                gawk_args2 = ""
+                mmseqs_taxonomy_args = ""
                 vamb_args = ""
             }
 
