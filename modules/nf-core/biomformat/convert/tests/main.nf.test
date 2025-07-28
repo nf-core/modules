@@ -14,8 +14,8 @@ nextflow_process {
 
     setup {
         run ("VSEARCH_CLUSTER", alias: "VSEARCH_CLUSTER_BIOMOUT") {
-
             script "../../../vsearch/cluster/main.nf"
+
             process {
                 """
                 input[0] = [
@@ -39,6 +39,7 @@ nextflow_process {
         run ("VSEARCH_CLUSTER", alias: "VSEARCH_CLUSTER_TXTOUT") {
 
             script "../../../vsearch/cluster/main.nf"
+
             process {
                 """
                 input[0] = [
@@ -66,6 +67,12 @@ nextflow_process {
         when {
             params {
                 module_args = '--to-tsv'
+                biomout_args  = '--id 0.8'
+                biomout_args2 = "--cluster_fast"
+                biomout_args3 = "--biomout"
+                txtout_args  = '--id 0.8'
+                txtout_args2 = "--cluster_fast"
+                txtout_args3 = "--otutabout"
             }            
 
             process {
@@ -89,6 +96,12 @@ nextflow_process {
         when {
             params {
                 module_args = '--table-type="OTU table" --to-json'
+                biomout_args  = '--id 0.8'
+                biomout_args2 = "--cluster_fast"
+                biomout_args3 = "--biomout"
+                txtout_args  = '--id 0.8'
+                txtout_args2 = "--cluster_fast"
+                txtout_args3 = "--otutabout"
             }
 
             process {
@@ -116,6 +129,12 @@ nextflow_process {
         when {
             params {
                 module_args = '-table-type="OTU table" --to-hdf5'
+                biomout_args  = '--id 0.8'
+                biomout_args2 = "--cluster_fast"
+                biomout_args3 = "--biomout"
+                txtout_args  = '--id 0.8'
+                txtout_args2 = "--cluster_fast"
+                txtout_args3 = "--otutabout"
             }            
 
             process {
@@ -140,6 +159,12 @@ nextflow_process {
         when {
             params {
                 module_args = '--table-type="OTU table" --to-json'
+                biomout_args  = '--id 0.8'
+                biomout_args2 = "--cluster_fast"
+                biomout_args3 = "--biomout"
+                txtout_args  = '--id 0.8'
+                txtout_args2 = "--cluster_fast"
+                txtout_args3 = "--otutabout"
             }
 
             process {
@@ -165,6 +190,12 @@ nextflow_process {
         when {
             params {
                 module_args = '--to-tsv'
+                biomout_args  = '--id 0.8'
+                biomout_args2 = "--cluster_fast"
+                biomout_args3 = "--biomout"
+                txtout_args  = '--id 0.8'
+                txtout_args2 = "--cluster_fast"
+                txtout_args3 = "--otutabout"
             }            
 
             process {
