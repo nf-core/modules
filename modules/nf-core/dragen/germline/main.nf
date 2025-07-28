@@ -31,7 +31,6 @@ process DRAGEN {
     path variant_annotation_data
     path vc_combine_phased_variants_distance_bed
     path vc_excluded_regions_bed
-    path vc_decoy_contigs
     path vc_forcegt_vcf
     path vc_log_bed
     path vc_mapping_metrics
@@ -346,9 +345,6 @@ process DRAGEN {
     }
     if (vc_excluded_regions_bed) {
         args = args + " --vc-excluded-regions-bed " + vc_excluded_regions_bed
-    }
-    if (vc_decoy_contigs) {
-        args = args + " --vc-decoy-contigs " + vc_decoy_contigs
     }
     if (vc_forcegt_vcf) {
         args = args + " --vc-forcegt-vcf " + vc_forcegt_vcf
