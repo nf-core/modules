@@ -46,6 +46,7 @@ nextflow_process {
         when {
             params{
                 module_args = ''
+                index_sparse_args = ''
             }
 
             process {
@@ -78,6 +79,7 @@ nextflow_process {
         when {
             params{
                 module_args = ''
+                index_sparse_args = ''
             }
 
             process {
@@ -103,11 +105,12 @@ nextflow_process {
 
     }
 
-        test("sarscov2 - sparse - single") {
+    test("sarscov2 - sparse - single") {
 
         when {
             params{
                 module_args = '-Sparse'
+                index_sparse_args = '-Sparse'
             }
 
             process {
@@ -140,6 +143,7 @@ nextflow_process {
         when {
             params{
                 module_args = '-Sparse'
+                index_sparse_args = '-Sparse'
             }
 
             process {
@@ -170,6 +174,7 @@ nextflow_process {
         when {
             params{
                 module_args = ''
+                index_sparse_args = ''
             }
 
             process {
@@ -203,6 +208,7 @@ nextflow_process {
         when {
             params{
                 module_args = ''
+                index_sparse_args = ''
             }
 
             process {
@@ -234,6 +240,7 @@ nextflow_process {
         when {
             params{
                 module_args = ''
+                index_sparse_args = ''
             }
 
             process {
@@ -266,6 +273,7 @@ nextflow_process {
         when {
             params{
                 module_args = ''
+                index_sparse_args = ''
             }
 
             process {
@@ -297,6 +305,7 @@ nextflow_process {
         when {
             params{
                 module_args = '-vcf'
+                index_sparse_args = ''
             }
 
             process {
@@ -330,6 +339,7 @@ nextflow_process {
         when {
             params{
                 module_args = '-vcf'
+                index_sparse_args = ''
             }
 
             process {
@@ -361,6 +371,7 @@ nextflow_process {
         when {
             params{
                 module_args = '-sam'
+                index_sparse_args = ''
             }
 
             process {
@@ -394,6 +405,7 @@ nextflow_process {
         when {
             params{
                 module_args = '-sam'
+                index_sparse_args = ''
             }
 
             process {
