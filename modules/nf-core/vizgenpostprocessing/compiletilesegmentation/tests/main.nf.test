@@ -10,8 +10,20 @@ nextflow_process {
     tag "vizgenpostprocessing/preparesegmentation"
     tag "vizgenpostprocessing/runsegmentationontile"
     tag "vizgenpostprocessing/compiletilesegmentation"
+    tag "untar"
 
     setup {
+        run("UNTAR", alias: "TESTDATA") {
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [:],
+                    file('https://github.com/nf-core/test-datasets/raw/refs/heads/modules/data/spatial_omics/merscope/minimal_data.tar.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
         run("VIZGENPOSTPROCESSING_PREPARESEGMENTATION") {
             script "../../preparesegmentation/main.nf"
             params {
@@ -19,27 +31,18 @@ nextflow_process {
             }
             process {
                 """
-                // Create test directory and files before process execution
-                testDir = file("tmpdir", type: 'dir')
-                testDir.mkdir()
+                TESTDATA.out.untar.map {
+                    meta, dir ->
+                        def images_dir = dir.listFiles().find { it.getName().matches('images') && it.isDirectory() }
+                        def pixel_transform_file = images_dir.listFiles().find { it.getName().matches('micron_to_mosaic_pixel_transform.csv') }
+                    return [
+                        [ id:'test' ],
+                        images_dir,
+                        pixel_transform_file
+                    ]
+                }.set { input_ch }
 
-                // Download source file
-                sourceUrl = 'https://github.com/nf-core/test-datasets/raw/modules/data/imaging/segmentation/nuclear_image.tif'
-                sourceFile = file(sourceUrl)
-
-                // Create renamed copies
-                sourceFile.copyTo(file("\${testDir}/mosaic_DAPI_z3.tif"))
-                sourceFile.copyTo(file("\${testDir}/mosaic_PolyT_z3.tif"))
-
-                // Create transform file
-                transformFile = file("\${testDir}/micron_to_mosaic_pixel_transform.csv")
-                transformFile.text = "2 0 0\\n0 2 0\\n0 0 1"
-
-                input[0] = [
-                    [ id:'test' ],
-                    testDir,
-                    transformFile
-                ]
+                input[0] = input_ch
                 input[1] = file('https://raw.githubusercontent.com/Vizgen/vpt-plugin-cellpose2/refs/heads/develop/example_analysis_algorithm/cellpose2_nuclei.json', checkIfExists: true)
                 input[2] = "mosaic_(?P<stain>[\\\\w|-]+)_z(?P<z>[0-9]+).tif"
                 """
@@ -54,10 +57,14 @@ nextflow_process {
                     .last()
                     .set { segmentation_params_ch }
 
-                Channel.of([
-                    [ id:'test' ],
-                    file("tmpdir", type: 'dir'),
-                ])
+                TESTDATA.out.untar.map {
+                    meta, dir ->
+                        def images_dir = dir.listFiles().find { it.getName().matches('images') && it.isDirectory() }
+                    return [
+                        [ id:'test' ],
+                        images_dir
+                    ]
+                }
                 .combine(segmentation_params_ch) // segmentation params JSON file
                 .combine(Channel.of(0)) // tile_index
                 .set { seg_input_ch }
