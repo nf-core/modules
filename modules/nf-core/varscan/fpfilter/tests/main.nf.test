@@ -104,6 +104,7 @@ nextflow_process {
         when {
             params {
                 fpfilter_args = '--min-ref-avgrl 0 --min-var-avgrl 0'
+                somatic_args = "--output-vcf 1"
             }
             process {
                 """
