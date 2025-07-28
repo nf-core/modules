@@ -23,7 +23,7 @@ process VARSCAN_FPFILTER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkfifo vcf_file
-    gzip -cdf $vcf > vcf_file &
+    bgzip -cdf $vcf > vcf_file &
 
     varscan fpfilter \\
         vcf_file \\
@@ -34,8 +34,8 @@ process VARSCAN_FPFILTER {
 
     rm vcf_file
 
-    bgzip ${prefix}.varscan.pass.vcf
-    bgzip ${prefix}.varscan.fail.vcf
+    bgzip ${prefix}.pass.vcf
+    bgzip ${prefix}.fail.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
