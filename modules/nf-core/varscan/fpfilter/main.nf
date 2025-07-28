@@ -21,18 +21,16 @@ process VARSCAN_FPFILTER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def compressed = vcf.name.endsWith('.gz') ? true : false
     """
-    mkfifo vcf_file
-    bgzip -cdf $vcf > vcf_file &
+    ${compressed ? "bgzip -df $vcf" : ""}
 
     varscan fpfilter \\
-        vcf_file \\
+        ${compressed ? "${vcf.baseName}" : "$vcf"} \\
         $rc \\
         --output-file ${prefix}.pass.vcf \\
         --filtered-file ${prefix}.fail.vcf \\
         $args
-
-    rm vcf_file
 
     bgzip ${prefix}.pass.vcf
     bgzip ${prefix}.fail.vcf
