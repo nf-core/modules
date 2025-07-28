@@ -10,7 +10,7 @@ process KMA_KMA {
     input:
     tuple val(meta), path(reads)
     tuple val(meta2), path(index)
-    val   interleaved
+    val (interleaved)
 
     output:
     tuple val(meta), path("*.res")    , optional: true, emit: res     // Results overview
