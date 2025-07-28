@@ -17,9 +17,6 @@ nextflow_process {
 
         run("VARSCAN_SOMATIC") {
             script "../../somatic/main.nf"
-            params {
-                somatic_args = "--output-vcf 1"
-            }
             process {
                 """
                 input[0] = [
