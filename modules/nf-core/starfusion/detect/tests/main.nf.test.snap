@@ -70,7 +70,7 @@
         },
         "timestamp": "2025-07-23T18:57:42.338803785"
     },
-    "Should run without failures": {
+    "Paired end - Should run without failures": {
         "content": [
             [
                 [
@@ -139,6 +139,59 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-07-25T13:53:08.587787666"
+        "timestamp": "2025-07-28T16:37:39.69722162"
+    },
+    "Single end - Should run without failures": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.starfusion.fusion_predictions.tsv:md5,62edb2285932b5afd88f6aba7d4ebdd1"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.starfusion.abridged.tsv:md5,4f76c050e3b012320b5e526f7076ffb8"
+                ]
+            ],
+            [
+                "versions.yml:md5,94428cafdf0c7ef55422f2b70257e186"
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    [
+                        "#FusionName",
+                        "CCDC6--RET",
+                        "TATDN1--GSDMB",
+                        "TOB1--SYNRG",
+                        "ACACA--STAC2",
+                        "TATDN1--GSDMB",
+                        "BAG6--SLC44A4",
+                        "TATDN1--GSDMB",
+                        "RARA--PKIA",
+                        "AC007562.1--AC012005.2",
+                        "SUMF1--LRRFIP2",
+                        "RAB22A--MYO9B",
+                        "BCR--ABL1"
+                    ]
+                ]
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.6"
+        },
+        "timestamp": "2025-07-28T15:46:14.791676551"
     }
 }

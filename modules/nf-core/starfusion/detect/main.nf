@@ -1,4 +1,4 @@
-process STARFUSION {
+process STARFUSION_DETECT {
     tag "$meta.id"
     label 'process_high'
 
@@ -32,7 +32,6 @@ process STARFUSION {
         $fastq_arg \\
         $junction_arg \\
         --CPU $task.cpus \\
-        --examine_coding_effect \\
         --output_dir . \\
         $args
 
