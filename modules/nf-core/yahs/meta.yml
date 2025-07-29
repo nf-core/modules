@@ -25,18 +25,21 @@ input:
         type: file
         description: BED file containing coordinates of read alignments
         pattern: "*.{bed,bam,bin}"
-  - - fasta:
-        type: file
-        description: FASTA reference file
-        pattern: "*.{fasta,fa}"
-  - - fai:
-        type: file
-        description: index of the reference file
-        pattern: "*.{fai}"
+        ontologies: []
+  - fasta:
+      type: file
+      description: FASTA reference file
+      pattern: "*.{fasta,fa}"
+      ontologies: []
+  - fai:
+      type: file
+      description: index of the reference file
+      pattern: "*.{fai}"
+      ontologies: []
 output:
   #Only when we have meta
-  - scaffolds_fasta:
-      - meta:
+  scaffolds_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,8 +48,9 @@ output:
           type: file
           description: FASTA file with resulting contigs
           pattern: "*scaffolds_final.fa"
-  - scaffolds_agp:
-      - meta:
+          ontologies: []
+  scaffolds_agp:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,22 +59,26 @@ output:
           type: file
           description: AGP file containing contigs placing coordinates
           pattern: "*scaffolds_final.agp"
-  - binary:
-      - meta:
+          ontologies: []
+  binary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
       - "*bin":
           type: file
-          description: BIN file with alignment results of Hi-C reads to the contigs in
-            internal YaHS binary format
+          description: BIN file with alignment results of Hi-C reads to the contigs
+            in internal YaHS binary format
           pattern: "*bin"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ksenia-krasheninnikova"
 maintainers:

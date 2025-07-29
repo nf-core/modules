@@ -27,14 +27,17 @@ input:
         type: file
         description: BAM or CRAM file with alignments
         pattern: "*.{bam,cram}"
+        ontologies: []
     - bam_index:
         type: file
         description: BAI file matching the BAM file
         pattern: "*.{bai}"
+        ontologies: []
     - vcf:
         type: file
         description: Matching VCF of alignments
         pattern: "*.vcf"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -44,9 +47,10 @@ input:
         type: file
         description: indexed reference FASTA file (recommended for reading CRAM files)
         pattern: "*.{fa,fasta}"
+        ontologies: []
 output:
-  - gt_vcf:
-      - meta:
+  gt_vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,8 +59,9 @@ output:
           type: file
           description: Genotyped SVs
           pattern: "*.vcf"
-  - json:
-      - meta:
+          ontologies: []
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -65,11 +70,15 @@ output:
           type: file
           description: JSON file including library information
           pattern: "*.json"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@tstoeriko"
 maintainers:

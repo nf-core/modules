@@ -34,7 +34,11 @@ process PARABRICKS_FQ2BAMMETH {
     def known_sites_output  = known_sites ? "--out-recal-file ${prefix}.table" : ""
     def num_gpus            = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
     """
-    ln -sf \$(readlink $fasta) $index/$fasta
+    if [ -L $fasta ]; then
+        ln -sf \$(readlink $fasta) $index/$fasta
+    else
+        ln -sf ../$fasta $index/$fasta
+    fi
 
     pbrun \\
         fq2bam_meth \\

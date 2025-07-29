@@ -34,6 +34,7 @@ input:
         description: Set of somalier files for query samples. Obtained via somalier
           extract.
         pattern: "*.{somalier}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -44,37 +45,45 @@ input:
         description: TSV for labelled samples. e.g. Somalier labels for 1kg
           https://raw.githubusercontent.com/brentp/somalier/master/scripts/ancestry-labels-1kg.tsv
         pattern: "*.{tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
     - labelled_somalier_files:
         type: file
         description: Set of somalier files for labelled samples. e.g. Somalier files
           for 1kg https://zenodo.org/record/3479773/files/1kg.somalier.tar.gz?download=1
         pattern: "*.{somalier}"
+        ontologies: []
 output:
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*-ancestry.tsv":
+      - "*.somalier-ancestry.tsv":
           type: file
           description: TSV with ancestry information for query and labelled samples.
-          pattern: "*.{-ancestry.tsv}"
-  - html:
-      - meta:
+          pattern: "*.somalier-ancestry.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  html:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*-ancestry.html":
+      - "*.somalier-ancestry.html":
           type: file
           description: html file with ancestry information for query and labelled samples.
-          pattern: "*.{-ancestry.html}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          pattern: "*.somalier-ancestry.html"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@atrigila"
 maintainers:

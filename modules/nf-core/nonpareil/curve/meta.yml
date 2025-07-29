@@ -29,9 +29,10 @@ input:
         type: file
         description: Single npo redundancy summary file from nonpareil itself
         pattern: "*.npo"
+        ontologies: []
 output:
-  - png:
-      - meta:
+  png:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,11 +41,14 @@ output:
           type: file
           description: PNG file of the Nonpareil curve
           pattern: "*.png"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

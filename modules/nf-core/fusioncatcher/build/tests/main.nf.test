@@ -1,0 +1,35 @@
+nextflow_process {
+
+    name "Test Process FUSIONCATCHER_BUILD"
+    script "../main.nf"
+    process "FUSIONCATCHER_BUILD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fusioncatcher"
+    tag "fusioncatcher/build"
+
+    // Only stub tests because this module downloads about 50 GB of data
+
+    test("stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ id:'test', single_end:false ] // meta map
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

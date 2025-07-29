@@ -24,10 +24,12 @@ input:
         type: file
         description: Sorted BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - index:
         type: file
         description: Contains indexed bam file
         pattern: "*.bai"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -37,9 +39,10 @@ input:
         type: file
         description: Contains the features in the GTF format
         pattern: "*.gtf"
+        ontologies: []
 output:
-  - txt:
-      - meta:
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -48,11 +51,14 @@ output:
           type: file
           description: File containing feature counts output
           pattern: ".txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@zehrahazalsezer"
 maintainers:

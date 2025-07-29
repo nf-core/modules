@@ -12,7 +12,7 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,0e1f68970eadc4e9fc347177e8f64753"
+                    "versions.yml:md5,3fcec21ae56ff5ae565fa96b3bcd3edd"
                 ],
                 "file_out": [
                     [
@@ -24,36 +24,53 @@
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,0e1f68970eadc4e9fc347177e8f64753"
+                    "versions.yml:md5,3fcec21ae56ff5ae565fa96b3bcd3edd"
                 ]
+            },
+            [
+                "versions.yml:md5,3fcec21ae56ff5ae565fa96b3bcd3edd"
+            ],
+            {
+                "FIND_CONCATENATE": {
+                    "find": "4.6.0",
+                    "pigz": 2.8,
+                    "coreutils": 9.4
+                }
             }
         ],
         "meta": {
             "nf-test": "0.9.2",
             "nextflow": "24.10.4"
         },
-        "timestamp": "2025-01-23T15:51:53.836846"
+        "timestamp": "2025-06-17T10:47:21.776779"
     },
     "test_cat_zipped_zipped": {
         "content": [
             [
-                "MT192765.1\tGenbank\ttranscript\t259\t29667\t.\t+\t.\tID=unknown_transcript_1;geneID=orf1ab;gene_name=orf1ab",
-                "MT192765.1\tGenbank\tgene\t259\t21548\t.\t+\t.\tParent=unknown_transcript_1",
-                "MT192765.1\tGenbank\tCDS\t259\t13461\t.\t+\t0\tParent=unknown_transcript_1;exception=\"ribosomal slippage\";gbkey=CDS;gene=orf1ab;note=\"pp1ab;translated=by -1 ribosomal frameshift\";product=\"orf1ab polyprotein\";protein_id=QIK50426.1",
-                "MT192765.1\tGenbank\tCDS\t13461\t21548\t.\t+\t0\tParent=unknown_transcript_1;exception=\"ribosomal slippage\";gbkey=CDS;gene=orf1ab;note=\"pp1ab;translated=by -1 ribosomal frameshift\";product=\"orf1ab polyprotein\";protein_id=QIK50426.1",
-                "MT192765.1\tGenbank\tCDS\t21556\t25377\t.\t+\t0\tParent=unknown_transcript_1;gbkey=CDS;gene=S;note=\"structural protein\";product=\"surface glycoprotein\";protein_id=QIK50427.1",
-                "MT192765.1\tGenbank\tgene\t21556\t25377\t.\t+\t.\tParent=unknown_transcript_1"
+                "# LAST version 1219",
+                "#",
+                "# a=47 b=3 A=47 B=3 e=109 d=68 x=108 y=45 z=108 D=1e+06 E=1.44021e+07",
+                "# R=01 u=0 s=2 S=1 M=0 T=0 m=10 l=1 n=10 k=1 w=1000 t=4.51421 j=3 Q=0",
+                "# lastdb/genome",
+                "# Reference sequences=1 normal letters=29829"
             ],
             78,
             [
-                "versions.yml:md5,0e1f68970eadc4e9fc347177e8f64753"
-            ]
+                "versions.yml:md5,3fcec21ae56ff5ae565fa96b3bcd3edd"
+            ],
+            {
+                "FIND_CONCATENATE": {
+                    "find": "4.6.0",
+                    "pigz": 2.8,
+                    "coreutils": 9.4
+                }
+            }
         ],
         "meta": {
             "nf-test": "0.9.2",
             "nextflow": "24.10.4"
         },
-        "timestamp": "2025-01-23T15:52:03.644766"
+        "timestamp": "2025-06-17T13:29:46.67152"
     },
     "test_cat_zipped_unzipped": {
         "content": [
@@ -64,11 +81,11 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "cat.txt:md5,c439d3b60e7bc03e8802a451a0d9a5d9"
+                        "cat.txt:md5,1a983f97a01107efe42c8c3e7728b4c1"
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,0e1f68970eadc4e9fc347177e8f64753"
+                    "versions.yml:md5,3fcec21ae56ff5ae565fa96b3bcd3edd"
                 ],
                 "file_out": [
                     [
@@ -76,31 +93,29 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "cat.txt:md5,c439d3b60e7bc03e8802a451a0d9a5d9"
+                        "cat.txt:md5,1a983f97a01107efe42c8c3e7728b4c1"
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,0e1f68970eadc4e9fc347177e8f64753"
+                    "versions.yml:md5,3fcec21ae56ff5ae565fa96b3bcd3edd"
                 ]
+            },
+            [
+                "versions.yml:md5,3fcec21ae56ff5ae565fa96b3bcd3edd"
+            ],
+            {
+                "FIND_CONCATENATE": {
+                    "find": "4.6.0",
+                    "pigz": 2.8,
+                    "coreutils": 9.4
+                }
             }
         ],
         "meta": {
             "nf-test": "0.9.2",
             "nextflow": "24.10.4"
         },
-        "timestamp": "2025-01-23T15:52:13.04625"
-    },
-    "test_cat_name_conflict": {
-        "content": [
-            [
-                
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.4"
-        },
-        "timestamp": "2025-01-21T16:19:41.909438"
+        "timestamp": "2025-06-17T13:29:55.821372"
     },
     "test_cat_one_file_unzipped_zipped": {
         "content": [
@@ -114,14 +129,21 @@
             ],
             374,
             [
-                "versions.yml:md5,0e1f68970eadc4e9fc347177e8f64753"
-            ]
+                "versions.yml:md5,3fcec21ae56ff5ae565fa96b3bcd3edd"
+            ],
+            {
+                "FIND_CONCATENATE": {
+                    "find": "4.6.0",
+                    "pigz": 2.8,
+                    "coreutils": 9.4
+                }
+            }
         ],
         "meta": {
             "nf-test": "0.9.2",
             "nextflow": "24.10.4"
         },
-        "timestamp": "2025-01-23T15:35:25.062033"
+        "timestamp": "2025-06-17T10:03:43.863933"
     },
     "test_cat_unzipped_zipped": {
         "content": [
@@ -135,13 +157,20 @@
             ],
             375,
             [
-                "versions.yml:md5,0e1f68970eadc4e9fc347177e8f64753"
-            ]
+                "versions.yml:md5,3fcec21ae56ff5ae565fa96b3bcd3edd"
+            ],
+            {
+                "FIND_CONCATENATE": {
+                    "find": "4.6.0",
+                    "pigz": 2.8,
+                    "coreutils": 9.4
+                }
+            }
         ],
         "meta": {
             "nf-test": "0.9.2",
             "nextflow": "24.10.4"
         },
-        "timestamp": "2025-01-23T15:52:22.438779"
+        "timestamp": "2025-06-17T10:03:38.907552"
     }
 }

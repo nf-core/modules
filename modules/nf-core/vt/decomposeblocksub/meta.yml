@@ -40,8 +40,8 @@ input:
         ontologies:
           - edam: "http://edamontology.org/format_3003"
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -52,11 +52,14 @@ output:
           pattern: "*.vcf.gz"
           ontologies:
             - edam: "http://edamontology.org/format_3016"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@kubranarci"
 maintainers:

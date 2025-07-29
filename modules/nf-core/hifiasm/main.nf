@@ -4,8 +4,8 @@ process HIFIASM {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hifiasm:0.24.0--h5ca1c30_0' :
-        'biocontainers/hifiasm:0.24.0--h5ca1c30_0' }"
+        'https://depot.galaxyproject.org/singularity/hifiasm:0.25.0--h5ca1c30_0' :
+        'biocontainers/hifiasm:0.25.0--h5ca1c30_0' }"
 
     input:
     tuple val(meta) , path(long_reads)        , path(ul_reads)
@@ -67,7 +67,7 @@ process HIFIASM {
         ${ultralong} \\
         -o ${prefix} \\
         ${long_reads_sorted} \\
-        2> >( tee ${prefix}.stderr.log >&2 )
+        2>| >( tee ${prefix}.stderr.log >&2 )
 
     if [ -f ${prefix}.ec.fa ]; then
         gzip ${prefix}.ec.fa
@@ -96,8 +96,8 @@ process HIFIASM {
     touch ${prefix}.p_utg.gfa
     touch ${prefix}.p_ctg.gfa
     touch ${prefix}.a_ctg.gfa
-    touch ${prefix}.hap1.p_ctg.gfa
-    touch ${prefix}.hap2.p_ctg.gfa
+    touch ${prefix}.bp.hap1.p_ctg.gfa
+    touch ${prefix}.bp.hap2.p_ctg.gfa
     echo "" | gzip > ${prefix}.ec.fa.gz
     echo "" | gzip > ${prefix}.ovlp.paf.gz
     touch ${prefix}.stderr.log
