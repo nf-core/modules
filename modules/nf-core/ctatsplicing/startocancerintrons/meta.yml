@@ -57,131 +57,131 @@ input:
         pattern: "*"
 
 output:
-  - cancer_introns_sorted_bam:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - '*.cancer_intron_reads.sorted.bam':
-        type: file
-        description: "Sorted BAM file containing reads mapped to cancer introns"
-        pattern: "*.cancer_intron_reads.sorted.bam"
-        ontologies:
-          - edam: "http://edamontology.org/format_2572"
-  - cancer_introns_sorted_bai:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - '*.cancer_intron_reads.sorted.bam.bai':
-        type: file
-        description: "Index file for the sorted BAM of cancer introns"
-        pattern: "*.cancer_intron_reads.sorted.bam.bai"
-        ontologies:
-          - edam: "http://edamontology.org/format_3327"
-  - gene_reads_sorted_bam:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - '*.gene_reads.sorted.sifted.bam':
-        type: file
-        description: "Sorted BAM file containing reads mapped to gene regions after downsampling coverage"
-        pattern: "*.gene_reads.sorted.sifted.bam"
-        ontologies:
-          - edam: "http://edamontology.org/format_2572"
-  - gene_reads_sorted_bai:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - '*.gene_reads.sorted.sifted.bam.bai':
-        type: file
-        description: "Index file for the sorted BAM of gene reads after filtering"
-        pattern: "*.gene_reads.sorted.sifted.bam.bai"
-        ontologies:
-          - edam: "http://edamontology.org/format_3327"
-  - cancer_introns:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - '*.cancer.introns':
-        type: file
-        description: "File containing detected and filtered introns that are found to be enriched in cancer transcriptomes"
-        pattern: "*.cancer.introns"
-  - cancer_introns_prelim:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - '*.cancer.introns.prelim':
-        type: file
-        description: "File containing detected introns that have at least one supporting read and are found to be enriched in cancer transcriptomes"
-        pattern: "*.cancer.introns.prelim"
-  - introns:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - '*${prefix}.introns':
-        type: file
-        description: "File containing all detected introns"
-        pattern: "*${prefix}.introns"
-  - introns_igv_bed:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - '*.introns.for_IGV.bed':
-        type: file
-        description: "Bed file used as input for IGV-report visualization, containing cancer introns"
-        pattern: "*.introns.for_IGV.bed"
-        ontologies:
-          - edam: "http://edamontology.org/format_3586"
-  - igv_html:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - '*.ctat-splicing.igv.html':
-        type: file
-        description: "Self-contained IGV-report in HTML format for visualization of cancer introns"
-        pattern: "*.ctat-splicing.igv.html"
-  - igv_tracks:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - '*.igv.tracks':
-        type: file
-        description: "IGV tracks file for visualizing cancer introns in IGV"
-        pattern: "*.igv.tracks"
-  - chckpts:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - '*.chckpts':
-        type: file
-        description: "Checkpoint files for CTAT-SPLICING, useful for debugging or resuming interrupted runs"
-        pattern: "*.chckpts"
-  - versions:
+  cancer_introns_sorted_bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - '*.cancer_intron_reads.sorted.bam':
+          type: file
+          description: "Sorted BAM file containing reads mapped to cancer introns"
+          pattern: "*.cancer_intron_reads.sorted.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572"
+  cancer_introns_sorted_bai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - '*.cancer_intron_reads.sorted.bam.bai':
+          type: file
+          description: "Index file for the sorted BAM of cancer introns"
+          pattern: "*.cancer_intron_reads.sorted.bam.bai"
+          ontologies:
+            - edam: "http://edamontology.org/format_3327"
+  gene_reads_sorted_bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - '*.gene_reads.sorted.sifted.bam':
+          type: file
+          description: "Sorted BAM file containing reads mapped to gene regions after downsampling coverage"
+          pattern: "*.gene_reads.sorted.sifted.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572"
+  gene_reads_sorted_bai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - '*.gene_reads.sorted.sifted.bam.bai':
+          type: file
+          description: "Index file for the sorted BAM of gene reads after filtering"
+          pattern: "*.gene_reads.sorted.sifted.bam.bai"
+          ontologies:
+            - edam: "http://edamontology.org/format_3327"
+  cancer_introns:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - '*.cancer.introns':
+          type: file
+          description: "File containing detected and filtered introns that are found to be enriched in cancer transcriptomes"
+          pattern: "*.cancer.introns"
+  cancer_introns_prelim:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - '*.cancer.introns.prelim':
+          type: file
+          description: "File containing detected introns that have at least one supporting read and are found to be enriched in cancer transcriptomes"
+          pattern: "*.cancer.introns.prelim"
+  introns:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - '*${prefix}.introns':
+          type: file
+          description: "File containing all detected introns"
+          pattern: "*${prefix}.introns"
+  introns_igv_bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - '*.introns.for_IGV.bed':
+          type: file
+          description: "Bed file used as input for IGV-report visualization, containing cancer introns"
+          pattern: "*.introns.for_IGV.bed"
+          ontologies:
+            - edam: "http://edamontology.org/format_3586"
+  igv_html:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - '*.ctat-splicing.igv.html':
+          type: file
+          description: "Self-contained IGV-report in HTML format for visualization of cancer introns"
+          pattern: "*.ctat-splicing.igv.html"
+  igv_tracks:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - '*.igv.tracks':
+          type: file
+          description: "IGV tracks file for visualizing cancer introns in IGV"
+          pattern: "*.igv.tracks"
+  chckpts:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - '*.chckpts':
+          type: file
+          description: "Checkpoint files for CTAT-SPLICING, useful for debugging or resuming interrupted runs"
+          pattern: "*.chckpts"
+  versions:
     - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 authors:
   - "@anoronh4"
   - "@nvnieuwk"
