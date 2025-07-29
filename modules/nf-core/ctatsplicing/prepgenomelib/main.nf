@@ -3,9 +3,7 @@ process CTATSPLICING_PREPGENOMELIB {
     label 'process_single'
     stageInMode 'copy'
 
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://data.broadinstitute.org/Trinity/CTAT_SINGULARITY/CTAT-SPLICING/ctat_splicing.v0.0.2.simg' :
-        'docker.io/trinityctat/ctat_splicing:0.0.2' }"
+    container "nf-core/ctatsplicing:0.0.3"
 
     input:
     tuple val(meta), path(genome_lib)
@@ -19,6 +17,10 @@ process CTATSPLICING_PREPGENOMELIB {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "SPACERANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '0.0.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.

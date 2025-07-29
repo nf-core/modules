@@ -2,9 +2,7 @@ process CTATSPLICING_STARTOCANCERINTRONS {
     tag "$meta.id"
     label 'process_single'
 
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://data.broadinstitute.org/Trinity/CTAT_SINGULARITY/CTAT-SPLICING/ctat_splicing.v0.0.2.simg' :
-        'docker.io/trinityctat/ctat_splicing:0.0.2' }"
+    container "nf-core/ctatsplicing:0.0.3"
 
     input:
     tuple val(meta), path(split_junction), path(junction), path(bam), path(bai)
@@ -28,6 +26,10 @@ process CTATSPLICING_STARTOCANCERINTRONS {
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "SPACERANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def bam_arg = bam ? "--bam_file ${bam}" : ""
