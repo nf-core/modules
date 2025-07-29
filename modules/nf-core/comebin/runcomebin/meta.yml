@@ -1,6 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "comebin_runcomebin"
-description: Effective binning of metagenomic contigs using COntrastive Multi-viEw representation learning
+description: Effective binning of metagenomic contigs using COntrastive
+  Multi-viEw representation learning
 keywords:
   - metagenomics
   - binning
@@ -14,7 +15,6 @@ tools:
       tool_dev_url: "https://github.com/ziyewang/COMEBin"
       doi: "10.1038/s41467-023-44290-z"
       licence: ["GPL v3"]
-      identifier: null
 
 input:
   - - meta:
@@ -28,14 +28,13 @@ input:
         pattern: "*.{fa,fas,fasta,fna,fa.gz,fas.gz,fasta.gz,fna.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
-    - bams:
+    - bam:
         type: file
         description: |
-          List of sorted bam files of reads mapped to the reference assembly.
+          List of sorted bam files of reads mapped to the reference assembly. Not compatible with TSV input.
         pattern: "*.bam"
         ontologies:
           - edam: http://edamontology.org/format_2572 # BAM
-
 output:
   bins:
     - - meta:
@@ -48,6 +47,7 @@ output:
           pattern: "*.fna.gz"
           ontologies:
             - edam: http://edamontology.org/format_1929 # FASTA
+            - edam: http://edamontology.org/format_3989 # GZIP format
   tsv:
     - - meta:
           type: map
