@@ -22,11 +22,11 @@ process COMEBIN_RUNCOMEBIN {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
-    def clean_assembly = assembly.toString() - ~/\.gz$/
+    def args               = task.ext.args ?: ''
+    prefix                 = task.ext.prefix ?: "${meta.id}"
+    def clean_assembly     = assembly.toString() - ~/\.gz$/
     def decompress_contigs = assembly.toString() == clean_assembly ? "" : "gunzip -q -f $assembly"
-    def cleanup = decompress_contigs ? "rm ${clean_assembly}" : ""
+    def cleanup            = decompress_contigs ? "rm ${clean_assembly}" : ""
     """
     ${decompress_contigs}
 
@@ -51,7 +51,7 @@ process COMEBIN_RUNCOMEBIN {
 
     stub:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix   = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}/comebin_res_bins
 
