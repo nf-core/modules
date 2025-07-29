@@ -9,6 +9,65 @@ nextflow_process {
     tag "ctatsplicing"
     tag "ctatsplicing/prepgenomelib"
 
+    test("homo_sapiens - reference") {
+        setup {
+            run("STARFUSION_BUILD") {
+                script "../../../starfusion/build/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'minigenome_fasta' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa')
+                    ]
+                    input[1] = [
+                        [ id:'minigenome_gtf' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf')
+                    ]
+
+                    input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/CTAT_HumanFusionLib.mini.dat.gz')
+                    input[3] = "homo_sapiens"
+                    input[4] = "http://ftp.ebi.ac.uk/pub/databases/Pfam/releases/Pfam37.4/Pfam-A.hmm.gz"
+                    input[5] = [
+                        "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm",
+                        "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3f",
+                        "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3i",
+                        "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3m",
+                        "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3p"
+                    ]
+                    input[6] = "https://data.broadinstitute.org/Trinity/CTAT_RESOURCE_LIB/AnnotFilterRule.pm"
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = STARFUSION_BUILD.out.reference
+                input[1] = [
+                    file("https://data.broadinstitute.org/Trinity/CTAT_RESOURCE_LIB/CANCER_SPLICING_LIB_SUPPLEMENT/cancer_introns.GRCh38.Jun232020.tsv.gz", checkIfExists:true)
+                ]
+                """
+            }
+        }
+
+        then {
+            def stable_name    = getAllFilesFromDir(process.out.reference.get(0).get(1), includeDir: true)
+            def stable_content = getAllFilesFromDir(process.out.reference.get(0).get(1), includeDir: false, include: ['*','**/*'], ignore: ['refGene.sort.bed.gz.tbi','**/refGene.sort.bed.gz.tbi','**/cancer_splicing.idx'])
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        stable_name*.name,
+                        stable_content,
+                        process.out.versions
+                    ).match()
+                }
+            )
+
+        }
+    }
+
     test("homo_sapiens - reference - stub") {
 
         options "-stub"
