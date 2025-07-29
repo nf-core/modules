@@ -9,74 +9,10 @@ nextflow_process {
     tag "comebin"
     tag "comebin/runcomebin"
 
-    // setup {
-
-    //     run("MINIMAP2_ALIGN") {
-    //         script "../../../minimap2/align/main.nf"
-    //         process {
-    //             """
-    //             input[0] = Channel.of([
-    //                 [id: "test"],
-    //                 [
-    //                     file("https://tolit.cog.sanger.ac.uk/test-data/Zymo_D6311_Metagenome/genomic_data/pacbio/fasta/subsampled.pacbio.part_001.fa.gz", checkIfExists: true),
-    //                     file("https://tolit.cog.sanger.ac.uk/test-data/Zymo_D6311_Metagenome/genomic_data/pacbio/fasta/subsampled.pacbio.part_002.fa.gz", checkIfExists: true)
-    //                 ]
-    //             ])
-    //             input[1] = [
-    //                 [id: "ref"],
-    //                 file(
-    //                     "https://tolit.cog.sanger.ac.uk/test-data/Zymo_D6311_Metagenome/assembly/xyTesTing1_metamdbg.contigs.fasta.gz",
-    //                     checkIfExists: true
-    //                 )
-    //             ]
-    //             input[2] = true
-    //             input[3] = "csi"
-    //             input[4] = false
-    //             input[5] = false
-    //             """
-    //         }
-    //     }
-    // }
-
-
-    // test("mag contigs - bam") {
-
-    //     when {
-
-    //         params {
-    //             // test data is too small for default batch size
-    //             // set to exact number of test contigs > 1kbp as suggested in GH issue
-    //             comebin_args = "-b 432"
-    //             minimap2_args = "-xasm5"
-    //         }
-
-    //         process {
-    //             """
-    //             input[0] = Channel.of([
-    //                     [id: "ref"],
-    //                     file(
-    //                         "https://tolit.cog.sanger.ac.uk/test-data/Zymo_D6311_Metagenome/assembly/xyTesTing1_metamdbg.contigs.fasta.gz",
-    //                         checkIfExists: true
-    //                     )
-    //                 ]).combine(MINIMAP2_ALIGN.out.bam)
-    //                 .map { ref_meta, asm, reads_meta, bam -> [reads_meta, asm, bam] }
-    //             """
-    //         }
-    //     }
-
-    //     then {
-    //         assertAll(
-    //             // Stochastic ML training outputs
-    //             { assert process.success },
-    //             { path(process.out.tsv.get(0).get(1)).exists()           },
-    //             { path(process.out.log.get(0).get(1)).exists()           },
-    //             { path(process.out.embeddings.get(0).get(1)).exists()    },
-    //             { path(process.out.covembeddings.get(0).get(1)).exists() },
-    //             { assert snapshot(process.out.versions).match()          }
-    //         )
-    //     }
-
-    // }
+    // Tool requires a large input dataset of sufficient complexity to run
+    // that's larger than anything in test-datasets - stub test only
+    //
+    // Should revisit in future!
 
     test("sarscov2 - stub") {
 
