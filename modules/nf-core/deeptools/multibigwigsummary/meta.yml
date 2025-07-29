@@ -1,0 +1,56 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "deeptools_multibigwigsummary"
+description: Computes the average scores for each of the files in every genomic region
+keywords:
+  - bigwig
+  - deeptools
+  - plot
+  - heatmap
+  - matrix
+tools:
+  - "deeptools":
+      description: "A set of user-friendly tools for normalization and visualization of deep-sequencing data"
+      homepage: "https://deeptools.readthedocs.io/en/develop/"
+      documentation: "https://deeptools.readthedocs.io/en/develop/"
+      tool_dev_url: "https://github.com/deeptools/deepTools/"
+      doi: "10.1093/nar/gku365"
+      licence: ["GPL v3"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bigwigs:
+        type: file
+        description: Two or more bigWig files
+        pattern: "*.{bigWig,bw}"
+    - labels:
+        type: list
+        description: Labels for the bigWig files used in the matrix
+
+output:
+  matrix:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.npz":
+          type: file
+          description: Matrix file from multiBigwigSummary
+          pattern: "*.npz"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@ugoiannacchero"
+  - "@daisymut"
+
+maintainers:
+  - "@ugoiannacchero"
+  - "@daisymut"
