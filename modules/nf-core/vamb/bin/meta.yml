@@ -33,6 +33,7 @@ input:
         description: |
           TSV describing abundance of contigs in the provided assembly with headers
           contigname\tsample1\tsample2...
+          ctg00001\t10.0\t5.0
 
           Not compatible with bam input.
         pattern: "*.tsv"
@@ -50,6 +51,7 @@ input:
         description: |
           TSV describing the taxonomic lineage of each contig, with headers
           contigs\tpredictions
+          ctg00001\tBacteria;Pseudomonadati;Pseudomonadota;Gammaproteobacteria;Enterobacterales;Enterobacteriacea;Escherichia coli
         pattern: "*.tsv"
         ontologies:
           - edam: http://edamontology.org/format_3475 # TSV
