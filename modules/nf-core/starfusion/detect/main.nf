@@ -47,13 +47,14 @@ process STARFUSION_DETECT {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.15.1'
     """
     touch ${prefix}.starfusion.fusion_predictions.tsv
     touch ${prefix}.starfusion.abridged.tsv
     touch ${prefix}.starfusion.abridged.coding_effect.tsv
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        STAR-Fusion: \$(STAR-Fusion --version 2>&1 | grep -i 'version' | sed 's/STAR-Fusion version: //')
+        STAR-Fusion: $VERSION
     END_VERSIONS
     """
 }

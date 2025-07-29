@@ -8,6 +8,7 @@ nextflow_process {
     tag "starfusion"
     tag "starfusion/detect"
     tag "modules"
+    config "./nextflow.config"
 
     setup {
         run("STARFUSION_BUILD") {
@@ -42,6 +43,9 @@ nextflow_process {
     test("Paired end - Should run without failures") {
 
         when {
+            params {
+                starfusion_detect_args = "--examine_coding_effect"
+            }
             process {
                 """
                 input[0] = [
@@ -54,9 +58,6 @@ nextflow_process {
                 ]
                 input[1] = STARFUSION_BUILD.out.reference.map { it[1] }
                 """
-            }
-            params {
-                starfusion_detect_args = '--examine_coding_effect'
             }
         }
 
@@ -79,20 +80,20 @@ nextflow_process {
     test("Single end - Should run without failures") {
         tag "single"
         when {
+            params {
+                starfusion_detect_args = "--examine_coding_effect"
+            }
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:true ], // meta map
                     [
-                        file("https://github.com/nf-core/test-datasets/raw/refs/heads/rnafusion/testdata/human/reads_1.fq.gz")
+                        file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/v0.0.1/rnaseq_1.fastq.gz")
                     ], // reads
                     [] // empty list for junction, as we don't have a pre-computed Chimeric.out.junction file
                 ]
                 input[1] = STARFUSION_BUILD.out.reference.map { it[1] }
                 """
-            }
-            params {
-                starfusion_detect_args = '--examine_coding_effect'
             }
         }
 
@@ -117,13 +118,16 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                starfusion_detect_args = "--examine_coding_effect"
+            }
             process {
                 """
                 input[0] = [
                     [ id:'test_stub', single_end:false ],
                     [
-                        file("https://github.com/nf-core/test-datasets/raw/refs/heads/rnafusion/testdata/human/reads_1.fq.gz"),
-                        file("https://github.com/nf-core/test-datasets/raw/refs/heads/rnafusion/testdata/human/reads_2.fq.gz")
+                        file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/v0.0.1/rnaseq_1.fastq.gz"),
+                        file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/v0.0.1/rnaseq_2.fastq.gz")
                     ],
                     [] // empty list for junction
                 ]
