@@ -46,7 +46,7 @@ nextflow_process {
                 def bigwig2 = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bigwig/test.bigwig', checkIfExists: true).copyTo('test2.bigwig')
 
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ], // meta map
                     [ bigwig1, bigwig2 ],
                     [ "test_bigwig1", "test_bigwig2" ]
                 ]
