@@ -21,7 +21,7 @@ process LAST_MAFCONVERT {
     tuple val(meta), path("*.blast.gz"),           optional:true, emit: blast_gz
     tuple val(meta), path("*.blasttab.gz"),        optional:true, emit: blasttab_gz
     tuple val(meta), path("*.chain.gz"),           optional:true, emit: chain_gz
-    tuple val(meta), path("*.cram"), path(fasta),  optional:true, emit: cram
+    tuple val(meta), path("*.cram"),               optional:true, emit: cram
     tuple val(meta), path("*.gff.gz"),             optional:true, emit: gff_gz
     tuple val(meta), path("*.html.gz"),            optional:true, emit: html_gz
     tuple val(meta), path("*.psl.gz"),             optional:true, emit: psl_gz
