@@ -5,6 +5,8 @@ keywords:
   - clustering
   - binning
   - metagenomics
+  - denovo assembly
+  - mag
 tools:
   - "vamb":
       description: "Variational autoencoder for metagenomic binning."
@@ -39,7 +41,7 @@ input:
     - bams:
         type: file
         description: |
-          List of sorted bam files of reads mapped to the reference assembly.
+          List of sorted bam files of reads mapped to the reference assembly. Not compatible with TSV input.
         pattern: "*.bam"
         ontologies:
           - edam: http://edamontology.org/format_2572 # BAM

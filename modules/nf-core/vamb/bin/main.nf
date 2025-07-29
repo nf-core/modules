@@ -27,7 +27,7 @@ process VAMB_BIN {
 
     script:
     if(bams && abundance_tsv) {
-        error("ERROR: Both bams and abundance TSV supplied to Vamb!")
+        error("ERROR: Both bams and abundance TSV supplied to Vamb! Please only supply one.")
     }
     def args    = task.ext.args ?: ''
     prefix      = task.ext.prefix ?: "${meta.id}"
@@ -54,7 +54,7 @@ process VAMB_BIN {
 
     stub:
     if(bams && abundance_tsv) {
-        error("ERROR: Both bams and abundance TSV supplied to Vamb!")
+        error("ERROR: Both bams and abundance TSV supplied to Vamb! Please only supply one.")
     }
     def args = task.ext.args ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
