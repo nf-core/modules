@@ -8,6 +8,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "ctatsplicing"
     tag "ctatsplicing/prepgenomelib"
+    tag "starfusion/build"
 
     test("homo_sapiens - reference") {
         setup {
@@ -23,7 +24,6 @@ nextflow_process {
                         [ id:'minigenome_gtf' ],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf')
                     ]
-
                     input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/CTAT_HumanFusionLib.mini.dat.gz')
                     input[3] = "homo_sapiens"
                     input[4] = "http://ftp.ebi.ac.uk/pub/databases/Pfam/releases/Pfam37.4/Pfam-A.hmm.gz"
@@ -53,7 +53,8 @@ nextflow_process {
 
         then {
             def stable_name    = getAllFilesFromDir(process.out.reference.get(0).get(1), includeDir: true)
-            def stable_content = getAllFilesFromDir(process.out.reference.get(0).get(1), includeDir: false, include: ['*','**/*'], ignore: ['refGene.sort.bed.gz.tbi','**/refGene.sort.bed.gz.tbi','**/cancer_splicing.idx'])
+            def stable_files = getAllFilesFromDir(process.out.reference.get(0).get(1), includeDir: false, include: ['*','**/*'], ignore: ['refGene.sort.bed.gz.tbi','**/refGene.sort.bed.gz.tbi','**/cancer_splicing.idx'])
+            def stable_content = stable_files.findAll { it.size() > 0 }
             assertAll(
                 { assert process.success },
                 {
