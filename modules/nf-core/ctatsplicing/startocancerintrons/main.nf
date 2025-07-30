@@ -19,7 +19,7 @@ process CTATSPLICING_STARTOCANCERINTRONS {
     tuple val(meta), path("*.introns.for_IGV.bed")               , emit: introns_igv_bed          , optional: true
     tuple val(meta), path("*.ctat-splicing.igv.html")            , emit: igv_html                 , optional: true
     tuple val(meta), path("*.igv.tracks")                        , emit: igv_tracks               , optional: true
-    tuple val(meta), path("*.chckpts")                           , emit: chckpts
+    tuple val(meta), path("*.chckpts")                           , emit: chckpts                  , optional: true
     path "versions.yml"                                          , emit: versions
 
     when:
