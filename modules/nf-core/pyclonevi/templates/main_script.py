@@ -109,8 +109,8 @@ if __name__ == "__main__":
     # Run pyclone
     pyclonevi_run = "pyclone-vi fit -i " + opt["prefix"] + "_pyclone_input.tsv -o " + \
                     opt["prefix"] + "_all_fits.h5 -c " + opt["n_cluster"] + " -d "+ \
-                    opt["density"] + " --num-grid-points " + opt["n_grid_point"] + \
-                    " --num-restarts " + opt["n_restarts"]
+                    "beta-binomial" + " --num-grid-points " + "100" + \
+                    " --num-restarts " + "100"
     subprocess.run(pyclonevi_run, shell=True)
 
     pyclonevi_write = "pyclone-vi write-results-file -i " + opt["prefix"] + "_all_fits.h5 -o " + \

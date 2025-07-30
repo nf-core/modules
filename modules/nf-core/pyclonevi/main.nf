@@ -1,6 +1,7 @@
 process PYCLONEVI {
     tag "$meta.id"
     label "process_low"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pyclone-vi:0.1.6--pyhdfd78af_0' :
         'biocontainers/pyclone-vi:0.1.6--pyhdfd78af_0' }"
@@ -23,7 +24,7 @@ process PYCLONEVI {
     template "main_script.py"
 
     stub:
-    def args = task.ext.args ?: ''
+    def args = task.ext.args ?: '' 
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
