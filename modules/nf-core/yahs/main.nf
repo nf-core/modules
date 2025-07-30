@@ -1,5 +1,5 @@
 process YAHS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
@@ -8,9 +8,7 @@ process YAHS {
         'biocontainers/yahs:1.2--he4a0461_1' }"
 
     input:
-    tuple val(meta), path(hic_map)
-    path fasta
-    path fai
+    tuple val(meta), path(fasta), path(fai), path(hic_map)
 
     output:
     tuple val(meta), path("*scaffolds_final.fa") , emit: scaffolds_fasta,  optional: true
@@ -26,10 +24,10 @@ process YAHS {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    yahs $args \\
-        -o $prefix \\
-        $fasta \\
-        $hic_map
+    yahs ${args} \\
+        -o ${prefix} \\
+        ${fasta} \\
+        ${hic_map}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
