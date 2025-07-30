@@ -11,10 +11,10 @@ process YAHS {
     tuple val(meta), path(fasta), path(fai), path(hic_map)
 
     output:
-    tuple val(meta), path("*scaffolds_final.fa") , emit: scaffolds_fasta,  optional: true
-    tuple val(meta), path("*scaffolds_final.agp"), emit: scaffolds_agp,    optional: true
-    tuple val(meta), path("*bin")                , emit: binary
-    path "versions.yml"                          , emit: versions
+    tuple val(meta), path("*.fa") , emit: scaffolds_fasta,  optional: true
+    tuple val(meta), path("*.agp"), emit: scaffolds_agp,    optional: true
+    tuple val(meta), path("*.bin"), emit: binary
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
