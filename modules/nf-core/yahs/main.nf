@@ -4,8 +4,8 @@ process YAHS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/yahs:1.2--he4a0461_1':
-        'biocontainers/yahs:1.2--he4a0461_1' }"
+        'https://depot.galaxyproject.org/singularity/yahs:1.2.2--h577a1d6_1':
+        'biocontainers/yahs:1.2.2--h577a1d6_1' }"
 
     input:
     tuple val(meta), path(fasta), path(fai), path(hic_map)
@@ -24,8 +24,9 @@ process YAHS {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    yahs ${args} \\
+    yahs \\
         -o ${prefix} \\
+        ${args} \\
         ${fasta} \\
         ${hic_map}
 

@@ -20,11 +20,6 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test' ]
-    - hic_map:
-        type: file
-        description: BED file containing coordinates of read alignments
-        pattern: "*.{bed,bam,bin}"
-        ontologies: []
     - fasta:
         type: file
         description: FASTA reference file
@@ -34,6 +29,11 @@ input:
         type: file
         description: index of the reference file
         pattern: "*.{fai}"
+        ontologies: []
+    - hic_map:
+        type: file
+        description: BED file containing coordinates of read alignments
+        pattern: "*.{bed,bam,bin}"
         ontologies: []
 output:
   scaffolds_fasta:
