@@ -53,7 +53,10 @@ nextflow_process {
 
         then {
             def stable_name    = getAllFilesFromDir(process.out.reference.get(0).get(1), includeDir: true)
-            def stable_files = getAllFilesFromDir(process.out.reference.get(0).get(1), includeDir: false, include: ['*','**/*'], ignore: ['refGene.sort.bed.gz.tbi','**/refGene.sort.bed.gz.tbi','**/cancer_splicing.idx'])
+            def stable_files = getAllFilesFromDir(process.out.reference.get(0).get(1), includeDir: false, include: ['*','**/*'],
+                ignore: ['refGene.sort.bed.gz.tbi','**/refGene.sort.bed.gz.tbi', 'refGene.bed', '**/cancer_splicing.idx', 'ref_annot.c*',
+                    'PFAM.domtblout.dat.gz', 'blast_pairs*', 'fusion_annot_lib.idx', 'pfam_domains.dbm', 'ref_annot.gtf.gene_spans',
+                    'ref_annot.prot_info.dbm', 'ref_annot.pep', 'ref_genome.fa.nin', 'ref_genome.fa.njs', '**/Log.out', '**/genomeParameters.txt', 'trans.blast.align_coords.align_coords.dbm'])
             def stable_content = stable_files.findAll { it.size() > 0 }
             assertAll(
                 { assert process.success },
