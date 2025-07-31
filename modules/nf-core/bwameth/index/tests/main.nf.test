@@ -31,4 +31,28 @@ nextflow_process {
         }
     }
 
+    test("sarscov2 genome [fasta] - mem2") {
+
+        when {
+            params {
+                use_mem2 = true
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match("mem2") }
+            )
+        }
+    }
+
 }
