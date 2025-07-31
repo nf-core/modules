@@ -28,7 +28,7 @@ process CTATSPLICING_STARTOCANCERINTRONS {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "SPACERANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error "CTATSPLICING_STARTOCANCERINTRONS module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
