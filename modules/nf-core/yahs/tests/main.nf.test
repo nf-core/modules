@@ -76,12 +76,13 @@ nextflow_process {
             process {
                 """
                 input[0] = SAMTOOLS_VIEW.out.bam
-                    .combine(
-                        Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true))
-                    )
-                    .combine(
-                        Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true))
-                    )
+                    .map { meta, bam ->
+                        [ meta,
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
+                        bam
+                        ]
+                    }
                 """
             }
         }
