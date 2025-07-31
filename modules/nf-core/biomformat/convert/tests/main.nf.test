@@ -13,7 +13,7 @@ nextflow_process {
     tag "biomformat/convert"
 
     setup {
-        run ("VSEARCH_CLUSTER", alias: "VSEARCH_CLUSTER_BIOMOUT") {
+        run ("VSEARCH_CLUSTER", alias: "VSEARCH_CLUSTER_BIOM") {
             script "../../../vsearch/cluster/main.nf"
 
             process {
@@ -26,17 +26,17 @@ nextflow_process {
             }
         }
 
-        run ("GUNZIP", alias: "GUNZIP_BIOMOUT") {
+        run ("GUNZIP", alias: "GUNZIP_BIOM") {
 
             script "../../../gunzip/main.nf"
             process {
                 """
-                input[0] = VSEARCH_CLUSTER_BIOMOUT.out.biom
+                input[0] = VSEARCH_CLUSTER_BIOM.out.biom
                 """
             }
         }
 
-        run ("VSEARCH_CLUSTER", alias: "VSEARCH_CLUSTER_TXTOUT") {
+        run ("VSEARCH_CLUSTER", alias: "VSEARCH_CLUSTER_TXT") {
 
             script "../../../vsearch/cluster/main.nf"
 
@@ -50,12 +50,12 @@ nextflow_process {
             }
         }
 
-        run ("GUNZIP", alias: "GUNZIP_TXTOUT") {
+        run ("GUNZIP", alias: "GUNZIP_TXT") {
 
             script "../../../gunzip/main.nf"
             process {
                 """
-                input[0] = VSEARCH_CLUSTER_TXTOUT.out.otu
+                input[0] = VSEARCH_CLUSTER_TXT.out.otu
                 """
             }
         }
@@ -66,18 +66,15 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--to-tsv'
-                biomout_args  = '--id 0.8'
-                biomout_args2 = "--cluster_fast"
-                biomout_args3 = "--biomout"
-                txtout_args  = '--id 0.8'
-                txtout_args2 = "--cluster_fast"
-                txtout_args3 = "--otutabout"
+                module_args   = '--to-tsv'
+                vsearch_args  = '--id 0.8'
+                vsearch_args2 = '--cluster_fast'
+                vsearch_args3 = '--biomout'
             }            
 
             process {
                 """
-                input[0] = GUNZIP_BIOMOUT.out.gunzip
+                input[0] = GUNZIP_BIOM.out.gunzip
                 """
             }
         }
@@ -95,18 +92,15 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--table-type="OTU table" --to-json'
-                biomout_args  = '--id 0.8'
-                biomout_args2 = "--cluster_fast"
-                biomout_args3 = "--biomout"
-                txtout_args  = '--id 0.8'
-                txtout_args2 = "--cluster_fast"
-                txtout_args3 = "--otutabout"
+                module_args   = '--table-type="OTU table" --to-json'
+                vsearch_args  = '--id 0.8'
+                vsearch_args2 = '--cluster_fast'
+                vsearch_args3 = '--otutabout'
             }
 
             process {
                 """
-                input[0] = GUNZIP_TXTOUT.out.gunzip
+                input[0] = GUNZIP_TXT.out.gunzip
                 """
             }
         }
@@ -128,18 +122,15 @@ nextflow_process {
 
         when {
             params {
-                module_args = '-table-type="OTU table" --to-hdf5'
-                biomout_args  = '--id 0.8'
-                biomout_args2 = "--cluster_fast"
-                biomout_args3 = "--biomout"
-                txtout_args  = ""
-                txtout_args2 = ""
-                txtout_args3 = ""
+                module_args   = '-table-type="OTU table" --to-hdf5'
+                vsearch_args  = '--id 0.8'
+                vsearch_args2 = '--cluster_fast'
+                vsearch_args3 = '--biomout'
             }            
 
             process {
                 """
-                input[0] = GUNZIP_BIOMOUT.out.gunzip
+                input[0] = GUNZIP_BIOM.out.gunzip
                 """
             }
         }
@@ -158,18 +149,15 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--table-type="OTU table" --to-json'
-                biomout_args  = '--id 0.8'
-                biomout_args2 = "--cluster_fast"
-                biomout_args3 = "--biomout"
-                txtout_args  = '--id 0.8'
-                txtout_args2 = "--cluster_fast"
-                txtout_args3 = "--otutabout"
+                module_args   = '--table-type="OTU table" --to-json'
+                vsearch_args  = '--id 0.8'
+                vsearch_args2 = '--cluster_fast'
+                vsearch_args3 = '--otutabout'
             }
 
             process {
                 """
-                input[0] = GUNZIP_TXTOUT.out.gunzip
+                input[0] = GUNZIP_TXT.out.gunzip
                 """
             }
         }
@@ -189,18 +177,15 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--to-tsv'
-                biomout_args  = '--id 0.8'
-                biomout_args2 = "--cluster_fast"
-                biomout_args3 = "--biomout"
-                txtout_args  = '--id 0.8'
-                txtout_args2 = "--cluster_fast"
-                txtout_args3 = "--otutabout"
+                module_args   = '--to-tsv'
+                vsearch_args  = '--id 0.8'
+                vsearch_args2 = '--cluster_fast'
+                vsearch_args3 = '--biomout'
             }            
 
             process {
                 """
-                input[0] = GUNZIP_BIOMOUT.out.gunzip
+                input[0] = GUNZIP_BIOM.out.gunzip
                 """
             }
         }
