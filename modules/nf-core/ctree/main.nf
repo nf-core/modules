@@ -29,12 +29,12 @@ process CTREE {
     """
 
     # outputs for mobster rds input
-    mkdir HCC1395_HCC1395T/
-    touch HCC1395_HCC1395T/${prefix}_ctree_mobster.rds
-    touch HCC1395_HCC1395T/${prefix}_ctree_mobster_plots.rds
-    touch HCC1395_HCC1395T/${prefix}_ctree_mobster_report.rds
-    touch HCC1395_HCC1395T/${prefix}_ctree_mobster_report.pdf
-    touch HCC1395_HCC1395T/${prefix}_ctree_mobster_report.png
+    mkdir stub/
+    touch stub/${prefix}_ctree_mobster.rds
+    touch stub/${prefix}_ctree_mobster_plots.rds
+    touch stub/${prefix}_ctree_mobster_report.rds
+    touch stub/${prefix}_ctree_mobster_report.pdf
+    touch stub/${prefix}_ctree_mobster_report.png
 
     # outputs for pyclonevi tsv input
     touch ${prefix}_ctree_pyclonevi.rds
