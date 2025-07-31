@@ -7,7 +7,7 @@ process PYCLONEVI {
         'biocontainers/pyclone-vi:0.1.6--pyhdfd78af_0' }"
 
     input:
-        tuple val(meta), path(rds_join), val(tumour_samples)
+    tuple val(meta), path(rds_join), val(tumour_samples)
 
     output:
         tuple val(meta), path("*_cluster_table.csv"),	emit: ctree_input
