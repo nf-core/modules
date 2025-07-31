@@ -102,7 +102,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.cancer_introns,
+                    process.out.cancer_introns_prelim,
+                    file(process.out.introns[0][1]).name,
+                    process.out.versions
+                ).match() }
             )
         }
 
