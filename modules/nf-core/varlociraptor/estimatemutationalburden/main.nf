@@ -23,10 +23,14 @@ process VARLOCIRAPTOR_ESTIMATEMUTATIONALBURDEN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     varlociraptor estimate mutational-burden \\
+        --coding-genome-size 3e7 --events SOMATIC_TUMOR --sample tumor \\
         --plot-mode ${plot_mode} \\
         ${args} \\
         < ${vcf} \\
         > ${prefix}.json
+
+    // --coding-genome-size 3e7 --events SOMATIC_TUMOR --sample tumor
+    // probably needs to be added
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

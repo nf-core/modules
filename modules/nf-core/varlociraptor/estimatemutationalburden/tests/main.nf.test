@@ -8,108 +8,16 @@ nextflow_process {
     tag "modules_nfcore"
     tag "varlociraptor"
     tag "varlociraptor/estimatemutationalburden"
-    tag "varlociraptor/estimatealignmentproperties"
-    tag "varlociraptor/preprocess"
-    tag "varlociraptor/callvariants"
-    tag "bcftools/view"
-    tag "snpeff/download"
-    tag "snpeff/snpeff"
-
-    setup {
-        run("VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES") {
-            script "../../estimatealignmentproperties/main.nf"
-            process {
-                """
-                input[0] = [
-                    [id:'test_normal'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists:true),
-                    ]
-                input[1] = [
-                    [id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
-                    ]
-                input[2] = [
-                    [id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
-                    ]
-                """
-            }
-        }
-
-        run("VARLOCIRAPTOR_PREPROCESS" ) {
-            script "../../preprocess/main.nf"
-            process {
-                """
-                input[0] = Channel.of([
-                    [id:'test_normal'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists:true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists:true),
-                    ]).collect().join(VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES.out.alignment_properties_json)
-                input[1] = [
-                    [id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
-                    ]
-                input[2] = [
-                    [id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
-                    ]
-                """
-            }
-        }
-
-        run("VARLOCIRAPTOR_CALLVARIANTS") {
-            script "../../callvariants/main.nf"
-            process {
-                """
-                input[0] = VARLOCIRAPTOR_PREPROCESS.out.bcf.map{meta1,vcf->[meta1,vcf,[]]}
-                input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/varlociraptor/scenario.yml', checkIfExists:true))
-                input[2] = "normal"
-                """
-            }
-        }
-
-        run("BCFTOOLS_VIEW") {
-            script "../../../bcftools/view/main.nf"
-            process {
-                """
-                input[0] = VARLOCIRAPTOR_CALLVARIANTS.out.bcf.map{it -> [ it[0], it[1], [] ]}
-                input[1] = []
-                input[2] = []
-                input[3] = []
-                """
-            }
-        }
-
-        run("SNPEFF_DOWNLOAD") {
-            script "../../../snpeff/download/main.nf"
-            process {
-                """
-                input[0] = Channel.of([[id:'GRCh38.105'], 'GRCh38.105'])
-                """
-            }
-        }
-
-
-        run("SNPEFF_SNPEFF") {
-            script "../../../snpeff/snpeff/main.nf"
-            process {
-                """
-                input[0] = BCFTOOLS_VIEW.out.vcf
-                input[1] = 'GRCh38.105'
-                input[2] = SNPEFF_DOWNLOAD.out.cache
-                """
-            }
-        }
-
-    }
 
     test("human - vcf") {
         when {
             process {
                 """
-                input[0] = SNPEFF_SNPEFF.out.vcf
+                input[0] = [
+                    [id:'test'],
+                    file('https://github.com/varlociraptor/varlociraptor/raw/refs/heads/master/tests/resources/testcases/test_tmb/annotated.vcf', checkIfExists:true)
+                    //file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz', checkIfExists:true)
+                    ]
                 input[1] = "hist"
                 """
             }
@@ -129,7 +37,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = SNPEFF_SNPEFF.out.vcf
+                input[0] = [
+                    [id:'test'],
+                    file('https://github.com/varlociraptor/varlociraptor/raw/refs/heads/master/tests/resources/testcases/test_tmb/annotated.vcf', checkIfExists:true)
+                    ]
                 input[1] = "hist"
                 """
             }
