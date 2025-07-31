@@ -13,49 +13,14 @@ nextflow_process {
     tag "biomformat/convert"
 
     setup {
-        run ("VSEARCH_CLUSTER", alias: "VSEARCH_CLUSTER_BIOM") {
+        run ("VSEARCH_CLUSTER") {
             script "../../../vsearch/cluster/main.nf"
-
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ]
-                """
-            }
-        }
-
-        run ("GUNZIP", alias: "GUNZIP_BIOM") {
-
-            script "../../../gunzip/main.nf"
-            process {
-                """
-                input[0] = VSEARCH_CLUSTER_BIOM.out.biom
-                """
-            }
-        }
-
-        run ("VSEARCH_CLUSTER", alias: "VSEARCH_CLUSTER_TXT") {
-
-            script "../../../vsearch/cluster/main.nf"
-
-            process {
-                """
-                input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
-                ]
-                """
-            }
-        }
-
-        run ("GUNZIP", alias: "GUNZIP_TXT") {
-
-            script "../../../gunzip/main.nf"
-            process {
-                """
-                input[0] = VSEARCH_CLUSTER_TXT.out.otu
                 """
             }
         }
@@ -64,17 +29,29 @@ nextflow_process {
 
     test("convert - to text") {
 
+        setup {
+            run ("GUNZIP") {
+
+                script "../../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = VSEARCH_CLUSTER.out.biom
+                    """
+                }
+            }            
+        }
+
         when {
             params {
                 module_args   = '--to-tsv'
                 vsearch_args  = '--id 0.8'
                 vsearch_args2 = '--cluster_fast'
                 vsearch_args3 = '--biomout'
-            }            
+            }
 
             process {
                 """
-                input[0] = GUNZIP_BIOM.out.gunzip
+                input[0] = GUNZIP.out.gunzip
                 """
             }
         }
@@ -90,6 +67,18 @@ nextflow_process {
 
     test("convert - to json biom") {
 
+        setup {
+            run ("GUNZIP") {
+
+                script "../../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = VSEARCH_CLUSTER.out.otu
+                    """
+                }
+            }            
+        }
+
         when {
             params {
                 module_args   = '--table-type="OTU table" --to-json'
@@ -100,7 +89,7 @@ nextflow_process {
 
             process {
                 """
-                input[0] = GUNZIP_TXT.out.gunzip
+                input[0] = GUNZIP.out.gunzip
                 """
             }
         }
@@ -120,6 +109,18 @@ nextflow_process {
 
     test("fails on identical filenames") {
 
+        setup {
+            run ("GUNZIP") {
+
+                script "../../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = VSEARCH_CLUSTER.out.biom
+                    """
+                }
+            }            
+        }
+
         when {
             params {
                 module_args   = '-table-type="OTU table" --to-hdf5'
@@ -130,7 +131,7 @@ nextflow_process {
 
             process {
                 """
-                input[0] = GUNZIP_BIOM.out.gunzip
+                input[0] = GUNZIP.out.gunzip
                 """
             }
         }
@@ -145,6 +146,18 @@ nextflow_process {
 
     test("convert - to json biom - stub") {
 
+        setup {
+            run ("GUNZIP") {
+
+                script "../../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = VSEARCH_CLUSTER.out.otu
+                    """
+                }
+            }            
+        }
+
         options "-stub"
 
         when {
@@ -157,7 +170,7 @@ nextflow_process {
 
             process {
                 """
-                input[0] = GUNZIP_TXT.out.gunzip
+                input[0] = GUNZIP.out.gunzip
                 """
             }
         }
@@ -173,6 +186,18 @@ nextflow_process {
 
     test("convert - to text - stub") {
 
+        setup {
+            run ("GUNZIP") {
+
+                script "../../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = VSEARCH_CLUSTER.out.biom
+                    """
+                }
+            }            
+        }
+
         options "-stub"
 
         when {
@@ -185,7 +210,7 @@ nextflow_process {
 
             process {
                 """
-                input[0] = GUNZIP_BIOM.out.gunzip
+                input[0] = GUNZIP.out.gunzip
                 """
             }
         }
