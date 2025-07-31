@@ -1,0 +1,112 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "binette"
+description: Binette binning refinement tool
+keywords:
+  - mag
+  - bins
+  - refinement
+  - metagenome
+  - quality
+  - checkm2
+  - completeness
+  - contamination
+tools:
+  - "binette":
+      description: "Binette: a fast and accurate bin refinement tool to construct high-quality
+        Metagenome Assembled Genomes"
+      homepage: "https://github.com/genotoul-bioinfo/Binette"
+      doi: "10.21105/joss.06782"
+      licence: ["GPL v3"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - input_binning:
+        type: file
+        description: |
+          One or multiple folders with bins' FASTA files OR
+          one or multiple TSV contig2bin tables, which establish the relationship between each contig and its corresponding bin.
+        pattern: "*.{fasta,fna,fa,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_3475 # TSV
+    - contigs:
+        type: file
+        description: |
+          A FASTA file containing all contigs that were used for binning.
+        pattern: "*.{fasta,fna,fa}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+    - proteins:
+        type: file
+        description: |
+          A FASTA file containing predicted proteins from the contigs used for binning (optional).
+          Specify this input if you don't want Binette to predict proteins from the contigs.
+        pattern: "*.{fasta,fna,fa}"
+        required: false
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - - input_type:
+        type: string
+        description: |
+          Type of input binning format provided to Binette.
+          Choose between `fasta` (for folders with bins FASTA files) or `tsv` (for TSV files that map contigs to bins).
+  - - checkm2_db:
+        type: file
+        description: |
+          CheckM2 database in Diamond format (.dmnd).
+          Required for assessing bin quality and completeness.
+        pattern: "*.dmnd"
+        ontologies:
+          - edam: http://edamontology.org/format_3247 # Diamond database
+output:
+  refined_bins:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*_final_bins/*":
+          type: file
+          description: All the bins created by Binette in fasta format.
+          pattern: "*_final_bins/*"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  refined_bins_report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*_final_bins_quality_reports.tsv":
+          type: file
+          description: TSV file containing quality information about the final selected bins.
+          pattern: "*_final_bins_quality_reports.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  input_bins_report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*_input_bins_quality_reports/*":
+          type: file
+          description: TSV files containing quality information about the input bins.
+          pattern: "*_input_bins_quality_reports/*"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
+
+authors:
+  - "@ochkalova"
