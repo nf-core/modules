@@ -19,9 +19,10 @@ process BWAMETH_INDEX {
 
     script:
     def args = task.ext.args ?: ''
+    def index_cmd = params.use_mem2 ? "index-mem2" : "index"
     """
 
-    bwameth.py index $fasta
+    bwameth.py ${index_cmd} $fasta
 
     rm $fasta
 
