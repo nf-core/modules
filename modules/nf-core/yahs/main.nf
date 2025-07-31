@@ -22,7 +22,6 @@ process YAHS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     yahs \\
         -o ${prefix} \\
@@ -37,6 +36,7 @@ process YAHS {
     """
 
     stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_scaffold_final.fa
     touch ${prefix}_scaffolds_final.agp
