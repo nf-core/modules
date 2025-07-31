@@ -29,9 +29,11 @@ input:
         description: Input sequences in FASTA/Q (zipped or unzipped) format to parse
           into an mmseqs database
         pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,fastq,fastq.gz,fq,fq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
 output:
-  - db:
-      - meta:
+  db:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,11 +41,13 @@ output:
       - ${prefix}/:
           type: directory
           description: The created MMseqs2 database
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Joon-Klaps"
 maintainers:

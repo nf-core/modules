@@ -16,61 +16,74 @@ tools:
       documentation: https://sanger-pathogens.github.io/gubbins/
       identifier: biotools:gubbins
 input:
-  - - alignment:
-        type: file
-        description: fasta alignment file
-        pattern: "*.{fasta,fas,fa,aln}"
+  - alignment:
+      type: file
+      description: fasta alignment file
+      pattern: "*.{fasta,fas,fa,aln}"
+      ontologies: []
 output:
-  - fasta:
-      - "*.fasta":
-          type: file
-          description: Filtered variant alignment in fasta format
-          pattern: "*.{fasta}"
-  - gff:
-      - "*.gff":
-          type: file
-          description: Recombination predictions in gff format
-          pattern: "*.{gff}"
-  - vcf:
-      - "*.vcf":
-          type: file
-          description: SNP distribution
-          pattern: "*.{vcf}"
-  - stats:
-      - "*.csv":
-          type: file
-          description: Per branch statistics
-          pattern: "*.{csv}"
-  - phylip:
-      - "*.phylip":
-          type: file
-          description: Filtered variant alignment in phylip format
-          pattern: "*.{phylip}"
-  - embl_predicted:
-      - "*.recombination_predictions.embl":
-          type: file
-          description: Recombination predictions in embl format
-          pattern: "*.{recombination_predictions.embl}"
-  - embl_branch:
-      - "*.branch_base_reconstruction.embl":
-          type: file
-          description: Branch base reconstruction
-          pattern: "*.{branch_base_reconstruction.embl}"
-  - tree:
-      - "*.final_tree.tre":
-          type: file
-          description: Recombination removed RAxML phylogenetic tree
-          pattern: "*.{final_tree.tre}"
-  - tree_labelled:
-      - "*.node_labelled.final_tree.tre":
-          type: file
-          description: Recombination removed RAxML phylogenetic tree (nodes labelled)
-          pattern: "*.{node_labelled.final_tree.tre}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  fasta:
+    - "*.fasta":
+        type: file
+        description: Filtered variant alignment in fasta format
+        pattern: "*.{fasta}"
+        ontologies: []
+  gff:
+    - "*.gff":
+        type: file
+        description: Recombination predictions in gff format
+        pattern: "*.{gff}"
+        ontologies: []
+  vcf:
+    - "*.vcf":
+        type: file
+        description: SNP distribution
+        pattern: "*.{vcf}"
+        ontologies: []
+  stats:
+    - "*.csv":
+        type: file
+        description: Per branch statistics
+        pattern: "*.{csv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+  phylip:
+    - "*.phylip":
+        type: file
+        description: Filtered variant alignment in phylip format
+        pattern: "*.{phylip}"
+        ontologies: []
+  embl_predicted:
+    - "*.recombination_predictions.embl":
+        type: file
+        description: Recombination predictions in embl format
+        pattern: "*.{recombination_predictions.embl}"
+        ontologies: []
+  embl_branch:
+    - "*.branch_base_reconstruction.embl":
+        type: file
+        description: Branch base reconstruction
+        pattern: "*.{branch_base_reconstruction.embl}"
+        ontologies: []
+  tree:
+    - "*.final_tree.tre":
+        type: file
+        description: Recombination removed RAxML phylogenetic tree
+        pattern: "*.{final_tree.tre}"
+        ontologies: []
+  tree_labelled:
+    - "*.node_labelled.final_tree.tre":
+        type: file
+        description: Recombination removed RAxML phylogenetic tree (nodes labelled)
+        pattern: "*.{node_labelled.final_tree.tre}"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@avantonder"
 maintainers:

@@ -29,31 +29,38 @@ input:
     - alignment_file:
         type: file
         description: file containing alignments
+        ontologies: []
     - alignment_index:
         type: file
         description: index of alignment file
+        ontologies: []
     - sv_variants:
         type: file
         description: A variants file containing structural variants
         pattern: "*.{vcf,bcf}(.gz)?"
+        ontologies: []
     - snp_variants:
         type: file
         description: A variants file containing SNPs
         pattern: "*.{vcf,bcf}(.gz)?"
+        ontologies: []
     - snp_variants_index:
         type: file
         description: index of snp variants file
-  - - fasta:
-        type: file
-        description: fasta file
-        pattern: "*.{fa,fasta,fna}"
-  - - fasta_fai:
-        type: file
-        description: Index of fasta file
-        pattern: "*.fai"
+        ontologies: []
+  - fasta:
+      type: file
+      description: fasta file
+      pattern: "*.{fa,fasta,fna}"
+      ontologies: []
+  - fasta_fai:
+      type: file
+      description: Index of fasta file
+      pattern: "*.fai"
+      ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -62,11 +69,15 @@ output:
           type: file
           description: The output VCF
           pattern: "*.vcf.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

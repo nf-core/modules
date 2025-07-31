@@ -24,13 +24,15 @@ input:
         type: file
         description: VCF file
         pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
     - tbi:
         type: file
         description: Index file
         pattern: "*.{tbi}"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,11 +41,14 @@ output:
           type: file
           description: Filtered VCF file
           pattern: "*.{vcf.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@zachary-foster"
 maintainers:
