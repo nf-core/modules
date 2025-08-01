@@ -5,7 +5,7 @@ process AMULETY_BALMPAIRED {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/amulety_wget:d69a2bc09a42a8b2':
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ae/aea48b124541c99138bf28ece7a27bcad3398aa2dc9812c4804b2ae0fd919024/data':
         'community.wave.seqera.io/library/amulety_wget:2ecd2554d8d6f58e' }"
 
     input:

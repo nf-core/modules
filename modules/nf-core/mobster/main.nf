@@ -4,7 +4,7 @@ process MOBSTER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/r-cnaqc_r-mobster_r-cli_r-dplyr_r-ggplot2:9f1d68529fc936de':
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/de/de31ce602ca40639c817dcd0f99f0260719a9a5f269759791d03576491ea3e87/data':
         'community.wave.seqera.io/library/r-cnaqc_r-mobster_r-cli_r-dplyr_r-ggplot2:96c0dbada588b39a' }"
 
     input:
