@@ -9,6 +9,7 @@ process BWAMETH_INDEX {
 
     input:
     tuple val(meta), path(fasta, name:"BwamethIndex/")
+    val use_mem2
 
     output:
     tuple val(meta), path("BwamethIndex"), emit: index
@@ -19,7 +20,7 @@ process BWAMETH_INDEX {
 
     script:
     def args = task.ext.args ?: ''
-    def index_cmd = params.use_mem2 ? "index-mem2" : "index"
+    def index_cmd = use_mem2 ? "index-mem2" : "index"
     """
 
     bwameth.py ${index_cmd} $fasta
