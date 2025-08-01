@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "agat_convertgff2bed"
 description: Takes a GFF3 file and converts to a bed12 file
 keywords:
@@ -22,7 +23,13 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - gff: {}
+    - gff:
+        type: file
+        description: Input GFF3 file
+        pattern: "*.{gff}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1975" # GFF3
+
 output:
   bed:
     - - meta:
@@ -30,7 +37,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.bed": {}
+      - "*.bed":
+          type: file
+          description: Output bed12 file
+          pattern: "*.bed"
+          ontologies:
+            - edam: "http://edamontology.org/format_3586" # bed12
   versions:
     - versions.yml:
         type: file
