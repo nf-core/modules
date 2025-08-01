@@ -24,12 +24,13 @@ nextflow_process {
     }
 
     test("PF14720 - aln - no trimming, fasta output") {
-        config "test_fasta_only.config"
+        config "./test_fasta_only.config"
 
         when {
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
+                input[1] = []
                 """
             }
         }
@@ -39,8 +40,9 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.trimal,
-                    // The log file will contain "Number of sites kept" corresponding to no trimming (original size)
-                    path(process.out.log.get(0).get(1)).readLines().any { it.contains("Number of sites kept:") },
+                    // The log file should not be produced in this case
+                    !process.out.log || process.out.log.isEmpty(),
+                    //path(process.out.log.get(0).get(1)).readLines().any { it.contains("Number of sites kept:") },
                     process.out.versions
                     ).match()
                 }
@@ -49,12 +51,13 @@ nextflow_process {
     }
 
     test("PF14720 - aln - gappyout trimming, mega output") {
-        config "test_gappyout_mega.config"
+        config "./test_gappyout_mega.config"
 
         when {
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
+                input[1] = []
                 """
             }
         }
@@ -64,8 +67,9 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.trimal,
-                    // Check for the specific 'Number of sites kept' relevant to 'gappyout'
-                    path(process.out.log.get(0).get(1)).readLines().any { it.contains("Number of sites kept:") },
+                    // The log file should not be produced in this case
+                    !process.out.log || process.out.log.isEmpty(),
+                    //path(process.out.log.get(0).get(1)).readLines().any { it.contains("Number of sites kept:") },
                     process.out.versions
                     ).match()
                 }
@@ -80,19 +84,19 @@ nextflow_process {
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
+                input[1] = []
                 """
             }
         }
 
         then {
             assertAll(
-                { assert process.success },
+                { assert process.success }, // Check if the process completed successfully.
                 { assert snapshot(
-                    process.out.trimal,
-                    process.out.html_report,
-                    // Check for 'Number of sites kept' specific to this complex method
-                    path(process.out.log.get(0).get(1)).readLines().any { it.contains("Number of sites kept:") },
-                    process.out.versions
+                    process.out.trimal,      // Snapshot the main output.
+                    process.out.html_report, // Snapshot the HTML report (now correctly named).
+                    process.out.log,         // Snapshot the standard log file (will be empty).
+                    process.out.versions     // Snapshot the versions file.
                     ).match()
                 }
             )
@@ -106,6 +110,7 @@ nextflow_process {
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
+                input[1] = []
                 """
             }
         }

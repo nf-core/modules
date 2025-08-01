@@ -14,7 +14,7 @@ process TRIMAL {
 
     output:
     tuple val(meta), path("${prefix}.${out_extension}"), emit: trimal
-    tuple val(meta), path("${prefix}.log")             , emit: log
+    tuple val(meta), path("${prefix}.html")            , emit: log, optional: true // HTML log file -htmlout param needs trimming method to be set and an <outfile> to be specified
     path "versions.yml"                                , emit: versions
 
     when:
@@ -44,6 +44,10 @@ process TRIMAL {
     """
     touch ${prefix}.${out_extension}
     touch ${prefix}.log
+
+    if [[ "$args" =~ "-htmlout" ]]; then
+        touch ${prefix}.html
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
