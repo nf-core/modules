@@ -6,7 +6,7 @@ Author:
 
 Copyright (c) 2025, Annick Reveney. All rights reserved.
 
-License: MIT License
+License: GPL-3 License
 """
 
 import platform
