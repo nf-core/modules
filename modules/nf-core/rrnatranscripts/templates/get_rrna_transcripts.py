@@ -4,7 +4,7 @@
 Author:
     Annick Renevey
 
-Copyright (c) 2025, Annick Reveney. All rights reserved.
+Copyright (c) 2025, Annick Renevey. All rights reserved.
 
 License: GPL-3 License
 """
