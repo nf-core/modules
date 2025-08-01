@@ -15,7 +15,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'test', single_end: false ],  // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf', checkIfExists: true)
                 ]                """
             }
         }
