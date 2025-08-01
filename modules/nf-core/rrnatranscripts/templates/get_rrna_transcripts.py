@@ -2,7 +2,7 @@
 
 """
 Author:
-    Annick Reveney
+    Annick Renevey
 
 Copyright (c) 2025, Annick Reveney. All rights reserved.
 
