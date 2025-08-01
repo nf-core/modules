@@ -63,9 +63,6 @@ nextflow_process {
         when {
             params {
                 module_args   = '--to-tsv'
-                vsearch_args  = '--id 0.8'
-                vsearch_args2 = '--cluster_fast'
-                vsearch_args3 = '--biomout'
             }
 
             process {
@@ -89,9 +86,6 @@ nextflow_process {
         when {
             params {
                 module_args   = '--table-type="OTU table" --to-json'
-                vsearch_args  = '--id 0.8'
-                vsearch_args2 = '--cluster_fast'
-                vsearch_args3 = '--otutabout'
             }
 
             process {
@@ -119,9 +113,6 @@ nextflow_process {
         when {
             params {
                 module_args   = '-table-type="OTU table" --to-hdf5'
-                vsearch_args  = '--id 0.8'
-                vsearch_args2 = '--cluster_fast'
-                vsearch_args3 = '--biomout'
             }            
 
             process {
@@ -146,9 +137,6 @@ nextflow_process {
         when {
             params {
                 module_args   = '--table-type="OTU table" --to-json'
-                vsearch_args  = '--id 0.8'
-                vsearch_args2 = '--cluster_fast'
-                vsearch_args3 = '--otutabout'
             }
 
             process {
@@ -174,9 +162,6 @@ nextflow_process {
         when {
             params {
                 module_args   = '--to-tsv'
-                vsearch_args  = '--id 0.8'
-                vsearch_args2 = '--cluster_fast'
-                vsearch_args3 = '--biomout'
             }            
 
             process {
