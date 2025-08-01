@@ -24,13 +24,13 @@ input:
           e.g. `[ id:'sample1']`
     - aln:
         type: file
-        description: Multiple sequence alignment file in various supported formats.
-        pattern: "*.{clustal,fasta-m10,fasta,phylip-relaxed,phylip-sequential,phylip,nexus,nexus-m10}"
+        description: Input file in several formats (e.g., clustal, fasta, nexus, phylip32, phylip40, pir).
+        pattern: "*"
         ontologies:
           - edam: http://edamontology.org/data_0863
   - out_format:
       type: string
-      description: Output format (clustal,fasta,nexus,etc.), default is stdout.
+      description: Output format (e.g., pir, mega, nexus, clustal, fasta, phylip). Default is set to "trimal".
       pattern: "*"
 output:
   trimal:
@@ -57,7 +57,7 @@ output:
             e.g. `[ id:'sample1']`
       - ${prefix}.html:
           type: file
-          description: HTML log file, needs -htmlout to be set in ext.args along with
+          description: HTML summary file, needs -htmlout to be set in ext.args along with
             a trimming method
           pattern: "*.html"
           ontologies:
