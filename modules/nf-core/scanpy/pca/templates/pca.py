@@ -24,9 +24,9 @@ key_added = "${key_added}"
 # Run PCA
 sc.pp.pca(adata, random_state=0, key_added=key_added)
 
-# Round to 10 decimal places
+# Round to 8 decimal places
 # This ensures hashes are stable
-adata.obsm[key_added] = np.round(adata.obsm[key_added], 10)
+adata.obsm[key_added] = np.round(adata.obsm[key_added], 8)
 
 adata.write_h5ad(f"{prefix}.h5ad")
 df = pd.DataFrame(adata.obsm[key_added], index=adata.obs_names)
