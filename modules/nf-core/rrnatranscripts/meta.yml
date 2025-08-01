@@ -12,19 +12,17 @@ tools:
       licence: ["GPL-3.0-or-later"]
       identifier: ""
 input:
-  - gtf:
-      type: file
-      description: GTF file
-      pattern: "*.{gtf}"
-      ontologies: []
+  - - meta: {}
+    - gtf:
+        type: file
+        description: GTF file
+        pattern: "*.{gtf}"
+        ontologies: []
 output:
   #
   rrna_gtf:
-    - "*rrna_intervals.gtf":
-        type: file
-        description: GTF file with ribosomal RNA only
-        pattern: "*.{gtf}"
-        ontologies: []
+    - - meta: {}
+      - "*_rrna_intervals.gtf": {}
   versions:
     - versions.yml:
         type: file
