@@ -1,28 +1,27 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "trimal"
-description: trimAl is a tool for the automated removal of spurious sequences
-  or poorly aligned regions from a multiple sequence alignment.
+description: trimAl is a tool for the automated removal of spurious sequences or poorly
+  aligned regions from a multiple sequence alignment.
 keywords:
-  - sort
-  - example
-  - genomics
+  - alignment
+  - trimming
+  - phylogeny
 tools:
-
   - "trimal":
-      description: "A tool for automated alignment trimming in large-scale phylogenetic analyses."
+      description: "A tool for automated alignment trimming in large-scale phylogenetic
+        analyses."
       homepage: "https://trimal.cgenomics.org/"
       documentation: "https://trimal.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/inab/trimal/tree/trimAl"
       doi: "10.1093/bioinformatics/btp348"
       licence: ["GPL v3-or-later", "GPL v3 or later (GPL v3+)"]
       identifier: biotools:trimal
-
 input:
-
   - - meta:
         type: map
-        description: Groovy Map containing sample information. e.g. `[
-          id:'sample1' ]`
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1']`
     - aln:
         type: file
         description: Multiple sequence alignment file in various supported formats.
@@ -34,12 +33,12 @@ input:
       description: Output format (clustal,fasta,nexus,etc.), default is stdout.
       pattern: "*"
 output:
-
   trimal:
     - - meta:
           type: map
-          description: Groovy Map containing sample information. e.g. `[
-            id:'sample1' ]`
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
       - ${prefix}.${out_extension}:
           type: file
           description: Trimmed multiple sequence alignment file
@@ -50,18 +49,19 @@ output:
             - edam: http://edamontology.org/format_1997 # PHYLIP format
             - edam: http://edamontology.org/format_1998 # phylipnon
             - edam: http://edamontology.org/format_1929 # FASTA
-  log:
+  summary:
     - - meta:
           type: map
-          description: Groovy Map containing sample information. e.g. `[
-            id:'sample1' ]`
-      - ${prefix}.log:
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}.html:
           type: file
-          description: log file
-          pattern: "*.log"
+          description: HTML log file, needs -htmlout to be set in ext.args along with
+            a trimming method
+          pattern: "*.html"
           ontologies:
-            - edam: http://edamontology.org/data_2048 # Report
-            - edam: http://edamontology.org/format_2330 # Textual format
+            - edam: "http://edamontology.org/format_2331" # HTML
   versions:
     - versions.yml:
         type: file

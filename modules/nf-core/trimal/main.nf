@@ -2,7 +2,6 @@ process TRIMAL {
     tag "$meta.id"
     label 'process_single'
 
-
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/trimal:1.5.0--h9948957_2':
@@ -14,7 +13,7 @@ process TRIMAL {
 
     output:
     tuple val(meta), path("${prefix}.${out_extension}"), emit: trimal
-    tuple val(meta), path("${prefix}.html")            , emit: log, optional: true // HTML log file -htmlout param needs trimming method to be set and an <outfile> to be specified
+    tuple val(meta), path("${prefix}.html")            , emit: summary, optional: true
     path "versions.yml"                                , emit: versions
 
     when:
@@ -24,17 +23,15 @@ process TRIMAL {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     out_extension = out_format ? out_format : "trimal"
-
     """
     trimal \\
-        -in $aln \\
+        -in ${aln} \\
         -out ${prefix}.${out_extension} \\
-        $args > ${prefix}.log
-
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        trimal: \$(trimal |& sed '1!d ; s/trimal //')
+        trimal: \$(trimal --version | sed -n 's/.*\\(v[0-9]\\+\\.[0-9]\\+\\.rev[0-9]\\+\\).*/\\1/p')
     END_VERSIONS
     """
 
@@ -43,19 +40,11 @@ process TRIMAL {
     out_extension = out_format ? out_format : "trimal"
     """
     touch ${prefix}.${out_extension}
-    touch ${prefix}.log
-
-    if [[ "$args" =~ "-htmlout" ]]; then
-        touch ${prefix}.html
-    fi
+    touch ${prefix}.html
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        trimal: \$(trimal --version)
+        trimal: \$(trimal --version | sed -n 's/.*\\(v[0-9]\\+\\.[0-9]\\+\\.rev[0-9]\\+\\).*/\\1/p')
     END_VERSIONS
     """
-
-
-
-
 }
