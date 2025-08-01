@@ -1,0 +1,57 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "agat_convertgff2bed"
+description: Takes a GFF3 file and converts to a bed12 file
+keywords:
+  - genome
+  - bed
+  - gff
+  - conversion
+tools:
+  - "agat":
+      description: "Another Gff Analysis Toolkit (AGAT). Suite of tools to handle gene
+        annotations in any GTF/GFF format."
+      homepage: "https://agat.readthedocs.io/en/latest/"
+      documentation: "https://agat.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/NBISweden/AGAT"
+      doi: "10.5281/zenodo.3552717"
+      licence: ["GPL v3"]
+      identifier: biotools:AGAT
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - gff:
+        type: file
+        description: Input GFF3 file
+        pattern: "*.{gff}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1975" # GFF3
+
+output:
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bed":
+          type: file
+          description: Output bed12 file
+          pattern: "*.bed"
+          ontologies:
+            - edam: "http://edamontology.org/format_3586" # bed12
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+authors:
+  - "@atrigila"
+maintainers:
+  - "@atrigila"
