@@ -12,24 +12,21 @@ nextflow_process {
     tag "biomformat"
     tag "biomformat/convert"
 
-    setup {
-        run ("VSEARCH_CLUSTER") {
-            script "../../../vsearch/cluster/main.nf"
-            process {
-                """
-                input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
-                ]
-                """
-            }
-        }
-
-    }
-
     test("convert - to text") {
 
         setup {
+            run ("VSEARCH_CLUSTER") {
+                script "../../../vsearch/cluster/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:false ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+
             run ("GUNZIP") {
 
                 script "../../../gunzip/main.nf"
@@ -68,6 +65,18 @@ nextflow_process {
     test("convert - to json biom") {
 
         setup {
+            run ("VSEARCH_CLUSTER") {
+                script "../../../vsearch/cluster/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:false ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+
             run ("GUNZIP") {
 
                 script "../../../gunzip/main.nf"
@@ -110,6 +119,18 @@ nextflow_process {
     test("fails on identical filenames") {
 
         setup {
+            run ("VSEARCH_CLUSTER") {
+                script "../../../vsearch/cluster/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:false ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+
             run ("GUNZIP") {
 
                 script "../../../gunzip/main.nf"
@@ -147,6 +168,18 @@ nextflow_process {
     test("convert - to json biom - stub") {
 
         setup {
+            run ("VSEARCH_CLUSTER") {
+                script "../../../vsearch/cluster/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:false ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+
             run ("GUNZIP") {
 
                 script "../../../gunzip/main.nf"
@@ -187,6 +220,18 @@ nextflow_process {
     test("convert - to text - stub") {
 
         setup {
+            run ("VSEARCH_CLUSTER") {
+                script "../../../vsearch/cluster/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:false ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+
             run ("GUNZIP") {
 
                 script "../../../gunzip/main.nf"
