@@ -63,8 +63,14 @@ for ao_k, ao_v in args_opt.items():
 
 def process_tsv_join(tsv_list):
     patients_tsv = tsv_list.split()
-    tables = [pd.read_csv(p, sep='\t', dtype=str) for p in patients_tsv]
-    return pd.concat(tables, ignore_index=True)
+    # Read each file into a pandas DataFrame and ensure all columns are of type 'string'
+    tables = []
+    for p_table in patients_tsv:
+        df = pd.read_csv(p_table, sep='\\t', dtype=str)
+        tables.append(df)
+    multisample_table = pd.concat(tables, ignore_index=True)
+    multisample_table_filtered = multisample_table[multisample_table['NV'] != '0']
+    return multisample_table_filtered
 
 def input_processing(data, prefix, genome):
     new_columns = {'Project': prefix, 'Genome': genome, 'Type': "SOMATIC", 'mut_type': "SNP"}
