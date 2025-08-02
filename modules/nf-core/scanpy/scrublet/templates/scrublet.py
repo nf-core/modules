@@ -16,7 +16,7 @@ sc.settings.n_jobs = int("${task.cpus}")
 
 adata = sc.read_h5ad("${h5ad}")
 prefix = "${prefix}"
-batch_col = "${batch_col}"
+batch_col = "${batch_col ?: ''}"
 
 kwargs = {}
 if batch_col and adata.obs[batch_col].nunique() > 1:
