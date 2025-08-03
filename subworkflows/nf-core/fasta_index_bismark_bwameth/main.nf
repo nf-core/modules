@@ -88,7 +88,8 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
             ch_versions      = ch_versions.mix(UNTAR.out.versions)
         } else {
             BWAMETH_INDEX (
-                ch_fasta
+                ch_fasta,
+                false
             )
             ch_bwameth_index = BWAMETH_INDEX.out.index
             ch_versions      = ch_versions.mix(BWAMETH_INDEX.out.versions)
