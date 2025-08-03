@@ -27,8 +27,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
-                    anndata(process.out.h5ad[0][1]).n_obs
+                    process.out.versions,
+                    file(process.out.h5ad[0][1]).name,
+                    file(process.out.predictions[0][1]).name
                 ).match() }
             )
         }
@@ -53,8 +54,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
-                    anndata(process.out.h5ad[0][1]).n_obs
+                    process.out.versions,
+                    file(process.out.h5ad[0][1]).name,
+                    file(process.out.predictions[0][1]).name
                 ).match() }
             )
         }
