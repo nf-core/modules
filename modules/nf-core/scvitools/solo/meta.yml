@@ -30,7 +30,7 @@ input:
       type: string
       description: Column in adata.obs to use as batch. If not provided, the entire dataset is treated as a single batch.
   - max_epochs:
-      type: int
+      type: integer
       description: Maximum number of epochs to train the model. Defaults to the [heuristic default](https://docs.scvi-tools.org/en/stable/api/reference/scvi.model.get_max_epochs_heuristic.html#scvi.model.get_max_epochs_heuristic).
 output:
   h5ad:

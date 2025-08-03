@@ -44,10 +44,10 @@ input:
       type: string
       description: Layer to save the denoised counts to. Defaults to `scar`.
   - max_epochs:
-      type: int
+      type: integer
       description: Maximum number of epochs to train the model. Defaults to the [heuristic default](https://docs.scvi-tools.org/en/stable/api/reference/scvi.model.get_max_epochs_heuristic.html#scvi.model.get_max_epochs_heuristic).
   - n_batch:
-      type: int
+      type: integer
       description: Number of batches to use for generating the ambient profile. Defaults to 1. This can be increased to prevent out-of-memory errors.
 output:
   h5ad:
