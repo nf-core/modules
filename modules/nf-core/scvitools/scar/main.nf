@@ -12,6 +12,7 @@ process SCVITOOLS_SCAR {
     val(input_layer)
     val(output_layer)
     val(max_epochs)
+    val(n_batch)
 
     output:
     tuple val(meta), path("*.h5ad"), emit: h5ad

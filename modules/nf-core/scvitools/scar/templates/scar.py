@@ -18,9 +18,10 @@ adata_unfiltered = ad.read_h5ad("${unfiltered}")
 input_layer = "${input_layer ?: 'X'}"
 output_layer = "${output_layer ?: 'scar'}"
 max_epochs = "${max_epochs ?: ''}"
+n_batch = int("${n_batch ?: 1}")
 
 SCAR.setup_anndata(adata, layer=None if input_layer == "X" else input_layer)
-SCAR.get_ambient_profile(adata, adata_unfiltered)
+SCAR.get_ambient_profile(adata, adata_unfiltered, n_batch=n_batch)
 
 vae = SCAR(adata)
 
