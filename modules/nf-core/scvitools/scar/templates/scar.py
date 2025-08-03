@@ -20,6 +20,9 @@ output_layer = "${output_layer ?: 'scar'}"
 max_epochs = "${max_epochs ?: ''}"
 n_batch = int("${n_batch ?: 1}")
 
+if input_layer != "X" and input_layer not in adata.layers:
+    raise ValueError(f"Input layer {input_layer} not found in adata.layers")
+
 SCAR.setup_anndata(adata, layer=None if input_layer == "X" else input_layer)
 SCAR.get_ambient_profile(adata, adata_unfiltered, n_batch=n_batch)
 
