@@ -22,6 +22,8 @@ batch_key = "${batch_key ?: ''}"
 max_epochs = "${max_epochs ?: ''}"
 
 def train_model(model):
+    scvi.settings.seed = 0
+
     if "${task.ext.use_gpu}" == "true":
         model.to_device(0)
 
@@ -33,6 +35,8 @@ if batch_key:
     SCVI.setup_anndata(adata, batch_key=batch_key)
 else:
     SCVI.setup_anndata(adata)
+
+scvi.settings.seed = 0
 
 model = SCVI(adata)
 
