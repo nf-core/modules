@@ -15,7 +15,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [id: 'test'],
-                    file('https://github.com/nf-core/test-datasets/raw/876e5c90169736ddd52d7f6c38d935e57a86007a/samples/SAMN14430799_custom_emptydrops_filter_matrix.h5ad', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679756_filtered_matrix.h5ad', checkIfExists: true)
                 ]
                 input[1] = []
                 input[2] = 1
@@ -26,7 +26,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out,
+                    anndata(process.out.h5ad[0][1]).n_obs
+                ).match() }
             )
         }
 
@@ -38,7 +41,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [id: 'test'],
-                    file('https://github.com/nf-core/test-datasets/raw/876e5c90169736ddd52d7f6c38d935e57a86007a/samples/SAMN14430799_custom_emptydrops_filter_matrix.h5ad', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679756_filtered_matrix.h5ad', checkIfExists: true)
                 ]
                 input[1] = 'sample'
                 input[2] = 1
@@ -49,7 +52,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out,
+                    anndata(process.out.h5ad[0][1]).n_obs
+                ).match() }
             )
         }
 
@@ -61,7 +67,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [id: 'test'],
-                    file('https://github.com/nf-core/test-datasets/raw/876e5c90169736ddd52d7f6c38d935e57a86007a/samples/SAMN14430799_custom_emptydrops_filter_matrix.h5ad', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679756_filtered_matrix.h5ad', checkIfExists: true)
                 ]
                 input[1] = 'invalid'
                 input[2] = 1
@@ -86,7 +92,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [id: 'test'],
-                    file('https://github.com/nf-core/test-datasets/raw/876e5c90169736ddd52d7f6c38d935e57a86007a/samples/SAMN14430799_custom_emptydrops_filter_matrix.h5ad', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679756_filtered_matrix.h5ad', checkIfExists: true)
                 ]
                 input[1] = []
                 input[2] = 1
