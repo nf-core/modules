@@ -40,7 +40,7 @@ train_model(model)
 
 adata.obs["doublet"] = False
 
-batches = adata.obs["batch"].unique() if batch_key else [0]
+batches = adata.obs[batch_key].unique() if batch_key else [0]
 for batch in batches:
     model = SOLO.from_scvi_model(model, restrict_to_batch=batch if len(batches) > 1 else None)
 
