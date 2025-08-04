@@ -4,7 +4,7 @@ process BISMARK_METHYLATIONEXTRACTOR {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'hhttps://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fe/fe2a9d58209a38df5c99615a41d9ed6e8e546380d04c176e076e107010819a72/data' :
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fe/fe2a9d58209a38df5c99615a41d9ed6e8e546380d04c176e076e107010819a72/data' :
         'community.wave.seqera.io/library/bismark:0.25.0--95ba99b483e2eaf9' }"
 
     input:
