@@ -8,7 +8,7 @@ process PERBASE {
         'community.wave.seqera.io/library/perbase:1.0.0--913516700ed7b57e' }"
 
     input:
-    tuple val(meta), path(bam), path(index), path(bed)
+    tuple val(meta) , path(bam)  , path(index), path(bed)
     tuple val(meta2), path(fasta), path(fai)
 
     output:
@@ -41,7 +41,7 @@ process PERBASE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}.tsv.gz
