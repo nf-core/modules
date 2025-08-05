@@ -21,11 +21,11 @@ process STARFUSION_DETECT {
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix = task.ext.prefix ?: "${meta.id}.starfusion"
-    def fastq_arg = reads ? (meta.single_end ? "--left_fq ${reads[0]}" : "--left_fq ${reads[0]} --right_fq ${reads[1]}") : ""
+    def prefix       = task.ext.prefix ?: "${meta.id}.starfusion"
+    def fastq_arg    = reads ? (meta.single_end ? "--left_fq ${reads[0]}" : "--left_fq ${reads[0]} --right_fq ${reads[1]}") : ""
     def junction_arg =  junction ? "-J ${junction}" : ""
-    def args = task.ext.args ?: ''
-    def VERSION = '1.15.1' // WARN: This is the actual version of the STAR-FUSION, but version information of tool is not updated and prints '1.15.0'
+    def args         = task.ext.args ?: ''
+    def VERSION      = '1.15.1' // WARN: This is the actual version of the STAR-FUSION, but version information of tool is not updated and prints '1.15.0'
     """
     STAR-Fusion \\
         --genome_lib_dir $reference \\
@@ -46,7 +46,7 @@ process STARFUSION_DETECT {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}.starfusion"
+    def prefix  = task.ext.prefix ?: "${meta.id}.starfusion"
     def VERSION = '1.15.1'
     """
     touch ${prefix}.fusion_predictions.tsv
