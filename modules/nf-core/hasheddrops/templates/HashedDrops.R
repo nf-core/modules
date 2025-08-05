@@ -72,18 +72,18 @@ opt <- list(
     gene_col = 2,       # Specify which column of genes.tsv or features.tsv to use for gene names; default is 2.
 
     # hashedDrops Parameters
-    ignore = NULL,         # A numeric scalar specifying the lower bound on the total UMI count, at or below which barcodes will be ignored.
-    alpha = NULL,          # A numeric scalar specifying the scaling parameter for the Dirichlet-multinomial sampling scheme.
-    ambient = TRUE,        # Whether to use the relative abundance of each HTO in the ambient solution from emptyDrops, set TRUE only when test_ambient is TRUE.
-    minProp = 0.05,        # Numeric scalar to be used to infer the ambient profile when ambient=NULL.
-    pseudoCount = 5,       # A numeric scalar specifying the minimum pseudo-count when computing logfold changes.
+    ignore = NULL,           # A numeric scalar specifying the lower bound on the total UMI count, at or below which barcodes will be ignored.
+    alpha = NULL,            # A numeric scalar specifying the scaling parameter for the Dirichlet-multinomial sampling scheme.
+    ambient = TRUE,          # Whether to use the relative abundance of each HTO in the ambient solution from emptyDrops, set TRUE only when test_ambient is TRUE.
+    minProp = 0.05,          # Numeric scalar to be used to infer the ambient profile when ambient=NULL.
+    pseudoCount = 5,         # A numeric scalar specifying the minimum pseudo-count when computing logfold changes.
     constantAmbient = FALSE, # Logical scalar indicating whether a constant level of ambient contamination should be used to estimate LogFC2 for all cells.
-    doubletNmads = 3,      # A numeric scalar specifying the number of median absolute deviations (MADs) to use to identify doublets.
-    doubletMin = 2,        # A numeric scalar specifying the minimum threshold on the log-fold change to use to identify doublets.
-    doubletMixture = FALSE, # Logical scalar indicating whether to use a 2-component mixture model to identify doublets.
-    confidentNmads = 3,    # A numeric scalar specifying the number of MADs to use to identify confidently assigned singlets.
-    confidentMin = 2,      # A numeric scalar specifying the minimum threshold on the log-fold change to use to identify singlets.
-    combinations = NULL,   # An integer matrix specifying valid combinations of HTOs. Each row corresponds to a single sample and specifies the indices of rows in x corresponding to the HTOs used to label that sample.
+    doubletNmads = 3,        # A numeric scalar specifying the number of median absolute deviations (MADs) to use to identify doublets.
+    doubletMin = 2,          # A numeric scalar specifying the minimum threshold on the log-fold change to use to identify doublets.
+    doubletMixture = FALSE,  # Logical scalar indicating whether to use a 2-component mixture model to identify doublets.
+    confidentNmads = 3,      # A numeric scalar specifying the number of MADs to use to identify confidently assigned singlets.
+    confidentMin = 2,        # A numeric scalar specifying the minimum threshold on the log-fold change to use to identify singlets.
+    combinations = NULL,     # An integer matrix specifying valid combinations of HTOs. Each row corresponds to a single sample and specifies the indices of rows in x corresponding to the HTOs used to label that sample.
 
     # others
     prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix') # Prefix name for output files.
