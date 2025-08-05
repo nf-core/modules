@@ -1,0 +1,104 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "FASTQ_ALIGN_CONVERT_STAR_SAMTOOLS"
+description: "Align FASTQ reads using STAR, index BAM files with samtools, and optionally convert to CRAM format"
+keywords:
+  - alignment
+  - star
+  - samtools
+  - rna-seq
+  - bam
+  - cram
+  - indexing
+  - conversion
+components:
+  - samtools/convert
+  - star/align
+  - samtools/index
+input:
+  - reads:
+      type: file
+      description: |
+        Structure: [ val(meta), path(fastq) ]
+        One or two FASTQ files for single or paired end data respectively.
+      pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
+  - index:
+      type: directory
+      description: |
+        Structure: [ val(meta), path(index) ]
+        STAR genome index directory
+      pattern: "star_index"
+  - gtf:
+      type: file
+      description: |
+        Structure: [ val(meta), path(gtf) ]
+        Reference GTF annotation file
+      pattern: "*.{gtf,gtf.gz}"
+  - fasta:
+      type: file
+      description: |
+        Structure: [ val(meta), path(fasta) ]
+        Reference genome FASTA file
+      pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+  - fai:
+      type: file
+      description: |
+        Structure: [ val(meta), path(fai) ]
+        Reference genome FASTA index file
+      pattern: "*.fai"
+  - ignore_sjdbgtf:
+      type: boolean
+      description: Indicates whether to ignore splice junctions from GTF file
+  - cram:
+      type: boolean
+      description: Indicates whether to convert BAM files to CRAM format
+output:
+  - versions:
+      type: file
+      description: |
+        Structure: [ path(versions.yml) ]
+        File containing software versions
+      pattern: "versions.yml"
+  - bam_bai:
+      type: file
+      description: |
+        Structure: [ val(meta), path("*.bam"), path ("*.bai") ]
+        Sorted BAM file and its index
+      pattern: "*.{bam,bai}"
+  - cram_crai:
+      type: file
+      description: |
+        Structure: [ val(meta), path("*.cram"), path("*.crai") ]
+        CRAM file and its index (optional, only when cram=true)
+      pattern: "*.{cram,crai}"
+  - junctions:
+      type: file
+      description: |
+        Structure: [ val(meta), path('*.out.junction') ]
+        STAR splice junction files
+      pattern: "*.SJ.out.tab"
+  - spl_junc_tabs:
+      type: file
+      description: |
+        Structure: [ tuple val(meta), path('*.SJ.out.tab') ]
+        STAR splice junction tab files
+      pattern: "*.tab"
+  - log_final:
+      type: file
+      description: |
+        Structure: [ val(meta), path('*Log.final.out') ]
+        STAR final log files
+      pattern: "*Log.final.out"
+  - gene_count:
+      type: file
+      description: |
+        Structure: [ val(meta), path('*.ReadsPerGene.out.tab') ]
+        STAR gene count files
+      pattern: "*ReadsPerGene.out.tab"
+authors:
+  - "@rannick"
+  - "@nvnieuwk"
+  - "@atrigila"
+maintainers:
+  - "@rannick"
+  - "@nvnieuwk"
+  - "@atrigila"

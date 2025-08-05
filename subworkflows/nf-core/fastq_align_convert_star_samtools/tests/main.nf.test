@@ -1,0 +1,242 @@
+nextflow_workflow {
+
+    name "Test Workflow FASTQ_ALIGN_CONVERT_STAR_SAMTOOLS"
+    script "subworkflows/nf-core/fastq_align_convert_star_samtools/main.nf"
+    workflow "FASTQ_ALIGN_CONVERT_STAR_SAMTOOLS"
+    config "./nextflow.config"
+    tag "star/align"
+    tag "subworkflows/fastq_align_convert_star_samtools"
+    tag "samtools/index"
+    tag "samtools/faidx"
+    tag "star/genomegenerate"
+    tag "samtools/convert"
+    tag "subworkflows_nfcore"
+    tag "subworkflows"
+
+    test("Minigenome - Paired-end - bam") {
+
+        setup {
+            run("SAMTOOLS_FAIDX") {
+                script "../../../../modules/nf-core/samtools/faidx/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id:'test', single_end:false ], // meta map
+                        [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa', checkIfExists: true) ]
+                    ])
+                    input[1] = Channel.of([[],[]])
+                    input[2] = false
+                    """
+                }
+            }
+
+            run("STAR_GENOMEGENERATE") {
+                script "../../../../modules/nf-core/star/genomegenerate/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id:'test_fasta' ],
+                        [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa', checkIfExists: true) ]
+                    ])
+                    input[1] = Channel.of([
+                        [ id:'test_gtf' ],
+                        [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf', checkIfExists: true) ]
+                    ])
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                outdir                   = $outputDir
+                read_length              = 100
+                star_genomegenerate_args = "--sjdbOverhang ${params.read_length - 1}"
+            }
+
+            workflow {
+                """
+                input[0] = Channel.of([[ id:'test', single_end:false ], [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_1.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_2.fastq.gz', checkIfExists: true)]])
+                input[1] = STAR_GENOMEGENERATE.out.index
+                input[2] = Channel.of([
+                        [ id:'test_gtf' ],
+                        [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf', checkIfExists: true) ]
+                    ])
+                input[3] = Channel.of([
+                        [ id:'test_fa' ],
+                        [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa', checkIfExists: true) ]
+                    ])
+                input[4] = SAMTOOLS_FAIDX.out.fai
+                input[5] = false
+                input[6] = false
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert snapshot(
+                workflow.out.versions,
+                workflow.out.bam_bai,
+                workflow.out.cram_crai,
+                workflow.out.junctions,
+                workflow.out.spl_junc_tab,
+                file(workflow.out.log_final[0][1]).name,
+                workflow.out.gene_count
+            ).match()
+        }
+
+    }
+
+    test("Minigenome - Paired-end - cram") {
+
+        setup {
+            run("SAMTOOLS_FAIDX") {
+                script "../../../../modules/nf-core/samtools/faidx/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id:'test', single_end:false ], // meta map
+                        [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa', checkIfExists: true) ]
+                    ])
+                    input[1] = Channel.of([[],[]])
+                    input[2] = false
+                    """
+                }
+            }
+
+            run("STAR_GENOMEGENERATE") {
+                script "../../../../modules/nf-core/star/genomegenerate/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id:'test_fasta' ],
+                        [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa', checkIfExists: true) ]
+                    ])
+                    input[1] = Channel.of([
+                        [ id:'test_gtf' ],
+                        [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf', checkIfExists: true) ]
+                    ])
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                outdir                   = $outputDir
+                read_length              = 100
+                star_genomegenerate_args = "--sjdbOverhang ${params.read_length - 1}"
+            }
+
+            workflow {
+                """
+                input[0] = Channel.of([[ id:'test', single_end:false ], [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_1.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_2.fastq.gz', checkIfExists: true)]])
+                input[1] = STAR_GENOMEGENERATE.out.index
+                input[2] = Channel.of([
+                        [ id:'test_gtf' ],
+                        [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf', checkIfExists: true) ]
+                    ])
+                input[3] = Channel.of([
+                        [ id:'test_fa' ],
+                        [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa', checkIfExists: true) ]
+                    ])
+                input[4] = SAMTOOLS_FAIDX.out.fai
+                input[5] = false
+                input[6] = true
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert snapshot(
+                workflow.out.versions,
+                workflow.out.bam_bai,
+                file(workflow.out.cram_crai[0][1]).length() >= 5000000,
+                file(workflow.out.cram_crai[0][2]).length() >= 2000,
+                workflow.out.junctions,
+                workflow.out.spl_junc_tab,
+                file(workflow.out.log_final[0][1]).name,
+                workflow.out.gene_count
+            ).match()
+        }
+
+    }
+
+    test("Minigenome - Single-end - bam") {
+
+        setup {
+            run("SAMTOOLS_FAIDX") {
+                script "../../../../modules/nf-core/samtools/faidx/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id:'test', single_end:true ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa', checkIfExists: true) ])
+                    input[1] = [[],[]]
+                    input[2] = false
+                    """
+                }
+            }
+
+            run("STAR_GENOMEGENERATE") {
+                script "../../../../modules/nf-core/star/genomegenerate/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id:'test_fasta' ],
+                        [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa', checkIfExists: true) ]
+                    ])
+                    input[1] = Channel.of([
+                        [ id:'test_gtf' ],
+                        [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf', checkIfExists: true) ]
+                    ])
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                outdir                   = $outputDir
+                read_length              = 100
+                star_genomegenerate_args = "--sjdbOverhang ${params.read_length - 1}"
+            }
+
+            workflow {
+                """
+                input[0] = Channel.of([[ id:'test', single_end:true ], [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_1.fastq.gz', checkIfExists: true)]])
+                input[1] = STAR_GENOMEGENERATE.out.index
+                input[2] = Channel.of([
+                        [ id:'test_gtf' ],
+                        [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf', checkIfExists: true) ]
+                    ])
+                input[3] = Channel.of([
+                        [ id:'test_fa' ],
+                        [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa', checkIfExists: true) ]
+                    ])
+                input[4] = SAMTOOLS_FAIDX.out.fai
+                input[5] = false
+                input[6] = false
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert snapshot(
+                workflow.out.versions,
+                workflow.out.bam_bai,
+                workflow.out.cram_crai,
+                workflow.out.junctions,
+                workflow.out.spl_junc_tab,
+                file(workflow.out.log_final[0][1]).name,
+                workflow.out.gene_count
+            ).match()
+        }
+
+    }
+
+}
+
