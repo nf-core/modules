@@ -12,16 +12,16 @@ process STARFUSION_DETECT {
     path reference
 
     output:
-    tuple val(meta), path("*.fusion_predictions.tsv")                   , emit: fusions
-    tuple val(meta), path("*.abridged.tsv")                             , emit: abridged
-    tuple val(meta), path("*.coding_effect.tsv")     , optional: true   , emit: coding_effect
-    path "versions.yml"                                                 , emit: versions
+    tuple val(meta), path("*.fusion_predictions.tsv"), emit: fusions
+    tuple val(meta), path("*.abridged.tsv")          , emit: abridged
+    tuple val(meta), path("*.coding_effect.tsv")     , emit: coding_effect, optional: true
+    path "versions.yml"                              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}.starfusion"
     def fastq_arg = reads ? (meta.single_end ? "--left_fq ${reads[0]}" : "--left_fq ${reads[0]} --right_fq ${reads[1]}") : ""
     def junction_arg =  junction ? "-J ${junction}" : ""
     def args = task.ext.args ?: ''
@@ -35,9 +35,9 @@ process STARFUSION_DETECT {
         --output_dir . \\
         $args
 
-    mv star-fusion.fusion_predictions.tsv ${prefix}.starfusion.fusion_predictions.tsv
-    mv star-fusion.fusion_predictions.abridged.tsv ${prefix}.starfusion.abridged.tsv
-    mv star-fusion.fusion_predictions.abridged.coding_effect.tsv ${prefix}.starfusion.abridged.coding_effect.tsv
+    mv star-fusion.fusion_predictions.tsv ${prefix}.fusion_predictions.tsv
+    mv star-fusion.fusion_predictions.abridged.tsv ${prefix}.abridged.tsv
+    mv star-fusion.fusion_predictions.abridged.coding_effect.tsv ${prefix}.abridged.coding_effect.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -46,12 +46,12 @@ process STARFUSION_DETECT {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}.starfusion"
     def VERSION = '1.15.1'
     """
-    touch ${prefix}.starfusion.fusion_predictions.tsv
-    touch ${prefix}.starfusion.abridged.tsv
-    touch ${prefix}.starfusion.abridged.coding_effect.tsv
+    touch ${prefix}.fusion_predictions.tsv
+    touch ${prefix}.abridged.tsv
+    touch ${prefix}.abridged.coding_effect.tsv
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         STAR-Fusion: $VERSION
