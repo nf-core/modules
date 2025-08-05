@@ -26,7 +26,14 @@ input:
         type: file
         description: Sorted BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_2572 # BAM
+    - bai:
+        type: file
+        description: Index of sorted BAM/CRAM/SAM file
+        pattern: "*.{bai,crai,sai}"
+        ontologies:
+          - edam: http://edamontology.org/format_3327 # BAI
   - - meta2:
         type: map
         description: |
@@ -36,7 +43,8 @@ input:
         type: file
         description: Reference fasta file
         pattern: "*.{fasta}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - meta3:
         type: map
         description: |
@@ -71,3 +79,4 @@ authors:
   - "@FriederikeHanssen"
 maintainers:
   - "@FriederikeHanssen"
+  - "@famosab"

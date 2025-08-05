@@ -3,9 +3,9 @@ process HASHEDDROPS {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'oras://community.wave.seqera.io/library/bioconductor-dropletutils_r-seurat:3cbdf18d48cd0cfa'
-        : 'community.wave.seqera.io/library/bioconductor-dropletutils_r-seurat:e1dff3a0fb7c5920'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/43/431b27926fac88d6334ee3e8f63479f69a1a69340b305a05b70bc84083d301aa/data':
+        'community.wave.seqera.io/library/bioconductor-dropletutils_r-seurat:e1dff3a0fb7c5920' }"
 
     input:
     tuple val(meta), path(hto_matrix), val(runEmptyDrops), path(rna_matrix)
@@ -27,7 +27,7 @@ process HASHEDDROPS {
     template('HashedDrops.R')
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_emptyDrops.png
     touch ${prefix}_emptyDrops.csv

@@ -63,11 +63,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:‘test’, single_end ]
-      - "*estimate__decoupler.tsv":
+      - "*estimate_decoupler.tsv":
           type: file
           description: |
             The file containing the estimation results of the enrichment(s)
-          pattern: "*estimate__decoupler.tsv"
+          pattern: "*estimate_decoupler.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   dc_pvals:
@@ -76,12 +76,26 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:‘test’, single_end ]
-      - "*pvals__decoupler.tsv":
+      - "*pvals_decoupler.tsv":
           type: file
           description: |
             The file containing the p-value associated to the estimation
             results of the enrichment(s)
-          pattern: "*pvals__decoupler.tsv"
+          pattern: "*pvals_decoupler.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  png:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:‘test’, single_end ]
+      - "*decoupler_plot.png":
+          type: file
+          description: |
+            The file containing the plots associated to the estimation
+            results of the enrichment(s)
+          pattern: "*decoupler_plot.png"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   versions:

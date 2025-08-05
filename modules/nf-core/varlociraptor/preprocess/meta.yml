@@ -26,17 +26,20 @@ input:
         type: file
         description: Sorted BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_2572 # BAM
     - bai:
         type: file
         description: Index of the BAM/CRAM/SAM file
         pattern: "*.{bai,crai,sai}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3327 # BAI
     - candidates:
         type: file
         description: Sorted BCF/VCF file
         pattern: "*.{bcf,vcf,vcf.gz}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3016 # VCF
     - alignment_json:
         type: file
         description: File containing alignment properties obtained with varlociraptor/estimatealignmentproperties
@@ -52,7 +55,8 @@ input:
         type: file
         description: Reference fasta file
         pattern: "*.{fasta}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - meta3:
         type: map
         description: |
@@ -74,7 +78,8 @@ output:
           type: file
           description: BCF file containing sample observations
           pattern: "*.bcf"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3020 # BCF
   versions:
     - versions.yml:
         type: file
@@ -86,3 +91,4 @@ authors:
   - "@FriederikeHanssen"
 maintainers:
   - "@FriederikeHanssen"
+  - "@famosab"

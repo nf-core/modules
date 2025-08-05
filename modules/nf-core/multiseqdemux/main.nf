@@ -3,9 +3,9 @@ process MULTISEQDEMUX {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'oras://community.wave.seqera.io/library/r-seurat_r-seuratobject:4c5a804804327d29'
-        : 'community.wave.seqera.io/library/r-seurat_r-seuratobject:b11306d1bdc82827'}"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f9/f96b7927142847485eff858170a4cfd2d3924fb4f09de7043dd6677ac6acd09e/data':
+        'community.wave.seqera.io/library/r-seurat_r-seuratobject:b11306d1bdc82827' }"
 
     input:
     tuple val(meta), path(seurat_object), val(assay)
@@ -23,7 +23,7 @@ process MULTISEQDEMUX {
     template('MultiSeqDemux.R')
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_params_multiseqdemux.csv
     touch ${prefix}_res_multiseqdemux.csv
