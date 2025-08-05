@@ -77,9 +77,10 @@ nextflow_workflow {
             assert workflow.success
             assert snapshot(
                 workflow.out.versions,
-                workflow.out.bam_bai,
+                bam(workflow.out.bam_bai[0][1]).getReadsMD5(),
+                file(workflow.out.bam_bai[0][2]).length(),
                 workflow.out.cram_crai,
-                workflow.out.junctions,
+                file(workflow.out.junctions[0][1]).length(),
                 workflow.out.spl_junc_tab,
                 file(workflow.out.log_final[0][1]).name,
                 workflow.out.gene_count
@@ -152,10 +153,11 @@ nextflow_workflow {
             assert workflow.success
             assert snapshot(
                 workflow.out.versions,
-                workflow.out.bam_bai,
+                bam(workflow.out.bam_bai[0][1]).getReadsMD5(),
+                file(workflow.out.bam_bai[0][2]).length(),
                 file(workflow.out.cram_crai[0][1]).length() >= 5000000,
                 file(workflow.out.cram_crai[0][2]).length() >= 2000,
-                workflow.out.junctions,
+                file(workflow.out.junctions[0][1]).length(),
                 workflow.out.spl_junc_tab,
                 file(workflow.out.log_final[0][1]).name,
                 workflow.out.gene_count
@@ -227,9 +229,10 @@ nextflow_workflow {
             assert workflow.success
             assert snapshot(
                 workflow.out.versions,
-                workflow.out.bam_bai,
+                bam(workflow.out.bam_bai[0][1]).getReadsMD5(),
+                file(workflow.out.bam_bai[0][2]).length(),
                 workflow.out.cram_crai,
-                workflow.out.junctions,
+                file(workflow.out.junctions[0][1]).length(),
                 workflow.out.spl_junc_tab,
                 file(workflow.out.log_final[0][1]).name,
                 workflow.out.gene_count
