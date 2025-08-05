@@ -4,8 +4,8 @@ process PERBASE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/perbase:0.10.3--h15397dd_0':
-        'biocontainers/perbase:0.10.3--h15397dd_0' }"
+        'https://community.wave.seqera.io/library/perbase:1.0.0--f202ba9adcee9bb3':
+        'community.wave.seqera.io/library/perbase:1.0.0--913516700ed7b57e' }"
 
     input:
     tuple val(meta), path(bam), path(index), path(bed)
