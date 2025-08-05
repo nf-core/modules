@@ -4,7 +4,7 @@ process PERBASE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community.wave.seqera.io/library/perbase:1.0.0--f202ba9adcee9bb3':
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/eb/eb5fad22cc063bd389d2a62d7710721cac547aff657c37be0f7afb4a66420b66/data':
         'community.wave.seqera.io/library/perbase:1.0.0--913516700ed7b57e' }"
 
     input:
