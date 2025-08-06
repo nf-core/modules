@@ -45,11 +45,11 @@ workflow FASTQ_ALIGN_CONVERT_STAR_SAMTOOLS {
     }
 
     emit:
-    versions      = ch_versions              // channel [ versions ]
-    bam_bai       = ch_bam_bai
-    cram_crai     = ch_cram_crai
-    junctions     = STAR_ALIGN.out.junction
-    spl_junc_tabs = STAR_ALIGN.out.spl_junc_tab
-    log_final     = STAR_ALIGN.out.log_final
-    gene_count    = STAR_ALIGN.out.read_per_gene_tab
+    versions      = ch_versions                      // channel: [ versions ]
+    bam_bai       = ch_bam_bai                       // channel: [ val(meta), path(bam) , path(bai) ]
+    cram_crai     = ch_cram_crai                     // channel: [ val(meta), path(cram), path(crai) ]
+    junctions     = STAR_ALIGN.out.junction          // channel: [ val(meta), path(junction) ]
+    spl_junc_tabs = STAR_ALIGN.out.spl_junc_tab      // channel: [ val(meta), path(spl_jun_tab) ]
+    log_final     = STAR_ALIGN.out.log_final         // channel: [ val(meta), path(log_final) ]
+    gene_count    = STAR_ALIGN.out.read_per_gene_tab // channel: [ val(meta), path(read_per_gene_tab) ]
 }
