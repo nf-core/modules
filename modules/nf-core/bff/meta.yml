@@ -28,20 +28,18 @@ input:
           Directory that contains the HTO matrix in a 10X format.
         ontologies:
             - edam: "http://edamontology.org/data_3917" # count matrix
-
     - methods:
         type: string
         description: |
-          Decides whether ‘RAW’, ‘CLUSTER’ OR ‘COMBINED’ should be selected as the call method.
+          Decides whether 'RAW', 'CLUSTER' OR 'COMBINED' should be selected as the call method.
     - preprocessing:
         type: string
         description: |
           Decides whether the HTO matrix should undergo a preprocessing step ('TRUE') or not ('FALSE').
 
 output:
-
-  - assignment:
-      - meta:
+  assignment:
+    - - meta:
           type: file
           description: |
             Groovy Map containing sample information
@@ -51,8 +49,8 @@ output:
           description: Contains the assignment results of demultiplexing.
           pattern: "assignment_bff.csv"
 
-  - metrics:
-      - meta:
+  metrics:
+    - - meta:
           type: file
           description: |
             Groovy Map containing sample information
@@ -62,8 +60,8 @@ output:
           description: Summary metrics will be written to this file.
           pattern: "_metrics_bff.csv"
 
-  - params:
-      - meta:
+  params:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -73,11 +71,11 @@ output:
           description: The used parameters to call HTODemux in the R-Script.
           pattern: "params_htodemux.csv"
 
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions.
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions.
+        pattern: "versions.yml"
 
 authors:
   - "@LuisHeinzlmeier"
