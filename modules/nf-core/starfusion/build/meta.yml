@@ -38,31 +38,31 @@ input:
         required: true
         ontologies:
           - edam: "http://edamontology.org/format_2306" # GTF
-  - - fusion_annot_lib:
-        type: file
-        description: Fusion annotation library file containing known fusion genes
-        required: true
-        ontologies:
-          - edam: "http://edamontology.org/topic_0203" # Gene fusion
-  - - dfam_species:
-        type: string
-        description: Dfam species name
+  - fusion_annot_lib:
+      type: file
+      description: Fusion annotation library file containing known fusion genes
+      required: true
+      ontologies:
+        - edam: "http://edamontology.org/topic_0203" # Gene fusion
+  - dfam_species:
+      type: string
+      description: Dfam species name
 output:
-  - reference:
-      - meta:
+  reference:
+    - - meta:
           type: map
           description: Metadata map
       - ${prefix}_genome_lib_build_dir:
           type: directory
           description: Genome library build directory
           pattern: "*_genome_lib_build_dir"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: http://edamontology.org/format_3750 # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@praveenraj2018"
   - "@martings"

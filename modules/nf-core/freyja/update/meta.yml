@@ -15,30 +15,37 @@ tools:
       licence: ["BSD-2-Clause"]
       identifier: ""
 input:
-  - - db_name:
-        type: string
-        description: "The name of the database directory"
+  - db_name:
+      type: string
+      description: "The name of the database directory"
 output:
-  - barcodes:
-      - ${db_name}/usher_barcodes.feather:
-          type: file
-          description: File containing lineage defining barcodes
-          pattern: "*barcodes.feather"
-  - lineages_topology:
-      - ${db_name}/lineages.yml:
-          type: file
-          description: File containing the lineage topology
-          pattern: "*lineages.yml"
-  - lineages_meta:
-      - ${db_name}/curated_lineages.json:
-          type: file
-          description: File containing lineage metadata that correspond to barcodes
-          pattern: "*lineages.json"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  barcodes:
+    - ${db_name}/usher_barcodes.feather:
+        type: file
+        description: File containing lineage defining barcodes
+        pattern: "*barcodes.feather"
+        ontologies: []
+  lineages_topology:
+    - ${db_name}/lineages.yml:
+        type: file
+        description: File containing the lineage topology
+        pattern: "*lineages.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+  lineages_meta:
+    - ${db_name}/curated_lineages.json:
+        type: file
+        description: File containing lineage metadata that correspond to barcodes
+        pattern: "*lineages.json"
+        ontologies:
+          - edam: http://edamontology.org/format_3464 # JSON
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Joon-Klaps"
 maintainers:

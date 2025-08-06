@@ -29,16 +29,19 @@ input:
         type: file
         description: input FastQ files
         pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
     - db:
         type: file
         description: Database in FASTA format
         pattern: "*.fasta"
-  - - db_type:
-        type: string
-        description: Type of database to use, either 'gene' or 'mlst'
+        ontologies: []
+  - db_type:
+      type: string
+      description: Type of database to use, either 'gene' or 'mlst'
 output:
-  - gene_results:
-      - meta:
+  gene_results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,8 +50,9 @@ output:
           type: file
           description: SRST2 gene results
           pattern: "*_genes_*_results.txt"
-  - fullgene_results:
-      - meta:
+          ontologies: []
+  fullgene_results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -57,8 +61,9 @@ output:
           type: file
           description: SRST2 full gene results
           pattern: "*_fullgenes_*_results.txt"
-  - mlst_results:
-      - meta:
+          ontologies: []
+  mlst_results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -67,8 +72,9 @@ output:
           type: file
           description: SRST2 MLST results
           pattern: "*_mlst_*_results.txt"
-  - pileup:
-      - meta:
+          ontologies: []
+  pileup:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -77,8 +83,9 @@ output:
           type: file
           description: SAMtools pileup file
           pattern: "*.pileup"
-  - sorted_bam:
-      - meta:
+          ontologies: []
+  sorted_bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -87,11 +94,14 @@ output:
           type: file
           description: Sorted BAM file
           pattern: "*.sorted.bam"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jvhagey"
 maintainers:
