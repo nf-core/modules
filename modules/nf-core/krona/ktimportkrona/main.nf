@@ -1,6 +1,6 @@
 process KRONA_KTIMPORTKRONA {
     label 'process_low'
-
+    stageInMode "copy"
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/krona:2.8.1--pl5321hdfd78af_1':
@@ -10,7 +10,7 @@ process KRONA_KTIMPORTKRONA {
     path html
 
     output:
-    path "*.krona.html"        , emit: html
+    path "*.html"              , emit: html
     path "versions.yml"        , emit: versions
 
     when:
@@ -18,7 +18,7 @@ process KRONA_KTIMPORTKRONA {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ? "-o ${task.ext.prefix}.krona.html" : ''
+    def prefix = task.ext.prefix ? "-o ${task.ext.prefix}.html" : ''
     """
     ktImportKrona ${html} \\
         ${prefix} \\
@@ -32,7 +32,7 @@ process KRONA_KTIMPORTKRONA {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ? "-o ${task.ext.prefix}.krona.html" : 'krona.krona.html'
+    def prefix = task.ext.prefix ? "-o ${task.ext.prefix}.html" : 'krona.krona.html'
     """
     touch ${prefix}
 
