@@ -46,7 +46,7 @@ workflow FASTQ_ALIGN_CONVERT_STAR_SAMTOOLS {
 
     emit:
     versions      = ch_versions                      // channel: [ versions ]
-    bam_bai       = ch_bam_bai                       // channel: [ val(meta), path(bam) , path(bai) ]
+    bam_bai       = ch_bam_bai                       // channel: [ val(meta), path(bam), path(bai) ]
     cram_crai     = ch_cram_crai                     // channel: [ val(meta), path(cram), path(crai) ]
     junctions     = STAR_ALIGN.out.junction          // channel: [ val(meta), path(junction) ]
     spl_junc_tabs = STAR_ALIGN.out.spl_junc_tab      // channel: [ val(meta), path(spl_jun_tab) ]
