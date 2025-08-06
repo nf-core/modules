@@ -1,0 +1,75 @@
+name: "pharmcat_report"
+description: PharmCAT (Pharmacogenomics Clinical Annotation Tool) is a bioinformatics
+  tool that analyzes genetic variants to predict drug response and tailor medical
+  treatment to an individual patient’s genetic profile.
+keywords:
+  - pharmacogenomics
+  - pharmcat
+  - genomics
+tools:
+  - pharmcat:
+      description: "PharmCAT (Pharmacogenomics Clinical Annotation Tool) is a bioinformatics\
+        \ tool that analyzes genetic variants to predict drug response and tailor medical\
+        \ treatment to an individual patient’s genetic profile."
+      homepage: "https://pharmcat.clinpgx.org/"
+      documentation: "https://pharmcat.clinpgx.org/using/Running-PharmCAT/"
+      tool_dev_url: "https://github.com/PharmGKB/PharmCAT"
+      licence: ["MPL"]
+      identifier: biotools:pharmcat
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample1', single_end: false ]
+    - bgz_file:
+        type: file
+        description: Compressed input VCF in bgzip format
+        pattern: "*.vcf.{gz,bgz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
+output:
+  html:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.html":
+          type: file
+          description: PharmCAT HTML report
+          pattern: "*.html"
+          ontologies: []
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.json":
+          type: file
+          description: PharmCAT JSON report
+          pattern: "*.json"
+          ontologies: []
+  json_input_reporter_parser:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.report.json":
+          type: file
+          description: PharmCAT JSON input for report parser
+          pattern: "*.report.json"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750  # YAML
+authors:
+  - "@PharmGKB"
+maintainers:
+  - "@PharmGKB"
