@@ -8,18 +8,25 @@ process SCANPY_HASHSOLO {
         'community.wave.seqera.io/library/python_pyyaml_scanpy:b5509a698e9aae25' }"
 
     input:
-    tuple val(meta), path(input_h5ad), val(cell_hashing_columns)
-    val(priors)
+    tuple val(meta), path(hto_data)
 
     output:
-    tuple val(meta), path("*.h5ad"), emit: h5ad
-    path "versions.yml"            , emit: versions
+    tuple val(meta), path("*_hashsolo.csv"), emit: assignment
+    tuple val(meta), path("*_hashsolo.jpg"), emit: plot
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
+
+    use_rna_data                  = task.ext.use_rna_data                  ?: false    // Whether to use RNA data for demultiplexing
+    priors                        = task.ext.priors_negative               ?: [0.01, 0.8, 0.19]  // A list of prior for each hypothesis. The first element is prior for the negative hypothesis, second for the singlet hypothesis, third element for the doublet hypothesis
+    pre_existing_clusters         = task.ext.pre_existing_clusters         ?: null            // Column in cell_hashing_adata.obs for how to break up demultiplexing
+    number_of_noise_barcodes      = task.ext.number_of_noise_barcodes      ?: null     // Number of barcodes to use to create noise distribution
+    clustering_data               = task.ext.clustering_data               ?: null     // Input directory containing transcriptomic data in 10x mtx format
+
     template('hashsolo.py')
 
     stub:

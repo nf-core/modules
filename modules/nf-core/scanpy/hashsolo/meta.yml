@@ -23,36 +23,42 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - input_h5ad:
+    - hto_data:
         type: file
-        description: The (annotated) data matrix of shape n_obs x n_vars. Rows
-          correspond to cells and columns to genes.
-        pattern: "*.h5ad"
-        ontologies: []
-    - cell_hashing_columns:
-        type: list
         description: |
-          List of cell hashing columns to use for demultiplexing.
-          e.g. `['hash_1', 'hash_2']`
-  - priors:
-      type: list
-      description: |
-        List of priors to use
+          Input directory containing hashing count matrix in 10x mtx format.
+        pattern: "*"
+        ontologies: []
 
 output:
-  h5ad:
+  assignment:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-          pattern: "*.h5ad"
-      - "*.h5ad":
+          pattern: "*_hashsolo.csv"
+      - "*_hashsolo.csv":
           type: file
           description: |
-            AnnData file containing cluster feature, etc.
-          pattern: "*.h5ad"
-          ontologies: []
+            CSV file containing hashsolo assignment results
+          pattern: "*_hashsolo.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  plot:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+          pattern: "*_hashsolo.jpg"
+      - "*_hashsolo.jpg":
+          type: file
+          description: |
+            QC plot images from hashsolo analysis
+          pattern: "*_hashsolo.jpg"
+          ontologies:
+            - edam: http://edamontology.org/format_3579 # JPEG
   versions:
     - versions.yml:
         type: file
