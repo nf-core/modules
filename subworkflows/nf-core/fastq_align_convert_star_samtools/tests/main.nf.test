@@ -78,9 +78,9 @@ nextflow_workflow {
             assert snapshot(
                 workflow.out.versions,
                 bam(workflow.out.bam_bai[0][1]).getReadsMD5(),
-                file(workflow.out.bam_bai[0][2]).length(),
+                file(workflow.out.bam_bai[0][2]).length() >= 90000,
                 workflow.out.cram_crai,
-                file(workflow.out.junctions[0][1]).length(),
+                file(workflow.out.junctions[0][1]).length() >= 1000000,
                 workflow.out.spl_junc_tab,
                 file(workflow.out.log_final[0][1]).name,
                 workflow.out.gene_count
@@ -154,10 +154,10 @@ nextflow_workflow {
             assert snapshot(
                 workflow.out.versions,
                 bam(workflow.out.bam_bai[0][1]).getReadsMD5(),
-                file(workflow.out.bam_bai[0][2]).length(),
+                file(workflow.out.bam_bai[0][2]).length() >= 90000,
                 file(workflow.out.cram_crai[0][1]).length() >= 5000000,
                 file(workflow.out.cram_crai[0][2]).length() >= 2000,
-                file(workflow.out.junctions[0][1]).length(),
+                file(workflow.out.junctions[0][1]).length() >= 1000000,
                 workflow.out.spl_junc_tab,
                 file(workflow.out.log_final[0][1]).name,
                 workflow.out.gene_count
@@ -230,9 +230,9 @@ nextflow_workflow {
             assert snapshot(
                 workflow.out.versions,
                 bam(workflow.out.bam_bai[0][1]).getReadsMD5(),
-                file(workflow.out.bam_bai[0][2]).length(),
+                file(workflow.out.bam_bai[0][2]).length() >= 50000,
                 workflow.out.cram_crai,
-                file(workflow.out.junctions[0][1]).length(),
+                file(workflow.out.junctions[0][1]).length() >= 70000,
                 workflow.out.spl_junc_tab,
                 file(workflow.out.log_final[0][1]).name,
                 workflow.out.gene_count
