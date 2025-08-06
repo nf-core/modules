@@ -51,8 +51,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     [
-                        file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/v0.0.1/rnaseq_1.fastq.gz"),
-                        file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/v0.0.1/rnaseq_2.fastq.gz")
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_1.fastq.gz'),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_2.fastq.gz')
                     ], // reads
                     [] // empty list for junction, as we don't have a pre-computed Chimeric.out.junction file
                 ]
@@ -88,7 +88,7 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:true ], // meta map
                     [
-                        file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/v0.0.1/rnaseq_1.fastq.gz")
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_1.fastq.gz')
                     ], // reads
                     [] // empty list for junction, as we don't have a pre-computed Chimeric.out.junction file
                 ]
@@ -126,8 +126,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'test_stub', single_end:false ],
                     [
-                        file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/v0.0.1/rnaseq_1.fastq.gz"),
-                        file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/v0.0.1/rnaseq_2.fastq.gz")
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_1.fastq.gz'),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_2.fastq.gz')
                     ],
                     [] // empty list for junction
                 ]

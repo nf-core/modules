@@ -48,8 +48,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     [
-                        file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/v0.0.1/rnaseq_1.fastq.gz"),
-                        file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/v0.0.1/rnaseq_2.fastq.gz")
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_1.fastq.gz'),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_2.fastq.gz')
                     ], // reads
                     [
                         file("https://github.com/FusionInspector/FusionInspector/raw/master/test/fusion_targets.A.txt")
@@ -85,8 +85,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     [
-                        file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/v0.0.1/rnaseq_1.fastq.gz"),
-                        file("https://github.com/STAR-Fusion/STAR-Fusion-Tutorial/raw/v0.0.1/rnaseq_2.fastq.gz")
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_1.fastq.gz'),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_2.fastq.gz')
                     ], // reads
                     [
                         file("https://github.com/FusionInspector/FusionInspector/raw/master/test/fusion_targets.A.txt")
