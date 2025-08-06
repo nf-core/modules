@@ -1,5 +1,5 @@
 process HTODEMUX {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
@@ -11,26 +11,17 @@ process HTODEMUX {
     tuple val(meta), path(seurat_object), val(assay)
 
     output:
-    tuple val(meta), path("*_params_htodemux.csv")             , emit: params
-    tuple val(meta), path("*_assignment_htodemux.csv")         , emit: assignment
-    tuple val(meta), path("*_classification_htodemux.csv")     , emit: classification
-    tuple val(meta), path("*_htodemux.rds")                    , emit: rds
-    path "versions.yml"                                        , emit: versions
+    tuple val(meta), path("*_params_htodemux.csv")        , emit: params
+    tuple val(meta), path("*_assignment_htodemux.csv")    , emit: assignment
+    tuple val(meta), path("*_classification_htodemux.csv"), emit: classification
+    tuple val(meta), path("*_htodemux.rds")               , emit: rds
+    path "versions.yml"                                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    quantile = task.ext.quantile ?: "0.99"
-    init = task.ext.init ?: "NULL"
-    nstarts = task.ext.nstarts ?: "100"
-    kfunc = task.ext.kfunc ?: "clara"
-    nsamples = task.ext.nsamples ?: "100"
-    seed = task.ext.seed ?: '42'
-    verbose = task.ext.verbose ?: 'TRUE'
-    prefix = task.ext.prefix ?: "${meta.id}"
-
-    template 'HTODemux.R'
+    template('HTODemux.R')
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
