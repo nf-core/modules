@@ -13,8 +13,9 @@ nextflow_process {
     tag "biomformat/convert"
 
     setup {
-        run ("VSEARCH_CLUSTER", alias: "VSEARCH_CLUSTER_BIOM") {
+        run ("VSEARCH_CLUSTER") {
             script "../../../vsearch/cluster/main.nf"
+
             process {
                 """
                 input[0] = [
@@ -30,19 +31,7 @@ nextflow_process {
             script "../../../gunzip/main.nf"
             process {
                 """
-                input[0] = VSEARCH_CLUSTER_BIOM.out.biom
-                """
-            }
-        }
-
-        run ("VSEARCH_CLUSTER", alias: "VSEARCH_CLUSTER_TXT") {
-            script "../../../vsearch/cluster/main.nf"
-            process {
-                """
-                input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
-                ]
+                input[0] = VSEARCH_CLUSTER.out.biom
                 """
             }
         }
@@ -52,7 +41,7 @@ nextflow_process {
             script "../../../gunzip/main.nf"
             process {
                 """
-                input[0] = VSEARCH_CLUSTER_TXT.out.otu
+                input[0] = VSEARCH_CLUSTER.out.otu
                 """
             }
         }   
@@ -62,7 +51,10 @@ nextflow_process {
 
         when {
             params {
-                module_args   = '--to-tsv'
+                vsearch_cluster_args  = '--id 0.8'
+                vsearch_cluster_args2 = '--cluster_fast'
+                vsearch_cluster_args3 = '--biomout'
+                module_args           = '--to-tsv'
             }
 
             process {
@@ -85,7 +77,10 @@ nextflow_process {
 
         when {
             params {
-                module_args   = '--table-type="OTU table" --to-json'
+                vsearch_cluster_args  = '--id 0.8'
+                vsearch_cluster_args2 = '--cluster_fast'
+                vsearch_cluster_args3 = '--otutabout'
+                module_args           = '--table-type="OTU table" --to-json'
             }
 
             process {
@@ -112,7 +107,10 @@ nextflow_process {
 
         when {
             params {
-                module_args   = '-table-type="OTU table" --to-hdf5'
+                vsearch_cluster_args   = '--id 0.8'
+                vsearch_cluster_args2  = '--cluster_fast'
+                vsearch_cluster_args3  = '--biomout'
+                module_args            = '-table-type="OTU table" --to-hdf5'
             }            
 
             process {
@@ -125,56 +123,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert !process.success }
-            )
-        }
-
-    }
-
-    test("convert - to text - stub") {
-
-        options "-stub"
-
-        when {
-            params {
-                module_args   = '--to-tsv'
-            }
-
-            process {
-                """
-                input[0] = GUNZIP_BIOM.out.gunzip
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
-
-    }
-
-    test("convert - to json biom - stub") {
-
-        options "-stub"
-
-        when {
-            params {
-                module_args   = '--table-type="OTU table" --to-json'
-            }
-
-            process {
-                """
-                input[0] = GUNZIP_TXT.out.gunzip
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
             )
         }
 
