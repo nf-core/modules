@@ -3,18 +3,33 @@
 import os
 import platform
 import yaml
+import shlex
+import argparse
 
 os.environ["MPLCONFIGDIR"] = "./tmp/mpl"
 os.environ["NUMBA_CACHE_DIR"] = "./tmp/numba"
 
 import scanpy as sc
 import scanpy.external as sce
+import pandas as pd
+import matplotlib.pyplot as plt
 
+class Arguments:
+    # adopted from mygene module (Suzanne Jin)
+    """
+    Parses the arguments, including the ones coming from $task.ext.args.
+    """
 
-# parse_ext_args
-# from modules/nf-core/mygene/templates/mygene.py
+    def __init__(self) -> None:
+        self.hto_data        = "$hto_data"
+        self.prefix          = "$task.ext.prefix" if "$task.ext.prefix" != "null" else "$meta.id"
+        self.path_assignment = self.prefix + "_hashsolo.csv"
+        self.path_plot       = self.prefix + "_hashsolo.jpg"
+        self.path_h5ad       = self.prefix + "_hashsolo.h5ad"
+        self.path_params     = self.prefix + "_params_hashsolo.csv"
+        self.parse_ext_args("$task.ext.args")
 
- def parse_ext_args(self, args_string: str) -> None:
+    def parse_ext_args(self, args_string: str) -> None:
         """
         It parses the extended arguments.
         """
@@ -25,50 +40,37 @@ import scanpy.external as sce
         # Parse the extended arguments
         args_list = shlex.split(args_string)  # Split the string into a list of arguments
         parser = argparse.ArgumentParser()
-        # input parameters
+
         parser.add_argument(
-            "--columname",
-            default="gene_id",
-            help="Name of the column where the gene ids are stored in the input file. Default: gene_id",
+            "--priors",
+            metavar="N",
+            type=float,
+            nargs=3,
+            help="a list of prior for each hypothesis. \
+                            The first element is prior for the negative hypothesis, \
+                            second for the singlet hypothesis, third element for the doublet hypothesis",
+            default=[0.01, 0.8, 0.19],
         )
-        # filtering parameters
+
         parser.add_argument(
-            "--species",
+            "--pre_existing_clusters",
+            help="column in cell_hashing_adata.obs for how to break up demultiplexing",
+            type=str,
             default=None,
-            help="Comma separated of common name of the species or taxon ids",
         )
         parser.add_argument(
-            "--go_category",
+            "--clustering_data",
+            help="input directory containing transcriptomic data in 10x mtx format.",
+            type=str,
             default=None,
-            help="Comma separated list of GO categories to keep. Default: all",
         )
         parser.add_argument(
-            "--go_evidence",
+            "--number_of_noise_barcodes",
+            help="Number of barcodes to use to create noise distribution",
+            type=int,
             default=None,
-            help="Comma separated list of GO evidence codes to keep. Default: all",
         )
-        # additional parameters for querymany
-        parser.add_argument(
-            "--scopes",
-            default=None,
-            help="Comma separated list of scopes to search for.",
-        )
-        parser.add_argument(
-            "--entrezonly",
-            default=False,
-            help="When true, the query returns only the hits with valid Entrez gene ids. Default: false.",
-        )
-        parser.add_argument(
-            "--ensemblonly",
-            default=False,
-            help="When true, the query returns only the hits with valid Ensembl gene ids. Default: False",
-        )
-        # output parameters
-        parser.add_argument(
-            "--generate_tsv",
-            default=False,
-            help="Also generate a tsv file with the gene based information. Default: False",
-        )
+
         args = parser.parse_args(args_list)
 
         # Convert "null" values to default values
@@ -82,96 +84,72 @@ import scanpy.external as sce
             elif value == "false":
                 setattr(args, attr, False)
 
-        # check if the arguments are valid
-        if args.go_category:
-            args.go_category = args.go_category.upper()
-            for category in args.go_category.split(","):
-                if category not in ["BP", "MF", "CC"]:
-                    raise ValueError("The GO category should be one of BP, MF, or CC.")
-        if args.go_evidence:
-            args.go_evidence = args.go_evidence.upper()
-
         # Assign args attributes to self attributes
         for attr in vars(args):
             setattr(self, attr, getattr(args, attr))
 
-#  ---------------------- new version  ----------------------
+    def print_args(self) -> None:
+        """
+        Print the arguments.
+        """
+        for attr in vars(self):
+            print(f"{attr}: {getattr(self, attr)}")
+
+if __name__ == "__main__":
+
+    # parse and print arguments
+    args = Arguments()
+    args.print_args()
+
+    cell_hashing_data = sc.read_10x_mtx(args.hto_data, gex_only=False)
+
+    if args.clustering_data is not None:
+        trans_data = sc.read_10x_mtx(args.clustering_data)
+        trans_data.var_names_make_unique()
+        sce.pp.hashsolo.hashsolo(
+            cell_hashing_data,
+            priors=args.priors,
+            clustering_data=trans_data,
+            pre_existing_clusters=args.pre_existing_clusters,
+            number_of_noise_barcodes=args.number_of_noise_barcodes,
+        )
+    else:
+        sce.pp.hashsolo.hashsolo(
+            cell_hashing_data,
+            priors=args.priors,
+            pre_existing_clusters=args.pre_existing_clusters,
+            number_of_noise_barcodes=args.number_of_noise_barcodes,
+        )
 
 
+    # save results
+    cell_hashing_data.obs.to_csv(args.path_assignment)
 
+    sce.pp.hashsolo.plot_qc_checks_cell_hashing(cell_hashing_data)
+    plt.savefig(args.path_plot, dpi=400)
 
+    cell_hashing_data.write(args.path_h5ad)
 
+    param_list = [
+        ["hto_data", args.hto_data],
+        ["priors", args.prior],
+        ["pre_existing_clusters", args.pre_existing_clusters],
+        ["number_of_noise_barcodes", args.number_of_noise_barcodes],
+        ["clustering_data", args.clustering_data],
+    ]
 
-param_list = [
-    ["hto_data", "${hto_data}"],
-    ["priors", "${priors}"],
-    ["pre_existing_clusters", "${pre_existing_clusters}"],
-    ["number_of_noise_barcodes", "${number_of_noise_barcodes}"],
-    ["clustering_data", "${clustering_data}"],
-]
+    param_df = pd.DataFrame(param_list, columns=["Argument", "Value"])
+    param_df.fillna("None", inplace=True)
+    param_df.to_csv(args.path_params, index=False)
 
-# param_df = pd.DataFrame(param_list, columns=["Argument", "Value"])
-
-cell_hashing_data = sc.read_10x_mtx(param_list.hto_data, gex_only=False)
-if args.clustering_data is not None:
-    trans_data = sc.read_10x_mtx(args.clustering_data)
-    trans_data.var_names_make_unique()
-    print("--------------------Get data-------------------------------")
-    hashsolo.hashsolo(
-        cell_hashing_data,
-        priors=args.priors,
-        clustering_data=trans_data,
-        pre_existing_clusters=args.pre_existing_clusters,
-        number_of_noise_barcodes=args.number_of_noise_barcodes,
-    )
-else:
-    print("--------------------Get data-------------------------------")
-    hashsolo.hashsolo(
-        cell_hashing_data,
-        priors=args.priors,
-        pre_existing_clusters=args.pre_existing_clusters,
-        number_of_noise_barcodes=args.number_of_noise_barcodes,
-    )
-print("--------------------Finished demultiplexing-------------------------------")
-
-print("------------------- Following Files are saved ----------------------------")
-print(args.assignmentOutHashSolo + "_res.csv")
-print(args.plotOutHashSolo + ".jpg")
-print("params.csv")
-cell_hashing_data.obs.to_csv(
-    args.outputdir + "/" + args.assignmentOutHashSolo + "_res.csv"
-)
-hashsolo.plot_qc_checks_cell_hashing(cell_hashing_data)
-plt.savefig(args.outputdir + "/" + args.plotOutHashSolo + ".jpg", dpi=400)
-# param_df.fillna("None", inplace=True)
-# param_df.to_csv(args.outputdir + "/params.csv", index=False)
-
-
-
-#  ---------------------- old version  ----------------------
-
-adata = sc.read_h5ad("${input_h5ad}")
-columns = "${cell_hashing_columns.join(' ')}".split()
-columns_str = [str(x) for x in columns]
-sce.pp.hashsolo(adata, columns_str, priors=[float(prior) for prior in "${priors.join(',')}".split(',')])
-
-adata.write("${prefix}.h5ad")
-
-
-
-
-
-
-
-
-# ---------------------- Versions ----------------------
-
-versions = {
-    "${task.process}": {
-        "python": platform.python_version(),
-        "scanpy": sc.__version__,
+    versions = {
+        "${task.process}": {
+            "python"    : platform.python_version(),
+            "scanpy"    : sc.__version__,
+            "matplotlib": plt.__version__,
+            "pandas"    : pd.__version__,
+        }
     }
-}
 
-with open("versions.yml", "w") as f:
-    yaml.dump(versions, f)
+    with open("versions.yml", "w") as f:
+        yaml.dump(versions, f)
