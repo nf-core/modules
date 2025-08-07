@@ -1,5 +1,5 @@
 process KRONA_KTIMPORTKRONA {
-    label 'process_low'
+    label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -18,10 +18,10 @@ process KRONA_KTIMPORTKRONA {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ? "-o ${task.ext.prefix}.html" : ''
+    def output = task.ext.prefix ? "${task.ext.prefix}.html" : 'krona.krona.html'
     """
     ktImportKrona ${html} \\
-        ${prefix} \\
+        -o ${output} \\
         ${args}
 
     cat <<-END_VERSIONS > versions.yml
@@ -32,9 +32,9 @@ process KRONA_KTIMPORTKRONA {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ? "-o ${task.ext.prefix}.html" : 'krona.krona.html'
+    def output = task.ext.prefix ? "${task.ext.prefix}.html" : 'krona.krona.html'
     """
-    touch ${prefix}
+    touch ${output}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
