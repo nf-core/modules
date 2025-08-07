@@ -30,6 +30,7 @@ process FASTPLONG {
     def adapter_list = adapter_fasta ? "--adapter_fasta ${adapter_fasta}" : ""
     def fail_fastq  = save_trimmed_fail ? "--failed_out ${prefix}.fail.fastq.gz" : ''
     def output_file = discard_trimmed_pass ? '' : "--out ${prefix}.fastplong.fastq.gz"
+    def report_title = task.ext.report_title ?: "${prefix}_fastplong_report"
     """
     fastplong \\
         --in ${prefix}.fastq.gz \\
@@ -39,6 +40,7 @@ process FASTPLONG {
         $adapter_list \\
         $fail_fastq \\
         --thread $task.cpus \\
+        --report_title $report_title\\
         $args \\
         2> >(tee ${prefix}.fastplong.log >&2)
 
