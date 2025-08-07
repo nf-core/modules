@@ -4,7 +4,7 @@ process KRAKENTOOLS_COMBINEKREPORTS {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/krakentools:1.2.1--pyh7e72e81_0':
-        'biocontainers/krakentools:1.2.1--pyh7e72e81_0 '}"
+        'biocontainers/krakentools:1.2.1--pyh7e72e81_0'}"
 
     input:
     tuple val(meta), path(kreports)
