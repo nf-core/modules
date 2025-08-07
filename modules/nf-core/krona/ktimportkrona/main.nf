@@ -1,6 +1,6 @@
 process KRONA_KTIMPORTKRONA {
     label 'process_low'
-    stageInMode "copy"
+
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/krona:2.8.1--pl5321hdfd78af_1':
