@@ -59,6 +59,34 @@ output:
           pattern: "*_hashsolo.jpg"
           ontologies:
             - edam: http://edamontology.org/format_3579 # JPEG
+  h5ad:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+          pattern: "*_hashsolo.h5ad"
+      - "*_hashsolo.h5ad":
+          type: file
+          description: |
+            Processed AnnData object containing hashsolo results
+          pattern: "*_hashsolo.h5ad"
+          ontologies:
+            - edam: http://edamontology.org/format_3591 # H5AD
+  params:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+          pattern: "*_params_hashsolo.csv"
+      - "*_params_hashsolo.csv":
+          type: file
+          description: |
+            CSV file containing parameters used in hashsolo analysis
+          pattern: "*_params_hashsolo.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
   versions:
     - versions.yml:
         type: file

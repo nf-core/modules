@@ -9,20 +9,25 @@ nextflow_process {
     tag "hashsolo"
     tag "scanpy/hashsolo"
     tag "scanpy"
+    tag "untar"
 
-    test("generated h5ad") {
+    test("hto_matrix") {
 
-        config "./nextflow.config"
-
+        setup {
+            run("UNTAR") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                """
+                input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true)   ])
+                """
+                }
+            }
+        }
         when {
+
             process {
                 """
-                input[0] = [
-                    [ id: 'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hashsolo_anndata.h5ad', checkIfExists: true),
-                    ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-                ]
-                input[1] = [0.01, 0.8, 0.19]
+                input[0] = UNTAR.out.untar
                 """
             }
         }
@@ -30,28 +35,30 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                        process.out,
-                        process.out.versions.collect { path(it).yaml }
-                    ).match() }
+                { assert snapshot(process.out).match() }
             )
         }
-
     }
 
-    test("generated h5ad - stub") {
+    test("hto_matrix - stub") {
 
         options "-stub"
-        config "./nextflow.config"
 
+        setup {
+            run("UNTAR") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                """
+                input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true)   ])
+                """
+                }
+            }
+        }
         when {
+
             process {
                 """
-                input[0] = [
-                    [ id: 'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hashsolo_anndata.h5ad', checkIfExists: true),
-                ]
-                input[1] = [0.01, 0.8, 0.19]
+                input[0] = UNTAR.out.untar
                 """
             }
         }
@@ -59,13 +66,108 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                        process.out,
-                        process.out.versions.collect { path(it).yaml }
-                    ).match() }
+                { assert snapshot(process.out).match() }
             )
         }
-
     }
+
+    // test("hto_matrix - combined - preprocessing - test ext.args") {
+    //     config "./nextflow.config"
+
+    //     setup {
+    //         run("UNTAR") {
+    //             script "modules/nf-core/untar/main.nf"
+    //             process {
+    //             """
+    //             input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true)   ])
+    //             """
+    //             }
+    //         }
+    //     }
+    //     when {
+    //         params {
+    //             module_args = "--doHeatmap false"
+    //         }
+    //         process {
+    //             """
+    //             input[0] = UNTAR.out.untar.map { meta, files -> [ [ id:'test'], files, "COMBINED", "TRUE"] }
+    //             """
+    //         }
+    //     }
+
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(process.out).match() }
+    //         )
+    //     }
+    // }
+
+
+
+
+
+
+
+
+
+
+    // test("generated h5ad") {
+
+    //     config "./nextflow.config"
+
+    //     when {
+    //         process {
+    //             """
+    //             input[0] = [
+    //                 [ id: 'test' ], // meta map
+    //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hashsolo_anndata.h5ad', checkIfExists: true),
+    //                 ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    //             ]
+    //             input[1] = [0.01, 0.8, 0.19]
+    //             """
+    //         }
+    //     }
+
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(
+    //                     process.out,
+    //                     process.out.versions.collect { path(it).yaml }
+    //                 ).match() }
+    //         )
+    //     }
+
+    // }
+
+    // test("generated h5ad - stub") {
+
+    //     options "-stub"
+    //     config "./nextflow.config"
+
+    //     when {
+    //         process {
+    //             """
+    //             input[0] = [
+    //                 [ id: 'test' ], // meta map
+    //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hashsolo_anndata.h5ad', checkIfExists: true),
+    //             ]
+    //             input[1] = [0.01, 0.8, 0.19]
+    //             """
+    //         }
+    //     }
+
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(
+    //                     process.out,
+    //                     process.out.versions.collect { path(it).yaml }
+    //                 ).match() }
+    //         )
+    //     }
+
+    // }
 
 }

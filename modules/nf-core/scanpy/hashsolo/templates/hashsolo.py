@@ -12,6 +12,7 @@ os.environ["NUMBA_CACHE_DIR"] = "./tmp/numba"
 import scanpy as sc
 import scanpy.external as sce
 import pandas as pd
+import matplotlib
 import matplotlib.pyplot as plt
 
 class Arguments:
@@ -103,19 +104,34 @@ if __name__ == "__main__":
 
     cell_hashing_data = sc.read_10x_mtx(args.hto_data, gex_only=False)
 
+    print(cell_hashing_data)
+    print(cell_hashing_data.obs.head())
+    print(cell_hashing_data.obs.columns)
+    cell_hashing_data.obs.info()
+
+
+    cell_hashing_data.obs[cell_hashing_data.var_names] = pd.DataFrame(
+        # Convert sparse matrix to dense array if needed, otherwise use as-is
+        cell_hashing_data.X.toarray() if hasattr(cell_hashing_data.X, "toarray") else cell_hashing_data.X,
+        index=cell_hashing_data.obs_names,
+        columns=cell_hashing_data.var_names
+    )
+
     if args.clustering_data is not None:
         trans_data = sc.read_10x_mtx(args.clustering_data)
         trans_data.var_names_make_unique()
-        sce.pp.hashsolo.hashsolo(
+        sce.pp.hashsolo(
             cell_hashing_data,
+            cell_hashing_columns=list(cell_hashing_data.columns),
             priors=args.priors,
             clustering_data=trans_data,
             pre_existing_clusters=args.pre_existing_clusters,
             number_of_noise_barcodes=args.number_of_noise_barcodes,
         )
     else:
-        sce.pp.hashsolo.hashsolo(
+        sce.pp.hashsolo(
             cell_hashing_data,
+            cell_hashing_columns=list(cell_hashing_data.var_names),
             priors=args.priors,
             pre_existing_clusters=args.pre_existing_clusters,
             number_of_noise_barcodes=args.number_of_noise_barcodes,
@@ -125,14 +141,15 @@ if __name__ == "__main__":
     # save results
     cell_hashing_data.obs.to_csv(args.path_assignment)
 
-    sce.pp.hashsolo.plot_qc_checks_cell_hashing(cell_hashing_data)
-    plt.savefig(args.path_plot, dpi=400)
+    # plot does not exist
+    # sce.pp.hashsolo.plot_qc_checks_cell_hashing(cell_hashing_data)
+    # plt.savefig(args.path_plot, dpi=400)
 
     cell_hashing_data.write(args.path_h5ad)
 
     param_list = [
         ["hto_data", args.hto_data],
-        ["priors", args.prior],
+        ["priors", args.priors],
         ["pre_existing_clusters", args.pre_existing_clusters],
         ["number_of_noise_barcodes", args.number_of_noise_barcodes],
         ["clustering_data", args.clustering_data],
@@ -146,7 +163,7 @@ if __name__ == "__main__":
         "${task.process}": {
             "python"    : platform.python_version(),
             "scanpy"    : sc.__version__,
-            "matplotlib": plt.__version__,
+            "matplotlib": matplotlib.__version__,
             "pandas"    : pd.__version__,
         }
     }
