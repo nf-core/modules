@@ -128,4 +128,60 @@ nextflow_process {
 
     }
 
+    test("convert - to text - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                vsearch_cluster_args   = '--id 0.8'
+                vsearch_cluster_args2  = '--cluster_fast'
+                vsearch_cluster_args3  = '--biomout'
+                module_args            = '--to-tsv'
+            }
+
+            process {
+                """
+                input[0] = GUNZIP_BIOM.out.gunzip
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("convert - to json biom - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                vsearch_cluster_args  = '--id 0.8'
+                vsearch_cluster_args2 = '--cluster_fast'
+                vsearch_cluster_args3 = '--otutabout'
+                module_args           = '--table-type="OTU table" --to-json'
+            }
+
+            process {
+                """
+                input[0] = GUNZIP_TXT.out.gunzip
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
 }
