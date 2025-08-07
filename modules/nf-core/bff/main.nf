@@ -23,7 +23,7 @@ process BFF {
     methodsForConsensus         = task.ext.methodsForConsensus         ?: null       // By default, a consensus call will be generated using all methods, null, RAW OR CLUSTER
     cellbarcodeWhitelist        = task.ext.cellbarcodeWhitelist        ?: null       // A vector of expected cell barcodes. This allows reporting on the total set of expected barcodes, not just those in the filtered count matrix
     prefix                      = task.ext.prefix                      ?: "${meta.id}" // Prefix name for output files
-    doTSNE                      = task.ext.doTSNE                      ?: true       // If true, tSNE will be run on the resulting hashing calls after each caller
+    doTSNE                      = task.ext.doTSNE                      ?: false       // If true, tSNE will be run on the resulting hashing calls after each caller
     barcodeWhitelist            = task.ext.barcodeWhitelist            ?: null       // A vector of barcode names to retain, used for preprocessing step
     doHeatmap                   = task.ext.doHeatmap                   ?: true       // If true, Seurat::HTOHeatmap will be run on the results of each caller
     perCellSaturation           = task.ext.perCellSaturation           ?: null       // An optional dataframe with the columns cellbarcode and saturation

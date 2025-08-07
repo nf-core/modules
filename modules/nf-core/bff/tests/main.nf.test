@@ -11,6 +11,8 @@ nextflow_process {
 
 
     test("hto_matrix - combined - preprocessing") {
+        config "./nextflow.config"
+
         setup {
             run("UNTAR") {
                 script "modules/nf-core/untar/main.nf"
@@ -22,6 +24,9 @@ nextflow_process {
             }
         }
         when {
+            params {
+                doTSNE = false
+            }
             process {
                 """
                 input[0] = UNTAR.out.untar.map { meta, files -> [ [ id:'test'], files, "COMBINED", "TRUE"] }
