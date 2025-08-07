@@ -13,7 +13,7 @@ tools:
       documentation: "https://github.com/statgen/Minimac4"
       tool_dev_url: "https://github.com/statgen/Minimac4"
       doi: "10.1038/ng.3656"
-      licence: ['GPL v3-or-later']
+      licence: ["GPL v3-or-later"]
       identifier: biotools:minimac4
 
 input:
@@ -36,24 +36,23 @@ input:
         ontologies:
           - edam: "http://edamontology.org/format_3700"
 
-
 output:
   - msav:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - "*.msav":
-        type: file
-        description: Multy-sample variant compressed file
-        pattern: "*.{msav}"
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.msav":
+          type: file
+          description: Multy-sample variant compressed file
+          pattern: "*.{msav}"
 
   - versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
 
 authors:
   - "@LouisLeNezet"
