@@ -1,5 +1,5 @@
 process BFF {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
@@ -20,18 +20,7 @@ process BFF {
     task.ext.when == null || task.ext.when
 
     script:
-    methodsForConsensus         = task.ext.methodsForConsensus         ?: null       // By default, a consensus call will be generated using all methods, null, RAW OR CLUSTER
-    cellbarcodeWhitelist        = task.ext.cellbarcodeWhitelist        ?: null       // A vector of expected cell barcodes. This allows reporting on the total set of expected barcodes, not just those in the filtered count matrix
-    prefix                      = task.ext.prefix                      ?: "${meta.id}" // Prefix name for output files
-    doTSNE                      = task.ext.doTSNE                      ?: false       // If true, tSNE will be run on the resulting hashing calls after each caller
-    barcodeWhitelist            = task.ext.barcodeWhitelist            ?: null       // A vector of barcode names to retain, used for preprocessing step
-    doHeatmap                   = task.ext.doHeatmap                   ?: true       // If true, Seurat::HTOHeatmap will be run on the results of each caller
-    perCellSaturation           = task.ext.perCellSaturation           ?: null       // An optional dataframe with the columns cellbarcode and saturation
-    majorityConsensusThreshold  = task.ext.majorityConsensusThreshold  ?: null       // This applies to calculating a consensus call when multiple algorithms are used
-    chemistry                   = task.ext.chemistry                   ?: "10xV3"      // This string is passed to EstimateMultipletRate. Should be either 10xV2 or 10xV3
-    callerDisagreementThreshold = task.ext.callerDisagreementThreshold ?: null       // If provided, the agreement rate will be calculated between each caller and the simple majority call, ignoring discordant and no-call cells
-
-    template 'bff.R'
+    template('bff.R')
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"

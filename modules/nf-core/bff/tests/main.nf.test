@@ -11,7 +11,6 @@ nextflow_process {
 
 
     test("hto_matrix - combined - preprocessing") {
-        config "./nextflow.config"
 
         setup {
             run("UNTAR") {
@@ -26,6 +25,38 @@ nextflow_process {
         when {
             params {
                 doTSNE = false
+            }
+            process {
+                """
+                input[0] = UNTAR.out.untar.map { meta, files -> [ [ id:'test'], files, "COMBINED", "TRUE"] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("hto_matrix - combined - preprocessing - test ext.args") {
+        config "./nextflow.config"
+
+        setup {
+            run("UNTAR") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                """
+                input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true)   ])
+                """
+                }
+            }
+        }
+        when {
+            params {
+                module_args = "--doHeatmap false"
             }
             process {
                 """
