@@ -14,6 +14,9 @@ process CUSTOM_FILTERDIFFERENTIALTABLE {
 
     output:
     tuple val(meta), path("*_filtered.tsv"), emit: filtered
+    // Need to modify the meta values, to make sure that filtered_up and filtered_down are different IDs from filtered
+    tuple val(meta), path("*_filtered_up.tsv"), emit: filtered_up
+    tuple val(meta), path("*_filtered_down.tsv"), emit: filtered_down
     path "versions.yml"                    , emit: versions
 
     when:
@@ -62,9 +65,13 @@ process CUSTOM_FILTERDIFFERENTIALTABLE {
         table["${stat_column}"].apply(lambda x: evaluate_condition(x, float("${stat_threshold}"), "${stat_cardinality}"))
     )
     filtered_table = table[mask]
+    filtered_table_up = filtered_table[filtered_table["${logfc_column}"] > 0]
+    filtered_table_down = filtered_table[filtered_table["${logfc_column}"] < 0]
 
     # Write the filtered table
     filtered_table.to_csv("${prefix}_filtered.tsv", sep='\t', index=False)
+    filtered_table_up.to_csv("${prefix}_filtered_up.tsv", sep='\t', index=False)
+    filtered_table_down.to_csv("${prefix}_filtered_down.tsv", sep='\t', index=False)
 
     # Write versions
     with open('versions.yml', 'w') as version_file:
@@ -76,6 +83,8 @@ process CUSTOM_FILTERDIFFERENTIALTABLE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_filtered.tsv
+    touch ${prefix}_up_filtered.tsv
+    touch ${prefix}_down_filtered.tsv
     echo '"${task.process}":\\n    pandas: 1.5.2' > versions.yml
     """
 }
