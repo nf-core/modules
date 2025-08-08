@@ -43,6 +43,10 @@ input:
       type: boolean
       description: |
         Whether to run picard collecthsmetrics tool
+  - use_mem2:
+      type: boolean
+      description: |
+        Build a mem2 index when bwameth is chosen as an aligner, and an index path is not supplied
 output:
   - fasta:
       type: file
