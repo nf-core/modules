@@ -22,13 +22,14 @@ class Arguments:
     """
 
     def __init__(self) -> None:
-        self.hto_data        = "$hto_data"
+        self.hto_data    = "$hto_data"
         self.prefix          = "$task.ext.prefix" if "$task.ext.prefix" != "null" else "$meta.id"
         self.path_assignment = self.prefix + "_hashsolo.csv"
         self.path_plot       = self.prefix + "_hashsolo.jpg"
         self.path_h5ad       = self.prefix + "_hashsolo.h5ad"
         self.path_params     = self.prefix + "_params_hashsolo.csv"
         self.parse_ext_args("$task.ext.args")
+
 
     def parse_ext_args(self, args_string: str) -> None:
         """
@@ -102,27 +103,35 @@ if __name__ == "__main__":
     args = Arguments()
     args.print_args()
 
-    cell_hashing_data = sc.read_10x_mtx(args.hto_data, gex_only=False)
+    if True:
+        cell_hashing_data = sc.read_10x_mtx(args.hto_data, gex_only=False)
 
-    print(cell_hashing_data)
-    print(cell_hashing_data.obs.head())
-    print(cell_hashing_data.obs.columns)
-    cell_hashing_data.obs.info()
+        print(cell_hashing_data)
+        print(cell_hashing_data.obs.head())
+        print(cell_hashing_data.obs.columns)
+        cell_hashing_data.obs.info()
 
 
-    cell_hashing_data.obs[cell_hashing_data.var_names] = pd.DataFrame(
-        # Convert sparse matrix to dense array if needed, otherwise use as-is
-        cell_hashing_data.X.toarray() if hasattr(cell_hashing_data.X, "toarray") else cell_hashing_data.X,
-        index=cell_hashing_data.obs_names,
-        columns=cell_hashing_data.var_names
-    )
+        cell_hashing_data.obs[cell_hashing_data.var_names] = pd.DataFrame(
+            # Convert sparse matrix to dense array if needed, otherwise use as-is
+            cell_hashing_data.X.toarray() if hasattr(cell_hashing_data.X, "toarray") else cell_hashing_data.X,
+            index=cell_hashing_data.obs_names,
+            columns=cell_hashing_data.var_names
+        )
+        args.cell_hashing_columns = list(cell_hashing_data.obs.columns)
+    else:
+        print("use the other option")
+
+    if len(args.cell_hashing_columns) == 2:
+        # This edge case issue may be fixed in future versions: https://github.com/calico/solo/issues/91
+        args.number_of_noise_barcodes = 1
 
     if args.clustering_data is not None:
         trans_data = sc.read_10x_mtx(args.clustering_data)
         trans_data.var_names_make_unique()
         sce.pp.hashsolo(
             cell_hashing_data,
-            cell_hashing_columns=list(cell_hashing_data.columns),
+            cell_hashing_columns=args.cell_hashing_columns,
             priors=args.priors,
             clustering_data=trans_data,
             pre_existing_clusters=args.pre_existing_clusters,
@@ -131,7 +140,7 @@ if __name__ == "__main__":
     else:
         sce.pp.hashsolo(
             cell_hashing_data,
-            cell_hashing_columns=list(cell_hashing_data.var_names),
+            cell_hashing_columns=args.cell_hashing_columns,
             priors=args.priors,
             pre_existing_clusters=args.pre_existing_clusters,
             number_of_noise_barcodes=args.number_of_noise_barcodes,
