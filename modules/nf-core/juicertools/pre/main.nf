@@ -27,7 +27,7 @@ process JUICERTOOLS_PRE {
     }
     def args   = task.ext.args    ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_genome = genome_id ?: chromsizes
+    input_genome = genome_id ?: chromsizes
     """
     export JAVA_OPTS='"-Xms${task.memory.toMega()/4}m" "-Xmx${task.memory.toGiga()}g"'
 
