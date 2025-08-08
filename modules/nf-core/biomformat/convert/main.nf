@@ -25,9 +25,9 @@ process BIOMFORMAT_CONVERT {
     if( "$output" == "$biom" ) error "ERROR: Input and output names are the same, set prefix in module configuration"
     """
     biom convert \\
-        -i $biom \\
-        -o $output \\
-        $args 
+        -i ${biom} \\
+        -o ${output} \\
+        ${args} 
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
