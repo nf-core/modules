@@ -1,0 +1,148 @@
+nextflow_process {
+
+    name "Test Process STARFUSION_DETECT"
+    script "../main.nf"
+    process "STARFUSION_DETECT"
+    tag "modules_nfcore"
+    tag "starfusion/build"
+    tag "starfusion"
+    tag "starfusion/detect"
+    tag "modules"
+    config "./nextflow.config"
+
+    setup {
+        run("STARFUSION_BUILD") {
+            script "../../../../nf-core/starfusion/build/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'minigenome_fasta' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa')
+                ]
+                input[1] = [
+                    [ id:'minigenome_gtf' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf')
+                ]
+
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/CTAT_HumanFusionLib.mini.dat.gz')
+                input[3] = "homo_sapiens"
+                input[4] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/Pfam-A.hmm.gz')
+                input[5] = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_dfam.hmm'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_dfam.hmm.h3f'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_dfam.hmm.h3i'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_dfam.hmm.h3m'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_dfam.hmm.h3p')
+                ]
+                input[6] = "https://data.broadinstitute.org/Trinity/CTAT_RESOURCE_LIB/AnnotFilterRule.pm"
+                """
+            }
+        }
+    }
+
+    test("Paired end - Should run without failures") {
+
+        when {
+            params {
+                starfusion_detect_args = "--examine_coding_effect"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_1.fastq.gz'),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_2.fastq.gz')
+                    ], // reads
+                    [] // empty list for junction, as we don't have a pre-computed Chimeric.out.junction file
+                ]
+                input[1] = STARFUSION_BUILD.out.reference.map { it[1] }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(
+                process.out.fusions,
+                process.out.abridged,
+                process.out.versions,
+                process.out.coding_effect.collect { meta, tsv ->
+                    [meta, path(tsv).readLines().collect { line ->
+                        line.split('\t')[0] // Get first column (tab-separated)
+                    }]
+                }
+            ).match()
+        }
+
+    }
+
+    test("Single end - Should run without failures") {
+        tag "single"
+        when {
+            params {
+                starfusion_detect_args = "--examine_coding_effect"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_1.fastq.gz')
+                    ], // reads
+                    [] // empty list for junction, as we don't have a pre-computed Chimeric.out.junction file
+                ]
+                input[1] = STARFUSION_BUILD.out.reference.map { it[1] }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(
+                process.out.fusions,
+                process.out.abridged,
+                process.out.versions,
+                process.out.coding_effect.collect { meta, tsv ->
+                    [meta, path(tsv).readLines().collect { line ->
+                        line.split('\t')[0] // Get first column (tab-separated)
+                    }]
+                }
+            ).match()
+        }
+
+    }
+
+    test("Should create stub files") {
+
+        options "-stub"
+
+        when {
+            params {
+                starfusion_detect_args = "--examine_coding_effect"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test_stub', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_1.fastq.gz'),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_2.fastq.gz')
+                    ],
+                    [] // empty list for junction
+                ]
+                input[1] = STARFUSION_BUILD.out.reference.map { it[1] }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(
+                process.out
+            ).match()
+        }
+
+    }
+
+}
