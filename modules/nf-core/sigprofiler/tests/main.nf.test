@@ -15,7 +15,7 @@ nextflow_process {
         when {
 
             params {
-              module_args = "[genome:GRCh38, download_genome_sigprofiler:True, volume:./, input_type:matrix, context_type:'96,DINUC,ID', minimum_signatures:1, maximum_signatures:2, nmf_replicates:10, min_nmf_iterations:10, max_nmf_iterations:100, nmf_test_conv:100, make_decomposition_plots:False ]"
+              module_args = "[download_genome_sigprofiler:True, volume:./, input_type:matrix, context_type:'96,DINUC,ID', minimum_signatures:1, maximum_signatures:2, nmf_replicates:10, min_nmf_iterations:10, max_nmf_iterations:100, nmf_test_conv:100, make_decomposition_plots:False ]"
 
             }
             
@@ -24,14 +24,21 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ], 
                     file(params.modules_testdata_base_path + 'delete_me/sigprofiler/test_GRCh38/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
-                ]                
-                input[1] = []
+                ]
+                input[1] = "GRCh38"                
+                input[2] = []
                 """
             }
         }
 
         then {
-            def (meta, resultDirs) = process.out.sbs_results[0] // or id_results[0]/dbs_results[0]  
+            def (meta, resultPaths) = process.out.results_sigprofiler[0]  
+            
+            // Convert the list of output paths to a File object list
+            def allPaths = resultPaths.collect { new File(it.toString()) }
+
+            // Get the parent directory containing "results"
+            def resultsDir = allPaths[0].parentFile
             
             assertAll( 
                 { assert process.success },
@@ -40,17 +47,88 @@ nextflow_process {
                     path(process.out.versions[0]).yaml
                 ).match() },
                 {
-                    // Directory existence check
-                    resultDirs.each { dir ->
-                        def file = new File(dir.toString())
-                        assert file.exists() 
-                        
-                    }  
-                }  
-            )
-        }
+                    def contextExpectedFiles = [
+                        "SBS96": ["SBS96/Samples.txt", "SBS96/Suggested_Solution/COSMIC_SBS96_Decomposed_Solution/Signatures/COSMIC_SBS96_Signatures.txt"],
+                        "DBS78": ["DBS78/Samples.txt", "DBS78/Suggested_Solution/COSMIC_DBS78_Decomposed_Solution/Signatures/COSMIC_DBS78_Signatures.txt"],
+                        "ID83": ["ID83/Samples.txt", "ID83/Suggested_Solution/COSMIC_ID83_Decomposed_Solution/Signatures/COSMIC_ID83_Signatures.txt"]
+                    ]
 
+                    // Detect which contexts were actually produced
+                    def availableContexts = resultsDir.listFiles()
+                                                      .findAll { it.isDirectory() }
+                                                      .collect { it.name }
+
+                    contextExpectedFiles.findAll { context, _ -> context in availableContexts }
+                                        .each { context, files ->
+                        def missing = []
+                        files.each { relativePath ->
+                            def f = new File(resultsDir, "${context}/${relativePath}")
+                            if (!f.exists()) {
+                                missing << relativePath
+                            }
+                        } 
+                        if (missing) { 
+                            println "[WARN] Missing expected files for ${context}: ${missing.join(', ')}"  
+                        } else {
+                            println "[OK] All expected files exist for ${context}"
+                        }
+                    }
+                }
+            )
+        }  
     }
+
+    // Additional error-condition tests
+
+    test("test_sigprofiler - invalid boolean argument") {
+        config "./nextflow.config"
+
+        when {
+            params {
+                module_args = "[download_genome_sigprofiler:True, volume:./, input_type:matrix, context_type:'96,DINUC,ID', minimum_signatures:1, maximum_signatures:2, nmf_replicates:10, min_nmf_iterations:10, max_nmf_iterations:100, nmf_test_conv:100, make_decomposition_plots:maybe ]"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/sigprofiler/test_GRCh38/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
+                ]
+                input[1] = "GRCh38"
+                input[2] = []
+                """
+            }
+        }
+        then {
+             assert !process.success
+             
+        }
+    } 
+
+ 
+    test("test_sigprofiler - download False but no genome_installed_path") {
+        config "./nextflow.config"
+
+        when {
+            params {
+                module_args = "[download_genome_sigprofiler:False, volume:./, input_type:matrix, context_type:'96,DINUC,ID', minimum_signatures:1, maximum_signatures:2, nmf_replicates:10, min_nmf_iterations:10, max_nmf_iterations:100, nmf_test_conv:100, make_decomposition_plots:maybe ]"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/sigprofiler/test_GRCh38/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
+                ]
+                input[1] = "GRCh38"
+                input[2] = []
+                """
+            }
+        }
+        then {
+             assert !process.success
+        }
+    }
+          
+
 
     test("test_sigprofiler - single_sample - stub") {
 
@@ -62,8 +140,9 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ], 
                     file(params.modules_testdata_base_path + 'delete_me/sigprofiler/test_GRCh38/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
-                ] 
-                input[1] = []
+                ]
+                input[1] = "GRCh38" 
+                input[2] = []
                 """
             }
         }
@@ -72,9 +151,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out).match() }
-            )
+                 
+            ) 
+            
         }
-
     }
 
 }

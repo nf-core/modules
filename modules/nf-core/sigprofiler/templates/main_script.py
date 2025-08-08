@@ -29,7 +29,7 @@ opt = dict()
 opt["prefix"] = "${task.ext.prefix ?: meta.id}"
 
 opt.update({
-    "genome": "",
+    "genome": "${genome}",
     "input_type": "matrix",
     "context_type": "96,DINUC,ID",
     "minimum_signatures": 1,
@@ -42,7 +42,7 @@ opt.update({
     "volume": "./",
     "make_decomposition_plots": True,
     "download_genome_sigprofiler": True,
-    "genome_installed_path": ""
+    "genome_installed_path": "${genome_installed_path}"
 })
 
 # Parse extra args
@@ -137,11 +137,12 @@ if __name__ == '__main__':
 
         print(f"Running SigProfilerExtractor on {key} using {input_data_path}")
 
-        output_dir = f"results/{key}"
+        output_dir = os.path.join("results", key)
         context_type = context_type_map[key]
 
         # Convert Python bools to lowercase strings 'true'/'false'
-        make_plots = str(opt["make_decomposition_plots"]).lower()
+        make_plots = True if opt["make_decomposition_plots"] else False
+        print(f"make_plots = {make_plots!r}")
 
         sigprofilerextractor_run = (
             f"SigProfilerExtractor sigprofilerextractor "
@@ -156,19 +157,13 @@ if __name__ == '__main__':
             f"--nmf_test_conv {opt["nmf_test_conv"]} "
             f"--make_decomposition_plots {make_plots} "
             f"matrix {output_dir} {input_data_path}"
-        )  
+        )
         subprocess.run(sigprofilerextractor_run, shell=True)                                                                
-                            
+
     # save the output results
-    results_path = os.path.join(prefix, "results")
-    available = []
-
-    for result_type in ["SBS96", "ID83", "DBS78"]:
-        path = os.path.join(results_path, result_type)
-        if os.path.isdir(path):
-            available.append(result_type)
-
-    print(f"Available result types: {', '.join(available)}")
+    source_dir = prefix + "/"
+    dest_dir = "results/"
+    shutil.copytree(source_dir, "results", dirs_exist_ok=True)
 
 
      # Write version

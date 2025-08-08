@@ -36,37 +36,23 @@ input:
         pattern: "*.{tsv}"
         ontologies:
           - edam: http://edamontology.org/format_3475 # TSV
+  - genome:
+      type: string
+      description: Reference genome name to use with SigProfiler (e.g. "GRCh37", "GRCh38")
+      ontologies: []
   - genome_installed_path:
       type: file
       description: path to installed reference genome (optional)
       ontologies: []
 output:
-  sbs_results:
+  results_sigprofiler:
     - - meta:
           type: map
           description: Groovy Map containing sample information e.g. [ id:'test' ]
-      - "results/SBS96/*":
+      - "results/*":
           type: directory
           description: folder with saved output results
-          pattern: "results/SBS96/*"
-          ontologies: []
-  id_results:
-    - - meta:
-          type: map
-          description: Groovy Map containing sample information e.g. [ id:'test' ]
-      - "results/ID83/*":
-          type: directory
-          description: folder with saved output results
-          pattern: "results/ID83/*"
-          ontologies: []
-  dbs_results:
-    - - meta:
-          type: map
-          description: Groovy Map containing sample information e.g. [ id:'test' ]
-      - "results/DBS78/*":
-          type: directory
-          description: folder with saved output results
-          pattern: "results/DBS78/*"
+          pattern: "results/*"
           ontologies: []
   versions:
     - versions.yml:
@@ -76,6 +62,4 @@ output:
         ontologies:
           - edam: http://edamontology.org/format_3750 # YAML
 authors:
-  - "@kdavydzenka"
-maintainers:
   - "@kdavydzenka"
