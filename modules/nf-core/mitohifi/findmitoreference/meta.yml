@@ -1,5 +1,8 @@
 name: "mitohifi_findmitoreference"
-description: Download a mitochondrial genome to be used as reference for MitoHiFi
+description: |
+  Download a mitochondrial genome to be used as reference for MitoHiFi.
+
+  Can optionally use the Nextflow secret "NCBI_API_KEY" to access NCBI.
 keywords:
   - mitochondrial genome
   - reference genome
@@ -27,26 +30,28 @@ input:
 output:
   fasta:
     - - meta:
-          type: file
-          description: Downloaded mitochondrial genome in Fasta format
-          pattern: "*.{fasta,fa}"
-          ontologies: []
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - "*.fasta":
           type: file
           description: Downloaded mitochondrial genome in Fasta format
           pattern: "*.{fasta,fa}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
   gb:
     - - meta:
-          type: file
-          description: Downloaded mitochondrial genome in Fasta format
-          pattern: "*.{fasta,fa}"
-          ontologies: []
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - "*.gb":
           type: file
           description: Downloaded mitochondrial genome in Genbank format
           pattern: "*.gb"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_1936 # GenBank
   versions:
     - versions.yml:
         type: file
