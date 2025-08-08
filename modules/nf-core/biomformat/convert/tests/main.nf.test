@@ -47,7 +47,7 @@ nextflow_process {
         }   
     }
 
-    test("convert - to text") {
+    test("sarscov2 - text - biom") {
 
         when {
             params {
@@ -73,7 +73,7 @@ nextflow_process {
 
     }
 
-    test("convert - to json biom") {
+    test("sarscov2 - json - biom") {
 
         when {
             params {
@@ -103,7 +103,7 @@ nextflow_process {
 
     }
 
-    test("fails on identical filenames") {
+    test("sarscov2 - hdf5 - fails on identical filenames") {
 
         when {
             params {
@@ -128,7 +128,7 @@ nextflow_process {
 
     }
 
-    test("convert - to text - stub") {
+    test("sarscov2 - text - biom - stub") {
 
         options "-stub"
 
@@ -156,7 +156,7 @@ nextflow_process {
 
     }
 
-    test("convert - to json biom - stub") {
+    test("sarscov2 - json - biom - stub") {
 
         options "-stub"
 
