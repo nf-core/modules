@@ -22,8 +22,19 @@ class Arguments:
     """
 
     def __init__(self) -> None:
-        self.hto_data    = "$hto_data"
-        self.prefix          = "$task.ext.prefix" if "$task.ext.prefix" != "null" else "$meta.id"
+
+        self.use_10x = True
+        if "$use_10x" == "false":
+            self.use_10x = False
+
+        self.hto_data_10x         = "$hto_data_10x"
+        self.hto_data_h5ad        = "$hto_data_h5ad"
+
+        cell_hashing_columns = "${cell_hashing_columns.join(' ')}".split()
+        self.cell_hashing_columns = [str(x) for x in cell_hashing_columns]
+
+        self.prefix               = "$task.ext.prefix" if "$task.ext.prefix" != "null" else "$meta.id"
+
         self.path_assignment = self.prefix + "_hashsolo.csv"
         self.path_plot       = self.prefix + "_hashsolo.jpg"
         self.path_h5ad       = self.prefix + "_hashsolo.h5ad"
@@ -103,8 +114,8 @@ if __name__ == "__main__":
     args = Arguments()
     args.print_args()
 
-    if True:
-        cell_hashing_data = sc.read_10x_mtx(args.hto_data, gex_only=False)
+    if args.use_10x:
+        cell_hashing_data = sc.read_10x_mtx(args.hto_data_10x, gex_only=False)
 
         print(cell_hashing_data)
         print(cell_hashing_data.obs.head())
@@ -120,7 +131,7 @@ if __name__ == "__main__":
         )
         args.cell_hashing_columns = list(cell_hashing_data.obs.columns)
     else:
-        print("use the other option")
+        cell_hashing_data = sc.read_h5ad(args.hto_data_h5ad)
 
     if len(args.cell_hashing_columns) == 2:
         # This edge case issue may be fixed in future versions: https://github.com/calico/solo/issues/91
@@ -156,8 +167,8 @@ if __name__ == "__main__":
 
     cell_hashing_data.write(args.path_h5ad)
 
+    # TODO update list
     param_list = [
-        ["hto_data", args.hto_data],
         ["priors", args.priors],
         ["pre_existing_clusters", args.pre_existing_clusters],
         ["number_of_noise_barcodes", args.number_of_noise_barcodes],
