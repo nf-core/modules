@@ -22,7 +22,7 @@ process BIOMFORMAT_CONVERT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def output = task.ext.args.contains("--to-tsv") ? "${prefix}.txt" : "${prefix}.biom"
-    if( "$output" == "$biom" ) error "ERROR: Input and output names are the same, set prefix in module configuration"
+    if( "${output}" == "${biom}" ) error "ERROR: Input and output names are the same, set prefix in module configuration"
     """
     biom convert \\
         -i ${biom} \\
