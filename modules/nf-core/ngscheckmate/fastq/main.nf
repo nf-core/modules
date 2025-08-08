@@ -4,8 +4,8 @@ process NGSCHECKMATE_FASTQ {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ngscheckmate:1.0.1--py312pl5321h577a1d6_4':
-        'biocontainers/ngscheckmate:1.0.1--py312pl5321h577a1d6_4' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a8/a87c8e024fc7d44064c5c304d3b3bd668a88579b9e069d40b74bcc2458d9dc91/data':
+        'community.wave.seqera.io/library/bcftools_ngscheckmate:5d4fe3e82ae99a2b' }"
 
     input:
     tuple val(meta), path(reads)
