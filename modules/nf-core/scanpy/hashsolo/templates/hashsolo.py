@@ -167,13 +167,9 @@ if __name__ == "__main__":
 
     cell_hashing_data.write(args.path_h5ad)
 
-    # TODO update list
-    param_list = [
-        ["priors", args.priors],
-        ["pre_existing_clusters", args.pre_existing_clusters],
-        ["number_of_noise_barcodes", args.number_of_noise_barcodes],
-        ["clustering_data", args.clustering_data],
-    ]
+    # Collect all available arguments from args for the params CSV
+    # Use a deterministic ordering for stable outputs
+    param_list = [[key, getattr(args, key)] for key in sorted(vars(args).keys())]
 
     param_df = pd.DataFrame(param_list, columns=["Argument", "Value"])
     param_df.fillna("None", inplace=True)
