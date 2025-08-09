@@ -14,7 +14,6 @@ process SCANPY_HASHSOLO {
 
     output:
     tuple val(meta), path("*_hashsolo.csv")       , emit: assignment
-    tuple val(meta), path("*_hashsolo.jpg")       , emit: plot, optional:true
     tuple val(meta), path("*_hashsolo.h5ad")      , emit: h5ad
     tuple val(meta), path("*_params_hashsolo.csv"), emit: params
     path "versions.yml", emit: versions

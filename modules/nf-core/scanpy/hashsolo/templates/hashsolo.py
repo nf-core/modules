@@ -111,13 +111,15 @@ class Arguments:
 
 if __name__ == "__main__":
 
-    # parse and print arguments
+    # ------------------------------ parse and print arguments ------------------------------
     args = Arguments()
     args.print_args()
 
+    # ----------------------------------- read input data -----------------------------------
     if args.use_10x:
         cell_hashing_data = sc.read_10x_mtx(args.hto_data_10x, gex_only=False)
 
+        # Move HTO data from .X to .obs columns
         cell_hashing_data.obs[cell_hashing_data.var_names] = pd.DataFrame(
             # Convert sparse matrix to dense array if needed, otherwise use as-is
             cell_hashing_data.X.toarray() if hasattr(cell_hashing_data.X, "toarray") else cell_hashing_data.X,
@@ -132,6 +134,8 @@ if __name__ == "__main__":
         # This edge case issue may be fixed in future versions: https://github.com/calico/solo/issues/91
         args.number_of_noise_barcodes = 1
 
+
+    # -------------------------------------- call hashsolo -----------------------------------
     if args.clustering_data is not None:
         trans_data = sc.read_10x_mtx(args.clustering_data)
         trans_data.var_names_make_unique()
@@ -153,17 +157,15 @@ if __name__ == "__main__":
         )
 
 
-    # save results
+    # ------------------------------------- save results -------------------------------------
     cell_hashing_data.obs.to_csv(args.path_assignment)
 
-    # plot does not exist
+    # plotting does not exist for scanpy.external.pp but we couldn't use the solo package
     # sce.pp.hashsolo.plot_qc_checks_cell_hashing(cell_hashing_data)
     # plt.savefig(args.path_plot, dpi=400)
 
     cell_hashing_data.write(args.path_h5ad)
 
-    # Collect all available arguments from args for the params CSV
-    # Use a deterministic ordering for stable outputs
     param_list = [[key, getattr(args, key)] for key in sorted(vars(args).keys())]
 
     param_df = pd.DataFrame(param_list, columns=["Argument", "Value"])

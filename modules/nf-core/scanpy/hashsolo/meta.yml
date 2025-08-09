@@ -18,17 +18,35 @@ tools:
       identifier: biotools:scanpy
 
 input:
+  - use_10x:
+      type: boolean
+      description: |
+        Whether to read hashing input in 10x mtx format (`true`) or H5AD (`false`).
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - hto_data:
+    - hto_data_10x:
+        type: directory
+        description: |
+          Input directory containing hashing count matrix in 10x mtx format (matrix.mtx, features.tsv, barcodes.tsv).
+          Can be `[]` if `use_10x` is `false`.
+        ontologies:
+          - edam: "http://edamontology.org/data_3917" # count matrix
+    - hto_data_h5ad:
         type: file
         description: |
-          Input directory containing hashing count matrix in 10x mtx format.
-        pattern: "*"
-        ontologies: []
+          AnnData object containing hashing counts in `.obs`.
+          Can be `[]` if `use_10x` is `true`, as the data is retrieved from the 10x input.
+        pattern: "*.{h5ad}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3590" # HDF5 format
+    - cell_hashing_columns:
+        type: list
+        description: |
+          Groovy list (`['hash_1', 'hash_2']`) of `.obs` columns that contain cell hashing.
+          Can be `[]` if `use_10x` is `true` because column are inferred from 10x input.
 
 output:
   assignment:
@@ -36,8 +54,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test' ]
-          pattern: "*_hashsolo.csv"
+            e.g. `[ id:'sample1' ]`
       - "*_hashsolo.csv":
           type: file
           description: |
@@ -45,40 +62,25 @@ output:
           pattern: "*_hashsolo.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
-  plot:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test' ]
-          pattern: "*_hashsolo.jpg"
-      - "*_hashsolo.jpg":
-          type: file
-          description: |
-            QC plot images from hashsolo analysis
-          pattern: "*_hashsolo.jpg"
-          ontologies:
-            - edam: http://edamontology.org/format_3579 # JPEG
   h5ad:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test' ]
-          pattern: "*_hashsolo.h5ad"
+            e.g. `[ id:'sample1' ]`
       - "*_hashsolo.h5ad":
           type: file
           description: |
             Processed AnnData object containing hashsolo results
           pattern: "*_hashsolo.h5ad"
           ontologies:
-            - edam: http://edamontology.org/format_3591 # H5AD
+            - edam: "http://edamontology.org/format_3590" # HDF5 format
   params:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test' ]
+            e.g. `[ id:'sample1' ]`
           pattern: "*_params_hashsolo.csv"
       - "*_params_hashsolo.csv":
           type: file
@@ -96,5 +98,7 @@ output:
           - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@seohyonkim"
+  - "@LuisHeinzlmeier"
 maintainers:
   - "@seohyonkim"
+  - "@LuisHeinzlmeier"
