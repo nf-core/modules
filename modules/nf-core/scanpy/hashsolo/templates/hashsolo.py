@@ -41,7 +41,6 @@ class Arguments:
         self.path_params     = self.prefix + "_params_hashsolo.csv"
         self.parse_ext_args("$task.ext.args")
 
-
     def parse_ext_args(self, args_string: str) -> None:
         """
         It parses the extended arguments.
@@ -56,12 +55,14 @@ class Arguments:
 
         parser.add_argument(
             "--priors",
-            metavar="N",
             type=float,
             nargs=3,
-            help="a list of prior for each hypothesis. \
-                            The first element is prior for the negative hypothesis, \
-                            second for the singlet hypothesis, third element for the doublet hypothesis",
+            metavar=("NEGATIVE", "SINGLET", "DOUBLET"),
+            help="""List of priors for each hypothesis:
+            NEGATIVE = prior for negative hypothesis
+            SINGLET  = prior for singlet hypothesis
+            DOUBLET  = prior for doublet hypothesis"""
+            ,
             default=[0.01, 0.8, 0.19],
         )
 
@@ -116,12 +117,6 @@ if __name__ == "__main__":
 
     if args.use_10x:
         cell_hashing_data = sc.read_10x_mtx(args.hto_data_10x, gex_only=False)
-
-        print(cell_hashing_data)
-        print(cell_hashing_data.obs.head())
-        print(cell_hashing_data.obs.columns)
-        cell_hashing_data.obs.info()
-
 
         cell_hashing_data.obs[cell_hashing_data.var_names] = pd.DataFrame(
             # Convert sparse matrix to dense array if needed, otherwise use as-is
