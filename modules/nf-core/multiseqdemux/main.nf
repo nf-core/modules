@@ -1,5 +1,5 @@
 process MULTISEQDEMUX {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
@@ -11,25 +11,16 @@ process MULTISEQDEMUX {
     tuple val(meta), path(seurat_object), val(assay)
 
     output:
-    tuple val(meta), path("*_params_multiseqdemux.csv")       , emit: params
-    tuple val(meta), path("*_res_multiseqdemux.csv")          , emit: results
-    tuple val(meta), path("*_multiseqdemux.rds")              , emit: rds
-    path "versions.yml"                                       , emit: versions
+    tuple val(meta), path("*_params_multiseqdemux.csv"), emit: params
+    tuple val(meta), path("*_res_multiseqdemux.csv")   , emit: results
+    tuple val(meta), path("*_multiseqdemux.rds")       , emit: rds
+    path "versions.yml"                                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    quantile = task.ext.assay ?: "0.7"
-    autoThresh = task.ext.autoThresh ?: "TRUE"
-    maxiter = task.ext.maxiter ?: "5"
-    qrangeFrom = task.ext.qrangeFrom ?: "0.1"
-    qrangeTo = task.ext.qrangeTo ?: "0.9"
-    qrangeBy = task.ext.qrangeBy ?: "0.05"
-    verbose = task.ext.verbose ?: 'TRUE'
-    prefix = task.ext.prefix ?: "${meta.id}"
-
-    template 'MultiSeqDemux.R'
+    template('MultiSeqDemux.R')
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
