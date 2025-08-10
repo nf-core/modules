@@ -1,11 +1,10 @@
 process SCANPY_HASHSOLO {
-    debug true
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/matplotlib_pandas_python_pyyaml_scanpy:e7e659a041ff08e0':
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a0/a06fe0be02e1a82be29f415a554cfd3ad9d921cd63e71ebce3b141a723564426/data':
         'community.wave.seqera.io/library/matplotlib_pandas_python_pyyaml_scanpy:bf7b7ef27120d15c' }"
 
     input:
@@ -16,7 +15,7 @@ process SCANPY_HASHSOLO {
     tuple val(meta), path("*_hashsolo.csv")       , emit: assignment
     tuple val(meta), path("*_hashsolo.h5ad")      , emit: h5ad
     tuple val(meta), path("*_params_hashsolo.csv"), emit: params
-    path "versions.yml", emit: versions
+    path "versions.yml"                           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
