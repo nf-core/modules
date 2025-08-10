@@ -20,6 +20,8 @@ nextflow_process {
 
     test("hto_data_10x") {
 
+        config "./nextflow.config"
+
         setup {
             run("UNTAR") {
                 script "modules/nf-core/untar/main.nf"
@@ -31,7 +33,11 @@ nextflow_process {
             }
         }
         when {
-
+            params{
+                module_args = [
+                    round_digits ? "--round_digits $round_digits" : ""
+                ].findAll { it != "" }.join(" ")
+            }
             process {
                 """
                 input[0] = Channel.of(true)
@@ -133,7 +139,14 @@ nextflow_process {
 
     test("hto_data_h5ad (generated, no real data)") {
 
+        config "./nextflow.config"
+
         when {
+            params{
+                module_args = [
+                    round_digits ? "--round_digits $round_digits" : ""
+                ].findAll { it != "" }.join(" ")
+            }
             process {
                 """
                 input[0] = Channel.of(false)
@@ -170,7 +183,8 @@ nextflow_process {
                     priors.join(" "),
                     pre_existing_clusters ? "--pre_existing_clusters $pre_existing_clusters" : "",
                     clustering_data ? "--clustering_data $clustering_data" : "",
-                    number_of_noise_barcodes ? "--number_of_noise_barcodes $number_of_noise_barcodes" : ""
+                    number_of_noise_barcodes ? "--number_of_noise_barcodes $number_of_noise_barcodes" : "",
+                    round_digits ? "--round_digits $round_digits" : ""
                 ].findAll { it != "" }.join(" ")
             }
             process {

@@ -174,6 +174,8 @@ if __name__ == "__main__":
         numeric_cols = cell_hashing_data.obs.select_dtypes(include=["number"]).columns
         cell_hashing_data.obs[numeric_cols] = cell_hashing_data.obs[numeric_cols].round(args.round_digits)
 
+    cell_hashing_data.obs.index.name = "Barcode"
+
     cell_hashing_data.obs.to_csv(args.path_assignment)
 
     # plotting does not exist for scanpy.external.pp but we couldn't use the solo package
