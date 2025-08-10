@@ -16,6 +16,7 @@ nextflow_process {
     def pre_existing_clusters    = null
     def clustering_data          = null
     def number_of_noise_barcodes = null
+    def round_digits             = 2
 
     test("hto_data_10x") {
 
@@ -71,7 +72,8 @@ nextflow_process {
                     priors.join(" "),
                     pre_existing_clusters ? "--pre_existing_clusters $pre_existing_clusters" : "",
                     clustering_data ? "--clustering_data $clustering_data" : "",
-                    number_of_noise_barcodes ? "--number_of_noise_barcodes $number_of_noise_barcodes" : ""
+                    number_of_noise_barcodes ? "--number_of_noise_barcodes $number_of_noise_barcodes" : "",
+                    round_digits ? "--round_digits $round_digits" : ""
                 ].findAll { it != "" }.join(" ")
             }
             process {

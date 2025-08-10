@@ -85,6 +85,16 @@ class Arguments:
             default=None,
         )
 
+        parser.add_argument(
+            "--round_digits",
+            help=(
+                "Number of decimal places to round numeric values in cell_hashing_data.obs "
+                "before saving. If omitted, no rounding is applied."
+            ),
+            type=int,
+            default=None,
+        )
+
         args = parser.parse_args(args_list)
 
         # Convert "null" values to default values
@@ -158,6 +168,12 @@ if __name__ == "__main__":
 
 
     # ------------------------------------- save results -------------------------------------
+
+    # Round numeric values if requested
+    if args.round_digits is not None:
+        numeric_cols = cell_hashing_data.obs.select_dtypes(include=["number"]).columns
+        cell_hashing_data.obs[numeric_cols] = cell_hashing_data.obs[numeric_cols].round(args.round_digits)
+
     cell_hashing_data.obs.to_csv(args.path_assignment)
 
     # plotting does not exist for scanpy.external.pp but we couldn't use the solo package
