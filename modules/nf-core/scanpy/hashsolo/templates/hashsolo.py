@@ -23,12 +23,13 @@ class Arguments:
 
     def __init__(self) -> None:
 
-        self.use_10x = True
-        if "$use_10x" == "false":
-            self.use_10x = False
 
-        self.hto_data_10x         = "$hto_data_10x"
-        self.hto_data_h5ad        = "$hto_data_h5ad"
+
+        self.data = "$data"
+
+        self.use_10x = True
+        if self.data.endswith(".h5ad"):
+            self.use_10x = False
 
         cell_hashing_columns = "${cell_hashing_columns.join(' ')}".split()
         self.cell_hashing_columns = [str(x) for x in cell_hashing_columns]
@@ -127,7 +128,7 @@ if __name__ == "__main__":
 
     # ----------------------------------- read input data -----------------------------------
     if args.use_10x:
-        cell_hashing_data = sc.read_10x_mtx(args.hto_data_10x, gex_only=False)
+        cell_hashing_data = sc.read_10x_mtx(args.data, gex_only=False)
 
         # Move HTO data from .X to .obs columns
         cell_hashing_data.obs[cell_hashing_data.var_names] = pd.DataFrame(
@@ -138,7 +139,7 @@ if __name__ == "__main__":
         )
         args.cell_hashing_columns = list(cell_hashing_data.obs.columns)
     else:
-        cell_hashing_data = sc.read_h5ad(args.hto_data_h5ad)
+        cell_hashing_data = sc.read_h5ad(args.data)
 
     if len(args.cell_hashing_columns) == 2:
         # This edge case issue may be fixed in future versions: https://github.com/calico/solo/issues/91

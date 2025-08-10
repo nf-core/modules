@@ -18,35 +18,22 @@ tools:
       identifier: biotools:scanpy
 
 input:
-  - use_10x:
-      type: boolean
-      description: |
-        Whether to read hashing input in 10x mtx format (`true`) or H5AD (`false`).
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - hto_data_10x:
-        type: directory
-        description: |
-          Input directory containing hashing count matrix in 10x mtx format (matrix.mtx, features.tsv, barcodes.tsv).
-          Can be `[]` if `use_10x` is `false`.
-        ontologies:
-          - edam: "http://edamontology.org/data_3917" # count matrix
-    - hto_data_h5ad:
+    - data:
         type: file
         description: |
-          AnnData object containing hashing counts in `.obs`.
-          Can be `[]` if `use_10x` is `true`, as the data is retrieved from the 10x input.
-        pattern: "*.{h5ad}"
+          A directory in 10x Genomics format containing `matrix.mtx.gz`, `features.tsv.gz`, `barcodes.tsv.gz` (hashing count matrix), or an AnnData (`.h5ad`) file with hashing counts stored in `.obs`.
         ontologies:
-          - edam: "http://edamontology.org/format_3590" # HDF5 format
+          - edam: "http://edamontology.org/data_3917" # count matrix
     - cell_hashing_columns:
         type: list
         description: |
-          Groovy list (`['hash_1', 'hash_2']`) of `.obs` columns that contain cell hashing.
-          Can be `[]` if `use_10x` is `true` because column are inferred from 10x input.
+          Groovy list (`['hash_1', 'hash_2']`) of `.obs` columns that contain cell hashing counts.
+          Can be `[]` if the data is in 10x Genomics format, as the columns are derived from the input.
 
 output:
   assignment:

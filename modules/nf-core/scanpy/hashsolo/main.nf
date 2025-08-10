@@ -8,8 +8,7 @@ process SCANPY_HASHSOLO {
         'community.wave.seqera.io/library/matplotlib_pandas_python_pyyaml_scanpy:bf7b7ef27120d15c' }"
 
     input:
-    val(use_10x)
-    tuple val(meta), path(hto_data_10x), path(hto_data_h5ad), val(cell_hashing_columns)
+    tuple val(meta), path(data), val(cell_hashing_columns)
 
     output:
     tuple val(meta), path("*_hashsolo.csv")       , emit: assignment
