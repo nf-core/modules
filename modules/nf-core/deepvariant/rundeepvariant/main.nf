@@ -1,6 +1,7 @@
 process DEEPVARIANT_RUNDEEPVARIANT {
     tag "$meta.id"
     label 'process_high'
+    label 'process_gpu'
 
     // FIXME Conda is not supported at the moment
     // https://github.com/bioconda/bioconda-recipes/pull/45214#issuecomment-1890937836
