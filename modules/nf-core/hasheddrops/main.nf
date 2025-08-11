@@ -15,6 +15,7 @@ process HASHEDDROPS {
     tuple val(meta), path("*_emptyDrops.csv")         , emit: empty_drops_csv
     tuple val(meta), path("*_emptyDrops.rds")         , emit: empty_drops_rds
     tuple val(meta), path("*_results_hasheddrops.csv"), emit: results
+    tuple val(meta), path("*_id_to_hash.csv")         , emit: id_to_hash
     tuple val(meta), path("*_hasheddrops.rds")        , emit: rds
     tuple val(meta), path("*_plot_hasheddrops.png")   , emit: plot
     tuple val(meta), path("*_params_hasheddrops.csv") , emit: params
@@ -33,6 +34,7 @@ process HASHEDDROPS {
     touch ${prefix}_emptyDrops.csv
     touch ${prefix}_emptyDrops.rds
     touch ${prefix}_results_hasheddrops.csv
+    touch ${prefix}_id_to_hash.csv
     touch ${prefix}_hasheddrops.rds
     touch ${prefix}_plot_hasheddrops.png
     touch ${prefix}_params_hasheddrops.csv

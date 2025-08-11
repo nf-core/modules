@@ -222,6 +222,7 @@ Argument <- c(
     "round",
     "byRank",
     "isCellFDR",
+    "gene_col",
     "ambient",
     "minProp",
     "pseudoCount",
@@ -244,6 +245,7 @@ Value <- c(
     round,
     null_to_string(byRank),
     isCellFDR,
+    gene_col,
     ambient,
     null_to_string(minProp),
     pseudoCount,
@@ -276,6 +278,7 @@ saveRDS(emptyDrops_out,file = paste0(prefix, "_emptyDrops.rds"))
 
 #--------- save hashedDrops() results ---------#
 
+
 write.csv(params, paste0(prefix, "_params_hasheddrops.csv"))
 write.csv(hashedDrops_out,paste0(prefix,"_results_hasheddrops.csv"))
 saveRDS(hashedDrops_out,file = paste0(prefix,"_hasheddrops.rds"))
@@ -300,7 +303,43 @@ if (sum(is.na(hashedDrops_out\$LogFC2)) != length(hashedDrops_out\$LogFC2)) {
     plot.new()
 }
 
+
+# TODO add this to the nf-core module to have a map that indexes from the integer (in Best, etc. to the HTO name or combinations)
+# TODO if combinations is specified it the index will map to the HTO join with an +
+# otherwise it will jost take the rowname
+# Mocking up an example dataset with 10 HTOs and 10% doublets.
+#print(y)
+# combinations <- NULL
+# hto <- Read10X(data.dir = "/Users/luisheinzlmeier/Desktop/hto", gene.column = 2)
+
+# Get the HTO names
+hto_names <- rownames(hto)
+if (!is.null(combinations)){
+    hto_names <- apply(combinations, 1, function(row) paste(row, collapse = "+"))
+    # In some applications, samples are labelled with a combination of HTOs to enable achieve greater
+    # multiplexing throughput. This is accommodated by passing combinations to specify the valid
+    # HTO combinations that were used for sample labelling. Each row of combinations corresponds
+    # to a sample and should contain non-duplicated row indices of x corresponding to the HTOs used in
+    # that sample.
+    # Quelle: https://bioconductor.statistik.tu-dortmund.de/packages/3.18/bioc/manuals/DropletUtils/man/DropletUtils.pdf
+
+    # If combinations is specified, Best instead specifies the sample (i.e., row index of combinations).
+    # The interpretation of LogFC and LogFC2 are slightly different, and Second is not reported - see “Resolving combinatorial hashes”.
+    # Quelle: https://rdrr.io/github/MarioniLab/DropletUtils/man/hashedDrops.html
+}
+
+# Create a data frame mapping names to indices
+hto_map <- data.frame(
+Index = seq_along(hto_names),
+HTO = hto_names
+)
+
+# Write to CSV
+write.csv(hto_map, file = paste0(prefix,"_id_to_hash.csv"), row.names = FALSE)
+
+
 dev.off()
+
 
 ################################################
 ################################################
