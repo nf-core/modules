@@ -6,8 +6,8 @@ process SENTIEON_STARALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/80/80ccb05eb4f1a193a3bd99c4da90f55f74ea6556c25f154e53e1ff5a6caa372d/data' :
-        'community.wave.seqera.io/library/sentieon:202503--5e378058d837c58c' }"
+        'https://community.wave.seqera.io/library/sentieon:202503.01--dfe54fae9486dd9b' :
+        'community.wave.seqera.io/library/sentieon:202503.01--1863def31ed8e4d5' }"
 
     input:
     tuple val(meta), path(reads, stageAs: "input*/*")
