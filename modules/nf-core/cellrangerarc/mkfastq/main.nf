@@ -25,7 +25,6 @@ process CELLRANGERARC_MKFASTQ {
 
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}_mkfastq"
-
     """
     cellranger-arc mkfastq --id=${prefix} \\
         --localmem=${task.memory.toGiga()} \\
@@ -46,6 +45,7 @@ process CELLRANGERARC_MKFASTQ {
     }
 
     prefix = task.ext.prefix ?: "${meta.id}"
+
     """
     mkdir -p "${prefix}/outs/fastq_path/"
     echo | gzip > ${prefix}/outs/fastq_path/Undetermined_S0_L001_I1_001.fastq.gz
