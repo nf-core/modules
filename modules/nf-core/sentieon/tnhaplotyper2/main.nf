@@ -83,6 +83,7 @@ process SENTIEON_TNHAPLOTYPER2 {
     def prefix        = task.ext.prefix ?: "${meta.id}"
     def orientation   = emit_orientation_data   ? "touch ${prefix}.orientation_data.tsv"              : ""
     def contamination = emit_contamination_data ? "touch ${prefix}.{contamination_data.tsv,segments}" : ""
+
     """
     echo | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
