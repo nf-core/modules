@@ -32,10 +32,9 @@ process FASTPLONG {
     def output_file = discard_trimmed_pass ? '' : "--out ${prefix}.fastplong.fastq.gz"
     def report_title = task.ext.report_title ?: "${prefix}_fastplong_report"
     """
-    [ ! -f  ${prefix}.fastq.gz ] && ln -sf $reads ${prefix}.fastq.gz
 
     fastplong \\
-        --in ${prefix}.fastq.gz \\
+        --in ${reads} \\
         $output_file \\
         --json ${prefix}.fastplong.json \\
         --html ${prefix}.fastplong.html \\
