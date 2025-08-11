@@ -37,7 +37,6 @@ process DEEPVARIANT_RUNDEEPVARIANT {
     prefix = task.ext.prefix ?: "${meta.id}"
     def regions = intervals ? "--regions=${intervals}" : ""
     def par_regions = par_bed ? "--par_regions_bed=${par_bed}" : ""
-    def use_gpu = task.accelerator ? "--use_gpu" : ""
 
     """
     /opt/deepvariant/bin/run_deepvariant \\
@@ -48,7 +47,6 @@ process DEEPVARIANT_RUNDEEPVARIANT {
         ${args} \\
         ${regions} \\
         ${par_regions} \\
-        ${use_gpu} \\
         --intermediate_results_dir=tmp \\
         --num_shards=${task.cpus}
 
