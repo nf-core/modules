@@ -1,6 +1,8 @@
 process SENTIEON_STARALIGN {
     tag "$meta.id"
     label 'process_high'
+    label 'sentieon'
+
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -50,8 +52,12 @@ process SENTIEON_STARALIGN {
     attrRG          = args.contains("--outSAMattrRGline") ? "" : "--outSAMattrRGline 'ID:$prefix' $seq_center_arg 'SM:$prefix' $seq_platform_arg"
     def out_sam_type    = (args.contains('--outSAMtype')) ? '' : '--outSAMtype BAM Unsorted'
     mv_unsorted_bam = (args.contains('--outSAMtype BAM Unsorted SortedByCoordinate')) ? "mv ${prefix}.Aligned.out.bam ${prefix}.Aligned.unsort.out.bam" : ''
+
+    def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64 ?
+        "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; " :
+        ""
     """
-    STAR \\
+    sentieon STAR \\
         --genomeDir $index \\
         --readFilesIn ${reads1.join(",")} ${reads2.join(",")} \\
         --runThreadN $task.cpus \\
@@ -74,9 +80,7 @@ process SENTIEON_STARALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        star: \$(STAR --version | sed -e "s/STAR_//g")
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-        gawk: \$(echo \$(gawk --version 2>&1) | sed 's/^.*GNU Awk //; s/, .*\$//')
+        star: \$(sentieon STAR --version | sed -e "s/STAR_//g")
     END_VERSIONS
     """
 
@@ -103,9 +107,7 @@ process SENTIEON_STARALIGN {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        star: \$(STAR --version | sed -e "s/STAR_//g")
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-        gawk: \$(echo \$(gawk --version 2>&1) | sed 's/^.*GNU Awk //; s/, .*\$//')
+        star: \$(sentieon STAR --version | sed -e "s/STAR_//g")
     END_VERSIONS
     """
 }
