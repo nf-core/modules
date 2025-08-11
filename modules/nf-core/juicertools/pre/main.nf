@@ -25,9 +25,9 @@ process JUICERTOOLS_PRE {
     if(!genome_id && !chromsizes) {
         log.error("Error: neither genome_id nor chromsizes provided to juicertools/pre!")
     }
-    def args   = task.ext.args    ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    input_genome = genome_id ?: chromsizes
+    def args     = task.ext.args   ?: ''
+    def prefix   = task.ext.prefix ?: "${meta.id}"
+    input_genome = genome_id       ?: chromsizes
     """
     export JAVA_OPTS='"-Xms${task.memory.toMega()/4}m" "-Xmx${task.memory.toGiga()}g"'
 
