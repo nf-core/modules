@@ -25,6 +25,7 @@ process CELLRANGERARC_MKFASTQ {
 
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}_mkfastq"
+
     """
     cellranger-arc mkfastq --id=${prefix} \\
         --localmem=${task.memory.toGiga()} \\
