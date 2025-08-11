@@ -44,7 +44,7 @@ process PHAROKKA_INSTALLDATABASES {
     touch $prefix/CARD_h
     touch $prefix/CARD_h.dbtype
     touch $prefix/CARD_h.index
-    echo "" | gzip > $prefix/VFDB_setB_pro.fas.gz
+    touch $prefix/VFDB_setB_pro.fas.gz
     touch $prefix/VFDBclusterRes_cluster.tsv
     touch $prefix/VFDBclusterRes_rep_seq.fasta
     touch $prefix/all_phrogs.h3m
