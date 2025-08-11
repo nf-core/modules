@@ -71,7 +71,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.vcf[0][1]).name,
-                    path(process.out.vcf[0][1]).vcf.summary, // the created vcf file has no reads
+                    path(process.out.vcf[0][1]).vcf.summary, // the created vcf file has no variants
                     process.out.versions
                     ).match()
                 }
