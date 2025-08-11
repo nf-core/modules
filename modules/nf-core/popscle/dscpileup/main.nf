@@ -44,10 +44,10 @@ process POPSCLE_DSCPILEUP {
     def VERSION = '0.1' // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
 
     """
-    touch ${prefix}.cel.gz
-    touch ${prefix}.var.gz
-    touch ${prefix}.plp.gz
-    touch ${prefix}.umi.gz
+    echo "" | gzip > ${prefix}.cel.gz
+    echo "" | gzip > ${prefix}.var.gz
+    echo "" | gzip > ${prefix}.plp.gz
+    echo "" | gzip > ${prefix}.umi.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

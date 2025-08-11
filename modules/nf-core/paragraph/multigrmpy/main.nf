@@ -32,7 +32,6 @@ process PARAGRAPH_MULTIGRMPY {
 
     if ("${variants}" == "${prefix}.vcf.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     if ("${variants}" == "${prefix}.json.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
-
     """
     ${check_vcf}
 
@@ -65,7 +64,6 @@ process PARAGRAPH_MULTIGRMPY {
 
     if ("${variants}" == "${prefix}.vcf.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     if ("${variants}" == "${prefix}.json.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
-
     """
     echo | gzip > ${prefix}.vcf.gz
     echo | gzip > ${prefix}.json.gz

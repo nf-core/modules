@@ -65,8 +65,8 @@ process SVANALYZER_SVBENCHMARK {
     def VERSION = '0.36' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
-    touch ${prefix}.falsenegatives.vcf.gz
-    touch ${prefix}.falsepositives.vcf.gz
+    echo "" | gzip > ${prefix}.falsenegatives.vcf.gz
+    echo "" | gzip > ${prefix}.falsepositives.vcf.gz
     touch ${prefix}.distances
     touch ${prefix}.log
     touch ${prefix}.report

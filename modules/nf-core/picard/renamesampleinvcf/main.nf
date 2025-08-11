@@ -47,7 +47,7 @@ process PICARD_RENAMESAMPLEINVCF {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_renam.vcf.gz
+    echo "" | gzip > ${prefix}_renam.vcf.gz
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         picard: \$(picard RenameSampleInVcf --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
