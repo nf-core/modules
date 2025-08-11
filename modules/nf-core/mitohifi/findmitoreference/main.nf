@@ -29,9 +29,9 @@ process MITOHIFI_FINDMITOREFERENCE {
         error "MitoHiFi module does not support Conda. Please use Docker / Singularity instead."
     }
 
-    def args = task.ext.args ?: ''
+    def args         = task.ext.args ?: ''
     // WARN: Incorrect version information is provided by tool on CLI. Please update this string when bumping container versions.
-    def VERSION = '3.2.3'
+    def VERSION      = '3.2.3'
     def ncbi_api_key = secrets.NCBI_API_KEY ? "--ncbi-api-key \$NCBI_API_KEY" : ""
     """
     findMitoReference.py \\
@@ -47,6 +47,7 @@ process MITOHIFI_FINDMITOREFERENCE {
     """
 
     stub:
+    // WARN: Incorrect version information is provided by tool on CLI. Please update this string when bumping container versions.
     def VERSION = '3.2.3'
     """
     touch accession.fasta

@@ -6,7 +6,7 @@ process MITOHIFI_MITOHIFI {
     container 'ghcr.io/marcelauliano/mitohifi:3.2.3'
 
     input:
-    tuple val(meta), path(input)
+    tuple val(meta) , path(input)
     tuple val(meta2), path(ref_fa)
     tuple val(meta3), path(ref_gb)
     val input_mode
@@ -40,7 +40,7 @@ process MITOHIFI_MITOHIFI {
         error "MitoHiFi module does not support Conda. Please use Docker / Singularity instead."
     }
 
-    def args = task.ext.args ?: ''
+    def args      = task.ext.args ?: ''
     def input_arg = ""
     if(input_mode == "contigs") {
         input_arg = "-c ${input}"
@@ -49,7 +49,8 @@ process MITOHIFI_MITOHIFI {
     } else {
         error "Error: invalid MitoHiFi input mode: ${input_mode}. Must be either 'contigs' or 'reads'!"
     }
-    def VERSION = '3.2.3' // WARN: Incorrect version information is provided by tool on CLI. Please update this string when bumping container versions.
+    // WARN: Incorrect version information is provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION   = '3.2.3'
     """
     mitohifi.py \\
         ${input_arg} \\
@@ -67,7 +68,8 @@ process MITOHIFI_MITOHIFI {
     """
 
     stub:
-    def VERSION = '3.2.3' // WARN: Incorrect version information is provided by tool on CLI. Please update this string when bumping container versions.
+    // WARN: Incorrect version information is provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '3.2.3'
     """
     touch final_mitogenome.fasta
     touch final_mitogenome.gb
