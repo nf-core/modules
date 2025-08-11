@@ -25,13 +25,16 @@ input:
         type: file
         description: Input fastq file containing query sequences
         pattern: "*.{fq,fastq,fastq.gz,fq.gz}"
-  - - database:
-        type: file
-        description: Database file in fasta format
-        pattern: "*.{fa,fasta}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - database:
+      type: file
+      description: Database file in fasta format
+      pattern: "*.{fa,fasta}"
+      ontologies: []
 output:
-  - classification_res:
-      - meta:
+  classification_res:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,8 +43,9 @@ output:
           type: file
           description: Coordinates where reads map
           pattern: "*.{classification_res}"
-  - meta_file:
-      - meta:
+          ontologies: []
+  meta_file:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,8 +54,9 @@ output:
           type: file
           description: Statistics for mapping result
           pattern: "*.{classification_res.meta}"
-  - meta_unmappedreadsLengths:
-      - meta:
+          ontologies: []
+  meta_unmappedreadsLengths:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -60,8 +65,9 @@ output:
           type: file
           description: Statistics for length of unmapped reads
           pattern: "*.{classification_res.meta.unmappedReadsLengths}"
-  - para_file:
-      - meta:
+          ontologies: []
+  para_file:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -70,11 +76,14 @@ output:
           type: file
           description: Log with parameters
           pattern: "*.{classification_res.parameters}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@henningonsbring"
   - "@sofstam"

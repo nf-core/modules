@@ -4,11 +4,11 @@ process SHINYNGS_STATICEXPLORATORY {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5b/5b0b2383d86ddb37ad7c2b8bc3c373926e8bc0cd08b137f457756c39e1589dd0/data' :
-        'community.wave.seqera.io/library/r-shinyngs:2.2.2--09ebd939fb477d18' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4f/4fc080dc45831489dd70b8183314a5a6f840064d6c78f3466790df0fba1503d0/data' :
+        'community.wave.seqera.io/library/r-shinyngs:2.2.4--2bf759f8be585e75' }"
 
     input:
-    tuple val(meta), path(sample), path(feature_meta), path(assay_files)
+    tuple val(meta), path(sample), path(feature_meta), path(assay_files), val(variable)
 
     output:
     tuple val(meta), path("*/png/boxplot.png")                  , emit: boxplots_png
@@ -37,7 +37,7 @@ process SHINYNGS_STATICEXPLORATORY {
         --sample_metadata "$sample" \\
         --feature_metadata "$feature_meta" \\
         --assay_files "${assay_files.join(',')}" \\
-        --contrast_variable "${meta.id}" \\
+        --contrast_variable "$variable" \\
         --outdir "$prefix" \\
         $args
 

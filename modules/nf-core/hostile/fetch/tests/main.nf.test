@@ -3,17 +3,22 @@ nextflow_process {
     name "Test Process HOSTILE_FETCH"
     script "../main.nf"
     process "HOSTILE_FETCH"
+    config './nextflow.config'
 
     tag "modules"
     tag "modules_nfcore"
     tag "hostile"
     tag "hostile/fetch"
 
-    test("default") {
+    test("human-t2t-hla - bowtie2") {
 
         when {
+            params {
+                module_args = "--bowtie2"
+            }
             process {
                 """
+                input[0] = 'human-t2t-hla'
                 """
             }
         }
@@ -27,13 +32,17 @@ nextflow_process {
 
     }
 
-    test("default - stub") {
+    test("human-t2t-hla - stub") {
 
         options "-stub"
 
         when {
+            params {
+                module_args = ""
+            }
             process {
                 """
+                input[0] = 'human-t2t-hla'
                 """
             }
         }

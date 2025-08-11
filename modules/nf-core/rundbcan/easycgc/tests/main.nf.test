@@ -1,0 +1,80 @@
+nextflow_process {
+
+    name "Test Process RUNDBCAN_EASYCGC"
+    script "../main.nf"
+    process "RUNDBCAN_EASYCGC"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "rundbcan"
+    tag "rundbcan/database"
+    tag "rundbcan/easycgc"
+
+
+    test("easycgc - simplified") {
+
+        setup {
+            run("RUNDBCAN_DATABASE"){
+                script "../../database/main.nf"
+                process {
+                    """
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true)
+                    ,"prodigal"
+                    ]
+                input[2] = RUNDBCAN_DATABASE.out.dbcan_db
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("easycgc - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [[id: 'stub'], file('stub')]
+                input[1] = [[id: 'stub'], file('stub.gff'), "prodigal"]
+                input[2] = file('stub_db')
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match()
+                }
+            )
+        }
+    }
+}
+

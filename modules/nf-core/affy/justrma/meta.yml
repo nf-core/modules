@@ -24,10 +24,15 @@ input:
         type: file
         description: |
           CSV or TSV format sample sheet with sample metadata and CEL file names
+        ontologies:
+          - edam: "http://edamontology.org/format_3752" # CSV
+          - edam: "http://edamontology.org/format_3475" # TSV
     - celfiles_dir:
         type: list
         description: Path to a directory containing CEL files
         pattern: "*.{CEL,CEL.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1638" # CEL
   - - meta2:
         type: map
         description: |
@@ -37,9 +42,10 @@ input:
         type: file
         description: |
           Optional description file in MIAME format
+        ontologies: []
 output:
-  - rds:
-      - meta:
+  rds:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -48,8 +54,9 @@ output:
           type: file
           description: Serialised ExpressionSet object
           pattern: "*.rds"
-  - expression:
-      - meta:
+          ontologies: []
+  expression:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -58,8 +65,10 @@ output:
           type: file
           description: TSV-format intensity matrix
           pattern: "matrix.tsv"
-  - annotation:
-      - meta:
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  annotation:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -68,11 +77,15 @@ output:
           type: file
           description: TSV-format annotation table
           pattern: "*.annotation.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@pinin4fjords"
 maintainers:

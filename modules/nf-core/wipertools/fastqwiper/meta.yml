@@ -1,6 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "wipertools_fastqwiper"
-description: A tool of the wipertools suite that fixes or wipes out uncompliant reads from FASTQ files
+description: A tool of the wipertools suite that fixes or wipes out uncompliant reads
+  from FASTQ files
 keywords:
   - fastq
   - malformed
@@ -8,7 +9,8 @@ keywords:
   - fix
 tools:
   - "fastqwiper":
-      description: "A tool of the wipertools suite that that fixes or wipes out uncompliant reads from FASTQ files."
+      description: "A tool of the wipertools suite that that fixes or wipes out uncompliant
+        reads from FASTQ files."
       homepage: "https://github.com/mazzalab/fastqwiper"
       documentation: "https://github.com/mazzalab/fastqwiper"
       tool_dev_url: "https://github.com/mazzalab/fastqwiper"
@@ -31,21 +33,21 @@ input:
           - edam: "http://edamontology.org/format_1930"
           - edam: "http://edamontology.org/format_3989"
 output:
-  - wiped_fastq:
-      - meta:
+  wiped_fastq:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "${prefix}.fastq.gz":
+      - ${prefix}.fastq.gz:
           type: file
           description: Cleaned FASTQ file
           pattern: "*.{fastq,fastq.gz}"
           ontologies:
             - edam: "http://edamontology.org/format_1930"
             - edam: "http://edamontology.org/format_3989"
-  - report:
-      - meta:
+  report:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -56,13 +58,13 @@ output:
           pattern: "*.report"
           ontologies:
             - edam: "http://edamontology.org/format_2330"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: "http://edamontology.org/format_3750"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750"
 authors:
   - "@tm4zza"
 maintainers:

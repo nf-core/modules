@@ -5,8 +5,8 @@ process SENTIEON_TNHAPLOTYPER2 {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a6/a64461f38d76bebea8e21441079e76e663e1168b0c59dafee6ee58440ad8c8ac/data' :
-        'community.wave.seqera.io/library/sentieon:202308.03--59589f002351c221' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/80/80ccb05eb4f1a193a3bd99c4da90f55f74ea6556c25f154e53e1ff5a6caa372d/data' :
+        'community.wave.seqera.io/library/sentieon:202503--5e378058d837c58c' }"
 
     input:
     tuple val(meta), path(input), path(input_index), path(intervals)
@@ -21,9 +21,9 @@ process SENTIEON_TNHAPLOTYPER2 {
     val(emit_contamination_data)
 
     output:
-    tuple val(meta), path("*.orientation_data.tsv")  , optional:true , emit: orientation_data
-    tuple val(meta), path("*.contamination_data.tsv"), optional:true , emit: contamination_data
-    tuple val(meta), path("*.segments")              , optional:true , emit: contamination_segments
+    tuple val(meta), path("*.orientation_data.tsv")  , emit: orientation_data      , optional:true
+    tuple val(meta), path("*.contamination_data.tsv"), emit: contamination_data    , optional:true
+    tuple val(meta), path("*.segments")              , emit: contamination_segments, optional:true
     tuple val(meta), path("*.stats")                 , emit: stats
     tuple val(meta), path("*.vcf.gz")                , emit: vcf
     tuple val(meta), path("*.vcf.gz.tbi")            , emit: index
@@ -80,13 +80,15 @@ process SENTIEON_TNHAPLOTYPER2 {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix        = task.ext.prefix ?: "${meta.id}"
+    def orientation   = emit_orientation_data   ? "touch ${prefix}.orientation_data.tsv"              : ""
+    def contamination = emit_contamination_data ? "touch ${prefix}.{contamination_data.tsv,segments}" : ""
     """
-    echo "" | gzip > ${prefix}.vcf.gz
+    echo | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
-    touch ${prefix}.contamination_data.tsv
-    touch ${prefix}.orientation_data.tsv
-    touch ${prefix}.segments
+    touch ${prefix}.vcf.gz.stats
+    $orientation
+    $contamination
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

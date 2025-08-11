@@ -25,18 +25,23 @@ process REPEATMASKER_REPEATMASKER {
     def args    = task.ext.args     ?: ''
     prefix      = task.ext.prefix   ?: "${meta.id}"
     def lib_arg = lib               ? "-lib $lib"   : ''
+
+    def out_fasta    = fasta.getBaseName(fasta.name.endsWith('.gz') ? 1 : 0)
+    def fasta_gz_cmd = fasta.name.endsWith('.gz') ? "gunzip -c ${fasta} > ${out_fasta}" : ""
+
     """
+    ${fasta_gz_cmd}
     RepeatMasker \\
         $lib_arg \\
         -pa ${task.cpus} \\
         -dir ${prefix} \\
         ${args} \\
-        ${fasta}
+        ${out_fasta}
 
-    mv $prefix/${fasta}.masked  ${prefix}.masked
-    mv $prefix/${fasta}.out     ${prefix}.out
-    mv $prefix/${fasta}.tbl     ${prefix}.tbl
-    mv $prefix/${fasta}.out.gff ${prefix}.gff       || echo "GFF is not produced"
+    mv $prefix/${out_fasta}.masked  ${prefix}.masked
+    mv $prefix/${out_fasta}.out     ${prefix}.out
+    mv $prefix/${out_fasta}.tbl     ${prefix}.tbl
+    mv $prefix/${out_fasta}.out.gff ${prefix}.gff       || echo "GFF is not produced"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -48,6 +53,7 @@ process REPEATMASKER_REPEATMASKER {
     prefix          = task.ext.prefix       ?: "${meta.id}"
     def args        = task.ext.args         ?: ''
     def touch_gff   = args.contains('-gff') ? "touch ${prefix}.gff" : ''
+
     """
     touch ${prefix}.masked
     touch ${prefix}.out
