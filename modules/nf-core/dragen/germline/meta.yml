@@ -120,9 +120,8 @@ input:
       description: FASTA files that contains adapter sequences to trim from the 5' end of Read 1 and 2; The sequences should be in reverse order (with respect to their appearance in the FASTQ) but not complemented
       pattern: "*.{fasta,fa}"
   - variant_annotation_data:
-      type: file
-      description: // keep?
-      pattern: // keep?
+      type: directory
+      description: Location of downloaded Nirvana annotation files
   - vc_combine_phased_variants_distance_bed:
       type: file
       description: Combine variants in the same phase set bed file.
