@@ -6,7 +6,9 @@ process DEEPVARIANT_RUNDEEPVARIANT {
     // https://github.com/bioconda/bioconda-recipes/pull/45214#issuecomment-1890937836
     // BUG https://github.com/nf-core/modules/issues/1754
     // BUG https://github.com/bioconda/bioconda-recipes/issues/30310
-    container "docker.io/google/deepvariant:1.9.0"
+    container task.accelerator ?
+        "docker.io/google/deepvariant:1.9.0-gpu" :
+        "docker.io/google/deepvariant:1.9.0"
 
     input:
     tuple val(meta), path(input), path(index), path(intervals)
@@ -34,6 +36,7 @@ process DEEPVARIANT_RUNDEEPVARIANT {
     prefix = task.ext.prefix ?: "${meta.id}"
     def regions = intervals ? "--regions=${intervals}" : ""
     def par_regions = par_bed ? "--par_regions_bed=${par_bed}" : ""
+    def use_gpu = task.accelerator ? "--use_gpu" : ""
 
     """
     /opt/deepvariant/bin/run_deepvariant \\
@@ -44,6 +47,7 @@ process DEEPVARIANT_RUNDEEPVARIANT {
         ${args} \\
         ${regions} \\
         ${par_regions} \\
+        ${use_gpu} \\
         --intermediate_results_dir=tmp \\
         --num_shards=${task.cpus}
 
