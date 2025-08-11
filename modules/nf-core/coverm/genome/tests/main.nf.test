@@ -49,12 +49,14 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/bam/test1.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/bam/test2.sorted.bam', checkIfExists: true)
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/bam/test1.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/bam/test2.sorted.bam', checkIfExists: true),
+                    ]
                 ]
                 input[1] = [
-                    [],
-                    []
+                    [ id:'test_ref' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz')
                 ]
                 input[2] = true
                 input[3] = false
