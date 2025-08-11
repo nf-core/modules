@@ -66,15 +66,13 @@ opt <- list(
     lower = 100,        # A numeric scalar specifying the lower bound on the total UMI count, at or below which all barcodes are assumed to correspond to empty droplets.
     niters = 10000,     # An integer scalar specifying the number of iterations to use for the Monte Carlo p-value calculations.
     testAmbient = TRUE, # A logical scalar indicating whether results should be returned for barcodes with totals less than or equal to lower.
+    ignore = NULL,      # A numeric scalar specifying the lower bound on the total UMI count, at or below which barcodes will be ignored.
+    alpha = Inf,        # A numeric scalar specifying the scaling parameter for the Dirichlet-multinomial sampling scheme.
     round = TRUE,       # Logical scalar indicating whether to check for non-integer values in m and, if present, round them for ambient profile estimation.
     byRank = NULL,      # An integer scalar parametrizing an alternative method for identifying assumed empty droplets. If set, this is used to redefine lower and any specified value for lower is ignored.
     isCellFDR = 0.01,   # Threshold to filter the cells.
-    gene_col = 2,       # Specify which column of genes.tsv or features.tsv to use for gene names; default is 2.
 
     # hashedDrops Parameters
-    ignore = NULL,           # A numeric scalar specifying the lower bound on the total UMI count, at or below which barcodes will be ignored.
-    alpha = NULL,            # A numeric scalar specifying the scaling parameter for the Dirichlet-multinomial sampling scheme.
-    # TODO test INF
     ambient = TRUE,          # Whether to use the relative abundance of each HTO in the ambient solution from emptyDrops, set TRUE only when test_ambient is TRUE.
     minProp = 0.05,          # Numeric scalar to be used to infer the ambient profile when ambient=NULL.
     pseudoCount = 5,         # A numeric scalar specifying the minimum pseudo-count when computing logfold changes.
@@ -87,6 +85,7 @@ opt <- list(
     combinations = NULL,     # An integer matrix specifying valid combinations of HTOs. Each row corresponds to a single sample and specifies the indices of rows in x corresponding to the HTOs used to label that sample.
 
     # others
+    gene_col = 2,                                                                 # Specify which column of genes.tsv or features.tsv to use for gene names; default is 2.
     prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix') # Prefix name for output files.
 )
 opt_types <- lapply(opt, class)
@@ -304,16 +303,9 @@ if (sum(is.na(hashedDrops_out\$LogFC2)) != length(hashedDrops_out\$LogFC2)) {
     plot.new()
 }
 
-
-# TODO add this to the nf-core module to have a map that indexes from the integer (in Best, etc. to the HTO name or combinations)
-# TODO if combinations is specified it the index will map to the HTO join with an +
-# otherwise it will jost take the rowname
-# Mocking up an example dataset with 10 HTOs and 10% doublets.
-#print(y)
-# combinations <- NULL
-# hto <- Read10X(data.dir = "/Users/luisheinzlmeier/Desktop/hto", gene.column = 2)
-
-# Get the HTO names
+# mapping from integers (e.g., in Best) to HTO names or combinations.
+# If combinations are specified, the index will map to the joined HTO names separated by a "+".
+# Otherwise, it will simply use the row name.
 hto_names <- rownames(hto)
 if (!is.null(combinations)){
     hto_names <- apply(combinations, 1, function(row) paste(row, collapse = "+"))
@@ -322,11 +314,10 @@ if (!is.null(combinations)){
     # HTO combinations that were used for sample labelling. Each row of combinations corresponds
     # to a sample and should contain non-duplicated row indices of x corresponding to the HTOs used in
     # that sample.
-    # Quelle: https://bioconductor.statistik.tu-dortmund.de/packages/3.18/bioc/manuals/DropletUtils/man/DropletUtils.pdf
+    # Source: https://bioconductor.statistik.tu-dortmund.de/packages/3.18/bioc/manuals/DropletUtils/man/DropletUtils.pdf
 
     # If combinations is specified, Best instead specifies the sample (i.e., row index of combinations).
-    # The interpretation of LogFC and LogFC2 are slightly different, and Second is not reported - see “Resolving combinatorial hashes”.
-    # Quelle: https://rdrr.io/github/MarioniLab/DropletUtils/man/hashedDrops.html
+    # Source: https://rdrr.io/github/MarioniLab/DropletUtils/man/hashedDrops.html
 }
 
 # Create a data frame mapping names to indices

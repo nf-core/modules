@@ -100,7 +100,7 @@ output:
       - "*_id_to_hash.csv":
           type: file
           description: |
-            A table mapping integer indices used by hashedDrops results (e.g. the column `Best` or `Second`) to HTO names or combinations.
+            A table mapping integer indices used by hashedDrops results (e.g. the column `Best` or `Second`) to HTO names (or combinations of HTO names joined with `+` if `combinations` is speficied in `ext.args`).
           pattern: "_id_to_hash.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
