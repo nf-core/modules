@@ -1,13 +1,13 @@
 process SENTIEON_STARALIGN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
     label 'sentieon'
 
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0f1dfe59ef66d7326b43db9ab1f39ce6220b358a311078c949a208f9c9815d4e/data' :
-        'community.wave.seqera.io/library/sentieon:202503.01--1863def31ed8e4d5' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0f1dfe59ef66d7326b43db9ab1f39ce6220b358a311078c949a208f9c9815d4e/data'
+        : 'community.wave.seqera.io/library/sentieon:202503.01--1863def31ed8e4d5'}"
 
     input:
     tuple val(meta), path(reads, stageAs: "input*/*")
@@ -18,24 +18,24 @@ process SENTIEON_STARALIGN {
     val seq_center
 
     output:
-    tuple val(meta), path('*Log.final.out')   , emit: log_final
-    tuple val(meta), path('*Log.out')         , emit: log_out
+    tuple val(meta), path('*Log.final.out'), emit: log_final
+    tuple val(meta), path('*Log.out'), emit: log_out
     tuple val(meta), path('*Log.progress.out'), emit: log_progress
-    path  "versions.yml"                      , emit: versions
+    path "versions.yml", emit: versions
 
-    tuple val(meta), path('*d.out.bam')                              , optional:true, emit: bam
-    tuple val(meta), path("${prefix}.sortedByCoord.out.bam")         , optional:true, emit: bam_sorted
-    tuple val(meta), path("${prefix}.Aligned.sortedByCoord.out.bam") , optional:true, emit: bam_sorted_aligned
-    tuple val(meta), path('*toTranscriptome.out.bam')                , optional:true, emit: bam_transcript
-    tuple val(meta), path('*Aligned.unsort.out.bam')                 , optional:true, emit: bam_unsorted
-    tuple val(meta), path('*fastq.gz')                               , optional:true, emit: fastq
-    tuple val(meta), path('*.tab')                                   , optional:true, emit: tab
-    tuple val(meta), path('*.SJ.out.tab')                            , optional:true, emit: spl_junc_tab
-    tuple val(meta), path('*.ReadsPerGene.out.tab')                  , optional:true, emit: read_per_gene_tab
-    tuple val(meta), path('*.out.junction')                          , optional:true, emit: junction
-    tuple val(meta), path('*.out.sam')                               , optional:true, emit: sam
-    tuple val(meta), path('*.wig')                                   , optional:true, emit: wig
-    tuple val(meta), path('*.bg')                                    , optional:true, emit: bedgraph
+    tuple val(meta), path('*d.out.bam'), optional: true, emit: bam
+    tuple val(meta), path("${prefix}.sortedByCoord.out.bam"), optional: true, emit: bam_sorted
+    tuple val(meta), path("${prefix}.Aligned.sortedByCoord.out.bam"), optional: true, emit: bam_sorted_aligned
+    tuple val(meta), path('*toTranscriptome.out.bam'), optional: true, emit: bam_transcript
+    tuple val(meta), path('*Aligned.unsort.out.bam'), optional: true, emit: bam_unsorted
+    tuple val(meta), path('*fastq.gz'), optional: true, emit: fastq
+    tuple val(meta), path('*.tab'), optional: true, emit: tab
+    tuple val(meta), path('*.SJ.out.tab'), optional: true, emit: spl_junc_tab
+    tuple val(meta), path('*.ReadsPerGene.out.tab'), optional: true, emit: read_per_gene_tab
+    tuple val(meta), path('*.out.junction'), optional: true, emit: junction
+    tuple val(meta), path('*.out.sam'), optional: true, emit: sam
+    tuple val(meta), path('*.wig'), optional: true, emit: wig
+    tuple val(meta), path('*.bg'), optional: true, emit: bedgraph
 
     when:
     task.ext.when == null || task.ext.when
@@ -45,29 +45,29 @@ process SENTIEON_STARALIGN {
     prefix = task.ext.prefix ?: "${meta.id}"
     def reads1 = []
     def reads2 = []
-    meta.single_end ? [reads].flatten().each{reads1 << it} : reads.eachWithIndex{ v, ix -> ( ix & 1 ? reads2 : reads1) << v }
-    def ignore_gtf      = star_ignore_sjdbgtf ? '' : "--sjdbGTFfile $gtf"
-    def seq_platform_arg  = seq_platform ? "'PL:$seq_platform'" : ""
-    def seq_center_arg    = seq_center ? "'CN:$seq_center'" : ""
-    attrRG          = args.contains("--outSAMattrRGline") ? "" : "--outSAMattrRGline 'ID:$prefix' $seq_center_arg 'SM:$prefix' $seq_platform_arg"
-    def out_sam_type    = (args.contains('--outSAMtype')) ? '' : '--outSAMtype BAM Unsorted'
-    mv_unsorted_bam = (args.contains('--outSAMtype BAM Unsorted SortedByCoordinate')) ? "mv ${prefix}.Aligned.out.bam ${prefix}.Aligned.unsort.out.bam" : ''
+    meta.single_end ? [reads].flatten().each { reads1 << it } : reads.eachWithIndex { v, ix -> (ix & 1 ? reads2 : reads1) << v }
+    def ignore_gtf = star_ignore_sjdbgtf ? '' : "--sjdbGTFfile ${gtf}"
+    def seq_platform_arg = seq_platform ? "'PL:${seq_platform}'" : ""
+    def seq_center_arg = seq_center ? "'CN:${seq_center}'" : ""
+    attrRG = args.contains("--outSAMattrRGline") ? "" : "--outSAMattrRGline 'ID:${prefix}' ${seq_center_arg} 'SM:${prefix}' ${seq_platform_arg}"
+    def out_sam_type = args.contains('--outSAMtype') ? '' : '--outSAMtype BAM Unsorted'
+    mv_unsorted_bam = args.contains('--outSAMtype BAM Unsorted SortedByCoordinate') ? "mv ${prefix}.Aligned.out.bam ${prefix}.Aligned.unsort.out.bam" : ''
 
-    def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64 ?
-        "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; " :
-        ""
+    def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64
+        ? "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; "
+        : ""
     """
     sentieon STAR \\
-        --genomeDir $index \\
+        --genomeDir ${index} \\
         --readFilesIn ${reads1.join(",")} ${reads2.join(",")} \\
-        --runThreadN $task.cpus \\
-        --outFileNamePrefix $prefix. \\
-        $out_sam_type \\
-        $ignore_gtf \\
-        $attrRG \\
-        $args
+        --runThreadN ${task.cpus} \\
+        --outFileNamePrefix ${prefix}. \\
+        ${out_sam_type} \\
+        ${ignore_gtf} \\
+        ${attrRG} \\
+        ${args}
 
-    $mv_unsorted_bam
+    ${mv_unsorted_bam}
 
     if [ -f ${prefix}.Unmapped.out.mate1 ]; then
         mv ${prefix}.Unmapped.out.mate1 ${prefix}.unmapped_1.fastq
