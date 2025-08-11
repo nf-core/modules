@@ -43,7 +43,7 @@ process HASHEDDROPS {
     "${task.process}":
         r-base: \$(Rscript -e "cat(strsplit(R.version[['version.string']], ' ')[[1]][3])")
         r-seurat: \$(Rscript -e "library(Seurat); cat(as.character(packageVersion('Seurat')))")
-        cdropletutils: \$(Rscript -e "library(DropletUtils); cat(as.character(packageVersion('DropletUtils')))")
+        dropletutils: \$(Rscript -e "library(DropletUtils); cat(as.character(packageVersion('DropletUtils')))")
     END_VERSIONS
     """
 }

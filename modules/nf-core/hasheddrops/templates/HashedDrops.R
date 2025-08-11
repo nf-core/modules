@@ -74,6 +74,7 @@ opt <- list(
     # hashedDrops Parameters
     ignore = NULL,           # A numeric scalar specifying the lower bound on the total UMI count, at or below which barcodes will be ignored.
     alpha = NULL,            # A numeric scalar specifying the scaling parameter for the Dirichlet-multinomial sampling scheme.
+    # TODO test INF
     ambient = TRUE,          # Whether to use the relative abundance of each HTO in the ambient solution from emptyDrops, set TRUE only when test_ambient is TRUE.
     minProp = 0.05,          # Numeric scalar to be used to infer the ambient profile when ambient=NULL.
     pseudoCount = 5,         # A numeric scalar specifying the minimum pseudo-count when computing logfold changes.
