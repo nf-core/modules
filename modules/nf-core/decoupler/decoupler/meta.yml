@@ -53,8 +53,11 @@ input:
   - annot:
       type: file
       description: |
-        Annotation file in tsv format
+        Annotation file in TSV format containing gene ID to gene name mappings.
+        Used specifically for mapping Ensembl IDs to gene names.
+        Expected format: two columns with gene_id and gene_name headers.
       pattern: "*.tsv"
+      required: false
       ontologies:
         - edam: http://edamontology.org/format_3475 # TSV
 output:
