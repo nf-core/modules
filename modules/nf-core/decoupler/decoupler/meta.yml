@@ -50,12 +50,13 @@ input:
       pattern: "*.tsv"
       ontologies:
         - edam: http://edamontology.org/format_3475 # TSV
-  - gtf:
+  - annot:
       type: file
       description: |
-        Annotation file in GTF format
-      pattern: "*.gtf"
-      ontologies: []
+        Annotation file in tsv format
+      pattern: "*.tsv"
+      ontologies:
+        - edam: http://edamontology.org/format_3475 # TSV
 output:
   dc_estimate:
     - - meta:
@@ -90,12 +91,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:‘test’, single_end ]
-      - "*decoupler_plot.png":
+      - "*estimate_decoupler_plot.png":
           type: file
           description: |
             The file containing the plots associated to the estimation
             results of the enrichment(s)
-          pattern: "*decoupler_plot.png"
+          pattern: "*estimate_decoupler_plot.png"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   versions:
