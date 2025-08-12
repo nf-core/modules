@@ -11,10 +11,10 @@ process SCANPY_HASHSOLO {
     tuple val(meta), path(data), val(cell_hashing_columns)
 
     output:
-    tuple val(meta), path("*_hashsolo.csv")       , emit: assignment
-    tuple val(meta), path("*_hashsolo.h5ad")      , emit: h5ad
-    tuple val(meta), path("*_params_hashsolo.csv"), emit: params
-    path "versions.yml"                           , emit: versions
+    tuple val(meta), path("*_assignment_hashsolo.csv"), emit: assignment
+    tuple val(meta), path("*_hashsolo.h5ad")          , emit: h5ad
+    tuple val(meta), path("*_params_hashsolo.csv")    , emit: params
+    path "versions.yml"                               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,8 +27,7 @@ process SCANPY_HASHSOLO {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_hashsolo.csv
-    touch ${prefix}_hashsolo.jpg
+    touch ${prefix}_assignment_hashsolo.csv
     touch ${prefix}_hashsolo.h5ad
     touch ${prefix}_params_hashsolo.csv
 
