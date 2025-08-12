@@ -57,7 +57,7 @@ if parsed_args.ensembl_ids.upper() == "TRUE":
         mat = mat[mat.index.notnull()]
         mat = mat[~mat.index.duplicated(keep='first')]
     except Exception as e:
-        print("ERROR: Failed to read annotation file:", e)
+        print("Expected format: tsv file with at least two columns with gene_id and gene_name headers. ERROR: Failed to read annotation file:", e)
         sys.exit(1)
 
 if parsed_args.transpose.upper() == "TRUE":
