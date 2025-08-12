@@ -27,7 +27,7 @@ jobs:
       conda-matrix: ${{ steps.conda-diff.outputs.all_changed_files }}
       dockerfile-matrix: ${{ steps.docker-diff.outputs.all_changed_files }}
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
 
       - name: Find conda differences
         id: conda-diff
@@ -63,7 +63,7 @@ jobs:
         profile: [docker, singularity]
         platform: ["linux/amd64", "linux/arm64"]
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
 
       - name: Install wave-cli
         run: |
@@ -103,7 +103,7 @@ jobs:
         # profile: [docker]
         platform: ["linux/amd64", "linux/arm64"]
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
 
       - name: Install wave-cli
         run: |
