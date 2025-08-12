@@ -44,7 +44,7 @@ def parse_ext_args(args_string: str):
     return parser.parse_args(args_list)
 
 # Parse external arguments
-raw_args = """${task.ext.args}"""
+raw_args = "${task.ext.args}"
 parsed_args = parse_ext_args(raw_args)
 methods = [m.strip() for m in parsed_args.methods.split(",") if m.strip()]
 
