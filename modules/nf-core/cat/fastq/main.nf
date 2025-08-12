@@ -30,7 +30,8 @@ process CAT_FASTQ {
                 cat: \$(echo \$(cat --version 2>&1) | sed 's/^.*coreutils) //; s/ .*\$//')
             END_VERSIONS
             """
-        } else {
+        }
+        else {
             error("Could not find any FASTQ files to concatenate in the process input")
         }
     }
@@ -48,7 +49,8 @@ process CAT_FASTQ {
                 cat: \$(echo \$(cat --version 2>&1) | sed 's/^.*coreutils) //; s/ .*\$//')
             END_VERSIONS
             """
-        } else {
+        }
+        else {
             error("Could not find any FASTQ file pairs to concatenate in the process input")
         }
     }
@@ -66,7 +68,8 @@ process CAT_FASTQ {
                 cat: \$(echo \$(cat --version 2>&1) | sed 's/^.*coreutils) //; s/ .*\$//')
             END_VERSIONS
             """
-        } else {
+        }
+        else {
             error("Could not find any FASTQ files to concatenate in the process input")
         }
     }
@@ -81,7 +84,8 @@ process CAT_FASTQ {
                 cat: \$(echo \$(cat --version 2>&1) | sed 's/^.*coreutils) //; s/ .*\$//')
             END_VERSIONS
             """
-        } else {
+        }
+        else {
             error("Could not find any FASTQ file pairs to concatenate in the process input")
         }
     }

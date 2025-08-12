@@ -13,7 +13,7 @@ process DRAGMAP_HASHTABLE {
 
     output:
     tuple val(meta), path("dragmap"), emit: hashmap
-    path "versions.yml",              emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when

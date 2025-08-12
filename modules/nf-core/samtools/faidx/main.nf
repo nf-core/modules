@@ -1,11 +1,11 @@
 process SAMTOOLS_FAIDX {
-    tag "$fasta"
+    tag "${fasta}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.21--h50ea8bc_0' :
-        'biocontainers/samtools:1.21--h50ea8bc_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/samtools:1.21--h50ea8bc_0'
+        : 'biocontainers/samtools:1.21--h50ea8bc_0'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -13,11 +13,11 @@ process SAMTOOLS_FAIDX {
     val get_sizes
 
     output:
-    tuple val(meta), path ("*.{fa,fasta}") , emit: fa, optional: true
-    tuple val(meta), path ("*.sizes")      , emit: sizes, optional: true
-    tuple val(meta), path ("*.fai")        , emit: fai, optional: true
-    tuple val(meta), path ("*.gzi")        , emit: gzi, optional: true
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), path("*.{fa,fasta}"), emit: fa, optional: true
+    tuple val(meta), path("*.sizes"), emit: sizes, optional: true
+    tuple val(meta), path("*.fai"), emit: fai, optional: true
+    tuple val(meta), path("*.gzi"), emit: gzi, optional: true
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,8 +28,8 @@ process SAMTOOLS_FAIDX {
     """
     samtools \\
         faidx \\
-        $fasta \\
-        $args
+        ${fasta} \\
+        ${args}
 
     ${get_sizes_command}
 
