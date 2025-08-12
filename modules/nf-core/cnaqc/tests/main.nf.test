@@ -1,0 +1,71 @@
+nextflow_process {
+
+    name "Test Process CNAQC"
+    script "../main.nf"
+    process "CNAQC"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cnaqc"
+
+    test("test_cnaqc") {
+
+        config "./nextflow.config"
+        
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test', tumour_sample: 'HCC1395_HCC1395T' ], 
+                    file(params.modules_testdata_base_path + 'delete_me/cnaqc/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_snv.rds', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/cnaqc/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_cna.rds', checkIfExists: true)     
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+
+                { assert snapshot(
+                    process.out.versions
+                    ).match() }, 
+                    // Check nondeterministic files exist
+                    { assert file(process.out.qc_rds[0][1]).exists() },
+                    { assert file(process.out.plot_rds[0][1]).exists() },
+                    { assert file(process.out.plot_pdf_data[0][1]).exists() },
+                    { assert file(process.out.plot_pdf_qc[0][1]).exists() }
+            )
+        }
+
+    }
+
+    test("cnaqc - rds - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test', tumour_sample: 'HCC1395_HCC1395T' ], 
+                    file(params.modules_testdata_base_path + 'delete_me/cnaqc/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_snv.rds', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/cnaqc/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_cna.rds', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
+
+
