@@ -1,7 +1,6 @@
 process DECOUPLER {
     tag "$meta.id"
     label 'process_medium'
-
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/dc/dc0ee6d6033b9f04c6377ad3b1cf5f924e3243626ab8d7be836d9d6617f8da4e/data' :
