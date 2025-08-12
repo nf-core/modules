@@ -20,13 +20,13 @@ process GAWK {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     // args is used for the main arguments of the tool
-    def args2 = task.ext.args2 ?: ''
+    def args = task.ext.args ?: ''
     // args2 is used to specify a program when no program file has been given
+    def args2 = task.ext.args2 ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    suffix = task.ext.suffix ?: "${input.collect { it.getExtension() }.get(0)}"
     // use the first extension of the input files
+    suffix = task.ext.suffix ?: "${input.collect { it.getExtension() }.get(0)}"
 
     program = program_file ? "-f ${program_file}" : "${args2}"
     lst_gz = input.findResults { it.getExtension().endsWith("gz") ? it.toString() : null }

@@ -2,7 +2,8 @@ process GATK4_CNNSCOREVARIANTS {
     tag "${meta.id}"
     label 'process_low'
 
-    //Conda is not supported at the moment: https://github.com/broadinstitute/gatk/issues/7811
+    // Conda is not supported at the moment: https://github.com/broadinstitute/gatk/issues/7811
+    // Biocontainers is missing a package
     container "nf-core/gatk:4.5.0.0"
 
     input:

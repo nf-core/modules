@@ -20,8 +20,8 @@ process CONTROLFREEC_FREEC2BED {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '11.6b'
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '11.6b'
     """
     freec2bed.pl -f ${ratio} ${args} > ${prefix}.bed
 
@@ -33,8 +33,8 @@ process CONTROLFREEC_FREEC2BED {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '11.6b'
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '11.6b'
     """
     touch ${prefix}.bed
 

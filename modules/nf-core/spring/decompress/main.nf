@@ -21,8 +21,8 @@ process SPRING_DECOMPRESS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.1.1'
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '1.1.1'
     def output = write_one_fastq_gz ? "-o ${prefix}.fastq.gz" : "-o ${prefix}_R1.fastq.gz ${prefix}_R2.fastq.gz"
 
     """
@@ -42,8 +42,8 @@ process SPRING_DECOMPRESS {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.1.1'
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '1.1.1'
     def output = write_one_fastq_gz ? "echo '' | gzip > ${prefix}.fastq.gz" : "echo '' | gzip > ${prefix}_R1.fastq.gz; echo '' | gzip > ${prefix}_R2.fastq.gz"
     """
     ${output}

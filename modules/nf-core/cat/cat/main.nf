@@ -39,7 +39,7 @@ process CAT_CAT {
     command2 = !in_zip && out_zip ? "| pigz -c -p ${task.cpus} ${args2}" : ''
     if (file_list.contains(prefix.trim())) {
         error(
-            "The name of the input file can't be the same as for the output prefix in the " + "module CAT_CAT (currently `${prefix}`). Please choose a different one."
+            "The name of the input file can't be the same as for the output prefix in the module CAT_CAT (currently `${prefix}`). Please choose a different one."
         )
     }
     """
@@ -60,7 +60,7 @@ process CAT_CAT {
     prefix = task.ext.prefix ?: "${meta.id}${file_list[0].substring(file_list[0].lastIndexOf('.'))}"
     if (file_list.contains(prefix.trim())) {
         error(
-            "The name of the input file can't be the same as for the output prefix in the " + "module CAT_CAT (currently `${prefix}`). Please choose a different one."
+            "The name of the input file can't be the same as for the output prefix in the module CAT_CAT (currently `${prefix}`). Please choose a different one."
         )
     }
     """

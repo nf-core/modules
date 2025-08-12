@@ -20,8 +20,8 @@ process CONTROLFREEC_FREEC2CIRCOS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '11.6b'
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '11.6b'
     """
     freec2circos.pl -f ${ratio} ${args} > ${prefix}.circos.txt
 
@@ -33,8 +33,8 @@ process CONTROLFREEC_FREEC2CIRCOS {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '11.6b'
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '11.6b'
     """
     touch ${prefix}.circos.txt
 

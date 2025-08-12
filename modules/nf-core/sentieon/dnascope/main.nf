@@ -20,11 +20,11 @@ process SENTIEON_DNASCOPE {
     val emit_gvcf
 
     output:
-    tuple val(meta), path("*.unfiltered.vcf.gz"), optional: true, emit: vcf
     // added the substring ".unfiltered" in the filename of the vcf-files since without that the g.vcf.gz-files were ending up in the vcf-channel
+    tuple val(meta), path("*.unfiltered.vcf.gz"), optional: true, emit: vcf
     tuple val(meta), path("*.unfiltered.vcf.gz.tbi"), optional: true, emit: vcf_tbi
-    tuple val(meta), path("*.g.vcf.gz"), optional: true, emit: gvcf
     // these output-files have to have the extension ".vcf.gz", otherwise the subsequent GATK-MergeVCFs will fail.
+    tuple val(meta), path("*.g.vcf.gz"), optional: true, emit: gvcf
     tuple val(meta), path("*.g.vcf.gz.tbi"), optional: true, emit: gvcf_tbi
     path "versions.yml", emit: versions
 
@@ -32,12 +32,12 @@ process SENTIEON_DNASCOPE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     // options for the driver
-    def args2 = task.ext.args2 ?: ''
+    def args = task.ext.args ?: ''
     // options for the vcf generation
-    def args3 = task.ext.args3 ?: ''
+    def args2 = task.ext.args2 ?: ''
     // options for the gvcf generation
+    def args3 = task.ext.args3 ?: ''
     def interval = intervals ? "--interval ${intervals}" : ''
     def dbsnp_cmd = dbsnp ? "-d ${dbsnp}" : ''
     def model_cmd = ml_model ? " --model ${ml_model}" : ''
