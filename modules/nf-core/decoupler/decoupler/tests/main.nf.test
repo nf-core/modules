@@ -25,7 +25,7 @@ nextflow_process {
                 input[1] = [
                     file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/progeny/mouse_network.tsv", checkIfExists: true)
                 ]
-                input[2] = [file("https://ftp.ensembl.org/pub/release-81/gtf/mus_musculus/Mus_musculus.GRCm38.81.gtf.gz", checkIfExists: true)]
+                input[2] = [file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/SRP254919.anno.feature_metadata.tsv", checkIfExists: true)]
                 """
             }
         }
@@ -75,7 +75,7 @@ nextflow_process {
                 input[1] = [
                     file(params.test_data['generic']['tsv']['network'], checkIfExists: true)
                 ]
-                input[2] = [file("https://ftp.ensembl.org/pub/release-81/gtf/mus_musculus/Mus_musculus.GRCm38.81.gtf.gz", checkIfExists: true)]
+                input[2] = [file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/SRP254919.anno.feature_metadata.tsv", checkIfExists: true)]
                 """
             }
         }
@@ -125,7 +125,7 @@ nextflow_process {
                 input[1] = [
                     file(params.test_data['generic']['tsv']['network'], checkIfExists: true)
                 ]
-                input[2] = [file("https://ftp.ensembl.org/pub/release-81/gtf/mus_musculus/Mus_musculus.GRCm38.81.gtf.gz", checkIfExists: true)]
+                input[2] = [file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/SRP254919.anno.feature_metadata.tsv", checkIfExists: true)]
                 """
             }
         }
