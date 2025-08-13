@@ -21,7 +21,11 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - snpeff_db: {}
+    - snpeff_db:
+        type: string
+        description: |
+          Which db to download
+        ontologies: []
 output:
   cache:
     - - meta:
