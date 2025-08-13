@@ -41,7 +41,7 @@ nextflow_process {
                 { assert path(process.out.candidate_small_indels_vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") },
                 { assert path(process.out.candidate_sv_vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") },
                 { assert path(process.out.diploid_sv_vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") },
-                { assert snapshot(process.out.version).match() }
+                { assert snapshot(process.out.versions).match() }
             )
         }
     }
@@ -77,7 +77,7 @@ nextflow_process {
                 { assert path(process.out.candidate_small_indels_vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") },
                 { assert path(process.out.candidate_sv_vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") },
                 { assert path(process.out.diploid_sv_vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") },
-                { assert snapshot(process.out.version).match() }
+                { assert snapshot(process.out.versions).match() }
             )
         }
     }
@@ -117,7 +117,7 @@ nextflow_process {
                 { assert path(process.out.candidate_small_indels_vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") },
                 { assert path(process.out.candidate_sv_vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") },
                 { assert path(process.out.diploid_sv_vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") },
-                { assert snapshot(process.out.version).match() }
+                { assert snapshot(process.out.versions).match() }
             )
         }
     }
