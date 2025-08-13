@@ -5,8 +5,8 @@ process KRAKENTOOLS_KREPORT2KRONA {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/krakentools:1.2--pyh5e36f6f_0':
-        'biocontainers/krakentools:1.2--pyh5e36f6f_0' }"
+        'https://depot.galaxyproject.org/singularity/krakentools:1.2.1--pyh7e72e81_0':
+        'biocontainers/krakentools:1.2.1--pyh7e72e81_0'}"
 
     input:
     tuple val(meta), path(kreport)
@@ -21,7 +21,7 @@ process KRAKENTOOLS_KREPORT2KRONA {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '1.2.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     kreport2krona.py \\
         -r ${kreport} \\
@@ -37,7 +37,7 @@ process KRAKENTOOLS_KREPORT2KRONA {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '1.2.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.txt
 

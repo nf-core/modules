@@ -28,6 +28,10 @@ input:
         type: file
         description: Input genome fasta file
         ontologies: []
+  - use_mem2:
+      type: boolean
+      description: |
+        If true, use bwameth index-mem2 for indexing. If false, use bwameth index (default: false)
 output:
   index:
     - - meta:

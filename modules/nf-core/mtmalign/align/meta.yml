@@ -32,7 +32,8 @@ input:
           uncompressed. They should contain exactly one chain!
         pattern: "*.{pdb}"
         ontologies:
-          - edam: http://edamontology.org/format_1747 # PDB atom record format
+          - edam: http://edamontology.org/format_1476 # PDB
+          - edam: http://edamontology.org/format_1477 # mmCIF
   - compress:
       type: boolean
       description: Flag representing whether the output MSA should be compressed. Set
@@ -64,7 +65,7 @@ output:
           description: Overlaid structures in PDB format. May be gzipped or uncompressed.
           pattern: "${prefix}.pdb{.gz,}"
           ontologies:
-            - edam: http://edamontology.org/format_1747 # PDB atom record format
+            - edam: http://edamontology.org/format_1476 # PDB
   versions:
     - versions.yml:
         type: file

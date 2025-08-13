@@ -5,7 +5,7 @@ process AMULETY_ANTIBERTA2 {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/amulety_igblast:b2a7736f645c40e5':
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/33/33a7125e32c3f338b1af9ba1961e39b1f263860c98ee3c3f0e2f432e3e72b8c8/data':
         'community.wave.seqera.io/library/amulety_igblast:659eaa872785adeb' }"
 
     input:
