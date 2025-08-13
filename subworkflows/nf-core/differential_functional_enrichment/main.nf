@@ -8,6 +8,7 @@ include { CUSTOM_TABULARTOGSEACLS  } from '../../../modules/nf-core/custom/tabul
 include { CUSTOM_TABULARTOGSEACHIP } from '../../../modules/nf-core/custom/tabulartogseachip/main.nf'
 include { GSEA_GSEA                } from '../../../modules/nf-core/gsea/gsea/main.nf'
 include { PROPR_GREA               } from "../../../modules/nf-core/propr/grea/main.nf"
+include { DECOUPLER                } from '../../../modules/nf-core/decoupler/decoupler/main'
 
 // Combine meta maps, including merging non-identical values of shared keys (e.g. 'id')
 def mergeMaps(meta, meta2){
@@ -80,6 +81,25 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
         .combine(ch_contrasts_transposed, by:0)
         .multiMap(criteria)
 
+    // In the case of DECOUPLER, it needs additional files coming from other channels that other methods don't use
+    // here we define the input channel for the DECOUPLER section
+
+    ch_input_for_decoupler = ch_input_for_other.input
+        .filter{ it[0].functional_method == 'decoupler' }
+        .map { meta, differential_results ->
+            // Preserve the method_differential field from the original metadata
+            def new_meta = [
+                id: meta.id,
+                method_differential: meta.params.differential_method
+            ]
+            [new_meta, differential_results]
+        }
+    ch_decoupler_network = ch_input_for_other.input
+        .filter{ it[0].functional_method == 'decoupler' }
+        .map { meta, differential_results ->
+            meta.params.decoupler_network ? file(meta.params.decoupler_network, checkIfExists: true) : []
+        }
+
     // ----------------------------------------------------
     // Perform enrichment analysis with gprofiler2
     // ----------------------------------------------------
@@ -116,6 +136,14 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
         ch_input_for_gsea.map{ tuple(it[0].reference, it[0].target) },
         CUSTOM_TABULARTOGSEACHIP.out.chip.first()
     )
+    // ----------------------------------------------------
+    // Perform enrichment analysis with DECOUPLER
+    // ----------------------------------------------------
+    DECOUPLER(
+        ch_input_for_decoupler,
+        ch_decoupler_network,
+        ch_featuresheet.map{ meta, features, features_id, features_symbol -> features }
+    )
 
     // ----------------------------------------------------
     // Perform enrichment analysis with GREA
@@ -133,6 +161,7 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
         .mix(CUSTOM_TABULARTOGSEACLS.out.versions)
         .mix(CUSTOM_TABULARTOGSEACHIP.out.versions)
         .mix(GSEA_GSEA.out.versions)
+        .mix(DECOUPLER.out.versions)
         .mix(PROPR_GREA.out.versions)
 
     emit:
@@ -146,6 +175,11 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
 
     // gsea-specific outputs
     gsea_report           = GSEA_GSEA.out.report_tsvs_ref.join(GSEA_GSEA.out.report_tsvs_target)
+
+    // decoupler-specific outputs
+    decoupler_dc_estimate = DECOUPLER.out.dc_estimate
+    decoupler_dc_pvals = DECOUPLER.out.dc_pvals
+    decoupler_png = DECOUPLER.out.png
 
     // grea-specific outputs
     grea_results          = PROPR_GREA.out.results
