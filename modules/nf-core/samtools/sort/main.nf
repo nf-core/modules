@@ -27,10 +27,10 @@ process SAMTOOLS_SORT {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def extension = args.contains("--output-fmt sam") ? "sam" :
-                    args.contains("--output-fmt cram") ? "cram" :
-                    "bam"
-    def reference = fasta ? "--reference ${fasta}" : ""
+    extension = args.contains("--output-fmt sam") ? "sam" :
+                args.contains("--output-fmt cram") ? "cram" :
+                "bam"
+    reference = fasta ? "--reference ${fasta}" : ""
     output_file = index_format ? "${prefix}.${extension}##idx##${prefix}.${extension}.${index_format} --write-index" : "${prefix}.${extension}"
     if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
 
@@ -54,12 +54,12 @@ process SAMTOOLS_SORT {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def extension = args.contains("--output-fmt sam") ? "sam" :
-                    args.contains("--output-fmt cram") ? "cram" :
-                    "bam"
+    prefix = task.ext.prefix ?: "${meta.id}"
+    extension = args.contains("--output-fmt sam") ? "sam" :
+                args.contains("--output-fmt cram") ? "cram" :
+                "bam"
     def reference = fasta ? "--reference ${fasta}" : ""
-    def index = index_format ? "touch ${prefix}.${extension}.${index_format}" : ""
+    index = index_format ? "touch ${prefix}.${extension}.${index_format}" : ""
 
     """
     touch ${prefix}.${extension}
