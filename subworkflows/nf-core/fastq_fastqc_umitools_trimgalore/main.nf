@@ -14,7 +14,7 @@ def getTrimGaloreReadsAfterFiltering(log_file) {
     def filtered_reads = 0
     log_file.eachLine { line ->
         def total_reads_matcher = line =~ /([\d\.]+)\ssequences processed in total/
-        def filtered_reads_matcher = line =~ /shorter than the length cutoff[^:]+:\s([\d\.]+)/
+        def filtered_reads_matcher = line =~ /shorter than the length cutoff[^:]+:\s*([\d\.]+)/
         if (total_reads_matcher) {
             total_reads = total_reads_matcher[0][1].toFloat()
         }

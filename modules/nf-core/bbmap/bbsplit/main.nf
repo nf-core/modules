@@ -88,7 +88,7 @@ process BBMAP_BBSPLIT {
         $fastq_in \\
         $fastq_out \\
         $refstats_cmd \\
-        $args 2> >(tee ${prefix}.log >&2)
+        $args 2>| >(tee ${prefix}.log >&2)
 
     # Summary files will have an absolute path that will make the index
     # impossible to use in other processes- we can fix that

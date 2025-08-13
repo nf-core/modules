@@ -24,9 +24,11 @@ input:
         type: file
         description: fastq file
         pattern: "*.{fastq,fq}(.gz)?"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
 output:
-  - fastq:
-      - meta:
+  fastq:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,8 +37,10 @@ output:
           type: file
           description: fastq file
           pattern: "*.{fastq, fq}.gz"
-  - log:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,11 +49,14 @@ output:
           type: file
           description: log file
           pattern: "*.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@danilodileo"
 maintainers:

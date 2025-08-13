@@ -21,7 +21,9 @@
                     },
                     [
                         "test.tumour_normalBAF.txt:md5,bee93180f7346edc1ead76f2ac150290",
-                        "test.tumour_tumourBAF.txt:md5,33bab5381edd65675458e72a492c4ef1"
+                        "test.tumour_normalBAF_rawBAF.txt:md5,4c6e12d9e04ac14e115796a08c82a1a9",
+                        "test.tumour_tumourBAF.txt:md5,33bab5381edd65675458e72a492c4ef1",
+                        "test.tumour_tumourBAF_rawBAF.txt:md5,7bab22a530cb8294542a6bc6cace9ae5"
                     ]
                 ]
             ],
@@ -46,11 +48,13 @@
                         "id": "test",
                         "single_end": false
                     },
-                    "test.metrics.txt:md5,6e473be3fb2226d493e48a73df2f4501"
+                    "test.metrics.txt:md5,6b7f492c84c2ee3038c9f2856a87b496"
                 ]
             ],
             [
                 [
+                    "test.after_correction_gc.test.tumour.germline.png",
+                    "test.after_correction_gc.test.tumour.tumour.png",
                     "test.before_correction.test.tumour.germline.png",
                     "test.before_correction.test.tumour.tumour.png",
                     "test.tumour.ASPCF.png",
@@ -76,14 +80,116 @@
                 ]
             ],
             [
-                "versions.yml:md5,686336a6e5781e5e76ce026a4d868593"
-            ]
+                "versions.yml:md5,75598081a811afded7d7c1a0d08405ac"
+            ],
+            {
+                "ASCAT": {
+                    "ascat": "3.2.0",
+                    "alleleCounter": "4.3.0"
+                }
+            }
         ],
         "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.4"
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.3"
         },
-        "timestamp": "2025-03-05T18:38:00.684889439"
+        "timestamp": "2025-06-25T12:07:29.534085987"
+    },
+    "human - bam - GC - folder inputs": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    [
+                        "test.normal_alleleFrequencies_chr21.txt:md5,627382ea8ab013d2fb3307a4f9abb058",
+                        "test.tumour_alleleFrequencies_chr21.txt:md5,79000d7e2f57c3492204a19649d327b1"
+                    ]
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    [
+                        "test.tumour_normalBAF.txt:md5,bee93180f7346edc1ead76f2ac150290",
+                        "test.tumour_normalBAF_rawBAF.txt:md5,4c6e12d9e04ac14e115796a08c82a1a9",
+                        "test.tumour_tumourBAF.txt:md5,33bab5381edd65675458e72a492c4ef1",
+                        "test.tumour_tumourBAF_rawBAF.txt:md5,7bab22a530cb8294542a6bc6cace9ae5"
+                    ]
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.cnvs.txt:md5,68b329da9893e34099c7d8ad5cb9c940"
+                ]
+            ],
+            [
+                [
+                    "test.tumour_normalLogR.txt",
+                    "test.tumour_tumourLogR.txt"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.metrics.txt:md5,3502b78584e5251db0fcbd71ed134480"
+                ]
+            ],
+            [
+                [
+                    "test.after_correction_gc_rt.test.tumour.germline.png",
+                    "test.after_correction_gc_rt.test.tumour.tumour.png",
+                    "test.before_correction.test.tumour.germline.png",
+                    "test.before_correction.test.tumour.tumour.png",
+                    "test.tumour.ASPCF.png",
+                    "test.tumour.sunrise.png"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.purityploidy.txt:md5,f1484c2b120834d3db8774ad02a038b9"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.segments.txt:md5,68b329da9893e34099c7d8ad5cb9c940"
+                ]
+            ],
+            [
+                "versions.yml:md5,75598081a811afded7d7c1a0d08405ac"
+            ],
+            {
+                "ASCAT": {
+                    "ascat": "3.2.0",
+                    "alleleCounter": "4.3.0"
+                }
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.3"
+        },
+        "timestamp": "2025-06-25T12:18:54.510148361"
     },
     "human - bam - stub": {
         "content": [
@@ -179,7 +285,7 @@
                     ]
                 ],
                 "8": [
-                    "versions.yml:md5,77b5e99ea58d2555e05b761bac9fc0cb"
+                    "versions.yml:md5,5c8663bfecf62e5eb460f76ee167d410"
                 ],
                 "allelefreqs": [
                     [
@@ -272,17 +378,17 @@
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,77b5e99ea58d2555e05b761bac9fc0cb"
+                    "versions.yml:md5,5c8663bfecf62e5eb460f76ee167d410"
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.4"
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.3"
         },
-        "timestamp": "2025-03-05T18:15:58.006828602"
+        "timestamp": "2025-06-16T12:14:45.315601183"
     },
-    "human - cram - GC - RT": {
+    "human - cram - GC - RT - additional_allelecounter": {
         "content": [
             [
                 [
@@ -304,7 +410,9 @@
                     },
                     [
                         "test.tumour_normalBAF.txt:md5,bee93180f7346edc1ead76f2ac150290",
-                        "test.tumour_tumourBAF.txt:md5,33bab5381edd65675458e72a492c4ef1"
+                        "test.tumour_normalBAF_rawBAF.txt:md5,4c6e12d9e04ac14e115796a08c82a1a9",
+                        "test.tumour_tumourBAF.txt:md5,33bab5381edd65675458e72a492c4ef1",
+                        "test.tumour_tumourBAF_rawBAF.txt:md5,7bab22a530cb8294542a6bc6cace9ae5"
                     ]
                 ]
             ],
@@ -361,13 +469,209 @@
                 ]
             ],
             [
-                "versions.yml:md5,686336a6e5781e5e76ce026a4d868593"
-            ]
+                "versions.yml:md5,75598081a811afded7d7c1a0d08405ac"
+            ],
+            {
+                "ASCAT": {
+                    "ascat": "3.2.0",
+                    "alleleCounter": "4.3.0"
+                }
+            }
         ],
         "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.4"
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.3"
         },
-        "timestamp": "2025-03-05T22:15:35.851834147"
+        "timestamp": "2025-06-20T12:46:05.832790403"
+    },
+    "human - cram - GC - RT": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    [
+                        "test.normal_alleleFrequencies_chr21.txt:md5,627382ea8ab013d2fb3307a4f9abb058",
+                        "test.tumour_alleleFrequencies_chr21.txt:md5,79000d7e2f57c3492204a19649d327b1"
+                    ]
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    [
+                        "test.tumour_normalBAF.txt:md5,bee93180f7346edc1ead76f2ac150290",
+                        "test.tumour_normalBAF_rawBAF.txt:md5,4c6e12d9e04ac14e115796a08c82a1a9",
+                        "test.tumour_tumourBAF.txt:md5,33bab5381edd65675458e72a492c4ef1",
+                        "test.tumour_tumourBAF_rawBAF.txt:md5,7bab22a530cb8294542a6bc6cace9ae5"
+                    ]
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.cnvs.txt:md5,68b329da9893e34099c7d8ad5cb9c940"
+                ]
+            ],
+            [
+                [
+                    "test.tumour_normalLogR.txt",
+                    "test.tumour_tumourLogR.txt"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.metrics.txt:md5,3502b78584e5251db0fcbd71ed134480"
+                ]
+            ],
+            [
+                [
+                    "test.after_correction_gc_rt.test.tumour.germline.png",
+                    "test.after_correction_gc_rt.test.tumour.tumour.png",
+                    "test.before_correction.test.tumour.germline.png",
+                    "test.before_correction.test.tumour.tumour.png",
+                    "test.tumour.ASPCF.png",
+                    "test.tumour.sunrise.png"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.purityploidy.txt:md5,f1484c2b120834d3db8774ad02a038b9"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.segments.txt:md5,68b329da9893e34099c7d8ad5cb9c940"
+                ]
+            ],
+            [
+                "versions.yml:md5,75598081a811afded7d7c1a0d08405ac"
+            ],
+            {
+                "ASCAT": {
+                    "ascat": "3.2.0",
+                    "alleleCounter": "4.3.0"
+                }
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.3"
+        },
+        "timestamp": "2025-06-16T15:51:14.807808184"
+    },
+    "human - bam - GC - additional_allelecounter": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    [
+                        "test.normal_alleleFrequencies_chr21.txt:md5,627382ea8ab013d2fb3307a4f9abb058",
+                        "test.tumour_alleleFrequencies_chr21.txt:md5,79000d7e2f57c3492204a19649d327b1"
+                    ]
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    [
+                        "test.tumour_normalBAF.txt:md5,bee93180f7346edc1ead76f2ac150290",
+                        "test.tumour_normalBAF_rawBAF.txt:md5,4c6e12d9e04ac14e115796a08c82a1a9",
+                        "test.tumour_tumourBAF.txt:md5,33bab5381edd65675458e72a492c4ef1",
+                        "test.tumour_tumourBAF_rawBAF.txt:md5,7bab22a530cb8294542a6bc6cace9ae5"
+                    ]
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.cnvs.txt:md5,68b329da9893e34099c7d8ad5cb9c940"
+                ]
+            ],
+            [
+                [
+                    "test.tumour_normalLogR.txt",
+                    "test.tumour_tumourLogR.txt"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.metrics.txt:md5,6e473be3fb2226d493e48a73df2f4501"
+                ]
+            ],
+            [
+                [
+                    "test.before_correction.test.tumour.germline.png",
+                    "test.before_correction.test.tumour.tumour.png",
+                    "test.tumour.ASPCF.png",
+                    "test.tumour.sunrise.png"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.purityploidy.txt:md5,f1484c2b120834d3db8774ad02a038b9"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.segments.txt:md5,68b329da9893e34099c7d8ad5cb9c940"
+                ]
+            ],
+            [
+                "versions.yml:md5,75598081a811afded7d7c1a0d08405ac"
+            ],
+            {
+                "ASCAT": {
+                    "ascat": "3.2.0",
+                    "alleleCounter": "4.3.0"
+                }
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.3"
+        },
+        "timestamp": "2025-06-20T12:45:23.273839886"
     }
 }

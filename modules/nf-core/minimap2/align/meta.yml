@@ -26,6 +26,7 @@ input:
         description: |
           List of input FASTA or FASTQ files of size 1 and 2 for single-end
           and paired-end data, respectively.
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -35,23 +36,24 @@ input:
         type: file
         description: |
           Reference database in FASTA format.
-  - - bam_format:
-        type: boolean
-        description: Specify that output should be in BAM format
-  - - bam_index_extension:
-        type: string
-        description: BAM alignment index extension (e.g. "bai")
-  - - cigar_paf_format:
-        type: boolean
-        description: Specify that output CIGAR should be in PAF format
-  - - cigar_bam:
-        type: boolean
-        description: |
-          Write CIGAR with >65535 ops at the CG tag. This is recommended when
-          doing XYZ (https://github.com/lh3/minimap2#working-with-65535-cigar-operations)
+        ontologies: []
+  - bam_format:
+      type: boolean
+      description: Specify that output should be in BAM format
+  - bam_index_extension:
+      type: string
+      description: BAM alignment index extension (e.g. "bai")
+  - cigar_paf_format:
+      type: boolean
+      description: Specify that output CIGAR should be in PAF format
+  - cigar_bam:
+      type: boolean
+      description: |
+        Write CIGAR with >65535 ops at the CG tag. This is recommended when
+        doing XYZ (https://github.com/lh3/minimap2#working-with-65535-cigar-operations)
 output:
-  - paf:
-      - meta:
+  paf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -60,8 +62,9 @@ output:
           type: file
           description: Alignment in PAF format
           pattern: "*.paf"
-  - bam:
-      - meta:
+          ontologies: []
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -70,8 +73,9 @@ output:
           type: file
           description: Alignment in BAM format
           pattern: "*.bam"
-  - index:
-      - meta:
+          ontologies: []
+  index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -80,11 +84,14 @@ output:
           type: file
           description: BAM alignment index
           pattern: "*.bam.*"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@heuermh"
   - "@sofstam"

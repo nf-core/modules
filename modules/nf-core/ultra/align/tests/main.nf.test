@@ -1,0 +1,112 @@
+nextflow_process {
+
+    name "Test Process ULTRA_ALIGN"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "ULTRA_ALIGN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gunzip"
+    tag "gnu"
+    tag "gnu/sort"
+    tag "ultra"
+    tag "ultra/index"
+    tag "ultra/align"
+
+    test("ultra_align") {
+        setup {
+            run("GUNZIP") {
+                script "../../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: 'test'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists:true)
+                    ]
+                    """
+                }
+            }
+
+            run("GNU_SORT") {
+                script "../../../gnu/sort/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: 'test'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists:true)
+                    ]
+                    """
+                }
+            }
+
+            run("ULTRA_INDEX") {
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: 'fasta'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
+                    ]
+                    input[1] = GNU_SORT.out.sorted
+                    """
+                }
+            }
+        }
+        when {
+            params {
+                gnu_sort_args = '-k1,1 -k4,4n'
+                ultra_index_args = '--disable_infer'
+            }
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = Channel.of([
+                    [id: 'fasta'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
+                ])
+                input[2] = ULTRA_INDEX.out.pickle
+                    .join(ULTRA_INDEX.out.database)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("ultra_align -- stub") {
+        options "-stub"
+        when {
+            params {
+                gnu_sort_args = ''
+                ultra_index_args = ''
+            }
+            process {
+                """
+                input[0] = [[id: 'test'], []]
+                input[1] = [
+                    [id: 'fasta'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true),
+                ]
+                input[2] = [[id: 'index'], [], []]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}
