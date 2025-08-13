@@ -1,4 +1,4 @@
-process RSEM_CALCULATEEXPRESSION {
+process SENTIEON_RSEMCALCULATEEXPRESSION {
     tag "$meta.id"
     label 'process_high'
     label 'sentieon'

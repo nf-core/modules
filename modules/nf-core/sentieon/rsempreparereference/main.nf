@@ -1,4 +1,4 @@
-process RSEM_PREPAREREFERENCE {
+process SENTIEON_RSEMPREPAREREFERENCE {
     tag "$fasta"
     label 'process_high'
     label 'sentieon'

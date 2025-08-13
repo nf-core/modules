@@ -1,8 +1,8 @@
 nextflow_process {
 
-    name "Test Process RSEM_CALCULATEEXPRESSION"
+    name "Test Process SENTIEON_RSEMCALCULATEEXPRESSION"
     script "../main.nf"
-    process "RSEM_CALCULATEEXPRESSION"
+    process "SENTIEON_RSEMCALCULATEEXPRESSION"
     config "./nextflow.config"
     tag "modules"
     tag "modules_nfcore"
@@ -13,8 +13,8 @@ nextflow_process {
     test("homo_sapiens") {
 
         setup {
-            run("RSEM_PREPAREREFERENCE") {
-                script "../../../rsem/preparereference/main.nf"
+            run("SENTIEON_RSEMPREPAREREFERENCE") {
+                script "../../../sentieon/rsempreparereference/main.nf"
                 process {
                     """
                     input[0] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true))
@@ -37,7 +37,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true)
                     ]
                 ])
-                input[1] = RSEM_PREPAREREFERENCE.out.index
+                input[1] = SENTIEON_RSEMPREPAREREFERENCE.out.index
                 """
             }
         }
@@ -58,8 +58,8 @@ nextflow_process {
     options "-stub"
 
         setup {
-            run("RSEM_PREPAREREFERENCE") {
-                script "../../../rsem/preparereference/main.nf"
+            run("SENTIEON_RSEMPREPAREREFERENCE") {
+                script "../../../sentieon/rsempreparereference/main.nf"
                 process {
                     """
                     input[0] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true))
@@ -79,7 +79,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true)
                     ]
                 ])
-                input[1] = RSEM_PREPAREREFERENCE.out.index
+                input[1] = SENTIEON_RSEMPREPAREREFERENCE.out.index
                 """
             }
         }
