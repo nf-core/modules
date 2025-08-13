@@ -491,7 +491,7 @@ nextflow_workflow {
                 ch_samplesheet = Channel.of([[], []])
                 ch_featuresheet = Channel.of([
                     [],
-                    file("https://ftp.ensembl.org/pub/release-81/gtf/mus_musculus/Mus_musculus.GRCm38.81.gtf.gz", checkIfExists: true),
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/differentialabundance/modules_testdata/Mus_musculus.anno.tsv", checkIfExists: true),
                     [],
                     []
                 ])
