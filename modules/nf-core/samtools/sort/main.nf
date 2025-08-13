@@ -10,24 +10,28 @@ process SAMTOOLS_SORT {
     input:
     tuple val(meta) , path(bam)
     tuple val(meta2), path(fasta)
+    val index_format
 
     output:
-    tuple val(meta), path("*.bam"),  emit: bam,  optional: true
-    tuple val(meta), path("*.cram"), emit: cram, optional: true
-    tuple val(meta), path("*.crai"), emit: crai, optional: true
-    tuple val(meta), path("*.csi"),  emit: csi,  optional: true
-    path  "versions.yml",            emit: versions
+    tuple val(meta), path("${prefix}.bam"),                 emit: bam,  optional: true
+    tuple val(meta), path("${prefix}.cram"),                emit: cram, optional: true
+    tuple val(meta), path("${prefix}.sam"),                 emit: sam,  optional: true
+    tuple val(meta), path("${prefix}.${extension}.crai"),   emit: crai, optional: true
+    tuple val(meta), path("${prefix}.${extension}.csi"),    emit: csi,  optional: true
+    tuple val(meta), path("${prefix}.${extension}.bai"),    emit: bai,  optional: true
+    path  "versions.yml",                                   emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def extension = args.contains("--output-fmt sam") ? "sam" :
                     args.contains("--output-fmt cram") ? "cram" :
                     "bam"
     def reference = fasta ? "--reference ${fasta}" : ""
+    output_file = index_format ? "${prefix}.${extension}##idx##${prefix}.${extension}.${index_format} --write-index" : "${prefix}.${extension}"
     if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
 
     """
@@ -39,7 +43,7 @@ process SAMTOOLS_SORT {
         -T ${prefix} \\
         --threads $task.cpus \\
         ${reference} \\
-        -o ${prefix}.${extension} \\
+        -o ${output_file} \\
         -
 
     cat <<-END_VERSIONS > versions.yml
@@ -54,15 +58,12 @@ process SAMTOOLS_SORT {
     def extension = args.contains("--output-fmt sam") ? "sam" :
                     args.contains("--output-fmt cram") ? "cram" :
                     "bam"
+    def reference = fasta ? "--reference ${fasta}" : ""
+    def index = index_format ? "touch ${prefix}.${extension}.${index_format}" : ""
+
     """
     touch ${prefix}.${extension}
-    if [ "${extension}" == "bam" ];
-    then
-        touch ${prefix}.${extension}.csi
-    elif [ "${extension}" == "cram" ];
-    then
-        touch ${prefix}.${extension}.crai
-    fi
+    ${index}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
