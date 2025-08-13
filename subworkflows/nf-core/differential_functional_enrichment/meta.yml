@@ -8,6 +8,7 @@ keywords:
 components:
   - gprofiler2/gost
   - gsea/gsea
+  - decoupler/decoupler
   - propr/grea
   - custom/tabulartogseagct
   - custom/tabulartogseacls
@@ -35,7 +36,7 @@ input:
               For the moment, it is only required for gprofiler2.
         - analysis_method:
             type: value
-            description: Analysis method (gprofiler2, gsea, or grea)
+            description: Analysis method (gprofiler2, gsea, decoupler or grea)
   - ch_contrasts:
       description: Channel with contrast information
       structure:
@@ -145,6 +146,47 @@ output:
             type: file
             description: Main TSV results report file for the target group.
             pattern: "*gsea_report_for_${target}.tsv"
+  - decoupler_dc_estimate:
+      description: Channel containing decoupler estimate results.
+      structure:
+        - meta:
+            type: map
+            description: |
+            Groovy Map containing sample information
+            e.g. [ id:‘test’, single_end ]
+        - "*estimate_decoupler.tsv":
+            type: file
+            description: |
+              The file containing the estimation results of the enrichment(s)
+            pattern: "*estimate_decoupler.tsv"
+  - decoupler_dc_pvals:
+      description: Channel containing decoupler pvals results.
+      structure:
+        - meta:
+            type: map
+            description: |
+              Groovy Map containing sample information
+              e.g. [ id:‘test’, single_end ]
+        - "*pvals_decoupler.tsv":
+            type: file
+            description: |
+              The file containing the p-value associated to the estimation
+              results of the enrichment(s)
+            pattern: "*pvals_decoupler.tsv"
+  - decoupler_png:
+      description: Channel containing decoupler png results.
+      structure:
+        - meta:
+            type: map
+            description: |
+              Groovy Map containing sample information
+              e.g. [ id:‘test’, single_end ]
+        - "*estimate_decoupler_plot.png":
+            type: file
+            description: |
+              The file containing the plots associated to the estimation
+              results of the enrichment(s)
+            pattern: "*estimate_decoupler_plot.png"
   - grea_results:
       description: |
         Channel containing the output from GREA.
