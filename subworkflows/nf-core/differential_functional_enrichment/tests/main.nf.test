@@ -19,6 +19,7 @@ nextflow_workflow {
     tag "custom/tabulartogseachip"
     tag "subworkflows/abundance_differential_filter"
     tag "abundance_differential_filter"
+    tag "decoupler_basic"
 
     test("test gprofiler2 - mouse") {
         tag 'gprofiler2_basic'
@@ -461,6 +462,60 @@ nextflow_workflow {
             )
         }
 
+    }
+
+    test("deseq2 + decoupler - mouse") {
+        tag "deseq2+decoupler"
+        tag "decoupler_basic"
+        config "./decoupler.config"
+
+        when {
+            workflow {
+                """
+                ch_input = Channel.of([
+                    [
+                        'id':'treatment_mCherry_hND6',
+                        'method_differential':'deseq2',
+                        'params': [
+                            'decoupler_network': 'https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/progeny/mouse_network.tsv',
+                            'differential_method': 'deseq2'
+                        ]
+                    ],
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/treatment_mCherry_hND6_.deseq2.results.tsv", checkIfExists: true),
+                    [],  // genesets (empty for decoupler)
+                    [],  // background (empty for decoupler)
+                    'decoupler'  // method
+                ])
+
+                ch_contrasts = Channel.of([[], [], [], [], [], []])
+                ch_samplesheet = Channel.of([[], []])
+                ch_featuresheet = Channel.of([
+                    [],
+                    file("https://ftp.ensembl.org/pub/release-81/gtf/mus_musculus/Mus_musculus.GRCm38.81.gtf.gz", checkIfExists: true),
+                    [],
+                    []
+                ])
+
+                input[0] = ch_input
+                input[1] = ch_contrasts
+                input[2] = ch_samplesheet
+                input[3] = ch_featuresheet
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.decoupler_dc_estimate,
+                    workflow.out.decoupler_dc_pvals,
+                    workflow.out.decoupler_png,
+                    path(workflow.out.versions.get(0)).yaml,
+                    workflow.out.versions
+                ).match() }
+            )
+        }
     }
 
     test("stub") {
