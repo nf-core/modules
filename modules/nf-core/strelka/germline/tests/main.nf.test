@@ -33,7 +33,6 @@ nextflow_process {
                 { assert snapshot(process.out.versions).match() }
             )
         }
-
     }
 
     test("human - cram - target") {
@@ -61,7 +60,6 @@ nextflow_process {
                 { assert snapshot(process.out.versions).match() }
             )
         }
-
     }
 
     test("human - cram - stub") {
@@ -88,7 +86,5 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
-
 }
