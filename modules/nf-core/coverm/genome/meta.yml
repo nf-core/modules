@@ -41,11 +41,11 @@ input:
 
     - reference:
         type: file
-        description: Reference FASTA file to map reads to, or minimap2/strobealign index.
-          Not required if using BAM input.
+        description: Genome FASTA file(s) (space-separated) to map reads to, or a directory containing genome FASTA files, or minimap2/strobealign index.
         pattern: "*.{fasta,fasta.gz,mmi,sti,fna,fna.gz,fa,fa.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
 
-        ontologies: []
   - bam_input:
       type: boolean
       description: True if input is bam files
