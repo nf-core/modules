@@ -14,8 +14,8 @@ process COVERM_GENOME {
     val interleaved
 
     output:
-    tuple val(meta), path("*.depth.txt"), emit: coverage
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.tsv"), emit: coverage
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,7 +34,7 @@ process COVERM_GENOME {
         ${input_type} ${input} \\
         ${reference_str} \\
         ${args} \\
-        --output-file ${prefix}.depth.txt
+        --output-file ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -45,7 +45,7 @@ process COVERM_GENOME {
     stub:
     def prefix        = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.depth.txt
+    touch ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

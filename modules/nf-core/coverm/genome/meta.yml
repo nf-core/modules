@@ -61,12 +61,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.depth.txt":
+      - "*.tsv":
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-          pattern: "*.depths.{txt}"
+          pattern: "*.{tsv}"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   versions:
