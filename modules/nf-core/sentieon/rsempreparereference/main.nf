@@ -55,6 +55,7 @@ process SENTIEON_RSEMPREPAREREFERENCE {
         "${task.process}":
             rsem: \$(rsem-calculate-expression --version | sed -e "s/Current version: RSEM v//g")
             star: \$(STAR --version | sed -e "s/STAR_//g")
+            sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
         END_VERSIONS
         """
     } else {
@@ -72,6 +73,7 @@ process SENTIEON_RSEMPREPAREREFERENCE {
         "${task.process}":
             rsem: \$(rsem-calculate-expression --version | sed -e "s/Current version: RSEM v//g")
             star: \$(STAR --version | sed -e "s/STAR_//g")
+            sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
         END_VERSIONS
         """
     }
@@ -84,6 +86,7 @@ process SENTIEON_RSEMPREPAREREFERENCE {
     "${task.process}":
         rsem: \$(rsem-calculate-expression --version | sed -e "s/Current version: RSEM v//g")
         star: \$(STAR --version | sed -e "s/STAR_//g")
+        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
     END_VERSIONS
     """
 }
