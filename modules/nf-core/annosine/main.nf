@@ -13,49 +13,49 @@ process ANNOSINE {
     val mode
 
     output:
-    tuple val(meta), path("${prefix}.log")  , emit: log
-    tuple val(meta), path("${prefix}.fa")   , emit: fa      , optional: true
-    path "versions.yml"                     , emit: versions
+    tuple val(meta), path("${prefix}.log"), emit: log
+    tuple val(meta), path("${prefix}.fa") , emit: fa, optional: true
+    path "versions.yml"                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args ?: ''
+    def args    = task.ext.args   ?: ''
     prefix      = task.ext.prefix ?: "${meta.id}_annosine"
     def VERSION = '2.0.8' // WARN: Manually update when changing Bioconda assets
-    if ( "$fasta" == "${prefix}.fa" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ( "${fasta}" == "${prefix}.fa" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     AnnoSINE_v2 \\
-        $args \\
-        --threads $task.cpus \\
-        $mode \\
-        $fasta \\
-        $prefix \\
+        ${args} \\
+        --threads ${task.cpus} \\
+        ${mode} \\
+        ${fasta} \\
+        ${prefix} \\
         &> >(tee ${prefix}.log 2>&1)
 
     mv \\
-        $prefix/Seed_SINE.fa \\
+        ${prefix}/Seed_SINE.fa \\
         ${prefix}.fa \\
         || echo 'AnnoSINE_v2 did not find SINE sequences. See log for details!'
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        annosine: $VERSION
+        annosine: ${VERSION}
     END_VERSIONS
     """
 
     stub:
     prefix      = task.ext.prefix ?: "${meta.id}_annosine"
     def VERSION = '2.0.8' // WARN: Manually update when changing Bioconda assets
-    if ( "$fasta" == "${prefix}.fa" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ( "${fasta}" == "${prefix}.fa" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     touch ${prefix}.log
     touch ${prefix}.fa
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        annosine: $VERSION
+        annosine: ${VERSION}
     END_VERSIONS
     """
 }

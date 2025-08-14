@@ -19,7 +19,7 @@ process BWA_ALN {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     if (meta.single_end) {
@@ -55,6 +55,30 @@ process BWA_ALN {
             -f ${prefix}.2.sai \\
             \$INDEX \\
             ${reads[1]}
+
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            bwa: \$(echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
+        END_VERSIONS
+        """
+    }
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    if (meta.single_end) {
+        """
+        touch ${prefix}.sai
+
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            bwa: \$(echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
+        END_VERSIONS
+        """
+    } else {
+        """
+        touch ${prefix}.1.sai
+        touch ${prefix}.2.sai
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":

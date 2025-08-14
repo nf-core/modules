@@ -20,12 +20,14 @@ process ANGSD_GL {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+
     def GL_model = args.contains("-GL 1") ? 1 : args.contains("-GL 2") ? 2 : args.contains("-GL 3") ? 3 : args.contains("-GL 4") ? 4 : 0
-    def ref = fasta ? "-ref ${fasta}" : ''                     // Use reference fasta if provided
-    def errors = error_file ? "-errors ${error_file}" : ''     // Only applies to SYK model
-    def output_mode = args.contains("-doGlf") ? "" : '-doGlf 1' // Default to outputting binary glf (10 log likelihoods) if not set in args
+
+    def ref         = fasta                   ? "-ref ${fasta}"         : ''         // Use reference fasta if provided
+    def errors      = error_file              ? "-errors ${error_file}" : ''         // Only applies to SYK model
+    def output_mode = args.contains("-doGlf") ? ""                      : '-doGlf 1' // Default to outputting binary glf (10 log likelihoods) if not set in args
     // NOTE: GL is specified within args, so is not provided as a separate argument
 
     if (GL_model != 3 && GL_model != 4) {
@@ -35,9 +37,9 @@ process ANGSD_GL {
         angsd \\
             -nThreads ${task.cpus} \\
             -bam bamlist.txt \\
-            $args \\
-            $ref \\
-            $output_mode \\
+            ${args} \\
+            ${ref} \\
+            ${output_mode} \\
             -out ${prefix}
 
         cat <<-END_VERSIONS > versions.yml
@@ -58,16 +60,16 @@ process ANGSD_GL {
             -bam bamlist.txt \\
             -minQ 0 \\
             -GL 3 \\
-            $ref \\
+            ${ref} \\
             -out ${prefix}
 
         ## Then run the model
         angsd \\
             -nThreads ${task.cpus} \\
             -bam bamlist.txt \\
-            $args \\
-            $ref \\
-            $output_mode \\
+            ${args} \\
+            ${ref} \\
+            ${output_mode} \\
             -out ${prefix}
 
         cat <<-END_VERSIONS > versions.yml
@@ -83,10 +85,10 @@ process ANGSD_GL {
         angsd \\
             -nThreads ${task.cpus} \\
             -bam bamlist.txt \\
-            $args \\
-            $ref \\
-            $output_mode \\
-            $errors \\
+            ${args} \\
+            ${ref} \\
+            ${output_mode} \\
+            ${errors} \\
             -doCounts 1 \\
             -out ${prefix}
 
@@ -98,7 +100,6 @@ process ANGSD_GL {
     }
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.glf

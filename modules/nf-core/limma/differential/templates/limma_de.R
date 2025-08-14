@@ -52,6 +52,17 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.nam
     )
 }
 
+#
+#' Turn “null” or empty strings into actual NULL
+#'
+#' @param x Input option
+#'
+#' @return NULL or x
+#'
+nullify <- function(x) {
+  if (is.character(x) && (tolower(x) == "null" || x == "")) NULL else x
+}
+
 ################################################
 ################################################
 ## PARSE PARAMETERS FROM NEXTFLOW             ##
@@ -71,6 +82,8 @@ opt <- list(
     contrast_variable = '$contrast_variable',
     reference_level = '$reference',
     target_level = '$target',
+    formula                 = '$formula',
+    contrast_string         = '$comparison',
     blocking_variables = NULL,
     probe_id_col = "probe_id",
     sample_id_col = "experiment_accession",
@@ -116,9 +129,13 @@ if ( ! is.null(opt\$round_digits)){
     opt\$round_digits <- as.numeric(opt\$round_digits)
 }
 
+# If there is no option supplied, convert string "null" to NULL
+keys <- c("formula", "contrast_string", "contrast_variable", "reference_level", "target_level")
+opt[keys] <- lapply(opt[keys], nullify)
+
 # Check if required parameters have been provided
 
-required_opts <- c('contrast_variable', 'reference_level', 'target_level', 'output_prefix')
+required_opts <- c('output_prefix')
 missing <- required_opts[unlist(lapply(opt[required_opts], is.null)) | ! required_opts %in% names(opt)]
 
 if (length(missing) > 0){
@@ -207,48 +224,49 @@ if (length(missing_samples) > 0) {
 contrast_variable <- make.names(opt\$contrast_variable)
 blocking.vars <- c()
 
-if (!contrast_variable %in% colnames(sample.sheet)) {
-    stop(
-        paste0(
-        'Chosen contrast variable \"',
-        contrast_variable,
-        '\" not in sample sheet'
-        )
-    )
-} else if (any(!c(opt\$reference_level, opt\$target_level) %in% sample.sheet[[contrast_variable]])) {
-    stop(
-        paste(
-        'Please choose reference and target levels that are present in the',
-        contrast_variable,
-        'column of the sample sheet'
-        )
-    )
-} else if (!is.null(opt\$blocking_variables)) {
-    blocking.vars = make.names(unlist(strsplit(opt\$blocking_variables, split = ';')))
-    if (!all(blocking.vars %in% colnames(sample.sheet))) {
-        missing_block <- paste(blocking.vars[! blocking.vars %in% colnames(sample.sheet)], collapse = ',')
+if (!is.null(opt\$contrast_variable)) {
+    if (!contrast_variable %in% colnames(sample.sheet)) {
         stop(
-            paste(
-                'Blocking variables', missing_block,
-                'do not correspond to sample sheet columns.'
+            paste0(
+            'Chosen contrast variable \"',
+            contrast_variable,
+            '\" not in sample sheet'
             )
         )
+    } else if (any(!c(opt\$reference_level, opt\$target_level) %in% sample.sheet[[contrast_variable]])) {
+        stop(
+            paste(
+            'Please choose reference and target levels that are present in the',
+            contrast_variable,
+            'column of the sample sheet'
+            )
+        )
+    } else if (!is.null(opt\$blocking_variables)) {
+        blocking.vars = make.names(unlist(strsplit(opt\$blocking_variables, split = ';')))
+        if (!all(blocking.vars %in% colnames(sample.sheet))) {
+            missing_block <- paste(blocking.vars[! blocking.vars %in% colnames(sample.sheet)], collapse = ',')
+            stop(
+                paste(
+                    'Blocking variables', missing_block,
+                    'do not correspond to sample sheet columns.'
+                )
+            )
+        }
     }
-}
 
-# Handle conflicts between blocking variables and block
-if (!is.null(opt\$block) && !is.null(opt\$blocking_variables)) {
-    if (opt\$block %in% blocking.vars) {
-        warning(paste("Variable", opt\$block, "is specified both as a fixed effect and a random effect. It will be treated as a random effect only."))
-        blocking.vars <- setdiff(blocking.vars, opt\$block)
-        if (length(blocking.vars) == 0) {
-            opt\$blocking_variables <- NULL
-        } else {
-            opt\$blocking_variables <- paste(blocking.vars, collapse = ';')
+    # Handle conflicts between blocking variables and block
+    if (!is.null(opt\$block) && !is.null(opt\$blocking_variables)) {
+        if (opt\$block %in% blocking.vars) {
+            warning(paste("Variable", opt\$block, "is specified both as a fixed effect and a random effect. It will be treated as a random effect only."))
+            blocking.vars <- setdiff(blocking.vars, opt\$block)
+            if (length(blocking.vars) == 0) {
+                opt\$blocking_variables <- NULL
+            } else {
+                opt\$blocking_variables <- paste(blocking.vars, collapse = ';')
+            }
         }
     }
 }
-
 # Optionally, subset to only the samples involved in the contrast
 
 if (opt\$subset_to_contrast_samples){
@@ -278,52 +296,57 @@ if ((! is.null(opt\$exclude_samples_col)) && (! is.null(opt\$exclude_samples_val
 
 ################################################
 ################################################
-## Build the Model Formula                    ##
+## Build the Model Formula and Run Limma      ##
 ################################################
 ################################################
 
-# Build the model formula with blocking variables first
-model_vars <- c()
+if (!is.null(opt\$formula)) {
+    model <- opt\$formula
+    model_formula <- as.formula(model)
+    cat("Using user-specified formula:\n   ", deparse(model_formula), "\n")
+    design <- model.matrix(model_formula, data = sample.sheet)
+    colnames(design) <- make.names(colnames(design))
+    cat("Column names after make.names():\n   ", paste(colnames(design), collapse = ", "), "\n")
 
-if (!is.null(opt\$blocking_variables)) {
-    # Include blocking variables (including pairing variables if any)
-    model_vars <- c(model_vars, blocking.vars)
+} else {
+    # Build the model formula with blocking variables first
+    model_vars <- c()
+
+    if (!is.null(opt\$blocking_variables)) {
+        # Include blocking variables (including pairing variables if any)
+        model_vars <- c(model_vars, blocking.vars)
+    }
+
+    # Add the contrast variable at the end
+    model_vars <- c(model_vars, contrast_variable)
+
+    # Construct the model formula
+    model <- paste('~ 0 +', paste(model_vars, collapse = '+'))
+
+    # Make sure all the appropriate variables are factors
+    vars_to_factor <- model_vars  # All variables in the model need to be factors
+    for (v in vars_to_factor) {
+        sample.sheet[[v]] <- as.factor(sample.sheet[[v]])
+    }
+
+    # Generate the design matrix
+    design <- model.matrix(
+        as.formula(model),
+        data=sample.sheet
+    )
+
+    # Adjust column names for the contrast variable
+    colnames(design) <- sub(
+        paste0('^', contrast_variable),
+        paste0(contrast_variable, '.'),
+        colnames(design)
+    )
+
+    # Adjust column names to be syntactically valid
+    colnames(design) <- make.names(colnames(design))
+    cat("Final column names after make.names():\n")
+    print(colnames(design))
 }
-
-# Add the contrast variable at the end
-model_vars <- c(model_vars, contrast_variable)
-
-# Construct the model formula
-model <- paste('~ 0 +', paste(model_vars, collapse = '+'))
-
-# Make sure all the appropriate variables are factors
-vars_to_factor <- model_vars  # All variables in the model need to be factors
-for (v in vars_to_factor) {
-    sample.sheet[[v]] <- as.factor(sample.sheet[[v]])
-}
-
-################################################
-################################################
-## Run Limma processes                        ##
-################################################
-################################################
-
-# Generate the design matrix
-design <- model.matrix(
-    as.formula(model),
-    data=sample.sheet
-)
-
-# Adjust column names for the contrast variable
-colnames(design) <- sub(
-    paste0('^', contrast_variable),
-    paste0(contrast_variable, '.'),
-    colnames(design)
-)
-
-# Adjust column names to be syntactically valid
-colnames(design) <- make.names(colnames(design))
-
 
 # Perform voom normalisation for RNA-seq data
 if (!is.null(opt\$use_voom) && opt\$use_voom) {
@@ -393,34 +416,42 @@ fit <- do.call(lmFit, lmfit_args)
 # Contrasts bit
 
 # Create the contrast string for the specified comparison
+if (!is.null(opt\$contrast_string)) {
+    cat("Using contrast string:", opt\$contrast_string, "\n")
+    contrast_string <- as.character(opt\$contrast_string)
+    contrast.matrix <- makeContrasts(contrasts=contrast_string, levels=colnames(design))
 
-# Construct the expected column names for the target and reference levels in the design matrix
-treatment_target <- paste0(contrast_variable, ".", opt\$target_level)
-treatment_reference <- paste0(contrast_variable, ".", opt\$reference_level)
-
-# Determine how to construct the contrast string based on which levels are present in the design matrix
-if ((treatment_target %in% colnames(design)) && (treatment_reference %in% colnames(design))) {
-    # Both target and reference levels are present in the design matrix
-    # We can directly compare the two levels
-    contrast_string <- paste0(treatment_target, "-", treatment_reference)
-} else if (treatment_target %in% colnames(design)) {
-    # Only the target level is present in the design matrix
-    # The reference level may have been omitted due to collinearity or being set as the baseline
-    # We compare the target level to zero (implicit reference)
-    contrast_string <- paste0(treatment_target, "- 0")
-} else if (treatment_reference %in% colnames(design)) {
-    # Only the reference level is present in the design matrix
-    # The target level may have been omitted from the design matrix
-    # We compare zero (implicit target) to the reference level
-    contrast_string <- paste0("0 - ", treatment_reference)
 } else {
-    # Neither level is present in the design matrix
-    # This indicates an error; the specified levels are not found
-    stop(paste0(treatment_target, " and ", treatment_reference, " not found in design matrix"))
+
+    # Construct the expected column names for the target and reference levels in the design matrix
+    treatment_target <- paste0(contrast_variable, ".", opt\$target_level)
+    treatment_reference <- paste0(contrast_variable, ".", opt\$reference_level)
+
+    # Determine how to construct the contrast string based on which levels are present in the design matrix
+    if ((treatment_target %in% colnames(design)) && (treatment_reference %in% colnames(design))) {
+        # Both target and reference levels are present in the design matrix
+        # We can directly compare the two levels
+        contrast_string <- paste0(treatment_target, "-", treatment_reference)
+    } else if (treatment_target %in% colnames(design)) {
+        # Only the target level is present in the design matrix
+        # The reference level may have been omitted due to collinearity or being set as the baseline
+        # We compare the target level to zero (implicit reference)
+        contrast_string <- paste0(treatment_target, "- 0")
+    } else if (treatment_reference %in% colnames(design)) {
+        # Only the reference level is present in the design matrix
+        # The target level may have been omitted from the design matrix
+        # We compare zero (implicit target) to the reference level
+        contrast_string <- paste0("0 - ", treatment_reference)
+    } else {
+        # Neither level is present in the design matrix
+        # This indicates an error; the specified levels are not found
+        stop(paste0(treatment_target, " and ", treatment_reference, " not found in design matrix"))
+    }
+    contrast.matrix <- makeContrasts(contrasts=contrast_string, levels=design)
+
 }
 
 # Create the contrast matrix
-contrast.matrix <- makeContrasts(contrasts=contrast_string, levels=design)
 fit2 <- contrasts.fit(fit, contrast.matrix)
 
 # Prepare for and run eBayes
