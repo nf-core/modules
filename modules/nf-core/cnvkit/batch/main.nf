@@ -104,4 +104,25 @@ process CNVKIT_BATCH {
         ${versions}
     END_VERSIONS
     """
+
+    stub:
+    def tumor_exists = tumor ? true : false
+    def normal_exists = normal ? true : false
+
+    // execute samtools only when cram files are input, cnvkit runs natively on bam but is prohibitively slow
+    def tumor_cram = tumor_exists && tumor.Extension == "cram" ? true : false
+    def normal_cram = normal_exists && normal.Extension == "cram" ? true : false
+
+    def versions = normal_cram || tumor_cram
+        ? "samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')\n        cnvkit: \$(cnvkit.py version | sed -e 's/cnvkit v//g')"
+        : "cnvkit: \$(cnvkit.py version | sed -e 's/cnvkit v//g')"
+    """
+    touch ${targets.simpleName}.antitarget.bed
+    touch ${targets.simpleName}.target.bed
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ${versions}
+    END_VERSIONS
+    """
 }
