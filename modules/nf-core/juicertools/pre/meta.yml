@@ -1,0 +1,75 @@
+name: "juicertools_pre"
+description: Create a multi-resolution .hic contact matrix for analysis with Juicer
+keywords:
+  - hic
+  - contact map
+  - genomics
+tools:
+  - "juicertools":
+      description: "Visualization and analysis software for Hi-C data"
+      homepage: "https://github.com/aidenlab/juicer"
+      documentation: "https://github.com/aidenlab/juicer"
+      tool_dev_url: "https://github.com/aidenlab/juicer"
+      doi: "10.1016/j.cels.2016.07.002"
+      licence: ["MIT"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - pairs:
+        type: file
+        description: |
+          Optionally gzipped TSV file, in one of a number of formats,
+          including pairs format. See https://github.com/aidenlab/juicer/wiki/Pre#file-format
+          for details.
+        pattern: "*.{pairs,tsv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - genome_id:
+        type: string
+        description: |
+          String of a supported genome ID, see https://github.com/aidenlab/juicer/wiki/Pre#usage
+          for details. Incompatible with chromsizes option.
+    - chromsizes:
+        type: file
+        description: |
+          Headerless TSV file describing chromosome sizes with format:
+          chrom_name\tlength
+
+          Incompatible with genome_id option.
+        pattern: "*.{tsv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+
+output:
+  hic:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.hic":
+          type: file
+          description: .hic file for analysis and visualisation in Juicer
+          pattern: "*.{hic}"
+          ontologies: []
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+authors:
+  - "@prototaxites"
+maintainers:
+  - "@prototaxites"
