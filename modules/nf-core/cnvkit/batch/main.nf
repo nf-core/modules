@@ -4,8 +4,8 @@ process CNVKIT_BATCH {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/mulled-v2-780d630a9bb6a0ff2e7b6f730906fd703e40e98f:c94363856059151a2974dc501fb07a0360cc60a3-0'
-        : 'biocontainers/mulled-v2-780d630a9bb6a0ff2e7b6f730906fd703e40e98f:c94363856059151a2974dc501fb07a0360cc60a3-0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3e/3e8542cdb0190cfe2cedd74f714f021a2ffa94be3ec2a5b95ff52610cb3e2c34/data'
+        : 'community.wave.seqera.io/library/cnvkit_htslib_samtools:86928c121163aca7'}"
 
     input:
     tuple val(meta), path(tumor), path(normal)
@@ -22,7 +22,7 @@ process CNVKIT_BATCH {
     tuple val(meta), path("*.cns"), emit: cns, optional: true
     tuple val(meta), path("*.pdf"), emit: pdf, optional: true
     tuple val(meta), path("*.png"), emit: png, optional: true
-    path "versions.yml", emit: versions
+    path "versions.yml",            emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -98,6 +98,27 @@ process CNVKIT_BATCH {
         ${target_args} \\
         --processes ${task.cpus} \\
         ${args}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ${versions}
+    END_VERSIONS
+    """
+
+    stub:
+    def tumor_exists = tumor ? true : false
+    def normal_exists = normal ? true : false
+
+    // execute samtools only when cram files are input, cnvkit runs natively on bam but is prohibitively slow
+    def tumor_cram = tumor_exists && tumor.Extension == "cram" ? true : false
+    def normal_cram = normal_exists && normal.Extension == "cram" ? true : false
+
+    def versions = normal_cram || tumor_cram
+        ? "samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')\n        cnvkit: \$(cnvkit.py version | sed -e 's/cnvkit v//g')"
+        : "cnvkit: \$(cnvkit.py version | sed -e 's/cnvkit v//g')"
+    """
+    touch ${targets.simpleName}.antitarget.bed
+    touch ${targets.simpleName}.target.bed
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
