@@ -50,14 +50,23 @@ methods = [m.strip() for m in parsed_args.methods.split(",") if m.strip()]
 
 if parsed_args.ensembl_ids.upper() == "TRUE":
     try:
+        if not os.path.exists("${annot}"):
+            raise FileNotFoundError(f"Annotation file not found: ${annot}")
+
         annot_df = pd.read_csv("${annot}", sep="\t")
+
+        required_cols = {"gene_id", "gene_name"}
+        missing = required_cols - set(annot_df.columns)
+        if missing:
+            raise ValueError(f"Missing required columns in annotation file: {missing}. Available columns: {list(annot_df.columns)}")
+
         gene_mapping = dict(zip(annot_df["gene_id"], annot_df["gene_name"]))
         new_index = [gene_mapping.get(ens, None) for ens in mat.index]
         mat.index = new_index
         mat = mat[mat.index.notnull()]
         mat = mat[~mat.index.duplicated(keep='first')]
     except Exception as e:
-        print("Expected format: tsv file with at least two columns with gene_id and gene_name headers. ERROR: Failed to read annotation file:", e)
+        print(f"ERROR: Failed to process annotation file: {e}")
         sys.exit(1)
 
 if parsed_args.transpose.upper() == "TRUE":
