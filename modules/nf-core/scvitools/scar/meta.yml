@@ -29,12 +29,26 @@ input:
         type: file
         description: AnnData file containing filtered data (without empty droplets)
         pattern: "*.h5ad"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3590" # HDF5 format
     - unfiltered:
         type: file
         description: AnnData file containing unfiltered data (with empty droplets)
         pattern: "*.h5ad"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3590" # HDF5 format
+  - input_layer:
+      type: string
+      description: Layer to use as input. Defaults to `X`.
+  - output_layer:
+      type: string
+      description: Layer to save the denoised counts to. Defaults to `scar`.
+  - max_epochs:
+      type: integer
+      description: Maximum number of epochs to train the model. Defaults to the [heuristic default](https://docs.scvi-tools.org/en/stable/api/reference/scvi.model.get_max_epochs_heuristic.html#scvi.model.get_max_epochs_heuristic).
+  - n_batch:
+      type: integer
+      description: Number of batches to use for generating the ambient profile. Defaults to 1. This can be increased to prevent out-of-memory errors.
 output:
   h5ad:
     - - meta:
@@ -46,7 +60,8 @@ output:
           type: file
           description: AnnData file containing decontaminated counts as `adata.X`
           pattern: "*.h5ad"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3590" # HDF5 format
   versions:
     - versions.yml:
         type: file
