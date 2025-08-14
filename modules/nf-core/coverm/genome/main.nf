@@ -25,7 +25,12 @@ process COVERM_GENOME {
     def prefix        = task.ext.prefix ?: "${meta.id}"
     def fastq_input   = meta.single_end ? "--single" : interleaved ? "--interleaved" : "--coupled"
     def input_type    = bam_input ? "--bam-files" : "${fastq_input}"
-    def reference_str = reference.isDirectory() ? "--genome-fasta-directory ${reference}" : "--genome-fasta-files ${reference}"
+    def reference_mode = task.ext.reference_mode ?: 'auto'   // 'auto' | 'dir' | 'file'
+    def reference_str  = (
+        reference_mode == 'dir'  || (reference_mode == 'auto' && reference.isDirectory())
+        ) ? "--genome-fasta-directory ${reference}"
+        :   "--genome-fasta-files ${reference}"
+
     """
     TMPDIR=.
 
