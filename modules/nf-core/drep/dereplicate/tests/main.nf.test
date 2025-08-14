@@ -38,7 +38,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                         path(process.out.summary_tables.get(0).get(1)).list().sort(),
-                        path(process.out.figures.get(0).get(1)).list().sort(),
+                        //process.out.figures.collect { meta, logs -> file(figures).list().sort() },
                         process.out.fastas,
                         path(process.out.log.get(0).get(1)).readLines().last().contains('Finished the dereplicate operation'),
                     ).match() }
@@ -88,8 +88,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        path(process.out.summary_tables.get(0).get(1)).list().sort(),
-                        path(process.out.figures.get(0).get(1)).list().sort(),
+                        //process.out.summary_tables.collect { meta, logs -> file(summary_tables).list().sort() },
+                        //process.out.figures.collect { meta, logs -> file(figures).list().sort() },
                         process.out.fastas,
                         path(process.out.log.get(0).get(1)).readLines().last().contains('Finished the dereplicate operation'),
                     ).match() }

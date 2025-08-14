@@ -14,7 +14,7 @@ process DREP_DEREPLICATE {
     output:
     tuple val(meta), path("dereplicated_genomes/*"), emit: fastas
     tuple val(meta), path("data_tables/*"), emit: summary_tables
-    tuple val(meta), path("figures"), emit: figures
+    tuple val(meta), path("figures/*pdf"), emit: figures
     tuple val(meta), path("logger.log"), emit: log
     path "versions.yml", emit: versions
 
