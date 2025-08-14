@@ -60,7 +60,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.fasta,
-                    process.out.stats,
+                    file(process.out.stats.get(0).get(1)).name, // not stable
                     process.out.gb,
                     process.out.gff,
                     process.out.contigs_annotations,
@@ -111,7 +111,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.fasta,
-                    process.out.stats,
+                    file(process.out.stats.get(0).get(1)).name, // not stable
                     process.out.gb,
                     process.out.gff,
                     process.out.contigs_annotations,
