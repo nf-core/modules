@@ -33,7 +33,7 @@ process FASTPLONG {
     def report_title = task.ext.report_title ?: "${prefix}_fastplong_report"
     """
     fastplong \\
-        --in ${prefix}.fastq.gz \\
+        --in ${reads} \\
         $output_file \\
         --json ${prefix}.fastplong.json \\
         --html ${prefix}.fastplong.html \\
