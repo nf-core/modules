@@ -1,0 +1,132 @@
+nextflow_process {
+
+    name "Test Process DREP_DEREPLICATE"
+    script "../main.nf"
+    process "DREP_DEREPLICATE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "drep"
+    tag "drep/compare"
+    tag "drep/dereplicate"
+    config "./nextflow.config"
+
+    test("sarscov2 - fasta") {
+
+        when {
+            params {
+                module_args = '--ignoreGenomeQuality -l 1000'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/escherichia_coli/genome/genome.fa", checkIfExists: true),
+                    ]
+                ]
+                input[1] = [[:],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out.summary_tables[0][1].collect { path(it).csv.rowCount },
+                        process.out.figures[0][1].collect { file(it).name }.sort(),
+                        process.out.fastas,
+                        path(process.out.log[0][1]).readLines().last().contains('Finished the dereplicate operation'),
+                        process.out.versions
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - premade workdir") {
+
+    setup {
+            run("DREP_COMPARE") {
+                script "../../../drep/compare/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:false ], // meta map
+                        [
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/escherichia_coli/genome/genome.fa", checkIfExists: true),
+                        ]
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = '--ignoreGenomeQuality -l 1000'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/escherichia_coli/genome/genome.fa", checkIfExists: true),
+                    ]
+                ]
+                input[1] = DREP_COMPARE.out.directory
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out.summary_tables[0][1].collect { path(it).csv.rowCount },
+                        process.out.figures[0][1].collect { file(it).name }.sort(),
+                        process.out.fastas,
+                        path(process.out.log[0][1]).readLines().last().contains('Finished the dereplicate operation'),
+                        process.out.versions
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--ignoreGenomeQuality -l 1000'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/escherichia_coli/genome/genome.fa", checkIfExists: true),
+                    ]
+                ]
+                input[1] = [[:],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
