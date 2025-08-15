@@ -27,16 +27,20 @@ input:
           Either one or multiple BAM/CRAM files in an array containing low-coverage sequencing reads or one VCF/BCF file containing the genotype likelihoods.
           When using BAM/CRAM the name of the file is used as samples name.
         pattern: "*.{bam,cram,vcf,vcf.gz,bcf,bcf.gz}"
+        ontologies: []
     - input_index:
         type: file
         description: Index file of the input BAM/CRAM/VCF/BCF file.
         pattern: "*.{bam.bai,cram.crai,vcf.gz.csi,bcf.gz.csi}"
+        ontologies: []
     - bamlist:
         type: file
         description: |
           File containing the list of BAM/CRAM files to be phased.
           One file per line and a second column can be added to indicate the sample name.
         pattern: "*.{txt,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
     - samples_file:
         type: file
         description: |
@@ -45,6 +49,8 @@ input:
           Sample names that are not present are assumed to have ploidy 2 (diploids).
           GLIMPSE does NOT handle the use of sex (M/F) instead of ploidy.
         pattern: "*.{txt,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
     - input_region:
         type: string
         description: |
@@ -61,16 +67,19 @@ input:
         type: file
         description: Reference panel of haplotypes in VCF/BCF format.
         pattern: "*.{vcf.gz,bcf.gz}"
+        ontologies: []
     - reference_index:
         type: file
         description: Index file of the Reference panel file.
         pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
+        ontologies: []
     - map:
         type: file
         description: |
           File containing the genetic map.
           Optional if reference panel is in bin format.
         pattern: "*.gmap"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -82,15 +91,17 @@ input:
           Faidx-indexed reference sequence file in the appropriate genome build.
           Necessary for CRAM files.
         pattern: "*.fasta"
+        ontologies: []
     - fasta_reference_index:
         type: file
         description: |
           Faidx index of the reference sequence file in the appropriate genome build.
           Necessary for CRAM files.
         pattern: "*.fai"
+        ontologies: []
 output:
-  - phased_variants:
-      - meta:
+  phased_variants:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -100,22 +111,27 @@ output:
           description: |
             Output VCF/BCF file containing genotype probabilities (GP field), imputed dosages (DS field), best guess genotypes (GT field), sampled haplotypes in the last (max 16) main iterations (HS field) and info-score.
           pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-  - stats_coverage:
-      - meta:
+          ontologies: []
+  stats_coverage:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
       - "*.txt.gz":
           type: file
-          description: Optional coverage statistic file created when BAM/CRAM files are
-            used as inputs.
+          description: Optional coverage statistic file created when BAM/CRAM files
+            are used as inputs.
           pattern: "*.txt.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@LouisLeNezet"
 maintainers:

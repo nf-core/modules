@@ -23,9 +23,10 @@ input:
         type: file
         description: FASTA file
         pattern: "*.{fa,fasta,fna}"
+        ontologies: []
 output:
-  - freq:
-      - meta:
+  freq:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -34,8 +35,10 @@ output:
           type: file
           description: TSV file with frequencies and statistics
           pattern: "*.{tsv}"
-  - mononuc:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  mononuc:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,8 +47,10 @@ output:
           type: file
           description: TSV file with mononucleotide counts
           pattern: "*.{tsv}"
-  - dinuc:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  dinuc:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,8 +59,10 @@ output:
           type: file
           description: TSV file with dinucleotide counts
           pattern: "*.{tsv}"
-  - trinuc:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  trinuc:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,8 +71,10 @@ output:
           type: file
           description: TSV file with trinucleotide counts
           pattern: "*.{tsv}"
-  - tetranuc:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  tetranuc:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -74,11 +83,15 @@ output:
           type: file
           description: TSV file with tetranucleotide counts
           pattern: "*.{tsv}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@muffato"
 maintainers:

@@ -23,6 +23,7 @@ input:
         type: file
         description: BAM file
         pattern: "*.bam"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -32,6 +33,7 @@ input:
         type: file
         description: BAM index file
         pattern: "*.bai"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -41,6 +43,7 @@ input:
         type: file
         description: Table from calculating BQSR. Output from parabricks/fq2bam or gatk4/baserecalibrator.
         pattern: "*.table"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -49,6 +52,7 @@ input:
     - intervals:
         type: file
         description: intervals
+        ontologies: []
   - - meta5:
         type: map
         description: |
@@ -58,9 +62,10 @@ input:
         type: file
         description: Reference fasta - must be unzipped.
         pattern: "*.fasta"
+        ontologies: []
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
@@ -69,8 +74,9 @@ output:
           type: file
           description: BAM file after applying BQSR.
           pattern: "*.bam"
-  - bai:
-      - meta:
+          ontologies: []
+  bai:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
@@ -79,11 +85,14 @@ output:
           type: file
           description: bai index corresponding to output bam file.
           pattern: "*.bai"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions.
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions.
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@bsiranosian"
 maintainers:

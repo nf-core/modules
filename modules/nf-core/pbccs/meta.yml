@@ -24,19 +24,21 @@ input:
         type: file
         description: Raw subreads bam
         pattern: "*.subreads.bam"
+        ontologies: []
     - pbi:
         type: file
         description: Pacbio BAM Index
         pattern: "*.pbi"
-  - - chunk_num:
-        type: integer
-        description: BAM part to process
-  - - chunk_on:
-        type: integer
-        description: Total number of bam parts to process
+        ontologies: []
+  - chunk_num:
+      type: integer
+      description: BAM part to process
+  - chunk_on:
+      type: integer
+      description: Total number of bam parts to process
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,8 +47,9 @@ output:
           type: file
           description: CCS sequences in bam format
           pattern: "*.bam"
-  - pbi:
-      - meta:
+          ontologies: []
+  pbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,28 +58,23 @@ output:
           type: file
           description: PacBio Index of CCS sequences
           pattern: "*.pbi"
-  - report_txt:
-      - meta:
+          ontologies: []
+  report_txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - '*.report.txt" ':
-          type: file
-          description: Summary of CCS in txt format
-          pattern: ".txt"
-  - report_json:
-      - meta:
+      - "*.report.txt": {}
+  report_json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - '*.report.json" ':
-          type: file
-          description: Summary of CCS in txt json
-          pattern: ".json"
-  - metrics:
-      - meta:
+      - "*.report.json": {}
+  metrics:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -85,11 +83,15 @@ output:
           type: file
           description: Metrics about zmws
           pattern: "*.json.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sguizard"
 maintainers:

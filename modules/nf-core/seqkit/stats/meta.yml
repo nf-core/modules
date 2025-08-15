@@ -25,9 +25,11 @@ input:
         description: >
           Either FASTA or FASTQ files.
         pattern: "*.{fa,fna,faa,fasta,fq,fastq}[.gz]"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
 output:
-  - stats:
-      - meta:
+  stats:
+    - - meta:
           type: map
           description: >
             Groovy Map containing sample information e.g. [ id:'test', single_end:false
@@ -37,11 +39,15 @@ output:
           description: >
             Tab-separated output file with basic sequence statistics.
           pattern: "*.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Midnighter"
   - "@heuermh"

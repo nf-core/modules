@@ -1,0 +1,178 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "vamb_bin"
+description: Variational autoencoder for metagenomic binning
+keywords:
+  - clustering
+  - binning
+  - metagenomics
+  - denovo assembly
+  - mag
+tools:
+  - "vamb":
+      description: "Variational autoencoder for metagenomic binning."
+      homepage: "https://vamb.readthedocs.io/en/latest"
+      documentation: "https://vamb.readthedocs.io/en/latest"
+      tool_dev_url: "https://github.com/RasmussenLab/vamb"
+      doi: "10.1038/s41587-020-00777-4"
+      licence: ["MIT"]
+      identifier: biotools:vamb
+
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[
+          id:'sample1' ]`
+    - assembly:
+        type: file
+        description: FASTA file of contigs for binning
+        pattern: "*.{fa,fas,fasta,fna,fa.gz,fas.gz,fasta.gz,fna.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+    - abundance_tsv:
+        type: file
+        description: |
+          TSV describing abundance of contigs in the provided assembly with headers
+          contigname\tsample1\tsample2...
+          ctg00001\t10.0\t5.0
+
+          Not compatible with bam input.
+        pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+    - bams:
+        type: file
+        description: |
+          List of sorted bam files of reads mapped to the reference assembly. Not compatible with TSV input.
+        pattern: "*.bam"
+        ontologies:
+          - edam: http://edamontology.org/format_2572 # BAM
+    - taxonomy:
+        type: file
+        description: |
+          TSV describing the taxonomic lineage of each contig, with headers
+          contigs\tpredictions
+          ctg00001\tBacteria;Pseudomonadati;Pseudomonadota;Gammaproteobacteria;Enterobacterales;Enterobacteriacea;Escherichia coli
+        pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+
+output:
+  bins:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - ${prefix}/bins/*.fna.gz:
+          type: file
+          description: List of FASTA files of binned contigs
+          pattern: "*.fna.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  clusters_metadata:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - ${prefix}/vae*_clusters_metadata.tsv:
+          type: file
+          description: |
+            TSV describing the metadata of the output bin clusters
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  clusters_split:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - ${prefix}/vae*_clusters_split.tsv:
+          type: file
+          description: |
+            TSV defining the output bin clusters if binsplitting enabled
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  clusters_unsplit:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - ${prefix}/vae*_clusters_unsplit.tsv:
+          type: file
+          description: |
+            TSV defining the output bin clusters without binsplitting
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  taxometer_results:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - ${prefix}/results_taxometer.tsv:
+          type: file
+          description: |
+            TSV describing the refined taxonomic lineage of each contig, with headers
+            contigs\tpredictions\tscores
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  latent_encoding:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - ${prefix}/latent.npz:
+          type: file
+          description: |
+            Numpy array of the latent embedding of the contigs
+          pattern: "*.npz"
+          ontologies:
+            - edam: http://edamontology.org/format_4003 # Numpy
+  abundance:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - ${prefix}/abundance.npz:
+          type: file
+          description: |
+            Numpy array of the abundance of contigs
+          pattern: "*.npz"
+          ontologies:
+            - edam: http://edamontology.org/format_4003 # Numpy
+  composition:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - ${prefix}/composition.npz:
+          type: file
+          description: |
+            Numpy array of the kmer composition of the contigs
+          pattern: "*.npz"
+          ontologies:
+            - edam: http://edamontology.org/format_4003 # Numpy
+  log:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - ${prefix}/log.txt:
+          type: file
+          description: |
+            Vamb log file
+          pattern: "*.log"
+          ontologies:
+            - edam: http://edamontology.org/format_3671 # Text
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: versions.yml
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@prototaxites"
+maintainers:
+  - "@prototaxites"
