@@ -23,9 +23,12 @@ nextflow_process {
                     file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/treatment_mCherry_hND6_.deseq2.results.tsv", checkIfExists: true)
                 ]
                 input[1] = [
+                    ['id':'network'],
                     file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/progeny/mouse_network.tsv", checkIfExists: true)
                 ]
-                input[2] = [file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/Mus_musculus.anno.feature_metadata.tsv", checkIfExists: true)]
+                input[2] = [
+                    ['id':'annot'],
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/Mus_musculus.anno.feature_metadata.tsv", checkIfExists: true)]
                 """
             }
         }
@@ -73,9 +76,12 @@ nextflow_process {
                     file(params.test_data['generic']['tsv']['expression'], checkIfExists: true)
                 ]
                 input[1] = [
+                    ['id':'network'],
                     file(params.test_data['generic']['tsv']['network'], checkIfExists: true)
                 ]
-                input[2] = [file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/Mus_musculus.anno.feature_metadata.tsv", checkIfExists: true)]
+                input[2] = [
+                    ['id':'annot'],
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/Mus_musculus.anno.feature_metadata.tsv", checkIfExists: true)]
                 """
             }
         }
@@ -123,9 +129,12 @@ nextflow_process {
                     file(params.test_data['generic']['tsv']['expression'], checkIfExists: true)
                 ]
                 input[1] = [
+                    ['id':'network'],
                     file(params.test_data['generic']['tsv']['network'], checkIfExists: true)
                 ]
-                input[2] = [file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/Mus_musculus.anno.feature_metadata.tsv", checkIfExists: true)]
+                input[2] = [
+                    ['id':'annot'],
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/Mus_musculus.anno.feature_metadata.tsv", checkIfExists: true)]
                 """
             }
         }
