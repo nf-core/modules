@@ -8,8 +8,8 @@ process DECOUPLER {
 
     input:
     tuple val(meta), path(mat)
-    path(net)
-    path(annot)
+    tuple val(meta2), path(net)
+    tuple val(meta3), path(annot)
 
     output:
     tuple val(meta), path("*estimate_decoupler.tsv"), emit: dc_estimate
