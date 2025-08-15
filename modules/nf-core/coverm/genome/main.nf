@@ -12,6 +12,7 @@ process COVERM_GENOME {
     tuple val(meta2), path(reference)
     val bam_input
     val interleaved
+    val ref_mode   // "dir" | "file" | "auto"
 
     output:
     tuple val(meta), path("*.tsv"), emit: coverage
@@ -21,13 +22,17 @@ process COVERM_GENOME {
     task.ext.when == null || task.ext.when
 
     script:
+    def _ref_mode = ref_mode ?: 'auto'
+    def _allowed = ['dir','file','auto']
+    assert _allowed.contains(_ref_mode) : "Invalid ref_mode='${_ref_mode}'. Allowed: ${_allowed.join(', ')}"
+
     def args          = task.ext.args ?: ""
     def prefix        = task.ext.prefix ?: "${meta.id}"
     def fastq_input   = meta.single_end ? "--single" : interleaved ? "--interleaved" : "--coupled"
     def input_type    = bam_input ? "--bam-files" : "${fastq_input}"
-    def reference_mode = task.ext.reference_mode ?: 'auto'   // 'auto' | 'dir' | 'file'
+
     def reference_str  = (
-        reference_mode == 'dir'  || (reference_mode == 'auto' && reference.isDirectory())
+        _ref_mode == 'dir'  || (_ref_mode == 'auto' && reference.isDirectory())
         ) ? "--genome-fasta-directory ${reference}"
         :   "--genome-fasta-files ${reference}"
 

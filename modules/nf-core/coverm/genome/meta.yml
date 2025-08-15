@@ -54,6 +54,16 @@ input:
       type: boolean
       description: True if input is interleaved fastq file
 
+  - ref_mode:
+      type: string
+      description: |
+        How to interpret the `reference` input:
+          - `"dir"`: Treat as a directory containing one or more FASTA files.
+          - `"file"`: Treat as a single FASTA file.
+          - `"auto"`: Automatically detect based on whether the `reference` path is a directory or file.
+        Defaults to `"auto"` if not provided.
+      pattern: "^(dir|file|auto)$"
+
 output:
   coverage:
     - - meta:
