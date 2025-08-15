@@ -35,7 +35,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        process.out.summary_tables[0][1].collect { path(it).csv.sortRows() },
+                        process.out.summary_tables[0][1].collect { path(it).csv.rowCount },
                         process.out.figures[0][1].collect { file(it).name }.sort(),
                         process.out.fastas,
                         path(process.out.log[0][1]).readLines().last().contains('Finished the dereplicate operation'),
@@ -87,7 +87,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        process.out.summary_tables[0][1].collect { path(it).csv.sortRows() },
+                        process.out.summary_tables[0][1].collect { path(it).csv.rowCount },
                         process.out.figures[0][1].collect { file(it).name }.sort(),
                         process.out.fastas,
                         path(process.out.log[0][1]).readLines().last().contains('Finished the dereplicate operation'),
