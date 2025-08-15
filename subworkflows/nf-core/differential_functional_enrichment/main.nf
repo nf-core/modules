@@ -81,24 +81,6 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
         .combine(ch_contrasts_transposed, by:0)
         .multiMap(criteria)
 
-    // In the case of DECOUPLER, it needs additional files coming from other channels that other methods don't use
-    // here we define the input channel for the DECOUPLER section
-
-    ch_input_for_decoupler = ch_input_for_other.input
-        .filter{ it[0].functional_method == 'decoupler' }
-        .map { meta, differential_results ->
-            // Preserve the method_differential field from the original metadata
-            def new_meta = [
-                id: meta.id,
-                method_differential: meta.params.differential_method
-            ]
-            [new_meta, differential_results]
-        }
-    ch_decoupler_network = ch_input_for_other.input
-        .filter{ it[0].functional_method == 'decoupler' }
-        .map { meta, differential_results ->
-            meta.params.decoupler_network ? file(meta.params.decoupler_network, checkIfExists: true) : []
-        }
 
     // ----------------------------------------------------
     // Perform enrichment analysis with gprofiler2
@@ -139,10 +121,11 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     // ----------------------------------------------------
     // Perform enrichment analysis with DECOUPLER
     // ----------------------------------------------------
+
     DECOUPLER(
-        ch_input_for_decoupler,
-        ch_decoupler_network,
-        ch_featuresheet.map{ meta, features, features_id, features_symbol -> features }
+        ch_input_for_other.input.filter{ it[0].functional_method == 'decoupler' },
+        ch_input_for_other.genesets.filter{ it[0].functional_method == 'decoupler'},
+        ch_featuresheet.map{ meta, features, features_id, features_symbol -> [meta, features] }
     )
 
     // ----------------------------------------------------
