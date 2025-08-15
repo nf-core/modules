@@ -25,13 +25,14 @@ input:
         type: file
         description: Path to COOL file
         pattern: "*.{cool.mcool}"
-  - - resolution:
-        type: integer
-        description: In case a .mcool file is provided, which resolution level to use
-          for the analysis
+        ontologies: []
+  - resolution:
+      type: integer
+      description: In case a .mcool file is provided, which resolution level to use
+        for the analysis
 output:
-  - output_folder:
-      - meta:
+  output_folder:
+    - - meta:
           type: map
           description: Groovy Map containing sample information. E.g. [ id:'test', single_end:false
             ]
@@ -39,8 +40,8 @@ output:
           type: directory
           description: Output folder containing sub-compartment (.tsv/.bed) and domain
             boundaries calls (.bed)
-  - intermediate_data_folder:
-      - meta:
+  intermediate_data_folder:
+    - - meta:
           type: map
           description: Groovy Map containing sample information. E.g. [ id:'test', single_end:false
             ]
@@ -48,11 +49,13 @@ output:
           type: directory
           description: Output folder containing intermediate data produced during the
             computation
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@lucananni93"
 maintainers:

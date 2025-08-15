@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "vizgenpostprocessing_runsegmentationontile"
 description: |
@@ -43,36 +42,39 @@ input:
         type: integer
         description: |
           The index of the tile to run the segmentation algorithm on.
-  - - algorithm_json:
-        type: file
-        description: JSON file containing the algorithm parameters.
-        pattern: "*.json"
-        ontologies:
-          - edam: "http://edamontology.org/format_3464"
-  - - custom_weights:
-        type: directory
-        description: |
-          Directory containing custom weights for the segmentation algorithm.
-          Must be defined in the algorithm JSON file under "custom_weights"
-          as directory name only (not full path).
+  - algorithm_json:
+      type: file
+      description: JSON file containing the algorithm parameters.
+      pattern: "*.json"
+      ontologies:
+        - edam: "http://edamontology.org/format_3464"
+  - custom_weights:
+      type: directory
+      description: |
+        Directory containing custom weights for the segmentation algorithm.
+        Must be defined in the algorithm JSON file under "custom_weights"
+        as directory name only (not full path).
 
 output:
-  - segmented_tile:
-      - meta:
+  segmented_tile:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "${prefix}/result_tiles/*.parquet":
+      - ${prefix}/result_tiles/*.parquet:
           type: file
           description: |
             Parquet file containing the segmentation results for the specified tile.
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mcmero"
 maintainers:
