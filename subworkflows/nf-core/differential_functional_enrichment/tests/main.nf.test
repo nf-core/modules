@@ -478,12 +478,11 @@ nextflow_workflow {
                         'id':'treatment_mCherry_hND6',
                         'method_differential':'deseq2',
                         'params': [
-                            'decoupler_network': 'https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/progeny/mouse_network.tsv',
                             'differential_method': 'deseq2'
                         ]
                     ],
                     file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/treatment_mCherry_hND6_.deseq2.results.tsv", checkIfExists: true),
-                    [],  // genesets (empty for decoupler)
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/progeny/mouse_network.tsv", checkIfExists: true),  // network file as genesets
                     [],  // background (empty for decoupler)
                     'decoupler'  // method
                 ])
