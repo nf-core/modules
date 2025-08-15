@@ -66,7 +66,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - data_tables/*:
+      - data_tables/*.csv:
           type: file
           description: Summary tables containing information about the dereplication
             process including cluster membership of each genome
@@ -79,7 +79,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - figures:
+      - figures/*pdf:
           type: file
           description: Figures visualising the dereplication process, such as clustering
             results and representative genome selection
