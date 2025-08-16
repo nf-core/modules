@@ -68,11 +68,11 @@ process GLIMPSE2_CONCORDANCE {
     def args                 = task.ext.args                      ?: ""
     def rsquare_per_site_cmd = args.contains("--out-r2-per-site") ? "touch ${prefix}_r2_sites.txt.gz" : ""
     """
-    touch ${prefix}.error.cal.txt.gz
-    touch ${prefix}.error.grp.txt.gz
-    touch ${prefix}.error.spl.txt.gz
-    touch ${prefix}.rsquare.grp.txt.gz
-    touch ${prefix}.rsquare.spl.txt.gz
+    echo "" | gzip > ${prefix}.error.cal.txt.gz
+    echo "" | gzip > ${prefix}.error.grp.txt.gz
+    echo "" | gzip > ${prefix}.error.spl.txt.gz
+    echo "" | gzip > ${prefix}.rsquare.grp.txt.gz
+    echo "" | gzip > ${prefix}.rsquare.spl.txt.gz
     ${rsquare_per_site_cmd}
 
     cat <<-END_VERSIONS > versions.yml
