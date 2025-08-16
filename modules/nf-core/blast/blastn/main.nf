@@ -10,6 +10,10 @@ process BLAST_BLASTN {
     input:
     tuple val(meta) , path(fasta)
     tuple val(meta2), path(db)
+    path(taxidlist)
+    path(negative_taxidlist)
+    val(taxids)
+    val(negative_taxids)
 
     output:
     tuple val(meta), path('*.txt'), emit: txt
@@ -23,6 +27,10 @@ process BLAST_BLASTN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def is_compressed = fasta.getExtension() == "gz" ? true : false
     def fasta_name = is_compressed ? fasta.getBaseName() : fasta
+    def taxidlist_cmd = taxidlist ? "-taxidlist ${taxidlist}" : ""
+    def negative_taxidlist_cmd = negative_taxidlist ? "-negative_taxidlist ${negative_taxidlist}" : ""
+    def taxids_cmd = taxids ? "-taxids ${taxids}" : ""
+    def negative_taxids_cmd = negative_taxids ? "-negative_taxids ${negative_taxids}" : ""
 
     """
     if [ "${is_compressed}" == "true" ]; then
@@ -39,6 +47,10 @@ process BLAST_BLASTN {
         -num_threads ${task.cpus} \\
         -db \$DB \\
         -query ${fasta_name} \\
+        ${taxidlist_cmd} \\
+        ${negative_taxidlist_cmd} \\
+        ${taxids_cmd} \\
+        ${negative_taxids_cmd} \\
         ${args} \\
         -out ${prefix}.txt
 
