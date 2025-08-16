@@ -1,6 +1,7 @@
 process SMOOVE_CALL {
     tag "$meta.id"
     label 'process_high'
+    ext prefix: "${meta.id}", args: '', when: true
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -16,12 +17,11 @@ process SMOOVE_CALL {
     tuple val(meta), path("*.vcf.gz"), emit: vcf
     path "versions.yml"              , emit: versions
 
-    when:
-    task.ext.when == null || task.ext.when
+    when: task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args
+    def prefix = task.ext.prefix
 
     def exclude = exclude_beds ? "--exclude ${exclude_beds}" : ""
     """
@@ -41,7 +41,7 @@ process SMOOVE_CALL {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix
     """
     echo "" | gzip > ${prefix}.vcf.gz
 
