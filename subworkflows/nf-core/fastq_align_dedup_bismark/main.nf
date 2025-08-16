@@ -61,7 +61,8 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
      */
     SAMTOOLS_SORT (
         ch_alignments,
-        [[:],[]] // [ [meta], [fasta]]
+        [[:],[]], // [ [meta], [fasta]]
+        ''
     )
     ch_versions = ch_versions.mix(SAMTOOLS_SORT.out.versions)
 

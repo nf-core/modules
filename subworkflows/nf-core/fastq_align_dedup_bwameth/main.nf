@@ -65,7 +65,8 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
      */
     SAMTOOLS_SORT (
         ch_alignment,
-        [[:],[]] // [ [meta], [fasta]]
+        [[:],[]], // [ [meta], [fasta]]
+        ''
     )
     ch_alignment = SAMTOOLS_SORT.out.bam
     ch_versions  = ch_versions.mix(SAMTOOLS_SORT.out.versions)

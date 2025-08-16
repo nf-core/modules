@@ -34,6 +34,7 @@ nextflow_process {
                         [ id:'fasta' ],
                         file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
                     ]
+                    input[2] = ''
                     """
                 }
             }
