@@ -18,13 +18,13 @@ process AGAT_SQSTATBASIC {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     agat_sq_stat_basic.pl \\
-        -i $gff \\
+        -i ${gff} \\
         --output ${prefix}.stats.txt \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

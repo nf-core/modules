@@ -41,4 +41,14 @@ process DUPHOLD {
         duphold: \$(duphold -h | head -n 1 | sed -e "s/^version: //")
     END_VERSIONS
     """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.vcf.gz
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        duphold: \$(duphold -h | head -n 1 | sed -e "s/^version: //")
+    END_VERSIONS
+    """
 }

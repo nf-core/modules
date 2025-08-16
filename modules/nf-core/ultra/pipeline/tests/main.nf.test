@@ -1,0 +1,63 @@
+nextflow_process {
+
+    name "Test Process ULTRA_PIPELINE"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "ULTRA_PIPELINE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ultra"
+    tag "ultra/pipeline"
+    tag "gunzip"
+    tag "gnu"
+    tag "gnu/sort"
+
+    test("test_ultra_pipeline") {
+
+        setup {
+            run("GUNZIP") {
+                script "../../../gunzip/main.nf"
+
+                process {
+                    """
+                    input[0] = [
+                        [id:'test',single_end:false],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz',checkIfExists:true)
+                        ]
+                    """
+                }
+            }
+
+            run("GNU_SORT") {
+                script "../../../gnu/sort/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id:'test',single_end:false],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf',checkIfExists:true)
+                        ]
+                    """
+                }
+            }
+        }
+        when {
+            params {
+                gnu_sort_args = '-k1,1 -k4,4n'
+            }
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',checkIfExists:true)
+                input[2] = GNU_SORT.out.sorted.map{it[1]}
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

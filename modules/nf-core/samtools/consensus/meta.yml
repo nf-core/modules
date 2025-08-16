@@ -30,9 +30,10 @@ input:
         type: file
         description: Sorted BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
 output:
-  - fasta:
-      - meta:
+  fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -41,8 +42,9 @@ output:
           type: file
           description: Consensus FASTA file
           pattern: "*.{fasta}"
-  - fastq:
-      - meta:
+          ontologies: []
+  fastq:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -51,8 +53,10 @@ output:
           type: file
           description: Consensus FASTQ file
           pattern: "*.{fastq}"
-  - pileup:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+  pileup:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -61,11 +65,14 @@ output:
           type: file
           description: Consensus PILEUP file
           pattern: "*.{pileup}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@LilyAnderssonLee"
 maintainers:

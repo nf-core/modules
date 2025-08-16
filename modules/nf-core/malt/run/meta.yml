@@ -29,43 +29,53 @@ input:
         type: file
         description: Input FASTQ files
         pattern: "*.{fastq.gz,fq.gz}"
-  - - index:
-        type: directory
-        description: Index/database directory from malt-build
-        pattern: "*/"
+        ontologies: []
+  - index:
+      type: directory
+      description: Index/database directory from malt-build
+      pattern: "*/"
 output:
-  - rma6:
-      - meta:
+  rma6:
+    - - meta:
           type: file
           description: MEGAN6 RMA6 file
           pattern: "*.rma6"
+          ontologies: []
       - "*.rma6":
           type: file
           description: MEGAN6 RMA6 file
           pattern: "*.rma6"
-  - alignments:
-      - meta:
+          ontologies: []
+  alignments:
+    - - meta:
           type: file
-          description: Alignment files in Tab, Text or MEGAN-compatible SAM format
-          pattern: "*.{tab,txt,sam}"
+          description: MEGAN6 RMA6 file
+          pattern: "*.rma6"
+          ontologies: []
       - "*.{tab,text,sam,tab.gz,text.gz,sam.gz}":
           type: file
           description: Alignment files in Tab, Text or MEGAN-compatible SAM format
           pattern: "*.{tab,txt,sam}"
-  - log:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  log:
+    - - meta:
           type: file
-          description: Log of verbose MALT stdout
-          pattern: "*-malt-run.log"
+          description: MEGAN6 RMA6 file
+          pattern: "*.rma6"
+          ontologies: []
       - "*.log":
           type: file
           description: Log of verbose MALT stdout
           pattern: "*-malt-run.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

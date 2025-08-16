@@ -24,27 +24,41 @@ process ATAQV_ATAQV {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def mito = mito_name ? "--mitochondrial-reference-name ${mito_name}" : ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def peak        = peak_file        ? "--peak-file $peak_file"                       : ''
-    def tss         = tss_file         ? "--tss-file $tss_file"                         : ''
-    def excl_regs   = excl_regs_file   ? "--excluded-region-file $excl_regs_file"       : ''
-    def autosom_ref = autosom_ref_file ? "--autosomal-reference-file $autosom_ref_file" : ''
+    def mito   = mito_name ? "--mitochondrial-reference-name ${mito_name}" : ''
+
+    def peak        = peak_file        ? "--peak-file ${peak_file}"                       : ''
+    def tss         = tss_file         ? "--tss-file ${tss_file}"                         : ''
+    def excl_regs   = excl_regs_file   ? "--excluded-region-file ${excl_regs_file}"       : ''
+    def autosom_ref = autosom_ref_file ? "--autosomal-reference-file ${autosom_ref_file}" : ''
     """
     ataqv \\
-        $args \\
-        $mito \\
-        $peak \\
-        $tss \\
-        $excl_regs \\
-        $autosom_ref \\
+        ${args} \\
+        ${mito} \\
+        ${peak} \\
+        ${tss} \\
+        ${excl_regs} \\
+        ${autosom_ref} \\
         --metrics-file "${prefix}.ataqv.json" \\
-        --threads $task.cpus \\
-        --name $prefix \\
-        $organism \\
-        $bam
+        --threads ${task.cpus} \\
+        --name ${prefix} \\
+        ${organism} \\
+        ${bam}
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ataqv: \$( ataqv --version )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix        = task.ext.prefix ?: "${meta.id}"
+    def args          = task.ext.args   ?: ''
+    def problems_cmd  = args.contains("--log-problematic-reads") ? "touch 1.problems" : ""
+    """
+    touch ${prefix}.ataqv.json
+    ${problems_cmd}
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         ataqv: \$( ataqv --version )

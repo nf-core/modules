@@ -33,6 +33,7 @@ process UCSC_BEDTOBIGBED {
         $args \\
         ${prefix}.bigBed
 
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         ucsc: $VERSION
