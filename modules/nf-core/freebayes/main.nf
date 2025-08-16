@@ -17,19 +17,19 @@ process FREEBAYES {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml"              , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args   ?: ''
-    def prefix  = task.ext.prefix ?: "${meta.id}"
-    def input            = input_2     ? "${input_1} ${input_2}"        : "${input_1}"
-    def targets_file     = target_bed  ? "--target ${target_bed}"       : ""
-    def samples_file     = samples     ? "--samples ${samples}"         : ""
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def input = input_2 ? "${input_1} ${input_2}" : "${input_1}"
+    def targets_file = target_bed ? "--target ${target_bed}" : ""
+    def samples_file = samples ? "--samples ${samples}" : ""
     def populations_file = populations ? "--populations ${populations}" : ""
-    def cnv_file         = cnv         ? "--cnv-map ${cnv}"             : ""
+    def cnv_file = cnv ? "--cnv-map ${cnv}" : ""
     """
     freebayes \\
         -f ${fasta} \\
