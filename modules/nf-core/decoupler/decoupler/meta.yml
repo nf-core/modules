@@ -41,25 +41,31 @@ input:
         pattern: "*.tsv"
         ontologies:
           - edam: http://edamontology.org/format_3475 # TSV
-  - net:
-      type: file
-      description: |
-        The prior knowledge network linking the features of the
-        expression matrix to a process/component (e.g. gene set,
-        transcription factor, kinase, etc.)
-      pattern: "*.tsv"
-      ontologies:
-        - edam: http://edamontology.org/format_3475 # TSV
-  - annot:
-      type: file
-      description: |
-        Annotation file in TSV format containing gene ID to gene name mappings.
-        Used specifically for mapping Ensembl IDs to gene names.
-        Expected format: two columns with gene_id and gene_name headers.
-      pattern: "*.tsv"
-      required: false
-      ontologies:
-        - edam: http://edamontology.org/format_3475 # TSV
+  - - meta2:
+        type: map
+        description: Groovy map
+    - net:
+        type: file
+        description: |
+          The prior knowledge network linking the features of the
+          expression matrix to a process/component (e.g. gene set,
+          transcription factor, kinase, etc.)
+        pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  - - meta3:
+        type: map
+        description: Groovy map
+    - annot:
+        type: file
+        description: |
+          Annotation file in TSV format containing gene ID to gene name mappings.
+          Used specifically for mapping Ensembl IDs to gene names.
+          Expected format: two columns with gene_id and gene_name headers.
+        pattern: "*.tsv"
+        required: false
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
   dc_estimate:
     - - meta:
