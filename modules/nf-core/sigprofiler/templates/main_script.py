@@ -142,8 +142,7 @@ if __name__ == '__main__':
 
         # Convert Python bools to lowercase strings 'true'/'false'
         make_plots = True if opt["make_decomposition_plots"] else False
-        print(f"make_plots = {make_plots!r}")
-
+        
         sigprofilerextractor_run = (
             f"SigProfilerExtractor sigprofilerextractor "
             f"--reference_genome  {genome} "

@@ -39,40 +39,64 @@ nextflow_process {
 
             // Get the parent directory containing "results"
             def resultsDir = allPaths[0].parentFile
+
+            // Define mapping between context names and output folder naming
+            def contextMap = [
+                "96"    : "SBS96",
+                "DINUC" : "DBS78",
+                "ID"    : "ID83"
+            ]
+
+            // Use the same context types as the workflow input (default: all three)
+            def contextTypes = params.context_type?.split(',') ?: ['96','DINUC','ID']
+            def expectedContexts = contextTypes.collect { contextMap[it] }
+
+
+            // Build expected files dynamically
+            def contextExpectedFiles = expectedContexts.collectEntries { sig ->
+                def type = (sig =~ /[A-Z]+/)[0]   // extract SBS / DBS / ID
+                [
+                    (sig): [
+                        "${sig}/${sig}/Samples.txt",
+                        "${sig}/${sig}/Suggested_Solution/COSMIC_${sig}_Decomposed_Solution/Signatures/COSMIC_${sig}_Signatures.txt",
+                        "output/${type}/${meta.id}.${sig}.all"
+                    ]
+                ]
+            }
             
             assertAll( 
                 { assert process.success },
                 { assert snapshot(
                     process.out.versions,
                     path(process.out.versions[0]).yaml
-                ).match() },
+                ).match("versions") },
                 {
-                    def contextExpectedFiles = [
-                        "SBS96": ["SBS96/Samples.txt", "SBS96/Suggested_Solution/COSMIC_SBS96_Decomposed_Solution/Signatures/COSMIC_SBS96_Signatures.txt"],
-                        "DBS78": ["DBS78/Samples.txt", "DBS78/Suggested_Solution/COSMIC_DBS78_Decomposed_Solution/Signatures/COSMIC_DBS78_Signatures.txt"],
-                        "ID83": ["ID83/Samples.txt", "ID83/Suggested_Solution/COSMIC_ID83_Decomposed_Solution/Signatures/COSMIC_ID83_Signatures.txt"]
-                    ]
+                    def inputFile = new File(resultsDir, "input/input_data.txt")
+                    assert inputFile.exists()
 
-                    // Detect which contexts were actually produced
-                    def availableContexts = resultsDir.listFiles()
-                                                      .findAll { it.isDirectory() }
-                                                      .collect { it.name }
-
-                    contextExpectedFiles.findAll { context, _ -> context in availableContexts }
+                    // Collect existing + missing files per context
+                    def filesStatus = [:]
+                    contextExpectedFiles.findAll { context, _ -> context in expectedContexts } 
                                         .each { context, files ->
-                        def missing = []
-                        files.each { relativePath ->
-                            def f = new File(resultsDir, "${context}/${relativePath}")
-                            if (!f.exists()) {
-                                missing << relativePath
-                            }
-                        } 
-                        if (missing) { 
-                            println "[WARN] Missing expected files for ${context}: ${missing.join(', ')}"  
+                        def status = files.collectEntries { relativePath ->
+                            def f = new File(resultsDir, relativePath)
+                            [ (relativePath): (f.exists() ? "present" : "missing") ]
+                        }
+                        filesStatus[context] = status
+                    } 
+                    
+                    filesStatus.each { context, status ->
+                        def missing = status.findAll { it.value == "missing" }.keySet()
+                        if (missing) {
+                            println "[WARN] Missing expected files for ${context}: ${missing.join(', ')}"
                         } else {
                             println "[OK] All expected files exist for ${context}"
                         }
-                    }
+                        
+                    } 
+      
+                    // Snapshot the full status map
+                    assert snapshot(filesStatus).match("outputs")  
                 }
             )
         }  
@@ -99,8 +123,10 @@ nextflow_process {
             }
         }
         then {
-             assert !process.success
-             
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("Invalid value for 'make_decomposition_plots'") }
+            ) 
         }
     } 
 
@@ -124,7 +150,10 @@ nextflow_process {
             }
         }
         then {
-             assert !process.success
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("download_genome_sigprofiler is False but no genome_installed_path was provided.") }
+            )
         }
     }
           
@@ -150,7 +179,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { 
+                    assert snapshot([
+                        results: process.out.results_sigprofiler,
+                        versions: process.out.versions
+                    ]).match()
+                }                
                  
             ) 
             

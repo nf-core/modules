@@ -1,5 +1,31 @@
 {
-    "test_sigprofiler_single_sample": {
+    "outputs": {
+        "content": [
+            {
+                "SBS96": {
+                    "SBS96/SBS96/Samples.txt": "missing",
+                    "SBS96/SBS96/Suggested_Solution/COSMIC_SBS96_Decomposed_Solution/Signatures/COSMIC_SBS96_Signatures.txt": "missing",
+                    "output/SBS/test.SBS96.all": "present"
+                },
+                "DBS78": {
+                    "DBS78/DBS78/Samples.txt": "present",
+                    "DBS78/DBS78/Suggested_Solution/COSMIC_DBS78_Decomposed_Solution/Signatures/COSMIC_DBS78_Signatures.txt": "present",
+                    "output/DBS/test.DBS78.all": "present"
+                },
+                "ID83": {
+                    "ID83/ID83/Samples.txt": "present",
+                    "ID83/ID83/Suggested_Solution/COSMIC_ID83_Decomposed_Solution/Signatures/COSMIC_ID83_Signatures.txt": "present",
+                    "output/ID/test.ID83.all": "present"
+                }
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.3"
+        },
+        "timestamp": "2025-08-18T22:25:05.413683317"
+    },
+    "versions": {
         "content": [
             [
                 "versions.yml:md5,e7653221d03888a0c587b06770c868fb"
@@ -16,12 +42,12 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.3"
         },
-        "timestamp": "2025-08-05T15:22:28.279111012"
+        "timestamp": "2025-08-18T22:25:05.348584324"
     },
     "test_sigprofiler - single_sample - stub": {
         "content": [
             {
-                "0": [
+                "results": [
                     [
                         {
                             "id": "test"
@@ -62,53 +88,19 @@
                                         ]
                                     ]
                                 ]
-                            ]
-                        ]
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,3df1693cd83758b57abcef3e32d83695"
-                ],
-                "results_sigprofiler": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
+                            ],
                             [
-                                [
-                                    "Samples.txt:md5,d41d8cd98f00b204e9800998ecf8427e",
-                                    [
-                                        [
-                                            [
-                                                "COSMIC_DBS78_Signatures.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
-                                            ]
-                                        ]
-                                    ]
-                                ]
+                                "input_data.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                             ],
                             [
                                 [
-                                    "Samples.txt:md5,d41d8cd98f00b204e9800998ecf8427e",
-                                    [
-                                        [
-                                            [
-                                                "COSMIC_ID83_Signatures.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                            ],
-                            [
+                                    "test.DBS78.all:md5,d41d8cd98f00b204e9800998ecf8427e"
+                                ],
                                 [
-                                    "Samples.txt:md5,d41d8cd98f00b204e9800998ecf8427e",
-                                    [
-                                        [
-                                            [
-                                                "COSMIC_SBS96_Signatures.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
-                                            ]
-                                        ]
-                                    ]
+                                    "test.ID83.all:md5,d41d8cd98f00b204e9800998ecf8427e"
+                                ],
+                                [
+                                    "test.SBS96.all:md5,d41d8cd98f00b204e9800998ecf8427e"
                                 ]
                             ]
                         ]
@@ -123,6 +115,6 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.3"
         },
-        "timestamp": "2025-08-08T21:26:50.032279871"
+        "timestamp": "2025-08-18T21:14:23.94791094"
     }
 }

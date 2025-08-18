@@ -25,19 +25,32 @@ process SIGPROFILER {
     stub:
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def context_types = task.ext.context_type?.split(',') ?: ['96','DINUC','ID']
+
+    // Map context to signature type
+    def context_map = [
+        '96'    : 'SBS96',
+        'DINUC' : 'DBS78',
+        'ID'    : 'ID83'
+    ]
+    def signatures = context_types.collect { context_map[it] }
 
     """
-    mkdir -p results/SBS96/SBS96/Suggested_Solution/COSMIC_SBS96_Decomposed_Solution/Signatures/
-    touch results/SBS96/SBS96/Samples.txt
-    touch results/SBS96/SBS96/Suggested_Solution/COSMIC_SBS96_Decomposed_Solution/Signatures/COSMIC_SBS96_Signatures.txt
+    mkdir -p results/input
+    touch results/input/input_data.txt
     
-    mkdir -p results/ID83/ID83/Suggested_Solution/COSMIC_ID83_Decomposed_Solution/Signatures/
-    touch results/ID83/ID83/Samples.txt
-    touch results/ID83/ID83/Suggested_Solution/COSMIC_ID83_Decomposed_Solution/Signatures/COSMIC_ID83_Signatures.txt
-    
-    mkdir -p results/DBS78/DBS78/Suggested_Solution/COSMIC_DBS78_Decomposed_Solution/Signatures/
-    touch results/DBS78/DBS78/Samples.txt
-    touch results/DBS78/DBS78/Suggested_Solution/COSMIC_DBS78_Decomposed_Solution/Signatures/COSMIC_DBS78_Signatures.txt
+    # Create per-context outputs
+
+    for sig in ${signatures.join(" ")}; do
+       
+        mkdir -p results/\$sig/\$sig/Suggested_Solution/COSMIC_\${sig}_Decomposed_Solution/Signatures/
+        touch    results/\$sig/\$sig/Samples.txt
+        touch    results/\$sig/\$sig/Suggested_Solution/COSMIC_\${sig}_Decomposed_Solution/Signatures/COSMIC_\${sig}_Signatures.txt
+
+        type=\$(echo "\$sig" | sed 's/[0-9]*//')   # e.g. SBS96 → SBS, ID83 → ID, DBS78 → DBS
+        mkdir -p results/output/\$type
+        touch    results/output/\$type/${prefix}.\${sig}.all
+    done
     
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
