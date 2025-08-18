@@ -31,15 +31,11 @@ process GATK4_PRINTSVEVIDENCE {
 
     def file_name = evidence_files[0].getFileName()
 
-    def file_type = file_name =~ ".sr.txt"
-        ? "sr"
-        : file_name =~ ".pe.txt"
-            ? "pe"
-            : file_name =~ ".baf.txt"
-                ? "baf"
-                : file_name =~ ".rd.txt"
-                    ? "rd"
-                    : false
+    def file_type = file_name =~ ".sr.txt" ? "sr" :
+                    file_name =~ ".pe.txt" ? "pe" :
+                    file_name =~ ".baf.txt" ? "baf" :
+                    file_name =~ ".rd.txt" ? "rd" :
+                    false
 
     if (!file_type) {
         error("The input file name should contain one of the following: '.sr.txt', '.pe.txt', '.baf.txt', '.rd.txt'")
