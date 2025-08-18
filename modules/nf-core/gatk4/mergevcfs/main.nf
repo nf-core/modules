@@ -13,8 +13,8 @@ process GATK4_MERGEVCFS {
 
     output:
     tuple val(meta), path('*.vcf.gz'), emit: vcf
-    tuple val(meta), path("*.tbi"), emit: tbi
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.tbi"),    emit: tbi
+    path "versions.yml",               emit: versions
 
     when:
     task.ext.when == null || task.ext.when

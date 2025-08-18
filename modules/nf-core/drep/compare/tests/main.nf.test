@@ -28,9 +28,9 @@ nextflow_process {
 then {
 
             def stablefiles = []
-            file(process.out.directory.get(0).get(1)).eachFileRecurse{ file -> if (!file.isDirectory() && ["Secondary_clustering_MDS.pdf", "Secondary_clustering_dendrograms.pdf", "cluster_arguments.json", "warnings.txt", "Cdb.csv", "Mdb.csv", "Ndb.csv"].find {file.toString().endsWith(it)}) {stablefiles.add(file)} }
+            file(process.out.directory.get(0).get(1)).eachFileRecurse{ file -> if (!file.isDirectory() && ["Secondary_clustering_MDS.pdf", "Secondary_clustering_dendrograms.pdf", "cluster_arguments.json", "warnings.txt", "Cdb.csv", "Ndb.csv"].find {file.toString().endsWith(it)}) {stablefiles.add(file)} }
             def unstablefiles = []
-            file(process.out.directory.get(0).get(1)).eachFileRecurse{ file -> if (["chunk0_MASH_table.tsv", "chunk_all.msh", "genome.fasta.msh", "genome.fna.gz.msh", "Clustering_scatterplots.pdf", "Primary_clustering_dendrogram.pdf", "logger.log", "Bdb.csv"].find {file.toString().endsWith(it)}) {unstablefiles.add(file.getName().toString())} }
+            file(process.out.directory.get(0).get(1)).eachFileRecurse{ file -> if (["chunk0_MASH_table.tsv", "chunk_all.msh", "genome.fasta.msh", "genome.fna.gz.msh", "Clustering_scatterplots.pdf", "Primary_clustering_dendrogram.pdf", "logger.log", "Bdb.csv",  "Mdb.csv",].find {file.toString().endsWith(it)}) {unstablefiles.add(file.getName().toString())} }
 
             assertAll(
                 { assert process.success },
