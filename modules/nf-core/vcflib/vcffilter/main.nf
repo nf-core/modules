@@ -21,8 +21,8 @@ process VCFLIB_VCFFILTER {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}.filter"
-    def VERSION = '1.0.14'
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '1.0.14'
     if (!(args.contains("-f") || args.contains("--info-filter") || args.contains("-g") || args.contains("--genotype-filter"))) {
         error("VCFLIB_VCFFILTER requires either the -f/--info-filter or -g/--genotype-filter arguments to be supplied using ext.args.")
     }
@@ -43,8 +43,8 @@ process VCFLIB_VCFFILTER {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}.filter"
-    def VERSION = '1.0.14'
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '1.0.14'
     if ("${vcf}" == "${prefix}.vcf.gz") {
         error("Input and output names are the same, set prefix in module configuration to disambiguate!")
     }
