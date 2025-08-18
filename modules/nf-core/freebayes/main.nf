@@ -23,8 +23,8 @@ process FREEBAYES {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args    = task.ext.args   ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}"
     def input            = input_2     ? "${input_1} ${input_2}"        : "${input_1}"
     def targets_file     = target_bed  ? "--target ${target_bed}"       : ""
     def samples_file     = samples     ? "--samples ${samples}"         : ""
