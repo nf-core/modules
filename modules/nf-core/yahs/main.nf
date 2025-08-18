@@ -38,7 +38,7 @@ process YAHS {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_scaffold_final.fa
+    touch ${prefix}_scaffolds_final.fa
     touch ${prefix}_scaffolds_final.agp
     touch ${prefix}.bin
 
