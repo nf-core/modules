@@ -17,22 +17,6 @@ nextflow_process {
         config "./nextflow.config"
 
         setup {
-            run("STAR_GENOMEGENERATE") {
-                script "../../../star/genomegenerate/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of([
-                        [ id:'test_fasta' ],
-                        [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
-                    ])
-                    input[1] = Channel.of([
-                        [ id:'test_gtf' ],
-                        [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
-                    ])
-                    """
-                }
-            }
-
             run("BWA_INDEX") {
                 script "../../../bwa/index/main.nf"
                 process {
@@ -61,10 +45,13 @@ nextflow_process {
                 ])
                 input[1] = Channel.of([
                     [ id:'test' ], // meta map
-                    file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ])
 				input[2] = BWA_INDEX.out.index
-                input[3] = STAR_GENOMEGENERATE.out.index
+                input[3] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/index/star-2.7.2a', checkIfExists: true)
+                ])
                 """
             }
         }
