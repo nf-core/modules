@@ -148,7 +148,7 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
     ch_versions = ch_versions.mix(ZIPPERBAMS_POST.out.versions)
 
     // finally sort bam file
-    SORTBAM ( ZIPPERBAMS_POST.out.bam, fasta )
+    SORTBAM ( ZIPPERBAMS_POST.out.bam, fasta, '' )
     ch_versions = ch_versions.mix(SORTBAM.out.versions)
 
     emit:
