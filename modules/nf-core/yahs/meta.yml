@@ -46,10 +46,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*.fa":
+      - "*_scaffolds_final.fa":
           type: file
           description: FASTA file with resulting contigs
-          pattern: "*.fa"
+          pattern: "*_scaffolds_final.fa"
           ontologies:
             - edam: http://edamontology.org/format_1929 # FASTA
   scaffolds_agp:
@@ -58,10 +58,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*.agp":
+      - "*_scaffolds_final.agp":
           type: file
           description: AGP file containing contigs placing coordinates
-          pattern: "*.agp"
+          pattern: "*_scaffolds_final.agp"
           ontologies:
             - edam: http://edamontology.org/format_3693 # AGP
   binary:
