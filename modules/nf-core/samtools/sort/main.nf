@@ -32,6 +32,13 @@ process SAMTOOLS_SORT {
                 "bam"
     reference = fasta ? "--reference ${fasta}" : ""
     output_file = index_format ? "${prefix}.${extension}##idx##${prefix}.${extension}.${index_format} --write-index" : "${prefix}.${extension}"
+    if (index_format) {
+        if (!index_format.matches('bai|csi|crai')) {
+            error "Index format not one of bai, csi, crai."
+        } else if (extension == "sam") {
+            error "Indexing not compatible with SAM output"
+        }
+    }
     if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
 
     """
@@ -59,6 +66,13 @@ process SAMTOOLS_SORT {
                 args.contains("--output-fmt cram") ? "cram" :
                 "bam"
     def reference = fasta ? "--reference ${fasta}" : ""
+    if (index_format) {
+        if (!index_format.matches('bai|csi|crai')) {
+            error "Index format not one of bai, csi, crai."
+        } else if (extension == "sam") {
+            error "Indexing not compatible with SAM output"
+        }
+    }
     index = index_format ? "touch ${prefix}.${extension}.${index_format}" : ""
 
     """
