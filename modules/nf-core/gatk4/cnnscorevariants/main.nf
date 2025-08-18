@@ -15,9 +15,9 @@ process GATK4_CNNSCOREVARIANTS {
     path weights
 
     output:
-    tuple val(meta), path("*cnn.vcf.gz"), emit: vcf
+    tuple val(meta), path("*cnn.vcf.gz"),     emit: vcf
     tuple val(meta), path("*cnn.vcf.gz.tbi"), emit: tbi
-    path "versions.yml", emit: versions
+    path "versions.yml",                      emit: versions
 
     when:
     task.ext.when == null || task.ext.when

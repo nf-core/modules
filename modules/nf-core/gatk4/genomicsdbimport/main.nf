@@ -14,10 +14,10 @@ process GATK4_GENOMICSDBIMPORT {
     val input_map
 
     output:
-    tuple val(meta), path("${prefix}"), emit: genomicsdb, optional: true
-    tuple val(meta), path("${updated_db}"), emit: updatedb, optional: true
+    tuple val(meta), path("${prefix}"),       emit: genomicsdb,   optional: true
+    tuple val(meta), path("${updated_db}"),   emit: updatedb,     optional: true
     tuple val(meta), path("*.interval_list"), emit: intervallist, optional: true
-    path "versions.yml", emit: versions
+    path "versions.yml",                      emit: versions
 
     when:
     task.ext.when == null || task.ext.when

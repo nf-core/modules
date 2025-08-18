@@ -14,9 +14,9 @@ process GATK4_APPLYBQSR {
     path dict
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam, optional: true
+    tuple val(meta), path("*.bam"),  emit: bam,  optional: true
     tuple val(meta), path("*.cram"), emit: cram, optional: true
-    path "versions.yml", emit: versions
+    path "versions.yml",             emit: versions
 
     when:
     task.ext.when == null || task.ext.when

@@ -9,23 +9,19 @@ process GATK4_VARIANTRECALIBRATOR {
 
     input:
     tuple val(meta), path(vcf), path(tbi)
-    // input vcf and tbi of variants to recalibrate
     path resource_vcf
-    // resource vcf
     path resource_tbi
-    // resource tbi
     val labels
-    // string (or list of strings) containing dedicated resource labels already formatted with '--resource:' tag
     path fasta
     path fai
     path dict
 
     output:
-    tuple val(meta), path("*.recal"), emit: recal
-    tuple val(meta), path("*.idx"), emit: idx
+    tuple val(meta), path("*.recal"),    emit: recal
+    tuple val(meta), path("*.idx"),      emit: idx
     tuple val(meta), path("*.tranches"), emit: tranches
-    tuple val(meta), path("*plots.R"), emit: plots, optional: true
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*plots.R"),   emit: plots, optional: true
+    path "versions.yml",                 emit: versions
 
     when:
     task.ext.when == null || task.ext.when

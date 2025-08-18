@@ -16,10 +16,10 @@ process GATK4_HAPLOTYPECALLER {
     tuple val(meta6), path(dbsnp_tbi)
 
     output:
-    tuple val(meta), path("*.vcf.gz"), emit: vcf
-    tuple val(meta), path("*.tbi"), optional: true, emit: tbi
-    tuple val(meta), path("*.realigned.bam"), optional: true, emit: bam
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.vcf.gz"),        emit: vcf
+    tuple val(meta), path("*.tbi"),           emit: tbi, optional: true
+    tuple val(meta), path("*.realigned.bam"), emit: bam, optional: true
+    path "versions.yml",                      emit: versions
 
     when:
     task.ext.when == null || task.ext.when
