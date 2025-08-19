@@ -34,7 +34,7 @@ workflow TIFF_SEGMENTATION_VPT {
         .map { _meta, seg_params -> seg_params }
         .splitJson(path: 'window_grid' )
         .filter { it.key == 'num_tiles' }
-        .map { it.value as Integer }
+        .map { it.value.toInteger() }
         .flatMap { num -> (0..num-1).toList() }
         .set{ ch_tiles }
 
