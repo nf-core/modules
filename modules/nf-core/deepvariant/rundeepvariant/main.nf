@@ -1,5 +1,5 @@
 process DEEPVARIANT_RUNDEEPVARIANT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     // FIXME Conda is not supported at the moment
@@ -28,7 +28,7 @@ process DEEPVARIANT_RUNDEEPVARIANT {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "DEEPVARIANT module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("DEEPVARIANT module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
@@ -56,7 +56,7 @@ process DEEPVARIANT_RUNDEEPVARIANT {
     stub:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "DEEPVARIANT module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("DEEPVARIANT module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     prefix = task.ext.prefix ?: "${meta.id}"
     """

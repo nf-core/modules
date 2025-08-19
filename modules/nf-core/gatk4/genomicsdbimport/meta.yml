@@ -72,7 +72,8 @@ output:
           description: A Groovy map containing sample information
       - ${prefix}:
           type: file
-          description: genomicsdb
+          description: genomics DB file
+          pattern: "${prefix}"
           ontologies: []
   updatedb:
     - - meta:
@@ -80,7 +81,8 @@ output:
           description: A Groovy map containing sample information
       - ${updated_db}:
           type: file
-          description: updated genomicsdb
+          description: updated genomics DB file
+          pattern: "${updated_db}"
           ontologies: []
   intervallist:
     - - meta:
