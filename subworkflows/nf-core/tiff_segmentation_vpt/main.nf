@@ -26,7 +26,7 @@ workflow TIFF_SEGMENTATION_VPT {
         ch_algorithm_json,
         ch_images_regex
     )
-    ch_versions = ch_versions.mix(VIZGENPOSTPROCESSING_PREPARESEGMENTATION.out.versions.first())
+    ch_versions = ch_versions.mix(VIZGENPOSTPROCESSING_PREPARESEGMENTATION.out.versions)
 
     // Create list sequence of 0..N tiles
     // Get N from segmentation params JSON file
