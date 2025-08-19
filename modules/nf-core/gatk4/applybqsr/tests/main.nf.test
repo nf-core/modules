@@ -11,7 +11,7 @@ nextflow_process {
 
     test("sarscov2 - bam") {
 
-        config "./nextflow.config"
+        config "./nextflow_bam.config"
 
         when {
             process {
@@ -75,7 +75,7 @@ nextflow_process {
 
     test("sarscov2 - bam - intervals") {
 
-        config "./nextflow.config"
+        config "./nextflow_bam.config"
 
         when {
             process {
@@ -165,7 +165,7 @@ nextflow_process {
     test("sarscov2 - bam - stub") {
 
         options "-stub"
-        config "./nextflow.config"
+        config "./nextflow_bam.config"
 
         when {
             process {
