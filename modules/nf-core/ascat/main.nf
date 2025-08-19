@@ -41,11 +41,11 @@ process ASCAT {
     def gc_input      = gc_file            ? "${gc_file}"            : "NULL"
     def rt_input      = rt_file            ? "${rt_file}"            : "NULL"
 
-    def minCounts_arg                   = args.minCounts                   ? ", minCounts = ${args.minCounts}" : ""
-    def bed_file_arg                    = bed_file                         ? ", BED_file = '${bed_file}'" : ""
-    def chrom_names_arg                 = args.chrom_names                 ? ", chrom_names = ${args.chrom_names}" : ""
-    def min_base_qual_arg               = args.min_base_qual               ? ", min_base_qual = ${args.min_base_qual}" : ""
-    def min_map_qual_arg                = args.min_map_qual                ? ", min_map_qual = ${args.min_map_qual}" : ""
+    def minCounts_arg                   = args.minCounts                   ? ", minCounts = ${args.minCounts}"                                     : ""
+    def bed_file_arg                    = bed_file                         ? ", BED_file = '${bed_file}'"                                          : ""
+    def chrom_names_arg                 = args.chrom_names                 ? ", chrom_names = ${args.chrom_names}"                                 : ""
+    def min_base_qual_arg               = args.min_base_qual               ? ", min_base_qual = ${args.min_base_qual}"                             : ""
+    def min_map_qual_arg                = args.min_map_qual                ? ", min_map_qual = ${args.min_map_qual}"                               : ""
     def skip_allele_counting_tumour_arg = args.skip_allele_counting_tumour ? ", skip_allele_counting_tumour = ${args.skip_allele_counting_tumour}" : ""
     def skip_allele_counting_normal_arg = args.skip_allele_counting_normal ? ", skip_allele_counting_normal = ${args.skip_allele_counting_normal}" : ""
 
