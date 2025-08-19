@@ -5,6 +5,26 @@ repos:
       - id: prettier
         additional_dependencies:
           - prettier@3.6.2
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+        exclude: |
+          (?x)^(
+              modules/nf-core/.*|
+              subworkflows/nf-core/.*|
+              .*\.snap$
+          )$
+      - id: end-of-file-fixer
+        exclude: |
+          (?x)^(
+              modules/nf-core/.*|
+              subworkflows/nf-core/.*|
+              .*\.snap$
+          )$
+
   - repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 0.33.2
     hooks:
