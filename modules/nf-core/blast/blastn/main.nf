@@ -10,10 +10,9 @@ process BLAST_BLASTN {
     input:
     tuple val(meta) , path(fasta)
     tuple val(meta2), path(db)
-    path(taxidlist)
-    path(negative_taxidlist)
-    val(taxids)
-    val(negative_taxids)
+    path taxidlist
+    val taxids
+    val negative_tax
 
     output:
     tuple val(meta), path('*.txt'), emit: txt
@@ -27,10 +26,12 @@ process BLAST_BLASTN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def is_compressed = fasta.getExtension() == "gz" ? true : false
     def fasta_name = is_compressed ? fasta.getBaseName() : fasta
-    def taxidlist_cmd = taxidlist ? "-taxidlist ${taxidlist}" : ""
-    def negative_taxidlist_cmd = negative_taxidlist ? "-negative_taxidlist ${negative_taxidlist}" : ""
-    def taxids_cmd = taxids ? "-taxids ${taxids}" : ""
-    def negative_taxids_cmd = negative_taxids ? "-negative_taxids ${negative_taxids}" : ""
+    def negative_tax_cmd = negative_tax ? "negative_" : ""
+    def taxidlist_cmd = taxidlist ? "-${negative_tax_cmd}taxidlist ${taxidlist}" : ""
+    def taxids_cmd = taxids ? "-${negative_tax_cmd}taxids ${taxids}" : ""
+    if (taxidlist_cmd.any() && taxids_cmd.any()) {
+        log.error("ERROR: taxidlist and taxids can not be used at the same time, choose only one argument to use for tax id filtering.")
+    }
 
     """
     if [ "${is_compressed}" == "true" ]; then
@@ -48,9 +49,7 @@ process BLAST_BLASTN {
         -db \$DB \\
         -query ${fasta_name} \\
         ${taxidlist_cmd} \\
-        ${negative_taxidlist_cmd} \\
         ${taxids_cmd} \\
-        ${negative_taxids_cmd} \\
         ${args} \\
         -out ${prefix}.txt
 
