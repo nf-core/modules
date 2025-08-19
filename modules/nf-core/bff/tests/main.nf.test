@@ -1,0 +1,164 @@
+nextflow_process {
+
+    name "Test Process BFF"
+    script "../main.nf"
+    process "BFF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bff"
+    tag "untar"
+
+
+    test("hto_matrix - combined - preprocessing") {
+
+        setup {
+            run("UNTAR") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                """
+                input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true)   ])
+                """
+                }
+            }
+        }
+        when {
+            params {
+                doTSNE = false
+            }
+            process {
+                """
+                input[0] = UNTAR.out.untar.map { meta, files -> [ [ id:'test'], files, "COMBINED", "TRUE"] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("hto_matrix - combined - preprocessing - test ext.args") {
+        config "./nextflow.config"
+
+        setup {
+            run("UNTAR") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                """
+                input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true)   ])
+                """
+                }
+            }
+        }
+        when {
+            params {
+                module_args = "--doHeatmap false"
+            }
+            process {
+                """
+                input[0] = UNTAR.out.untar.map { meta, files -> [ [ id:'test'], files, "COMBINED", "TRUE"] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+
+    test("hto_matrix - raw - preprocessing") {
+        setup {
+            run("UNTAR") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                """
+                input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true)   ])
+                """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.map { meta, files -> [ [ id:'test'], files, "RAW", "TRUE"] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+
+    test("hto_matrix - combined - no preprocessing") {
+        setup {
+            run("UNTAR") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                """
+                input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true)   ])
+                """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.map { meta, files -> [ [ id:'test'], files, "COMBINED", "FALSE"] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+
+
+    test("hto_matrix - combined - preprocessing - stub") {
+
+        options "-stub"
+
+        setup {
+            run("UNTAR") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                """
+                input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true)   ])
+                """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.map { meta, files -> [ [ id:'test'], files, "COMBINED", "TRUE"] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}
