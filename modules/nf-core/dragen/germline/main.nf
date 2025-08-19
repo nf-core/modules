@@ -5,7 +5,7 @@ process DRAGEN {
     // ATTENTION: No conda env or container image as Dragen requires specialized hardware to run
 
     input:
-    tuple val(meta), path(fastq), path(ora), path(bam), path(cram)
+    tuple val(meta), path(input)
     path checkfingerprint_expected_vcf
     path cnv_combined_counts
     path cnv_exclude_bed
@@ -204,35 +204,30 @@ process DRAGEN {
     args = args + rgid + rgsm
 
     // input data
-    def input = ""
-    if (fastq) {
-        if (fastq instanceof List && fastq.size() > 2) {
-            error "Error: cannot have more than 2 fastq files as input."
-        } else {
-            input = "-1 " + fastq.join(" -2 ")
+    def bam_rex = /\.bam$/
+    def cram_rex = /\.cram$/
+    def fastq_rex = /\.f(ast)?q(\.gz)?$/
+    def ora_rex = /\.ora$/
+    def format_input = ""
+    if (input instanceof List) {
+        if (input.size() != 2) {
+            error "Error: a maximum of 2 input files is supported."
         }
-    } else if (ora) {
-        if (ora instanceof List && ora.size() > 2) {
-            error "Error: cannot have more than 2 ora files as input."
-        } else if (!ora_reference) {
-            error "Error: using ora file(s) requires an ora reference."
+        if ((input[0] =~ fastq_rex && input[1] =~ fastq_rex) || (input[0] =~ ora_rex && input[1] =~ ora_rex)) {
+            format_input = "-1 ${input[0]} -2 ${input[1]}"
         } else {
-            input = "-1 " + ora.join(" -2 ")
-        }
-    } else if (bam) {
-        if (bam instanceof List) {
-            error "Error: cannot have more than 1 bam file as input."
-        } else {
-            input = "-b " + bam
-        }
-    } else if (cram) {
-        if (cram instanceof List) {
-            error "Error: cannot have more than 1 cram file as input."
-        } else {
-            input = "--cram-input " + cram
+            error "Error: input of 2 files of this type is not supported."
         }
     } else {
-        error "Error: missing input."
+        if (input =~ fastq_rex || input =~ ora_rex) {
+            format_input = "-1 ${input}"
+        } else if (input =~ bam_rex) {
+            format_input = "-b ${input}"
+        } else if (input =~ cram_rex) {
+            format_input = "--cram-input ${input}"
+        } else {
+            error "Error: unsupported input type."
+        }
     }
 
     // checkfingerprint-expected-vcf
@@ -393,7 +388,7 @@ process DRAGEN {
     """
     dragen
         $args \\
-        $input \\
+        $format_input \\
         --output-file-prefix $prefix \\
         --output-directory \$(pwd)
 
