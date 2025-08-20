@@ -13,7 +13,7 @@ process SENTIEON_BWAINDEX {
 
     output:
     tuple val(meta), path("bwa"), emit: index
-    path "versions.yml",          emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,8 +32,8 @@ process SENTIEON_BWAINDEX {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
         bwa: \$(echo \$(sentieon bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
+        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
     END_VERSIONS
     """
 
@@ -49,8 +49,8 @@ process SENTIEON_BWAINDEX {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
         bwa: \$(echo \$(sentieon bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
+        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
     END_VERSIONS
     """
 }

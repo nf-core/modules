@@ -80,6 +80,7 @@ process SENTIEON_STARALIGN {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         star: \$(sentieon STAR --version | sed -e "s/STAR_//g")
+        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
     END_VERSIONS
     """
 
@@ -107,6 +108,7 @@ process SENTIEON_STARALIGN {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         star: \$(sentieon STAR --version | sed -e "s/STAR_//g")
+        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
     END_VERSIONS
     """
 }
