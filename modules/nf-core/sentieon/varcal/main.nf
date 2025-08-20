@@ -31,6 +31,8 @@ process SENTIEON_VARCAL {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     // Process labels to create the command string
+    // labels is a list. Here is an example of what labels might look like:
+    // ['--resource:dbsnp,known=false,training=true,truth=false,prior=2.0 dbsnp_146.hg38.vcf.gz', '--resource:gatk,known=false,training=true,truth=true,prior=10.0 Homo_sapiens_assembly38.known_indels.vcf.gz --resource:mills,known=false,training=true,truth=true,prior=10.0 Mills_and_1000G_gold_standard.indels.hg38.vcf.gz']
     def labels_command = ''
     def labels_input = labels
     if (labels_input instanceof String && !labels_input.trim().isEmpty()) {
