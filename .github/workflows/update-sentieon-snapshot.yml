@@ -88,7 +88,7 @@ jobs:
           SENTIEON_AUTH_MECH: "GitHub Actions - token"
         run: |
           nf-test test \
-          --profile=docker,sentieon \
+          --profile=docker \
           --verbose \
           --ci \
           --update-snapshot \
