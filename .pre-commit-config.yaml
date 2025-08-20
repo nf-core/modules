@@ -13,15 +13,11 @@ repos:
         args: [--markdown-linebreak-ext=md]
         exclude: |
           (?x)^(
-              modules/nf-core/.*|
-              subworkflows/nf-core/.*|
               .*\.snap$
           )$
       - id: end-of-file-fixer
         exclude: |
           (?x)^(
-              modules/nf-core/.*|
-              subworkflows/nf-core/.*|
               .*\.snap$
           )$
 
