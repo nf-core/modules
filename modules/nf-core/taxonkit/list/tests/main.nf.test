@@ -18,21 +18,21 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file("ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz", checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdump/taxdump.tar.gz', checkIfExists:true)
                 ]
                 """
             }
         }
     }
 
-    test("homo sapiens - taxonid") {
+    test("haemophilus - taxonid") {
 
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    "9606",
+                    "724",
                     []
                 ]
                 input[1] = UNTAR.out.untar.map{ it[1] }
@@ -49,7 +49,7 @@ nextflow_process {
 
     }
 
-    test("homo sapiens - taxid list") {
+    test("haemophilus - taxid list") {
 
         when {
             process {
@@ -57,7 +57,7 @@ nextflow_process {
                 input[0] = Channel.of( [
                     [ id:'test', single_end:false ], // meta map
                     ''
-                ] ).combine( Channel.of("9606").collectFile( name:'taxids.txt', newLine: true ) )
+                ] ).combine( Channel.of("724").collectFile( name:'taxids.txt', newLine: true ) )
                 input[1] = UNTAR.out.untar.map{ it[1] }
                 """
             }
@@ -72,7 +72,7 @@ nextflow_process {
 
     }
 
-    test("homo sapiens - taxid - stub") {
+    test("haemophilus - taxid - stub") {
 
         options "-stub"
 
@@ -81,7 +81,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    "9606",
+                    "724",
                     []
                 ]
                 input[1] = UNTAR.out.untar.map{ it[1] }
