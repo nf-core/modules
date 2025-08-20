@@ -25,9 +25,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.index).match("index")},
-                { assert snapshot(process.out.transcript_fasta).match("transcript_fasta")},
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    process.out.index,
+                    process.out.transcript_fasta,
+                    path(process.out.versions[0]).yaml
+                ).match("") }
             )
         }
     }

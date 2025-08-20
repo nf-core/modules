@@ -82,7 +82,6 @@ nextflow_process {
                     path(process.out.vcf[0][1]).vcf.summary,
                     file(process.out.index[0][1]).name,
                     process.out.stats,
-                    process.out.versions,
                     path(process.out.versions[0]).yaml
                     ).match() }
             )
@@ -127,7 +126,6 @@ nextflow_process {
                     path(process.out.vcf[0][1]).vcf.summary,
                     file(process.out.index[0][1]).name,
                     process.out.stats,
-                    process.out.versions,
                     path(process.out.versions[0]).yaml
                     ).match() }
             )
@@ -175,7 +173,6 @@ nextflow_process {
                     process.out.orientation_data,
                     process.out.contamination_data,
                     process.out.contamination_segments,
-                    process.out.versions,
                     path(process.out.versions[0]).yaml
                     ).match() }
             )
@@ -217,7 +214,6 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.vcf[0][1]).vcf.summary,
                     file(process.out.index[0][1]).name,
-                    process.out.versions,
                     process.out.stats,
                     path(process.out.versions[0]).yaml
                     ).match() }

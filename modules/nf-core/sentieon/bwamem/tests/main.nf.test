@@ -51,7 +51,6 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
 
     test("Single-End Output CRAM") {
@@ -93,7 +92,6 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
 
     test("Paired-End") {
@@ -195,7 +193,6 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
 
     test("Paired-End - stub") {
@@ -257,6 +254,4 @@ nextflow_process {
             )
         }
     }
-
-
 }

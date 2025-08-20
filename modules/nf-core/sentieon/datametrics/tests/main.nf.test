@@ -38,7 +38,6 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
 
     test("metrics - with plots") {
@@ -77,13 +76,11 @@ nextflow_process {
                     file(process.out.qd_plot[0][1]).name,
                     file(process.out.is_plot[0][1]).name,
                     file(process.out.gc_plot[0][1]).name,
-                    process.out.versions,
                     path(process.out.versions[0]).yaml
-                    ).match() 
+                    ).match()
                 }
             )
         }
-        
     }
 
     test("sarscov2 - stub") {
@@ -117,7 +114,5 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
-
 }
