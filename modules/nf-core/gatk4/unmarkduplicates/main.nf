@@ -13,7 +13,7 @@ process GATK4_UNMARKDUPLICATES {
     output:
     tuple val(meta), path("${prefix}.bam"), emit: bam
     tuple val(meta), path("${prefix}.bai"), emit: bai
-    path "versions.yml", emit: versions
+    path "versions.yml",                    emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -45,7 +45,6 @@ process GATK4_UNMARKDUPLICATES {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}_UnmarkDuplicates"
-    prefix_no_suffix = task.ext.prefix ? prefix.tokenize('.')[0] : "${meta.id}"
     """
     touch ${prefix}.bam
     touch ${prefix}.bai
