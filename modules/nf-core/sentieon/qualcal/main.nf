@@ -17,12 +17,12 @@ process SENTIEON_QUALCAL {
     val generate_recalibrated_bams
 
     output:
-    tuple val(meta), path ("*.table")       , emit: table           , optional: true
-    tuple val(meta), path ("*.table.post")  , emit: table_post      , optional: true
-    tuple val(meta), path ("*.{cram,bam}")  , emit: recal_alignment , optional: true
-    tuple val(meta), path ("*.csv")         , emit: csv             , optional: true
-    tuple val(meta), path ("*.pdf")         , emit: pdf             , optional: true
-    path "versions.yml"                     , emit: versions
+    tuple val(meta), path ("*.table"),      emit: table,           optional: true
+    tuple val(meta), path ("*.table.post"), emit: table_post,      optional: true
+    tuple val(meta), path ("*.{cram,bam}"), emit: recal_alignment, optional: true
+    tuple val(meta), path ("*.csv"),        emit: csv,             optional: true
+    tuple val(meta), path ("*.pdf"),        emit: pdf,             optional: true
+    path "versions.yml",                    emit: versions
 
     when:
     task.ext.when == null || task.ext.when

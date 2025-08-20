@@ -5,8 +5,8 @@ process SENTIEON_VARCAL {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/80/80ccb05eb4f1a193a3bd99c4da90f55f74ea6556c25f154e53e1ff5a6caa372d/data'
-        : 'community.wave.seqera.io/library/sentieon:202503--5e378058d837c58c'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0f1dfe59ef66d7326b43db9ab1f39ce6220b358a311078c949a208f9c9815d4e/data'
+        : 'community.wave.seqera.io/library/sentieon:202503.01--1863def31ed8e4d5'}"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
@@ -17,11 +17,11 @@ process SENTIEON_VARCAL {
     path fai
 
     output:
-    tuple val(meta), path("*.recal"), emit: recal
-    tuple val(meta), path("*.idx"), emit: idx
+    tuple val(meta), path("*.recal"),    emit: recal
+    tuple val(meta), path("*.idx"),      emit: idx
     tuple val(meta), path("*.tranches"), emit: tranches
-    tuple val(meta), path("*plots.R"), emit: plots, optional: true
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*plots.R"),   emit: plots, optional: true
+    path "versions.yml",                 emit: versions
 
     when:
     task.ext.when == null || task.ext.when
