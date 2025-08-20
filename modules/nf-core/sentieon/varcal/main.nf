@@ -32,9 +32,10 @@ process SENTIEON_VARCAL {
 
     // Process labels to create the command string
     def labels_command = ''
-    if (labels instanceof String && !labels.trim().isEmpty()) {
+    def labels_input = labels
+    if (labels_input instanceof String && !labels_input.trim().isEmpty()) {
         // Process string input
-        def resourceStrings = labels.split('--resource:').findAll()
+        def resourceStrings = labels_input.split('--resource:').findAll()
         def processedResources = resourceStrings.collect { resource_string ->
             def items = resource_string.split(' ', 2)
             if (items.size() != 2) {
@@ -44,10 +45,10 @@ process SENTIEON_VARCAL {
         }
         labels_command = processedResources.join(' ')
     }
-    else if (labels instanceof List) {
+    else if (labels_input instanceof List) {
         // Process list input
-        def processedResources = labels.collect { labels_ ->
-            def cleanedLabel = labels_.replaceFirst('^--resource:', '')
+        def processedResources = labels_input.collect { label ->
+            def cleanedLabel = label.replaceFirst('^--resource:', '')
             def items = cleanedLabel.split(' ', 2)
             if (items.size() != 2) {
                 error("Expected the resource string '${cleanedLabel}' to contain two elements separated by a space.")
@@ -56,8 +57,8 @@ process SENTIEON_VARCAL {
         }
         labels_command = processedResources.join(' ')
     }
-    else if (labels != null) {
-        error("Expected 'labels' to be either a String or a List, but got ${labels.getClass()}")
+    else if (labels_input != null) {
+        error("Expected 'labels' to be either a String or a List, but got ${labels_input.getClass()}")
     }
 
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64
