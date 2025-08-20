@@ -27,7 +27,7 @@ input:
         description: Input protein structures in PDB format.
         pattern: "*.{pdb,mmcif}"
         ontologies:
-          - edam: http://edamontology.org/format_1747 # PDB atom record format
+          - edam: http://edamontology.org/format_1476 # PDB
           - edam: http://edamontology.org/format_1477 # mmCIF
   - - meta2:
         type: map
@@ -41,14 +41,14 @@ input:
         ontologies:
           - edam: http://edamontology.org/format_2006 # PHYLOGENETIC TREE
           - edam: http://edamontology.org/format_1910 # NEWICK
-  - - compress:
-        type: boolean
-        description: Flag representing whether the output MSA should be compressed.
-          Set to true to enable/false to disable compression. Compression is done using
-          pigz, and is multithreaded.
+  - compress:
+      type: boolean
+      description: Flag representing whether the output MSA should be compressed. Set
+        to true to enable/false to disable compression. Compression is done using pigz,
+        and is multithreaded.
 output:
-  - msa_3di:
-      - meta:
+  msa_3di:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -62,8 +62,8 @@ output:
             - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
             - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
             - edam: http://edamontology.org/format_1984 # FASTA-ALN
-  - msa_aa:
-      - meta:
+  msa_aa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -77,13 +77,13 @@ output:
             - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
             - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
             - edam: http://edamontology.org/format_1984 # FASTA-ALN
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: http://edamontology.org/format_3750 # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@luisas"
 maintainers:

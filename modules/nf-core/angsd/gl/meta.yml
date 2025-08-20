@@ -49,8 +49,8 @@ input:
         pattern: "*.error.chunkunordered"
         ontologies: []
 output:
-  - genotype_likelihood:
-      - meta:
+  genotype_likelihood:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -60,13 +60,13 @@ output:
           description: File containing genotype likelihoods per sample
           pattern: "*.{glf,beagle}.gz"
           ontologies: []
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: "http://edamontology.org/format_3750" # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@apeltzer"
   - "@TCLamnidis"

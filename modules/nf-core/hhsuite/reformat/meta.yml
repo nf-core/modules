@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "hhsuite_reformat"
 description: Reformat a Multiple Sequence Alignment (MSA) file
@@ -26,30 +25,34 @@ input:
         type: file
         description: Input MSA file
         pattern: "*.{fa,fasta,fas,a2m,a3m,sto,psi,clu,fa.gz,fasta.gz,fas.gz,a2m.gz,a3m.gz,sto.gz,psi.gz,clu.gz}"
-  - - informat:
-        type: string
-        description: Format of the input MSA file
-        enum: ["fas", "a2m", "a3m", "sto", "psi", "clu"]
-  - - outformat:
-        type: string
-        description: Format of the output MSA file
-        enum: ["fas", "a2m", "a3m", "sto", "psi", "clu"]
+        ontologies: []
+  - informat:
+      type: string
+      description: Format of the input MSA file
+      enum: ["fas", "a2m", "a3m", "sto", "psi", "clu"]
+  - outformat:
+      type: string
+      description: Format of the output MSA file
+      enum: ["fas", "a2m", "a3m", "sto", "psi", "clu"]
 output:
-  - msa:
-      - meta:
+  msa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "${prefix}.${outformat}.gz":
+      - ${prefix}.${outformat}.gz:
           type: file
           description: Gzipped reformatted output MSA file
           pattern: "*.{fas.gz,a2m.gz,a3m.gz,sto.gz,psi.gz,clu.gz}"
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@vagkaratzas"
 maintainers:

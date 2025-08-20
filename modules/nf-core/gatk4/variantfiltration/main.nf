@@ -61,7 +61,7 @@ process GATK4_VARIANTFILTRATION {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml

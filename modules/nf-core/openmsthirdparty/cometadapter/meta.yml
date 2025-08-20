@@ -27,13 +27,15 @@ input:
         type: file
         description: File containing mass spectra in mzML format
         pattern: "*.{mzML}"
+        ontologies: []
     - fasta:
         type: file
         description: Protein sequence database containing targets and decoys
         pattern: "*.{fasta}"
+        ontologies: []
 output:
-  - idxml:
-      - meta:
+  idxml:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -42,8 +44,9 @@ output:
           type: file
           description: File containing target and decoy hits in idXML format
           pattern: "*.{idXML}"
-  - pin:
-      - meta:
+          ontologies: []
+  pin:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -52,11 +55,15 @@ output:
           type: file
           description: TSV file tailored as Percolator input (pin) file
           pattern: "*.{tsv}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jonasscheid"
 maintainers:
