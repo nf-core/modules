@@ -12,17 +12,16 @@ process SENTIEON_VARCAL {
     tuple val(meta), path(vcf), path(tbi)
     path resource_vcf
     path resource_tbi
-    // string (or list of strings) containing dedicated resource labels already formatted with '--resource:' tag
     val labels
     path fasta
     path fai
 
     output:
-    tuple val(meta), path("*.recal"),    emit: recal
-    tuple val(meta), path("*.idx"),      emit: idx
+    tuple val(meta), path("*.recal"), emit: recal
+    tuple val(meta), path("*.idx"), emit: idx
     tuple val(meta), path("*.tranches"), emit: tranches
-    tuple val(meta), path("*plots.R"),   emit: plots, optional: true
-    path "versions.yml",                 emit: versions
+    tuple val(meta), path("*plots.R"), emit: plots, optional: true
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -47,8 +46,8 @@ process SENTIEON_VARCAL {
     }
     else if (labels instanceof List) {
         // Process list input
-        def processedResources = labels.collect { label ->
-            def cleanedLabel = label.replaceFirst('^--resource:', '')
+        def processedResources = labels.collect { labels_ ->
+            def cleanedLabel = labels_.replaceFirst('^--resource:', '')
             def items = cleanedLabel.split(' ', 2)
             if (items.size() != 2) {
                 error("Expected the resource string '${cleanedLabel}' to contain two elements separated by a space.")
