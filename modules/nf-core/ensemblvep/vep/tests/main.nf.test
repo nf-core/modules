@@ -16,7 +16,7 @@ nextflow_process {
         when {
             process {
                 """
-                vep_cache = Channel.of(file("${projectDir}")).collect()
+                vep_cache = Channel.of(file('s3://annotation-cache/vep_cache/113_WBcel235/')).collect()
 
                 input[0] = Channel.of([
                     [ id:'test' ], // meta map
