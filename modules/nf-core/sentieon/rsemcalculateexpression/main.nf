@@ -19,9 +19,9 @@ process SENTIEON_RSEMCALCULATEEXPRESSION {
     tuple val(meta), path("*.log")             , emit: logs
     path  "versions.yml"                       , emit: versions
 
-    tuple val(meta), path("*.STAR.genome.bam")       , optional:true, emit: bam_star
-    tuple val(meta), path("${prefix}.genome.bam")    , optional:true, emit: bam_genome
-    tuple val(meta), path("${prefix}.transcript.bam"), optional:true, emit: bam_transcript
+    tuple val(meta), path("*.STAR.genome.bam"),        emit: bam_star,       optional:true
+    tuple val(meta), path("${prefix}.genome.bam"),     emit: bam_genome,     optional:true
+    tuple val(meta), path("${prefix}.transcript.bam"), emit: bam_transcript, optional:true
 
     when:
     task.ext.when == null || task.ext.when
