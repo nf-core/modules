@@ -33,9 +33,10 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
+                        process.out.versions,
                         path(process.out.versions[0]).yaml,
                         file(process.out.vcf_tbi.get(0).get(1)).name,
                         path(process.out.vcf[0][1]).vcf.variantsMD5
@@ -43,7 +44,6 @@ nextflow_process {
                 }
             )
         }
-
     }
 
     test("Sentieon Haplotyper GVCF") {
@@ -68,9 +68,10 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
+                        process.out.versions,
                         path(process.out.versions[0]).yaml,
                         file(process.out.gvcf_tbi.get(0).get(1)).name,
                         path(process.out.gvcf[0][1]).vcf.variantsMD5
@@ -78,7 +79,6 @@ nextflow_process {
                 }
             )
         }
-
     }
 
     test("Sentieon Haplotyper BOTH") {
@@ -103,9 +103,10 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
+                        process.out.versions,
                         path(process.out.versions[0]).yaml,
                         file(process.out.gvcf_tbi.get(0).get(1)).name,
                         path(process.out.gvcf[0][1]).vcf.variantsMD5,
@@ -115,7 +116,6 @@ nextflow_process {
                 }
             )
         }
-
     }
 
     test("Sentieon Haplotyper Intervals BOTH") {
@@ -140,9 +140,10 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
+                        process.out.versions,
                         path(process.out.versions[0]).yaml,
                         file(process.out.gvcf_tbi.get(0).get(1)).name,
                         path(process.out.gvcf[0][1]).vcf.variantsMD5,
@@ -152,7 +153,6 @@ nextflow_process {
                 }
             )
         }
-
     }
 
     test("Sentieon Haplotyper DBSNP BOTH") {
@@ -177,9 +177,10 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
+                        process.out.versions,
                         path(process.out.versions[0]).yaml,
                         file(process.out.gvcf_tbi.get(0).get(1)).name,
                         path(process.out.gvcf[0][1]).vcf.variantsMD5,
@@ -237,9 +238,10 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
+                        process.out.versions,
                         path(process.out.versions[0]).yaml,
                         file(process.out.vcf_tbi.get(0).get(1)).name,
                         path(process.out.vcf[0][1]).vcf.variantsMD5
@@ -247,7 +249,6 @@ nextflow_process {
                 }
             )
         }
-
     }
 
     test("Sentieon Haplotyper multiple CRAMs") {
@@ -279,9 +280,10 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
+                        process.out.versions,
                         path(process.out.versions[0]).yaml,
                         file(process.out.vcf_tbi.get(0).get(1)).name,
                         path(process.out.vcf[0][1]).vcf.variantsMD5
@@ -289,7 +291,6 @@ nextflow_process {
                 }
             )
         }
-
     }
 
     test("Sentieon Haplotyper - stub") {
@@ -315,13 +316,10 @@ nextflow_process {
         }
 
         then {
-
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
-
         }
     }
-
 }

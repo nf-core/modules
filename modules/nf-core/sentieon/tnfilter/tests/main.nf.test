@@ -44,6 +44,7 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.vcf[0][1]).vcf.summary,
                     file(process.out.tbi[0][1]).name,
+                    process.out.versions,
                     path(process.out.versions[0]).yaml
                     ).match()
                 }
@@ -84,6 +85,7 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.vcf[0][1]).vcf.summary,
                     file(process.out.tbi[0][1]).name,
+                    process.out.versions,
                     path(process.out.versions[0]).yaml
                     ).match()
                 }
@@ -123,11 +125,11 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out,
+                    process.out.versions,
                     path(process.out.versions[0]).yaml
                     ).match()
                 }
             )
         }
     }
-
 }
