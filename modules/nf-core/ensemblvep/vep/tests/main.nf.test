@@ -21,7 +21,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = Channel.of([
-                        [id:"113_WBcel235"],
+                        [id:"114_WBcel235"],
                         params.vep_genome,
                         params.vep_species,
                         params.vep_cache_version
@@ -75,7 +75,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = Channel.of([
-                        [id:"113_WBcel235"],
+                        [id:"114_WBcel235"],
                         params.vep_genome,
                         params.vep_species,
                         params.vep_cache_version
@@ -110,7 +110,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions).match() },
-                { assert path(process.out.tab.get(0).get(1)).linesGzip.contains("## ENSEMBL VARIANT EFFECT PREDICTOR v113.0") }
+                { assert path(process.out.tab.get(0).get(1)).linesGzip.contains("## ENSEMBL VARIANT EFFECT PREDICTOR v114.2") }
             )
         }
     }
