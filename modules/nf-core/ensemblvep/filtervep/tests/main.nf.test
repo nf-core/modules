@@ -64,8 +64,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out.versions).match() },
                 { assert path(process.out.output.get(0).get(1)).readLines().first().contains("##fileformat=VCFv4.2") }
             )
@@ -124,8 +124,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out.versions).match() },
                 { assert path(process.out.output.get(0).get(1)).readLines().first().contains("## ENSEMBL VARIANT EFFECT PREDICTOR v114") }
             )
