@@ -17,22 +17,24 @@ nextflow_workflow {
         when {
             workflow {
                 """
+                snpeff_cache = Channel.of([
+                    [ id:'WBcel235.105' ],
+                    file('s3://annotation-cache/snpeff_cache/WBcel235.105/')
+                ]).collect()
+
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
                 ])
                 input[1] = "WBcel235.105"
-                input[2] = Channel.of([
-                    [ id:'WBcel235.105' ],
-                    file('s3://annotation-cache/snpeff_cache/WBcel235.105/')
-                ])
+                input[2] = snpeff_cache
                 """
             }
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success},
                 { assert snapshot(
                     workflow.out.vcf_tbi.collect { [it[0], "${file(it[1]).name},variantsMD5:${path(it[1]).vcf.variantsMD5}", file(it[2]).name] },
                     workflow.out.reports.collect { it.collect { it instanceof String ? file(it).name : it } },
@@ -51,22 +53,24 @@ nextflow_workflow {
         when {
             workflow {
                 """
+                snpeff_cache = Channel.of([
+                    [ id:'WBcel235.105' ],
+                    file("${projectDir}")
+                ]).collect()
+
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
                 ])
                 input[1] = "WBcel235.105"
-                input[2] = Channel.of([
-                    [ id:'test', single_end:false ], // meta map
-                    file("${projectDir}", checkIfExists: true)
-                ])
+                input[2] = snpeff_cache
                 """
             }
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success},
                 { assert snapshot(workflow.out).match()}
             )
         }

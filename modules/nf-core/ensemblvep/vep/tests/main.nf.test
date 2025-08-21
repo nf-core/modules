@@ -16,6 +16,8 @@ nextflow_process {
         when {
             process {
                 """
+                vep_cache = Channel.of(file("${projectDir}")).collect()
+
                 input[0] = Channel.of([
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
@@ -24,7 +26,7 @@ nextflow_process {
                 input[1] = params.vep_genome
                 input[2] = params.vep_species
                 input[3] = params.vep_cache_version
-                input[4] = Channel.of(file('s3://annotation-cache/vep_cache/113_WBcel235/'))
+                input[4] = vep_cache
                 input[5] = Channel.value([
                     [id:"fasta"],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
@@ -53,6 +55,8 @@ nextflow_process {
         when {
             process {
                 """
+                vep_cache = Channel.of(file('s3://annotation-cache/vep_cache/113_WBcel235/')).collect()
+
                 input[0] = Channel.of([
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
@@ -61,7 +65,7 @@ nextflow_process {
                 input[1] = params.vep_genome
                 input[2] = params.vep_species
                 input[3] = params.vep_cache_version
-                input[4] = Channel.of(file('s3://annotation-cache/vep_cache/113_WBcel235/'))
+                input[4] = vep_cache
                 input[5] = Channel.value([
                     [id:"fasta"],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)

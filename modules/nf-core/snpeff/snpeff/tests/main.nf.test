@@ -15,15 +15,17 @@ nextflow_process {
         when {
             process {
                 """
+                snpeff_cache = Channel.of([
+                    [ id:'WBcel235.105' ],
+                    file('s3://annotation-cache/snpeff_cache/WBcel235.105/')
+                ]).collect()
+
                 input[0] = Channel.of([
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true)
                 ])
                 input[1] = params.snpeff_db
-                input[2] = Channel.of([
-                    [ id:'WBcel235.105' ],
-                    file('s3://annotation-cache/snpeff_cache/WBcel235.105/')
-                ])
+                input[2] = snpeff_cache
                 """
             }
         }
@@ -49,15 +51,17 @@ nextflow_process {
         when {
             process {
                 """
+                snpeff_cache = Channel.of([
+                    [ id:'WBcel235.105' ],
+                    file("${projectDir}")
+                ]).collect()
+
                 input[0] = Channel.of([
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true)
                 ])
                 input[1] = params.snpeff_db
-                input[2] = Channel.of([
-                    [ id:'WBcel235.105' ],
-                    file('s3://annotation-cache/snpeff_cache/WBcel235.105/')
-                ])
+                input[2] = snpeff_cache
                 """
             }
         }
