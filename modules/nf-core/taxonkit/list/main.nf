@@ -1,5 +1,5 @@
 process TAXONKIT_LIST {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
@@ -25,9 +25,9 @@ process TAXONKIT_LIST {
     """
     taxonkit \\
         list \\
-        $args \\
-        --data-dir $taxdb \\
-        --threads $task.cpus \\
+        ${args} \\
+        --data-dir ${taxdb} \\
+        --threads ${task.cpus} \\
         --out-file ${prefix}.tsv \\
         ${taxid? "<<< '$taxid'": taxidfile}
 
