@@ -46,6 +46,7 @@ nextflow_workflow {
                 }.set { input_ch }
 
                 input[0] = input_ch
+                // file cannot be hosted in the nf-core test-datasets repo due to licensing issues
                 input[1] = file('https://raw.githubusercontent.com/Vizgen/vpt-plugin-cellpose2/refs/heads/develop/example_analysis_algorithm/cellpose2_nuclei.json', checkIfExists: true) // Algorithm JSON
                 input[2] = "mosaic_(?P<stain>[\\\\w|-]+)_z(?P<z>[0-9]+).tif" // Image regex
                 input[3] = [] // No custom weights
