@@ -46,12 +46,11 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
 
     test("Single-End Output CRAM") {
@@ -88,12 +87,11 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
 
     test("Paired-End") {
@@ -148,8 +146,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
@@ -190,12 +188,11 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
 
     test("Paired-End - stub") {
@@ -251,12 +248,10 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
     }
-
-
 }
