@@ -44,9 +44,9 @@ input:
         type: integer
         description: Normalise the read depth to this value
 
-  - - sort_bam:
-        type: boolean
-        description: Optionally sort the BAM file after trimming
+  - sort_bam:
+      type: boolean
+      description: Optionally sort the BAM file after trimming
 
 output:
   primertrimmed_bam:
@@ -55,7 +55,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}.primertrimmed.bam:
+      - "*.primertrimmed*.bam":
           type: file
           description: BAM file with primer sequences soft clipped
           pattern: "*.primertrimmed.bam"
@@ -67,7 +67,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}.align_trim_report.tsv:
+      - "*.align_trim_report.tsv":
           type: file
           description: TSV report containing full details of primer trimming for each read / read pair
           pattern: "*.align_trim_report.tsv"
@@ -79,7 +79,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}.amp_depth_report.tsv:
+      - "*.amp_depth_report.tsv":
           type: file
           description: TSV report containing mean depth per amplicon
           pattern: "*.amp_depth_report.tsv"
