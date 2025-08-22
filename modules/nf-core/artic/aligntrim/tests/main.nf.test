@@ -19,7 +19,7 @@ nextflow_process {
                     file('https://github.com/quick-lab/primerschemes/raw/refs/heads/main/primerschemes/artic-sars-cov-2/400/v3.0.0/primer.bed', checkIfExists: true),
                     200
 				]
-                input[1] = false
+                input[1] = []
                 """
             }
         }
@@ -29,7 +29,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                         process.out.versions,
-                        process.out.primertrimmed_bam,
+                        file(process.out.primertrimmed_bam.get(0).get(1)).name,
                         process.out.align_trim_report,
                         process.out.amp_depth_report
                     ).match()
@@ -58,7 +58,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                         process.out.versions,
-                        process.out.primertrimmed_bam,
+                        file(process.out.primertrimmed_bam.get(0).get(1)).name,
                         process.out.align_trim_report,
                         process.out.amp_depth_report
                     ).match()
@@ -87,7 +87,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                         process.out.versions,
-                        process.out.primertrimmed_bam,
+                        file(process.out.primertrimmed_bam.get(0).get(1)).name,
                         process.out.align_trim_report,
                         process.out.amp_depth_report
                     ).match()
