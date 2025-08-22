@@ -37,6 +37,10 @@ input:
         Note that you will also need to specify `--index` and the database version name (e.g. 'mpa_vJan21_TOY_CHOCOPhlAnSGB_202103') in your module.conf ext.args for METAPHLAN_METAPHLAN!
       pattern: "*/"
       ontologies: []
+  - save_samfile:
+      type: boolean
+      description: |
+        Whether to save the SAM file produced by MetaPhlAn of read alignments to MetaPhlAn database gene sequences
 output:
   profile:
     - - meta:
@@ -74,6 +78,17 @@ output:
             against the MetaPHlAn marker database ( not compatible with `bowtie2out`
             files generated with MetaPhlAn versions below 3 )
           pattern: "*.{bowtie2out.txt}"
+          ontologies: []
+  sam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.sam":
+          type: file
+          description: SAM file produced by MetaPPhlAn of read alignments to MetaPhlAn database gene sequences
+          pattern: "*.{sam}"
           ontologies: []
   versions:
     - versions.yml:
