@@ -62,6 +62,8 @@ jobs:
         files: "${{ fromJson(needs.generate-matrix.outputs.conda-matrix) }}"
         profile: [docker, singularity]
         platform: ["linux/amd64", "linux/arm64"]
+    outputs:
+      container_info: ${{ steps.build_container.outputs.container_output }}
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
 
@@ -72,18 +74,20 @@ jobs:
           chmod +x /usr/local/bin/wave
 
       - name: Build ${{ matrix.profile }} container
+        id: build_container
         # FIXME Hack while iron out the CI
         continue-on-error: true
         env:
           PROFILE: ${{ (contains(matrix.profile, 'singularity') && '--singularity') || '' }}
         run: |
-          wave --conda-file "${{ matrix.files }}" \
+          output=$(wave --conda-file "${{ matrix.files }}" \
               $PROFILE \
               --freeze \
               --await \
               --platform ${{ matrix.platform }} \
               --tower-token ${{ secrets.TOWER_ACCESS_TOKEN }} \
-              --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }}
+              --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }})
+          echo "container_output=$output" >> $GITHUB_OUTPUT
 
   dockerfile-wave:
     # NOTE This should get skipped because generate-matrix won't run
@@ -102,6 +106,8 @@ jobs:
         # https://nextflow.slack.com/archives/C0477AS31T5/p1731755350230149?thread_ts=1731697852.661849&cid=C0477AS31T5
         # profile: [docker]
         platform: ["linux/amd64", "linux/arm64"]
+    outputs:
+      container_info: ${{ steps.build_container.outputs.container_output }}
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
 
@@ -120,67 +126,85 @@ jobs:
             return '${{ matrix.files }}'.replace('modules/nf-core/', '').replace('/Dockerfile', '').replace('/', '_');
 
       - name: Build ${{ matrix.platform }} container
+        id: build_container
         # NOTE If you're changing a Dockerfile and this is running, try to update the Dockerfile to build with wave
         continue-on-error: false
         run: |
-          wave -f "${{ matrix.files }}" \
+          output=$(wave -f "${{ matrix.files }}" \
               --freeze \
               --await \
               --platform ${{ matrix.platform }} \
               --build-repo quay.io/nf-core/modules/${{steps.registry-name.outputs.result}} \
               --cache-repository quay.io/nf-core/wave-cache/docker/${{ matrix.platform }} \
               --tower-token ${{ secrets.TOWER_ACCESS_TOKEN }} \
-              --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }}
+              --tower-workspace-id ${{ secrets.TOWER_WORKSPACE_ID }})
+          echo "container_output=$output" >> $GITHUB_OUTPUT
 
-  # bump-versions:
-  #   needs: generate-matrix
-  #   name: bump-versions
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/setup-java@8df1039502a15bceb9433410b1a100fbe190c53b # v4
-  #       with:
-  #         distribution: "temurin"
-  #         java-version: "17"
+  update-meta-yml:
+    needs: [generate-matrix, conda-wave, dockerfile-wave]
+    # Make sure this job runs even if some dependencies fail
+    if: always() && (needs.generate-matrix.outputs.conda-matrix != '[]' || needs.generate-matrix.outputs.dockerfile-matrix != '[]')
+    name: Update meta.yml with Container Info
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-  #     - uses: nf-core/setup-nextflow@v2
+      - name: Debug workflow state
+        run: |
+          echo "Conda Matrix: ${{ needs.generate-matrix.outputs.conda-matrix }}"
+          echo "Dockerfile Matrix: ${{ needs.generate-matrix.outputs.dockerfile-matrix }}"
+          echo "Conda Wave Result: ${{ needs.conda-wave.result }}"
+          echo "Conda Wave Output: ${{ needs.conda-wave.outputs.container_info }}"
+          echo "Dockerfile Wave Result: ${{ needs.dockerfile-wave.result }}"
+          echo "Dockerfile Wave Output: ${{ needs.dockerfile-wave.outputs.container_info }}"
 
-  #     - uses: nf-core/setup-nf-test@v1
-  #       with:
-  #         version: ${{ env.NFT_VER }}
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
 
-  #     - name: Bump Snapshot Versions
-  #       env:
-  #         # NFT_DIFF: "pdiff"
-  #         # NFT_DIFF_ARGS: "--line-numbers --width 120 --expand-tabs=2"
-  #         SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
-  #         SENTIEON_AUTH_MECH: "GitHub Actions - token"
-  #       run: |
-  #         # use "docker_self_hosted" if it runs on self-hosted runner and matrix.profile=docker
-  #         if [ "${{ matrix.profile }}" == "docker" ]; then
-  #           PROFILE="docker_self_hosted"
-  #         else
-  #           PROFILE=${{ matrix.profile }}
-  #         fi
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml
 
-  #         NFT_WORKDIR=~ \
-  #         nf-test test \
-  #           --profile=${{ matrix.profile }} \
-  #           --tap=test.tap \
-  #           # --ci \
-  #           --verbose \
-  #           --only-changed \
-  #           # --shard ${{ matrix.shard }}/${{ env.TOTAL_SHARDS }} \
-  #           # --filter ${{ matrix.filter }} \
-  #           --follow-dependencies \
-  #           --tag version \
-  #           --update-snapshot
+      - name: Update meta.yml files
+        run: |
+          # Process whatever outputs are available, ignoring failures
+          CONDA_FILES='${{ needs.generate-matrix.outputs.conda-matrix }}'
+          DOCKERFILE_FILES='${{ needs.generate-matrix.outputs.dockerfile-matrix }}'
+          CONDA_CONTAINERS='[]'
+          DOCKERFILE_CONTAINERS='[]'
 
-  #     - name: Commit & push version bumps
-  #       run: |
-  #         git config user.email "core@nf-co.re"
-  #         git config user.name "nf-core-bot"
-  #         git config push.default upstream
-  #         git add .
-  #         git status
-  #         git commit -m "[automated] Bump versions snapshot"
-  #         git push
+          # Use actual outputs if they exist
+          if [[ "${{ needs.conda-wave.result || 'skipped' }}" == "success" ]]; then
+            CONDA_CONTAINERS='${{ needs.conda-wave.outputs.container_info || '[]' }}'
+          fi
+
+          if [[ "${{ needs.dockerfile-wave.result || 'skipped' }}" == "success" ]]; then
+            DOCKERFILE_CONTAINERS='${{ needs.dockerfile-wave.outputs.container_info || '[]' }}'
+          fi
+
+          echo "Running update script with:"
+          echo "Conda files: $CONDA_FILES"
+          echo "Dockerfile files: $DOCKERFILE_FILES"
+          echo "Conda containers: $CONDA_CONTAINERS"
+          echo "Dockerfile containers: $DOCKERFILE_CONTAINERS"
+
+          python .github/scripts/update_meta_yml.py \
+            --conda-files "$CONDA_FILES" \
+            --dockerfile-files "$DOCKERFILE_FILES" \
+            --conda-containers "$CONDA_CONTAINERS" \
+            --dockerfile-containers "$DOCKERFILE_CONTAINERS"
+
+      - name: Commit changes
+        run: |
+          git config user.email "infrastructure@nf-co.re"
+          git config user.name "nf-core-bot"
+          git add "**/meta.yml"
+          git diff --staged --quiet || git commit -m "[automated] Update container info in meta.yml [skip ci]"
+          git push
