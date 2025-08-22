@@ -135,7 +135,7 @@ nextflow_process {
                         path(process.out.profile[0][1]).readLines()[2..5],
                         path(process.out.biom[0][1]).readLines().last().contains('Biological Observation Matrix'),
                         process.out.bt2out,
-                        sam(process.out.sam.get(0).get(1)).getHeaderMD5(),
+                        sam(process.out.sam.get(0).get(1)).getFileType(),
                         process.out.versions
                     ).match()
                 }
