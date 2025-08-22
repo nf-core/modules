@@ -1,0 +1,131 @@
+nextflow_process {
+
+    name "Test Process ARTIC_ALIGNTRIM"
+    script "../main.nf"
+    process "ARTIC_ALIGNTRIM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "artic"
+    tag "artic/aligntrim"
+
+    test("sarscov2 - paired_bam") {
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'test'],
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file('https://github.com/quick-lab/primerschemes/raw/refs/heads/main/primerschemes/artic-sars-cov-2/400/v3.0.0/primer.bed', checkIfExists: true),
+                    200
+				]
+                input[1] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out.versions,
+                        process.out.primertrimmed_bam,
+                        process.out.align_trim_report,
+                        process.out.amp_depth_report
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("sarscov2 - unpaired_bam") {
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'test'],
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/bam/test.sorted.bam', checkIfExists: true),
+                    file('https://github.com/quick-lab/primerschemes/raw/refs/heads/main/primerschemes/artic-sars-cov-2/400/v3.0.0/primer.bed', checkIfExists: true),
+                    200
+				]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out.versions,
+                        process.out.primertrimmed_bam,
+                        process.out.align_trim_report,
+                        process.out.amp_depth_report
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("sarscov2 - unpaired_bam_sort") {
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'test'],
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/bam/test.sorted.bam', checkIfExists: true),
+                    file('https://github.com/quick-lab/primerschemes/raw/refs/heads/main/primerschemes/artic-sars-cov-2/400/v3.0.0/primer.bed', checkIfExists: true),
+                    200
+				]
+                input[1] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out.versions,
+                        process.out.primertrimmed_bam,
+                        process.out.align_trim_report,
+                        process.out.amp_depth_report
+                    ).match()
+                }
+            )
+        }
+    }    
+
+    test("sarscov2 - align_trim - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'test'],
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file('https://github.com/quick-lab/primerschemes/raw/refs/heads/main/primerschemes/artic-sars-cov-2/400/v3.0.0/primer.bed', checkIfExists: true),
+                    200
+				]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert snapshot(
+                        process.out.versions,
+                        process.out.primertrimmed_bam,
+                        process.out.align_trim_report,
+                        process.out.amp_depth_report
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+}
