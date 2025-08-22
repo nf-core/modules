@@ -22,13 +22,15 @@ input:
         type: file
         description: BAM file
         pattern: "*.{bam}"
+        ontologies: []
     - bai:
         type: file
         description: BAM index file
         pattern: "*.{bai}"
+        ontologies: []
 output:
-  - hla_type:
-      - meta:
+  hla_type:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -37,8 +39,9 @@ output:
           type: file
           description: HLA type
           pattern: "${prefix}/*.tsv"
-  - coverage_plot:
-      - meta:
+          ontologies: []
+  coverage_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,11 +50,14 @@ output:
           type: file
           description: OptiType coverage plot
           pattern: "${prefix}/*.pdf"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@apeltzer"
 maintainers:

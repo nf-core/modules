@@ -24,16 +24,17 @@ input:
         description: pytor file containing cnv calls. To merge calls from multiple samples
           use a list of files.
         pattern: "*.{pytor}"
-  - - bin_sizes:
-        type: string
-        description: list of binsizes separated by space e.g. "1000 10000" and "1000"
-  - - output_format:
-        type: string
-        description: output format of the cnv calls. Valid entries are "tsv", "vcf",
-          and "xls"
+        ontologies: []
+  - bin_sizes:
+      type: string
+      description: list of binsizes separated by space e.g. "1000 10000" and "1000"
+  - output_format:
+      type: string
+      description: output format of the cnv calls. Valid entries are "tsv", "vcf", and
+        "xls"
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -42,8 +43,9 @@ output:
           type: file
           description: vcf file containing cnv calls
           pattern: "*.{vcf}"
-  - tsv:
-      - meta:
+          ontologies: []
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -52,8 +54,10 @@ output:
           type: file
           description: tsv file containing cnv calls
           pattern: "*.{tsv}"
-  - xls:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  xls:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -62,11 +66,14 @@ output:
           type: file
           description: xls file containing cnv calls
           pattern: "*.{xls}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sima-r"
   - "@ramprasadn"

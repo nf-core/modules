@@ -26,9 +26,10 @@ input:
         type: file
         description: FASTA file
         pattern: "*.{fasta}"
+        ontologies: []
 output:
-  - wig:
-      - meta:
+  wig:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -37,11 +38,14 @@ output:
           type: file
           description: GC Wiggle track file
           pattern: "*.{wig.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@kaurravneet4123"
 maintainers:

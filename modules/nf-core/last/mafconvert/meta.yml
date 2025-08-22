@@ -25,6 +25,7 @@ input:
         description: Multiple Alignment Format (MAF) file, optionally compressed with
           gzip
         pattern: "*.{maf.gz,maf}"
+        ontologies: []
     - format:
         type: string
         description: Output format (one of axt, bam, blast, blasttab, cram, chain, gff,
@@ -36,9 +37,10 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - fasta:
         type: file
-        description: Genome file in FASTA format for CRAM conversion.  If compressed it
-          must be done in BGZF format (like with the bgzip tool).
+        description: Genome file in FASTA format for CRAM conversion.  If compressed
+          it must be done in BGZF format (like with the bgzip tool).
         pattern: "*.{fasta,fasta.gz,fasta.bgz,fasta.bgzf}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -48,6 +50,7 @@ input:
         type: file
         description: Genome index file needed for CRAM conversion.
         pattern: "*.fai"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -58,6 +61,7 @@ input:
         description: Genome index file needed for CRAM conversion when the genome file
           was compressed with the BGZF algorithm.
         pattern: "*.gzi"
+        ontologies: []
   - - meta5:
         type: map
         description: |
@@ -67,9 +71,10 @@ input:
         type: file
         description: Samtools dictionary of the genome file.
         pattern: "*.dict"
+        ontologies: []
 output:
-  - axt_gz:
-      - meta:
+  axt_gz:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -78,8 +83,10 @@ output:
           type: file
           description: Gzipped pairwise alignment in Axt (Blastz) format (optional)
           pattern: "*.axt.gz"
-  - bam:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -88,8 +95,9 @@ output:
           type: file
           description: Pairwise alignment in BAM format (optional)
           pattern: "*.bam"
-  - bed_gz:
-      - meta:
+          ontologies: []
+  bed_gz:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -98,8 +106,10 @@ output:
           type: file
           description: Gzipped pairwise alignment in BED format (optional)
           pattern: "*.bed.gz"
-  - blast_gz:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  blast_gz:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -108,8 +118,10 @@ output:
           type: file
           description: Gzipped pairwise alignment in blast format (optional)
           pattern: "*.blast.gz"
-  - blasttab_gz:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  blasttab_gz:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -118,8 +130,10 @@ output:
           type: file
           description: Gzipped pairwise alignment in blasttab format (optional)
           pattern: "*.blasttab.gz"
-  - chain_gz:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  chain_gz:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -128,8 +142,10 @@ output:
           type: file
           description: Gzipped pairwise alignment in UCSC chain format (optional)
           pattern: "*.chain.gz"
-  - cram:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  cram:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -138,12 +154,9 @@ output:
           type: file
           description: Pairwise alignment in CRAM format (optional)
           pattern: "*.cram"
-      - fasta:
-          type: file
-          description: Genome file to recover sequences from the CRAM file (optional)
-          pattern: "*.{fasta,fasta.gz,fasta.bgz,fasta.bgzf}"
-  - gff_gz:
-      - meta:
+          ontologies: []
+  gff_gz:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -152,8 +165,10 @@ output:
           type: file
           description: Gzipped pairwise alignment in GFF format (optional)
           pattern: "*.gff.gz"
-  - html_gz:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  html_gz:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -162,8 +177,10 @@ output:
           type: file
           description: Gzipped pairwise alignment in HTML format (optional)
           pattern: "*.html.gz"
-  - psl_gz:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  psl_gz:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -172,8 +189,10 @@ output:
           type: file
           description: Gzipped pairwise alignment in PSL (BLAT) format (optional)
           pattern: "*.psl.gz"
-  - sam_gz:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  sam_gz:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -182,8 +201,10 @@ output:
           type: file
           description: Gzipped pairwise alignment in SAM format (optional)
           pattern: "*.sam.gz"
-  - tab_gz:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tab_gz:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -192,11 +213,15 @@ output:
           type: file
           description: Gzipped pairwise alignment in TAB format (optional)
           pattern: "*.tab.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@aleksandrabliznina"
   - "@charles-plessy"

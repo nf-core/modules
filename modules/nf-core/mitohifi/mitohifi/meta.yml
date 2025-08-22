@@ -6,7 +6,8 @@ keywords:
   - PacBio
 tools:
   - "mitohifi.py":
-      description: A python workflow that assembles mitogenomes from Pacbio HiFi reads
+      description: A python workflow that assembles mitogenomes from Pacbio HiFi
+        reads
       homepage: https://github.com/marcelauliano/MitoHiFi
       documentation: https://github.com/marcelauliano/MitoHiFi
       tool_dev_url: https://github.com/marcelauliano/MitoHiFi
@@ -21,179 +22,237 @@ input:
           e.g. [ id:'test', single_end:false ]
     - input:
         type: file
-        description: Path to PacBio HiFi reads or contigs. Type (-r/-c) is specified
-          in ext.args2
+        description: Path to PacBio HiFi reads or fasta contigs
         pattern: "*.{fa,fa.gz,fasta,fasta.gz}"
-  - - ref_fa:
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - ref_fa:
         type: file
-        description: Reference sequence
+        description: Reference mitochondrial genome to align reads or contigs against
         pattern: "*.{fa,fasta}"
-  - - ref_gb:
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - ref_gb:
         type: file
-        description: Reference annotation
+        description: Reference mitochondrial genome annotation
         pattern: "*.{gb}"
-  - - input_mode:
-        type: string
-        description: Specifies type of input - reads or contigs
-        pattern: "{r,c}"
-  - - mito_code:
-        type: string
-        description: Mitochondrial genetic code
+        ontologies:
+          - edam: http://edamontology.org/format_1936 # GenBank
+  - input_mode:
+      type: string
+      description: Specifies type of input - reads or contigs
+      pattern: "{reads,contigs}"
+  - mito_code:
+      type: integer
+      description: |
+        Integer reference number of mitochondrial genetic code - see
+        https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi for details.
 output:
-  - fasta:
-      - meta:
-          type: file
-          description: Mitochondrial sequence
-          pattern: "*.{fasta,fa}"
-      - "*fasta":
-          type: file
-          description: Mitochondrial sequence
-          pattern: "*.{fasta,fa}"
-  - stats:
-      - meta:
+  fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*contigs_stats.tsv":
+      - final_mitogenome.fasta:
           type: file
-          description: Contigs statistics
-          pattern: "*contigs_stats.tsv"
-  - gb:
-      - meta:
+          description: Fasta file containing final chosen mitochondrial sequence
+          pattern: "final_mitogenome.fasta"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - contigs_stats.tsv:
           type: file
-          description: Genome annotation in case mitofinder was used
-          pattern: "*.gb"
-      - "*gb":
+          description: Statistics of all identified mitochondrial contigs
+          pattern: "contigs_stats.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  gb:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - final_mitogenome.gb:
           type: file
-          description: Genome annotation in case mitofinder was used
-          pattern: "*.gb"
-  - gff:
-      - meta:
+          description: |
+            GB annotation file of final chosen mitochondrial sequence,
+            if Mitofinder mode was used for annotation.
+          pattern: "final_mitogenome.gb"
+          ontologies:
+            - edam: http://edamontology.org/format_1936 # GenBank
+  gff:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - final_mitogenome.gff:
           type: file
-          description: Genome annotation in case mitos was used
-          pattern: "*.gff"
-      - "*gff":
+          description: |
+            GB annotation file of final chosen mitochondrial sequence,
+            if Mitos mode was used for annotation.
+          pattern: "final_mitogenome.gff"
+          ontologies:
+            - edam: http://edamontology.org/format_1975 # GFFv3
+  all_potential_contigs:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - all_potential_contigs.fa:
           type: file
-          description: Genome annotation in case mitos was used
-          pattern: "*.gff"
-  - all_potential_contigs:
-      - meta:
-          type: file
-          description: Contains sequences of all potential contigs
-          pattern: "*all_potential_contigs.fa"
-      - "*all_potential_contigs.fa":
-          type: file
-          description: Contains sequences of all potential contigs
-          pattern: "*all_potential_contigs.fa"
-  - contigs_annotations:
-      - meta:
+          description: Fasta file containing sequences of all potential mitogenome contigs
+          pattern: "all_potential_contigs.fa"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  contigs_annotations:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - contigs_annotations.png:
           type: file
           description: Graphical representation of annotated genes and tRNAs
-          pattern: "*contigs_annotations.png"
-      - "*contigs_annotations.png":
-          type: file
-          description: Graphical representation of annotated genes and tRNAs
-          pattern: "*contigs_annotations.png"
-  - contigs_circularization:
-      - meta:
+          pattern: "contigs_annotations.png"
+          ontologies:
+            - edam: http://edamontology.org/format_3603 # PNG
+  contigs_circularization:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - contigs_circularization/:
           type: directory
           description: Contains circularization reports
-          pattern: "*contigs_circularization"
-      - "*contigs_circularization":
-          type: directory
-          description: Contains circularization reports
-          pattern: "*contigs_circularization"
-  - contigs_filtering:
-      - meta:
-          type: directory
-          description: Contains files with initial blast matches
-          pattern: "*contigs_filtering"
-      - "*contigs_filtering":
+          pattern: "contigs_circularization/"
+  contigs_filtering:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "contigs_filtering/":
           type: directory
           description: Contains files with initial blast matches
-          pattern: "*contigs_filtering"
-  - coverage_mapping:
-      - meta:
+          pattern: "contigs_filtering/"
+  coverage_mapping:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "coverage_mapping/":
           type: directory
           description: Contains statistics on coverage mapping
-          pattern: "*coverage_mapping"
-      - "*coverage_mapping":
-          type: directory
-          description: Contains statistics on coverage mapping
-          pattern: "*coverage_mapping"
-  - coverage_plot:
-      - meta:
+          pattern: "coverage_mapping/"
+  coverage_plot:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - coverage_plot.png:
           type: file
           description: Read coverage plot for mitochondrial contigs
-          pattern: "*coverage_plot.png"
-      - "*coverage_plot.png":
+          pattern: "coverage_plot.png"
+          ontologies:
+            - edam: http://edamontology.org/format_3603 # PNG
+  final_mitogenome_annotation:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - final_mitogenome.annotation.png:
           type: file
-          description: Read coverage plot for mitochondrial contigs
-          pattern: "*coverage_plot.png"
-  - final_mitogenome_annotation:
-      - meta:
-          type: file
-          description: Graphical representation of annotated genes for the final mito
-            contig
-          pattern: "*final_mitogenome.annotation.png"
-      - "*final_mitogenome.annotation.png":
-          type: file
-          description: Graphical representation of annotated genes for the final mito
-            contig
-          pattern: "*final_mitogenome.annotation.png"
-  - final_mitogenome_choice:
-      - meta:
+          description: |
+            Graphical representation of annotated genes for the final
+            mitogenome contig
+          pattern: "final_mitogenome.annotation.png"
+          ontologies:
+            - edam: http://edamontology.org/format_3603 # PNG
+  final_mitogenome_choice:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - final_mitogenome_choice/:
           type: directory
           description: Files with potential contigs clusterings and alignments
-          pattern: "*final_mitogenome_choice"
-      - "*final_mitogenome_choice":
-          type: directory
-          description: Files with potential contigs clusterings and alignments
-          pattern: "*final_mitogenome_choice"
-  - final_mitogenome_coverage:
-      - meta:
+          pattern: "final_mitogenome_choice/"
+  final_mitogenome_coverage:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - final_mitogenome.coverage.png:
           type: file
-          description: Graphical representation of reads coverage plot for the final mito
-            contig
-          pattern: "*final_mitogenome.coverage.png"
-      - "*final_mitogenome.coverage.png":
-          type: file
-          description: Graphical representation of reads coverage plot for the final mito
-            contig
-          pattern: "*final_mitogenome.coverage.png"
-  - potential_contigs:
-      - meta:
+          description: |
+            Graphical representation of reads coverage plot for the
+            final mitogenome contig
+          pattern: "final_mitogenome.coverage.png"
+          ontologies:
+            - edam: http://edamontology.org/format_3603 # PNG
+  potential_contigs:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "potential_contigs/":
           type: directory
           description: Files with sequences and annotations of the potential contigs
-          pattern: "*potential_contigs"
-      - "*potential_contigs":
-          type: directory
-          description: Files with sequences and annotations of the potential contigs
-          pattern: "*potential_contigs"
-  - reads_mapping_and_assembly:
-      - meta:
-          type: directory
-          description: Read mapping files for run from the raw reads
-          pattern: "*reads_mapping_and_assembly"
-      - "*reads_mapping_and_assembly":
+          pattern: "potential_contigs/"
+  reads_mapping_and_assembly:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - reads_mapping_and_assembly/:
           type: directory
           description: Read mapping files for run from the raw reads
-          pattern: "*reads_mapping_and_assembly"
-  - shared_genes:
-      - meta:
+          pattern: "reads_mapping_and_assembly/"
+  shared_genes:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - shared_genes.tsv:
           type: directory
           description: Report on genes shared with the reference genome
-          pattern: "*shared_genes.tsv"
-      - "*shared_genes.tsv":
-          type: directory
-          description: Report on genes shared with the reference genome
-          pattern: "*shared_genes.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          pattern: "shared_genes.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ksenia-krasheninnikova"
 maintainers:

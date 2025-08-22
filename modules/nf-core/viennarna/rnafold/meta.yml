@@ -33,34 +33,42 @@ input:
         description: |
           A fasta file containing RNA or transcript sequences
         pattern: "*.{fasta,fa}"
+        ontologies: []
 output:
-  - rnafold_txt:
-      - meta:
+  rnafold_txt:
+    - - meta:
           type: file
           description: The text Output of RNAfold that
           pattern: "*.{fold}"
+          ontologies: []
       - "*.fold":
           type: file
           description: The text Output of RNAfold that
           pattern: "*.{fold}"
-  - rnafold_ps:
-      - meta:
+          ontologies: []
+  rnafold_ps:
+    - - meta:
           type: file
           description: The text Output of RNAfold that
-          pattern: "*.ss"
+          pattern: "*.{fold}"
+          ontologies: []
       - "*.ps":
           type: file
           description: The text Output of RNAfold that
           pattern: "*.ss"
-  - versions:
-      - meta:
+          ontologies: []
+  versions:
+    - - meta:
           type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          description: The text Output of RNAfold that
+          pattern: "*.{fold}"
+          ontologies: []
       - versions.yml:
           type: file
           description: File containing software versions
           pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@kokul-atx"
 maintainers:
