@@ -1,0 +1,55 @@
+name: "baysor_segfree"
+description: Extract neighborhood composition vectors (NVCs) from a dataset.
+keywords:
+  - neighborhood
+tools:
+  - "baysor":
+    description: "Baysor is a tool that segments cells using spatial gene expression maps. Optionally, segmentation masks can be given as additional input."
+    homepage: "https://kharchenkolab.github.io/Baysor/dev/"
+    documentation: "https://kharchenkolab.github.io/Baysor/dev/"
+    tool_dev_url: "https://github.com/kharchenkolab/Baysor"
+    doi: "https://doi.org/10.1038/s41587-021-01044-w"
+    licence: ["MIT license"]
+    identifier:
+
+## baysor_segfree requires a transcript map of the data and a configuration file with argument values
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - transcripts_csv:
+        type: file
+        description: CSV file
+        pattern: "*.csv"
+
+  - config_toml:
+    type: file
+    description: TOML file with config arguments
+    pattern: "*.toml"
+
+## neighborhood composition vectors
+output:
+  - preview_html:
+      - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+      - "ncvs.loom":
+        type: file
+        description: loom file with neighborhood results
+        pattern: "preview.html"
+
+  - ncvs_log:
+    type: file
+    description: |
+      Log file with summary statistics
+    pattern: "ncvs_segfree_log.log"
+
+
+authors:
+  - "@sebgoti8"
+maintainers:
+  - "@sebgoti8"
