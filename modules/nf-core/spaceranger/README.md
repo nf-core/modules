@@ -1,6 +1,6 @@
 # Updating the docker container and making a new module release
 
-Space Ranger is a commercial tool by 10X Genomics. The container provided for the spaceranger nf-core module is not provided nor supported by 10x Genomics. Updating the Space Ranger version in the container and pushing the update to Dockerhub needs to be done manually.
+Space Ranger is a commercial tool by 10X Genomics. The container provided for the spaceranger nf-core module is not provided nor supported by 10x Genomics. Updating the Space Ranger version in the container and pushing the update to quay.io needs to be done manually.
 
 1. Navigate to the [Space Ranger download page](https://support.10xgenomics.com/spatial-gene-expression/software/downloads/latest) and get a link for the Space Ranger downloads
 
