@@ -110,6 +110,12 @@ process BUSCO_BUSCO {
     mv ${prefix}-busco/*/short_summary.*.{json,txt} . || echo "Short summaries were not available: No genes were found."
     mv ${prefix}-busco/logs/busco.log ${prefix}-busco.log
 
+    if grep 'Run failed; check logs' ${prefix}-busco.batch_summary.txt > /dev/null
+    then
+        echo "Busco run failed"
+        exit 1
+    fi
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         busco: \$( busco --version 2> /dev/null | sed 's/BUSCO //g' )
