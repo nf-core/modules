@@ -6,9 +6,9 @@ nextflow_process {
 
     tag "bwa/index"
     tag "modules"
-    tag "parabricks/star"
-    tag "modules_nfcore"
     tag "parabricks"
+    tag "parabricks/rnafq2bam"
+    tag "modules_nfcore"
     tag "gpu"
 
     config './nextflow.config'
@@ -39,7 +39,7 @@ nextflow_process {
                     """
                     input[0] = Channel.of([
                         [ id:'test' ], // meta map
-                        file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                     ])
                     """
                 }
@@ -48,7 +48,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--low-memory'
+                module_args = '--low-memory --read-files-command zcat'
                 // Ref: https://forums.developer.nvidia.com/t/problem-with-gpu/256825/6
                 // Parabricks’s fq2bam requires 24GB of memory.
                 // Using --low-memory for testing

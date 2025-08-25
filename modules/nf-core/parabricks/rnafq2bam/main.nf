@@ -29,17 +29,10 @@ process PARABRICKS_STAR {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def in_fq_command = meta.single_end ? "--in-se-fq $reads" : "--in-fq $reads"
-
+    // if (reads.name.endsWith('.gz')) {
+    //     error "Input FASTQ files must be uncompressed. Please provide uncompressed FASTQ files."
+    // }
     def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
-
-    // Mostly for testing purposes, to allow the genome directory to be passed as tarball
-    if genome_lib_dir.endswith('tar.gz') || genome_lib_dir.endswith('tar') || genome_lib_dir.endswith('tgz') || genome_lib_dir.endswith('zip') {
-        genome_lib_dir = "genome_lib_dir"
-        """
-        mkdir -p $genome_lib_dir
-        tar -xzf ${genome_lib_dir} -C $genome_lib_dir
-        """
-    } 
 
     """
     INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
