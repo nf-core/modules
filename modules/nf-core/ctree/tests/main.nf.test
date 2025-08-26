@@ -12,9 +12,10 @@ nextflow_process {
         when {
             process {
                 """
-                meta = [ id : "test" ]
-                ctree_input = file(params.modules_testdata_base_path + "delete_me/ctree/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_mobster_st_best_fit.rds", checkIfExists: true)
-                input[0] = tuple(meta, ctree_input)
+                input[0] = [
+                    [ id : "test" ],
+                    file(params.modules_testdata_base_path + "delete_me/ctree/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_mobster_st_best_fit.rds", checkIfExists: true)
+                ]
                 """
             }
         }
@@ -33,9 +34,10 @@ nextflow_process {
         when {
             process {
                 """
-                meta = [ id : "test" ]
-                ctree_input = file(params.modules_testdata_base_path + "delete_me/ctree/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_mobster_st_best_fit.rds", checkIfExists: true)
-                input[0] = tuple(meta, ctree_input)
+                input[0] = [
+                    [ id : "test" ],
+                    file(params.modules_testdata_base_path + "delete_me/ctree/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_mobster_st_best_fit.rds", checkIfExists: true)
+                ]
                 """
             }
         }
@@ -53,9 +55,10 @@ nextflow_process {
         when {
             process {
                 """
-                meta = [ id : "test" ]
-                ctree_input = file(params.modules_testdata_base_path + "delete_me/ctree/HCC1395_WXS_HCC1395_cluster_table.csv", checkIfExists: true)
-                input[0] = tuple(meta, ctree_input)
+                input[0] = [
+                    [ id : "test" ],
+                    file(params.modules_testdata_base_path + "delete_me/ctree/HCC1395_WXS_HCC1395_cluster_table.csv", checkIfExists: true)
+                ]
                 """
             }
         }
@@ -74,9 +77,10 @@ nextflow_process {
         when {
             process {
                 """
-                meta = [ id : "test" ]
-                ctree_input = file(params.modules_testdata_base_path + "delete_me/ctree/HCC1395_WXS_HCC1395_cluster_table.csv", checkIfExists: true)
-                input[0] = tuple(meta, ctree_input)
+                input[0] = [
+                    [ id : "test" ],
+                    file(params.modules_testdata_base_path + "delete_me/ctree/HCC1395_WXS_HCC1395_cluster_table.csv", checkIfExists: true)
+                ]
                 """
             }
         }
