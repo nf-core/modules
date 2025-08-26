@@ -490,10 +490,16 @@ nextflow_workflow {
                 ch_contrasts = Channel.of([[], [], [], [], [], []])
                 ch_samplesheet = Channel.of([[], []])
                 ch_featuresheet = Channel.of([
-                    [],
+                    [
+                        'id':'treatment_mCherry_hND6',  
+                        'method_differential':'deseq2',
+                        'params': [
+                            'differential_method': 'deseq2'
+                        ]
+                    ],
                     file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/differentialabundance/modules_testdata/Mus_musculus.anno.tsv", checkIfExists: true),
-                    [],
-                    []
+                    'gene_id',      // features_id
+                    'gene_name'     // features_symbol
                 ])
 
                 input[0] = ch_input
