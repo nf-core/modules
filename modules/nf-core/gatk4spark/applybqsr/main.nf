@@ -25,7 +25,8 @@ process GATK4SPARK_APPLYBQSR {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "cram"
+    // suffix can only be sam, bam or cram, cram being the sensible default
+    def suffix = task.ext.suffix && task.ext.suffix.matches("bam|sam") ? task.ext.suffix : "cram"
     def interval_command = intervals ? "--intervals ${intervals}" : ""
 
     def avail_mem = 3072
