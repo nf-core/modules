@@ -5,6 +5,14 @@ nextflow_workflow {
     workflow "MMSEQS_FASTA_CLUSTER"
     config './nextflow.config'
 
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/mmseqs_fasta_cluster"
+    tag "mmseqs/createdb"
+    tag "mmseqs/cluster"
+    tag "mmseqs/linclust"
+    tag "mmseqs/createtsv"
+
     test("fasta - linclust") {
 
         when {
