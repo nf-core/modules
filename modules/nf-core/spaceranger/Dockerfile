@@ -2,7 +2,6 @@
 
 FROM mambaorg/micromamba:1.5.10-jammy
 ARG SPACERANGER_VER="4.0.1"
-# NOTE you need to go fill out the form to get a new download link
 ARG SPACERANGER_URL="https://cf.10xgenomics.com/releases/spatial-exp/spaceranger-4.0.1.tar.gz?Expires=1756263067&Key-Pair-Id=APKAI7S6A5RYOXBWRPDA&Signature=ZuXyhILJpqvX67FsKT4HuAW4JAW0pkLCDphqWCpqe553ujNcB9r13EmZU-yS7Wwmrfr7iPPYZsBGs2CEHQMjgJa0EhnB3kAIgTu33mtnBlZscmjbPx~AkgmvCJxrF06hXfU7nPIG0nQH2TbwAV2XAY67~-IHn8xrLZhEYdIFedIcsbpXJ0RMsb~JDyCaqqykIRnDsS85fAJ-nO7zaiv53iUsN4PgvVwF9vBJslLQzH-pA44ihpA0C4ibHxXIztdKbo72Gu-udibDvmiXBoM3Sb7E1-W6VCp8z0R9Yzwpv1POjYel7bVVc8bZd1Nj3vNNamr2T0fyP1XHnHcbDCZlEg__" \"
 ARG SPACERANGER_SHA256="eacb4a3e7a342424a57ac757fce95d536c1e0099fd8fef8d249f8afb105d6d91"
 LABEL org.opencontainers.image.authors="Gisela Gabernet <gisela.gabernet@gmail.com>,Edmund Miller <edmund@nf-co.re>"
