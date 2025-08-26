@@ -5,6 +5,22 @@ repos:
       - id: prettier
         additional_dependencies:
           - prettier@3.6.2
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+        exclude: |
+          (?x)^(
+              .*\.snap$
+          )$
+      - id: end-of-file-fixer
+        exclude: |
+          (?x)^(
+              .*\.snap$
+          )$
+
   - repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 0.33.2
     hooks:
@@ -33,11 +49,6 @@ repos:
         files: \.py$
         args: [--fix, --exit-non-zero-on-fix, "--select", "I,E1,E4,E7,E9,F,UP,N"] # sort imports and fix (rules taken from nf-core/tools)
       - id: ruff-format # formatter
-  - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
-    rev: "3.2.1"
-    hooks:
-      - id: editorconfig-checker
-        alias: ec
     # NOTE This runs with Docker instead of the binary. Hoping anyone messing with Dockerfiles has Docker installed
   - repo: https://github.com/hadolint/hadolint
     rev: v2.12.0
