@@ -66,6 +66,18 @@ input:
         required: false
         ontologies:
           - edam: http://edamontology.org/format_3475 # TSV
+    - features_id:
+        type: string
+        description: |
+          Column name in the annotation file containing the feature identifiers
+          (e.g., 'gene_id', 'protein_id', 'metabolite_id')
+        required: true
+    - features_symbol:
+        type: string
+        description: |
+          Column name in the annotation file containing the feature symbols/names
+          (e.g., 'gene_name', 'protein_name', 'metabolite_name')
+        required: true
 output:
   dc_estimate:
     - - meta:
