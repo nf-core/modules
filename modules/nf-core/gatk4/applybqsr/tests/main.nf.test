@@ -45,10 +45,6 @@ nextflow_process {
     test("sarscov2 - bam in, cram out") {
 
         when {
-            params {
-                module_suffix = "cram"
-            }
-
             process {
                 """
                 input[0] = [
@@ -111,10 +107,6 @@ nextflow_process {
 
     test("sarscov2 - cram") {
         when {
-            params {
-                module_suffix = "cram"
-            }
-
             process {
                 """
                 input[0] = [
@@ -148,10 +140,6 @@ nextflow_process {
         options "-stub"
 
         when {
-            params {
-                module_suffix = "cram"
-            }
-
             process {
                 """
                 input[0] = [
