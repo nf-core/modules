@@ -40,8 +40,9 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     // Also, reorganize the structure to match them with the modules' input organization
 
     ch_input_for_other = ch_input
+        .join(ch_featuresheet, by: 0)
         .multiMap {
-            meta, file, genesets, background, method ->
+            meta, file, genesets, background, method, features_sheet, features_id, features_symbol ->
             def meta_with_method = meta + [ 'functional_method': method ]
             input:
                 [ meta_with_method, file ]
@@ -49,8 +50,10 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
                 [ meta_with_method, genesets ]
             background:
                 [ meta_with_method, background ]
+            featuresheet:
+                [ meta_with_method, features_sheet]
         }
-
+    
     // In the case of GSEA, it needs additional files coming from other channels that other methods don't use
     // here we define the input channel for the GSEA section
 
@@ -125,7 +128,7 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     DECOUPLER(
         ch_input_for_other.input.filter{ it[0].functional_method == 'decoupler' },
         ch_input_for_other.genesets.filter{ it[0].functional_method == 'decoupler'},
-        ch_featuresheet.map{ meta, features, features_id, features_symbol -> [meta, features] }
+        ch_input_for_other.featuresheet.filter{ it[0].functional_method == 'decoupler'}
     )
 
     // ----------------------------------------------------
