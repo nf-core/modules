@@ -6,7 +6,6 @@ parse_args = function(x) {
     # giving errors when we have lists like c(xxx, xxx) since it will separate it
     # args_list = unlist(strsplit(x, ', ')[[1]])
     args_list = unlist(strsplit(x, ", (?=[^)]*(?:\\\\(|\$))", perl=TRUE))
-    # args_vals = lapply(args_list, function(x) strsplit(x, split=":")[[1]])
     args_vals = lapply(args_list, function(x) {
         x_splt = strsplit(x, split=":")[[1]]
         c(x_splt[1],  paste(x_splt[2:length(x_splt)], collapse=":"))
@@ -68,14 +67,13 @@ initialize_ctree_obj_pyclone = function(ctree_input) {
     # cluster | nMuts | is.driver | is.clonal | sample1 | sample2 | ...
     CCF_table = ctree_input %>%
         dplyr::select(sample_id, cluster, nMuts, is.driver, is.clonal, CCF) %>%
-        dplyr::mutate(is.driver=replace(is.driver, is.driver=="", "FALSE")) %>%
-        dplyr::mutate(is.driver=as.logical(is.driver)) %>%
+        dplyr::mutate(is.driver=ifelse(is.driver=="", FALSE, TRUE)) %>%
         dplyr::filter(cluster!="Tail") %>%
-        dplyr::mutate(cluster=as.character(cluster)) %>%
         dplyr::group_by(cluster) %>%
         dplyr::mutate(is.driver=any(is.driver)) %>%
         dplyr::filter(any(CCF>0)) %>%
-        dplyr::ungroup() %>% unique() %>%
+        dplyr::ungroup() %>%
+        unique() %>%
         tidyr::pivot_wider(names_from="sample_id", values_from="CCF", values_fill=0)
 
     # the driver table must contain patient and variant IDs and report clonality and driver status
@@ -83,7 +81,6 @@ initialize_ctree_obj_pyclone = function(ctree_input) {
     drivers_table = ctree_input %>%
         dplyr::filter(cluster %in% CCF_table[["cluster"]]) %>%
         dplyr::mutate(is.driver=as.logical(is.driver)) %>%
-        dplyr::mutate(cluster=as.character(cluster)) %>%
         dplyr::select(patientID, sample_id, variantID, cluster, is.driver, is.clonal, CCF) %>%
         dplyr::filter(is.driver==TRUE) %>%
         dplyr::mutate(variantID=replace(variantID, is.na(variantID), "")) %>%
@@ -92,13 +89,14 @@ initialize_ctree_obj_pyclone = function(ctree_input) {
     samples = unique(ctree_input[["sample_id"]])  # if multisample, this is a list
     patient = unique(ctree_input[["patientID"]])
 
-    CCF_table = add_dummy_driver(CCF_table, variant_colname="variantID", is_driver_colname="is.driver")
+    CCF_table = add_dummy_driver(CCF_table, variant_colname="variantID", is_driver_colname="is.driver") %>%
+        dplyr::mutate(cluster=as.character(cluster))
 
     if (nrow(drivers_table)==0) {
         drivers_table = CCF_table %>%
-        dplyr::filter(is.driver) %>%
-        dplyr::select(-nMuts) %>%
-        dplyr::mutate(patientID=patient)
+            dplyr::filter(is.driver) %>%
+            dplyr::select(-nMuts) %>%
+            dplyr::mutate(patientID=patient)
     }
 
     ctree_init = list("CCF_table"=CCF_table,
@@ -185,18 +183,23 @@ if (do_fit & !is.null(trees)) {
 
 
 # Version export
+
 f = file("versions.yml","w")
 ctree_version = sessionInfo()\$otherPkgs\$ctree\$Version
 mobster_version = sessionInfo()\$otherPkgs\$mobster\$Version
 viber_version = sessionInfo()\$otherPkgs\$VIBER\$Version
 cli_version = sessionInfo()\$otherPkgs\$cli\$Version
 dplyr_version = sessionInfo()\$otherPkgs\$dplyr\$Version
+tidyr_version = sessionInfo()\$otherPkgs\$tidyr\$Version
 ggplot2_version = sessionInfo()\$otherPkgs\$ggplot2\$Version
+ggpubr_version = sessionInfo()\$otherPkgs\$ggpubr\$Version
 writeLines(paste0('"', "$task.process", '"', ":"), f)
 writeLines(paste("    ctree:", ctree_version), f)
 writeLines(paste("    mobster:", mobster_version), f)
 writeLines(paste("    VIBER:", viber_version), f)
 writeLines(paste("    cli:", cli_version), f)
 writeLines(paste("    dplyr:", dplyr_version), f)
+writeLines(paste("    tidyr:", tidyr_version), f)
 writeLines(paste("    ggplot2:", ggplot2_version), f)
+writeLines(paste("    ggpubr:", ggpubr_version), f)
 close(f)
