@@ -41,6 +41,8 @@ def parse_ext_args(args_string: str):
     parser.add_argument("--column", type=str, default="log2FoldChange", help="Column name to use for transposition")
     parser.add_argument("--ensembl_ids", type=str, default="FALSE", help="Convert ENSEMBL IDs to gene symbols if TRUE")
     parser.add_argument("--methods", type=str, default = "ulm", help="Comma-separated list of methods to use (e.g., 'mlm,ulm')")
+    parser.add_argument("--features_id_col", type=str, default="gene_id", help="Column name for feature IDs")
+    parser.add_argument("--features_symbol_col", type=str, default="gene_name", help="Column name for feature symbols")
     return parser.parse_args(args_list)
 
 # Parse external arguments
@@ -55,13 +57,13 @@ if parsed_args.ensembl_ids.upper() == "TRUE":
 
         annot_df = pd.read_csv("${annot}", sep="\t")
 
-        required_cols = {"${features_id}", "${features_symbol}"}
+        required_cols = {parsed_args.features_id_col, parsed_args.features_symbol_col}
 
         missing = required_cols - set(annot_df.columns)
         if missing:
             raise ValueError(f"Missing required columns in annotation file: {missing}. Available columns: {list(annot_df.columns)}")
 
-        gene_mapping = dict(zip(annot_df["${features_id}"], annot_df["${features_symbol}"]))
+        gene_mapping = dict(zip(annot_df[parsed_args.features_id_col], annot_df[parsed_args.features_symbol_col]))
         new_index = [gene_mapping.get(ens, None) for ens in mat.index]
         mat.index = new_index
         mat = mat[mat.index.notnull()]
