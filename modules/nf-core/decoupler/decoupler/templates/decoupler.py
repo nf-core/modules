@@ -55,12 +55,13 @@ if parsed_args.ensembl_ids.upper() == "TRUE":
 
         annot_df = pd.read_csv("${annot}", sep="\t")
 
-        required_cols = {"gene_id", "gene_name"}
+        required_cols = {"${features_id}", "${features_symbol}"}
+
         missing = required_cols - set(annot_df.columns)
         if missing:
             raise ValueError(f"Missing required columns in annotation file: {missing}. Available columns: {list(annot_df.columns)}")
 
-        gene_mapping = dict(zip(annot_df["gene_id"], annot_df["gene_name"]))
+        gene_mapping = dict(zip(annot_df["${features_id}"], annot_df["${features_symbol}"]))
         new_index = [gene_mapping.get(ens, None) for ens in mat.index]
         mat.index = new_index
         mat = mat[mat.index.notnull()]
