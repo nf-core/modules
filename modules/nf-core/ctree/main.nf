@@ -4,7 +4,7 @@ process CTREE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/r-ctree_r-mobster_r-viber_r-cli_pruned:660fb0bfa4d8d4ac':
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/40/4084291fbed2d8371cc9dd8c53a422d0731a27b2366d0dc0069c0fc0fac314bb/data':
         'community.wave.seqera.io/library/r-ctree_r-mobster_r-viber_r-cli_pruned:48299db4104e296b' }"
 
     input:
