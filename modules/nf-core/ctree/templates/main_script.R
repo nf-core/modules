@@ -28,12 +28,14 @@ for ( ao in names(args_opt)) opt[[ao]] = args_opt[[ao]]
 
 # Load packages
 
+suppressPackageStartupMessages({
 library(ctree)
 library(mobster)
 library(VIBER)
 library(cli)
 library(dplyr)
 library(ggplot2)
+})
 
 outdir = ""
 
