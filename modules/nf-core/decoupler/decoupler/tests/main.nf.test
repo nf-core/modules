@@ -14,7 +14,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = "--min_n 2 --transpose TRUE --ensembl_ids TRUE --methods mlm"
+                module_args = "--min_n 2 --transpose TRUE --ensembl_ids TRUE --methods mlm --features_id_col gene_id --features_symbol_col gene_name"
             }
             process {
                 """
@@ -28,9 +28,7 @@ nextflow_process {
                 ]
                 input[2] = [
                     ['id':'annot'],
-                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/Mus_musculus.anno.feature_metadata.tsv", checkIfExists: true),
-                    'gene_id',
-                    'gene_name']
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/Mus_musculus.anno.feature_metadata.tsv", checkIfExists: true)]
                 """
             }
         }
@@ -68,7 +66,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = "--min_n 1"
+                module_args = "--min_n 1 --features_id_col gene_id --features_symbol_col gene_name"
             }
 
             process {
@@ -83,9 +81,7 @@ nextflow_process {
                 ]
                 input[2] = [
                     ['id':'annot'],
-                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/Mus_musculus.anno.feature_metadata.tsv", checkIfExists: true),
-                    'gene_id',
-                    'gene_name']
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/Mus_musculus.anno.feature_metadata.tsv", checkIfExists: true)]
                 """
             }
         }
@@ -124,7 +120,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = "--min_n 1"
+                module_args = "--min_n 1 --features_id_col gene_id --features_symbol_col gene_name"
             }
             process {
                 """
@@ -138,9 +134,7 @@ nextflow_process {
                 ]
                 input[2] = [
                     ['id':'annot'],
-                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/Mus_musculus.anno.feature_metadata.tsv", checkIfExists: true),
-                    'gene_id',
-                    'gene_name']
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/Mus_musculus.anno.feature_metadata.tsv", checkIfExists: true)]
                 """
             }
         }
