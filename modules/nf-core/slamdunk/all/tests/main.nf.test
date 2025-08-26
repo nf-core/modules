@@ -37,7 +37,7 @@ nextflow_process {
                     [ id:'test_bed' ],
                     file('https://raw.githubusercontent.com/nf-core/test-datasets/slamseq/reference/hg38_refseq_3UTR.chr8.bed', checkIfExists: true)
                 ]
-                input[3] = []
+                input[3] = [[], []]
                 """
             }
         }
@@ -79,7 +79,7 @@ nextflow_process {
                     [ id:'test_bed' ],
                     file('https://raw.githubusercontent.com/nf-core/test-datasets/slamseq/reference/hg38_refseq_3UTR.chr8.bed', checkIfExists: true)
                 ]
-                input[3] = []
+                input[3] = [[], []]
                 """
             }
         }
