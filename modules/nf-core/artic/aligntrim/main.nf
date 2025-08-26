@@ -12,10 +12,10 @@ process ARTIC_ALIGNTRIM {
     val sort_bam
 
     output:
-    tuple val(meta), path("*.primertrimmed*.bam"),    emit: primertrimmed_bam
-    tuple val(meta), path("*.align_trim_report.tsv"), emit: align_trim_report
-    tuple val(meta), path("*.amp_depth_report.tsv"),  emit: amp_depth_report
-    path "versions.yml",                              emit: versions
+    tuple val(meta), path("*.primertrimmed*.bam"),      emit: primertrimmed_bam
+    tuple val(meta), path("*.align_trim_report.tsv"),   emit: align_trim_report
+    tuple val(meta), path("*.amp_depth_report.tsv"),    emit: amp_depth_report
+    path "versions.yml",                                emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,8 +46,9 @@ process ARTIC_ALIGNTRIM {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def sort_bam_cmd = sort_bam ? "touch ${prefix}.primertrimmed.sorted.bam" : "touch ${prefix}.primertrimmed.bam"
     """
-    touch ${prefix}.primertrimmed.bam
+    ${sort_bam_cmd}
     touch ${prefix}.align_trim_report.tsv
     touch ${prefix}.amp_depth_report.tsv
 

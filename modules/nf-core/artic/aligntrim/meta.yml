@@ -37,14 +37,12 @@ input:
         pattern: "*.bed"
         ontologies:
           - edam: "http://edamontology.org/format_3617" # BED
-
     - normalise_depth:
         type: integer
         description: Normalise the read depth to this value
   - sort_bam:
       type: boolean
       description: Optionally sort the BAM file after trimming
-
 output:
   primertrimmed_bam:
     - - meta:
@@ -87,10 +85,8 @@ output:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
-
         ontologies:
           - edam: http://edamontology.org/format_3750 # YAML
-
 authors:
   - "@BioWilko"
 maintainers:
