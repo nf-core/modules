@@ -11,6 +11,7 @@ process SLAMDUNK_ALL {
     tuple val(meta), path(input)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(bed)
+    tuple val(meta4), path(filter_bed)
 
     output:
     tuple val(meta), path("outputs/map/*.bam")            , emit: bam
@@ -28,6 +29,7 @@ process SLAMDUNK_ALL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def filterbed = filter_bed ? "-fb ${filter_bed}" : ""
     """
     slamdunk \\
         all \\
@@ -36,6 +38,7 @@ process SLAMDUNK_ALL {
         -t $task.cpus \\
         -o outputs \\
         $args \\
+        $filterbed \\
         $input
 
     cat <<-END_VERSIONS > versions.yml
@@ -47,6 +50,7 @@ process SLAMDUNK_ALL {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def filterbed = filter_bed ? "-fb ${filter_bed}" : ""
     """
     mkdir -p outputs/map
     mkdir -p outputs/filter

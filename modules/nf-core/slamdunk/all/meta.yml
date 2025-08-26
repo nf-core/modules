@@ -47,6 +47,17 @@ input:
           e.g. `[ id:'annotation' ]`
     - bed:
         type: file
+        description: BED file with 3'UTR coordinates
+        pattern: "*.bed"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing annotation information
+          e.g. `[ id:'annotation' ]`
+    - filter_bed:
+        type: file
         description: BED file with 3'UTR coordinates to filter multimappers
         pattern: "*.bed"
         ontologies:
