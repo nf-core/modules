@@ -57,7 +57,7 @@ process GATK4SPARK_APPLYBQSR {
     prefix = task.ext.prefix ?: "${meta.id}"
     suffix = task.ext.suffix ?: "cram"
     """
-    touch ${prefix}
+    touch ${prefix}.${suffix}
     if [[ ${suffix} == bam ]]; then
         touch ${prefix}.bai
     fi
