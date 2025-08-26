@@ -28,7 +28,9 @@ nextflow_process {
                 ]
                 input[2] = [
                     ['id':'annot'],
-                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/Mus_musculus.anno.feature_metadata.tsv", checkIfExists: true)]
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/Mus_musculus.anno.feature_metadata.tsv", checkIfExists: true),
+                    'gene_id',
+                    'gene_name']
                 """
             }
         }
@@ -81,7 +83,9 @@ nextflow_process {
                 ]
                 input[2] = [
                     ['id':'annot'],
-                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/Mus_musculus.anno.feature_metadata.tsv", checkIfExists: true)]
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/Mus_musculus.anno.feature_metadata.tsv", checkIfExists: true),
+                    'gene_id',
+                    'gene_name']
                 """
             }
         }
@@ -134,7 +138,9 @@ nextflow_process {
                 ]
                 input[2] = [
                     ['id':'annot'],
-                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/Mus_musculus.anno.feature_metadata.tsv", checkIfExists: true)]
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/Mus_musculus.anno.feature_metadata.tsv", checkIfExists: true),
+                    'gene_id',
+                    'gene_name']
                 """
             }
         }
