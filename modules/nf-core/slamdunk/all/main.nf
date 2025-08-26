@@ -16,7 +16,7 @@ process SLAMDUNK_ALL {
     tuple val(meta), path("outputs/map/*.bam")            , emit: bam
     tuple val(meta), path("outputs/filter/*.bam")         , emit: filtered_bam
     tuple val(meta), path("outputs/filter/*.bam.bai")     , emit: filtered_bai
-    tuple val(meta), path("outputs/snp/*.vcf")            , emit: vcf
+    tuple val(meta), path("outputs/snp/*.vcf")            , emit: vcf, optional: true
     tuple val(meta), path("outputs/count/*.tsv")          , emit: tsv
     tuple val(meta), path("outputs/count/*_plus.bedgraph"), emit: plus_bedgraph
     tuple val(meta), path("outputs/count/*_mins.bedgraph"), emit: mins_bedgraph
