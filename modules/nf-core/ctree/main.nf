@@ -43,6 +43,13 @@ process CTREE {
     touch ${prefix}_ctree_pyclonevi_report.pdf
     touch ${prefix}_ctree_pyclonevi_report.png
 
+    # outputs for VIBER rds input
+    touch ${prefix}_ctree_VIBER.rds
+    touch ${prefix}_ctree_VIBER_plots.rds
+    touch ${prefix}_ctree_VIBER_report.pdf
+    touch ${prefix}_ctree_VIBER_report.png
+    touch ${prefix}_ctree_VIBER_report.rds
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         ctree: \$(Rscript -e 'library(ctree); sessionInfo()\$otherPkgs\$ctree\$Version')
