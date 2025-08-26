@@ -45,9 +45,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bam,
-                    process.out.filtered_bam,
-                    process.out.filtered_bai,
+                    process.out.bam.collect { file(it[1]).getName() },
+                    process.out.filtered_bam.collect { file(it[1]).getName() },
+                    process.out.filtered_bai.collect { file(it[1]).getName() },
                     process.out.vcf,
                     process.out.tsv,
                     process.out.plus_bedgraph,
