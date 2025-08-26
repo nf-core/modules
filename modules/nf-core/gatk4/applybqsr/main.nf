@@ -14,10 +14,10 @@ process GATK4_APPLYBQSR {
     path dict
 
     output:
-    tuple val(meta), path("${prefix}.bam"), emit: bam, optional: true
-    tuple val(meta), path("${prefix}*bai"), emit: bai, optional: true
+    tuple val(meta), path("${prefix}.bam"),  emit: bam,  optional: true
+    tuple val(meta), path("${prefix}*bai"),  emit: bai,  optional: true
     tuple val(meta), path("${prefix}.cram"), emit: cram, optional: true
-    path "versions.yml", emit: versions
+    path "versions.yml",                     emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,7 +25,7 @@ process GATK4_APPLYBQSR {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    suffix = task.ext.suffix ?: "cram"
+    def suffix = task.ext.suffix ?: "cram"
     def interval_command = intervals ? "--intervals ${intervals}" : ""
 
     def avail_mem = 3072
@@ -54,7 +54,7 @@ process GATK4_APPLYBQSR {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    suffix = task.ext.suffix ?: "cram"
+    def suffix = task.ext.suffix ?: "cram"
     """
     touch ${prefix}.${suffix}
     if [[ ${suffix} == cram ]]; then
