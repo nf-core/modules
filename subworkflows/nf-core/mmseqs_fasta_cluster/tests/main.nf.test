@@ -1,8 +1,8 @@
 nextflow_workflow {
 
-    name "Test Subworkflow MMSEQS_FASTA_CLUSTERING"
+    name "Test Subworkflow MMSEQS_FASTA_CLUSTER"
     script "../main.nf"
-    workflow "MMSEQS_FASTA_CLUSTERING"
+    workflow "MMSEQS_FASTA_CLUSTER"
     config './nextflow.config'
 
     test("fasta - linclust") {

@@ -3,7 +3,7 @@ include { MMSEQS_CLUSTER   } from '../../../modules/nf-core/mmseqs/cluster/main'
 include { MMSEQS_LINCLUST  } from '../../../modules/nf-core/mmseqs/linclust/main'
 include { MMSEQS_CREATETSV } from '../../../modules/nf-core/mmseqs/createtsv/main'
 
-workflow MMSEQS_FASTA_CLUSTERING {
+workflow MMSEQS_FASTA_CLUSTER {
     take:
     sequences       // tuple val(meta), path(fasta)
     clustering_tool // string: ["linclust", "cluster"]
