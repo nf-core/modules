@@ -41,7 +41,12 @@ nextflow_workflow {
                 input[0] = ch_input
                 input[1] = Channel.of([[], [], [], [], [], []])
                 input[2] = Channel.of([[], []])
-                input[3] = Channel.of([[], [], [], []])
+                input[3] = Channel.of([
+                    ['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'],
+                    [],  // 
+                    '',  // 
+                    ''   // 
+                ])
                 """
             }
         }
@@ -116,10 +121,15 @@ nextflow_workflow {
                         [meta, results, [], [], 'gprofiler2']
                     }
 
+                ch_featuresheet = ch_input
+                    .map { meta, file, genesets, background, method ->
+                        [meta, [], '', '']  
+                    }
+
                 input[0] = ch_input
                 input[1] = Channel.of([[], [], [], [], [], []])
                 input[2] = Channel.of([[], []])
-                input[3] = Channel.of([[], [], [], []])
+                input[3] = ch_featuresheet
                 """
             }
         }
@@ -305,11 +315,14 @@ nextflow_workflow {
                     .map { meta, results, genesets ->
                         [meta, results, genesets, [], 'grea']
                     }
-
+                ch_featuresheet = ch_input
+                    .map { meta, file, genesets, background, method ->
+                        [meta, [], '', '']  
+                    }
                 input[0] = ch_input
                 input[1] = Channel.of([[], [], [], [], [], []])
                 input[2] = Channel.of([[], []])
-                input[3] = Channel.of([[], [], [], []])
+                input[3] = ch_featuresheet
                 """
             }
         }
@@ -482,9 +495,9 @@ nextflow_workflow {
                         ]
                     ],
                     file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/treatment_mCherry_hND6_.deseq2.results.tsv", checkIfExists: true),
-                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/progeny/mouse_network.tsv", checkIfExists: true),  // network file as genesets
-                    [],  // background (empty for decoupler)
-                    'decoupler'  // method
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/progeny/mouse_network.tsv", checkIfExists: true),  
+                    [],  
+                    'decoupler'  
                 ])
 
                 ch_contrasts = Channel.of([[], [], [], [], [], []])
@@ -498,8 +511,8 @@ nextflow_workflow {
                         ]
                     ],
                     file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/differentialabundance/modules_testdata/Mus_musculus.anno.tsv", checkIfExists: true),
-                    'gene_id',      // features_id
-                    'gene_name'     // features_symbol
+                    'gene_id',      
+                    'gene_name'     
                 ])
 
                 input[0] = ch_input
@@ -551,7 +564,12 @@ nextflow_workflow {
                 input[0] = ch_input
                 input[1] = Channel.of([[], [], [], [], [], []])
                 input[2] = Channel.of([[], []])
-                input[3] = Channel.of([[], [], [], []])
+                input[3] = Channel.of([
+                    ['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'],  
+                    [],  
+                    '',  
+                    ''   
+                ])
                 """
             }
         }
