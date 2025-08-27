@@ -20,7 +20,7 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [ id: 'test_linclust' ],
-                    file(params.modules_testdata_base_path + '../../proteinfamilies/test_data/mgnifams_input_small.fa', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta.gz', checkIfExists: true)
                 ])
                 input[1] = 'linclust'
                 """
@@ -31,10 +31,9 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(
-                    file(workflow.out.clusters[0][1]).name,
-                    path(workflow.out.clusters[0][1]).readLines().size(),
-                    workflow.out.versions.collect { path(it).yaml }.unique()
-                    ).match() }
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
             )
         }
     }
@@ -46,7 +45,7 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [ id: 'test_cluster' ],
-                    file(params.modules_testdata_base_path + '../../proteinfamilies/test_data/mgnifams_input_small.fa', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta.gz', checkIfExists: true)
                 ])
                 input[1] = 'cluster'
                 """
@@ -57,10 +56,9 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(
-                    file(workflow.out.clusters[0][1]).name,
-                    path(workflow.out.clusters[0][1]).readLines().size(),
-                    workflow.out.versions.collect { path(it).yaml }.unique()
-                    ).match() }
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
             )
         }
     }
@@ -74,7 +72,7 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [ id: 'test_linclust_stub' ],
-                    file(params.modules_testdata_base_path + '../../proteinfamilies/test_data/mgnifams_input_small.fa', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta.gz', checkIfExists: true)
                 ])
                 input[1] = 'linclust'
                 """
@@ -84,7 +82,10 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
             )
         }
     }
@@ -98,7 +99,7 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [ id: 'test_cluster_stub' ],
-                    file(params.modules_testdata_base_path + '../../proteinfamilies/test_data/mgnifams_input_small.fa', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta.gz', checkIfExists: true)
                 ])
                 input[1] = 'cluster'
                 """
@@ -108,7 +109,10 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
             )
         }
     }
