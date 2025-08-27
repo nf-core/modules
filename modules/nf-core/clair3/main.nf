@@ -4,8 +4,8 @@ process CLAIR3 {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/clair3:1.0.10--py39hd649744_1':
-        'biocontainers/clair3:1.0.10--py39hd649744_1' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e7/e70b0f4389028f4dc88efde1aac7139927c898cf7add680e14724d97fecd3d32/data':
+        'community.wave.seqera.io/library/clair3:1.2.0--b1b03d4e9d1b6a2e' }"
 
     input:
     tuple val(meta), path(bam), path(bai), val(packaged_model), path(user_model), val(platform)
