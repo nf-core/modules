@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process GATK4_APPLYBQSR"
     script "../main.nf"
     process "GATK4_APPLYBQSR"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -11,9 +12,11 @@ nextflow_process {
 
     test("sarscov2 - bam") {
 
-        config "./nextflow_bam.config"
-
         when {
+            params {
+                module_suffix = "bam"
+            }
+
             process {
                 """
                 input[0] = [
@@ -31,8 +34,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
@@ -41,8 +44,6 @@ nextflow_process {
 
     test("sarscov2 - bam in, cram out") {
 
-        config "./nextflow_cram.config"
-
         when {
             process {
                 """
@@ -61,8 +62,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.versions,
                     file(process.out.cram[0][1]).name,
@@ -75,9 +76,11 @@ nextflow_process {
 
     test("sarscov2 - bam - intervals") {
 
-        config "./nextflow_bam.config"
-
         when {
+            params {
+                module_suffix = "bam"
+            }
+
             process {
                 """
                 input[0] = [
@@ -95,15 +98,14 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
     }
 
     test("sarscov2 - cram") {
-
         when {
             process {
                 """
@@ -122,8 +124,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.versions,
                     file(process.out.cram[0][1]).name,
@@ -155,8 +157,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
@@ -165,9 +167,12 @@ nextflow_process {
     test("sarscov2 - bam - stub") {
 
         options "-stub"
-        config "./nextflow_bam.config"
 
         when {
+            params {
+                module_suffix = "bam"
+            }
+
             process {
                 """
                 input[0] = [
@@ -185,8 +190,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }

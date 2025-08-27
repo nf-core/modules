@@ -14,17 +14,19 @@ process GATK4_APPLYBQSR {
     path dict
 
     output:
-    tuple val(meta), path("*.bam"),  emit: bam,  optional: true
-    tuple val(meta), path("*.bai"),  emit: bai,  optional: true
-    tuple val(meta), path("*.cram"), emit: cram, optional: true
-    path "versions.yml",             emit: versions
+    tuple val(meta), path("${prefix}.bam"),  emit: bam,  optional: true
+    tuple val(meta), path("${prefix}*bai"),  emit: bai,  optional: true
+    tuple val(meta), path("${prefix}.cram"), emit: cram, optional: true
+    path "versions.yml",                     emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}.cram"
+    prefix = task.ext.prefix ?: "${meta.id}"
+    // suffix can only be bam or cram, cram being the sensible default
+    def suffix = task.ext.suffix && task.ext.suffix == "bam" ? "bam" : "cram"
     def interval_command = intervals ? "--intervals ${intervals}" : ""
 
     def avail_mem = 3072
@@ -38,7 +40,7 @@ process GATK4_APPLYBQSR {
     gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         ApplyBQSR \\
         --input ${input} \\
-        --output ${prefix} \\
+        --output ${prefix}.${suffix} \\
         --reference ${fasta} \\
         --bqsr-recal-file ${bqsr_table} \\
         ${interval_command} \\
@@ -52,13 +54,14 @@ process GATK4_APPLYBQSR {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}.cram"
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def suffix = task.ext.suffix ?: "cram"
     """
-    touch ${prefix}
-    if [[ ${prefix} == *.cram ]]; then
-        touch ${prefix}.bai
+    touch ${prefix}.${suffix}
+    if [[ ${suffix} == cram ]]; then
+        touch ${prefix}.cram.bai
     else
-        touch ${prefix.replace(/\.bam$/, '.bai')}
+        touch ${prefix}.bai
     fi
 
     cat <<-END_VERSIONS > versions.yml
