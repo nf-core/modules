@@ -117,9 +117,9 @@ process CNVKIT_BATCH {
     def tumor_cram = tumor_exists && tumor.Extension == "cram" ? true : false
     def normal_cram = normal_exists && normal.Extension == "cram" ? true : false
     def out_base_name = tumor_exists ? tumor.BaseName : normal.BaseName
-    def versions = normal_cram || tumor_cram ?
-        "samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')\n        cnvkit: \$(cnvkit.py version | sed -e 's/cnvkit v//g')" :
-        "cnvkit: \$(cnvkit.py version | sed -e 's/cnvkit v//g')"
+    def versions = normal_cram || tumor_cram
+        ? "samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')\n        cnvkit: \$(cnvkit.py version | sed -e 's/cnvkit v//g')"
+        : "cnvkit: \$(cnvkit.py version | sed -e 's/cnvkit v//g')"
     """
     touch ${bed_prefix}.antitarget${bed_suffix}
     touch ${bed_prefix}.target${bed_suffix}
