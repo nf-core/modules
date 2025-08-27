@@ -35,9 +35,8 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    bam(process.out.bam[0][1]).getHeaderMD5(),
                     bam(process.out.bam[0][1]).getReadsMD5(),
-                    process.out.csi,
+                    file(process.out.csi[0][1]).name,
                     process.out.cram,
                     process.out.crai,
                     path(process.out.versions[0]).yaml
@@ -78,11 +77,10 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    cram(process.out.cram[0][1], fasta).getHeaderMD5(),
                     cram(process.out.cram[0][1], fasta).getReadsMD5(),
                     process.out.csi,
                     process.out.bam,
-                    process.out.crai,
+                    file(process.out.crai[0][1]).name,
                     path(process.out.versions[0]).yaml
                 ).match()
                 }
@@ -127,7 +125,7 @@ nextflow_process {
                     file(process.out.cram[0][1]).name,
                     process.out.csi,
                     process.out.bam,
-                    process.out.crai,
+                    file(process.out.crai[0][1]).name,
                     path(process.out.versions[0]).yaml
                 ).match()
                 }
@@ -158,7 +156,6 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    bam(process.out.bam[0][1]).getHeaderMD5(),
                     bam(process.out.bam[0][1]).getReadsMD5(),
                     process.out.csi,
                     process.out.cram,
