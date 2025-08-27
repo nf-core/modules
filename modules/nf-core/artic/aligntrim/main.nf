@@ -48,6 +48,7 @@ process ARTIC_ALIGNTRIM {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def sort_bam_cmd = sort_bam ? "touch ${prefix}.primertrimmed.sorted.bam" : "touch ${prefix}.primertrimmed.bam"
     """
+    echo ${args}
     ${sort_bam_cmd}
     touch ${prefix}.align_trim_report.tsv
     touch ${prefix}.amp_depth_report.tsv
