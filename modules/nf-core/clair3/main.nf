@@ -17,6 +17,8 @@ process CLAIR3 {
     tuple val(meta), path("*merge_output.vcf.gz.tbi"),        emit: tbi
     tuple val(meta), path("*phased_merge_output.vcf.gz"),     emit: phased_vcf, optional: true
     tuple val(meta), path("*phased_merge_output.vcf.gz.tbi"), emit: phased_tbi, optional: true
+    tuple val(meta), path("*merge_output.gvcf.gz"),           emit: gvcf, optional: true
+    tuple val(meta), path("*merge_output.gvcf.gz.tbi"),       emit: gtbi, optional: true
     path "versions.yml",                                      emit: versions
 
     when:
@@ -64,6 +66,8 @@ process CLAIR3 {
     touch ${prefix}.phased_merge_output.vcf.gz.tbi
     echo "" | gzip > ${prefix}.merge_output.vcf.gz
     touch ${prefix}.merge_output.vcf.gz.tbi
+    echo "" | gzip > ${prefix}.merge_output.gvcf.gz
+    touch ${prefix}.merge_output.gvcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
