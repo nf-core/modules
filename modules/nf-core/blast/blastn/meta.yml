@@ -35,15 +35,15 @@ input:
         type: directory
         description: Directory containing the blast database
         pattern: "*"
-  - - taxidlist:
+  - taxidlist:
         type: file
         description: File containing NCBI taxon ids, one per line, for filtering the database.
         pattern: "*.{txt}"
-  - - taxids:
+  - taxids:
         type: string
         description: Comma-delimited list of NCBI taxon ids for filtering the database.
         pattern: "^[0-9]+(,[0-9]+)*$"
-  - - negative_tax:
+  - negative_tax:
         type: boolean
         description: Use negative filtering (true) to exclude taxon ids or normal filtering (false).
         pattern: "true or false"
