@@ -20,7 +20,7 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - bed:
+    - bedmethyl:
         type: file
         description: bedMethyl file
         pattern: "*.{bed}"
@@ -44,7 +44,7 @@ input:
         Can be either a list of strings or a string containing a comma-separated list.
 
 output:
-  bam:
+  bw:
     - - meta:
           type: map
           description: |
