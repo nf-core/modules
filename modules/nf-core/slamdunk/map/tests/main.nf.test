@@ -1,0 +1,84 @@
+nextflow_process {
+
+    name "Test Process SLAMDUNK_MAP"
+    script "../main.nf"
+    process "SLAMDUNK_MAP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "slamdunk"
+    tag "slamdunk/map"
+    tag "gunzip"
+
+    setup {
+        run("GUNZIP") {
+            script "../../../gunzip/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test_ref' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/slamseq/reference/hg38_chr8.fa.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("slamdunk - map - fastq") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/slamseq/testdata/MOLM-13_dmso_1_chr8.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = GUNZIP.out.gunzip
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.bam,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("slamdunk - map - fastq - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/slamseq/testdata/MOLM-13_dmso_1_chr8.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'test_ref' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/slamseq/reference/hg38_chr8.fa.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.bam,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+}
