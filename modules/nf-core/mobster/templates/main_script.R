@@ -63,7 +63,6 @@ run_mobster_fit = function(joint_table, descr) {
     # get input table for the single patient
     inp_tb = joint_table %>%
         dplyr::mutate(adj_VAF=VAF/!!purity) %>%
-        dplyr::filter(adj_VAF<=1) %>%
         dplyr::filter(adj_VAF>=0.05) %>%
         dplyr::filter(karyotype=="1:1") %>%
         dplyr::select(-adj_VAF)
