@@ -38,37 +38,25 @@ input:
           - edam: "http://edamontology.org/format_1929" # FASTA
           - edam: "http://edamontology.org/format_1936" # GenBank
           - edam: "http://edamontology.org/format_1927" # EMBL
-  - - databases:
-        type: directory
-        description: |
-          Downloaded AntiSMASH databases (e.g. in the AntiSMASH installation directory
-          "data/databases")
-        pattern: "*/"
-  - - antismash_dir:
-        type: directory
-        description: |
-          A local copy of an AntiSMASH installation folder. This is required when running with
-          docker and singularity (not required for conda), due to attempted 'modifications' of
-          files during database checks in the installation directory, something that cannot
-          be done in immutable docker/singularity containers. Therefore, a local installation
-          directory needs to be mounted (including all modified files from the downloading step)
-          to the container as a workaround.
-        pattern: "*/"
+  - databases:
+      type: directory
+      description: |
+        Downloaded AntiSMASH databases (e.g. in the AntiSMASH installation directory
+        "data/databases")
+      pattern: "*/"
+  - antismash_dir:
+      type: directory
+      description: |
+        A local copy of an AntiSMASH installation folder. This is required when running with
+        docker and singularity (not required for conda), due to attempted 'modifications' of
+        files during database checks in the installation directory, something that cannot
+        be done in immutable docker/singularity containers. Therefore, a local installation
+        directory needs to be mounted (including all modified files from the downloading step)
+        to the container as a workaround.
+      pattern: "*/"
 output:
-  - clusterblast_file:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - ${prefix}/clusterblast/*_c*.txt:
-          type: file
-          description: Output of ClusterBlast algorithm
-          pattern: "clusterblast/*_c*.txt"
-          ontologies:
-            - edam: "http://edamontology.org/format_2330" # Text
-  - html_accessory_files:
-      - meta:
+  html_accessory_files:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -77,68 +65,8 @@ output:
           type: directory
           description: Accessory files for the HTML output
           pattern: "{css/,images/,js/}"
-  - knownclusterblast_html:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - ${prefix}/knownclusterblast/region*/ctg*.html:
-          type: file
-          description: Tables with MIBiG hits in HTML format
-          pattern: "knownclusterblast/region*/ctg*.html"
-          ontologies:
-            - edam: "http://edamontology.org/format_2331" # HTML
-  - knownclusterblast_dir:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - ${prefix}/knownclusterblast/:
-          type: directory
-          description: Directory with MIBiG hits
-          pattern: "knownclusterblast/"
-  - knownclusterblast_txt:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - ${prefix}/knownclusterblast/*_c*.txt:
-          type: file
-          description: Tables with MIBiG hits
-          pattern: "knownclusterblast/*_c*.txt"
-          ontologies:
-            - edam: "http://edamontology.org/format_2330" # Text
-  - svg_files_clusterblast:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - ${prefix}/svg/clusterblast*.svg:
-          type: file
-          description: SVG images showing the % identity of the aligned hits against their
-            queries
-          pattern: "svg/clusterblast*.svg"
-          ontologies:
-            - edam: "http://edamontology.org/format_3604" # SVG
-  - svg_files_knownclusterblast:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - ${prefix}/svg/knownclusterblast*.svg:
-          type: file
-          description: SVG images showing the % identity of the aligned hits against their
-            queries
-          pattern: "svg/knownclusterblast*.svg"
-          ontologies:
-            - edam: "http://edamontology.org/format_3604" # SVG
-  - gbk_input:
-      - meta:
+  gbk_input:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -150,21 +78,21 @@ output:
           pattern: "*.gbk"
           ontologies:
             - edam: "http://edamontology.org/format_1936" # GenBank
-  - json_results:
-      - meta:
+  json_results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - ${prefix}/*.json:
           type: file
-          description: Nucleotide sequence and annotations in JSON format; converted from
-            GenBank file (gbk_input)
+          description: Nucleotide sequence and annotations in JSON format; converted
+            from GenBank file (gbk_input)
           pattern: "*.json"
           ontologies:
             - edam: "http://edamontology.org/format_3464" # JSON
-  - log:
-      - meta:
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -176,8 +104,8 @@ output:
           pattern: "*.log"
           ontologies:
             - edam: "http://edamontology.org/format_2330" # Text
-  - zip:
-      - meta:
+  zip:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -188,8 +116,104 @@ output:
           pattern: "*.zip"
           ontologies:
             - edam: "http://edamontology.org/format_3987" # ZIP
-  - gbk_results:
-      - meta:
+  html:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/index.html:
+          type: file
+          description: Graphical web view of results in HTML format
+          patterN: "index.html"
+          ontologies:
+            - edam: "http://edamontology.org/format_2331" # HTML
+  json_sideloading:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/regions.js:
+          type: file
+          description: Sideloaded annotations of protoclusters and/or subregions (see
+            antiSMASH documentation "Annotation sideloading")
+          pattern: "regions.js"
+          ontologies: []
+  clusterblast_file:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/clusterblast/*_c*.txt:
+          type: file
+          description: Output of ClusterBlast algorithm
+          pattern: "clusterblast/*_c*.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Text
+  knownclusterblast_html:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/knownclusterblast/region*/ctg*.html:
+          type: file
+          description: Tables with MIBiG hits in HTML format
+          pattern: "knownclusterblast/region*/ctg*.html"
+          ontologies:
+            - edam: "http://edamontology.org/format_2331" # HTML
+  knownclusterblast_dir:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/knownclusterblast/:
+          type: directory
+          description: Directory with MIBiG hits
+          pattern: "knownclusterblast/"
+  knownclusterblast_txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/knownclusterblast/*_c*.txt:
+          type: file
+          description: Tables with MIBiG hits
+          pattern: "knownclusterblast/*_c*.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Text
+  svg_files_clusterblast:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/svg/clusterblast*.svg:
+          type: file
+          description: SVG images showing the % identity of the aligned hits against
+            their queries
+          pattern: "svg/clusterblast*.svg"
+          ontologies:
+            - edam: "http://edamontology.org/format_3604" # SVG
+  svg_files_knownclusterblast:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/svg/knownclusterblast*.svg:
+          type: file
+          description: SVG images showing the % identity of the aligned hits against
+            their queries
+          pattern: "svg/knownclusterblast*.svg"
+          ontologies:
+            - edam: "http://edamontology.org/format_3604" # SVG
+  gbk_results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -201,8 +225,8 @@ output:
           pattern: "*region*.gbk"
           ontologies:
             - edam: "http://edamontology.org/format_1936" # GenBank
-  - clusterblastoutput:
-      - meta:
+  clusterblastoutput:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -214,20 +238,8 @@ output:
           pattern: "clusterblastoutput.txt"
           ontologies:
             - edam: "http://edamontology.org/format_2330" # Text
-  - html:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - ${prefix}/index.html:
-          type: file
-          description: Graphical web view of results in HTML format
-          patterN: "index.html"
-          ontologies:
-            - edam: "http://edamontology.org/format_2331" # HTML
-  - knownclusterblastoutput:
-      - meta:
+  knownclusterblastoutput:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -238,25 +250,13 @@ output:
           pattern: "knownclusterblastoutput.txt"
           ontologies:
             - edam: "http://edamontology.org/format_2330" # Text
-  - json_sideloading:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - ${prefix}/regions.js:
-          type: file
-          description: Sideloaded annotations of protoclusters and/or subregions (see
-            antiSMASH documentation "Annotation sideloading")
-          pattern: "regions.js"
-          ontologies: []
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: "http://edamontology.org/format_3750" # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@jasmezz"
 maintainers:

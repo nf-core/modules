@@ -22,29 +22,45 @@ input:
           e.g. [ id:'test', single_end:false ]
     - bam:
         type: file
-        description: BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
+        description: BAM/CRAM file
+        pattern: "*.{bam,cram}"
+        ontologies: []
     - bai:
         type: file
-        description: BAM index file
+        description: BAM/CRAM index file
         pattern: "*.{bai}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Genome fasta file. Required when using a CRAM file.
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+
 output:
-  - wig:
-      - meta:
+  wig:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.wig":
           type: file
-          description: A wig file with the number of reads lying within each window in
-            each chromosome
+          description: A wig file with the number of reads lying within each window
+            in each chromosome
           pattern: "*.wig"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sppearce"
 maintainers:

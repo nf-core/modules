@@ -4,8 +4,8 @@ process DREP_COMPARE {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/drep:3.5.0--pyhdfd78af_0'
-        : 'biocontainers/drep:3.5.0--pyhdfd78af_0'}"
+        ? 'https://depot.galaxyproject.org/singularity/drep:3.6.2--pyhdfd78af_0'
+        : 'biocontainers/drep:3.6.2--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path("fastas/*")
