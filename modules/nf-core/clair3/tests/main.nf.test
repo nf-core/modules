@@ -9,6 +9,8 @@ nextflow_process {
     tag "clair3"
     tag "untar"
 
+    config "./nextflow.config"
+
     setup {
         run("UNTAR") {
             script "../../../../modules/nf-core/untar/main.nf"
@@ -25,6 +27,9 @@ nextflow_process {
     test("sarscov2 - bam - user_model") {
 
         when {
+            params {
+                args = "--include_all_ctgs"
+            }
             process {
                 """
                 def model_path = UNTAR.out.untar
@@ -52,11 +57,17 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.vcf.collect { path(it[1]).vcf.summary },
+                    process.out.vcf.collect {
+                        [file(it[1]).name, path(it[1]).vcf.summary]
+                    },
                     process.out.tbi.collect { file(it[1]).name },
-                    process.out.phased_vcf.collect { path(it[1]).vcf.summary },
+                    process.out.phased_vcf.collect {
+                        [file(it[1]).name, path(it[1]).vcf.summary]
+                    },
                     process.out.phased_tbi.collect { file(it[1]).name },
-                    process.out.gvcf.collect { path(it[1]).vcf.summary },
+                    process.out.gvcf.collect {
+                        [file(it[1]).name, path(it[1]).vcf.summary]
+                    },
                     process.out.gtbi.collect { file(it[1]).name },
                     process.out.versions)
                     .match()}
@@ -68,6 +79,9 @@ nextflow_process {
     test("sarscov2 - bam - packaged_model") {
 
         when {
+            params {
+                args = "--include_all_ctgs"
+            }
             process {
                 """
                 input[0] = Channel.of([
@@ -94,11 +108,17 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.vcf.collect { path(it[1]).vcf.summary },
+                    process.out.vcf.collect {
+                        [file(it[1]).name, path(it[1]).vcf.summary]
+                    },
                     process.out.tbi.collect { file(it[1]).name },
-                    process.out.phased_vcf.collect { path(it[1]).vcf.summary },
+                    process.out.phased_vcf.collect {
+                        [file(it[1]).name, path(it[1]).vcf.summary]
+                    },
                     process.out.phased_tbi.collect { file(it[1]).name },
-                    process.out.gvcf.collect { path(it[1]).vcf.summary },
+                    process.out.gvcf.collect {
+                        [file(it[1]).name, path(it[1]).vcf.summary]
+                    },
                     process.out.gtbi.collect { file(it[1]).name },
                     process.out.versions)
                     .match()}
@@ -110,6 +130,9 @@ nextflow_process {
     test("sarscov2 - bam - both") {
 
         when {
+            params {
+                args = "--include_all_ctgs"
+            }
             process {
                 """
                 input[0] = Channel.of([
@@ -144,7 +167,7 @@ nextflow_process {
 
         when {
             params {
-                args = "--gvcf"
+                args = "--gvcf --include_all_ctgs"
             }
             process {
                 """
@@ -173,11 +196,17 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.vcf.collect { path(it[1]).vcf.summary },
+                    process.out.vcf.collect {
+                        [file(it[1]).name, path(it[1]).vcf.summary]
+                    },
                     process.out.tbi.collect { file(it[1]).name },
-                    process.out.phased_vcf.collect { path(it[1]).vcf.summary },
+                    process.out.phased_vcf.collect {
+                        [file(it[1]).name, path(it[1]).vcf.summary]
+                    },
                     process.out.phased_tbi.collect { file(it[1]).name },
-                    process.out.gvcf.collect { path(it[1]).vcf.summary },
+                    process.out.gvcf.collect {
+                        [file(it[1]).name, path(it[1]).vcf.summary]
+                    },
                     process.out.gtbi.collect { file(it[1]).name },
                     process.out.versions)
                     .match()}

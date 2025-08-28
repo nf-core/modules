@@ -47,6 +47,18 @@ process CLAIR3 {
         --model=$model \\
         $args
 
+    # Rename to add prefix
+    for file in merge_output.vcf.gz \
+            merge_output.vcf.gz.tbi \
+            phased_merge_output.vcf.gz \
+            phased_merge_output.vcf.gz.tbi \
+            merge_output.gvcf.gz \
+            merge_output.gvcf.gz.tbi; do
+    if [ -e "\$file" ]; then
+        mv "\$file" "${prefix}.\$file"
+    fi
+    done
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         clair3: \$(run_clair3.sh  --version |& sed '1!d ; s/Clair3 v//')
