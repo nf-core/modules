@@ -47,7 +47,9 @@ nextflow_process {
                 { assert path(process.out.annotations.get(0).get(1)).readLines().contains("ENSSASP00005000002.1\tENSSASP00005000002.1\t0.0\t14179.0\tCOG0498@1|root,COG0498@2|Bacteria,1MUWQ@1224|Proteobacteria,2VHR6@28216|Betaproteobacteria,2KUMA@206389|Rhodocyclales\t1224|Proteobacteria\tE\tthreonine synthase\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-") },
                 { assert path(process.out.orthologs.get(0).get(1)).readLines().contains("ENSSASP00005000002.1\tENSSASP00005000002.1\t0.0\t14179.0\t1\t7096\t1\t7096\t100.0\t100.0\t100.0") },
                 { assert snapshot(path(process.out.hits.get(0).get(1)).readLines().size() >= 12).match("hits") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    process.out.versions.collect{ path(it).yaml }
+                ).match("versions") }
             )
         }
 
@@ -85,8 +87,10 @@ nextflow_process {
                 { assert process.success },
                 { assert path(process.out.annotations.get(0).get(1)).readLines().contains("ENSSASP00005000002.1\tENSSASP00005000002.1\t0.0\t14179.0\tCOG0498@1|root,COG0498@2|Bacteria,1MUWQ@1224|Proteobacteria,2VHR6@28216|Betaproteobacteria,2KUMA@206389|Rhodocyclales\t1224|Proteobacteria\tE\tthreonine synthase\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-\t-") },
                 { assert path(process.out.orthologs.get(0).get(1)).readLines().contains("ENSSASP00005000002.1\tENSSASP00005000002.1\t0.0\t14179.0\t1\t7096\t1\t7096\t100.0\t100.0\t100.0") },
-                { assert snapshot(path(process.out.hits.get(0).get(1)).readLines().size() >= 12).match("hits--emptyparams") },
-                { assert snapshot(process.out.versions).match("versions--empty-params") }
+                { assert snapshot(path(process.out.hits.get(0).get(1)).readLines().size()  >= 12).match("hits--emptyparams") },
+                { assert snapshot(
+                    process.out.versions.collect{ path(it).yaml }
+                ).match("versions--empty-params") }
             )
         }
 
