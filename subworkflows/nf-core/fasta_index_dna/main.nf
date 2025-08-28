@@ -22,7 +22,7 @@ workflow FASTA_INDEX_DNA {
     ch_aligner_index    = Channel.empty()
     ch_versions         = Channel.empty()
 
-    if(ch_altliftover && val_aligner != "snap") {
+    if(ch_altliftover.map{meta, file -> file} && val_aligner != "snap") {
         error "Liftover file is only currently supported for aligner `snap`"
     }
 
