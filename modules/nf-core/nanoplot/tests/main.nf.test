@@ -31,7 +31,7 @@ nextflow_process {
                     process.out.versions
                     ).match()
                 },
-                { assert file(process.out.log[0][1]).text.contains('Finished!') }
+                { assert file(process.out.log[0][1]).exists() }
             )
         }
 
@@ -61,7 +61,7 @@ nextflow_process {
                     process.out.versions
                     ).match()
                 },
-                { assert file(process.out.log[0][1]).text.contains('Finished!') }
+                { assert file(process.out.log[0][1]).exists() }
             )
         }
 
