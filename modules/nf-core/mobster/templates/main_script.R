@@ -38,18 +38,19 @@ samples = strsplit(x="$meta.tumour_sample", ",") %>% unlist()  # list of samples
 
 ## read mCNAqc object
 if ( grepl(".rds\$", tolower("$rds_join")) ) {
-    obj = readRDS("$rds_join")
+   obj = readRDS("$rds_join")
     if (class(obj) == "m_cnaqc") {
-        original = obj %>% get_sample(sample=samples, which_obj="original")
-        input_table = lapply(names(original), function(sample_name) {
-            purity = original[[sample_name]][["purity"]]
-            original[[sample_name]] %>%
-                # keep only mutations on the diploid karyotypeCNAqc::subset_by_segment_karyotype("1:1") %>%
-                CNAqc::Mutations() %>%
-                dplyr::mutate(sample_id=sample_name, purity=purity)
-        }) %>% dplyr::bind_rows()
+      original = obj %>% get_sample(sample=samples, which_obj="original")
+      input_table = lapply(names(original),
+                           function(sample_name) {
+                             purity = original[[sample_name]][["purity"]]
+                             original[[sample_name]] %>%
+                               # keep only mutations on the diploid karyotypeCNAqc::subset_by_segment_karyotype("1:1") %>%
+                               CNAqc::Mutations() %>%
+                               dplyr::mutate(sample_id=sample_name, purity=purity)
+                           }) %>% dplyr::bind_rows()
     } else {
-        cli::cli_abort("Object of class {class($rds_join)} not supported.")
+      cli::cli_abort("Object of class {class($rds_join)} not supported.")
     }
 } else {
     input_table = read.csv("$rds_join")
@@ -61,12 +62,10 @@ run_mobster_fit = function(joint_table, descr) {
 
     # get input table for the single patient
     inp_tb = joint_table %>%
-        dplyr::rowwise() %>%
-        dplyr::mutate(adj_VAF=VAF/purity) %>%
-        dplyr::ungroup() %>%
-        dplyr::filter(adj_VAF<1) %>%
+        dplyr::mutate(adj_VAF=VAF/!!purity) %>%
+        dplyr::filter(adj_VAF<=1) %>%
         dplyr::filter(adj_VAF>=0.05) %>%
-        dplyr::filter(karyotype=="1:1") %>% 
+        dplyr::filter(karyotype=="1:1") %>%
         dplyr::select(-adj_VAF)
 
     mobster_fit(x = inp_tb,
