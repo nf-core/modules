@@ -1,0 +1,83 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "bff"
+description: Generating cell hashing calls from a matrix of count data.
+keywords:
+  - demultiplexing
+  - hashing-based deconvolution
+  - single-cell
+tools:
+  - "bff":
+      description: "A toolkit for quality control, analysis, and exploration of single cell RNA sequencing data. 'Seurat' aims to enable users to identify and interpret sources of heterogeneity from single cell transcriptomic measurements, and to integrate diverse types of single cell data. See Satija R, Farrell J, Gennert D, et al (2015) <doi:10.1038/nbt.3192>, Macosko E, Basu A, Satija R, et al (2015) <doi:10.1016/j.cell.2015.05.002>, and Butler A and Satija R (2017) <doi:10.1101/164889> for more details."
+      homepage: "https://rdrr.io/github/BimberLab/cellhashR/man/GenerateCellHashingCalls.html"
+      documentation: "https://rdrr.io/github/BimberLab/cellhashR/man/GenerateCellHashingCalls.html"
+      tool_dev_url: "https://github.com/BimberLab/cellhashR"
+      doi: "10.5281/zenodo.6402477"
+      licence: ["GPL-3"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - hto_matrix:
+        type: file
+        description: |
+          Directory that contains the HTO matrix in a 10X format.
+        ontologies:
+          - edam: "http://edamontology.org/data_3917" # count matrix
+    - methods:
+        type: string
+        description: |
+          Decides whether 'RAW', 'CLUSTER' OR 'COMBINED' should be selected as the call method.
+    - preprocessing:
+        type: string
+        description: |
+          Decides whether the HTO matrix should undergo a preprocessing step ('TRUE') or not ('FALSE').
+
+output:
+  assignment:
+    - - meta:
+          type: file
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_assignment_bff.csv":
+          type: file
+          description: Contains the assignment results of demultiplexing.
+          pattern: "assignment_bff.csv"
+
+  metrics:
+    - - meta:
+          type: file
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_metrics_bff.csv":
+          type: file
+          description: Summary metrics will be written to this file.
+          pattern: "_metrics_bff.csv"
+
+  params:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_params_bff.csv":
+          type: file
+          description: The used parameters to call HTODemux in the R-Script.
+          pattern: "params_htodemux.csv"
+
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions.
+        pattern: "versions.yml"
+
+authors:
+  - "@LuisHeinzlmeier"
+maintainers:
+  - "@LuisHeinzlmeier"
