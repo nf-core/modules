@@ -14,7 +14,6 @@ process NANOPLOT {
     tuple val(meta), path("*.html")                , emit: html
     tuple val(meta), path("*.png") , optional: true, emit: png
     tuple val(meta), path("*.txt")                 , emit: txt
-    tuple val(meta), path("*.log")                 , emit: log
     path  "versions.yml"                           , emit: versions
 
     when:
@@ -41,7 +40,6 @@ process NANOPLOT {
     touch LengthvsQualityScatterPlot_dot.html
     touch LengthvsQualityScatterPlot_kde.html
     touch NanoPlot-report.html
-    touch NanoPlot_20240301_1130.log
     touch NanoStats.txt
     touch Non_weightedHistogramReadlength.html
     touch Non_weightedLogTransformed_HistogramReadlength.html
