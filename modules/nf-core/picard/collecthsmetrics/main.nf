@@ -9,8 +9,8 @@ process PICARD_COLLECTHSMETRICS {
 
     input:
     tuple val(meta), path(bam), path(bai), path(bait_intervals, stageAs: "baits/*"), path(target_intervals, stageAs: 'targets/*')
-    tuple val(meta2), path(fasta)
-    tuple val(meta3), path(fai)
+    tuple val(meta2), path(ref)
+    tuple val(meta3), path(ref_idx)
     tuple val(meta4), path(dict)
 
     output:
@@ -23,7 +23,7 @@ process PICARD_COLLECTHSMETRICS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def reference = fasta ? "--REFERENCE_SEQUENCE ${fasta}" : ""
+    def reference = ref ? "--REFERENCE_SEQUENCE ${ref}" : ""
 
     def avail_mem = 3072
     if (!task.memory) {

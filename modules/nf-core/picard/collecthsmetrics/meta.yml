@@ -49,22 +49,22 @@ input:
         description: |
           Groovy Map containing reference information
           e.g. [ id:'genome' ]
-    - fasta:
+    - ref:
         type: file
         description: |
           A reference file to calculate dropout metrics measuring reduced representation of reads.
           Optional input.
-        pattern: "*.{fa,fasta,fna}"
+        pattern: "*.{fa,fa.gz,fasta,fasta.gz,fna,fna.gz}"
         ontologies: []
   - - meta3:
         type: map
         description: |
           Groovy Map containing reference information
           e.g. [ id:'genome' ]
-    - fai:
+    - ref_idx:
         type: file
-        description: Index of FASTA file. Only needed when fasta is supplied.
-        pattern: "*.fai"
+        description: Index of reference file. Only needed when reference is supplied.
+        pattern: "*.{fai,gzi}"
         ontologies: []
   - - meta4:
         type: map
