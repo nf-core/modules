@@ -59,17 +59,6 @@ output:
           description: Stats from NanoPlot
           pattern: "*{.txt}"
           ontologies: []
-  log:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.log":
-          type: file
-          description: log file of NanoPlot run
-          pattern: "*{.log}"
-          ontologies: []
   versions:
     - versions.yml:
         type: file
