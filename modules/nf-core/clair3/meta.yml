@@ -121,6 +121,31 @@ output:
           description: index for vcf files
           pattern: "*.{vcf.tbi,vcf.tbi.gz}"
           ontologies: []
+  gvcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+          pattern: "*.{vcf,vcf.gz}"
+      - "*merge_output.gvcf.gz":
+          type: file
+          description: gvcf file
+          pattern: "*.{gvcf,gvcf.gz}"
+          ontologies: []
+  gtbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+          pattern: "*.{gvcf.tbi,gvcf.gz.tbi}"
+      - "*merge_output.gvcf.gz.tbi":
+          type: file
+          description: index for gvcf file
+          pattern: "*.{vcf.tbi,vcf.tbi.gz}"
+          ontologies: []
+
   versions:
     - versions.yml:
         type: file
