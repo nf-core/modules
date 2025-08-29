@@ -13,7 +13,8 @@ repos:
         entry: nextflow lint
         language: system
         files: '\.nf$|nextflow\.config$'
-        args: ["-format", "-sort-declarations", "-spaces", "4", "-harshil-alignment", "-output", "concise"]
+        # FIXME Removed -format https://github.com/nextflow-io/nextflow/issues/6365
+        args: ["-sort-declarations", "-spaces", "4", "-harshil-alignment", "-output", "concise"]
         pass_filenames: true
         # FIXME Throws `ERROR ~ Unexpected error [ConcurrentModificationException]`
         require_serial: true
