@@ -4,18 +4,18 @@ process ARTIC_ALIGNTRIM {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'oras://community.wave.seqera.io/library/align_trim_samtools:3f69e9e238df1a73'
-        : 'community.wave.seqera.io/library/align_trim_samtools:e329909729947df9'}"
+        ? 'oras://community.wave.seqera.io/library/align_trim_samtools:ae17186e78142d18'
+        : 'community.wave.seqera.io/library/align_trim_samtools:3883b74edda083a2'}"
 
     input:
     tuple val(meta), path(samfile), path(scheme_bed), val(normalise_depth)
     val sort_bam
 
     output:
-    tuple val(meta), path("*.primertrimmed*.bam"),    emit: primertrimmed_bam
+    tuple val(meta), path("*.primertrimmed*.bam"), emit: primertrimmed_bam
     tuple val(meta), path("*.align_trim_report.tsv"), emit: align_trim_report
-    tuple val(meta), path("*.amp_depth_report.tsv"),  emit: amp_depth_report
-    path "versions.yml",                              emit: versions
+    tuple val(meta), path("*.amp_depth_report.tsv"), emit: amp_depth_report
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
