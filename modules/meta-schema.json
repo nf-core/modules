@@ -34,25 +34,72 @@
                 "type": "string"
             }
         },
+        "extra_args": {
+            "type": "array",
+            "description": "Extra arguments for the module",
+            "items": {
+                "type" : "object",
+                "properties": {
+                    "description": {
+                        "type": "string",
+                        "description": "Description of the argument"
+                    }
+                }
+            }
+        },
         "input": {
             "type": "array",
             "description": "Input channels for the module",
             "items": {
-                "type": "array",
-                "items": { "$ref": "#/definitions/elementProperties" }
+                "oneOf": [{
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "patternProperties": {
+                            ".*": {
+                                "$ref": "#/definitions/elementProperties"
+                            }
+                        }
+                    }
+                },
+                {
+                    "type": "object",
+                    "patternProperties": {
+                        ".*": {
+                            "$ref": "#/definitions/elementProperties"
+                        }
+                    }}
+                ]
             }
         },
         "output": {
-            "type": "array",
+            "type": "object",
             "description": "Output channels for the module",
-            "items": {
-                "type": "object",
-                "patternProperties": {
-                    ".*": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/definitions/elementProperties"
-                        }
+            "patternProperties": {
+                ".*": {
+                    "type": "array",
+                    "items": {
+                        "oneOf": [
+                            {
+                                "type": "object",
+                                "patternProperties": {
+                                    ".*": {
+                                        "$ref": "#/definitions/elementProperties"
+                                    }
+                                }
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "patternProperties": {
+                                        ".*": {
+                                            "$ref": "#/definitions/elementProperties"
+                                        }
+                                    }
+                                }
+                            }
+                        ]
                     }
                 }
             }
@@ -145,49 +192,44 @@
     "definitions": {
         "elementProperties": {
             "type": "object",
-            "patternProperties": {
-                ".*": {
-                    "type": "object",
-                    "properties": {
-                        "type": {
-                            "type": "string",
-                            "description": "Type of the channel element",
-                            "enum": ["map", "file", "directory", "string", "integer", "float", "boolean", "list"]
-                        },
-                        "description": {
-                            "type": "string",
-                            "description": "Description of the channel"
-                        },
-                        "pattern": {
-                            "type": "string",
-                            "description": "Pattern of the channel, given in Java glob syntax"
-                        },
-                        "enum": {
-                            "type": "array",
-                            "description": "List of allowed values for the channel",
-                            "items": {
-                                "type": ["string", "number", "boolean", "array", "object"]
-                            },
-                            "uniqueItems": true
-                        },
-                        "ontologies": {
-                            "type": "array",
-                            "description": "List of ontologies for the channel",
-                            "uniqueItems": true,
-                            "items": {
-                                "type": "object",
-                                "patternProperties": {
-                                    ".*": {
-                                        "type": "string",
-                                        "pattern": "^(http|https)://.*"
-                                    }
-                                }
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "Type of the channel element",
+                    "enum": ["map", "file", "directory", "string", "integer", "float", "boolean", "list"]
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Description of the channel"
+                },
+                "pattern": {
+                    "type": "string",
+                    "description": "Pattern of the channel, given in Java glob syntax"
+                },
+                "enum": {
+                    "type": "array",
+                    "description": "List of allowed values for the channel",
+                    "items": {
+                        "type": ["string", "number", "boolean", "array", "object"]
+                    },
+                    "uniqueItems": true
+                },
+                "ontologies": {
+                    "type": "array",
+                    "description": "List of ontologies for the channel",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "object",
+                        "patternProperties": {
+                            ".*": {
+                                "type": "string",
+                                "pattern": "^(http|https)://.*"
                             }
                         }
-                    },
-                    "required": ["type", "description"]
+                    }
                 }
-            }
+            },
+            "required": ["type", "description"]
         }
     },
     "required": ["name", "description", "keywords", "authors", "output", "tools"]

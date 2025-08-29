@@ -30,15 +30,18 @@ process LAST_SPLIT {
             FS="\t";  # Set field separator as tab
             totalMatches = 0;
             totalAlignmentLength = 0;
-            print "Sample\tTotalAlignmentLength\tPercentSimilarity";  # Header for MultiQC
+            totalAlignedBases = 0;
+            print "Sample\tTotalAlignmentLength\tPercentIdentity\tPercentIdentityNoGaps";  # Header for MultiQC
         }
         {
-            totalMatches += \$1 + \$3;  # Sum matches and repMatches
+            totalMatches         += \$1 +       \$3            ;  # Sum matches          and repMatches
             totalAlignmentLength += \$1 + \$2 + \$3 + \$6 + \$8;  # Sum matches, misMatches, repMatches, qBaseInsert, and tBaseInsert
+            totalAlignedBases    += \$1 + \$2 + \$3            ;  # Sum matches, misMatches, repMatches
         }
         END {
-            percentSimilarity = (totalAlignmentLength > 0) ? (totalMatches / totalAlignmentLength * 100) : 0;
-            print "$meta.id" "\t" totalAlignmentLength "\t" percentSimilarity;  # Data in TSV format
+            percentIdentity       = (totalAlignmentLength > 0) ? (totalMatches / totalAlignmentLength * 100) : 0;
+            percentIdentityNoGaps = (totalAlignmentLength > 0) ? (totalMatches / totalAlignedBases    * 100) : 0;
+            print "$meta.id" "\t" totalAlignmentLength "\t" percentIdentity "\t" percentIdentityNoGaps;  # Data in TSV format
         }'
     }
 

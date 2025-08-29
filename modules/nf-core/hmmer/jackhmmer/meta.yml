@@ -1,0 +1,102 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "hmmer_jackhmmer"
+description: iterative searches to detect distant homologs by refining an HMM profile
+  from hits
+keywords:
+  - HMM
+  - homologs
+  - iterative model refinement
+tools:
+  - "hmmer":
+      description: Biosequence analysis using profile hidden Markov models
+      homepage: http://hmmer.org/
+      documentation: http://hmmer.org/documentation.html
+      tool_dev_url: https://github.com/EddyRivasLab/hmmer
+      doi: "10.1371/journal.pcbi.1002195"
+      licence: ["BSD"]
+      identifier: biotools:hmmer3
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: One or multiple amino acid sequences from which to start building
+          a model iteratively (one model per input sequence)
+        pattern: "*.{fasta,fna,faa,fa,fasta.gz,fna.gz,faa.gz,fa.gz}"
+        ontologies: []
+    - seqdb:
+        type: file
+        description: Database of sequences in FASTA format
+        pattern: "*.{fasta,fna,faa,fa,fasta.gz,fna.gz,faa.gz,fa.gz}"
+        ontologies: []
+    - write_align:
+        type: boolean
+        description: Flag to save optional alignment output. Specify with 'true' to
+          save.
+    - write_target:
+        type: boolean
+        description: Flag to save optional per target summary. Specify with 'true' to
+          save.
+    - write_domain:
+        type: boolean
+        description: Flag to save optional per domain summary. Specify with 'true' to
+          save.
+output:
+  output:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt.gz":
+          type: file
+          description: Human readable output summarizing hmmsearch results
+          pattern: "*.{txt.gz}"
+          ontologies: []
+  alignments:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.sto.gz":
+          type: file
+          description: Optional multiple sequence alignment (MSA) in Stockholm format
+          pattern: "*.{sto.gz}"
+          ontologies: []
+  target_summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tbl.gz":
+          type: file
+          description: Optional tabular (space-delimited) summary of per-target output
+          pattern: "*.{tbl.gz}"
+          ontologies: []
+  domain_summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.domtbl.gz":
+          type: file
+          description: Optional tabular (space-delimited) summary of per-domain output
+          pattern: "*.{domtbl.gz}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"

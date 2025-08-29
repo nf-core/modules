@@ -1,0 +1,50 @@
+name: "osfclient_fetch"
+description: A python library and a command-line client for up- and downloading files
+  to and from your Open Science Framework projects
+keywords:
+  - osf
+  - Open Science Framework
+  - fetch
+tools:
+  - "osfclient":
+      description: "The osfclient is a python library and a command-line client for
+        up- and downloading files to and from your Open Science Framework projects."
+      homepage: "https://osfclient.readthedocs.io/en/latest/"
+      documentation: "https://osfclient.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/osfclient/osfclient"
+      licence: ["BSD-3-clause"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - project_id:
+        type: string
+        description: Project ID of the Open Science Framework project to fetch files
+          from
+    - path:
+        type: string
+        description: File to fetch from the project
+output:
+  download_files:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${outname}:
+          type: file
+          description: Downloaded file
+          pattern: "*"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@JacquelineAldridge"

@@ -1,0 +1,91 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "souporcell"
+description: souporcell is a method for clustering mixed-genotype scRNAseq
+  experiments by individual.
+keywords:
+  - clustering
+  - mixed-genotype
+  - genomics
+tools:
+  - "souporcell":
+      description: "Clustering scRNAseq by genotypes."
+      homepage: "https://github.com/wheaton5/souporcell"
+      documentation: "https://github.com/wheaton5/souporcell"
+      tool_dev_url: "https://github.com/wheaton5/souporcell"
+      doi: "10.1101/699637v1"
+      licence: ["MIT"]
+      identifier: biotools:souporcell
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+
+    - bam:
+        type: file
+        description: A BAM file from cellranger containing single-cell RNA-seq
+          alignments.
+        pattern: "*.bam"
+
+        ontologies: []
+    - barcodes:
+        type: file
+        description: A barcode or whitelist TSV file from cellranger identifying
+          individual cell barcodes.
+        pattern: "*.tsv"
+
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+
+    - fasta:
+        type: file
+        description: A reference fasta file.
+        pattern: "*.fasta"
+
+        ontologies: []
+  - clusters:
+      type: integer
+      description: Number of clusters.
+
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*/*.vcf":
+          type: file
+          description: VCF file containing genotype information
+          pattern: "*.vcf"
+          ontologies: []
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*/*.tsv":
+          type: file
+          description: TSV file containing clustering results
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@seohyonkim"
+maintainers:
+  - "@seohyonkim"

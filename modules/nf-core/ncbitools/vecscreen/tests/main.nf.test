@@ -1,0 +1,81 @@
+nextflow_process {
+
+    name "Test Process NCBITOOLS_VECSCREEN"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "NCBITOOLS_VECSCREEN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "blast"
+    tag "blast/makeblastdb"
+    tag "ncbitools"
+    tag "ncbitools/vecscreen"
+
+    setup {
+        run("BLAST_MAKEBLASTDB") {
+            script "../../../blast/makeblastdb/main.nf"
+            config './nextflow.config'
+            process {
+                """
+                input[0] = [[id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/primers.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("homo sapiens") {
+
+        when {
+            params {
+                module_args = '-f3'
+            }
+            process {
+                """
+                input[0] = [[id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/primers.fasta', checkIfExists: true)
+                    ]
+                input[1] = BLAST_MAKEBLASTDB.out.db
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+
+
+    test("homo sapiens -- stub") {
+        options '-stub'
+        when {
+            params {
+                module_args = '-f3'
+            }
+            process {
+                """
+                input[0] = [[id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/primers.fasta', checkIfExists: true)
+                    ]
+                input[1] = BLAST_MAKEBLASTDB.out.db
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+}

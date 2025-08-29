@@ -24,6 +24,8 @@ input:
         type: file
         description: Query sequences
         pattern: "*.fastq.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
   - - meta2:
         type: map
         description: |
@@ -32,9 +34,10 @@ input:
     - sequences_sketch:
         type: file
         description: sketch file of sequences
+        ontologies: []
 output:
-  - screen:
-      - meta:
+  screen:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -43,11 +46,14 @@ output:
           type: file
           description: List of sequences from fastx_db similar to query sequences
           pattern: "*.screen"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mahesh-panchal"
 maintainers:

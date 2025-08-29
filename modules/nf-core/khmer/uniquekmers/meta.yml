@@ -15,29 +15,50 @@ tools:
       licence: ["BSD License"]
       identifier: biotools:khmer
 input:
-  - - fasta:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
         type: file
         description: fasta file
         pattern: "*.{fa,fasta}"
-  - - kmer_size:
-        type: integer
-        description: k-mer size to use
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+  - kmer_size:
+      type: integer
+      description: k-mer size to use
 output:
-  - report:
-      - report.txt:
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.report.txt":
           type: file
           description: Text file containing unique-kmers.py execution report
-          pattern: "report.txt"
-  - kmers:
-      - kmers.txt:
+          pattern: "*.report.txt"
+          ontologies: []
+  kmers:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.kmers.txt":
           type: file
           description: Text file containing number of kmers
-          pattern: "kmers.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          pattern: "*.kmers.txt"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@JoseEspinosa"
 maintainers:

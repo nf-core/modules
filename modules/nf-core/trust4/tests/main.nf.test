@@ -18,10 +18,13 @@ nextflow_process {
                     [], // bam
                     [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)] // reads
                 ])
-                input[1] = [[ id:'test'],[file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)]] // fasta
-                input[2] = [[ id:'test'],[]] // ref
-                input[3] = [[ id:'test'],[]] // barcode
-                input[4] = [[ id:'test'],[]] // umi
+                input[1] = [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)] // fasta
+                input[2] = [] // ref
+                input[3] = [] // barcodeWhitelist
+                input[4] = [] // barcode
+                input[5] = [] // umi
+                input[6] = [] // read format
+                
                 """
             }
         }
@@ -57,10 +60,12 @@ nextflow_process {
                     [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test2_1.fastq.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test2_2.fastq.gz', checkIfExists: true)] // reads
                 ])
-                input[1] = [[ id:'test'],[file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)]] // fasta
-                input[2] = [[ id:'test'],[]] // ref
-                input[3] = [[ id:'test'], null] // barcode
-                input[4] = [[ id:'test'], null] // umi
+                input[1] = [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)] // fasta
+                input[2] = [] // ref
+                input[3] = [] // barcodeWhitelist
+                input[4] = [] // barcode
+                input[5] = [] // umi
+                input[6] = [] // read format
                 """
             }
         }
@@ -94,13 +99,15 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end:true ], // meta map
-                    [],
+                    [], // bam
                     [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
                 ])
-                input[1] = [[ id:'test'],[file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)]]
-                input[2] = [[ id:'test'],[]] // ref
-                input[3] = [[ id:'test'],[]] // barcode
-                input[4] = [[ id:'test'],[]] // umi
+                input[1] = [file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)]
+                input[2] = [] // ref
+                input[3] = [] // barcodeWhitelist
+                input[4] = [] // barcode
+                input[5] = [] // umi
+                input[6] = [] // read format
                 """
             }
         }

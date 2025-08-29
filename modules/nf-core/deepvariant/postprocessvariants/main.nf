@@ -3,7 +3,7 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
     label 'process_medium'
 
     //Conda is not supported at the moment
-    container "docker.io/google/deepvariant:1.8.0"
+    container "docker.io/google/deepvariant:1.9.0"
 
     input:
     tuple val(meta), path(variant_calls_tfrecord_files), path(gvcf_tfrecords), path(small_model_calls), path(intervals)
