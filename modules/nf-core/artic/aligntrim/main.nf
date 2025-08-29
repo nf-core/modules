@@ -15,7 +15,7 @@ process ARTIC_ALIGNTRIM {
     tuple val(meta), path("*.primertrimmed*.bam"),    emit: primertrimmed_bam
     tuple val(meta), path("*.align_trim_report.tsv"), emit: align_trim_report
     tuple val(meta), path("*.amp_depth_report.tsv"),  emit: amp_depth_report
-    path "versions.yml", emit: versions
+    path "versions.yml",                              emit: versions
 
     when:
     task.ext.when == null || task.ext.when
