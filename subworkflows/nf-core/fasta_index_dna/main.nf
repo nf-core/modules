@@ -46,9 +46,10 @@ workflow FASTA_INDEX_DNA {
         ch_aligner_index = DRAGMAP_HASHTABLE.out.hashmap
         ch_versions = DRAGMAP_HASHTABLE.out.versions
     } else if (val_aligner == 'snap') {
+
         ch_snap_reference = ch_fasta
-            .join(ch_altliftover)
-            .map { meta, fasta_, alt -> [meta, fasta_, [], [], alt] }
+            .combine(ch_altliftover)
+            .map { meta, fasta_, _meta2, liftover -> [meta, fasta_, [], [], liftover] }
 
         SNAP_INDEX(ch_snap_reference)
         ch_aligner_index = SNAP_INDEX.out.index
