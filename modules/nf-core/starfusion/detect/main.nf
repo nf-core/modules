@@ -37,7 +37,9 @@ process STARFUSION_DETECT {
 
     mv star-fusion.fusion_predictions.tsv ${prefix}.fusion_predictions.tsv
     mv star-fusion.fusion_predictions.abridged.tsv ${prefix}.abridged.tsv
-    mv star-fusion.fusion_predictions.abridged.coding_effect.tsv ${prefix}.abridged.coding_effect.tsv
+    if [ -f star-fusion.fusion_predictions.abridged.coding_effect.tsv ]; then
+        mv star-fusion.fusion_predictions.abridged.coding_effect.tsv ${prefix}.abridged.coding_effect.tsv
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

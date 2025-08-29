@@ -11,10 +11,10 @@ process YAHS {
     tuple val(meta), path(fasta), path(fai), path(hic_map)
 
     output:
-    tuple val(meta), path("*.fa") , emit: scaffolds_fasta,  optional: true
-    tuple val(meta), path("*.agp"), emit: scaffolds_agp,    optional: true
-    tuple val(meta), path("*.bin"), emit: binary
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*_scaffolds_final.fa") , emit: scaffolds_fasta,  optional: true
+    tuple val(meta), path("*_scaffolds_final.agp"), emit: scaffolds_agp  ,  optional: true
+    tuple val(meta), path("*.bin")                , emit: binary
+    path "versions.yml"                           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,7 +38,7 @@ process YAHS {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_scaffold_final.fa
+    touch ${prefix}_scaffolds_final.fa
     touch ${prefix}_scaffolds_final.agp
     touch ${prefix}.bin
 
