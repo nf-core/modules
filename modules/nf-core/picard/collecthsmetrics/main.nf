@@ -10,7 +10,7 @@ process PICARD_COLLECTHSMETRICS {
     input:
     tuple val(meta), path(bam), path(bai), path(bait_intervals, stageAs: "baits/*"), path(target_intervals, stageAs: 'targets/*')
     tuple val(meta2), path(ref)
-    tuple val(meta3), path(ref_idx)
+    tuple val(meta3), path(ref_fai), path(ref_gzi) // ref_gzi only required if ref is gzipped
     tuple val(meta4), path(dict)
 
     output:

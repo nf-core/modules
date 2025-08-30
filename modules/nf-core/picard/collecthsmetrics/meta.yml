@@ -61,10 +61,15 @@ input:
         description: |
           Groovy Map containing reference information
           e.g. [ id:'genome' ]
-    - ref_idx:
+    - ref_fai:
         type: file
         description: Index of reference file. Only needed when reference is supplied.
-        pattern: "*.{fai,gzi}"
+        pattern: "*.fai"
+        ontologies: []
+    - ref_gzi:
+        type: file
+        description: Index of reference file. Only needed when gzipped reference is supplied.
+        pattern: "*.gzi"
         ontologies: []
   - - meta4:
         type: map
