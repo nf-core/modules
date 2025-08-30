@@ -10,8 +10,9 @@ process PICARD_COLLECTHSMETRICS {
     input:
     tuple val(meta), path(bam), path(bai), path(bait_intervals, stageAs: "baits/*"), path(target_intervals, stageAs: 'targets/*')
     tuple val(meta2), path(ref)
-    tuple val(meta3), path(ref_fai), path(ref_gzi) // ref_gzi only required if ref is gzipped
-    tuple val(meta4), path(dict)
+    tuple val(meta3), path(ref_fai)
+    tuple val(meta4), path(ref_dict)
+    tuple val(meta5), path(ref_gzi) // ref_gzi only required if reference is gzipped
 
     output:
     tuple val(meta), path("*_metrics")  , emit: metrics
@@ -36,14 +37,14 @@ process PICARD_COLLECTHSMETRICS {
     def bait_intervallist_cmd = ""
     if (bait_intervals =~ /.(bed|bed.gz)$/){
         bait_interval_list = bait_intervals.toString().replaceAll(/.(bed|bed.gz)$/, ".interval_list")
-        bait_intervallist_cmd = "picard -Xmx${avail_mem}M  BedToIntervalList --INPUT ${bait_intervals} --OUTPUT ${bait_interval_list} --SEQUENCE_DICTIONARY ${dict} --TMP_DIR ."
+        bait_intervallist_cmd = "picard -Xmx${avail_mem}M  BedToIntervalList --INPUT ${bait_intervals} --OUTPUT ${bait_interval_list} --SEQUENCE_DICTIONARY ${ref_dict} --TMP_DIR ."
     }
 
     def target_interval_list = target_intervals
     def target_intervallist_cmd = ""
     if (target_intervals =~ /.(bed|bed.gz)$/){
         target_interval_list = target_intervals.toString().replaceAll(/.(bed|bed.gz)$/, ".interval_list")
-        target_intervallist_cmd = "picard -Xmx${avail_mem}M  BedToIntervalList --INPUT ${target_intervals} --OUTPUT ${target_interval_list} --SEQUENCE_DICTIONARY ${dict} --TMP_DIR ."
+        target_intervallist_cmd = "picard -Xmx${avail_mem}M  BedToIntervalList --INPUT ${target_intervals} --OUTPUT ${target_interval_list} --SEQUENCE_DICTIONARY ${ref_dict} --TMP_DIR ."
     }
 
 

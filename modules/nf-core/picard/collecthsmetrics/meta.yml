@@ -66,21 +66,26 @@ input:
         description: Index of reference file. Only needed when reference is supplied.
         pattern: "*.fai"
         ontologies: []
-    - ref_gzi:
-        type: file
-        description: Index of reference file. Only needed when gzipped reference is supplied.
-        pattern: "*.gzi"
-        ontologies: []
   - - meta4:
         type: map
         description: |
           Groovy Map containing reference information
           e.g. [ id:'genome' ]
-    - dict:
+    - ref_dict:
         type: file
         description: Sequence dictionary of FASTA file. Only needed when bed interval
           lists are supplied.
         pattern: "*.dict"
+        ontologies: []
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - ref_gzi:
+        type: file
+        description: Index of reference file. Only needed when gzipped reference is supplied.
+        pattern: "*.gzi"
         ontologies: []
 output:
   metrics:
