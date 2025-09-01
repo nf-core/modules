@@ -53,7 +53,7 @@ output:
       - "*.primertrimmed*.bam":
           type: file
           description: BAM file with primer sequences soft clipped
-          pattern: "*.primertrimmed.bam"
+          pattern: "*.primertrimmed*.bam"
           ontologies:
             - edam: http://edamontology.org/format_2572 # BAM
   align_trim_report:
