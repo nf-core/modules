@@ -1,9 +1,10 @@
 name: "seqkit_sana"
 description: Sanitize broken single line FASTQ files
 keywords:
-  - parser
+  - fastq
+  - quality check
   - skip malformed
-  - quality
+  - parser
 tools:
   - "seqkit":
       description: A cross-platform and ultrafast toolkit for FASTA/Q file manipulation.
@@ -20,7 +21,7 @@ input:
     - reads:
         type: file
         description: One line for each sequence and quality value
-        pattern: "*.{fq,fastq}[.gz]"
+        pattern: "*.{fq,fastq}{,.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1930 # FASTQ
 output:
@@ -30,7 +31,7 @@ output:
           description: Groovy Map containing sample information. e.g. [ id:'sample1']
       - ${prefix}${extension}:
           type: file
-          description: Parsed fastq file without malformed lines
+          description: Parsed fastq file without malformed entries/lines
           pattern: "*.${extension}"
           ontologies:
             - edam: http://edamontology.org/format_1930 # FASTQ
