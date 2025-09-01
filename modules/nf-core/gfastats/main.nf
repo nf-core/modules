@@ -26,13 +26,15 @@ process GFASTATS {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def agp    = agpfile ? "--agp-to-path $agpfile" : ""
-    def ibed   = include_bed ? "--include-bed $include_bed" : ""
-    def ebed   = exclude_bed ? "--exclude-bed $exclude_bed" : ""
-    def sak    = instructions ? "--swiss-army-knife $instructions" : ""
-    def output_sequences = out_fmt ? "--out-format ${prefix}.${out_fmt}.gz" : ""
+    def args              = task.ext.args ?: ''
+    def prefix            = task.ext.prefix ?: "${meta.id}"
+    def agp               = agpfile ? "--agp-to-path $agpfile" : ""
+    def ibed              = include_bed ? "--include-bed $include_bed" : ""
+    def ebed              = exclude_bed ? "--exclude-bed $exclude_bed" : ""
+    def sak               = instructions ? "--swiss-army-knife $instructions" : ""
+    def output_sequences  = out_fmt ? "--out-format ${prefix}.${out_fmt}.gz" : ""
+    def genome_size_input = genomesize ? "${genome_size}: : ""
+    def target_input      = target ? "${target}" : ""
     """
     gfastats \\
         $args \\
@@ -43,8 +45,8 @@ process GFASTATS {
         $sak \\
         $output_sequences \\
         --input-sequence $assembly \\
-        $genome_size \\
-        $target \\
+        $genome_size_input \\
+        $target_input \\
         > ${prefix}.assembly_summary
 
     cat <<-END_VERSIONS > versions.yml
