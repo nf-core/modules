@@ -12,6 +12,7 @@ process SEQKIT_SANA {
 
     output:
     tuple val(meta), path("${prefix}${extension}"), emit: reads
+    tuple val(meta), path("${prefix}.log")        , emit: log
     path "versions.yml"                           , emit: versions
 
     when:
@@ -25,7 +26,7 @@ process SEQKIT_SANA {
     seqkit sana \\
         $args \\
         ${reads} \\
-        -o ${prefix}${extension}
+        -o ${prefix}${extension} > ${prefix}.log 2>&1
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -40,7 +41,13 @@ process SEQKIT_SANA {
     """
     echo $args
     
-    touch ${prefix}${extension}
+    # Create empty output files conditionally based on extension
+    if [[ "${extension}" == *.gz ]]; then
+        echo -n | gzip -c > ${prefix}${extension}
+    else
+        touch ${prefix}${extension}
+    fi
+    touch ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
