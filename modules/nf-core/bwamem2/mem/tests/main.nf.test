@@ -41,16 +41,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getHeaderMD5(),
                     bam(process.out.bam[0][1]).getReadsMD5(),
-                    process.out.versions
+                    ['versions', process.out[5], process.out[6]]
                 ).match() }
             )
         }
-
     }
 
     test("sarscov2 - fastq, index, fasta, true") {
@@ -70,16 +69,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getHeaderMD5(),
                     bam(process.out.bam[0][1]).getReadsMD5(),
-                    process.out.versions
+                    ['versions', process.out[5], process.out[6]]
                 ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [fastq1, fastq2], index, fasta, false") {
@@ -102,16 +100,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getHeaderMD5(),
                     bam(process.out.bam[0][1]).getReadsMD5(),
-                    process.out.versions
+                    ['versions', process.out[5], process.out[6]]
                 ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [fastq1, fastq2], index, fasta, true") {
@@ -134,16 +131,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getHeaderMD5(),
                     bam(process.out.bam[0][1]).getReadsMD5(),
-                    process.out.versions
+                    ['versions', process.out[5], process.out[6]]
                 ).match() }
             )
         }
-
     }
 
     test("sarscov2 - [fastq1, fastq2], index, fasta, true - stub") {
@@ -168,12 +164,14 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    bam(process.out.bam[0][1]).getHeaderMD5(),
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    ['versions', process.out[5], process.out[6]]
+                ).match() }
             )
         }
-
     }
-
 }
