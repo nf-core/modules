@@ -40,22 +40,13 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     // Also, reorganize the structure to match them with the modules' input organization
 
     ch_input_for_other = ch_input
-        .multiMap {
-            meta, file, genesets, background, method ->
-            def meta_with_method = meta + [ 'functional_method': method ]
-            input:
-                [ meta_with_method, file ]
-            genesets:
-                [ meta_with_method, genesets ]
-            background:
-                [ meta_with_method, background ]
-
-        }
-    
-    ch_input_for_decoupler = ch_input
-        .join(ch_featuresheet, by: 0)
-        .multiMap {
-            meta, file, genesets, background, method, features_sheet, features_id, features_symbol ->
+        .join(ch_featuresheet, by: 0, remainder: true)
+        .multiMap { tuple ->
+            def (meta, file, genesets, background, method) = tuple[0..4]
+            def features_sheet = tuple.size() > 5 ? tuple[5] : null
+            def features_id = tuple.size() > 6 ? tuple[6] : ''
+            def features_symbol = tuple.size() > 7 ? tuple[7] : ''
+            
             def meta_with_method = meta + [ 'functional_method': method ]
             input:
                 [ meta_with_method, file ]
@@ -64,7 +55,7 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
             background:
                 [ meta_with_method, background ]
             features:
-                [ meta_with_method, features_sheet, features_id, features_symbol]
+                [ meta_with_method, features_sheet ?: [], features_id, features_symbol]
         }
     // In the case of GSEA, it needs additional files coming from other channels that other methods don't use
     // here we define the input channel for the GSEA section
@@ -138,9 +129,10 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     // ----------------------------------------------------
 
     DECOUPLER(
-        ch_input_for_decoupler.input.filter{ it[0].functional_method == 'decoupler' },
-        ch_input_for_decoupler.genesets.filter{ it[0].functional_method == 'decoupler'},
-        ch_input_for_decoupler.features.filter{ it[0].functional_method == 'decoupler'}
+        ch_input_for_other.input.filter{ it[0].functional_method == 'decoupler' },
+        ch_input_for_other.genesets.filter{ it[0].functional_method == 'decoupler'},
+        ch_input_for_other.features.filter{ it[0].functional_method == 'decoupler'}
+            .map{ meta, features_sheet, features_id, features_symbol -> [meta, features_sheet] }
     )
 
     // ----------------------------------------------------
