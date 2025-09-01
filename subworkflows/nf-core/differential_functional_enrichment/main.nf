@@ -129,9 +129,10 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     // ----------------------------------------------------
 
     DECOUPLER(
-        ch_input_for_decoupler.input.filter{ it[0].functional_method == 'decoupler' },
-        ch_input_for_decoupler.genesets.filter{ it[0].functional_method == 'decoupler'},
-        ch_input_for_decoupler.features.filter{ it[0].functional_method == 'decoupler'}
+        ch_input_for_other.input.filter{ it[0].functional_method == 'decoupler' },
+        ch_input_for_other.genesets.filter{ it[0].functional_method == 'decoupler'},
+        ch_input_for_other.features.filter{ it[0].functional_method == 'decoupler'}
+            .map{ meta, features_sheet, features_id, features_symbol -> [meta, features_sheet] }
     )
 
     // ----------------------------------------------------
