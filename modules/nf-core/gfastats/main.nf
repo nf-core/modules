@@ -33,7 +33,7 @@ process GFASTATS {
     def ebed              = exclude_bed ? "--exclude-bed $exclude_bed" : ""
     def sak               = instructions ? "--swiss-army-knife $instructions" : ""
     def output_sequences  = out_fmt ? "--out-format ${prefix}.${out_fmt}.gz" : ""
-    def genome_size_input = genomesize ? "${genome_size}" : ""
+    def genome_size_input = genome_size ? "${genome_size}" : ""
     def target_input      = target ? "${target}" : ""
     """
     gfastats \\
