@@ -1,31 +1,14 @@
 {
-    "name": "nfcore/modules",
-    "image": "ghcr.io/nextflow-io/training@sha256:97cce091b2c786f8fbd86f470e59d096dff546fe07941cf0e97421b6f95333e2",
-    "remoteUser": "root",
-    "privileged": true,
+    "name": "nfcore-modules",
+    "image": "nfcore/devcontainer:latest",
 
-    "workspaceMount": "source=${localWorkspaceFolder},target=${localWorkspaceFolder},type=bind",
-    "workspaceFolder": "${localWorkspaceFolder}",
-
-    // Configure tool-specific properties.
-    "customizations": {
-        // Configure properties specific to VS Code.
-        "vscode": {
-            // Set *default* container specific settings.json values on container create.
-            "settings": {
-                "python.defaultInterpreterPath": "/opt/conda/bin/python",
-                "python.linting.enabled": true
-            },
-
-            // Add the IDs of extensions you want installed when the container is created.
-            "extensions": ["nf-core.nf-core-extensionpack"]
-        }
+    "remoteEnv": {
+        // Workspace path on the host for mounting with docker-outside-of-docker
+        "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
     },
-    "features": {
-        "ghcr.io/devcontainers/features/github-cli:1.0.14": {
-            "digest": "sha256:464564228ccdd6028f01f8a62a3cfbaf76e9ba7953b29ac0e53ba2c262604312"
-        },
-        "./local-features/nf-test": {},
-        "./local-features/apptainer": {}
-    }
+
+    "onCreateCommand": "./.devcontainer/setup.sh",
+
+    "remoteUser": "root",
+    "privileged": true
 }
