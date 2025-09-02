@@ -7,7 +7,6 @@ nextflow_workflow {
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "subworkflows/vcf_annotate_ensemblvep"
-    tag "ensemblvep/download"
     tag "ensemblvep/vep"
     tag "tabix/tabix"
 
@@ -15,25 +14,11 @@ nextflow_workflow {
 
     test("WBcel235 caenorhabditis_elegans 113 - test.vcf.gz") {
 
-        setup {
-            run("ENSEMBLVEP_DOWNLOAD") {
-                script "../../../../modules/nf-core/ensemblvep/download"
-                process {
-                    """
-                    input[0] = [
-                        [id:"WBcel235_113"],
-                        "WBcel235",
-                        "caenorhabditis_elegans",
-                        "113"
-                    ]
-                    """
-                }
-            }
-        }
-
         when {
             workflow {
                 """
+                vep_cache = Channel.of(file('s3://annotation-cache/vep_cache/113_WBcel235/')).collect()
+
                 input[0] = Channel.of([
                     [ id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
@@ -43,7 +28,7 @@ nextflow_workflow {
                 input[2] = "WBcel235"
                 input[3] = "caenorhabditis_elegans"
                 input[4] = "113"
-                input[5] = ENSEMBLVEP_DOWNLOAD.out.cache.map { meta, cache -> cache }
+                input[5] = vep_cache
                 input[6] = []
                 """
             }
@@ -70,6 +55,8 @@ nextflow_workflow {
         when {
             workflow {
                 """
+                vep_cache = Channel.of(file("${projectDir}")).collect()
+
                 input[0] = Channel.of([
                     [ id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
@@ -79,7 +66,7 @@ nextflow_workflow {
                 input[2] = "WBcel235"
                 input[3] = "caenorhabditis_elegans"
                 input[4] = "113"
-                input[5] = file("${projectDir}")
+                input[5] = vep_cache
                 input[6] = []
                 """
             }

@@ -24,6 +24,7 @@ process JASMINESV {
     def args    = task.ext.args ?: ''
     def args2   = task.ext.args2 ?: ''
     def args3   = task.ext.args3 ?: ''
+    def args4   = task.ext.args4 ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
 
     def make_bam = bams ? "ls *.bam > bams.txt" : ""
@@ -33,7 +34,7 @@ process JASMINESV {
     def chr_norm_argument = chr_norm ? "chr_norm_file=${chr_norm}" : ""
 
     def first_vcf = vcfs[0].name.replaceAll(".gz\$", "")
-    def unzip_inputs = vcfs.collect { it.name.endsWith(".vcf.gz") ? "    bgzip -d --threads ${task.cpus} ${args2} ${it}" : "" }.join("\n")
+    def unzip_inputs = vcfs.collect { it.name.endsWith(".vcf.gz") ? "    bgzip -d --threads ${task.cpus} ${args4} ${it}" : "" }.join("\n")
 
     vcfs.each { vcf ->
         if ("$vcf".startsWith("${prefix}.vcf")) error "Input and output names are the same, set prefix in module configuration to disambiguate!"

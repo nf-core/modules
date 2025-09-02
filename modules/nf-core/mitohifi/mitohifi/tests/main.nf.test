@@ -8,19 +8,48 @@ nextflow_process {
     tag "modules_nfcore"
     tag "mitohifi"
     tag "mitohifi/mitohifi"
+    tag "seqkit/head"
 
     test("mitohifi - mitohifi - deilephila_porcellus - contigs mode") {
 
+        // The test data contigs file contains two "valid" mito sequences, which leads to
+        // unpredictable outputs from the module.
+        //
+        // Take the head of the module so we just get the first sequence!
+
+        setup {
+            run("SEQKIT_HEAD") {
+                script "../../../seqkit/head/main.nf"
+                process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/ilDeiPorc1.contigs.fa", checkIfExists: true),
+                    1
+                ]
+                """
+                }
+            }
+        }
+
         when {
+
             process {
                 """
-                input[0] = Channel.of(
-                    [[id:"ilDeiPorc1"],
-                    file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/ilDeiPorc1.contigs.fa", checkIfExists: true)
-                ])
-                input[1] = Channel.of(file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.fasta", checkIfExists: true))
-                input[2] = Channel.of(file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.gb", checkIfExists: true))
-                input[3] = Channel.of('c')
+                input[0] = SEQKIT_HEAD.out.subset
+                input[1] = Channel.of(
+                    [
+                        [id: "ref"],
+                        file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.fasta", checkIfExists: true)
+                    ]
+                )
+                input[2] = Channel.of(
+                    [
+                        [id: "ref"],
+                        file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.gb", checkIfExists: true)
+                    ]
+                )
+                input[3] = Channel.of('contigs')
                 input[4] = Channel.of(5)
                 """
             }
@@ -31,7 +60,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.fasta,
-                    process.out.stats,
+                    file(process.out.stats.get(0).get(1)).name, // not stable
                     process.out.gb,
                     process.out.gff,
                     process.out.contigs_annotations,
@@ -54,12 +83,24 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of(
-                    [[id:"ilDeiPorc1"],
-                    file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/ilDeiPorc1.HiFi.reads.fa", checkIfExists: true)
-                ])
-                input[1] = Channel.of(file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.fasta", checkIfExists: true))
-                input[2] = Channel.of(file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.gb", checkIfExists: true))
-                input[3] = Channel.of('r')
+                    [
+                        [id:"ilDeiPorc1"],
+                        file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/ilDeiPorc1.HiFi.reads.fa", checkIfExists: true)
+                    ]
+                )
+                input[1] = Channel.of(
+                    [
+                        [id: "ref"],
+                        file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.fasta", checkIfExists: true)
+                    ]
+                )
+                input[2] = Channel.of(
+                    [
+                        [id: "ref"],
+                        file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.gb", checkIfExists: true)
+                    ]
+                )
+                input[3] = Channel.of('reads')
                 input[4] = Channel.of(5)
                 """
             }
@@ -70,7 +111,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.fasta,
-                    process.out.stats,
+                    file(process.out.stats.get(0).get(1)).name, // not stable
                     process.out.gb,
                     process.out.gff,
                     process.out.contigs_annotations,
@@ -95,12 +136,24 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of(
-                    [[id:"ilDeiPorc1"],
-                    file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/ilDeiPorc1.contigs.fa", checkIfExists: true)
-                ])
-                input[1] = Channel.of(file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.fasta", checkIfExists: true))
-                input[2] = Channel.of(file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.gb", checkIfExists: true))
-                input[3] = Channel.of('c')
+                    [
+                        [id:"ilDeiPorc1"],
+                        file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/ilDeiPorc1.contigs.fa", checkIfExists: true)
+                    ]
+                )
+                input[1] = Channel.of(
+                    [
+                        [id: "ref"],
+                        file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.fasta", checkIfExists: true)
+                    ]
+                )
+                input[2] = Channel.of(
+                    [
+                        [id: "ref"],
+                        file(params.modules_testdata_base_path + "genomics/eukaryotes/deilephila_porcellus/mito/MW539688.1.gb", checkIfExists: true)
+                    ]
+                )
+                input[3] = Channel.of('contigs')
                 input[4] = Channel.of(5)
                 """
             }

@@ -55,6 +55,7 @@ process DIAMOND_MAKEDB {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
+    echo "${args}"
     touch ${prefix}.dmnd
 
     cat <<-END_VERSIONS > versions.yml

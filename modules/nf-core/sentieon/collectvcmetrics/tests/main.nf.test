@@ -40,7 +40,8 @@ nextflow_process {
                     assert snapshot(
                         file(process.out.metrics[0][1]).readLines().findAll { !it.startsWith("#") },
                         file(process.out.summary[0][1]).readLines().findAll { !it.startsWith("#") },
-                        process.out.versions
+                        process.out.versions,
+                        path(process.out.versions[0]).yaml
                     ).match()
                 }
             )
@@ -77,7 +78,8 @@ nextflow_process {
                     assert snapshot(
                         file(process.out.metrics[0][1]).readLines().findAll { !it.startsWith("#") },
                         file(process.out.summary[0][1]).readLines().findAll { !it.startsWith("#") },
-                        process.out.versions
+                        process.out.versions,
+                        path(process.out.versions[0]).yaml
                     ).match()
                 }
             )

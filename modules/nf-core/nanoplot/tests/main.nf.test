@@ -23,6 +23,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert process.out.html[0][1].size() > 0 },
+                { assert process.out.txt[0][1] },
+                { assert file(process.out.txt[0][1]).readLines().size() > 1 },
                 { assert snapshot(
                     process.out.html[0][1].collect { p -> file(p).name },
                     file(process.out.txt[0][1]).name,
@@ -30,11 +33,9 @@ nextflow_process {
                     // file(process.out.log[0][1]).name, name contains date
                     process.out.versions
                     ).match()
-                },
-                { assert file(process.out.log[0][1]).text.contains('Finished!') }
+                }
             )
         }
-
     }
 
     test("NanoPlot FASTQ") {
@@ -53,6 +54,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert process.out.html[0][1].size() > 0 },
+                { assert process.out.txt[0][1] },
+                { assert file(process.out.txt[0][1]).readLines().size() > 1 },
                 { assert snapshot(
                     process.out.html[0][1].collect { p -> file(p).name },
                     file(process.out.txt[0][1]).name,
@@ -60,11 +64,9 @@ nextflow_process {
                     // file(process.out.log[0][1]).name, name contains date
                     process.out.versions
                     ).match()
-                },
-                { assert file(process.out.log[0][1]).text.contains('Finished!') }
+                }
             )
         }
-
     }
 
     test("NanoPlot - stub") {
@@ -87,6 +89,5 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
 }

@@ -20,7 +20,6 @@ process SAMTOOLS_MERGE {
     tuple val(meta), path("*.crai")        , optional:true, emit: crai
     path  "versions.yml"                                  , emit: versions
 
-
     when:
     task.ext.when == null || task.ext.when
 
