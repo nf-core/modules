@@ -38,9 +38,6 @@ input:
         type: list
         description: Input BED file
         pattern: "*.bed"
-  - vcf_output:
-      type: boolean
-      description: Specify to output to VCF format
 output:
   bcf:
     - - meta:
@@ -51,17 +48,6 @@ output:
       - "*.bcf":
           type: file
           description: merged BCF file
-          pattern: "*.bcf"
-          ontologies: []
-  vcf:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test' ]
-      - "*.vcf.gz":
-          type: file
-          description: merged VCF file
           pattern: "*.bcf"
           ontologies: []
   versions:
