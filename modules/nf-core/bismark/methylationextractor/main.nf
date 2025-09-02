@@ -54,9 +54,9 @@ process BISMARK_METHYLATIONEXTRACTOR {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.bedGraph.gz
-    touch ${prefix}.txt.gz
-    touch ${prefix}.cov.gz
+    echo | gzip > ${prefix}.bedGraph.gz
+    echo | gzip > ${prefix}.txt.gz
+    echo | gzip > ${prefix}.cov.gz
     touch ${prefix}_splitting_report.txt
     touch ${prefix}.M-bias.txt
 
