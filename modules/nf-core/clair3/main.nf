@@ -27,7 +27,10 @@ process CLAIR3 {
     script:
     def model = ""
     if (!user_model) {
-        model = "\${CONDA_PREFIX}/bin/models/${packaged_model}"
+        // In seqera containers `MAMBA_ROOT_PREFIX` is always available
+        // whereas `CONDA_PREFIX` may not be
+        // see https://github.com/seqeralabs/wave/issues/886
+        model = "\${CONDA_PREFIX:-\$MAMBA_ROOT_PREFIX}/bin/models/${packaged_model}"
     }
     if (!packaged_model) {
         model = "$user_model"
