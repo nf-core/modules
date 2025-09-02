@@ -31,12 +31,6 @@ input:
         pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1930 # FASTQ
-  - amplicon_seq_fallback:
-      type: string
-      description: Amplicon sequence fallback if not provided per sample
-  - guide_seq_fallback:
-      type: string
-      description: Guide RNA sequence fallback if not provided per sample
 
 output:
   results:
@@ -59,7 +53,8 @@ output:
           type: file
           description: CRISPResso HTML report
           pattern: "*.html"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2331 # HTML
   txt:
     - - meta:
           type: map
@@ -70,6 +65,8 @@ output:
           type: file
           description: CRISPResso text output files
           pattern: "CRISPResso_on_*/*.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
   versions:
     - versions.yml:
         type: file

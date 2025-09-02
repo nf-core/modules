@@ -4,13 +4,11 @@ process CRISPRESSO2 {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/crispresso2:2.3.3--py39hff726c5_0' :
+        'https://depot.galaxyproject.org/singularity/crispresso2:2.3.3--pyhdfd78af_0' :
         'biocontainers/crispresso2:2.3.3--py39hff726c5_0' }"
 
     input:
     tuple val(meta), path(reads)
-    val amplicon_seq_fallback
-    val guide_seq_fallback
 
     output:
     tuple val(meta), path("CRISPResso_on_*")        , emit: results
@@ -25,14 +23,7 @@ process CRISPRESSO2 {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     
-    // Use amplicon and guide from meta if available, otherwise fallback to input parameters
-    def amplicon_seq = meta.amplicon_seq ?: amplicon_seq_fallback ?: ""
-    def guide_seq = meta.guide_seq ?: guide_seq_fallback ?: ""
-    
-    def amplicon_param = amplicon_seq ? "-a ${amplicon_seq}" : ""
-    def guide_param = guide_seq ? "-g ${guide_seq}" : ""
-    
-    // Handle single-end vs paired-end reads and copy files to avoid symlink issues in Docker
+    // Handle single-end vs paired-end reads
     def read_inputs = ""
     def copy_commands = ""
     if (reads instanceof Path || reads.size() == 1) {
@@ -48,8 +39,6 @@ process CRISPRESSO2 {
     
     CRISPResso \\
         ${read_inputs} \\
-        ${amplicon_param} \\
-        ${guide_param} \\
         --name ${prefix} \\
         --output_folder . \\
         ${args}
@@ -62,7 +51,6 @@ process CRISPRESSO2 {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // Ensure stub runs without Docker interference
     """
     #!/usr/bin/env bash
     set -e

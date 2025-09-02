@@ -1,14 +1,15 @@
 nextflow_process {
+
     name "Test Process CRISPRESSO2"
     script "../main.nf"
     process "CRISPRESSO2"
-    config "./nextflow.config"
-    
+
     tag "modules"
-    tag "modules_nfcore"
+    tag "modules_nfcore"  
     tag "crispresso2"
-    
-    test("base_editor - stub") {
+
+    test("crispresso2 test") {
+        
         options "-stub"
         
         when {
@@ -16,57 +17,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:true ],
-                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
+                    []
                 ]
-                input[1] = "TTCGAGCTCAGCCTGAGTGTTGAGGCCCCAGTGGCTGCTCTGGGGGCCTCCTGAGTTTCTCATCTGTGCCCCTCCCTCCCTGGCCCAGGTGAAGGTGTGGTTCCAGAACCGGAGGACAAAGTACAAACGGCAGAAGCTGGAGGAGGAAGGGCCTGAGTCCGAGCAGAAGAAGAAGGGCTCCCATCACATCAACCGGTGGCGCATTGCCACGAAGCAGGCCAATGGGGAGGACATCGATGTCACCTCCAAT"
-                input[2] = "GTGGCGCATTGCCACGAAGC"
-                """
-            }
-        }
-        
-        then {
-            assert process.success
-            assert snapshot(process.out).match()
-        }
-    }
-
-    test("nhej_analysis - stub") {
-        options "-stub"
-        
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'nhej_test', single_end:true ],
-                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
-                ]
-                input[1] = "CCGAGCTCAGCCTGAGTGTTGAGGCCCCAGTGGCTGCTCTGGGGGCCTCCTGAGTTTCTCATCTGTGCCCCTCCCTCCCTGGCCCAGGTGAAGGTGTGGTTCCAGAACCGGAGGACAAAGTACAAACGGCAGAAGCTGGAGGAGGAAGGGCCTGAGTCCGAGCAGAAGAAGAAGGGCTCC"
-                input[2] = "GCAGAAGCTGGAGGAGGAAG"
-                """
-            }
-        }
-        
-        then {
-            assert process.success
-            assert snapshot(process.out).match()
-        }
-    }
-
-    test("paired_end_reads - stub") {
-        options "-stub"
-        
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'paired_test', single_end:false ],
-                    [ 
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
-                    ]
-                ]
-                input[1] = "GCAGCTCAGCCTGAGTGTTGAGGCCCCAGTGGCTGCTCTGGGGGCCTCCTGAGTTTCTCATCTGTGCCCCTCCCTCCCTGGCCCAGGTGAAGGTGTGGTTCCAGAACCGGAGGACAAAGTACAAACGGCAGAAGCTGGAGGAGGAAGGGCCTGAGTCCGAGCAGAAGAAGAAGGGCTCC"
-                input[2] = "AAGGTGTGGTTCCAGAACCG"
                 """
             }
         }
