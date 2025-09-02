@@ -59,7 +59,8 @@ output:
           type: file
           description: CRISPResso HTML report
           pattern: "*.html"
-          ontologies: []
+          ontologies: 
+              - edam: http://edamontology.org/format_2331 # HTML
   txt:
     - - meta:
           type: map
