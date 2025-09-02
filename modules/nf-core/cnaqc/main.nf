@@ -29,7 +29,6 @@ process CNAQC {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    
     """
     touch ${prefix}_qc.rds
     touch ${prefix}_data_plot.rds
