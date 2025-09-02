@@ -58,7 +58,7 @@ process CLAIR3 {
             merge_output.gvcf.gz \
             merge_output.gvcf.gz.tbi; do
     if [ -e "\$file" ]; then
-        mv "\$file" "${prefix}.\$file"
+        mv "\$file" "${prefix}\$file"
     fi
     done
 
