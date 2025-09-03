@@ -1,13 +1,6 @@
 {
     "homo_sapiens - bam - with_known_indels": {
         "content": [
-            [
-                "@HD\tVN:1.6\tSO:coordinate",
-                "@SQ\tSN:chr22\tLN:40001",
-                "@RG\tID:1\tPU:1\tSM:testN\tLB:testN\tPL:illumina",
-                "@PG\tID:bwa\tPN:bwa\tVN:0.7.17-r1188\tCL:bwa mem -K 100000000 -R @RG\\tID:1\\tPU:1\\tSM:testN\\tLB:testN\\tPL:illumina -t 19 -M genome.fasta test_1.retry.fq.gz test_2.retry.fq.gz",
-                "@PG\tID:ABRA2\tVN:2.24\tCL:/usr/local/share/abra2-2.24-3/abra2.jar --in test.paired_end.sorted.bam --out test_known_indels.test.paired_end.sorted.bam --ref genome.fasta --threads 2 --in-vcf mills_and_1000G.indels.vcf --index"
-            ],
             "a6d5eb709ea32e26a49597fe0dccd0b1",
             [
                 
@@ -17,13 +10,10 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-09-03T18:15:32.639725"
+        "timestamp": "2025-09-03T18:26:22.258117"
     },
     "sarscov2 - bam - stub": {
         "content": [
-            [
-                "@HD\tVN:1.6"
-            ],
             "d41d8cd98f00b204e9800998ecf8427e",
             [
                 [
@@ -39,19 +29,10 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-09-03T18:15:09.51907"
+        "timestamp": "2025-09-03T18:26:01.784385"
     },
     "homo_sapiens - rnaseq - with_gtf": {
         "content": [
-            [
-                "@HD\tVN:1.6\tSO:coordinate",
-                "@SQ\tSN:chr22\tLN:40001",
-                "@RG\tID:test\tSM:test\tPL:illumina",
-                "@PG\tID:STAR\tPN:STAR\tVN:2.7.10a\tCL:STAR   --runThreadN 2   --genomeDir star   --readFilesIn test_rnaseq_1.fastq.gz   test_rnaseq_2.fastq.gz      --readFilesCommand zcat      --outFileNamePrefix test.   --outSAMtype BAM   Unsorted      --outSAMattrRGline ID:test   SM:test   PL:illumina      --sjdbGTFfile genome.gtf",
-                "@PG\tID:samtools\tPN:samtools\tPP:STAR\tVN:1.16.1\tCL:samtools sort test.rna.Aligned.unsorted.bam",
-                "@PG\tID:ABRA2\tVN:2.24\tCL:/usr/local/share/abra2-2.24-3/abra2.jar --in test.rna.paired_end.sorted.bam --out test_rnaseq.test.rna.paired_end.sorted.bam --ref genome.fasta --threads 2 --gtf genome.gtf --index",
-                "@CO\tuser command line: STAR --genomeDir star --readFilesIn test_rnaseq_1.fastq.gz test_rnaseq_2.fastq.gz --runThreadN 2 --outFileNamePrefix test. --outSAMtype BAM Unsorted --sjdbGTFfile genome.gtf --outSAMattrRGline ID:test SM:test PL:illumina --readFilesCommand zcat"
-            ],
             "108457baa45bdbb2ca92763e268527c9",
             [
                 
@@ -61,19 +42,10 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-09-03T18:15:18.653911"
+        "timestamp": "2025-09-03T18:26:09.925527"
     },
     "sarscov2 - bam": {
         "content": [
-            [
-                "@HD\tVN:1.6\tSO:coordinate",
-                "@SQ\tSN:MT192765.1\tLN:29829",
-                "@RG\tID:1\tLB:lib1\tPL:ILLUMINA\tSM:test\tPU:barcode1",
-                "@PG\tID:minimap2\tPN:minimap2\tVN:2.17-r941\tCL:minimap2 -ax sr tests/data/fasta/sarscov2/GCA_011545545.1_ASM1154554v1_genomic.fna tests/data/fastq/dna/sarscov2_1.fastq.gz tests/data/fastq/dna/sarscov2_2.fastq.gz",
-                "@PG\tID:samtools\tPN:samtools\tPP:minimap2\tVN:1.11\tCL:samtools view -Sb sarscov2_aln.sam",
-                "@PG\tID:samtools.1\tPN:samtools\tPP:samtools\tVN:1.11\tCL:samtools sort -o sarscov2_paired_aln.sorted.bam sarscov2_paired_aln.bam",
-                "@PG\tID:ABRA2\tVN:2.24\tCL:/usr/local/share/abra2-2.24-3/abra2.jar --in test.paired_end.sorted.bam --out test.test.paired_end.sorted.bam --ref genome.fasta --threads 2 --index"
-            ],
             "5a5baeea55f04def40fd3070318e5a3",
             [
                 
@@ -83,19 +55,10 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-09-03T18:15:00.768682"
+        "timestamp": "2025-09-03T18:25:53.79576"
     },
     "sarscov2 - bam - with_targets": {
         "content": [
-            [
-                "@HD\tVN:1.6\tSO:coordinate",
-                "@SQ\tSN:MT192765.1\tLN:29829",
-                "@RG\tID:1\tLB:lib1\tPL:ILLUMINA\tSM:test\tPU:barcode1",
-                "@PG\tID:minimap2\tPN:minimap2\tVN:2.17-r941\tCL:minimap2 -ax sr tests/data/fasta/sarscov2/GCA_011545545.1_ASM1154554v1_genomic.fna tests/data/fastq/dna/sarscov2_1.fastq.gz tests/data/fastq/dna/sarscov2_2.fastq.gz",
-                "@PG\tID:samtools\tPN:samtools\tPP:minimap2\tVN:1.11\tCL:samtools view -Sb sarscov2_aln.sam",
-                "@PG\tID:samtools.1\tPN:samtools\tPP:samtools\tVN:1.11\tCL:samtools sort -o sarscov2_paired_aln.sorted.bam sarscov2_paired_aln.bam",
-                "@PG\tID:ABRA2\tVN:2.24\tCL:/usr/local/share/abra2-2.24-3/abra2.jar --in test.paired_end.sorted.bam --out test.test.paired_end.sorted.bam --ref genome.fasta --threads 2 --targets test.bed --index"
-            ],
             "5a5baeea55f04def40fd3070318e5a3",
             [
                 
@@ -105,25 +68,11 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-09-03T18:15:05.691085"
+        "timestamp": "2025-09-03T18:25:58.304764"
     },
     "homo_sapiens - multiple_bams": {
         "content": [
-            [
-                "@HD\tVN:1.6\tSO:coordinate",
-                "@SQ\tSN:chr22\tLN:40001",
-                "@RG\tID:1\tPU:1\tSM:testN\tLB:testN\tPL:illumina",
-                "@PG\tID:bwa\tPN:bwa\tVN:0.7.17-r1188\tCL:bwa mem -K 100000000 -R @RG\\tID:1\\tPU:1\\tSM:testN\\tLB:testN\\tPL:illumina -t 19 -M genome.fasta test_1.retry.fq.gz test_2.retry.fq.gz",
-                "@PG\tID:ABRA2\tVN:2.24\tCL:/usr/local/share/abra2-2.24-3/abra2.jar --in test.paired_end.sorted.bam,test2.paired_end.sorted.bam --out test_multi.test.paired_end.sorted.bam,test_multi.test2.paired_end.sorted.bam --ref genome.fasta --threads 2 --index"
-            ],
             "a6d5eb709ea32e26a49597fe0dccd0b1",
-            [
-                "@HD\tVN:1.6\tSO:coordinate",
-                "@SQ\tSN:chr22\tLN:40001",
-                "@RG\tID:2\tPU:2\tSM:testT\tLB:testT\tPL:illumina",
-                "@PG\tID:bwa\tPN:bwa\tVN:0.7.17-r1188\tCL:bwa mem -K 100000000 -R @RG\\tID:2\\tPU:2\\tSM:testT\\tLB:testT\\tPL:illumina -B 3 -t 19 -M genome.fasta test2_1.retry.fq.gz test2_2.retry.fq.gz",
-                "@PG\tID:ABRA2\tVN:2.24\tCL:/usr/local/share/abra2-2.24-3/abra2.jar --in test.paired_end.sorted.bam,test2.paired_end.sorted.bam --out test_multi.test.paired_end.sorted.bam,test_multi.test2.paired_end.sorted.bam --ref genome.fasta --threads 2 --index"
-            ],
             "d61994c44cbec651473669378132cb7c",
             [
                 
@@ -133,6 +82,6 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-09-03T18:15:26.408961"
+        "timestamp": "2025-09-03T18:26:16.375476"
     }
 }
