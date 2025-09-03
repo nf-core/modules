@@ -11,7 +11,6 @@ nextflow_process {
     test("crispresso2 - single_end") {
         
         config "./single_end.config"
-        options "-stub"
         
         when {
             process {
@@ -33,7 +32,6 @@ nextflow_process {
     test("crispresso2 - paired_end") {
         
         config "./paired_end.config"
-        options "-stub"
         
         when {
             process {
@@ -55,7 +53,6 @@ nextflow_process {
     test("crispresso2 - nhej_analysis") {
         
         config "./nhej.config"
-        options "-stub"
         
         when {
             process {
