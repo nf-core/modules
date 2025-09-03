@@ -25,18 +25,13 @@ process CRISPRESSO2 {
     
     // Handle single-end vs paired-end reads
     def read_inputs = ""
-    def copy_commands = ""
     if (reads instanceof Path || reads.size() == 1) {
-        copy_commands = "cp -L ${reads} reads.fastq.gz"
-        read_inputs = "-r1 reads.fastq.gz"
+        read_inputs = "-r1 ${reads}"
     } else {
-        copy_commands = "cp -L ${reads[0]} reads_1.fastq.gz\n    cp -L ${reads[1]} reads_2.fastq.gz"
-        read_inputs = "-r1 reads_1.fastq.gz -r2 reads_2.fastq.gz"
+        read_inputs = "-r1 ${reads[0]} -r2 ${reads[1]}"
     }
 
     """
-    ${copy_commands}
-    
     CRISPResso \\
         ${read_inputs} \\
         --name ${prefix} \\
