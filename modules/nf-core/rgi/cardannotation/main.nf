@@ -2,18 +2,18 @@ process RGI_CARDANNOTATION {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/rgi:6.0.3--pyha8f3691_1':
-        'biocontainers/rgi:6.0.3--pyha8f3691_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/rgi:6.0.5--pyh05cac1d_0'
+        : 'biocontainers/rgi:6.0.5--pyh05cac1d_0'}"
 
     input:
-    path(card)
+    path card
 
     output:
-    path("card_database_processed") , emit: db
-    env RGI_VERSION                 , emit: tool_version
-    env DB_VERSION                  , emit: db_version
-    path "versions.yml"             , emit: versions
+    path ("card_database_processed"), emit: db
+    env RGI_VERSION, emit: tool_version
+    env DB_VERSION, emit: db_version
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,7 +24,7 @@ process RGI_CARDANNOTATION {
     """
     rgi card_annotation \\
         -i ${card}/card.json \\
-        $args
+        ${args}
 
     DB_VERSION=\$(ls card_database_*_all.fasta | sed "s/card_database_v\\([0-9].*[0-9]\\).*/\\1/")
 
