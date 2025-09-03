@@ -33,7 +33,28 @@ nextflow_process {
                 }
             )
         }
-
     }
 
+    test("sarscov2 paired-end methylated [bam] | stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:false ],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.bam', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match()
+                }
+            )
+        }
+    }
 }

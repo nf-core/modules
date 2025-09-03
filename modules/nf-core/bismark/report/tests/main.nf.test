@@ -13,9 +13,7 @@ nextflow_process {
     tag "bismark/methylationextractor"
     tag "bismark/genomepreparation"
 
-    test("sarscov2 genome [fasta] | sarscov2 single-end methylated [fastq]") {
-
-        setup {
+    setup {
             run("BISMARK_GENOMEPREPARATION") {
                 script "../../genomepreparation/main.nf"
                 process {
@@ -62,6 +60,8 @@ nextflow_process {
             }
         }
 
+    test("sarscov2 genome [fasta] | sarscov2 single-end methylated [fastq]") {
+
         when {
             process {
                 """
@@ -82,7 +82,28 @@ nextflow_process {
                 ).match() },
             )
         }
-
     }
 
+    test("sarscov2 genome [fasta] | sarscov2 single-end methylated [fastq] | stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = BISMARK_ALIGN.out.report
+                            .join(BISMARK_DEDUPLICATE.out.report)
+                            .join(BISMARK_METHYLATIONEXTRACTOR.out.report)
+                            .join(BISMARK_METHYLATIONEXTRACTOR.out.mbias)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert snapshot(
+                file(process.out).match() },
+            )
+        }
+    }
 }
