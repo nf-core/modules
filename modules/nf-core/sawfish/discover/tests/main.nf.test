@@ -27,7 +27,9 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true)
                 ]
 
-                input[2] = [[], [], [], []]
+                input[2] = [[], []]
+                input[3] = [[], []]
+                input[4] = [[], []]
 
 
                 """
@@ -50,7 +52,6 @@ nextflow_process {
                     process.out.genome_gclevels,
                     process.out.sample_gcbias,
                     process.out.depth_mpack,
-                    process.out.max_depth,
                     process.out.sample_gcbias,
                 ).match() }
 
@@ -76,7 +77,9 @@ nextflow_process {
                     [ id:'test'], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true)
                 ]
-                input[2] = [[], [], [], []]
+                input[2] = [[], []]
+                input[3] = [[], []]
+                input[4] = [[], []]
 
                 """
             }

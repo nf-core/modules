@@ -4,13 +4,15 @@ process SAWFISH_DISCOVER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e7/e7f042970a563400d0486306b8c2c681625e35743e50f06ae7e37b515235bbdd/data' :
-        'community.wave.seqera.io/library/sawfish:2.0.4--9ccd13315939ebe4' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/72/72b081ac73287f98b0453a7e2fbd66e581f9eed68fe91289b9e4189e639fa6d9/data' :
+        'community.wave.seqera.io/library/sawfish:2.0.5--422cc4cf3cd63e02' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
     tuple val(meta2), path(fasta)
-    tuple val(meta3), path(expected_cn_bed), path(maf_vcf), path(cnv_exclude_regions)
+    tuple val(meta3), path(expected_cn_bed)
+    tuple val(meta4), path(maf_vcf)
+    tuple val(meta5), path(cnv_exclude_regions)
 
     output:
     tuple val(meta), path("versions.yml")           , emit: versions
@@ -46,6 +48,7 @@ process SAWFISH_DISCOVER {
     """
     sawfish \\
         discover \\
+        --disable-path-canonicalization \\
         --ref $fasta \\
         --bam $bam \\
         --threads $task.cpus \\

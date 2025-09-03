@@ -46,12 +46,17 @@ input:
         type: map
         description: |
           Groovy Map containing additional information
-          e.g. [ id:'cnv' ]
+          e.g. [ id:'cn' ]
     - expected_cn_bed:
         type: file
         description: Expected copy number BED file
         pattern: "*.bed"
         ontologies: []
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing additional information
+          e.g. [ id:'maf' ]
     - maf_vcf:
         type: file
         description: |
@@ -59,6 +64,11 @@ input:
           in VCF or BCF format.
         pattern: "*.{vcf.gz,bcf.gz}"
         ontologies: []
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing additional information
+          e.g. [ id:'cnv' ]
     - cnv_exclude_regions:
         type: file
         description: Regions of the genome to exclude from CNV analysis, in BED
