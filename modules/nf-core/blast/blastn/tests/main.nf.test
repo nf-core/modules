@@ -31,6 +31,9 @@ nextflow_process {
                 """
                 input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
                 input[1] = BLAST_MAKEBLASTDB.out.db
+                input[2] = []
+                input[3] = []
+                input[4] = []
                 """
             }
         }
@@ -55,6 +58,9 @@ nextflow_process {
                 """
                 input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true) ]
                 input[1] = BLAST_MAKEBLASTDB.out.db
+                input[2] = []
+                input[3] = []
+                input[4] = []
                 """
             }
         }
