@@ -1,0 +1,70 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: samclip
+description: Filters SAM file for soft and hard clipped alignments
+keywords:
+  - soft-clipped reads
+  - hard-clipped reads
+  - genomics
+  - sam
+tools:
+  - samclip:
+      description: Filters SAM file for soft and hard clipped alignments
+      homepage: https://github.com/tseemann/samclip
+      documentation: https://github.com/tseemann/samclip
+      tool_dev_url: https://github.com/tseemann/samclip
+      doi: "no DOI available"
+      licence: ["GPL v3"]
+      identifier: biotools:samclip
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+
+    - sam:
+        type: file
+        description: SAM file
+        pattern: "*.sam"
+        ontologies:
+          - edam: http://edamontology.org/format_2573 # SAM
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing fasta reference information
+          e.g. [ id:'test' ]
+    - reference:
+        type: file
+        description: |
+          reference FASTA file
+        pattern: "*.{fasta,fa}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+    - reference_index:
+        type: file
+        description: |
+          reference FASTA file index
+        pattern: "*.{fai}"
+        ontologies: []
+output:
+  sam:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. [ id:'test']
+      - "*.sam":
+          type: file
+          description: Filtered SAM
+          ontologies:
+            - edam: http://edamontology.org/format_2573 # SAM
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: versions.yml
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@emmcauley"
+maintainers:
+  - "@emmcauley"
