@@ -4,7 +4,7 @@ process ENSEMBLVEP_DOWNLOAD {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/115--pl5321h2a3209d_0'
+        ? 'https://depot.galaxyproject.org/singularity/ensembl-vep:115--pl5321h2a3209d_0'
         : 'biocontainers/ensembl-vep:115--pl5321h2a3209d_0'}"
 
     input:
