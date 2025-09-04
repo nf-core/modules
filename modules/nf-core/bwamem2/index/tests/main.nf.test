@@ -8,7 +8,33 @@ nextflow_process {
     script "../main.nf"
     process "BWAMEM2_INDEX"
 
-    test("BWAMEM2 index") {
+    test("fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.index,
+                    path(process.out.versions.get(0)).yaml
+                ).match() }
+            )
+        }
+    }
+
+    test("fasta - stub") {
+
+        options "-stub"
 
         when {
             process {
