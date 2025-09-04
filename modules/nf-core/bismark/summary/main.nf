@@ -33,10 +33,9 @@ process BISMARK_SUMMARY {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${bam.baseName()}"
     """
-    touch ${prefix}.report.txt
-    touch ${prefix}.report.html
+    touch bismark_summary_report.txt
+    touch bismark_summary_report.html
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
