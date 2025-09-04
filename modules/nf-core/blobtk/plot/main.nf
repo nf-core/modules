@@ -1,11 +1,12 @@
 process BLOBTK_PLOT {
+    // A somewhat nuclear option
     // Linked to issue https://github.com/sanger-tol/genomenote/issues/184
     // Depending on the blob dataset in use, the grid option may not
     // work at all. This is down to the version of blobtoolkit used to
     // generate the blob.
     // Adding a check would overly complicate the module so for now
-    // we can ignore errors, with the knowledge it would only kill
-    // runs in which the blobdir doesn't have the right data.
+    // we can ignore errors, with the *assumption* it would only kill
+    // runs in which the blobdir doesn't have the right data
     errorStrategy = 'ignore'
 
     tag "$prefix"
