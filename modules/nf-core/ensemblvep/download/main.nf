@@ -4,8 +4,8 @@ process ENSEMBLVEP_DOWNLOAD {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/ensembl-vep:114.2--pl5321h2a3209d_0'
-        : 'biocontainers/ensembl-vep:114.2--pl5321h2a3209d_0'}"
+        ? 'https://depot.galaxyproject.org/singularity/115--pl5321h2a3209d_0'
+        : 'biocontainers/ensembl-vep:115--pl5321h2a3209d_0'}"
 
     input:
     tuple val(meta), val(assembly), val(species), val(cache_version)
