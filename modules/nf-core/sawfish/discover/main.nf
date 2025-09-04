@@ -15,7 +15,7 @@ process SAWFISH_DISCOVER {
     tuple val(meta5), path(cnv_exclude_regions)
 
     output:
-    tuple val(meta), path("versions.yml")           , emit: versions
+    tuple val(meta), path("versions.yml")                                  , emit: versions
     tuple val(meta), path("*_discover_dir/assembly.regions.bed")           , emit: assembly_regions
     tuple val(meta), path("*_discover_dir/candidate.sv.bcf")               , emit: candidate_sv_bcf
     tuple val(meta), path("*_discover_dir/candidate.sv.bcf.csi")           , emit: candidate_sv_bcf_csi
