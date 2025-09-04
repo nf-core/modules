@@ -8,7 +8,8 @@ dependencies:
   - htslib
   - pip
   - pybedtools
+  - git
   - pip: # FIXME https://github.com/nf-core/modules/issues/5814
       # NOTE PINTS isn't adding conda builds and is a few versions behind.
       # renovate: datasource=pypi depName=pypints
-      - pypints==1.1.13
+      - git+https://github.com/hyulab/PINTS.git
