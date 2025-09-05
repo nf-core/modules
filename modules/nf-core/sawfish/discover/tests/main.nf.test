@@ -1,0 +1,95 @@
+nextflow_process {
+
+    name "Test Process SAWFISH_DISCOVER"
+    script "../main.nf"
+    process "SAWFISH_DISCOVER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "sawfish"
+    tag "sawfish/discover"
+
+    test("sawfish_discover_bam") {
+
+        config "./sawfish_discover.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true)
+                ]
+
+                input[1] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true)
+                ]
+
+                input[2] = [[], []]
+                input[3] = [[], []]
+                input[4] = [[], []]
+
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    file(process.out.candidate_sv_bcf[0][1]).name,
+                    process.out.candidate_sv_bcf_csi,
+                    process.out.depth_mpack,
+                    process.out.contig_alignment_bam,
+                    process.out.contig_alignment_bam_csi,
+                    process.out.debug_breakpoint_clusters,
+                    process.out.copynum_mpack,
+                    process.out.copynum_bedgraph,
+                    process.out.genome_gclevels,
+                    process.out.sample_gcbias,
+                    process.out.depth_mpack,
+                    process.out.sample_gcbias,
+                ).match() }
+
+            )
+        }
+    }
+
+    test("sawfish_bam_stub") {
+
+        options "-stub"
+
+        when {
+            process {
+
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true)
+                ]
+
+                input[1] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true)
+                ]
+                input[2] = [[], []]
+                input[3] = [[], []]
+                input[4] = [[], []]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
