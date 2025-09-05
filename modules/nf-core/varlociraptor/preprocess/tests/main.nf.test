@@ -73,6 +73,9 @@ nextflow_process {
     }
 
     test("sarscov2 - [bam,vcf,json,fasta] - stub") {
+        
+        options '-stub'
+
         when {
             process {
                 """
