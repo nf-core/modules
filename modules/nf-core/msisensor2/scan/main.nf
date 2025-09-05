@@ -1,32 +1,31 @@
 process MSISENSOR2_SCAN {
-    tag "$fasta"
+    tag "${fasta}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/msisensor2:0.1--hd03093a_0':
-        'biocontainers/msisensor2:0.1--hd03093a_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/msisensor2:0.1--hd03093a_0'
+        : 'biocontainers/msisensor2:0.1--hd03093a_0'}"
 
     input:
-    path fasta
-    val output
+    tuple val(meta), path(fasta)
 
     output:
-    path output_path   , emit: scan
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.scan"), emit: scan
+    path "versions.yml",             emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args        = task.ext.args ?: ''
-    def inputs      = fasta.collect{ "-d $it"}.join(" ")
-    output_path = output ?: "output.scan"
+    def args   = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def inputs = fasta.sort().collect { "-d ${it}" }.join(" ")
     """
     msisensor2 scan \\
-        $args \\
-        $inputs \\
-        -o $output_path
+        ${args} \\
+        ${inputs} \\
+        -o ${prefix}.scan
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -35,9 +34,9 @@ process MSISENSOR2_SCAN {
     """
 
     stub:
-    output_path = output ?: "output.scan"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch $output_path
+    touch ${prefix}.scan
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
