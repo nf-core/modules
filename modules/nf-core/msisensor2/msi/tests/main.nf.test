@@ -12,18 +12,22 @@ nextflow_process {
     tag "msisensor2/msi"
 
     test("homo_sapiens tumor_only - bam - fasta scan") {
+
         setup {
             run("MSISENSOR2_SCAN") {
                 script "../../scan/main.nf"
 
                 process {
                     """
-                    input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',checkIfExists:true)
-                    input[1] = "outputfile"
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    ]
                     """
                 }
             }
         }
+
         when {
             process {
                 """
@@ -41,30 +45,36 @@ nextflow_process {
             }
         }
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.msi,
                     process.out.distribution,
                     file(process.out.somatic[0][1]).name, // Empty file
-                    process.out.versions
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
                 ).match() }
             )
         }
     }
+
     test("homo_sapiens tumor_normal - bam tumor bam normal - fasta scan") {
+
         setup {
             run("MSISENSOR2_SCAN") {
                 script "../../scan/main.nf"
 
                 process {
                     """
-                    input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
-                    input[1] = "outputfile"
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    ]
                     """
                 }
             }
         }
+
         when {
             process {
                 """
@@ -82,18 +92,20 @@ nextflow_process {
             }
         }
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.msi,
                     process.out.distribution,
                     file(process.out.somatic[0][1]).name, // Empty file
                     file(process.out.germline[0][1]).name, // Empty file
-                    process.out.versions
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
                 ).match() }
             )
         }
     }
+
     test("homo_sapiens tumor_only - bam - [] - models") {
         when {
             process {
@@ -130,20 +142,23 @@ nextflow_process {
             }
         }
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.msi,
                     process.out.distribution,
                     file(process.out.somatic[0][1]).name, // Empty file
-                    process.out.versions
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
                 ).match() }
             )
         }
     }
 
     test("homo_sapiens tumor_only - bam -- stub") {
+
         options "-stub"
+
         when {
             process {
                 """
@@ -161,8 +176,8 @@ nextflow_process {
             }
         }
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out,
                     path(process.out.versions[0]).yaml
