@@ -80,7 +80,7 @@ jobs:
           list-files: "json"
 
       - name: Get module name
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         id: module_names
         with:
           script: |
@@ -92,7 +92,7 @@ jobs:
               )
             )];
       - name: Get subworkflow name
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         id: subworkflow_names
         with:
           script: |

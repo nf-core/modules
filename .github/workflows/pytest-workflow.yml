@@ -290,7 +290,7 @@ jobs:
           batcat --decorations=always --color=always /home/ubuntu/pytest_workflow_*/*/log.{out,err}
 
       - name: Setting global variables
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         id: parsed
         with:
           script: |
