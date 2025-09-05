@@ -25,7 +25,7 @@ process MSISENSOR2_MSI {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def interval_command = intervals  ? "-e ${intervals}" : ""
+    def interval_cmd     = intervals  ? "-e ${intervals}" : ""
     def model_cmd        = models     ? "-M models/" : ""
     def normal_bam_cmd   = normal_bam ? "-n ${normal_bam}" : ""
     def scan_cmd         = scan       ? "-d ${scan}" : ""
@@ -36,7 +36,7 @@ process MSISENSOR2_MSI {
         ${args} \\
         ${model_cmd} \\
         ${scan_cmd} \\
-        ${interval_command} \\
+        ${interval_cmd} \\
         ${tumor_bam_cmd} \\
         ${normal_bam_cmd} \\
         -o ${prefix}
