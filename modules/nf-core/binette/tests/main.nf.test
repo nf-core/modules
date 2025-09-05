@@ -1,0 +1,126 @@
+nextflow_process {
+
+    name "Test Process BINETTE"
+    tag "modules_ebimetagenomics"
+    tag "modules"
+    tag "binette"
+    script "../main.nf"
+    process "BINETTE"
+
+
+    test("Refine bins from FASTA input directories") {
+        when {
+            params {
+                outdir = "${launchDir}/tests/results"
+            }
+            process {
+                """
+                input[0] = [
+                    [id: 'test'],
+                    [
+                        file('$moduleDir/tests/data/binner1', checkIfExists: true),
+                        file('$moduleDir/tests/data/binner2', checkIfExists: true)
+                    ],
+                    file('$moduleDir/tests/data/metagenome.fasta', checkIfExists: true),
+                    []
+                ]
+                input[1] = "fasta"
+                input[2] = file('$moduleDir/tests/data/small_db.dmnd', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        process.out.refined_bins,
+                        process.out.refined_bins_report,
+                        process.out.versions,
+                        path(process.out.versions[0]).yaml
+                    ).match()
+                }
+            )
+        }
+    }
+
+
+    test("Refine bins from TSV contig2bin tables") {
+        when {
+            params {
+                outdir = "${launchDir}/tests/results"
+            }
+            process {
+                """
+                input[0] = [
+                    [id: 'test'],
+                    [
+                        file('$moduleDir/tests/data/binner1.tsv', checkIfExists: true),
+                        file('$moduleDir/tests/data/binner2.tsv', checkIfExists: true)
+                    ],
+                    file('$moduleDir/tests/data/metagenome.fasta', checkIfExists: true),
+                    []
+                ]
+                input[1] = "tsv"
+                input[2] = file('$moduleDir/tests/data/small_db.dmnd', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        process.out.refined_bins,
+                        process.out.refined_bins_report,
+                        process.out.versions,
+                        path(process.out.versions[0]).yaml
+                    ).match()
+                }
+            )
+        }
+    }
+
+
+    test("test_binette - stub") {
+
+        options '-stub'
+
+        when {
+            params {
+                outdir = "${launchDir}/tests/results"
+            }
+            process {
+                """
+                input[0] = [
+                    [id: 'test'],
+                    [
+                        file('$moduleDir/tests/data/binner1', checkIfExists: true),
+                        file('$moduleDir/tests/data/binner2', checkIfExists: true)
+                    ],
+                    file('$moduleDir/tests/data/metagenome.fasta', checkIfExists: true),
+                    []
+                ]
+                input[1] = "fasta"
+                input[2] = file('$moduleDir/tests/data/small_db.dmnd', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        process.out.refined_bins,
+                        process.out.refined_bins_report,
+                        process.out.versions,
+                        path(process.out.versions[0]).yaml
+                    ).match()
+                }
+            )
+        }
+    }
+}
