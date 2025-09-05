@@ -5,13 +5,13 @@ nextflow_process {
     process "BLOBTK_DEPTH"
 
     tag "modules"
-    tag "modules_sangertol"
+    tag "modules_nfcore"
     tag "blobtk"
     tag "blobtk/depth"
 
     config './nextflow.config'
 
-    test("Cantharis rufa - bam and bai") {
+    test("bacteroides fragilis - bam and bai") {
 
         when {
 
@@ -24,8 +24,8 @@ nextflow_process {
                 input[0] = Channel.of(
                     [
                         [ id:'test' ], // meta map
-                        file(params.modules_testdata_base_path + "Cantharis_rufa/analysis/icCanRufa1/read_mapping/pacbio/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.bam", checkIfExists: true),
-                        file(params.modules_testdata_base_path + "Cantharis_rufa/analysis/icCanRufa1/read_mapping/pacbio/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.bam.bai", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/illumina/bam/test1.sorted.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/illumina/bam/test1.sorted.bam.bai", checkIfExists: true),
                     ]
                 )
 
@@ -41,7 +41,7 @@ nextflow_process {
         }
     }
 
-    test("Cantharis rufa - bam and bai - stub") {
+    test("bacteroides fragilis - bam and bai - stub") {
 
         options "-stub"
 
@@ -52,8 +52,8 @@ nextflow_process {
                 input[0] = Channel.of(
                     [
                         [ id:'test' ], // meta map
-                        file(params.modules_testdata_base_path + "Cantharis_rufa/analysis/icCanRufa1/read_mapping/pacbio/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.bam", checkIfExists: true),
-                        file(params.modules_testdata_base_path + "Cantharis_rufa/analysis/icCanRufa1/read_mapping/pacbio/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.bam.bai", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/illumina/bam/test1.sorted.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/illumina/bam/test1.sorted.bam.bai", checkIfExists: true),
                     ]
                 )
                 """

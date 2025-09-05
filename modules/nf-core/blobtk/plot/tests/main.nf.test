@@ -5,38 +5,23 @@ nextflow_process {
     process "BLOBTK_PLOT"
 
     tag "modules"
-    tag "modules_sangertol"
+    tag "modules_nfcore"
     tag "blobtk"
     tag "blobtk/plot"
-    tag "nf-core/gunzip"
-
-    setup {
-        nfcoreInitialise("${launchDir}/library/")
-        nfcoreInstall("${launchDir}/library/", ["gunzip"])
-        nfcoreLink("${launchDir}/library/", "${baseDir}/modules/")
-
-        run("GUNZIP") {
-            script "../../../../nf-core/gunzip/main.nf"
-            process {
-                """
-                input[0] = Channel.of([
-                    [ id: "test" ],
-                    file(params.modules_testdata_base_path + 'Ceramica_pisi/assembly/release/ilCerPisi1.1/insdc/GCA_963859965.1.fasta.gz', checkIfExists: true)
-                ])
-                """
-            }
-        }
-    }
+    tag "gunzip"
 
     config './nextflow.config'
 
-    test("Ceramica pisi - fasta") {
+    test("bacteroides_fragilis - fasta") {
 
         when {
 
             process {
                 """
-                input[0] = GUNZIP.out.gunzip
+                input[0] = Channel.of([
+                    [ id: "test" ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
 
                 input[1] = []
 
@@ -63,14 +48,9 @@ nextflow_process {
                 }
             )
         }
-
-        cleanup {
-            nfcoreUnlink("${launchDir}/library/", "${baseDir}/modules/")
-        }
-
     }
 
-    test("Ceramica pisi - fasta - stub") {
+    test("bacteroides fragilis - fasta - stub") {
 
         options "-stub"
 
@@ -78,7 +58,10 @@ nextflow_process {
 
             process {
                 """
-                input[0] = GUNZIP.out.gunzip
+                input[0] = Channel.of([
+                    [ id: "test" ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
 
                 input[1] = []
 
@@ -100,11 +83,5 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
-        cleanup {
-            nfcoreUnlink("${launchDir}/library/", "${baseDir}/modules/")
-        }
-
     }
-
 }
