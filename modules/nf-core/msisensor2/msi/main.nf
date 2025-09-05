@@ -13,11 +13,11 @@ process MSISENSOR2_MSI {
     path models, stageAs: "models/*"
 
     output:
-    tuple val(meta), path("${prefix}"), emit: msi
-    tuple val(meta), path("${prefix}_dis"), emit: distribution
-    tuple val(meta), path("${prefix}_somatic"), emit: somatic
+    tuple val(meta), path("${prefix}"),          emit: msi
+    tuple val(meta), path("${prefix}_dis"),      emit: distribution
+    tuple val(meta), path("${prefix}_somatic"),  emit: somatic
     tuple val(meta), path("${prefix}_germline"), emit: germline, optional: true
-    path "versions.yml", emit: versions
+    path "versions.yml",                         emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,11 +25,11 @@ process MSISENSOR2_MSI {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def scan_cmd = scan ? "-d ${scan}" : ""
-    def model_cmd = models ? "-M models/" : ""
-    def tumor_bam_cmd = tumor_bam ? "-t ${tumor_bam}" : ""
-    def normal_bam_cmd = normal_bam ? "-n ${normal_bam}" : ""
-    def interval_command = intervals ? "-e ${intervals}" : ""
+    def interval_command = intervals  ? "-e ${intervals}" : ""
+    def model_cmd        = models     ? "-M models/" : ""
+    def normal_bam_cmd   = normal_bam ? "-n ${normal_bam}" : ""
+    def scan_cmd         = scan       ? "-d ${scan}" : ""
+    def tumor_bam_cmd    = tumor_bam  ? "-t ${tumor_bam}" : ""
     """
     msisensor2 msi \\
         -b ${task.cpus} \\
