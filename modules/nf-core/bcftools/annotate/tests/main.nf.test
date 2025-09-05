@@ -213,7 +213,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
                     process.out.versions
-                ).match("bcf") }
+                ).match("bcf-header") }
             )
         }
 
@@ -246,7 +246,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
                     process.out.versions
-                ).match("bcf") }
+                ).match("bcf-columns") }
             )
         }
 

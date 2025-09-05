@@ -26,7 +26,7 @@ process BCFTOOLS_ANNOTATE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def annotations_file = annotations ? "--annotations ${annotations}" : ''
-    def columns_file = columns ? "--columns-file ${columns_file}" : ''
+    def columns_file = columns ? "--columns-file ${columns}" : ''
     def header_file = header_lines ? "--header-lines ${header_lines}" : ''
     def rename_chrs_file = rename_chrs ? "--rename-chrs ${rename_chrs}" : ''
     def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
