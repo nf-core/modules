@@ -39,7 +39,7 @@ nextflow_process {
                     [],
                     [],
                 ]
-                input[1] = MSISENSOR2_SCAN.out.scan
+                input[1] = MSISENSOR2_SCAN.out.scan.map{ _meta, scan -> scan }
                 input[2] = []
                 """
             }
@@ -86,7 +86,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam.bai',checkIfExists:true),
                     [],
                     ]
-                input[1] = MSISENSOR2_SCAN.out.scan
+                input[1] = MSISENSOR2_SCAN.out.scan.map{ _meta, scan -> scan }
                 input[2] = []
                 """
             }
