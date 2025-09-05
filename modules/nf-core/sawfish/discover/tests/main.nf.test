@@ -41,7 +41,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.versions,
-                    process.out.candidate_sv_bcf,
+                    file(process.out.candidate_sv_bcf[0][1]).name,
                     process.out.candidate_sv_bcf_csi,
                     process.out.depth_mpack,
                     process.out.contig_alignment_bam,
