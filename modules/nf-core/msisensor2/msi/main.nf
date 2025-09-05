@@ -15,8 +15,8 @@ process MSISENSOR2_MSI {
     output:
     tuple val(meta), path("${prefix}"),          emit: msi
     tuple val(meta), path("${prefix}_dis"),      emit: distribution
-    tuple val(meta), path("${prefix}_somatic"),  emit: somatic
     tuple val(meta), path("${prefix}_germline"), emit: germline, optional: true
+    tuple val(meta), path("${prefix}_somatic"),  emit: somatic
     path "versions.yml",                         emit: versions
 
     when:

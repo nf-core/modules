@@ -12,15 +12,15 @@ process MSISENSOR2_SCAN {
 
     output:
     tuple val(meta), path("*.scan"), emit: scan
-    path "versions.yml", emit: versions
+    path "versions.yml",             emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def inputs = fasta.collect { "-d ${it}" }.join(" ")
+    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def inputs = fasta.collect { "-d ${it}" }.join(" ")
     """
     msisensor2 scan \\
         ${args} \\
