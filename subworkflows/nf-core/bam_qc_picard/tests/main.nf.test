@@ -35,6 +35,7 @@ nextflow_workflow {
                     [id:'genome'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
                 ]
+                input[4] = [[:],[]]
                 """
             }
         }
@@ -89,6 +90,7 @@ nextflow_workflow {
                     [id:'genome'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
                 ]
+                input[4] = [[:],[]]
                 """
             }
         }
@@ -146,6 +148,7 @@ nextflow_workflow {
                     [id:'genome'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
                 ]
+                input[4] = [[:],[]]
                 """
             }
         }
