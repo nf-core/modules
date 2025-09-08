@@ -1,11 +1,11 @@
 process ABRA2 {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/abra2:2.24--hdcf5f25_3':
-        'biocontainers/abra2:2.24--hdcf5f25_3' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/abra2:2.24--hdcf5f25_3'
+        : 'biocontainers/abra2:2.24--hdcf5f25_3'}"
 
     input:
     tuple val(meta), path(bams), path(bais)
@@ -16,9 +16,9 @@ process ABRA2 {
     tuple val(meta6), path(known_indels)
 
     output:
-    tuple val(meta), path("*.bam")    , emit: bam
+    tuple val(meta), path("*.bam"),     emit: bam
     tuple val(meta), path("*.bam.bai"), emit: bai, optional: true
-    path "versions.yml", emit: versions
+    path "versions.yml",                emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,12 +46,11 @@ process ABRA2 {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        abra2: \$(abra2 2>&1 | grep -oP 'version: [0-9.]+' | sed 's/version: //g')
+        abra2: \$(abra2 2>&1 | grep 'Abra version:' | sed 's/.*Abra version: //')
     END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.abra.bam
@@ -59,7 +58,7 @@ process ABRA2 {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        abra2: abra2: \$(abra2 2>&1 | grep -oP 'version: [0-9.]+' | sed 's/version: //g')
+        abra2: \$(abra2 2>&1 | grep 'Abra version:' | sed 's/.*Abra version: //')
     END_VERSIONS
     """
 }
