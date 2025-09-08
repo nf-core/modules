@@ -84,8 +84,9 @@ process LAST_MAFCONVERT {
             # This will not be needed in after htslib > 1.21 is released, see https://github.com/samtools/htslib/pull/1881
             export REF_CACHE='.'
             export REF_PATH='.'
+            # Note 4: CRAM version 3.0 is enforced until htsjdk, and therefore nf-test, supports 3.1
             maf-convert $args \$DICT_ARGS sam $maf -r 'ID:${meta.id} SM:${meta.id}' |
-                samtools sort -O cram -o ${prefix}.cram
+                samtools sort -O cram,version=3.0 -o ${prefix}.cram
             ;;
         *)
             maf-convert $args $format $maf |
