@@ -16,7 +16,8 @@ process GATK4_MUTECT2 {
     path germline_resource_tbi
     path panel_of_normals
     path panel_of_normals_tbi
-
+    path gzi
+    
     output:
     tuple val(meta), path("*.vcf.gz"),      emit: vcf
     tuple val(meta), path("*.tbi"),         emit: tbi
