@@ -20,7 +20,7 @@ process CONTROLFREEC_ASSESSSIGNIFICANCE {
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    def VERSION = '11.6b'
+    def VERSION = "11.6b"
     """
     cat \$(which assess_significance.R) | R --slave --args ${cnvs} ${ratio}
 
@@ -35,7 +35,7 @@ process CONTROLFREEC_ASSESSSIGNIFICANCE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    def VERSION = '11.6b'
+    def VERSION = "11.6b"
     """
     touch ${prefix}.p.value.txt
 

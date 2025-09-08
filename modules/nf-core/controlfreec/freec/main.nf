@@ -91,7 +91,7 @@ process CONTROLFREEC_FREEC {
     def target_bed_command         = target_bed                                           ? "captureRegions = ${target_bed}" : ""
 
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    def VERSION = '11.6b'
+    def VERSION = "11.6b"
     """
     touch config.txt
 
@@ -162,7 +162,7 @@ process CONTROLFREEC_FREEC {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    def VERSION = '11.6b'
+    def VERSION = "11.6b"
     """
     touch ${prefix}_ratio.BedGraph
     touch ${prefix}_sample.cpn

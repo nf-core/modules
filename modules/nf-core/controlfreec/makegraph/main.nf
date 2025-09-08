@@ -24,7 +24,7 @@ process CONTROLFREEC_MAKEGRAPH {
     def args = task.ext.args ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
     def baf = baf ?: ""
-    def VERSION = '11.6b' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = "11.6b" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     cat \$(which makeGraph.R) | R --slave --args ${ploidy} ${args} ${ratio} ${baf}
 
@@ -40,7 +40,7 @@ process CONTROLFREEC_MAKEGRAPH {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '11.6b' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = "11.6b" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}_BAF.png
     touch ${prefix}_ratio.log2.png
