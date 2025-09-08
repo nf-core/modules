@@ -64,6 +64,14 @@ input:
       type: file
       description: File containing intervals.
       pattern: "*.interval_list"
+  - mutect2_force_call:
+        type: file
+        description: vcf file to be used to force-call alleles.
+        pattern: "*.vcf.gz"
+  - mutect2_force_call_tbi:
+        type: file
+        description: Index for alleles to be force-called.
+        pattern: "*.vcf.gz.tbi"
 output:
   - versions:
       type: file

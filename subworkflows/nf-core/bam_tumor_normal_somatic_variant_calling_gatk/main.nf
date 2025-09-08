@@ -9,15 +9,17 @@ include { GATK4_FILTERMUTECTCALLS                                     } from '..
 
 workflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_GATK {
     take:
-    ch_input                 // channel: [ val(meta), path(input), path(input_index), val(which_norm) ]
-    ch_fasta                 // channel: [ val(meta), path(fasta) ]
-    ch_fai                   // channel: [ val(meta), path(fai) ]
-    ch_dict                  // channel: [ val(meta), path(dict) ]
-    ch_germline_resource     // channel: /path/to/germline/resource
-    ch_germline_resource_tbi // channel: /path/to/germline/index
-    ch_panel_of_normals      // channel: /path/to/panel/of/normals
-    ch_panel_of_normals_tbi  // channel: /path/to/panel/of/normals/index
-    ch_interval_file         // channel: /path/to/interval/file
+    ch_input                  // channel: [ val(meta), path(input), path(input_index), val(which_norm) ]
+    ch_fasta                  // channel: [ val(meta), path(fasta) ]
+    ch_fai                    // channel: [ val(meta), path(fai) ]
+    ch_dict                   // channel: [ val(meta), path(dict) ]
+    ch_germline_resource      // channel: /path/to/germline/resource
+    ch_germline_resource_tbi  // channel: /path/to/germline/index
+    ch_panel_of_normals       // channel: /path/to/panel/of/normals
+    ch_panel_of_normals_tbi   // channel: /path/to/panel/of/normals/index
+    ch_interval_file          // channel: /path/to/interval/file
+    ch_mutect2_force_call     // channel: /path/to/mutect2/force/call
+    ch_mutect2_force_call_tbi // channel: /path/to/mutect2/force/call/index
 
     main:
     versions = Channel.empty()
@@ -32,6 +34,8 @@ workflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_GATK {
         ch_germline_resource_tbi,
         ch_panel_of_normals,
         ch_panel_of_normals_tbi,
+        ch_mutect2_force_call,
+        ch_mutect2_force_call_tbi
     )
 
     // Generate artifactpriors using learnreadorientationmodel on the f1r2 output of GATK4_MUTECT2.

@@ -59,6 +59,14 @@ input:
       description: |
         File containing intervals.
         Structure: [ path(interval_files) ]
+  - ch_mutect2_force_call:
+      description: |
+        VCF file to be used for force calling in Mutect2.
+        Structure: [ path(mutect2_force_call) ]
+  - ch_mutect2_force_call_tbi:
+      description: |
+        Index file for force calling in Mutect2.
+        Structure: [ path(mutect2_force_call_tbi) ]
 output:
   - versions:
       description: |
