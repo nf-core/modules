@@ -20,7 +20,7 @@ process MSISENSOR2_SCAN {
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def inputs = fasta.sort().collect { "-d ${it}" }.join(" ")
+    def inputs = fasta.sort{ fasta_ -> fasta_.name }.collect { fasta_ -> "-d ${fasta_}" }.join(" ")
     """
     msisensor2 scan \\
         ${args} \\
