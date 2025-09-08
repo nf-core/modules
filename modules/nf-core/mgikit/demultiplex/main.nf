@@ -1,6 +1,6 @@
 process MGIKIT_DEMULTIPLEX {
     tag {"$run_id"}
-    label 'process_high'
+    label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
 
