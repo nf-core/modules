@@ -10,8 +10,8 @@ process MMSEQS_CREATETSV {
 
     input:
     tuple val(meta), path(db_result)
-    tuple val(meta2), path(db_query)
-    tuple val(meta3), path(db_target)
+    tuple val(meta2), path(db_query, stageAs: "db_query")
+    tuple val(meta3), path(db_target, stageAs: "db_target")
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
