@@ -7,15 +7,15 @@ include { GATK4_FILTERMUTECTCALLS      } from '../../../modules/nf-core/gatk4/fi
 
 workflow BAM_TUMOR_ONLY_SOMATIC_VARIANT_CALLING_GATK {
     take:
-    ch_input                 // channel: [ val(meta), [ input ], [ input_index ], [] ]
-    ch_fasta                 // channel: /path/to/reference/fasta
-    ch_fai                   // channel: /path/to/reference/fasta/index
-    ch_dict                  // channel: /path/to/reference/fasta/dictionary
-    ch_germline_resource     // channel: /path/to/germline/resource
-    ch_germline_resource_tbi // channel: /path/to/germline/index
-    ch_panel_of_normals      // channel: /path/to/panel/of/normals
-    ch_panel_of_normals_tbi  // channel: /path/to/panel/of/normals/index
-    ch_interval_file         // channel: /path/to/interval/file
+    ch_input                  // channel: [ val(meta), [ input ], [ input_index ], [] ]
+    ch_fasta                  // channel: /path/to/reference/fasta
+    ch_fai                    // channel: /path/to/reference/fasta/index
+    ch_dict                   // channel: /path/to/reference/fasta/dictionary
+    ch_germline_resource      // channel: /path/to/germline/resource
+    ch_germline_resource_tbi  // channel: /path/to/germline/index
+    ch_panel_of_normals       // channel: /path/to/panel/of/normals
+    ch_panel_of_normals_tbi   // channel: /path/to/panel/of/normals/index
+    ch_interval_file          // channel: /path/to/interval/file
     ch_mutect2_force_call     // channel: /path/to/mutect2/force/call
     ch_mutect2_force_call_tbi // channel: /path/to/mutect2/force/call/index
 
