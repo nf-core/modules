@@ -53,7 +53,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'genome.fasta', single_end:false ], // meta map
+                input[0] = [ [ id:'genome', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true) ]
                 """
             }

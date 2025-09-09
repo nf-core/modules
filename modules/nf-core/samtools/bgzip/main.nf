@@ -20,7 +20,7 @@ process SAMTOOLS_BGZIP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    output = "${prefix}.gz"
+    output = "${prefix}.fasta.gz"
     """
     FILE_TYPE=\$(htsfile $fasta)
     case "\$FILE_TYPE" in

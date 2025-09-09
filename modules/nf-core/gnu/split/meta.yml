@@ -26,9 +26,10 @@ input:
     - input:
         type: file
         description: Text file, possibly gzip file
+        ontologies: []
 output:
-  - split:
-      - meta:
+  split:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information

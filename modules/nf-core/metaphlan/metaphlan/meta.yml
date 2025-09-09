@@ -29,15 +29,21 @@ input:
           SAM files (produced from alignments to the MetaPHlAn marker database) and
           intermediate bowtie2 alignment files (bowtie2out)
         pattern: "*.{fastq.gz, fasta, fasta.gz, sam, bowtie2out.txt}"
-  - - metaphlan_db_latest:
-        type: file
-        description: |
-          Directory containing pre-downloaded and uncompressed MetaPhlAn database downloaded from: http://cmprod1.cibio.unitn.it/biobakery4/metaphlan_databases/.
-          Note that you will also need to specify `--index` and the database version name (e.g. 'mpa_vJan21_TOY_CHOCOPhlAnSGB_202103') in your module.conf ext.args for METAPHLAN_METAPHLAN!
-        pattern: "*/"
+        ontologies: []
+  - metaphlan_db_latest:
+      type: file
+      description: |
+        Directory containing pre-downloaded and uncompressed MetaPhlAn database downloaded from: http://cmprod1.cibio.unitn.it/biobakery4/metaphlan_databases/.
+        Note that you will also need to specify `--index` and the database version name (e.g. 'mpa_vJan21_TOY_CHOCOPhlAnSGB_202103') in your module.conf ext.args for METAPHLAN_METAPHLAN!
+      pattern: "*/"
+      ontologies: []
+  - save_samfile:
+      type: boolean
+      description: |
+        Whether to save the SAM file produced by MetaPhlAn of read alignments to MetaPhlAn database gene sequences
 output:
-  - profile:
-      - meta:
+  profile:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -46,8 +52,9 @@ output:
           type: file
           description: Tab-separated output file of the predicted taxon relative abundances
           pattern: "*.{txt}"
-  - biom:
-      - meta:
+          ontologies: []
+  biom:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -57,8 +64,10 @@ output:
           description: General-use format for representing biological sample by observation
             contingency tables
           pattern: "*.{biom}"
-  - bt2out:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3746 # BIOM format
+  bt2out:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -66,14 +75,28 @@ output:
       - "*.bowtie2out.txt":
           type: file
           description: Intermediate Bowtie2 output produced from mapping the metagenome
-            against the MetaPHlAn marker database ( not compatible with `bowtie2out` files
-            generated with MetaPhlAn versions below 3 )
+            against the MetaPHlAn marker database ( not compatible with `bowtie2out`
+            files generated with MetaPhlAn versions below 3 )
           pattern: "*.{bowtie2out.txt}"
-  - versions:
-      - versions.yml:
+          ontologies: []
+  sam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.sam":
           type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          description: SAM file produced by MetaPPhlAn of read alignments to MetaPhlAn database gene sequences
+          pattern: "*.{sam}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@MGordon09"
   - "@LilyAnderssonLee"

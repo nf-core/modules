@@ -45,4 +45,21 @@ process METAPHLAN3_METAPHLAN3 {
         metaphlan3: \$(metaphlan --version 2>&1 | awk '{print \$3}')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def input_type  = ("$input".endsWith(".fastq.gz") || "$input".endsWith(".fq.gz")) ? "--input_type fastq" :  ("$input".contains(".fasta")) ? "--input_type fasta" : ("$input".endsWith(".bowtie2out.txt")) ? "--input_type bowtie2out" : "--input_type sam"
+    def bowtie2_required = !( "$input_type" == "--input_type bowtie2out" || "$input_type" == "--input_type sam" )
+    """
+    ${bowtie2_required ? "touch ${prefix}.bowtie2out.txt" : ""}
+
+    touch ${prefix}.biom
+    touch ${prefix}_profile.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        metaphlan3: \$(metaphlan --version 2>&1 | awk '{print \$3}')
+    END_VERSIONS
+    """
+
 }

@@ -51,7 +51,6 @@ process GLIMPSE2_SPLITREFERENCE {
     """
 
     stub:
-    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_${output_region.replace(":","_")}"
     """
     touch ${prefix}.bin

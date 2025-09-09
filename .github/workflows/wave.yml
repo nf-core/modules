@@ -27,7 +27,7 @@ jobs:
       conda-matrix: ${{ steps.conda-diff.outputs.all_changed_files }}
       dockerfile-matrix: ${{ steps.docker-diff.outputs.all_changed_files }}
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
 
       - name: Find conda differences
         id: conda-diff
@@ -63,7 +63,7 @@ jobs:
         profile: [docker, singularity]
         platform: ["linux/amd64", "linux/arm64"]
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
 
       - name: Install wave-cli
         run: |
@@ -103,7 +103,7 @@ jobs:
         # profile: [docker]
         platform: ["linux/amd64", "linux/arm64"]
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
 
       - name: Install wave-cli
         run: |
@@ -112,7 +112,7 @@ jobs:
           chmod +x /usr/local/bin/wave
 
       - name: Create a registry name
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         id: registry-name
         with:
           result-encoding: string
