@@ -3,7 +3,7 @@ process MCQUANT {
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    container "docker.io/labsyspharm/quantification:1.5.4"
+    container "nf-core/quantification:1.5.4"
 
     input:
     tuple val(meta), path(image)

@@ -1,0 +1,65 @@
+nextflow_process {
+
+    name "Test Process WISECONDORX_NEWREF"
+    script "../main.nf"
+    process "WISECONDORX_NEWREF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "wisecondorx"
+    tag "wisecondorx/newref"
+    tag "wisecondorx/convert"
+
+    test("homo_sapiens - [npz]") {
+
+        // Stub run because this process needs at least 30 samples to successfully run
+        options "-stub"
+
+        setup {
+            run("WISECONDORX_CONVERT") {
+                script "../../convert/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                    ],
+                    [
+                        [ id: 'test2' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam.bai', checkIfExists: true)
+                    ])
+                    input[1] = [[],[]]
+                    input[2] = [[],[]]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = WISECONDORX_CONVERT.out.npz
+                    .map { meta, npz ->
+                        new_meta = meta + [id:"combined"]
+                        [new_meta, npz]
+                    }
+                    .groupTuple()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.npz.collect { it.collect { it instanceof Map ? it : file(it).name }}
+                ).match() }
+            )
+        }
+
+    }
+
+}

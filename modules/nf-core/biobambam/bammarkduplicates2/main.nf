@@ -2,7 +2,7 @@ process BIOBAMBAM_BAMMARKDUPLICATES2 {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::biobambam=2.0.183"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ? 'https://depot.galaxyproject.org/singularity/biobambam:2.0.183--h9f5acd7_1' : 'biocontainers/biobambam:2.0.183--h9f5acd7_1'}"
 
     input:
@@ -27,6 +27,18 @@ process BIOBAMBAM_BAMMARKDUPLICATES2 {
         M=${prefix}.metrics.txt \\
         tmpfile=$prefix \\
         markthreads=$task.cpus
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bammarkduplicates2: \$(echo \$(bammarkduplicates2 --version 2>&1) | sed 's/^This is biobambam2 version //; s/..biobambam2 is .*\$//' )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bam
+    touch ${prefix}.metrics.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

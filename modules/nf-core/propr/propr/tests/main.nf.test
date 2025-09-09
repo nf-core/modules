@@ -1,0 +1,240 @@
+nextflow_process {
+
+    name "Test Process PROPR_PROPR"
+    script "../main.nf"
+    process "PROPR_PROPR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "propr"
+    tag "propr/propr"
+
+    test("Test propr/propr using default options") {
+
+        tag "default"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    //file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv")
+                ]
+                """
+            }
+        }
+        
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.matrix).match("Test propr/propr using default options - matrix") },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+    }
+
+    test("Test propr/propr while running clr+pcor.bshrink explicitly") {
+
+        tag "clr_pcorbshrink"
+        config "./clr_pcorbshrink.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.matrix).match("Test propr/propr while running clr+pcor.bshrink explicitly - matrix")},
+                { assert snapshot(process.out.fdr).match("Test propr/propr while running clr+pcor.bshrink explicitly - fdr")}
+            )
+        }
+    }
+
+    test("Test propr/propr while running alr+pcor.bshrink") {
+        
+        tag "alr_pcorbshrink"
+        config "./alr_pcorbshrink.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            // TODO also check that the first columns are the same as the above processes
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.matrix).match("Test propr/propr while running alr+pcor.bshrink - matrix") },
+                { assert snapshot(process.out.fdr).match("Test propr/propr while running alr+pcor.bshrink - fdr") }
+            )
+        }
+    }
+
+    test("Test propr/propr while running clr+rho") {
+
+        tag "clr_rho"
+        config "./clr_rho.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.matrix).match("Test propr/propr while running clr+rho - matrix") },
+                { assert snapshot(process.out.fdr).match("Test propr/propr while running clr+rho - fdr") }
+            )
+        }
+    }
+
+    test("Test propr/propr while running clr+pcor") {
+
+        tag "clr_pcor"
+        config "./clr_pcor.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.matrix).match("Test propr/propr while running clr+pcor - matrix") },
+                { assert snapshot(process.out.fdr).match("Test propr/propr while running clr+pcor - fdr") }
+            )
+        }
+    }
+
+    test("Test propr/propr while running clr+rho with boxcox transformation") {
+
+        tag "clr_rho_alpha"
+        config "./clr_rho_alpha.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.matrix).match("Test propr/propr while running clr+rho with boxcox transformation - matrix") },
+                { assert snapshot(process.out.fdr).match("Test propr/propr while running clr+rho with boxcox transformation - fdr") }
+            )
+        }
+    }
+
+    test("Test propr/propr calculating adjacency_matrix for rho") {
+
+        tag "adjacency_rho"
+        config "./adjacency_rho.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv")
+                ]
+                """
+            }
+        }
+        
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.matrix).match("Test propr/propr calculating adjacency_matrix for rho - matrix") },
+                { assert snapshot(process.out.fdr).match("Test propr/propr calculating adjacency_matrix for rho - fdr") },
+                { assert snapshot(process.out.adj).match("Test propr/propr calculating adjacency_matrix for rho - adj") }
+            )
+        }
+    }
+
+    test("Test propr/propr calculating adjacency_matrix for phs") {
+
+        tag "adjacency_phs"
+        config "./adjacency_phs.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv")
+                ]
+                """
+            }
+        }
+        
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.matrix).match("Test propr/propr calculating adjacency_matrix for phs - matrix") },
+                { assert snapshot(process.out.fdr).match("Test propr/propr calculating adjacency_matrix for phs - fdr") },
+                { assert snapshot(process.out.adj).match("Test propr/propr calculating adjacency_matrix for phs - adj") }
+            )
+        }
+    }
+
+    test("Test propr/propr calculating adjacency_matrix for pcor") {
+
+        tag "adjacency_pcor"
+        config "./adjacency_pcor.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv")
+                ]
+                """
+            }
+        }
+        
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.matrix).match("Test propr/propr calculating adjacency_matrix for pcor - matrix") },
+                { assert snapshot(process.out.fdr).match("Test propr/propr calculating adjacency_matrix for pcor - fdr") },
+                { assert snapshot(process.out.adj).match("Test propr/propr calculating adjacency_matrix for pcor - adj") }
+            )
+        }
+    }
+}

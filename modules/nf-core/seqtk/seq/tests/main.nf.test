@@ -1,0 +1,80 @@
+nextflow_process {
+
+    name "Test Process SEQTK_SEQ"
+    script "modules/nf-core/seqtk/seq/main.nf"
+    process "SEQTK_SEQ"
+    config "./standard.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "seqtk"
+    tag "seqtk/seq"
+
+    test("sarscov2_seq_fa") {
+
+        when {
+            process {
+                """
+                input[0] =  [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2_seq_fq") {
+
+        when {
+            process {
+                """
+                input[0] =  [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2_seq_fa_stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] =  [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

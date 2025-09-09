@@ -1,0 +1,63 @@
+nextflow_process {
+
+    name "Test Process SKA_FASTA"
+    script "../main.nf"
+    process "SKA_FASTA"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ska"
+    tag "ska/fasta"
+
+    test("sarscov2 - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            def lines = path(process.out.skf[0][1]).readLines()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions,
+                                    lines[0..2],
+                                    lines.size()).match() },
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

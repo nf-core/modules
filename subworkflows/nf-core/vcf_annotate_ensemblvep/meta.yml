@@ -5,14 +5,14 @@ keywords:
   - vcf
   - annotation
   - ensemblvep
-modules:
+components:
   - ensemblvep/vep
   - tabix/tabix
 input:
   - ch_vcf:
       description: |
         vcf file to annotate
-        Structure: [ val(meta), path(vcf), [path(custom_file1), path(custom_file2)... (optionnal)] ]
+        Structure: [ val(meta), path(vcf), [path(custom_file1), path(custom_file2)... (optional)] ]
   - ch_fasta:
       description: |
         Reference genome fasta file (optional)
@@ -56,6 +56,10 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@maxulysse"
+  - "@matthdsm"
+  - "@nvnieuwk"
+maintainers:
   - "@maxulysse"
   - "@matthdsm"
   - "@nvnieuwk"

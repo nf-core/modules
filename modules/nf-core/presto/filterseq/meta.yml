@@ -1,0 +1,66 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+name: "presto_filterseq"
+description: Filter reads by quality score.
+keywords:
+  - immcantation
+  - airrseq
+  - genomics
+  - immunoinformatics
+tools:
+  - "presto":
+      description: "A bioinformatics toolkit for processing high-throughput lymphocyte
+        receptor sequencing data."
+      homepage: "https://immcantation.readthedocs.io"
+      documentation: "https://presto.readthedocs.io"
+      tool_dev_url: "https://bitbucket.org/kleinstein/presto"
+      doi: "10.1093/bioinformatics/btu138"
+      licence: ["AGPL v3"]
+      identifier: biotools:presto-measure
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - reads:
+        type: file
+        description: fastq file
+        pattern: "*.{fastq}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+output:
+  reads:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*_quality-pass.fastq":
+          type: file
+          description: filtered fastq file
+          pattern: "*.{fastq}"
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+  logs:
+    - "*_command_log.txt":
+        type: file
+        description: command logs
+        pattern: "*.txt"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+  log_tab:
+    - "*.tab":
+        type: file
+        description: parsed log table
+        pattern: "*.tab"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+authors:
+  - "@ggabernet"

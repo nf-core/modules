@@ -1,0 +1,81 @@
+nextflow_process {
+
+    name "Test Process MMSEQS_TAXONOMY"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "MMSEQS_TAXONOMY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mmseqs"
+    tag "mmseqs/taxonomy"
+    tag "mmseqs/createdb"
+    tag "mmseqs/databases"
+
+    setup {
+        run("MMSEQS_CREATEDB") {
+            script "modules/nf-core/mmseqs/createdb/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test_query', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        run("MMSEQS_DATABASES") {
+            script "modules/nf-core/mmseqs/databases/main.nf"
+            process {
+                """
+                input[0] = 'SILVA'
+                """
+            }
+        }
+    }
+
+    test("mmseqs/taxonomy - bacteroides_fragilis - genome_nt") {
+        when {
+            process {
+                """
+                input[0] = MMSEQS_CREATEDB.out.db
+                input[1] = MMSEQS_DATABASES.out.database
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.db_taxonomy[0][1]).list().sort(),
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("mmseqs/taxonomy - bacteroides_fragilis - genome_nt - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = MMSEQS_CREATEDB.out.db
+                input[1] = MMSEQS_DATABASES.out.database
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
+

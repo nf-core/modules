@@ -1,0 +1,76 @@
+nextflow_process {
+
+    name "Test Process SNPEFF_SNPEFF"
+    script "../main.nf"
+    process "SNPEFF_SNPEFF"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "modules_snpeff"
+    tag "snpeff"
+    tag "snpeff/snpeff"
+
+    test("test_SNPEFF_SNPEFF") {
+
+        when {
+            process {
+                """
+                snpeff_cache = Channel.of([
+                    [ id:'WBcel235.105' ],
+                    file('s3://annotation-cache/snpeff_cache/WBcel235.105/')
+                ]).collect()
+
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true)
+                ])
+                input[1] = params.snpeff_db
+                input[2] = snpeff_cache
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.genes_txt,
+                    file(process.out.report[0][1]).name,
+                    file(process.out.summary_html[0][1]).name,
+                    file(process.out.vcf[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("test_SNPEFF_SNPEFF - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                snpeff_cache = Channel.of([
+                    [ id:'WBcel235.105' ],
+                    file("${projectDir}")
+                ]).collect()
+
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true)
+                ])
+                input[1] = params.snpeff_db
+                input[2] = snpeff_cache
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

@@ -1,0 +1,233 @@
+nextflow_process {
+
+    name "Test Process BAMTOOLS_CONVERT"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "BAMTOOLS_CONVERT"
+   
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bamtools"
+    tag "bamtools/convert"
+   
+    test("test_bamtools_convert_ext_error") {
+        when {
+            params {
+                module_args = "-format vcf"
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:false],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("-format option must be provided in args. Possible values: bed fasta fastq json pileup sam yaml") }
+            )
+        }
+    }
+    test("test_bamtools_convert_noext_error") {
+        when {
+            params {
+                module_args = ""
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:false],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists:true)
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("-format option must be provided in args. Possible values: bed fasta fastq json pileup sam yaml") }
+            )
+        }
+    }
+    test("test_bamtools_convert_bed") {
+        when {
+            params {
+                module_args = "-format bed"
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:false],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists:true)
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    test("test_bamtools_convert_fasta") {
+        when {
+            params {
+                module_args = "-format fasta"
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:false],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists:true)
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    test("test_bamtools_convert_fastq") {
+        when {
+            params {
+                module_args = "-format fastq"
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:false],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists:true)
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    test("test_bamtools_convert_json") {
+        
+        
+        when {
+            params {
+                module_args = "-format json"
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:false],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists:true)
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    test("test_bamtools_convert_pileup") {
+        
+        
+        when {
+            params {
+                module_args = "-format pileup"
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:false],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists:true)
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    test("test_bamtools_convert_sam") {
+        
+        
+        when {
+            params {
+                module_args = "-format sam"
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:false],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists:true)
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    test("test_bamtools_convert_yaml") {
+        when {
+            params {
+                module_args = "-format yaml"
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:false],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists:true)
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test_bamtools_convert_yaml - stub") {
+        when {
+            params {
+                module_args = "-format yaml"
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:false],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists:true)
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{path(it).yaml}
+                ).match() }
+            )
+        }
+    }
+}

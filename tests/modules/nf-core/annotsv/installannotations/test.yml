@@ -1,9 +1,0 @@
-- name: annotsv installannotations test_annotsv_installannotations
-  command: nextflow run ./tests/modules/nf-core/annotsv/installannotations -entry test_annotsv_installannotations -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/annotsv/installannotations/nextflow.config
-  tags:
-    - annotsv/installannotations
-    - annotsv
-  files:
-    - path: output/annotsv/AnnotSV_annotations/Annotations_Exomiser
-    - path: output/annotsv/AnnotSV_annotations/Annotations_Human
-    - path: output/annotsv/versions.yml

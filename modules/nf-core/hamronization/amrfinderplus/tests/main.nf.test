@@ -1,0 +1,64 @@
+nextflow_process {
+
+    name "Test Process HAMRONIZATION_AMRFINDERPLUS"
+    script "../main.nf"
+    process "HAMRONIZATION_AMRFINDERPLUS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hamronization"
+    tag "hamronization/amrfinderplus"
+
+    test("hamronization/amrfinderplus - delete_me/amrfinderplus - tsv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map                                                                                                                           
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/amrfinderplus/test_output.tsv", checkIfExists: true)                              
+                ]
+                input[1] = 'tsv'
+                input[2] = '3.10.30'
+                input[3] = '2022-05-26.1'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("hamronization/amrfinderplus - delete_me/amrfinderplus - tsv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map                                                                                                                           
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/amrfinderplus/test_output.tsv", checkIfExists: true)                              
+                ]
+                input[1] = 'tsv'
+                input[2] = '3.10.30'
+                input[3] = '2022-05-26.1'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

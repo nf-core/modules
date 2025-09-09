@@ -2,10 +2,10 @@ process CUTADAPT {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::cutadapt=3.4"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cutadapt:3.4--py39h38f01e4_1' :
-        'biocontainers/cutadapt:3.4--py39h38f01e4_1' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/17/1758869538eb8e658077cc14cd7a4e76fd9b6d73d3a68f85a70bf292e39e27c5/data' :
+        'community.wave.seqera.io/library/cutadapt:5.0--991bbd2e184b7014' }"
 
     input:
     tuple val(meta), path(reads)
@@ -24,6 +24,7 @@ process CUTADAPT {
     def trimmed  = meta.single_end ? "-o ${prefix}.trim.fastq.gz" : "-o ${prefix}_1.trim.fastq.gz -p ${prefix}_2.trim.fastq.gz"
     """
     cutadapt \\
+        -Z \\
         --cores $task.cpus \\
         $args \\
         $trimmed \\

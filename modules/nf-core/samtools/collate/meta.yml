@@ -3,6 +3,8 @@ description: shuffles and groups reads together by their names
 keywords:
   - collate
   - bam
+  - sam
+  - cram
 tools:
   - "samtools":
       description: "Tools for dealing with SAM, BAM and CRAM files"
@@ -10,35 +12,73 @@ tools:
       documentation: "https://www.htslib.org/doc/samtools-collate.html"
       tool_dev_url: "https://github.com/samtools/samtools"
       doi: "10.1093/bioinformatics/btp352"
-      licence: "['MIT']"
-
+      licence: ["MIT"]
+      identifier: biotools:samtools
 input:
   # Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - input:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input:
+        type: file
+        description: BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: FASTA ref file
+        pattern: "*.fasta"
+        ontologies: []
 output:
   #Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - output:
-      type: file
-      description: Collated BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bam":
+          type: file
+          description: Sorted BAM
+          pattern: "*.{bam}"
+          ontologies: []
+  cram:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.cram":
+          type: file
+          description: Sorted CRAM
+          pattern: "*.{cram}"
+          ontologies: []
+  sam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.sam":
+          type: file
+          description: Sorted SAM
+          pattern: "*.{sam}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@priyanka-surana"
+maintainers:
   - "@priyanka-surana"

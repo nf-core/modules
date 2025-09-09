@@ -1,0 +1,109 @@
+
+nextflow_process {
+
+    name "Test Process GATK4_SPLITINTERVALS"
+    script "../main.nf"
+    process "GATK4_SPLITINTERVALS"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gatk4"
+    tag "gatk4/splitintervals"
+
+    test("test-gatk4-splitintervals-bed") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.multi_intervals.bed', checkIfExists: true)
+				]
+				input[1] = [ [ id:'genome' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+				]
+				input[2] = [ [ id:'genome' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+				]
+				input[3] = [ [ id:'genome' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-gatk4-splitintervals-intervals") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				[ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.interval_list', checkIfExists: true)
+				]
+				input[1] = [ [ id:'genome' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+				]
+				input[2] = [ [ id:'genome' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+				]
+				input[3] = [ [ id:'genome' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-gatk4-splitintervals-intervals-stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+				[ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.interval_list', checkIfExists: true)
+				]
+				input[1] = [ [ id:'genome' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+				]
+				input[2] = [ [ id:'genome' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+				]
+				input[3] = [ [ id:'genome' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

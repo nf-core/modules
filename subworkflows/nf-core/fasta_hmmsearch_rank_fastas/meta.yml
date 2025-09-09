@@ -1,0 +1,46 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fasta_hmmsearch_rank_fastas"
+description: Run hmmsearch and output separate fasta files for top scoring hits to each profile
+keywords:
+  - hmmer
+  - search
+  - rank
+  - fasta
+components:
+  - hmmer/hmmsearch
+  - hmmer/hmmrank
+  - seqtk/subseq
+input:
+  - ch_hmms:
+      type: file
+      description: |
+        The input channel containing hmm profiles
+        Structure: [ val(meta), path(hmm) ]
+      pattern: "*.{hmm}"
+  - ch_fasta:
+      type: file
+      description: |
+        The input channel containing sequences to be searched and ranked
+output:
+  - hmmrank:
+      type: file
+      description: |
+        Channel containing the TSV file from ranking hmmsearch hits
+        Structure: [ val(meta), path(hmmrank) ]
+      pattern: "*.hmmrank.tsv.gz"
+  - bai:
+      type: file
+      description: |
+        Channel containing subsets of sequences
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.fa.gz"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"

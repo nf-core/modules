@@ -2,7 +2,7 @@ process ASSEMBLYSCAN {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::assembly-scan=0.4.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/assembly-scan:0.4.1--pyhdfd78af_0' :
         'biocontainers/assembly-scan:0.4.1--pyhdfd78af_0' }"
@@ -18,10 +18,9 @@ process ASSEMBLYSCAN {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    assembly-scan $assembly > ${prefix}.json
+    assembly-scan ${assembly} > ${prefix}.json
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

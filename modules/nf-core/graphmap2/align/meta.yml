@@ -13,39 +13,49 @@ tools:
       homepage: https://github.com/lbcb-sci/graphmap2
       documentation: https://github.com/lbcb-sci/graphmap2#graphmap2---a-highly-sensitive-and-accurate-mapper-for-long-error-prone-reads
       licence: ["MIT"]
+      identifier: biotools:Graphmap2
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fastq:
-      type: file
-      description: |
-        List of input FASTQ files
-        and paired-end data, respectively.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: file containing reads to be aligned.
+        ontologies: []
   - fasta:
       type: file
       description: |
         Reference database in FASTA format.
+      ontologies: []
   - index:
       type: file
       description: |
         FASTA index in gmidx.
+      ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - sam:
-      type: file
-      description: Alignment in SAM format
-      pattern: "*.sam"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  sam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.sam":
+          type: file
+          description: Alignment in SAM format
+          pattern: "*.sam"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@yuukiiwa"
+  - "@drpatelh"
+maintainers:
   - "@yuukiiwa"
   - "@drpatelh"

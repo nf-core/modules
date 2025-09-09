@@ -1,0 +1,37 @@
+nextflow_process {
+
+    name "Test Process MEDAKA"
+    tag "modules_nfcore"
+    tag "modules"
+    tag "medaka"
+    script "../main.nf"
+    process "MEDAKA"
+
+    test("Medaka") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.assembly[0][1]).linesGzip.join()[0..99],
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+}

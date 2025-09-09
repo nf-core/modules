@@ -1,11 +1,13 @@
 process BWAMEM2_INDEX {
     tag "$fasta"
-    label 'process_single'
+    // NOTE Requires 28N GB memory where N is the size of the reference sequence, floor of 280M
+    // source: https://github.com/bwa-mem2/bwa-mem2/issues/9
+    memory { (280.MB * Math.ceil(fasta.size() / 10000000)) * task.attempt }
 
-    conda "bioconda::bwa-mem2=2.2.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bwa-mem2:2.2.1--he513fc3_0' :
-        'biocontainers/bwa-mem2:2.2.1--he513fc3_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9a/9ac054213e67b3c9308e409b459080bbe438f8fd6c646c351bc42887f35a42e7/data' :
+        'community.wave.seqera.io/library/bwa-mem2_htslib_samtools:e1f420694f8e42bd' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -18,13 +20,15 @@ process BWAMEM2_INDEX {
     task.ext.when == null || task.ext.when
 
     script:
+    def prefix = task.ext.prefix ?: "${fasta}"
     def args = task.ext.args ?: ''
     """
     mkdir bwamem2
     bwa-mem2 \\
         index \\
         $args \\
-        $fasta -p bwamem2/${fasta}
+        -p bwamem2/${prefix} \\
+        $fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -33,13 +37,15 @@ process BWAMEM2_INDEX {
     """
 
     stub:
+    def prefix = task.ext.prefix ?: "${fasta}"
+
     """
     mkdir bwamem2
-    touch bwamem2/${fasta}.0123
-    touch bwamem2/${fasta}.ann
-    touch bwamem2/${fasta}.pac
-    touch bwamem2/${fasta}.amb
-    touch bwamem2/${fasta}.bwt.2bit.64
+    touch bwamem2/${prefix}.0123
+    touch bwamem2/${prefix}.ann
+    touch bwamem2/${prefix}.pac
+    touch bwamem2/${prefix}.amb
+    touch bwamem2/${prefix}.bwt.2bit.64
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

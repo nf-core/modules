@@ -1,23 +1,22 @@
 process GATK4_ASEREADCOUNTER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
-    conda "bioconda::gatk4=4.4.0.0"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
-        'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b2/b28daf5d9bb2f0d129dcad1b7410e0dd8a9b087aaf3ec7ced929b1f57624ad98/data'
+        : 'community.wave.seqera.io/library/gatk4_gcnvkernel:e48d414933d188cd'}"
 
     input:
-    tuple val(meta), path(input), path(input_index)
-    tuple val(meta), path(vcf), path(tbi)
-    path fasta
-    path fai
-    path dict
+    tuple val(meta), path(bam), path(bai), path(vcf), path(tbi)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
+    tuple val(meta4), path(dict)
     path intervals
 
     output:
     tuple val(meta), file("*_ase.csv"), emit: csv
-    path "versions.yml"               , emit: versions
+    path "versions.yml",                emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,26 +24,28 @@ process GATK4_ASEREADCOUNTER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def reference_command = fasta ? "--reference $fasta" : ""
-    def dictionary_command = fasta ? "--sequence-dictionary $dict" : ""
-    def intervals_command = intervals ? "--intervals $intervals" : ""
+    def reference_command = fasta ? "--reference ${fasta}" : ""
+    def dictionary_command = fasta ? "--sequence-dictionary ${dict}" : ""
+    def intervals_command = intervals ? "--intervals ${intervals}" : ""
 
     def avail_mem = 3072
     if (!task.memory) {
-        log.info '[GATK ASEReadCounter] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        log.info('[GATK ASEReadCounter] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
+    }
+    else {
+        avail_mem = (task.memory.mega * 0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" ASEReadCounter \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        ASEReadCounter \\
         --output ${prefix}_ase.csv \\
-        --input ${input} \\
+        --input ${bam} \\
         --variant ${vcf} \\
-        $reference_command \\
-        $intervals_command \\
-        $dictionary_command \\
+        ${reference_command} \\
+        ${intervals_command} \\
+        ${dictionary_command} \\
         --tmp-dir . \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -53,7 +54,6 @@ process GATK4_ASEREADCOUNTER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """

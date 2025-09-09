@@ -2,7 +2,7 @@ process PEAR {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::pear=0.9.6"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pear:0.9.6--h67092d7_8':
         'biocontainers/pear:0.9.6--h67092d7_8' }"

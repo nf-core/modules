@@ -2,7 +2,7 @@ process SNAPALIGNER_INDEX {
     tag "$fasta"
     label 'process_high'
 
-    conda "bioconda::snap-aligner=2.0.3"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snap-aligner:2.0.3--hd03093a_0':
         'biocontainers/snap-aligner:2.0.3--hd03093a_0' }"
@@ -37,7 +37,7 @@ process SNAPALIGNER_INDEX {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        snapaligner: \$(snap-aligner 2>&1| head -n 1 | sed 's/^.*version //')
+        snapaligner: \$(snap-aligner 2>&1| head -n 1 | sed 's/^.*version //;s/.\$//')
     END_VERSIONS
     """
     stub:
@@ -50,7 +50,7 @@ process SNAPALIGNER_INDEX {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        snapaligner: \$(snap-aligner 2>&1| head -n 1 | sed 's/^.*version //;s/\.\$//')
+        snapaligner: \$(snap-aligner 2>&1| head -n 1 | sed 's/^.*version //;s/.\$//')
     END_VERSIONS
     """
 }

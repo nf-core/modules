@@ -2,10 +2,10 @@ process AGAT_SQSTATBASIC {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::agat=1.0.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/agat:1.0.0--pl5321hdfd78af_0' :
-        'biocontainers/agat:1.0.0--pl5321hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/agat:1.4.2--pl5321hdfd78af_0' :
+        'biocontainers/agat:1.4.2--pl5321hdfd78af_0' }"
 
     input:
     tuple val(meta), path(gff)
@@ -18,18 +18,28 @@ process AGAT_SQSTATBASIC {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     agat_sq_stat_basic.pl \\
-        -i $gff \\
+        -i ${gff} \\
         --output ${prefix}.stats.txt \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        agat: \$(agat_sq_stat_basic.pl --help |head -n4 | tail -n1 | grep -Eo '[0-9.]+')
+        agat: \$(agat_sq_stat_basic.pl --help | sed -n 's/.*(AGAT) - Version: \\(.*\\) .*/\\1/p')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.stats.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        agat: \$(agat_sq_stat_basic.pl --help | sed -n 's/.*(AGAT) - Version: \\(.*\\) .*/\\1/p')
     END_VERSIONS
     """
 }

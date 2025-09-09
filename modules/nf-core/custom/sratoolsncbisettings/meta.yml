@@ -1,5 +1,6 @@
-name: "sratoolsncbisettings"
-description: Test for the presence of suitable NCBI settings or create them on the fly.
+name: "custom_sratoolsncbisettings"
+description: Test for the presence of suitable NCBI settings or create them on the
+  fly.
 keywords:
   - NCBI
   - settings
@@ -12,17 +13,27 @@ tools:
       homepage: https://github.com/ncbi/sra-tools
       documentation: https://github.com/ncbi/sra-tools/wiki
       tool_dev_url: https://github.com/ncbi/sra-tools
-      licence: "['Public Domain']"
-
+      licence: ["Public Domain"]
+      identifier: ""
+input:
+  - ids:
+      type: string
+      description: List of id settings
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - ncbi_settings:
-      type: file
-      description: An NCBI user settings file.
-      pattern: "*.mkfg"
-
+  ncbi_settings:
+    - "*.mkfg":
+        type: file
+        description: An NCBI user settings file.
+        pattern: "*.mkfg"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@Midnighter"
+maintainers:
   - "@Midnighter"

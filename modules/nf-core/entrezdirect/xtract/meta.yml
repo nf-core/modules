@@ -20,40 +20,46 @@ tools:
       tool_dev_url: https://www.ncbi.nlm.nih.gov/books/NBK25498/
       doi: 10.1016/S0076-6879(96)66012-1
       licence: ["PUBLIC DOMAIN"]
-
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - xml_input:
-      type: file
-      description: XML text file containing query results from database.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - xml_input:
+        type: file
+        description: XML text file containing query results from database.
+        ontologies: []
   - pattern:
-      type: value
+      type: string
       description: String in xml_input that encloses element to search.
   - element:
-      type: value
+      type: string
       description: Space-delimited strings that will be converted to columns.
   - sep:
-      type: value
+      type: string
       description: Separator/delimiter between columns (for instance "," or "\t").
-
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - xtract_table:
-      type: file
-      description: TXT file containing columns searched from element.
-      pattern: "*.txt"
-
+  txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt":
+          type: file
+          description: Text file
+          pattern: "*.txt"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@alxndrdiaz"
+maintainers:
   - "@alxndrdiaz"

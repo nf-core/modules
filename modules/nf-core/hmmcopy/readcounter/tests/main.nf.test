@@ -1,0 +1,92 @@
+nextflow_process {
+
+    name "Test Process HMMCOPY_READCOUNTER"
+    script "../main.nf"
+    process "HMMCOPY_READCOUNTER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hmmcopy"
+    tag "hmmcopy/readcounter"
+
+    test("homo_sapiens - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
+                    ]
+                input[1] = [[], []] // only need fasta for cram
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - cram") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.markduplicates.sorted.cram', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.markduplicates.sorted.cram.crai', checkIfExists: true)
+                    ]
+                input[1] = [ [ id:'fasta'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - bam - stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
+                    ]
+                input[1] = [[], []] // only need fasta for cram
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+
+    }
+
+}

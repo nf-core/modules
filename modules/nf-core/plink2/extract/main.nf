@@ -2,7 +2,7 @@ process PLINK2_EXTRACT {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::plink2=2.00a2.3"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/plink2:2.00a2.3--h712d239_1' :
         'biocontainers/plink2:2.00a2.3--h712d239_1' }"

@@ -2,7 +2,7 @@ process SNIPPY_CORE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::snippy=4.6.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snippy:4.6.0--hdfd78af_2':
         'biocontainers/snippy:4.6.0--hdfd78af_1' }"
@@ -44,6 +44,22 @@ process SNIPPY_CORE {
         --ref $reference_name \\
         --prefix $prefix \\
         samples/*
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        snippy-core: \$(echo \$(snippy-core --version 2>&1) | sed 's/snippy-core //')
+    END_VERSIONS
+    """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir samples/
+    touch ${prefix}.aln
+    touch ${prefix}.full.aln
+    touch ${prefix}.tab
+    touch ${prefix}.vcf
+    touch ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

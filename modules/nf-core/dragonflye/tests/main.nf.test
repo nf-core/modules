@@ -1,0 +1,172 @@
+nextflow_process {
+
+    name "Test Process DRAGONFLYE"
+    script "../main.nf"
+    config "./nextflow.config"
+
+    process "DRAGONFLYE"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "dragonflye"
+
+    test("Dragonflye with miniasm") {
+        when {
+            params {
+                modules_testdata_base_path = 'https://raw.githubusercontent.com/nf-core/test-datasets/bacass/'
+                module_args = '--assembler miniasm --gsize 5000000'
+            }
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    [],
+                    file(params.modules_testdata_base_path + "nanopore/subset15000.fq.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(
+                process.out.raw_contigs,
+                process.out.gfa,
+                process.out.contigs[0][1].collect{ file(it).name }, // MD5sum not reproducible (contig order)
+                file(process.out.log[0][1]).name, // MD5sum not reproducible (timestamp)
+                process.out.versions,
+                path(process.out.versions[0]).yaml
+            ).match()
+        }
+
+    }
+
+    test("Dragonflye with raven") {
+        when {
+            params {
+                modules_testdata_base_path = 'https://raw.githubusercontent.com/nf-core/test-datasets/bacass/'
+                module_args = '--assembler raven --gsize 5000000'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    [],
+                    file(params.modules_testdata_base_path + "nanopore/subset15000.fq.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(
+                process.out.raw_contigs,
+                process.out.gfa,
+                process.out.contigs[0][1].collect{ file(it).name }, // MD5sum not reproducible (contig order)
+                file(process.out.log[0][1]).name, // MD5sum not reproducible (timestamp)
+                process.out.versions,
+                path(process.out.versions[0]).yaml
+            ).match()
+        }
+
+    }
+
+    test("Dragonflye hybrid") {
+        when {
+            params {
+                modules_testdata_base_path = 'https://raw.githubusercontent.com/nf-core/test-datasets/bacass/'
+                module_args = '--assembler miniasm -gsize 5000000'
+            }
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + "A1403KPN_R1.fastq.gz", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "A1403KPN_R2.fastq.gz", checkIfExists: true)
+                    ], // short reads for polishing
+                    file(params.modules_testdata_base_path + "nanopore/A1403KPN.fq.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(
+                process.out.raw_contigs,
+                process.out.gfa,
+                process.out.contigs[0][1].collect{ file(it).name }, // MD5sum not reproducible (contig order)
+                file(process.out.log[0][1]).name, // MD5sum not reproducible (timestamp)
+                process.out.versions,
+                path(process.out.versions[0]).yaml
+            ).match()
+        }
+
+    }
+
+    test("Dragonflye hybrid -- stub") {
+        options "-stub"
+        tag "stub"
+        when {
+            params {
+                modules_testdata_base_path = 'https://raw.githubusercontent.com/nf-core/test-datasets/bacass/'
+                module_args = '--assembler miniasm -gsize 5000000'
+            }
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + "A1403KPN_R1.fastq.gz", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "A1403KPN_R2.fastq.gz", checkIfExists: true)
+                    ], // short reads for polishing
+                    file(params.modules_testdata_base_path + "nanopore/A1403KPN.fq.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(
+                process.out,
+                path(process.out.versions[0]).yaml
+            ).match()
+        }
+
+    }
+
+    test("Dragonflye no assembler -- stub") {
+        options "-stub"
+        tag "stub"
+        when {
+            params {
+                modules_testdata_base_path = 'https://raw.githubusercontent.com/nf-core/test-datasets/bacass/'
+                module_args = '-gsize 5000000'
+            }
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [],
+                    file(params.modules_testdata_base_path + "nanopore/A1403KPN.fq.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(
+                process.out,
+                path(process.out.versions[0]).yaml
+            ).match()
+        }
+
+    }
+}

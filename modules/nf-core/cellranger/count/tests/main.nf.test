@@ -1,0 +1,102 @@
+nextflow_process {
+
+    name "Test Process CELLRANGER_COUNT"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "CELLRANGER_COUNT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cellranger"
+    tag "cellranger/count"
+    tag "cellranger/mkref"
+    tag "cellranger/mkgtf"
+
+    setup {
+        config "./nextflow.config"
+
+        run("CELLRANGER_MKGTF") {
+            script "../../mkgtf/main.nf"
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                """
+            }
+        }
+        run("CELLRANGER_MKREF") {
+            script "../../mkref/main.nf"
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                input[1] = CELLRANGER_MKGTF.out.gtf
+                input[2] = "homo_sapiens_reference"
+                """
+            }
+        }
+    }
+
+    test("10x example file") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                input[0] =  [
+                    [ id:'test_10x', single_end:false, strandedness:'auto'  ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R2_001.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = CELLRANGER_MKREF.out.reference
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        process.out.versions,
+                        process.out.outs[0][1].findAll { file(it).name !in [
+                            'web_summary.html', // unstable checksum
+                            'barcodes.tsv.gz' // empty file in test data -> would raise linting error
+                        ]}
+                    ).match()
+                },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'web_summary.html' }).exists() },
+                { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'barcodes.tsv.gz' }).exists() }
+            )
+        }
+
+    }
+
+    test("10x example file - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] =  [
+                    [ id:'test_10x', single_end:false, strandedness:'auto'  ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R2_001.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = CELLRANGER_MKREF.out.reference
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

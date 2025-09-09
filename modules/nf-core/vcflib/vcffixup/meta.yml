@@ -1,0 +1,56 @@
+name: "vcflib_vcffixup"
+description: Generates a VCF stream where AC and NS have been generated for each record
+  using sample genotypes.
+keywords:
+  - vcf
+  - vcflib
+  - vcflib/vcffixup
+  - AC/NS/AF
+tools:
+  - "vcflib":
+      description: "Command-line tools for manipulating VCF files"
+      homepage: https://github.com/vcflib/vcflib
+      documentation: https://github.com/vcflib/vcflib#USAGE
+      doi: "10.1101/2021.05.21.445151"
+      licence: ["MIT"]
+      identifier: biotools:vcflib
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: Compressed VCF file
+        pattern: "*.{.vcf.gz,vcf}"
+        ontologies: []
+    - tbi:
+        type: file
+        description: Index of VCF file
+        pattern: "*.vcf.gz.tbi"
+        ontologies: []
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf.gz":
+          type: file
+          description: Compressed VCF file
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@atrigila"
+maintainers:
+  - "@atrigila"

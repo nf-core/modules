@@ -2,7 +2,7 @@ process ATLAS_CALL {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::atlas=0.9.9"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/atlas:0.9.9--h082e891_0':
         'biocontainers/atlas:0.9.9--h082e891_0' }"
@@ -22,11 +22,10 @@ process ATLAS_CALL {
     task.ext.when == null || task.ext.when
 
     script:
-    def args               = task.ext.args ?: ''
-    def prefix             = task.ext.prefix ?: "${meta.id}"
-    def recal_file         = recal ? "recal=${recal}" : ""
-    def pmd_file           = pmd ? "pmdFile=${pmd}" : ""
-    def known_alleles_file = known_alleles ? "alleles=${known_alleles}" : ""
+    def args               = task.ext.args   ?: ''
+    def recal_file         = recal           ? "recal=${recal}" : ""
+    def pmd_file           = pmd             ? "pmdFile=${pmd}" : ""
+    def known_alleles_file = known_alleles   ? "alleles=${known_alleles}" : ""
 
     def valid_method = ['MLE', 'Bayesian', 'allelePresence', 'randomBase', 'majorityBase']
     if ( !valid_method.contains(method) )  { error "Unrecognised calling method for ATLAS_CALL. Options: MLE, Bayesian, allelePresence, randomBase, majorityBase" }
@@ -36,12 +35,11 @@ process ATLAS_CALL {
         task=call \\
         bam=${bam} \\
         fasta=${fasta} \\
-        $recal_file \\
-        $pmd_file \\
-        $known_alleles_file \\
+        ${recal_file} \\
+        ${pmd_file} \\
+        ${known_alleles_file} \\
         method=${method} \\
-        $args
-
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

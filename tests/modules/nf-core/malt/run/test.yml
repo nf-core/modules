@@ -1,9 +1,0 @@
-- name: malt run test_malt_run
-  command: nextflow run ./tests/modules/nf-core/malt/run -entry test_malt_run -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/malt/run/nextflow.config
-  tags:
-    - malt/run
-    - malt
-  files:
-    - path: output/malt/test-malt-run.log
-      contains: ["Peak memory"]
-    - path: output/malt/test_se.rma6

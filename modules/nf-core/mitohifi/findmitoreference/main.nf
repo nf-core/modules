@@ -1,47 +1,62 @@
 process MITOHIFI_FINDMITOREFERENCE {
-    tag '$species'
-    label 'process_low'
+    tag "$species"
+    label 'process_single'
+    secret secrets.NCBI_API_KEY ? "NCBI_API_KEY" : ""
 
-    // Docker image available at the biocontainers Dockerhub
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'docker://biocontainers/mitohifi:3.0.0_cv1':
-        'docker.io/biocontainers/mitohifi:3.0.0_cv1' }"
+    // NOTE: An optional NCBI API key can be supplied to MITOHIFI_FINDMITOREFERENCE.
+    // This should be set using Nextflow's secrets functionality:
+    // `nextflow secrets set NCBI_API_KEY <key>`
+    //
+    // See https://www.nextflow.io/docs/latest/secrets.html for more information.
+
+    // Docker image available at the project github repository
+    container 'ghcr.io/marcelauliano/mitohifi:3.2.3'
 
     input:
-    val species
-    val email
-    val min_length
+    tuple val(meta), val(species)
 
     output:
-    path "*.fasta",                 emit: fasta
-    path "*.gb",                    emit: gb
-    path "versions.yml",            emit: versions
+    tuple val(meta), path("*.fasta"), emit: fasta
+    tuple val(meta), path("*.gb")   , emit: gb
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "MitoHiFi module does not support Conda. Please use Docker / Singularity instead."
+    }
+
+    def args         = task.ext.args ?: ''
+    // WARN: Incorrect version information is provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION      = '3.2.3'
+    def ncbi_api_key = secrets.NCBI_API_KEY ? "--ncbi-api-key \$NCBI_API_KEY" : ""
     """
     findMitoReference.py \\
-        --species $species \\
-        --email $email \\
-        --min_length $min_length \\
-        --outfolder .
+        ${ncbi_api_key} \\
+        --species "$species" \\
+        --outfolder . \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mitohifi: \$( mitohifi.py --version 2>&1 | head -n1 | sed 's/^.*MitoHiFi //; s/ .*\$//' )
+        mitohifi: ${VERSION}
     END_VERSIONS
     """
 
     stub:
+    // WARN: Incorrect version information is provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '3.2.3'
     """
     touch accession.fasta
     touch accession.gb
 
+    ## old version command: \$(mitohifi.py -v | sed 's/.* //')
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        mitohifi: \$( mitohifi.py --version 2>&1 | head -n1 | sed 's/^.*MitoHiFi //; s/ .*\$//' )
+        mitohifi: ${VERSION}
     END_VERSIONS
     """
 }

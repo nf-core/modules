@@ -1,182 +1,213 @@
-name: nf-test
+name: Run nf-test
 on:
   push:
-    branches: [master]
+    branches:
+      # https://docs.renovatebot.com/key-concepts/automerge/#branch-vs-pr-automerging
+      - "renovate/**" # branches Renovate creates
+    paths-ignore:
+      - "**/meta.yml"
   pull_request:
     branches: [master]
+    paths-ignore:
+      - "**/meta.yml"
   merge_group:
     types: [checks_requested]
     branches: [master]
+  workflow_dispatch:
 
 # Cancel if a newer run is started
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # renovate: datasource=github-releases depName=askimed/nf-test versioning=semver
+  NFT_VER: "0.9.2"
+  NXF_ANSI_LOG: false
+  NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
+  NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
+  # renovate: datasource=github-releases depName=nextflow/nextflow versioning=semver
+  NXF_VER: "24.10.2"
+
 jobs:
-  changes:
-    name: Check for changes
-    runs-on: ubuntu-latest
+  nf-test-changes:
+    name: nf-test-changes
+    runs-on:
+      - runs-on=${{ github.run_id }}-nf-test-changes
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
     outputs:
-      # Expose matched filters as job 'modules' output variable
-      modules: ${{ steps.filter.outputs.changes }}
+      # Expose detected tags as 'modules' and 'workflows' output variables
+      paths: ${{ steps.list.outputs.components }}
+      modules: ${{ steps.components.outputs.modules }}
+      subworkflows: ${{ steps.components.outputs.subworkflows}}
+      shard: ${{ steps.set-shards.outputs.shard }}
+      total_shards: ${{ steps.set-shards.outputs.total_shards }}
     steps:
-      - uses: actions/checkout@v3
-
-      - uses: dorny/paths-filter@v2
-        id: filter
+      - name: Clean Workspace # Purge the workspace in case it's running on a self-hosted runner
+        run: |
+          ls -la ./
+          rm -rf ./* || true
+          rm -rf ./.??* || true
+          ls -la ./
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
         with:
-          filters: "tests/config/nftest_modules.yml"
+          fetch-depth: 0
 
-  test:
-    runs-on: ubuntu-20.04
+      - name: List nf-test files
+        id: list
+        uses: adamrtalbot/detect-nf-test-changes@de3c3c8e113031b4f15a3c1104b5f135e8346997 # v0.0.6
+        with:
+          head: ${{ github.sha }}
+          base: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha || 'origin/master' }}
+          n_parents: 0
+          exclude_tags: "gpu"
 
-    name: ${{ matrix.tags }} ${{ matrix.profile }}
-    needs: changes
-    if: needs.changes.outputs.modules != '[]'
+      - name: Separate modules and subworkflows
+        id: components
+        run: |
+          echo modules=$(echo '${{ steps.list.outputs.components }}' | jq -c '. | map(select(contains("modules"))) | map(gsub("modules/nf-core/"; ""))') >> $GITHUB_OUTPUT
+          echo subworkflows=$(echo '${{ steps.list.outputs.components }}' | jq '. | map(select(contains("subworkflows"))) | map(gsub("subworkflows/nf-core/"; ""))') >> $GITHUB_OUTPUT
+
+      - name: get number of shards
+        id: set-shards
+        if: ${{ steps.list.outputs.components != '[]' }}
+        uses: ./.github/actions/get-shards
+        env:
+          NFT_VER: ${{ env.NFT_VER }}
+        with:
+          max_shards: 15
+          paths: "${{ join(fromJson(steps.list.outputs.components ), ' ') }}"
+
+      - name: debug
+        run: |
+          echo ${{ steps.list.outputs.components }}
+          echo ${{ steps.components.outputs.modules }}
+          echo ${{ steps.components.outputs.subworkflows }}
+          echo ${{ steps.set-shards.outputs.shard }}
+          echo ${{ steps.set-shards.outputs.total_shards }}
+
+  nf-test:
+    runs-on:
+      - runs-on=${{ github.run_id }}
+      - runner=4cpu-linux-${{ matrix.arch }}
+      - image=ubuntu24-full-${{ matrix.arch }}
+    name: "${{ matrix.arch }} | ${{ matrix.profile }} | ${{ matrix.shard }}"
+    needs: [nf-test-changes]
+    if: ${{ needs.nf-test-changes.outputs.total_shards != '0' }}
     strategy:
       fail-fast: false
       matrix:
-        tags: ["${{ fromJson(needs.changes.outputs.modules) }}"]
-        profile: ["docker", "singularity", "conda"]
-        exclude:
-          - profile: "conda"
-            tags: annotsv
-          - profile: "conda"
-            tags: bases2fastq
-          - profile: "conda"
-            tags: bcl2fastq
-          - profile: "conda"
-            tags: bclconvert
-          - profile: "conda"
-            tags: cellranger/count
-          - profile: "conda"
-            tags: cellranger/mkfastq
-          - profile: "conda"
-            tags: cellranger/mkgtf
-          - profile: "conda"
-            tags: cellranger/mkref
-          - profile: "conda"
-            tags: deepvariant
-          - profile: "conda"
-            tags: ensemblvep/vep
-          - profile: "conda"
-            tags: fastk/fastk
-          - profile: "conda"
-            tags: fastk/histex
-          - profile: "conda"
-            tags: fastk/merge
-          - profile: "conda"
-            tags: fcs/fcsadaptor
-          - profile: "conda"
-            tags: fcs/fcsgx
-          - profile: "conda"
-            tags: gatk4/cnnscorevariants
-          - profile: "conda"
-            tags: gatk4/determinegermlinecontigploidy
-          - profile: "conda"
-            tags: genescopefk
-          - profile: "conda"
-            tags: ilastik/multicut
-          - profile: "conda"
-            tags: ilastik/pixelclassification
-          - profile: "conda"
-            tags: imputeme/vcftoprs
-          - profile: "conda"
-            tags: merquryfk/katcomp
-          - profile: "conda"
-            tags: merquryfk/katgc
-          - profile: "conda"
-            tags: merquryfk/merquryfk
-          - profile: "conda"
-            tags: merquryfk/ploidyplot
-          - profile: "conda"
-            tags: sentieon/bwaindex
-          - profile: "conda"
-            tags: sentieon/bwamem
-          - profile: "conda"
-            tags: universc
-          - profile: "singularity"
-            tags: universc
-          - profile: "conda"
-            tags: subworkflows/vcf_annotate_ensemblvep
+        shard: ${{ fromJson(needs.nf-test-changes.outputs.shard) }}
+        profile: [conda, docker, singularity]
+        arch:
+          - x64
+          # FIXME
+          # - arm64
     env:
       NXF_ANSI_LOG: false
-      SENTIEON_LICENSE_BASE64: ${{ secrets.SENTIEON_LICENSE_BASE64 }}
+      TOTAL_SHARDS: ${{ needs.nf-test-changes.outputs.total_shards }}
+    outputs:
+      filtered_paths: ${{ steps.filter.outputs.filtered_paths }}
+
     steps:
-      - uses: actions/checkout@v3
-
-      - uses: actions/cache@v3
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
         with:
-          path: /usr/local/bin/nextflow
-          key: ${{ runner.os }}
-          restore-keys: |
-            ${{ runner.os }}-nextflow-
+          fetch-depth: 0
 
-      - name: Install Nextflow
+      - name: Filter paths
+        id: filter
+        run: |
+          PATHS='${{ needs.nf-test-changes.outputs.paths }}'
+          FILTERED=$(jq -n -c \
+            --arg profile "${{ matrix.profile }}" \
+            --argjson input_paths "$PATHS" \
+            '
+            def get_skip_list: inputs | .[$profile] // [];
+
+            # Get skip list and filter
+            get_skip_list as $skip_patterns |
+
+            # Debug output
+            ($skip_patterns | "Skip patterns: " + (map("  - " + .) | join(","))) |
+            debug |
+
+            # Do the actual filtering
+            $input_paths | map(
+              . as $path |
+              select($skip_patterns | all(. as $pattern | ($path | startswith($pattern)) | not))
+            ) as $result |
+
+            # Debug what was skipped
+            (if ($input_paths - $result) | length > 0 then
+              "Skipped: " + (($input_paths - $result) | map("  - " + .) | join(","))
+            else
+              "No paths skipped"
+            end) |
+            debug |
+
+            $result
+            ' .github/skip_nf_test.json)
+
+          echo "filtered_paths=${FILTERED}" >> $GITHUB_OUTPUT
+
+      - name: debug
+        run: |
+          echo filtered_paths = ${{ steps.filter.outputs.filtered_paths }}
+
+      - name: Run nf-test Action
+        if: ${{steps.filter.outputs.filtered_paths != '[]'}}
+        continue-on-error: ${{ runner.arch == 'ARM64' }}
+        uses: ./.github/actions/nf-test-action
         env:
-          CAPSULE_LOG: none
-        run: |
-          wget -qO- get.nextflow.io | bash
-          sudo mv nextflow /usr/local/bin/
-
-      - name: Cache nf-test installation
-        id: cache-software
-        uses: actions/cache@v3
+          SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
+          SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
+          SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
+          SENTIEON_AUTH_MECH: "GitHub Actions - token"
         with:
-          path: |
-            /usr/local/bin/nf-test
-            /home/runner/.nf-test/nf-test.jar
-          key: ${{ runner.os }}-nftest
+          profile: ${{ matrix.profile }}${{ runner.arch == 'ARM64' && ',arm64,wave' || '' }}
+          shard: ${{ matrix.shard }}
+          total_shards: ${{ env.TOTAL_SHARDS }}
+          paths: "${{ join(fromJson(steps.filter.outputs.filtered_paths), ' ') }}"
 
-      - name: Install nf-test
-        if: steps.cache-software.outputs.cache-hit != 'true'
+  confirm-pass-nf-test:
+    runs-on:
+      - runs-on=${{ github.run_id }}-confirm-pass-nf-test
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
+    needs: [nf-test]
+    if: always()
+    steps:
+      - name: One or more tests failed
+        if: ${{ contains(needs.*.result, 'failure') }}
+        run: exit 1
+
+      - name: One or more tests cancelled
+        if: ${{ contains(needs.*.result, 'cancelled') }}
+        run: exit 1
+
+      - name: If no tests run, but filtered_paths was not empty and no tests succeeded, fail
+        if: ${{ needs.nf-test.outputs.filtered_paths != '' && !contains(needs.*.result, 'success') }}
+        run: exit 1
+
+      - name: All tests ok
+        if: ${{ contains(needs.*.result, 'success') }}
+        run: exit 0
+
+      - name: debug-print
+        if: always()
         run: |
-          wget -qO- https://code.askimed.com/install/nf-test | bash
-          sudo mv nf-test /usr/local/bin/
+          echo "::group::DEBUG: `needs` Contents"
+          echo "DEBUG: toJSON(needs) = ${{ toJSON(needs) }}"
+          echo "DEBUG: toJSON(needs.*.result) = ${{ toJSON(needs.*.result) }}"
+          echo "DEBUG: needs.nf-test.outputs.filtered_paths = ${{ needs.nf-test.outputs.filtered_paths }}"
+          echo "::endgroup::"
 
-      - name: Set up Singularity
-        if: matrix.profile == 'singularity'
-        uses: eWaterCycle/setup-singularity@v5
-        with:
-          singularity-version: 3.7.1
-
-      - name: Set up miniconda
-        if: matrix.profile == 'conda'
-        uses: conda-incubator/setup-miniconda@v2
-        with:
-          auto-update-conda: true
-          channels: conda-forge,bioconda,defaults
-          python-version: ${{ matrix.python-version }}
-
-      - name: Conda setup
-        if: matrix.profile == 'conda'
+      - name: Clean Workspace # Purge the workspace in case it's running on a self-hosted runner
+        if: always()
         run: |
-          conda clean -a
-          conda install -n base conda-libmamba-solver
-          conda config --set solver libmamba
-
-      # Set up secrets
-      - name: Set up nextflow secrets
-        if: env.SENTIEON_LICENSE_BASE64 != null
-        run: |
-          nextflow secrets set SENTIEON_LICENSE_BASE64 ${{ secrets.SENTIEON_LICENSE_BASE64 }}
-          nextflow secrets set SENTIEON_AUTH_MECH_BASE64 ${{ secrets.SENTIEON_AUTH_MECH_BASE64 }}
-          SENTIEON_ENCRYPTION_KEY=$(echo -n "${{ secrets.ENCRYPTION_KEY_BASE64 }}" | base64 -d)
-          SENTIEON_LICENSE_MESSAGE=$(echo -n "${{ secrets.LICENSE_MESSAGE_BASE64 }}" | base64 -d)
-          SENTIEON_AUTH_DATA=$(python tests/modules/nf-core/sentieon/license_message.py encrypt --key "$SENTIEON_ENCRYPTION_KEY" --message "$SENTIEON_LICENSE_MESSAGE")
-          SENTIEON_AUTH_DATA_BASE64=$(echo -n "$SENTIEON_AUTH_DATA" | base64 -w 0)
-          nextflow secrets set SENTIEON_AUTH_DATA_BASE64 $SENTIEON_AUTH_DATA_BASE64
-
-      # Test the module
-      - name: Run nf-test
-        run: |
-          nf-test test \
-            --profile=${{ matrix.profile }} \
-            --tag ${{ matrix.tags }} \
-            --tap=test.tap
-
-      - uses: pcolby/tap-summary@v1
-        with:
-          path: >-
-            test.tap
+          ls -la ./
+          rm -rf ./* || true
+          rm -rf ./.??* || true
+          ls -la ./

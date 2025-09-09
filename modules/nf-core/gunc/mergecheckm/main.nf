@@ -2,10 +2,10 @@ process GUNC_MERGECHECKM {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::gunc=1.0.5"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gunc:1.0.5--pyhdfd78af_0' :
-        'biocontainers/gunc:1.0.5--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gunc:1.0.6--pyhdfd78af_0' :
+        'biocontainers/gunc:1.0.6--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(gunc_file), path(checkm_file)
@@ -32,5 +32,15 @@ process GUNC_MERGECHECKM {
     "${task.process}":
         gunc: \$( gunc --version )
     END_VERSIONS
+    """
+
+    stub:
+    """
+    touch gunc_merge_checkm.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gunc: \$( gunc --version )
+    END_VERSIONS 
     """
 }

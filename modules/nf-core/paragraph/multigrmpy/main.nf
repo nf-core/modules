@@ -3,7 +3,7 @@ process PARAGRAPH_MULTIGRMPY {
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::paragraph=2.3"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/paragraph:2.3--h21f15d8_1':
         'biocontainers/paragraph:2.3--h21f15d8_1' }"
@@ -14,9 +14,9 @@ process PARAGRAPH_MULTIGRMPY {
     tuple val(meta3), path(fasta_fai)
 
     output:
-    tuple val(meta), path("*.vcf.gz")   , emit: vcf
-    tuple val(meta), path("*.json.gz")  , emit: json, optional:true
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.vcf.gz") , emit: vcf
+    tuple val(meta), path("*.json.gz"), emit: json, optional:true
+    path "versions.yml"               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,7 +32,6 @@ process PARAGRAPH_MULTIGRMPY {
 
     if ("${variants}" == "${prefix}.vcf.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     if ("${variants}" == "${prefix}.json.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
-
     """
     ${check_vcf}
 
@@ -65,10 +64,9 @@ process PARAGRAPH_MULTIGRMPY {
 
     if ("${variants}" == "${prefix}.vcf.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     if ("${variants}" == "${prefix}.json.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
-
     """
-    touch ${prefix}.vcf.gz
-    touch ${prefix}.json.gz
+    echo | gzip > ${prefix}.vcf.gz
+    echo | gzip > ${prefix}.json.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

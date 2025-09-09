@@ -4,7 +4,6 @@ keywords:
   - geo
   - expression
   - microarray
-
 tools:
   - "geoquery":
       description: "Get data from NCBI Gene Expression Omnibus (GEO)"
@@ -12,36 +11,57 @@ tools:
       documentation: "https://bioconductor.org/packages/release/bioc/vignettes/GEOquery/inst/doc/GEOquery.html"
       tool_dev_url: "https://github.com/seandavi/GEOquery"
       doi: "10.1093/bioinformatics/btm254"
-      licence: "MIT"
-
+      licence: ["MIT"]
+      identifier: biotools:geoquery
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing metadata about the GEO dataset, minimally 'id'.
-  - querygse:
-      type: string
-      description: |
-        GSE identifier to pass to getGEO()
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing metadata about the GEO dataset, minimally 'id'.
+    - querygse:
+        type: string
+        description: |
+          GSE identifier to pass to getGEO()
 output:
-  - rds:
-      type: file
-      description: R object containing GEO data
-      pattern: "*.rds"
-  - expression:
-      type: file
-      description: TSV-format expression matrix
-      pattern: "*matrix.tsv"
-  - annotation:
-      type: file
-      description: TSV-format annotation file
-      pattern: "*annotation.tsv"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+  rds:
+    - - meta:
+          type: map
+          description: A Groovy map containing sample information
+      - "*.rds":
+          type: file
+          description: R object containing GEO data
+          pattern: "*.rds"
+          ontologies: []
+  expression:
+    - - meta:
+          type: map
+          description: A Groovy map containing sample information
+      - "*matrix.tsv":
+          type: file
+          description: TSV-format expression matrix
+          pattern: "*matrix.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  annotation:
+    - - meta:
+          type: map
+          description: A Groovy map containing sample information
+      - "*annotation.tsv":
+          type: file
+          description: TSV-format annotation file
+          pattern: "*annotation.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@azedinez"
+  - "@pinin4fjords"
+maintainers:
   - "@azedinez"
   - "@pinin4fjords"

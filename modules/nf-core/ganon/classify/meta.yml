@@ -10,62 +10,107 @@ keywords:
   - classify
 tools:
   - "ganon":
-      description: "ganon classifies short DNA sequences against large sets of genomic reference sequences efficiently"
+      description: "ganon classifies short DNA sequences against large sets of genomic
+        reference sequences efficiently"
       homepage: "https://github.com/pirovc/ganon"
       documentation: "https://github.com/pirovc/ganon"
       tool_dev_url: "https://github.com/pirovc/ganon"
       doi: "10.1093/bioinformatics/btaa458"
-      licence: "['MIT License']"
-
+      licence: ["MIT"]
+      identifier: biotools:ganon
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fastqs:
-      type: file
-      description: Single or paired FASTQ files, optionally gzipped
-      pattern: "*.{fq,fq.gz,fastq,fastq.gz}"
-  - dbs:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fastqs:
+        type: file
+        description: Single or paired FASTQ files, optionally gzipped
+        pattern: "*.{fq,fq.gz,fastq,fastq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - db:
       type: file
       description: Ganon database files from build or build-custom
       pattern: "*.{ibf,tax}"
-
+      ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - tre:
-      type: file
-      description: Full ganon report file
-      pattern: "*.tre"
-  - report:
-      type: file
-      description: Plain ganon report file with only targets with match
-      pattern: "*.rep"
-  - lca:
-      type: file
-      description: Information about the lowest common ancestor match of a given read
-      pattern: "*.lca"
-  - all:
-      type: file
-      description: Information of all matches to a given read
-      pattern: "*.all"
-  - unc:
-      type: file
-      description: List of all reads without a hit
-      pattern: "*.unc"
-  - log:
-      type: file
-      description: Text file containing console output from ganon classify
-      pattern: "*.log"
-
+  tre:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tre":
+          type: file
+          description: Full ganon report file
+          pattern: "*.tre"
+          ontologies: []
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.rep":
+          type: file
+          description: Plain ganon report file with only targets with match
+          pattern: "*.rep"
+          ontologies: []
+  one:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.one":
+          type: file
+          description: Information about a single (best) match of a given read after
+            EM or LCA algorithms
+          pattern: "*.one"
+          ontologies: []
+  all:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.all":
+          type: file
+          description: Information of all matches to a given read
+          pattern: "*.all"
+          ontologies: []
+  unc:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.unc":
+          type: file
+          description: List of all reads without a hit
+          pattern: "*.unc"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: Text file containing console output from ganon classify
+          pattern: "*.log"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

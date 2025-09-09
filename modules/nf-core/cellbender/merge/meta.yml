@@ -1,0 +1,59 @@
+name: cellbender_merge
+description: Module to use CellBender to remove ambient RNA from single-cell RNA-seq
+  data
+keywords:
+  - single-cell
+  - scRNA-seq
+  - ambient RNA removal
+tools:
+  - cellbender:
+      description: CellBender is a software package for eliminating technical artifacts
+        from high-throughput single-cell RNA sequencing (scRNA-seq) data.
+      documentation: https://cellbender.readthedocs.io/en/latest/
+      tool_dev_url: https://github.com/broadinstitute/CellBender
+      licence: ["BSD-3-Clause"]
+      identifier: biotools:CellBender
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - filtered:
+        type: file
+        description: AnnData file containing filtered data (without empty droplets)
+        pattern: "*.h5ad"
+        ontologies: []
+    - unfiltered:
+        type: file
+        description: AnnData file containing unfiltered data (with empty droplets)
+        pattern: "*.h5ad"
+        ontologies: []
+    - cellbender_h5:
+        type: file
+        description: CellBender h5 file containing ambient RNA estimates
+        pattern: "*.h5"
+        ontologies: []
+output:
+  h5ad:
+    - - meta:
+          type: file
+          description: AnnData file containing decontaminated counts as `adata.X`
+          pattern: "*.h5ad"
+          ontologies: []
+      - ${prefix}.h5ad:
+          type: file
+          description: AnnData file containing decontaminated counts as `adata.X`
+          pattern: "*.h5ad"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software version
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@nictru"
+maintainers:
+  - "@nictru"

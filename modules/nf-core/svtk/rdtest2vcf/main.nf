@@ -2,7 +2,7 @@ process SVTK_RDTEST2VCF {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::svtk=0.0.20190615"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/svtk:0.0.20190615--py37h73a75cf_2':
         'biocontainers/svtk:0.0.20190615--py37h73a75cf_2' }"
@@ -30,6 +30,18 @@ process SVTK_RDTEST2VCF {
         ${samples} \\
         ${prefix}.vcf.gz \\
         ${contigs}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        svtk: ${VERSION}
+    END_VERSIONS
+    """
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '0.0.20190615' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    echo "" | gzip > ${prefix}.vcf.gz
+    touch ${prefix}.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

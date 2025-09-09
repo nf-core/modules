@@ -13,52 +13,64 @@ tools:
       documentation: https://github.com/waveygang/wfmash
       tool_dev_url: https://github.com/waveygang/wfmash
       doi: 10.5281/zenodo.6949373
-      licence: "['MIT']"
-
+      licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta_gz:
-      type: file
-      description: BGZIPPED FASTA target file to create the mappings from.
-      pattern: "{fa.gz,fna.gz,fasta.gz}"
-  - paf:
-      type: file
-      description: Optional inpute file in PAF format to derive the precise alignments for.
-      pattern: "*.{paf}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta_gz:
+        type: file
+        description: BGZIPPED FASTA target file to create the mappings from.
+        pattern: "{fa.gz,fna.gz,fasta.gz}"
+        ontologies: []
+    - paf:
+        type: file
+        description: Optional inpute file in PAF format to derive the precise alignments
+          for.
+        pattern: "*.{paf}"
+        ontologies: []
+    - gzi:
+        type: file
+        description: The GZI index of the input FASTA file.
+        pattern: "*.{gzi}"
+        ontologies: []
+    - fai:
+        type: file
+        description: The FASTA index of the input FASTA file.
+        pattern: "*.{fai}"
+        ontologies: []
   - query_self:
       type: boolean
       description: If set to true, the input FASTA will also be used as the query FASTA.
-  - gzi:
-      type: file
-      description: The GZI index of the input FASTA file.
-      pattern: "*.{gzi}"
-  - fai:
-      type: file
-      description: The FASTA index of the input FASTA file.
-      pattern: "*.{fai}"
   - fasta_query_list:
       type: file
-      description: Optional inpute file in FASTA format specifying the query sequences as a list.
+      description: Optional inpute file in FASTA format specifying the query sequences
+        as a list.
       pattern: "*.{fa,fna,fasta}"
-
+      ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - paf:
-      type: file
-      description: Alignments in PAF format
-      pattern: "*.{paf}"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+  paf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.paf":
+          type: file
+          description: Alignments in PAF format
+          pattern: "*.{paf}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@subwaystation"
+maintainers:
   - "@subwaystation"

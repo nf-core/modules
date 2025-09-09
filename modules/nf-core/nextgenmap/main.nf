@@ -2,7 +2,7 @@ process NEXTGENMAP {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::nextgenmap=0.5.5"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/nextgenmap%3A0.5.5--hc9558a2_4' :
         'biocontainers/nextgenmap:0.5.5--hc9558a2_4' }"
@@ -55,4 +55,15 @@ process NEXTGENMAP {
         END_VERSIONS
         """
     }
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bam
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        NextGenMap: \$(ngm 2>&1 | head -1 | grep -o -E '[[:digit:]]+.[[:digit:]]+.[[:digit:]]+')
+    END_VERSIONS
+    """
 }

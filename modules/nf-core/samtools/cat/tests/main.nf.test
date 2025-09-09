@@ -1,0 +1,61 @@
+nextflow_process {
+
+    name "Test Process SAMTOOLS_CAT"
+    script "../main.nf"
+    process "SAMTOOLS_CAT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "samtools"
+    tag "samtools/cat"
+
+    test("bams") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id: 'test', single_end: false], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.unaligned.bam', checkIfExists: true) ]
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(file(process.out.bam[0][1]).name).match("bams_bam") },
+                { assert snapshot(process.out.cram).match("bams_cram") },
+                { assert snapshot(process.out.versions).match("bams_versions") }
+            )
+        }
+    }
+
+    test("bams_stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id: 'test', single_end: false], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.unaligned.bam', checkIfExists: true) ]
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(file(process.out.bam[0][1]).name).match("bams_stub_bam") },
+                { assert snapshot(process.out.cram).match("bams_stub_cram") },
+                { assert snapshot(process.out.versions).match("bams_stub_versions") }
+            )
+        }
+    }
+}

@@ -2,10 +2,10 @@ process BWA_ALN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::bwa=0.7.17"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bwa:0.7.17--h5bf99c6_8' :
-        'biocontainers/bwa:0.7.17--h5bf99c6_8' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bf/bf7890f8d4e38a7586581cb7fa13401b7af1582f21d94eef969df4cea852b6da/data' :
+        'community.wave.seqera.io/library/bwa_htslib_samtools:56c9f8d5201889a4' }"
 
     input:
     tuple val(meta) , path(reads)
@@ -19,7 +19,7 @@ process BWA_ALN {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     if (meta.single_end) {
@@ -55,6 +55,30 @@ process BWA_ALN {
             -f ${prefix}.2.sai \\
             \$INDEX \\
             ${reads[1]}
+
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            bwa: \$(echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
+        END_VERSIONS
+        """
+    }
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    if (meta.single_end) {
+        """
+        touch ${prefix}.sai
+
+        cat <<-END_VERSIONS > versions.yml
+        "${task.process}":
+            bwa: \$(echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
+        END_VERSIONS
+        """
+    } else {
+        """
+        touch ${prefix}.1.sai
+        touch ${prefix}.2.sai
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":

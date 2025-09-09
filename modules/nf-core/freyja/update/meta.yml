@@ -6,35 +6,47 @@ keywords:
   - UShER
 tools:
   - "freyja":
-      description: "Freyja recovers relative lineage abundances from mixed SARS-CoV-2 samples and provides functionality to analyze lineage dynamics."
+      description: "Freyja recovers relative lineage abundances from mixed SARS-CoV-2
+        samples and provides functionality to analyze lineage dynamics."
       homepage: "https://github.com/andersen-lab/Freyja"
       documentation: "https://github.com/andersen-lab/Freyja/wiki"
       tool_dev_url: "https://github.com/andersen-lab/Freyja"
       doi: "10.1038/s41586-022-05049-6"
-      licence: "['BSD-2-Clause']"
-
+      licence: ["BSD-2-Clause"]
+      identifier: ""
 input:
   - db_name:
       type: string
       description: "The name of the database directory"
-
 output:
-  - barcodes:
-      type: file
-      description: File containing lineage defining barcodes
-      pattern: "*barcodes.csv"
-  - lineages_topology:
-      type: file
-      description: File containing the lineage topology
-      pattern: "*lineages.yml"
-  - lineages_meta:
-      type: file
-      description: File containing lineage metadata that correspond to barcodes
-      pattern: "*lineages.json"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+  barcodes:
+    - ${db_name}/usher_barcodes.feather:
+        type: file
+        description: File containing lineage defining barcodes
+        pattern: "*barcodes.feather"
+        ontologies: []
+  lineages_topology:
+    - ${db_name}/lineages.yml:
+        type: file
+        description: File containing the lineage topology
+        pattern: "*lineages.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+  lineages_meta:
+    - ${db_name}/curated_lineages.json:
+        type: file
+        description: File containing lineage metadata that correspond to barcodes
+        pattern: "*lineages.json"
+        ontologies:
+          - edam: http://edamontology.org/format_3464 # JSON
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@Joon-Klaps"
+maintainers:
   - "@Joon-Klaps"

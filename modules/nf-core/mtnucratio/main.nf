@@ -2,7 +2,7 @@ process MTNUCRATIO {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::mtnucratio=0.7"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mtnucratio:0.7--hdfd78af_2' :
         'biocontainers/mtnucratio:0.7--hdfd78af_2' }"
@@ -28,6 +28,19 @@ process MTNUCRATIO {
         $args \\
         $bam \\
         $mt_id
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        mtnucratio: \$(echo \$(mtnucratio --version 2>&1) | head -n1 | sed 's/Version: //')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${prefix}.mtnucratio
+    touch ${prefix}.json
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

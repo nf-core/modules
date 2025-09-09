@@ -5,8 +5,9 @@ keywords:
   - vcf
   - annotation
   - snpeff
-modules:
+components:
   - snpeff
+  - snpeff/snpeff
   - tabix/bgziptabix
 input:
   - ch_vcf:
@@ -29,9 +30,19 @@ output:
       description: |
         html reports
         Structure: [ path(html) ]
+  - summary:
+      description: |
+        html reports
+        Structure: [ path(csv) ]
+  - genes_txt:
+      description: |
+        html reports
+        Structure: [ path(txt) ]
   - versions:
       description: |
         Files containing software versions
         Structure: [ path(versions.yml) ]
 authors:
+  - "@maxulysse"
+maintainers:
   - "@maxulysse"

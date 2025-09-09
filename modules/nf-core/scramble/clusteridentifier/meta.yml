@@ -10,42 +10,54 @@ tools:
       homepage: "https://github.com/GeneDx/scramble"
       documentation: "https://github.com/GeneDx/scramble"
       tool_dev_url: "https://github.com/GeneDx/scramble"
-
-      licence: "['CC']"
-
+      licence: ["CC"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - input:
-      type: file
-      description: BAM/CRAM file
-      pattern: "*.{bam,cram}"
-  - input_index:
-      type: file
-      description: Index of the BAM/CRAM file
-      pattern: "*.{bai,crai}"
-  - fasta:
-      type: file
-      description: The reference FASTA file (mandatory when using CRAM files)
-      pattern: "*.{fasta,fa}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - input:
+        type: file
+        description: BAM/CRAM file
+        pattern: "*.{bam,cram}"
+        ontologies: []
+    - input_index:
+        type: file
+        description: Index of the BAM/CRAM file
+        pattern: "*.{bai,crai}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing information about the fasta file
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: The reference FASTA file (mandatory when using CRAM files)
+        pattern: "*.{fasta,fa}"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - clusters:
-      type: file
-      description: Tab-delimited file containing the soft-clipped clusters
-      pattern: "*.clusters.txt"
-
+  clusters:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.clusters.txt":
+          type: file
+          description: Tab-delimited file containing the soft-clipped clusters
+          pattern: "*.clusters.txt"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

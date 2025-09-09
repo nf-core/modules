@@ -1,0 +1,70 @@
+nextflow_process {
+
+    name "Test Process MERYL_HISTOGRAM"
+    script "../main.nf"
+    process "MERYL_HISTOGRAM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "meryl"
+    tag "meryl/count"
+    tag "meryl/histogram"
+
+    setup {
+        run('MERYL_COUNT'){
+            script "../../../../../modules/nf-core/meryl/count/main.nf"
+            process {
+                """
+                input[0] = Channel.value([
+                    [ id: 'test', single_end: true ], // meta map
+                    file( params.modules_testdata_base_path + "/genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz", checkIfExists: true )
+                ])
+                input[1] = Channel.value(21)
+                """
+            }
+        }
+    }
+
+    test("bacteroides_fragilis - fastq") {
+
+        when {
+            process {
+                """
+                input[0] = MERYL_COUNT.out.meryl_db
+                input[1] = Channel.value(21)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("bacteroides_fragilis - fastq - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = MERYL_COUNT.out.meryl_db
+                input[1] = Channel.value(21)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

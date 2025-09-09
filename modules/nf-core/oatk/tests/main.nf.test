@@ -1,0 +1,93 @@
+nextflow_process {
+
+    name "Test Process OATK"
+    script "../main.nf"
+    process "OATK"
+    config "./nextflow.config"
+
+    tag "oatk"
+    tag "modules"
+    tag "modules_nfcore"
+
+    test("test_oatk_mito") {
+        tag "test_oatk_mito"
+
+        when {
+
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                    """
+                    input[0] = Channel.of([[id:"ilDeiPorc1"],file(params.modules_testdata_base_path + 'genomics/eukaryotes/deilephila_porcellus/mito/ilDeiPorc1.HiFi.reads.fa', checkIfExists: true)])
+
+                    hmm = file("https://raw.githubusercontent.com/c-zhou/OatkDB/main/v20230921/insecta_mito.fam", checkIfExists: true)
+                    hmm_h3f = file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/insecta_mito.fam.h3f", checkIfExists: true)
+                    hmm_h3i = file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/insecta_mito.fam.h3i", checkIfExists: true)
+                    hmm_h3m = file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/insecta_mito.fam.h3m", checkIfExists: true)
+                    hmm_h3p = file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/insecta_mito.fam.h3p", checkIfExists: true)
+                    input[1] = Channel.of([hmm, hmm_h3f, hmm_h3i, hmm_h3m, hmm_h3p])
+                    input[2] = [[],[],[],[],[]]
+                    """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.final_gfa.get(0).get(1) ==~ '.*utg.final.gfa' } ,
+                { assert process.out.initial_gfa.get(0).get(1) ==~ '.*utg.gfa' } ,
+                { assert process.out.annot_mito_txt[0][1] ==~ ".*annot_mito.txt" },
+                { assert snapshot(
+                    process.out.mito_bed,
+                    process.out.mito_fasta,
+                    process.out.mito_gfa,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("test_oatk_pltd") {
+        tag "test_oatk_pltd"
+
+        when {
+
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                    """
+                    input[0] = Channel.of([[id:"ddAraThal4"],file(params.modules_testdata_base_path + 'genomics/eukaryotes/arabidopsis_thaliana/plastid/ddAraThal4.HiFi.reads.fasta', checkIfExists: true)])
+
+                    input[1] = [[],[],[],[],[]]
+                    hmm = file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam", checkIfExists: true)
+                    hmm_h3f = file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3f", checkIfExists: true)
+                    hmm_h3i = file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3i", checkIfExists: true)
+                    hmm_h3m = file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3m", checkIfExists: true)
+                    hmm_h3p = file("https://github.com/c-zhou/OatkDB/raw/main/v20230921/embryophyta_pltd.fam.h3p", checkIfExists: true)
+                    input[2] = Channel.of([hmm, hmm_h3f, hmm_h3i, hmm_h3m, hmm_h3p])
+                    """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.final_gfa.get(0).get(1) ==~ '.*utg.final.gfa' } ,
+                { assert process.out.initial_gfa.get(0).get(1) ==~ '.*utg.gfa' } ,
+                { assert process.out.annot_pltd_txt[0][1] ==~ ".*annot_pltd.txt" },
+                { assert snapshot(
+                    process.out.pltd_bed,
+                    process.out.pltd_fasta,
+                    process.out.pltd_gfa,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+}

@@ -3,7 +3,7 @@ process UPD {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::upd=0.1.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/upd:0.1.1--pyhdfd78af_0':
         'biocontainers/upd:0.1.1--pyhdfd78af_0' }"

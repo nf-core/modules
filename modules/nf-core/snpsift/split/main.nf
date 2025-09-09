@@ -2,7 +2,7 @@ process SNPSIFT_SPLIT {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::snpsift=4.3.1t"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snpsift:4.3.1t--hdfd78af_3' :
         'biocontainers/snpsift:4.3.1t--hdfd78af_3' }"
@@ -48,4 +48,16 @@ process SNPSIFT_SPLIT {
         """
     }
 
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${prefix}.chr1.vcf
+    touch ${prefix}.chr2.vcf
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        snpsift: \$( echo \$(SnpSift split -h 2>&1) | sed 's/^.*version //' | sed 's/(.*//' | sed 's/t//g' )
+    END_VERSIONS
+    """
 }

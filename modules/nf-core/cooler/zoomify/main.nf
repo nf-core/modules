@@ -2,10 +2,10 @@ process COOLER_ZOOMIFY {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::cooler=0.9.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cooler:0.9.2--pyh7cba7a3_0' :
-        'biocontainers/cooler:0.9.2--pyh7cba7a3_0' }"
+        'https://depot.galaxyproject.org/singularity/cooler:0.10.4--pyhdfd78af_0' :
+        'biocontainers/cooler:0.10.4--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(cool)

@@ -1,5 +1,6 @@
 name: "bedtools_coverage"
-description: computes both the depth and breadth of coverage of features in file B on the features in file A
+description: computes both the depth and breadth of coverage of features in file B
+  on the features in file A
 keywords:
   - bedtools
   - coverage
@@ -15,22 +16,24 @@ tools:
       documentation: "https://bedtools.readthedocs.io/en/latest/content/bedtools-suite.html"
       tool_dev_url: "https://github.com/arq5x/bedtools2"
       doi: "10.1093/bioinformatics/btq033"
-      licence: "['GPL v2', 'MIT']"
-
+      licence: ["GPL v2", "MIT"]
+      identifier: biotools:bedtools
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - input_A:
-      type: file
-      description: BAM/BED/GFF/VCF file
-      pattern: "*.{bam,bed,gff,vcf}"
-  - input_B:
-      type: file
-      description: One or more BAM/BED/GFF/VCF file
-      pattern: "*.{bam,bed,gff,vcf}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input_A:
+        type: file
+        description: BAM/BED/GFF/VCF file
+        pattern: "*.{bam,bed,gff,vcf}"
+        ontologies: []
+    - input_B:
+        type: file
+        description: One or more BAM/BED/GFF/VCF file
+        pattern: "*.{bam,bed,gff,vcf}"
+        ontologies: []
   - genome_file:
       type: file
       description: |
@@ -38,21 +41,27 @@ input:
         in the input files for use with the -sorted option.
         When `genome_file` is provided, `-sorted` option is added to the command.
       pattern: "*.{fai,txt,chromsizes}"
-
+      ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bed:
-      type: file
-      description: File containing coverage of sequence alignments
-      pattern: "*.bed"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bed":
+          type: file
+          description: File containing coverage of sequence alignments
+          pattern: "*.bed"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@priyanka-surana"
+maintainers:
   - "@priyanka-surana"

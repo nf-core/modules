@@ -2,7 +2,7 @@ process NGMASTER {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::ngmaster=0.5.8"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ngmaster:0.5.8--pyhdfd78af_1' :
         'biocontainers/ngmaster:0.5.8--pyhdfd78af_1' }"
@@ -25,6 +25,18 @@ process NGMASTER {
         $args \\
         $fasta \\
         > ${prefix}.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ngmaster: \$( echo \$(ngmaster --version 2>&1) | sed 's/^.*ngmaster //' )
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

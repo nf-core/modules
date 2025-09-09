@@ -3,7 +3,7 @@ process CMSEQ_POLYMUT {
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::cmseq=1.0.4"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cmseq:1.0.4--pyhb7b1952_0' :
         'biocontainers/cmseq:1.0.4--pyhb7b1952_0' }"
@@ -31,6 +31,18 @@ process CMSEQ_POLYMUT {
         $fasta_refid \\
         --gff_file $gff \\
         $bam > ${prefix}.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        cmseq: $VERSION
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.0.4' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    touch ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

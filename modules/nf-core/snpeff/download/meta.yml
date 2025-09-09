@@ -1,7 +1,11 @@
-name: SNPEFF_DOWNLOAD
+name: snpeff_download
 description: Genetic variant annotation and functional effect prediction toolbox
 keywords:
   - annotation
+  - effect prediction
+  - snpeff
+  - variant
+  - vcf
 tools:
   - snpeff:
       description: |
@@ -10,28 +14,34 @@ tools:
       homepage: https://pcingola.github.io/SnpEff/
       documentation: https://pcingola.github.io/SnpEff/se_introduction/
       licence: ["MIT"]
+      identifier: biotools:snpeff
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: |
-        vcf to annotate
-  - db:
-      type: value
-      description: |
-        which db to annotate with
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - snpeff_db: {}
 output:
-  - cache:
-      type: file
-      description: |
-        snpEff cache
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  cache:
+    - - meta:
+          type: file
+          description: |
+            snpEff cache
+          ontologies: []
+      - snpeff_cache:
+          type: file
+          description: |
+            snpEff cache
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@maxulysse"
+maintainers:
   - "@maxulysse"

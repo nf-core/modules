@@ -1,10 +1,10 @@
 name: "khmer_uniquekmers"
-description: In-memory nucleotide sequence k-mer counting, filtering, graph traversal and more
+description: In-memory nucleotide sequence k-mer counting, filtering, graph traversal
+  and more
 keywords:
   - khmer
   - k-mer
   - effective genome size
-
 tools:
   - "khmer":
       description: khmer k-mer counting library
@@ -13,30 +13,53 @@ tools:
       tool_dev_url: https://github.com/dib-lab/khmer
       doi: "10.12688/f1000research.6924.1"
       licence: ["BSD License"]
-
+      identifier: biotools:khmer
 input:
-  - fasta:
-      type: file
-      description: fasta file
-      pattern: "*.{fa,fasta}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: fasta file
+        pattern: "*.{fa,fasta}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
   - kmer_size:
-      type: value
+      type: integer
       description: k-mer size to use
-      pattern: "[0-9]+"
-
 output:
-  - report:
-      type: file
-      description: Text file containing unique-kmers.py execution report
-      pattern: "report.txt"
-  - kmers:
-      type: file
-      description: Text file containing number of kmers
-      pattern: "kmers.txt"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.report.txt":
+          type: file
+          description: Text file containing unique-kmers.py execution report
+          pattern: "*.report.txt"
+          ontologies: []
+  kmers:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.kmers.txt":
+          type: file
+          description: Text file containing number of kmers
+          pattern: "*.kmers.txt"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@JoseEspinosa"
+maintainers:
   - "@JoseEspinosa"

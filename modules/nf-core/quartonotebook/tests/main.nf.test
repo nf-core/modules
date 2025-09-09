@@ -1,0 +1,222 @@
+nextflow_process {
+
+    name "Test Process QUARTONOTEBOOK"
+    script "../main.nf"
+    process "QUARTONOTEBOOK"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "quartonotebook"
+
+    test("test notebook - [qmd:r]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'generic/notebooks/quarto/quarto_r.qmd', checkIfExists: true) // Notebook
+                ]
+                input[1] = [:] // Parameters
+                input[2] = [] // Input files
+                input[3] = [] // Extensions
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.artifacts,
+                    process.out.params_yaml
+                ).match() },
+                { assert path(process.out.html[0][1]).readLines().any { it.contains('Hello World 1') } },
+            )
+        }
+
+    }
+
+    test("test notebook - [qmd:python]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'generic/notebooks/quarto/quarto_python.qmd', checkIfExists: true) // Notebook
+                ]
+                input[1] = [:] // Parameters
+                input[2] = [] // Input files
+                input[3] = [] // Extensions
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.artifacts,
+                    process.out.params_yaml
+                ).match() },
+                { assert path(process.out.html[0][1]).readLines().any { it.contains('Hello World 1') } },
+            )
+        }
+
+    }
+
+    test("test notebook - parametrized - [qmd:r]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'generic/notebooks/quarto/quarto_r.qmd', checkIfExists: true) // Notebook
+                ]
+                input[1] = [input_filename: "hello.txt", n_iter: 12] // Parameters
+                input[2] = file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true) // Input files
+                input[3] = [] // Extensions
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.artifacts,
+                    process.out.params_yaml
+                ).match() },
+                { assert path(process.out.html[0][1]).readLines().any { it.contains('Hello World 1') } },
+                { assert path(process.out.params_yaml[0][1]).readLines().any { it.contains('meta:') } },
+            )
+        }
+
+    }
+
+    test("test notebook - parametrized - [qmd:python]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'generic/notebooks/quarto/quarto_python.qmd', checkIfExists: true) // Notebook
+                ]
+                input[1] = [input_filename: "hello.txt", n_iter: 12] // Parameters
+                input[2] = file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true) // Input files
+                input[3] = [] // Extensions
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.artifacts,
+                    process.out.params_yaml
+                ).match() },
+                { assert path(process.out.html[0][1]).readLines().any { it.contains('Hello World 1') } },
+                { assert path(process.out.params_yaml[0][1]).readLines().any { it.contains('meta:') } },
+            )
+        }
+
+    }
+
+    test("test notebook - parametrized - [rmd]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'generic/notebooks/rmarkdown/rmarkdown_notebook.Rmd', checkIfExists: true) // notebook
+                ]
+                input[1] = [input_filename: "hello.txt", n_iter: 12] // Parameters
+                input[2] = file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true) // Input files
+                input[3] = [] // Extensions
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.artifacts,
+                    process.out.params_yaml
+                ).match() },
+                { assert path(process.out.html[0][1]).readLines().any { it.contains('Hello World 1') } },
+                { assert path(process.out.params_yaml[0][1]).readLines().any { it.contains('meta:') } },
+            )
+        }
+
+    }
+
+    test("test notebook - parametrized - [ipynb]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'generic/notebooks/jupyter/ipython_notebook.ipynb', checkIfExists: true) // notebook
+                ]
+                input[1] = [input_filename: "hello.txt", n_iter: 12] // Parameters
+                input[2] = file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true) // Input files
+                input[3] = [] // Extensions
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.artifacts,
+                    process.out.params_yaml
+                ).match() },
+                { assert path(process.out.html[0][1]).readLines().any { it.contains('Hello World') } },
+                { assert path(process.out.params_yaml[0][1]).readLines().any { it.contains('meta:') } },
+            )
+        }
+
+    }
+
+    test("test notebook - stub - [qmd:r]") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'generic/notebooks/quarto/quarto_r.qmd', checkIfExists: true) // Notebook
+                ]
+                input[1] = [:] // Parameters
+                input[2] = [] // Input files
+                input[3] = [] // Extensions
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+
+    }
+
+}

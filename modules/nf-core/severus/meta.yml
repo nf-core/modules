@@ -1,0 +1,252 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "severus"
+description: Severus is a somatic structural variation (SV) caller for long reads
+  (both PacBio and ONT)
+keywords:
+  - structural
+  - variation
+  - somatic
+  - germline
+  - long-read
+tools:
+  - "severus":
+      description: "A tool for somatic structural variant calling using long reads"
+      homepage: "https://github.com/KolmogorovLab/Severus"
+      documentation: "https://github.com/KolmogorovLab/Severus"
+      tool_dev_url: "https://github.com/KolmogorovLab/Severus"
+      doi: "10.1101/2024.03.22.24304756"
+      licence: ["BSD-3-clause"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - target_input:
+        type: file
+        description: path to one or multiple target BAM/CRAM files (e.g. tumor, must
+          be indexed)
+        pattern: "*.{bam,cram}"
+        ontologies: []
+    - target_index:
+        type: file
+        description: path to one or multiple target BAM/CRAM index files
+        pattern: "*.{bai,crai,csi}"
+        ontologies: []
+    - control_input:
+        type: file
+        description: path to the control BAM/CRAM file (e.g. normal, must be indexed)
+        pattern: "*.{bam,cram}"
+        ontologies: []
+    - control_index:
+        type: file
+        description: path to the control BAM/CRAM file index
+        pattern: "*.{bai,crai,csi}"
+        ontologies: []
+    - vcf:
+        type: file
+        description: path to vcf file used for phasing (if using haplotype specific
+          SV calling
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing tandem repeat regions information
+          e.g. `[ id:'hg38']`
+    - bed:
+        type: file
+        description: path to bed file for tandem repeat regions (must be ordered)
+        pattern: "*.bed"
+        ontologies: []
+output:
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "${prefix}/severus.log"
+      - ${prefix}/severus.log:
+          type: file
+          description: |
+            log file
+          pattern: "${prefix}/severus.log"
+          ontologies: []
+  read_qual:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "${prefix}/severus.log"
+      - ${prefix}/read_qual.txt:
+          type: file
+          description: |
+            txt file containing read quality information
+          pattern: "${prefix}/read_qual.txt"
+          ontologies: []
+  breakpoints_double:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "${prefix}/severus.log"
+      - ${prefix}/breakpoints_double.csv:
+          type: file
+          description: |
+            Detailed info about the detected breakpoints for all samples in text format, intended for an advanced user.
+          pattern: "${prefix}/breakpoints_double.csv"
+          ontologies: []
+  read_alignments:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "${prefix}/severus.log"
+      - ${prefix}/read_alignments:
+          type: file
+          description: |
+          pattern: "${prefix}/read_alignments"
+          ontologies: []
+  read_ids:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "${prefix}/severus.log"
+      - ${prefix}/read_ids.csv:
+          type: file
+          description: |
+            Contains supporting read IDs for each SV
+          pattern: "${prefix}/read_ids"
+          ontologies: []
+  collapsed_dup:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "${prefix}/severus.log"
+      - ${prefix}/severus_collaped_dup.bed:
+          type: file
+          description: |
+          pattern: "${prefix}/severus_collaped_dup"
+          ontologies: []
+  loh:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "${prefix}/severus.log"
+      - ${prefix}/severus_LOH.bed:
+          type: file
+          description: |
+            BED file containing loss of heterozygosity information
+          pattern: "${prefix}/severus_LOH.bed"
+          ontologies: []
+  all_vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "${prefix}/severus.log"
+      - ${prefix}/all_SVs/severus_all.vcf:
+          type: map
+          description: |
+            VCF file containing somatic and germline structural variants
+          pattern: "${prefix}/all_SVs/severus_all.vcf"
+  all_breakpoints_clusters_list:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "${prefix}/severus.log"
+      - ${prefix}/all_SVs/breakpoints_clusters_list.tsv:
+          type: file
+          description: |
+            a TSV containing a list of all breakpoint clusters
+          pattern: "${prefix}/all_SVs/breakpoints_clusters_list.tsv"
+          ontologies: []
+  all_breakpoints_clusters:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "${prefix}/severus.log"
+      - ${prefix}/all_SVs/breakpoints_clusters.tsv:
+          type: file
+          description: |
+            TSV file listing meta information in breakpoint clusters
+          pattern: "${prefix}/all_SVs/breakpoints_clusters.tsv"
+          ontologies: []
+  all_plots:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "${prefix}/severus.log"
+      - ${prefix}/all_SVs/plots/severus_*.html:
+          type: file
+          description: |
+            Plotly graph containing of somatic and germline breakpoint clusters
+          pattern: "${prefix}/all_SVs/plots/*.html"
+          ontologies: []
+  somatic_vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "${prefix}/severus.log"
+      - ${prefix}/somatic_SVs/severus_somatic.vcf:
+          type: file
+          description: |
+            VCF file containing somatic structural variants (SV)
+          pattern: "${prefix}/somatic_SVs/severus_all.vcf"
+          ontologies: []
+  somatic_breakpoints_clusters_list:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "${prefix}/severus.log"
+      - ${prefix}/somatic_SVs/breakpoints_clusters_list.tsv:
+          type: file
+          description: |
+            TSV file containing full list of somatic breakpoint clusters
+          pattern: "${prefix}/somatic_SVs/breakpoints_clusters_list.tsv"
+          ontologies: []
+  somatic_breakpoints_clusters:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "${prefix}/severus.log"
+      - ${prefix}/somatic_SVs/breakpoints_clusters.tsv:
+          type: file
+          description: |
+            TSV file containing meta information of somatic breakpoint clusters
+          pattern: "${prefix}/somatic_SVs/breakpoints_clusters.tsv"
+          ontologies: []
+  somatic_plots:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "${prefix}/severus.log"
+      - ${prefix}/somatic_SVs/plots/severus_*.html:
+          type: file
+          description: |
+            Plotly graph of somatic breakpoint clusters
+          pattern: "${prefix}/somatic_SVs/plots/*.html"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@fellen31"
+maintainers:
+  - "@fellen31"

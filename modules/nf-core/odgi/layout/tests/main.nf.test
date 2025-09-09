@@ -1,0 +1,36 @@
+nextflow_process {
+
+    name "Test Process ODGI_LAYOUT"
+    script "../main.nf"
+    process "ODGI_LAYOUT"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "odgi"
+    tag "odgi/layout"
+
+    test("homo_sapiens - pangenome - pangenome_smoothxg_gfa") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.smoothxg.gfa', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match()},
+                // odgi layout is not deterministic
+                { assert path(process.out.lay.get(0).get(1)).exists() },
+                { assert path(process.out.tsv.get(0).get(1)).exists() }
+            )
+        }
+    }
+}

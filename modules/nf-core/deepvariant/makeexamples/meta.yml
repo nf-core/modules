@@ -1,0 +1,120 @@
+name: deepvariant_makeexamples
+description: Transforms the input alignments to a format suitable for the deep neural
+  network variant caller
+keywords:
+  - variant calling
+  - machine learning
+  - neural network
+tools:
+  - deepvariant:
+      description: DeepVariant is an analysis pipeline that uses a deep neural network
+        to call genetic variants from next-generation DNA sequencing data
+      homepage: https://github.com/google/deepvariant
+      documentation: https://github.com/google/deepvariant
+      tool_dev_url: https://github.com/google/deepvariant
+      doi: "10.1038/nbt.4235"
+      licence: ["BSD-3-clause"]
+      identifier: biotools:deepvariant
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input:
+        type: file
+        description: BAM/CRAM file
+        pattern: "*.bam/cram"
+        ontologies: []
+    - index:
+        type: file
+        description: Index of BAM/CRAM file
+        pattern: "*.bai/crai"
+        ontologies: []
+    - intervals:
+        type: file
+        description: Interval file for targeted regions
+        pattern: "*.bed"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: The reference fasta file
+        pattern: "*.fasta"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fai:
+        type: file
+        description: Index of reference fasta file
+        pattern: "*.fai"
+        ontologies: []
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - gzi:
+        type: file
+        description: GZI index of reference fasta file
+        ontologies: []
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+        pattern: "*.gzi"
+    - par_bed:
+        type: file
+        description: BED file containing PAR regions
+        pattern: "*.bed"
+        ontologies: []
+output:
+  examples:
+    - - meta:
+          type: list
+          description: |
+            Tuple containing sample metadata and examples that can be used for calling
+      - ${prefix}.examples.tfrecord-*-of-*.gz{,.example_info.json}:
+          type: list
+          description: |
+            Tuple containing sample metadata and examples that can be used for calling
+  gvcf:
+    - - meta:
+          type: list
+          description: |
+            Tuple containing sample metadata and examples that can be used for calling
+      - ${prefix}.gvcf.tfrecord-*-of-*.gz:
+          type: list
+          description: |
+            Tuple containing sample metadata and the GVCF data in tfrecord format
+  small_model_calls:
+    - - meta:
+          type: list
+          description: |
+            Tuple containing sample metadata and examples that can be used for calling
+      - ${prefix}_call_variant_outputs.examples.tfrecord-*-of-*.gz:
+          type: list
+          description: |
+            Optional variant calls from the small model, if enabled, in tfrecord format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing the DeepVariant software version
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@abhi18av"
+  - "@ramprasadn"
+  - "@fa2k"
+maintainers:
+  - "@abhi18av"
+  - "@ramprasadn"

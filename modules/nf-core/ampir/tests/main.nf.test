@@ -1,0 +1,73 @@
+nextflow_process {
+
+    name "Test Process AMPIR"
+    script "../main.nf"
+    process "AMPIR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ampir"
+
+    test("candidatus_portiera_aleyrodidarum proteome [fasta]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test' ],
+                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true),
+                ]
+                input[1] = "precursor" // model
+                input[2] = 10          // min_length
+                input[3] = "0.7"       // min_probability
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.amps_faa,
+                    path(process.out.amps_tsv[0][1]).csv(sep: "\t")["columns"].findAll {
+                        key, _ -> key != "prob_AMP" // prob_AMP has floating-point inprecision issues
+                    },
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml,
+                ).match() }
+            )
+        }
+
+    }
+
+    test("candidatus_portiera_aleyrodidarum proteome [fasta] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test' ],
+                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true),
+                ]
+                input[1] = "precursor" // model
+                input[2] = 10          // min_length
+                input[3] = "0.7"       // min_probability
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml,
+                ).match() }
+            )
+        }
+
+    }
+
+}

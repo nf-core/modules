@@ -1,9 +1,0 @@
-- name: pairtools restrict test_pairtools_restrict
-  command: nextflow run ./tests/modules/nf-core/pairtools/restrict -entry test_pairtools_restrict -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/pairtools/restrict/nextflow.config
-  tags:
-    - pairtools/restrict
-    - pairtools
-  files:
-    - path: output/pairtools/test.restrict.pairs.gz # Not using MD5 checksum because the file includes the run paths, which are different under Conda
-      contains:
-        - "readid01\tchr1\t1\tchr1\t2\t+\t+\tUU\t0\t0\t51\t0\t0\t51"

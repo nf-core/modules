@@ -2,6 +2,7 @@ name: rseqc_inferexperiment
 description: Infer strandedness from sequencing reads
 keywords:
   - rnaseq
+  - strandedness
   - experiment
 tools:
   - rseqc:
@@ -12,29 +13,45 @@ tools:
       documentation: http://rseqc.sourceforge.net/
       doi: 10.1093/bioinformatics/bts356
       licence: ["GPL-3.0-or-later"]
+      identifier: biotools:rseqc
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: the bam file to calculate statistics of
-      pattern: "*.{bam}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: the bam file to calculate statistics of
+        pattern: "*.{bam}"
+        ontologies: []
   - bed:
       type: file
       description: a bed file for the reference gene model
       pattern: "*.{bed}"
+      ontologies: []
 output:
-  - txt:
-      type: file
-      description: infer_experiment results report
-      pattern: "*.infer_experiment.txt"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  txt:
+    - - meta:
+          type: file
+          description: infer_experiment results report
+          pattern: "*.infer_experiment.txt"
+          ontologies: []
+      - "*.infer_experiment.txt":
+          type: file
+          description: infer_experiment results report
+          pattern: "*.infer_experiment.txt"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@drpatelh"
+  - "@kevinmenden"
+maintainers:
   - "@drpatelh"
   - "@kevinmenden"

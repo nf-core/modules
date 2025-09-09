@@ -2,7 +2,7 @@ process CRISPRCLEANR_NORMALIZE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::r-crisprcleanr=3.0.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/r-crisprcleanr:3.0.0--r42hdfd78af_1':
         'biocontainers/r-crisprcleanr:3.0.0--r42hdfd78af_1' }"
@@ -49,4 +49,18 @@ process CRISPRCLEANR_NORMALIZE {
     close(f)
 
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${prefix}_norm_table.tsv
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        R: R --version | sed '1!d; s/.*version //; s/ .*//'
+        CRISPRcleanR: Rscript -e 'packageVersion("CRISPRcleanR")'
+    END_VERSIONS
+    """
+
 }

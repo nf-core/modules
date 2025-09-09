@@ -1,0 +1,86 @@
+nextflow_process {
+
+    name "Test Process ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION"
+    script "../main.nf"
+    process "ATLASGENEANNOTATIONMANIPULATION_GTF2FEATUREANNOTATION"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "atlasgeneannotationmanipulation"
+    tag "atlasgeneannotationmanipulation/gtf2featureannotation"
+
+    test("human - gtf") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ "id":"homo_sapiens" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.gtf")
+                ]
+                input[1] = [[ "id":"homo_sapiens" ], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("human - gtf - fasta") {
+
+        config './nextflow.config'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ "id":"homo_sapiens" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.gtf")
+                ]
+                input[1] = [
+                    [ "id":"homo_sapiens" ], 
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/transcriptome.fasta")
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("human - gtf - stub") {
+        
+        options '-stub'
+        
+        when {
+            process {
+                """
+                input[0] = [
+                    [ "id":"homo_sapiens" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.gtf")
+                ]
+                input[1] = [[ "id":"homo_sapiens" ], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+}

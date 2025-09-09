@@ -2,17 +2,17 @@ process KALLISTO_INDEX {
     tag "$fasta"
     label 'process_medium'
 
-    conda "bioconda::kallisto=0.46.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/kallisto:0.46.2--h4f7b962_1' :
-        'biocontainers/kallisto:0.46.2--h4f7b962_1' }"
+        'https://depot.galaxyproject.org/singularity/kallisto:0.51.1--heb0cbe2_0':
+        'biocontainers/kallisto:0.51.1--heb0cbe2_0' }"
 
     input:
-    path fasta
+    tuple val(meta), path(fasta)
 
     output:
-    path "kallisto" , emit: idx
-    path "versions.yml" , emit: versions
+    tuple val(meta), path("kallisto")  , emit: index
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,7 +34,7 @@ process KALLISTO_INDEX {
 
     stub:
     """
-    touch kallisto
+    mkdir kallisto
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -1,0 +1,53 @@
+// nf-core modules test cellranger/mkgtf
+nextflow_process {
+
+    name "Test Process CELLRANGER_MKGTF"
+    script "../main.nf"
+    process "CELLRANGER_MKGTF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cellranger"
+    tag "cellranger/mkgtf"
+
+    test("homo_sapiens - reference") {
+
+        when {
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - reference - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

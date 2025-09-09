@@ -2,10 +2,10 @@ process PICARD_SORTVCF {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::picard=3.0.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:3.0.0--hdfd78af_1' :
-        'biocontainers/picard:3.0.0--hdfd78af_1' }"
+        'https://depot.galaxyproject.org/singularity/picard:3.3.0--hdfd78af_0' :
+        'biocontainers/picard:3.3.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(vcf)
@@ -50,7 +50,7 @@ process PICARD_SORTVCF {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_sorted.vcf.gz
+    echo "" | gzip > ${prefix}_sorted.vcf.gz
     touch ${prefix}.bam.bai
     touch ${prefix}.MarkDuplicates.metrics.txt
 

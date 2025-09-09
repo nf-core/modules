@@ -1,0 +1,82 @@
+nextflow_process {
+
+    name "Test Process BRACKEN_BUILD"
+    script "../main.nf"
+    process "BRACKEN_BUILD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bracken"
+    tag "bracken/build"
+    tag "untar"
+
+    test("kraken2 - db") {
+
+        setup {
+            run ("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [[id: 'db'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2_intermediate.tar.gz', checkIfExists: true)]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        file("${process.out.db[0][1]}/database100mers.kmer_distrib").name,
+                        file("${process.out.db[0][1]}/database100mers.kraken").name,
+                        file("${process.out.db[0][1]}/database.kraken").name,
+                        file("${process.out.bracken_files[0][1]}/database100mers.kmer_distrib").name,
+                        file("${process.out.bracken_files[0][1]}/database100mers.kraken").name,
+                        file("${process.out.bracken_files[0][1]}/database.kraken").name,
+                        process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("kraken2 - db - stub") {
+
+        options "-stub"
+
+        setup {
+            run ("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [[id: 'db'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2_intermediate.tar.gz', checkIfExists: true)]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

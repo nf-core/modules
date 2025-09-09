@@ -1,9 +1,0 @@
-- name: hamronization abricate test_hamronization_abricate
-  command: nextflow run ./tests/modules/nf-core/hamronization/abricate -entry test_hamronization_abricate -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/hamronization/abricate/nextflow.config
-  tags:
-    - hamronization/abricate
-    - hamronization
-  files:
-    - path: output/hamronization/test.tsv
-      contains:
-        - "input_file_name	gene_symbol	gene_name	reference_database_name	reference_database_version	reference_accession	analysis_software_name	analysis_software_version	genetic_variation_type	antimicrobial_agent	coverage_percentage	coverage_depth	coverage_ratio	drug_class	input_gene_length	input_gene_start	input_gene_stop	input_protein_length	input_protein_start	input_protein_stop	input_sequence_id	nucleotide_mutation	nucleotide_mutation_interpretation	predicted_phenotype	predicted_phenotype_confidence_level	amino_acid_mutation	amino_acid_mutation_interpretation	reference_gene_length	reference_gene_start	reference_gene_stop	reference_protein_length	reference_protein_start	reference_protein_stop	resistance_mechanism	strand_orientation	sequence_identity"

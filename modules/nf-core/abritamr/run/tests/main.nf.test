@@ -1,0 +1,66 @@
+nextflow_process {
+
+    name "Test Process ABRITAMR_RUN"
+    script "../main.nf"
+    process "ABRITAMR_RUN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "abritamr"
+    tag "abritamr/run"
+
+    test("haemophilus_influenzae genome [fna_gz]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.fna.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.matches,
+                    process.out.partials,
+                    process.out.virulence,
+                    process.out.out,
+                    process.out.txt,
+                    process.out.versions
+                ).match() },
+            )
+        }
+
+    }
+
+    test("haemophilus_influenzae genome [fna_gz] - stub") {
+        options "-stub-run"
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.fna.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() },
+            )
+        }
+    }
+
+}

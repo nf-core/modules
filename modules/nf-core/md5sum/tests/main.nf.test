@@ -1,0 +1,180 @@
+nextflow_process {
+
+    name "Test Process MD5SUM"
+    script "../main.nf"
+    process "MD5SUM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "md5sum"
+
+    test("md5sum on hello.txt") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'hello' ],
+                    [ file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true) ]
+                ]
+                input[1] = true
+                """
+            }
+        }
+
+        then {
+            assertAll {
+                { assert process.success }
+                { assert snapshot(process.out).match() }
+            }
+        }
+    }
+
+    test("md5sum on hello.txt (BSD-style)") {
+
+        config './nextflow.config'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'hello' ],
+                    [ file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true) ]
+                ]
+                input[1] = true
+                """
+            }
+        }
+
+        then {
+            assertAll {
+                { assert process.success }
+                { assert snapshot(process.out).match() }
+            }
+        }
+    }
+
+    test("md5sum on hello.txt - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'hello' ],
+                    [ file(params.modules_testdata_base_path + 'generic/txt/hello.txt', checkIfExists: true) ]
+                ]
+                input[1] = true
+                """
+            }
+        }
+
+        then {
+            assertAll {
+                { assert process.success }
+                { assert snapshot(process.out).match() }
+            }
+        }
+    }
+
+    test("md5sum on paired fastq, combined") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = false
+                """
+            }
+        }
+
+        then {
+            assertAll {
+                { assert process.success }
+                { assert snapshot(process.out).match() }
+            }
+        }
+    }
+
+    test("md5sum on paired fastq, combined - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = false
+                """
+            }
+        }
+
+        then {
+            assertAll {
+                { assert process.success }
+                { assert snapshot(process.out).match() }
+            }
+        }
+    }
+
+
+    test("md5sum on paired fastq, separate") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = true
+                """
+            }
+        }
+
+        then {
+            assertAll {
+                { assert process.success }
+                { assert snapshot(process.out).match() }
+            }
+        }
+    }
+
+    test("md5sum on paired fastq, separate - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = true
+                """
+            }
+        }
+
+        then {
+            assertAll {
+                { assert process.success }
+                { assert snapshot(process.out).match() }
+            }
+        }
+    }
+
+}

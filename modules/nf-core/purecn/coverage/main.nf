@@ -4,10 +4,11 @@ process PURECN_COVERAGE {
     stageInMode "link"
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::bioconductor-purecn=2.4.0 bioconda::bioconductor-txdb.hsapiens.ucsc.hg38.knowngene=3.16.0 bioconductor-txdb.hsapiens.ucsc.hg19.knowngene=3.2.2 bioconda::bioconductor-org.hs.eg.db=3.16.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-582ac26068889091d5e798347c637f8208d77a71:a29c64a63498b1ee8b192521fdf6ed3c65506994-0':
-        'quay.io/biocontainers/mulled-v2-582ac26068889091d5e798347c637f8208d77a71:a29c64a63498b1ee8b192521fdf6ed3c65506994-0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/17/171d9cdb3db28ca8a63d87dd514a97e92af353f35b8f2173173a3dc3bb801516/data':
+        'community.wave.seqera.io/library/bioconductor-dnacopy_bioconductor-org.hs.eg.db_bioconductor-purecn_bioconductor-txdb.hsapiens.ucsc.hg19.knowngene_pruned:cc846801cfba58d6' }"
+
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -26,13 +27,12 @@ process PURECN_COVERAGE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '2.4.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '2.12.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     if (task.stageInMode != 'link') {
-        System.err.println("ERROR: purecn/coverage can not handle staging files with symlinks. Please change the stageInmode option to 'Link'")
-        System.exit(1)
-    } else {
+        error "purecn/coverage can not handle staging files with symlinks. Please change the stageInmode option to 'Link'"
+    }
+
     """
     library_path=\$(Rscript -e 'cat(.libPaths(), sep = "\\n")')
     Rscript "\$library_path"/PureCN/extdata/Coverage.R \\
@@ -47,23 +47,21 @@ process PURECN_COVERAGE {
         purecn: ${VERSION}
     END_VERSIONS
     """
-    }
 
     stub:
-
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def png = args.contains("--skip-gc-norm") ? "" : "touch ${prefix}.png"
+    def args         = task.ext.args                   ?: ''
+    def prefix       = task.ext.prefix                 ?: "${meta.id}"
+    def png          = args.contains("--skip-gc-norm") ? "" : "touch ${prefix}.png"
     def loess_qc_txt = args.contains("--skip-gc-norm") ? "" : "touch ${prefix}_loess_qc.txt"
-    def loess_txt = args.contains("--skip-gc-norm") ? "" : "touch ${prefix}_loess.txt.gz"
-    def VERSION = '2.4.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def loess_txt    = args.contains("--skip-gc-norm") ? "" : "echo | gzip > ${prefix}_loess.txt.gz"
+    def VERSION = '2.12.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     if (task.stageInMode != 'link') {
-        System.err.println("ERROR: purecn/coverage can not handle staging files with symlinks. Please change the stageInmode option to 'Link'")
-        System.exit(1)
-    } else {
+        error "purecn/coverage can not handle staging files with symlinks. Please change the stageInmode option to 'Link'"
+    }
+
     """
-    touch ${prefix}.txt
+    echo | gzip > ${prefix}.txt.gz
     touch ${prefix}.bed
     ${png}
     ${loess_qc_txt}
@@ -74,5 +72,4 @@ process PURECN_COVERAGE {
         purecn: ${VERSION}
     END_VERSIONS
     """
-    }
 }

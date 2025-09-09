@@ -1,0 +1,80 @@
+nextflow_process {
+
+    name "Test Process BASES2FASTQ"
+    script "../main.nf"
+    process "BASES2FASTQ"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bases2fastq"
+    tag "untar"
+
+    setup {
+        run("UNTAR") {
+            script "modules/nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = Channel.of([ [id: "sim-data",  samplesheet: file("https://raw.githubusercontent.com/nf-core/test-datasets/demultiplex/testdata/sim-data/RunManifest.csv", checkIfExists: true)], file("https://github.com/nf-core/test-datasets/raw/demultiplex/testdata/sim-data/sim-data.tar.gz", checkIfExists: true) ])
+                """
+            }
+        }
+    }
+
+    test("sim-data.tar.gz - bcl") {
+        when {
+            process {
+                """
+                input[0]= UNTAR.out.untar.map{meta, untar -> [meta, meta.samplesheet, untar]}
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.metrics,
+                    process.out.generated_run_manifest,
+                    process.out.unassigned,
+                    process.out.sample_fastq,
+                    process.out.versions,
+                    file(process.out.qc_report[0][1]).name,
+                    file(process.out.run_stats[0][1]).name,
+                    file(process.out.sample_json[0][1]).name,
+                ).match()
+                }
+            )
+        }
+
+    }
+
+    test("sim-data.tar.gz - bcl -stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0]= UNTAR.out.untar.map{meta, untar -> [meta, meta.samplesheet, untar]}
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.metrics,
+                    process.out.generated_run_manifest,
+                    process.out.unassigned,
+                    process.out.sample_fastq,
+                    process.out.versions,
+                    file(process.out.qc_report[0][1]).name,
+                    file(process.out.run_stats[0][1]).name,
+                    file(process.out.sample_json[0][1]).name,
+                ).match()
+                }
+            )
+        }
+    }
+}

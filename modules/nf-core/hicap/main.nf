@@ -2,7 +2,7 @@ process HICAP {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::hicap=1.0.3"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hicap:1.0.3--py_0' :
         'biocontainers/hicap:1.0.3--py_0' }"
@@ -39,6 +39,19 @@ process HICAP {
         $args \\
         --threads $task.cpus \\
         -o ./
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        hicap: \$( echo \$( hicap --version 2>&1 ) | sed 's/^.*hicap //' )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.gbk
+    touch ${prefix}.svg
+    touch ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

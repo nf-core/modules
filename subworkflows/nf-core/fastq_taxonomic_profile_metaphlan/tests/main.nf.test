@@ -1,0 +1,48 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTQ_TAXONOMIC_PROFILE_METAPHLAN"
+    script "../main.nf"
+    workflow "FASTQ_TAXONOMIC_PROFILE_METAPHLAN"
+    config "./nextflow.config"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fastq_taxonomic_profile_metaphlan"
+    tag "metaphlan/makedb"
+    tag "metaphlan/metaphlan"
+    tag "metaphlan/mergemetaphlantables"
+
+
+    test("sarscov2 - fastq - paired_end") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of (
+                    [
+                        [ id:'test1', single_end:false ], // meta map
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                            ]
+                    ],
+                    [
+                        [ id:'test2', single_end:false ], // meta map
+                            [
+                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fastq/test1_2.fastq.gz', checkIfExists: true)
+                            ]
+                    ]
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
+}

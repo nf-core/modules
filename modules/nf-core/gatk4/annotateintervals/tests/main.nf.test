@@ -1,0 +1,186 @@
+nextflow_process {
+
+    name "Test Process GATK4_ANNOTATEINTERVALS"
+    script "../main.nf"
+    process "GATK4_ANNOTATEINTERVALS"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gatk4"
+    tag "gatk4/annotateintervals"
+
+    test("homo_sapiens genome [bed]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
+                ]
+                input[1] = [[:], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)] // fasta
+                input[2] = [[:], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)] // fasta_fai
+                input[3] = [[:], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)] // dict
+                input[4] = [[:],[]]
+                input[5] = [[:],[]]
+                input[6] = [[:],[]]
+                input[7] = [[:],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens genome multi-interval [bed]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.multi_intervals.bed', checkIfExists: true)
+                            ]
+                ]
+                input[1] = [[:], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)] // fasta
+                input[2] = [[:], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)] // fasta_fai
+                input[3] = [[:], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)] // dict
+                input[4] = [[:],[]]
+                input[5] = [[:],[]]
+                input[6] = [[:],[]]
+                input[7] = [[:],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens genome [interval_list]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.interval_list', checkIfExists: true)
+                ]
+                input[1] = [[:], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)] // fasta
+                input[2] = [[:], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)] // fasta_fai
+                input[3] = [[:], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)] // dict
+                input[4] = [[:],[]]
+                input[5] = [[:],[]]
+                input[6] = [[:],[]]
+                input[7] = [[:],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens genome [interval_list] mappable_regions") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.interval_list', checkIfExists: true)
+                ]
+                input[1] = [[:], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)] // fasta
+                input[2] = [[:], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)] // fasta_fai
+                input[3] = [[:], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)] // dict
+                input[4] = [[:], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed.gz', checkIfExists: true)] // mappable_regions
+                input[5] = [[:], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed.gz.tbi', checkIfExists: true)] // mappable_regions_tbi
+                input[6] = [[:],[]]
+                input[7] = [[:],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens genome [interval_list] duplication_regions") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.interval_list', checkIfExists: true)
+                ]
+                input[1] = [[:], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)] // fasta
+                input[2] = [[:], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)] // fasta_fai
+                input[3] = [[:], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)] // dict
+                input[4] = [[:],[]]
+                input[5] = [[:],[]]
+                input[6] = [[:], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed.gz', checkIfExists: true)] // segmental_duplication_regions
+                input[7] = [[:], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed.gz.tbi', checkIfExists: true)] // segmental_duplication_regions_tbi
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens genome [bed] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id:'test', single_end:false ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
+                ]
+                input[1] = [[:], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)] // fasta
+                input[2] = [[:], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)] // fasta_fai
+                input[3] = [[:], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)] // dict
+                input[4] = [[:],[]]
+                input[5] = [[:],[]]
+                input[6] = [[:],[]]
+                input[7] = [[:],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.annotated_intervals.collect { file(it[1]).getName() } +
+                                process.out.versions).match() }
+            )
+        }
+    }
+}

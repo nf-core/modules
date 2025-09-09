@@ -3,7 +3,7 @@ process UCSC_LIFTOVER {
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::ucsc-liftover=377"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ucsc-liftover:377--h0b8a92a_3' :
         'biocontainers/ucsc-liftover:377--h0b8a92a_3' }"
@@ -37,4 +37,17 @@ process UCSC_LIFTOVER {
         ucsc: $VERSION
     END_VERSIONS
     """
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '377' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    touch ${prefix}.lifted.bed
+    touch ${prefix}.unlifted.bed
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        ucsc: $VERSION
+    END_VERSIONS
+    """
+
 }

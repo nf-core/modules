@@ -1,0 +1,54 @@
+nextflow_workflow {
+
+    name "Test Subworkflow H5AD_REMOVEBACKGROUND_BARCODES_CELLBENDER_ANNDATA"
+    script "../main.nf"
+    workflow "H5AD_REMOVEBACKGROUND_BARCODES_CELLBENDER_ANNDATA"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/h5ad_removebackground_barcodes_cellbender_anndata"
+    tag "cellbender/removebackground"
+    tag "anndata/barcodes"
+
+    test("h5ad - h5ad_removebackground_barcodes_cellbender_anndata") {
+        config './epochs.config'
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679759_raw_matrix.h5ad', checkIfExists: true)
+                ])
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert file(workflow.out.h5ad.get(0).get(1)).exists()},
+                { assert snapshot(workflow.out.versions).match()}
+            )
+        }
+    }
+
+    test("h5ad - h5ad_removebackground_barcodes_cellbender_anndata - stub") {
+        options '-stub'
+        when {
+            workflow {
+                """
+                input[0] = Channel.value([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679759_raw_matrix.h5ad', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
+}

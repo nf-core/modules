@@ -1,0 +1,74 @@
+name: "svync"
+description: A tool to standardize VCF files from structural variant callers
+keywords:
+  - structural variants
+  - vcf
+  - standardization
+  - standardize
+  - sv
+tools:
+  - "svync":
+      description: "A tool to standardize VCF files from structural variant callers"
+      homepage: "https://github.com/nvnieuwk/svync"
+      documentation: "https://github.com/nvnieuwk/svync"
+      tool_dev_url: "https://github.com/nvnieuwk/svync"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - vcf:
+        type: file
+        description: The input VCF file containing structural variants
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
+    - tbi:
+        type: file
+        description: The index of the input VCF file containing structural variants
+        pattern: "*.tbi"
+        ontologies: []
+    - config:
+        type: file
+        description: The config stating how the standardization should happen
+        pattern: "*.{yml,yaml}"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.vcf.gz":
+          type: file
+          description: The standardized VCF file
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.tbi":
+          type: file
+          description: The index of the standardized VCF file
+          pattern: "*.tbi"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@nvnieuwk"
+maintainers:
+  - "@nvnieuwk"

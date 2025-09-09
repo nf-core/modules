@@ -15,50 +15,71 @@ tools:
       documentation: http://www.htslib.org/doc/samtools.html
       doi: 10.1093/bioinformatics/btp352
       licence: ["MIT"]
-
+      identifier: biotools:samtools
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+        ontologies: []
   - bed:
       type: file
       description: BED file of regions to be removed (e.g. amplicon primers)
       pattern: "*.{bed}"
+      ontologies: []
   - save_cliprejects:
-      type: value
+      type: boolean
       description: Save filtered reads to a file
   - save_clipstats:
-      type: value
+      type: boolean
       description: Save clipping stats to a file
-
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - bam:
-      type: file
-      description: Clipped reads BAM file
-      pattern: "*.{bam}"
-  - stats:
-      type: file
-      description: Clipping statistics text file
-      pattern: "*.{clipstats.txt}"
-  - rejects_bam:
-      type: file
-      description: Filtered reads BAM file
-      pattern: "*.{cliprejects.bam}"
-
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.clipallowed.bam":
+          type: file
+          description: Clipped reads BAM file
+          pattern: "*.{bam}"
+          ontologies: []
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.clipstats.txt":
+          type: file
+          description: Clipping statistics text file
+          pattern: "*.{clipstats.txt}"
+          ontologies: []
+  rejects_bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.cliprejects.bam":
+          type: file
+          description: Filtered reads BAM file
+          pattern: "*.{cliprejects.bam}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@bjohnnyd"
+maintainers:
   - "@bjohnnyd"

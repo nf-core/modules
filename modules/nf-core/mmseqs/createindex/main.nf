@@ -1,17 +1,17 @@
 process MMSEQS_CREATEINDEX {
-    tag "$db"
+    tag "${meta.id}"
     label 'process_high'
 
-    conda "bioconda::mmseqs2=14.7e284"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mmseqs2:14.7e284--pl5321hf1761c0_0':
-        'biocontainers/mmseqs2:14.7e284--pl5321hf1761c0_0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/mmseqs2:17.b804f--hd6d6fdc_1'
+        : 'biocontainers/mmseqs2:17.b804f--hd6d6fdc_1'}"
 
     input:
-    path db
+    tuple val(meta), path(db)
 
     output:
-    path(db)           , emit: db_indexed
+    tuple val(meta), path(db), emit: db_indexed
     path "versions.yml", emit: versions
 
     when:
@@ -19,13 +19,18 @@ process MMSEQS_CREATEINDEX {
 
     script:
     def args = task.ext.args ?: ''
-    """
-    DB_PATH_NAME=\$(find -L "$db/" -name "*_seq.tsv" | sed 's/_seq\\.tsv\$//')
+    def args2 = task.ext.args2 ?: "*.dbtype"
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
-    mmseqs createindex \\
-        \${DB_PATH_NAME} \\
+    """
+    DB_INPUT_PATH_NAME=\$(find -L "${db}/" -maxdepth 1 -name "${args2}" | sed 's/\\.[^.]*\$//' |  sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
+
+    mmseqs \\
+        createindex \\
+        \${DB_INPUT_PATH_NAME} \\
         tmp1 \\
-        $args
+        ${args} \\
+        --threads ${task.cpus}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -34,8 +39,9 @@ process MMSEQS_CREATEINDEX {
     """
 
     stub:
+    def args2 = task.ext.args2 ?: "*.dbtype"
     """
-    DB_PATH_NAME=\$(find -L "$db/" -name "*_seq.tsv" | sed 's/_seq\\.tsv\$//')
+    DB_INPUT_PATH_NAME=\$(find -L "${db}/" -maxdepth 1 -name "${args2}" | sed 's/\\.[^.]*\$//' |  sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
 
     touch "\${DB_PATH_NAME}.idx"
 

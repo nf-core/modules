@@ -1,0 +1,59 @@
+nextflow_process {
+
+    name "Test Process AGAT_SPSTATISTICS"
+    script "../main.nf"
+    process "AGAT_SPSTATISTICS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "agat"
+    tag "agat/spstatistics"
+
+    test("sarscov2 genome [gff]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id: 'test' ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 genome [gff] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                            [ id: 'test' ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.stats_txt.collect { file(it[1]).getName() } +
+                                process.out.versions ).match() }
+            )
+        }
+
+    }
+
+}

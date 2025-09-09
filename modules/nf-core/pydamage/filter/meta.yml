@@ -20,32 +20,40 @@ tools:
       documentation: https://pydamage.readthedocs.io/
       tool_dev_url: https://github.com/maxibor/pydamage
       licence: ["GPL v3"]
-
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - csv:
-      type: file
-      description: csv file from pydamage analyze
-      pattern: "*.csv"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - csv:
+        type: file
+        description: csv file from pydamage analyze
+        pattern: "*.csv"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - csv:
-      type: file
-      description: PyDamage filtered results as csv file
-      pattern: "*.csv"
-
+  csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}_pydamage_filtered_results.csv:
+          type: file
+          description: PyDamage filtered results as csv file
+          pattern: "*.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@maxibor"
+maintainers:
   - "@maxibor"

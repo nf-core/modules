@@ -11,29 +11,32 @@ tools:
       homepage: https://github.com/lh3/minimap2
       documentation: https://github.com/lh3/minimap2/blob/master/README.md
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: An input bam file to be converted into paf.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: An input bam file to be converted into paf.
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - paf:
-      type: file
-      description: |
-        An output paf containing detailed data about the sample
-      pattern: "${prefix}.paf"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  paf:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@DLBPointon"
+maintainers:
   - "@DLBPointon"

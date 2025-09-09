@@ -16,33 +16,69 @@ tools:
       documentation: http://bowtie-bio.sourceforge.net/manual.shtml
       arxiv: arXiv:1303.3997
       licence: ["Artistic-2.0"]
+      identifier: biotools:bowtie
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: |
-        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-        respectively.
-  - index:
-      type: file
-      description: Bowtie genome index files
-      pattern: "*.ebwt"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively.
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing genome information
+          e.g. [ id:'sarscov2' ]
+    - index:
+        type: file
+        description: Bowtie genome index files
+        pattern: "*.ebwt"
+        ontologies: []
+  - save_unaligned:
+      type: boolean
+      description: Whether to save fastq files containing the reads which did not align.
 output:
-  - bam:
-      type: file
-      description: Output BAM file containing read alignments
-      pattern: "*.{bam}"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - fastq:
-      type: file
-      description: Unaligned FastQ files
-      pattern: "*.fastq.gz"
+  bam:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.bam":
+          type: file
+          description: Output BAM file containing read alignments
+          pattern: "*.{bam}"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.out":
+          type: file
+          description: Log file
+          pattern: "*.log"
+          ontologies: []
+  fastq:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*fastq.gz":
+          type: file
+          description: Unaligned FastQ files
+          pattern: "*.fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@kevinmenden"
+maintainers:
   - "@kevinmenden"

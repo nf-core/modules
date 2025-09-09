@@ -1,0 +1,153 @@
+nextflow_process {
+
+    name "Test Process WITTYER"
+    script "../main.nf"
+    process "WITTYER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "wittyer"
+    tag "tabix/bgzip"
+
+    config "./nextflow.config"
+
+    setup {
+        run('TABIX_BGZIP', alias: 'TABIX_BGZIP_1') {
+            script "../../../nf-core/tabix/bgzip"
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        run('TABIX_BGZIP', alias: 'TABIX_BGZIP_2') {
+            script "../../../nf-core/tabix/bgzip"
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv2.vcf.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("human - simulatedSV - vcf_gz") {
+
+        when {
+            process {
+                """
+                input[0] = TABIX_BGZIP_1.out.output.join(TABIX_BGZIP_2.out.output).map{meta, vcf1, vcf2 -> tuple(meta, vcf1, vcf2, [], [])}
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.report,
+                    file(process.out.bench_vcf_tbi.get(0).get(1)).name,
+                    path(process.out.bench_vcf[0][1]).vcf.variantsMD5
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("human - simulatedSV - vcf_gz - bed") {
+
+        when {
+            process {
+                """
+                input[0] = TABIX_BGZIP_1.out.output
+                    .join(TABIX_BGZIP_2.out.output)
+                    .map{meta, vcf1, vcf2 ->
+                        tuple(meta, vcf1, vcf2,
+                            [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true)],
+                            [])
+                        }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.report,
+                    file(process.out.bench_vcf_tbi.get(0).get(1)).name,
+                    path(process.out.bench_vcf[0][1]).vcf.variantsMD5
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("human - simulatedSV - vcf_gz - config") {
+
+        when {
+            process {
+                """
+                input[0] = TABIX_BGZIP_1.out.output
+                    .join(TABIX_BGZIP_2.out.output)
+                    .map{meta, vcf1, vcf2 ->
+                        tuple(meta, vcf1, vcf2, [],
+                        // change to config file
+                            [file(params.modules_testdata_base_path + 'generic/config/wittyer_config.json', checkIfExists: true)])
+                        }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.report,
+                    file(process.out.bench_vcf_tbi.get(0).get(1)).name,
+                    path(process.out.bench_vcf[0][1]).vcf.variantsMD5
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("human - simulatedSV - vcf_gz - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_stub', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv2.vcf.gz', checkIfExists: true),
+                    [], // bed file
+                    []  // config file
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

@@ -15,55 +15,97 @@ tools:
       tool_dev_url: https://bitbucket.org/berkeleylab/metabat/src/master/
       doi: "10.7717/peerj.7359"
       licence: ["BSD-3-clause-LBNL"]
-
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: Fasta file of the assembled contigs
-      pattern: "*.{fa,fas,fasta,fna,fa.gz,fas.gz,fasta.gz,fna.gz}"
-  - depth:
-      type: file
-      description: |
-        Optional text file listing the coverage per contig pre-generated
-        by metabat2_jgisummarizebamcontigdepths
-      pattern: "*.txt"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Fasta file of the assembled contigs
+        pattern: "*.{fa,fas,fasta,fna,fa.gz,fas.gz,fasta.gz,fna.gz}"
+        ontologies: []
+    - depth:
+        type: file
+        description: |
+          Optional text file listing the coverage per contig pre-generated
+          by metabat2_jgisummarizebamcontigdepths
+        pattern: "*.txt"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - fasta:
-      type: file
-      description: Bins created from assembled contigs in fasta file
-      pattern: "*.fa.gz"
-  - tooshort:
-      type: file
-      description: Contigs that did not pass length filtering
-      pattern: "*.tooShort.fa.gz"
-  - lowdepth:
-      type: file
-      description: Contigs that did not have sufficient depth for binning
-      pattern: "*.lowDepth.fa.gz"
-  - unbinned:
-      type: file
-      description: Contigs that pass length and depth filtering but could not be binned
-      pattern: "*.unbinned.fa.gz"
-  - membership:
-      type: file
-      description: cluster memberships as a matrix format.
-      pattern: "*.tsv.gz"
-
+  tooshort:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tooShort.fa.gz":
+          type: file
+          description: Contigs that did not pass length filtering
+          pattern: "*.tooShort.fa.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  lowdepth:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.lowDepth.fa.gz":
+          type: file
+          description: Contigs that did not have sufficient depth for binning
+          pattern: "*.lowDepth.fa.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  unbinned:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.unbinned.fa.gz":
+          type: file
+          description: Contigs that pass length and depth filtering but could not be
+            binned
+          pattern: "*.unbinned.fa.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  membership:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv.gz":
+          type: file
+          description: cluster memberships as a matrix format.
+          pattern: "*.tsv.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*[!lowDepth|tooShort|unbinned].fa.gz":
+          type: file
+          description: Bins created from assembled contigs in fasta file
+          pattern: "*.fa.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@maxibor"
+  - "@jfy133"
+maintainers:
   - "@maxibor"
   - "@jfy133"

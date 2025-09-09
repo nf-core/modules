@@ -1,0 +1,181 @@
+{
+    "test_gatk4_combinegvcfs - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.combined.g.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "1": [
+                    "versions.yml:md5,aca96fc758ea3451abf185e1470788b5"
+                ],
+                "combined_gvcf": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.combined.g.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,aca96fc758ea3451abf185e1470788b5"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.1",
+            "nextflow": "24.10.0"
+        },
+        "timestamp": "2024-10-31T10:47:56.847188152"
+    },
+    "test_gatk4_combinegvcfs": {
+        "content": [
+            [
+                "chr22\t1\t.\tA\t<NON_REF>\t.\t.\tEND=1951\tGT:DP:GQ:MIN_DP:PL\t./.:0:0:0:0,0,0",
+                "chr22\t1952\t.\tT\t<NON_REF>\t.\t.\tEND=1953\tGT:DP:GQ:MIN_DP:PL\t./.:1:3:1:0,3,25",
+                "chr22\t1954\t.\tT\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:1:0:1:0,0,0",
+                "chr22\t1955\t.\tT\t<NON_REF>\t.\t.\tEND=1956\tGT:DP:GQ:MIN_DP:PL\t./.:1:3:1:0,3,33",
+                "chr22\t1957\t.\tT\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:2:6:2:0,6,68",
+                "chr22\t1958\t.\tA\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:1:3:1:0,3,34",
+                "chr22\t1959\t.\tA\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:3:9:3:0,9,101",
+                "chr22\t1960\t.\tA\t<NON_REF>\t.\t.\tEND=1961\tGT:DP:GQ:MIN_DP:PL\t./.:3:6:2:0,6,58",
+                "chr22\t1962\t.\tC\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:2:0:2:0,0,0",
+                "chr22\t1963\t.\tA\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:6:15:6:0,15,225",
+                "chr22\t1964\t.\tT\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:6:18:6:0,18,197",
+                "chr22\t1965\t.\tC\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:11:33:11:0,33,335",
+                "chr22\t1966\t.\tT\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:25:75:25:0,75,687",
+                "chr22\t1967\t.\tG\t<NON_REF>\t.\t.\tEND=1981\tGT:DP:GQ:MIN_DP:PL\t./.:107:99:35:0,105,934",
+                "chr22\t1982\trs7287620\tA\tG,<NON_REF>\t.\t.\tBaseQRankSum=0.00;DP=211;ExcessHet=3.01;MQRankSum=0.00;RAW_MQandDP=759600,211;ReadPosRankSum=1.09\tGT:AD:DP:GQ:PL:SB\t./.:155,30,0:185:99:184,0,3246,648,3335,3984:77,78,15,15",
+                "chr22\t1983\t.\tA\t<NON_REF>\t.\t.\tEND=2102\tGT:DP:GQ:MIN_DP:PL\t./.:476:99:209:0,120,1800",
+                "chr22\t2103\t.\tT\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:206:93:206:0,93,1395",
+                "chr22\t2104\t.\tC\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:194:48:194:0,48,720",
+                "chr22\t2105\t.\tC\t<NON_REF>\t.\t.\tEND=2106\tGT:DP:GQ:MIN_DP:PL\t./.:177:30:171:0,30,450",
+                "chr22\t2107\t.\tC\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:156:24:156:0,24,360",
+                "chr22\t2108\t.\tT\t<NON_REF>\t.\t.\tEND=2110\tGT:DP:GQ:MIN_DP:PL\t./.:110:21:96:0,21,315",
+                "chr22\t2111\t.\tC\t<NON_REF>\t.\t.\tEND=2113\tGT:DP:GQ:MIN_DP:PL\t./.:47:15:29:0,15,225",
+                "chr22\t2114\t.\tA\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:14:12:14:0,12,180",
+                "chr22\t2115\t.\tA\t<NON_REF>\t.\t.\tEND=2117\tGT:DP:GQ:MIN_DP:PL\t./.:10:6:8:0,6,90",
+                "chr22\t2118\t.\tC\t<NON_REF>\t.\t.\tEND=2122\tGT:DP:GQ:MIN_DP:PL\t./.:7:0:3:0,0,0",
+                "chr22\t2123\t.\tC\tG,<NON_REF>\t.\t.\tBaseQRankSum=0.967;DP=4;ExcessHet=3.01;MQRankSum=0.00;RAW_MQandDP=14400,4;ReadPosRankSum=0.967\tGT:AD:DP:GQ:PL:SB\t./.:1,2,0:3:1:41,0,1,43,7,50:0,1,1,1",
+                "chr22\t2124\t.\tG\t<NON_REF>\t.\t.\tEND=2716\tGT:DP:GQ:MIN_DP:PL\t./.:0:0:0:0,0,0",
+                "chr22\t2717\t.\tT\t<NON_REF>\t.\t.\tEND=2721\tGT:DP:GQ:MIN_DP:PL\t./.:2:6:2:0,6,49",
+                "chr22\t2722\t.\tG\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:10:30:10:0,30,247",
+                "chr22\t2723\t.\tT\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:12:36:12:0,36,297",
+                "chr22\t2724\t.\tT\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:18:54:18:0,54,445",
+                "chr22\t2725\t.\tA\t<NON_REF>\t.\t.\tEND=2836\tGT:DP:GQ:MIN_DP:PL\t./.:250:99:36:0,108,890",
+                "chr22\t2837\t.\tT\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:116:72:116:0,72,1080",
+                "chr22\t2838\t.\tA\t<NON_REF>\t.\t.\tEND=2907\tGT:DP:GQ:MIN_DP:PL\t./.:0:0:0:0,0,0",
+                "chr22\t2908\t.\tA\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:8:24:8:0,24,260",
+                "chr22\t2909\t.\tA\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:16:48:16:0,48,546",
+                "chr22\t2910\t.\tA\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:21:63:21:0,63,678",
+                "chr22\t2911\t.\tA\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:28:84:28:0,84,894",
+                "chr22\t2912\t.\tC\t<NON_REF>\t.\t.\tEND=3119\tGT:DP:GQ:MIN_DP:PL\t./.:848:99:33:0,99,1061",
+                "chr22\t3120\t.\tA\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:190:54:190:0,54,810",
+                "chr22\t3121\t.\tC\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:178:39:178:0,39,585",
+                "chr22\t3122\t.\tC\t<NON_REF>\t.\t.\tEND=3124\tGT:DP:GQ:MIN_DP:PL\t./.:147:15:137:0,15,225",
+                "chr22\t3125\t.\tG\t<NON_REF>\t.\t.\tEND=3126\tGT:DP:GQ:MIN_DP:PL\t./.:115:9:110:0,9,135",
+                "chr22\t3127\t.\tT\t<NON_REF>\t.\t.\tEND=3139\tGT:DP:GQ:MIN_DP:PL\t./.:5:6:3:0,6,90",
+                "chr22\t3140\t.\tA\tG,<NON_REF>\t.\t.\tDP=2;ExcessHet=3.01;RAW_MQandDP=7200,2\tGT:AD:DP:GQ:PL:SB\t./.:0,2,0:2:6:49,6,0,49,6,49:0,0,1,1",
+                "chr22\t3141\t.\tG\t<NON_REF>\t.\t.\tEND=3144\tGT:DP:GQ:MIN_DP:PL\t./.:2:6:2:0,6,49",
+                "chr22\t3145\t.\tT\t<NON_REF>\t.\t.\tEND=3190\tGT:DP:GQ:MIN_DP:PL\t./.:0:0:0:0,0,0",
+                "chr22\t3191\t.\tC\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:2:6:2:0,6,49",
+                "chr22\t3192\t.\tA\t<NON_REF>\t.\t.\tEND=3196\tGT:DP:GQ:MIN_DP:PL\t./.:6:18:6:0,18,148",
+                "chr22\t3197\t.\tT\t<NON_REF>\t.\t.\tEND=3200\tGT:DP:GQ:MIN_DP:PL\t./.:8:24:8:0,24,196",
+                "chr22\t3201\t.\tT\t<NON_REF>\t.\t.\tEND=3207\tGT:DP:GQ:MIN_DP:PL\t./.:12:36:12:0,36,297",
+                "chr22\t3208\t.\tA\t<NON_REF>\t.\t.\tEND=3209\tGT:DP:GQ:MIN_DP:PL\t./.:14:42:14:0,42,346",
+                "chr22\t3210\t.\tT\t<NON_REF>\t.\t.\tEND=3217\tGT:DP:GQ:MIN_DP:PL\t./.:16:48:16:0,48,396",
+                "chr22\t3218\t.\tA\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:18:54:18:0,54,445",
+                "chr22\t3219\t.\tA\t<NON_REF>\t.\t.\tEND=3265\tGT:DP:GQ:MIN_DP:PL\t./.:20:60:20:0,60,493",
+                "chr22\t3266\trs4008589\tT\tC,<NON_REF>\t.\t.\tDP=20;ExcessHet=3.01;RAW_MQandDP=72000,20\tGT:AD:DP:GQ:PL:SB\t./.:0,20,0:20:60:495,60,0,495,60,495:0,0,10,10",
+                "chr22\t3267\t.\tT\t<NON_REF>\t.\t.\tEND=3302\tGT:DP:GQ:MIN_DP:PL\t./.:20:60:20:0,60,493",
+                "chr22\t3303\t.\tA\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:20:54:20:0,54,810",
+                "chr22\t3304\t.\tC\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:20:42:20:0,42,630",
+                "chr22\t3305\t.\tT\t<NON_REF>\t.\t.\tEND=3308\tGT:DP:GQ:MIN_DP:PL\t./.:20:36:20:0,36,540",
+                "chr22\t3309\t.\tT\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:20:24:20:0,24,360",
+                "chr22\t3310\t.\tA\t<NON_REF>\t.\t.\tEND=3317\tGT:DP:GQ:MIN_DP:PL\t./.:16:18:12:0,18,270",
+                "chr22\t3318\t.\tG\t<NON_REF>\t.\t.\tEND=3320\tGT:DP:GQ:MIN_DP:PL\t./.:8:0:6:0,0,0",
+                "chr22\t3321\t.\tT\t<NON_REF>\t.\t.\tEND=3351\tGT:DP:GQ:MIN_DP:PL\t./.:1:3:1:0,3,24",
+                "chr22\t3352\t.\tT\t<NON_REF>\t.\t.\tEND=3354\tGT:DP:GQ:MIN_DP:PL\t./.:2:6:2:0,6,58",
+                "chr22\t3355\t.\tT\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:2:0:2:0,0,10",
+                "chr22\t3356\t.\tT\t<NON_REF>\t.\t.\tEND=3365\tGT:DP:GQ:MIN_DP:PL\t./.:2:6:2:0,6,47",
+                "chr22\t3366\t.\tT\t<NON_REF>\t.\t.\tEND=3373\tGT:DP:GQ:MIN_DP:PL\t./.:3:9:3:0,9,83",
+                "chr22\t3374\t.\tA\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:4:12:4:0,12,135",
+                "chr22\t3375\t.\tG\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:4:0:4:0,0,19",
+                "chr22\t3376\t.\tA\t<NON_REF>\t.\t.\tEND=3377\tGT:DP:GQ:MIN_DP:PL\t./.:4:12:4:0,12,124",
+                "chr22\t3378\t.\tC\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:4:0:4:0,0,80",
+                "chr22\t3379\t.\tG\t<NON_REF>\t.\t.\tEND=3381\tGT:DP:GQ:MIN_DP:PL\t./.:4:12:4:0,12,122",
+                "chr22\t3382\t.\tC\t<NON_REF>\t.\t.\tEND=3385\tGT:DP:GQ:MIN_DP:PL\t./.:5:15:5:0,15,146",
+                "chr22\t3386\t.\tC\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:5:0:5:0,0,112",
+                "chr22\t3387\t.\tA\t<NON_REF>\t.\t.\tEND=3390\tGT:DP:GQ:MIN_DP:PL\t./.:7:21:7:0,21,193",
+                "chr22\t3391\t.\tA\t<NON_REF>\t.\t.\tEND=3392\tGT:DP:GQ:MIN_DP:PL\t./.:9:27:9:0,27,284",
+                "chr22\t3393\t.\tT\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:9:3:9:0,3,237",
+                "chr22\t3394\t.\tG\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:9:27:9:0,27,260",
+                "chr22\t3395\t.\tA\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:9:2:9:0,2,225",
+                "chr22\t3396\t.\tA\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:9:0:9:0,0,28",
+                "chr22\t3397\t.\tC\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:9:3:9:0,3,228",
+                "chr22\t3398\t.\tC\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:9:27:9:0,27,286",
+                "chr22\t3399\t.\tT\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:9:3:9:0,3,237",
+                "chr22\t3400\t.\tG\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:9:4:9:0,4,223",
+                "chr22\t3401\t.\tA\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:9:27:9:0,27,285",
+                "chr22\t3402\t.\tT\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:9:3:9:0,3,206",
+                "chr22\t3403\t.\tT\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:9:4:9:0,4,238",
+                "chr22\t3404\t.\tT\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:9:27:9:0,27,305",
+                "chr22\t3405\t.\tG\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:12:2:12:0,2,295",
+                "chr22\t3406\t.\tT\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:19:0:19:0,0,259",
+                "chr22\t3407\t.\tT\t<NON_REF>\t.\t.\tEND=3408\tGT:DP:GQ:MIN_DP:PL\t./.:22:42:22:0,42,577",
+                "chr22\t3409\t.\tT\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:22:43:22:0,43,605",
+                "chr22\t3410\t.\tT\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:22:66:22:0,66,642",
+                "chr22\t3411\t.\tT\t<NON_REF>\t.\t.\tEND=3412\tGT:DP:GQ:MIN_DP:PL\t./.:23:46:23:0,46,629",
+                "chr22\t3413\t.\tT\tG,TG,<NON_REF>\t.\t.\tBaseQRankSum=-1.318e+00;DP=17;ExcessHet=3.01;MQRankSum=0.00;RAW_MQandDP=61200,17;ReadPosRankSum=2.37\tGT:AD:DP:GQ:PL:SB\t./.:8,5,2,0:15:44:86,0,108,44,85,250,107,136,225,271:6,2,6,1",
+                "chr22\t3414\t.\tG\t<NON_REF>\t.\t.\tEND=3417\tGT:DP:GQ:MIN_DP:PL\t./.:17:51:17:0,51,478",
+                "chr22\t3418\t.\tC\t<NON_REF>\t.\t.\tEND=3420\tGT:DP:GQ:MIN_DP:PL\t./.:18:54:18:0,54,506",
+                "chr22\t3421\t.\tC\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:19:57:19:0,57,522",
+                "chr22\t3422\t.\tT\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:28:84:28:0,84,811",
+                "chr22\t3423\t.\tA\t<NON_REF>\t.\t.\tEND=3631\tGT:DP:GQ:MIN_DP:PL\t./.:1099:99:51:0,120,1800",
+                "chr22\t3632\t.\tC\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:99:96:99:0,96,1440",
+                "chr22\t3633\t.\tT\t<NON_REF>\t.\t.\tEND=3634\tGT:DP:GQ:MIN_DP:PL\t./.:90:51:85:0,51,765",
+                "chr22\t3635\t.\tG\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:74:45:74:0,45,675",
+                "chr22\t3636\t.\tA\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:69:39:69:0,39,585",
+                "chr22\t3637\t.\tA\t<NON_REF>\t.\t.\tEND=3644\tGT:DP:GQ:MIN_DP:PL\t./.:44:3:17:0,3,45",
+                "chr22\t3645\t.\tC\t<NON_REF>\t.\t.\tEND=4465\tGT:DP:GQ:MIN_DP:PL\t./.:0:0:0:0,0,0",
+                "chr22\t4466\t.\tA\t<NON_REF>\t.\t.\tEND=4487\tGT:DP:GQ:MIN_DP:PL\t./.:2:6:2:0,6,49",
+                "chr22\t4488\t.\tC\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:0:0:0:0,0,0",
+                "chr22\t4489\t.\tT\t<NON_REF>\t.\t.\tEND=4493\tGT:DP:GQ:MIN_DP:PL\t./.:2:6:2:0,6,49",
+                "chr22\t4494\t.\tC\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:0:0:0:0,0,0",
+                "chr22\t4495\t.\tA\t<NON_REF>\t.\t.\tEND=4498\tGT:DP:GQ:MIN_DP:PL\t./.:2:6:2:0,6,48",
+                "chr22\t4499\t.\tG\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:6:18:6:0,18,148",
+                "chr22\t4500\t.\tT\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:10:30:10:0,30,247",
+                "chr22\t4501\t.\tT\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:14:42:14:0,42,346",
+                "chr22\t4502\t.\tT\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:24:72:24:0,72,593",
+                "chr22\t4503\t.\tG\t<NON_REF>\t.\t.\tEND=4507\tGT:DP:GQ:MIN_DP:PL\t./.:32:90:30:0,90,742",
+                "chr22\t4508\t.\tG\t<NON_REF>\t.\t.\tEND=4575\tGT:DP:GQ:MIN_DP:PL\t./.:60:99:34:0,102,841",
+                "chr22\t4576\t.\tT\t<NON_REF>\t.\t.\tEND=4578\tGT:DP:GQ:MIN_DP:PL\t./.:48:90:48:0,90,1350",
+                "chr22\t4579\t.\tA\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:48:84:48:0,84,1260",
+                "chr22\t4580\t.\tA\t<NON_REF>\t.\t.\tEND=4582\tGT:DP:GQ:MIN_DP:PL\t./.:42:54:40:0,54,810",
+                "chr22\t4583\t.\tG\t<NON_REF>\t.\t.\tEND=4584\tGT:DP:GQ:MIN_DP:PL\t./.:38:48:36:0,48,720",
+                "chr22\t4585\t.\tT\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:34:42:34:0,42,630",
+                "chr22\t4586\t.\tC\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:32:24:32:0,24,360",
+                "chr22\t4587\t.\tA\t<NON_REF>\t.\t.\tEND=4597\tGT:DP:GQ:MIN_DP:PL\t./.:16:12:4:0,12,99",
+                "chr22\t4598\t.\tT\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:2:6:2:0,6,49",
+                "chr22\t4599\t.\tG\t<NON_REF>\t.\t.\tEND=4604\tGT:DP:GQ:MIN_DP:PL\t./.:4:12:4:0,12,98",
+                "chr22\t4605\t.\tG\t<NON_REF>\t.\t.\t.\tGT:DP:GQ:MIN_DP:PL\t./.:0:0:0:0,0,0",
+                "chr22\t4606\t.\tT\t<NON_REF>\t.\t.\tEND=4607\tGT:DP:GQ:MIN_DP:PL\t./.:2:6:2:0,6,49",
+                "chr22\t4608\t.\tA\t<NON_REF>\t.\t.\tEND=40001\tGT:DP:GQ:MIN_DP:PL\t./.:0:0:0:0,0,0"
+            ],
+            [
+                "versions.yml:md5,aca96fc758ea3451abf185e1470788b5"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.1",
+            "nextflow": "24.10.0"
+        },
+        "timestamp": "2024-10-31T10:47:45.34645647"
+    }
+}

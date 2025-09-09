@@ -1,0 +1,122 @@
+nextflow_process {
+
+    name "Test Process FIND_UNPIGZ"
+    script "../main.nf"
+    process "FIND_UNPIGZ"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "find"
+    tag "find/unpigz"
+
+
+    test("test_unpigz_success") {
+        when {
+            process {
+                """
+                input[0] =
+                    [
+                        [ id:'test', single_end:true ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/last/contigs.genome.maf.gz', checkIfExists: true)
+                        ]
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out,
+                        process.out.versions
+                    ).match()
+                },
+                { assert process.out.file_out[0][1].size() == 2 },
+                { assert file(process.out.file_out[0][1].find { file(it).name == "genome.gff3" }).exists() },
+                { assert file(process.out.file_out[0][1].find { file(it).name == "contigs.genome.maf" }).exists() },
+            )
+        }
+    }
+
+    test("test_unpigz_success_single_file") {
+        when {
+            process {
+                """
+                input[0] =
+                    [
+                        [ id:'test', single_end:true ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3.gz', checkIfExists: true),
+                        ]
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out,
+                        process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test_non_gzipped_files") {
+        when {
+            process {
+                """
+                input[0] =
+                    [
+                        [ id:'test', single_end:true ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.sizes', checkIfExists: true)
+                        ]
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.stdout.toString().contains("All files provided to this module must be gzipped (and have the .gz extension).") },
+                { assert snapshot(
+                        process.out,
+                        process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test_stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] =
+                    [
+                        [ id:'test', single_end:true ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                        ]
+                    ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out,
+                        process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+}

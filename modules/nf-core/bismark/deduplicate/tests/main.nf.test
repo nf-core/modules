@@ -1,0 +1,39 @@
+nextflow_process {
+
+    name "Test Process BISMARK_DEDUPLICATE"
+    script "../main.nf"
+    process "BISMARK_DEDUPLICATE"
+
+    tag "bismark"
+    tag "bismark/deduplicate"
+    tag "modules"
+    tag "modules_nfcore"
+
+    test("sarscov2 paired-end methylated [bam]") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:false ],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.bam', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.bam.collect { bam(it[1]).getReadsMD5() },
+                    process.out.report,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+}

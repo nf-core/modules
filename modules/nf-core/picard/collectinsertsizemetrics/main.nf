@@ -2,10 +2,10 @@ process PICARD_COLLECTINSERTSIZEMETRICS {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::picard=3.0.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:3.0.0--hdfd78af_1' :
-        'biocontainers/picard:3.0.0--hdfd78af_1' }"
+        'https://depot.galaxyproject.org/singularity/picard:3.3.0--hdfd78af_0' :
+        'biocontainers/picard:3.3.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -32,7 +32,6 @@ process PICARD_COLLECTINSERTSIZEMETRICS {
     picard \\
         -Xmx${avail_mem}M \\
         CollectInsertSizeMetrics \\
-        $args \\
         --INPUT $bam \\
         --OUTPUT ${prefix}.txt \\
         --Histogram_FILE ${prefix}.pdf \\
@@ -47,6 +46,9 @@ process PICARD_COLLECTINSERTSIZEMETRICS {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    if (!task.memory) {
+        log.info '[Picard CollectInsertSizeMetrics] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    }
     """
     touch ${prefix}.pdf
     touch ${prefix}.txt

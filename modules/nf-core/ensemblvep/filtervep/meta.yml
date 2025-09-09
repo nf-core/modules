@@ -1,0 +1,57 @@
+name: ensemblvep_filtervep
+description: Filter variants based on Ensembl Variant Effect Predictor (VEP) annotations.
+keywords:
+  - annotation
+  - vcf
+  - tab
+  - filter
+tools:
+  - ensemblvep:
+      description: |
+        VEP determines the effect of your variants (SNPs, insertions, deletions, CNVs
+        or structural variants) on genes, transcripts, and protein sequence, as well as regulatory regions.
+      homepage: https://www.ensembl.org/info/docs/tools/vep/index.html
+      documentation: https://www.ensembl.org/info/docs/tools/vep/script/index.html
+      licence: ["Apache-2.0"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - input:
+        type: file
+        description: VCF/TAB file annotated with vep
+        pattern: "*.{vcf,tab,tsv,txt}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  - feature_file:
+      type: file
+      description: File containing features on separate lines. To be used with --filter
+        option.
+      ontologies: []
+output:
+  output:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.${extension}":
+          type: file
+          description: VCF/TAB file
+          pattern: "*.{vcf,tab,txt,tsv}"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@ramprasadn"
+maintainers:
+  - "@ramprasadn"

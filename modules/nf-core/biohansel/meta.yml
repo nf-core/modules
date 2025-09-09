@@ -11,45 +11,67 @@ tools:
       documentation: "https://github.com/phac-nml/biohansel"
       tool_dev_url: "https://github.com/phac-nml/biohansel"
       doi: "10.1101/2020.01.10.902056"
-      licence: "['Apache-2.0 license']"
-
+      licence: ["Apache-2.0 license"]
+      identifier: biotools:biohansel
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - seqs:
-      type: file
-      description: FASTA or FASTQ
-      pattern: "*.{fasta.gz,fa.gz,fna.gz,fastq.gz,fq.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - seqs:
+        type: file
+        description: FASTA or FASTQ
+        pattern: "*.{fasta.gz,fa.gz,fna.gz,fastq.gz,fq.gz}"
+        ontologies: []
   - scheme_metadata:
       type: file
       description: Scheme subtype metadata table
       pattern: "*.{tab,tsv,txt}"
-
+      ontologies:
+        - edam: http://edamontology.org/format_3475 # TSV
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - summary:
-      type: file
-      description: Tab-delimited subtyping summary output
-      pattern: "*summary.txt"
-  - kmer_results:
-      type: file
-      description: Tab-delimited subtyping kmer matching output
-      pattern: "*kmer-results.txt"
-  - simple_summary:
-      type: file
-      description: A simple version of summary output
-      pattern: "*simple-summary.txt"
-
+  summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}-summary.txt:
+          type: file
+          description: Tab-delimited subtyping summary output
+          pattern: "*summary.txt"
+          ontologies: []
+  kmer_results:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}-kmer-results.txt:
+          type: file
+          description: Tab-delimited subtyping kmer matching output
+          pattern: "*kmer-results.txt"
+          ontologies: []
+  simple_summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}-simple-summary.txt:
+          type: file
+          description: A simple version of summary output
+          pattern: "*simple-summary.txt"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

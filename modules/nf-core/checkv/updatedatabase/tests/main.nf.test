@@ -1,0 +1,106 @@
+nextflow_process {
+
+    name "Test Process CHECKV_UPDATEDATABASE"
+    script "../main.nf"
+    process "CHECKV_UPDATEDATABASE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "checkv"
+    tag "checkv/updatedatabase"
+    tag "untar"
+
+    setup {
+        run("UNTAR") {
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'checkv_minimal_db' ],
+                        file("https://github.com/nf-core/test-datasets/raw/phageannotator/modules/nfcore/checkv/endtoend/checkv_minimal_db.tar", checkIfExists: true)
+                    ]
+                )
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - genome - genome_fasta") {
+
+        when {
+            params {
+                outdir   = "${outputDir}"
+            }
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id: 'test' ],
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                )
+                input[1] = UNTAR.out.untar.map { it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert new File("${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.dmnd.log").exists() },
+                { assert new File("${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.dmnd").exists() },
+                { assert snapshot(
+                    "${process.out.checkv_db.get(0).get(1).get(0)}",
+                    "${process.out.checkv_db.get(0).get(1).get(2)}",
+                    "${process.out.checkv_db.get(0).get(1).get(1)}/changelog.tsv",
+                    "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_error.tsv",
+                    "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_info.tsv",
+                    "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.faa",
+                    "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.fna",
+                    "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.log",
+                    "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.tsv",
+                    process.out.versions
+                    ).match()
+                },
+            )
+        }
+    }
+
+    test("sarscov2 - genome - genome_fasta - stub") {
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id: 'test' ],
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                )
+                input[1] = UNTAR.out.untar.map { it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert new File("${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.dmnd.log").exists() },
+                { assert new File("${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.dmnd").exists() },
+                { assert snapshot(
+                    "${process.out.checkv_db.get(0).get(1).get(0)}",
+                    "${process.out.checkv_db.get(0).get(1).get(2)}",
+                    "${process.out.checkv_db.get(0).get(1).get(1)}/changelog.tsv",
+                    "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_error.tsv",
+                    "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_info.tsv",
+                    "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.faa",
+                    "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.fna",
+                    "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.log",
+                    "${process.out.checkv_db.get(0).get(1).get(1)}/checkv_reps.tsv",
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+}

@@ -1,45 +1,60 @@
 name: hamronization_summarize
-description: Tool to summarize and combine all hAMRonization reports into a single file
+description: Tool to summarize and combine all hAMRonization reports into a single
+  file
 keywords:
   - amr
   - antimicrobial resistance
   - reporting
 tools:
   - hamronization:
-      description: Tool to convert and summarize AMR gene detection outputs using the hAMRonization specification
+      description: Tool to convert and summarize AMR gene detection outputs using the
+        hAMRonization specification
       homepage: https://github.com/pha4ge/hAMRonization/
       documentation: https://github.com/pha4ge/hAMRonization/
       tool_dev_url: https://github.com/pha4ge/hAMRonization
-
       licence: ["GNU Lesser General Public v3 (LGPL v3)"]
-
+      identifier: biotools:hamronization
 input:
   - reports:
       type: file
       description: List of multiple hAMRonization reports in either JSON or TSV format
       pattern: "*.{json,tsv}"
+      ontologies:
+        - edam: http://edamontology.org/format_3464 # JSON
+        - edam: http://edamontology.org/format_3475 # TSV
   - format:
-      type: value
+      type: string
       description: Type of final combined report file to be produced
       pattern: "tsv|json|interactive"
-
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - json:
-      type: file
-      description: hAMRonised summary in JSON format
-      pattern: "*.json"
-  - tsv:
-      type: file
-      description: hAMRonised summary in TSV format
-      pattern: "*.json"
-  - html:
-      type: file
-      description: hAMRonised summary in HTML format
-      pattern: "*.html"
-
+  json:
+    - hamronization_combined_report.json:
+        type: file
+        description: hAMRonised summary in JSON format
+        pattern: "*.json"
+        ontologies:
+          - edam: http://edamontology.org/format_3464 # JSON
+  tsv:
+    - hamronization_combined_report.tsv:
+        type: file
+        description: hAMRonised summary in TSV format
+        pattern: "*.json"
+        ontologies:
+          - edam: http://edamontology.org/format_3464 # JSON
+  html:
+    - hamronization_combined_report.html:
+        type: file
+        description: hAMRonised summary in HTML format
+        pattern: "*.html"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@jfy133"
+maintainers:
   - "@jfy133"

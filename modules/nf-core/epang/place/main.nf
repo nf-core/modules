@@ -2,7 +2,7 @@ process EPANG_PLACE {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::epa-ng=0.3.8"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/epa-ng:0.3.8--h9a82719_1':
         'biocontainers/epa-ng:0.3.8--h9a82719_1' }"
@@ -45,6 +45,24 @@ process EPANG_PLACE {
         cp epa_result.jplace.gz ${prefix}.epa_result.jplace.gz
     fi
     [ -e epa_info.log ]      && cp epa_info.log ${prefix}.epa_info.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        epang: \$(echo \$(epa-ng --version 2>&1) | sed 's/^EPA-ng v//')
+    END_VERSIONS
+    """
+
+    stub:
+    def args       = task.ext.args   ?: ''
+    def prefix     = task.ext.prefix ?: "${meta.id}"
+    def queryarg   = queryaln        ? "--query $queryaln"       : ""
+    def refalnarg  = referencealn    ? "--ref-msa $referencealn" : ""
+    def reftreearg = referencetree   ? "--tree $referencetree"   : ""
+    def bfastarg   = bfastfile       ? "--bfast $bfastfile"      : ""
+    def binaryarg  = binaryfile      ? "--binary $binaryfile"    : ""
+    if ( binaryfile && ( referencealn || referencetree ) ) error "[EPANG] Cannot supply both binary and reference MSA or reference tree. Check input"
+    """
+    touch ${prefix}.epa_info.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

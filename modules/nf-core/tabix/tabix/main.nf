@@ -2,10 +2,10 @@ process TABIX_TABIX {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::tabix=1.11"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/tabix:1.11--hdfd78af_0' :
-        'biocontainers/tabix:1.11--hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/92/92859404d861ae01afb87e2b789aebc71c0ab546397af890c7df74e4ee22c8dd/data' :
+        'community.wave.seqera.io/library/htslib:1.21--ff8e28a189fbecaa' }"
 
     input:
     tuple val(meta), path(tab)
@@ -21,7 +21,10 @@ process TABIX_TABIX {
     script:
     def args = task.ext.args ?: ''
     """
-    tabix $args $tab
+    tabix \\
+        --threads $task.cpus \\
+        $args \\
+        $tab
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -30,11 +33,11 @@ process TABIX_TABIX {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${tab}.tbi
-    cat <<-END_VERSIONS > versions.yml
+    touch ${tab}.csi
 
+    cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         tabix: \$(echo \$(tabix -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
     END_VERSIONS

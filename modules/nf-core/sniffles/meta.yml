@@ -3,6 +3,7 @@ description: structural-variant calling with sniffles
 keywords:
   - sniffles
   - structural-variant calling
+  - long-read
 tools:
   - sniffles:
       description: a fast structural variant caller for long-read sequencing
@@ -10,50 +11,102 @@ tools:
       documentation: https://github.com/fritzsedlazeck/Sniffles#readme
       tool_dev_url: https://github.com/fritzsedlazeck/Sniffles
       licence: ["MIT"]
-
+      identifier: biotools:sniffles
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - bam:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - input:
+        type: file
+        description: A single .bam/.cram file - OR - one or more .snf files - OR - a
+          single .tsv file containing a list of .snf files and optional sample ids as
+          input
+        pattern: "*.{bam,cram,snf,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+    - index:
+        type: file
+        description: Index of BAM/CAM file
+        pattern: "*.{bai,crai}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'fasta' ]
+    - fasta:
+        type: file
+        description: |
+          Reference database in FASTA format
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing tandem repeat information
+          e.g. [ id:'hg38' ]
+    - tandem_file:
+        type: file
+        description: Tandem repeat file
+        pattern: "*.bed"
+        ontologies: []
+  - vcf_output:
       type: file
-      description: BAM file
-      pattern: "*.bam"
-  - bai:
-      type: file
-      description: Index of BAM file
-      pattern: "*.bai"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'fasta' ]
-  - fasta:
-      type: file
-      description: |
-        Reference database in FASTA format
-
-output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - vcf:
-      type: file
-      description: Compressed VCF file
+      description: VCF output file
       pattern: "*.vcf.gz"
-  - snf:
+      ontologies:
+        - edam: http://edamontology.org/format_3989 # GZIP format
+  - snf_output:
       type: file
-      description: Compressed SNF file
-      pattern: "*.snf.gz"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+      description: SNF output file
+      ontologies: []
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.vcf.gz":
+          type: file
+          description: Compressed VCF file
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.vcf.gz.tbi":
+          type: file
+          description: Compressed VCF file index
+          pattern: "*.tbi"
+          ontologies: []
+  snf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.snf":
+          type: file
+          description: SNF file
+          pattern: "*.snf"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@christopher-hakkaart"
   - "@yuukiiwa"
+maintainers:
+  - "@christopher-hakkaart"
+  - "@yuukiiwa"
+  - "@fellen31"

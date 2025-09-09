@@ -2,7 +2,7 @@ process SEXDETERRMINE {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::sexdeterrmine=1.1.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sexdeterrmine:1.1.2--hdfd78af_1':
         'biocontainers/sexdeterrmine:1.1.2--hdfd78af_1' }"
@@ -21,7 +21,7 @@ process SEXDETERRMINE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_sexdeterrmine"
     def sample_list = sample_list_file ? '-f ${sample_list_file}' : ''
     if ("$depth" == "${prefix}.tsv") error "Input depth and output TSV names are the same, set prefix in module configuration to disambiguate!"
 
@@ -37,4 +37,19 @@ process SEXDETERRMINE {
         sexdeterrmine: \$(echo \$(sexdeterrmine --version 2>&1))
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}_sexdeterrmine"
+    if ("$depth" == "${prefix}.tsv") error "Input depth and output TSV names are the same, set prefix in module configuration to disambiguate!"
+
+    """
+    touch ${prefix}.tsv
+    touch ${prefix}.json
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        sexdeterrmine: \$(echo \$(sexdeterrmine --version 2>&1))
+    END_VERSIONS
+    """
+
 }

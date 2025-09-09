@@ -1,0 +1,367 @@
+nextflow_process {
+
+    name "Test Process GLIMPSE2_PHASE"
+    script "../main.nf"
+    config "./nextflow.config"
+
+    process "GLIMPSE2_PHASE"
+
+    tag "modules_nfcore"
+    tag "modules"
+    tag "glimpse2"
+    tag "glimpse2/phase"
+    tag "samtools/view"
+    tag "samtools"
+
+    test("homo_sapiens - vcf region - panel") {
+        when {
+            process {
+                """
+                input_vcf = Channel.of([
+                    [ id:'input' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi", checkIfExists: true),
+                    [], [],
+                    "chr22:16600000-16800000",
+                    "chr22:16650000-16750000"
+                ])
+
+                ref_panel = Channel.of([
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
+                ])
+
+                map_file = Channel.of([[]])
+
+                // [meta, vcf, index, sample_infos, regionin, regionout,ref, index, map] [meta, fasta, fai]
+                input[0] = input_vcf
+                    .combine(ref_panel)
+                    .combine(map_file)
+                input[1] = Channel.of([[],[],[]])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.phased_variants[0][1]).vcf.variantsMD5,
+                    process.out.versions
+                ).match()}
+            )
+        }
+
+    }
+
+    test("homo_sapiens - bam region - panel") {
+        when {
+            process {
+                """
+                input_bam = Channel.of([
+                    [id:'input'],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam.bai", checkIfExists: true),
+                    [], [],
+                    "chr22:16600000-16800000",
+                    "chr22:16650000-16750000",
+                ])
+
+                ref_panel = Channel.of([
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
+                ])
+
+                map_file = Channel.of([[]])
+
+                // [meta, vcf, index, sample_infos, regionin, regionout,ref, index, map] [meta, fasta, fai]
+                input[0] = input_bam
+                    .combine(ref_panel)
+                    .combine(map_file)
+                input[1] = Channel.of([[],[],[]])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.phased_variants[0][1]).vcf.variantsMD5,
+                    process.out.stats_coverage,
+                    process.out.versions
+                ).match()}
+            )
+        }
+
+    }
+
+    test("homo_sapiens - cram region - panel - fasta") {
+        setup {
+            run ("SAMTOOLS_VIEW") {
+                script "../../../samtools/view"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [id:'input'],
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam.bai", checkIfExists: true)
+                    ])
+                    input[1] = Channel.of([
+                        [id: 'Hg38'],
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/GRCh37_chr22.fasta.gz", checkIfExists: true)
+                    ])
+                    input[2] = []
+                    input[3] = "crai"
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input_cram = SAMTOOLS_VIEW.out.cram
+                    .join(SAMTOOLS_VIEW.out.crai)
+                    .combine(Channel.of([
+                        [], [],
+                        "chr22:16600000-16800000",
+                        "chr22:16650000-16750000",
+                    ]))
+                ref_panel = Channel.of([
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true)
+                ])
+
+                map_file = Channel.of([[]])
+
+                reference_genome = Channel.of([
+                    [id: 'Hg38'],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/GRCh37_chr22.fasta.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta.fai", checkIfExists: true)
+                ])
+
+                // [meta, vcf, index, sample_infos, regionin, regionout,ref, index, map] [meta, fasta, fai]
+                input[0] = input_cram
+                    .combine(ref_panel)
+                    .combine(map_file)
+                input[1] = reference_genome
+                """
+                }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.phased_variants[0][1]).vcf.variantsMD5,
+                    process.out.stats_coverage,
+                    process.out.versions
+                ).match()}
+            )
+        }
+    }
+
+    test("homo_sapiens - [bam, bam] region - panel") {
+        when {
+            process {
+                """
+                input_bam = Channel.of([
+                    [id:'input'],
+                    [
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA12878/NA12878.s.bam", checkIfExists: true),
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA19401/NA19401.s.bam", checkIfExists: true)
+                    ],
+                    [
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA12878/NA12878.s.bam.bai", checkIfExists: true),
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA19401/NA19401.s.bam.bai", checkIfExists: true)
+                    ],
+                    [], [],
+                    "chr22:16600000-16800000",
+                    "chr22:16650000-16750000",
+                ])
+                ref_panel = Channel.of([
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true)
+                ])
+
+                map_file = Channel.of([[]])
+
+                // [meta, vcf, index, sample_infos, regionin, regionout,ref, index, map] [meta, fasta, fai]
+                input[0] = input_bam
+                    .combine(ref_panel)
+                    .combine(map_file)
+                input[1] = Channel.of([[],[],[]])
+                """
+                }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    // path(process.out.phased_variants[0][1]).vcf.variantsMD5, // MD5 sum not stable for the AF infos of 1 variant at the 5th decimals
+                    process.out.phased_variants.collect{ path(it[1]).vcf.summary.replaceAll(", phasedAutodetect=(false|true)", "") },
+                    process.out.stats_coverage,
+                    process.out.versions
+                ).match()}
+            )
+        }
+    }
+
+    test("Error file type inconsistent") {
+        when {
+            process {
+                """
+                input_bam = Channel.of([
+                    [id:'input'],
+                    [
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA12878/NA12878.s.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz", checkIfExists: true)
+                    ],
+                    [
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA12878/NA12878.s.bam.bai", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi", checkIfExists: true)
+                    ],
+                    [], [],
+                    "chr22:16600000-16800000",
+                    "chr22:16650000-16750000",
+                    [], [], []
+                ])
+
+                // [meta, vcf, index, sample_infos, regionin, regionout,ref, index, map] [meta, fasta, fai]
+                input[0] = input_bam
+                input[1] = Channel.of([[],[],[]])
+                """
+                }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("Input files must be of the same type and either .bam/.cram or .vcf/.vcf.gz/.bcf format. Found: [bam, gl]") }
+            )
+        }
+    }
+
+    test("Error only one vcf allowed") {
+        when {
+            process {
+                """
+                input_bam = Channel.of([
+                    [id:'input'],
+                    [
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA12878/NA12878.s.1x.bcf", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz", checkIfExists: true),
+                    ],
+                    [
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA12878/NA12878.s.1x.bcf.csi", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi", checkIfExists: true),
+                    ],
+                    [], [],
+                    "chr21:16600000-16800000",
+                    "chr21:16650000-16750000",
+                    [], [], []
+                ])
+
+                // [meta, vcf, index, sample_infos, regionin, regionout,ref, index, map] [meta, fasta, fai]
+                input[0] = input_bam
+                input[1] = Channel.of([[],[],[]])
+                """
+                }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("Only one input .vcf/.vcf.gz/.bcf file can be provided") }
+            )
+        }
+    }
+
+    test("homo_sapiens - [bam, bam] region sample rename - panel") {
+        when {
+            process {
+                """
+                bamlist = Channel.of(
+                    "NA12878.s.bam\tNA12878",
+                    "NA19401.s.bam\tNA19401"
+                ).collectFile(name: 'bamlist.txt', newLine: true)
+
+                input_bam = Channel.of([
+                    [id:'input'],
+                    [
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA12878/NA12878.s.bam", checkIfExists: true),
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA19401/NA19401.s.bam", checkIfExists: true)
+                    ],
+                    [
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA12878/NA12878.s.bam.bai", checkIfExists: true),
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA19401/NA19401.s.bam.bai", checkIfExists: true)
+                    ],
+                ]).combine(bamlist)
+                .map{ map, bam, bai, bamlist -> [
+                    map, bam, bai, bamlist, [],
+                    "chr22:16600000-16800000",
+                    "chr22:16650000-16750000",
+                ]}
+
+                ref_panel = Channel.of([
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true)
+                ])
+
+                map_file = Channel.of([[]])
+                // [meta, vcf, index, sample_infos, regionin, regionout,ref, index, map] [meta, fasta, fai]
+                input[0] = input_bam
+                    .combine(ref_panel)
+                    .combine(map_file)
+                input[1] = Channel.of([[],[],[]])
+                """
+                }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.phased_variants.collect{ path(it[1]).vcf.header.getGenotypeSamples().sort() },
+                    process.out.phased_variants.collect{ path(it[1]).vcf.summary.replaceAll(", phasedAutodetect=(false|true)", "") }
+                ).match()}
+            )
+        }
+    }
+
+    test("homo_sapiens - vcf region - panel -- stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input_vcf = Channel.of([
+                    [ id:'input' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi", checkIfExists: true),
+                    [], [],
+                    "chr22:16600000-16800000",
+                    "chr22:16650000-16750000",
+                    [], [], []
+                ])
+
+                // [meta, vcf, index, sample_infos, regionin, regionout,ref, index, map] [meta, fasta, fai]
+                input[0] = input_vcf
+                input[1] = Channel.of([[],[],[]])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match()}
+            )
+        }
+
+    }
+}

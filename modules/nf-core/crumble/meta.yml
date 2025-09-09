@@ -12,51 +12,79 @@ tools:
       documentation: "https://github.com/jkbonfield/crumble"
       tool_dev_url: "https://github.com/jkbonfield/crumble"
       doi: "10.1093/bioinformatics/bty608"
-      licence: "['multiple BSD style licenses']"
-
+      licence: ["multiple BSD style licenses"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - input:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input:
+        type: file
+        description: BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+        ontologies: []
   - keepbed:
       type: file
       description: BED file defining regions to keep quality
+      ontologies: []
   - bedout:
       type: boolean
-      description: set to true to ouput suspicious regions to a BED file
-
+      description: set to true to output suspicious regions to a BED file
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - bam:
-      type: file
-      description: optional filtered/compressed BAM file
-      pattern: "*.{bam}"
-  - cram:
-      type: file
-      description: optional filtered/compressed CRAM file
-      pattern: "*.{cram}"
-  - sam:
-      type: file
-      description: optional filtered/compressed SAM file
-      pattern: "*.{sam}"
-  - bed:
-      type: file
-      description: optional suspicious regions BED file
-      pattern: "*{bed}"
-
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bam":
+          type: file
+          description: optional filtered/compressed BAM file
+          pattern: "*.{bam}"
+          ontologies: []
+  cram:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.cram":
+          type: file
+          description: optional filtered/compressed CRAM file
+          pattern: "*.{cram}"
+          ontologies: []
+  sam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.sam":
+          type: file
+          description: optional filtered/compressed SAM file
+          pattern: "*.{sam}"
+          ontologies: []
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bed":
+          type: file
+          description: optional suspicious regions BED file
+          pattern: "*{bed}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@priyanka-surana"
+maintainers:
   - "@priyanka-surana"

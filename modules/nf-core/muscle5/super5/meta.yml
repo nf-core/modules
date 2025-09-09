@@ -1,0 +1,69 @@
+name: "muscle5_super5"
+description: Muscle is a program for creating multiple alignments of amino acid or
+  nucleotide sequences. This particular module uses the super5 algorithm for very
+  big alignments. It can permutate the guide tree according to a set of flags.
+keywords:
+  - align
+  - msa
+  - multiple sequence alignment
+tools:
+  - muscle -super5:
+      description: "Muscle v5 is a major re-write of MUSCLE based on new algorithms."
+      homepage: "https://drive5.com/muscle5/"
+      documentation: "https://drive5.com/muscle5/manual/"
+      doi: "10.1101/2021.06.20.449169"
+      licence: ["Public Domain"]
+      identifier: ""
+  - "pigz":
+      description: "Parallel implementation of the gzip algorithm."
+      homepage: "https://zlib.net/pigz/"
+      documentation: "https://zlib.net/pigz/pigz.pdf"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Input sequences for alignment must be in FASTA format
+        pattern: "*.{fasta,fa,fna}"
+        ontologies:
+          - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - compress:
+      type: boolean
+      description: Flag representing whether the output MSA should be compressed. Set
+        to true to enable/false to disable compression. Compression is done using pigz,
+        and is multithreaded.
+output:
+  alignment:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.aln{.gz,}":
+          type: file
+          description: Multiple sequence alignment produced in gzipped FASTA format.
+            If '-perm all' is passed in ext.args, this will be multiple files per input!
+          pattern: "*.{aln.gz}"
+          ontologies:
+            - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
+            - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
+            - edam: http://edamontology.org/format_1984 # FASTA-ALN
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@alessiovignoli"
+  - "@JoseEspinosa"
+maintainers:
+  - "@alessiovignoli"
+  - "@JoseEspinosa"
+  - "@lrauschning"

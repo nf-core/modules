@@ -1,0 +1,85 @@
+nextflow_process {
+
+    name "Test Process FCSGX_CLEANGENOME"
+    script "../main.nf"
+    process "FCSGX_CLEANGENOME"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fcsgx"
+    tag "fcsgx/fetchdb"
+    tag "fcsgx/rungx"
+    tag "fcsgx/cleangenome"
+
+    setup {
+        run("FCSGX_FETCHDB"){
+            script "../../fetchdb/main.nf"
+            process {
+                """
+                input[0] = file('https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/database/test-only/test-only.manifest', checkIfExists: true)
+                """
+            }
+        }
+        run("FCSGX_RUNGX") {
+            script "../../rungx/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    '2697049', // taxid for SARS-CoV-2
+                    file('https://zenodo.org/records/10932013/files/FCS_combo_test.fa', checkIfExists: true),
+                ]
+                input[1] = FCSGX_FETCHDB.out.database
+                input[2] = []
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.value([
+                    [ id:'test' ], // meta map
+                    file('https://zenodo.org/records/10932013/files/FCS_combo_test.fa', checkIfExists: true),
+                ]).join(FCSGX_RUNGX.out.fcsgx_report)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.value([
+                    [ id:'test' ], // meta map
+                    file('https://zenodo.org/records/10932013/files/FCS_combo_test.fa', checkIfExists: true),
+                ]).join(FCSGX_RUNGX.out.fcsgx_report)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

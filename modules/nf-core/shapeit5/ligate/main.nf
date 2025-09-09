@@ -2,13 +2,13 @@ process SHAPEIT5_LIGATE {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::shapeit5=1.0.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/shapeit5:1.0.0--h0c8ee15_0':
-        'biocontainers/shapeit5:1.0.0--h0c8ee15_0'}"
+        'https://depot.galaxyproject.org/singularity/shapeit5:5.1.1--hb60d31d_0':
+        'biocontainers/shapeit5:5.1.1--hb60d31d_0'}"
 
     input:
-    tuple val(meta), path(input_list), path (input_list_index)
+    tuple val(meta), path(input_list), path(input_list_index)
 
     output:
     tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: merged_variants
@@ -18,7 +18,7 @@ process SHAPEIT5_LIGATE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "vcf.gz"
     """
@@ -31,8 +31,21 @@ process SHAPEIT5_LIGATE {
         --output ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            shapeit5: "\$(SHAPEIT5_ligate | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -n 1)"
+    "${task.process}":
+        shapeit5: "\$(SHAPEIT5_ligate | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -n 1)"
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix     = task.ext.prefix        ?: "${meta.id}"
+    def suffix     = task.ext.suffix        ?: "vcf.gz"
+    def create_cmd = suffix.endsWith(".gz") ? "echo '' | gzip >" : "touch"
+    """
+    ${create_cmd} ${prefix}.${suffix}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        shapeit5: "\$(SHAPEIT5_ligate | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -n 1)"
     END_VERSIONS
     """
 }

@@ -4,54 +4,96 @@ keywords:
   - bacterial
   - assembly
   - nanopore
-
 tools:
   - dragonflye:
       description: Microbial assembly pipeline for Nanopore reads
       homepage: https://github.com/rpetit3/dragonflye
       documentation: https://github.com/rpetit3/dragonflye/blob/main/README.md
       licence: ["GPL v2"]
-
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: Input Nanopore FASTQ file
-      pattern: "*.fastq.gz"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - shortreads:
+        type: file
+        description: |
+          Optional. List of FastQ files of short reads (paired-end data) that will be used to polish the draft genome.
+        pattern: "*.fastq.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
+    - longreads:
+        type: file
+        description: Input Nanopore FASTQ file
+        pattern: "*.fastq.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - contigs:
-      type: file
-      description: The final assembly produced by Dragonflye
-      pattern: "contigs.fa"
-  - log:
-      type: file
-      description: Full log file for bug reporting
-      pattern: "dragonflye.log"
-  - raw_contigs:
-      type: file
-      description: Raw assembly produced by the assembler (Flye, Miniasm, or Raven)
-      pattern: "{flye,miniasm,raven}.fasta"
-  - txt:
-      type: file
-      description: Assembly information output by Flye
-      pattern: "flye-info.txt"
-  - gfa:
-      type: file
-      description: Assembly graph produced by Miniasm, or Raven
-      pattern: "{miniasm,raven}-unpolished.gfa"
-
+  contigs:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fa":
+          type: file
+          description: The final assembly produced by Dragonflye
+          pattern: "*.fa"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - dragonflye.log:
+          type: file
+          description: Full log file for bug reporting
+          pattern: "dragonflye.log"
+          ontologies: []
+  raw_contigs:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "{flye,miniasm,raven}.fasta":
+          type: file
+          description: Raw assembly produced by the assembler (Flye, Miniasm, or Raven)
+          pattern: "{flye,miniasm,raven}.fasta"
+          ontologies: []
+  gfa:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "{flye,miniasm,raven}-unpolished.gfa":
+          type: file
+          description: Assembly graph produced by Miniasm, or Raven
+          pattern: "{flye,miniasm,raven}-unpolished.gfa"
+          ontologies: []
+  txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - flye-info.txt:
+          type: file
+          description: Assembly information output by Flye
+          pattern: "flye-info.txt"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

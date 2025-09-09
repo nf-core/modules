@@ -1,0 +1,166 @@
+nextflow_process {
+
+    name "Test Process LTRRETRIEVER_LAI"
+    script "../main.nf"
+    process "LTRRETRIEVER_LAI"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gunzip"
+    tag "ltrretriever"
+    tag "ltrretriever/ltrretriever"
+    tag "ltrretriever/lai"
+    tag "ltrharvest"
+    tag "ltrfinder"
+    tag "cat/cat"
+
+    test("actinidia_chinensis-genome_21_fasta_gz-success") {
+
+        setup {
+
+            run("GUNZIP") {
+                script "../../../gunzip"
+
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/eukaryotes/actinidia_chinensis/genome/chr1/genome.fasta.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+
+            run("LTRHARVEST") {
+                script "../../../ltrharvest"
+
+                process {
+                    """
+                    input[0] = GUNZIP.out.gunzip
+                    """
+                }
+            }
+
+            run("LTRFINDER") {
+                script "../../../ltrfinder"
+
+                process {
+                    """
+                    input[0] = GUNZIP.out.gunzip
+                    """
+                }
+            }
+
+            run("CAT_CAT") {
+                script "../../../cat/cat"
+
+                process {
+                    """
+                    input[0] = LTRHARVEST.out.scn.mix(LTRFINDER.out.scn).groupTuple()
+                    """
+                }
+            }
+
+            run("LTRRETRIEVER_LTRRETRIEVER") {
+                script "../../ltrretriever"
+
+                process {
+                    """
+                    input[0] = GUNZIP.out.gunzip
+                    input[1] = CAT_CAT.out.file_out.map { meta, tabout -> tabout }
+                    input[2] = []
+                    input[3] = []
+                    input[4] = []
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = LTRRETRIEVER_LTRRETRIEVER.out.pass_list.map { meta, pass_list -> pass_list }
+                input[2] = LTRRETRIEVER_LTRRETRIEVER.out.annotation_out.map { meta, annotation_out -> annotation_out }
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.log[0][1]).text.contains("Dependency checking: Passed!") },
+                { assert path(process.out.log[0][1]).text.contains("Calculate LAI:") },
+                { assert path(process.out.log[0][1]).text.contains("Done!") },
+                { assert path(process.out.log[0][1]).text.contains("Result file:") },
+                { assert Math.abs(Float.parseFloat(path(process.out.lai_out[0][1]).text.split("\n")[1].split("\t")[6]) - 31.29) <= 1.0 }
+            )
+        }
+
+    }
+
+    test("stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                def pass_list       = new File('test.pass.list')
+                def out_file        = new File('test.out')
+                def monoploid_seqs  = new File('some_seqs.list.txt')
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/actinidia_chinensis/genome/chr1/genome.fasta.gz', checkIfExists: true)
+                ]
+                input[1] = pass_list.toPath()
+                input[2] = out_file.toPath()
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("stub_with_monoploid_seqs") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                def pass_list       = new File('test.pass.list')
+                def out_file        = new File('test.out')
+                def monoploid_seqs  = new File('some_seqs.list.txt')
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/actinidia_chinensis/genome/chr1/genome.fasta.gz', checkIfExists: true)
+                ]
+                input[1] = pass_list.toPath()
+                input[2] = out_file.toPath()
+                input[3] = monoploid_seqs.toPath()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

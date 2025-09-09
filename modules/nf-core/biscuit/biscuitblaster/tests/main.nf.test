@@ -1,0 +1,113 @@
+nextflow_process {
+
+    name "Test Process BISCUIT_BLASTER"
+    script "../main.nf"
+    process "BISCUIT_BLASTER"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "biscuit"
+    tag "biscuit/biscuitblaster"
+    tag "biscuit/index"
+
+    setup {
+        run("BISCUIT_INDEX") {
+            script "../../index/main.nf"
+            process {
+            """
+            input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+            ])
+            """
+            }
+        }
+    }
+
+    test("sarscov2 single-end [fastq_gz]") {
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                                [ file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz", checkIfExists: true) ]
+                ]
+                input[1] = Channel.of([
+                                [ id:'test' ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = BISCUIT_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					bam(process.out.bam[0][1]).getReadsMD5(),
+                    process.out.bai,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+
+    }
+
+    test("sarscov2 paired-end [fastq_gz]") {
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                                [ file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz", checkIfExists: true),
+                                  file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz", checkIfExists: true) ]
+                ]
+                input[1] = Channel.of([
+                                [ id:'test' ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = BISCUIT_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					bam(process.out.bam[0][1]).getReadsMD5(),
+                    process.out.bai,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("sarscov2 paired-end [fastq_gz] - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                                [ file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test.methylated_1.fastq.gz", checkIfExists: true),
+                                  file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test.methylated_2.fastq.gz", checkIfExists: true) ]
+                ]
+                input[1] = Channel.of([
+                                [ id:'test' ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = BISCUIT_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

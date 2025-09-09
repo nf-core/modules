@@ -1,11 +1,11 @@
 process GATK4_MERGEBAMALIGNMENT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
-    conda "bioconda::gatk4=4.4.0.0"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
-        'biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b2/b28daf5d9bb2f0d129dcad1b7410e0dd8a9b087aaf3ec7ced929b1f57624ad98/data'
+        : 'community.wave.seqera.io/library/gatk4_gcnvkernel:e48d414933d188cd'}"
 
     input:
     tuple val(meta), path(aligned), path(unmapped)
@@ -14,7 +14,7 @@ process GATK4_MERGEBAMALIGNMENT {
 
     output:
     tuple val(meta), path('*.bam'), emit: bam
-    path  "versions.yml"          , emit: versions
+    path "versions.yml",            emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,18 +25,20 @@ process GATK4_MERGEBAMALIGNMENT {
 
     def avail_mem = 3072
     if (!task.memory) {
-        log.info '[GATK MergeBamAlignment] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        log.info('[GATK MergeBamAlignment] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
+    }
+    else {
+        avail_mem = (task.memory.mega * 0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" MergeBamAlignment \\
-        --UNMAPPED_BAM $unmapped \\
-        --ALIGNED_BAM $aligned \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        MergeBamAlignment \\
+        --UNMAPPED_BAM ${unmapped} \\
+        --ALIGNED_BAM ${aligned} \\
         --OUTPUT ${prefix}.bam \\
-        --REFERENCE_SEQUENCE $fasta \\
+        --REFERENCE_SEQUENCE ${fasta} \\
         --TMP_DIR . \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

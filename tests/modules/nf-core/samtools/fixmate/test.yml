@@ -1,9 +1,0 @@
-- name: samtools fixmate test_samtools_fixmate
-  command: nextflow run ./tests/modules/nf-core/samtools/fixmate -entry test_samtools_fixmate -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/samtools/fixmate/nextflow.config
-  tags:
-    - samtools/fixmate
-    - samtools
-  files:
-    - path: output/samtools/test.bam
-      md5sum: f0b0ab1c4c99ac05ce10eb4b8db36bb2
-    - path: output/samtools/versions.yml

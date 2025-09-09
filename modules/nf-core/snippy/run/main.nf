@@ -2,7 +2,7 @@ process SNIPPY_RUN {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::snippy=4.6.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snippy:4.6.0--hdfd78af_2' :
         'biocontainers/snippy:4.6.0--hdfd78af_2' }"
@@ -42,10 +42,40 @@ process SNIPPY_RUN {
     snippy \\
         $args \\
         --cpus $task.cpus \\
+        --ram $task.memory \\
         --outdir $prefix \\
         --reference $reference \\
         --prefix $prefix \\
         $read_inputs
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        snippy: \$(echo \$(snippy --version 2>&1) | sed 's/snippy //')
+    END_VERSIONS
+    """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir ${prefix}/
+    touch ${prefix}/${prefix}.tab
+    touch ${prefix}/${prefix}.csv
+    touch ${prefix}/${prefix}.html
+    touch ${prefix}/${prefix}.vcf
+    touch ${prefix}/${prefix}.bed
+    touch ${prefix}/${prefix}.gff
+    touch ${prefix}/${prefix}.bam
+    touch ${prefix}/${prefix}.bam.bai
+    touch ${prefix}/${prefix}.log
+    touch ${prefix}/${prefix}.aligned.fa
+    touch ${prefix}/${prefix}.consensus.fa
+    touch ${prefix}/${prefix}.consensus.subs.fa
+    touch ${prefix}/${prefix}.raw.vcf
+    touch ${prefix}/${prefix}.filt.vcf
+    gzip -c ${prefix}/${prefix}.vcf > ${prefix}/${prefix}.vcf.gz
+    touch ${prefix}/${prefix}.vcf.gz.csi
+    touch ${prefix}/${prefix}.txt
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

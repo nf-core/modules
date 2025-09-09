@@ -1,0 +1,66 @@
+nextflow_process {
+
+    name "Test Process MINDAGAP_DUPLICATEFINDER"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "MINDAGAP_DUPLICATEFINDER"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mindagap"
+    tag "mindagap/duplicatefinder"
+
+    test("mindagap - duplicatefinder - spots - txt") {
+
+        when {
+            params {
+                modules_testdata_base_path = 'https://raw.githubusercontent.com/nf-core/test-datasets/molkart/'
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'test_data/input_data/spots.txt', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("mindagap - duplicatefinder - spots - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                modules_testdata_base_path = 'https://raw.githubusercontent.com/nf-core/test-datasets/molkart/'
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'test_data/input_data/spots.txt', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

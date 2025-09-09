@@ -12,29 +12,36 @@ tools:
       tool_dev_url: https://github.com/open2c/cooler
       doi: "10.1093/bioinformatics/btz540"
       licence: ["BSD-3-Clause"]
-
+      identifier: ""
 input:
   - fasta:
       type: file
       description: Genome assembly FASTA file or folder containing FASTA files (uncompressed).
       pattern: "*.{fasta,fa}"
+      ontologies: []
   - chromsizes:
       type: file
       description: Path to a chromsizes file.
+      ontologies: []
   - enzyme:
       type: string
       description: Name of restriction enzyme. e.g. CviQI.
       documentation: http://biopython.org/DIST/docs/cookbook/Restriction.html
-
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - bed:
-      type: file
-      description: A genome segmentation of restriction fragments as a BED file.
-      pattern: "*.{bed}"
-
+  bed:
+    - "*.bed":
+        type: file
+        description: A genome segmentation of restriction fragments as a BED file.
+        pattern: "*.{bed}"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@jianhong"
+maintainers:
   - "@jianhong"

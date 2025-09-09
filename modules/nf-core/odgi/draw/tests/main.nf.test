@@ -1,0 +1,33 @@
+nextflow_process {
+
+    name "Test Process ODGI_DRAW"
+    script "../main.nf"
+    process "ODGI_DRAW"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "odgi"
+    tag "odgi/draw"
+
+    test("homo_sapiens - pangenome - odgi - pangenome_og - pangenome_lay") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/odgi/pangenome.og', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/odgi/pangenome.lay', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() } 
+            )
+        }
+    }
+}

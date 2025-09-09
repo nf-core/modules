@@ -1,0 +1,88 @@
+import groovy.io.FileType
+
+nextflow_process {
+
+    name "Test Process ISMAPPER"
+    script "../main.nf"
+    process "ISMAPPER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ismapper"
+
+    test("test-ismapper") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ],
+				    file("https://github.com/jhawkey/IS_mapper/raw/master/test/inputs/S_suis_P17.gbk", checkIfExists: true),
+				    file("https://github.com/jhawkey/IS_mapper/raw/master/test/inputs/ISSsu3.fasta", checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    def all_files = []
+
+                    file(process.out.results[0][1]).eachFileRecurse (FileType.FILES) { file ->
+                        all_files << file
+                    }
+
+                    def all_file_names = all_files.collect { it.name }.toSorted()
+
+                    def stable_file_names = [
+                        'test__AM946016.1_table.txt'
+                    ]
+
+                    def stable_files = all_files.findAll { it.name in stable_file_names }.toSorted()
+
+                    assert snapshot(
+                        all_file_names,
+                        stable_files,
+                        process.out.versions[0]
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-ismapper-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ],
+				    file("https://github.com/jhawkey/IS_mapper/raw/master/test/inputs/S_suis_P17.gbk", checkIfExists: true),
+				    file("https://github.com/jhawkey/IS_mapper/raw/master/test/inputs/ISSsu3.fasta", checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

@@ -4,54 +4,89 @@ keywords:
   - bacterial
   - assembly
   - illumina
-
 tools:
   - shovill:
       description: Microbial assembly pipeline for Illumina paired-end reads
       homepage: https://github.com/tseemann/shovill
       documentation: https://github.com/tseemann/shovill/blob/master/README.md
       licence: ["GPL v2"]
-
+      identifier: biotools:shovill
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: List of input paired-end FastQ files
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: List of input paired-end FastQ files
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - contigs:
-      type: file
-      description: The final assembly produced by Shovill
-      pattern: "contigs.fa"
-  - corrections:
-      type: file
-      description: List of post-assembly corrections made by Shovill
-      pattern: "shovill.corrections"
-  - log:
-      type: file
-      description: Full log file for bug reporting
-      pattern: "shovill.log"
-  - raw_contigs:
-      type: file
-      description: Raw assembly produced by the assembler (SKESA, SPAdes, MEGAHIT, or Velvet)
-      pattern: "{skesa,spades,megahit,velvet}.fasta"
-  - gfa:
-      type: file
-      description: Assembly graph produced by MEGAHIT, SPAdes, or Velvet
-      pattern: "contigs.{fastg,gfa,LastGraph}"
-
+  contigs:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - contigs.fa:
+          type: file
+          description: The final assembly produced by Shovill
+          pattern: "contigs.fa"
+          ontologies: []
+  corrections:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - shovill.corrections:
+          type: file
+          description: List of post-assembly corrections made by Shovill
+          pattern: "shovill.corrections"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - shovill.log:
+          type: file
+          description: Full log file for bug reporting
+          pattern: "shovill.log"
+          ontologies: []
+  raw_contigs:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "{skesa,spades,megahit,velvet}.fasta":
+          type: file
+          description: Raw assembly produced by the assembler (SKESA, SPAdes, MEGAHIT,
+            or Velvet)
+          pattern: "{skesa,spades,megahit,velvet}.fasta"
+          ontologies: []
+  gfa:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - contigs.{fastg,gfa,LastGraph}:
+          type: file
+          description: Assembly graph produced by MEGAHIT, SPAdes, or Velvet
+          pattern: "contigs.{fastg,gfa,LastGraph}"
+          ontologies:
+            - edam: http://edamontology.org/format_3975 # GFA 1
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

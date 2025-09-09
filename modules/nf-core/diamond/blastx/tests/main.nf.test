@@ -1,0 +1,82 @@
+nextflow_process {
+
+    name "Test Process DIAMOND_BLASTX"
+    script "../main.nf"
+    process "DIAMOND_BLASTX"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "diamond"
+    tag "diamond/makedb"
+    tag "diamond/blastx"
+
+    setup {
+        run("DIAMOND_MAKEDB") {
+            script "../../makedb/main.nf"
+            process {
+                """
+                input[0] = [ [id:'test2'], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ] ]
+                input[1] = []
+                input[2] = []
+                input[3] = []
+                """
+            }
+        }
+    }
+
+    test("Should search for transcriptome hits against a DIAMOND db and return the default tab separated output file of hits") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true) ]
+                input[1] = DIAMOND_MAKEDB.out.db
+                input[2] = 'tfdfdt' // Nonsense file extension to check default case.
+                input[3] = 'qseqid qlen'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.log.get(0).get(1)).readLines().contains("11 queries aligned.") },
+                { assert snapshot(
+                    process.out.txt,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("Should search for transcriptome hits against a DIAMOND db and return the daa format output file of hits") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true) ]
+                input[1] = DIAMOND_MAKEDB.out.db
+                input[2] = 'daa'
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.daa },
+                { assert path(process.out.log.get(0).get(1)).readLines().contains("11 queries aligned.") },
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+
+    }
+}

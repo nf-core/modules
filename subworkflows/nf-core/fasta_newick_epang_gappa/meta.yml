@@ -7,12 +7,13 @@ keywords:
   - alignment
   - fasta
   - newick
-modules:
+components:
   - hmmer/hmmbuild
   - hmmer/hmmalign
   - hmmer/eslalimask
   - hmmer/eslreformat
-  - mafft
+  - clustalo/align
+  - mafft/align
   - epang/place
   - epang/split
   - gappa/examinegraft
@@ -59,7 +60,7 @@ input:
       description: Phylogenetic model to use in placement, e.g. 'LG+F' or 'GTR+I+F'
   - alignmethod:
       type: string
-      description: Method used for alignment, 'hmmer' or 'mafft'
+      description: Method used for alignment, 'hmmer', 'clustalo' or 'mafft'
 output:
   - meta:
       type: map
@@ -95,4 +96,6 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@erikrikarddaniel"
+maintainers:
   - "@erikrikarddaniel"

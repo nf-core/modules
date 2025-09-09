@@ -2,7 +2,7 @@ process KLEBORATE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::kleborate=2.1.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/kleborate:2.1.0--pyhdfd78af_1' :
         'biocontainers/kleborate:2.1.0--pyhdfd78af_1' }"
@@ -25,6 +25,17 @@ process KLEBORATE {
         $args \\
         --outfile ${prefix}.results.txt \\
         --assemblies $fastas
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        kleborate: \$( echo \$(kleborate --version | sed 's/Kleborate v//;'))
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.results.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

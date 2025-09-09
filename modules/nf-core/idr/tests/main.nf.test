@@ -1,0 +1,127 @@
+
+nextflow_process {
+
+    name "Test Process IDR"
+    script "../main.nf"
+    process "IDR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "idr"
+
+    test("test-idr-narrowpeak") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/narrowpeak/test.narrowPeak', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/narrowpeak/test2.narrowPeak', checkIfExists: true)
+				]
+				input[1] = 'narrowPeak'
+				input[2] = 'test'
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					process.out.idr,
+					file(process.out.log[0]).name,
+					file(process.out.png[0]).name,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-idr-broadpeak") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/broadpeak/test.broadPeak', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/broadpeak/test2.broadPeak', checkIfExists: true)
+				]
+				input[1] = 'broadPeak'
+				input[2] = 'test'
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					process.out.idr,
+					file(process.out.log[0]).name,
+					file(process.out.png[0]).name,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-idr-noprefix") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/narrowpeak/test.narrowPeak', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/narrowpeak/test2.narrowPeak', checkIfExists: true)
+				]
+				input[1] = 'narrowPeak'
+				input[2] = 'test'
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					process.out.idr,
+					file(process.out.log[0]).name,
+					file(process.out.png[0]).name,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-idr-noprefix-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/narrowpeak/test.narrowPeak', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/narrowpeak/test2.narrowPeak', checkIfExists: true)
+				]
+				input[1] = 'narrowPeak'
+				input[2] = 'test'
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

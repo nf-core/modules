@@ -3,6 +3,7 @@ description: Import variant genetic data using plink2
 keywords:
   - plink2
   - import
+  - "variant genetic"
 tools:
   - plink2:
       description: |
@@ -10,42 +11,73 @@ tools:
         of basic, large-scale analyses in a computationally efficient manner
       homepage: http://www.cog-genomics.org/plink/2.0/
       documentation: http://www.cog-genomics.org/plink/2.0/general_usage
-
       licence: ["GPL v3"]
-
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: Variant calling file (vcf)
-      pattern: "*.{vcf}, *.{vcf.gz}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: Variant calling file (vcf)
+        pattern: "*.{vcf}, *.{vcf.gz}"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - pgen:
-      type: file
-      description: PLINK 2 binary genotype table
-      pattern: "*.{pgen}"
-  - psam:
-      type: file
-      description: PLINK 2 sample information file
-      pattern: "*.{psam}"
-  - pvar:
-      type: file
-      description: PLINK 2 variant information file
-      pattern: "*.{pvar.zst}"
-
+  pgen:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.pgen":
+          type: file
+          description: PLINK 2 binary genotype table
+          pattern: "*.{pgen}"
+          ontologies: []
+  psam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.psam":
+          type: file
+          description: PLINK 2 sample information file
+          pattern: "*.{psam}"
+          ontologies: []
+  pvar:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.pvar":
+          type: file
+          description: PLINK 2 variant information file
+          pattern: "*.{pvar.zst}"
+          ontologies: []
+  pvar_zst:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.pvar.zst":
+          type: file
+          description: PLINK 2 variant information zst file
+          pattern: "*.pvar.zst"
+          ontologies:
+            - edam: http://edamontology.org/format_4006 # Zstandard format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@nebfield"
+maintainers:
   - "@nebfield"

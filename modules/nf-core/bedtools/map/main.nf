@@ -2,17 +2,17 @@ process BEDTOOLS_MAP {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::bedtools=2.31.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bedtools:2.31.0--hf5e1c6e_2' :
-        'biocontainers/bedtools:2.31.0--hf5e1c6e_2' }"
+        'https://depot.galaxyproject.org/singularity/bedtools:2.31.1--hf5e1c6e_0' :
+        'biocontainers/bedtools:2.31.1--hf5e1c6e_0' }"
 
     input:
     tuple val(meta), path(intervals1), path(intervals2)
     tuple val(meta2), path(chrom_sizes)
 
     output:
-    tuple val(meta), path("*.${extension}"), emit: map
+    tuple val(meta), path("*.${extension}"), emit: mapped
     path  "versions.yml"                   , emit: versions
 
     when:

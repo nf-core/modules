@@ -1,0 +1,117 @@
+nextflow_process {
+
+    name "Test Process KAIJU_KAIJU"
+    script "../main.nf"
+    process "KAIJU_KAIJU"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "kaiju"
+    tag "kaiju/kaiju"
+    tag "untar"
+
+    test("sarscov2 - fastq - single-end") {
+
+        setup {
+            run ("UNTAR"){
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [ [], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kaiju.tar.gz', checkIfExists: true) ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] =  [
+                        [ id:'test', single_end:true ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                        ]
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.results[0][1]).getText().contains("C\tERR5069949.2257580\t2697049") }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fastq - paired-end") {
+
+        setup {
+            run ("UNTAR"){
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [ [], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kaiju.tar.gz', checkIfExists: true) ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]
+                ]
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.results[0][1]).getText().contains("C\tERR5069949.2257580\t2697049") }
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - stub") {
+
+        options '-stub'
+
+        setup {
+            run ("UNTAR"){
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [ [], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kaiju.tar.gz', checkIfExists: true) ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]
+                ]
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(file(process.out.results[0][1]).name).match() }
+            )
+        }
+    }
+
+}

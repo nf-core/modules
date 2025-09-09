@@ -1,9 +1,0 @@
-- name: diamond makedb test_diamond_makedb
-  command: nextflow run ./tests/modules/nf-core/diamond/makedb -entry test_diamond_makedb -c ./tests/config/nextflow.config
-  tags:
-    - diamond/makedb
-    - diamond
-  files:
-    - path: output/diamond/proteome.fasta.dmnd
-      md5sum: fc28c50b202dd7a7c5451cddff2ba1f4
-    - path: output/diamond/versions.yml

@@ -2,10 +2,10 @@ process STRINGTIE_STRINGTIE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::stringtie=2.2.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/stringtie:2.2.1--hecb563c_2' :
-        'biocontainers/stringtie:2.2.1--hecb563c_2' }"
+        'https://depot.galaxyproject.org/singularity/stringtie:2.2.3--h43eeafb_0' :
+        'biocontainers/stringtie:2.2.3--h43eeafb_0' }"
 
     input:
     tuple val(meta), path(bam)

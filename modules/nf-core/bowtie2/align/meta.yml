@@ -16,26 +16,39 @@ tools:
       documentation: http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml
       doi: 10.1038/nmeth.1923
       licence: ["GPL-3.0-or-later"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: |
-        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-        respectively.
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test', single_end:false ]
-  - index:
-      type: file
-      description: Bowtie2 genome index files
-      pattern: "*.ebwt"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively.
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test', single_end:false ]
+    - index:
+        type: file
+        description: Bowtie2 genome index files
+        pattern: "*.ebwt"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Bowtie2 genome fasta file
+        pattern: "*.fasta"
+        ontologies: []
   - save_unaligned:
       type: boolean
       description: |
@@ -46,22 +59,80 @@ input:
       description: use samtools sort (true) or samtools view (false)
       pattern: "true or false"
 output:
-  - aligned:
-      type: file
-      description: Output BAM/SAM file containing read alignments
-      pattern: "*.{bam,sam}"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - fastq:
-      type: file
-      description: Unaligned FastQ files
-      pattern: "*.fastq.gz"
-  - log:
-      type: file
-      description: Aligment log
-      pattern: "*.log"
+  sam:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.sam":
+          type: file
+          description: Output SAM file containing read alignments
+          pattern: "*.sam"
+          ontologies: []
+  bam:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.bam":
+          type: file
+          description: Output BAM file containing read alignments
+          pattern: "*.bam"
+          ontologies: []
+  cram:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.cram":
+          type: file
+          description: Output CRAM file containing read alignments
+          pattern: "*.cram"
+          ontologies: []
+  csi:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.csi":
+          type: file
+          description: Output SAM/BAM index for large inputs
+          pattern: "*.csi"
+          ontologies: []
+  crai:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.crai":
+          type: file
+          description: Output CRAM index
+          pattern: "*.crai"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.log":
+          type: file
+          description: Alignment log
+          pattern: "*.log"
+          ontologies: []
+  fastq:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*fastq.gz":
+          type: file
+          description: Unaligned FastQ files
+          pattern: "*.fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@joseespinosa"
+  - "@drpatelh"
+maintainers:
   - "@joseespinosa"
   - "@drpatelh"

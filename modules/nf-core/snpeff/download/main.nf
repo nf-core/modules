@@ -2,13 +2,13 @@ process SNPEFF_DOWNLOAD {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::snpeff=5.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snpeff:5.1--hdfd78af_2' :
         'biocontainers/snpeff:5.1--hdfd78af_2' }"
 
     input:
-    tuple val(meta), val(genome), val(cache_version)
+    tuple val(meta), val(snpeff_db)
 
     output:
     tuple val(meta), path('snpeff_cache'), emit: cache
@@ -28,7 +28,7 @@ process SNPEFF_DOWNLOAD {
     """
     snpEff \\
         -Xmx${avail_mem}M \\
-        download ${genome}.${cache_version} \\
+        download ${snpeff_db} \\
         -dataDir \${PWD}/snpeff_cache \\
         ${args}
 
@@ -41,7 +41,10 @@ process SNPEFF_DOWNLOAD {
 
     stub:
     """
-    mkdir ${genome}.${cache_version}
+    mkdir -p snpeff_cache/${snpeff_db}
+
+    touch snpeff_cache/${snpeff_db}/sequence.I.bin
+    touch snpeff_cache/${snpeff_db}/sequence.bin
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

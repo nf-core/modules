@@ -2,7 +2,7 @@ process MASHTREE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::mashtree=1.2.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mashtree:1.2.0--pl526h516909a_0' :
         'biocontainers/mashtree:1.2.0--pl526h516909a_0' }"
@@ -28,6 +28,19 @@ process MASHTREE {
         --outmatrix ${prefix}.tsv \\
         --outtree ${prefix}.dnd \\
         $seqs
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        mashtree: \$( echo \$( mashtree --version 2>&1 ) | sed 's/^.*Mashtree //' )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.dnd
+    touch ${prefix}.tsv
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

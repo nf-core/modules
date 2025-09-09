@@ -1,0 +1,93 @@
+nextflow_workflow {
+
+    name "Test Workflow VCF_IMPUTE_GLIMPSE"
+    script "../main.nf"
+    workflow "VCF_IMPUTE_GLIMPSE"
+
+    tag "subworkflows"
+    tag "bcftools/index"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/vcf_impute_glimpse"
+    tag "glimpse/phase"
+    tag "glimpse/ligate"
+    tag "glimpse/chunk"
+
+    test("Should run without failures") {
+        config "./nextflow.config"
+
+        when {
+            params {
+                outdir = "tests/results"
+                impute_dataset = "https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/"
+            }
+            workflow {
+                """
+                samples_infos = Channel.of('NA12878 2').collectFile(name: 'sampleinfos.txt')
+
+                ch_panel = Channel.fromList([
+                    [[ chr:"chr21"],
+                    file(params.impute_dataset + "panel/chr21/1000GP.chr21.s.norel.vcf.gz", checkIfExists: true),
+                    file(params.impute_dataset + "panel/chr21/1000GP.chr21.s.norel.vcf.gz.csi", checkIfExists: true)],
+                    [[ chr:"chr22"],
+                    file(params.impute_dataset + "panel/chr22/1000GP.chr22.s.norel.vcf.gz", checkIfExists: true),
+                    file(params.impute_dataset + "panel/chr22/1000GP.chr22.s.norel.vcf.gz.csi", checkIfExists: true)]
+                ])
+                region = Channel.fromList([
+                    [[chr: "chr21", region: "chr21:16600000-16800000"], "chr21:16600000-16800000"],
+                    [[chr: "chr22", region: "chr22:16600000-16800000"], "chr22:16600000-16800000"]
+                ])
+
+                input_vcf = Channel.fromList([
+                    [[ id:'NA12878'], // meta map
+                    file(params.impute_dataset + "individuals/NA12878/NA12878.s.1x.bcf", checkIfExists: true),
+                    file(params.impute_dataset + "individuals/NA12878/NA12878.s.1x.bcf.csi", checkIfExists: true),
+                    ],
+                    [[ id:'NA19401'], // meta map
+                    file(params.impute_dataset + "individuals/NA19401/NA19401.s.1x.bcf", checkIfExists: true),
+                    file(params.impute_dataset + "individuals/NA19401/NA19401.s.1x.bcf.csi", checkIfExists: true),
+                    ]
+                ])
+                input_vcf_multiple = input_vcf
+                    .combine( samples_infos )
+                    .combine( region )
+                    .map{ metaI, vcf, index, sample, metaCR, region ->
+                        [metaI + metaCR, vcf, index, sample, region ]
+                    }
+
+                ch_map = Channel.fromList([
+                    [[ chr: "chr21"],
+                        file(params.impute_dataset + "reference_genome/GRCh38_21.map", checkIfExists: true)
+                    ],
+                    [[ chr: "chr22"],
+                        file(params.impute_dataset + "reference_genome/GRCh38_22.map", checkIfExists: true)
+                    ]
+                ])
+
+                // Combine input and map depending on chromosome name
+                input[0] = input_vcf_multiple
+                    .map{ metaIRC, vcf, index, sample, region ->
+                        [metaIRC.subMap(["chr"]), metaIRC, vcf, index, sample, region]
+                    }
+                    .combine(ch_panel, by: 0)
+                    .combine(ch_map, by: 0)
+                    .map{ metaC, metaIRC, vcf, index, sample, region, ref, ref_index, map ->
+                        [metaIRC, vcf, index, sample, region, ref, ref_index, map]
+                    }
+                """
+            }
+        }
+
+        then {
+            def lines = path(workflow.out.merged_variants.get(0).get(1)).linesGzip.last()
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out.versions).match("versions") },
+                { assert snapshot(workflow.out.chunk_chr).match("chunk_chr") },
+                { assert workflow.out.merged_variants.size() == 4},
+                { assert snapshot(lines).match("merged") }
+            )
+        }
+
+    }
+
+}

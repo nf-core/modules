@@ -1,0 +1,93 @@
+nextflow_process {
+
+    name "Test Process SAMTOOLS_COLLATE"
+    script "../main.nf"
+    process "SAMTOOLS_COLLATE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "samtools"
+    tag "samtools/collate"
+
+    test("sarscov2 - bam") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                ])
+                input[1] = [ [id:'fasta'], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(file(process.out.bam[0][1]).name).match("bam_bam") },
+                { assert snapshot(process.out.cram).match("bam_cram") },
+                { assert snapshot(process.out.sam).match("bam_sam") },
+                { assert snapshot(process.out.versions).match("bam_versions") }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - cram + fasta") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
+                    [ id:'fasta'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(file(process.out.bam[0][1]).name).match("cram_fasta_bam") },
+                { assert snapshot(process.out.cram).match("cram_fasta_cram") },
+                { assert snapshot(process.out.sam).match("cram_fasta_sam") },
+                { assert snapshot(process.out.versions).match("cram_fasta_versions") }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam -- stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                ])
+                input[1] = [ [id:'fasta'], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() },
+            )
+        }
+
+    }
+
+}

@@ -1,0 +1,50 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: rrnatranscripts
+description: Ribosomal RNA extraction from a GTF file.
+keywords:
+  - ribosomal
+  - rna
+  - genomics
+tools:
+  - rrnatranscripts:
+      description: |
+        Extraction of ribosomal RNA
+      homepage: https://github.com/nf-core/rnafusion
+      licence: ["GPL-3.0-or-later"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - gtf:
+        type: file
+        description: GTF file
+        pattern: "*.{gtf}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2306" # GTF
+output:
+  rrna_gtf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_rrna_intervals.gtf":
+          type: file
+          description: Output GTF file containing ribosomal RNA intervals
+          pattern: "*_rrna_intervals.gtf"
+          ontologies:
+            - edam: "http://edamontology.org/format_2306" # GTF
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+authors:
+  - "@rannick"
+maintainers:
+  - "@rannick"

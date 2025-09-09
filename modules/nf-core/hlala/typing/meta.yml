@@ -1,46 +1,157 @@
 name: "hlala_typing"
-description: Performs HLA typing based on a population reference graph and employs a new linear projection method to align reads to the graph.
+description: Performs HLA typing based on a population reference graph and employs
+  a new linear projection method to align reads to the graph.
 keywords:
   - hla
   - hlala
   - hla_typing
   - hlala_typing
 tools:
-  - "hlala":
+  - hlala:
       description: "HLA typing from short and long reads"
       homepage: "https://github.com/DiltheyLab/HLA-LA"
       documentation: "https://github.com/DiltheyLab/HLA-LA#running-hlala"
       tool_dev_url: "https://github.com/DiltheyLab/HLA-LA"
       doi: "10.1093/bioinformatics/btz235"
-      licence: "['GPL']"
-
+      licence: ["GPL"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-  - graph:
-      type: directory
-      description: Path to prepared graph with hla-la --acton prepareGraph
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - bam:
+        type: file
+        description: BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+        ontologies: []
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.{bai}"
+        ontologies: []
+    - graph:
+        type: directory
+        description: Path to prepared graph with hla-la --action prepareGraph
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - folder:
-      type: directory
-      description: Folder containing the HLA typing output
-
+  results:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - results:
+          type: file
+          description: Results file
+          ontologies: []
+  extraction:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - results/extraction.bam:
+          type: file
+          description: Extraction BAM file
+          pattern: "*.bam"
+          ontologies: []
+  extraction_index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - results/extraction.bam.bai:
+          type: file
+          description: Extraction BAM index file
+          pattern: "*.bam.bai"
+          ontologies: []
+  extraction_mapped:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - results/extraction_mapped.bam:
+          type: file
+          description: Extraction mapped BAM file
+          pattern: "*.bam"
+          ontologies: []
+  extraction_unmpapped:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - results/extraction_unmapped.bam:
+          type: file
+          description: Extraction unmapped BAM file
+          pattern: "*.bam"
+          ontologies: []
+  hla:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - results/hla/*:
+          type: file
+          description: HLA results
+          ontologies: []
+  fastq:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - results/*.fastq:
+          type: file
+          description: Fastq file
+          pattern: "*.fastq"
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+  reads_per_level:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - results/reads_per_level.txt:
+          type: file
+          description: Reads per level
+          pattern: "*.txt"
+          ontologies: []
+  remapped:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - results/remapped_with_a.bam:
+          type: file
+          description: Remapped BAM file
+          pattern: "*.bam"
+          ontologies: []
+  remapped_index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - results/remapped_with_a.bam.bai:
+          type: file
+          description: Remapped BAM index file
+          pattern: "*.bam.bai"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@mapo9"
+maintainers:
   - "@mapo9"

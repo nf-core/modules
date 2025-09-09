@@ -12,25 +12,40 @@ tools:
       tool_dev_url: https://github.com/open2c/cooler
       doi: "10.1093/bioinformatics/btz540"
       licence: ["BSD-3-Clause"]
-
+      identifier: ""
 input:
-  - chromsize:
-      type: file
-      description: Path to chromosome size file
-  - cool_bin:
-      type: integer
-      description: Resolution (bin size) in base pairs
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - chromsizes:
+        type: file
+        description: Path to a chromsizes file.
+        ontologies: []
+    - cool_bin:
+        type: integer
+        description: Resolution (bin size) in base pairs
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - bed:
-      type: file
-      description: Genome segmentation at a fixed resolution as a BED file.
-      pattern: "*.bed"
-
+  bed:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.bed":
+          type: file
+          description: Genome segmentation at a fixed resolution as a BED file.
+          pattern: "*.bed"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@nservant"
+  - "@muffato"
+maintainers:
   - "@nservant"
   - "@muffato"

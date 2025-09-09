@@ -2,7 +2,7 @@ process SPATYPER {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::spatyper=0.3.3"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/spatyper:0.3.3--pyhdfd78af_3' :
         'biocontainers/spatyper:0.3.3--pyhdfd78af_3' }"
@@ -34,5 +34,10 @@ process SPATYPER {
     "${task.process}":
         spatyper: \$( echo \$(spaTyper --version 2>&1) | sed 's/^.*spaTyper //' )
     END_VERSIONS
+    """
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.tsv
     """
 }

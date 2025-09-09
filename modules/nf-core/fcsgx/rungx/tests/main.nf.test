@@ -1,0 +1,85 @@
+nextflow_process {
+
+    name "Test Process FCSGX_RUNGX"
+    script "../main.nf"
+    process "FCSGX_RUNGX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fcsgx"
+    tag "fcsgx/fetchdb"
+    tag "fcsgx/rungx"
+
+    setup {
+        run("FCSGX_FETCHDB"){
+            script "../../fetchdb/main.nf"
+            process {
+                """
+                input[0] = file('https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/database/test-only/test-only.manifest', checkIfExists: true)
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    '2697049', // taxid for SARS-CoV-2
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                ]
+                input[1] = FCSGX_FETCHDB.out.database
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        file(process.out.fcsgx_report[0][1]).readLines()[1], // Timestamp in header L:0
+                        file(process.out.taxonomy_report[0][1]).readLines()[1..2], // Timestamp in header L:0
+                        file(process.out.log[0][1]).readLines()[0..9], // Timestamps and binary paths present
+                        file(process.out.log[0][1]).text.contains('fcs_gx_report.txt contamination summary:'),
+                        file(process.out.log[0][1]).text.contains('fcs_gx_report.txt action summary:'),
+                        process.out.hits,
+                        process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    '2697049', // taxid for SARS-CoV-2
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                ]
+                input[1] = FCSGX_FETCHDB.out.database
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

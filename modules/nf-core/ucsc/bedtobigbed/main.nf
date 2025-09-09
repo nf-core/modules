@@ -3,7 +3,7 @@ process UCSC_BEDTOBIGBED {
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::ucsc-bedtobigbed=447"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ucsc-bedtobigbed:447--h954228d_0' :
         'biocontainers/ucsc-bedtobigbed:447--h954228d_0' }"
@@ -32,6 +32,7 @@ process UCSC_BEDTOBIGBED {
         $as_option \\
         $args \\
         ${prefix}.bigBed
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

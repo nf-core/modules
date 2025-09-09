@@ -7,10 +7,9 @@ keywords:
   - adapters
   - trimming
   - fastq
-modules:
+components:
   - fastqc
   - fastp
-
 input:
   - ch_reads:
       type: file
@@ -30,6 +29,12 @@ input:
       description: |
         Structure: val(save_trimmed_fail)
         Specify true to save files that failed to pass trimming thresholds ending in `*.fail.fastq.gz`
+  - val_discard_trimmed_pass:
+      type: boolean
+      description: |
+        Structure: val(discard_trimmed)
+        Specify true to not write any reads that pass trimming thresholds.
+        This can be used to use fastp for the output report only.
   - val_save_merged:
       type: boolean
       description: |
@@ -45,12 +50,10 @@ input:
       description: |
         Structure: val(skip_fastp)
         skip the fastp process if true
-
 output:
   - meta:
-      type: value
-      description: Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
+      type: string
+      description: Groovy Map containing sample information e.g. [ id:'test', single_end:false ]
   - reads:
       type: file
       description: |
@@ -81,7 +84,6 @@ output:
       description: |
         Structure: [ val(meta), path(trim_reads_merged) ]
         Reads that were successfully merged
-
   - fastqc_raw_html:
       type: file
       description: |
@@ -107,4 +109,6 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@Joon-Klaps"
+maintainers:
   - "@Joon-Klaps"

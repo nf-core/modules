@@ -1,0 +1,71 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "nanoq"
+description: Nanoq implements ultra-fast read filters and summary reports for high-throughput
+  nanopore reads.
+keywords:
+  - nanoq
+  - Read filters
+  - Read trimming
+  - Read report
+tools:
+  - "nanoq":
+      description: "Ultra-fast quality control and summary reports for nanopore reads"
+      homepage: "https://github.com/esteinig/nanoq"
+      documentation: "https://github.com/esteinig/nanoq"
+      tool_dev_url: "https://github.com/esteinig/nanoq"
+      doi: "10.21105/joss.02991"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - ontreads:
+        type: file
+        description: Compressed or uncompressed nanopore reads in fasta or fastq formats.
+        pattern: "*.{fa,fna,faa,fasta,fq,fastq}{,.gz,.bz2,.xz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - output_format:
+      type: string
+      description: "Specifies the output format. One of these formats: fasta, fastq;
+        fasta.gz, fastq.gz; fasta.bz2, fastq.bz2; fasta.lzma, fastq.lzma."
+output:
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.{stats,json}":
+          type: file
+          description: Summary report of reads statistics.
+          pattern: "*.{stats,json}"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  reads:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}.${output_format}:
+          type: file
+          description: Filtered reads.
+          pattern: "*.{fasta,fastq}{,.gz,.bz2,.lzma}"
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@LilyAnderssonLee"
+maintainers:
+  - "@LilyAnderssonLee"

@@ -6,11 +6,11 @@ keywords:
   - qc
   - bam
   - snp
-modules:
+components:
   - bcftools/mpileup
   - ngscheckmate/ncm
 input:
-  - meta:
+  - meta1:
       type: map
       description: |
         Groovy Map containing sample information
@@ -19,16 +19,24 @@ input:
       type: file
       description: BAM files for each sample
       pattern: "*.{bam}"
+  - meta2:
+      type: map
+      description: |
+        Groovy Map containing bed file information
+        e.g. [ id:'sarscov2' ]
   - snp_bed:
       type: file
       description: BED file containing the SNPs to analyse. NGSCheckMate provides some default ones for hg19/hg38.
       pattern: "*.{bed}"
-
+  - meta3:
+      type: map
+      description: |
+        Groovy Map containing reference genome meta information
+        e.g. [ id:'sarscov2' ]
   - fasta:
       type: file
       description: fasta file for the genome
       pattern: "*.{fasta}"
-
 output:
   - pdf:
       type: file
@@ -55,4 +63,6 @@ output:
       description: File containing software versions
       pattern: "versions.yml"
 authors:
+  - "@SPPearce"
+maintainers:
   - "@SPPearce"

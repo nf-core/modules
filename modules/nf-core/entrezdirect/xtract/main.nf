@@ -2,7 +2,7 @@ process ENTREZDIRECT_XTRACT {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::entrez-direct=16.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
     'https://depot.galaxyproject.org/singularity/entrez-direct:16.2--he881be0_1':
     'biocontainers/entrez-direct:16.2--he881be0_1' }"
@@ -31,6 +31,16 @@ process ENTREZDIRECT_XTRACT {
         $args \\
         > ${prefix}.txt
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        xtract: \$(xtract -version)
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.txt
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         xtract: \$(xtract -version)

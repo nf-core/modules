@@ -1,0 +1,74 @@
+
+nextflow_process {
+
+    name "Test Process PRINSEQPLUSPLUS"
+    script "../main.nf"
+    process "PRINSEQPLUSPLUS"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "prinseqplusplus"
+
+    test("test-prinseqplusplus-single-end") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+				    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					file(process.out.good_reads[0][1]).name, // unstable
+					process.out.single_reads,
+					process.out.bad_reads,
+					file(process.out.log[0][1]).name,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-prinseqplusplus-paired-end") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+				    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					process.out.good_reads[0][1].collect { file(it).name }, // unstable
+					process.out.single_reads[0][1].collect { file(it).name }, // empty: d41d8cd98f00b204e9800998ecf8427e
+					process.out.bad_reads,
+					file(process.out.log[0][1]).name,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

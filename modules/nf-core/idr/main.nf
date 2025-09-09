@@ -2,7 +2,7 @@ process IDR {
     tag "$prefix"
     label 'process_low'
 
-    conda "bioconda::idr=2.0.4.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/idr:2.0.4.2--py39hcbe4a3b_5' :
         'biocontainers/idr:2.0.4.2--py39hcbe4a3b_5' }"
@@ -40,6 +40,25 @@ process IDR {
         --log-output-file $log_file \\
         --plot \\
         $args
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        idr: \$(echo \$(idr --version 2>&1) | sed 's/^.*IDR //; s/ .*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    if (peaks.toList().size < 2) {
+        log.error "[ERROR] idr needs at least two replicates only one provided."
+    }
+    def peak_types = ['narrowPeak', 'broadPeak', 'bed']
+    if (!peak_types.contains(peak_type)) {
+        log.error "[ERROR] Invalid option: '${peak_type}'. Valid options for 'peak_type': ${peak_types.join(', ')}."
+    }
+    """
+    touch "${prefix}.idrValues.txt"
+    touch "${prefix}.log.txt"
+    touch "${prefix}.png"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

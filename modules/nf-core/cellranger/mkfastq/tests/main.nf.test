@@ -1,0 +1,106 @@
+// nf-core modules test cellranger/mkfastq
+nextflow_process {
+
+    name "Test Process CELLRANGER_MKFASTQ"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "CELLRANGER_MKFASTQ"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cellranger"
+    tag "cellranger/mkfastq"
+    tag "untar"
+
+    setup {
+        run("UNTAR") {
+            script "modules/nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: 'test', lane:1 ],
+                    file("https://cf.10xgenomics.com/supp/cell-exp/cellranger-tiny-bcl-1.2.0.tar.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("cellranger - tiny - simple") {
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.map{ it -> [ [ id: 'test', lane:1 ], file("https://cf.10xgenomics.com/supp/cell-exp/cellranger-tiny-bcl-simple-1.2.0.csv", checkIfExists: true), it[1] ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fastq,
+                    process.out.undetermined_fastq,
+                    process.out.interop,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("cellranger - tiny - illumina") {
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.map{ it -> [ [ id: 'test', lane:1 ], file("https://cf.10xgenomics.com/supp/cell-exp/cellranger-tiny-bcl-samplesheet-1.2.0.csv", checkIfExists: true), it[1] ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fastq,
+                    process.out.undetermined_fastq,
+                    process.out.interop,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("cellranger - tiny - simple - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.map{ it -> [ [ id: 'test', lane:1 ], file("https://cf.10xgenomics.com/supp/cell-exp/cellranger-tiny-bcl-simple-1.2.0.csv", checkIfExists: true), it[1] ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fastq,
+                    process.out.undetermined_fastq,
+                    process.out.interop,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+}

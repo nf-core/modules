@@ -1,8 +1,8 @@
 process VERIFYBAMID_VERIFYBAMID2 {
-    tag '${meta.id}'
+    tag "${meta.id}"
     label 'process_low'
 
-    conda "bioconda::verifybamid2=2.0.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/verifybamid2:2.0.1--hbb20b25_6' :
         'biocontainers/verifybamid2:2.0.1--h19d48f6_8' }"
@@ -48,6 +48,22 @@ process VERIFYBAMID_VERIFYBAMID2 {
         ${reference_args}  \\
         ${args_list.join(' ')} \\
         > ${prefix}.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        verifybamid: \$(echo \$(verifybamid2 --help 2>&1 | sed -e '3p;d' | sed -e 's/ Version://'))
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.log
+    touch ${prefix}.ud
+    touch ${prefix}.bed
+    touch ${prefix}.mu
+    touch ${prefix}.selfSM
+    touch ${prefix}.Ancestry
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -2,7 +2,7 @@ process EMMTYPER {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::emmtyper=0.2.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/emmtyper:0.2.0--py_0' :
         'biocontainers/emmtyper:0.2.0--py_0' }"

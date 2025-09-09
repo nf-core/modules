@@ -1,0 +1,171 @@
+nextflow_process {
+
+    name "Test Process BBMAP_ALIGN"
+    script "../main.nf"
+    process "BBMAP_ALIGN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bbmap"
+    tag "bbmap/align"
+    tag "bbmap/index"
+
+    setup {
+        run("BBMAP_INDEX") {
+            script "../../index/main.nf"
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                """
+            }
+        }
+    }
+
+    test("paired_end - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+					file(process.out.log[0][1]).name,
+                    process.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5()},
+                    process.out.versions
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("paired_end - index") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ]
+                input[1] = BBMAP_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+					file(process.out.log[0][1]).name,
+                    process.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5()},
+                    process.out.versions
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("single_end - index") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:true ], // meta map
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                        ]
+                    ]
+                input[1] = BBMAP_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+					file(process.out.log[0][1]).name,
+                    process.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5()},
+                    process.out.versions
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("paired_end - index - pigz") {
+        config "./nextflow.config"
+        when {
+            params {
+                module_args = 'unpigz=t'
+            }
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ]
+                input[1] = BBMAP_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+					file(process.out.log[0][1]).name,
+                    process.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5()},
+                    process.out.versions
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("paired_end - index - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ]
+                input[1] = BBMAP_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+					file(process.out.log[0][1]).name,
+                    process.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5()},
+                    process.out.versions
+                    ).match() }
+            )
+        }
+
+    }
+
+}

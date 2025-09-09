@@ -2,7 +2,7 @@ process FASTAWINDOWS {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::fasta_windows=0.2.4"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/fasta_windows:0.2.4--hec16e2b_0':
         'biocontainers/fasta_windows:0.2.4--hec16e2b_0' }"
@@ -31,6 +31,25 @@ process FASTAWINDOWS {
         $args \\
         --fasta $fasta \\
         --output ${prefix}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        fasta_windows: \$(fasta_windows --version | cut -d' ' -f3)
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir -p fw_out
+
+    touch fw_out/${prefix}_freq_windows.tsv
+    touch fw_out/${prefix}_mononuc_windows.tsv
+    touch fw_out/${prefix}_dinuc_windows.tsv
+    touch fw_out/${prefix}_trinuc_windows.tsv
+    touch fw_out/${prefix}_tetranuc_windows.tsv
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

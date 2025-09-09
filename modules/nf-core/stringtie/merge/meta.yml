@@ -11,27 +11,35 @@ tools:
       homepage: https://ccb.jhu.edu/software/stringtie/index.shtml
       documentation: https://ccb.jhu.edu/software/stringtie/index.shtml?t=manual
       licence: ["MIT"]
+      identifier: biotools:stringtie
 input:
   - stringtie_gtf:
       type: file
       description: |
         Stringtie transcript gtf output(s).
       pattern: "*.gtf"
+      ontologies: []
   - annotation_gtf:
       type: file
       description: |
         Annotation gtf file (optional).
       pattern: "*.gtf"
+      ontologies: []
 output:
-  - merged_gtf:
-      type: map
-      description: |
-        Merged gtf from annotation and stringtie output gtfs.
-      pattern: "*.gtf"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+  gtf:
+    - stringtie.merged.gtf:
+        type: file
+        description: Merged gtf file
+        pattern: "stringtie.merged.gtf"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@yuukiiwa"
+maintainers:
   - "@yuukiiwa"

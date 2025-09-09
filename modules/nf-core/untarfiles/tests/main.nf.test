@@ -1,0 +1,104 @@
+
+nextflow_process {
+
+    name "Test Process UNTARFILES"
+    script "../main.nf"
+    process "UNTARFILES"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "untarfiles"
+
+    test("test-untarfiles") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [id: 'test'],
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-untarfiles-subdirectories") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [id: 'test'],
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell.tar.gz', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.files[0][1].collect { file(it).name }.toSorted(),
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-untarfiles-onlyfiles") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [id: 'test'],
+				    file(params.modules_testdata_base_path + 'generic/tar/hello.tar.gz', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-untarfiles-onlyfiles-stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+				    [id: 'test'],
+				    file(params.modules_testdata_base_path + 'generic/tar/hello.tar.gz', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

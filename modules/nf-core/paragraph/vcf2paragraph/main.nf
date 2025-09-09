@@ -3,7 +3,7 @@ process PARAGRAPH_VCF2PARAGRAPH {
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::paragraph=2.3"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/paragraph:2.3--h21f15d8_1':
         'biocontainers/paragraph:2.3--h21f15d8_1' }"
@@ -48,7 +48,7 @@ process PARAGRAPH_VCF2PARAGRAPH {
     def VERSION = '2.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
-    touch ${prefix}.json.gz
+    echo | gzip > ${prefix}.json.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

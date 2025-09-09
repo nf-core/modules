@@ -1,9 +1,0 @@
-- name: "chopper"
-  command: nextflow run ./tests/modules/nf-core/chopper -entry test_chopper -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/chopper/nextflow.config
-  tags:
-    - "chopper"
-  files:
-    - path: "output/chopper/test_out.fastq.gz"
-      contains:
-        - "@2109d790-67ec-4fd1-8931-6c7e61908ff3 runid=97ca62ca093ff43533aa34c38a10b1d6325e7e7b read=52274 ch=243 start_time=2021-02-05T23:27:30Z flow_cell_id=FAP51364 protocol_group_id=data sample_id=RN20097 barcode=barcode01 barcode_alias=barcode01"
-    - path: "output/chopper/versions.yml"

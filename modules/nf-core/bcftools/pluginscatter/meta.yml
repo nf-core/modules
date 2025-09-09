@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "bcftools_pluginscatter"
 description: Split VCF by chunks or regions, creating multiple VCFs.
@@ -15,21 +14,23 @@ tools:
       documentation: http://samtools.github.io/bcftools/bcftools.html#reheader
       doi: 10.1093/gigascience/giab008
       licence: ["MIT"]
-
+      identifier: biotools:bcftools
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: The input VCF to scatter
-      pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
-  - tbi:
-      type: file
-      description: Optional index of the input VCF
-      pattern: "*.tbi"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: The input VCF to scatter
+        pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+        ontologies: []
+    - tbi:
+        type: file
+        description: Optional index of the input VCF
+        pattern: "*.tbi"
+        ontologies: []
   - sites_per_chunk:
       type: integer
       description: |
@@ -45,29 +46,60 @@ input:
       description: |
         A file containing a region on each line with an optional second column containing the filename
         Either this or `sites_per_chunk` or `scatter` have to be given
+      ontologies: []
   - regions:
       type: file
       description: Optional file containing the regions to work on
       pattern: "*.bed"
+      ontologies: []
   - targets:
       type: file
-      description: Optional file containing the regions to work on (but streams instead of index-jumping)
+      description: Optional file containing the regions to work on (but streams instead
+        of index-jumping)
       pattern: "*.bed"
-
+      ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - scatter:
-      type: file
-      description: The resulting files of the scattering
-      pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
-
+  scatter:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*{vcf,vcf.gz,bcf,bcf.gz}":
+          type: file
+          description: The resulting files of the scattering
+          pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+          ontologies: []
+  tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tbi":
+          type: file
+          description: Alternative VCF file index
+          pattern: "*.tbi"
+          ontologies: []
+  csi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.csi":
+          type: file
+          description: Default VCF file index
+          pattern: "*.csi"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

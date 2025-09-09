@@ -12,36 +12,43 @@ tools:
       homepage: http://hgdownload.cse.ucsc.edu/admin/exe/
       documentation: https://genome.ucsc.edu/goldenPath/help/bigWig.html
       licence: ["varies; see http://genome.ucsc.edu/license"]
-
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bedgraph:
-      type: file
-      description: bedGraph file
-      pattern: "*.{bedGraph}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bedgraph:
+        type: file
+        description: bedGraph file
+        pattern: "*.{bedGraph}"
+        ontologies: []
   - sizes:
       type: file
       description: chromosome sizes file
       pattern: "*.{sizes}"
-
+      ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - bigwig:
-      type: file
-      description: bigWig file
-      pattern: "*.{bigWig}"
-
+  bigwig:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bigWig":
+          type: file
+          description: bigWig file
+          pattern: "*.{bigWig}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@drpatelh"
+maintainers:
   - "@drpatelh"

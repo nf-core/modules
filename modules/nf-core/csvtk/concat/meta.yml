@@ -10,19 +10,21 @@ tools:
       homepage: http://bioinf.shenwei.me/csvtk
       documentation: http://bioinf.shenwei.me/csvtk
       tool_dev_url: https://github.com/shenwei356/csvtk
-
       licence: ["MIT"]
-
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - csv:
-      type: file
-      description: CSV/TSV formatted files
-      pattern: "*.{csv,tsv}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - csv:
+        type: file
+        description: CSV/TSV formatted files
+        pattern: "*.{csv,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+          - edam: http://edamontology.org/format_3475 # TSV
   - in_format:
       type: string
       description: Input format (csv, tab, or a delimiting character)
@@ -31,21 +33,28 @@ input:
       type: string
       description: Output format (csv, tab, or a delimiting character)
       pattern: "*"
-
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "version.yml"
-  - csv:
-      type: file
-      description: Concatenated CSV/TSV file
-      pattern: "*.{csv,tsv}"
-
+  csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.${out_extension}:
+          type: file
+          description: Concatenated CSV/TSV file
+          pattern: "*.{csv,tsv}"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "version.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

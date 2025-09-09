@@ -2,7 +2,7 @@ process BIOHANSEL {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::bio_hansel=2.6.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bio_hansel:2.6.1--py_0':
         'biocontainers/bio_hansel:2.6.1--py_0' }"
@@ -36,6 +36,18 @@ process BIOHANSEL {
         $input_type \\
         $seqs
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        biohansel: \$(echo \$(hansel --version 2>&1) | sed 's/^.*hansel //' )
+    END_VERSIONS
+    """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}-summary.txt
+    touch ${prefix}-kmer-results.txt
+    touch ${prefix}-simple-summary.txt
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         biohansel: \$(echo \$(hansel --version 2>&1) | sed 's/^.*hansel //' )

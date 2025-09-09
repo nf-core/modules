@@ -1,0 +1,49 @@
+nextflow_process {
+
+    name "Test Process SNPSITES"
+    script "../main.nf"
+    process "SNPSITES"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "snpsites"
+
+    test("sarscov2 - all_sites_fas") {
+
+        when {
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - all_sites_fas - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

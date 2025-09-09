@@ -12,37 +12,52 @@ tools:
       documentation: "https://github.com/weizhongli/cdhit/wiki"
       tool_dev_url: "https://github.com/weizhongli/cdhit"
       doi: "10.1093/bioinformatics/btl158"
-      licence: "['GPL v2']"
-
+      licence: ["GPL v2"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - sequences:
-      type: file
-      description: fasta file of sequences to be clustered
-      pattern: "*.{fa,fasta}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - sequences:
+        type: file
+        description: fasta file of sequences to be clustered
+        pattern: "*.{fa,fasta}"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - fasta:
-      type: file
-      description: fasta file of the representative sequences for each cluster
-      pattern: "*.{fasta}"
-  - clusters:
-      type: file
-      description: List of clusters
-      pattern: "*.{clstr}"
-
+  fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fasta":
+          type: file
+          description: fasta file of the representative sequences for each cluster
+          pattern: "*.{fasta}"
+          ontologies: []
+  clusters:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.clstr":
+          type: file
+          description: List of clusters
+          pattern: "*.{clstr}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@timslittle"
+  - "@Puumanamana"
+maintainers:
+  - "@timslittle"
+  - "@Puumanamana"

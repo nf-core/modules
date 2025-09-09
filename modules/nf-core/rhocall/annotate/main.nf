@@ -2,7 +2,7 @@ process RHOCALL_ANNOTATE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::rhocall=0.5.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/rhocall:0.5.1--py39hbf8eff0_0':
         'biocontainers/rhocall:0.5.1--py39hbf8eff0_0' }"
@@ -24,6 +24,8 @@ process RHOCALL_ANNOTATE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def az_bed = bed ? "-b ${bed}" : ''
     """
+    export MPLCONFIGDIR=\$PWD
+
     rhocall \\
         annotate \\
         $args \\
@@ -41,6 +43,8 @@ process RHOCALL_ANNOTATE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    export MPLCONFIGDIR=\$PWD
+
     touch ${prefix}_rhocall.vcf
 
     cat <<-END_VERSIONS > versions.yml

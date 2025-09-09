@@ -2,7 +2,7 @@ process EXPANSIONHUNTERDENOVO_MERGE {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::expansionhunterdenovo=0.9.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/expansionhunterdenovo:0.9.0--hdc99072_3':
         'biocontainers/expansionhunterdenovo:0.9.0--hdc99072_3' }"
@@ -30,6 +30,16 @@ process EXPANSIONHUNTERDENOVO_MERGE {
         --output-prefix ${prefix} \\
         ${args}
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        expansionhunterdenovo: \$(echo \$(ExpansionHunterDenovo --help 2>&1) | sed -e "s/ExpansionHunter Denovo v//;s/ Usage.*//")
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.multisample_profile.json
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         expansionhunterdenovo: \$(echo \$(ExpansionHunterDenovo --help 2>&1) | sed -e "s/ExpansionHunter Denovo v//;s/ Usage.*//")

@@ -2,7 +2,7 @@ process ENTREZDIRECT_ESEARCH {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::entrez-direct=16.2"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/entrez-direct:16.2--he881be0_1':
         'biocontainers/entrez-direct:16.2--he881be0_1' }"
@@ -27,6 +27,16 @@ process ENTREZDIRECT_ESEARCH {
         -query $term \\
         $args > ${prefix}.xml
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        esearch: \$(esearch -version)
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.xml
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         esearch: \$(esearch -version)

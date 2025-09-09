@@ -2,16 +2,17 @@ process FREYJA_UPDATE {
     tag "$db_name"
     label 'process_single'
 
-    conda "bioconda::freyja=1.3.12"
+
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/freyja:1.3.12--pyhdfd78af_0':
-        'biocontainers/freyja:1.3.12--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/freyja:1.5.3--pyhdfd78af_1' :
+        'biocontainers/freyja:1.5.3--pyhdfd78af_1' }"
 
     input:
     val db_name
 
     output:
-    path "${db_name}/usher_barcodes.csv"   , emit: barcodes
+    path "${db_name}/usher_barcodes.feather"   , emit: barcodes
     path "${db_name}/lineages.yml"         , emit: lineages_topology
     path "${db_name}/curated_lineages.json", emit: lineages_meta
     path "versions.yml"                    , emit: versions

@@ -1,0 +1,65 @@
+name: "htseq_count"
+description: count how many reads map to each feature
+keywords:
+  - htseq
+  - count
+  - gtf
+  - annotation
+tools:
+  - "htseq/count":
+      description: "HTSeq is a Python library to facilitate processing and analysis
+        of data from high-throughput sequencing (HTS) experiments."
+      homepage: "https://htseq.readthedocs.io/en/latest/"
+      documentation: "https://htseq.readthedocs.io/en/latest/index.html"
+      doi: "10.1093/bioinformatics/btu638"
+      licence: ["GPL v3"]
+      identifier: biotools:htseq
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - input:
+        type: file
+        description: Sorted BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+        ontologies: []
+    - index:
+        type: file
+        description: Contains indexed bam file
+        pattern: "*.bai"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          .gtf file information
+          e.g. `[ id:'test' ]`
+    - gtf:
+        type: file
+        description: Contains the features in the GTF format
+        pattern: "*.gtf"
+        ontologies: []
+output:
+  txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.txt":
+          type: file
+          description: File containing feature counts output
+          pattern: ".txt"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@zehrahazalsezer"
+maintainers:
+  - "@zehrahazalsezer"

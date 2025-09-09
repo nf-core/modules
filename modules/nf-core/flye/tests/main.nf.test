@@ -1,0 +1,178 @@
+// According to the issue https://github.com/fenderglass/Flye/issues/164
+// Some fluctuations are expected because of the heuristics
+// Here we check the that test.assembly_info.txt contains at least contig_1
+
+nextflow_process {
+
+    name "Test Process FLYE"
+    script "../main.nf"
+    process "FLYE"
+    tag "flye"
+    tag "modules"
+    tag "modules_nfcore"
+
+    test("flye_pacbio_corr") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] =  [ [ id:'test' ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)
+                            ]
+                input[1] = "--pacbio-corr"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.fasta.get(0).get(1)).name,
+                    file(process.out.gfa.get(0).get(1)).name,
+                    file(process.out.gv.get(0).get(1)).name,
+                    file(process.out.log.get(0).get(1)).name,
+                    file(process.out.txt.get(0).get(1)).name,
+                    path(process.out.txt.get(0).get(1)).readLines()[1].contains("contig_1"),
+                    process.out.json,
+                    process.out.versions
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("flye_pacbio_hifi") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] =  [ [ id:'test' ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)
+                            ]
+                input[1] = "--pacbio-hifi"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.fasta.get(0).get(1)).name,
+                    file(process.out.gfa.get(0).get(1)).name,
+                    file(process.out.gv.get(0).get(1)).name,
+                    file(process.out.log.get(0).get(1)).name,
+                    file(process.out.txt.get(0).get(1)).name,
+                    path(process.out.txt.get(0).get(1)).readLines()[1].contains("contig_1"),
+                    process.out.json,
+                    process.out.versions
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("flye_nano_corr") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] =  [ [ id:'test' ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)
+                            ]
+                input[1] = "--nano-corr"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.fasta.get(0).get(1)).name,
+                    file(process.out.gfa.get(0).get(1)).name,
+                    file(process.out.gv.get(0).get(1)).name,
+                    file(process.out.log.get(0).get(1)).name,
+                    file(process.out.txt.get(0).get(1)).name,
+                    path(process.out.txt.get(0).get(1)).readLines()[1].contains("contig_1"),
+                    process.out.json,
+                    process.out.versions
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("flye_nano_hq") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] =  [ [ id:'test' ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)
+                            ]
+                input[1] = "--nano-hq"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.fasta.get(0).get(1)).name,
+                    file(process.out.gfa.get(0).get(1)).name,
+                    file(process.out.gv.get(0).get(1)).name,
+                    file(process.out.log.get(0).get(1)).name,
+                    file(process.out.txt.get(0).get(1)).name,
+                    path(process.out.txt.get(0).get(1)).readLines()[1].contains("contig_1"),
+                    process.out.json,
+                    process.out.versions
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("flye_pacbio_raw - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] =  [ [ id:'test' ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true)
+                            ]
+                input[1] = "--pacbio-raw"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions.get(0)).yaml
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+}

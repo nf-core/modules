@@ -2,10 +2,10 @@ process DEEPTOOLS_PLOTHEATMAP {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::deeptools=3.5.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/deeptools:3.5.1--py_0' :
-        'biocontainers/deeptools:3.5.1--py_0' }"
+        'https://depot.galaxyproject.org/singularity/deeptools:3.5.5--pyhdfd78af_0':
+        'biocontainers/deeptools:3.5.5--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(matrix)
@@ -31,6 +31,18 @@ process DEEPTOOLS_PLOTHEATMAP {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         deeptools: \$(plotHeatmap --version | sed -e "s/plotHeatmap //g")
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.plotHeatmap.pdf
+    touch ${prefix}.plotHeatmap.mat.tab
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        deeptools: \$(plotFingerprint --version | sed -e "s/plotFingerprint //g")
     END_VERSIONS
     """
 }

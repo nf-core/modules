@@ -3,7 +3,7 @@ process SAM2LCA_ANALYZE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::sam2lca=1.1.2" : null)
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sam2lca:1.1.2--pyhdfd78af_1':
         'biocontainers/sam2lca:1.1.2--pyhdfd78af_1' }"
@@ -13,10 +13,10 @@ process SAM2LCA_ANALYZE {
     path(database)
 
     output:
-    tuple val(meta), path("*.csv") ,                 emit: csv
-    tuple val(meta), path("*.json"),                 emit: json
-    tuple val(meta), path("*.bam") , optional: true, emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.csv")  , emit: csv
+    tuple val(meta), path("*.json") , emit: json
+    tuple val(meta), path("*.bam")  , emit: bam     , optional: true
+    path "versions.yml"             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,6 +34,19 @@ process SAM2LCA_ANALYZE {
         $args \\
         -o ${prefix} \\
         $bam
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        sam2lca: \$(echo \$(sam2lca --version 2>&1) | sed 's/^sam2lca, version //' ))
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.csv
+    touch ${prefix}.json
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -2,7 +2,7 @@ process MAPDAMAGE2 {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::mapdamage2=2.2.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mapdamage2:2.2.1--pyr40_0' :
         'biocontainers/mapdamage2:2.2.1--pyr40_0' }"
@@ -43,6 +43,19 @@ process MAPDAMAGE2 {
             $args \\
             -i $bam \\
             -r $fasta
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        mapdamage2: \$(echo \$(mapDamage --version))
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir results_${bam.baseName}
+
+    touch results_${bam.baseName}/Runtime_log.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

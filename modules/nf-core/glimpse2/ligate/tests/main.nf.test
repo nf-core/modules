@@ -1,0 +1,100 @@
+nextflow_process {
+
+    name "Test Process GLIMPSE2_LIGATE"
+    script "../main.nf"
+
+    process "GLIMPSE2_LIGATE"
+
+    tag "modules_nfcore"
+    tag "modules"
+    tag "glimpse2"
+    tag "glimpse2/ligate"
+    tag "bcftools/index"
+    tag "glimpse2/phase"
+
+    test("Should run glimpse ligate") {
+        setup {
+            run("GLIMPSE2_PHASE") {
+                script "../../phase/main.nf"
+                process {
+                """
+                input_vcf = Channel.of([
+                    [ id:'input' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi", checkIfExists: true),
+                    [], [],
+                    "chr22:16600000-16800000",
+                    "chr22:16650000-16750000"
+                ])
+
+                ref_panel = Channel.of([
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
+                ])
+
+                map_file = Channel.of([[]])
+
+                // [meta, vcf, index, sample_infos, regionin, regionout,ref, index, map] [meta, fasta, fai]
+                input[0] = input_vcf
+                    .combine(ref_panel)
+                    .combine(map_file)
+                input[1] = Channel.of([[],[],[]])
+                """
+                }
+            }
+            run("BCFTOOLS_INDEX") {
+                script "../../../bcftools/index/main.nf"
+                process {
+                """
+                input[0] = GLIMPSE2_PHASE.out.phased_variants
+                """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = GLIMPSE2_PHASE.out.phased_variants
+                    | groupTuple()
+                    | join (BCFTOOLS_INDEX.out.csi.groupTuple())
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.merged_variants.collect{ path(it[1]).vcf.variantsMD5}
+                ).match() },
+            )
+        }
+    }
+
+    test("Should run glimpse ligate -- stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'input' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi", checkIfExists: true),
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml,
+                ).match() },
+            )
+        }
+    }
+}

@@ -13,24 +13,32 @@ tools:
       manual: https://salmon.readthedocs.io/en/latest/salmon.html
       doi: 10.1038/nmeth.4197
       licence: ["GPL-3.0-or-later"]
+      identifier: biotools:salmon
 input:
   - genome_fasta:
       type: file
       description: Fasta file of the reference genome
-  - transcriptome_fasta:
+      ontologies: []
+  - transcript_fasta:
       type: file
       description: Fasta file of the reference transcriptome
-
+      ontologies: []
 output:
-  - index:
-      type: directory
-      description: Folder containing the star index files
-      pattern: "salmon"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+  index:
+    - salmon:
+        type: directory
+        description: Folder containing the star index files
+        pattern: "salmon"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
+  - "@kevinmenden"
+  - "@drpatelh"
+maintainers:
   - "@kevinmenden"
   - "@drpatelh"

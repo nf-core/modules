@@ -1,0 +1,84 @@
+nextflow_process {
+
+    name "Test Process SEQTK_MERGEPE"
+    script "modules/nf-core/seqtk/mergepe/main.nf"
+    process "SEQTK_MERGEPE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "seqtk"
+    tag "seqtk/mergepe"
+
+    test("mergepe_single_end") {
+
+        when {
+            process {
+                """
+                input[0] =  [
+                                [ id:'test', single_end:true ],
+                                file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert snapshot(
+                            file(process.out.reads[0][1]).name
+                                ).match("single_end")
+                }
+            )
+        }
+    }
+
+    test("mergepe_paired_end") {
+
+        when {
+            process {
+                """
+                input[0] =  [
+                                [ id:'test', single_end:false ], // meta map
+                                [   file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                                    file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                                ]
+                            ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert snapshot(
+                            file(process.out.reads[0][1]).name
+                                ).match("paired_end")
+                }
+            )
+        }
+    }
+
+    test("mergepe_single_end_stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] =  [
+                                [ id:'test', single_end:true ],
+                                file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                            ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
