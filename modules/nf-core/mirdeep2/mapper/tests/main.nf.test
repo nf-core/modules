@@ -1,0 +1,141 @@
+
+nextflow_process {
+
+    name "Test Process MIRDEEP2_MAPPER"
+    script "../main.nf"
+    process "MIRDEEP2_MAPPER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mirdeep2"
+    tag "bowtie/build"
+    tag "mirdeep2/mapper"
+    tag "seqkit/fq2fa"
+    tag "seqkit/replace"
+
+
+    setup {
+        run("BOWTIE_BUILD") {
+            script "../../../bowtie/build/main.nf"
+            process {
+            """
+            input[0] = [
+                        [ id:'genome_cel_cluster' ], // meta map
+                    file('https://github.com/rajewsky-lab/mirdeep2/raw/master/tutorial_dir/cel_cluster.fa', checkIfExists: true)
+            ]
+            """
+            }
+        }
+
+        run("SEQKIT_FQ2FA") {
+            script "../../../seqkit/fq2fa/main.nf"
+            process {
+            """
+            input[0] = [
+                        [ id:'small_Clone1_N1' ], // meta map
+                    file('https://github.com/nf-core/test-datasets/raw/smrnaseq/testdata/trimmed/small_Clone1_N1.fastp.fastq.gz', checkIfExists: true)
+            ]
+            """
+            }
+        }
+
+        run("SEQKIT_REPLACE") {
+            script "../../../seqkit/replace/main.nf"
+            config "./nextflow.config"
+            process {
+            """
+            input[0] = SEQKIT_FQ2FA.out.fasta
+            """
+            }
+        }
+
+    }
+
+    test("mirdeep2 - mapper - fasta celegans") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+            input[0] = [
+                        [ id:'test_reads', single_end:false ], // meta map
+                    file('https://github.com/rajewsky-lab/mirdeep2/raw/master/tutorial_dir/reads.fa', checkIfExists: true)
+            ]
+            input[1] = BOWTIE_BUILD.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match() },
+
+                // md5sum not stable - IDs change while sequences are the same
+
+                // Assert TCACCGGGGGTACATCAGCTAA occurs once
+                { assert file(process.out.outputs[0][1]).readLines().findAll { it.contains("TCACCGGGGGTACATCAGCTAA") }.size() == 1 },
+
+                // Assert seq_347479_x287 occurs once
+                { assert file(process.out.outputs[0][1]).readLines().findAll { it.contains("seq_347479_x287") }.size() == 1 },
+
+                // Assert that specific content occurs 4 times
+                { assert file(process.out.outputs[0][2]).readLines().findAll { it.contains("21\t1\t21\ttcaccgggtgtaaatcagctt\tchrII:11534525-11540624\t21\t3535\t3555\ttcaccgggtgtaaatcagctt\t+\t0\tmmmmmmmmmmmmmmmmmmmmm") }.size() == 4 }
+            )
+        }
+
+    }
+
+    test("mirdeep2 - mapper - fasta smrnaseq") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+            input[0] = SEQKIT_REPLACE.out.fastx
+            input[1] = BOWTIE_BUILD.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+
+                // Assert reads occurs once
+                { assert file(process.out.outputs[0][1]).readLines().findAll { it.contains("TACCTGAGGTAGCAGGTTGTATAGTTGGGG") }.size() == 1 },
+
+                // Assert ID occurs once
+                { assert file(process.out.outputs[0][1]).readLines().findAll { it.contains("seq_996152_x1") }.size() == 1 }
+
+                )
+        }
+
+    }
+
+    test("mirdeep2 - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+            input[0] = [
+                        [ id:'test_reads', single_end:false ], // meta map
+                    file('https://github.com/rajewsky-lab/mirdeep2/raw/master/tutorial_dir/reads.fa', checkIfExists: true)
+            ]
+            input[1] = BOWTIE_BUILD.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

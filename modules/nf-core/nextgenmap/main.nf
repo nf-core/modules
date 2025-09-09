@@ -55,4 +55,15 @@ process NEXTGENMAP {
         END_VERSIONS
         """
     }
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bam
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        NextGenMap: \$(ngm 2>&1 | head -1 | grep -o -E '[[:digit:]]+.[[:digit:]]+.[[:digit:]]+')
+    END_VERSIONS
+    """
 }

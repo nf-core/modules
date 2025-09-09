@@ -1,0 +1,61 @@
+
+nextflow_process {
+
+    name "Test Process PURGEDUPS_SPLITFA"
+    script "../main.nf"
+    process "PURGEDUPS_SPLITFA"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "purgedups"
+    tag "purgedups/splitfa"
+
+    test("splitfa") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				[ id:'test' ],
+				file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+				]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+
+    test("splitfa - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+				[ id:'test' ],
+				file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+				]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+
+}

@@ -4,8 +4,8 @@ process DEEPTOOLS_PLOTFINGERPRINT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/deeptools:3.5.1--py_0' :
-        'biocontainers/deeptools:3.5.1--py_0' }"
+        'https://depot.galaxyproject.org/singularity/deeptools:3.5.5--pyhdfd78af_0':
+        'biocontainers/deeptools:3.5.5--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(bams), path(bais)
@@ -32,6 +32,19 @@ process DEEPTOOLS_PLOTFINGERPRINT {
         --outRawCounts ${prefix}.plotFingerprint.raw.txt \\
         --outQualityMetrics ${prefix}.plotFingerprint.qcmetrics.txt \\
         --numberOfProcessors $task.cpus
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        deeptools: \$(plotFingerprint --version | sed -e "s/plotFingerprint //g")
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.plotFingerprint.pdf
+    touch ${prefix}.plotFingerprint.raw.txt
+    touch ${prefix}.plotFingerprint.qcmetrics.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -1,0 +1,40 @@
+
+nextflow_process {
+
+    name "Test Process BCFTOOLS_SPLIT"
+    script "../main.nf"
+    process "BCFTOOLS_SPLIT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bcftools"
+    tag "bcftools/split"
+
+    test("test-bcftools-split") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz.tbi', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					path(process.out.split_vcf[0][1]).vcf.variantsMD5,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

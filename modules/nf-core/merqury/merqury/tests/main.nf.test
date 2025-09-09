@@ -19,8 +19,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     [
-                        file(params.test_data['homo_sapiens']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['illumina']['test_2_fastq_gz'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ]
                 input[1] = 21
@@ -46,7 +46,7 @@ nextflow_process {
                 """
                 assembly = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[0] = MERYL_UNIONSUM.out.meryl_db.join( Channel.value( assembly ) )
                 """
@@ -91,7 +91,7 @@ nextflow_process {
                     input[0] = [
                         [ id:'test', single_end:false ], // meta map
                         [
-                            file(params.test_data['homo_sapiens']['illumina']['test2_1_fastq_gz'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_1.fastq.gz', checkIfExists: true)
                         ]
                     ]
                     input[1] = 21
@@ -106,7 +106,7 @@ nextflow_process {
                     input[0] = [
                         [ id:'test', single_end:false ], // meta map
                         [
-                            file(params.test_data['homo_sapiens']['illumina']['test2_2_fastq_gz'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_2.fastq.gz', checkIfExists: true)
                         ]
                     ]
                     input[1] = 21
@@ -120,7 +120,7 @@ nextflow_process {
                 """
                 ch_assembly = Channel.value([
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ])
 
                 ch_input = MERYL_UNIONSUM.out.meryl_db
@@ -170,7 +170,7 @@ nextflow_process {
                 """
                 assembly = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[0] = MERYL_UNIONSUM.out.meryl_db.join( Channel.value( assembly ) )
                 """

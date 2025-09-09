@@ -1,0 +1,50 @@
+
+nextflow_workflow {
+
+    name "Test Subworkflow BAM_STATS_MIRNA_MIRTOP"
+    script "../main.nf"
+    workflow "BAM_STATS_MIRNA_MIRTOP"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/bam_stats_mirna_mirtop"
+    tag "mirtop"
+    tag "mirtop/gff"
+    tag "mirtop/export"
+    tag "mirtop/stats"
+    tag "mirtop/counts"
+
+    test("isomir - bam") {
+
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [ id:'sample_sim_isomir_bam'], // meta map
+                    file("https://github.com/nf-core/test-datasets/raw/smrnaseq/nf-test_data/mirtop/SRX8195117_SRR11631013_seqcluster.bam", checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'hairpin'], // meta map
+                    file("https://github.com/nf-core/test-datasets/raw/smrnaseq/reference/hairpin.fa", checkIfExists: true),
+                ]
+                input[2] = [
+                    [ id:'hsa' ], // meta map
+                    file("https://github.com/nf-core/test-datasets/raw/smrnaseq/reference/hsa.gff3", checkIfExists: true),
+                "hsa"]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out.isomirs,
+                    workflow.out.stats_txt,
+                    workflow.out.stats_log,
+                    workflow.out.versions).match() },
+                { assert path("${workflow.out.counts[0][1]}").exists() }
+            )
+        }
+    }
+}

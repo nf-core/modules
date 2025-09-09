@@ -41,4 +41,16 @@ process HPSUISSERO {
         hpsuissero: $VERSION
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.0.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    touch ${prefix}.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        hpsuissero: $VERSION
+    END_VERSIONS
+    """
 }

@@ -1,7 +1,8 @@
-name: krona_ktupdatetaxonomy
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
-  - defaults
 dependencies:
-  - bioconda::krona=2.7.1
+  - bioconda::krona=2.8.1
+  - conda-forge::make=4.4.1

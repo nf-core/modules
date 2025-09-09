@@ -13,82 +13,184 @@ tools:
       documentation: https://lima.how/
       tool_dev_url: https://github.com/pacificbiosciences/barcoding/
       licence: ["BSD-3-Clause-Clear"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - ccs:
-      type: file
-      description: A BAM or fasta or fasta.gz or fastq or fastq.gz file of subreads or ccs
-      pattern: "*.{bam,fasta,fasta.gz,fastq,fastq.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - ccs:
+        type: file
+        description: A BAM or fasta or fasta.gz or fastq or fastq.gz file of subreads
+          or ccs
+        pattern: "*.{bam,fasta,fasta.gz,fastq,fastq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
   - primers:
       type: file
       description: Fasta file, sequences of primers
       pattern: "*.fasta"
+      ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - bam:
-      type: file
-      description: A bam file of ccs purged of primers
-      pattern: "*.bam"
-  - pbi:
-      type: file
-      description: Pacbio index file of ccs purged of primers
-      pattern: "*.bam"
-  - xml:
-      type: file
-      description: An XML file representing a set of a particular sequence data type such as subreads, references or aligned subreads.
-      pattern: "*.xml"
-  - json:
-      type: file
-      description: A metadata json file
-      pattern: "*.json"
-  - clips:
-      type: file
-      description: A fasta file of clipped primers
-      pattern: "*.clips"
-  - counts:
-      type: file
-      description: A tabulated file of describing pairs of primers
-      pattern: "*.counts"
-  - guess:
-      type: file
-      description: A second tabulated file of describing pairs of primers (no doc available)
-      pattern: "*.guess"
-  - report:
-      type: file
-      description: A tab-separated file about each ZMW, unfiltered
-      pattern: "*.report"
-  - summary:
-      type: file
-      description: This file shows how many ZMWs have been filtered, how ZMWs many are same/different, and how many reads have been filtered.
-      pattern: "*.summary"
-  - fasta:
-      type: file
-      description: A fasta file of ccs purged of primers.
-      pattern: "*.fa"
-  - fastagz:
-      type: file
-      description: A fasta.gz file of ccs purged of primers.
-      pattern: "*.fasta.gz"
-  - fastq:
-      type: file
-      description: A fastq file of ccs purged of primers.
-      pattern: "*.fastq"
-  - fastqgz:
-      type: file
-      description: A fastq.gz file of ccs purged of primers.
-      pattern: "*.fastq.gz"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  counts:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.counts":
+          type: file
+          description: A tabulated file of describing pairs of primers
+          pattern: "*.counts"
+          ontologies: []
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.report":
+          type: file
+          description: A tab-separated file about each ZMW, unfiltered
+          pattern: "*.report"
+          ontologies: []
+  summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.summary":
+          type: file
+          description: This file shows how many ZMWs have been filtered, how ZMWs many
+            are same/different, and how many reads have been filtered.
+          pattern: "*.summary"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.bam":
+          type: file
+          description: A bam file of ccs purged of primers
+          pattern: "*.bam"
+          ontologies: []
+  pbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.bam.pbi":
+          type: file
+          description: Pacbio index file of ccs purged of primers
+          pattern: "*.bam"
+          ontologies: []
+  fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.{fa, fasta}":
+          type: file
+          description: A fasta file of ccs purged of primers.
+          pattern: "*.fa"
+          ontologies: []
+  fastagz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.{fa.gz, fasta.gz}":
+          type: file
+          description: A fasta.gz file of ccs purged of primers.
+          pattern: "*.fasta.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  fastq:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.fastq":
+          type: file
+          description: A fastq file of ccs purged of primers.
+          pattern: "*.fastq"
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+  fastqgz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.fastq.gz":
+          type: file
+          description: A fastq.gz file of ccs purged of primers.
+          pattern: "*.fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  xml:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.xml":
+          type: file
+          description: An XML file representing a set of a particular sequence data
+            type such as subreads, references or aligned subreads.
+          pattern: "*.xml"
+          ontologies:
+            - edam: http://edamontology.org/format_2332 # XML
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.json":
+          type: file
+          description: A metadata json file
+          pattern: "*.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  clips:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.clips":
+          type: file
+          description: A fasta file of clipped primers
+          pattern: "*.clips"
+          ontologies: []
+  guess:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.guess":
+          type: file
+          description: A second tabulated file of describing pairs of primers (no doc
+            available)
+          pattern: "*.guess"
+          ontologies: []
 authors:
   - "@sguizard"
 maintainers:

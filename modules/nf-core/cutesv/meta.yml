@@ -3,50 +3,61 @@ description: structural-variant calling with cutesv
 keywords:
   - cutesv
   - structural-variant calling
+  - sv
 tools:
   - cutesv:
-      description: a clustering-and-refinement method to analyze the signatures to implement sensitive SV detection.
+      description: a clustering-and-refinement method to analyze the signatures to implement
+        sensitive SV detection.
       homepage: https://github.com/tjiangHIT/cuteSV
       documentation: https://github.com/tjiangHIT/cuteSV#readme
       tool_dev_url: https://github.com/tjiangHIT/cuteSV
       licence: ["MIT"]
+      identifier: biotools:cuteSV
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - bam:
-      type: file
-      description: BAM file
-      pattern: "*.bam"
-  - bai:
-      type: file
-      description: Index of BAM file
-      pattern: "*.bai"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'fasta' ]
-  - fasta:
-      type: file
-      description: |
-        Reference database in FASTA format
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - bam:
+        type: file
+        description: BAM file
+        pattern: "*.bam"
+        ontologies: []
+    - bai:
+        type: file
+        description: Index of BAM file
+        pattern: "*.bai"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'fasta' ]
+    - fasta:
+        type: file
+        description: |
+          Reference database in FASTA format
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - vcf:
-      type: file
-      description: VCF file containing called variants from CuteSV
-      pattern: "*.vcf"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.vcf":
+          type: file
+          description: VCF file containing called variants from CuteSV
+          pattern: "*.vcf"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@christopher-hakkaart"
   - "@yuukiiwa"

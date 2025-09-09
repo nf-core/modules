@@ -4,8 +4,8 @@ process SHAPEIT5_SWITCH {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/shapeit5:1.0.0--h0c8ee15_0':
-        'biocontainers/shapeit5:1.0.0--h0c8ee15_0'}"
+        'https://depot.galaxyproject.org/singularity/shapeit5:5.1.1--hb60d31d_0':
+        'biocontainers/shapeit5:5.1.1--hb60d31d_0'}"
 
     input:
         tuple val(meta) , path(estimate), path(estimate_index), val(region), path(pedigree)
@@ -43,18 +43,18 @@ process SHAPEIT5_SWITCH {
     """
 
     stub:
-    def args         = task.ext.args   ?: ''
     def prefix       = task.ext.prefix ?: "${meta.id}"
+    def create_cmd   = "echo '' | gzip >"
     """
-    touch ${prefix}.block.switch.txt.gz
-    touch ${prefix}.calibration.switch.txt.gz
-    touch ${prefix}.flipsAndSwitches.txt.gz
-    touch ${prefix}.frequency.switch.txt.gz
-    touch ${prefix}.sample.switch.txt.gz
-    touch ${prefix}.sample.typing.txt.gz
-    touch ${prefix}.type.switch.txt.gz
-    touch ${prefix}.variant.switch.txt.gz
-    touch ${prefix}.variant.typing.txt.gz
+    ${create_cmd} ${prefix}.block.switch.txt.gz
+    ${create_cmd} ${prefix}.calibration.switch.txt.gz
+    ${create_cmd} ${prefix}.flipsAndSwitches.txt.gz
+    ${create_cmd} ${prefix}.frequency.switch.txt.gz
+    ${create_cmd} ${prefix}.sample.switch.txt.gz
+    ${create_cmd} ${prefix}.sample.typing.txt.gz
+    ${create_cmd} ${prefix}.type.switch.txt.gz
+    ${create_cmd} ${prefix}.variant.switch.txt.gz
+    ${create_cmd} ${prefix}.variant.typing.txt.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

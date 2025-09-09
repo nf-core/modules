@@ -1,0 +1,88 @@
+
+nextflow_process {
+
+    name "Test Process SCRAMBLE_CLUSTERIDENTIFIER"
+    script "../main.nf"
+    process "SCRAMBLE_CLUSTERIDENTIFIER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "scramble"
+    tag "scramble/clusteridentifier"
+
+    test("bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scramble/test.bam', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scramble/test.bam.bai', checkIfExists: true)
+				]
+				input[1] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("cram") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ],
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scramble/test.cram', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scramble/test.cram.crai', checkIfExists: true)
+				]
+				input[1] = [
+                    [ id: 'fasta'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scramble/test.fa', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("bam - stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scramble/test.bam', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scramble/test.bam.bai', checkIfExists: true)
+				]
+				input[1] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    file(process.out.clusters[0][1]).readLines()
+                    ).match() }
+            )
+        }
+    }
+
+}

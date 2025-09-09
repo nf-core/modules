@@ -1,0 +1,90 @@
+// nf-core subworkflows test fasta_hmmsearch_rank_fastas
+nextflow_workflow {
+
+    name "Test Subworkflow FASTA_HMMSEARCH_RANK_FASTAS"
+    script "../main.nf"
+    workflow "FASTA_HMMSEARCH_RANK_FASTAS"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fasta_hmmsearch_rank_fastas"
+    tag "hmmer"
+    tag "hmmer/hmmfetch"
+    tag "hmmer/hmmsearch"
+    tag "hmmer/hmmrank"
+    tag "seqtk/subseq"
+
+    test("SSU rRNA - hmm/fasta") {
+
+        setup {
+            run("HMMER_HMMFETCH") {
+                script "../../../../modules/nf-core/hmmer/hmmfetch/main.nf"
+                process {
+                    """
+                    input[0] = Channel.fromList([
+                        tuple([ id: 'arc16s' ], file("https://raw.githubusercontent.com/tseemann/barrnap/master/db/arc.hmm")),
+                        tuple([ id: 'bac16s' ], file("https://raw.githubusercontent.com/tseemann/barrnap/master/db/bac.hmm")),
+                        tuple([ id: 'euk18s' ], file("https://raw.githubusercontent.com/tseemann/barrnap/master/db/euk.hmm")),
+                        tuple([ id: 'mito12s' ], file("https://raw.githubusercontent.com/tseemann/barrnap/master/db/mito.hmm"))
+                    ])
+                    input[1] = Channel.of('16S_rRNA', '16S_rRNA', '18S_rRNA', '12S_rRNA')
+                    input[2] = []
+                    input[3] = []
+                    """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                input[0] = HMMER_HMMFETCH.out.hmm
+                input[1] = Channel.fromPath("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/domain_16s.fna")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match('16s_out') }
+            )
+        }
+    }
+
+    // The profile used here doesn't give any significant results, and no output fastas are expected
+    test("LSU rRNA - hmm/fasta") {
+
+        setup {
+            run("HMMER_HMMFETCH") {
+                script "../../../../modules/nf-core/hmmer/hmmfetch/main.nf"
+                process {
+                    """
+                    input[0] = Channel.fromList([
+                        tuple([ id: 'euk28s' ], file("https://raw.githubusercontent.com/tseemann/barrnap/master/db/euk.hmm"))
+                    ])
+                    input[1] = Channel.of('28S_rRNA')
+                    input[2] = []
+                    input[3] = []
+                    """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                input[0] = HMMER_HMMFETCH.out.hmm
+                input[1] = Channel.fromPath("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/domain_16s.fna")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match('28s_out') }
+            )
+        }
+    }
+}

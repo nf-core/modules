@@ -14,9 +14,12 @@ nextflow_process {
 
         when {
             process {
-                """             
-                input[0] = [[],file(params.test_data['sarscov2']['genome']['all_sites_fas'], checkIfExists: true)]
-                input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                """
+                input[0] = [
+                    [id: "test" ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
+                ]
+                input[1] = [[id: "genome" ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                 input[2] = []
                 """
 
@@ -32,22 +35,16 @@ nextflow_process {
 
             assertAll(
                 {assert process.success},
+                {assert snapshot(process.out.versions,
+                                 process.out.valid_fasta,
+                                 process.out.invalid_fasta).match()},
                 {assert process.out.log != null},
                 {assert process.out.log.size() == 1},
-                {assert process.out.log.get(0).get(1) ==~ ".*/president_logger.log"},
+                {assert process.out.log.get(0).get(1) ==~ ".*president_logger.log"},
                 {assert process.out.report != null},
                 {assert process.out.report.size() == 1},
-                {assert process.out.report.get(0).get(1) ==~ ".*/report.tsv"},
+                {assert process.out.report.get(0).get(1) ==~ ".*report.tsv"},
                 {assert firstReportEntry == firstReportAssert},
-                {assert process.out.fasta != null},
-                {assert process.out.fasta.size() == 1},
-                {assert process.out.fasta.get(0).get(1).size() == 2},
-                {assert process.out.fasta.get(0).get(1).get(0) ==~ ".*/invalid.fasta"},
-                {assert path(process.out.fasta.get(0).get(1).get(0)).readLines().size() == 2},
-                {assert path(process.out.fasta.get(0).get(1).get(0)).md5 == "5e16f45d529bac4c6d757a84802ac772"},
-                {assert process.out.fasta.get(0).get(1).get(1) ==~ ".*/valid.fasta"},
-                {assert path(process.out.fasta.get(0).get(1).get(1)).readLines().size() == 6},
-                {assert path(process.out.fasta.get(0).get(1).get(1)).md5 == "16031b5d95fff7ff01b60615728df4ab"}
             )
         }
     }
@@ -56,9 +53,12 @@ nextflow_process {
 
         when {
             process {
-                """             
-                input[0] = [[],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)]
-                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                """
+                input[0] = [
+                    [id: "test" ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
+                ]
+                input[1] = [[id: "genome" ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                 input[2] = "true"
                 """
             }
@@ -73,28 +73,67 @@ nextflow_process {
             firstReportAssert.add(sdf.format(date))
             assertAll(
                 {assert process.success},
-
+                {assert snapshot(process.out.versions,
+                                 process.out.valid_fasta,
+                                 process.out.invalid_fasta).match()},
                 {assert process.out.log != null},
                 {assert process.out.log.size() == 1},
-                {assert process.out.log.get(0).get(1) ==~ ".*/president_logger.log"},
+                {assert process.out.log.get(0).get(1) ==~ ".*president_logger.log"},
 
                 {assert process.out.report != null},
                 {assert process.out.report.size() == 1},
-                {assert process.out.report.get(0).get(1) ==~ ".*/report.tsv"},
-
+                {assert process.out.report.get(0).get(1) ==~ ".*report.tsv"},
                 {assert firstReportEntry == firstReportAssert},
-
-                {assert process.out.fasta != null},
-                {assert process.out.fasta.size() == 1},
-                {assert process.out.fasta.get(0).get(1).size() == 2},
-                {assert process.out.fasta.get(0).get(1).get(0) ==~ ".*/invalid.fasta.gz"},
-                {assert path(process.out.fasta.get(0).get(1).get(0)).linesGzip.size() == 2},
-                {assert path(process.out.fasta.get(0).get(1).get(0)).md5 == "5e16f45d529bac4c6d757a84802ac772"},
-
-                {assert process.out.fasta.get(0).get(1).get(1) ==~ ".*/valid.fasta.gz"},
-                {assert path(process.out.fasta.get(0).get(1).get(1)).linesGzip.size() == 6},
-                {assert path(process.out.fasta.get(0).get(1).get(1)).md5 == "16031b5d95fff7ff01b60615728df4ab"}
             )
         }
     }
+
+    test("president - nocompress - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: "test" ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
+                ]
+                input[1] = [[id: "genome" ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                input[2] = false
+                """
+
+            }
+        }
+
+        then {
+            assertAll(
+                {assert process.success},
+                {assert snapshot(process.out).match()}
+            )
+        }
+    }
+
+    test("president - compress - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: "test" ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
+                ]
+                input[1] = [[id: "genome" ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                input[2] = true
+                """
+
+            }
+        }
+
+        then {
+            assertAll(
+                {assert process.success},
+                {assert snapshot(process.out).match()}
+            )
+        }
+    }
+
 }

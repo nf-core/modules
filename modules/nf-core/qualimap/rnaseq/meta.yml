@@ -15,39 +15,46 @@ tools:
       documentation: http://qualimap.conesalab.org/doc_html/index.html
       doi: 10.1093/bioinformatics/bts503
       licence: ["GPL-2.0-only"]
+      identifier: biotools:qualimap
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: BAM file
-      pattern: "*.{bam}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test' ]
-  - gtf:
-      type: file
-      description: GTF file of the reference genome
-      pattern: "*.{gtf}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM file
+        pattern: "*.{bam}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test' ]
+    - gtf:
+        type: file
+        description: GTF file of the reference genome
+        pattern: "*.{gtf}"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - results:
-      type: directory
-      description: Qualimap results dir
-      pattern: "*/*"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  results:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}:
+          type: directory
+          description: Qualimap results dir
+          pattern: "*/*"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@FriederikeHanssen"
 maintainers:

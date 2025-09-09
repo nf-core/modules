@@ -9,16 +9,21 @@ nextflow_process {
     tag "vsearch"
     tag "vsearch/cluster"
 
+    config "./nextflow.config"
+
     test("sarscov2 - fastq - cluster fast") {
 
-        config './nextflow_fast.config'
-
         when {
+            params {
+                cluster_args = '--id 0.8'
+                cluster_args2 = "--cluster_fast"
+                cluster_args3 = "--centroids"
+            }
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ]
                 """
             }
@@ -35,14 +40,17 @@ nextflow_process {
 
     test("sarscov2 - fastq - cluster size") {
 
-        config './nextflow_size.config'
-
         when {
+            params {
+                cluster_args = '--id 0.8'
+                cluster_args2 = "--cluster_size"
+                cluster_args3 = "--samout" // Test also sam to bam conversion
+            }
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ]
                 """
             }
@@ -59,14 +67,17 @@ nextflow_process {
 
     test("sarscov2 - fastq - cluster smallmem") {
 
-        config './nextflow_smallmem.config'
-
         when {
+            params {
+                cluster_args = '--id 0.8 --usersort'
+                cluster_args2 = "--cluster_smallmem"
+                cluster_args3 = "--centroids"
+            }
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ]
                 """
             }
@@ -83,14 +94,17 @@ nextflow_process {
 
     test("sarscov2 - fastq - cluster unoise") {
 
-        config './nextflow_unoise.config'
-
         when {
+            params {
+                cluster_args = '--id 0.8 --minsize 1'
+                cluster_args2 = "--cluster_unoise"
+                cluster_args3 = "--centroids"
+            }
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ]
                 """
             }
@@ -107,14 +121,75 @@ nextflow_process {
 
     test("sarscov2 - fastq - cluster userout") {
 
-        config './nextflow_userout.config'
-
         when {
+            params {
+                cluster_args = '--id 0.8 --userfields query+target+id'
+                cluster_args2 = "--cluster_fast"
+                cluster_args3 = "--userout"
+            }
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fastq - cluster fast - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                cluster_args = '--id 0.8'
+                cluster_args2 = "--cluster_fast"
+                cluster_args3 = "--centroids"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fastq - cluster size - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                cluster_args = '--id 0.8'
+                cluster_args2 = "--cluster_size"
+                cluster_args3 = "--samout" // Test also sam to bam conversion
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ]
                 """
             }

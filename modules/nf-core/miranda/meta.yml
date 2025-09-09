@@ -10,35 +10,43 @@ tools:
       homepage: "https://cbio.mskcc.org/miRNA2003/miranda.html"
       documentation: "https://cbio.mskcc.org/miRNA2003/miranda.html"
       doi: "10.1186/gb-2003-5-1-r1"
-      licence: "GNU Public License"
+      licence: ["GNU Public License"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - query:
-      type: file
-      description: FASTA file containing the microRNA query sequences
-      pattern: "*.{fa,fasta}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - query:
+        type: file
+        description: FASTA file containing the microRNA query sequences
+        pattern: "*.{fa,fasta}"
+        ontologies: []
   - mirbase:
       type: file
       description: FASTA file containing the sequence(s) to be scanned
       pattern: "*.{fa,fasta}"
+      ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - txt:
-      type: file
-      description: Reformatted TXT file containing microRNA targets
-      pattern: "*.{txt}"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.txt":
+          type: file
+          description: Reformatted TXT file containing microRNA targets
+          pattern: "*.{txt}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@BarryDigby"
 maintainers:

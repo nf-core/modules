@@ -1,0 +1,58 @@
+
+nextflow_process {
+
+    name "Test Process HMMER_HMMALIGN"
+    script "../main.nf"
+    process "HMMER_HMMALIGN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hmmer"
+    tag "hmmer/hmmalign"
+
+    test("test-hmmer-hmmalign") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true)
+                ]
+				input[1] = file(params.modules_testdata_base_path + 'delete_me/hmmer/bac.16S_rRNA.hmm.gz', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-hmmer-hmmalign-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true)
+                ]
+				input[1] = file(params.modules_testdata_base_path + 'delete_me/hmmer/bac.16S_rRNA.hmm.gz', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

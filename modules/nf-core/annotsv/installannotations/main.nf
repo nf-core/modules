@@ -4,8 +4,8 @@ process ANNOTSV_INSTALLANNOTATIONS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/annotsv:3.4.2--141a0ee560de1897' :
-        'community.wave.seqera.io/library/annotsv:3.4.2--010fa21247b5b64b' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/df/df5e87ce610d595afe5f1e4017c255e53590cfa9b156c43310d637b36bfd12b3/data' :
+        'community.wave.seqera.io/library/annotsv:3.4.6--c5a6da1bf4c2c8e5' }"
 
     output:
     path "AnnotSV_annotations", emit: annotations

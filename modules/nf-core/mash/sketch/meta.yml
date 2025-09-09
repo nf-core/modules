@@ -16,33 +16,47 @@ tools:
       tool_dev_url: https://github.com/marbl/Mash
       doi: "10.1186/s13059-016-0997-x"
       licence: ["https://github.com/marbl/Mash/blob/master/LICENSE.txt"]
+      identifier: biotools:mash
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: List of input paired-end FastQ files
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: List of input paired-end FastQ files
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - mash:
-      type: file
-      description: Sketch output
-      pattern: "*.{mash}"
-  - stats:
-      type: file
-      description: Sketch statistics
-      pattern: "*.{mash_stats}"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  mash:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.msh":
+          type: file
+          description: Sketch output
+          pattern: "*.{mash}"
+          ontologies: []
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.mash_stats":
+          type: file
+          description: Sketch statistics
+          pattern: "*.{mash_stats}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@thanhleviet"
 maintainers:

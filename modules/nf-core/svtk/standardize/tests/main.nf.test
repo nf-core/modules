@@ -1,0 +1,66 @@
+nextflow_process {
+
+    name "Test Process SVTK_STANDARDIZE"
+    script "../main.nf"
+    process "SVTK_STANDARDIZE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "svtk"
+    tag "svtk/standardize"
+
+    test("homo sapiens - vcf.gz") {
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', caller:'manta'], // meta map
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/vcf/test.genome_21.somatic_sv.vcf.gz', checkIfExists: true)
+				]
+                input[1] = [
+                    [id:'fai'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2") }
+            )
+        }
+
+    }
+
+    test("homo sapiens - vcf.gz - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', caller:'manta' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.genome_21.somatic_sv.vcf.gz', checkIfExists: true)
+				]
+                input[1] = [
+                    [id:'fai'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

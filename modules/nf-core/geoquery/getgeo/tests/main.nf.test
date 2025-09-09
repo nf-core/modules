@@ -1,0 +1,94 @@
+
+nextflow_process {
+
+    name "Test Process GEOQUERY_GETGEO"
+    script "../main.nf"
+    process "GEOQUERY_GETGEO"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "geoquery"
+    tag "geoquery/getgeo"
+
+    test("test-geoquery-getgeo") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+				    'GSE50790'
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					file(process.out.rds[0][1]).name,
+					file(process.out.expression[0][1]).name, // unstable
+					process.out.annotation,
+					process.out.versions,
+                    file(process.out.versions[0]).readLines().collect { it.trim() } // Trap to catch conda version mismatches
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-geoquery-getgeo-with-metacols") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+				    'GSE50790'
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					file(process.out.rds[0][1]).name,
+					file(process.out.expression[0][1]).name, // unstable
+					process.out.annotation,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-geoquery-getgeo-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+				    'GSE50790'
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

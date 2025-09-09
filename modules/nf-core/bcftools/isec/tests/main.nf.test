@@ -11,7 +11,7 @@ nextflow_process {
 
     config "./nextflow.config"
 
-    test("sarscov2 - [[vcf1, vcf2], [tbi1, tbi2]]") {
+    test("sarscov2 - [[vcf1.gz, vcf2.gz], [tbi1, tbi2]]") {
 
         when {
             process {
@@ -19,11 +19,52 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ], // meta map
                     [
-                        file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
-                        file(params.test_data['sarscov2']['illumina']['test2_vcf_gz'], checkIfExists: true)],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true)
+                        ],
                     [
-                        file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true),
-                        file(params.test_data['sarscov2']['illumina']['test2_vcf_gz_tbi'], checkIfExists: true)]
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
+                        ]
+                    ]
+                """
+            }
+        }
+
+        then {
+            def results_dir = new File(process.out.results[0][1])
+            def results_list = []
+            results_dir.eachFileRecurse { file -> results_list << file.getName() }
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    results_list.sort(),
+                    path("${process.out.results[0][1]}").list().findAll {
+                        it.getFileName().toString() != "0000.vcf.gz.tbi" && it.getFileName().toString() != "0001.vcf.gz.tbi"
+                    }
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("sarscov2 - [[vcf1, vcf2], [tbi1, tbi2]] - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true)
+                        ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true)
+                        ]
                     ]
                 """
             }
@@ -32,10 +73,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.results.collect { it.collect { it instanceof Map ? it : file(it).name } },
-                    process.out.versions
-                ).match() }
+                { assert snapshot(process.out).match() }
             )
         }
 

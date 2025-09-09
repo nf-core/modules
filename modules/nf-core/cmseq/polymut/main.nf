@@ -37,4 +37,16 @@ process CMSEQ_POLYMUT {
         cmseq: $VERSION
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '1.0.4' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    touch ${prefix}.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        cmseq: $VERSION
+    END_VERSIONS
+    """
 }

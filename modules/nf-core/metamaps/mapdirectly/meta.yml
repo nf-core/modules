@@ -13,49 +13,77 @@ tools:
       tool_dev_url: https://github.com/DiltheyLab/MetaMaps
       doi: "10.1038/s41467-019-10934-2"
       licence: ["Public Domain"]
+      identifier: biotools:metamaps
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: Input fastq file containing query sequences
-      pattern: "*.{fq,fastq,fastq.gz,fq.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: Input fastq file containing query sequences
+        pattern: "*.{fq,fastq,fastq.gz,fq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
   - database:
       type: file
       description: Database file in fasta format
       pattern: "*.{fa,fasta}"
-
+      ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - classification_res:
-      type: file
-      description: Coordinates where reads map
-      pattern: "*.{classification_res}"
-  - meta_file:
-      type: file
-      description: Statistics for mapping result
-      pattern: "*.{classification_res.meta}"
-  - meta_unmappedreadsLengths:
-      type: file
-      description: Statistics for length of unmapped reads
-      pattern: "*.{classification_res.meta.unmappedReadsLengths}"
-  - para_file:
-      type: file
-      description: Log with parameters
-      pattern: "*.{classification_res.parameters}"
-
+  classification_res:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*classification_res":
+          type: file
+          description: Coordinates where reads map
+          pattern: "*.{classification_res}"
+          ontologies: []
+  meta_file:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*classification_res.meta":
+          type: file
+          description: Statistics for mapping result
+          pattern: "*.{classification_res.meta}"
+          ontologies: []
+  meta_unmappedreadsLengths:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*classification_res.meta.unmappedReadsLengths":
+          type: file
+          description: Statistics for length of unmapped reads
+          pattern: "*.{classification_res.meta.unmappedReadsLengths}"
+          ontologies: []
+  para_file:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*classification_res.parameters":
+          type: file
+          description: Log with parameters
+          pattern: "*.{classification_res.parameters}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@henningonsbring"
   - "@sofstam"

@@ -4,8 +4,8 @@ process SAMTOOLS_CONVERT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.20--h50ea8bc_0' :
-        'biocontainers/samtools:1.20--h50ea8bc_0' }"
+        'https://depot.galaxyproject.org/singularity/samtools:1.21--h50ea8bc_0' :
+        'biocontainers/samtools:1.21--h50ea8bc_0' }"
 
     input:
     tuple val(meta), path(input), path(index)
@@ -50,7 +50,7 @@ process SAMTOOLS_CONVERT {
 
     """
     touch ${prefix}.${output_extension}
-    touch ${prefix}.${index_extension}
+    touch ${prefix}.${output_extension}.${index_extension}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -18,10 +18,10 @@ nextflow_process {
                 process {
                     """
                     input[0] = Channel.of(
-                        [ [ id:'test' ], file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true) ],
-                        [ [ id:'test2' ], file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam'], checkIfExists: true) ]
+                        [ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true) ],
+                        [ [ id:'test2' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true) ]
                     )
-                    input[1] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                    input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                     input[2] = []
                     input[3] = []
                     """
@@ -33,8 +33,8 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of(
-                    [ [ id:'test' ], file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_bam'], checkIfExists: true) ],
-                    [ [ id:'test2' ], file(params.test_data['homo_sapiens']['illumina']['test2_paired_end_sorted_bam'], checkIfExists: true) ]
+                    [ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true) ],
+                    [ [ id:'test2' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true) ]
                 )
                 .join( INSTRAIN_PROFILE.out.profile )
                 .map { [ [ id:'all_samples' ], it[1], it[2] ] }

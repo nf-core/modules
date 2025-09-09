@@ -2,11 +2,10 @@ process HISAT2_EXTRACTSPLICESITES {
     tag "$gtf"
     label 'process_medium'
 
-    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hisat2:2.2.1--h1b792b2_3' :
-        'biocontainers/hisat2:2.2.1--h1b792b2_3' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d2/d2ec9b73c6b92e99334c6500b1b622edaac316315ac1708f0b425df3131d0a83/data' :
+        'community.wave.seqera.io/library/hisat2_samtools:6be64e12472a7b75' }"
 
     input:
     tuple val(meta), path(gtf)
@@ -20,12 +19,21 @@ process HISAT2_EXTRACTSPLICESITES {
 
     script:
     def args = task.ext.args ?: ''
-    def VERSION = '2.2.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     hisat2_extract_splice_sites.py $gtf > ${gtf.baseName}.splice_sites.txt
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        hisat2: $VERSION
+        hisat2: \$(hisat2 --version | grep -o 'version [^ ]*' | cut -d ' ' -f 2)
+    END_VERSIONS
+    """
+
+    stub:
+    """
+    touch ${gtf.baseName}.splice_sites.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        hisat2: \$(hisat2 --version | grep -o 'version [^ ]*' | cut -d ' ' -f 2)
     END_VERSIONS
     """
 }

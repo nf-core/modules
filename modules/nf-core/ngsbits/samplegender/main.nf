@@ -4,13 +4,13 @@ process NGSBITS_SAMPLEGENDER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ngs-bits:2023_02--py311ha0b7adc_2':
-        'biocontainers/ngs-bits:2023_02--py311ha0b7adc_2' }"
+        'https://depot.galaxyproject.org/singularity/ngs-bits:2024_11--py312hd80e9a6_0':
+        'biocontainers/ngs-bits:2024_11--py312hd80e9a6_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
     tuple val(meta2), path(fasta)
-    tuple val(meta2), path(fai)
+    tuple val(meta3), path(fai)
     val method
 
     output:

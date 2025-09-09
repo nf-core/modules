@@ -13,29 +13,48 @@ tools:
       tool_dev_url: "https://github.com/sanger-pathogens/ariba"
       doi: "10.1099/mgen.0.000131"
       licence: ["GPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: Paired-end reads in FASTQ format
-      pattern: "*_R[1|2].{fastq.gz,fq.gz}"
-  - db:
-      type: file
-      description: An Ariba prepared database
-      pattern: "*.tar.gz"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: Paired-end reads in FASTQ format
+        pattern: "*_R[1|2].{fastq.gz,fq.gz}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - db:
+        type: file
+        description: An Ariba prepared database
+        pattern: "*.tar.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - results:
-      type: file
-      description: A directory of Ariba analysis outputs
-      pattern: "*"
+  results:
+    - - meta:
+          type: file
+          description: A directory of Ariba analysis outputs
+          pattern: "*"
+          ontologies: []
+      - ${prefix}/*:
+          type: file
+          description: A directory of Ariba analysis outputs
+          pattern: "*"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@rpetit3"
 maintainers:

@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "xengsort_index"
 description: Fast lightweight accurate xenograft sorting
@@ -18,16 +17,19 @@ tools:
       tool_dev_url: "https://gitlab.com/genomeinformatics/xengsort"
       doi: "10.4230/LIPIcs.WABI.2020.4"
       licence: ["MIT"]
+      identifier: ""
 
 input:
   - host_fasta:
       type: file
       description: |
         Reference genome fasta file from host, compressed or uncompressed.
+      ontologies: []
   - graft_fasta:
       type: file
       description: |
         Reference genome fasta file from graft, compressed or uncompressed.
+      ontologies: []
   - index:
       type: string
       description: |
@@ -40,21 +42,26 @@ input:
       type: string
       description: |
         Gapped k-mer mask (quoted string like '#__##_##__#').
-
 output:
-  - hash:
-      type: file
-      description: File with index hash file.
-      pattern: "*hash"
-  - info:
-      type: file
-      description: File with index info file.
-      pattern: "*info"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+  hash:
+    - ${index}.hash:
+        type: file
+        description: File with index hash file.
+        pattern: "*hash"
+        ontologies: []
+  info:
+    - ${index}.info:
+        type: file
+        description: File with index info file.
+        pattern: "*info"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@diegomscoelho"
 maintainers:

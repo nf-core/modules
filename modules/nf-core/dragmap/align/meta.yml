@@ -13,44 +13,116 @@ tools:
       documentation: https://github.com/Illumina/dragmap
       tool_dev_url: https://github.com/Illumina/dragmap#basic-command-line-usage
       licence: ["GPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: |
-        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-        respectively.
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test', single_end:false ]
-  - hashmap:
-      type: file
-      description: DRAGMAP hash table
-      pattern: "Directory containing DRAGMAP hash table *.{cmp,.bin,.txt}"
-  - meta3:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'genome']
-  - fasta:
-      type: file
-      description: Genome fasta reference files
-      pattern: "*.{fa,fasta,fna}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively.
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test', single_end:false ]
+    - hashmap:
+        type: file
+        description: DRAGMAP hash table
+        pattern: "Directory containing DRAGMAP hash table *.{cmp,.bin,.txt}"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome']
+    - fasta:
+        type: file
+        description: Genome fasta reference files
+        pattern: "*.{fa,fasta,fna}"
+        ontologies: []
+  - sort_bam:
+      type: boolean
+      description: Sort the BAM file
 output:
-  - bam:
-      type: file
-      description: Output BAM file containing read alignments
-      pattern: "*.{bam}"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  sam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.sam":
+          type: file
+          description: Output SAM file containing read alignments
+          pattern: "*.{sam}"
+          ontologies: []
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bam":
+          type: file
+          description: Output BAM file containing read alignments
+          pattern: "*.{bam}"
+          ontologies: []
+  cram:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.cram":
+          type: file
+          description: Output CRAM file containing read alignments
+          pattern: "*.{cram}"
+          ontologies: []
+  crai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.crai":
+          type: file
+          description: Index file for CRAM file
+          pattern: "*.{crai}"
+          ontologies: []
+  csi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.csi":
+          type: file
+          description: Index file for CRAM file
+          pattern: "*.{csi}"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: Log file
+          pattern: "*.{log}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@edmundmiller"
 maintainers:

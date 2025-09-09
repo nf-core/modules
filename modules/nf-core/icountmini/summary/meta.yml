@@ -1,4 +1,3 @@
----
 name: icountmini_summary
 description: Report proportion of cross-link events/sites on each region type.
 keywords:
@@ -11,41 +10,66 @@ tools:
       homepage: https://icount.readthedocs.io/en/latest/
       documentation: https://icount.readthedocs.io/en/latest/
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bed:
-      type: file
-      description: BED file of crosslinks
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bed:
+        type: file
+        description: BED file of crosslinks
+        ontologies: []
   - segmentation:
       type: file
       description: A iCount segmentation file
       pattern: "*.{gtf}"
+      ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - summary_type:
-      type: file
-      description: Summary type output stats file
-      pattern: "*summary_type.tsv"
-  - summary_subtype:
-      type: file
-      description: Summary subtype output stats file
-      pattern: "*summary_subtype.tsv"
-  - summary_gene:
-      type: file
-      description: Summary gene output stats file
-      pattern: "*summary_gene.tsv"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  summary_type:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*summary_type.tsv":
+          type: file
+          description: Summary type output stats file
+          pattern: "*summary_type.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  summary_subtype:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*summary_subtype.tsv":
+          type: file
+          description: Summary subtype output stats file
+          pattern: "*summary_subtype.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  summary_gene:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*summary_gene.tsv":
+          type: file
+          description: Summary gene output stats file
+          pattern: "*summary_gene.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@marc-jones"
   - "@chris-cheshire"

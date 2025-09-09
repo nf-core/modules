@@ -33,4 +33,16 @@ process BIOBAMBAM_BAMMARKDUPLICATES2 {
         bammarkduplicates2: \$(echo \$(bammarkduplicates2 --version 2>&1) | sed 's/^This is biobambam2 version //; s/..biobambam2 is .*\$//' )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bam
+    touch ${prefix}.metrics.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bammarkduplicates2: \$(echo \$(bammarkduplicates2 --version 2>&1) | sed 's/^This is biobambam2 version //; s/..biobambam2 is .*\$//' )
+    END_VERSIONS
+    """
 }

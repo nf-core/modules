@@ -1,11 +1,12 @@
-name: proteus_readproteingroups
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
-  - defaults
+
 dependencies:
-  - conda-forge::r-base=4.2.1
-  - bioconda::r-proteus-bartongroup=0.2.16
-  - conda-forge::r-plotly=4.10.2
   - bioconda::bioconductor-limma=3.54.0
+  - bioconda::r-proteus-bartongroup=0.2.16
+  - conda-forge::r-base=4.2.1
   - conda-forge::r-ggplot2=3.4.4
+  - conda-forge::r-plotly=4.10.2

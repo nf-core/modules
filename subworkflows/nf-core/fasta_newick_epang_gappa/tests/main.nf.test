@@ -10,6 +10,8 @@ nextflow_workflow {
     tag "subworkflows_nfcore"
     tag "subworkflows/fasta_newick_epang_gappa"
     tag "fasta_newick_epang_gappa"
+    tag "clustalo"
+    tag "clustalo/align"
     tag "epang"
     tag "epang/place"
     tag "epang/split"
@@ -22,17 +24,17 @@ nextflow_workflow {
     tag "hmmer/hmmalign"
     tag "hmmer/eslalimask"
     tag "hmmer/eslreformat"
-    tag "mafft"
+    tag "mafft/align"
 
 
     test("test_fasta_newick_epang_gappa_hmmer") {
-        
+
         when {
             workflow {
                 """
                 input[0] = Channel.of(
                     [
-                        meta: [ id: "hmmer" ],
+                        meta: [ id: "hmmer", min_bitscore: 4 ],
                         data: [
                             alignmethod:  'hmmer',
                             queryseqfile: file("https://github.com/nf-core/test-datasets/raw/phyloplace/testdata/PF14720_3_sequences.faa", checkIfExists: true),
@@ -54,9 +56,7 @@ nextflow_workflow {
                 { assert snapshot(file(workflow.out.grafted_phylogeny.get(0).get(1)).name).match("hmmer.graft.placement.epa_result.newick") },
                 { assert snapshot(workflow.out.grafted_phylogeny.get(0).get(1)).md5().match("hmmer.graft.placement.epa_result.newick_lines") },
                 { assert snapshot(file(workflow.out.taxonomy_profile.get(0).get(1)).name).match("hmmer.taxonomy.profile.tsv") },
-                { assert snapshot(workflow.out.grafted_phylogeny.get(0).get(1)).md5().match("hmmer.taxonomy.profile.tsv_lines") },
                 { assert snapshot(file(workflow.out.taxonomy_per_query.get(0).get(1)).name).match("hmmer.taxonomy.per_query.tsv") },
-                { assert snapshot(workflow.out.grafted_phylogeny.get(0).get(1)).md5().match("hmmer.taxonomy.per_query.tsv_lines") },
                 { assert snapshot(file(workflow.out.versions.get(0)).name).match("hmmer.versions.yml") },
                 { assert snapshot(workflow.out.versions.get(0)).md5().match("hmmer.versions.yml_lines") },
             )
@@ -64,7 +64,7 @@ nextflow_workflow {
     }
 
     test("test_fasta_newick_epang_gappa_mafft") {
-    
+
         when {
             params {
                 outdir = "$outputDir"
@@ -103,8 +103,45 @@ nextflow_workflow {
             )
         }
     }
-    test("test_fasta_newick_epang_gappa_nucl_hmmer") {
+
+    test("test_fasta_newick_epang_gappa_clustalo") {
     
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        meta: [ id: "clustalo" ],
+                        data: [
+                            alignmethod:  'clustalo',
+                            queryseqfile: file("https://github.com/nf-core/test-datasets/raw/phyloplace/testdata/PF14720_3_sequences.faa", checkIfExists: true),
+                            refseqfile:   file("https://github.com/nf-core/test-datasets/raw/phyloplace/testdata/PF14720_seed.alnfaa", checkIfExists: true),
+                            refphylogeny: file("https://github.com/nf-core/test-datasets/raw/phyloplace/testdata/PF14720_seed.ft.LGCAT.newick", checkIfExists: true),
+                            model:        "LG",
+                            taxonomy:     file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/gappa/gappa_taxonomy.tsv", checkIfExists: true)
+                        ]
+                    ]
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(file(workflow.out.jplace.get(0).get(1)).name).match("clustalo.epa_result.jplace.gz") },
+                { assert snapshot(file(workflow.out.grafted_phylogeny.get(0).get(1)).name).match("clustalo.graft.placement.epa_result.newick") },
+                { assert snapshot(workflow.out.grafted_phylogeny.get(0).get(1)).md5().match("clustalo.graft.placement.epa_result.newick_lines") },
+                { assert snapshot(file(workflow.out.taxonomy_profile.get(0).get(1)).name).match("clustalo.taxonomy.profile.tsv") },
+                { assert snapshot(file(workflow.out.taxonomy_per_query.get(0).get(1)).name).match("clustalo.taxonomy.per_query.tsv") },
+                { assert snapshot(file(workflow.out.versions.get(0)).name).match("clustalo.versions.yml") },
+                { assert snapshot(workflow.out.versions.get(0)).md5().match("clustalo.versions.yml_lines") },
+            )
+        }
+    }
+
+    test("test_fasta_newick_epang_gappa_nucl_hmmer") {
+
         when {
             workflow {
                 """

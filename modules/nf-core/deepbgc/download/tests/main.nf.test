@@ -14,7 +14,6 @@ nextflow_process {
         when {
             process {
                 """
-                
                 """
             }
         }
@@ -22,11 +21,27 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.db).match("db") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out).match() }
             )
         }
-
     }
 
+    test("deepbgc download db - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
 }

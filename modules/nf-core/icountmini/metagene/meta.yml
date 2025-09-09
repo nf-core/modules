@@ -1,6 +1,6 @@
----
 name: icountmini_metagene
-description: Plot a metagene of cross-link events/sites around various transcriptomic landmarks.
+description: Plot a metagene of cross-link events/sites around various transcriptomic
+  landmarks.
 keywords:
   - iCLIP
   - gtf
@@ -11,33 +11,42 @@ tools:
       homepage: https://icount.readthedocs.io/en/latest/
       documentation: https://icount.readthedocs.io/en/latest/
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bed:
-      type: file
-      description: BED file of crosslinks
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bed:
+        type: file
+        description: BED file of crosslinks
+        ontologies: []
   - segmentation:
       type: file
       description: A iCount segmentation file
       pattern: "*.{gtf}"
+      ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - tsv:
-      type: file
-      description: Metagene table
-      pattern: "*.tsv"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - metagene_*/*plot_data.tsv:
+          type: file
+          description: Metagene table
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@marc-jones"
   - "@chris-cheshire"

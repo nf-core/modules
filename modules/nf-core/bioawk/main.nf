@@ -20,7 +20,7 @@ process BIOAWK {
     script:
     def args  = task.ext.args ?: '' // args is used for the main arguments of the tool
     prefix = task.ext.prefix ?: "${meta.id}"
-
+    if ("${input}" == "${prefix}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     def VERSION = '1.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     bioawk \\

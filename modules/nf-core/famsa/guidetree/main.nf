@@ -46,4 +46,3 @@ process FAMSA_GUIDETREE {
     END_VERSIONS
     """
 }
-

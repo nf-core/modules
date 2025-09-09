@@ -1,11 +1,11 @@
 process GATK4_COLLECTREADCOUNTS {
-    tag "$meta.id"
-    label 'process_medium'
+    tag "${meta.id}"
+    label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.5.0.0--py36hdfd78af_0':
-        'biocontainers/gatk4:4.5.0.0--py36hdfd78af_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b2/b28daf5d9bb2f0d129dcad1b7410e0dd8a9b087aaf3ec7ced929b1f57624ad98/data'
+        : 'community.wave.seqera.io/library/gatk4_gcnvkernel:e48d414933d188cd'}"
 
     input:
     tuple val(meta), path(input), path(input_index), path(intervals)
@@ -14,9 +14,9 @@ process GATK4_COLLECTREADCOUNTS {
     tuple val(meta4), path(dict)
 
     output:
-    tuple val(meta), path("*.hdf5"), optional: true, emit: hdf5
-    tuple val(meta), path("*.tsv") , optional: true, emit: tsv
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.hdf5"), emit: hdf5, optional: true
+    tuple val(meta), path("*.tsv"),  emit: tsv, optional: true
+    path "versions.yml",             emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,26 +25,29 @@ process GATK4_COLLECTREADCOUNTS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def reference = fasta ? "--reference $fasta" : ""
-    def extension = args.contains("--format HDF5") ? "hdf5" :
-                    args.contains("--format TSV")  ? "tsv" :
-                    "hdf5"
+    def reference = fasta ? "--reference ${fasta}" : ""
+    def extension = args.contains("--format HDF5")
+        ? "hdf5"
+        : args.contains("--format TSV")
+            ? "tsv"
+            : "hdf5"
 
     def avail_mem = 3072
     if (!task.memory) {
-        log.info '[GATK COLLECTREADCOUNTS] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        log.info('[GATK COLLECTREADCOUNTS] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
+    }
+    else {
+        avail_mem = (task.memory.mega * 0.8).intValue()
     }
     """
     gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         CollectReadCounts \\
-        --input $input \\
-        --intervals $intervals \\
-        --output ${prefix}.$extension \\
-        $reference \\
+        --input ${input} \\
+        --intervals ${intervals} \\
+        --output ${prefix}.${extension} \\
+        ${reference} \\
         --tmp-dir . \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -55,9 +58,11 @@ process GATK4_COLLECTREADCOUNTS {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def extension = args.contains("--format HDF5") ? "hdf5" :
-                    args.contains("--format TSV")  ? "tsv" :
-                    "hdf5"
+    def extension = args.contains("--format HDF5")
+        ? "hdf5"
+        : args.contains("--format TSV")
+            ? "tsv"
+            : "hdf5"
     """
     touch ${prefix}.${extension}
 

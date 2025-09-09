@@ -15,11 +15,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    [ file(params.test_data['homo_sapiens']['illumina']['na24385_chr22_sv_vcf'], checkIfExists: true) ]
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA24385_sv.vcf.gz', checkIfExists: true) ]
                 ]
                 input[1] = [
                     [ id:'test' ], // meta map
-                    [ file(params.test_data['homo_sapiens']['illumina']['na24385_chr22_coverage'], checkIfExists: true) ]
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bedgraph/NA24385_coverage.bed', checkIfExists: true) ]
                 ]
                 input[2] = [ [:], [] ]
                 input[3] = [ [:], [] ]
@@ -47,11 +47,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    [ file(params.test_data['homo_sapiens']['illumina']['na24385_chr22_sv_vcf'], checkIfExists: true) ]
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA24385_sv.vcf.gz', checkIfExists: true) ]
                 ]
                 input[1] = [
                     [ id:'test' ], // meta map
-                    [ file(params.test_data['homo_sapiens']['illumina']['na24385_chr22_coverage'], checkIfExists: true) ]
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bedgraph/NA24385_coverage.bed', checkIfExists: true) ]
                 ]
                 input[2] = [ [:], [] ]
                 input[3] = [ [:], [] ]

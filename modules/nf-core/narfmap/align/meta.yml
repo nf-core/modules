@@ -13,35 +13,72 @@ tools:
       documentation: https://github.com/edmundmiller/NARFMAP/blob/main/doc/usage.md#basic-command-line-usage
       tool_dev_url: https://github.com/edmundmiller/narfmap
       licence: ["GPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: |
-        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-        respectively.
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test', single_end:false ]
-  - hashmap:
-      type: file
-      description: NARFMAP hash table
-      pattern: "Directory containing NARFMAP hash table *.{cmp,.bin,.txt}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively.
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test', single_end:false ]
+    - hashmap:
+        type: file
+        description: NARFMAP hash table
+        pattern: "Directory containing NARFMAP hash table *.{cmp,.bin,.txt}"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fasta:
+        type: file
+        description: Reference genome in FASTA format
+        pattern: "*.{fasta,fa,fna}"
+        ontologies: []
+  - sort_bam:
+      type: boolean
+      description: Sort the BAM file after alignment
 output:
-  - bam:
-      type: file
-      description: Output BAM file containing read alignments
-      pattern: "*.{bam}"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  bam:
+    - - meta:
+          type: file
+          description: Output BAM file containing read alignments
+          pattern: "*.{bam}"
+          ontologies: []
+      - "*.bam":
+          type: file
+          description: Output BAM file containing read alignments
+          pattern: "*.{bam}"
+          ontologies: []
+  log:
+    - - meta:
+          type: file
+          description: Output BAM file containing read alignments
+          pattern: "*.{bam}"
+          ontologies: []
+      - "*.log":
+          type: file
+          description: Log file of NARFMAP run
+          pattern: "*{.log}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@edmundmiller"
 maintainers:

@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process TABIX_BGZIP"
-    script "modules/nf-core/tabix/bgzip/main.nf"
+    script "../main.nf"
     process "TABIX_BGZIP"
 
     tag "modules"
@@ -15,7 +15,7 @@ nextflow_process {
                 """
                 input[0] = [
                                 [ id:'bgzip_test' ],
-                                [ file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true) ]
+                                [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true) ]
                 ]
                 """
             }
@@ -39,7 +39,7 @@ nextflow_process {
                 """
                 input[0] = [
                             [ id:'bedgz_test' ],
-                            [ file(params.test_data['homo_sapiens']['genome']['genome_bed_gz'], checkIfExists: true) ]
+                            [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed.gz', checkIfExists: true) ]
                 ]
                 """
             }
@@ -66,7 +66,7 @@ nextflow_process {
                 """
                 input[0] = [
                                 [ id:"test_stub" ],
-                                [ file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true) ]
+                                [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true) ]
                 ]
                 """
             }
@@ -91,7 +91,7 @@ nextflow_process {
                 """
                 input[0] = [
                                 [ id:"gzi_compress_test" ],
-                                [ file(params.test_data['sarscov2']['illumina']['test_vcf'], checkIfExists: true) ]
+                                [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true) ]
                 ]
                 """
             }

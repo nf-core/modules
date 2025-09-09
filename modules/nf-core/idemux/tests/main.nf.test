@@ -16,10 +16,10 @@ nextflow_process {
                 input[0] = [
                     [ id:'NVQ', lane:1 ],
                     [
-                        file(params.test_data['homo_sapiens']['lexogen']['i7_i5_i1_read_1'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['lexogen']['i7_i5_i1_read_2'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/lexogen/idemux/i7_i5_i1_read_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/lexogen/idemux/i7_i5_i1_read_2.fastq.gz', checkIfExists: true)
                     ],
-                    file(params.test_data['homo_sapiens']['lexogen']['i7_i5_i1_sample_sheet'])
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/lexogen/idemux/i7_i5_i1_sample_sheet.csv', checkIfExists: true)
                     ]
                 """
             }
@@ -48,10 +48,10 @@ nextflow_process {
                 input[0] = [
                     [ id:'NVQ', lane:1 ],
                     [
-                        file(params.test_data['homo_sapiens']['lexogen']['i7_i5_i1_read_1'], checkIfExists: true),
-                        file(params.test_data['homo_sapiens']['lexogen']['i7_i5_i1_read_2'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/lexogen/idemux/i7_i5_i1_read_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/lexogen/idemux/i7_i5_i1_read_2.fastq.gz', checkIfExists: true)
                     ],
-                    file(params.test_data['homo_sapiens']['lexogen']['i7_i5_i1_sample_sheet'])
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/lexogen/idemux/i7_i5_i1_sample_sheet.csv', checkIfExists: true)
                     ]
                 """
             }

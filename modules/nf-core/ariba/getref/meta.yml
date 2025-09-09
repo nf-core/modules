@@ -12,20 +12,38 @@ tools:
       documentation: "https://sanger-pathogens.github.io/ariba/"
       tool_dev_url: "https://github.com/sanger-pathogens/ariba"
       doi: "10.1099/mgen.0.000131"
-      licence: "['GPL v3']"
+      licence: ["GPL v3"]
+      identifier: ""
 input:
-  - db_name:
-      type: string
-      description: A database to setup up for Ariba
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - db_name:
+        type: string
+        description: A database to setup up for Ariba
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - db:
-      type: file
-      description: An Ariba prepared database
-      pattern: "*.tar.gz"
+  db:
+    - - meta:
+          type: file
+          description: An Ariba prepared database
+          pattern: "*.tar.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+      - ${db_name}.tar.gz:
+          type: file
+          description: An Ariba prepared database
+          pattern: "*.tar.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@rpetit3"
 maintainers:

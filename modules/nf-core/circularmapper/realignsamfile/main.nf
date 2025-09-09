@@ -10,7 +10,10 @@ process CIRCULARMAPPER_REALIGNSAMFILE {
     input:
     tuple val(meta), path(bam)
     tuple val(meta2), path(fasta)
-    val(elongation_factor)
+    tuple val(meta3), val(elongation_factor)
+    tuple val(meta4), path(elongated_chr_list)
+    // NOTE: The elongated_chr_list is not used in the script, but is an implicit input that realignsamfile requires when using the `-f true` option.
+    //          In its absence, when `-f true` is set, realignsamfile will remove all @SQ tags from the BAM header, breaking the bamfile.
 
     output:
     tuple val(meta), path("*_realigned.bam")    , emit: bam

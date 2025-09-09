@@ -1,0 +1,63 @@
+// nf-core modules test hmmer/hmmrank
+nextflow_process {
+
+    name "Test Process HMMER_HMMRANK"
+    script "../main.nf"
+    process "HMMER_HMMRANK"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hmmer"
+    tag "hmmer/hmmfetch"
+    tag "hmmer/hmmsearch"
+    tag "hmmer/hmmrank"
+
+    test("hmmrank - 16S") {
+
+        setup {
+            run("HMMER_HMMFETCH") {
+                script "../../hmmfetch/main.nf"
+                process {
+                    """
+                    input[0] = Channel.fromList([
+                        tuple([ id: 'arc16s' ], file("https://raw.githubusercontent.com/tseemann/barrnap/master/db/arc.hmm")),
+                        tuple([ id: 'bac16s' ], file("https://raw.githubusercontent.com/tseemann/barrnap/master/db/bac.hmm"))
+                    ])
+                    input[1] = Channel.of('16S_rRNA').first()
+                    input[2] = []
+                    input[3] = []
+                    """
+                }
+            }
+            run("HMMER_HMMSEARCH") {
+                script "../../hmmsearch/main.nf"
+                process {
+                    """
+                    input[0] = HMMER_HMMFETCH.out.hmm.map {
+                        [ it[0], it[1], file("https://raw.githubusercontent.com/nf-core/test-datasets/phyloplace/testdata/domain_16s.fna"), false, true, false ]
+                    }
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = HMMER_HMMSEARCH.out.target_summary
+                    .collect { it[1] }
+                    .map { [ [ id: '16S-test' ], it ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match('16s_out') },
+                { assert snapshot(process.out.hmmrank).match('16s_hmmrank') },
+                { assert snapshot(process.out.versions).match('16s_versions') }
+            )
+        }
+    }
+}

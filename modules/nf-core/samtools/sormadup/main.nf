@@ -4,8 +4,8 @@ process SAMTOOLS_SORMADUP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.20--h50ea8bc_0' :
-        'biocontainers/samtools:1.20--h50ea8bc_0' }"
+        'https://depot.galaxyproject.org/singularity/samtools:1.21--h50ea8bc_0' :
+        'biocontainers/samtools:1.21--h50ea8bc_0' }"
 
     input:
     tuple val(meta), path(input)
@@ -33,11 +33,12 @@ process SAMTOOLS_SORMADUP {
                     args5.contains("--output-fmt cram") ? "cram" :
                     "bam"
     def reference = fasta ? "--reference ${fasta}" : ""
-    def sort_memory = (task.memory.mega/task.cpus*0.75).intValue()
+    // memory per thread for samtools sort
+    // set to 50% of the memory per thread, but at least 768M (samtools default)
+    def sort_memory = Math.max(768,(task.memory.mega/task.cpus*0.50).intValue())
 
     """
     samtools cat \\
-        --threads $task.cpus \\
         $args \\
         ${input}  \\
     | \\
@@ -70,6 +71,7 @@ process SAMTOOLS_SORMADUP {
         -T ${prefix} \\
         -f ${prefix}.metrics \\
         --threads $task.cpus \\
+        $reference \\
         $args5 \\
         - \\
         ${prefix}.${extension}

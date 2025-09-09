@@ -1,5 +1,6 @@
 name: hamronization_deeparg
-description: Tool to convert and summarize DeepARG outputs using the hAMRonization specification
+description: Tool to convert and summarize DeepARG outputs using the hAMRonization
+  specification
 keywords:
   - amr
   - antimicrobial resistance
@@ -7,21 +8,24 @@ keywords:
   - deeparg
 tools:
   - hamronization:
-      description: Tool to convert and summarize AMR gene detection outputs using the hAMRonization specification
+      description: Tool to convert and summarize AMR gene detection outputs using the
+        hAMRonization specification
       homepage: https://github.com/pha4ge/hAMRonization/
       documentation: https://github.com/pha4ge/hAMRonization/
       tool_dev_url: https://github.com/pha4ge/hAMRonization
       licence: ["GNU Lesser General Public v3 (LGPL v3)"]
+      identifier: biotools:hamronization
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - report:
-      type: file
-      description: Output .mapping.ARG file from DeepARG
-      pattern: "*.mapping.ARG"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - report:
+        type: file
+        description: Output .mapping.ARG file from DeepARG
+        pattern: "*.mapping.ARG"
+        ontologies: []
   - format:
       type: string
       description: Type of report file to be produced
@@ -35,23 +39,37 @@ input:
       description: Database version of DeepARG used
       pattern: "[0-9]"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - json:
-      type: file
-      description: hAMRonised report in JSON format
-      pattern: "*.json"
-  - tsv:
-      type: file
-      description: hAMRonised report in TSV format
-      pattern: "*.json"
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.json":
+          type: file
+          description: hAMRonised report in JSON format
+          pattern: "*.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: hAMRonised report in TSV format
+          pattern: "*.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

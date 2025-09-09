@@ -8,19 +8,83 @@ nextflow_process {
     tag "modules_nfcore"
     tag "interproscan"
 
-    test("Annotates set of input proteins in an output tsv file") {
+    // Note: Regular tests have been commented out because Interproscan has a harded coded a requirement of 10G memory,
+    // and so will therefore not run on the nf-core test runners without being killed.
+
+    // test("sarscov2 - proteome_fasta") {
+
+    //     when {
+    //         process {
+    //             """
+    //             input[0] = [
+    //                 [ id:'test' ],
+    //                 file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
+    //             ]
+    //             input[1] = []
+    //             """
+    //         }
+    //     }
+
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(
+    //                 path(process.out.tsv[0][1]).readLines()[0]
+    //                     .contains("ENSSASP00005000004.1	4c35f09aac2f7be4f3cffd30c6aecac8	1273	Coils	Coil	Coil	1176	1203	-	T"),
+    //                 process.out.xml,
+    //                 process.out.json,
+    //                 path(process.out.gff3[0][1]).readLines()[0..4,6..-1],
+    //                 process.out.versions,
+    //                 ).match()
+    //             }
+    //         )
+    //     }
+
+    // }
+
+    // test("sarscov2 - proteome_fasta_gz") {
+
+    //     when {
+    //         process {
+    //             """
+    //             input[0] = [
+    //                 [ id:'test' ],
+    //                 file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta.gz', checkIfExists: true)
+    //             ]
+    //             input[1] = []
+    //             """
+    //         }
+    //     }
+
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(
+    //                 path(process.out.tsv[0][1]).readLines()[0]
+    //                     .contains("ENSSASP00005000004.1	4c35f09aac2f7be4f3cffd30c6aecac8	1273	Coils	Coil	Coil	1176	1203	-	T"),
+    //                 process.out.xml,
+    //                 process.out.json,
+    //                 path(process.out.gff3[0][1]).readLines()[0..4,6..-1],
+    //                 process.out.versions,
+    //                 ).match()
+    //             }
+    //         )
+    //     }
+
+    // }
+
+    test("sarscov2 - proteome_fasta_gz - stub") {
+
+        options '-stub'
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta.gz', checkIfExists: true)
                 ]
-                input[1] = 'tsv'
+                input[1] = []
                 """
             }
         }
@@ -28,38 +92,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.tsv).match("tsv") },
-                { assert process.out.versions }
+                { assert snapshot(process.out).match() }
             )
         }
 
     }
-
-    test("Annotates set of zipped input proteins in an output xml file") {
-
-        when {
-            params {
-                outdir = "$outputDir"
-            }
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ],
-                    file(params.test_data['sarscov2']['genome']['proteome_fasta_gz'], checkIfExists: true)
-                ]
-                input[1] = 'xml'
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.xml).match("xml") },
-                { assert process.out.versions }
-            )
-        }
-
-    }
-
 }

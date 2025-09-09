@@ -10,30 +10,41 @@ tools:
         Extract tar.gz files.
       documentation: https://www.gnu.org/software/tar/manual/
       licence: ["GPL-3.0-or-later"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - archive:
-      type: file
-      description: File to be untar
-      pattern: "*.{tar}.{gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - archive:
+        type: file
+        description: File to be untar
+        pattern: "*.{tar}.{gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3981 # TAR format
+          - edam: http://edamontology.org/format_3989 # GZIP format
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - untar:
-      type: directory
-      description: Directory containing contents of archive
-      pattern: "*/"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  untar:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*/"
+      - ${prefix}:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*/"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@joseespinosa"
   - "@drpatelh"

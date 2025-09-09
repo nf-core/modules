@@ -1,7 +1,9 @@
 process SPOTIFLOW {
     tag "$meta.id"
     label 'process_medium'
-    container "docker.io/miguelib/spotiflow:0.0.3"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2f/2f7e014ce832214c25d8faa1b4660db125a79c8c3b075c93059771aa3b83d1c3/data':
+        'community.wave.seqera.io/library/spotiflow:0.5.7--c7eb617591164164' }"
 
     input:
     tuple val(meta), path(image_2d)
@@ -15,31 +17,26 @@ process SPOTIFLOW {
 
     script:
     def args    = task.ext.args   ?: ''
-    def prefix  = task.ext.prefix ?: "${meta.id}"
-    def VERSION = "0.0.3"
-
     """
     spotiflow-predict \\
         ${image_2d} \\
-        -o . \\
+        --out-dir . \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        spotiflow: $VERSION
+        spotiflow: \$( python -m pip show --version spotiflow | grep "Version" | sed -e "s/Version: //g" )
     END_VERSIONS
     """
 
     stub:
-    def args    = task.ext.args   ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def VERSION = "0.0.3"
     """
     touch ${prefix}.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        spotiflow: $VERSION
+        spotiflow: \$( python -m pip show --version spotiflow | grep "Version" | sed -e "s/Version: //g" )
     END_VERSIONS
     """
 }

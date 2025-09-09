@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "ganon_report"
 description: Generate a ganon report file from the output of ganon classify
@@ -12,40 +11,50 @@ keywords:
   - report
 tools:
   - "ganon":
-      description: "ganon classifies short DNA sequences against large sets of genomic reference sequences efficiently"
+      description: "ganon classifies short DNA sequences against large sets of genomic
+        reference sequences efficiently"
       homepage: "https://github.com/pirovc/ganon"
       documentation: "https://github.com/pirovc/ganon"
       tool_dev_url: "https://github.com/pirovc/ganon"
       doi: "10.1093/bioinformatics/btaa458"
       licence: ["MIT"]
+      identifier: biotools:ganon
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - rep:
-      type: file
-      description: Input 'repo' files from ganon classify
-      pattern: "*.rep"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - rep:
+        type: file
+        description: Input 'repo' files from ganon classify
+        pattern: "*.rep"
+        ontologies: []
   - db:
       type: file
       description: Ganon database files from build or build-custom
       pattern: "*.{ibf,tax}"
+      ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - tre:
-      type: file
-      description: Output ganon report containing taxonomic profile information. Formatting of contents depends on --output-format.
-      pattern: "*.tre"
+  tre:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tre":
+          type: file
+          description: Output ganon report containing taxonomic profile information.
+            Formatting of contents depends on --output-format.
+          pattern: "*.tre"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

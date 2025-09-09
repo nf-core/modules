@@ -1,0 +1,80 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTQ_FIND_MIRNA_MIRDEEP2"
+    script "../main.nf"
+    workflow "FASTQ_FIND_MIRNA_MIRDEEP2"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fastq_find_mirna_mirdeep2"
+    tag "mirdeep2/mapper"
+    tag "mirdeep2/mirdeep2"
+    tag "seqkit/fq2fa"
+    tag "seqkit/replace"
+    tag "bowtie/build"
+
+
+    test("smrnaseq - fasta - single_end") {
+        config "./nextflow.config"
+
+    setup {
+        run("SEQKIT_REPLACE") {
+            script "modules/nf-core/seqkit/replace/main.nf"
+            config "./nextflow.config"
+
+            process {
+                """
+                input[0] = [
+                    [ id:'genome' ], // meta map
+                    file('https://github.com/nf-core/test-datasets/raw/smrnaseq/reference/genome.fa', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        run("BOWTIE_BUILD") {
+            script "modules/nf-core/bowtie/build/main.nf"
+            process {
+                """
+                input[0] = SEQKIT_REPLACE.out.fastx
+                """
+            }
+        }
+    }
+
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [ id:'small_Clone1_N1', single_end:false ], // meta map
+                    file('https://github.com/nf-core/test-datasets/raw/smrnaseq/testdata/trimmed/small_Clone1_N1.fastp.fastq.gz', checkIfExists: true)
+                ]
+
+                input[1] = SEQKIT_REPLACE.out.fastx
+
+                input[2] = BOWTIE_BUILD.out.index
+
+                input[3] = [
+                    [ id:'mirna_mature_hairpin'], // meta map
+                    file('https://github.com/nf-core/test-datasets/raw/smrnaseq/MirGeneDB/mirgenedb_hsa_mature.fa', checkIfExists: true),
+                    file('https://github.com/nf-core/test-datasets/raw/smrnaseq/MirGeneDB/mirgenedb_hsa_hairpin.fa', checkIfExists: true),
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out.versions,
+                    path(workflow.out.outputs.get(0).get(1)[2]).readLines().last().contains('</html>'),
+                    workflow.out.outputs.get(0).get(1)[0],
+                    path(workflow.out.outputs.get(0).get(1)[1]).readLines().first().contains('miRDeep2 score')
+                ).match()},
+                // Assert .html
+                { assert path(workflow.out.outputs.get(0).get(1)[2]).readLines().last().contains('</html>') }
+            )
+        }
+    }
+}

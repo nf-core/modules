@@ -7,7 +7,7 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
 
-    test("Should run without failures") {
+    test("test with lambda reference") {
 
         when {
             params {
@@ -17,8 +17,45 @@ nextflow_process {
                 """
                 input[0] =  [
                                 [id:'test_out' ], // meta map
-                                file(params.test_data['sarscov2']['nanopore']['test_fastq_gz'], checkIfExists: true)
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test_2.fastq.gz', checkIfExists: true)
                             ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+
+            def fastq_content = path(process.out.fastq.get(0).get(1)).linesGzip
+
+            assertAll(
+                { assert process.success },
+                // original pytest checks
+                { assert process.out.fastq.get(0).get(1) ==~ ".*/test_out.fastq.gz" },
+                { assert !fastq_content.contains("@a52a642e-88d0-4584-babd-414ea84db484 runid=71c83ae0021f873e29b130c6562a4c27185f93b8 read=2768 ch=489 start_time=2021-08-11T12:07:39Z flow_cell_id=FAQ57606 protocol_group_id=210811_47CoV_SA sample_id=CS5 barcode=barcode04 barcode_alias=barcode04")},
+                // additional nf-test checks
+                // Order of reads is not deterministic, so only assess whether the number of reads is correct
+                { assert snapshot(
+                    fastq_content.size(),
+                    process.out.versions
+                    ).match() }
+            )
+        }
+    }
+
+        test("test without lambda reference") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] =  [
+                                [id:'test_out' ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true)
+                            ]
+                input[1] = []
                 """
             }
         }
@@ -34,12 +71,37 @@ nextflow_process {
                 { assert fastq_content.contains("@2109d790-67ec-4fd1-8931-6c7e61908ff3 runid=97ca62ca093ff43533aa34c38a10b1d6325e7e7b read=52274 ch=243 start_time=2021-02-05T23:27:30Z flow_cell_id=FAP51364 protocol_group_id=data sample_id=RN20097 barcode=barcode01 barcode_alias=barcode01")},
                 // additional nf-test checks
                 // Order of reads is not deterministic, so only assess whether the number of reads is correct
-                { assert snapshot(fastq_content.size()).match("number_of_lines") },
-                { assert snapshot(process.out.versions).match("versions") }
-
+                { assert snapshot(
+                    fastq_content.size(),
+                    process.out.versions
+                ).match() }
             )
         }
-
     }
 
+    test("test-chopper-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] =  [
+                                [id:'test_out' ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true)
+                            ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
 }

@@ -1,44 +1,60 @@
 name: "bbmap_pileup"
-description: Calculates per-scaffold or per-base coverage information from an unsorted sam or bam file.
+description: Calculates per-scaffold or per-base coverage information from an unsorted
+  sam or bam file.
 keywords:
   - fasta
   - genome
   - coverage
 tools:
   - bbmap:
-      description: BBMap is a short read aligner, as well as various other bioinformatic tools.
-      homepage: https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/
-      documentation: https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/
+      description: BBMap is a short read aligner, as well as various other bioinformatic
+        tools.
+      homepage: https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/
+      documentation: https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/
       tool_dev_url: "https://github.com/BioInfoTools/BBMap/blob/master/sh/pileup.sh"
       licence: ["UC-LBL license (see package)"]
+      identifier: biotools:bbmap
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - stats:
-      type: file
-      description: Per-scaffold coverage info
-      pattern: "*.stats.txt"
-  - hist:
-      type: file
-      description: "Histogram of # occurrences of each depth level"
-      pattern: "*.hist.txt"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  covstats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.stats.txt":
+          type: file
+          description: Coverage statistics
+          pattern: "*.stats.txt"
+          ontologies: []
+  hist:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.hist.txt":
+          type: file
+          description: "Histogram of # occurrences of each depth level"
+          pattern: "*.hist.txt"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@edmundmiller"
 maintainers:

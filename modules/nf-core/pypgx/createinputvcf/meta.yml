@@ -1,0 +1,77 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "pypgx_createinputvcf"
+description: Call SNVs/indels from BAM files for all target genes.
+keywords:
+  - pypgx
+  - Pharmacogenetics
+  - variants
+tools:
+  - "pypgx":
+      description: "A Python package for pharmacogenomics research"
+      homepage: "https://pypgx.readthedocs.io/en/latest/"
+      documentation: "https://pypgx.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/sbslee/pypgx"
+      doi: "10.1371/journal.pone.0272129"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [id: 'test']
+    - bam:
+        type: file
+        description: Input BAM file
+        pattern: "*.{bam}"
+        ontologies: []
+    - bai:
+        type: file
+        description: Input BAM index file
+        pattern: "*.{bam.bai}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [id: 'test']
+    - fasta:
+        type: file
+        description: Reference genome file
+        pattern: "*.{fasta,fa,fna,fasta.gz,fa.gz,fna.gz}"
+        ontologies: []
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [id: 'test']
+      - "*.vcf.gz":
+          type: file
+          description: VCF file containing called SNVs/indels
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [id: 'test']
+      - "*.vcf.gz.tbi":
+          type: file
+          description: File containing the VCF tabix index
+          pattern: "*.vcf.gz.tbi"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@jorisvansteenbrugge"
+maintainers:
+  - "@jorisvansteenbrugge"

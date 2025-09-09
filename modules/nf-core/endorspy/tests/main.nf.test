@@ -1,0 +1,208 @@
+nextflow_process {
+
+    name "Test Process ENDORSPY"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "ENDORSPY"
+   
+    tag "modules"
+    tag "modules_nfcore"
+    tag "endorspy"
+    tag "samtools"
+    tag "samtools/flagstat"
+    tag "samtools/view"
+    tag "samtools/index"
+
+    setup {
+        run("SAMTOOLS_FLAGSTAT", alias: "SAMTOOLS_FLAGSTAT1") {
+            script "../../samtools/flagstat/main.nf"
+            
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:false],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai',checkIfExists:true)
+                ]
+                """
+            }
+        }
+        
+        run("SAMTOOLS_VIEW") {
+            script "../../samtools/view/main.nf"                
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:false],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai',checkIfExists:true)
+                ]
+                input[1] = [[],[]]
+                input[2] = []
+                input[3] = []
+                """
+            }
+        }
+        
+        run("SAMTOOLS_INDEX") {
+            script "../../samtools/index/main.nf"
+            
+            process {
+                """
+                input[0] = SAMTOOLS_VIEW.out.bam
+                """
+            }
+        }
+        
+        run("SAMTOOLS_FLAGSTAT", alias: "SAMTOOLS_FLAGSTAT2") {
+            script "../../samtools/flagstat/main.nf"
+            
+            process {
+                """
+                input[0] = SAMTOOLS_VIEW.out.bam
+                    .mix(SAMTOOLS_INDEX.out.bai)
+                    .groupTuple(by:0)
+                    .map{[it[0], it[1][0], it[1][1]]}
+                """
+            }
+        }
+        
+        run("SAMTOOLS_FLAGSTAT", alias: "SAMTOOLS_FLAGSTAT3") {
+            script "../../samtools/flagstat/main.nf"
+            
+            process {
+                """
+                input[0] = SAMTOOLS_VIEW.out.bam
+                    .mix(SAMTOOLS_INDEX.out.bai)
+                    .groupTuple(by:0)
+                    .map{[it[0], it[1][0], it[1][1]]}
+                """
+            }
+        }
+    }
+   
+    test("sarscov2 - bam") {
+        when {
+            params {
+                samtools_view_args = "-q 30 -b"
+            }
+            process {
+                """
+                input[0] = SAMTOOLS_FLAGSTAT1.out.flagstat.map{[it[0],it[1],[],[]]}
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    test("sarscov2 - bam - bam filtered") {
+        when {
+            params {
+                samtools_view_args = "-q 30 -b"
+            }
+            process {
+                """
+                input[0] = SAMTOOLS_FLAGSTAT1.out.flagstat
+                    .join(SAMTOOLS_FLAGSTAT2.out.flagstat)
+                    .map{[it[0], it[1], it[2], []]}
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+    test("sarscov2 - bam - bam filtered - bam dedup") {
+        when {
+            params {
+                samtools_view_args = "-q 30 -b"
+            }
+            process {
+                """
+                input[0] = SAMTOOLS_FLAGSTAT1.out.flagstat
+                    .join(SAMTOOLS_FLAGSTAT2.out.flagstat)
+                    .join(SAMTOOLS_FLAGSTAT3.out.flagstat)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - bam - bam dedup") {
+        when {
+            params {
+                samtools_view_args = "-q 30 -b"
+            }
+            process {
+                """
+                input[0] = SAMTOOLS_FLAGSTAT1.out.flagstat
+                    .join(SAMTOOLS_FLAGSTAT2.out.flagstat)
+                    .map{[it[0], it[1], [], it[2]]}
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - bam filtered - bam dedup") {
+        when {
+            params {
+                samtools_view_args = "-q 30 -b"
+            }
+            process {
+                """
+                input[0] = SAMTOOLS_FLAGSTAT1.out.flagstat
+                    .join(SAMTOOLS_FLAGSTAT2.out.flagstat)
+                    .map{[it[0], [], it[1], it[2]]}
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - bam filtered - bam dedup - stub") {
+        tag "stub"
+        options '-stub'
+
+        when {
+            params {
+                samtools_view_args = "-q 30 -b"
+            }
+            process {
+                """
+                input[0] = SAMTOOLS_FLAGSTAT1.out.flagstat
+                    .join(SAMTOOLS_FLAGSTAT2.out.flagstat)
+                    .map{[it[0], [], it[1], it[2]]}
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

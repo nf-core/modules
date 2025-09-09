@@ -15,7 +15,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test', single_end:false ], // meta map
-                            file(params.test_data['generic']['pairtools']['mock_pairsam'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pairtools/mock.pairsam', checkIfExists: true)
                        ]
                 """
             }
@@ -40,7 +40,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test', single_end:false ], // meta map
-                            file(params.test_data['generic']['pairtools']['mock_pairsam'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pairtools/mock.pairsam', checkIfExists: true)
                        ]
                 """
             }

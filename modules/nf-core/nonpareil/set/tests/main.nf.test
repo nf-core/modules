@@ -10,23 +10,23 @@ nextflow_process {
     tag "nonpareil/set"
     tag "nonpareil/nonpareil"
 
-    test("candidatus_portiera_aleyrodidarum") {
-
-        setup {
-            run("NONPAREIL_NONPAREIL") {
-                script "../../../nonpareil/nonpareil/main.nf"
-                process {
-                    """
-                    input[0] = Channel.fromList([
-                        [[ id:'test', single_end:false ], file(params.test_data['candidatus_portiera_aleyrodidarum']['illumina']['test_1_fastq_gz'], checkIfExists: true)],
-                        [[ id:'test2', single_end:false ], file(params.test_data['candidatus_portiera_aleyrodidarum']['illumina']['test_1_fastq_gz'], checkIfExists: true)],
-                    ])
-                    input[1] = 'fastq'
-                    input[2] = 'kmer'
-                    """
-                }
+    setup {
+        run("NONPAREIL_NONPAREIL") {
+            script "../../../nonpareil/nonpareil/main.nf"
+            process {
+                """
+                input[0] = Channel.fromList([
+                    [[ id:'test', single_end:false ], file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/illumina/fastq/test_1.fastq.gz', checkIfExists: true)],
+                    [[ id:'test2', single_end:false ], file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/illumina/fastq/test_1.fastq.gz', checkIfExists: true)],
+                ])
+                input[1] = 'fastq'
+                input[2] = 'kmer'
+                """
             }
         }
+    }
+
+    test("candidatus_portiera_aleyrodidarum") {
 
         when {
             process {
@@ -44,6 +44,27 @@ nextflow_process {
                         process.out.versions
                     ).match()
                 }
+            )
+        }
+
+    }
+
+test("candidatus_portiera_aleyrodidarum - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = NONPAREIL_NONPAREIL.out.npo.map{meta, npo -> [[id:'test'], npo]}.groupTuple()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
             )
         }
 

@@ -23,11 +23,11 @@ nextflow_workflow {
                 input[0] = Channel.of(
                     [
                         [ id:'test' ],
-                        file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                     ],
                     [
                         [ id:'test2' ],
-                        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                     ]
                 )
                 input[1] = Channel.of(
@@ -62,11 +62,11 @@ nextflow_workflow {
                 input[0] = Channel.of(
                     [
                         [ id:'test' ],
-                        file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                     ],
                     [
                         [ id:'test2' ],
-                        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                     ]
                 )
                 input[1] = Channel.of(
@@ -97,11 +97,11 @@ nextflow_workflow {
                 input[0] = Channel.of(
                     [
                         [ id:'test' ],
-                        file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                     ],
                     [
                         [ id:'test2' ],
-                        file(params.test_data['homo_sapiens']['genome']['genome_21_fasta'], checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                     ]
                 )
                 input[1] = []

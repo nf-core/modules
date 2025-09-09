@@ -1,0 +1,59 @@
+nextflow_process {
+
+    name "Test Process PROOVFRAME_MAP"
+    script "../main.nf"
+    process "PROOVFRAME_MAP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "proovframe"
+    tag "proovframe/map"
+
+    test("sarscov2 - tsv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.tsv[0][1]).text.contains('MT192765.1	ENSSASP00005000002.1	100.0	7096	1	0	259	21545	1') },
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - tsv - stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

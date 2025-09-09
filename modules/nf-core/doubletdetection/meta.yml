@@ -1,0 +1,64 @@
+name: "doubletdetection"
+description: Doublet detection in single-cell RNA-seq data
+keywords:
+  - single-cell
+  - doublets
+  - doublet_detection
+tools:
+  - "doubletdetection":
+      description: "Doublet detection in single-cell RNA-seq data"
+      tool_dev_url: "https://github.com/JonathanShor/DoubletDetection"
+      doi: "10.5281/zenodo.6349517"
+      licence: ["MIT"]
+      identifier: biotools:DoubletDetection
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+
+    - h5ad:
+        type: file
+        description: H5AD anndata object
+        pattern: "*.h5ad"
+
+        ontologies: []
+output:
+  h5ad:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.h5ad":
+          type: file
+          description: H5AD anndata object
+          pattern: "*.h5ad"
+
+          ontologies: []
+  predictions:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.pkl":
+          type: file
+          description: pandas dataframe containing the doublet classification
+          pattern: "*.pkl"
+
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@LeonHafner"
+maintainers:
+  - "@LeonHafner"

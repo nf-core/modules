@@ -15,7 +15,7 @@ nextflow_process {
             }
             process {
                 """
-                file_a = file(params.test_data['sarscov2']['genome']['proteome_fasta'], checkIfExists: true)
+                file_a = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
                 file_a.copyTo("${workDir}/prot1.fasta")
                 file_a.copyTo("${workDir}/prot2.fasta")
                 file_a = file("${workDir}/prot1.fasta", checkIfExists:true)

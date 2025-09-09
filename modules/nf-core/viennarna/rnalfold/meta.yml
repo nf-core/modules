@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "viennarna_rnalfold"
 description: calculate locally stable secondary structures of RNAs
@@ -22,6 +21,7 @@ tools:
       documentation: "https://viennarna.readthedocs.io/en/latest/"
       doi: 10.1186/1748-7188-6-26
       licence: ["custom"]
+      identifier: biotools:viennarna
 
 input:
   - fasta:
@@ -29,16 +29,21 @@ input:
       description: |
         A fasta file containing RNA or transcript sequences
       pattern: "*.{fasta,fa}"
+      ontologies: []
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - rnalfold_txt:
-      type: file
-      description: The text Output of RNALfold
-      pattern: "*.{lfold}"
-
+  rnalfold_txt:
+    - "*.lfold":
+        type: file
+        description: The text Output of RNALfold
+        pattern: "*.{lfold}"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@kokul-atx"
 maintainers:

@@ -1,5 +1,6 @@
 name: "survivor_merge"
-description: Compare or merge VCF files to generate a consensus or multi sample VCF files.
+description: Compare or merge VCF files to generate a consensus or multi sample VCF
+  files.
 keywords:
   - survivor
   - merge
@@ -12,22 +13,24 @@ tools:
       documentation: "https://github.com/fritzsedlazeck/SURVIVOR/wiki"
       tool_dev_url: "https://github.com/fritzsedlazeck/SURVIVOR"
       doi: "10.1038/NCOMMS14061"
-      licence: "['MIT']"
+      licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcfs:
-      type: files
-      description: |
-        The VCF files to be merged
-        Gzipped VCF files are not supported: https://github.com/fritzsedlazeck/SURVIVOR/issues/158
-      pattern: "*.vcf"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcfs:
+        type: list
+        description: |
+          The VCF files to be merged
+          Gzipped VCF files are not supported: https://github.com/fritzsedlazeck/SURVIVOR/issues/158
+        pattern: "*.vcf"
   - max_distance_breakpoints:
       type: integer
-      description: Max distance between breakpoints (0-1 percent of length, 1- number of bp)
+      description: Max distance between breakpoints (0-1 percent of length, 1- number
+        of bp)
   - min_supporting_callers:
       type: integer
       description: Minimum number of supporting caller
@@ -44,19 +47,24 @@ input:
       type: integer
       description: Minimum size of SVs to be taken into account
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - vcf:
-      type: file
-      description: The merged VCF file
-      pattern: "*.vcf"
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf":
+          type: file
+          description: The merged VCF file
+          pattern: "*.vcf"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

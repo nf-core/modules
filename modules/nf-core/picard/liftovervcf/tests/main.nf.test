@@ -1,0 +1,84 @@
+
+nextflow_process {
+
+    name "Test Process PICARD_LIFTOVERVCF"
+    script "../main.nf"
+    process "PICARD_LIFTOVERVCF"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "picard"
+    tag "picard/liftovervcf"
+
+    test("test-picard-liftovervcf") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ],
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true)
+				]
+				input[1] = [ [ id:'genome' ],
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
+				]
+				input[2] = [ [ id:'genome' ],
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+				]
+				input[3] = [ [ id:'genome' ],
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.chain.gz', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					path(process.out.vcf_lifted[0][1]).vcf.summary,
+					path(process.out.vcf_unlifted[0][1]).vcf.variantsMD5,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-picard-liftovervcf-stubs") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ],
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true)
+				]
+				input[1] = [ [ id:'genome' ],
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
+				]
+				input[2] = [ [ id:'genome' ],
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+				]
+				input[3] = [ [ id:'genome' ],
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.chain.gz', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					file(process.out.vcf_lifted[0][1]).name,
+					file(process.out.vcf_unlifted[0][1]).name,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

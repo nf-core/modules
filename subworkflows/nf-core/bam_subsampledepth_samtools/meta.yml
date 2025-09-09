@@ -1,0 +1,42 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "bam_subsampledepth_samtools"
+description: Subsample a BAM/CRAM/SAM file using samtools to a given mean depth
+keywords:
+  - subsample
+  - bam
+  - sam
+  - cram
+components:
+  - samtools/depth
+  - samtools/view
+  - gawk
+input:
+  - ch_bam:
+      type: file
+      description: |
+        The input channel containing the BAM/CRAM/SAM files and their indexes and the depth at which to subsample them.
+        Structure: [ val(meta), path(bam), path(bai), val(depth) ]
+      pattern: "*.{bam,cram,sam}"
+  - ch_fasta:
+      type: file
+      description: |
+        The reference genome channel containing the fasta files and its index
+        Structure: [ val(meta), path(fasta), path(fai) ]
+      pattern: "*.{fa(sta)?}"
+output:
+  - bam_subsampled:
+      type: file
+      description: |
+        Channel containing subsampled BAM/CRAM/SAM files and their indexes
+        Structure: [ val(meta), path(bam), path(csi) ]
+      pattern: "*.{bam,cram,sam}"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@louislenezet"
+maintainers:
+  - "@louislenezet"

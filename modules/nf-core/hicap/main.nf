@@ -45,4 +45,17 @@ process HICAP {
         hicap: \$( echo \$( hicap --version 2>&1 ) | sed 's/^.*hicap //' )
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.gbk
+    touch ${prefix}.svg
+    touch ${prefix}.tsv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        hicap: \$( echo \$( hicap --version 2>&1 ) | sed 's/^.*hicap //' )
+    END_VERSIONS
+    """
 }

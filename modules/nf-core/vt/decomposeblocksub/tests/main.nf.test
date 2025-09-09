@@ -1,0 +1,62 @@
+
+nextflow_process {
+
+    name "Test Process VT_DECOMPOSEBLOCKSUB"
+    script "../main.nf"
+    process "VT_DECOMPOSEBLOCKSUB"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "vt"
+    tag "vt/decomposeblocksub"
+
+    test("test-vt-decomposeblocksub") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
+				[]
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-vt-decomposeblocksub-intervals") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				[ id:'test', single_end:false ], // meta map
+				file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
+                [],
+				file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

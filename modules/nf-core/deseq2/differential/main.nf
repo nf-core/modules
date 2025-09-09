@@ -1,5 +1,5 @@
 process DESEQ2_DIFFERENTIAL {
-    tag "$meta"
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -8,7 +8,7 @@ process DESEQ2_DIFFERENTIAL {
         'biocontainers/bioconductor-deseq2:1.34.0--r41hc247a5b_3' }"
 
     input:
-    tuple val(meta), val(contrast_variable), val(reference), val(target)
+    tuple val(meta), val(contrast_variable), val(reference), val(target), val(formula), val(comparison)
     tuple val(meta2), path(samplesheet), path(counts)
     tuple val(meta3), path(control_genes_file)
     tuple val(meta4), path(transcript_lengths_file)
@@ -29,7 +29,7 @@ process DESEQ2_DIFFERENTIAL {
     task.ext.when == null || task.ext.when
 
     script:
-    template 'deseq_de.R'
+    template 'deseq2_differential.R'
 
     stub:
     """

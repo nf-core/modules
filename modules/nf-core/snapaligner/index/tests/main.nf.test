@@ -1,0 +1,69 @@
+
+nextflow_process {
+
+    name "Test Process SNAPALIGNER_INDEX"
+    script "../main.nf"
+    process "SNAPALIGNER_INDEX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "snapaligner"
+    tag "snapaligner/index"
+
+    test("test-snapaligner-index") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:"test"],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    [],
+                    [],
+                    []
+				]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.index[0][1].collect { file(it).name }.toSorted(),
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-snapaligner-index-stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:"test"],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    [],
+                    [],
+                    []
+				]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+
+}

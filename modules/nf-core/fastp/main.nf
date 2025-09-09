@@ -4,8 +4,8 @@ process FASTP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fastp:0.23.4--h5f740d0_0' :
-        'biocontainers/fastp:0.23.4--h5f740d0_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/88/889a182b8066804f4799f3808a5813ad601381a8a0e3baa4ab8d73e739b97001/data' :
+        'community.wave.seqera.io/library/fastp:0.24.0--62c97b06e8447690' }"
 
     input:
     tuple val(meta), path(reads)
@@ -48,7 +48,7 @@ process FASTP {
             $adapter_list \\
             $fail_fastq \\
             $args \\
-            2> >(tee ${prefix}.fastp.log >&2) \\
+            2>| >(tee ${prefix}.fastp.log >&2) \\
         | gzip -c > ${prefix}.fastp.fastq.gz
 
         cat <<-END_VERSIONS > versions.yml
@@ -69,7 +69,7 @@ process FASTP {
             $adapter_list \\
             $fail_fastq \\
             $args \\
-            2> >(tee ${prefix}.fastp.log >&2)
+            2>| >(tee ${prefix}.fastp.log >&2)
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -94,7 +94,7 @@ process FASTP {
             --thread $task.cpus \\
             --detect_adapter_for_pe \\
             $args \\
-            2> >(tee ${prefix}.fastp.log >&2)
+            2>| >(tee ${prefix}.fastp.log >&2)
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -106,14 +106,16 @@ process FASTP {
     stub:
     def prefix              = task.ext.prefix ?: "${meta.id}"
     def is_single_output    = task.ext.args?.contains('--interleaved_in') || meta.single_end
-    def touch_reads         = (is_single_output && !discard_trimmed_pass) ? "echo '' | gzip > ${prefix}.fastp.fastq.gz" : "echo '' | gzip > ${prefix}_1.fastp.fastq.gz ; echo '' | gzip > ${prefix}_2.fastp.fastq.gz"
+    def touch_reads         = (discard_trimmed_pass) ? "" : (is_single_output) ? "echo '' | gzip > ${prefix}.fastp.fastq.gz" : "echo '' | gzip > ${prefix}_1.fastp.fastq.gz ; echo '' | gzip > ${prefix}_2.fastp.fastq.gz"
     def touch_merged        = (!is_single_output && save_merged) ? "echo '' | gzip >  ${prefix}.merged.fastq.gz" : ""
+    def touch_fail_fastq    = (!save_trimmed_fail) ? "" : meta.single_end ? "echo '' | gzip > ${prefix}.fail.fastq.gz" : "echo '' | gzip > ${prefix}.paired.fail.fastq.gz ; echo '' | gzip > ${prefix}_1.fail.fastq.gz ; echo '' | gzip > ${prefix}_2.fail.fastq.gz"
     """
     $touch_reads
+    $touch_fail_fastq
+    $touch_merged
     touch "${prefix}.fastp.json"
     touch "${prefix}.fastp.html"
     touch "${prefix}.fastp.log"
-    $touch_merged
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
