@@ -8,7 +8,7 @@ process BLOBTK_DEPTH {
         'community.wave.seqera.io/library/blobtk:0.7.1--e3f63bb2cdc8fb96' }"
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(bam), path(index)
 
     output:
     tuple val(meta), path('*.regions.bed.gz') , emit: bed
