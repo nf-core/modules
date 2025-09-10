@@ -39,6 +39,14 @@ input:
       description: |
         GATK sequence dictionary
         Structure: [ path(dict) ]
+  - ch_alleles:
+      description: |
+        VCF file to be used for force calling of alleles.
+        Structure: [ path(alleles) ]
+  - ch_alleles_tbi:
+      description: |
+        Index of VCF file of alleles for force calling.
+        Structure: [ path(alleles_tbi) ]
   - ch_germline_resource:
       description: |
         Population vcf of germline sequencing, containing allele fractions.
@@ -59,14 +67,6 @@ input:
       description: |
         File containing intervals.
         Structure: [ path(interval_files) ]
-  - ch_mutect2_force_call:
-      description: |
-        VCF file to be used for force calling in Mutect2.
-        Structure: [ path(mutect2_force_call) ]
-  - ch_mutect2_force_call_tbi:
-      description: |
-        Index file for force calling in Mutect2.
-        Structure: [ path(mutect2_force_call_tbi) ]
 output:
   - versions:
       description: |

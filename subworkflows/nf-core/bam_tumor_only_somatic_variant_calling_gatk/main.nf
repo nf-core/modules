@@ -7,17 +7,17 @@ include { GATK4_FILTERMUTECTCALLS      } from '../../../modules/nf-core/gatk4/fi
 
 workflow BAM_TUMOR_ONLY_SOMATIC_VARIANT_CALLING_GATK {
     take:
-    ch_input                  // channel: [ val(meta), [ input ], [ input_index ], [] ]
-    ch_fasta                  // channel: /path/to/reference/fasta
-    ch_fai                    // channel: /path/to/reference/fasta/index
-    ch_dict                   // channel: /path/to/reference/fasta/dictionary
-    ch_germline_resource      // channel: /path/to/germline/resource
-    ch_germline_resource_tbi  // channel: /path/to/germline/index
-    ch_panel_of_normals       // channel: /path/to/panel/of/normals
-    ch_panel_of_normals_tbi   // channel: /path/to/panel/of/normals/index
-    ch_interval_file          // channel: /path/to/interval/file
-    ch_mutect2_force_call     // channel: /path/to/mutect2/force/call
-    ch_mutect2_force_call_tbi // channel: /path/to/mutect2/force/call/index
+    ch_input                 // channel: [ val(meta), [ input ], [ input_index ], [] ]
+    ch_fasta                 // channel: /path/to/reference/fasta
+    ch_fai                   // channel: /path/to/reference/fasta/index
+    ch_dict                  // channel: /path/to/reference/fasta/dictionary
+    ch_alleles               // channel: /path/to/alleles
+    ch_alleles_tbi           // channel: /path/to/alleles/index
+    ch_germline_resource     // channel: /path/to/germline/resource
+    ch_germline_resource_tbi // channel: /path/to/germline/index
+    ch_panel_of_normals      // channel: /path/to/panel/of/normals
+    ch_panel_of_normals_tbi  // channel: /path/to/panel/of/normals/index
+    ch_interval_file         // channel: /path/to/interval/file
 
     main:
     versions = Channel.empty()
@@ -28,12 +28,12 @@ workflow BAM_TUMOR_ONLY_SOMATIC_VARIANT_CALLING_GATK {
         ch_fasta,
         ch_fai,
         ch_dict,
+        ch_alleles,
+        ch_alleles_tbi,
         ch_germline_resource,
         ch_germline_resource_tbi,
         ch_panel_of_normals,
-        ch_panel_of_normals_tbi,
-        ch_mutect2_force_call,
-        ch_mutect2_force_call_tbi
+        ch_panel_of_normals_tbi
     )
 
     //Generate pileup summary table using getpileupsummaries.
