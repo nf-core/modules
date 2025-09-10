@@ -39,6 +39,14 @@ input:
       description: |
         GATK sequence dictionary
         Structure: [ path(dict) ]
+  - ch_alleles:
+      description: |
+        VCF file to be used for force calling of alleles.
+        Structure: [ path(alleles) ]
+  - ch_alleles_tbi:
+      description: |
+        Index of VCF file of alleles for force calling.
+        Structure: [ path(alleles_tbi) ]
   - ch_germline_resource:
       description: |
         Population vcf of germline sequencing, containing allele fractions.

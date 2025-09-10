@@ -30,6 +30,8 @@ workflow BAM_CREATE_SOM_PON_GATK {
         [],
         [],
         [],
+        [],
+        [],
         []
     )
     ch_versions = ch_versions.mix(GATK4_MUTECT2.out.versions.first())
