@@ -46,8 +46,8 @@ process BLOBTK_PLOT {
         -o ${prefix}.png
 
     cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            blobtk: \$(blobtk --version | cut -d' ' -f2)
+    "${task.process}":
+        blobtk: \$(blobtk --version | cut -d' ' -f2)
     END_VERSIONS
     """
 
