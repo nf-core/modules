@@ -12,12 +12,12 @@ process GATK4_MUTECT2 {
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(dict)
+    path alleles
+    path alleles_tbi
     path germline_resource
     path germline_resource_tbi
     path panel_of_normals
     path panel_of_normals_tbi
-    path mutect2_force_call
-    path mutect2_force_call_tbi
 
     output:
     tuple val(meta), path("*.vcf.gz"),      emit: vcf
@@ -36,7 +36,7 @@ process GATK4_MUTECT2 {
     def interval_command = intervals ? "--intervals ${intervals}" : ""
     def pon_command = panel_of_normals ? "--panel-of-normals ${panel_of_normals}" : ""
     def gr_command = germline_resource ? "--germline-resource ${germline_resource}" : ""
-    def mfc_command = mutect2_force_call ? "--alleles ${mutect2_force_call}": ""
+    def a_command = alleles ? "--alleles ${alleles}": ""
 
     def avail_mem = 3072
     if (!task.memory) {
@@ -53,7 +53,7 @@ process GATK4_MUTECT2 {
         --reference ${fasta} \\
         ${pon_command} \\
         ${gr_command} \\
-        ${mfc_command} \\
+        ${a_command} \\
         ${interval_command} \\
         --tmp-dir . \\
         ${args}

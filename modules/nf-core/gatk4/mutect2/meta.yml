@@ -68,6 +68,17 @@ input:
         description: GATK sequence dictionary
         pattern: "*.dict"
         ontologies: []
+  - alleles:
+      type: file
+      description: vcf file to be used to force-call alleles.
+      pattern: "*.vcf.gz"
+      ontologies:
+        - edam: http://edamontology.org/format_3989 # GZIP format
+  - alleles_tbi:
+      type: file
+      description: Index file for alleles to be force-called.
+      pattern: "*.vcf.gz.tbi"
+      ontologies: []
   - germline_resource:
       type: file
       description: Population vcf of germline sequencing, containing allele fractions.
@@ -90,14 +101,6 @@ input:
       description: Index for the panel of normals.
       pattern: "*.vcf.gz.tbi"
       ontologies: []
-  - mutect2_force_call:
-        type: file
-        description: vcf file to be used to force-call alleles.
-        pattern: "*.vcf.gz"
-  - mutect2_force_call_tbi:
-        type: file
-        description: Index for alleles to be force-called.
-        pattern: "*.vcf.gz.tbi"
 output:
   vcf:
     - - meta:
