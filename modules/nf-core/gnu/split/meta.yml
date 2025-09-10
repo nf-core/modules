@@ -27,23 +27,25 @@ input:
         type: file
         description: Text file, possibly gzip file
         ontologies: []
-
 output:
   split:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - outfile_prefix:
-        type: file
-        description: Split files
-        pattern: "${outfile_prefix}.*"
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${outfile_prefix}.*:
+          type: file
+          description: Split files
+          pattern: "${outfile_prefix}.*"
+          ontologies: []
   versions:
     - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@k1sauce"
 maintainers:
