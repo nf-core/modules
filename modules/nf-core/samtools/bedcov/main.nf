@@ -41,7 +41,6 @@ process SAMTOOLS_BEDCOV {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """

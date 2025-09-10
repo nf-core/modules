@@ -30,7 +30,7 @@ process SAMTOOLS_SORT {
     extension = args.contains("--output-fmt sam") ? "sam" :
                 args.contains("--output-fmt cram") ? "cram" :
                 "bam"
-    reference = fasta ? "--reference ${fasta}" : ""
+    def reference = fasta ? "--reference ${fasta}" : ""
     output_file = index_format ? "${prefix}.${extension}##idx##${prefix}.${extension}.${index_format} --write-index" : "${prefix}.${extension}"
     if (index_format) {
         if (!index_format.matches('bai|csi|crai')) {
@@ -65,7 +65,6 @@ process SAMTOOLS_SORT {
     extension = args.contains("--output-fmt sam") ? "sam" :
                 args.contains("--output-fmt cram") ? "cram" :
                 "bam"
-    def reference = fasta ? "--reference ${fasta}" : ""
     if (index_format) {
         if (!index_format.matches('bai|csi|crai')) {
             error "Index format not one of bai, csi, crai."
