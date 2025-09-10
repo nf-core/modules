@@ -49,6 +49,7 @@ nextflow_process {
             input[5] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz.tbi', checkIfExists: true)
             input[6] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz', checkIfExists: true)
             input[7] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz.tbi', checkIfExists: true)
+            input[8] = []
             """
             }
         }
@@ -109,6 +110,7 @@ nextflow_process {
             input[5] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz.tbi', checkIfExists: true)
             input[6] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz', checkIfExists: true)
             input[7] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz.tbi', checkIfExists: true)
+            input[8] = []
             """
             }
         }
@@ -156,6 +158,7 @@ nextflow_process {
             input[5] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz.tbi', checkIfExists: true)
             input[6] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz', checkIfExists: true)
             input[7] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz.tbi', checkIfExists: true)
+            input[8] = []
             """
             }
         }
@@ -203,6 +206,7 @@ nextflow_process {
             input[5] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz.tbi', checkIfExists: true)
             input[6] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz', checkIfExists: true)
             input[7] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz.tbi', checkIfExists: true)
+            input[8] = []
             """
             }
         }
@@ -251,6 +255,7 @@ nextflow_process {
             input[5] = []
             input[6] = []
             input[7] = []
+            input[8] = []
             """
             }
         }
@@ -299,6 +304,56 @@ nextflow_process {
             input[5] = []
             input[6] = []
             input[7] = []
+            input[8] = []
+            """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                        process.out.tbi.collect { file(it[1]).getName() },
+                        process.out.stats,
+                        process.out.f1r2,
+                        process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+test("mitochondria - bam - gz_ref"){
+        when {
+            params {
+                module_args = "--mitochondria-mode"
+            }
+            process {
+            """
+            input[0] = [
+                [ id:'test'],
+                [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/mitochon_standin.recalibrated.sorted.bam', checkIfExists: true)],
+                [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/mitochon_standin.recalibrated.sorted.bam.bai', checkIfExists: true)],
+                [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)]
+            ]
+            input[1] = [
+                [ id:'genome' ],
+                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.gz', checkIfExists: true)
+            ]
+            input[2] = [
+                [ id:'genome' ],
+                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.gz.fai', checkIfExists: true)
+            ]
+            input[3] = [
+                [ id:'genome' ],
+                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
+            ]
+            input[4] = []
+            input[5] = []
+            input[6] = []
+            input[7] = []
+            input[8] = [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.gz.gzi', checkIfExists: true)]
             """
             }
         }
@@ -360,6 +415,7 @@ nextflow_process {
             input[5] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz.tbi', checkIfExists: true)
             input[6] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz', checkIfExists: true)
             input[7] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz.tbi', checkIfExists: true)
+            input[8] = []
             """
             }
         }
