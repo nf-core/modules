@@ -7,7 +7,7 @@ keywords:
   - sort
   - merge compare
 tools:
-  - "gnu":
+  - gnu:
       description: "The GNU Core Utilities are the basic file, shell and text manipulation
         utilities of the GNU operating system. These are the core utilities which are
         expected to exist on every operating system."
@@ -28,25 +28,26 @@ input:
         description: Draft assembly file
         pattern: "*.{txt,bed,interval,genome,bins}"
         ontologies: []
+
 output:
-  - sorted:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-          pattern: "${output_file}"
-      - '${output_file}':
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-          pattern: "${output_file}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  sorted:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+        pattern: "${output_file}"
+    - "${output_file}":
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+        pattern: "${output_file}"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 authors:
   - "@DLBPointon"
 maintainers:
