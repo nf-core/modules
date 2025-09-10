@@ -27,7 +27,18 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.collectEntries { key, val ->
+                    if (key[0].isNumber()) {
+                        // Skip numbered outputs
+                        return
+                    }
+                    if (key == "discarded") {
+                        // Discarded fastq is empty, causing a lint failure => only check filename for this output
+                        return [key, val.collect { meta, fastq -> [ meta, file(fastq).name ]}]
+                    } else {
+                        return [key, val]
+                    }
+                } ).match() }
             )
         }
 
