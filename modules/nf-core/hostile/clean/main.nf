@@ -4,18 +4,17 @@ process HOSTILE_CLEAN {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4f/4f1e4558685117662053d37800dcf7a0d64d1f857e22c84900c379a16a04103c/data'
-        : 'community.wave.seqera.io/library/hostile:2.0.1--9fa0d3c35ac8f37e'}"
+        ? 'https://depot.galaxyproject.org/singularity/hostile:2.0.2--pyhdfd78af_0'
+        : 'biocontainers/hostile:2.0.2--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(reads)
     tuple val(reference_name), path(reference_dir)
 
-
     output:
     tuple val(meta), path('cleaned_reads/*.fastq.gz'), emit: fastq
-    tuple val(meta), path('*.json')                  , emit: json
-    path 'versions.yml'                              , emit: versions
+    tuple val(meta), path('*.json'), emit: json
+    path 'versions.yml', emit: versions
 
     when:
     task.ext.when == null || task.ext.when
