@@ -1,6 +1,6 @@
 process DRAGEN {
     tag "$meta.id"
-    label 'process_long'
+    label 'process_dragen'
 
     // ATTENTION: No conda env or container image as Dragen requires specialized hardware to run
 
