@@ -13,8 +13,8 @@ process VIBER {
     output:
         tuple val(meta), path("*_viber_best_st_fit.rds"), emit: viber_rds
         tuple val(meta), path("*_viber_best_st_heuristic_fit.rds"), emit: viber_heuristic_rds
-        tuple val(meta), path("*_${plot1}"), emit: viber_plots_rds
-        tuple val(meta), path("*_${plot2}"), emit: viber_heuristic_plots_rds
+        tuple val(meta), path("*_viber_best_st_fit_plots.rds"), emit: viber_plots_rds
+        tuple val(meta), path("*_viber_best_st_heuristic_fit_plots.rds"), emit: viber_heuristic_plots_rds
         tuple val(meta), path("*_REPORT_plots_viber.rds"), emit: viber_report_rds
         tuple val(meta), path("*_REPORT_plots_viber.pdf"), emit: viber_report_pdf
         tuple val(meta), path("*_REPORT_plots_viber.png"), emit: viber_report_png
@@ -25,33 +25,33 @@ process VIBER {
 
 
     script:
-    def n_samples = tumour_samples.size()
-    if (n_samples==1) {
-        plot1 = "viber_best_st_mixing_plots.rds"
-        plot2 = "viber_best_st_heuristic_mixing_plots.rds"
-    } else {
-        plot1 = "viber_best_st_fit_plots.rds"
-        plot2 = "viber_best_st_heuristic_fit_plots.rds"
-    }
+    //def n_samples = tumour_samples.size()
+    //if (n_samples==1) {
+    //    plot1 = "viber_best_st_mixing_plots.rds"
+    //    plot2 = "viber_best_st_heuristic_mixing_plots.rds"
+    //} else {
+    //    plot1 = "viber_best_st_fit_plots.rds"
+    //    plot2 = "viber_best_st_heuristic_fit_plots.rds"
+    //}
 
-    template "main_script.R"
+    template "viber_main_script.R"
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def n_samples = tumour_samples.size()
-    if (n_samples==1) {
-        plot1 = "viber_best_st_mixing_plots.rds"
-        plot2 = "viber_best_st_heuristic_mixing_plots.rds"
-    } else {
-        plot1 = "viber_best_st_fit_plots.rds"
-        plot2 = "viber_best_st_heuristic_fit_plots.rds"
-    }
+    //def n_samples = tumour_samples.size()
+    //if (n_samples==1) {
+    //    plot1 = "viber_best_st_mixing_plots.rds"
+    //    plot2 = "viber_best_st_heuristic_mixing_plots.rds"
+    //} else {
+    //    plot1 = "viber_best_st_fit_plots.rds"
+    //    plot2 = "viber_best_st_heuristic_fit_plots.rds"
+    //}
 
     """
     touch ${prefix}_viber_best_st_fit.rds
     touch ${prefix}_viber_best_st_heuristic_fit.rds
-    touch ${prefix}_${plot1}
-    touch ${prefix}_${plot2}
+    touch ${prefix}_viber_best_st_fit_plots.rds
+    touch ${prefix}_viber_best_st_heuristic_fit_plots.rds
     touch ${prefix}_REPORT_plots_viber.rds
     touch ${prefix}_REPORT_plots_viber.pdf
     touch ${prefix}_REPORT_plots_viber.png

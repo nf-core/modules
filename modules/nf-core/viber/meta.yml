@@ -55,7 +55,7 @@ output:
       - "*_viber_best_st_heuristic_fit.rds":
           type: file
           description: Cluster-filtering heuristics viber fit as an .rds object
-          pattern: "_viber_best_st_heuristic_fit.rds"
+          pattern: "*_viber_best_st_heuristic_fit.rds"
           ontologies: []
   viber_plots_rds:
     - - meta:
@@ -63,10 +63,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*_${plot1}":
+      - "*_viber_best_st_fit_plots.rds":
           type: file
-          description: mixining proportion plot or best fit plot
-          pattern: "*_plots.rds"
+          description: best fit plot
+          pattern: "_viber_best_st_fit_plots.rds"
           ontologies: []
   viber_heuristic_plots_rds:
     - - meta:
@@ -74,10 +74,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*_${plot2}":
+      - "*_viber_best_st_heuristic_fit_plots.rds":
           type: file
-          description: mixining proportion plot or best fit plot heuristics
-          pattern: "*viber_best_st_heuristic*.rds"
+          description: heuristics fit plot 
+          pattern: "*_viber_best_st_heuristic_fit_plots.rds"
           ontologies: []
   viber_report_rds:
     - - meta:

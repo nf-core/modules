@@ -30,11 +30,11 @@ print(opt)
 
 library(VIBER)
 library(dplyr)
-library(tidyverse)
+library(tidyr)
 library(ggplot2)
 library(CNAqc)
+library(ggpubr)
 
-#patientID = "$meta.patient"
 samples = substr("$tumour_samples", 2, nchar("$tumour_samples")-1)
 samples = strsplit(samples, ", ")[[1]]
 print("$meta.patient")
@@ -49,7 +49,6 @@ if ( grepl(".rds\$", tolower("$rds_join")) ) {
         joint_table = lapply(names(shared),
                         function(sample_name)
                         shared[[sample_name]] %>%
-                            # keep only mutations on the diploid karyotype
                             CNAqc::subset_by_segment_karyotype("1:1") %>%
                             CNAqc::Mutations() %>%
                             dplyr::mutate(sample_id=sample_name)
@@ -64,33 +63,31 @@ if ( grepl(".rds\$", tolower("$rds_join")) ) {
 
 print("Subset joint done")
 
-## TODO : add drivers to `input_tab`
 
 ## Read input joint table
 input_tab = joint_table %>%
-dplyr::mutate(VAF=replace(VAF, VAF==0, 1e-7))
+  dplyr::mutate(VAF=replace(VAF, VAF==0, 1e-7))
 
 ## Convert the input table into longer format
 reads_data = input_tab %>%
-dplyr::select(chr, from, ref, alt, NV, DP, VAF, sample_id) %>%
-tidyr::pivot_wider(names_from="sample_id",
-                    values_from=c("NV","DP","VAF"), names_sep=".")
+  dplyr::select(chr, from, ref, alt, NV, DP, VAF, sample_id) %>%
+  tidyr::pivot_wider(names_from="sample_id",
+                     values_from=c("NV","DP","VAF"), names_sep=".")
 
 ## Extract DP (depth)
 dp = reads_data %>%
-# dplyr::filter(mutation_id %in% non_tail) %>% ## this step should be managed before by other module
-dplyr::select(dplyr::starts_with("DP")) %>%
-dplyr::mutate(dplyr::across(.cols=dplyr::everything(),
-                            .fns=function(x) replace(x, is.na(x), 0))) %>%
-dplyr::rename_all(function(x) stringr::str_remove_all(x,"DP."))
+  dplyr::select(dplyr::starts_with("DP")) %>%
+  dplyr::mutate(dplyr::across(.cols=dplyr::everything(),
+                              .fns=function(x) replace(x, is.na(x), 0))) %>%
+  dplyr::rename_all(function(x) stringr::str_remove_all(x,"DP."))
 
 ## Extract NV (alt_counts)
 nv = reads_data %>%
-# dplyr::filter(mutation_id %in% non_tail) %>% ## this step should be managed before by other module
-dplyr::select(dplyr::starts_with("NV")) %>%
-dplyr::mutate(dplyr::across(.cols=dplyr::everything(),
-                            .fns=function(x) replace(x, is.na(x), 0))) %>%
-dplyr::rename_all(function(x) stringr::str_remove_all(x,"NV."))
+  dplyr::select(dplyr::starts_with("NV")) %>%
+  dplyr::mutate(dplyr::across(.cols=dplyr::everything(),
+                              .fns=function(x) replace(x, is.na(x), 0))) %>%
+  dplyr::rename_all(function(x) stringr::str_remove_all(x,"NV."))
+
 
 # Standard fit
 viber_K = as.integer(opt[["K"]])
@@ -125,29 +122,23 @@ saveRDS(best_fit_heuristic, file = paste0(opt[["prefix"]], "_viber_best_st_heuri
 
 # Save plots
 n_samples = ncol(best_fit[["x"]]) - 1
-if (n_samples >1) { #mutlisample mode on
-print("multisample mode on")
-plot_fit = plot(best_fit)
-plot_fit_heuristic = plot(best_fit_heuristic)
+if (n_samples >1) {
+  print("multisample mode on")
+  plot_fit = plot(best_fit)
+  plot_fit_heuristic = plot(best_fit_heuristic)
+} else {
+  plot_fit = plot_mixing_proportions(best_fit)
+  plot_fit_heuristic = plot_mixing_proportions(best_fit_heuristic)
+}
 
 saveRDS(plot_fit, file=paste0(opt[["prefix"]], "_viber_best_st_fit_plots.rds"))
 saveRDS(plot_fit_heuristic, file=paste0(opt[["prefix"]], "_viber_best_st_heuristic_fit_plots.rds"))
-} else {
-plot_fit_mixing = plot_mixing_proportions(best_fit)
-plot_fit_mixing_heuristic = plot_mixing_proportions(best_fit_heuristic)
-
-saveRDS(plot_fit_mixing, file=paste0(opt[["prefix"]], "_viber_best_st_mixing_plots.rds"))
-saveRDS(plot_fit_mixing_heuristic, file=paste0(opt[["prefix"]], "_viber_best_st_heuristic_mixing_plots.rds"))
-}
 
 # Save report plot
 n_samples = ncol(best_fit[["x"]]) - 1
 marginals = multivariate = ggplot()
 
 try(expr = {marginals <<- VIBER::plot_1D(best_fit)} )
-#try(expr = {multivariate = plot(best_fit) %>% patchwork::wrap_plots()} )
-#top_p = patchwork::wrap_plots(marginals, multivariate, design=ifelse(n_samples>2, "ABB", "AAB"))
-
 try(expr = {multivariate = plot(best_fit)})
 try(expr = {multivariate = ggpubr::ggarrange(plotlist = multivariate)})
 top_p = ggpubr::ggarrange(plotlist = list(marginals, multivariate), widths=ifelse(n_samples>2, c(1,2), c(2,1)))
@@ -155,10 +146,8 @@ top_p = ggpubr::ggarrange(plotlist = list(marginals, multivariate), widths=ifels
 mix_p = VIBER::plot_mixing_proportions(best_fit)
 binom = VIBER::plot_peaks(best_fit)
 elbo = VIBER::plot_ELBO(best_fit)
-#bottom_p = patchwork::wrap_plots(mix_p, binom, elbo, design="ABBBC")
 bottom_p = ggpubr::ggarrange(plotlist = list(mix_p, binom, elbo), widths = c(1,2,1), nrow = 1)
 
-#report_fig = patchwork::wrap_plots(top_p, bottom_p, design=ifelse(n_samples>2, "AAAB", "AAB"))
 report_fig = ggpubr::ggarrange(top_p, bottom_p, nrow = 2, heights = ifelse(n_samples>2, c(3,1), c(2,1)))
 saveRDS(report_fig, file=paste0(opt[["prefix"]], "_REPORT_plots_viber.rds"))
 ggplot2::ggsave(plot=report_fig, filename=paste0(opt[["prefix"]], "_REPORT_plots_viber.pdf"), height=210, width=210, units="mm", dpi = 200)
@@ -169,7 +158,17 @@ ggplot2::ggsave(plot=report_fig, filename=paste0(opt[["prefix"]], "_REPORT_plots
 f = file("versions.yml","w")
 cnaqc_version = sessionInfo()\$otherPkgs\$CNAqc\$Version
 viber_version = sessionInfo()\$otherPkgs\$VIBER\$Version
+cli_version = sessionInfo()\$otherPkgs\$cli\$Version
+dplyr_version = sessionInfo()\$otherPkgs\$dplyr\$Version
+tidyr_version = sessionInfo()\$otherPkgs\$tidyr\$Version
+ggplot2_version = sessionInfo()\$otherPkgs\$ggplot2\$Version
+ggpubr_version = sessionInfo()\$otherPkgs\$ggpubr\$Version
 writeLines(paste0('"', "$task.process", '"', ":"), f)
 writeLines(paste("    CNAqc:", cnaqc_version), f)
 writeLines(paste("    VIBER:", viber_version), f)
+writeLines(paste("    cli:", cli_version), f)
+writeLines(paste("    dplyr:", dplyr_version), f)
+writeLines(paste("    tidyr:", tidyr_version), f)
+writeLines(paste("    ggplot2:", ggplot2_version), f)
+writeLines(paste("    ggpubr:", ggpubr_version), f)
 close(f)
