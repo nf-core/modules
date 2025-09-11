@@ -50,7 +50,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.mbias_processed_pdf,
+                    process.out.mbias_processed_pdf.collect { meta, pdf_file -> file(pdf_file).name },
                     process.out.mbias_processed_csv,
                     process.out.mbias_processed_str,
                     process.out.versions
