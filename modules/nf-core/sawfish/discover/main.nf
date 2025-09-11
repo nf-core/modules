@@ -40,7 +40,6 @@ process SAWFISH_DISCOVER {
     script:
     def args = task.ext.args ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def reference = fasta ? "--ref ${fasta}" : ""
     def expected_cn = expected_cn_bed ? "--expected-cn ${expected_cn_bed}" : ""
     def maf = maf_vcf ? "--maf ${maf_vcf}" : ""
     def cnv_exclude_regions = cnv_exclude_regions ? "--cnv-exclude-regions ${cnv_exclude_regions}" : ""
@@ -70,31 +69,31 @@ process SAWFISH_DISCOVER {
     def expected_cn_bed = expected_cn_bed ? "touch ${prefix}/expected.copy.number.bed": ''
     def maf_mpack = maf_vcf ? "echo \"MAF VCF mpack\" > ${prefix}/maf.mpack": ''
     def copynum_files = !args.contains('--disable-cnv') ? """
-        echo "Copynum bedgraph" > ${prefix}/copynum.bedgraph
-        echo "Copynum mpack" > ${prefix}/copynum.mpack
-        echo "Sample GC bias mpack" > ${prefix}/sample.gcbias.mpack
-        echo "Genome GC levels mpack" > ${prefix}/genome.gclevels.mpack
+        touch ${prefix}/copynum.bedgraph
+        touch ${prefix}/copynum.mpack
+        touch ${prefix}/sample.gcbias.mpack
+        touch ${prefix}/genome.gclevels.mpack
     """ : ''
 
     """
     mkdir -p ${prefix}
-    echo "##fileformat=VCFv4.2" > ${prefix}/candidate.sv.bcf
-    echo "VCF index content" > ${prefix}/candidate.sv.bcf.csi
-    echo -e "chr1\t1000\t2000" > ${prefix}/assembly.regions.bed
-    echo "BAM content" > ${prefix}/contig.alignment.bam
-    echo "BAM index content" > ${prefix}/contig.alignment.bam.csi
-    echo -e "chr1\t1000\t2000\tcluster1" > ${prefix}/debug.breakpoint_clusters.bed
-    echo "Cluster refinement content" > ${prefix}/debug.cluster.refinement.txt
-    echo "{ \"setting\": \"value\" }" > ${prefix}/discover.settings.json
-    echo -e "chr1\t1000\t50" > ${prefix}/max.depth.bed
-    echo "{ \"stat\": \"value\" }" > ${prefix}/run.stats.json
-    echo "Log content" > ${prefix}/sawfish.log
-    echo "Depth mpack content" > ${prefix}/depth.mpack
-    echo "Copy number bedgraph content" > ${prefix}/copynum.bedgraph
-    echo "Copy number mpack content" > ${prefix}/copynum.mpack
-    echo "GC bias content" > ${prefix}/sample.gcbias.mpack
-    echo "Genome GC levels content" > ${prefix}/genome.gclevels.mpack
-    echo "Expected copy number content" > ${prefix}/expected.copy.number.bed
+    touch ${prefix}/candidate.sv.bcf
+    touch ${prefix}/candidate.sv.bcf.csi
+    touch ${prefix}/assembly.regions.bed
+    touch ${prefix}/contig.alignment.bam
+    touch ${prefix}/contig.alignment.bam.csi
+    touch ${prefix}/debug.breakpoint_clusters.bed
+    touch ${prefix}/debug.cluster.refinement.txt
+    touch ${prefix}/discover.settings.json
+    touch ${prefix}/max.depth.bed
+    touch ${prefix}/run.stats.json
+    touch ${prefix}/sawfish.log
+    touch ${prefix}/depth.mpack
+    touch ${prefix}/copynum.bedgraph
+    touch ${prefix}/copynum.mpack
+    touch ${prefix}/sample.gcbias.mpack
+    touch ${prefix}/genome.gclevels.mpack
+    touch ${prefix}/expected.copy.number.bed
 
     ${copynum_files}
     ${expected_cn_bed}
