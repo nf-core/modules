@@ -8,11 +8,11 @@ process HOSTILE_CLEAN {
         : 'community.wave.seqera.io/library/hostile:2.0.2--a7f5e5d341b6b94b'}"
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), path(reads, stageAs: 'input_reads')
     tuple val(reference_name), path(reference_dir)
 
     output:
-    tuple val(meta), path('cleaned_reads/*.fastq.gz'), emit: fastq
+    tuple val(meta), path('*.fastq.gz'), emit: fastq
     tuple val(meta), path('*.json'), emit: json
     path 'versions.yml', emit: versions
 
@@ -22,10 +22,9 @@ process HOSTILE_CLEAN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def reads_cmd = meta.single_end ? "--fastq1 ${reads.sort()[0]}" : "--fastq1 ${reads.sort()[0]} --fastq2 ${reads.sort()[1]}"
+    def reads_cmd = meta.single_end ? "--fastq1 input_reads/${reads.sort()[0]}" : "--fastq1 ${reads.sort()[0]} --fastq2 ${reads.sort()[1]}"
     """
     export HOSTILE_CACHE_DIR=${reference_dir}
-    mkdir cleaned_reads/
 
     ## Reorder the reads for reproducibility
     ## Set offline as we never want this process to auto-download reference files as required input channel
@@ -35,7 +34,7 @@ process HOSTILE_CLEAN {
         --threads ${task.cpus} \\
         ${reads_cmd} \\
         --index ${reference_name} \\
-        --output cleaned_reads/ \\
+        --output . \\
         --reorder \\
         --airplane \\
         | tee > ${prefix}.json
