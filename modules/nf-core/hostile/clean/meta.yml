@@ -51,7 +51,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - cleaned_reads/*.fastq.gz:
+      - "*.fastq.gz":
           type: map
           description: |
             Groovy Map containing sample information
