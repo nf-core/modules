@@ -1,0 +1,58 @@
+
+nextflow_process {
+
+    name "Test process rastair"
+    script "../main.nf"
+    process "RASTAIR_CALL"
+
+    tag "rastair"
+    tag "rastair/call"
+
+    test("rastair call conversion calls") {
+
+        when {
+            process {
+                """
+                input[0] =  [
+                    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[3] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[4] = [
+                    [ id:'test' ], // meta map
+                    "1"
+                ]
+                input[5] = [
+                    [ id:'test' ], // meta map
+                    "1"
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                // I need to define the snapshot comparison
+                { assert snapshot(
+                    process.out.txt,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+}
