@@ -46,7 +46,7 @@ input:
     - fasta:
         type: file
         description: The reference fasta file
-        pattern: "*.{fasta,fa,fa.gz,fasta.gz}"
+        pattern: "*.{fasta,fasta.gz}"
         ontologies: []
   - - meta3:
         type: map
@@ -103,8 +103,8 @@ input:
       ontologies: []
   - gzi:
       type: file
-      description: Bgzip block index, required if fasta is .fa.gz
-      pattern: "*.{fa.gz.gzi,fasta.gz.gzi}"
+      description: Bgzip index of reference fasta.gz
+      pattern: "*.fasta.gz.gzi"
       ontologies: []
 output:
   vcf:
