@@ -1,0 +1,61 @@
+name: rastair_call
+description: Assess positive C->T conversion as a readout for methylation on a genome-wide basis
+keywords:
+  - methylation
+  - rastair
+  - C->T conversion
+  - bisulphite
+  - bisulfite
+  - bam
+  - mCtoT
+tools:
+  - rastair:
+      description: |
+        A tool for rapid genome-wide assessment of positive C->T conversion as a readout for methylation.
+      homepage: https://bitbucket.org/bsblabludwig/rastair/src/master/
+      documentation: https://bitbucket.org/bsblabludwig/rastair/src/master/README.md
+      licence: ["GPL-3.0"]
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM/CRAM file
+        pattern: "*.{bam,cram}"
+    - bai:
+        type: file
+        description: BAM/CRAM index file
+        pattern: "*.{bai,crai}"
+  - fasta:
+      type: file
+      description: Input genome fasta file
+      pattern: "*.{fasta,fa}"
+  - fai:
+      type: file
+      description: FASTA index file
+      pattern: "*.fai"
+output:
+  txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.rastair_call.txt":
+          type: file
+          description: Text file from Rastair call containing C->T conversion metrics
+          pattern: "*.rastair_call.txt"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@eduard-casas"
+maintainers:
+  - "@eduard-casas"
