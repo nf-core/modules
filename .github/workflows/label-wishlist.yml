@@ -4,6 +4,10 @@ on:
     - cron: "0 0 * * 0" # Once a week
   workflow_dispatch:
 
+# Grant permissions to add labels to issues
+permissions:
+  issues: write
+
 jobs:
   assign_label:
     runs-on: ubuntu-latest
