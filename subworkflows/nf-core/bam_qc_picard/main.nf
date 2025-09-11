@@ -12,6 +12,7 @@ workflow BAM_QC_PICARD {
     ch_fasta                // channel: [ val(meta), fasta ]
     ch_fasta_fai            // channel: [ val(meta), fasta_fai ]
     ch_fasta_dict           // channel: [ val(meta), fasta_dict ]
+    ch_fasta_gzi            // channel: [ val(meta), fasta_gzi ]
 
     main:
     ch_versions = Channel.empty()
@@ -29,7 +30,7 @@ workflow BAM_QC_PICARD {
             return [ it[0], it[1], it[2] ]
     }
 
-    PICARD_COLLECTHSMETRICS( ch_bam_bai_bait_target_branched.hsmetrics, ch_fasta, ch_fasta_fai, ch_fasta_dict )
+    PICARD_COLLECTHSMETRICS( ch_bam_bai_bait_target_branched.hsmetrics, ch_fasta, ch_fasta_fai, ch_fasta_dict, ch_fasta_gzi )
     ch_coverage_metrics = ch_coverage_metrics.mix(PICARD_COLLECTHSMETRICS.out.metrics)
     ch_versions = ch_versions.mix(PICARD_COLLECTHSMETRICS.out.versions.first())
 
