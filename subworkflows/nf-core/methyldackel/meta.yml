@@ -1,0 +1,59 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "methyldackel"
+description: Performs alignment of BS-Seq reads using bwameth or parabricks/fq2bammeth, sort and deduplicate
+keywords:
+  - 3-letter genome
+  - methylation
+  - 5mC
+  - methylseq
+  - bisulphite
+  - bisulfite
+  - bam
+components:
+  - methyldackel/extract
+  - methyldackel/mbias
+input:
+  - ch_bam:
+      type: file
+      description: |
+        BAM alignment files
+        Structure: [ val(meta), path(bam) ]
+      pattern: "*.bam"
+  - ch_bai:
+      type: file
+      description: |
+        BAM index files
+        Structure: [ val(meta), path(bai) ]
+      pattern: "*.bai"
+  - ch_fasta:
+      type: file
+      description: |
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.{fa,fa.gz}"
+  - ch_fasta_index:
+      type: file
+      description: |
+        Structure: [ val(meta), path(fasta index) ]
+output:
+  - methydackel_extract_bedgraph:
+      type: file
+      description: |
+        bedGraph file, containing per-base methylation metrics
+        Structure: [ val(meta), path(bedgraph) ]
+      pattern: "*.bedGraph"
+  - methydackel_extract_methylkit:
+      type: file
+      description: |
+        methylKit file, containing per-base methylation metrics
+        Structure: [ val(meta), path(methylKit) ]
+      pattern: "*.methylKit"
+  - methydackel_mbias:
+      type: file
+      description: |
+        Text file containing methylation bias
+        Structure: [ val(meta), path(mbias) ]
+      pattern: "*.{txt}"
+authors:
+  - "@eduard-watchmaker"
+maintainers:
+  - "@eduard-watchmaker"
