@@ -2,27 +2,41 @@
     "Test with BAM input": {
         "content": [
             [
-                "test.paired_end.sorted_CpG.bedGraph"
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.paired_end.sorted_CpG.bedGraph:md5,183e498d4fdabc6661b359d156c41c3d"
+                ]
             ],
             [
                 
             ],
             [
-                "test.mbias.txt"
-            ],
-            [
-                "test.mbias.txt",
-                "test.paired_end.sorted_CpG.bedGraph"
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.mbias.txt:md5,2f2eb6623aa79f4ef1f486ccaa6c17b4"
+                ]
             ],
             [
                 "versions.yml:md5,5ad7eb14fa6a69c42ffa074457b26e50",
                 "versions.yml:md5,70c896cbd710784ba61ef765a715050a"
+            ],
+            [
+                [
+                    "test.mbias.txt:md5,2f2eb6623aa79f4ef1f486ccaa6c17b4"
+                ],
+                [
+                    "test.paired_end.sorted_CpG.bedGraph:md5,183e498d4fdabc6661b359d156c41c3d"
+                ]
             ]
         ],
         "meta": {
             "nf-test": "0.9.0",
             "nextflow": "24.10.5"
         },
-        "timestamp": "2025-09-10T16:13:30.429888"
+        "timestamp": "2025-09-11T15:38:49.361186"
     }
 }
