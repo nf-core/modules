@@ -124,6 +124,16 @@ jobs:
           total_shards: ${{ env.TOTAL_SHARDS }}
           paths: "${{ join(fromJson(needs.nf-test-changes.outputs.paths), ' ') }}"
 
+      # Check for snapshot failures and provide helpful comment
+      - name: Check for snapshot failures
+        if: failure() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.nf_core_bot_auth_token }}
+          script: |
+            const { checkSnapshotFailures } = require('./.github/scripts/check-snapshot-failures.js');
+            return await checkSnapshotFailures({ github, context, core });
+
   confirm-pass-gpu:
     runs-on:
       - runs-on=${{ github.run_id }}-confirm-pass-gpu
