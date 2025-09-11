@@ -34,7 +34,7 @@ process HOSTILE_CLEAN {
         ${args} \\
         --threads ${task.cpus} \\
         ${reads_cmd} \\
-        --index ${reference_dir}/${reference_name} \\
+        --index ${reference_name} \\
         --output cleaned_reads/ \\
         --reorder \\
         --airplane \\
