@@ -25,18 +25,49 @@ input:
         type: file
         description: BAM/CRAM file
         pattern: "*.{bam,cram}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
     - bai:
         type: file
         description: BAM/CRAM index file
         pattern: "*.{bai,crai}"
-  - fasta:
-      type: file
-      description: Input genome fasta file
-      pattern: "*.{fasta,fa}"
-  - fai:
-      type: file
-      description: FASTA index file
-      pattern: "*.fai"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Input genome fasta file
+        pattern: "*.{fasta,fa}"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fai:
+        type: file
+        description: FASTA index file
+        pattern: "*.fai"
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - parsed_trim_OT:
+        type: string
+        description: Number of nucleotides to trim from Original Top (OT) reads.
+  - - meta6:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - parsed_trim_OB:
+        type: string
+        description: Number of nucleotides to trim from Original Bottom (OB) reads.
 output:
   txt:
     - - meta:
