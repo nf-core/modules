@@ -41,12 +41,12 @@ nextflow_workflow {
                 { assert workflow.success},
                 { assert snapshot(
                     // Snapshot the outputs ('emit') from the METHYLDACKEL workflow
-                    workflow.out.methydackel_extract_bedgraph.collect { meta, bedgraph -> file(bedgraph).name },
-                    workflow.out.methydackel_extract_methylkit.collect { meta, methylkit -> file(methylkit).name },
-                    workflow.out.methydackel_mbias.collect { meta, mbias -> file(mbias).name },
-                    workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
-                    ).match() }
+                    process.out.methydackel_extract_bedgraph,
+                    process.out.methydackel_extract_methylkit,
+                    process.out.methydackel_mbias,
+                    process.out.versions,
+                    process.out.multiqc
+                ).match() }
             )
         }
     }
