@@ -25,27 +25,12 @@ process VIBER {
 
 
     script:
-    //def n_samples = tumour_samples.size()
-    //if (n_samples==1) {
-    //    plot1 = "viber_best_st_mixing_plots.rds"
-    //    plot2 = "viber_best_st_heuristic_mixing_plots.rds"
-    //} else {
-    //    plot1 = "viber_best_st_fit_plots.rds"
-    //    plot2 = "viber_best_st_heuristic_fit_plots.rds"
-    //}
 
     template "viber_main_script.R"
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    //def n_samples = tumour_samples.size()
-    //if (n_samples==1) {
-    //    plot1 = "viber_best_st_mixing_plots.rds"
-    //    plot2 = "viber_best_st_heuristic_mixing_plots.rds"
-    //} else {
-    //    plot1 = "viber_best_st_fit_plots.rds"
-    //    plot2 = "viber_best_st_heuristic_fit_plots.rds"
-    //}
+
 
     """
     touch ${prefix}_viber_best_st_fit.rds
