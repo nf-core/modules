@@ -8,7 +8,7 @@ process JASMINESV {
         'biocontainers/jasminesv:1.1.5--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(vcfs, arity:'1..*'), path(bams), path(sample_dists)
+    tuple val(meta), path(vcfs, arity:'1..*'), path(bams), path(bais), path(sample_dists)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fasta_fai)
     path(chr_norm)
