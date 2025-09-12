@@ -93,9 +93,9 @@ nextflow_process {
                     process.out.counts_gene,
                     process.out.counts_transcript,
                     process.out.stat,
-                    process.out.logs,
                     process.out.versions
-                ).match() }
+                ).match() },
+                { assert path(process.out.logs.get(0).get(1)).exists() }
             )
         }
     }
