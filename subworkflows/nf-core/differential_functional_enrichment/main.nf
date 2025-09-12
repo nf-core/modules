@@ -38,15 +38,9 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     // Add method information into meta map of ch_input
     // This information is used later to determine which method to run for each input
     // Also, reorganize the structure to match them with the modules' input organization
-
     ch_input_for_other = ch_input
-        .join(ch_featuresheet, by: 0, remainder: true)
-        .multiMap { tuple ->
-            def (meta, file, genesets, background, method) = tuple[0..4]
-            def features_sheet = tuple.size() > 5 ? tuple[5] : null
-            def features_id = tuple.size() > 6 ? tuple[6] : ''
-            def features_symbol = tuple.size() > 7 ? tuple[7] : ''
-            
+        .join(ch_featuresheet)
+        .multiMap { meta, file, genesets, background, method, features_sheet, features_id, features_symbol ->
             def meta_with_method = meta + [ 'functional_method': method ]
             input:
                 [ meta_with_method, file ]
@@ -55,8 +49,9 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
             background:
                 [ meta_with_method, background ]
             features:
-                [ meta_with_method, features_sheet ?: [], features_id, features_symbol]
+                [ meta_with_method, features_sheet, features_id, features_symbol]
         }
+    
     // In the case of GSEA, it needs additional files coming from other channels that other methods don't use
     // here we define the input channel for the GSEA section
 
