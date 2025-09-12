@@ -84,7 +84,6 @@ runs:
           --ci \
           --shard ${{ inputs.shard }}/${{ inputs.total_shards }} \
           --filter process,workflow \
-          --update-snapshot \
           ${{ inputs.paths }}
 
           # Save the absolute path of the test.tap file to the output
