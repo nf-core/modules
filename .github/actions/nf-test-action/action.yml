@@ -84,7 +84,6 @@ runs:
           --ci \
           --shard ${{ inputs.shard }}/${{ inputs.total_shards }} \
           --filter process,workflow \
-          --update-snapshot \
           ${{ inputs.paths }}
 
           # Save the absolute path of the test.tap file to the output
@@ -120,42 +119,6 @@ runs:
         else
           echo "| ⚠️ | No test results found | ${{ inputs.profile }} | ${{ inputs.shard }}/${{ inputs.total_shards }} |" >> $GITHUB_STEP_SUMMARY
         fi
-
-    - name: Upload updated snapshots on failure
-      if: failure()
-      shell: bash
-      run: |
-        # Find snapshot files that were updated during the test run
-        changed_snapshots=$(git status --porcelain | grep '^ M.*\.nf\.test\.snap$' | cut -c4- || true)
-
-        if [ -n "$changed_snapshots" ]; then
-          echo "Changed snapshots found:"
-          echo "$changed_snapshots"
-
-          # Create a temporary directory with only changed snapshots
-          mkdir -p ./changed-snapshots
-          echo "$changed_snapshots" | while read -r file; do
-            if [ -f "$file" ]; then
-              target_dir="./changed-snapshots/$(dirname "$file")"
-              mkdir -p "$target_dir"
-              cp "$file" "./changed-snapshots/$file"
-            fi
-          done
-
-          echo "changed_snapshots_found=true" >> $GITHUB_OUTPUT
-        else
-          echo "No snapshot changes found"
-          echo "changed_snapshots_found=false" >> $GITHUB_OUTPUT
-        fi
-      id: check-snapshots
-
-    - name: Upload changed snapshots
-      if: failure() && steps.check-snapshots.outputs.changed_snapshots_found == 'true'
-      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-      with:
-        name: updated-snapshots-${{ inputs.profile }}-${{ inputs.shard }}
-        path: ./changed-snapshots/**/*.nf.test.snap
-        retention-days: 30
 
     - name: Clean up
       if: always()
