@@ -23,10 +23,12 @@ process BCFTOOLS_SORT {
     def args = task.ext.args ?: '--output-type z'
     def prefix = task.ext.prefix ?: "${meta.id}"
     def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
-                    args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
+                    args.contains("--output-type u") || args.contains("-Ou") ? "bcf"    :
                     args.contains("--output-type z") || args.contains("-Oz") ? "vcf.gz" :
-                    args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
-                    "vcf"
+                    args.contains("--output-type v") || args.contains("-Ov") ? "vcf"    :
+                    "vcf.gz"
+
+    if ("$vcf" == "${prefix}.${extension}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     """
     bcftools \\
