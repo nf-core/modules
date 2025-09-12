@@ -37,12 +37,16 @@ jobs:
       - name: Download and apply snapshots
         if: steps.find-artifacts.outputs.has_artifacts == 'true'
         run: |
-          # Download snapshot artifacts
-          gh run download ${{ steps.find-artifacts.outputs.run_id }} \
-            --pattern "updated-snapshots-*" \
-            --dir ./artifacts
+          # Download snapshot artifacts from all failed runs
+          IFS=',' read -ra RUN_IDS <<< "${{ steps.find-artifacts.outputs.run_ids }}"
+          for run_id in "${RUN_IDS[@]}"; do
+            echo "Downloading artifacts from run: $run_id"
+            gh run download "$run_id" \
+              --pattern "updated-snapshots-*" \
+              --dir "./artifacts"
+          done
 
-          # Apply snapshots maintaining directory structure
+          # Apply all downloaded snapshots
           find ./artifacts -name "*.nf.test.snap" | while read snap_file; do
             # Remove the artifact prefix to get the relative path
             relative_path=$(echo "$snap_file" | sed 's|^./artifacts/[^/]*/||')
