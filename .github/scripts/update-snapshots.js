@@ -14,7 +14,7 @@ async function findSnapshotArtifacts({ github, context, core }) {
     content: "eyes",
   });
 
-  // Get the PR head commit SHA
+  // Get the PR number and details
   const prNumber = context.payload.issue.number;
   const pr = await github.rest.pulls.get({
     owner: context.repo.owner,
@@ -22,9 +22,9 @@ async function findSnapshotArtifacts({ github, context, core }) {
     pull_number: prNumber,
   });
   const headSha = pr.data.head.sha;
-  console.log("PR head commit:", headSha);
+  console.log(`PR ${prNumber} head commit:`, headSha);
 
-  // Find workflow runs for this specific commit
+  // Find workflow runs for this PR's latest commit only
   const allRuns = await github.rest.actions.listWorkflowRunsForRepo({
     owner: context.repo.owner,
     repo: context.repo.repo,
@@ -40,17 +40,21 @@ async function findSnapshotArtifacts({ github, context, core }) {
   );
 
   if (failedNfTestRuns.length === 0) {
+    // Debug: show what runs we did find for this commit
+    const allRunsForCommit = allRuns.data.workflow_runs;
+    const runSummary = allRunsForCommit.map((run) => `${run.name}: ${run.conclusion}`).join(", ");
+
     await github.rest.issues.createComment({
       owner: context.repo.owner,
       repo: context.repo.repo,
-      issue_number: context.payload.issue.number,
-      body: "❌ **No failed nf-test runs found for this PR**\n\nI couldn't find any failed 'Run nf-tests' or 'Run GPU nf-tests' workflow runs for this PR's latest commit. Make sure the CI tests have run and failed due to snapshot mismatches first.",
+      issue_number: prNumber,
+      body: `❌ **No failed nf-test runs found for PR #${prNumber}**\n\nI couldn't find any failed 'Run nf-tests' or 'Run GPU nf-tests' workflow runs for this PR's latest commit (\`${headSha.substring(0, 7)}\`).\n\n**Found these runs for this commit:** ${runSummary || "none"}\n\nMake sure the CI tests have run and failed due to snapshot mismatches first. You may need to wait for the tests to complete.`,
     });
     return;
   }
 
   console.log(
-    `Found ${failedNfTestRuns.length} failed nf-test runs:`,
+    `Found ${failedNfTestRuns.length} failed nf-test runs for PR #${prNumber}:`,
     failedNfTestRuns.map((r) => `${r.name} (${r.id})`),
   );
 
@@ -81,16 +85,19 @@ async function findSnapshotArtifacts({ github, context, core }) {
     await github.rest.issues.createComment({
       owner: context.repo.owner,
       repo: context.repo.repo,
-      issue_number: context.payload.issue.number,
-      body: "🤔 **No snapshot artifacts found**\n\nThe failed CI runs didn't upload any snapshot artifacts. This might mean:\n- Tests failed for reasons other than snapshot mismatches\n- The test failures occurred before snapshots could be generated\n- The failed jobs didn't run long enough to generate updated snapshots",
+      issue_number: prNumber,
+      body: `🤔 **No snapshot artifacts found for #${prNumber}**\n\nFound ${failedNfTestRuns.length} failed nf-test runs for PR #${prNumber}, but the failed CI runs didn't upload any snapshot artifacts. This might mean:\n- Tests failed for reasons other than snapshot mismatches\n- The test failures occurred before snapshots could be generated\n- The failed jobs didn't run long enough to generate updated snapshots`,
     });
     return;
   }
 
-  console.log(`Total snapshot artifacts found: ${allSnapshotArtifacts.length} across ${allRunIds.length} runs`);
+  console.log(
+    `Total snapshot artifacts found: ${allSnapshotArtifacts.length} across ${allRunIds.length} runs for PR #${prNumber}`,
+  );
   core.setOutput("run_ids", allRunIds.join(","));
   core.setOutput("has_artifacts", "true");
   core.setOutput("artifact_count", allSnapshotArtifacts.length.toString());
+  core.setOutput("pr_number", prNumber.toString());
 }
 
 /**
@@ -117,11 +124,17 @@ async function commitSnapshots({ github, context, require }) {
     execSync('git commit -m "[automated] Update nf-test snapshots from CI artifacts"');
     execSync("git push");
 
+    // Get count of updated files
+    const changedFiles = execSync("git diff --name-only HEAD~1", { encoding: "utf8" })
+      .trim()
+      .split("\n")
+      .filter((f) => f.endsWith(".nf.test.snap"));
+
     await github.rest.issues.createComment({
       owner: context.repo.owner,
       repo: context.repo.repo,
       issue_number: context.payload.issue.number,
-      body: "✅ **Snapshots updated from CI artifacts!**\n\nI found updated snapshots from the failed CI run and committed them to this PR. Much faster than re-running tests! 🚀",
+      body: `✅ **Snapshots updated from CI artifacts!**\n\nI found updated snapshots from the failed CI runs and committed them to this PR. Updated ${changedFiles.length} snapshot files. Much faster than re-running tests! 🚀`,
     });
   }
 }
