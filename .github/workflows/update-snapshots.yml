@@ -1,0 +1,64 @@
+name: update-snapshots
+run-name: update nf-test snapshots from CI artifacts (automated)
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  update-snapshots-from-artifacts:
+    # Only run if comment is on a PR with the main repo, and if it contains the magic keywords
+    if: >
+      contains(github.event.comment.html_url, '/pull/') &&
+      contains(github.event.comment.body, '@nf-core-bot update snapshots') &&
+      github.repository == 'nf-core/modules'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+        with:
+          token: ${{ secrets.nf_core_bot_auth_token }}
+          fetch-depth: 0
+
+      - name: Find snapshot artifacts from failed CI runs
+        id: find-artifacts
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        with:
+          github-token: ${{ secrets.nf_core_bot_auth_token }}
+          script: |
+            const { findSnapshotArtifacts } = require('./.github/scripts/update-snapshots.js');
+            return await findSnapshotArtifacts({ github, context, core });
+
+      - name: Checkout Pull Request branch
+        if: steps.find-artifacts.outputs.has_artifacts == 'true'
+        run: gh pr checkout ${{ github.event.issue.number }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.nf_core_bot_auth_token }}
+
+      - name: Download and apply snapshots
+        if: steps.find-artifacts.outputs.has_artifacts == 'true'
+        run: |
+          # Download snapshot artifacts
+          gh run download ${{ steps.find-artifacts.outputs.run_id }} \
+            --pattern "updated-snapshots-*" \
+            --dir ./artifacts
+
+          # Apply snapshots maintaining directory structure
+          find ./artifacts -name "*.nf.test.snap" | while read snap_file; do
+            # Remove the artifact prefix to get the relative path
+            relative_path=$(echo "$snap_file" | sed 's|^./artifacts/[^/]*/||')
+            target_dir=$(dirname "$relative_path")
+            mkdir -p "$target_dir"
+            cp "$snap_file" "$relative_path"
+            echo "Updated: $relative_path"
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.nf_core_bot_auth_token }}
+
+      - name: Commit updated snapshots
+        if: steps.find-artifacts.outputs.has_artifacts == 'true'
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        with:
+          github-token: ${{ secrets.nf_core_bot_auth_token }}
+          script: |
+            const { commitSnapshots } = require('./.github/scripts/update-snapshots.js');
+            return await commitSnapshots({ github, context, require });
