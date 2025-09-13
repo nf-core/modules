@@ -1,0 +1,72 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "opt_stat"
+description: "stat summarizes opt binding predictions"
+keywords:
+  - opt
+  - opt stat
+  - transcripts
+  - binding predictions
+  - off-target probes
+  - align probes
+  - summary stats
+tools:
+  - "opt":
+      description: "opt is a simple program that aligns probe sequences to transcript
+        sequences to detect potential off-target probe activity"
+      homepage: "https://github.com/JEFworks-Lab/off-target-probe-tracker"
+      documentation: "https://github.com/JEFworks-Lab/off-target-probe-tracker/blob/main/README.md"
+      tool_dev_url: "https://github.com/JEFworks-Lab/off-target-probe-tracker/tree/main?tab=readme-ov-file"
+      licence: [GPL-3.0 license]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - probe_targets:
+        type: file
+        description: Fasta file for the probe sequences
+        pattern: "*.fasta"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fwd_oriented_probes:
+        type: file
+        description: Forward oriented probes generated from the opt flip command
+        pattern: "*.fa"
+        ontologies: []
+  - gene_synonyms:
+      type: file
+      description: Gene synonyms that may have been counted as off-targets but
+        simply differ in name (optional input)
+      pattern: "*.fa"
+      ontologies: []
+output:
+  summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${meta.id}/collapsed_summary.tsv":
+          type: file
+          description: tsv file containing the summary stats
+          pattern: "*.tsv"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+authors:
+  - "@khersameesh24"
+maintainers:
+  - "@khersameesh24"
