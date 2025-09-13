@@ -1,10 +1,3 @@
-/**
-This module describes the Rastair process 'mbias' to
-run Rastair and assessing C->T conversion
-as a readout for methylation
-in a per read position basis
-*/
-
 process RASTAIR_MBIAS {
     label 'process_medium'
 
