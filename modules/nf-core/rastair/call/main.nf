@@ -1,10 +1,3 @@
-/**
-This module describes the Rastair process 'call' to
-run Rastair and assessing C->T conversion
-as a readout for methylation
-in a genome-wide basis
-*/
-
 process RASTAIR_CALL {
     label 'process_medium'
 
