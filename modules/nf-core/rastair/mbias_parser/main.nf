@@ -1,10 +1,3 @@
-/**
-This module describes the custom process to
-parse the mbias output,
-assess the ideal cutoff for conversion
-and report into a file readable by rastair call process
-*/
-
 process RASTAIR_MBIAS_PARSER {
     label 'process_low'
 
