@@ -1,9 +1,3 @@
-/**
-This module describes the custom Rastair process for
-parsing the rastair call output
-and converting into MethylKit and Bismark digestible formats.
-*/
-
 process CONVERT_TO_METHYLKIT {
     label 'process_low'
 
