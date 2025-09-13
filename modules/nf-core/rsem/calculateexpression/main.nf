@@ -8,14 +8,14 @@ process RSEM_CALCULATEEXPRESSION {
         'community.wave.seqera.io/library/rsem_star:5acb4e8c03239c32' }"
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), path(reads)  // FASTQ files or BAM file for --alignments mode
     path  index
 
     output:
     tuple val(meta), path("*.genes.results")   , emit: counts_gene
     tuple val(meta), path("*.isoforms.results"), emit: counts_transcript
     tuple val(meta), path("*.stat")            , emit: stat
-    tuple val(meta), path("*.log")             , emit: logs
+    tuple val(meta), path("*.log")             , emit: logs, optional:true
     path  "versions.yml"                       , emit: versions
 
     tuple val(meta), path("*.STAR.genome.bam")       , optional:true, emit: bam_star
@@ -35,14 +35,28 @@ process RSEM_CALCULATEEXPRESSION {
     } else if (meta.strandedness == 'reverse') {
         strandedness = '--strandedness reverse'
     }
-    def paired_end = meta.single_end ? "" : "--paired-end"
+
+    // Detect if input is BAM file(s)
+    def is_bam = reads.toString().toLowerCase().endsWith('.bam')
+    def alignment_mode = is_bam ? '--alignments' : ''
+        
     """
     INDEX=`find -L ./ -name "*.grp" | sed 's/\\.grp\$//'`
+    
+    # Detect paired-end reads at runtime
+    PAIRED_END_FLAG=""
+    if [ "${is_bam}" == "true" ]; then
+        samtools flagstat $reads | grep -q 'paired in sequencing' && PAIRED_END_FLAG="--paired-end"
+    else
+        [ ${reads.size()} -gt 1 ] && PAIRED_END_FLAG="--paired-end"
+    fi
+    
     rsem-calculate-expression \\
         --num-threads $task.cpus \\
         --temporary-folder ./tmp/ \\
+        $alignment_mode \\
         $strandedness \\
-        $paired_end \\
+        \$PAIRED_END_FLAG \\
         $args \\
         $reads \\
         \$INDEX \\
@@ -57,12 +71,18 @@ process RSEM_CALCULATEEXPRESSION {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
+    def is_bam = reads.toString().toLowerCase().endsWith('.bam')
     """
     touch ${prefix}.genes.results
     touch ${prefix}.isoforms.results
     touch ${prefix}.stat
     touch ${prefix}.log
-    touch ${prefix}.STAR.genome.bam
+    
+    # Only create STAR BAM output when not in alignment mode
+    if [ "${is_bam}" == "false" ]; then
+        touch ${prefix}.STAR.genome.bam
+    fi
+    
     touch ${prefix}.genome.bam
     touch ${prefix}.transcript.bam
 
