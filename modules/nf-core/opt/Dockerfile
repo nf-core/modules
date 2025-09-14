@@ -2,7 +2,7 @@ FROM python:3.11-slim
 
 LABEL \
     title="Docker container for package opt - off-target-probe-tracker" \
-    maintainer="Sameesh Kher <khersameesh24@gmail.com.com>"
+    maintainer="Sameesh Kher <khersameesh24@gmail.com>"
 
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONDONTWRITEBYTECODE=1 \
@@ -48,7 +48,8 @@ RUN git clone --branch v4.0.1 https://github.com/mummer4/mummer.git && \
 # --- Install off-target-probe-tracker ---
 RUN git clone https://github.com/JEFworks/off-target-probe-tracker.git && \
     cd off-target-probe-tracker && \
-    pip install --no-cache-dir .
+    pip install --no-cache-dir . && \
+    cd .. && rm -rf off-target-probe-tracker
 
 # Default work directory
 WORKDIR /data
