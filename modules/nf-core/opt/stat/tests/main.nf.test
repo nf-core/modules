@@ -9,20 +9,21 @@ nextflow_process {
     tag "opt"
     tag "opt/stat"
 
-    test("xenium human breast cancer panel probe sequences") {
+    test("testrun panel probe sequences") {
 
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test_run' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/opt/testdata/xenium_human_breast_gene_expression_panel_probe_sequences.fasta, checkIfExists: true)
+                    file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/probe2targets.tsv', checkIfExists: true)
                 ]
                 input[1] = [
                     [ id:'test_run' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/opt/testdata/fwd_oriented.fa, checkIfExists: true)
+                    file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/fwd_oriented.fa', checkIfExists: true)
                 ]
-                input[2] = [file('https://raw.githubusercontent.com/nf-core/test-datasets/opt/testdata/gene_synonyms.csv, checkIfExists: true)]
+                input[2] = []
+                // input[2] = [file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/gene_synonyms.csv', checkIfExists: true)]
                 """
             }
         }
@@ -34,20 +35,21 @@ nextflow_process {
         }
     }
 
-    test("xenium human breast cancer panel probe sequences -stub") {
+    test("testrun panel probe sequences -stub") {
         options "-stub"
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test_run' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/opt/testdata/xenium_human_breast_gene_expression_panel_probe_sequences.fasta, checkIfExists: true)
+                    file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/probe2targets.tsv', checkIfExists: true)
                 ]
                 input[1] = [
                     [ id:'test_run' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/opt/testdata/fwd_oriented.fa, checkIfExists: true)
+                    file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/fwd_oriented.fa', checkIfExists: true)
                 ]
-                input[2] = [file('https://raw.githubusercontent.com/nf-core/test-datasets/opt/testdata/gene_synonyms.csv, checkIfExists: true)]
+                input[2] = []
+                // input[2] = [file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/gene_synonyms.csv', checkIfExists: true)]
                 """
             }
         }

@@ -9,18 +9,18 @@ nextflow_process {
     tag "opt"
     tag "opt/track"
 
-    test("xenium human breast cancer panel probe sequences") {
+    test("testrun panel probe sequences") {
 
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test_run' ], file('https://raw.githubusercontent.com/nf-core/test-datasets/opt/testdata/fwd_oriented.fa, checkIfExists: true)
+                    [ id:'test_run' ], file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/fwd_oriented.fa', checkIfExists: true)
                 ]
                 input[1] = [
                     [ id:'test_run' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/opt/testdata/gencode.v47.basic.annotation.fmted.chr1.reduced.gff, checkIfExists: true),
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/opt/testdata/gencode.v47.basic.annotation.fmted.reduced.fa, checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 """
             }
@@ -33,19 +33,19 @@ nextflow_process {
         }
     }
 
-    test("xenium human breast cancer panel probe sequences -stub") {
+    test("testrun panel probe sequences -stub") {
         options "-stub"
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test_run' ], file('https://raw.githubusercontent.com/nf-core/test-datasets/opt/testdata/fwd_oriented.fa, checkIfExists: true)
+                    [ id:'test_run' ], file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/fwd_oriented.fa', checkIfExists: true)
                 ]
                 
                 input[1] = [
                     [ id:'test_run' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/opt/testdata/gencode.v47.basic.annotation.fmted.chr1.reduced.gff, checkIfExists: true),
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/opt/testdata/gencode.v47.basic.annotation.fmted.reduced.fa, checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 """
             }

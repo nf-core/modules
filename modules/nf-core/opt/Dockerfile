@@ -1,5 +1,9 @@
 FROM python:3.11-slim
 
+LABEL \
+    title="Docker container for package opt - off-target-probe-tracker" \
+    maintainer="Sameesh Kher <khersameesh24@gmail.com.com>"
+
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -13,6 +17,7 @@ RUN apt-get update && \
         pkg-config \
         wget \
         curl \
+        procps \
         zlib1g-dev \
         libbz2-dev \
         liblzma-dev \
