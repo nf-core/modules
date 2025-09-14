@@ -19,26 +19,26 @@ input:
   - - meta:
         type: map
         description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
+          Groovy Map containing sample information of the probe panel sequences used for the xenium experiment
+          e.g. `[ id:'breast_cancer_probe_panel_sequences' ]`
     - probes_fasta:
         type: file
-        description: Fasta file for the probe sequences
+        description: Fasta file for the probe sequences used in the xenium experiment
         pattern: "*.fasta"
         ontologies: []
   - - meta2:
         type: map
         description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
+          Groovy Map containing the information of the genomic features and fasta files used as references
+          e.g. `[ id:'gencode_references' ]`
     - ref_annot_gff:
         type: file
-        description: Reference annotation in gff format
+        description: Reference annotations in gff format
         pattern: "*.gff"
         ontologies: []
     - ref_annot_fa:
         type: file
-        description: Reference annotation in fasta format
+        description: Reference annotations in fasta format
         pattern: "*.fa"
         ontologies: []
 
@@ -47,8 +47,8 @@ output:
     - - meta:
           type: map
           description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
+            Groovy Map containing information of the forward oriented fasta generated with the probes panel sequences 'opt flip'
+            e.g. `[ id:'breast_cancer_probe_panel_sequences' ]`
       - "${meta.id}/fwd_oriented.fa":
           type: file
           description: The forward oriented fasta file

@@ -23,36 +23,36 @@ input:
   - - meta:
         type: map
         description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
+          Groovy Map containing information of the probe targets generated from the panel sequences with `opt track`
+          e.g. `[ id:'breast_cancer_probe_panel_sequences' ]`
     - probe_targets:
         type: file
-        description: Fasta file for the probe sequences
-        pattern: "*.fasta"
+        description: Generated probe targets
+        pattern: "*.tsv"
         ontologies: []
   - - meta2:
         type: map
         description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
+          Groovy Map containing information of the forward oriented fasta generated with the probes panel sequences 'opt flip'
+          e.g. `[ id:'breast_cancer_probe_panel_sequences' ]`
     - fwd_oriented_probes:
         type: file
-        description: Forward oriented probes generated from the opt flip command
+        description: The forward oriented fasta file
         pattern: "*.fa"
         ontologies: []
   - gene_synonyms:
       type: file
       description: Gene synonyms that may have been counted as off-targets but
         simply differ in name (optional input)
-      pattern: "*.fa"
+      pattern: "*.csv"
       ontologies: []
 output:
   summary:
     - - meta:
           type: map
           description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
+            Groovy Map containing summary of the forward oriented probes generated with the panel sequences 'opt flip and track'
+            e.g. `[ id:'breast_cancer_probe_panel_sequences' ]`
       - "${meta.id}/collapsed_summary.tsv":
           type: file
           description: tsv file containing the summary stats
