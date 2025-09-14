@@ -4,15 +4,15 @@ process SAMCLIP {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/samclip:0.4.0--hdfd78af_1'
-        : 'biocontainers/samclip:0.4.0--hdfd78af_1'}"
+        ? 'oras://community.wave.seqera.io/library/samclip_samtools:7af2916e4ae6f461'
+        : 'community.wave.seqera.io/library/samclip_samtools:00cc7aefd75be672'}"
 
     input:
-    tuple val(meta), path(sam)
+    tuple val(meta), path(bam)
     tuple val(meta2), path(reference), path(reference_index)
 
     output:
-    tuple val(meta), path("*.sam"), emit: sam
+    tuple val(meta), path("*.bam"), emit: bam
     path "versions.yml", emit: versions
 
     when:
@@ -27,25 +27,28 @@ process SAMCLIP {
     # decompress reference if gzipped
     ${is_compressed ? "gzip -c -d ${reference} > ${ref_filename}" : ""}
 
-    samclip ${args} \\
-        --ref ${ref_filename} \\
-        < ${sam} \\
-        > ${prefix}.sam \\
+    samtools view -h --output-fmt sam ${bam} | \\
+    samclip ${args} --ref ${ref_filename} | \\
+    samtools sort -n -O BAM -T /tmp | \\
+    samtools fixmate -m - - | \\
+    samtools sort -O BAM > ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         samclip: \$(echo \$(samclip --version 2>&1) | sed 's/^.*samclip //g' )
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}.samclip"
     """
-    touch ${prefix}.sam
+    touch ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         samclip: \$(echo \$(samclip --version 2>&1) | sed 's/^.*samclip //g' )
+        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
 }

@@ -23,12 +23,12 @@ input:
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
 
-    - sam:
+    - bam:
         type: file
-        description: SAM file
-        pattern: "*.sam"
+        description: BAM file
+        pattern: "*.bam"
         ontologies:
-          - edam: http://edamontology.org/format_2573 # SAM
+          - edam: http://edamontology.org/format_2572 # BAM
   - - meta2:
         type: map
         description: |
@@ -48,15 +48,15 @@ input:
         pattern: "*.{fai}"
         ontologies: []
 output:
-  sam:
+  bam:
     - - meta:
           type: map
           description: Groovy Map containing sample information. e.g. [ id:'test']
-      - "*.sam":
+      - "*.bam":
           type: file
-          description: Filtered SAM
+          description: Filtered BAM
           ontologies:
-            - edam: http://edamontology.org/format_2573 # SAM
+            - edam: http://edamontology.org/format_2572 # BAM
   versions:
     - versions.yml:
         type: file
