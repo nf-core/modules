@@ -31,7 +31,7 @@ jobs:
 
       - name: Find conda differences
         id: conda-diff
-        uses: tj-actions/changed-files@ed68ef82c095e0d48ec87eccea555d944a631a4c # v46
+        uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v47
         with:
           json: true
           escape_json: false
@@ -40,7 +40,7 @@ jobs:
 
       - name: Find Dockerfile differences
         id: docker-diff
-        uses: tj-actions/changed-files@ed68ef82c095e0d48ec87eccea555d944a631a4c # v46
+        uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v47
         with:
           json: true
           escape_json: false
@@ -112,7 +112,7 @@ jobs:
           chmod +x /usr/local/bin/wave
 
       - name: Create a registry name
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         id: registry-name
         with:
           result-encoding: string

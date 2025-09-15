@@ -1,0 +1,57 @@
+name: "seqkit_sana"
+description: Sanitize broken single line FASTQ files
+keywords:
+  - fastq
+  - quality check
+  - skip malformed
+  - parser
+tools:
+  - "seqkit":
+      description: A cross-platform and ultrafast toolkit for FASTA/Q file manipulation.
+      homepage: "https://bioinf.shenwei.me/seqkit"
+      documentation: "https://bioinf.shenwei.me/seqkit"
+      tool_dev_url: "https://github.com/shenwei356/seqkit"
+      doi: "10.1371/journal.pone.0163962"
+      licence: ["MIT"]
+      identifier: biotools:seqkit
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. [ id:'sample1']
+    - reads:
+        type: file
+        description: One line for each sequence and quality value
+        pattern: "*.{fq,fastq}{,.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+output:
+  reads:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. [ id:'sample1']
+      - ${prefix}${extension}:
+          type: file
+          description: Parsed fastq file without malformed entries/lines
+          pattern: "*.${extension}"
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+  log:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. [ id:'sample1']
+      - ${prefix}.log:
+          type: file
+          description: Log file produced by the seqkit/sana software
+          pattern: "*.log"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: versions.yml
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"
