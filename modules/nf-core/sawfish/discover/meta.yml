@@ -76,6 +76,19 @@ input:
         pattern: "*.bed"
         ontologies: []
 output:
+  versions:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/format_3750" # YAML
+
   assembly_regions:
     - - meta:
           type: map
@@ -185,7 +198,8 @@ output:
           type: file
           description: Discover settings JSON file
           pattern: "*.json"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
   genome_gclevels:
     - - meta:
           type: map
@@ -218,7 +232,8 @@ output:
           type: file
           description: Run statistics JSON file
           pattern: "*.json"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
   sample_gcbias:
     - - meta:
           type: map
@@ -263,19 +278,32 @@ output:
           description: Expected copy number BED file
           pattern: "*.bed"
           ontologies: []
-  versions:
+  discover_dir:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - versions.yml:
+      - "*_discover_dir":
+          type: directory
+          description: Directory containing all discover output files
+          ontologies: []
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - bam:
           type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: "http://edamontology.org/format_3750" # YAML
-
+          description: Sorted BAM/CRAM file
+          pattern: "*.{bam,cram}"
+          ontologies: []
+      - bai:
+          type: file
+          description: BAM index file
+          pattern: "*.bai"
+          ontologies: []
 authors:
   - "@padraicc"
 maintainers:
