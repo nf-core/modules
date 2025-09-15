@@ -49,7 +49,7 @@ nextflow_process {
                     [ id:'test' ],
                     bigwig1, bigwig2
                 ]
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/bed/test.bed', checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.blacklist_intervals.bed', checkIfExists: true)
                 """
             }
         }
