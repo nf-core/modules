@@ -49,7 +49,6 @@ process GLIMPSE_CONCORDANCE {
 
     stub:
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def args    = task.ext.args   ?: ""
     """
     echo "" | gzip > ${prefix}.error.cal.txt.gz
     echo "" | gzip > ${prefix}.error.grp.txt.gz
