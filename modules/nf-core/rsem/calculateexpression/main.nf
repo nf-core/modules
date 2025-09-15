@@ -39,16 +39,22 @@ process RSEM_CALCULATEEXPRESSION {
     // Detect if input is BAM file(s)
     def is_bam = reads.toString().toLowerCase().endsWith('.bam')
     def alignment_mode = is_bam ? '--alignments' : ''
-        
+
+    // Use metadata for paired-end detection if available, otherwise empty (auto-detect)
+    def paired_end = meta.containsKey('single_end') ? (meta.single_end ? "" : "--paired-end") : "unknown"
+
     """
     INDEX=`find -L ./ -name "*.grp" | sed 's/\\.grp\$//'`
-    
-    # Detect paired-end reads at runtime
-    PAIRED_END_FLAG=""
-    if [ "${is_bam}" == "true" ]; then
-        samtools flagstat $reads | grep -q 'paired in sequencing' && PAIRED_END_FLAG="--paired-end"
-    else
-        [ ${reads.size()} -gt 1 ] && PAIRED_END_FLAG="--paired-end"
+
+    # Use metadata-based paired-end detection, or auto-detect if no metadata provided
+    PAIRED_END_FLAG="$paired_end"
+    if [ "${paired_end}" == "unknown" ]; then
+        # Auto-detect only if no metadata provided
+        if [ "${is_bam}" == "true" ]; then
+            samtools flagstat $reads | grep -q 'paired in sequencing' && PAIRED_END_FLAG="--paired-end"
+        else
+            [ ${reads.size()} -gt 1 ] && PAIRED_END_FLAG="--paired-end"
+        fi
     fi
     
     rsem-calculate-expression \\
