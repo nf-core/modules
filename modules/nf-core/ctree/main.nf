@@ -11,8 +11,8 @@ process CTREE {
     tuple val(meta), path(ctree_input)
 
     output:
-    tuple val(meta), path("**ctree_{mobster,VIBER,pyclonevi}.rds")       , emit: ctree_rds      , optional: true
-    tuple val(meta), path("**ctree_{mobster,VIBER,pyclonevi}_plots.rds") , emit: ctree_plots_rds, optional: true
+    tuple val(meta), path("**ctree_{mobster,VIBER,pyclonevi}.rds")       , emit: ctree_rds       , optional: true
+    tuple val(meta), path("**ctree_{mobster,VIBER,pyclonevi}_plots.rds") , emit: ctree_plots_rds , optional: true
     tuple val(meta), path("**ctree_{mobster,VIBER,pyclonevi}_report.rds"), emit: ctree_report_rds, optional: true
     tuple val(meta), path("**ctree_{mobster,VIBER,pyclonevi}_report.pdf"), emit: ctree_report_pdf, optional: true
     tuple val(meta), path("**ctree_{mobster,VIBER,pyclonevi}_report.png"), emit: ctree_report_png, optional: true
