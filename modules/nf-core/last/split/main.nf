@@ -25,13 +25,39 @@ process LAST_SPLIT {
     """
     set -o pipefail
 
+    # LAST reports genome sizes and sequence number at the beginning and end of the MAF files it outputs.
+    function get_genome_stats() { awk '
+        BEGIN { OFS = "\\t" }
+        function extract(line, regex,   s) {
+            if (match(line, regex)) {
+                s = substr(line, RSTART, RLENGTH)
+                sub(/^[^=]*=/, "", s)   # strip up to "="
+                return s
+            }
+            return ""
+        }
+        /^# Reference sequences=/ {
+            ref_seq     = extract(\$0, "^# Reference sequences=[0-9]+")
+            ref_letters = extract(\$0,                "letters=[0-9]+")
+        }
+        /^# Query sequences=/ {
+            qry_seq     = extract(\$0, "^# Query sequences=[0-9]+")
+            qry_letters = extract(\$0,            "letters=[0-9]+")
+        }
+        END {
+            print "TargetSequences", "TargetLength", "QuerySequences", "QueryLength"    # Header for MultiQC
+            print ref_seq+0,         ref_letters+0,  qry_seq+0,         qry_letters+0   # Data in TSV format
+        }'
+    }
+
+    # The MAF files do not report number of matches directly, but we can compute it easily via conversion to PSL format and then extract them.
     function calculate_psl_metrics() {
         awk 'BEGIN {
-            FS="\t";  # Set field separator as tab
+            OFS="\\t";
+            FS="\\t";  # Set field separator as tab
             totalMatches = 0;
             totalAlignmentLength = 0;
             totalAlignedBases = 0;
-            print "Sample\tTotalAlignmentLength\tPercentIdentity\tPercentIdentityNoGaps";  # Header for MultiQC
         }
         {
             totalMatches         += \$1 +       \$3            ;  # Sum matches          and repMatches
@@ -41,15 +67,21 @@ process LAST_SPLIT {
         END {
             percentIdentity       = (totalAlignmentLength > 0) ? (totalMatches / totalAlignmentLength * 100) : 0;
             percentIdentityNoGaps = (totalAlignmentLength > 0) ? (totalMatches / totalAlignedBases    * 100) : 0;
-            print "$meta.id" "\t" totalAlignmentLength "\t" percentIdentity "\t" percentIdentityNoGaps;  # Data in TSV format
+            print "Sample",  "TotalAlignmentLength", "PercentIdentity", "PercentIdentityNoGaps";  # Header for MultiQC
+            print "$meta.id", totalAlignmentLength,   percentIdentity,   percentIdentityNoGaps;   # Data in TSV format
         }'
     }
 
+    # The MAF files can be really big, so we stream them in the awk functions and gzip instead of reading them each time.
     zcat < $maf |
         last-split $args |
-        tee >(gzip --no-name  > ${prefix}.maf.gz) |
+        tee >(get_genome_stats > ${prefix}.genomestats.txt) |
+        tee >(gzip --no-name   > ${prefix}.maf.gz) |
         maf-convert psl |
-        calculate_psl_metrics > ${prefix}.tsv
+        calculate_psl_metrics  > ${prefix}.alignmentstats.txt
+
+    # Combine the two stats file into one for MultiQC.
+    paste ${prefix}.alignmentstats.txt ${prefix}.genomestats.txt > ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
