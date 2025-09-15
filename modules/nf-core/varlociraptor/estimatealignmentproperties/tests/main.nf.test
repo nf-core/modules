@@ -36,6 +36,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     path(process.out.alignment_properties_json[0][1]).json,
+                    process.out.alignment_properties_json,
                     process.out.versions
                     ).match() }
             )
