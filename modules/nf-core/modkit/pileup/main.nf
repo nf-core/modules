@@ -4,12 +4,12 @@ process MODKIT_PILEUP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ont-modkit:0.3.0--h5c23e0d_0':
-        'biocontainers/ont-modkit:0.3.0--h5c23e0d_0' }"
+        'https://depot.galaxyproject.org/singularity/ont-modkit:0.4.4--hcdda2d0_0':
+        'biocontainers/ont-modkit:0.4.4--hcdda2d0_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
-    tuple val(meta2), path(fasta)
+    tuple val(meta2), path(fasta), path(fai)
     tuple val(meta3), path(bed)
 
     output:

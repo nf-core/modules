@@ -5,6 +5,7 @@ keywords:
   - blast
   - blastn
   - DNA sequence
+  - taxids
 tools:
   - blast:
       description: |
@@ -24,6 +25,7 @@ input:
         type: file
         description: Input fasta file containing queries sequences
         pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -33,9 +35,21 @@ input:
         type: directory
         description: Directory containing the blast database
         pattern: "*"
+  - taxidlist:
+        type: file
+        description: File containing NCBI taxon ids, one per line, for filtering the database.
+        pattern: "*.{txt}"
+  - taxids:
+        type: string
+        description: Comma-delimited list of NCBI taxon ids for filtering the database.
+        pattern: "^[0-9]+(,[0-9]+)*$"
+  - negative_tax:
+        type: boolean
+        description: Use negative filtering (true) to exclude taxon ids or normal filtering (false).
+        pattern: "true or false"
 output:
-  - txt:
-      - meta:
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,11 +58,14 @@ output:
           type: file
           description: File containing blastn hits
           pattern: "*.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@joseespinosa"
   - "@drpatelh"

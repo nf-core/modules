@@ -19,19 +19,31 @@ process ADAPTERREMOVALFIXPREFIX {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if ("$fastq" == "${prefix}.fq.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${fastq}" == "${prefix}.fq.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     def VERSION = '0.0.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     AdapterRemovalFixPrefix \\
-        $fastq \\
-        $args \\
+        ${fastq} \\
+        ${args} \\
         | gzip > ${prefix}.fq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        adapterremovalfixprefix: $VERSION
+        adapterremovalfixprefix: ${VERSION}
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '0.0.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    """
+    echo | gzip > ${prefix}.fq.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        adapterremovalfixprefix: ${VERSION}
     END_VERSIONS
     """
 }

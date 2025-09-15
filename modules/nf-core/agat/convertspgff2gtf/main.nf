@@ -12,20 +12,20 @@ process AGAT_CONVERTSPGFF2GTF {
 
     output:
     tuple val(meta), path("*.agat.gtf"), emit: output_gtf
-    tuple val(meta), path("*.log"), emit: log
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.log")     , emit: log
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     agat_convert_sp_gff2gtf.pl \\
-        --gff $gff \\
+        --gff ${gff} \\
         --output ${prefix}.agat.gtf \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

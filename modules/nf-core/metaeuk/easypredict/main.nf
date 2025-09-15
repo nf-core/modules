@@ -22,8 +22,8 @@ process METAEUK_EASYPREDICT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
     """
     if [ -d ${database} ]; then
         ## if supplying an mmseqs database as a directory, metaeuk requires the basename of the database

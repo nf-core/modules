@@ -20,8 +20,8 @@ process GEM2_GEMMAPPABILITY {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args    = task.ext.args   ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}"
     def VERSION = '20200110' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     gem-mappability \\
@@ -38,8 +38,7 @@ process GEM2_GEMMAPPABILITY {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix  = task.ext.prefix ?: "${meta.id}"
     def VERSION = '20200110' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """

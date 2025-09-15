@@ -11,15 +11,12 @@ nextflow_process {
     test("bacteroides_fragilis - genome.fa.gz") {
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = [
-                                [ id:'test', single_end:false ], // meta map
-                                file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
-                            ]
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                ]
                 input[1] = []
                 """
             }
@@ -27,26 +24,23 @@ nextflow_process {
 
         then {
             assertAll(
-            { assert process.success },
-            { assert snapshot(process.out).match() }
+                { assert process.success },
+                { assert snapshot(process.out).match() }
             )
         }
     }
 
-    test("bacteroides_fragilis - genome - stub") {
+    test("bacteroides_fragilis - genome.fa.gz - stub") {
 
         options "-stub"
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = [
-                                [ id:'test', single_end:false ], // meta map
-                                file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
-                            ]
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                ]
                 input[1] = []
                 """
             }
@@ -54,11 +48,9 @@ nextflow_process {
 
         then {
             assertAll(
-            { assert process.success },
-            { assert snapshot(process.out).match() }
+                { assert process.success },
+                { assert snapshot(process.out).match() }
             )
         }
-
     }
-
 }
