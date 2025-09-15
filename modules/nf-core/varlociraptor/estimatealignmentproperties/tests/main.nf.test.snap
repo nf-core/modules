@@ -2,23 +2,15 @@
     "sarscov2 - [bam,fasta]": {
         "content": [
             {
-                "insert_size": {
-                    "mean": 205.109756097561,
-                    "sd": 58.03511199809246
-                },
-                "max_del_cigar_len": 32,
-                "max_ins_cigar_len": null,
                 "frac_max_softclip": 0.09473684210526316,
-                "max_read_len": 151,
-                "max_mapq": 60,
                 "gap_params": {
-                    "prob_insertion_artifact": -12.785891140783116,
                     "prob_deletion_artifact": -12.186270018233994,
-                    "prob_insertion_extend_artifact": null,
-                    "prob_deletion_extend_artifact": null
+                    "prob_deletion_extend_artifact": null,
+                    "prob_insertion_artifact": -12.785891140783116,
+                    "prob_insertion_extend_artifact": null
                 },
                 "hop_params": {
-                    "prob_seq_homopolymer": [
+                    "prob_ref_extend_homopolymer": [
                         null,
                         null,
                         null,
@@ -36,19 +28,28 @@
                         null,
                         null
                     ],
-                    "prob_ref_extend_homopolymer": [
+                    "prob_seq_homopolymer": [
                         null,
                         null,
                         null,
                         null
                     ]
                 },
+                "initial": false,
+                "insert_size": {
+                    "mean": 205.109756097561,
+                    "sd": 58.03511199809246
+                },
+                "max_del_cigar_len": 32,
+                "max_ins_cigar_len": null,
+                "max_mapq": 60,
+                "max_read_len": 151,
                 "wildtype_homopolymer_error_model": {
                     "0": 1.0021330230754315,
                     "1": 0.001357378320729106
-                },
-                "initial": false
+                }
             },
+            "3ac1018cc57d06525ec4336aaad6c7dd",
             [
                 [
                     {
@@ -66,7 +67,7 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.3"
         },
-        "timestamp": "2025-09-15T13:03:37.730021"
+        "timestamp": "2025-09-15T13:26:06.503081"
     },
     "sarscov2 - [bam,fasta] - stub": {
         "content": [

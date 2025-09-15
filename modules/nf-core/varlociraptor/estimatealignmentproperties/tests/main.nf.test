@@ -35,7 +35,12 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    path(process.out.alignment_properties_json[0][1]).json,
+                    path(process.out.alignment_properties_json[0][1]).json.sort { a, b -> a.key <=> b.key }.collectEntries { k, v -> 
+                        [k, v instanceof Map ? v.sort { it.key } : v] 
+                    },
+                    path(process.out.alignment_properties_json[0][1]).json.sort { a, b -> a.key <=> b.key }.collectEntries { k, v -> 
+                        [k, v instanceof Map ? v.sort { it.key } : v] 
+                    }.toString().md5(),
                     process.out.alignment_properties_json,
                     process.out.versions
                     ).match() }
