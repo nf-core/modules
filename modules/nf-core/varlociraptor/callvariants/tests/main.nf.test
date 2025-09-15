@@ -171,11 +171,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    file(process.out.bcf[0][1]).name,
-                    //path(process.out.bcf[0][1]).vcf.variantsMD5,
-                    // Error: BCF magic header info not found with current version of nf-test htjsk
-                    // Might be linked to https://github.com/samtools/htsjdk/issues/946 and block gzipped BCF
-                    process.out.versions,
+                    process.out,
                     path(process.out.versions[0]).yaml
                 ).match() }
             )
