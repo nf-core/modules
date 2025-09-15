@@ -1,5 +1,5 @@
-name: update-gpu-snapshot
-run-name: update gpu snapshot (automated)
+name: update-snapshots
+run-name: update snapshots (automated)
 on:
   issue_comment:
     types: [created]
@@ -13,13 +13,13 @@ env:
   NXF_VER: "24.10.2"
 
 jobs:
-  update-gpu-snapshot:
+  update-snapshots:
     # Only run if comment is on a PR with the main repo, and if it contains the magic keywords
     if: >
       contains(github.event.comment.html_url, '/pull/') &&
-      contains(github.event.comment.body, '@nf-core-bot update gpu snapshot') &&
+      contains(github.event.comment.body, '@nf-core-bot update snapshots') &&
       github.repository == 'nf-core/modules'
-    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.xlarge/image=ubuntu24-gpu-x64"
+    runs-on: ${{ contains(github.event.comment.body, 'type:gpu') && 'runs-on=${{ github.run_id }}/family=g4dn.xlarge/image=ubuntu24-gpu-x64' || 'ubuntu-latest' }}
     steps:
       # indication that the snapshot is being updated
       - name: React on comment
@@ -32,10 +32,10 @@ jobs:
         with:
           token: ${{ secrets.nf_core_bot_auth_token }}
 
-      - name: Get the test path from the comment (after "@nf-core-bot update gpu snapshot path:")
+      - name: Get the test path from the comment (after "path:")
         id: get-test-path
         run: |
-          echo "test_path=$(echo ${{ github.event.comment.body }} | grep -oP 'path:\s*\K[^ ]+')" >> $GITHUB_OUTPUT
+          echo "test_path=$(echo '${{ github.event.comment.body }}' | sed -n 's/.*path: *\([^ ]*\).*/\1/p')" >> $GITHUB_OUTPUT
 
       - name: if test path is empty, exit
         uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043 # v4
@@ -76,16 +76,47 @@ jobs:
           version: "${{ env.NFT_VER }}"
           install-pdiff: true
 
-      - name: Update gpu snapshot
-        id: update-gpu-snapshot
+      # Set up Sentieon secrets if this is a sentieon module
+      - name: Set up Sentieon secrets
+        if: contains(github.event.comment.body, 'type:sentieon')
+        env:
+          SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
+          SENTIEON_LICENSE_MESSAGE: ${{ secrets.SENTIEON_LICENSE_MESSAGE }}
         run: |
+          if [ -n "$SENTIEON_ENCRYPTION_KEY" ] && [ -n "$SENTIEON_LICENSE_MESSAGE" ]; then
+            python -m pip install cryptography
+            nextflow secrets set SENTIEON_AUTH_DATA $(python3 modules/nf-core/sentieon/license_message.py encrypt --key "$SENTIEON_ENCRYPTION_KEY" --message "$SENTIEON_LICENSE_MESSAGE")
+          fi
+
+      - name: Update snapshots
+        id: update-snapshots
+        env:
+          SENTIEON_LICSRVR_IP: ${{ secrets.SENTIEON_LICSRVR_IP }}
+          SENTIEON_AUTH_MECH: "GitHub Actions - token"
+        run: |
+          # Set profile and tag based on type
+          if [[ '${{ github.event.comment.body }}' == *'type:gpu'* ]]; then
+            PROFILE="docker,gpu"
+            TAG="--tag gpu"
+            CLEAN_SNAPSHOT=""
+          elif [[ '${{ github.event.comment.body }}' == *'type:sentieon'* ]]; then
+            PROFILE="docker"
+            TAG="--tag sentieon"
+            CLEAN_SNAPSHOT="--clean-snapshot"
+          else
+            PROFILE="docker"
+            TAG=""
+            CLEAN_SNAPSHOT=""
+          fi
+          
           nf-test test \
-          --profile=docker,gpu \
+          --profile=$PROFILE \
           --verbose \
           --ci \
           --update-snapshot \
+          $CLEAN_SNAPSHOT \
           --filter process,workflow \
-          --tag gpu \
+          $TAG \
           ${{ steps.get-test-path.outputs.test_path }}
 
       - name: Commit & push changes
@@ -95,5 +126,5 @@ jobs:
           git config push.default upstream
           git add .
           git status
-          git commit -m "[automated] Update gpu snapshot"
+          git commit -m "[automated] Update snapshots"
           git push
