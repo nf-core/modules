@@ -9,7 +9,7 @@ process GATK4_MUTECT2 {
 
     input:
     tuple val(meta), path(input), path(input_index), path(intervals)
-    tuple val(meta2), path(fasta)
+    tuple val(meta2), path(fasta), path(gzi)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(dict)
     path alleles
@@ -18,7 +18,6 @@ process GATK4_MUTECT2 {
     path germline_resource_tbi
     path panel_of_normals
     path panel_of_normals_tbi
-    path gzi
 
     output:
     tuple val(meta), path("*.vcf.gz"),      emit: vcf
