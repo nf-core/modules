@@ -8,7 +8,7 @@ process CTREE {
         'community.wave.seqera.io/library/r-ctree_r-mobster_r-viber_r-cli_pruned:48299db4104e296b' }"
 
     input:
-        tuple val(meta), path(ctree_input)
+    tuple val(meta), path(ctree_input)
 
     output:
         tuple val(meta), path("**ctree_{mobster,VIBER,pyclonevi}.rds")       , emit: ctree_rds, optional: true
