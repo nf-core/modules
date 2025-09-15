@@ -1,7 +1,7 @@
 include { METHYLDACKEL_EXTRACT                          } from '../../../modules/nf-core/methyldackel/extract/main'
 include { METHYLDACKEL_MBIAS                            } from '../../../modules/nf-core/methyldackel/mbias/main'
 
-workflow METHYLDACKEL {
+workflow METHYLDACKEL_EXTRACT_MBIAS {
 
     take:
     ch_alignment            // channel: [ val(meta), [ bam ] ] ## BAM from alignment
