@@ -35,15 +35,16 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    //file(process.out.alignment_properties_json[0][1]).text,
+                    path(process.out.alignment_properties_json[0][1]).json.sort { a, b -> a.key <=> b.key }.collectEntries { k, v -> 
+                        [k, v instanceof Map ? v.sort { it.key } : v] 
+                    }.toString().md5(),
                     process.out.versions
                     ).match() }
-                //{ assert file.contains('wildtype_homopolymer_error_model') }
             )
         }
     }
 
-    test("sarscov2 - [bam,fasta] -stub") {
+    test("sarscov2 - [bam,fasta] - stub") {
 
         options '-stub'
 
