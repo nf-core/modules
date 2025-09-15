@@ -21,10 +21,11 @@ input:
           e.g. [ id:'test', single_end:false ]
     - reads:
         type: file
-        description: Input reads for quantification
-        pattern: "*.fastq.gz"
+        description: Input reads for quantification (FASTQ files or BAM file for --alignments mode)
+        pattern: "*.{fastq.gz,bam}"
         ontologies:
           - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: http://edamontology.org/format_2572 # BAM format
   - index:
       type: file
       description: RSEM index
