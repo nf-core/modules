@@ -9,13 +9,13 @@ nextflow_process {
     tag "deeptools"
     tag "deeptools/bigwigcompare"
 
-    test("sarscov2 - 2 bigwig files") {
+    test("homo_sapiens - 2 bigwig files") {
 
         when {
             process {
                 """
-                def bigwig1 = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bigwig/test.bigwig', checkIfExists: true)
-                def bigwig2 = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bigwig/test.bigwig', checkIfExists: true).copyTo('test2.bigwig')
+                def bigwig1 = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bigwig/test_S2.RPKM.bw', checkIfExists: true)
+                def bigwig2 = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bigwig/test_S3.RPKM.bw', checkIfExists: true).copyTo('test2.bigwig')
 
                 input[0] = [
                     [ id:'test' ],
@@ -29,24 +29,27 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.bigwig,                                
+                                  process.out.versions)
+                                  .match()
+                }
             )
         }
     }
 
-    test("sarscov2 - 2 bigwig files - with blacklist") {
+    test("homo_sapiens - 2 bigwig files - with blacklist") {
 
         when {
             process {
                 """
-                def bigwig1 = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bigwig/test.bigwig', checkIfExists: true)
-                def bigwig2 = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bigwig/test.bigwig', checkIfExists: true).copyTo('test2.bigwig')
+                def bigwig1 = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bigwig/test_S2.RPKM.bw', checkIfExists: true)
+                def bigwig2 = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bigwig/test_S3.RPKM.bw', checkIfExists: true).copyTo('test2.bigwig')
 
                 input[0] = [
                     [ id:'test' ],
                     bigwig1, bigwig2
                 ]
-                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/bed/test.bed', checkIfExists: true)
                 """
             }
         }
@@ -54,47 +57,23 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.bigwig,                                
+                                  process.out.versions)
+                                  .match()
+                }
             )
         }
     }
-
-    test("sarscov2 - 2 bigwig files - bedgraph output") {
-
-        config "./nextflow.config"
-
-        when {
-            process {
-                """
-                def bigwig1 = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bigwig/test.bigwig', checkIfExists: true)
-                def bigwig2 = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bigwig/test.bigwig', checkIfExists: true).copyTo('test2.bigwig')
-
-                input[0] = [
-                    [ id:'test' ],
-                    bigwig1, bigwig2
-                ]
-                input[1] = []
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
-        }
-    }
-
-    test("sarscov2 - 2 bigwig files - stub") {
+    
+    test("homo_sapiens - 2 bigwig files - stub") {
 
         options "-stub"
 
         when {
             process {
                 """
-                def bigwig1 = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bigwig/test.bigwig', checkIfExists: true)
-                def bigwig2 = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bigwig/test.bigwig', checkIfExists: true).copyTo('test2.bigwig')
+                def bigwig1 = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bigwig/test_S2.RPKM.bw', checkIfExists: true)
+                def bigwig2 = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bigwig/test_S3.RPKM.bw', checkIfExists: true).copyTo('test2.bigwig')
 
                 input[0] = [
                     [ id:'test' ],
@@ -108,7 +87,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.bigwig,                                
+                                  process.out.versions)
+                                  .match()
+                }
             )
         }
     }
