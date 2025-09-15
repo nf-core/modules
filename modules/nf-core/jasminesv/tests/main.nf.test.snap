@@ -1,5 +1,5 @@
 {
-    "homo_sapiens - [vcf, vcf2], [], [], [], [], [] - empty vcf - not stub, but linting complains otherwise": {
+    "homo_sapiens - [vcf, vcf2], [bam, bam2], [bai1, bai2], [], fasta, fai, [] - iris": {
         "content": [
             {
                 "vcf": [
@@ -7,7 +7,29 @@
                         {
                             "id": "test"
                         },
-                        "VcfFile [chromosomes=[], sampleCount=1, variantCount=0, phased=true, phasedAutodetect=true]"
+                        "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=205, phased=false, phasedAutodetect=false]"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,41765be9d926daaf66d9f8cc1ae88820"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.6"
+        },
+        "timestamp": "2025-09-12T12:27:56.867507"
+    },
+    "homo_sapiens - [vcf, vcf2], [bam, bam2], [], fasta, fai, txt - normalize": {
+        "content": [
+            {
+                "vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "VcfFile [chromosomes=[22], sampleCount=1, variantCount=207, phased=false, phasedAutodetect=false]"
                     ]
                 ],
                 "versions": [
@@ -19,31 +41,9 @@
             "nf-test": "0.9.1",
             "nextflow": "24.10.4"
         },
-        "timestamp": "2025-02-06T15:10:53.589673221"
+        "timestamp": "2025-02-06T15:09:58.394068285"
     },
-    "homo_sapiens - [vcf, vcf2], [], [], [], [], [] - vcf": {
-        "content": [
-            {
-                "vcf": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=207, phased=false, phasedAutodetect=false]"
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,41765be9d926daaf66d9f8cc1ae88820"
-                ]
-            }
-        ],
-        "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.4"
-        },
-        "timestamp": "2025-02-06T15:09:35.406672231"
-    },
-    "homo_sapiens - [vcf_gz, vcf_gz2], [], [], [], [], [] - vcf.gz": {
+    "homo_sapiens - [vcf_gz, vcf_gz2], [], [], [], [], [], [] - vcf.gz": {
         "content": [
             {
                 "vcf": [
@@ -60,12 +60,56 @@
             }
         ],
         "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.4"
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2025-02-06T15:09:42.666253059"
+        "timestamp": "2025-09-12T12:27:35.350373"
     },
-    "homo_sapiens - [vcf, vcf2], [], [], [], [], [] - stub": {
+    "homo_sapiens - [vcf, vcf2], [bam, bam2], [], [], fasta, fai, [] - iris": {
+        "content": [
+            {
+                "vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=205, phased=false, phasedAutodetect=false]"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,41765be9d926daaf66d9f8cc1ae88820"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.6"
+        },
+        "timestamp": "2025-09-12T12:27:46.287491"
+    },
+    "homo_sapiens - [vcf, vcf2], [], [], [], [], [], [] - vcf": {
+        "content": [
+            {
+                "vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=207, phased=false, phasedAutodetect=false]"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,41765be9d926daaf66d9f8cc1ae88820"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.6"
+        },
+        "timestamp": "2025-09-12T12:27:28.001379"
+    },
+    "homo_sapiens - [vcf, vcf2], [], [], [], [], [], [] - stub": {
         "content": [
             {
                 "0": [
@@ -93,12 +137,12 @@
             }
         ],
         "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.4"
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2025-02-06T13:19:28.224152765"
+        "timestamp": "2025-09-12T12:28:10.076817"
     },
-    "homo_sapiens - [vcf, vcf2], [bam, bam2], [], fasta, fai, txt - normalize": {
+    "homo_sapiens - [vcf, vcf2], [], [], [], [], [], [] - empty vcf - not stub, but linting complains otherwise": {
         "content": [
             {
                 "vcf": [
@@ -106,7 +150,7 @@
                         {
                             "id": "test"
                         },
-                        "VcfFile [chromosomes=[22], sampleCount=1, variantCount=207, phased=false, phasedAutodetect=false]"
+                        "VcfFile [chromosomes=[], sampleCount=1, variantCount=0, phased=true, phasedAutodetect=true]"
                     ]
                 ],
                 "versions": [
@@ -115,31 +159,9 @@
             }
         ],
         "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.4"
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2025-02-06T15:09:58.394068285"
-    },
-    "homo_sapiens - [vcf, vcf2], [bam, bam2], [], fasta, fai, [] - iris": {
-        "content": [
-            {
-                "vcf": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=205, phased=false, phasedAutodetect=false]"
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,41765be9d926daaf66d9f8cc1ae88820"
-                ]
-            }
-        ],
-        "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.4"
-        },
-        "timestamp": "2025-02-06T15:10:35.020277741"
+        "timestamp": "2025-09-12T12:28:16.79139"
     }
 }
