@@ -120,15 +120,6 @@ runs:
           echo "| ⚠️ | No test results found | ${{ inputs.profile }} | ${{ inputs.shard }}/${{ inputs.total_shards }} |" >> $GITHUB_STEP_SUMMARY
         fi
 
-    - name: Upload updated snapshots on failure
-      if: failure()
-      uses: actions/upload-artifact@v4
-      with:
-        name: updated-snapshots-${{ inputs.profile }}-${{ inputs.shard }}
-        path: |
-          **/*.nf.test.snap
-        retention-days: 30
-
     - name: Clean up
       if: always()
       shell: bash
