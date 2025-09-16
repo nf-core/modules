@@ -15,7 +15,7 @@ nextflow_process {
         when {
             params {
                 module_args = ""
-                module_args2 = "--output-fmt bam"
+                module_args2 = "--output-fmt bam --write-index"
             }
             process {
                 """
@@ -39,7 +39,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.bam,
+                    process.out.csi,
+                    process.out.versions
+                ).match() }
             )
         }
     }
@@ -72,7 +76,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.bam,
+                    process.out.versions
+                ).match() }
             )
         }
     }
@@ -81,7 +88,7 @@ nextflow_process {
         when {
             params {
                 module_args = ""
-                module_args2 = "--output-fmt cram"
+                module_args2 = "--output-fmt cram,version=3.0 --write-index"
             }
             process {
                 """
@@ -105,7 +112,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    cram(process.out.cram[0][1], 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta').getReadsMD5(),
+                    process.out.crai,
+                    process.out.versions
+                ).match() }
             )
         }
     }
@@ -114,7 +125,7 @@ nextflow_process {
         when {
             params {
                 module_args = ""
-                module_args2 = "--output-fmt cram"
+                module_args2 = "--output-fmt cram,version=3.0"
             }
             process {
                 """
@@ -138,7 +149,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    cram(process.out.cram[0][1], 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta').getReadsMD5(),
+                    process.out.versions
+                ).match() }
             )
         }
     }
@@ -171,7 +185,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.paf,
+                    process.out.versions
+                ).match() }
             )
         }
     }
@@ -204,7 +221,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.tsv,
+                    process.out.versions
+                ).match() }
             )
         }
     }
@@ -237,7 +257,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.sti,
+                    process.out.versions
+                ).match() }
             )
         }
     }
