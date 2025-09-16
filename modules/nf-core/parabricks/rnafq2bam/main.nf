@@ -36,7 +36,7 @@ process PARABRICKS_STAR {
 
     """
     INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
-    cp $fasta \$INDEX
+    cp ${fasta} \$INDEX
 
     pbrun \\
         rna_fq2bam  \\
