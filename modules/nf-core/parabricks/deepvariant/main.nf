@@ -2,7 +2,7 @@ process PARABRICKS_DEEPVARIANT {
     tag "${meta.id}"
     label 'process_high'
     label 'process_gpu'
-    // needed by the module to work properly can be removed when fixed upstream - Issue #7226
+    // needed by the module to work properly can be removed when fixed upstream - see: https://github.com/nf-core/modules/issues/7226
     stageInMode 'copy'
 
     container "nvcr.io/nvidia/clara/clara-parabricks:4.4.0-1"

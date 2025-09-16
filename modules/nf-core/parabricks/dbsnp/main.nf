@@ -2,7 +2,7 @@ process PARABRICKS_DBSNP {
     tag "${meta.id}"
     label 'process_high'
     label 'process_gpu'
-    // needed by the module to work properly can be removed when fixed upstream - Issue #7226
+    // needed by the module to work properly can be removed when fixed upstream - see: https://github.com/nf-core/modules/issues/7226
     stageInMode 'copy'
 
     container "nvcr.io/nvidia/clara/clara-parabricks:4.5.1-1"
@@ -22,8 +22,8 @@ process PARABRICKS_DBSNP {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         exit(1, "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
-    def args     = task.ext.args ?: ''
-    def prefix   = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
     """
     pbrun \\

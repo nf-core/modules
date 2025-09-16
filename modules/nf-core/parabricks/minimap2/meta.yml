@@ -27,8 +27,8 @@ input:
           'fq.gz', 'bam'
         pattern: "^.*\\.(fastq|fastq\\.gz|fq|fq\\.gz|bam)$"
         ontologies:
-          - edam: http://edamontology.org/format_3989 # GZIP format
           - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_3989" # GZIP
   - - meta2:
         type: map
         description: |
