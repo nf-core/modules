@@ -1,7 +1,7 @@
 include { ENSEMBLVEP_FILTERVEP } from '../../../modules/nf-core/ensemblvep/filtervep/main'
 include { BCFTOOLS_VIEW        } from '../../../modules/nf-core/bcftools/view/main'
 include { TABIX_BGZIPTABIX     } from '../../../modules/nf-core/tabix/bgziptabix/main'
-
+// Please note this subworkflow requires the options for bcftools_view that are included in the nextflow.config
 workflow VCF_FILTER_BCFTOOLS_FILTERVEP {
 
     take:
@@ -26,7 +26,6 @@ workflow VCF_FILTER_BCFTOOLS_FILTERVEP {
         )
         ch_versions = ch_versions.mix(BCFTOOLS_VIEW.out.versions)
 
-        // Expected to use '--output-type z --write-index=tbi' in config
         ch_vcf = BCFTOOLS_VIEW.out.vcf
         ch_tbi = BCFTOOLS_VIEW.out.tbi
     }
