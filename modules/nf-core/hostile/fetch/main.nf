@@ -3,15 +3,15 @@ process HOSTILE_FETCH {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4f/4f1e4558685117662053d37800dcf7a0d64d1f857e22c84900c379a16a04103c/data'
-        : 'community.wave.seqera.io/library/hostile:2.0.1--9fa0d3c35ac8f37e'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7c/7caca3a47606de8e3460b35823193a471272aa6ab7cfafbf9aabf4615c9fa181/data'
+        : 'community.wave.seqera.io/library/hostile:2.0.2--a7f5e5d341b6b94b'}"
 
     input:
     val index_name
 
     output:
     tuple val(index_name), path('reference/'), emit: reference
-    path 'versions.yml'                      , emit: versions
+    path 'versions.yml', emit: versions
 
     when:
     task.ext.when == null || task.ext.when
