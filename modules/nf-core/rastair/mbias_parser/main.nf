@@ -4,7 +4,7 @@ process RASTAIR_MBIAS_PARSER {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/rastair:0.8.2--r44h4349ce8_2' :
-        'quay.io/biocontainers/rastair:0.8.2--r44h4349ce8_2' }"
+        'biocontainers/rastair:0.8.2--r44h4349ce8_2' }"
 
     input:
     tuple val(meta), path(rastair_mbias_txt)
