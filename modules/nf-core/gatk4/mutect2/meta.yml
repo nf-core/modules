@@ -48,6 +48,11 @@ input:
         description: The reference fasta file
         pattern: "*.{fasta,fasta.gz}"
         ontologies: []
+    - gzi:
+        type: file
+        description: Index of reference fasta file
+        pattern: "*.{fasta.gz.gzi,fasta.gz.gzi}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -100,11 +105,6 @@ input:
       type: file
       description: Index for the panel of normals.
       pattern: "*.vcf.gz.tbi"
-      ontologies: []
-  - gzi:
-      type: file
-      description: Bgzip index of reference fasta.gz
-      pattern: "*.fasta.gz.gzi"
       ontologies: []
 output:
   vcf:
