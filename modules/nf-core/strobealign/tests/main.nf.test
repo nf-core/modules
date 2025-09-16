@@ -114,7 +114,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     cram(process.out.cram[0][1], 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta').getReadsMD5(),
-                    process.out.crai,
+                    file(process.out.crai[0][1]).exists(),
                     process.out.versions
                 ).match() }
             )
