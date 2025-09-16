@@ -48,7 +48,7 @@ process PARABRICKS_DEEPVARIANT {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def output_cmd = "--gvcf" =~ task.ext.args ? "echo '' | gzip > ${prefix}.g.vcf.gz" : "touch ${prefix}.vcf"
+    def output_cmd = "--gvcf" =~ task.ext.args ? "echo '' | gzip > ${prefix}.g.vcf.gz" : "echo '' | gzip > touch ${prefix}.vcf.gz"
     """
     ${output_cmd}
 
