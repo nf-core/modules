@@ -37,24 +37,28 @@ process STROBEALIGN {
         ? "paf"
         : args.contains("--aemb")
             ? "tsv"
-            : args2.contains("--output-fmt cram")
-                ? "cram"
-                : sort_bam && args2.contains("-O cram")
+            : args.contains("--create-index")
+                ? "sti"
+                : args2.contains("--output-fmt cram")
                     ? "cram"
-                    : !sort_bam && args2.contains("-C")
+                    : sort_bam && args2.contains("-O cram")
                         ? "cram"
-                        : "bam"
+                        : !sort_bam && args2.contains("-C")
+                            ? "cram"
+                            : "bam"
     def reference = fasta && extension == "cram" ? "--reference ${fasta}" : ""
     if (!fasta && extension == "cram") {
         error("Fasta reference is required for CRAM output")
     }
     def output_cmd = extension == "bam" || extension == "cram"
-        ? "${samtools_command} ${args2} ${reference} --threads ${task.cpus} -o ${prefix}.${extension} -"
+        ? "samtools ${samtools_command} ${args2} ${reference} --threads ${task.cpus} -o ${prefix}.${extension} -"
         : extension == "paf"
             ? "pigz ${args2} > ${prefix}.paf.gz"
             : extension == "tsv"
                 ? "pigz ${args2} > ${prefix}.tsv.gz"
-                : error("Unable to determine output command for extension: ${extension}")
+                : extension == "sti"
+                    ? "tee ${prefix}.log > /dev/null"
+                    : error("Unable to determine output command for extension: ${extension}")
 
     """
     strobealign \\
@@ -92,8 +96,8 @@ process STROBEALIGN {
     touch ${prefix}.${extension}
     touch ${prefix}.csi
     touch ${prefix}.crai
-    echo "" | pigz ${prefix}.paf.gz
-    echo "" | pigz ${prefix}.tsv.gz
+    echo "" | pigz > ${prefix}.paf.gz
+    echo "" | pigz > ${prefix}.tsv.gz
     touch ${prefix}.sti
 
     cat <<-END_VERSIONS > versions.yml
