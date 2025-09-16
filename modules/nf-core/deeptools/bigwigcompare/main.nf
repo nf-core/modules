@@ -9,11 +9,11 @@ process DEEPTOOLS_BIGWIGCOMPARE {
 
     input:
     tuple val(meta), path(bigwig1), path(bigwig2)
-    path  blacklist
+    tuple val(meta2), path(blacklist)
     
     output:
     tuple val(meta), path("*.{bw,bedgraph}"), emit: bigwig
-    path "versions.yml"           , emit: versions
+    path "versions.yml"                     , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
