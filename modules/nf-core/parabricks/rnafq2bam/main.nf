@@ -41,12 +41,12 @@ process PARABRICKS_STAR {
     pbrun \\
         rna_fq2bam  \\
         --ref \$INDEX \\
-        $in_fq_command \\
-        --output-dir $prefix \\
+        ${in_fq_command} \\
+        --output-dir ${prefix} \\
         --genome-lib-dir ${genome_lib_dir} \\
         --out-bam ${prefix}.bam \\
-        $num_gpus \\
-        $args
+        ${num_gpus} \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
