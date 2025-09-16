@@ -37,3 +37,7 @@ Alignment and coordinate sorting are always performed. Duplicate marking can be 
 Please see the `fq2bam/meta.yml` file for a detailed list of required and optional inputs and outputs.
 
 For additional considerations, including information about how readgroups are added to the resulting bam files, see the [tool documentation](https://docs.nvidia.com/clara/parabricks/latest/Documentation/ToolDocs/man_fq2bam.html).
+
+## Compatible with
+
+Is added as optional output to the stub section to make the compatible CPU version available to the end user. This section is not given for the subtools `applybqsr, fq2bammeth, genotypegvcf`.
