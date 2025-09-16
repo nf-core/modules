@@ -64,6 +64,35 @@ nextflow_process {
             )
         }
     }
+
+    test("homo_sapiens - 2 bigwig files - bedgraph output") {
+
+
+        when {
+            process {
+                """
+                def bigwig1 = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bigwig/test_S2.RPKM.bw', checkIfExists: true)
+                def bigwig2 = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bigwig/test_S3.RPKM.bw', checkIfExists: true)
+
+                input[0] = [
+                    [ id:'test' ],
+                    bigwig1, bigwig2
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.bedgraph,                                
+                                  process.out.versions)
+                                  .match()
+                }
+            )
+        }
+    }
     
     test("homo_sapiens - 2 bigwig files - stub") {
 
@@ -88,6 +117,36 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.bigwig,                                
+                                  process.out.versions)
+                                  .match()
+                }
+            )
+        }
+    }
+    
+    test("homo_sapiens - 2 bigwig files - bedgraph output - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                def bigwig1 = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bigwig/test_S2.RPKM.bw', checkIfExists: true)
+                def bigwig2 = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bigwig/test_S3.RPKM.bw', checkIfExists: true).copyTo('test2.bigwig')
+
+                input[0] = [
+                    [ id:'test' ],
+                    bigwig1, bigwig2
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.bedgraph,                                
                                   process.out.versions)
                                   .match()
                 }
