@@ -12,7 +12,7 @@ process DEEPTOOLS_BIGWIGCOMPARE {
     path  blacklist
     
     output:
-    tuple val(meta), path("*.{bw,bedGraph}"), emit: bigwig
+    tuple val(meta), path("*.{bw,bedgraph}"), emit: bigwig
     path "versions.yml"           , emit: versions
 
     when:
@@ -23,8 +23,13 @@ process DEEPTOOLS_BIGWIGCOMPARE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def blacklist_cmd = blacklist ? "--blackListFileName ${blacklist}" : ""
         
-    def format = args.contains('--outFileFormat bedgraph') ? 'bedGraph' : 'bw'
-    def extension = format == 'bedGraph' ? 'bedGraph' : 'bw'
+    def format = 'bw'  // default
+    if (args.contains('--outFileFormat bedgraph')) {
+        format = 'bedgraph'
+    } else if (args.contains('--outFileFormat bigwig')) {
+        format = 'bw'
+    }
+    def extension = format == 'bedgraph' ? 'bedgraph' : 'bw'
     
     """
     bigwigCompare \\
@@ -44,8 +49,8 @@ process DEEPTOOLS_BIGWIGCOMPARE {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def format = args.contains('--outFileFormat bedgraph') ? 'bedGraph' : 'bw'
-    def extension = format == 'bedGraph' ? 'bedGraph' : 'bw'
+    def format = args.contains('--outFileFormat bedgraph') ? 'bedgraph' : 'bw'
+    def extension = format == 'bedgraph' ? 'bedgraph' : 'bw'
 
     """   
     touch ${prefix}.${extension}
