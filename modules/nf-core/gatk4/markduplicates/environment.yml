@@ -9,5 +9,7 @@ dependencies:
   - bioconda::gatk4=4.6.2.0
   # renovate: datasource=conda depName=bioconda/gcnvkernel
   - bioconda::gcnvkernel=0.9
+  # do not update - later htslib versions not compatible with gcnvkernel
   - bioconda::htslib=1.21
+  # do not update - later samtools versions not compatible with gcnvkernel
   - bioconda::samtools=1.21
