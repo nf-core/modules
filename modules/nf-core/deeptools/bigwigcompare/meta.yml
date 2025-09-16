@@ -51,13 +51,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*.{bw,bedgraph}":
-          type: file
-          description: Output bigWig or bedGraph file with comparison results
-          pattern: "*.{bw,bedgraph}"
-          ontologies:
-            - edam: "http://edamontology.org/data_3002"
-            - edam: "http://edamontology.org/format_3006"
+      - "*.{bw,bedGraph}": {}
   versions:
     - versions.yml:
         type: file
