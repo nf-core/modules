@@ -14,13 +14,14 @@ process PARABRICKS_MINIMAP2 {
     val output_fmt
 
     output:
-    tuple val(meta), path("*.bam"),                   emit: bam,               optional: true
-    tuple val(meta), path("*.bai"),                   emit: bai,               optional: true
-    tuple val(meta), path("*.cram"),                  emit: cram,              optional: true
-    tuple val(meta), path("*.crai"),                  emit: crai,              optional: true
-    tuple val(meta), path("*.table"),                 emit: bqsr_table,        optional: true
-    tuple val(meta), path("*_qc_metrics"),            emit: qc_metrics,        optional: true
-    tuple val(meta), path("*.duplicate-metrics.txt"), emit: duplicate_metrics, optional: true
+    tuple val(meta), path("*.bam"),                   emit: bam,                 optional: true
+    tuple val(meta), path("*.bai"),                   emit: bai,                 optional: true
+    tuple val(meta), path("*.cram"),                  emit: cram,                optional: true
+    tuple val(meta), path("*.crai"),                  emit: crai,                optional: true
+    tuple val(meta), path("*.table"),                 emit: bqsr_table,          optional: true
+    tuple val(meta), path("*_qc_metrics"),            emit: qc_metrics,          optional: true
+    tuple val(meta), path("*.duplicate-metrics.txt"), emit: duplicate_metrics,   optional: true
+    path "compatible_versions.yml",                   emit: compatible_versions, optional: true
     path "versions.yml",                              emit: versions
 
     when:
@@ -88,6 +89,18 @@ process PARABRICKS_MINIMAP2 {
     ${known_sites_output}
     ${qc_metrics_output}
     ${duplicate_metrics_output}
+
+    # Capture the full version output once and store it in a variable
+    pbrun_version_output=\$(pbrun minimap2 --version 2>&1)
+
+    # Generate compatible_versions.yml
+    cat <<EOF > compatible_versions.yml
+    "${task.process}":
+        pbrun_version: \$(echo "\$pbrun_version_output" | grep "pbrun:" | awk '{print \$2}')
+        compatible_with:
+        \$(echo "\$pbrun_version_output" | awk '/Compatible With:/,/^---/{ if (\$1 ~ /^[A-Z]/ && \$1 != "Compatible" && \$1 != "---") { printf "  %s: %s\\n", \$1, \$2 } }')
+    EOF
+
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

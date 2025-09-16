@@ -93,7 +93,7 @@ process PARABRICKS_FQ2BAM {
     "${task.process}":
         pbrun_version: \$(echo "\$pbrun_version_output" | grep "pbrun:" | awk '{print \$2}')
         compatible_with:
-        \$(echo "\$pbrun_version_output" | awk '/Compatible With:/,/^---/{ if (\$1 ~ /^[A-Z]/ && \$1 != "Compatible" && \$1 != "---") { printf "  %s: %s\\n", \$1, \$2 } }')
+        \$(echo "\$pbrun_version_output" | awk -F': ' '/Compatible With:/,/^---/{ if (\$1 ~ /^[A-Z]/ && \$1 != "Compatible" && \$1 != "---") { printf "  %s: %s\\n", \$1, \$2 } }')
     EOF
 
     cat <<-END_VERSIONS > versions.yml
