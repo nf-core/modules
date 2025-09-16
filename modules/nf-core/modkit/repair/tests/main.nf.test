@@ -30,7 +30,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.bam.collect { tuple -> file(tuple[1]).name },
                     process.out.log.collect { tuple -> file(tuple[1]).name },
-                    process.out.versions.collect { tuple -> file(tuple[1]).name }
+                    process.out.versions.collect { file(it).name }
                 ).match() }
             )
         }
