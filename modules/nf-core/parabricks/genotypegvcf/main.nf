@@ -1,5 +1,5 @@
 process PARABRICKS_GENOTYPEGVCF {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     container "nvcr.io/nvidia/clara/clara-parabricks:4.4.0-1"
@@ -10,7 +10,7 @@ process PARABRICKS_GENOTYPEGVCF {
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
-    path "versions.yml",            emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -18,7 +18,7 @@ process PARABRICKS_GENOTYPEGVCF {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
+        exit(1, "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
 
     def args = task.ext.args ?: ''
@@ -27,11 +27,11 @@ process PARABRICKS_GENOTYPEGVCF {
     """
     pbrun \\
         genotypegvcf \\
-        --ref $fasta \\
-        --in-gvcf $input \\
-        --out-vcf $output_file \\
-        --num-threads $task.cpus \\
-        $args
+        --ref ${fasta} \\
+        --in-gvcf ${input} \\
+        --out-vcf ${output_file} \\
+        --num-threads ${task.cpus} \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -44,7 +44,7 @@ process PARABRICKS_GENOTYPEGVCF {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def output_file = "${prefix}.vcf"
     """
-    touch $output_file
+    touch ${output_file}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
