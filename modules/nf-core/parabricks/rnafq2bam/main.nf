@@ -1,5 +1,5 @@
 process PARABRICKS_STAR {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
     label 'process_gpu'
     stageInMode 'copy'
@@ -29,9 +29,6 @@ process PARABRICKS_STAR {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def in_fq_command = meta.single_end ? "--in-se-fq $reads" : "--in-fq $reads"
-    // if (reads.name.endsWith('.gz')) {
-    //     error "Input FASTQ files must be uncompressed. Please provide uncompressed FASTQ files."
-    // }
     def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
 
     """
@@ -66,8 +63,8 @@ process PARABRICKS_STAR {
     """
     touch ${prefix}.bam
     touch ${prefix}.bam.bai
-    $qc_metrics_output
-    $duplicate_metrics_output
+    ${qc_metrics_output}
+    ${duplicate_metrics_output}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

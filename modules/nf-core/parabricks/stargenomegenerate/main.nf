@@ -1,5 +1,5 @@
 process STAR_GENOMEGENERATE {
-    tag "$fasta"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
@@ -10,8 +10,8 @@ process STAR_GENOMEGENERATE {
     tuple val(meta2), path(gtf)
 
     output:
-    tuple val(meta), path("star")  , emit: index
-    path "versions.yml"            , emit: versions
+    tuple val(meta), path("star"), emit: index
+    path "versions.yml"          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,18 +20,18 @@ process STAR_GENOMEGENERATE {
     def args        = task.ext.args ?: ''
     def args_list   = args.tokenize()
     def memory      = task.memory ? "--limitGenomeGenerateRAM ${task.memory.toBytes() - 100000000}" : ''
-    def include_gtf = gtf ? "--sjdbGTFfile $gtf" : ''
+    def include_gtf = gtf ? "--sjdbGTFfile ${gtf}" : ''
     if (args_list.contains('--genomeSAindexNbases')) {
         """
         mkdir star
         STAR \\
             --runMode genomeGenerate \\
             --genomeDir star/ \\
-            --genomeFastaFiles $fasta \\
-            $include_gtf \\
-            --runThreadN $task.cpus \\
-            $memory \\
-            $args
+            --genomeFastaFiles ${fasta} \\
+            ${include_gtf} \\
+            --runThreadN ${task.cpus} \\
+            ${memory} \\
+            ${args}
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":

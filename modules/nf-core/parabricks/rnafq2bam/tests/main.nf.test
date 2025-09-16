@@ -11,40 +11,40 @@ nextflow_process {
     tag "modules_nfcore"
     tag "gpu"
 
-    config './nextflow.config'
+    setup {
 
-    test("homo_sapiens - single_end") {
-        config "./nextflow.config"
-
-        setup {
-            run("STAR_GENOMEGENERATE") {
-                script "../../stargenomegenerate/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of([
-                        [ id:'test_fasta' ],
-                        [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
-                    ])
-                    input[1] = Channel.of([
-                        [ id:'test_gtf' ],
-                        [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
-                    ])
-                    """
-                }
-            }
-
-            run("BWA_INDEX") {
-                script "../../../bwa/index/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of([
-                        [ id:'test' ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                    ])
-                    """
-                }
+        run("STAR_GENOMEGENERATE") {
+            script "../../stargenomegenerate/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test_fasta' ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                ])
+                input[1] = Channel.of([
+                    [ id:'test_gtf' ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
+                ])
+                """
             }
         }
+
+        run("BWA_INDEX") {
+            script "../../../bwa/index/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens") {
+        
+        config "./nextflow.config"
 
         when {
             params {
@@ -75,4 +75,40 @@ nextflow_process {
             )
         }
     }
+
+    test("homo_sapiens - stub") {
+        
+        config "./nextflow.config"
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--low-memory --read-files-command zcat'
+                // Ref: https://forums.developer.nvidia.com/t/problem-with-gpu/256825/6
+                // Parabricks’s fq2bam requires 24GB of memory.
+                // Using --low-memory for testing
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true) ]
+                ])
+                input[1] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
+				input[2] = BWA_INDEX.out.index
+                input[3] = STAR_GENOMEGENERATE.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success }
+            )
+        }
+    }
+
 }

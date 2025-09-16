@@ -12,7 +12,7 @@ tools:
       description: "NVIDIA Clara Parabricks GPU-accelerated genomics tools"
       homepage: "https://www.nvidia.com/en-us/clara/genomics/"
       documentation: "https://docs.nvidia.com/clara/parabricks/latest/index.html"
-      licence: ["custom"]
+      licence: ["https://docs.nvidia.com/clara/parabricks/latest/eula.html"]
       identifier: ""
 input:
   - - meta:
@@ -65,7 +65,8 @@ output:
           type: file
           description: Sorted BAM file
           pattern: "*.bam"
-          ontologies: []
+          ontologies: 
+            - edam: http://edamontology.org/format_2572 # BAM
   bai:
     - - meta:
           type: map

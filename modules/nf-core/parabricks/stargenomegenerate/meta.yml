@@ -1,5 +1,5 @@
 name: parabricks_stargenomegenerate
-description: Create index for STAR
+description: This is near identical to the existing star/genomegenerate however it runs on an older version (2.7.2a) that is required for Parabricks compatibility. 
 keywords:
   - index
   - fasta
@@ -24,7 +24,9 @@ input:
     - fasta:
         type: file
         description: Fasta file of the reference genome
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+
   - - meta2:
         type: map
         description: |
@@ -53,8 +55,6 @@ output:
         ontologies:
           - edam: http://edamontology.org/format_3750 # YAML
 authors:
-  - "@kevinmenden"
-  - "@drpatelh"
+  - "@gburnett-nvidia"
 maintainers:
-  - "@kevinmenden"
-  - "@drpatelh"
+  - "@gburnett-nvidia"
