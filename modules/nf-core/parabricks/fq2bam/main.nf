@@ -4,7 +4,7 @@ process PARABRICKS_FQ2BAM {
     label 'process_gpu'
     stageInMode 'copy'
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.4.0-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.5.0-1"
 
     input:
     tuple val(meta) , path(reads)
