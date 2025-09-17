@@ -24,7 +24,6 @@ process VIBER {
     when:
     task.ext.when == null || task.ext.when
 
-
     script:
 
     template "viber_main_script.R"
