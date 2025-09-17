@@ -2,6 +2,7 @@ process VIBER {
     tag "$meta.id"
     label "process_single"
     label "error_ignore"
+
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'oras://community.wave.seqera.io/library/r-cnaqc_r-viber:014077a3164189d5':
