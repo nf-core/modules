@@ -1,0 +1,73 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "blobtk_plot"
+description: |
+  Creates differing styles of blobplots depending on provided arguments.
+keywords:
+  - png
+  - bkt
+  - blobtoolkit
+  - plot
+tools:
+  - btk:
+      description: |
+        BlobTk contains a set of core functions used by BlobToolKit tools.
+        Implemented in Rust, these functions are intended to be accessible
+        from the command line, as python modules and will include web assembly
+        code for use in javascript.
+      homepage: https://github.com/genomehubs/blobtk/
+      documentation: https://github.com/genomehubs/blobtk/wiki/
+      licence: ["MIT"]
+      identifier: biotools:btk
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information and blobtk arguments
+          e.g. `[ id:'sample1']`
+    - fasta:
+        type: file
+        description: |
+          Input assembly FASTA.
+        pattern: "*.fasta"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - local_path:
+      type: directory
+      description: |
+        A path to a Blob Dir generated as part of a greater pipeline.
+      pattern: "*/"
+  - online_path:
+      type: string
+      description: |
+        A webaddress to a Blob Dir e.g. hosted on a BlobToolKit Viewer.
+      pattern: "*/"
+  - extra_args:
+      type: map
+      description: |
+        Groovy Map containing sample information and blobtk arguments
+        e.g. `[name: 'VIEW', args: "-v"]`
+
+output:
+  png:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.png":
+          type: file
+          description: |
+            Blobplot PNG results of input arguments.
+          ontologies:
+            - edam: http://edamontology.org/format_3603
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@DLBPointon"
+maintainers:
+  - "@DLBPointon"

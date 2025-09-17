@@ -22,8 +22,8 @@ nextflow_process {
                 process {
                     """
                     input[0] = [
-                        [id:'test',single_end:false],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz',checkIfExists:true)
+                        [id:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists:true)
                         ]
                     """
                 }
@@ -34,8 +34,8 @@ nextflow_process {
                 process {
                     """
                     input[0] = [
-                        [id:'test',single_end:false],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf',checkIfExists:true)
+                        [id:'gtf'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists:true)
                         ]
                     """
                 }
@@ -48,8 +48,34 @@ nextflow_process {
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',checkIfExists:true)
-                input[2] = GNU_SORT.out.sorted.map{it[1]}
+                input[1] = [ [id:'genome'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)]
+                input[2] = GNU_SORT.out.sorted
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sam(process.out.sam[0][1]).getStatistics(),
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+
+    test("test_ultra_pipeline - stub") {
+        options '-stub'
+        when {
+            params {
+                gnu_sort_args = ''
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], [] ]
+                input[1] = [ [id:'genome'], [] ]
+                input[2] = [ [id:'gtf'], [] ]
                 """
             }
         }
@@ -60,4 +86,5 @@ nextflow_process {
             )
         }
     }
+
 }

@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "hostile_clean"
-description: write your description here
+description: Removes host reads from short- and long-read FASTQ sequencing files
 keywords:
   - hostile
   - decontamination
@@ -51,7 +51,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - cleaned_reads/*.fastq.gz:
+      - "*.fastq.gz":
           type: map
           description: |
             Groovy Map containing sample information

@@ -4,8 +4,8 @@ process SAMTOOLS_SORT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.21--h50ea8bc_0' :
-        'biocontainers/samtools:1.21--h50ea8bc_0' }"
+        'https://depot.galaxyproject.org/singularity/samtools:1.22.1--h96c455f_0' :
+        'biocontainers/samtools:1.22.1--h96c455f_0' }"
 
     input:
     tuple val(meta) , path(bam)
@@ -30,7 +30,7 @@ process SAMTOOLS_SORT {
     extension = args.contains("--output-fmt sam") ? "sam" :
                 args.contains("--output-fmt cram") ? "cram" :
                 "bam"
-    reference = fasta ? "--reference ${fasta}" : ""
+    def reference = fasta ? "--reference ${fasta}" : ""
     output_file = index_format ? "${prefix}.${extension}##idx##${prefix}.${extension}.${index_format} --write-index" : "${prefix}.${extension}"
     if (index_format) {
         if (!index_format.matches('bai|csi|crai')) {
@@ -65,7 +65,6 @@ process SAMTOOLS_SORT {
     extension = args.contains("--output-fmt sam") ? "sam" :
                 args.contains("--output-fmt cram") ? "cram" :
                 "bam"
-    def reference = fasta ? "--reference ${fasta}" : ""
     if (index_format) {
         if (!index_format.matches('bai|csi|crai')) {
             error "Index format not one of bai, csi, crai."

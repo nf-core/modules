@@ -1,0 +1,63 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "blobtk_depth"
+description: |
+  Creates a bed file containing the depth of data at intervals of an aligned bam.
+keywords:
+  - bam
+  - gzipped
+  - blobtoolkit
+  - depth
+tools:
+  - btk:
+      description: |
+        BlobTk contains a set of core functions used by BlobToolKit tools.
+        Implemented in Rust, these functions are intended to be accessible
+        from the command line, as python modules and will include web assembly
+        code for use in javascript.
+      homepage: https://github.com/genomehubs/blobtk/
+      documentation: https://github.com/genomehubs/blobtk/wiki/
+      licence: ["MIT"]
+      identifier: biotools:btk
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: |
+          Algined BAM file.
+        pattern: "*.bam"
+        ontologies:
+          - edam: http://edamontology.org/format_2572 # BAM
+    - index:
+        type: file
+        description: |
+          Algined BAM index file.
+        pattern: "*.bai|*.csi"
+        ontologies:
+          - edam: http://edamontology.org/format_3327 # BAI
+
+output:
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.regions.bed.gz":
+          type: file
+          description: |
+            Bed file describing the depth of regions across the genome.
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@DLBPointon"
+maintainers:
+  - "@DLBPointon"

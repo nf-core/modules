@@ -29,6 +29,10 @@ input:
         type: list
         description: Optional - The BAM files from which the VCFs were created
         pattern: "*.bam"
+    - bais:
+        type: list
+        description: Optional - The BAM index files from which the VCFs were created
+        pattern: "*.bai"
     - sample_dists:
         type: file
         description: Optional - A txt file containing the distance thresholds for each

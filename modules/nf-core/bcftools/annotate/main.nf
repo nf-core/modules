@@ -4,11 +4,12 @@ process BCFTOOLS_ANNOTATE {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5acacb55c52bec97c61fd34ffa8721fce82ce823005793592e2a80bf71632cd0/data'
-        : 'community.wave.seqera.io/library/bcftools:1.21--4335bec1d7b44d11'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/47/474a5ea8dc03366b04df884d89aeacc4f8e6d1ad92266888e7a8e7958d07cde8/data'
+        : 'community.wave.seqera.io/library/bcftools_htslib:0a3fa2654b52006f'}"
 
     input:
     tuple val(meta), path(input), path(index), path(annotations), path(annotations_index)
+    path columns
     path header_lines
     path rename_chrs
 
@@ -24,8 +25,9 @@ process BCFTOOLS_ANNOTATE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def header_file = header_lines ? "--header-lines ${header_lines}" : ''
     def annotations_file = annotations ? "--annotations ${annotations}" : ''
+    def columns_file = columns ? "--columns-file ${columns}" : ''
+    def header_file = header_lines ? "--header-lines ${header_lines}" : ''
     def rename_chrs_file = rename_chrs ? "--rename-chrs ${rename_chrs}" : ''
     def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
                     args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
@@ -43,8 +45,9 @@ process BCFTOOLS_ANNOTATE {
         annotate \\
         ${args} \\
         ${annotations_file} \\
-        ${rename_chrs_file} \\
+        ${columns_file} \\
         ${header_file} \\
+        ${rename_chrs_file} \\
         --output ${prefix}.${extension} \\
         --threads ${task.cpus} \\
         ${input}
