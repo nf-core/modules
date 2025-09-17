@@ -1,12 +1,12 @@
 nextflow_process {
 
-    name "Test Process STAR_GENOMEGENERATE"
+    name "Test Process STARGENOMEGENERATE_PARABRICKS_COMPAT"
     script "../main.nf"
-    process "STAR_GENOMEGENERATE"
+    process "STARGENOMEGENERATE_PARABRICKS_COMPAT"
     tag "modules"
     tag "modules_nfcore"
     tag "parabricks"
-    tag "parabricks/stargenomegenerate"
+    tag "parabricks/stargenomegenerate_parabricks_compat"
 
     test("fasta_gtf") {
 
