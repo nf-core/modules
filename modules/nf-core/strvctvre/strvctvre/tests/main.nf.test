@@ -40,8 +40,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bed,
-                    process.out.vcf,
+                    process.out,
                     path(process.out.versions[0]).yaml
                 ).match() }
             )
@@ -78,8 +77,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bed,
-                    process.out.vcf,
+                    process.out,
                     path(process.out.versions[0]).yaml
                 ).match() }
             )
