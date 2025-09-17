@@ -47,7 +47,7 @@ process STRVCTVRE_STRVCTVRE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        strvctvre: $VERSION
+        strvctvre: '$VERSION'
     END_VERSIONS
     """
 
@@ -70,7 +70,7 @@ process STRVCTVRE_STRVCTVRE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        strvctvre: $VERSION
+        strvctvre: '$VERSION'
     END_VERSIONS
     """
 }
