@@ -12,10 +12,10 @@ process VIBER {
     tuple val(meta), path(rds_join), val(tumour_samples)
 
     output:
-    tuple val(meta), path("*_viber_best_st_fit.rds")                , emit: viber_rds
-    tuple val(meta), path("*_viber_best_st_heuristic_fit.rds")      , emit: viber_heuristic_rds
-    tuple val(meta), path("*_viber_best_st_fit_plots.rds")          , emit: viber_plots_rds
-    tuple val(meta), path("*_viber_best_st_heuristic_fit_plots.rds"), emit: viber_heuristic_plots_rds
+    tuple val(meta), path("*_viber_best_fit.rds")                , emit: viber_rds
+    tuple val(meta), path("*_viber_best_heuristic_fit.rds")      , emit: viber_heuristic_rds
+    tuple val(meta), path("*_viber_best_fit_plots.rds")          , emit: viber_plots_rds
+    tuple val(meta), path("*_viber_best_heuristic_fit_plots.rds"), emit: viber_heuristic_plots_rds
     tuple val(meta), path("*_viber_report.rds")                     , emit: viber_report_rds
     tuple val(meta), path("*_viber_report.pdf")                     , emit: viber_report_pdf
     tuple val(meta), path("*_viber_report.png")                     , emit: viber_report_png
@@ -32,10 +32,10 @@ process VIBER {
 
 
     """
-    touch ${prefix}_viber_best_st_fit.rds
-    touch ${prefix}_viber_best_st_heuristic_fit.rds
-    touch ${prefix}_viber_best_st_fit_plots.rds
-    touch ${prefix}_viber_best_st_heuristic_fit_plots.rds
+    touch ${prefix}_viber_best_fit.rds
+    touch ${prefix}_viber_best_heuristic_fit.rds
+    touch ${prefix}_viber_best_fit_plots.rds
+    touch ${prefix}_viber_best_heuristic_fit_plots.rds
     touch ${prefix}_viber_report.rds
     touch ${prefix}_viber_reportr.pdf
     touch ${prefix}_viber_report.png
