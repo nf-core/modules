@@ -30,7 +30,6 @@ process VIBER {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-
     """
     touch ${prefix}_viber_best_fit.rds
     touch ${prefix}_viber_best_heuristic_fit.rds
