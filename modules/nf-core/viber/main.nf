@@ -9,7 +9,7 @@ process VIBER {
         'community.wave.seqera.io/library/r-cnaqc_r-viber:2314592f7d2f9abe'}"
 
     input:
-        tuple val(meta), path(rds_join), val(tumour_samples) //rds from either JOIN_CNAQC or JOIN_FIT, should be always grouped
+    tuple val(meta), path(rds_join), val(tumour_samples) //rds from either JOIN_CNAQC or JOIN_FIT, should be always grouped
 
     output:
         tuple val(meta), path("*_viber_best_st_fit.rds"), emit: viber_rds
