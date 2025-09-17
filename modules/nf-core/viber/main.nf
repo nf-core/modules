@@ -37,7 +37,7 @@ process VIBER {
     touch ${prefix}_viber_best_fit_plots.rds
     touch ${prefix}_viber_best_heuristic_fit_plots.rds
     touch ${prefix}_viber_report.rds
-    touch ${prefix}_viber_reportr.pdf
+    touch ${prefix}_viber_report.pdf
     touch ${prefix}_viber_report.png
 
     cat <<-END_VERSIONS > versions.yml
