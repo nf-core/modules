@@ -21,15 +21,8 @@ process DEEPTOOLS_BIGWIGCOMPARE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def blacklist_cmd = blacklist ? "--blackListFileName ${blacklist}" : ""
-        
-    def format = 'bw'  // default
-    if (args.contains('--outFileFormat bedgraph')) {
-        format = 'bedgraph'
-    } else if (args.contains('--outFileFormat bigwig')) {
-        format = 'bw'
-    }
-    def extension = format == 'bedgraph' ? 'bedgraph' : 'bw'
+    def blacklist_cmd = blacklist ? "--blackListFileName ${blacklist}" : ""        
+    def extension = args.contains("--outFileFormat bedgraph") || args.contains("-of bedgraph") ? "bedgraph" : "bw"
     
     """
     bigwigCompare \\
@@ -49,13 +42,7 @@ process DEEPTOOLS_BIGWIGCOMPARE {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def format = 'bw'  // default
-    if (args.contains('--outFileFormat bedgraph')) {
-        format = 'bedgraph'
-    } else if (args.contains('--outFileFormat bigwig')) {
-        format = 'bw'
-    }
-    def extension = format == 'bedgraph' ? 'bedgraph' : 'bw'
+    def extension = args.contains("--outFileFormat bedgraph") || args.contains("-of bedgraph") ? "bedgraph" : "bw"
 
     """   
     touch ${prefix}.${extension}
