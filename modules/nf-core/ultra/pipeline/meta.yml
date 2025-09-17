@@ -21,30 +21,45 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test' ]
     - reads:
         type: file
         description: A fasta or fastq file of reads to align
         pattern: "*.{fasta,fastq}"
         ontologies:
           - edam: http://edamontology.org/format_1930 # FASTQ
-  - genome:
-      type: file
-      description: fasta file of reference genome
-      pattern: "*.fasta"
-      ontologies: []
-  - gtf:
-      type: file
-      description: A annotation of use the genome
-      pattern: "*.gtf"
-      ontologies: []
+
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: fasta file of reference genome
+        pattern: "*.fasta"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - gtf:
+        type: file
+        description: Genome annotation file
+        pattern: "*.gtf"
+        ontologies:
+          - edam: "http://edamontology.org/format_2306" # GTF
+
 output:
   sam:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*.sam":
           type: file
           description: The aligned reads in sam format

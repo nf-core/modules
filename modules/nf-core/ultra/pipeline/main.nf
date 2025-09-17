@@ -9,8 +9,8 @@ process ULTRA_PIPELINE {
 
     input:
     tuple val(meta), path(reads)
-    path genome
-    path gtf
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(gtf)
 
     output:
     tuple val(meta), path("*.sam"), emit: sam
@@ -28,7 +28,7 @@ process ULTRA_PIPELINE {
         --t $task.cpus \\
         --prefix $prefix \\
         $args \\
-        $genome \\
+        $fasta \\
         $gtf \\
         $reads \\
         ./
