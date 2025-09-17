@@ -1,0 +1,93 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "clairs"
+description: write your description here
+keywords:
+  - small
+  - variant
+  - SNV
+  - indel
+tools:
+  - "clairs":
+      description: ""
+      homepage: "https://github.com/HKU-BAL/ClairS"
+      documentation: "https://github.com/HKU-BAL/ClairS"
+      tool_dev_url: "https://github.com/HKU-BAL/ClairS"
+      doi: "10.1101/2023.08.17.553778 "
+      licence: ["BSD-3-clause"]
+      identifier: biotools:clairs
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - tumor_bam:
+        type: file
+        description: |
+          BAM file for tumor sample
+        pattern: "*.vcf.gz"
+    - tumor_bai:
+        type: file
+        description: |
+          index file for tumor BAM file
+        pattern: "*.bai"
+    - normal_bam:
+        type: file
+        description: |
+          BAM file for normal sample
+        pattern: "*.bam"
+    - normal_bai:
+        type: file
+        description: |
+          index file for normal BAM file
+        pattern: "*.bai"
+    - model:
+        type: string
+        description: |
+          Name for ClairS model
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - reference:
+        type: file
+        description: |
+          A reference fasta file
+        pattern: "*.fasta"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - index:
+        type: file
+        description: |
+          index file for the reference fasta file
+        pattern: "*.fai"
+output:
+  - vcf:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*.vcf.gz":
+          type: file
+          description: VCF file containing small somatic variants
+          pattern: "*.vcf.gz"
+  - tbi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*.vcf.gz.tbi":
+          type: file
+          description: VCF index file for small somatic variants
+          pattern: "*.vcf.gz.tbi"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@robert-a-forsyth"
+maintainers:
+  - "@robert-a-forsyth"
