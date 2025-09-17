@@ -63,7 +63,6 @@ if ( grepl(".rds\$", tolower("$rds_join")) ) {
 
 print("Subset joint done")
 
-
 ## Read input joint table
 input_tab = joint_table %>%
   dplyr::mutate(VAF=replace(VAF, VAF==0, 1e-7))
