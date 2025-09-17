@@ -9,17 +9,17 @@ process VIBER {
         'community.wave.seqera.io/library/r-cnaqc_r-viber:2314592f7d2f9abe'}"
 
     input:
-    tuple val(meta), path(rds_join), val(tumour_samples) //rds from either JOIN_CNAQC or JOIN_FIT, should be always grouped
+    tuple val(meta), path(rds_join), val(tumour_samples)
 
     output:
-        tuple val(meta), path("*_viber_best_st_fit.rds"), emit: viber_rds
-        tuple val(meta), path("*_viber_best_st_heuristic_fit.rds"), emit: viber_heuristic_rds
-        tuple val(meta), path("*_viber_best_st_fit_plots.rds"), emit: viber_plots_rds
-        tuple val(meta), path("*_viber_best_st_heuristic_fit_plots.rds"), emit: viber_heuristic_plots_rds
-        tuple val(meta), path("*_REPORT_plots_viber.rds"), emit: viber_report_rds
-        tuple val(meta), path("*_REPORT_plots_viber.pdf"), emit: viber_report_pdf
-        tuple val(meta), path("*_REPORT_plots_viber.png"), emit: viber_report_png
-        path "versions.yml", emit: versions
+    tuple val(meta), path("*_viber_best_st_fit.rds")                , emit: viber_rds
+    tuple val(meta), path("*_viber_best_st_heuristic_fit.rds")      , emit: viber_heuristic_rds
+    tuple val(meta), path("*_viber_best_st_fit_plots.rds")          , emit: viber_plots_rds
+    tuple val(meta), path("*_viber_best_st_heuristic_fit_plots.rds"), emit: viber_heuristic_plots_rds
+    tuple val(meta), path("*_viber_report.rds")                     , emit: viber_report_rds
+    tuple val(meta), path("*_viber_report.pdf")                     , emit: viber_report_pdf
+    tuple val(meta), path("*_viber_report.png")                     , emit: viber_report_png
+    path "versions.yml"                                             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,9 +36,9 @@ process VIBER {
     touch ${prefix}_viber_best_st_heuristic_fit.rds
     touch ${prefix}_viber_best_st_fit_plots.rds
     touch ${prefix}_viber_best_st_heuristic_fit_plots.rds
-    touch ${prefix}_REPORT_plots_viber.rds
-    touch ${prefix}_REPORT_plots_viber.pdf
-    touch ${prefix}_REPORT_plots_viber.png
+    touch ${prefix}_viber_report.rds
+    touch ${prefix}_viber_reportr.pdf
+    touch ${prefix}_viber_report.png
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
