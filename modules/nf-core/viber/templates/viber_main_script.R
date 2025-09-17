@@ -87,7 +87,6 @@ nv = reads_data %>%
                               .fns=function(x) replace(x, is.na(x), 0))) %>%
   dplyr::rename_all(function(x) stringr::str_remove_all(x,"NV."))
 
-
 # Standard fit
 viber_K = as.integer(opt[["K"]])
 
