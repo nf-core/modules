@@ -4,12 +4,13 @@ nextflow_process {
     script "../main.nf"
     process "PARABRICKS_STAR"
 
-    tag "bwa/index"
+    tag "gpu"
     tag "modules"
+    tag "modules_nfcore"
+    tag "bwa/index"
     tag "parabricks"
     tag "parabricks/rnafq2bam"
-    tag "modules_nfcore"
-    tag "gpu"
+    tag "parabricks/stargenomegenerate"
 
     setup {
 
@@ -43,7 +44,7 @@ nextflow_process {
     }
 
     test("homo_sapiens") {
-        
+
         config "./nextflow.config"
 
         when {
@@ -77,7 +78,7 @@ nextflow_process {
     }
 
     test("homo_sapiens - stub") {
-        
+
         config "./nextflow.config"
         options "-stub"
 

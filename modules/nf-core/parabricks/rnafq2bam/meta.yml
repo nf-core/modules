@@ -26,7 +26,7 @@ input:
         pattern: "*.fastq.gz"
         ontologies:
           - edam: http://edamontology.org/format_3989 # GZIP format
-  - - meta2:
+  - - meta1:
         type: map
         description: |
           Groovy Map containing fasta information
@@ -35,7 +35,7 @@ input:
         description: reference fasta file - must be unzipped
         pattern: "*.fasta"
         ontologies: []
-  - - meta3:
+  - - meta2:
         type: map
         description: |
           Groovy Map containing index information
@@ -44,7 +44,7 @@ input:
         description: reference BWA index
         pattern: "*.{amb,ann,bwt,pac,sa}"
         ontologies: []
-  - - meta4:
+  - - meta3:
         type: map
         description: |
           Groovy Map containing genome lib dir information
@@ -65,7 +65,7 @@ output:
           type: file
           description: Sorted BAM file
           pattern: "*.bam"
-          ontologies: 
+          ontologies:
             - edam: http://edamontology.org/format_2572 # BAM
   bai:
     - - meta:
