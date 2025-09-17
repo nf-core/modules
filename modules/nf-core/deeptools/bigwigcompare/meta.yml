@@ -26,24 +26,30 @@ input:
     - bigwig1:
         type: file
         description: First bigWig file (usually treatment)
-        pattern: "*.{bw,bigWig}"
+        pattern: "*.{bw,bigwig}"
         ontologies:
           - edam: "http://edamontology.org/data_3002"
           - edam: "http://edamontology.org/format_3006"
     - bigwig2:
         type: file
         description: Second bigWig file (usually control)
-        pattern: "*.{bw,bigWig}"
+        pattern: "*.{bw,bigwig}"
         ontologies:
           - edam: "http://edamontology.org/data_3002"
           - edam: "http://edamontology.org/format_3006"
-  - blacklist:
-      type: file
-      description: BED/GTF file containing regions to exclude from analysis
-      pattern: "*.{bed,gtf}"
-      ontologies:
-        - edam: "http://edamontology.org/data_3002"
-        - edam: "http://edamontology.org/format_3003"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing blacklist metadata
+          e.g. [ id:'blacklist' ]
+    - blacklist:
+        type: file
+        description: BED/GTF file containing regions to exclude from analysis
+        pattern: "*.{bed,gtf}"
+        ontologies:
+          - edam: "http://edamontology.org/data_3002"
+          - edam: "http://edamontology.org/format_3003"
+        optional: true
 output:
   bigwig:
     - - meta:
@@ -68,6 +74,8 @@ output:
 authors:
   - "@nadiaxaidan"
   - "@daisymut"
+  - "@ugoiannacchero"
 maintainers:
   - "@nadiaxaidan"
   - "@daisymut"
+  - "@ugoiannacchero"

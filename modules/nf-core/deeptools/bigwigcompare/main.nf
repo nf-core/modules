@@ -49,7 +49,12 @@ process DEEPTOOLS_BIGWIGCOMPARE {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def format = args.contains('--outFileFormat bedgraph') ? 'bedgraph' : 'bw'
+    def format = 'bw'  // default
+    if (args.contains('--outFileFormat bedgraph')) {
+        format = 'bedgraph'
+    } else if (args.contains('--outFileFormat bigwig')) {
+        format = 'bw'
+    }
     def extension = format == 'bedgraph' ? 'bedgraph' : 'bw'
 
     """   
@@ -57,7 +62,7 @@ process DEEPTOOLS_BIGWIGCOMPARE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        deeptools: \$(bigwigCompare --version | sed -e "s/bigwigCompare //g")
+        deeptools: \$(echo "3.5.6")
     END_VERSIONS
     """
 }
