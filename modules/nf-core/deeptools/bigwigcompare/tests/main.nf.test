@@ -43,8 +43,6 @@ nextflow_process {
 
     test("homo_sapiens - 2 bigwig files - bedgraph output") {
 
-        config "./nextflow.bedgraph.config"
-
         when {
             process {
                 """
@@ -145,7 +143,6 @@ nextflow_process {
     test("homo_sapiens - 2 bigwig files - bedgraph output - stub") {
 
         options "-stub"
-        config "./nextflow.bedgraph.config"
         
         when {
             process {
