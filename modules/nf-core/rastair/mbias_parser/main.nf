@@ -33,4 +33,16 @@ process RASTAIR_MBIAS_PARSER {
         rastair: \$(rastair --version)
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.rastair_mbias_processed.pdf
+    touch ${prefix}.rastair_mbias_processed.csv
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        rastair: \$(rastair --version 2>&1 || echo "stub")
+    END_VERSIONS
+    """
 }

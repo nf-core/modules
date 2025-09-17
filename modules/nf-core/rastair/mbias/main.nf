@@ -34,4 +34,15 @@ process RASTAIR_MBIAS {
         rastair: \$(rastair --version)
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.rastair_mbias.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        rastair: \$(rastair --version 2>&1 || echo "stub")
+    END_VERSIONS
+    """
 }
