@@ -37,20 +37,20 @@ samples = strsplit(x="$meta.tumour_sample", ",") %>% unlist()  # list of samples
 
 ## read mCNAqc object
 if ( grepl(".rds\$", tolower("$rds_join")) ) {
-   obj = readRDS("$rds_join")
+    obj = readRDS("$rds_join")
     if (class(obj) == "m_cnaqc") {
-      original = obj %>% get_sample(sample=samples, which_obj="original")
-      input_table = lapply(names(original),
-                           function(sample_name) {
-                             purity = original[[sample_name]][["purity"]]
-                             original[[sample_name]] %>%
-                               # keep only mutations on the diploid karyotype
-                               CNAqc::subset_by_segment_karyotype("1:1") %>%
-                               CNAqc::Mutations() %>%
-                               dplyr::mutate(sample_id=sample_name, purity=purity)
-                           }) %>% dplyr::bind_rows()
+        original = obj %>% get_sample(sample=samples, which_obj="original")
+        input_table = lapply(names(original),
+                             function(sample_name) {
+                                 purity = original[[sample_name]][["purity"]]
+                                 original[[sample_name]] %>%
+                                     # keep only mutations on the diploid karyotype
+                                    CNAqc::subset_by_segment_karyotype("1:1") %>%
+                                     CNAqc::Mutations() %>%
+                                     dplyr::mutate(sample_id=sample_name, purity=purity)
+                             }) %>% dplyr::bind_rows()
     } else {
-      cli::cli_abort("Object of class {class($rds_join)} not supported.")
+        cli::cli_abort("Object of class {class($rds_join)} not supported.")
     }
 } else {
     input_table = read.csv("$rds_join")
