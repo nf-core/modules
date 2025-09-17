@@ -153,7 +153,6 @@ saveRDS(report_fig, file=paste0(opt[["prefix"]], "_REPORT_plots_viber.rds"))
 ggplot2::ggsave(plot=report_fig, filename=paste0(opt[["prefix"]], "_REPORT_plots_viber.pdf"), height=210, width=210, units="mm", dpi = 200)
 ggplot2::ggsave(plot=report_fig, filename=paste0(opt[["prefix"]], "_REPORT_plots_viber.png"), height=210, width=210, units="mm", dpi = 200)
 
-
 # version export
 f = file("versions.yml","w")
 cnaqc_version = sessionInfo()\$otherPkgs\$CNAqc\$Version
