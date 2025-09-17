@@ -19,7 +19,7 @@ process GNU_SPLIT {
 
     script:
     def args    = task.ext.args   ?: ''
-    prefix      = task.ext.prefix ?: "${meta.id}_split"
+    prefix      = task.ext.prefix ?: "${meta.id}.split"
     def suffix  = input.extension
     if (suffix == 'gz') {
         def next_suffix = file(input.baseName).getExtension()
