@@ -5,7 +5,7 @@ process MYLOASM {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/myloasm:0.2.0--ha6fb395_0':
-        'biocontainers/myloasm:0.2.0--ha6fb395_0' }"
+        'community.wave.seqera.io/library/myloasm:0.2.0--036e61a36965d08c' }"
 
     input:
     tuple val(meta), path(reads)
