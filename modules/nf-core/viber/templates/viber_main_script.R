@@ -115,8 +115,8 @@ tryCatch(expr = {
     } )
 
 # Save fits
-saveRDS(best_fit, file=paste0(opt[["prefix"]], "_viber_best_st_fit.rds"))
-saveRDS(best_fit_heuristic, file = paste0(opt[["prefix"]], "_viber_best_st_heuristic_fit.rds"))
+saveRDS(best_fit, file=paste0(opt[["prefix"]], "_viber_best_fit.rds"))
+saveRDS(best_fit_heuristic, file = paste0(opt[["prefix"]], "_viber_best_heuristic_fit.rds"))
 
 # Save plots
 n_samples = ncol(best_fit[["x"]]) - 1
@@ -129,8 +129,8 @@ if (n_samples >1) {
   plot_fit_heuristic = plot_mixing_proportions(best_fit_heuristic)
 }
 
-saveRDS(plot_fit, file=paste0(opt[["prefix"]], "_viber_best_st_fit_plots.rds"))
-saveRDS(plot_fit_heuristic, file=paste0(opt[["prefix"]], "_viber_best_st_heuristic_fit_plots.rds"))
+saveRDS(plot_fit, file=paste0(opt[["prefix"]], "_viber_best_fit_plots.rds"))
+saveRDS(plot_fit_heuristic, file=paste0(opt[["prefix"]], "_viber_best_heuristic_fit_plots.rds"))
 
 # Save report plot
 n_samples = ncol(best_fit[["x"]]) - 1
@@ -147,9 +147,9 @@ elbo = VIBER::plot_ELBO(best_fit)
 bottom_p = ggpubr::ggarrange(plotlist = list(mix_p, binom, elbo), widths = c(1,2,1), nrow = 1)
 
 report_fig = ggpubr::ggarrange(top_p, bottom_p, nrow = 2, heights = ifelse(n_samples>2, c(3,1), c(2,1)))
-saveRDS(report_fig, file=paste0(opt[["prefix"]], "_REPORT_plots_viber.rds"))
-ggplot2::ggsave(plot=report_fig, filename=paste0(opt[["prefix"]], "_REPORT_plots_viber.pdf"), height=210, width=210, units="mm", dpi = 200)
-ggplot2::ggsave(plot=report_fig, filename=paste0(opt[["prefix"]], "_REPORT_plots_viber.png"), height=210, width=210, units="mm", dpi = 200)
+saveRDS(report_fig, file=paste0(opt[["prefix"]], "_viber_report.rds"))
+ggplot2::ggsave(plot=report_fig, filename=paste0(opt[["prefix"]], "_viber_report.pdf"), height=210, width=210, units="mm", dpi = 200)
+ggplot2::ggsave(plot=report_fig, filename=paste0(opt[["prefix"]], "_viber_report.png"), height=210, width=210, units="mm", dpi = 200)
 
 # version export
 f = file("versions.yml","w")
