@@ -45,10 +45,10 @@ if ( grepl(".rds\$", tolower("$rds_join")) ) {
                                  purity = original[[sample_name]][["purity"]]
                                  original[[sample_name]] %>%
                                      # keep only mutations on the diploid karyotype
-                                    CNAqc::subset_by_segment_karyotype("1:1") %>%
+                                     CNAqc::subset_by_segment_karyotype("1:1") %>%
                                      CNAqc::Mutations() %>%
                                      dplyr::mutate(sample_id=sample_name, purity=purity)
-                             }) %>% dplyr::bind_rows()
+                                 }) %>% dplyr::bind_rows()
     } else {
         cli::cli_abort("Object of class {class($rds_join)} not supported.")
     }
