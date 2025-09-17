@@ -91,7 +91,6 @@ nv = reads_data %>%
 # Standard fit
 viber_K = as.integer(opt[["K"]])
 
-
 message("Starting standard fit")
 st_fit = VIBER::variational_fit(nv, dp,
                                 K=viber_K,
