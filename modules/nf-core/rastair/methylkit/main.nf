@@ -31,15 +31,7 @@ process CONVERT_TO_METHYLKIT {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.rastair_methylkit.txt.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rastair: \$(rastair --version 2>&1 || echo "stub")
-    END_VERSIONS
-    """
-}
-
+    touch ${prefix}.methylkit.txt.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
