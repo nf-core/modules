@@ -57,7 +57,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sam(process.out.sam[0][1]).getReadsMD5(),
+                    sam(process.out.sam[0][1]).getStatistics(),
                     process.out.versions,
                     path(process.out.versions[0]).yaml
                     ).match() }
