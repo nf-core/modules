@@ -1,4 +1,4 @@
-process PARABRICKS_RNA_FQ2BAM {
+process PARABRICKS_RNAFQ2BAM {
     tag "${meta.id}"
     label 'process_high'
     label 'process_gpu'

@@ -1,8 +1,8 @@
 nextflow_process {
 
-    name "Test Process PARABRICKS_RNA_FQ2BAM"
+    name "Test Process PARABRICKS_RNAFQ2BAM"
     script "../main.nf"
-    process "PARABRICKS_RNA_FQ2BAM"
+    process "PARABRICKS_RNAFQ2BAM"
 
     tag "gpu"
     tag "modules"
@@ -10,12 +10,12 @@ nextflow_process {
     tag "bwa/index"
     tag "parabricks"
     tag "parabricks/rnafq2bam"
-    tag "parabricks/stargenomegenerate"
+    tag "parabricks/stargenomegenerate_parabricks_compat"
 
     setup {
 
-        run("STAR_GENOMEGENERATE") {
-            script "../../stargenomegenerate/main.nf"
+        run("STARGENOMEGENERATE_PARABRICKS_COMPAT") {
+            script "../../stargenomegenerate_parabricks_compat/main.nf"
             process {
                 """
                 input[0] = Channel.of([
@@ -65,7 +65,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ])
 				input[2] = BWA_INDEX.out.index
-                input[3] = STAR_GENOMEGENERATE.out.index
+                input[3] = STARGENOMEGENERATE_PARABRICKS_COMPAT.out.index
                 """
             }
         }
@@ -100,7 +100,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ])
 				input[2] = BWA_INDEX.out.index
-                input[3] = STAR_GENOMEGENERATE.out.index
+                input[3] = STARGENOMEGENERATE_PARABRICKS_COMPAT.out.index
                 """
             }
         }
