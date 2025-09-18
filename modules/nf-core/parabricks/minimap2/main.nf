@@ -94,6 +94,8 @@ process PARABRICKS_MINIMAP2 {
     # Capture the full version output once and store it in a variable
     pbrun_version_output=\$(pbrun minimap2 --version 2>&1)
 
+    # We handle this different to the other modules because minimap does not begin with an Uppercase letter
+
     # Generate compatible_versions.yml
     cat <<EOF > compatible_versions.yml
     "${task.process}":
