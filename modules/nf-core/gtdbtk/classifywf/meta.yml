@@ -29,7 +29,7 @@ input:
         type: file
         description: A list of one or more bins in FASTA format for classification
         pattern: "*.{fasta,fna,fas,fa}{,.gz}"
-        ontologies: 
+        ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
   - - db_name:
         type: string
@@ -116,7 +116,7 @@ output:
           type: file
           description: Multiple sequence alignments file.
           pattern: "*.{msa.fasta.gz}"
-          ontologies: 
+          ontologies:
             - edam: http://edamontology.org/format_1929 # FASTA
   user_msa:
     - - meta:
@@ -129,7 +129,7 @@ output:
           type: file
           description: Multiple sequence alignments file for the user-provided files.
           pattern: "*.{user_msa.fasta.gz}"
-          ontologies: 
+          ontologies:
             - edam: http://edamontology.org/format_1929 # FASTA
   filtered:
     - - meta:
