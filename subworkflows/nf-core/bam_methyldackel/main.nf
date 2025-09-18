@@ -1,7 +1,7 @@
 include { METHYLDACKEL_EXTRACT                          } from '../../../modules/nf-core/methyldackel/extract/main'
 include { METHYLDACKEL_MBIAS                            } from '../../../modules/nf-core/methyldackel/mbias/main'
 
-workflow METHYLDACKEL_EXTRACT_MBIAS {
+workflow BAM_METHYLDACKEL {
 
     take:
     ch_alignment            // channel: [ val(meta), [ bam ] ] ## BAM from alignment
@@ -20,19 +20,26 @@ workflow METHYLDACKEL_EXTRACT_MBIAS {
      * Extract per-base methylation and plot methylation bias
      */
 
+    ch_alignment.view { it -> println "BAM: ${it[1]}" }
+    ch_alignment_index.view { it -> println "BAI: ${it[1]}" }
+    ch_fasta.view { it -> println "FASTA: ${it[1]}" }
+    ch_fasta_index.view { it -> println "FASTA index: ${it[1]}" }
+
     METHYLDACKEL_EXTRACT (
-        ch_alignment.join(ch_alignment_index),
-        ch_fasta.map{ meta, fasta_file -> fasta_file },
-        ch_fasta_index.map{ meta, fasta_index -> fasta_index }
+        ch_alignment,
+        ch_alignment_index,
+        ch_fasta,
+        ch_fasta_index
     )
     ch_methydackel_extract_bedgraph  = METHYLDACKEL_EXTRACT.out.bedgraph
     ch_methydackel_extract_methylkit = METHYLDACKEL_EXTRACT.out.methylkit
     ch_versions                      = ch_versions.mix(METHYLDACKEL_EXTRACT.out.versions)
 
     METHYLDACKEL_MBIAS (
-        ch_alignment.join(ch_alignment_index),
-        ch_fasta.map{ meta, fasta_file -> fasta_file },
-        ch_fasta_index.map{ meta, fasta_index -> fasta_index }
+        ch_alignment,
+        ch_alignment_index,
+        ch_fasta,
+        ch_fasta_index
     )
     ch_methydackel_mbias = METHYLDACKEL_MBIAS.out.txt
     ch_versions          = ch_versions.mix(METHYLDACKEL_MBIAS.out.versions)

@@ -1,16 +1,16 @@
 nextflow_workflow {
 
-    name "Test Subworkflow METHYLDACKEL_EXTRACT_MBIAS"
+    name "Test Subworkflow BAM_METHYLDACKEL"
     script "../main.nf"
-    workflow "METHYLDACKEL_EXTRACT_MBIAS"
+    workflow "BAM_METHYLDACKEL"
 
     tag "subworkflows"
     tag "subworkflows_nfcore"
-    tag "subworkflows/methyldackel_extract_mbias"
+    tag "subworkflows/bam_methyldackel"
     tag "methyldackel/extract"
     tag "methyldackel/mbias"
 
-    test("Test with BAM input") {
+    test("sarscov2 paired-end methylated [bam] / sarscov2 genome [fasta]") {
 
         when {
             workflow {
@@ -39,14 +39,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(
-                    // Snapshot the outputs ('emit') from the METHYLDACKEL workflow
-                    workflow.out.methydackel_extract_bedgraph,
-                    workflow.out.methydackel_extract_methylkit,
-                    workflow.out.methydackel_mbias,
-                    workflow.out.versions,
-                    workflow.out.multiqc
-                ).match() }
+                { assert snapshot(workflow.out).match() }
             )
         }
     }
