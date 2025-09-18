@@ -42,7 +42,7 @@ process LONGPHASE_PHASE {
     bgzip \\
         --threads $task.cpus \\
         $args2 \\
-        ${prefix}.vcf
+        ${prefix}*.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -53,8 +53,11 @@ process LONGPHASE_PHASE {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def sv_command = svs ? "echo '' | bgzip -c > ${prefix}_SV.vcf.gz" : ""
     """
     echo "" | bgzip -c > ${prefix}.vcf.gz
+
+    $sv_command
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
