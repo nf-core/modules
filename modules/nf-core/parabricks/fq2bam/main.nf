@@ -85,27 +85,26 @@ process PARABRICKS_FQ2BAM {
     ${qc_metrics_output}
     ${duplicate_metrics_output}
 
-    # Capture the full version output once and store it in a variable
+    # Capture once and build single-line compatible_with (spaces only, no tabs)
     pbrun_version_output=\$(pbrun fq2bam --version 2>&1)
 
-    # Generate compatible_versions.yml
+    compat_line=\$(echo "\$pbrun_version_output" | awk -F':' '
+        /Compatible With:/ {on=1; next}
+        /^---/ {on=0}
+        on && /:/ {
+            key=\$1; val=\$2
+            gsub(/[ \\t]+/, " ", key); gsub(/^[ \\t]+|[ \\t]+$/, "", key)
+            gsub(/[ \\t]+/, " ", val); gsub(/^[ \\t]+|[ \\t]+$/, "", val)
+            a[++i]=key ": " val
+        }
+        END { for (j=1;j<=i;j++) printf "%s%s", (j>1?", ":""), a[j] }
+    ')
+
     cat <<EOF > compatible_versions.yml
-    "${task.process}":
-        pbrun_version: \$(echo "\$pbrun_version_output" | grep "pbrun:" | awk '{print \$2}')
-        compatible_with:
-        \$(echo "\$pbrun_version_output" | awk '
-            /Compatible With:/ {flag=1; next}
-            /^---/ {flag=0}
-            flag && /:/ {
-                split(\$0, arr, ":")
-                key=arr[1]
-                val=arr[2]
-                gsub(/^ +| +\$/, "", key)
-                gsub(/^ +| +\$/, "", val)
-                printf "  %s: %s\\n", key, val
-            }
-        ')
-    EOF
+"${task.process}":
+  pbrun_version: \$(echo "\$pbrun_version_output" | awk '/^pbrun:/ {print \$2; exit}')
+  compatible_with: "\$compat_line"
+EOF
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
