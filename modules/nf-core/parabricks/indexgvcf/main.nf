@@ -12,7 +12,7 @@ process PARABRICKS_INDEXGVCF {
 
     output:
     tuple val(meta), path("*.{idx,tbi}"), emit: gvcf_index
-    path "versions.yml", emit: versions
+    path "versions.yml",                  emit: versions
 
     when:
     task.ext.when == null || task.ext.when
