@@ -1,0 +1,46 @@
+nextflow_process {
+
+    name "Test Process FIBERTOOLSRS_EXTRACT"
+    script "../main.nf"
+    process "FIBERTOOLSRS_EXTRACT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fibertoolsrs"
+    tag "fibertoolsrs/predictm6a"
+    tag "fibertoolsrs/extract"
+
+    test("homo_sapiens - bam") {
+
+        setup {
+            run("FIBERTOOLSRS_PREDICTM6A") {
+                script "../../predictm6a/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.bam', checkIfExists: true),
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = FIBERTOOLSRS_PREDICTM6A.out.bam.collect{ meta, bam -> bam }.map{ bam -> [[ id: 'test_extract'], bam]}
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
