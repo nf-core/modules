@@ -101,10 +101,10 @@ process PARABRICKS_FQ2BAM {
     ')
 
     cat <<EOF > compatible_versions.yml
-"${task.process}":
-  pbrun_version: \$(echo "\$pbrun_version_output" | awk '/^pbrun:/ {print \$2; exit}')
-  compatible_with: "\$compat_line"
-EOF
+    "${task.process}":
+    pbrun_version: \$(echo "\$pbrun_version_output" | awk '/^pbrun:/ {print \$2; exit}')
+    compatible_with: "\$compat_line"
+    EOF
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
