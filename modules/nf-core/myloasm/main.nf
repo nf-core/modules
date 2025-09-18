@@ -24,7 +24,7 @@ process MYLOASM {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix   = task.ext.prefix ?: "${meta.id}"
     // Note: MyloAsm works best with FASTQ files for base quality information
     """
     myloasm \\
