@@ -96,7 +96,7 @@ nextflow_process {
     }
 
     test("SRR389222 - fastq - se - stub") {
-        
+
         options '-stub'
 
         when {
@@ -128,7 +128,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out,
-                    path(process.out.versions[0]).yaml
+                    path(process.out.versions.get(0)).yaml,
+                    path(process.out.compatible_versions.get(0)).yaml
                     ).match() }
             )
         }
@@ -212,7 +213,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out,
-                    path(process.out.versions[0]).yaml
+                    path(process.out.versions.get(0)).yaml,
+                    path(process.out.compatible_versions.get(0)).yaml
                     ).match() }
             )
         }
@@ -298,7 +300,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out,
                     path(process.out.versions[0]).yaml
-                    ).match() 
+                    ).match()
                 }
             )
         }
