@@ -93,15 +93,15 @@ process PARABRICKS_FQ2BAM {
     "${task.process}":
         pbrun_version: \$(echo "\$pbrun_version_output" | grep "pbrun:" | awk '{print \$2}')
         compatible_with:
-        $(echo "\$pbrun_version_output" | awk '
+        \$(echo "\$pbrun_version_output" | awk '
             /Compatible With:/ {flag=1; next}
             /^---/ {flag=0}
             flag && /:/ {
                 split(\$0, arr, ":")
                 key=arr[1]
                 val=arr[2]
-                gsub(/^ +| +$/, "", key)
-                gsub(/^ +| +$/, "", val)
+                gsub(/^ +| +\$/, "", key)
+                gsub(/^ +| +\$/, "", val)
                 printf "  %s: %s\\n", key, val
             }
         ')
