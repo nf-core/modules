@@ -9,7 +9,7 @@ nextflow_process {
     tag "sigprofiler"
 
     test("test_sigprofiler_single_sample") {
-        
+
         config "./nextflow.config"
 
         when {
@@ -18,14 +18,14 @@ nextflow_process {
               module_args = "[download_genome_sigprofiler:True, volume:./, input_type:matrix, context_type:'96,DINUC,ID', minimum_signatures:1, maximum_signatures:2, nmf_replicates:10, min_nmf_iterations:10, max_nmf_iterations:100, nmf_test_conv:100, make_decomposition_plots:False ]"
 
             }
-            
+
             process {
                 """
                 input[0] = [
                     [ id:'test' ], 
                     file(params.modules_testdata_base_path + 'delete_me/sigprofiler/test_GRCh38/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
                 ]
-                input[1] = "GRCh38"                
+                input[1] = "GRCh38"
                 input[2] = []
                 """
             }
@@ -33,7 +33,7 @@ nextflow_process {
 
         then {
             def (meta, resultPaths) = process.out.results_sigprofiler[0]  
-            
+
             // Convert the list of output paths to a File object list
             def allPaths = resultPaths.collect { new File(it.toString()) }
 
@@ -50,7 +50,6 @@ nextflow_process {
             // Use the same context types as the workflow input (default: all three)
             def contextTypes = params.context_type?.split(',') ?: ['96','DINUC','ID']
             def expectedContexts = contextTypes.collect { contextMap[it] }
-
 
             // Build expected files dynamically
             def contextExpectedFiles = expectedContexts.collectEntries { sig ->
@@ -83,7 +82,7 @@ nextflow_process {
                             [ (relativePath): (f.exists() ? "present" : "missing") ]
                         }
                         filesStatus[context] = status
-                    } 
+                    }
                     
                     filesStatus.each { context, status ->
                         def missing = status.findAll { it.value == "missing" }.keySet()
@@ -92,12 +91,10 @@ nextflow_process {
                         } else {
                             println "[OK] All expected files exist for ${context}"
                         }
-                        
-                    } 
-        
+                    }
                 }
             )
-        }  
+        }
     }
 
     // Additional error-condition tests
@@ -182,8 +179,7 @@ nextflow_process {
                         results: process.out.results_sigprofiler,
                         versions: process.out.versions
                     ]).match()
-                }                
-                 
+                }
             ) 
             
         }
