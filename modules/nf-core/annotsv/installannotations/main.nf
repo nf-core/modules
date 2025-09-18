@@ -16,8 +16,17 @@ process ANNOTSV_INSTALLANNOTATIONS {
 
     script:
     """
-    TAG=\$(AnnotSV --version 2>/dev/null | sed 's/AnnotSV //' || echo "master")
-    INSTALL_annotations.sh \$TAG
+    TAG="\${ANNOTSV_TAG:-\$(AnnotSV --version 2>/dev/null | sed 's/AnnotSV //' || true)}"
+
+    # try v-prefixed tag first (skip if TAG is master or already v-prefixed)
+    if [[ "\$TAG" != "master" && "\$TAG" != v* ]] && INSTALL_annotations.sh "v\$TAG"; then
+        :
+    elif INSTALL_annotations.sh "\$TAG"; then
+        :
+    else
+        echo "Install with tag 'v\$TAG' and '\$TAG' failed - falling back to 'master'" >&2
+        INSTALL_annotations.sh master || { echo "Install with 'master' failed" >&2; exit 1; }
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

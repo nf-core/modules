@@ -1,0 +1,47 @@
+nextflow_process {
+
+    name "Test process rastair/mbias"
+    script "../main.nf"
+    process "RASTAIR_MBIAS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "rastair"
+    tag "rastair/mbias"
+
+    test("sarscov2 paired-end methylated [bam] / sarscov2 genome [fasta]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[3] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match()
+                }
+            )
+        }
+
+    }
+
+}
