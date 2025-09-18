@@ -11,6 +11,7 @@ process MYLOASM {
     tuple val(meta), path(reads)
 
     output:
+    tuple val(meta), path("${prefix}")                                           , emit: results
     tuple val(meta), path("${prefix}/assembly_primary.fa")                       , emit: contigs
     tuple val(meta), path("${prefix}/final_contig_graph.gfa")                    , emit: gfa
     tuple val(meta), path("${prefix}/alternate_assemblies/assembly_alternate.fa"), emit: contigs_alt

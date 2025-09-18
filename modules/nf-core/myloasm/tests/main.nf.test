@@ -28,6 +28,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
+                    file(process.out.results[0][1]).list().size(),
                     process.out.contigs,
                     process.out.gfa,
                     process.out.contigs_alt,
