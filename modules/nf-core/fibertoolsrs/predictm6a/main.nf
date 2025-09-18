@@ -4,7 +4,7 @@ process FIBERTOOLSRS_PREDICTM6A {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fibertools-rs:0.6.2--h3b373d1_0':
+        'https://depot.galaxyproject.org/singularity/fibertools-rs:0.7.1--h3b373d1_0':
         'biocontainers/fibertools-rs:0.7.1--h3b373d1_0' }"
 
     input:
