@@ -4,8 +4,8 @@ process LONGPHASE_PHASE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-d626bb8ec5a659accfbd8490bc1ac4a940722258:682e8c0cc0ceebf9bd38371a58249aabce93b1b3-0':
-        'biocontainers/mulled-v2-d626bb8ec5a659accfbd8490bc1ac4a940722258:682e8c0cc0ceebf9bd38371a58249aabce93b1b3-0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b0/b0184a9a36d8612fbae38bbaad7b52f03b815ad17673740e107cf1f267a1f15d/data':
+        'community.wave.seqera.io/library/htslib_longphase:3071e61356fc25a4' }"
 
     input:
     tuple val(meta), path(bam), path(bai), path(snps), path(svs), path(mods)
