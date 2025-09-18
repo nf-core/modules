@@ -27,7 +27,7 @@ process PARABRICKS_DEEPVARIANT {
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def output_file = "--gvcf" =~ task.ext.args ? "${prefix}.g.vcf.gz" : "${prefix}.vcf.gz"
+    def output_file = args.contains("--gvcf") ? "${prefix}.g.vcf.gz" : "${prefix}.vcf.gz"
     def interval_file_command = interval_file ? interval_file.collect { "--interval-file ${it}" }.join(' ') : ""
     def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
     """
@@ -47,8 +47,9 @@ process PARABRICKS_DEEPVARIANT {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def output_cmd = "--gvcf" =~ task.ext.args ? "echo '' | gzip > ${prefix}.g.vcf.gz" : "echo '' | gzip > touch ${prefix}.vcf.gz"
+    def output_cmd = args.contains("--gvcf") ? "echo '' | gzip > ${prefix}.g.vcf.gz" : "echo '' | gzip > touch ${prefix}.vcf.gz"
     """
     ${output_cmd}
 
