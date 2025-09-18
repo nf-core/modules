@@ -44,7 +44,7 @@ process SAWFISH_DISCOVER {
     prefix = task.ext.prefix ?: "${meta.id}"
     def expected_cn = expected_cn_bed ? "--expected-cn ${expected_cn_bed}" : ""
     def maf = maf_vcf ? "--maf ${maf_vcf}" : ""
-    def cnv_exclude_regions = cnv_exclude_regions ? "--cnv-exclude-regions ${cnv_exclude_regions}" : ""
+    def cnv_exclude_regions = cnv_exclude_regions ? "--cnv-excluded-regions ${cnv_exclude_regions}" : ""
 
     """
     sawfish \\
