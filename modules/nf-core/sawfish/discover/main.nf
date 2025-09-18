@@ -15,33 +15,33 @@ process SAWFISH_DISCOVER {
     tuple val(meta5), path(cnv_exclude_regions)
 
     output:
-    tuple val(meta), path("versions.yml")                                  , emit: versions
-    tuple val(meta), path("*_discover_dir/assembly.regions.bed")           , emit: assembly_regions
-    tuple val(meta), path("*_discover_dir/candidate.sv.bcf")               , emit: candidate_sv_bcf
-    tuple val(meta), path("*_discover_dir/candidate.sv.bcf.csi")           , emit: candidate_sv_bcf_csi
-    tuple val(meta), path("*_discover_dir/contig.alignment.bam")           , emit: contig_alignment_bam
-    tuple val(meta), path("*_discover_dir/contig.alignment.bam.csi")       , emit: contig_alignment_bam_csi
-    tuple val(meta), path("*_discover_dir/copynum.bedgraph")               , emit: copynum_bedgraph          , optional: true
-    tuple val(meta), path("*_discover_dir/copynum.mpack")                  , emit: copynum_mpack             , optional: true
-    tuple val(meta), path("*_discover_dir/debug.breakpoint_clusters.bed")  , emit: debug_breakpoint_clusters
-    tuple val(meta), path("*_discover_dir/debug.cluster.refinement.txt")   , emit: debug_cluster_refinement
-    tuple val(meta), path("*_discover_dir/discover.settings.json")         , emit: discover_settings
-    tuple val(meta), path("*_discover_dir/genome.gclevels.mpack")          , emit: genome_gclevels
-    tuple val(meta), path("*_discover_dir/max.depth.bed")                  , emit: max_depth
-    tuple val(meta), path("*_discover_dir/run.stats.json")                 , emit: run_stats
-    tuple val(meta), path("*_discover_dir/sample.gcbias.mpack")            , emit: sample_gcbias             , optional: true
-    tuple val(meta), path("*_discover_dir/sawfish.log")                    , emit: log
-    tuple val(meta), path("*_discover_dir/depth.mpack")                    , emit: depth_mpack
-    tuple val(meta), path("*_discover_dir/expected.copy.number.bed")       , emit: expected_cn               , optional: true
-    tuple val(meta), path("*_discover_dir")                                , emit: discover_dir
-    tuple val(meta), path(bam), path(bai)                                  , emit: bam
+    tuple val(meta), path("versions.yml")                             , emit: versions
+    tuple val(meta), path("${prefix}/assembly.regions.bed")           , emit: assembly_regions
+    tuple val(meta), path("${prefix}/candidate.sv.bcf")               , emit: candidate_sv_bcf
+    tuple val(meta), path("${prefix}/candidate.sv.bcf.csi")           , emit: candidate_sv_bcf_csi
+    tuple val(meta), path("${prefix}/contig.alignment.bam")           , emit: contig_alignment_bam
+    tuple val(meta), path("${prefix}/contig.alignment.bam.csi")       , emit: contig_alignment_bam_csi
+    tuple val(meta), path("${prefix}/copynum.bedgraph")               , emit: copynum_bedgraph          , optional: true
+    tuple val(meta), path("${prefix}/copynum.mpack")                  , emit: copynum_mpack             , optional: true
+    tuple val(meta), path("${prefix}/debug.breakpoint_clusters.bed")  , emit: debug_breakpoint_clusters
+    tuple val(meta), path("${prefix}/debug.cluster.refinement.txt")   , emit: debug_cluster_refinement
+    tuple val(meta), path("${prefix}/discover.settings.json")         , emit: discover_settings
+    tuple val(meta), path("${prefix}/genome.gclevels.mpack")          , emit: genome_gclevels
+    tuple val(meta), path("${prefix}/max.depth.bed")                  , emit: max_depth
+    tuple val(meta), path("${prefix}/run.stats.json")                 , emit: run_stats
+    tuple val(meta), path("${prefix}/sample.gcbias.mpack")            , emit: sample_gcbias             , optional: true
+    tuple val(meta), path("${prefix}/sawfish.log")                    , emit: log
+    tuple val(meta), path("${prefix}/depth.mpack")                    , emit: depth_mpack
+    tuple val(meta), path("${prefix}/maf.mpack")                      , emit: maf_mpack                 , optional: true
+    tuple val(meta), path("${prefix}/expected.copy.number.bed")       , emit: expected_cn               , optional: true
+    tuple val(meta), path("${prefix}")                                , emit: discover_dir
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ""
-    def prefix = task.ext.prefix ?: "${meta.id}_discover_dir"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def expected_cn = expected_cn_bed ? "--expected-cn ${expected_cn_bed}" : ""
     def maf = maf_vcf ? "--maf ${maf_vcf}" : ""
     def cnv_exclude_regions = cnv_exclude_regions ? "--cnv-exclude-regions ${cnv_exclude_regions}" : ""
@@ -67,9 +67,9 @@ process SAWFISH_DISCOVER {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}_discover_dir"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def expected_cn_bed = expected_cn_bed ? "touch ${prefix}/expected.copy.number.bed": ''
-    def maf_mpack = maf_vcf ? "echo \"MAF VCF mpack\" > ${prefix}/maf.mpack": ''
+    def maf_mpack = maf_vcf ? "touch  ${prefix}/maf.mpack": ''
     def copynum_files = !args.contains('--disable-cnv') ? """
         touch ${prefix}/copynum.bedgraph
         touch ${prefix}/copynum.mpack

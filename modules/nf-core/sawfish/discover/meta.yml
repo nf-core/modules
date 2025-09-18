@@ -95,7 +95,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - "*_discover_dir/assembly.regions.bed":
+      - ${prefix}/assembly.regions.bed:
           type: file
           description: Assembly regions BED file
           pattern: "*.bed"
@@ -106,7 +106,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - "*_discover_dir/candidate.sv.bcf":
+      - ${prefix}/candidate.sv.bcf:
           type: file
           description: Candidate SV BCF file
           pattern: "*.bcf"
@@ -117,7 +117,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - "*_discover_dir/candidate.sv.bcf.csi":
+      - ${prefix}/candidate.sv.bcf.csi:
           type: file
           description: Candidate SV BCF CSI file
           pattern: "*.csi"
@@ -128,7 +128,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - "*_discover_dir/contig.alignment.bam":
+      - ${prefix}/contig.alignment.bam:
           type: file
           description: Contig alignment BAM file
           pattern: "*.bam"
@@ -139,7 +139,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - "*_discover_dir/contig.alignment.bam.csi":
+      - ${prefix}/contig.alignment.bam.csi:
           type: file
           description: Contig alignment BAM CSI file
           pattern: "*.csi"
@@ -150,7 +150,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - "*_discover_dir/copynum.bedgraph":
+      - ${prefix}/copynum.bedgraph:
           type: file
           description: Copy number BEDGraph file
           pattern: "*.bedgraph"
@@ -161,7 +161,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - "*_discover_dir/copynum.mpack":
+      - ${prefix}/copynum.mpack:
           type: file
           description: Copy number mpack file
           pattern: "*.mpack"
@@ -172,7 +172,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - "*_discover_dir/debug.breakpoint_clusters.bed":
+      - ${prefix}/debug.breakpoint_clusters.bed:
           type: file
           description: Debug breakpoint clusters BED file
           pattern: "*.bed"
@@ -183,7 +183,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - "*_discover_dir/debug.cluster.refinement.txt":
+      - ${prefix}/debug.cluster.refinement.txt:
           type: file
           description: Debug cluster refinement text file
           pattern: "*.txt"
@@ -194,7 +194,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - "*_discover_dir/discover.settings.json":
+      - ${prefix}/discover.settings.json:
           type: file
           description: Discover settings JSON file
           pattern: "*.json"
@@ -206,7 +206,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - "*_discover_dir/genome.gclevels.mpack":
+      - ${prefix}/genome.gclevels.mpack:
           type: file
           description: Genome GC levels mpack file
           pattern: "*.mpack"
@@ -217,7 +217,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - "*_discover_dir/max.depth.bed":
+      - ${prefix}/max.depth.bed:
           type: file
           description: Max depth BED file
           pattern: "*.bed"
@@ -228,7 +228,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - "*_discover_dir/run.stats.json":
+      - ${prefix}/run.stats.json:
           type: file
           description: Run statistics JSON file
           pattern: "*.json"
@@ -240,7 +240,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - "*_discover_dir/sample.gcbias.mpack":
+      - ${prefix}/sample.gcbias.mpack:
           type: file
           description: Sample GC bias mpack file
           pattern: "*.mpack"
@@ -251,7 +251,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - "*_discover_dir/sawfish.log":
+      - ${prefix}/sawfish.log:
           type: file
           description: Sawfish log file
           pattern: "*.log"
@@ -262,9 +262,20 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - "*_discover_dir/depth.mpack":
+      - ${prefix}/depth.mpack:
           type: file
           description: Depth mpack file
+          pattern: "*.mpack"
+          ontologies: []
+  maf_mpack:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}/maf.mpack:
+          type: file
+          description: MAF mpack file
           pattern: "*.mpack"
           ontologies: []
   expected_cn:
@@ -273,7 +284,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - "*_discover_dir/expected.copy.number.bed":
+      - ${prefix}/expected.copy.number.bed:
           type: file
           description: Expected copy number BED file
           pattern: "*.bed"
@@ -284,25 +295,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - "*_discover_dir":
+      - ${prefix}:
           type: directory
           description: Directory containing all discover output files
-          ontologies: []
-  bam:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'test' ]`
-      - bam:
-          type: file
-          description: Sorted BAM/CRAM file
-          pattern: "*.{bam,cram}"
-          ontologies: []
-      - bai:
-          type: file
-          description: BAM index file
-          pattern: "*.bai"
           ontologies: []
 authors:
   - "@padraicc"

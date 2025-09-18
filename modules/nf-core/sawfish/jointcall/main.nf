@@ -24,7 +24,7 @@ process SAWFISH_JOINTCALL {
     tuple val(meta), path("*/samples/*/gc_bias_corrected_depth.bw") , emit: gc_bias_corrected_depth_bw , optional: true
     tuple val(meta), path("*/samples/*/copynum.summary.json")       , emit: copynum_summary            , optional: true
     tuple val(meta), path("*/sawfish.log")                          , emit: log
-    path "versions.yml"                                                          , emit: versions
+    path "versions.yml"                                             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,7 +34,9 @@ process SAWFISH_JOINTCALL {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def sample_args = sample_csv ? '' : sample_dirs.collect { "--sample ${it}" }.join(' ')
     def sample_csv_arg = sample_csv ? "--sample-csv ${sample_csv}" : ""
-
+    if (sample_args && sample_csv_arg) {
+        throw new IllegalArgumentException("--sample-csv cannot be used together with --sample; choose one input method.")
+    }
     """
     sawfish \\
         joint-call \\
@@ -62,7 +64,6 @@ process SAWFISH_JOINTCALL {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p ${prefix}
     mkdir -p ${prefix}/samples/sample0001_test/
     echo \"\" | gzip > ${prefix}/${prefix}_genotyped.sv.vcf.gz
     touch ${prefix}/${prefix}_genotyped.sv.vcf.gz.tbi
