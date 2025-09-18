@@ -93,8 +93,8 @@ process PARABRICKS_FQ2BAM {
         /^---/ {on=0}
         on && /:/ {
             key=\$1; val=\$2
-            gsub(/[ \\t]+/, " ", key); gsub(/^[ \\t]+|[ \\t]+$/, "", key)
-            gsub(/[ \\t]+/, " ", val); gsub(/^[ \\t]+|[ \\t]+$/, "", val)
+            gsub(/[ \\t]+/, " ", key); gsub(/^[ \\t]+|[ \\t]+\$/, "", key)
+            gsub(/[ \\t]+/, " ", val); gsub(/^[ \\t]+|[ \\t]+\$/, "", val)
             a[++i]=key ": " val
         }
         END { for (j=1;j<=i;j++) printf "%s%s", (j>1?", ":""), a[j] }
