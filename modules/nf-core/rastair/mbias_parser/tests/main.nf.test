@@ -10,7 +10,7 @@ nextflow_process {
     tag "rastair/mbias"
     tag "rastair/mbias_parser"
 
-    test("rastair mbias parser") {
+    test("sarscov2 paired-end methylated [bam] / sarscov2 genome [fasta]") {
 
         setup {
             run("RASTAIR_MBIAS") {

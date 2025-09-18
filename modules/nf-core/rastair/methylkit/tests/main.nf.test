@@ -1,6 +1,6 @@
 nextflow_process {
 
-    name "Test process rastair/convert_to_methylkit"
+    name "Test process rastair/methylkit"
     script "../main.nf"
     process "CONVERT_TO_METHYLKIT"
 
@@ -10,7 +10,7 @@ nextflow_process {
     tag "rastair/call"
     tag "rastair/methylkit"
 
-    test("rastair call to methylkit conversion") {
+    test("sarscov2 paired-end methylated [bam] / sarscov2 genome [fasta]") {
 
         setup {
             run("RASTAIR_CALL") {
@@ -57,7 +57,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.methylkit.size() > 0
+                { assert file(process.out.methylkit[0][1]).exists()
                 }
             )
         }
