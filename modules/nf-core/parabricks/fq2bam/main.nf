@@ -88,6 +88,7 @@ process PARABRICKS_FQ2BAM {
     # Capture once and build single-line compatible_with (spaces only, no tabs)
     pbrun_version_output=\$(pbrun fq2bam --version 2>&1)
 
+    # Because of a space between BWA and mem in the version output this is handled different to the other modules
     compat_line=\$(echo "\$pbrun_version_output" | awk -F':' '
         /Compatible With:/ {on=1; next}
         /^---/ {on=0}
