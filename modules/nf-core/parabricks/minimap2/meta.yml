@@ -146,6 +146,13 @@ output:
           pattern: "*.duplicate-metrics.txt"
           ontologies:
             - edam: "http://edamontology.org/format_2330" # TXT
+  compatible_versions:
+    - compatible_versions.yml:
+        type: file
+        description: File containing info on compatible CPU-based software versions.
+        pattern: "compatible_versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
   versions:
     - versions.yml:
         type: file
