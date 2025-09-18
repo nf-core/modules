@@ -12,6 +12,7 @@ process PARABRICKS_INDEXGVCF {
 
     output:
     tuple val(meta), path("*.{idx,tbi}"), emit: gvcf_index
+    path "compatible_versions.yml",       emit: compatible_versions, optional: true
     path "versions.yml",                  emit: versions
 
     when:
@@ -56,7 +57,6 @@ process PARABRICKS_INDEXGVCF {
         compatible_with:
         \$(echo "\$pbrun_version_output" | awk '/Compatible With:/,/^---/{ if (\$1 ~ /^[A-Z]/ && \$1 != "Compatible" && \$1 != "---") { printf "  %s: %s\\n", \$1, \$2 } }')
     EOF
-
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
