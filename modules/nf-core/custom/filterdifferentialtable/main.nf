@@ -13,11 +13,11 @@ process CUSTOM_FILTERDIFFERENTIALTABLE {
     tuple val(stat_column), val(stat_threshold), val(stat_cardinality)
 
     output:
-    tuple val(meta), path("*_filtered.tsv"), emit: filtered
+    tuple val(meta), path("*_filtered.tsv")         , emit: filtered
     // Need to modify the meta values, to make sure that filtered_up and filtered_down are different IDs from filtered
-    tuple val(meta), path("*_filtered_up.tsv"), emit: filtered_up
-    tuple val(meta), path("*_filtered_down.tsv"), emit: filtered_down
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), path("*_filtered_up.tsv")      , emit: filtered_up
+    tuple val(meta), path("*_filtered_down.tsv")    , emit: filtered_down
+    path "versions.yml"                             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
