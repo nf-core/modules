@@ -12,6 +12,7 @@ process PARABRICKS_DBSNP {
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
+    path "compatible_versions.yml", emit: compatible_versions, optional: true
     path "versions.yml",            emit: versions
 
     when:
@@ -44,6 +45,17 @@ process PARABRICKS_DBSNP {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.vcf
+
+    # Capture the full version output once and store it in a variable
+    pbrun_version_output=\$(pbrun dbsnp --version 2>&1)
+
+    # Generate compatible_versions.yml
+    cat <<EOF > compatible_versions.yml
+    "${task.process}":
+        pbrun_version: \$(echo "\$pbrun_version_output" | grep "pbrun:" | awk '{print \$2}')
+        compatible_with:
+        \$(echo "\$pbrun_version_output" | awk '/Compatible With:/,/^---/{ if (\$1 ~ /^[A-Z]/ && \$1 != "Compatible" && \$1 != "---") { printf "  %s: %s\\n", \$1, \$2 } }')
+    EOF
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
