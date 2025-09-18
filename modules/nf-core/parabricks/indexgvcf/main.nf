@@ -2,10 +2,10 @@ process PARABRICKS_INDEXGVCF {
     tag "${meta.id}"
     label 'process_high'
     label 'process_gpu'
+    // needed by the module to work properly can be removed when fixed upstream - see: https://github.com/nf-core/modules/issues/7226
     stageInMode 'copy'
-    // needed by the module to work properly - might be removed when this is fixed upstream
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.4.0-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.5.1-1"
 
     input:
     tuple val(meta), path(gvcf)

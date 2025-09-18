@@ -17,6 +17,7 @@ process PARABRICKS_APPLYBQSR {
     output:
     tuple val(meta), path("*.bam"), emit: bam
     tuple val(meta), path("*.bai"), emit: bai
+    path "compatible_versions.yml", emit: compatible_versions, optional: true
     path "versions.yml",            emit: versions
 
     when:

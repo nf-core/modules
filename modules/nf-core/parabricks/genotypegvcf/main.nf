@@ -1,16 +1,19 @@
 process PARABRICKS_GENOTYPEGVCF {
     tag "${meta.id}"
     label 'process_high'
+    label 'process_gpu'
+    // needed by the module to work properly can be removed when fixed upstream - see: https://github.com/nf-core/modules/issues/7226
+    stageInMode 'copy'
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.4.0-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.5.1-1"
 
     input:
-    tuple val(meta), path(input)
-    tuple val(ref_meta), path(fasta)
+    tuple val(meta),  path(input)
+    tuple val(meta2), path(fasta)
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
-    path "versions.yml", emit: versions
+    path "versions.yml",            emit: versions
 
     when:
     task.ext.when == null || task.ext.when
