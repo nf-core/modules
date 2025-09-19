@@ -29,7 +29,8 @@ input:
         type: file
         description: A list of one or more bins in FASTA format for classification
         pattern: "*.{fasta,fna,fas,fa}{,.gz}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - db_name:
         type: string
         description: The name of the GTDB database to use.
@@ -60,7 +61,7 @@ output:
             e.g. [ id:'test', single_end:false,  assembler:'spades' ]
           pattern: "*"
       - ${prefix}:
-          type: map
+          type: directory
           description: All files output by GTDB-Tk
           pattern: "*"
   summary:
@@ -71,9 +72,11 @@ output:
             e.g. [ id:'test', single_end:false,  assembler:'spades' ]
           pattern: "*"
       - ${prefix}/classify/*.summary.tsv:
-          type: map
+          type: file
           description: A TSV summary file for the classification
           pattern: "*.{summary.tsv}"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   tree:
     - - meta:
           type: map
@@ -82,11 +85,13 @@ output:
             e.g. [ id:'test', single_end:false,  assembler:'spades' ]
           pattern: "*"
       - ${prefix}/classify/*.classify.tree:
-          type: map
+          type: file
           description: |
             Groovy Map NJ or UPGMA trees in Newick format produced from a multiple sequence
             alignment
           pattern: "*.{classify.tree}"
+          ontologies:
+            - edam: http://edamontology.org/format_1910 # newick
   markers:
     - - meta:
           type: map
@@ -95,9 +100,11 @@ output:
             e.g. [ id:'test', single_end:false,  assembler:'spades' ]
           pattern: "*"
       - ${prefix}/identify/*.markers_summary.tsv:
-          type: map
+          type: file
           description: A TSV summary file lineage markers used for the classification.
           pattern: "*.{markers_summary.tsv}"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   msa:
     - - meta:
           type: map
@@ -106,9 +113,11 @@ output:
             e.g. [ id:'test', single_end:false,  assembler:'spades' ]
           pattern: "*"
       - ${prefix}/align/*.msa.fasta.gz:
-          type: map
+          type: file
           description: Multiple sequence alignments file.
           pattern: "*.{msa.fasta.gz}"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
   user_msa:
     - - meta:
           type: map
@@ -117,9 +126,11 @@ output:
             e.g. [ id:'test', single_end:false,  assembler:'spades' ]
           pattern: "*"
       - ${prefix}/align/*.user_msa.fasta.gz:
-          type: map
+          type: file
           description: Multiple sequence alignments file for the user-provided files.
           pattern: "*.{user_msa.fasta.gz}"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
   filtered:
     - - meta:
           type: map
@@ -128,10 +139,12 @@ output:
             e.g. [ id:'test', single_end:false,  assembler:'spades' ]
           pattern: "*"
       - ${prefix}/align/*.filtered.tsv:
-          type: map
+          type: file
           description: A list of genomes with an insufficient number of amino acids
             in MSA
           pattern: "*.{filtered.tsv}"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   failed:
     - - meta:
           type: map
@@ -140,9 +153,11 @@ output:
             e.g. [ id:'test', single_end:false,  assembler:'spades' ]
           pattern: "*"
       - ${prefix}/identify/*.failed_genomes.tsv:
-          type: map
+          type: file
           description: A TSV summary of the genomes which GTDB-tk failed to classify.
           pattern: "*.{failed_genomes.tsv}"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   log:
     - - meta:
           type: map
@@ -151,9 +166,11 @@ output:
             e.g. [ id:'test', single_end:false,  assembler:'spades' ]
           pattern: "*"
       - ${prefix}/${prefix}.log:
-          type: map
+          type: file
           description: GTDB-tk log file
           pattern: "*.{log}"
+          ontologies:
+            - edam: http://edamontology.org/data_3671 # Text
   warnings:
     - - meta:
           type: map
@@ -162,9 +179,11 @@ output:
             e.g. [ id:'test', single_end:false,  assembler:'spades' ]
           pattern: "*"
       - ${prefix}/${prefix}.warnings.log:
-          type: map
+          type: file
           description: GTDB-tk warnings log file
           pattern: "*.{warnings.log}"
+          ontologies:
+            - edam: http://edamontology.org/data_3671 # Text
   versions:
     - versions.yml:
         type: file
