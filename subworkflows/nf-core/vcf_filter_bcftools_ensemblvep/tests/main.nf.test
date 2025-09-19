@@ -1,13 +1,13 @@
 nextflow_workflow {
 
-    name "Test Subworkflow VCF_FILTER_BCFTOOLS_FILTERVEP"
+    name "Test Subworkflow VCF_FILTER_BCFTOOLS_ENSEMBLVEP"
     script "../main.nf"
-    workflow "VCF_FILTER_BCFTOOLS_FILTERVEP"
+    workflow "VCF_FILTER_BCFTOOLS_ENSEMBLVEP"
     config "./nextflow.config"
 
     tag "subworkflows"
     tag "subworkflows_nfcore"
-    tag "subworkflows/vcf_filter_bcftools_filtervep"
+    tag "subworkflows/vcf_filter_bcftools_ensemblvep"
     tag "bcftools/view"
     tag "ensemblvep/filtervep"
     tag "tabix/bgziptabix"

@@ -2,7 +2,7 @@ include { ENSEMBLVEP_FILTERVEP } from '../../../modules/nf-core/ensemblvep/filte
 include { BCFTOOLS_VIEW        } from '../../../modules/nf-core/bcftools/view/main'
 include { TABIX_BGZIPTABIX     } from '../../../modules/nf-core/tabix/bgziptabix/main'
 // Please note this subworkflow requires the options for bcftools_view that are included in the nextflow.config
-workflow VCF_FILTER_BCFTOOLS_FILTERVEP {
+workflow VCF_FILTER_BCFTOOLS_ENSEMBLVEP {
 
     take:
     ch_vcf                     // channel: [ val(meta), path(vcf) ]
