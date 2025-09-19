@@ -20,11 +20,6 @@ workflow BAM_METHYLDACKEL {
      * Extract per-base methylation and plot methylation bias
      */
 
-    ch_alignment.view { it -> println "BAM: ${it[1]}" }
-    ch_alignment_index.view { it -> println "BAI: ${it[1]}" }
-    ch_fasta.view { it -> println "FASTA: ${it[1]}" }
-    ch_fasta_index.view { it -> println "FASTA index: ${it[1]}" }
-
     METHYLDACKEL_EXTRACT (
         ch_alignment,
         ch_alignment_index,
