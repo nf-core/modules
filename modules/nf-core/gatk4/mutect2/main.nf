@@ -10,7 +10,7 @@ process GATK4_MUTECT2 {
     input:
     tuple val(meta), path(input), path(input_index), path(intervals)
     tuple val(meta2), path(fasta), path(gzi)
-    tuple val(meta3), path(fai)
+    tuple val(meta3), path(fai), path(gzi)
     tuple val(meta4), path(dict)
     path alleles
     path alleles_tbi
