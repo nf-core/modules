@@ -4,8 +4,8 @@ process SIGPROFILER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-b6141a7b8f0674ac604d90eb1306a731da24a734:daf9213409b038023df2a741f058d1bfd66b3c4c-0':
-        'biocontainers/mulled-v2-b6141a7b8f0674ac604d90eb1306a731da24a734:daf9213409b038023df2a741f058d1bfd66b3c4c-0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3e/3e160064566f2529f87874cfc606b160d9f58c606fbb1842ca46023da2afe8d3/data':
+        'community.wave.seqera.io/library/pip_sigprofilerassignment_sigprofilerextractor_sigprofilermatrixgenerator_pruned:02a3f95da35d8c9a' }"
 
     input:
     tuple val(meta), path(tsv_list, stageAs: '*.tsv')
@@ -55,8 +55,11 @@ process SIGPROFILER {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python3 -c 'import sys; print(".".join(map(str, sys.version_info[:3])))')
-        sigprofilermatrixGenerator: \$(python3 -c "import SigProfilerMatrixGenerator as matGen; print(matGen.__version__)")
-        sigprofilerextractor: \$(python3 -c "import SigProfilerExtractor as sig; print(sig.__version__)")
+        SigProfilerAssignment: \$(python3 -c "import SigProfilerAssignment as sig; print(sig.__version__)")
+        SigProfilerExtractor: \$(python3 -c "import SigProfilerExtractor as sig; print(sig.__version__)")
+        SigProfilerMatrixGenerator: \$(python3 -c "import SigProfilerMatrixGenerator as matGen; print(matGen.__version__)")
+        pandas: \$(python3 -c "import pandas as pd; print(pd.__version__)")
+        sigProfilerPlotting: \$(python3 -c "import sigProfilerPlotting as sig; print(sig.__version__)")
     END_VERSIONS
     """
 }
