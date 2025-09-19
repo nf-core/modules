@@ -62,7 +62,6 @@ nextflow_workflow {
                 { assert snapshot(
                         workflow.out.adapter_seq,
                         workflow.out.reads,
-                        workflow.out.trim_json,
                         workflow.out.trim_read_count,
                         workflow.out.trim_reads_fail,
                         workflow.out.trim_reads_merged,
@@ -122,7 +121,6 @@ nextflow_workflow {
                 { assert snapshot(
                         workflow.out.adapter_seq,
                         workflow.out.reads,
-                        workflow.out.trim_json,
                         workflow.out.trim_read_count,
                         workflow.out.trim_reads_fail,
                         workflow.out.trim_reads_merged,
@@ -180,7 +178,6 @@ nextflow_workflow {
                 { assert snapshot(
                         workflow.out.adapter_seq,
                         workflow.out.reads,
-                        workflow.out.trim_json,
                         workflow.out.trim_read_count,
                         workflow.out.trim_reads_fail,
                         workflow.out.trim_reads_merged,
@@ -240,7 +237,6 @@ nextflow_workflow {
                 { assert snapshot(
                         workflow.out.adapter_seq,
                         workflow.out.reads,
-                        workflow.out.trim_json,
                         workflow.out.trim_read_count,
                         workflow.out.trim_reads_fail,
                         workflow.out.trim_reads_merged,
@@ -300,7 +296,6 @@ nextflow_workflow {
                 { assert snapshot(
                         workflow.out.adapter_seq,
                         workflow.out.reads,
-                        workflow.out.trim_json,
                         workflow.out.trim_read_count,
                         workflow.out.trim_reads_fail,
                         workflow.out.trim_reads_merged,
@@ -361,7 +356,6 @@ nextflow_workflow {
                         // If we skip trimming then input is output, so not snapshotting
                         workflow.out.adapter_seq,
                         workflow.out.reads.get(0).get(0), // Reads meta map
-                        workflow.out.trim_json,
                         workflow.out.trim_read_count,
                         workflow.out.trim_reads_fail,
                         workflow.out.trim_reads_merged,
@@ -421,7 +415,6 @@ nextflow_workflow {
                 { assert snapshot(
                         workflow.out.adapter_seq,
                         workflow.out.reads,
-                        workflow.out.trim_json,
                         workflow.out.trim_read_count,
                         workflow.out.trim_reads_fail,
                         workflow.out.trim_reads_merged,
@@ -481,7 +474,6 @@ nextflow_workflow {
                 { assert snapshot(
                         workflow.out.adapter_seq,
                         workflow.out.reads,
-                        workflow.out.trim_json,
                         workflow.out.trim_read_count,
                         workflow.out.trim_reads_fail,
                         workflow.out.trim_reads_merged,
@@ -542,7 +534,6 @@ nextflow_workflow {
                 { assert snapshot(
                         workflow.out.adapter_seq,
                         workflow.out.reads,
-                        workflow.out.trim_json,
                         workflow.out.trim_read_count,
                         workflow.out.trim_reads_fail,
                         workflow.out.trim_reads_merged,
