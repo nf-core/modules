@@ -94,11 +94,12 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
     trim_reads = umi_reads
     if (!skip_trimming) {
         FASTP(
-            umi_reads,
-            adapter_fasta,
+            umi_reads.map{ meta, umi_reads_files ->
+                [ meta, umi_reads_files, adapter_fasta ?: [] ]
+            },
             false,
             save_trimmed_fail,
-            save_merged,
+            save_merged
         )
         trim_json = FASTP.out.json
         trim_html = FASTP.out.html

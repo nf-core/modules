@@ -55,8 +55,9 @@ workflow FASTQ_TRIM_FASTP_FASTQC {
     ch_fastqc_trim_zip   = Channel.empty()
     if (!val_skip_fastp) {
         FASTP (
-            ch_reads,
-            ch_adapter_fasta,
+            ch_reads.map{ meta, reads ->
+                [ meta, reads, ch_adapter_fasta ?: [] ]
+            },
             val_discard_trimmed_pass,
             val_save_trimmed_fail,
             val_save_merged
