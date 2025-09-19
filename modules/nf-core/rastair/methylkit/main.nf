@@ -20,7 +20,7 @@ process RASTAIR_METHYLKIT {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    cat ${rastair_call_txt} | /opt/conda/share/rastair/scripts/rastair_call_to_methylkit.sh | gzip -c > ${prefix}.rastair_methylkit.txt.gz
+    cat ${rastair_call_txt} | rastair_call_to_methylkit.sh | gzip -c > ${prefix}.rastair_methylkit.txt.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -23,11 +23,11 @@ nextflow_workflow {
                 // Define the input channels required by the BAM_TAPS_CONVERSION workflow
                 input[0] = Channel.of([
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam", checkIfExists: true)
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
                 ])
                 input[1] = Channel.of([
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai", checkIfExists: true)
                 ])
                 input[2] = Channel.of([
                     [ id:'test' ],
