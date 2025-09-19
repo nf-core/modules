@@ -7,7 +7,7 @@ process DIANN_INSILICOLIBRARYGENERATION {
         'docker.io/biocontainers/diann:v1.8.1_cv1' }"
 
     input:
-    tuple val(meta), path(fasta), path(cfg)
+    tuple val(meta), path(fasta)
 
     output:
     tuple val(meta), path("*.predicted.speclib"), emit: predict_speclib
@@ -26,7 +26,7 @@ process DIANN_INSILICOLIBRARYGENERATION {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    diann `cat ${cfg}` \\
+    diann \\
             --fasta ${fasta} \\
             --fasta-search \\
             --threads ${task.cpus} \\

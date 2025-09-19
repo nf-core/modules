@@ -17,8 +17,7 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [id:'test'],
-                    file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS_mini.fasta', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'proteomics/diann/diann_config.cfg', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS_mini.fasta', checkIfExists: true)
                 ])
                 """
             }
@@ -45,8 +44,7 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [id:'test'],
-                    file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS_mini.fasta', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'proteomics/diann/diann_config.cfg', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS_mini.fasta', checkIfExists: true)
                 ])
                 """
             }

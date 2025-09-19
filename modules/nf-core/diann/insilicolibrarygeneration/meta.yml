@@ -32,12 +32,6 @@ input:
         pattern: "*.{fasta,fa}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA format
-    - cfg:
-        type: file
-        description: DIA-NN configuration file
-        pattern: "*.cfg"
-        ontologies:
-          - edam: http://edamontology.org/format_2330 # Text format
 output:
   predict_speclib:
     - - meta:
