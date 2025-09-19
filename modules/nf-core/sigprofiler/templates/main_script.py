@@ -142,7 +142,7 @@ if __name__ == '__main__':
 
         # Convert Python bools to lowercase strings 'true'/'false'
         make_plots = True if opt["make_decomposition_plots"] else False
-        
+
         sigprofilerextractor_run = (
             f"SigProfilerExtractor sigprofilerextractor "
             f"--reference_genome  {genome} "
@@ -157,7 +157,7 @@ if __name__ == '__main__':
             f"--make_decomposition_plots {make_plots} "
             f"matrix {output_dir} {input_data_path}"
         )
-        subprocess.run(sigprofilerextractor_run, shell=True)                                                                
+        subprocess.run(sigprofilerextractor_run, shell=True)
 
     # save the output results
     source_dir = prefix + "/"
@@ -166,15 +166,21 @@ if __name__ == '__main__':
 
 
      # Write version
-    SigProfilerMatrixGenerator_version = version("SigProfilerMatrixGenerator")
-    SigProfilerExtractor_version = version("SigProfilerExtractor")
     python_version = ".".join(map(str, sys.version_info[:3]))
+    SigProfilerAssignment_version = version("SigProfilerAssignment")
+    SigProfilerExtractor_version = version("SigProfilerExtractor")
+    SigProfilerMatrixGenerator_version = version("SigProfilerMatrixGenerator")
+    pandas_version = pd.__version__
+    sigProfilerPlotting_version = version("sigProfilerPlotting")
 
     with open('versions.yml', 'a') as f:
         f.write('"${task.process}":'+"\\n")
         f.write("    python: "+python_version+"\\n")
-        f.write("    SigProfilerMatrixGenerator: "+SigProfilerMatrixGenerator_version+"\\n")
+        f.write("    SigProfilerAssignment: "+SigProfilerAssignment_version+"\\n")
         f.write("    SigProfilerExtractor: "+SigProfilerExtractor_version+"\\n")
+        f.write("    SigProfilerMatrixGenerator: "+SigProfilerMatrixGenerator_version+"\\n")
+        f.write("    pandas: "+pandas_version+"\\n")
+        f.write("    sigProfilerPlotting: "+sigProfilerPlotting_version+"\\n")
 
     
 
