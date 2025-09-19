@@ -1,10 +1,14 @@
 name: "diann_insilicolibrarygeneration"
-description: Generate in silico predicted spectral library using DIA-NN deep learning predictor
+description: |
+  Generate in silico predicted spectral library using DIA-NN deep learning predictor.
+  This module uses DIA-NN software for data-independent acquisition (DIA) proteomics data processing.
+  Output materials should include attribution: "Generated using DIA-NN".
 keywords:
   - diann
   - spectral library
   - proteomics
   - deep learning
+  - dia
 tools:
   - "diann":
       description: |
@@ -14,6 +18,7 @@ tools:
       documentation: "https://github.com/vdemichev/DiaNN"
       tool_dev_url: "https://github.com/vdemichev/DiaNN"
       doi: "10.1038/s41592-020-01009-0"
+      licence: ["https://github.com/vdemichev/DiaNN/blob/1.8.1/LICENSE.txt"]
       identifier: "biotools:diann"
 input:
   - - meta:
