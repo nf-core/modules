@@ -48,10 +48,10 @@ input_mut = dplyr::full_join(tumor_mutations, normal_mutations, by = c("chr", "f
     dplyr::mutate(t_vaf = case_when(is.na(t_vaf) ~ 1e-5, .default = t_vaf)) %>%
     dplyr::mutate(n_vaf = case_when(is.na(n_vaf) ~ 1e-5, .default = n_vaf)) %>%
     dplyr::mutate(t_vaf = as.numeric(t_vaf), n_vaf = as.numeric(n_vaf)) %>%
-    dplyr::filter((n_ref_count + n_alt_count) > 0) %>% 
     dplyr::filter(!(is.na(t_alt_count))) %>%
     dplyr::filter(!(is.na(n_alt_count))) %>%
     dplyr::mutate(t_alt_count = as.numeric(t_alt_count), t_ref_count = as.numeric(t_ref_count), n_tot_count = as.numeric(n_tot_count), n_ref_count = as.numeric(n_ref_count)) %>%
+    dplyr::filter((n_ref_count + n_alt_count) > 0) %>%
     dplyr::filter(t_vaf > 0)
 
 CNAs = readRDS("$cna_rds")[['segments']]
