@@ -45,13 +45,6 @@ input:
   - use_pplacer_scratch_dir:
       type: boolean
       description: Set to true to reduce pplacer memory usage by writing to disk (slower)
-  - mash_db:
-      type: file
-      description: The local copy of the Mash sketch database used by GTDB-tk if `ani_screen`
-        mode is used (optional)
-      pattern: "*.msh"
-      ontologies:
-        - edam: http://edamontology.org/format_3911 # msh
 output:
   gtdb_outdir:
     - - meta:
