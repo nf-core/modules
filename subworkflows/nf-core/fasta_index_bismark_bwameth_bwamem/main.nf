@@ -111,20 +111,13 @@ workflow FASTA_INDEX_BISMARK_BWAMETH_BWAMEM {
     // if it is empty, we can run the BWA_INDEX subworkflow
     // if it is not empty, we need to validate the index (file or link)
 
-    else if (params.aligner == 'bwamem'){
+    else if ( aligner == 'bwamem' ){
         log.info "BWA index not provided. Generating BWA index from FASTA file."
         /*
          * Generate BWA index from FASTA file
          */
         if (bwamem_index) {
-            // TODO: Validate the BWA index
-            ch_bwamem_index = bwamem_index //.map { meta, index ->
-            //     if (index.toString().endsWith('.bwt')) {
-            //         [meta, index]
-            //     } else {
-            //         error "BWA index file ${index} is not valid. It should end with .bwt"
-            //     }
-            // }
+            ch_bwamem_index = bwamem_index
         } else {
             BWA_INDEX(
                 ch_fasta
