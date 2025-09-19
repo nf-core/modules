@@ -7,7 +7,7 @@
 include { RASTAIR_MBIAS             } from '../../../modules/nf-core/rastair/mbias/main'
 include { RASTAIR_MBIAS_PARSER      } from '../../../modules/nf-core/rastair/mbias_parser/main'
 include { RASTAIR_CALL              } from '../../../modules/nf-core/rastair/call/main'
-include { CONVERT_TO_METHYLKIT      } from '../../../modules/nf-core/rastair/methylkit/main'
+include { RASTAIR_METHYLKIT         } from '../../../modules/nf-core/rastair/methylkit/main'
 
 workflow BAM_TAPS_CONVERSION {
 
@@ -50,11 +50,11 @@ workflow BAM_TAPS_CONVERSION {
     ch_rastair_call = RASTAIR_CALL.out.txt // channel: [ val(meta), txt ]
     ch_versions     = ch_versions.mix(RASTAIR_CALL.out.versions)
 
-    CONVERT_TO_METHYLKIT (
+    RASTAIR_METHYLKIT (
         ch_rastair_call
     )
-    ch_methylkit = CONVERT_TO_METHYLKIT.out.methylkit // channel
-    ch_versions  = ch_versions.mix(CONVERT_TO_METHYLKIT.out.versions)
+    ch_methylkit = RASTAIR_METHYLKIT.out.methylkit // channel
+    ch_versions  = ch_versions.mix(RASTAIR_METHYLKIT.out.versions)
 
     emit:
     mbias        = ch_rastair_mbias         // channel: [ val(meta), path("*.txt") ]

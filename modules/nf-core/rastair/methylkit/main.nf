@@ -1,4 +1,4 @@
-process CONVERT_TO_METHYLKIT {
+process RASTAIR_METHYLKIT {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
