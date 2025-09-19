@@ -1,4 +1,4 @@
-process STARGENOMEGENERATE_PARABRICKS_COMPAT {
+process STARGENOMEGENERATE {
     tag "${meta.id}"
     label 'process_high'
 
