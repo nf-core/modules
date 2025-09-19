@@ -166,6 +166,7 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     decoupler_dc_pvals = DECOUPLER_DECOUPLER.out.dc_pvals
     decoupler_png = DECOUPLER_DECOUPLER.out.png
 
+
     // grea-specific outputs
     grea_results          = PROPR_GREA.out.results
 
