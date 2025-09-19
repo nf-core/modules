@@ -73,7 +73,10 @@ nextflow_process {
        then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match()},
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.compatible_versions
+                    ).match()},
                 {
                     def (meta, bam_file) = process.out.bam.get(0)
                     assert file(bam_file).exists()
@@ -117,7 +120,10 @@ nextflow_process {
        then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match()},
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.compatible_versions
+                    ).match()},
                 {
                     def (meta, bam_file) = process.out.bam.get(0)
                     assert file(bam_file).exists()
