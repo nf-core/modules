@@ -21,8 +21,7 @@ def getFastpReadsAfterFiltering(json_file ) {
 workflow FASTQ_TRIM_FASTP_FASTQC {
 
     take:
-    ch_reads                 // channel: [ val(meta), path(reads)  ]
-    ch_adapter_fasta         // channel: [ path(fasta) ]
+    ch_reads                 // channel: [ val(meta), path(reads), path(adapter_fasta) ]
     val_save_trimmed_fail    // value: boolean
     val_discard_trimmed_pass // value: boolean
     val_save_merged          // value: boolean
@@ -34,18 +33,21 @@ workflow FASTQ_TRIM_FASTP_FASTQC {
 
     ch_versions = Channel.empty()
 
+    // Split input channel for reads-only operations
+    ch_reads_only = ch_reads.map { meta, reads, adapter_fasta -> [ meta, reads ] }
+
     ch_fastqc_raw_html = Channel.empty()
     ch_fastqc_raw_zip  = Channel.empty()
     if (!val_skip_fastqc) {
         FASTQC_RAW (
-            ch_reads
+            ch_reads_only
         )
         ch_fastqc_raw_html = FASTQC_RAW.out.html
         ch_fastqc_raw_zip  = FASTQC_RAW.out.zip
         ch_versions     = ch_versions.mix(FASTQC_RAW.out.versions.first())
     }
 
-    ch_trim_reads        = ch_reads
+    ch_trim_reads        = ch_reads_only
     ch_trim_json         = Channel.empty()
     ch_trim_html         = Channel.empty()
     ch_trim_log          = Channel.empty()
@@ -55,9 +57,7 @@ workflow FASTQ_TRIM_FASTP_FASTQC {
     ch_fastqc_trim_zip   = Channel.empty()
     if (!val_skip_fastp) {
         FASTP (
-            ch_reads.map{ meta, reads ->
-                [ meta, reads, ch_adapter_fasta ?: [] ]
-            },
+            ch_reads,
             val_discard_trimmed_pass,
             val_save_trimmed_fail,
             val_save_merged
