@@ -133,7 +133,7 @@ nextflow_process {
                 """
                 adapter_fasta        = []
                 discard_trimmed_pass = false
-                save_trimmed_fail    = false
+                save_trimmed_fail    = true
                 save_merged          = false
 
                 input[0] = Channel.of([
