@@ -10,12 +10,12 @@ nextflow_process {
     tag "bwa/index"
     tag "parabricks"
     tag "parabricks/rnafq2bam"
-    tag "parabricks/stargenomegenerate_parabricks_compat"
+    tag "parabricks/stargenomegenerate"
 
     setup {
 
-        run("STARGENOMEGENERATE_PARABRICKS_COMPAT") {
-            script "../../stargenomegenerate_parabricks_compat/main.nf"
+        run("STARGENOMEGENERATE") {
+            script "../../stargenomegenerate/main.nf"
             process {
                 """
                 input[0] = Channel.of([
@@ -65,14 +65,23 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ])
 				input[2] = BWA_INDEX.out.index
-                input[3] = STARGENOMEGENERATE_PARABRICKS_COMPAT.out.index
+                input[3] = STARGENOMEGENERATE.out.index
                 """
             }
         }
 
-        then {
+       then {
             assertAll(
-                { assert process.success }
+                { assert process.success },
+                { assert snapshot(process.out.versions).match()},
+                {
+                    def (meta, bam_file) = process.out.bam.get(0)
+                    assert file(bam_file).exists()
+                },
+                {
+                    def (meta, bai_file) = process.out.bai.get(0)
+                    assert file(bai_file).exists()
+                }
             )
         }
     }
@@ -100,14 +109,23 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ])
 				input[2] = BWA_INDEX.out.index
-                input[3] = STARGENOMEGENERATE_PARABRICKS_COMPAT.out.index
+                input[3] = STARGENOMEGENERATE.out.index
                 """
             }
         }
 
-        then {
+       then {
             assertAll(
-                { assert process.success }
+                { assert process.success },
+                { assert snapshot(process.out.versions).match()},
+                {
+                    def (meta, bam_file) = process.out.bam.get(0)
+                    assert file(bam_file).exists()
+                },
+                {
+                    def (meta, bai_file) = process.out.bai.get(0)
+                    assert file(bai_file).exists()
+                }
             )
         }
     }
