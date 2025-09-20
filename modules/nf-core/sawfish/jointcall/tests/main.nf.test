@@ -9,8 +9,7 @@ nextflow_process {
     tag "sawfish"
     tag "sawfish/jointcall"
     tag "sawfish/discover"
-    tag "samtools/reheader"
-    tag "samtools/index"
+
 
     setup {
         run("SAWFISH_DISCOVER") {
@@ -41,6 +40,7 @@ nextflow_process {
             }
         }
     }
+
 
     test("sawfish_jointcall") {
 
@@ -73,6 +73,55 @@ nextflow_process {
                     )
                 ])
                 input[3] = [[], []]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    file(process.out.tbi.get(0).get(1)).name,
+                    path(process.out.vcf.get(0).get(1)).linesGzip[2..39],
+                ).match() }
+            )
+        }
+    }
+
+    test("sawfish_jointcall_sample_csv") {
+
+        when {
+            process {
+                """
+
+                input[0] = SAWFISH_DISCOVER.out.discover_dir
+                                .map { it[1] }
+                                .collect()
+                                .map { dirs -> tuple([ id:'cohort' ], dirs) }
+
+                input[1] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true)
+                ]
+
+                // Provide a single tuple: cohort meta + list of BAMs + list of indexes
+                input[2] = Channel.fromList([
+                    tuple(
+                        [ id:'cohort' ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true),
+                            file('https://raw.githubusercontent.com/padraicc/test-datasets/add_pacbio_bam/data/genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam', checkIfExists: true)
+                        ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true),
+                            file('https://raw.githubusercontent.com/padraicc/test-datasets/add_pacbio_bam/data/genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true)
+                        ]
+                    )
+                ])
+                input[3] = Channel.of("sample1", "sample2")
+                    .collectFile(name:"samples.csv", newLine:true).map { file -> [ [ id: 'cohort' ], file ] }
 
                 """
             }
