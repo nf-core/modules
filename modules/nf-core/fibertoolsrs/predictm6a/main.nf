@@ -19,7 +19,7 @@ process FIBERTOOLSRS_PREDICTM6A {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_m6a"
 
     """
     ft \\
@@ -37,7 +37,7 @@ process FIBERTOOLSRS_PREDICTM6A {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_m6a"
 
     """
     echo $args

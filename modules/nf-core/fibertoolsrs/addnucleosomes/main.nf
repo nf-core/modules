@@ -19,7 +19,7 @@ process FIBERTOOLSRS_ADDNUCLEOSOMES {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_nucleosomes"
 
     """
     ft \\
@@ -37,7 +37,7 @@ process FIBERTOOLSRS_ADDNUCLEOSOMES {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_m6a"
 
     """
     echo $args

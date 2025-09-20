@@ -9,9 +9,10 @@ process FIBERTOOLSRS_EXTRACT {
 
     input:
     tuple val(meta), path(bam)
+    val(extract_type)
 
     output:
-    tuple val(meta), path("*.bed"), emit: bed
+    tuple val(meta), path("*.bed.gz"), emit: bed
     path "versions.yml"           , emit: versions
 
     when:
@@ -20,7 +21,7 @@ process FIBERTOOLSRS_EXTRACT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def outbed = params.ft_extract_type ? "--${params.ft_extract_type} ${prefix}.bed" : "--all ${prefix}.bed"
+    // def outbed = params.ft_extract_type ? "--${params.ft_extract_type} ${prefix}.bed" : "--all ${prefix}.bed"
 
     """
     ft \\
@@ -28,7 +29,8 @@ process FIBERTOOLSRS_EXTRACT {
         $args \\
         --threads $task.cpus \\
         $bam \\
-        $outbed
+        $extract_type \\
+        ${prefix}.bed.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -43,7 +45,7 @@ process FIBERTOOLSRS_EXTRACT {
     """
     echo $args
     
-    touch ${prefix}.bed
+    echo "" | gzip > ${prefix}.bed.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
