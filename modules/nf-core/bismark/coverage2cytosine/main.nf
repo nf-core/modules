@@ -42,8 +42,8 @@ process BISMARK_COVERAGE2CYTOSINE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.cov.gz
-    touch ${prefix}.report.txt.gz
+    echo | gzip > ${prefix}.cov.gz
+    echo | gzip > ${prefix}.report.txt.gz
     touch ${prefix}.cytosine_context_summary.txt
 
     cat <<-END_VERSIONS > versions.yml
