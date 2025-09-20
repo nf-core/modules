@@ -21,7 +21,6 @@ process FIBERTOOLSRS_EXTRACT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // def outbed = params.ft_extract_type ? "--${params.ft_extract_type} ${prefix}.bed" : "--all ${prefix}.bed"
 
     """
     ft \\
