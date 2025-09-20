@@ -1,0 +1,518 @@
+nextflow_process {
+    name "Test Process COBS_QUERY"
+    script "../main.nf"
+    process "COBS_QUERY"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cobs"
+    tag "cobs/query"
+    tag "xz/compress"
+    tag "cobs/classicconstruct"
+    tag "pigz/compress"
+    tag "cobs/compactconstruct"
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Classic index tests
+    test("sarscov2 - classic index not compressed") {
+        setup {
+            run("COBS_CLASSICCONSTRUCT") {
+                script "../../classicconstruct/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test'], // meta map
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map,
+                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                ]
+                input[1] = COBS_CLASSICCONSTRUCT.out.index
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match("consistent_output")}
+            )
+        }
+    }
+
+    test("sarscov2 - classic index xz compressed") {
+        setup {
+            run("COBS_CLASSICCONSTRUCT") {
+                script "../../classicconstruct/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test'], // meta map
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+            run("XZ_COMPRESS") {
+                script "../../../xz/compress/main.nf"
+                process {
+                    """
+                    input[0] = COBS_CLASSICCONSTRUCT.out.index
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map,
+                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                ]
+                input[1] = XZ_COMPRESS.out.archive
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match("consistent_output")}
+            )
+        }
+    }
+
+    test("sarscov2 - classic index gz compressed") {
+        setup {
+            run("COBS_CLASSICCONSTRUCT") {
+                script "../../classicconstruct/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test'], // meta map
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+            run("PIGZ_COMPRESS") {
+                script "../../../pigz/compress/main.nf"
+                process {
+                    """
+                    input[0] = COBS_CLASSICCONSTRUCT.out.index
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map,
+                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                ]
+                input[1] = PIGZ_COMPRESS.out.archive
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match("consistent_output")}
+            )
+        }
+    }
+
+    test("sarscov2 - classic index not compressed with load complete") {
+        config "./nextflow.load_complete.config"
+        setup {
+            run("COBS_CLASSICCONSTRUCT") {
+                script "../../classicconstruct/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test'], // meta map
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map,
+                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                ]
+                input[1] = COBS_CLASSICCONSTRUCT.out.index
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match("consistent_output")}
+            )
+        }
+    }
+
+    test("sarscov2 - classic index xz compressed with load complete") {
+        config "./nextflow.load_complete.config"
+        setup {
+            run("COBS_CLASSICCONSTRUCT") {
+                script "../../classicconstruct/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test'], // meta map
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+            run("XZ_COMPRESS") {
+                script "../../../xz/compress/main.nf"
+                process {
+                    """
+                    input[0] = COBS_CLASSICCONSTRUCT.out.index
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map,
+                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                ]
+                input[1] = XZ_COMPRESS.out.archive
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match("consistent_output")}
+            )
+        }
+    }
+
+    test("sarscov2 - classic index gz compressed with load complete") {
+        config "./nextflow.load_complete.config"
+        setup {
+            run("COBS_CLASSICCONSTRUCT") {
+                script "../../classicconstruct/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test'], // meta map
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+            run("PIGZ_COMPRESS") {
+                script "../../../pigz/compress/main.nf"
+                process {
+                    """
+                    input[0] = COBS_CLASSICCONSTRUCT.out.index
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map,
+                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                ]
+                input[1] = PIGZ_COMPRESS.out.archive
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match("consistent_output")}
+            )
+        }
+    }
+    // End of classic index tests
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Compact index tests
+    test("sarscov2 - compact index not compressed") {
+        setup {
+            run("COBS_COMPACTCONSTRUCT") {
+                script "../../compactconstruct/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test'], // meta map
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map,
+                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                ]
+                input[1] = COBS_COMPACTCONSTRUCT.out.index
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match("consistent_output")}
+            )
+        }
+    }
+
+    test("sarscov2 - compact index xz compressed") {
+        setup {
+            run("COBS_COMPACTCONSTRUCT") {
+                script "../../compactconstruct/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test'], // meta map
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+            run("XZ_COMPRESS") {
+                script "../../../xz/compress/main.nf"
+                process {
+                    """
+                    input[0] = COBS_COMPACTCONSTRUCT.out.index
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map,
+                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                ]
+                input[1] = XZ_COMPRESS.out.archive
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match("consistent_output")}
+            )
+        }
+    }
+
+    test("sarscov2 - compact index gz compressed") {
+        setup {
+            run("COBS_COMPACTCONSTRUCT") {
+                script "../../compactconstruct/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test'], // meta map
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+            run("PIGZ_COMPRESS") {
+                script "../../../pigz/compress/main.nf"
+                process {
+                    """
+                    input[0] = COBS_COMPACTCONSTRUCT.out.index
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map,
+                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                ]
+                input[1] = PIGZ_COMPRESS.out.archive
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match("consistent_output")}
+            )
+        }
+    }
+
+    test("sarscov2 - compact index not compressed with load complete") {
+        config "./nextflow.load_complete.config"
+        setup {
+            run("COBS_COMPACTCONSTRUCT") {
+                script "../../compactconstruct/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test'], // meta map
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map,
+                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                ]
+                input[1] = COBS_COMPACTCONSTRUCT.out.index
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match("consistent_output")}
+            )
+        }
+    }
+
+    test("sarscov2 - compact index xz compressed with load complete") {
+        config "./nextflow.load_complete.config"
+        setup {
+            run("COBS_COMPACTCONSTRUCT") {
+                script "../../compactconstruct/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test'], // meta map
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+            run("XZ_COMPRESS") {
+                script "../../../xz/compress/main.nf"
+                process {
+                    """
+                    input[0] = COBS_COMPACTCONSTRUCT.out.index
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map,
+                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                ]
+                input[1] = XZ_COMPRESS.out.archive
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.stdout.toString().contains("COBS does not support loading a compact and compressed index directly RAM")}
+            )
+        }
+    }
+
+    test("sarscov2 - compact index gz compressed with load complete") {
+        config "./nextflow.load_complete.config"
+        setup {
+            run("COBS_COMPACTCONSTRUCT") {
+                script "../../compactconstruct/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test'], // meta map
+                        file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+            run("PIGZ_COMPRESS") {
+                script "../../../pigz/compress/main.nf"
+                process {
+                    """
+                    input[0] = COBS_COMPACTCONSTRUCT.out.index
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map,
+                    file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)
+                ]
+                input[1] = PIGZ_COMPRESS.out.archive
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.stdout.toString().contains("COBS does not support loading a compact and compressed index directly RAM")}
+            )
+        }
+    }
+    // End of compact index tests
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Stub test
+    test("sarscov2 - classic index no compression - stub") {
+        options "-stub-run"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map,
+                    file('reads.fastq.gz')
+                ]
+                input[1] = [
+                    [ id:'test'], // meta map
+                    file('test.index.cobs_classic')
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match("stub")}
+            )
+        }
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+}
