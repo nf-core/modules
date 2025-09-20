@@ -26,7 +26,7 @@ nextflow_process {
                 { assert snapshot(process.out.versions).match() },
                 { assert file(process.out.mobster_rds[0][1]).exists() },
                 { assert file(process.out.mobster_best_rds[0][1]).exists() },
-                { assert file(process.out.mobster_plots_rds[0][1]).exists() },
+                { assert file(process.out.mobster_best_plots_rds[0][1]).exists() },
                 { assert file(process.out.mobster_report_rds[0][1]).exists() },
                 { assert file(process.out.mobster_report_pdf[0][1]).exists() },
                 { assert file(process.out.mobster_report_png[0][1]).exists() }
@@ -72,7 +72,7 @@ nextflow_process {
                 { assert snapshot(process.out.versions).match() },
                 { assert file(process.out.mobster_rds[0][1]).exists() },
                 { assert file(process.out.mobster_best_rds[0][1]).exists() },
-                { assert file(process.out.mobster_plots_rds[0][1]).exists() },
+                { assert file(process.out.mobster_best_plots_rds[0][1]).exists() },
                 { assert file(process.out.mobster_report_rds[0][1]).exists() },
                 { assert file(process.out.mobster_report_pdf[0][1]).exists() },
                 { assert file(process.out.mobster_report_png[0][1]).exists() }

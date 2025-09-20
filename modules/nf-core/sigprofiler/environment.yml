@@ -3,7 +3,10 @@ channels:
   - bioconda
 
 dependencies:
-  - bioconda::sigprofilerextractor=1.2.1
-  - bioconda::sigprofilermatrixgenerator=1.3.3
-  - conda-forge::pandas=2.3.0
-  - conda-forge::python=3.13.3
+  - conda-forge::pip==25.2
+  - pip:
+      - SigProfilerAssignment==0.2.6
+      - SigProfilerExtractor==1.2.2
+      - SigProfilerMatrixGenerator==1.3.5
+      - pandas==2.3.2
+      - sigProfilerPlotting==1.4.1

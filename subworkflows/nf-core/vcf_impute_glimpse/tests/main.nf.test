@@ -56,10 +56,10 @@ nextflow_workflow {
 
                 ch_map = Channel.fromList([
                     [[ chr: "chr21"],
-                        file(params.impute_dataset + "reference_genome/GRCh38_21.map", checkIfExists: true)
+                        file(params.impute_dataset + "reference_genome/GRCh38_chr21.glimpse.map", checkIfExists: true)
                     ],
                     [[ chr: "chr22"],
-                        file(params.impute_dataset + "reference_genome/GRCh38_22.map", checkIfExists: true)
+                        file(params.impute_dataset + "reference_genome/GRCh38_chr21.glimpse.map", checkIfExists: true)
                     ]
                 ])
 

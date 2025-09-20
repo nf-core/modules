@@ -8,8 +8,7 @@ process FASTP {
         'community.wave.seqera.io/library/fastp:1.0.1--c8b87fe62dcc103c' }"
 
     input:
-    tuple val(meta), path(reads)
-    path  adapter_fasta
+    tuple val(meta), path(reads), path(adapter_fasta)
     val   discard_trimmed_pass
     val   save_trimmed_fail
     val   save_merged

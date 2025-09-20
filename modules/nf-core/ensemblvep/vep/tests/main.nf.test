@@ -16,7 +16,7 @@ nextflow_process {
         when {
             process {
                 """
-                vep_cache = Channel.of(file('s3://annotation-cache/vep_cache/114_WBcel235/')).collect()
+                vep_cache = Channel.of(file('s3://annotation-cache/vep_cache/115_WBcel235/')).collect()
 
                 input[0] = Channel.of([
                     [ id:'test' ], // meta map
@@ -55,7 +55,7 @@ nextflow_process {
         when {
             process {
                 """
-                vep_cache = Channel.of(file('s3://annotation-cache/vep_cache/114_WBcel235/')).collect()
+                vep_cache = Channel.of(file('s3://annotation-cache/vep_cache/115_WBcel235/')).collect()
 
                 input[0] = Channel.of([
                     [ id:'test' ], // meta map
@@ -79,7 +79,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(process.out.versions).match() },
-                { assert path(process.out.tab.get(0).get(1)).linesGzip.contains("## ENSEMBL VARIANT EFFECT PREDICTOR v115.0") }
+                { assert path(process.out.tab.get(0).get(1)).linesGzip.contains("## ENSEMBL VARIANT EFFECT PREDICTOR v115.1") }
             )
         }
     }
