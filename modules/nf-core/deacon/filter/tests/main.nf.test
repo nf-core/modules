@@ -1,0 +1,198 @@
+
+nextflow_process {
+
+    name "Test Process DEACON_FILTER"
+    script "../main.nf"
+    process "DEACON_FILTER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "deacon"
+    tag "deacon/filter"
+
+    setup {
+        run("DEACON_INDEX") {
+            script "../../index/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - fastq single end") {
+
+        when {
+            process {
+                """
+                input[0] = DEACON_INDEX.out.index
+                input[1] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fastq paired end") {
+
+        when {
+            process {
+                """
+                input[0] = DEACON_INDEX.out.index
+                input[1] = [
+                    [ id:'test', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fastq paired end - host depletion") {
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                depletion = '-d'
+            }
+
+            process {
+                """
+                input[0] = DEACON_INDEX.out.index
+                input[1] = [
+                    [ id:'test', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+        assertAll(
+            { assert process.success },
+            { assert snapshot(
+                process.out.filtered_reads,
+                process.out.versions
+            ).match() }
+        )
+    }
+
+
+    }
+
+    test("sarscov2 - fastq single end with summary") {
+
+        when {
+            process {
+                """
+                input[0] = DEACON_INDEX.out.index
+                input[1] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                input[2] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                // Only a subset of the summary json, as it contains non-stable values
+                { assert snapshot(
+                    process.out.filtered_reads,
+                    path(process.out.summary_json.get(0).get(1)).json.version,
+                    path(process.out.summary_json.get(0).get(1)).json.index,
+                    path(process.out.summary_json.get(0).get(1)).json.input1,
+                    path(process.out.summary_json.get(0).get(1)).json.input2,
+                    path(process.out.summary_json.get(0).get(1)).json.output,
+                    path(process.out.summary_json.get(0).get(1)).json.output2,
+                    path(process.out.summary_json.get(0).get(1)).json.k,
+                    path(process.out.summary_json.get(0).get(1)).json.w,
+                    path(process.out.summary_json.get(0).get(1)).json.match_threshold,
+                    path(process.out.summary_json.get(0).get(1)).json.prefix_length,
+                    path(process.out.summary_json.get(0).get(1)).json.deplete,
+                    path(process.out.summary_json.get(0).get(1)).json.rename,
+                    path(process.out.summary_json.get(0).get(1)).json.seqs_in,
+                    path(process.out.summary_json.get(0).get(1)).json.seqs_out,
+                    path(process.out.summary_json.get(0).get(1)).json.seqs_removed,
+                    path(process.out.summary_json.get(0).get(1)).json.seqs_removed_proportion,
+                    path(process.out.summary_json.get(0).get(1)).json.bp_in,
+                    path(process.out.summary_json.get(0).get(1)).json.bp_out,
+                    path(process.out.summary_json.get(0).get(1)).json.bp_removed,
+                    path(process.out.summary_json.get(0).get(1)).json.bp_removed_proportion,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+
+    }
+
+   test("sarscov2 - fastq single end - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = DEACON_INDEX.out.index
+                input[1] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+
+    }
+
+}
