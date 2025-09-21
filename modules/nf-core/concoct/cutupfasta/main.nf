@@ -35,7 +35,7 @@ process CONCOCT_CUTUPFASTA {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        concoct: \$(echo \$(concoct --version 2>&1) | sed 's/concoct //g' )
+        concoct: \$(echo \$(concoct --version 2> /dev/null) | sed 's/concoct //g' )
     END_VERSIONS
     """
 
@@ -51,7 +51,7 @@ process CONCOCT_CUTUPFASTA {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        concoct: \$(echo \$(concoct --version 2>&1) | sed 's/concoct //g' )
+        concoct: \$(echo \$(concoct --version 2> /dev/null) | sed 's/concoct //g' )
     END_VERSIONS
     """
 }
