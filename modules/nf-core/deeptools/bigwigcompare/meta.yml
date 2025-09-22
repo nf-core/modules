@@ -26,14 +26,14 @@ input:
     - bigwig1:
         type: file
         description: First bigWig file (usually treatment)
-        pattern: "*.{bw,bigwig}"
+        pattern: "*.{bw,bigwig,bigWig}"
         ontologies:
           - edam: "http://edamontology.org/data_3002"
           - edam: "http://edamontology.org/format_3006"
     - bigwig2:
         type: file
         description: Second bigWig file (usually control)
-        pattern: "*.{bw,bigwig}"
+        pattern: "*.{bw,bigwig,bigWig}"
         ontologies:
           - edam: "http://edamontology.org/data_3002"
           - edam: "http://edamontology.org/format_3006"
@@ -51,18 +51,18 @@ input:
           - edam: "http://edamontology.org/format_3003"
         optional: true
 output:
-  bigwig:
+  output:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*.{bw,bedgraph}":
+      - "*.{bigWig,bedgraph}":
           type: file
           description: Output bigWig or bedGraph file with comparison results
-          pattern: "*.{bw,bedgraph}"
+          pattern: "*.{bigWig,bedgraph}"
           ontologies:
-            - edam: "http://edamontology.org/data_3002"
+            - edam: "http://edamontology.org/format_3583"
             - edam: "http://edamontology.org/format_3006"
   versions:
     - versions.yml:
