@@ -12,7 +12,7 @@ process SAWFISH_DISCOVER {
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(expected_cn_bed)
     tuple val(meta4), path(maf_vcf)
-    tuple val(meta5), path(cnv_exclude_regions)
+    tuple val(meta5), path(cnv_exclude_regions_bed)
 
     output:
     tuple val(meta), path("versions.yml")                           , emit: versions
@@ -44,7 +44,7 @@ process SAWFISH_DISCOVER {
     prefix = task.ext.prefix ?: "${meta.id}"
     def expected_cn = expected_cn_bed ? "--expected-cn ${expected_cn_bed}" : ""
     def maf = maf_vcf ? "--maf ${maf_vcf}" : ""
-    def cnv_exclude_regions = cnv_exclude_regions ? "--cnv-excluded-regions ${cnv_exclude_regions}" : ""
+    def cnv_exclude_regions = cnv_exclude_regions_bed ? "--cnv-excluded-regions ${cnv_exclude_regions_bed}" : ""
 
     """
     sawfish \\
@@ -68,7 +68,7 @@ process SAWFISH_DISCOVER {
     stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def expected_cn_bed = expected_cn_bed ? "touch ${prefix}/expected.copy.number.bed": ''
+    def expected_cn = expected_cn_bed ? "touch ${prefix}/expected.copy.number.bed": ''
     def maf_mpack = maf_vcf ? "touch  ${prefix}/maf.mpack": ''
     def copynum_files = !args.contains('--disable-cnv') ? """
         touch ${prefix}/copynum.bedgraph
@@ -98,7 +98,7 @@ process SAWFISH_DISCOVER {
     touch ${prefix}/expected.copy.number.bed
 
     ${copynum_files}
-    ${expected_cn_bed}
+    ${expected_cn}
     ${maf_mpack}
 
     cat <<-END_VERSIONS > versions.yml
