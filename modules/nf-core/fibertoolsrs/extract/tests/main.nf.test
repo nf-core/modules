@@ -44,7 +44,7 @@ nextflow_process {
 
     }
 
-    test("homo_sapiens - bam - m6a") {
+    test("homo_sapiens - bam - cpg") {
 
         setup {
             run("FIBERTOOLSRS_PREDICTM6A") {
@@ -64,7 +64,7 @@ nextflow_process {
             process {
                 """
                 input[0] = FIBERTOOLSRS_PREDICTM6A.out.bam
-                input[1] = 'm6a'
+                input[1] = 'cpg'
                 """
             }
         }
