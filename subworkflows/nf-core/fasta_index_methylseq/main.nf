@@ -5,7 +5,7 @@ include { BWAMETH_INDEX             } from '../../../modules/nf-core/bwameth/ind
 include { BWA_INDEX                 } from '../../../modules/nf-core/bwa/index/main'
 include { SAMTOOLS_FAIDX            } from '../../../modules/nf-core/samtools/faidx/main'
 
-workflow FASTA_INDEX_BISMARK_BWAMETH_BWAMEM {
+workflow FASTA_INDEX_METHYLSEQ {
 
     take:
     fasta            // channel: [ val(meta), [ fasta ] ]
