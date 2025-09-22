@@ -11,8 +11,7 @@ workflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_GATK {
     take:
     ch_input                 // channel: [ val(meta), path(input), path(input_index), val(which_norm) ]
     ch_fasta                 // channel: [ val(meta), path(fasta) ]
-    ch_fai                   // channel: [ val(meta), path(fai) ]
-    ch_gzi                   // channel: [ val(meta), path(gzi) ]
+    ch_fai                   // channel: [ val(meta), path(fai), path(gzi) ]
     ch_dict                  // channel: [ val(meta), path(dict) ]
     ch_alleles               // channel: /path/to/alleles
     ch_alleles_tbi           // channel: /path/to/alleles/index
@@ -30,7 +29,6 @@ workflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_GATK {
         ch_input,
         ch_fasta,
         ch_fai,
-        ch_gzi,
         ch_dict,
         ch_alleles,
         ch_alleles_tbi,
