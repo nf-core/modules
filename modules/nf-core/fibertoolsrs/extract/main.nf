@@ -13,7 +13,7 @@ process FIBERTOOLSRS_EXTRACT {
 
     output:
     tuple val(meta), path("*.bed.gz"), emit: bed
-    path "versions.yml"           , emit: versions
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,7 +28,7 @@ process FIBERTOOLSRS_EXTRACT {
         $args \\
         --threads $task.cpus \\
         $bam \\
-        $extract_type \\
+        --$extract_type \\
         ${prefix}.bed.gz
 
     cat <<-END_VERSIONS > versions.yml

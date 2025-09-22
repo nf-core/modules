@@ -30,7 +30,7 @@ nextflow_process {
             process {
                 """
                 input[0] = FIBERTOOLSRS_PREDICTM6A.out.bam
-                input[1] = '--all' //extract_type
+                input[1] = 'all'
                 """
             }
         }
@@ -48,25 +48,11 @@ nextflow_process {
 
         options "-stub"
 
-        setup {
-            run("FIBERTOOLSRS_PREDICTM6A") {
-                script "../../predictm6a/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test' ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true),
-                    ]
-                    """
-                }
-            }
-        }
-
         when {
             process {
                 """
-                input[0] = FIBERTOOLSRS_PREDICTM6A.out.bam
-                input[1] = '--all' //extract_type
+                input[0] = [[ id:'test' ], [] ]
+                input[1] = 'all'
                 """
             }
         }
