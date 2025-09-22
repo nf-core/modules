@@ -24,7 +24,7 @@ process SLAMDUNK_MAP {
     """
     slamdunk \\
         map \\
-        -r $fasta \\
+        -r ${fasta} \\
         -t $task.cpus \\
         -o outputs \\
         $args \\
