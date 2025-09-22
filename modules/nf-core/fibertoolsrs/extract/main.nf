@@ -21,6 +21,8 @@ process FIBERTOOLSRS_EXTRACT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def allowed_types = ['m6a', 'cpg', 'msp', 'nuc', 'all']
+    assert allowed_types.contains(extract_type) : "Invalid extract_type='${extract_type}'. Allowed: ${allowed_types.join(', ')}"
 
     """
     ft \\
