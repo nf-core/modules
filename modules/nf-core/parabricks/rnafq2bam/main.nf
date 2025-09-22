@@ -46,15 +46,6 @@ process PARABRICKS_RNAFQ2BAM {
         ${num_gpus} \\
         ${args}
 
-    # Capture the full version output once and store it in a variable
-    pbrun_version_output=\$(pbrun rnafq2bam --version 2>&1)
-    # Generate compatible_versions.yml
-    cat <<EOF > compatible_versions.yml
-    "${task.process}":
-        pbrun_version: \$(echo "\$pbrun_version_output" | grep "pbrun:" | awk '{print \$2}')
-        compatible_with:
-        \$(echo "\$pbrun_version_output" | awk '/Compatible With:/,/^---/{ if (\$1 ~ /^[A-Z]/ && \$1 != "Compatible" && \$1 != "---") { printf "  %s: %s\\n", \$1, \$2 } }')
-    EOF
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
             pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
