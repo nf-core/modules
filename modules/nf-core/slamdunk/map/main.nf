@@ -1,11 +1,11 @@
 process SLAMDUNK_MAP {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/slamdunk:0.4.3--py_0':
-        'biocontainers/slamdunk:0.4.3--py_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/slamdunk:0.4.3--py_0'
+        : 'biocontainers/slamdunk:0.4.3--py_0'}"
 
     input:
     tuple val(meta), path(input)
@@ -13,7 +13,7 @@ process SLAMDUNK_MAP {
 
     output:
     tuple val(meta), path("outputs/*.bam"), emit: bam
-    path "versions.yml"                   , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,10 +25,10 @@ process SLAMDUNK_MAP {
     slamdunk \\
         map \\
         -r ${fasta} \\
-        -t $task.cpus \\
+        -t ${task.cpus} \\
         -o outputs \\
-        $args \\
-        $input
+        ${args} \\
+        ${input}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
