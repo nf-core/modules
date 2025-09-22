@@ -107,9 +107,6 @@ workflow FASTA_INDEX_METHYLSEQ {
         }
     }
 
-    // TODO: Here we could check if ch_or_val_bwamem_index is empty or not
-    // if it is empty, we can run the BWA_INDEX subworkflow
-    // if it is not empty, we need to validate the index (file or link)
 
     else if ( aligner == 'bwamem' ){
         log.info "BWA index not provided. Generating BWA index from FASTA file."
