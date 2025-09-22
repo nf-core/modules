@@ -25,8 +25,8 @@ nextflow_process {
                     ),
                     tuple(
                         [id:'sample2'],
-                        file('https://raw.githubusercontent.com/padraicc/test-datasets/add_pacbio_bam/data/genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam', checkIfExists: true),
-                        file('https://raw.githubusercontent.com/padraicc/test-datasets/add_pacbio_bam/data/genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true),
                     )
                 ])
                 input[1] = [
@@ -64,11 +64,11 @@ nextflow_process {
                         [ id:'cohort' ],
                         [
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true),
-                            file('https://raw.githubusercontent.com/padraicc/test-datasets/add_pacbio_bam/data/genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam', checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam', checkIfExists: true)
                         ],
                         [
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true),
-                            file('https://raw.githubusercontent.com/padraicc/test-datasets/add_pacbio_bam/data/genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true)
                         ]
                     )
                 ])
@@ -112,11 +112,11 @@ nextflow_process {
                         [ id:'cohort' ],
                         [
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true),
-                            file('https://raw.githubusercontent.com/padraicc/test-datasets/add_pacbio_bam/data/genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam', checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam', checkIfExists: true)
                         ],
                         [
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true),
-                            file('https://raw.githubusercontent.com/padraicc/test-datasets/add_pacbio_bam/data/genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true)
                         ]
                     )
                 ])
@@ -163,11 +163,11 @@ nextflow_process {
                         [ id:'cohort' ],
                         [
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true),
-                            file('https://raw.githubusercontent.com/padraicc/test-datasets/add_pacbio_bam/data/genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam', checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam', checkIfExists: true)
                         ],
                         [
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true),
-                            file('https://raw.githubusercontent.com/padraicc/test-datasets/add_pacbio_bam/data/genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true)
                         ]
                     )
                 ])
