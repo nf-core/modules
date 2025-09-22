@@ -14,17 +14,17 @@ process SAWFISH_JOINTCALL {
     tuple val(meta4), path(sample_csv)
 
     output:
-    tuple val(meta), path("*/*_genotyped.sv.vcf.gz")                , emit: vcf
-    tuple val(meta), path("*/*_genotyped.sv.vcf.gz.tbi")            , emit: tbi
-    tuple val(meta), path("*/contig.alignment.bam")                 , emit: bam
-    tuple val(meta), path("*/contig.alignment.bam.csi")             , emit: bam_index
-    tuple val(meta), path("*/run.stats.json")                       , emit: stats
-    tuple val(meta), path("*/samples/*/depth.bw")                   , emit: depth_bw
-    tuple val(meta), path("*/samples/*/copynum.bedgraph")           , emit: copynum_bedgraph           , optional: true
-    tuple val(meta), path("*/samples/*/gc_bias_corrected_depth.bw") , emit: gc_bias_corrected_depth_bw , optional: true
-    tuple val(meta), path("*/samples/*/copynum.summary.json")       , emit: copynum_summary            , optional: true
-    tuple val(meta), path("*/sawfish.log")                          , emit: log
-    path "versions.yml"                                             , emit: versions
+    tuple val(meta), path("*/*_genotyped.sv.vcf.gz")               , emit: vcf
+    tuple val(meta), path("*/*_genotyped.sv.vcf.gz.tbi")           , emit: tbi
+    tuple val(meta), path("*/contig.alignment.bam")                , emit: bam
+    tuple val(meta), path("*/contig.alignment.bam.csi")            , emit: bam_index
+    tuple val(meta), path("*/run.stats.json")                      , emit: stats
+    tuple val(meta), path("*/samples/*/depth.bw")                  , emit: depth_bw
+    tuple val(meta), path("*/samples/*/copynum.bedgraph")          , emit: copynum_bedgraph          , optional: true
+    tuple val(meta), path("*/samples/*/gc_bias_corrected_depth.bw"), emit: gc_bias_corrected_depth_bw, optional: true
+    tuple val(meta), path("*/samples/*/copynum.summary.json")      , emit: copynum_summary           , optional: true
+    tuple val(meta), path("*/sawfish.log")                         , emit: log
+    path "versions.yml"                                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

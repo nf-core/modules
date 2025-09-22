@@ -15,26 +15,26 @@ process SAWFISH_DISCOVER {
     tuple val(meta5), path(cnv_exclude_regions)
 
     output:
-    tuple val(meta), path("versions.yml")                             , emit: versions
-    tuple val(meta), path("${prefix}/assembly.regions.bed")           , emit: assembly_regions
-    tuple val(meta), path("${prefix}/candidate.sv.bcf")               , emit: candidate_sv_bcf
-    tuple val(meta), path("${prefix}/candidate.sv.bcf.csi")           , emit: candidate_sv_bcf_csi
-    tuple val(meta), path("${prefix}/contig.alignment.bam")           , emit: contig_alignment_bam
-    tuple val(meta), path("${prefix}/contig.alignment.bam.csi")       , emit: contig_alignment_bam_csi
-    tuple val(meta), path("${prefix}/copynum.bedgraph")               , emit: copynum_bedgraph          , optional: true
-    tuple val(meta), path("${prefix}/copynum.mpack")                  , emit: copynum_mpack             , optional: true
-    tuple val(meta), path("${prefix}/debug.breakpoint_clusters.bed")  , emit: debug_breakpoint_clusters
-    tuple val(meta), path("${prefix}/debug.cluster.refinement.txt")   , emit: debug_cluster_refinement
-    tuple val(meta), path("${prefix}/discover.settings.json")         , emit: discover_settings
-    tuple val(meta), path("${prefix}/genome.gclevels.mpack")          , emit: genome_gclevels
-    tuple val(meta), path("${prefix}/max.depth.bed")                  , emit: max_depth
-    tuple val(meta), path("${prefix}/run.stats.json")                 , emit: run_stats
-    tuple val(meta), path("${prefix}/sample.gcbias.mpack")            , emit: sample_gcbias             , optional: true
-    tuple val(meta), path("${prefix}/sawfish.log")                    , emit: log
-    tuple val(meta), path("${prefix}/depth.mpack")                    , emit: depth_mpack
-    tuple val(meta), path("${prefix}/maf.mpack")                      , emit: maf_mpack                 , optional: true
-    tuple val(meta), path("${prefix}/expected.copy.number.bed")       , emit: expected_cn               , optional: true
-    tuple val(meta), path("${prefix}")                                , emit: discover_dir
+    tuple val(meta), path("versions.yml")                           , emit: versions
+    tuple val(meta), path("${prefix}/assembly.regions.bed")         , emit: assembly_regions
+    tuple val(meta), path("${prefix}/candidate.sv.bcf")             , emit: candidate_sv_bcf
+    tuple val(meta), path("${prefix}/candidate.sv.bcf.csi")         , emit: candidate_sv_bcf_csi
+    tuple val(meta), path("${prefix}/contig.alignment.bam")         , emit: contig_alignment_bam
+    tuple val(meta), path("${prefix}/contig.alignment.bam.csi")     , emit: contig_alignment_bam_csi
+    tuple val(meta), path("${prefix}/copynum.bedgraph")             , emit: copynum_bedgraph         , optional: true
+    tuple val(meta), path("${prefix}/copynum.mpack")                , emit: copynum_mpack            , optional: true
+    tuple val(meta), path("${prefix}/debug.breakpoint_clusters.bed"), emit: debug_breakpoint_clusters
+    tuple val(meta), path("${prefix}/debug.cluster.refinement.txt") , emit: debug_cluster_refinement
+    tuple val(meta), path("${prefix}/discover.settings.json")       , emit: discover_settings
+    tuple val(meta), path("${prefix}/genome.gclevels.mpack")        , emit: genome_gclevels
+    tuple val(meta), path("${prefix}/max.depth.bed")                , emit: max_depth
+    tuple val(meta), path("${prefix}/run.stats.json")               , emit: run_stats
+    tuple val(meta), path("${prefix}/sample.gcbias.mpack")          , emit: sample_gcbias            , optional: true
+    tuple val(meta), path("${prefix}/sawfish.log")                  , emit: log
+    tuple val(meta), path("${prefix}/depth.mpack")                  , emit: depth_mpack
+    tuple val(meta), path("${prefix}/maf.mpack")                    , emit: maf_mpack                , optional: true
+    tuple val(meta), path("${prefix}/expected.copy.number.bed")     , emit: expected_cn              , optional: true
+    tuple val(meta), path("${prefix}")                              , emit: discover_dir
 
     when:
     task.ext.when == null || task.ext.when
