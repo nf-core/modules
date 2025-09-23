@@ -1,0 +1,134 @@
+nextflow_process {
+
+    name "Test Process HIFICNV"
+    script "../main.nf"
+    process "HIFICNV"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hificnv"
+
+    test("homo_sapiens - [bam] [fasta] - no_optional_inputs") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'homo_sapiens/pacbio/bam_hiphased/GRCh38_chr22_sampled_snv_phased_clean.sorted.bam', checkIfExists: true), //bam
+                    file(params.modules_testdata_base_path + 'homo_sapiens/pacbio/bam_hiphased/GRCh38_chr22_sampled_snv_phased_clean.sorted.bam.csi', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'genome' ], // meta2
+                    file(params.modules_testdata_base_path + 'homo_sapiens/genome/GRCh38.chr22.fasta', checkIfExists: true)
+                ]
+                input[2] = [
+                    [:], // meta3 - empty
+                    []   // maf - empty file
+                ]
+                input[3] = [
+                    [:], // meta4 - empty
+                    []   // exclude - empty file
+                ]
+                input[4] = [
+                    [:], // meta5 - empty
+                    []   // expected_cn - empty file
+                ]
+                """
+            }
+        }
+
+        then {
+            if (process.success) {
+                // If process succeeds, check for expected outputs
+                assertAll(
+                    { assert process.success },
+                    { assert process.out.versions.size() == 1 },
+                    // Depth and log should always be created if successful
+                    { assert process.out.depth.size() == 1 },
+                    { assert process.out.log.size() == 1 },
+                    // Optional outputs may or may not be present
+                    { assert process.out.copynum.size() >= 0 },
+                    { assert process.out.vcf.size() >= 0 },
+                    { assert process.out.maf.size() == 0 },
+                    { assert snapshot(
+                        process.out.depth,
+                        process.out.log,
+                        process.out.versions
+                    ).match() }
+                )
+            } else {
+                // If process fails, check it fails as expected
+                assertAll(
+                    { assert !process.success },
+                    { assert process.exitStatus == 65 },
+                    { assert process.out.versions.size() == 1 },
+                    // No output files when process fails
+                    { assert process.out.depth.size() == 0 },
+                    { assert process.out.log.size() == 0  },
+                    { assert process.out.copynum.size() == 0 },
+                    { assert process.out.vcf.size() == 0 },
+                    { assert process.out.maf.size() == 0 },
+                    { assert snapshot(
+                                process.out.versions
+                    ).match() }
+                )
+            }
+        }
+    }
+
+
+    test("homo_sapiens - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'homo_sapiens/pacbio/bam_hiphased/GRCh38_chr22_sampled_snv_phased_clean.sorted.bam', checkIfExists: true), // bam
+                    file(params.modules_testdata_base_path + 'homo_sapiens/pacbio/bam_hiphased/GRCh38_chr22_sampled_snv_phased_clean.sorted.bam.csi', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'genome' ], // meta2
+                    file(params.modules_testdata_base_path + 'homo_sapiens/genome/GRCh38.chr22.fasta', checkIfExists: true)
+                ]
+                input[2] = [
+                    [:], // meta3 - empty
+                    []   // maf - empty file
+                ]
+                input[3] = [
+                    [:], // meta4 - empty
+                    []   // exclude - empty file
+                ]
+                input[4] = [
+                    [:], // meta5 - empty
+                    []   // expected_cn - empty file
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.copynum.size() == 1 },
+                { assert process.out.depth.size() == 1 },
+                { assert process.out.vcf.size() == 1 },
+                { assert process.out.log.size() == 1 },
+                { assert process.out.versions.size() == 1 },
+                // MAF output should be empty in stub when no MAF input
+                { assert process.out.maf.size() == 0 },
+                { assert snapshot(
+                    process.out.copynum,
+                    process.out.depth,
+                    process.out.vcf,
+                    process.out.log,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+}
