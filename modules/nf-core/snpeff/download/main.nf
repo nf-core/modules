@@ -4,8 +4,8 @@ process SNPEFF_DOWNLOAD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/snpeff:5.2--hdfd78af_2' :
-        'biocontainers/snpeff:5.2--hdfd78af_2' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/37/37a5be8afdc2e112fd1bb4aa226e009a437e6537f50a51ed909fe2018fd62e99/data' :
+        'community.wave.seqera.io/library/snpeff:5.3.0a--ca8e0b08f227a463' }"
 
     input:
     tuple val(meta), val(snpeff_db)

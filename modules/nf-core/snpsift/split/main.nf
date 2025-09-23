@@ -4,8 +4,8 @@ process SNPSIFT_SPLIT {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8f/8f096b1bc84d2cc7783cb346abd8a0f3c644e85951d13ec8401b2558e4383a20/data'
-        : 'community.wave.seqera.io/library/snpsift:5.2--308b80d185f61139'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/35/3570381a93c22449d48bdaa85097c5e8a075e90437565546acb2e40a29171bca/data'
+        : 'community.wave.seqera.io/library/snpsift:5.3.0a--67d3871d6f67ac2b'}"
 
     input:
     tuple val(meta), path(vcf)
