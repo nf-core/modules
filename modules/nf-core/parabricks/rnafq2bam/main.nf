@@ -16,7 +16,7 @@ process PARABRICKS_RNAFQ2BAM {
     output:
     tuple val(meta), path("*.bam"), emit: bam
     tuple val(meta), path("*.bai"), emit: bai
-    path "versions.yml", emit: versions
+    path "versions.yml",            emit: versions
 
     when:
     task.ext.when == null || task.ext.when
