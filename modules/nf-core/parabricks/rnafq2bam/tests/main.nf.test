@@ -51,7 +51,7 @@ nextflow_process {
             params {
                 module_args = '--low-memory --read-files-command zcat'
                 // Ref: https://forums.developer.nvidia.com/t/problem-with-gpu/256825/6
-                // Parabricks’s fq2bam requires 24GB of memory.
+                // Parabricks’s rnafq2bam requires 24GB of memory.
                 // Using --low-memory for testing
             }
             process {
@@ -117,7 +117,6 @@ nextflow_process {
                 { assert snapshot(
                     process.out,
                     path(process.out.versions.get(0)).yaml,
-                    path(process.out.compatible_versions.get(0)).yaml
                     ).match() }
             )
         }

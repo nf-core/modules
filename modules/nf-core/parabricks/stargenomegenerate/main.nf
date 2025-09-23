@@ -3,7 +3,10 @@ process STARGENOMEGENERATE {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "community.wave.seqera.io/library/htslib_samtools_star_gawk:4de2f983041d42e6"
+
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/90/90e5dfb6f785d74101a62b11668bb53a7020647ddda2df959c7c18023ee5c591/data'
+        : 'community.wave.seqera.io/library/htslib_samtools_star_gawk:4de2f983041d42e6'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -11,15 +14,15 @@ process STARGENOMEGENERATE {
 
     output:
     tuple val(meta), path("star"), emit: index
-    path "versions.yml"          , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args        = task.ext.args ?: ''
-    def args_list   = args.tokenize()
-    def memory      = task.memory ? "--limitGenomeGenerateRAM ${task.memory.toBytes() - 100000000}" : ''
+    def args = task.ext.args ?: ''
+    def args_list = args.tokenize()
+    def memory = task.memory ? "--limitGenomeGenerateRAM ${task.memory.toBytes() - 100000000}" : ''
     def include_gtf = gtf ? "--sjdbGTFfile ${gtf}" : ''
     if (args_list.contains('--genomeSAindexNbases')) {
         """
@@ -40,21 +43,22 @@ process STARGENOMEGENERATE {
             gawk: \$(echo \$(gawk --version 2>&1) | sed 's/^.*GNU Awk //; s/, .*\$//')
         END_VERSIONS
         """
-    } else {
+    }
+    else {
         """
-        samtools faidx $fasta
+        samtools faidx ${fasta}
         NUM_BASES=`gawk '{sum = sum + \$2}END{if ((log(sum)/log(2))/2 - 1 > 14) {printf "%.0f", 14} else {printf "%.0f", (log(sum)/log(2))/2 - 1}}' ${fasta}.fai`
 
         mkdir star
         STAR \\
             --runMode genomeGenerate \\
             --genomeDir star/ \\
-            --genomeFastaFiles $fasta \\
-            $include_gtf \\
-            --runThreadN $task.cpus \\
+            --genomeFastaFiles ${fasta} \\
+            ${include_gtf} \\
+            --runThreadN ${task.cpus} \\
             --genomeSAindexNbases \$NUM_BASES \\
-            $memory \\
-            $args
+            ${memory} \\
+            ${args}
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -93,7 +97,8 @@ process STARGENOMEGENERATE {
             gawk: \$(echo \$(gawk --version 2>&1) | sed 's/^.*GNU Awk //; s/, .*\$//')
         END_VERSIONS
         """
-    } else {
+    }
+    else {
         """
         mkdir star
         touch star/Genome

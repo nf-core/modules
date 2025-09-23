@@ -26,6 +26,7 @@ input:
         pattern: "*.fastq.gz"
         ontologies:
           - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: http://edamontology.org/format_1930 # FASTQ
   - - meta1:
         type: map
         description: |
@@ -34,7 +35,8 @@ input:
         type: file
         description: reference fasta file - must be unzipped
         pattern: "*.fasta"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - meta2:
         type: map
         description: |
@@ -77,15 +79,8 @@ output:
           type: file
           description: index corresponding to sorted BAM file
           pattern: "*.bai"
-          ontologies: []
-  compatible_versions:
-    - compatible_versions.yml:
-        type: file
-        description: File containing info on compatible CPU-based software
-          versions.
-        pattern: "compatible_versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+          ontologies:
+            - edam: http://edamontology.org/format_3327 # BAI
   versions:
     - versions.yml:
         type: file
