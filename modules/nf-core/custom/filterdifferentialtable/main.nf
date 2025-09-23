@@ -82,8 +82,8 @@ process CUSTOM_FILTERDIFFERENTIALTABLE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_filtered.tsv
-    touch ${prefix}_up_filtered.tsv
-    touch ${prefix}_down_filtered.tsv
+    touch ${prefix}_filtered_up.tsv
+    touch ${prefix}_filtered_down.tsv
     echo '"${task.process}":\\n    pandas: 1.5.2' > versions.yml
     """
 }
