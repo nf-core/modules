@@ -4,7 +4,7 @@ process MOSDEPTH {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community.wave.seqera.io/v2/library/mosdepth_htslib/blobs/sha256:00d32b53160c26794959da7303ee6e2107afd4d292060c9f287b0af1fddbd847/data' :
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/00/00d32b53160c26794959da7303ee6e2107afd4d292060c9f287b0af1fddbd847/data' :
         'community.wave.seqera.io/library/mosdepth_htslib:0f58993cb6d93294'}"
 
     input:
