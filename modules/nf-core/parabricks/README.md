@@ -40,4 +40,6 @@ For additional considerations, including information about how readgroups are ad
 
 ## Compatible with
 
-Is added as optional output to the stub section to make the compatible CPU version available to the end user. This section is not given for the subtools `applybqsr, fq2bammeth, genotypegvcf`.
+Is added as optional output to the stub section to make the compatible CPU version available to the end user. This section is not given for the subtools `applybqsr`, `fq2bammeth`, `genotypegvcf`, or `rnafq2bam`.
+
+For the full list of compatible versions, check the [Parabricks documentation](https://docs.nvidia.com/clara/parabricks/latest/documentation/tooldocs/outputaccuracyandcompatiblecpusoftwareversions.html#).
