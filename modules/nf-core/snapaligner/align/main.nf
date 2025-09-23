@@ -4,8 +4,8 @@ process SNAPALIGNER_ALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/snap-aligner:2.0.3--hd03093a_0':
-        'biocontainers/snap-aligner:2.0.3--hd03093a_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/21/21f75cd3d97dfe58e62bea51751b04d33a03a16eae3e9947335d569e22962143/data':
+        'community.wave.seqera.io/library/snap-aligner:2.0.5--23601d3a3a2ae452' }"
 
     input:
     tuple val(meta) , path(reads, stageAs: "?/*")
