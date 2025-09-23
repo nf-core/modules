@@ -62,8 +62,9 @@ jobs:
           head: ${{ github.sha }}
           base: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha || 'origin/master' }}
           n_parents: 0
-          exclude_tags: "gpu"
+          exclude_tags: "gpu,arm_failure"
 
+        # FIXME Can't we just do this with nf-test --filter?
       - name: Separate modules and subworkflows
         id: components
         run: |
@@ -103,8 +104,7 @@ jobs:
         profile: [conda, docker, singularity]
         arch:
           - x64
-          # FIXME
-          # - arm64
+          - arm64
     env:
       NXF_ANSI_LOG: false
       TOTAL_SHARDS: ${{ needs.nf-test-changes.outputs.total_shards }}
@@ -158,7 +158,6 @@ jobs:
 
       - name: Run nf-test Action
         if: ${{steps.filter.outputs.filtered_paths != '[]'}}
-        continue-on-error: ${{ runner.arch == 'ARM64' }}
         uses: ./.github/actions/nf-test-action
         env:
           SENTIEON_ENCRYPTION_KEY: ${{ secrets.SENTIEON_ENCRYPTION_KEY }}
@@ -188,7 +187,7 @@ jobs:
         run: exit 1
 
       - name: If no tests run, but filtered_paths was not empty and no tests succeeded, fail
-        if: ${{ needs.nf-test.outputs.filtered_paths != '' && !contains(needs.*.result, 'success') }}
+        if: ${{ needs.nf-test.outputs.arm_filtered_paths != '' && !contains(needs.*.result, 'success') }}
         run: exit 1
 
       - name: All tests ok
@@ -198,10 +197,10 @@ jobs:
       - name: debug-print
         if: always()
         run: |
-          echo "::group::DEBUG: `needs` Contents"
+          echo "::group::DEBUG: \`needs\` Contents"
           echo "DEBUG: toJSON(needs) = ${{ toJSON(needs) }}"
           echo "DEBUG: toJSON(needs.*.result) = ${{ toJSON(needs.*.result) }}"
-          echo "DEBUG: needs.nf-test.outputs.filtered_paths = ${{ needs.nf-test.outputs.filtered_paths }}"
+          echo "DEBUG: needs.nf-test.outputs.arm_filtered_paths = ${{ needs.nf-test.outputs.arm_filtered_paths }}"
           echo "::endgroup::"
 
       - name: Clean Workspace # Purge the workspace in case it's running on a self-hosted runner
