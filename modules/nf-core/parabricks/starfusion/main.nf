@@ -8,11 +8,11 @@ process PARABRICKS_STARFUSION {
     container "nvcr.io/nvidia/clara/clara-parabricks:4.5.1-1"
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), path(chimeric_junction)
     tuple val(meta1), path(genome_lib_dir)
 
     output:
-    tuple val(meta), path(output_dir)   , emit: out_dir
+    tuple val(meta), path("starfusion") , emit: out_dir
     path "versions.yml"                 , emit: versions
     path "compatible_versions.yml"      , emit: compatible_versions, optional: true
 
@@ -25,7 +25,6 @@ process PARABRICKS_STARFUSION {
         error "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
 
     def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
     """
@@ -33,9 +32,9 @@ process PARABRICKS_STARFUSION {
         --ref \$INDEX \\
         --chimeric-junction ${chimeric_junction} \\
         --genome-lib-dir ${genome_lib_dir} \\
-        --output-dir $prefix \\
-        $num_gpus \\
-        $args
+        --output-dir starfusion \\
+        ${num_gpus} \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
