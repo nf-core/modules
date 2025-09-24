@@ -10,7 +10,7 @@ nextflow_process {
     tag "deeptools/bamcoverage"
 
     test("homo_sampiens - bam") {
-
+      
         when {
             process {
                 """                
@@ -21,6 +21,10 @@ nextflow_process {
                 ]
                 input[1] = []
                 input[2] = []
+                input[3] = [
+                    [ id:'no_blacklist' ],
+                    []
+                ]
                 """
             }
         }
@@ -48,6 +52,10 @@ nextflow_process {
                 ]
                 input[1] = [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
                 input[2] = [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true) ]
+                input[3] = [
+                    [ id:'no_blacklist' ],
+                    []
+                ]
                 """
             }
         }
@@ -64,7 +72,7 @@ nextflow_process {
     }
 
     test("homo_sampiens - cram - fasta") {
-
+        
         when {
             process {
                 """                
@@ -75,6 +83,10 @@ nextflow_process {
                 ]
                 input[1] = [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
                 input[2] = []
+                input[3] = [
+                    [ id:'no_blacklist' ],
+                    []
+                ]
                 """
             }
         }
@@ -104,6 +116,10 @@ nextflow_process {
                 ]
                 input[1] = []
                 input[2] = []
+                input[3] = [
+                    [ id:'no_blacklist' ],
+                    []
+                ]
                 """
             }
         }
