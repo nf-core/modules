@@ -14,7 +14,7 @@ nextflow_process {
 
     setup {
 
-        run("STARGENOMEGENERATE") {
+        run("PARABRICKS_STARGENOMEGENERATE") {
             script "../../stargenomegenerate/main.nf"
             process {
                 """
@@ -65,7 +65,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ])
 				input[2] = BWA_INDEX.out.index
-                input[3] = STARGENOMEGENERATE.out.index
+                input[3] = PARABRICKS_STARGENOMEGENERATE.out.index
                 """
             }
         }
@@ -106,7 +106,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ])
 				input[2] = BWA_INDEX.out.index
-                input[3] = STARGENOMEGENERATE.out.index
+                input[3] = PARABRICKS_STARGENOMEGENERATE.out.index
                 """
             }
         }
