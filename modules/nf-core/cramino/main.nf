@@ -2,7 +2,6 @@ process CRAMINO {
     tag "$meta.id"
     label 'process_medium'
 
-    // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cramino:0.14.5--h5076881_0' :
@@ -13,7 +12,7 @@ process CRAMINO {
 
     output:
     tuple val(meta), path("*.txt"),   emit: stats
-    tuple val(meta), path("*.arrow"), emit: arrow
+    tuple val(meta), path("*.arrow"), optional: true, emit: arrow
     path "versions.yml"             , emit: versions
 
     when:
@@ -23,11 +22,11 @@ process CRAMINO {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
+
     """
     cramino \\
         $args \\
         --threads $task.cpus \\
-        --arrow ${prefix}.arrow \\
         ${bam} > ${prefix}.txt
 
 
@@ -38,10 +37,11 @@ process CRAMINO {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    touch ${prefix}.arrow
+    ${ args.contains('--arrow') ? "touch ${prefix}.arrow" : "" }
     touch ${prefix}.cramino.txt
 
 
