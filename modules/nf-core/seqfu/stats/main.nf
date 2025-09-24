@@ -45,7 +45,7 @@ process SEQFU_STATS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        seqfu: \$(samtools --version |& sed '1!d ; s/samtools //')
+        seqfu: \$(seqfu version)
     END_VERSIONS
     """
 }
