@@ -4,8 +4,8 @@ process GLIMPSE_CONCORDANCE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/glimpse-bio:1.1.1--hce55b13_1':
-        'biocontainers/glimpse-bio:1.1.1--hce55b13_1' }"
+        'https://depot.galaxyproject.org/singularity/glimpse-bio:1.1.1--h0303221_3':
+        'biocontainers/glimpse-bio:1.1.1--h0303221_3' }"
 
     input:
     tuple val(meta), path(estimate), path(estimate_index), path(freq), path(freq_index), path(truth), path(truth_index), val(region)
@@ -49,7 +49,6 @@ process GLIMPSE_CONCORDANCE {
 
     stub:
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def args    = task.ext.args   ?: ""
     """
     echo "" | gzip > ${prefix}.error.cal.txt.gz
     echo "" | gzip > ${prefix}.error.grp.txt.gz
