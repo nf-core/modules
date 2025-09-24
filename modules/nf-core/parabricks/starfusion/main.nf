@@ -29,7 +29,7 @@ process PARABRICKS_STARFUSION {
     def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
     """
     pbrun \\
-        --ref \$INDEX \\
+        starfusion \\
         --chimeric-junction ${chimeric_junction} \\
         --genome-lib-dir ${genome_lib_dir} \\
         --output-dir starfusion \\
@@ -53,12 +53,12 @@ process PARABRICKS_STARFUSION {
     def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
     """
     pbrun \\
-        --ref \$INDEX \\
+        starfusion \\
         --chimeric-junction ${chimeric_junction} \\
         --genome-lib-dir ${genome_lib_dir} \\
-        --output-dir $prefix \\
-        $num_gpus \\
-        $args
+        --output-dir starfusion \\
+        ${num_gpus} \\
+        ${args}
 
     # Capture once and build single-line compatible_with (spaces only, no tabs)
     pbrun_version_output=\$(pbrun fq2bam --version 2>&1)
