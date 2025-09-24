@@ -38,6 +38,10 @@ Please see the `fq2bam/meta.yml` file for a detailed list of required and option
 
 For additional considerations, including information about how readgroups are added to the resulting bam files, see the [tool documentation](https://docs.nvidia.com/clara/parabricks/latest/Documentation/ToolDocs/man_fq2bam.html).
 
+## parabricks/stargenomegenerate
+
+The `parabricks/stargenomegenerate` module is near identical to the existing `star/genomegenerate` module, however it runs on with older version of STAR (2.7.2a) that is required for Parabricks compatibility. This module does not exist in any previous versions of the `nf-core/modules` and therefore must be included here. In the future, it's possible that Parabricks will update to a newer version of STAR and this accessory module may become obselete, but for now it is required pre-processing if the Genome Lib Dir has not already been generated with this vesion of STAR.
+
 ## Compatible with
 
 Is added as optional output to the stub section to make the compatible CPU version available to the end user. This section is not given for the subtools `applybqsr`, `fq2bammeth`, `genotypegvcf`, or `rnafq2bam`.
