@@ -1,4 +1,4 @@
-process STARGENOMEGENERATE {
+process PARABRICKS_STARGENOMEGENERATE {
     tag "${meta.id}"
     label 'process_high'
 
