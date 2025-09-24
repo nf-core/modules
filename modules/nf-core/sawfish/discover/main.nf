@@ -15,7 +15,6 @@ process SAWFISH_DISCOVER {
     tuple val(meta5), path(cnv_exclude_regions_bed)
 
     output:
-    tuple val(meta), path("versions.yml")                           , emit: versions
     tuple val(meta), path("${prefix}/assembly.regions.bed")         , emit: assembly_regions
     tuple val(meta), path("${prefix}/candidate.sv.bcf")             , emit: candidate_sv_bcf
     tuple val(meta), path("${prefix}/candidate.sv.bcf.csi")         , emit: candidate_sv_bcf_csi
@@ -35,6 +34,7 @@ process SAWFISH_DISCOVER {
     tuple val(meta), path("${prefix}/maf.mpack")                    , emit: maf_mpack                , optional: true
     tuple val(meta), path("${prefix}/expected.copy.number.bed")     , emit: expected_cn              , optional: true
     tuple val(meta), path("${prefix}")                              , emit: discover_dir
+    path("versions.yml")                                            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
