@@ -16,8 +16,8 @@ nextflow_process {
             process {
                 """
                 snpeff_cache = Channel.of([
-                    [ id:'WBcel235.105' ],
-                    file('s3://annotation-cache/snpeff_cache/WBcel235.105/')
+                    [ id:'WBcel235.99' ],
+                    file('s3://annotation-cache/snpeff_cache/WBcel235.99/')
                 ]).collect()
 
                 input[0] = Channel.of([
@@ -52,7 +52,7 @@ nextflow_process {
             process {
                 """
                 snpeff_cache = Channel.of([
-                    [ id:'WBcel235.105' ],
+                    [ id:'WBcel235.99' ],
                     file("${projectDir}")
                 ]).collect()
 
