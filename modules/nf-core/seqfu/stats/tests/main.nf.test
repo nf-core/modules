@@ -9,7 +9,6 @@ nextflow_process {
     tag "seqfu"
     tag "seqfu/stats"
 
-    
     test("seqfu stats - faa") {
         // test with 1 FAA file (with  multiple sequences of different length)
         when {
@@ -67,6 +66,33 @@ nextflow_process {
                 { assert path(process.out.stats[0][1]).readLines()[0] ==  'File\t#Seq\tTotal bp\tAvg\tN50\tN75\tN90\tauN\tMin\tMax' },
                 { assert path(process.out.multiqc[0][1]).readLines().join('\n').contains('genome.fasta') },
                 { assert path(process.out.multiqc[0][1]).readLines().join('\n').contains('proteome.fasta') }              
+            )
+        }
+
+    }
+
+    test("seqfu stats - faa - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], 
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success},
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
             )
         }
 
