@@ -38,7 +38,8 @@ nextflow_process {
                 { assert snapshot(
                     process.out.versions,
                     path(process.out.vcf.get(0).get(1)).vcf.header.getColumnCount(),
-                    path(process.out.vcf.get(0).get(1)).vcf.summary
+                    path(process.out.vcf.get(0).get(1)).vcf.summary,
+                    path(process.out.vcf.get(0).get(1)).vcf.getVariantsMD5()
                     ).match()
                 }
             )
