@@ -4,14 +4,16 @@ process GATK4_MUTECT2 {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b2/b28daf5d9bb2f0d129dcad1b7410e0dd8a9b087aaf3ec7ced929b1f57624ad98/data'
-        : 'community.wave.seqera.io/library/gatk4_gcnvkernel:e48d414933d188cd'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ce/ced519873646379e287bc28738bdf88e975edd39a92e7bc6a34bccd37153d9d0/data'
+        : 'community.wave.seqera.io/library/gatk4_gcnvkernel:edb12e4f0bf02cd3'}"
 
     input:
     tuple val(meta), path(input), path(input_index), path(intervals)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(dict)
+    path alleles
+    path alleles_tbi
     path germline_resource
     path germline_resource_tbi
     path panel_of_normals
@@ -34,6 +36,7 @@ process GATK4_MUTECT2 {
     def interval_command = intervals ? "--intervals ${intervals}" : ""
     def pon_command = panel_of_normals ? "--panel-of-normals ${panel_of_normals}" : ""
     def gr_command = germline_resource ? "--germline-resource ${germline_resource}" : ""
+    def a_command = alleles ? "--alleles ${alleles}": ""
 
     def avail_mem = 3072
     if (!task.memory) {
@@ -50,6 +53,7 @@ process GATK4_MUTECT2 {
         --reference ${fasta} \\
         ${pon_command} \\
         ${gr_command} \\
+        ${a_command} \\
         ${interval_command} \\
         --tmp-dir . \\
         ${args}
