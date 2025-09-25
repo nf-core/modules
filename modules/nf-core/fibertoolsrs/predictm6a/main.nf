@@ -20,6 +20,7 @@ process FIBERTOOLSRS_PREDICTM6A {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_m6a"
+    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     """
     ft \\

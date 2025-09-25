@@ -10,21 +10,21 @@ nextflow_process {
     tag "fibertoolsrs/predictm6a"
     tag "fibertoolsrs/extract"
 
-    test("homo_sapiens - bam") {
-
-        setup {
-            run("FIBERTOOLSRS_PREDICTM6A") {
-                script "../../predictm6a/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test' ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true),
-                    ]
-                    """
-                }
+    setup {
+        run("FIBERTOOLSRS_PREDICTM6A") {
+            script "../../predictm6a/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true),
+                ]
+                """
             }
         }
+    }
+
+    test("homo_sapiens - bam") {
 
         when {
             process {
@@ -46,20 +46,6 @@ nextflow_process {
 
     test("homo_sapiens - bam - cpg") {
 
-        setup {
-            run("FIBERTOOLSRS_PREDICTM6A") {
-                script "../../predictm6a/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test' ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true),
-                    ]
-                    """
-                }
-            }
-        }
-
         when {
             process {
                 """
@@ -80,20 +66,6 @@ nextflow_process {
 
     test("homo_sapiens - bam - invalid_extract_type") {
 
-        setup {
-            run("FIBERTOOLSRS_PREDICTM6A") {
-                script "../../predictm6a/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test' ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true),
-                    ]
-                    """
-                }
-            }
-        }
-
         when {
             process {
                 """
@@ -105,7 +77,7 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert !process.success },
+                { assert process.failed },
                 { assert process.stdout.toString().contains("Invalid extract_type") }
             )
         }
