@@ -1,14 +1,14 @@
 nextflow_process {
-    name "Test Process STARFUSION_BUILD"
+    name "Test Process PARABRICKS_STARFUSION_BUILD"
     script "../main.nf"
-    process "STARFUSION_BUILD"
+    process "PARABRICKS_STARFUSION_BUILD"
     tag "modules"
     tag "modules_nfcore"
-    tag "starfusion"
-    tag "starfusion/build"
+    tag "parabricks"
+    tag "parabricks/starfusion_build"
     tag "fusioninspector"
 
-    test("STARFUSION_BUILD - human - minigenome") {
+    test("PARABRICKS_STARFUSION_BUILD - human - minigenome") {
         when {
             process {
                 """
@@ -117,7 +117,7 @@ nextflow_process {
         }
     }
 
-    test("STARFUSION_BUILD - human - minigenome - stub") {
+    test("PARABRICKS_STARFUSION_BUILD - human - minigenome - stub") {
         options "-stub"
 
         when {
@@ -152,7 +152,7 @@ nextflow_process {
         }
     }
 
-    test("STARFUSION_BUILD - stub - fail") {
+    test("PARABRICKS_STARFUSION_BUILD - stub - fail") {
         options "-stub"
 
         when {

@@ -1,4 +1,4 @@
-process STARFUSION_BUILD {
+process PARABRICKS_STARFUSION_BUILD {
     tag "$meta.id"
     label 'process_high'
     stageInMode 'copy'

@@ -1,4 +1,4 @@
-name: starfusion_build
+name: parabricks_starfusion_build
 description: Download STAR-fusion genome resource required to run STAR-Fusion caller
 keywords:
   - download
@@ -47,6 +47,15 @@ input:
   - dfam_species:
       type: string
       description: Dfam species name
+  - pfam_url:
+      type: file
+      description: Pfam URL
+  - dfam_urls:
+      type: file
+      description: Dfam URLs
+  - annot_filter_url:
+      type: file
+      description: Annotation filter URL
 output:
   reference:
     - - meta:
