@@ -1,56 +1,61 @@
-name: parabricks_starfusion
-description: This tool uses the GPU to perform fusion calling for RNA-Seq samples, utilizing the STAR-Fusion algorithm. This requires input of a genome resource library, in accordance with the original STAR-Fusion tool, and outputs candidate fusion transcripts.
+name: starfusion_build
+description: Download STAR-fusion genome resource required to run STAR-Fusion caller
 keywords:
-  - fusion
+  - download
   - starfusion
-  - rna
+  - build
+
 tools:
-  - "parabricks":
-      description: "NVIDIA Clara Parabricks GPU-accelerated genomics tools"
-      homepage: "https://www.nvidia.com/en-us/clara/genomics/"
-      documentation: "https://docs.nvidia.com/clara/parabricks/latest/index.html"
-      licence: ["https://docs.nvidia.com/clara/parabricks/latest/eula.html"]
+  - star-fusion:
+      description: Fusion calling algorithm for RNAseq data
+      homepage: https://github.com/STAR-Fusion/
+      documentation: https://github.com/STAR-Fusion/STAR-Fusion/wiki/installing-star-fusion
+      tool_dev_url: https://github.com/STAR-Fusion/STAR-Fusion
+      doi: "10.1186/s13059-019-1842-9"
+      licence: ["GPL v3"]
       identifier: ""
+
 input:
   - - meta:
         type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - chimeric_junction:
+        description: Metadata map
+        required: true
+    - fasta:
         type: file
-        description: Path to the Chimeric.out.junction file produced by STAR
-        pattern: "Chimeric.out.junction"
-        ontologies: []
-  - - meta1:
+        description: Input FASTA file
+        pattern: "*.{fa,fasta}"
+        required: true
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - - meta2:
         type: map
-        description: |
-          Groovy Map containing genome lib dir information
-    - genome_lib_dir:
-        type: directory
-        description: Path to a genome resource library directory. The indexing
-          required to run STAR should be completed by the user beforehand.
-        pattern: "*"
-        ontologies: []
+        description: Second metadata map
+        required: true
+    - gtf:
+        type: file
+        description: Input GTF (Gene Transfer Format) file
+        pattern: "*.gtf"
+        required: true
+        ontologies:
+          - edam: "http://edamontology.org/format_2306" # GTF
+  - fusion_annot_lib:
+      type: file
+      description: Fusion annotation library file containing known fusion genes
+      required: true
+      ontologies:
+        - edam: "http://edamontology.org/topic_0203" # Gene fusion
+  - dfam_species:
+      type: string
+      description: Dfam species name
 output:
-  out_dir:
+  reference:
     - - meta:
           type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - output_dir:
+          description: Metadata map
+      - ${prefix}_genome_lib_build_dir:
           type: directory
-          description: Path to the directory that will contain all of the generated files.
-          pattern: "*"
-          ontologies: []
-  compatible_versions:
-    - compatible_versions.yml:
-        type: file
-        description: File containing info on compatible CPU-based software versions.
-        pattern: "compatible_versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+          description: Genome library build directory
+          pattern: "*_genome_lib_build_dir"
   versions:
     - versions.yml:
         type: file
@@ -59,6 +64,11 @@ output:
         ontologies:
           - edam: http://edamontology.org/format_3750 # YAML
 authors:
-  - "@gburnett-nvidia"
+  - "@praveenraj2018"
+  - "@martings"
+  - "@alanmmobbs93"
+  - "@delfiterradas"
+  - "@sofiromano"
+
 maintainers:
-  - "@gburnett-nvidia"
+  - "@praveenraj2018"
