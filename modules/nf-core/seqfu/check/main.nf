@@ -8,7 +8,7 @@ process SEQFU_CHECK {
         'biocontainers/seqfu:1.22.3--hc29b5fc_1' }"
 
     input:
-    tuple val(meta), path(files)
+    tuple val(meta), path(fastq)
 
     output:
     tuple val(meta), path("*.tsv")    , emit: check
@@ -24,7 +24,7 @@ process SEQFU_CHECK {
     seqfu \\
         check \\
         $args \\
-        $files > ${prefix}.tsv
+        $fastq > ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
