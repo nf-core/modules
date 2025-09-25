@@ -33,7 +33,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.bigwig,                                
-                                  process.out.versions)
+                                  process.out.versions,
+                                  path(process.out.versions[0]).yaml)
                                   .match()
                 }
             )
@@ -64,7 +65,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.bigwig,                                
-                                  process.out.versions)
+                                  process.out.versions,
+                                  path(process.out.versions[0]).yaml)
                                   .match()
                 }
             )
@@ -95,7 +97,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.bigwig,                                
-                                  process.out.versions)
+                                  process.out.versions,
+                                  path(process.out.versions[0]).yaml)
                                   .match()
                 }
             )
