@@ -4,7 +4,7 @@ process MUSE_SUMP {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f9/f951cafbcec988c70d08bec486d40d902db4114bb1aaee89fd68155fdc3273da/data'
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/83/83d1d3caa1b6ce54ce999e0061d7fe8acbe6788d5c7970574eff330ea819fb85/data'
         : 'community.wave.seqera.io/library/htslib_muse:9a4b9cb78c211f1e'}"
 
     input:
