@@ -25,11 +25,11 @@ input:
           respectively. If you wish to run interleaved paired-end data,  supply as single-end data
           but with `--interleaved_in` in your `modules.conf`'s `ext.args` for the module.
         ontologies: []
-  - adapter_fasta:
-      type: file
-      description: File in FASTA format containing possible adapters to remove.
-      pattern: "*.{fasta,fna,fas,fa}"
-      ontologies: []
+    - adapter_fasta:
+        type: file
+        description: File in FASTA format containing possible adapters to remove.
+        pattern: "*.{fasta,fna,fas,fa}"
+        ontologies: []
   - discard_trimmed_pass:
       type: boolean
       description: |

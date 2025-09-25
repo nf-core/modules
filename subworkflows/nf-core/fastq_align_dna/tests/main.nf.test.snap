@@ -25,15 +25,15 @@
                 [
                     "FASTQ_ALIGN_DNA:BWAMEM2_MEM",
                     "samtools",
-                    "1.21"
+                    "1.22.1"
                 ]
             ]
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nextflow": "25.04.7"
         },
-        "timestamp": "2025-09-01T13:16:56.604786099"
+        "timestamp": "2025-09-25T14:26:20.204243812"
     },
     "test_fastq_align_dragmap_PE": {
         "content": [
@@ -61,9 +61,62 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nextflow": "25.04.7"
         },
-        "timestamp": "2025-09-01T13:17:57.365007941"
+        "timestamp": "2025-09-25T14:28:00.270822687"
+    },
+    "test_fastq_align_strobealign_PE": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam:md5,1d8fb5dce75cbfb87955c7ee03c17a5f"
+                    ]
+                ],
+                "1": [
+                    
+                ],
+                "2": [
+                    
+                ],
+                "3": [
+                    "versions.yml:md5,9d1991417e63455f5e7fe9d67e5985a4"
+                ],
+                "4": [
+                    
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam:md5,1d8fb5dce75cbfb87955c7ee03c17a5f"
+                    ]
+                ],
+                "bam_index": [
+                    
+                ],
+                "reports": [
+                    
+                ],
+                "topic_versions": [
+                    
+                ],
+                "versions": [
+                    "versions.yml:md5,9d1991417e63455f5e7fe9d67e5985a4"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.7"
+        },
+        "timestamp": "2025-09-25T14:29:14.157572493"
     },
     "test_fastq_align_bwa_mem_SE": {
         "content": [
@@ -77,8 +130,8 @@
             [
                 {
                     "FASTQ_ALIGN_DNA:BWAMEM1_MEM": {
-                        "bwa": "0.7.18-r1243-dirty",
-                        "samtools": 1.21
+                        "bwa": "0.7.19-r1273",
+                        "samtools": "1.22.1"
                     }
                 }
             ],
@@ -88,9 +141,9 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nextflow": "25.04.7"
         },
-        "timestamp": "2025-09-01T13:16:17.903317919"
+        "timestamp": "2025-09-25T14:25:23.474432812"
     },
     "test_fastq_align_bwamem2_SE": {
         "content": [
@@ -118,42 +171,15 @@
                 [
                     "FASTQ_ALIGN_DNA:BWAMEM2_MEM",
                     "samtools",
-                    "1.21"
+                    "1.22.1"
                 ]
             ]
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nextflow": "25.04.7"
         },
-        "timestamp": "2025-09-01T13:16:42.777381479"
-    },
-    "test_fastq_align_bwa_mem_PE": {
-        "content": [
-            "test.bam",
-            [
-                
-            ],
-            [
-                
-            ],
-            [
-                {
-                    "FASTQ_ALIGN_DNA:BWAMEM1_MEM": {
-                        "bwa": "0.7.18-r1243-dirty",
-                        "samtools": 1.21
-                    }
-                }
-            ],
-            [
-                
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-09-01T13:16:27.96904962"
+        "timestamp": "2025-09-25T14:26:01.163352946"
     },
     "test_fastq_align_bowtie2_SE": {
         "content": [
@@ -173,9 +199,36 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nextflow": "25.04.7"
         },
-        "timestamp": "2025-09-01T13:14:42.1079798"
+        "timestamp": "2025-09-25T14:24:40.16043618"
+    },
+    "test_fastq_align_bwa_mem_PE": {
+        "content": [
+            "test.bam",
+            [
+                
+            ],
+            [
+                
+            ],
+            [
+                {
+                    "FASTQ_ALIGN_DNA:BWAMEM1_MEM": {
+                        "bwa": "0.7.19-r1273",
+                        "samtools": "1.22.1"
+                    }
+                }
+            ],
+            [
+                
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.7"
+        },
+        "timestamp": "2025-09-25T14:25:40.603778154"
     },
     "test_fastq_align_dragmap_SE": {
         "content": [
@@ -203,9 +256,9 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nextflow": "25.04.7"
         },
-        "timestamp": "2025-09-01T13:17:48.771253082"
+        "timestamp": "2025-09-25T14:27:49.052603319"
     },
     "test_fastq_align_bowtie2_PE": {
         "content": [
@@ -225,9 +278,9 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nextflow": "25.04.7"
         },
-        "timestamp": "2025-09-01T13:16:06.75021421"
+        "timestamp": "2025-09-25T14:24:55.755744308"
     },
     "test_fastq_align_snapaligner_PE": {
         "content": [
@@ -238,7 +291,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.bam:md5,1f4f6c38e40ddd5da7f644bb0f794aa8"
+                        "test.bam:md5,504bcc1ac7f8d8e1e728276a4ce4f4d4"
                     ]
                 ],
                 "1": [
@@ -248,7 +301,7 @@
                     
                 ],
                 "3": [
-                    "versions.yml:md5,ef9883fd373e293fbf6a98985d3c0308"
+                    "versions.yml:md5,e98be7da5d37b69852090365352c3534"
                 ],
                 "4": [
                     
@@ -259,7 +312,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.bam:md5,1f4f6c38e40ddd5da7f644bb0f794aa8"
+                        "test.bam:md5,504bcc1ac7f8d8e1e728276a4ce4f4d4"
                     ]
                 ],
                 "bam_index": [
@@ -272,17 +325,17 @@
                     
                 ],
                 "versions": [
-                    "versions.yml:md5,ef9883fd373e293fbf6a98985d3c0308"
+                    "versions.yml:md5,e98be7da5d37b69852090365352c3534"
                 ]
             }
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nextflow": "25.04.7"
         },
-        "timestamp": "2025-09-01T13:18:23.086332913"
+        "timestamp": "2025-09-25T14:28:37.357024943"
     },
-    "test_fastq_align_snapaligner_SE": {
+    "test_fastq_align_strobealign_SE": {
         "content": [
             {
                 "0": [
@@ -291,7 +344,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test.bam:md5,6b3188b8e48ec5c155cfe02b9a24d37a"
+                        "test.bam:md5,30a9339ac99b881844cf8514f719f204"
                     ]
                 ],
                 "1": [
@@ -301,7 +354,7 @@
                     
                 ],
                 "3": [
-                    "versions.yml:md5,ef9883fd373e293fbf6a98985d3c0308"
+                    "versions.yml:md5,9d1991417e63455f5e7fe9d67e5985a4"
                 ],
                 "4": [
                     
@@ -312,7 +365,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test.bam:md5,6b3188b8e48ec5c155cfe02b9a24d37a"
+                        "test.bam:md5,30a9339ac99b881844cf8514f719f204"
                     ]
                 ],
                 "bam_index": [
@@ -325,14 +378,67 @@
                     
                 ],
                 "versions": [
-                    "versions.yml:md5,ef9883fd373e293fbf6a98985d3c0308"
+                    "versions.yml:md5,9d1991417e63455f5e7fe9d67e5985a4"
                 ]
             }
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nextflow": "25.04.7"
         },
-        "timestamp": "2025-09-01T13:18:12.649489873"
+        "timestamp": "2025-09-25T14:28:59.116072002"
+    },
+    "test_fastq_align_snapaligner_SE": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bam:md5,9de00a20df23dc66ddf0d9bba2e486c3"
+                    ]
+                ],
+                "1": [
+                    
+                ],
+                "2": [
+                    
+                ],
+                "3": [
+                    "versions.yml:md5,e98be7da5d37b69852090365352c3534"
+                ],
+                "4": [
+                    
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bam:md5,9de00a20df23dc66ddf0d9bba2e486c3"
+                    ]
+                ],
+                "bam_index": [
+                    
+                ],
+                "reports": [
+                    
+                ],
+                "topic_versions": [
+                    
+                ],
+                "versions": [
+                    "versions.yml:md5,e98be7da5d37b69852090365352c3534"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.7"
+        },
+        "timestamp": "2025-09-25T14:28:23.602263171"
     }
 }
