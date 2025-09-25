@@ -1,0 +1,57 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+# # TODO nf-core: Add a description of the module and list keywords
+name: "seqfu_check"
+description: write your description here
+keywords:
+- sort
+- example
+- genomics
+tools:
+## TODO nf-core: Add a description and other details for the software below
+- "seqfu":
+    description: "DNA sequence utilities"
+    homepage: "None"
+    documentation: "None"
+    tool_dev_url: "None"
+    doi: ""
+    licence: ['GPL v3']
+    identifier: biotools:seqfu
+
+input:
+# TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
+- - meta:
+      type: map
+      description: Groovy Map containing sample information. e.g. `[ id:'sample1'
+        ]`
+  - dna_sequence:
+      type: file
+      description: dna_sequence file
+      pattern: '*.{fastq-like}'
+      ontologies:
+      - edam: http://edamontology.org/data_3494  # DNA sequence
+      - edam: http://edamontology.org/format_2545  # FASTQ-like format
+output:
+# TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
+  dna_sequence:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[ id:'sample1'
+          ]`
+    - '*.{fastq-like}':
+        type: file
+        description: dna_sequence file
+        pattern: '*.{fastq-like}'
+        ontologies:
+        - edam: http://edamontology.org/data_3494  # DNA sequence
+        - edam: http://edamontology.org/format_2545  # FASTQ-like format
+  versions:
+  - versions.yml:
+      type: file
+      description: File containing software versions
+      pattern: versions.yml
+      ontologies:
+      - edam: http://edamontology.org/format_3750  # YAML
+authors:
+- "@georgette-femerling"
+maintainers:
+- "@georgette-femerling"
