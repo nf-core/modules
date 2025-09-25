@@ -1,5 +1,5 @@
 process MODKIT_REPAIR {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
@@ -21,16 +21,16 @@ process MODKIT_REPAIR {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
+    if ("${before_trim}" == "${prefix}.bam" || "${after_trim}" == "${prefix}.bam") { error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"}
     """
     modkit \\
         repair \\
-        $args \\
+        ${args} \\
         --threads ${task.cpus} \\
         --donor-bam ${before_trim} \\
         --acceptor-bam ${after_trim} \\
-        --output-bam ${prefix}_repaired.bam \\
-        --log-filepath ./${prefix}_repair.log
+        --output-bam ${prefix}.bam \\
+        --log-filepath ./${prefix}.log
 
 
     cat <<-END_VERSIONS > versions.yml
@@ -42,10 +42,8 @@ process MODKIT_REPAIR {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
-
     """
-    echo $args
+    echo ${args}
     
     touch ${prefix}.bam
     touch ${prefix}.log
