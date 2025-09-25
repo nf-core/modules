@@ -9,31 +9,15 @@ nextflow_process {
     tag "modules_nfcore"
     tag "ensemblvep"
     tag "ensemblvep/vep"
-    tag "ensemblvep/download"
 
     test("test_ensemblvep_vep_fasta_vcf - stub (not really but linting complains otherwise)") {
         config "./vcf.config"
 
-        setup {
-            run("ENSEMBLVEP_DOWNLOAD") {
-                script "../../download/main.nf"
-
-                process {
-                    """
-                    input[0] = Channel.of([
-                        [id:"113_WBcel235"],
-                        params.vep_genome,
-                        params.vep_species,
-                        params.vep_cache_version
-                    ])
-                    """
-                }
-            }
-        }
-
         when {
             process {
                 """
+                vep_cache = Channel.of(file('s3://annotation-cache/vep_cache/115_WBcel235/')).collect()
+
                 input[0] = Channel.of([
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
@@ -42,7 +26,7 @@ nextflow_process {
                 input[1] = params.vep_genome
                 input[2] = params.vep_species
                 input[3] = params.vep_cache_version
-                input[4] = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }
+                input[4] = vep_cache
                 input[5] = Channel.value([
                     [id:"fasta"],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
@@ -53,8 +37,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.versions,
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
@@ -68,26 +52,11 @@ nextflow_process {
     test("test_ensemblvep_vep_fasta_tab_gz") {
         config "./tab.gz.config"
 
-        setup {
-            run("ENSEMBLVEP_DOWNLOAD") {
-                script "../../download/main.nf"
-
-                process {
-                    """
-                    input[0] = Channel.of([
-                        [id:"113_WBcel235"],
-                        params.vep_genome,
-                        params.vep_species,
-                        params.vep_cache_version
-                    ])
-                    """
-                }
-            }
-        }
-
         when {
             process {
                 """
+                vep_cache = Channel.of(file('s3://annotation-cache/vep_cache/115_WBcel235/')).collect()
+
                 input[0] = Channel.of([
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
@@ -96,7 +65,7 @@ nextflow_process {
                 input[1] = params.vep_genome
                 input[2] = params.vep_species
                 input[3] = params.vep_cache_version
-                input[4] = ENSEMBLVEP_DOWNLOAD.out.cache.map{ meta, cache -> [cache] }
+                input[4] = vep_cache
                 input[5] = Channel.value([
                     [id:"fasta"],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
@@ -107,10 +76,10 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out.versions).match() },
-                { assert path(process.out.tab.get(0).get(1)).linesGzip.contains("## ENSEMBL VARIANT EFFECT PREDICTOR v113.0") }
+                { assert path(process.out.tab.get(0).get(1)).linesGzip.contains("## ENSEMBL VARIANT EFFECT PREDICTOR v115.1") }
             )
         }
     }
