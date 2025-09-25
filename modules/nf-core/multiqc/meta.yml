@@ -73,6 +73,12 @@ output:
         description: Plots created by MultiQC
         pattern: "*_data"
         ontologies: []
+  csv:
+    - "*.csv":
+        type: file
+        description: Plots created by MultiQC
+        pattern: "*_data"
+        ontologies: []
   versions:
     - versions.yml:
         type: file
