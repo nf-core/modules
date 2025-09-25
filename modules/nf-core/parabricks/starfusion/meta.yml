@@ -1,5 +1,8 @@
 name: parabricks_starfusion
-description: This tool uses the GPU to perform fusion calling for RNA-Seq samples, utilizing the STAR-Fusion algorithm. This requires input of a genome resource library, in accordance with the original STAR-Fusion tool, and outputs candidate fusion transcripts.
+description: This tool uses the GPU to perform fusion calling for RNA-Seq
+  samples, utilizing the STAR-Fusion algorithm. This requires input of a genome
+  resource library, in accordance with the original STAR-Fusion tool, and
+  outputs candidate fusion transcripts.
 keywords:
   - fusion
   - starfusion
@@ -39,23 +42,25 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - output_dir:
+      - "*_starfusion":
           type: directory
-          description: Path to the directory that will contain all of the generated files.
-          pattern: "*"
+          description: Path to the directory that will contain all of the
+            generated files.
+          pattern: "*_starfusion"
           ontologies: []
-  compatible_versions:
-    - compatible_versions.yml:
-        type: file
-        description: File containing info on compatible CPU-based software versions.
-        pattern: "compatible_versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
   versions:
     - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+  compatible_versions:
+    - compatible_versions.yml:
+        type: file
+        description: File containing info on compatible CPU-based software
+          versions.
+        pattern: "compatible_versions.yml"
         ontologies:
           - edam: http://edamontology.org/format_3750 # YAML
 authors:

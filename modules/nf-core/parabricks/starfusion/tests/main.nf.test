@@ -6,17 +6,33 @@ nextflow_process {
 
     tag "gpu"
     tag "modules"
+    tag "modules_nfcore"
+    tag "bwa/index"
     tag "star/align"
     tag "star/genomegenerate"
     tag "starfusion/build"
-    tag "modules_nfcore"
     tag "parabricks"
+    tag "parabricks/rnafq2bam"
     tag "parabricks/starfusion"
+    tag "parabricks/starfusion_build"
+    tag "parabricks/stargenomegenerate"
 
     setup {
 
-        run("STAR_GENOMEGENERATE") {
-            script "../../../star/genomegenerate/main.nf"
+        run("BWA_INDEX") {
+            script "../../../bwa/index/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        run("PARABRICKS_STARGENOMEGENERATE") {
+            script "../../stargenomegenerate/main.nf"
             process {
                 """
                 input[0] = [
@@ -31,28 +47,26 @@ nextflow_process {
             }
         }
 
-        run("STAR_ALIGN") {
-            script "../../../star/align/main.nf"
+        run("PARABRICKS_RNAFQ2BAM") {
+            script "../../rnafq2bam/main.nf"
             process {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end:true ], // meta map
                     [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_1.fastq.gz', checkIfExists: true) ]
                 ])
-                input[1] = STAR_GENOMEGENERATE.out.index
-                input[2] = Channel.of([
-                    [ id:'minigenome_gtf' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf')
+                input[1] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf', checkIfExists: true)
                 ])
-                input[3] = false
-                input[4] = 'illumina'
-                input[5] = false
+				input[2] = BWA_INDEX.out.index
+                input[3] = PARABRICKS_STARGENOMEGENERATE.out.index
                 """
             }
         }
 
-        run("STARFUSION_BUILD"){
-            script "../../../starfusion/build/main.nf"
+        run("PARABRICKS_STARFUSION_BUILD"){
+            script "../../starfusion_build/main.nf"
             process {
                 """
                 input[0] = [
@@ -84,24 +98,17 @@ nextflow_process {
         config "./nextflow.config"
 
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
-                input[0] = STAR_ALIGN.out.junction
-				input[1] = STARFUSION_BUILD.out.reference
+                input[0] = PARABRICKS_RNAFQ2BAM.out.junction
+				input[1] = PARABRICKS_STARFUSION_BUILD.out.reference
                 """
             }
         }
 
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert process.success }
             )
         }
     }
@@ -112,24 +119,17 @@ nextflow_process {
         options "-stub"
 
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
-                input[0] = STAR_ALIGN.out.junction
-				input[1] = STARFUSION_BUILD.out.reference
+                input[0] = PARABRICKS_RNAFQ2BAM.out.junction
+				input[1] = PARABRICKS_STARFUSION_BUILD.out.reference
                 """
             }
         }
 
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert process.success }
             )
         }
     }

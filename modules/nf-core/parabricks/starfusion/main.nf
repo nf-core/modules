@@ -12,38 +12,15 @@ process PARABRICKS_STARFUSION {
     tuple val(meta1), path(genome_lib_dir)
 
     output:
-    tuple val(meta), path("starfusion") , emit: out_dir
-    path "versions.yml"                 , emit: versions
-    path "compatible_versions.yml"      , emit: compatible_versions, optional: true
+    tuple val(meta), path("*_starfusion"),  emit: out_dir
+    path "versions.yml",                    emit: versions
+    path "compatible_versions.yml",         emit: compatible_versions, optional: true
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-    def args = task.ext.args ?: ''
-
-    def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
-    """
-    pbrun \\
-        starfusion \\
-        --chimeric-junction ${chimeric_junction} \\
-        --genome-lib-dir ${genome_lib_dir} \\
-        --output-dir starfusion \\
-        ${num_gpus} \\
-        ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
-    END_VERSIONS
-    """
-
-    stub:
-        // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
@@ -56,7 +33,31 @@ process PARABRICKS_STARFUSION {
         starfusion \\
         --chimeric-junction ${chimeric_junction} \\
         --genome-lib-dir ${genome_lib_dir} \\
-        --output-dir starfusion \\
+        --output-dir ${prefix}_starfusion \\
+        ${num_gpus} \\
+        ${args}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
+    END_VERSIONS
+    """
+
+    stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
+    """
+    pbrun \\
+        starfusion \\
+        --chimeric-junction ${chimeric_junction} \\
+        --genome-lib-dir ${genome_lib_dir} \\
+        --output-dir ${prefix}_starfusion \\
         ${num_gpus} \\
         ${args}
 
