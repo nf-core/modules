@@ -39,6 +39,7 @@ nextflow_process {
                     process.out.versions,
                     path(process.out.vcf.get(0).get(1)).vcf.header.getColumnCount(),
                     path(process.out.vcf.get(0).get(1)).vcf.summary
+                    // we do not get variants MD5 because the file is empty
                     ).match()
                 }
             )
