@@ -27,7 +27,7 @@ process CRAMINO {
     cramino \\
         $args \\
         --threads $task.cpus \\
-        ${bam} > ${prefix}.cramino.txt
+        ${bam} > ${prefix}.txt
 
 
     cat <<-END_VERSIONS > versions.yml
@@ -39,10 +39,11 @@ process CRAMINO {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def arrow_file = args.contains('--arrow') ? "touch ${args.split('--arrow')[1].trim().split(' ')[0]}" : ""
 
     """
-    ${ args.contains('--arrow') ? "touch ${args.split('--arrow')[1].trim().split(' ')[0]}" : "" }
-    touch ${prefix}.cramino.txt
+    ${arrow_file}
+    touch ${prefix}.txt
 
 
     cat <<-END_VERSIONS > versions.yml

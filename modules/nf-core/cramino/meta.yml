@@ -23,13 +23,13 @@ input:
           e.g. `[ id:'sample1' ]`
     - bam:
         type: file
-        description: BAM file
-        pattern: "*.bam"
+        description: BAM/CRAM file
+        pattern: "*.{bam,cram}"
         ontologies: []
     - bai: 
         type: file
-        description: Index of BAM file
-        pattern: "*.bai"
+        description: Index of BAM/CRAM file
+        pattern: "*.{bai,crai,csi}"
         ontologies: []
 
 output:
