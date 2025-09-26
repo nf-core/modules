@@ -13,8 +13,8 @@ process CSVTK_CONCAT {
     val out_format
 
     output:
-    tuple val(meta), path("${prefix}.${out_extension}"), emit: csv
-    path "versions.yml"                                , emit: versions
+    tuple val(meta), path("${prefix}.${suffix}"), emit: csv
+    path "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,9 +22,9 @@ process CSVTK_CONCAT {
     script:
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
+    suffix   = task.ext.suffix ?: (out_format == 'tsv' ? 'tsv' : 'csv')
     def delimiter = in_format == "tsv" ? "\t" : (in_format == "csv" ? "," : in_format)
     def out_delimiter = out_format == "tsv" ? "\t" : (out_format == "csv" ? "," : out_format)
-    out_extension = out_format == "tsv" ? 'tsv' : 'csv'
     """
     csvtk \\
         concat \\
@@ -32,7 +32,7 @@ process CSVTK_CONCAT {
         --num-cpus $task.cpus \\
         --delimiter "${delimiter}" \\
         --out-delimiter "${out_delimiter}" \\
-        --out-file ${prefix}.${out_extension} \\
+        --out-file ${prefix}.${suffix} \\
         $csv
 
     cat <<-END_VERSIONS > versions.yml
@@ -43,9 +43,9 @@ process CSVTK_CONCAT {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    out_extension = out_format == "tsv" ? 'tsv' : 'csv'
+    suffix = task.ext.suffix ?: (out_format == 'tsv' ? 'tsv' : 'csv')
     """
-    touch ${prefix}.${out_extension}
+    touch ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
