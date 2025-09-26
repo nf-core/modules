@@ -48,7 +48,6 @@ process NGSBITS_UPDHUNTER {
     
     touch ${prefix}.tsv
     touch ${prefix}.igv
-    touch ${prefix}.tdx
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
