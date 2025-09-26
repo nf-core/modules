@@ -18,7 +18,7 @@ process HIFICNV {
     tuple val(meta), path("*.copynum.bedgraph"), emit: copynum, optional: true
     tuple val(meta), path("*.depth.bw"),         emit: depth
     tuple val(meta), path("*.maf.bw"),           emit: maf, optional: true
-    tuple val(meta), path("*.vcf.gz"),           emit: vcf, optional: true
+    tuple val(meta), path("*.vcf{,.gz}"),        emit: vcf, optional: true
     tuple val(meta), path("*.log"),              emit: log
     path "versions.yml",                         emit: versions
 
@@ -72,9 +72,6 @@ process HIFICNV {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    // Create MAF output only if MAF input is provided
-    def maf_stub = (maf && maf.name != 'NO_FILE') ? "touch ${prefix}.maf.bw" : ""
-
     """
     # Create mandatory output files
     touch ${prefix}.depth.bw
@@ -82,12 +79,12 @@ process HIFICNV {
 
     # Create optional output files
     touch ${prefix}.copynum.bedgraph
-    touch ${prefix}.vcf.gz
-    ${maf_stub}
+    touch ${prefix}.vcf
+    touch ${prefix}.maf.bw
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        hificnv: \$(echo "1.0.1")
+        hificnv: \$(hificnv --version 2>&1 | sed 's/^.*hificnv //; s/ .*\$//')
     END_VERSIONS
     """
 }

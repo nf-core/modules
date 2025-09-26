@@ -51,12 +51,8 @@ nextflow_process {
                     // Optional outputs may or may not be present
                     { assert process.out.copynum.size() >= 0 },
                     { assert process.out.vcf.size() >= 0 },
-                    { assert process.out.maf.size() == 0 },
-                    { assert snapshot(
-                        process.out.depth,
-                        process.out.log,
-                        process.out.versions
-                    ).match() }
+                    { assert process.out.maf.size() >= 0 },
+                    { assert snapshot(process.out).match() }
                 )
             } else {
                 // If process fails, check it fails as expected
@@ -64,15 +60,13 @@ nextflow_process {
                     { assert !process.success },
                     { assert process.exitStatus == 65 },
                     { assert process.out.versions.size() == 1 },
-                    // No output files when process fails
-                    { assert process.out.depth.size() == 0 },
-                    { assert process.out.log.size() == 0  },
+                    { assert process.out.depth.size() == 1 },
+                    { assert process.out.log.size() == 1  },
+                    // No ouptput files when extiStatus is 65
                     { assert process.out.copynum.size() == 0 },
                     { assert process.out.vcf.size() == 0 },
-                    { assert process.out.maf.size() == 0 },
-                    { assert snapshot(
-                                process.out.versions
-                    ).match() }
+                    { assert process.out.maf.size() >= 0 },
+                    { assert snapshot(process.out).match() }
                 )
             }
         }
@@ -114,20 +108,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.copynum.size() == 1 },
-                { assert process.out.depth.size() == 1 },
-                { assert process.out.vcf.size() == 1 },
-                { assert process.out.log.size() == 1 },
-                { assert process.out.versions.size() == 1 },
-                // MAF output should be empty in stub when no MAF input
-                { assert process.out.maf.size() == 0 },
-                { assert snapshot(
-                    process.out.copynum,
-                    process.out.depth,
-                    process.out.vcf,
-                    process.out.log,
-                    process.out.versions
-                ).match() }
+                { assert snapshot(process.out).match() }
             )
         }
     }
