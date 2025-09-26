@@ -115,16 +115,6 @@ output:
           description: "Copy number variants in VCF format"
           pattern: "*.{vcf,vcf.gz}"
           optional: true
-  log:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'test', single_end:false ]`
-      - "*.log":
-          type: file
-          description: "HiFiCNV log file"
-          pattern: "*.log"
   versions:
     - "versions.yml":
         type: file
