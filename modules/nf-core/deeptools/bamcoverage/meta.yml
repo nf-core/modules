@@ -42,6 +42,19 @@ input:
       description: Index of the reference file (optional, but recommended)
       pattern: "*.{fai}"
       ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing blacklist metadata
+          e.g. [ id:'blacklist' ]
+    - blacklist:
+        type: file
+        description: BED/GTF file containing regions to exclude from analysis
+        pattern: "*.{bed,gtf}"
+        ontologies:
+          - edam: "http://edamontology.org/data_3002"
+          - edam: "http://edamontology.org/format_3003"
+        optional: true
 output:
   bigwig:
     - - meta:
