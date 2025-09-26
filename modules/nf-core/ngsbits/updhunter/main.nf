@@ -13,7 +13,6 @@ process NGSBITS_UPDHUNTER {
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
     tuple val(meta), path("*.igv"), emit: igv
-    path("*.tdx")                 , emit: tdx
     path "versions.yml"           , emit: versions
 
     when:
