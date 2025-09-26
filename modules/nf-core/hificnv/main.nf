@@ -19,7 +19,6 @@ process HIFICNV {
     tuple val(meta), path("*.depth.bw"),         emit: depth
     tuple val(meta), path("*.maf.bw"),           emit: maf, optional: true
     tuple val(meta), path("*.vcf{,.gz}"),        emit: vcf, optional: true
-    tuple val(meta), path("*.log"),              emit: log
     path "versions.yml",                         emit: versions
 
     when:
@@ -75,7 +74,6 @@ process HIFICNV {
     """
     # Create mandatory output files
     touch ${prefix}.depth.bw
-    touch ${prefix}.log
 
     # Create optional output files
     touch ${prefix}.copynum.bedgraph
