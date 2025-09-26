@@ -1,0 +1,80 @@
+name: "deacon_filter"
+description: write your description here
+keywords:
+  - filter
+  - decontamination
+  - minimizer
+  - alignment-free
+  - genomics
+tools:
+  - "deacon":
+      description: "Fast alignment-free sequence filter"
+      homepage: "https://github.com/bede/deacon"
+      documentation: "https://github.com/bede/deacon#readme"
+      tool_dev_url: "https://github.com/bede/deacon"
+      doi: "10.1093/bioinformatics/btae004"
+      licence: ["MIT"]
+      identifier: "biotools:deacon"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing index information.
+          e.g. [ id:'test', single_end:false ]
+    - index:
+        type: file
+        description: Deacon minimizer index file
+        pattern: "*.idx"
+        ontologies:
+          - edam: "http://edamontology.org/data_3210" # Genome index
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information.
+          e.g. [ id:'sample1', single_end:false ]
+    - reads:
+        type: file
+        description: Input genomic reads in FASTQ format
+        pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/data_0850" # Sequence set
+          - edam: "http://edamontology.org/format_1930" # FASTQ
+
+output:
+  - reads:
+      - meta2:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+            e.g. [ id:'sample1', single_end:false ]
+      - "*.fastq.gz":
+          type: file
+          description: Filtered genomic reads in compressed FASTQ format
+          pattern: "*.fastq.gz"
+          ontologies:
+            - edam: "http://edamontology.org/data_0850" # Sequence set
+            - edam: "http://edamontology.org/format_1930" # FASTQ
+  - json:
+      - meta2:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+            e.g. [ id:'sample1', single_end:false ]
+      - "*.json":
+          type: file
+          description: Summary statistics in JSON format (optional)
+          pattern: "*.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464" # JSON
+  - versions:
+      - "versions.yml":
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@mberacochea"
+  - "@sofstam"
+maintainers:
+  - "@mberacochea"
+  - "@sofstam"
