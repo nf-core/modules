@@ -1,0 +1,68 @@
+nextflow_process {
+
+    name "Test Process MODKIT_REPAIR"
+    script "../main.nf"
+    process "MODKIT_REPAIR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "modkit"
+    tag "modkit/repair"
+
+    test("test - donor_bam - acceptor_bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/arabidopsis_thaliana/genome/ont_Col-0_tets_data_Chr1_5mb_7mb.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/arabidopsis_thaliana/genome/trimmed_ont_Col-0_tets_data_Chr1_5mb_7mb.bam', checkIfExists: true)
+                ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    process.out.log.collect { tuple -> file(tuple[1]).name },
+                    process.out.versions.collect { file(it).name }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("test - donor_bam - acceptor_bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/arabidopsis_thaliana/genome/ont_Col-0_tets_data_Chr1_5mb_7mb.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/arabidopsis_thaliana/genome/trimmed_ont_Col-0_tets_data_Chr1_5mb_7mb.bam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions.get(0)).yaml
+                    ).match() }
+            )
+        }
+
+    }
+
+}
