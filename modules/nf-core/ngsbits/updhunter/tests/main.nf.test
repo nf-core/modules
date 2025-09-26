@@ -13,7 +13,7 @@ nextflow_process {
     test("vcf") {
         when {
             params {
-                module_args = "-c earlycasualcaiman -f hugelymodelbat -m slowlycivilbuck"
+                module_args = "-c hugelymodelbat -f earlycasualcaiman -m slowlycivilbuck"
             }
             process {
                 """
@@ -38,7 +38,7 @@ nextflow_process {
         options "-stub"
         when {
             params {
-                module_args = "-c earlycasualcaiman -f hugelymodelbat -m slowlycivilbuck"
+                module_args = "-c hugelymodelbat -f earlycasualcaiman -m slowlycivilbuck"
             }
             process {
                 """
