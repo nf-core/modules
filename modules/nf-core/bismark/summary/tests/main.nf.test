@@ -13,9 +13,7 @@ nextflow_process {
     tag "bismark/genomepreparation"
     tag "bismark/methylationextractor"
 
-    test("sarscov2 genome [fasta] | sarscov2 single-end methylated [fastq]") {
-
-        setup {
+    setup {
             run("BISMARK_GENOMEPREPARATION") {
                 script "../../genomepreparation/main.nf"
                 process {
@@ -62,6 +60,8 @@ nextflow_process {
             }
         }
 
+    test("sarscov2 genome [fasta] | sarscov2 single-end methylated [fastq]") {
+
         when {
             process {
                 """
@@ -75,20 +75,46 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-            { assert process.success },
-            { assert snapshot(process.out.versions).match("versions") },
-            {
-                with(process.out.summary) {
-                    assert get(0).size() == 2
-                    assert get(0).every { it.contains('bismark_summary_report') }
-                    assert path(get(0).get(1)).readLines().first().contains('CpGs')
-                    assert path(get(0).get(0)).readLines().last().contains('</html>')
-                }
-            }
+                {
+                    with(process.out.summary) {
+                        assert get(0).size() == 2
+                        assert get(0).every { it.contains('bismark_summary_report') }
+                        assert path(get(0).get(1)).readLines().first().contains('CpGs')
+                        assert path(get(0).get(0)).readLines().last().contains('</html>')
+                    }
+                },
+                { assert snapshot(
+                        path(process.out.versions[0]).yaml
+                        ).match() }
             )
         }
-
     }
 
+    test("sarscov2 genome [fasta] | sarscov2 single-end methylated [fastq] | stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = BISMARK_ALIGN.out.bam.collect { meta, bam -> bam }
+                input[1] = BISMARK_ALIGN.out.report.collect { meta, report -> report }
+                input[2] = BISMARK_DEDUPLICATE.out.report.collect { meta, report -> report }
+                input[3] = BISMARK_METHYLATIONEXTRACTOR.out.report.collect { meta, report -> report }
+                input[4] = BISMARK_METHYLATIONEXTRACTOR.out.mbias.collect { meta, txt -> txt }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+            { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
 }
