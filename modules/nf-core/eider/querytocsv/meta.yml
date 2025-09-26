@@ -1,0 +1,46 @@
+name: eider_querytocsv
+description: Generic DuckDB query to CSV text format
+keywords:
+  - duckdb
+  - csv
+  - sql
+  - query
+tools:
+  - eider:
+      description: |
+        Command line bioinformatics tools for DuckDB.
+      homepage: https://github.com/heuermh/eider
+      documentation: https://github.com/heuermh/eider
+      licence: ["Apache-2.0"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - sql:
+        type: file
+        description: SQL query template
+        pattern: "*.{sql|sql.bgz|sql.gz|sql.zst}"
+output:
+  - csv:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.csv":
+          type: file
+          description: |
+            Query results in comma separated values (CSV) text format
+          pattern: "*.{csv}"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@heuermh"
+maintainers:
+  - "@heuermh"
