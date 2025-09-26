@@ -14,9 +14,10 @@ process PARABRICKS_RNAFQ2BAM {
     tuple val(meta3), path(genome_lib_dir)
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
-    tuple val(meta), path("*.bai"), emit: bai
-    path "versions.yml",            emit: versions
+    tuple val(meta), path("*.bam"),                     emit: bam
+    tuple val(meta), path("*.bai"),                     emit: bai
+    tuple val(meta), path("*.Chimeric.out.junction"),   emit: junction,             optional: true
+    path "versions.yml",                                emit: versions
 
     when:
     task.ext.when == null || task.ext.when
