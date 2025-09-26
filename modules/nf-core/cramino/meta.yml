@@ -1,24 +1,21 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-# # TODO nf-core: Add a description of the module and list keywords
 name: "cramino"
-description: write your description here
+description: Quality assessment of long-read bam files using cramino.
 keywords:
-  - sort
-  - example
+  - quality assessment
+  - bam
+  - long-read
   - genomics
 tools:
-  ## TODO nf-core: Add a description and other details for the software below
   - "cramino":
-      description: "A tool for very fast quality assessment of long read cram/bam files."
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
+      description: A tool for very fast quality assessment of long read cram/bam files.
+      homepage: https://github.com/wdecoster/cramino
+      documentation: https://github.com/wdecoster/cramino#readme
+      tool_dev_url: https://github.com/wdecoster/cramino
       licence: ["MIT"]
-      identifier: null
+      identifier: ""
 
 input:
-  ### TODO nf-core: Add a description of all of the variables used as input
   - - meta:
         type: map
         description: |
@@ -26,37 +23,45 @@ input:
           e.g. `[ id:'sample1' ]`
     - bam:
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
-        ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
-          - edam: "http://edamontology.org/format_2573" # CRAM
-          - edam: "http://edamontology.org/format_3462" # SAM
+        description: BAM file
+        pattern: "*.bam"
+        ontologies: []
+    - bai: 
+        type: file
+        description: Index of BAM file
+        pattern: "*.bai"
+        ontologies: []
 
 output:
-  ### TODO nf-core: Add a description of all of the variables used as output
-  bam:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - "*.bam":
-          type: file
-          description: Sorted BAM/CRAM/SAM file
-          pattern: "*.{bam,cram,sam}"
-          ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
-            - edam: "http://edamontology.org/format_2573" # CRAM
-            - edam: "http://edamontology.org/format_3462" # SAM
   versions:
     - "versions.yml":
         type: file
         description: File containing software versions
         pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
-
+        ontologies: []
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.txt":
+          type: file
+          description: Text file containing summary statistics of the long-read data
+          pattern: "*.txt"
+          ontologies: []
+  arrow:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.arrow":
+          type: file
+          description: Arrow file containing summary statistics of the long-read data
+          pattern: "*.arrow"
+          ontologies: []
+    
 authors:
   - "@inemesb"
 maintainers:
