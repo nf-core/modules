@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "faa_seqfu_seqkit"
+description: Subworkflow that checks the quality of input amino acid sequences and exports statistics
+keywords:
+  - fasta
+  - protein
+  - statistics
+  - quality check
+components:
+  - seqfu/stats
+  - seqkit/seq
+  - seqkit/rmdup
+  - seqkit/replace
+input:
+  - sequences:
+      type: file
+      description: |
+        Amino acid sequences fasta file.
+output:
+  - versions:
+      type: file
+      description: |
+        Versions file containing the software versions used in the workflow.
+  - multiqc_files:
+      type: file
+      description: |
+        Statistics file for MultiQC.
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"
