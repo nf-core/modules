@@ -15,7 +15,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test' ], // meta map
+                input[0] = [ [ id:'test_uncompressed' ], // meta map
                              file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
                            ]
                 input[1] = [[:],[]]
@@ -39,7 +39,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test' ], // meta map
+                input[0] = [ [ id:'test_compressed' ], // meta map
                              file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
                            ]
                 input[1] = [[:],[]]
@@ -65,7 +65,7 @@ nextflow_process {
                 script "../../guidetree/main.nf"
                 process {
                     """
-                    input[0] = [ [ id:'test' ], // meta map
+                    input[0] = [ [ id:'test_guide_tree' ], // meta map
                                  file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
                                ]
                     """
@@ -76,7 +76,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test' ], // meta map
+                input[0] = [ [ id:'test_guide_tree' ], // meta map
                              file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
                            ]
                 input[1] = FAMSA_GUIDETREE.out.tree.collect{ meta, tree -> tree }.map{ tree -> [[ id: 'test_summary'], tree]}
@@ -92,5 +92,33 @@ nextflow_process {
                 { assert snapshot(process.out.versions).match("with_guide_tree_versions") }
             )
         }
+    }
+
+    test("sarscov2 - fasta - uncompressed - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test_stub' ],
+                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+                           ]
+                input[1] = [[:],[]]
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success},
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+
     }
 }
