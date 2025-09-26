@@ -111,6 +111,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.versions,
+                    process.out.out_dir
                 ).match() }
             )
         }
@@ -135,6 +136,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.versions,
+                    process.out.out_dir
                 ).match() }
             )
         }
