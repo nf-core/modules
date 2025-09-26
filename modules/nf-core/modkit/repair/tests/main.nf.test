@@ -16,8 +16,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file("https://github.com/nf-core/test-datasets/raw/refs/heads/methylong/test_data/test_modbam/ont_Col-0_tets_data_Chr1_5mb_7mb.bam", checkIfExists: true),
-                    file("https://github.com/nf-core/test-datasets/raw/refs/heads/methylong/test_data/test_modbam/trimmed_ont_Col-0_tets_data_Chr1_5mb_7mb.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/arabidopsis_thaliana/genome/ont_Col-0_tets_data_Chr1_5mb_7mb.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/arabidopsis_thaliana/genome/trimmed_ont_Col-0_tets_data_Chr1_5mb_7mb.bam', checkIfExists: true)
                 ]
 
                 """
@@ -46,8 +46,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file("https://github.com/nf-core/test-datasets/raw/refs/heads/methylong/test_data/test_modbam/ont_Col-0_tets_data_Chr1_5mb_7mb.bam", checkIfExists: true),
-                    file("https://github.com/nf-core/test-datasets/raw/refs/heads/methylong/test_data/test_modbam/trimmed_ont_Col-0_tets_data_Chr1_5mb_7mb.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/arabidopsis_thaliana/genome/ont_Col-0_tets_data_Chr1_5mb_7mb.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/arabidopsis_thaliana/genome/trimmed_ont_Col-0_tets_data_Chr1_5mb_7mb.bam', checkIfExists: true)
                 ]
                 """
             }
