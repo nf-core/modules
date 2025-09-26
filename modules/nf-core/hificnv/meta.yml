@@ -110,10 +110,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-      - "*.vcf.gz":
+      - "*.vcf{,.gz}":
           type: file
           description: "Copy number variants in VCF format"
-          pattern: "*.vcf.gz"
+          pattern: "*.{vcf,vcf.gz}"
           optional: true
   log:
     - - meta:
