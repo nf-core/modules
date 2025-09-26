@@ -1,0 +1,71 @@
+nextflow_process {
+
+    name "Test Process PAML_CODEML"
+    script "../main.nf"
+    process "PAML_CODEML"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "paml"
+    tag "paml/codeml"
+
+    test("complete config case_a") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'caseA_aln' ],
+                    file('https://raw.githubusercontent.com/RiccPicc/test_data/refs/heads/main/case_a.phy', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'caseA_tree' ],
+                    file('https://raw.githubusercontent.com/RiccPicc/test_data/refs/heads/main/case_a.tree', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'caseA_ctl' ],
+                    file('https://raw.githubusercontent.com/RiccPicc/test_data/refs/heads/main/case_a.ctl', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("stub test case_a") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'caseA_aln' ],
+                    file('https://raw.githubusercontent.com/RiccPicc/test_data/refs/heads/main/case_a.phy', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'caseA_tree' ],
+                    file('https://raw.githubusercontent.com/RiccPicc/test_data/refs/heads/main/case_a.tree', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'caseA_ctl' ],
+                    file('https://raw.githubusercontent.com/RiccPicc/test_data/refs/heads/main/case_a.ctl', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}
