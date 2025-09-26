@@ -26,6 +26,10 @@ nextflow_process {
                     ],
                     [ "test_bam1", "test_bam2" ]
                 ]
+                input[1] = [
+                    [ id:'no_blacklist' ],
+                    []
+                ]
                 """
             }
         }
@@ -60,6 +64,10 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam.bai', checkIfExists: true)
                     ],
                     [ "test_bam1", "test_bam2" ]
+                ]
+                input[1] = [
+                    [ id:'no_blacklist' ],
+                    []
                 ]
                 """
             }
