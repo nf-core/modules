@@ -10,7 +10,7 @@ nextflow_process {
     tag "deeptools/bamcoverage"
 
     test("homo_sampiens - bam") {
-      
+
         when {
             process {
                 """                
@@ -21,10 +21,7 @@ nextflow_process {
                 ]
                 input[1] = []
                 input[2] = []
-                input[3] = [
-                    [ id:'no_blacklist' ],
-                    []
-                ]
+                input[3] = []
                 """
             }
         }
@@ -33,9 +30,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.bigwig,                                
-                                  process.out.versions,
-                                  path(process.out.versions[0]).yaml)
-                                  .match()
+                                process.out.versions,
+                                path(process.out.versions[0]).yaml)
+                                .match()
                 }
             )
         }
@@ -53,10 +50,7 @@ nextflow_process {
                 ]
                 input[1] = [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
                 input[2] = [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true) ]
-                input[3] = [
-                    [ id:'no_blacklist' ],
-                    []
-                ]
+                input[3] = []
                 """
             }
         }
@@ -65,9 +59,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.bigwig,                                
-                                  process.out.versions,
-                                  path(process.out.versions[0]).yaml)
-                                  .match()
+                                process.out.versions,
+                                path(process.out.versions[0]).yaml)
+                                .match()
                 }
             )
         }
@@ -85,10 +79,7 @@ nextflow_process {
                 ]
                 input[1] = [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
                 input[2] = []
-                input[3] = [
-                    [ id:'no_blacklist' ],
-                    []
-                ]
+                input[3] = []
                 """
             }
         }
@@ -97,9 +88,38 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.bigwig,                                
-                                  process.out.versions,
-                                  path(process.out.versions[0]).yaml)
-                                  .match()
+                                process.out.versions,
+                                path(process.out.versions[0]).yaml)
+                                .match()
+                }
+            )
+        }
+    }
+
+    test("homo_sampiens - bam - with blacklist") {
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[1] = []
+                input[2] = []
+                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.blacklist_intervals.bed', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.bigwig,                                
+                                process.out.versions,
+                                path(process.out.versions[0]).yaml)
+                                .match()
                 }
             )
         }
@@ -119,10 +139,7 @@ nextflow_process {
                 ]
                 input[1] = []
                 input[2] = []
-                input[3] = [
-                    [ id:'no_blacklist' ],
-                    []
-                ]
+                input[3] = []
                 """
             }
         }

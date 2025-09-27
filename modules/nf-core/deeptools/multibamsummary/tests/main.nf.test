@@ -9,7 +9,7 @@ nextflow_process {
     tag "deeptools"
     tag "deeptools/multibamsummary"
 
-    test("homo_sampiens - bam") {
+    test("homo_sapiens - bam") {
 
         when {
             process {
@@ -26,10 +26,7 @@ nextflow_process {
                     ],
                     [ "test_bam1", "test_bam2" ]
                 ]
-                input[1] = [
-                    [ id:'no_blacklist' ],
-                    []
-                ]
+                input[1] = []
                 """
             }
         }
@@ -38,15 +35,15 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(file(process.out.matrix.get(0).get(1)).name,
-                                  process.out.versions)
-                                  .match()
+                                process.out.versions)
+                                .match()
                 }
             )
         }
 
     }
 
-    test("homo_sampiens - bam - stub") {
+    test("homo_sapiens - bam - stub") {
 
         options "-stub"
 
@@ -65,10 +62,7 @@ nextflow_process {
                     ],
                     [ "test_bam1", "test_bam2" ]
                 ]
-                input[1] = [
-                    [ id:'no_blacklist' ],
-                    []
-                ]
+                input[1] = []
                 """
             }
         }
@@ -81,3 +75,4 @@ nextflow_process {
         }
     }
 }
+

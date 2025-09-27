@@ -9,7 +9,7 @@ process DEEPTOOLS_MULTIBAMSUMMARY {
 
     input:
     tuple val(meta) , path(bams)    , path(bais), val(labels)
-    tuple val(meta2), path(blacklist)
+    path(blacklist)
 
     output:
     tuple val(meta), path("*.npz"), emit: matrix
