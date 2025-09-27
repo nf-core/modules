@@ -9,7 +9,7 @@ process DEEPTOOLS_BIGWIGCOMPARE {
 
     input:
     tuple val(meta) , path(bigwig1)     , path(bigwig2)
-    tuple val(meta2), path(blacklist)
+    path(blacklist)
     
     output:
     tuple val(meta), path("*.{bigWig,bedgraph}"), emit: output

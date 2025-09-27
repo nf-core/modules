@@ -11,7 +11,7 @@ process DEEPTOOLS_BAMCOVERAGE {
     tuple val(meta) , path(input)   , path(input_index)
     path(fasta)
     path(fasta_fai)
-    tuple val(meta2), path(blacklist)
+    path(blacklist)
 
     output:
     tuple val(meta), path("*.bigWig")  , emit: bigwig  , optional: true

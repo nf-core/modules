@@ -9,7 +9,7 @@ process DEEPTOOLS_MULTIBIGWIGSUMMARY {
 
     input:
     tuple val(meta) , path(bigwigs) , val(labels)
-    tuple val(meta2), path(blacklist)
+    path(blacklist)
 
     output:
     tuple val(meta), path("*.npz"), emit: matrix
