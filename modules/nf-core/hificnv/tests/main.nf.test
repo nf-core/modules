@@ -17,7 +17,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'homo_sapiens/pacbio/bam_hiphased/GRCh38_chr22_sampled_snv_phased_clean.sorted.bam', checkIfExists: true), //bam
-                    file(params.modules_testdata_base_path + 'homo_sapiens/pacbio/bam_hiphased/GRCh38_chr22_sampled_snv_phased_clean.sorted.bam.csi', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'homo_sapiens/pacbio/bam_hiphased/GRCh38_chr22_sampled_snv_phased_clean.sorted.bam.csi', checkIfExists: true), //bai;csi
+                    [] // maf (optional)
                 ]
                 input[1] = [
                     [ id:'genome' ], // meta2
@@ -25,14 +26,10 @@ nextflow_process {
                 ]
                 input[2] = [
                     [:], // meta3 - empty
-                    []   // maf - empty file
+                    []   // exclude - empty file
                 ]
                 input[3] = [
                     [:], // meta4 - empty
-                    []   // exclude - empty file
-                ]
-                input[4] = [
-                    [:], // meta5 - empty
                     []   // expected_cn - empty file
                 ]
                 """
@@ -72,7 +69,8 @@ nextflow_process {
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'homo_sapiens/pacbio/bam_hiphased/GRCh38_chr22_sampled_snv_phased_clean.sorted.bam', checkIfExists: true), // bam
-                    file(params.modules_testdata_base_path + 'homo_sapiens/pacbio/bam_hiphased/GRCh38_chr22_sampled_snv_phased_clean.sorted.bam.csi', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'homo_sapiens/pacbio/bam_hiphased/GRCh38_chr22_sampled_snv_phased_clean.sorted.bam.csi', checkIfExists: true), //bai or csi
+                    []
                 ]
                 input[1] = [
                     [ id:'genome' ], // meta2
@@ -80,14 +78,10 @@ nextflow_process {
                 ]
                 input[2] = [
                     [:], // meta3 - empty
-                    []   // maf - empty file
+                    []   // exclude - empty file
                 ]
                 input[3] = [
                     [:], // meta4 - empty
-                    []   // exclude - empty file
-                ]
-                input[4] = [
-                    [:], // meta5 - empty
                     []   // expected_cn - empty file
                 ]
                 """

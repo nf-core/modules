@@ -31,6 +31,11 @@ input:
         type: file
         description: BAM index file (CSI or BAI format)
         pattern: "*.{bai,csi}"
+    - maf:
+        type: file
+        description: "Minor allele frequency file (VCF format)"
+        pattern: "*.{vcf,vcf.gz}"
+        optional: true
   - - meta2:
         type: map
         description: |
@@ -43,16 +48,6 @@ input:
   - - meta3:
         type: map
         description: |
-          Groovy Map containing MAF file information
-          e.g. `[ id:'population_maf' ]`
-    - maf:
-        type: file
-        description: "Minor allele frequency file (VCF format)"
-        pattern: "*.{vcf,vcf.gz}"
-        optional: true
-  - - meta4:
-        type: map
-        description: |
           Groovy Map containing exclude regions information
           e.g. `[ id:'excluded_regions' ]`
     - exclude:
@@ -60,7 +55,7 @@ input:
         description: "BED file containing regions to exclude from CNV calling"
         pattern: "*.{bed,bed.gz}"
         optional: true
-  - - meta5:
+  - - meta4:
         type: map
         description: |
           Groovy Map containing expected copy number information
@@ -110,10 +105,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-      - "*.vcf{,.gz}":
+      - "*.vcf.gz":
           type: file
           description: "Copy number variants in VCF format"
-          pattern: "*.{vcf,vcf.gz}"
+          pattern: "*.{vcf.gz}"
           optional: true
   versions:
     - "versions.yml":
