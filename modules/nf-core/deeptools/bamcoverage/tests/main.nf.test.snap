@@ -1,5 +1,5 @@
 {
-    "homo_sampiens - bam": {
+    "homo_sapiens - bam - with blacklist": {
         "content": [
             [
                 [
@@ -7,7 +7,7 @@
                         "id": "test",
                         "single_end": false
                     },
-                    "test.bigWig:md5,95fe9383a9e6c02aea6b785cf074274f"
+                    "test.bigWig:md5,8997f636f4b0c5b176437008ec9dab99"
                 ]
             ],
             [
@@ -23,9 +23,9 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-09-25T09:29:29.003717036"
+        "timestamp": "2025-09-27T13:14:15.107177375"
     },
-    "homo_sampiens - cram - fasta - fai ": {
+    "homo_sapiens - cram - fasta": {
         "content": [
             [
                 [
@@ -50,9 +50,62 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-09-25T09:29:42.530479251"
+        "timestamp": "2025-09-27T13:14:03.782476739"
     },
-    "homo_sampiens - bam - stub": {
+    "homo_sapiens - bam": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.bigWig:md5,95fe9383a9e6c02aea6b785cf074274f"
+                ]
+            ],
+            [
+                "versions.yml:md5,241ec68695b08434d2db71ad878ed162"
+            ],
+            {
+                "DEEPTOOLS_BAMCOVERAGE": {
+                    "deeptools": "3.5.5"
+                }
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.6"
+        },
+        "timestamp": "2025-09-27T13:13:41.547097029"
+    },
+    "homo_sapiens - cram - fasta - fai ": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.bigWig:md5,95fe9383a9e6c02aea6b785cf074274f"
+                ]
+            ],
+            [
+                "versions.yml:md5,e51ed2fa03466eba8e61cb5319a21ebc"
+            ],
+            {
+                "DEEPTOOLS_BAMCOVERAGE": {
+                    "samtools": 1.2,
+                    "deeptools": "3.5.5"
+                }
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.6"
+        },
+        "timestamp": "2025-09-27T13:13:52.788223077"
+    },
+    "homo_sapiens - bam - stub": {
         "content": [
             {
                 "0": [
@@ -91,59 +144,6 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-09-27T12:53:12.705046024"
-    },
-    "homo_sampiens - cram - fasta": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test.bigWig:md5,95fe9383a9e6c02aea6b785cf074274f"
-                ]
-            ],
-            [
-                "versions.yml:md5,e51ed2fa03466eba8e61cb5319a21ebc"
-            ],
-            {
-                "DEEPTOOLS_BAMCOVERAGE": {
-                    "samtools": 1.2,
-                    "deeptools": "3.5.5"
-                }
-            }
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-09-25T09:30:02.751966286"
-    },
-    "homo_sampiens - bam - with blacklist": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test.bigWig:md5,8997f636f4b0c5b176437008ec9dab99"
-                ]
-            ],
-            [
-                "versions.yml:md5,241ec68695b08434d2db71ad878ed162"
-            ],
-            {
-                "DEEPTOOLS_BAMCOVERAGE": {
-                    "deeptools": "3.5.5"
-                }
-            }
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-09-27T12:53:03.05271463"
+        "timestamp": "2025-09-27T13:14:25.71410207"
     }
 }

@@ -8,8 +8,8 @@ keywords:
   - coverage
 tools:
   - "deeptools":
-      description: A set of user-friendly tools for normalization and
-        visualization of deep-sequencing data
+      description: A set of user-friendly tools for normalization and visualization
+        of deep-sequencing data
       homepage: https://deeptools.readthedocs.io/en/develop/
       documentation: https://deeptools.readthedocs.io/en/develop/content/tools/bigwigCompare.html
       tool_dev_url: https://github.com/deeptools/deepTools
@@ -37,19 +37,14 @@ input:
         ontologies:
           - edam: "http://edamontology.org/data_3002"
           - edam: "http://edamontology.org/format_3006"
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing blacklist metadata
-          e.g. [ id:'blacklist' ]
-    - blacklist:
-        type: file
-        description: BED/GTF file containing regions to exclude from analysis
-        pattern: "*.{bed,gtf}"
-        ontologies:
-          - edam: "http://edamontology.org/data_3002"
-          - edam: "http://edamontology.org/format_3003"
-        optional: true
+  - blacklist:
+      type: file
+      description: BED/GTF file containing regions to exclude from analysis
+      pattern: "*.{bed,gtf}"
+      ontologies:
+        - edam: "http://edamontology.org/data_3002"
+        - edam: "http://edamontology.org/format_3003"
+      optional: true
 output:
   output:
     - - meta:

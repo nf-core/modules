@@ -9,7 +9,7 @@ nextflow_process {
     tag "deeptools"
     tag "deeptools/bamcoverage"
 
-    test("homo_sampiens - bam") {
+    test("homo_sapiens - bam") {
 
         when {
             process {
@@ -38,7 +38,7 @@ nextflow_process {
         }
     }
 
-    test("homo_sampiens - cram - fasta - fai ") {
+    test("homo_sapiens - cram - fasta - fai ") {
 
         when {
             process {
@@ -67,7 +67,7 @@ nextflow_process {
         }
     }
 
-    test("homo_sampiens - cram - fasta") {
+    test("homo_sapiens - cram - fasta") {
         
         when {
             process {
@@ -96,7 +96,7 @@ nextflow_process {
         }
     }
 
-    test("homo_sampiens - bam - with blacklist") {
+    test("homo_sapiens - bam - with blacklist") {
 
         when {
             process {
@@ -125,7 +125,7 @@ nextflow_process {
         }
     }
 
-    test("homo_sampiens - bam - stub") {
+    test("homo_sapiens - bam - stub") {
 
         options "-stub"
 
