@@ -1,0 +1,60 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: bam_baserecalibrator
+description: Sort SAM/BAM/CRAM file
+keywords:
+  - baserecalibration
+  - bam
+  - sam
+  - cram
+components:
+  - gatk4/baserecalibrator
+  - gatk4/gatherbqsrreports
+input:
+  - ch_cram:
+      type: file
+      description: |
+        The input channel containing the BAM/CRAM/SAM files
+        Structure: [ val(meta), path(bam) ]
+      pattern: "*.{bam/cram/sam}"
+  - ch_dict:
+      description: |
+        GATK sequence dictionary, optional
+        Structure: [ meta, dict ]
+  - ch_fasta:
+      type: file
+      description: reference fasta file
+      pattern: ".{fa,fa.gz,fasta,fasta.gz}"
+  - ch_fasta_fai:
+      type: file
+      description: reference fasta file index
+      pattern: "*.{fa,fasta}.fai"
+  - ch_intervals:
+      type: file
+      description: |
+        Structure: [ intervals, num_intervals ] (or [ [], 0 ] if no intervals)
+  - ch_known_sites:
+      type: file
+      description: |
+        Structure:  [ known_sites ]
+  - ch_known_sites_tbi:
+      type: file
+      description: |
+        Structure:  [ known_sites_tbi ]
+
+output:
+  - table_bqsr:
+      type: file
+      description: |
+        Recalibration table for Base Quality Score Recalibration (BQSR)
+        Structure: [ val(meta), path(table) ]
+      pattern: "*.table"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@famosab"
+maintainers:
+  - "@famosab"
