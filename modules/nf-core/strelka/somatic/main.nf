@@ -14,10 +14,10 @@ process STRELKA_SOMATIC {
     path fai
 
     output:
-    tuple val(meta), path("*.somatic_indels.vcf.gz"), emit: vcf_indels
+    tuple val(meta), path("*.somatic_indels.vcf.gz"),     emit: vcf_indels
     tuple val(meta), path("*.somatic_indels.vcf.gz.tbi"), emit: vcf_indels_tbi
-    tuple val(meta), path("*.somatic_snvs.vcf.gz"), emit: vcf_snvs
-    tuple val(meta), path("*.somatic_snvs.vcf.gz.tbi"), emit: vcf_snvs_tbi
+    tuple val(meta), path("*.somatic_snvs.vcf.gz"),       emit: vcf_snvs
+    tuple val(meta), path("*.somatic_snvs.vcf.gz.tbi"),   emit: vcf_snvs_tbi
     path "versions.yml", emit: versions
 
     when:
