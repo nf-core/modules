@@ -1,0 +1,68 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "cramino"
+description: Quality assessment of long-read bam files using cramino.
+keywords:
+  - quality assessment
+  - bam
+  - long-read
+  - genomics
+tools:
+  - "cramino":
+      description: A tool for very fast quality assessment of long read cram/bam files.
+      homepage: https://github.com/wdecoster/cramino
+      documentation: https://github.com/wdecoster/cramino#readme
+      tool_dev_url: https://github.com/wdecoster/cramino
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: BAM/CRAM file
+        pattern: "*.{bam,cram}"
+        ontologies: []
+    - bai: 
+        type: file
+        description: Index of BAM/CRAM file
+        pattern: "*.{bai,crai,csi}"
+        ontologies: []
+
+output:
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies: []
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.txt":
+          type: file
+          description: Text file containing summary statistics of the long-read data
+          pattern: "*.txt"
+          ontologies: []
+  arrow:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.arrow":
+          type: file
+          description: Arrow file containing summary statistics of the long-read data
+          pattern: "*.arrow"
+          ontologies: []
+    
+authors:
+  - "@inemesb"
+maintainers:
+  - "@inemesb"

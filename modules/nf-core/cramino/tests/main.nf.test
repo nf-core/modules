@@ -1,0 +1,152 @@
+nextflow_process {
+
+    name "Test Process CRAMINO"
+    script "../main.nf"
+    process "CRAMINO"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cramino"
+
+    test("pacbio - bam - arrow") {
+
+        when {
+            params{
+                module_args = "--arrow test.arrow"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success }, 
+                { 
+                    assert snapshot(
+                        process.out.versions,
+                        process.out.arrow,
+                        process.out.stats.collect { 
+                            it.collect { 
+                                it instanceof String && file(it).exists() ? file(it).name : it 
+                            } // stats filename
+                        },
+                        process.out.stats.collect { 
+                            it.collect { 
+                                it instanceof String && file(it).exists() ? file(it).text.split("\n")[0..-2] : it 
+                            } // stats content, without last timestamp line
+                        }
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+        test("pacbio - bam") {
+
+        when {
+            params{
+                module_args = ""
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success }, 
+                { 
+                    assert snapshot(
+                        process.out.versions,
+                        process.out.arrow,
+                        process.out.stats.collect { 
+                            it.collect { 
+                                it instanceof String && file(it).exists() ? file(it).name : it 
+                            } // stats filename
+                        },
+                        process.out.stats.collect { 
+                            it.collect { 
+                                it instanceof String && file(it).exists() ? file(it).text.split("\n")[0..-2] : it 
+                            } // stats content, without last timestamp line
+                        }
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("pacbio - bam - arrow - stub") {
+
+        options "-stub"
+
+        when {
+            params{
+                module_args = "--arrow test.arrow"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.arrow,
+                    process.out.stats).match() })
+        }
+
+    }
+
+    test("pacbio - bam  - stub") {
+
+        options "-stub"
+
+        when {
+            params{
+                module_args = ""
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.arrow,
+                    process.out.stats).match() })
+        }
+    }
+}
