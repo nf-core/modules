@@ -27,65 +27,66 @@ input:
         type: file
         description: Sample sheet
         pattern: "*.csv"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
     - bcl:
         type: file
         description: Base call files
         pattern: "*.bcl.bgzf"
+        ontologies: []
 output:
-  - fastq:
-      - meta:
-          type: file
-          description: Unaligned FastQ files
-          pattern: "*.fastq.gz"
+  fastq:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*_outs/outs/fastq_path/**/*.fastq.gz":
           type: file
           description: Unaligned FastQ files
           pattern: "*.fastq.gz"
-  - undetermined_fastq:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  undetermined_fastq:
+    - - meta:
           type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+          description: Groovy Map containing sample information
       - "*_outs/outs/fastq_path/Undetermined*.fastq.gz":
           type: file
           description: Undetermined FastQ files
           pattern: "Undetermined*.fastq.gz"
-  - reports:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  reports:
+    - - meta:
           type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+          description: Groovy Map containing sample information
       - "*_outs/outs/fastq_path/Reports":
           type: directory
           description: Reports
           pattern: "Reports"
-  - stats:
-      - meta:
+  stats:
+    - - meta:
           type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+          description: Groovy Map containing sample information
       - "*_outs/outs/fastq_path/Stats":
           type: directory
           description: Stats
           pattern: "Stats"
-  - interop:
-      - meta:
+  interop:
+    - - meta:
           type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+          description: Groovy Map containing sample information
       - "*_outs/outs/interop_path/*.bin":
           type: file
           description: InterOp files
           pattern: "*.bin"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software version
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software version
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ggabernet"
   - "@edmundmiller"

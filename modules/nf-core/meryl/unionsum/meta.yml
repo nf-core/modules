@@ -21,12 +21,12 @@ input:
     - meryl_dbs:
         type: directory
         description: Meryl k-mer databases
-  - - kvalue:
-        type: integer
-        description: An integer value of k to use as the k-mer value.
+  - kvalue:
+      type: integer
+      description: An integer value of k to use as the k-mer value.
 output:
-  - meryl_db:
-      - meta:
+  meryl_db:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,11 +35,13 @@ output:
           type: directory
           description: A Meryl k-mer database that is the union sum of the input databases
           pattern: "*.unionsum.meryl"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mahesh-panchal"
 maintainers:

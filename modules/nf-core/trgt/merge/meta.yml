@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "trgt_merge"
 description: Merge TRGT VCFs from multiple samples
@@ -16,6 +15,7 @@ tools:
       doi: "10.1038/s41587-023-02057-3"
       licence:
         ["Pacific Biosciences Software License (https://github.com/PacificBiosciences/trgt/blob/main/LICENSE.md)"]
+      identifier: ""
 
 input:
   - - meta:
@@ -29,11 +29,13 @@ input:
           List containing VCF files from TRGT
           Must contain at least 2 elements unless `--force-single` is given
           Samples in each VCf must be pairwise disjoint
+        ontologies: []
     - tbis:
         type: file
         description: |
           List containing indexes of VCF files from TRGT
           Must contain at least 2 elements unless `--force-single` is given
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -45,6 +47,7 @@ input:
           FASTA reference file (optional)
           Required if VCFs were generated with TRGT pre 1.0
         pattern: "*.{fasta,fa,fna}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -56,10 +59,10 @@ input:
           Index for FASTA file (optional)
           Required if VCFs were generated with TRGT pre 1.0
         pattern: "*.fai"
-
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -68,12 +71,15 @@ output:
           type: file
           description: "Merged output file"
           pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Schmytzi"
 maintainers:

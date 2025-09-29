@@ -29,21 +29,26 @@ input:
         type: file
         description: A single BAM/SAM/CRAM file, e.g., from CellRanger.
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - bai:
         type: file
         description: The index of the BAM/CRAM file.
         pattern: "*.{bai,crai}"
+        ontologies: []
     - region_vcf:
         type: file
         description: A optional vcf file listing all candidate SNPs for genotyping.
         pattern: "*.{vcf, vcf.gz}"
+        ontologies: []
     - barcode:
         type: file
         description: A plain file listing all effective cell barcodes.
         pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
-  - base:
-      - meta:
+  base:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,8 +58,10 @@ output:
           description: A VCF file listing genotyped SNPs and aggregated AD & DP information
             (without GT).
           pattern: "*.base.vcf.gz"
-  - cell:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  cell:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,8 +71,10 @@ output:
           description: A VCF file listing genotyped SNPs and aggregated AD & DP information
             & genotype (GT) information for each cell or sample.
           pattern: "*.cells.vcf.gz"
-  - sample:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  sample:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -74,8 +83,10 @@ output:
           type: file
           description: A TSV file listing cell barcodes or sample IDs.
           pattern: "*.tsv"
-  - allele_depth:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  allele_depth:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -85,8 +96,10 @@ output:
           description: A file in “Matrix Market exchange formats”, containing the allele
             depths of the alternative (ALT) alleles.
           pattern: "*.tag.AD.mtx"
-  - depth_coverage:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3916 # MTX
+  depth_coverage:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -96,8 +109,10 @@ output:
           description: A file in “Matrix Market exchange formats”, containing the sum
             of allele depths of the reference and alternative alleles (REF + ALT).
           pattern: "*.tag.DP.mtx"
-  - depth_other:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3916 # MTX
+  depth_other:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -107,11 +122,15 @@ output:
           description: A file in “Matrix Market exchange formats”, containing the sum
             of allele depths of all the alleles other than REF and ALT.
           pattern: "*.tag.OTH.mtx"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3916 # MTX
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@wxicu"
 maintainers:

@@ -26,30 +26,37 @@ input:
         description: multiple sequence alignment in fasta, clustal, stockholm or phylip
           format
         pattern: "*"
-  - - mxfile:
-        type: file
-        description: read substitution score matrix, for use when building profiles
-          from single sequences (--singlemx option)
-        pattern: "*"
+        ontologies: []
+  - mxfile:
+      type: file
+      description: read substitution score matrix, for use when building profiles from
+        single sequences (--singlemx option)
+      pattern: "*"
+      ontologies: []
 output:
-  - hmm:
-      - meta:
+  hmm:
+    - - meta:
           type: file
           description: Gzipped HMM file
           pattern: "*.{hmm.gz}"
+          ontologies: []
       - "*.hmm.gz":
           type: file
           description: Gzipped HMM file
           pattern: "*.{hmm.gz}"
-  - hmmbuildout:
-      - "*.hmmbuild.txt":
-          type: file
-          description: HMM build output
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  hmmbuildout:
+    - "*.hmmbuild.txt":
+        type: file
+        description: HMM build output
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@erikrikarddaniel"
 maintainers:

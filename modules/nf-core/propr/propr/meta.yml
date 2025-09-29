@@ -41,9 +41,12 @@ input:
           This matrix should not contain zeros. Otherwise, they will be replaced by the minimum number.
           It is recommended to handle the zeros beforehand with the method of preference.
         pattern: "*.{csv,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
-  - propr:
-      - meta:
+  propr:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
@@ -53,8 +56,9 @@ output:
           type: file
           description: R propr object
           pattern: "*.propr.rds"
-  - matrix:
-      - meta:
+          ontologies: []
+  matrix:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
@@ -64,8 +68,10 @@ output:
           type: file
           description: Coefficient matrix
           pattern: "*.propr.tsv"
-  - fdr:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  fdr:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
@@ -75,8 +81,10 @@ output:
           type: file
           description: (optional) propr fdr table
           pattern: "*.fdr.tsv"
-  - adj:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  adj:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
@@ -86,20 +94,26 @@ output:
           type: file
           description: (optional) propr adjacency table
           pattern: "*.adj.csv"
-  - warnings:
-      - "*.warnings.log":
-          type: file
-          description: Warnings
-          pattern: "*.warnings.log"
-  - session_info:
-      - "*.R_sessionInfo.log":
-          type: file
-          description: dump of R SessionInfo
-          pattern: "*.R_sessionInfo.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  warnings:
+    - "*.warnings.log":
+        type: file
+        description: Warnings
+        pattern: "*.warnings.log"
+        ontologies: []
+  session_info:
+    - "*.R_sessionInfo.log":
+        type: file
+        description: dump of R SessionInfo
+        pattern: "*.R_sessionInfo.log"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@suzannejin"

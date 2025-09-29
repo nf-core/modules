@@ -113,7 +113,8 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert path(workflow.out.results_genewise[0][1]).getText().contains("logFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB\n-95.6666") },
+                { assert path(workflow.out.results_genewise[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
+                { assert path(workflow.out.results_genewise[0][1]).getText().contains("-95.6666") },
                 { assert path(workflow.out.results_genewise[0][1]).getText().contains("1050\t549\t4.15") },
                 { assert snapshot(
                     file(workflow.out.results_genewise[0][1]).name,
@@ -421,7 +422,7 @@ nextflow_workflow {
                     file(testData.expression_test_data_dir + testData.abundance_file),
                     'propd',  // analysis method
                     1.5,      // FC threshold
-                    100       // stat (weighted connectivity) threshold
+                    0.05       // significance threshold (automatically given by propd, not necessary)
                 ])
 
                 input[0] = ch_input
@@ -561,7 +562,7 @@ nextflow_workflow {
                         file(testData.expression_test_data_dir + testData.abundance_file),
                         'propd',
                         1.5,       // FC threshold
-                        100        // stat (weighted connectivity) threshold
+                        0.05        // significant threshold (automatically given by propd, not necessary)
                     ]
                 )
 

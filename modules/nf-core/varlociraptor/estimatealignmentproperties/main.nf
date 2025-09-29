@@ -1,13 +1,14 @@
 process VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
+
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/varlociraptor:8.1.1--hc349b7f_0':
-        'biocontainers/varlociraptor:8.1.1--hc349b7f_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d2/d2431fb9ebb3f21e639fb2e902619752eb6cea81e577b1694ba280704ecc08b0/data':
+        'community.wave.seqera.io/library/varlociraptor:8.7.4--1d51725b87d202f0' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(bam), path(bai)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
 
@@ -23,9 +24,9 @@ process VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     varlociraptor estimate alignment-properties \\
-        $fasta \\
-        --bam $bam \\
-        $args \\
+        ${fasta} \\
+        --bams ${bam} \\
+        ${args} \\
         > ${prefix}.alignment-properties.json
 
     cat <<-END_VERSIONS > versions.yml
@@ -35,7 +36,6 @@ process VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.alignment-properties.json
