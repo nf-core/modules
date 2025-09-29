@@ -90,6 +90,53 @@ nextflow_process {
         }
     }
 
+    test("sawfish_jointcall - one sample") {
+        tag "one_sample"
+        when {
+            process {
+                """
+
+                input[0] = SAWFISH_DISCOVER.out.discover_dir
+                                .filter { meta, dir -> meta.id == "sample1" }
+                                .map { it[1] }
+                                .collect()
+                                .map { dirs -> tuple([ id:'cohort' ], dirs) }
+
+                input[1] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true)
+                ]
+
+                // Provide a single tuple: cohort meta + list of BAMs + list of indexes
+                input[2] = Channel.fromList([
+                    tuple(
+                        [ id:'cohort' ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true)
+                        ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true)
+                        ]
+                    )
+                ])
+                input[3] = [[], []]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    file(process.out.tbi.get(0).get(1)).name,
+                    path(process.out.vcf.get(0).get(1)).linesGzip[2..39],
+                ).match() }
+            )
+        }
+    }
+
     test("sawfish_jointcall_sample_csv") {
 
         when {
