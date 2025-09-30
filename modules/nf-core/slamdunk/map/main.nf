@@ -29,7 +29,7 @@ process SLAMDUNK_MAP {
         -o outputs \\
         ${args} \\
         ${input}
-
+    mv outputs/${prefix}.bam ${prefix}.bam
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         slamdunk: \$(echo \$(slamdunk --version) | sed 's/^slamdunk //')
