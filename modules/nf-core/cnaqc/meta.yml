@@ -40,7 +40,7 @@ output:
           description: R object containing quality control results for the sample
           pattern: "*{_qc.rds}"
           ontologies: []
-  plot_rds:
+  data_plot_rds:
     - - meta:
           type: map
           description: |
@@ -57,6 +57,18 @@ output:
             the sample
           pattern: "*{_qc_plot.rds}"
           ontologies: []
+  qc_plot_rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', tumour_sample:'tumour_sample1_name' ]`
+      - "*_qc_plot.rds":
+          type: file
+          description: R object containing plots of the quality control results for
+            the sample
+          pattern: "*{_qc_plot.rds}"
+          ontologies: []
   plot_pdf_data:
     - - meta:
           type: map
@@ -67,7 +79,8 @@ output:
           type: file
           description: plots of the CNA statistics for the sample
           pattern: "*{_data.pdf}"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3508" # pdf
   plot_pdf_qc:
     - - meta:
           type: map
@@ -78,7 +91,8 @@ output:
           type: file
           description: plots of the quality control results for the sample
           pattern: "*{_qc.pdf}"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3508" # pdf
   versions:
     - versions.yml:
         type: file
