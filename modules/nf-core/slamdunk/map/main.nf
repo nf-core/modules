@@ -40,8 +40,7 @@ process SLAMDUNK_MAP {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir outputs
-    touch outputs/${prefix}.bam
+    touch ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
