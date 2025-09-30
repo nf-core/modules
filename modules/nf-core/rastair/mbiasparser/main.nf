@@ -1,4 +1,4 @@
-process RASTAIR_MBIAS_PARSER {
+process RASTAIR_MBIASPARSER {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"

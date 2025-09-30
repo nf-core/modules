@@ -1,14 +1,14 @@
 nextflow_process {
 
-    name "Test process rastair/mbias_parser"
+    name "Test process rastair/mbiasparser"
     script "../main.nf"
-    process "RASTAIR_MBIAS_PARSER"
+    process "RASTAIR_MBIASPARSER"
 
     tag "modules"
     tag "modules_nfcore"
     tag "rastair"
     tag "rastair/mbias"
-    tag "rastair/mbias_parser"
+    tag "rastair/mbiasparser"
 
     test("sarscov2 paired-end methylated [bam] / sarscov2 genome [fasta]") {
 
