@@ -1,0 +1,48 @@
+nextflow_process {
+
+    name "Test Process METABULI_BUILD"
+    script "../main.nf"
+    process "METABULI_BUILD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "metabuli"
+    tag "metabuli/build"
+
+    test("sarscov2 - sarscov2 DNA") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                        [
+                        file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+                        ]
+                    ]
+                input[1] = file(params.modules_testdata_base_path +'genomics/sarscov2/metagenome/prot_names.dmp', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path +'genomics/sarscov2/metagenome/prot_nodes.dmp', checkIfExists: true)
+                input[3] = []
+                input[4] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/accession2taxid/nucl_gb.accession2taxid', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        path("${process.out.db[0][1]}/acc2taxid.map"),
+                        path("${process.out.db[0][1]}/diffIdx"),
+                        path("${process.out.db[0][1]}/info"),
+                        file("${process.out.db[0][1]}/split").name,
+                        path("${process.out.db[0][1]}/taxID_list"),
+                        file("${process.out.db[0][1]}/db.parameters").name,
+                        process.out.versions
+                        ).match()
+                }
+            )
+        }
+
+    }
+}
