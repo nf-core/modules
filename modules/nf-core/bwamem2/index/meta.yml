@@ -39,13 +39,16 @@ output:
           pattern: "*.{0123,amb,ann,bwt.2bit.64,pac}"
           ontologies:
             - edam: "http://edamontology.org/data_3210" # Genome index
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+  versions1:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bwa-mem2:
+          type: string
+          description: The tool name
+      - bwa-mem2 version 2>&1 | tail -1:
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@maxulysse"
 maintainers:

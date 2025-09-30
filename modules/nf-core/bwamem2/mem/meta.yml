@@ -118,13 +118,26 @@ output:
           description: Index file for BAM file
           pattern: "*.{csi}"
           ontologies: []
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+  versions1:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bwa-mem2:
+          type: string
+          description: The tool name
+      - bwa-mem2 version 2>&1 | tail -1:
+          type: string
+          description: The command used to generate the version of the tool
+  versions2:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - samtools --version 2>&1 | head -1 | sed 's/^.*samtools //':
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@maxulysse"
   - "@matthdsm"
