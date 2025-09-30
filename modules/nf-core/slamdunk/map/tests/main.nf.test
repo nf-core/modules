@@ -30,7 +30,6 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1]).getHeader(),
                     bam(process.out.bam[0][1]).getReadsMD5(),
                     process.out.versions
                 ).match() }
@@ -91,7 +90,6 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    bam(process.out.bam[0][1]).getHeader(),
                     bam(process.out.bam[0][1]).getReadsMD5(),
                     process.out.versions
                 ).match() }

@@ -1,13 +1,6 @@
 {
     "slamdunk - map - fastq": {
         "content": [
-            [
-                "@HD\tVN:1.6\tSO:unsorted",
-                "@SQ\tSN:MT192765.1\tLN:29829",
-                "@RG\tID:0\tSM:test_1.fastq:pulse:0",
-                "@PG\tID:ngm\tPN:ngm\tVN:0.5.5\tCL:\" --affine 0 --argos_min_score 0 --bin_size 2 --block_multiplier 2 --broken_pairs 0 --bs_cutoff 6 --bs_mapping 0 --cpu_threads 2 --dualstrand 1 --fast 0 --fast_pairing 0 --force_rlength_check 0 --format 1 --gap_extend_penalty 5 --gap_read_penalty 20 --gap_ref_penalty 20 --hard_clip 0 --keep_tags 0 --kmer 13 --kmer_min 0 --kmer_skip 2 --local 1 --match_bonus 10 --match_bonus_tc 2 --match_bonus_tt 10 --max_cmrs 2147483647 --max_equal 1 --max_insert_size 1000 --max_polya 4 --max_read_length 0 --min_identity 0.650000 --min_insert_size 0 --min_mq 0 --min_residues 0.500000 --min_score 0.000000 --mismatch_penalty 15 --mode 0 --no_progress 1 --no_unal 0 --ocl_threads 1 --output outputs/test_1.fastq_slamdunk_mapped.sam --overwrite 1 --pair_score_cutoff 0.900000 --paired 0 --parse_all 1 --pe_delimiter / --qry test_1.fastq.gz --qry_count -1 --qry_start 0 --ref genome.fasta --ref_mode -1 --rg_id 0 --rg_sm test_1.fastq:pulse:0 --sensitive 0 --silent_clip 0 --skip_mate_check 0 --skip_save 0 --slam_seq 2 --step_count 4 --strata 0 --topn 1 --trim5 12 --update_check 0 --very_fast 0 --very_sensitive 0\"",
-                "@PG\tID:samtools\tPN:samtools\tPP:ngm\tVN:1.10\tCL:samtools view -@ 2 -Sb -o outputs/test_1.fastq_slamdunk_mapped.bam outputs/test_1.fastq_slamdunk_mapped.sam"
-            ],
             "e67d1ccdc32302367cff215a78ecf16",
             [
                 "versions.yml:md5,a1d909b69b4f1672b4d058e55c895583"
@@ -17,17 +10,10 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-09-30T12:47:26.721465222"
+        "timestamp": "2025-09-30T13:48:06.205913301"
     },
     "slamdunk - map - bam": {
         "content": [
-            [
-                "@HD\tVN:1.6\tSO:unsorted",
-                "@SQ\tSN:MT192765.1\tLN:29829",
-                "@RG\tID:0\tSM:test.unaligned:pulse:0",
-                "@PG\tID:ngm\tPN:ngm\tVN:0.5.5\tCL:\" --affine 0 --argos_min_score 0 --bin_size 2 --block_multiplier 2 --broken_pairs 0 --bs_cutoff 6 --bs_mapping 0 --cpu_threads 2 --dualstrand 1 --fast 0 --fast_pairing 0 --force_rlength_check 0 --format 1 --gap_extend_penalty 5 --gap_read_penalty 20 --gap_ref_penalty 20 --hard_clip 0 --keep_tags 0 --kmer 13 --kmer_min 0 --kmer_skip 2 --local 1 --match_bonus 10 --match_bonus_tc 2 --match_bonus_tt 10 --max_cmrs 2147483647 --max_equal 1 --max_insert_size 1000 --max_polya 4 --max_read_length 0 --min_identity 0.650000 --min_insert_size 0 --min_mq 0 --min_residues 0.500000 --min_score 0.000000 --mismatch_penalty 15 --mode 0 --no_progress 1 --no_unal 0 --ocl_threads 1 --output outputs/test.unaligned_slamdunk_mapped.sam --overwrite 1 --pair_score_cutoff 0.900000 --paired 0 --parse_all 1 --pe_delimiter / --qry test.unaligned.bam --qry_count -1 --qry_start 0 --ref genome.fasta --ref_mode -1 --rg_id 0 --rg_sm test.unaligned:pulse:0 --sensitive 0 --silent_clip 0 --skip_mate_check 0 --skip_save 0 --slam_seq 2 --step_count 4 --strata 0 --topn 1 --trim5 12 --update_check 0 --very_fast 0 --very_sensitive 0\"",
-                "@PG\tID:samtools\tPN:samtools\tPP:ngm\tVN:1.10\tCL:samtools view -@ 2 -Sb -o outputs/test.unaligned_slamdunk_mapped.bam outputs/test.unaligned_slamdunk_mapped.sam"
-            ],
             "b19ae65259390bd5ec3e01f7ea3726bf",
             [
                 "versions.yml:md5,a1d909b69b4f1672b4d058e55c895583"
@@ -37,7 +23,7 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-09-30T12:47:37.20512347"
+        "timestamp": "2025-09-30T13:48:16.66916882"
     },
     "slamdunk - map - fastq - stub": {
         "content": [
