@@ -12,7 +12,8 @@ process CNAQC {
 
     output:
     tuple val(meta), path("*_qc.rds"),                                  emit: qc_rds
-    tuple val(meta), path("*_data_plot.rds"), path("*_qc_plot.rds"),    emit: plot_rds
+    tuple val(meta), path("*_data_plot.rds"), path("*_qc_plot.rds"),    emit: data_plot_rds
+    tuple val(meta), path("*_qc_plot.rds"),                             emit: qc_plot_rds
     tuple val(meta), path("*_data.pdf"),                                emit: plot_pdf_data
     tuple val(meta), path("*_qc.pdf"),                                  emit: plot_pdf_qc
     path "versions.yml",                                                emit: versions
