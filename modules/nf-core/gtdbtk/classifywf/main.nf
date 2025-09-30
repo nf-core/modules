@@ -4,14 +4,13 @@ process GTDBTK_CLASSIFYWF {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gtdbtk:2.4.1--pyhdfd78af_1':
-        'biocontainers/gtdbtk:2.4.1--pyhdfd78af_1' }"
+        'https://depot.galaxyproject.org/singularity/gtdbtk:2.5.2--pyh1f0d9b5_0':
+        'biocontainers/gtdbtk:2.5.2--pyh1f0d9b5_0' }"
 
     input:
     tuple val(meta)   , path("bins/*")
     tuple val(db_name), path(db)
     val use_pplacer_scratch_dir
-    path mash_db
 
     output:
     tuple val(meta), path("${prefix}")                               , emit: gtdb_outdir
@@ -33,7 +32,6 @@ process GTDBTK_CLASSIFYWF {
     def args            = task.ext.args ?: ''
     prefix              = task.ext.prefix ?: "${meta.id}"
     def pplacer_scratch = use_pplacer_scratch_dir ? "--scratch_dir pplacer_tmp" : ""
-    def mash_mode       = mash_db ? "--mash_db ${mash_db}" : "--skip_ani_screen"
     """
     export GTDBTK_DATA_PATH="\$(find -L ${db} -name 'metadata' -type d -exec dirname {} \\;)"
 
@@ -47,7 +45,6 @@ process GTDBTK_CLASSIFYWF {
         --prefix "${prefix}" \\
         --out_dir ${prefix} \\
         --cpus ${task.cpus} \\
-        ${mash_mode} \\
         ${pplacer_scratch}
 
     mv ${prefix}/gtdbtk.log "${prefix}/${prefix}.log"
