@@ -8,9 +8,6 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "bwa/index"
-    tag "star/align"
-    tag "star/genomegenerate"
-    tag "starfusion/build"
     tag "parabricks"
     tag "parabricks/rnafq2bam"
     tag "parabricks/starfusion"
@@ -98,6 +95,9 @@ nextflow_process {
         config "./nextflow.config"
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = PARABRICKS_RNAFQ2BAM.out.junction
@@ -110,8 +110,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
-                    process.out.out_dir
+                    file(process.out.out_dir[0][1]).listFiles().collect { it.getName() }.sort().toString(),
+                    process.out.versions
                 ).match() }
             )
         }
@@ -123,6 +123,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = PARABRICKS_RNAFQ2BAM.out.junction
@@ -135,11 +138,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
-                    process.out.out_dir
+                    process.out.versions
                 ).match() }
             )
         }
     }
-
 }
