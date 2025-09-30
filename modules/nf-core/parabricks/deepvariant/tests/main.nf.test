@@ -102,6 +102,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
+                    file(process.out.gvcf[0][1]).name,
                     path(process.out.gvcf[0][1]).vcf.getVariantsAsStrings(100),
                     process.out.versions,
                     path(process.out.versions[0]).yaml
@@ -140,6 +141,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
+                    file(process.out.gvcf[0][1]).name,
                     path(process.out.gvcf[0][1]).vcf.getVariantsAsStrings(100),
                     process.out.versions,
                     path(process.out.versions[0]).yaml
@@ -176,7 +178,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out,
-                    path(process.out.versions[0]).yaml
+                    path(process.out.versions.get(0)).yaml,
+                    path(process.out.compatible_versions.get(0)).yaml
                     ).match() }
             )
         }
