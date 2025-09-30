@@ -33,9 +33,17 @@ nextflow_process {
                     ).match() }, 
                     // Check nondeterministic files exist
                     { assert file(process.out.qc_rds[0][1]).exists() },
-                    { assert file(process.out.plot_rds[0][1]).exists() },
-                    { assert file(process.out.plot_pdf_data[0][1]).exists() },
-                    { assert file(process.out.plot_pdf_qc[0][1]).exists() }
+                    { assert file(process.out.data_plot_rds[0][1]).exists() },
+                    { assert file(process.out.qc_plot_rds[0][1]).exists() },
+                    { assert file(process.out.plot_pdf_data[0][1]).exists() }, 
+                    { assert file(process.out.plot_pdf_qc[0][1]).exists() }, 
+
+                    { assert path(process.out.qc_rds[0][1]).exists() },
+                    { assert path(process.out.data_plot_rds[0][1]).exists() },
+                    { assert path(process.out.qc_plot_rds[0][1]).exists() },
+                    { assert path(process.out.plot_pdf_data[0][1]).exists() }, 
+                    { assert path(process.out.plot_pdf_qc[0][1]).exists() }
+
             )
         }
 
@@ -60,7 +68,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out).match() }, 
+                { assert path(process.out.versions[0]).yaml }
             )
         }
 
