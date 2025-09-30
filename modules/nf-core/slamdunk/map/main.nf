@@ -12,7 +12,7 @@ process SLAMDUNK_MAP {
     tuple val(meta2), path(fasta)
 
     output:
-    tuple val(meta), path("outputs/*.bam"), emit: bam
+    tuple val(meta), path("*.bam"), emit: bam
     path "versions.yml", emit: versions
 
     when:
