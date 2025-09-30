@@ -1,7 +1,7 @@
 process VIBER {
     tag "$meta.id"
     label "process_single"
-    label "error_ignore"
+    //label "error_ignore"
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -16,10 +16,10 @@ process VIBER {
     tuple val(meta), path("*_viber_best_heuristic_fit.rds")      , emit: viber_heuristic_rds
     tuple val(meta), path("*_viber_best_fit_plots.rds")          , emit: viber_plots_rds
     tuple val(meta), path("*_viber_best_heuristic_fit_plots.rds"), emit: viber_heuristic_plots_rds
-    tuple val(meta), path("*_viber_report.rds")                     , emit: viber_report_rds
-    tuple val(meta), path("*_viber_report.pdf")                     , emit: viber_report_pdf
-    tuple val(meta), path("*_viber_report.png")                     , emit: viber_report_png
-    path "versions.yml"                                             , emit: versions
+    tuple val(meta), path("*_viber_report.rds")                  , emit: viber_report_rds
+    tuple val(meta), path("*_viber_report.pdf")                  , emit: viber_report_pdf
+    tuple val(meta), path("*_viber_report.png")                  , emit: viber_report_png
+    path "versions.yml"                                          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when

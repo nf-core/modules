@@ -71,20 +71,16 @@ input_tab = joint_table %>%
 reads_data = input_tab %>%
   dplyr::select(chr, from, ref, alt, NV, DP, VAF, sample_id) %>%
   tidyr::pivot_wider(names_from="sample_id",
-                     values_from=c("NV","DP","VAF"), names_sep=".")
+                     values_from=c("NV","DP","VAF"), names_sep=".",values_fill=0)
 
 ## Extract DP (depth)
 dp = reads_data %>%
   dplyr::select(dplyr::starts_with("DP")) %>%
-  dplyr::mutate(dplyr::across(.cols=dplyr::everything(),
-                              .fns=function(x) replace(x, is.na(x), 0))) %>%
   dplyr::rename_all(function(x) stringr::str_remove_all(x,"DP."))
 
 ## Extract NV (alt_counts)
 nv = reads_data %>%
   dplyr::select(dplyr::starts_with("NV")) %>%
-  dplyr::mutate(dplyr::across(.cols=dplyr::everything(),
-                              .fns=function(x) replace(x, is.na(x), 0))) %>%
   dplyr::rename_all(function(x) stringr::str_remove_all(x,"NV."))
 
 # Standard fit
