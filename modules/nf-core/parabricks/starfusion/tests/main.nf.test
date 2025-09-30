@@ -110,7 +110,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.out_dir[0][1]).listFiles().collect { it.getName() }.sort().toString(),
+                    process.out.out_dir,
                     process.out.versions
                 ).match() }
             )
