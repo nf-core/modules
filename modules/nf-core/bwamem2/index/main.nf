@@ -14,7 +14,7 @@ process BWAMEM2_INDEX {
 
     output:
     tuple val(meta), path("bwamem2"), emit: index
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('bwa-mem2'), eval("bwa-mem2 version 2>&1 | tail -1"),                            topic: versions, emit: versions1
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,11 +29,6 @@ process BWAMEM2_INDEX {
         $args \\
         -p bwamem2/${prefix} \\
         $fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bwamem2: \$(echo \$(bwa-mem2 version 2>&1) | sed 's/.* //')
-    END_VERSIONS
     """
 
     stub:
@@ -46,10 +41,5 @@ process BWAMEM2_INDEX {
     touch bwamem2/${prefix}.pac
     touch bwamem2/${prefix}.amb
     touch bwamem2/${prefix}.bwt.2bit.64
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bwamem2: \$(echo \$(bwa-mem2 version 2>&1) | sed 's/.* //')
-    END_VERSIONS
     """
 }
