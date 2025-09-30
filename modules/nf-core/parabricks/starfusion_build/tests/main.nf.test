@@ -6,7 +6,6 @@ nextflow_process {
     tag "modules_nfcore"
     tag "parabricks"
     tag "parabricks/starfusion_build"
-    tag "fusioninspector"
 
     test("PARABRICKS_STARFUSION_BUILD - human - minigenome") {
         when {
@@ -20,7 +19,6 @@ nextflow_process {
                     [ id:'minigenome_gtf' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf')
                 ]
-
                 input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/CTAT_HumanFusionLib.mini.dat.gz')
                 input[3] = "homo_sapiens"
                 input[4] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/Pfam-A.hmm.gz')
@@ -151,3 +149,4 @@ nextflow_process {
             assert snapshot(process.out).match()
         }
     }
+}
