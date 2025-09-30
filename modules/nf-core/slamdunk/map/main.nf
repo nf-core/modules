@@ -21,6 +21,10 @@ process SLAMDUNK_MAP {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+
+    if ("${input}" == "${prefix}.bam") {
+        error("Input and output names of bam files are the same, set prefix in module configuration to disambiguate!")
+    }
     """
     slamdunk \\
         map \\
@@ -29,7 +33,9 @@ process SLAMDUNK_MAP {
         -o outputs \\
         ${args} \\
         ${input}
-    mv outputs/${prefix}.bam ${prefix}.bam
+
+    mv outputs/*.bam ${prefix}.bam
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         slamdunk: \$(echo \$(slamdunk --version) | sed 's/^slamdunk //')
@@ -39,6 +45,10 @@ process SLAMDUNK_MAP {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+
+    if ("${input}" == "${prefix}.bam") {
+        error("Input and output names of bam files are the same, set prefix in module configuration to disambiguate!")
+    }
     """
     touch ${prefix}.bam
 
