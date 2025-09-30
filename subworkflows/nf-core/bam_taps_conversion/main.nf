@@ -5,7 +5,7 @@
  */
 
 include { RASTAIR_MBIAS             } from '../../../modules/nf-core/rastair/mbias/main'
-include { RASTAIR_MBIAS_PARSER      } from '../../../modules/nf-core/rastair/mbias_parser/main'
+include { RASTAIR_MBIASPARSER       } from '../../../modules/nf-core/rastair/mbiasparser/main'
 include { RASTAIR_CALL              } from '../../../modules/nf-core/rastair/call/main'
 include { RASTAIR_METHYLKIT         } from '../../../modules/nf-core/rastair/methylkit/main'
 
@@ -33,19 +33,19 @@ workflow BAM_TAPS_CONVERSION {
     ch_rastair_mbias = RASTAIR_MBIAS.out.txt // channel: [ val(meta), txt ]
     ch_versions      = ch_versions.mix(RASTAIR_MBIAS.out.versions)
 
-    RASTAIR_MBIAS_PARSER (
+    RASTAIR_MBIASPARSER (
         ch_rastair_mbias
     )
-    ch_rastair_mbias_parser = RASTAIR_MBIAS_PARSER.out.mbias_processed_str // channel: [ val(meta), nOT_clip, nOB_clip ]
-    ch_versions             = ch_versions.mix(RASTAIR_MBIAS_PARSER.out.versions)
+    ch_rastair_mbiasparser = RASTAIR_MBIASPARSER.out.mbias_processed_str // channel: [ val(meta), nOT_clip, nOB_clip ]
+    ch_versions             = ch_versions.mix(RASTAIR_MBIASPARSER.out.versions)
 
     RASTAIR_CALL (
         ch_bam,
         ch_bai,
         ch_fasta,
         ch_fasta_index,
-        ch_rastair_mbias_parser.map{ meta, nOT_clip, nOB_clip -> [ meta, nOT_clip ] },
-        ch_rastair_mbias_parser.map{ meta, nOT_clip, nOB_clip -> [ meta, nOB_clip ] },
+        ch_rastair_mbiasparser.map{ meta, nOT_clip, nOB_clip -> [ meta, nOT_clip ] },
+        ch_rastair_mbiasparser.map{ meta, nOT_clip, nOB_clip -> [ meta, nOB_clip ] },
     )
     ch_rastair_call = RASTAIR_CALL.out.txt // channel: [ val(meta), txt ]
     ch_versions     = ch_versions.mix(RASTAIR_CALL.out.versions)
