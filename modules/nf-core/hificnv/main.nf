@@ -5,7 +5,7 @@ process HIFICNV {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hificnv:1.0.1--h9ee0642_0':
-        'quay.io/biocontainers/hificnv:1.0.1--h9ee0642_0' }"
+        'community.wave.seqera.io/library/hificnv:1.0.1--b7e433ac6789e2d2' }"
 
     input:
     tuple val(meta), path(bam), path(bai), path(maf)
