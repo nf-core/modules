@@ -8,16 +8,16 @@ process PARABRICKS_RNAFQ2BAM {
     container "nvcr.io/nvidia/clara/clara-parabricks:4.5.1-1"
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta),  path(reads)
     tuple val(meta1), path(fasta)
     tuple val(meta2), path(index)
     tuple val(meta3), path(genome_lib_dir)
 
     output:
-    tuple val(meta), path("*.bam"),                     emit: bam
-    tuple val(meta), path("*.bai"),                     emit: bai
-    tuple val(meta), path("*Chimeric.out.junction"),   emit: junction,             optional: true
-    path "versions.yml",                                emit: versions
+    tuple val(meta), path("*.bam"),                                 emit: bam
+    tuple val(meta), path("*.bai"),                                 emit: bai
+    tuple val(meta), path("${meta.id}/Chimeric.out.junction"),      emit: junction, optional: true
+    path "versions.yml",                                            emit: versions
 
     when:
     task.ext.when == null || task.ext.when

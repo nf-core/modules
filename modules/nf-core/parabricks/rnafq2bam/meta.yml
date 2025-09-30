@@ -87,7 +87,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.Chimeric.out.junction":
+      - "${meta.id}/Chimeric.out.junction":
           type: file
           description: Chimeric junction output file
           pattern: "*.Chimeric.out.junction"
