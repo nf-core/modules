@@ -15,7 +15,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [id:'test'],
-                    file('https://github.com/varlociraptor/varlociraptor/raw/refs/heads/master/tests/resources/testcases/test_tmb/annotated.vcf', checkIfExists:true)
+                    file('https://raw.githubusercontent.com/varlociraptor/varlociraptor/refs/heads/master/tests/resources/testcases/test_tmb/annotated.vcf', checkIfExists:true)
                     //file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz', checkIfExists:true)
                     ]
                 input[1] = "curve"

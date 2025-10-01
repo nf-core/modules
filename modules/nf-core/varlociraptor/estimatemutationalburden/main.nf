@@ -25,7 +25,7 @@ process VARLOCIRAPTOR_ESTIMATEMUTATIONALBURDEN {
     def output_cmd = output_mode == 'curve' ? "| vg2svg > ${prefix}.svg" : "> ${prefix}.tsv"
     """
     varlociraptor estimate mutational-burden \\
-        --coding-genome-size 3e7 --events SOMATIC_TUMOR --sample tumor \\
+        --coding-genome-size 3e7 --sample tumor \\
         --mode ${output_mode} \\
         ${args} \\
         < ${vcf} \\
