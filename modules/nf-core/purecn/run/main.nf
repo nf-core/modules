@@ -11,6 +11,7 @@ process PURECN_RUN {
     input:
     tuple val(meta), path(intervals), path(coverage), path(vcf)
     path normal_db
+    path mapping_bias
     val genome
 
     output:
@@ -34,6 +35,8 @@ process PURECN_RUN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def vcf_opt = vcf ? "--vcf ${vcf}": ''
+    def mapping_bias_opt = mapping_bias ? "--mapping-bias-file ${mapping_bias}": ''
+    def normaldb_opt = normal_db ? "--normaldb ${normal_db}": ''
     def VERSION = '2.12.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
@@ -47,6 +50,8 @@ process PURECN_RUN {
         --genome ${genome} \\
         --parallel \\
         --cores ${task.cpus} \\
+        ${normaldb_opt} \\
+        ${mapping_bias_opt} \\
         ${vcf_opt} \\
         ${args}
 
