@@ -38,14 +38,14 @@ input:
         description: File containing somatic variants from Mutect2
         pattern: "{*.vcf, *.vcf.gz}"
         ontologies: []
-  - normal_db:
-      type: file
-      description: Database created from a panel of normals
-      ontologies: []
-　- mapping_bias:
-      type: file
-      description : Mapping bias file generated with normal panel
-      ontologies: []
+    - normal_db:
+        type: file
+        description: Database created from a panel of normals
+        ontologies: []
+    - mapping_bias:
+        type: file
+        description : Mapping bias file generated with normal panel
+        ontologies: []
   - genome:
       type: string
       description: Genome build
