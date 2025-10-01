@@ -28,22 +28,21 @@ input:
         ontologies:
           - edam: http://edamontology.org/format_3016 # VCF
           - edam: http://edamontology.org/format_3020 # BCF
-  - plot_mode:
+  - output_mode:
       type: string
-      description: Offering three modes (hist, curve, and stratified)
+      description: Offering two modes (curve or table)
 output:
-  json:
+  table:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.json":
+      - "*.tsv":
           type: file
-          description: File containing mutational burden estimates
-          pattern: "*.json"
-          ontologies:
-            - edam: http://edamontology.org/format_3464 # JSON
+          description: Table containing mutational burden estimates
+          pattern: "*.tsv"
+          ontologies: []
   versions:
     - versions.yml:
         type: file
@@ -57,4 +56,3 @@ authors:
 maintainers:
   - "@FriederikeHanssen"
   - "@famosab"
-

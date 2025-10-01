@@ -1,5 +1,5 @@
 process VARLOCIRAPTOR_ESTIMATEMUTATIONALBURDEN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -9,11 +9,12 @@ process VARLOCIRAPTOR_ESTIMATEMUTATIONALBURDEN {
 
     input:
     tuple val(meta), path(vcf)
-    val(plot_mode)
+    val(output_mode)
 
     output:
-    tuple val(meta), path("*.json"), emit: json
-    path "versions.yml"            , emit: versions
+    tuple val(meta), path("*.tsv"), emit: table, optional: true
+    tuple val(meta), path("*.svg"), emit: svg,   optional: true
+    path "versions.yml",            emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,13 +22,15 @@ process VARLOCIRAPTOR_ESTIMATEMUTATIONALBURDEN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def output_cmd = output_mode == 'curve' ? "| vg2svg > ${prefix}.svg" : "> ${prefix}.tsv"
     """
+    varlociraptor estimate mutational-burden --coding-genome-size 3e7 --events SOMATIC_TUMOR --sample tumor < calls.bcf > tmb.tsv
     varlociraptor estimate mutational-burden \\
         --coding-genome-size 3e7 --events SOMATIC_TUMOR --sample tumor \\
-        --plot-mode ${plot_mode} \\
+        --mode ${output_mode} \\
         ${args} \\
         < ${vcf} \\
-        > ${prefix}.json
+        ${output_cmd}
 
     // --coding-genome-size 3e7 --events SOMATIC_TUMOR --sample tumor
     // probably needs to be added
