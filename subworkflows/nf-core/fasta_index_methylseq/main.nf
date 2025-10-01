@@ -1,6 +1,7 @@
 include { UNTAR                     } from '../../../modules/nf-core/untar/main'
 include { GUNZIP                    } from '../../../modules/nf-core/gunzip/main'
-include { BISMARK_GENOMEPREPARATION } from '../../../modules/nf-core/bismark/genomepreparation/main'
+include { BISMARK_GENOMEPREPARATION as BISMARK_GENOMEPREPARATION_BOWTIE } from '../../../modules/nf-core/bismark/genomepreparation/main'
+include { BISMARK_GENOMEPREPARATION as BISMARK_GENOMEPREPARATION_HISAT } from '../../../modules/nf-core/bismark/genomepreparation/main'
 include { BWAMETH_INDEX             } from '../../../modules/nf-core/bwameth/index/main'
 include { BWA_INDEX                 } from '../../../modules/nf-core/bwa/index/main'
 include { SAMTOOLS_FAIDX            } from '../../../modules/nf-core/samtools/faidx/main'
@@ -62,11 +63,20 @@ workflow FASTA_INDEX_METHYLSEQ {
             ch_bismark_index = ch_bismark_index_branched.unzipped.mix(UNTAR.out.untar)
             ch_versions      = ch_versions.mix(UNTAR.out.versions)
         } else {
-            BISMARK_GENOMEPREPARATION (
+
+            if( aligner == "bismark_hisat") {
+                BISMARK_GENOMEPREPARATION_HISAT (
                 ch_fasta
-            )
-            ch_bismark_index = BISMARK_GENOMEPREPARATION.out.index
-            ch_versions      = ch_versions.mix(BISMARK_GENOMEPREPARATION.out.versions)
+                )
+                ch_bismark_index = BISMARK_GENOMEPREPARATION_HISAT.out.index
+                ch_versions      = ch_versions.mix(BISMARK_GENOMEPREPARATION_HISAT.out.versions)
+            } else {
+                BISMARK_GENOMEPREPARATION_BOWTIE (
+                    ch_fasta
+                )
+                ch_bismark_index = BISMARK_GENOMEPREPARATION_BOWTIE.out.index
+                ch_versions      = ch_versions.mix(BISMARK_GENOMEPREPARATION_BOWTIE.out.versions)
+            }
         }
     }
 
