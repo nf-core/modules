@@ -12,9 +12,10 @@ process PARABRICKS_STARFUSION {
     tuple val(meta1), path(genome_lib_dir)
 
     output:
-    tuple val(meta), path("*_starfusion"),  emit: out_dir
-    path "versions.yml",                    emit: versions
-    path "compatible_versions.yml",         emit: compatible_versions, optional: true
+    tuple val(meta), path("*/fusion_predictions.tsv"),              emit: fusions
+    tuple val(meta), path("*/fusion_predictions.abridged.tsv"),     emit: abridged
+    path "versions.yml",                                            emit: versions
+    path "compatible_versions.yml",                                 emit: compatible_versions, optional: true
 
     when:
     task.ext.when == null || task.ext.when

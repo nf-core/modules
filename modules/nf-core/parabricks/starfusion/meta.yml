@@ -36,18 +36,26 @@ input:
         pattern: "*"
         ontologies: []
 output:
-  out_dir:
+  fusions:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_starfusion":
-          type: directory
-          description: Path to the directory that will contain all of the
-            generated files.
-          pattern: "*_starfusion"
-          ontologies: []
+      - "*/fusion_predictions.tsv":
+          type: file
+          description: Fusion events from STAR-fusion
+          pattern: "*/fusion_predictions.tsv"
+  abridged:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*/fusion_predictions.abridged.tsv":
+          type: file
+          description: Abridged version of fusion events from STAR-fusion
+          pattern: "*/fusion_predictions.abridged.tsv"
   versions:
     - versions.yml:
         type: file
