@@ -19,8 +19,8 @@ process BWAMEM2_MEM {
     tuple val(meta), path("*.cram") , emit: cram, optional:true
     tuple val(meta), path("*.crai") , emit: crai, optional:true
     tuple val(meta), path("*.csi")  , emit: csi , optional:true
-    tuple val("${task.process}"), val('bwa-mem2'), eval("bwa-mem2 version 2>&1 | tail -1"),                            topic: versions, emit: versions1
-    tuple val("${task.process}"), val('samtools'), eval("samtools --version 2>&1 | head -1 | sed 's/^.*samtools //'"), topic: versions, emit: versions2
+    tuple val("${task.process}"), val('bwa-mem2'), eval("bwa-mem2 version 2>&1 | tail -1"),                            topic: versions, emit: versions_bwamem2
+    tuple val("${task.process}"), val('samtools'), eval("samtools --version 2>&1 | head -1 | sed 's/^.*samtools //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when

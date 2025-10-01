@@ -39,7 +39,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.model, process.out.versions).match() }
+                { assert snapshot(process.out.model, process.out.findAll { key, val -> key.startsWith("versions")}).match() }
             )
         }
     }
@@ -97,7 +97,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.model, process.out.versions).match() },
+                { assert snapshot(process.out.model, process.out.findAll { key, val -> key.startsWith("versions")}).match() },
                 { assert path(process.out.session_info[0][1]).getText().contains("limma_3.58.1") },
                 { assert path(process.out.results[0][1]).getText().contains("1007_s_at\t-0.2775254") },
                 { assert path(process.out.results[0][1]).getText().contains("1053_at\t-0.071547786") }
@@ -159,7 +159,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.model, process.out.versions).match() },
+                { assert snapshot(process.out.model, process.out.findAll { key, val -> key.startsWith("versions")}).match() },
                 { assert path(process.out.session_info[0][1]).getText().contains("limma_3.58.1") },
                 { assert path(process.out.results[0][1]).getText().contains("1007_s_at\t-0.27752") },
                 { assert path(process.out.results[0][1]).getText().contains("1053_at\t-0.0715477") }
@@ -221,7 +221,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.model, process.out.versions).match() },
+                { assert snapshot(process.out.model, process.out.findAll { key, val -> key.startsWith("versions")}).match() },
                 { assert path(process.out.session_info[0][1]).getText().contains("limma_3.58.1") },
                 { assert path(process.out.results[0][1]).getText().contains("1007_s_at\t-0.4778282") },
                 { assert path(process.out.results[0][1]).getText().contains("1053_at\t-0.08958278") }
@@ -284,7 +284,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.model, process.out.versions).match() },
+                { assert snapshot(process.out.model, process.out.findAll { key, val -> key.startsWith("versions")}).match() },
                 { assert path(process.out.session_info[0][1]).getText().contains("limma_3.58.1") },
                 { assert path(process.out.results[0][1]).getText().contains("1007_s_at\t-0.2775254") },
                 { assert path(process.out.results[0][1]).getText().contains("1053_at\t-0.071547786") }
@@ -312,7 +312,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.model, process.out.versions).match() },
+                { assert snapshot(process.out.model, process.out.findAll { key, val -> key.startsWith("versions")}).match() },
                 { assert path(process.out.results[0][1]).getText().contains("ENSMUSG00000023978\t-4.89014922224241") },
                 { assert path(process.out.results[0][1]).getText().contains("ENSMUSG00000059991\t0.77922") },
                 { assert path(process.out.normalised_counts[0][1]).getText().contains("ENSMUSG00000023978\t6.11247620232167") },
@@ -341,7 +341,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.model, process.out.versions).match() },
+                { assert snapshot(process.out.model, process.out.findAll { key, val -> key.startsWith("versions")}).match() },
                 { assert path(process.out.results[0][1]).getText().contains("ENSMUSG00000023978\t-2.84055986312942") },
                 { assert path(process.out.results[0][1]).getText().contains("ENSMUSG00000059991\t0.7055") },
                 { assert path(process.out.normalised_counts[0][1]).getText().contains("ENSMUSG00000023978\t6.11247620232167") },
@@ -370,7 +370,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.model, process.out.versions).match() },
+                { assert snapshot(process.out.model, process.out.findAll { key, val -> key.startsWith("versions")}).match() },
                 { assert path(process.out.results[0][1]).getText().contains("ENSMUSG00000023978\t-2.8363444336503") },
                 { assert path(process.out.results[0][1]).getText().contains("ENSMUSG00000059991\t0.7360") },
                 { assert path(process.out.normalised_counts[0][1]).getText().contains("ENSMUSG00000023978\t6.11247620232167") },
@@ -398,7 +398,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot([process.out.results, process.out.model, process.out.normalised_counts, process.out.versions]).match() }
+                { assert snapshot([process.out.results, process.out.model, process.out.normalised_counts, process.out.findAll { key, val -> key.startsWith("versions") }]).match() }
             )
         }
     }

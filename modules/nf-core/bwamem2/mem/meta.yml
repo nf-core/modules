@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: bwamem2_mem
 description: Performs fastq alignment to a fasta reference using BWA
 keywords:
@@ -118,7 +119,7 @@ output:
           description: Index file for BAM file
           pattern: "*.{csi}"
           ontologies: []
-  versions1:
+  versions_bwamem2:
     - - ${task.process}:
           type: string
           description: The process the versions were collected from
@@ -128,7 +129,7 @@ output:
       - bwa-mem2 version 2>&1 | tail -1:
           type: string
           description: The command used to generate the version of the tool
-  versions2:
+  versions_samtools:
     - - ${task.process}:
           type: string
           description: The process the versions were collected from
@@ -138,6 +139,17 @@ output:
       - samtools --version 2>&1 | head -1 | sed 's/^.*samtools //':
           type: string
           description: The command used to generate the version of the tool
+topics:
+  - versions:
+      - - process:
+            type: string
+            description: The process the versions were collected from
+        - tool:
+            type: string
+            description: The tool name
+        - version:
+            type: string
+            description: The version of the tool
 authors:
   - "@maxulysse"
   - "@matthdsm"
