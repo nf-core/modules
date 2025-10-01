@@ -1,5 +1,8 @@
 name: "varlociraptor_estimatemutationalburden"
-description: Varlociraptor enables an uncertainty aware computation of the mutational burden (or tumor mutational burden (TMB) in a tumor context). Mutational burden is usually defined as the number of non-synonymous coding mutations per megabase of the measured coding genome (in tumor context restricted to e.g. somatic mutations)
+description: Varlociraptor enables an uncertainty aware computation of the mutational
+  burden (or tumor mutational burden (TMB) in a tumor context). Mutational burden
+  is usually defined as the number of non-synonymous coding mutations per megabase
+  of the measured coding genome (in tumor context restricted to e.g. somatic mutations)
 keywords:
   - estimation
   - mutational burden
@@ -23,7 +26,9 @@ input:
           e.g. [ id:'test', single_end:false ]
     - vcf:
         type: file
-        description: The input file has to be a VCF/BCF file that has been obtained from Varlociraptor and annotated with e.g. SnpEff, such that Varlociraptor can select non-synonymous coding mutations.
+        description: The input file has to be a VCF/BCF file that has been obtained
+          from Varlociraptor and annotated with e.g. SnpEff, such that Varlociraptor
+          can select non-synonymous coding mutations.
         pattern: "*.{vcf,bcf,vcf.gz}"
         ontologies:
           - edam: http://edamontology.org/format_3016 # VCF
@@ -42,6 +47,18 @@ output:
           type: file
           description: Table containing mutational burden estimates
           pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  svg:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.svg":
+          type: file
+          description: Plot containing mutational burden estimates
+          pattern: "*.svg"
           ontologies: []
   versions:
     - versions.yml:

@@ -24,7 +24,6 @@ process VARLOCIRAPTOR_ESTIMATEMUTATIONALBURDEN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def output_cmd = output_mode == 'curve' ? "| vg2svg > ${prefix}.svg" : "> ${prefix}.tsv"
     """
-    varlociraptor estimate mutational-burden --coding-genome-size 3e7 --events SOMATIC_TUMOR --sample tumor < calls.bcf > tmb.tsv
     varlociraptor estimate mutational-burden \\
         --coding-genome-size 3e7 --events SOMATIC_TUMOR --sample tumor \\
         --mode ${output_mode} \\
@@ -44,8 +43,9 @@ process VARLOCIRAPTOR_ESTIMATEMUTATIONALBURDEN {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def output_cmd = output_mode == 'curve' ? "touch ${prefix}.svg" : "touch ${prefix}.tsv"
     """
-    touch ${prefix}.json
+    ${output_cmd}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
