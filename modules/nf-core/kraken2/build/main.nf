@@ -30,7 +30,7 @@ process KRAKEN2_BUILD {
         --threads ${task.cpus} \\
         --db database/
 
-    ${runclean}
+    ${run_clean}
 
     mv database/ ${prefix}/
 
