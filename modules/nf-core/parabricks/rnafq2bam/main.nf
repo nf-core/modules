@@ -16,7 +16,7 @@ process PARABRICKS_RNAFQ2BAM {
     output:
     tuple val(meta), path("*.bam"),                                 emit: bam
     tuple val(meta), path("*.bai"),                                 emit: bai
-    tuple val(meta), path("${meta.id}/Chimeric.out.junction"),      emit: junction, optional: true
+    tuple val(meta), path("*/Chimeric.out.junction"),               emit: junction, optional: true
     path "versions.yml",                                            emit: versions
 
     when:
