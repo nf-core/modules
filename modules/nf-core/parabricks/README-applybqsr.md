@@ -1,3 +1,0 @@
-# Parabricks applybqsr
-
-TBD.
