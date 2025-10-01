@@ -102,7 +102,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(process.out.versions).match() },
-                { assert path(process.out.output.get(0).get(1)).readLines().first().contains("## ENSEMBL VARIANT EFFECT PREDICTOR v115.1") }
+                { assert path(process.out.output.get(0).get(1)).readLines().first().contains("## ENSEMBL VARIANT EFFECT PREDICTOR v115.2") }
             )
         }
     }
