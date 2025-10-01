@@ -32,7 +32,7 @@ process SAWFISH_JOINTCALL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def sample_args = sample_csv ? '' : sample_dirs.collect { "--sample ${it}" }.join(' ')
+    def sample_args = sample_csv ? '' : sample_dirs.sort { dir -> dir.name }.collect { dir -> "--sample ${dir}" }.join(' ')
     def sample_csv_arg = sample_csv ? "--sample-csv ${sample_csv}" : ""
     if (sample_args && sample_csv_arg) {
         throw new IllegalArgumentException("--sample-csv cannot be used together with --sample; choose one input method.")
