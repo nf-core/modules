@@ -20,12 +20,12 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
                 ])
                 input[1] = Channel.of([
-                    [ id:'fasta' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                ])
+                    [:], // meta map
+                    []
+                ])      
                 input[2] = Channel.of([
-                    [ id:'fai' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                    [:], // meta map
+                    []
                 ])
                 """
             }
@@ -68,6 +68,65 @@ nextflow_process {
             )
         }
     }
+
+    test("test_samtools_coverage_cram_no_fasta") {
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id: 'test', single_end: false], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
+                    [:], // meta map
+                    []
+                ])
+                input[2] = Channel.of([
+                    [ id:'fai' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.stdout.toString().contains("CRAM input file provided but no reference FASTA and/or FAI index for said reference, both are required for CRAM input.") },
+            )
+        }
+    }
+
+    test("test_samtools_coverage_cram_no_fai") {
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id: 'test', single_end: false], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
+                    [ id:'fasta' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = Channel.of([
+                    [:], // meta map
+                    []
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.stdout.toString().contains("CRAM input file provided but no reference FASTA and/or FAI index for said reference, both are required for CRAM input.") },
+            )
+        }
+    }    
+
 
     test("test_samtools_coverage_stub") {
 
