@@ -62,7 +62,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out,
-                    path(process.out.versions.get(0).yaml
+                    path(process.out.versions.get(0)).yaml
                 ).match() }
             )
         }

@@ -27,24 +27,43 @@
     },
     "slamdunk - map - fastq - stub": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true
-                    },
-                    "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    "versions.yml:md5,a1d909b69b4f1672b4d058e55c895583"
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,a1d909b69b4f1672b4d058e55c895583"
                 ]
-            ],
-            [
-                "versions.yml:md5,a1d909b69b4f1672b4d058e55c895583"
-            ]
+            },
+            {
+                "SLAMDUNK_MAP": {
+                    "slamdunk": "0.4.3"
+                }
+            }
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.04.2"
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2025-08-28T16:38:09.336767"
+        "timestamp": "2025-10-01T21:21:25.614899787"
     },
     "slamdunk - map - bam - stub": {
         "content": [
