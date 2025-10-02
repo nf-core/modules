@@ -24,7 +24,7 @@ workflow FASTA_BUILD_ADD_KRAKEN2_BRACKEN {
     KRAKEN2_ADD(ch_fasta, ch_taxonomy_names, ch_taxonomy_nodes, ch_accession2taxid, ch_custom_seqid2taxid)
     ch_versions = ch_versions.mix(KRAKEN2_ADD.out.versions.first())
 
-    KRAKEN2_BUILD(KRAKEN2_ADD.out.db, val_cleanup)
+    KRAKEN2_BUILD(KRAKEN2_ADD.out.library_added_files, KRAKEN2_ADD.out.seqid2taxid_map.ifEmpty([[:], []]), KRAKEN2_ADD.out.taxonomy_files, val_cleanup)
     ch_versions = ch_versions.mix(KRAKEN2_BUILD.out.versions.first())
 
     if (val_runbrackenbuild) {
