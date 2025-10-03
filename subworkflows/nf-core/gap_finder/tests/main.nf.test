@@ -18,7 +18,7 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
                 ])
                 """
             }
@@ -26,7 +26,7 @@ nextflow_workflow {
 
         then {
             assertAll(
-                { assert workflow.success }
+                { assert workflow.success },
                 { assert snapshot(workflow.out).match() }
             )
         }
@@ -39,7 +39,7 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
                 ])
                 """
             }
@@ -47,7 +47,7 @@ nextflow_workflow {
 
         then {
             assertAll(
-                { assert workflow.success }
+                { assert workflow.success },
                 { assert snapshot(workflow.out).match() }
             )
         }
