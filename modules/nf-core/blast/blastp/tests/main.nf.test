@@ -39,8 +39,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.tsv).match("tsv_default") },
-                { assert snapshot(process.out.versions).match("versions_tsv_default") }
+                { assert snapshot(process.out).match() }
             )
         }
 
@@ -64,8 +63,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.tsv).match("gz_tsv_default") },
-                { assert snapshot(process.out.versions).match("versions_gz_tsv_default") }
+                { assert snapshot(process.out).match() }
             )
         }
 
@@ -89,8 +87,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.xml).match("xml") },
-                { assert snapshot(process.out.versions).match("versions_xml") }
+                { assert snapshot(process.out).match() }
             )
         }
 
@@ -114,8 +111,31 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.tsv).match("tsv") },
-                { assert snapshot(process.out.versions).match("versions_tsv") }
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("Should search for proteins against a blast db and return a tsv.gz file with hits") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
+                input[1] = BLAST_MAKEBLASTDB.out.db
+                input[2] = 'tsv.gz'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
             )
         }
 
@@ -139,8 +159,33 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.csv).match("csv") },
-                { assert snapshot(process.out.versions).match("versions_csv") }
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("Should search for proteins against a blast db and return a tsv.gz file with hits - stub") {
+
+        options '-stub'
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ]
+                input[1] = BLAST_MAKEBLASTDB.out.db
+                input[2] = 'tsv.gz'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
             )
         }
 
