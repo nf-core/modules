@@ -33,11 +33,8 @@ nextflow_workflow {
     }
 
     test("sarscov2 genome - stub") {
-
         options "-stub"
-
         when {
-
             workflow {
                 """
                 input[0] = Channel.of([
