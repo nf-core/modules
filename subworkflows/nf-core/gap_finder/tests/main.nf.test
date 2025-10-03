@@ -1,0 +1,58 @@
+nextflow_workflow {
+
+    name "Test Subworkflow GAP_FINDER"
+    script "../main.nf"
+    config "./nextflow.config"
+    workflow "GAP_FINDER"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/gap_finder"
+    tag "seqtk_cutn"
+    tag "gawk"
+
+    test("sarscov2 genome [fasta]") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success }
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2 genome - stub") {
+
+        options "-stub"
+
+        when {
+
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success }
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+}

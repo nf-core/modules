@@ -1,0 +1,36 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "gap_finder"
+description: Generated a bed file containing gaps and their length
+keywords:
+  - gap
+  - bed
+  - adapters
+  - trimming
+  - fasta
+components:
+  - seqtk_cutn
+  - gawk
+input:
+  - ch_reference:
+      type: file
+      description: |
+        Structure [ val(meta), path(reference) ]
+        Meta is the Groovy Map containing sample information
+        Reference is the fasta for analysis
+output:
+  - meta:
+      type: string
+      description: Groovy Map containing sample information e.g. [ id:'test', single_end:false ]
+  - gap_file:
+      type: file
+      description: |
+        Structure: [ val(meta), path(gap_file) ]
+        Bed file containing gap location and lengths
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@DLBPointon"
+maintainers:
+  - "@DLBPointon"
