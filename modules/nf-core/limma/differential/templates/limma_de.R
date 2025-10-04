@@ -566,13 +566,8 @@ sink()
 r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
 limma.version <- as.character(packageVersion('limma'))
 
-writeLines(
-    c(
-        '"${task.process}":',
-        paste('    r-base:', r.version),
-        paste('    bioconductor-limma:', limma.version)
-    ),
-'versions.yml')
+Sys.setenv('R_BASE_VERSION' = r.version)
+Sys.setenv('BIOCONDUCTOR_LIMMA_VERSION' = limma.version)
 
 ################################################
 ################################################
