@@ -5,7 +5,7 @@ process CHECKM_LINEAGEWF {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/checkm-genome:1.2.3--pyhdfd78af_1' :
-        'biocontainers/checkm-genome:1.2.3--pyhdfd78af_1' }"
+        'biocontainers/checkm-genome:1.2.4--pyhdfd78af_1' }"
 
     input:
     tuple val(meta), path(fasta, stageAs: "input_bins/*")
