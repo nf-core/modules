@@ -22,12 +22,11 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.index,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    ['versions', process.out[1]]
                 ).match() }
             )
         }
@@ -49,12 +48,11 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.index,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    ['versions', process.out[1]]
                 ).match() }
             )
         }
