@@ -16,11 +16,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map                                                                                                                           
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/amrfinderplus/test_output.tsv", checkIfExists: true)                              
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/amrfinderplus/test_output_prot.tsv", checkIfExists: true)                              
                 ]
                 input[1] = 'tsv'
-                input[2] = '3.10.30'
-                input[3] = '2022-05-26.1'
+                input[2] = '4.0.23'
+                input[3] = '2025-07-16.1'
                 """
             }
         }
@@ -43,11 +43,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map                                                                                                                           
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/amrfinderplus/test_output.tsv", checkIfExists: true)                              
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/amrfinderplus/test_output_prot.tsv", checkIfExists: true)                              
                 ]
                 input[1] = 'tsv'
-                input[2] = '3.10.30'
-                input[3] = '2022-05-26.1'
+                input[2] = '4.0.23'
+                input[3] = '2025-07-16.1'
                 """
             }
         }
