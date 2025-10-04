@@ -9,8 +9,9 @@ process PURECN_RUN {
         'community.wave.seqera.io/library/bioconductor-dnacopy_bioconductor-org.hs.eg.db_bioconductor-purecn_bioconductor-txdb.hsapiens.ucsc.hg19.knowngene_pruned:cc846801cfba58d6' }"
 
     input:
-    tuple val(meta), path(intervals), path(coverage)
+    tuple val(meta), path(intervals), path(coverage), path(vcf)
     path normal_db
+    path mapping_bias
     val genome
 
     output:
@@ -33,6 +34,9 @@ process PURECN_RUN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def vcf_opt = vcf ? "--vcf ${vcf}": ''
+    def mapping_bias_opt = mapping_bias ? "--mapping-bias-file ${mapping_bias}": ''
+    def normaldb_opt = normal_db ? "--normaldb ${normal_db}": ''
     def VERSION = '2.12.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
@@ -46,7 +50,9 @@ process PURECN_RUN {
         --genome ${genome} \\
         --parallel \\
         --cores ${task.cpus} \\
-        --stats-file ${prefix}_stats.txt \\
+        ${normaldb_opt} \\
+        ${mapping_bias_opt} \\
+        ${vcf_opt} \\
         ${args}
 
     cat <<-END_VERSIONS > versions.yml
