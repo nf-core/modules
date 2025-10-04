@@ -141,7 +141,11 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
     // not returning the full normalized matrix as NORM modules would do.
     norm_inputs = ch_input
         .combine(ch_samplesheet_with_control, by:0)
-        .join(ch_contrasts.transpose()) // by using join instead of combine, it only returns the inner join with the first contrast
+        .combine(ch_contrasts.transpose(), by:0)
+        .groupTuple()
+        .map { meta, abundance_list, method_list, fc_list, stat_list, samplesheet_list, transcript_list, control_list, contrast_meta_list, var_list, ref_list, target_list, formula_list, comp_list ->
+            tuple(meta, abundance_list[0], method_list[0], fc_list[0], stat_list[0], samplesheet_list[0], transcript_list[0], control_list[0], contrast_meta_list[0], var_list[0], ref_list[0], target_list[0], formula_list[0], comp_list[0])
+        }
         .multiMap(criteria)
 
     // ----------------------------------------------------
