@@ -1,0 +1,209 @@
+name: "diann_finalquantification"
+description: |
+  Perform final quantification and summarization of DIA-NN analysis results.
+  This module generates comprehensive reports and matrices from individual analysis results using DIA-NN software for data-independent acquisition (DIA) proteomics data processing.
+  Output materials should include attribution: "Generated using DIA-NN".
+keywords:
+  - diann
+  - final quantification
+  - proteomics
+  - dia
+  - summarization
+tools:
+  - "diann":
+      description: |
+        DIA-NN is a universal software for data-independent acquisition (DIA) proteomics data processing.
+        It performs final quantification and generates comprehensive reports and matrices.
+      homepage: "https://github.com/vdemichev/DiaNN"
+      documentation: "https://github.com/vdemichev/DiaNN"
+      tool_dev_url: "https://github.com/vdemichev/DiaNN"
+      doi: "10.1038/s41592-020-01009-0"
+      licence: ["https://github.com/vdemichev/DiaNN/blob/1.8.1/LICENSE.txt"]
+      identifier: "biotools:diann"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing experiment information
+          e.g. `[ experiment_id:'exp1' ]`
+    - ms_files:
+        type: file
+        description: Mass spectrometry data files in mzML format (names only, files not staged)
+        pattern: "*.{mzML,mzml}"
+        ontologies:
+          - edam: http://edamontology.org/format_3240 # mzML format
+    - empirical_library:
+        type: file
+        description: Empirical spectral library from DIA-NN analysis
+        pattern: "*.{tsv,speclib}"
+        ontologies:
+          - edam: http://edamontology.org/format_3240 # Spectral library format
+    - "quant/":
+        type: file
+        description: Quantification files from individual DIA-NN analysis
+        pattern: "*.quant"
+        ontologies:
+          - edam: http://edamontology.org/format_2330 # Text format
+    - fasta:
+        type: file
+        description: Protein sequence database in FASTA format
+        pattern: "*.{fasta,fa}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA format
+output:
+  main_report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing experiment information
+            e.g. `[ experiment_id:'exp1' ]`
+      - "diann_report.tsv":
+          type: file
+          description: Main DIA-NN report with precursor and protein IDs
+          pattern: "diann_report.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Text format
+  report_parquet:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing experiment information
+            e.g. `[ experiment_id:'exp1' ]`
+      - "diann_report.parquet":
+          type: file
+          description: DIA-NN report in Parquet format
+          pattern: "diann_report.parquet"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Text format
+  report_manifest:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing experiment information
+            e.g. `[ experiment_id:'exp1' ]`
+      - "diann_report.manifest.txt":
+          type: file
+          description: DIA-NN report manifest file
+          pattern: "diann_report.manifest.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Text format
+  protein_description:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing experiment information
+            e.g. `[ experiment_id:'exp1' ]`
+      - "diann_report.protein_description.tsv":
+          type: file
+          description: Protein description information
+          pattern: "diann_report.protein_description.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Text format
+  report_stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing experiment information
+            e.g. `[ experiment_id:'exp1' ]`
+      - "diann_report.stats.tsv":
+          type: file
+          description: DIA-NN analysis statistics
+          pattern: "diann_report.stats.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Text format
+  pr_matrix:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing experiment information
+            e.g. `[ experiment_id:'exp1' ]`
+      - "diann_report.pr_matrix.tsv":
+          type: file
+          description: Precursor-level quantification matrix
+          pattern: "diann_report.pr_matrix.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Text format
+  pg_matrix:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing experiment information
+            e.g. `[ experiment_id:'exp1' ]`
+      - "diann_report.pg_matrix.tsv":
+          type: file
+          description: Protein group-level quantification matrix
+          pattern: "diann_report.pg_matrix.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Text format
+  gg_matrix:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing experiment information
+            e.g. `[ experiment_id:'exp1' ]`
+      - "diann_report.gg_matrix.tsv":
+          type: file
+          description: Gene group-level quantification matrix
+          pattern: "diann_report.gg_matrix.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Text format
+  unique_gene_matrix:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing experiment information
+            e.g. `[ experiment_id:'exp1' ]`
+      - "diann_report.unique_genes_matrix.tsv":
+          type: file
+          description: Unique gene-level quantification matrix
+          pattern: "diann_report.unique_genes_matrix.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Text format
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing experiment information
+            e.g. `[ experiment_id:'exp1' ]`
+      - "diannsummary.log":
+          type: file
+          description: DIA-NN summary log file
+          pattern: "diannsummary.log"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Text format
+  final_speclib:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing experiment information
+            e.g. `[ experiment_id:'exp1' ]`
+      - "empirical_library.tsv":
+          type: file
+          description: Final empirical spectral library
+          pattern: "empirical_library.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3240 # Spectral library format
+  skyline_speclib:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing experiment information
+            e.g. `[ experiment_id:'exp1' ]`
+      - "empirical_library.tsv.skyline.speclib":
+          type: file
+          description: Skyline-compatible spectral library
+          pattern: "empirical_library.tsv.skyline.speclib"
+          ontologies:
+            - edam: http://edamontology.org/format_3240 # Spectral library format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@daichengxin"
+  - "@pinin4fjords"
+maintainers:
+  - "@daichengxin"

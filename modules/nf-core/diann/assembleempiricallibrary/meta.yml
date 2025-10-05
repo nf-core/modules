@@ -1,0 +1,83 @@
+name: "diann_assembleempiricallibrary"
+description: |
+  Assemble empirical spectral library from preliminary DIA-NN analysis results.
+  This module combines quantification results from multiple files to create an empirical spectral library using DIA-NN software for data-independent acquisition (DIA) proteomics data processing.
+  Output materials should include attribution: "Generated using DIA-NN".
+keywords:
+  - diann
+  - empirical library
+  - proteomics
+  - dia
+  - spectral library
+tools:
+  - "diann":
+      description: |
+        DIA-NN is a universal software for data-independent acquisition (DIA) proteomics data processing.
+        It assembles empirical spectral libraries from quantification results.
+      homepage: "https://github.com/vdemichev/DiaNN"
+      documentation: "https://github.com/vdemichev/DiaNN"
+      tool_dev_url: "https://github.com/vdemichev/DiaNN"
+      doi: "10.1038/s41592-020-01009-0"
+      licence: ["https://github.com/vdemichev/DiaNN/blob/1.8.1/LICENSE.txt"]
+      identifier: "biotools:diann"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing experiment information
+          e.g. `[ experiment_id:'exp1' ]`
+    - ms_files:
+        type: file
+        description: Mass spectrometry data files in mzML format
+        pattern: "*.{mzML,mzml}"
+        ontologies:
+          - edam: http://edamontology.org/format_3240 # mzML format
+    - "quant/*":
+        type: file
+        description: Quantification files from preliminary DIA-NN analysis
+        pattern: "*.quant"
+        ontologies:
+          - edam: http://edamontology.org/format_2330 # Text format
+    - lib:
+        type: file
+        description: Input spectral library file
+        pattern: "*.{tsv,speclib}"
+        ontologies:
+          - edam: http://edamontology.org/format_3240 # Spectral library format
+output:
+  empirical_library:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing experiment information
+            e.g. `[ experiment_id:'exp1' ]`
+      - "empirical_library.*":
+          type: file
+          description: Empirical spectral library assembled from quantification results
+          pattern: "empirical_library.*"
+          ontologies:
+            - edam: http://edamontology.org/format_3240 # Spectral library format
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing experiment information
+            e.g. `[ experiment_id:'exp1' ]`
+      - "assemble_empirical_library.log":
+          type: file
+          description: DIA-NN log file
+          pattern: "assemble_empirical_library.log"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Text format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@daichengxin"
+  - "@pinin4fjords"
+maintainers:
+  - "@daichengxin"

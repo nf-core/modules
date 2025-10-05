@@ -1,0 +1,68 @@
+nextflow_process {
+
+    name "Test Process DIANN_FINALQUANTIFICATION"
+    script "../main.nf"
+    process "DIANN_FINALQUANTIFICATION"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "diann"
+    tag "diann/finalquantification"
+
+    test("proteomics - final quantification") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [experiment_id:'test_exp'],
+                    ['RD139_Narrow_UPS1_0_1fmol_inj1.mzML'],
+                    file(params.modules_testdata_base_path + 'proteomics/diann/empirical_library.speclib', checkIfExists: true),
+                    [file(params.modules_testdata_base_path + 'proteomics/diann/individual_analysis.quant', checkIfExists: true)],
+                    file(params.modules_testdata_base_path + 'proteomics/diann/REF_EColi_K12_UPS1_combined_subset_100.fasta', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path("${process.out.log[0][1]}").exists() },
+                { assert snapshot(
+                    process.out.report_stats,
+                    process.out.pr_matrix,
+                    process.out.pg_matrix,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("proteomics - final quantification - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [experiment_id:'test_exp'],
+                    ['RD139_Narrow_UPS1_0_1fmol_inj1.mzML'],
+                    file(params.modules_testdata_base_path + 'proteomics/diann/empirical_library.speclib', checkIfExists: true),
+                    [file(params.modules_testdata_base_path + 'proteomics/diann/individual_analysis.quant', checkIfExists: true)],
+                    file(params.modules_testdata_base_path + 'proteomics/diann/REF_EColi_K12_UPS1_combined_subset_100.fasta', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

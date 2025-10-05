@@ -1,0 +1,62 @@
+name: "quantmsutils_dianncfg"
+description: |
+  Generate DIA-NN configuration arguments from enzyme and modification parameters.
+  This module uses quantms-utils to convert enzyme and modification specifications into DIA-NN-compatible command-line arguments.
+  It validates modifications against the Unimod database and handles special cases for labeling reagents.
+keywords:
+  - quantms-utils
+  - diann
+  - configuration
+  - enzyme
+  - modifications
+tools:
+  - "quantms-utils":
+      description: |
+        quantms-utils is a Python package with scripts and functions for quantitative proteomics data analysis.
+        The dianncfg command converts enzyme and modification parameters to DIA-NN-compatible format.
+      homepage: "https://github.com/bigbio/quantms-utils"
+      documentation: "https://github.com/bigbio/quantms-utils"
+      tool_dev_url: "https://github.com/bigbio/quantms-utils"
+      licence: ["MIT"]
+      identifier: "biotools:quantms-utils"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - enzyme:
+        type: string
+        description: Enzyme name for protein digestion
+        pattern: ".*"
+    - fixed_modifications:
+        type: string
+        description: Fixed modifications in Unimod format
+        pattern: ".*"
+    - variable_modifications:
+        type: string
+        description: Variable modifications in Unimod format
+        pattern: ".*"
+output:
+  diann_cfg:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing experiment information
+            e.g. `[ experiment_id:'exp1' ]`
+      - stdout:
+          type: string
+          description: DIA-NN configuration arguments as stdout
+          pattern: "*.txt"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@daichengxin"
+  - "@pinin4fjords"
+maintainers:
+  - "@daichengxin"

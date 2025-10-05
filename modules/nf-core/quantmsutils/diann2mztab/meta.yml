@@ -1,0 +1,80 @@
+name: "quantmsutils_diann2mztab"
+description: "Convert DIA-NN results to mzTab, MSstats, and Triqler formats using quantms-utils"
+keywords:
+  - "quantms-utils"
+  - "diann"
+  - "mztab"
+  - "msstats"
+  - "triqler"
+  - "proteomics"
+tools:
+  - "quantms-utils":
+      description: "quantms-utils is a Python package for proteomics data processing"
+      homepage: "https://github.com/bigbio/quantms-utils"
+      documentation: "https://quantms-utils.readthedocs.io/"
+      tool_dev_url: "https://github.com/bigbio/quantms-utils"
+      doi: ""
+      licence: "['MIT']"
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', name:'test', condition:'test' ]
+  - report:
+      type: file
+      description: "DIA-NN main report file (tsv or parquet)"
+      pattern: "*.{tsv,parquet}"
+  - exp_design:
+      type: file
+      description: "Experimental design file"
+      pattern: "*.tsv"
+  - report_pg:
+      type: file
+      description: "DIA-NN protein group report file"
+      pattern: "*.tsv"
+  - report_pr:
+      type: file
+      description: "DIA-NN precursor report file"
+      pattern: "*.tsv"
+  - ms_information:
+      type: file
+      description: "MS information file"
+      pattern: "*.parquet"
+  - fasta:
+      type: file
+      description: "FASTA database file"
+      pattern: "*.{fasta,fa}"
+  - versions:
+      type: file
+      description: "File containing software versions"
+      pattern: "versions.yml"
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', name:'test', condition:'test' ]
+  - versions:
+      type: file
+      description: "File containing software versions"
+      pattern: "versions.yml"
+  - out_msstats:
+      type: file
+      description: "MSstats input file"
+      pattern: "*msstats_in.csv"
+  - out_triqler:
+      type: file
+      description: "Triqler input file"
+      pattern: "*triqler_in.tsv"
+  - out_mztab:
+      type: file
+      description: "mzTab output file"
+      pattern: "*.mzTab"
+  - log:
+      type: file
+      description: "Log file"
+      pattern: "*.log"
+authors:
+  - "@bigbio"
+  - "@nf-core"

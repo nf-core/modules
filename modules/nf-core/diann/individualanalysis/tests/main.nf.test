@@ -1,0 +1,75 @@
+nextflow_process {
+
+    name "Test Process DIANN_INDIVIDUALANALYSIS"
+    script "../main.nf"
+    process "DIANN_INDIVIDUALANALYSIS"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "diann"
+    tag "diann/individualanalysis"
+    tag "untar"
+
+    setup {
+        run("UNTAR") {
+            script "../../../../nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'proteomics/diann/RD139_Narrow_UPS1_0_1fmol_inj1.mzML.tar.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("proteomics - individual analysis") {
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.map{ meta, dir ->  
+                    def mzmlFile = dir.resolve('RD139_Narrow_UPS1_0_1fmol_inj1.mzML')
+                    [meta, mzmlFile, file(params.modules_testdata_base_path + 'proteomics/diann/REF_EColi_K12_UPS1_combined_subset_100.fasta', checkIfExists: true), file(params.modules_testdata_base_path + 'proteomics/diann/empirical_library.speclib', checkIfExists: true)]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path("${process.out.log[0][1]}").exists() },
+                { assert snapshot(
+                    process.out.diann_quant,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("proteomics - individual analysis - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.map{ meta, dir ->  
+                    def mzmlFile = dir.resolve('RD139_Narrow_UPS1_0_1fmol_inj1.mzML')
+                    [meta, mzmlFile, file(params.modules_testdata_base_path + 'proteomics/diann/REF_EColi_K12_UPS1_combined_subset_100.fasta', checkIfExists: true), file(params.modules_testdata_base_path + 'proteomics/diann/empirical_library.speclib', checkIfExists: true)]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
