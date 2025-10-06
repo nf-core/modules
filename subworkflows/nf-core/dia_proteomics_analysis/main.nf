@@ -4,15 +4,9 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-//include { DIANN_INSILICOLIBRARYGENERATION } from '../../../modules/nf-core/diann/insilicolibrarygeneration/main'
-//include { DIANN_PRELIMINARYANALYSIS      } from '../../../modules/nf-core/diann/preliminaryanalysis/main'
-//include { DIANN_ASSEMBLEEMPIRICALLIBRARY } from '../../../modules/nf-core/diann/assembleempiricallibrary/main'
-//include { DIANN_INDIVIDUALANALYSIS       } from '../../../modules/nf-core/diann/individualanalysis/main'
-//include { DIANN_FINALQUANTIFICATION      } from '../../../modules/nf-core/diann/finalquantification/main'
 include { QUANTMSUTILS_DIANNCFG          } from '../../../modules/nf-core/quantmsutils/dianncfg/main'
 include { QUANTMSUTILS_MZMLSTATISTICS    } from '../../../modules/nf-core/quantmsutils/mzmlstatistics/main'
 include { QUANTMSUTILS_DIANN2MZTAB       } from '../../../modules/nf-core/quantmsutils/diann2mztab/main'
-include { MSSTATS_MSSTATSLFQ             } from '../../../modules/nf-core/msstats/msstatslfq/main'
 
 include { DIANN as DIANN_INSILICOLIBRARYGENERATION } from '../../../modules/nf-core/diann/main'
 include { DIANN as DIANN_PRELIMINARYANALYSIS } from '../../../modules/nf-core/diann/main'
