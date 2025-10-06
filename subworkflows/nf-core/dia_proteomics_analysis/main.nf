@@ -14,8 +14,36 @@ include { DIANN as DIANN_ASSEMBLEEMPIRICALLIBRARY } from '../../../modules/nf-co
 include { DIANN as DIANN_INDIVIDUALANALYSIS } from '../../../modules/nf-core/diann/main'
 include { DIANN as DIANN_FINALQUANTIFICATION } from '../../../modules/nf-core/diann/main'
 
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    HELPER FUNCTIONS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+
+/**
+ * Comparator function to sort file paths by filename
+ * 
+ * @param a First file path
+ * @param b Second file path
+ * @return Comparison result for sorting (negative, zero, or positive integer)
+ */
 def sortByFilename = { a, b -> file(a).getName() <=> file(b).getName() }
 
+/**
+ * Sort all lists in a tuple based on the filename order of a reference list
+ * 
+ * This function takes a tuple where the first element is metadata and the remaining
+ * elements are lists. It sorts all lists in the tuple according to the filename order
+ * of the list at the specified index.
+ * 
+ * @param tuple A tuple with structure [meta, list1, list2, ..., listN] where meta is preserved
+ * @param sortIndex The index (1-based) of the list to use as the sorting reference
+ * @return A new tuple with the same structure but all lists sorted by the reference list's filename order
+ * 
+ * Example:
+ *   Input:  [[meta], [file_c, file_a, file_b], [data_c, data_a, data_b]], 1
+ *   Output: [[meta], [file_a, file_b, file_c], [data_a, data_b, data_c]]
+ */
 def sortListsByPathName = { tuple, sortIndex ->
     def meta = tuple[0]
     def sortOrder = tuple[sortIndex].withIndex()
@@ -27,6 +55,20 @@ def sortListsByPathName = { tuple, sortIndex ->
     }
 }
 
+/**
+ * Extract mass accuracy settings from DIA-NN log file
+ * 
+ * Parses the DIA-NN log file to extract recommended mass accuracy settings for MS1 and MS2,
+ * as well as the scan window. These values are extracted from the "Averaged recommended settings"
+ * line in the log output.
+ * 
+ * @param diann_log Path object pointing to the DIA-NN log file
+ * @return Map containing extracted settings with keys:
+ *         - mass_acc_ms1: MS1 mass accuracy (precursor tolerance) in ppm
+ *         - mass_acc_ms2: MS2 mass accuracy (fragment tolerance) in ppm
+ *         - scan_window: Scan window parameter
+ *         Returns null values if the settings line is not found in the log
+ */
 def extractDiannMassAccuracyFromLog = { diann_log ->
     def settingsLine = diann_log.text.split('\n').find { it.contains('Averaged recommended settings') }
     if (settingsLine) {
@@ -40,6 +82,30 @@ def extractDiannMassAccuracyFromLog = { diann_log ->
     return [mass_acc_ms1: null, mass_acc_ms2: null, scan_window: null]
 }
 
+/**
+ * Define mass accuracy settings for DIA-NN analysis
+ * 
+ * Determines the final mass accuracy settings to use based on a combination of:
+ * - Settings extracted from DIA-NN log file (automatic recommendations)
+ * - User-provided workflow parameters
+ * - Tolerance units (must be in ppm for manual settings to be used)
+ * 
+ * The function uses the following priority:
+ * 1. If automatic mass accuracy or scan window is enabled, use log-extracted values
+ * 2. If both tolerances are in ppm units, use user-provided values
+ * 3. Otherwise, fall back to log-extracted values
+ * 
+ * @param logSettings Map of settings extracted from DIA-NN log (mass_acc_ms1, mass_acc_ms2, scan_window)
+ * @param precursor_tolerance User-provided precursor (MS1) tolerance value
+ * @param fragment_tolerance User-provided fragment (MS2) tolerance value
+ * @param precursor_tolerance_unit Unit for precursor tolerance (e.g., "ppm", "Da")
+ * @param fragment_tolerance_unit Unit for fragment tolerance (e.g., "ppm", "Da")
+ * @param wf_scan_window User-provided scan window parameter
+ * @param wf_mass_acc_automatic Boolean flag to enable automatic mass accuracy from log
+ * @param wf_scan_window_automatic Boolean flag to enable automatic scan window from log
+ * @param wf_pg_level Protein group level for DIA-NN analysis
+ * @return Map containing final settings with keys: mass_acc_ms1, mass_acc_ms2, scan_window, pg_level
+ */
 def defineMassAccuracySettings = { logSettings, precursor_tolerance, fragment_tolerance, precursor_tolerance_unit, fragment_tolerance_unit, wf_scan_window, wf_mass_acc_automatic, wf_scan_window_automatic, wf_pg_level ->
     def mass_acc_ms1, mass_acc_ms2, scan_window
     
@@ -77,17 +143,28 @@ workflow DIA_PROTEOMICS_ANALYSIS {
     wf_scan_window_automatic // Boolean: Whether to use automatic scan window from preliminary analysis
     wf_diann_debug           // Boolean: Enable DIA-NN debug output
     wf_pg_level              // String: Protein group level for DIA-NN analysis
-    ch_speclib               // Channel of tuples of val(meta), path(speclib)
-    ch_empirical             // tuple val(meta), path(assembly_log), path(empirical_library)
+    ch_speclib_in            // Channel of path(speclib) to use for all inputs
+    ch_empirical_library_in  // Channel of path(empirical_library) to use for all inputs
+    ch_empirical_log_in      // Channel of path(assembly_log) to use for all inputs
 
     main:
 
     ch_versions = Channel.empty()
     (random_preanalysis, random_preanalysis_n, random_preanalysis_seed) = random_preanalysis ?: [false, null, null]
 
+    //
+    // Generate all combinations of inputs and create channel views with appropriate metadata
+    // This multiMap creates all necessary entity combinations up-front:
+    //   - Experiments + Search databases + Input samples + Optional pre-generated files
+    //   - Multiple channel views are created with different metadata granularities for downstream processes
+    //   - Each view groups data at the appropriate level (per-sample, per-experiment, per-enzyme, etc.)
+    //
     input = ch_expdesign
         .combine(ch_searchdb)
         .combine(ch_input)
+        .combine(ch_speclib_in.ifEmpty(null))
+        .combine(ch_empirical_library_in.ifEmpty(null))
+        .combine(ch_empirical_log_in.ifEmpty(null))
         .multiMap{ 
             meta_exp, 
             expdesign,
@@ -101,7 +178,10 @@ workflow DIA_PROTEOMICS_ANALYSIS {
             precursor_tolerance, 
             fragment_tolerance, 
             precursor_tolerance_unit, 
-            fragment_tolerance_unit ->
+            fragment_tolerance_unit,
+            speclib,
+            empirical_lib,
+            empirical_log ->
 
             def dia_params = [fragment_tolerance, fragment_tolerance_unit, precursor_tolerance, precursor_tolerance_unit, enzyme, fixed_mods, variable_mods].join(';')
             
@@ -131,12 +211,22 @@ workflow DIA_PROTEOMICS_ANALYSIS {
             search_db_by_enzyme: [meta_enzyme_mods, meta_fasta_enzyme, meta_fasta, fasta]
             enzyme_mods: [meta_enzyme_mods, enzyme, fixed_mods, variable_mods]
             mass_tolerance_settings: [meta_input_fasta, precursor_tolerance, fragment_tolerance, precursor_tolerance_unit, fragment_tolerance_unit, ms_file, fasta]
+
+            speclib: [meta_fasta_enzyme, speclib]
+            empirical: [meta_exp_searchdb, empirical_lib, empirical_log]
         }
+
+    ch_speclib = input.speclib.filter{ tuple -> tuple[1] != null }
+    ch_empirical = input.empirical.filter{ tuple -> tuple[1] != null }
 
     //
     // MODULE: Generate DIA-NN configuration. Needs to run once each unique enzyme, fixed modifications, and variable modifications combination.
     //
     // Only run config generation and speclib generation if no speclib is provided
+    // Conditional execution pattern:
+    //   - combine with ifEmpty(null) pairs each input with either existing speclib or null
+    //   - filter keeps only tuples containing null (i.e., no pre-generated speclib exists)
+    //   - downstream processes only execute when needed
 
     ch_config_input = input.enzyme_mods.unique() // [meta_enzyme_mods, enzyme, fixed_mods, variable_mods]
         .combine(ch_speclib.ifEmpty(null))
@@ -164,7 +254,7 @@ workflow DIA_PROTEOMICS_ANALYSIS {
     ch_versions = ch_versions.mix(DIANN_INSILICOLIBRARYGENERATION.out.versions)
 
     // In-silico libraries have been generated for combinations of FASTA and configuration, which 
-    //may have been the same over multiple inputs. Use a combine to annotate inputs with in silico libraries.
+    // may have been the same over multiple inputs. Use a combine to annotate inputs with in silico libraries.
     ch_fasta_input_with_speclib = ch_speclib
         .map{ meta, speclib -> [meta.findAll { key, value -> key != 'config' }, speclib] } // Filter out config from meta to allow the combine by: 0
         .combine(input.ms_file_fasta, by: 0)
@@ -177,6 +267,10 @@ workflow DIA_PROTEOMICS_ANALYSIS {
     //
 
     // We only need to do preliminary analysis and empirical library assembly if no empirical library is provided
+    // Conditional execution pattern:
+    //   - join with remainder: true preserves inputs even if no empirical library exists
+    //   - filter keeps only tuples containing null (i.e., no pre-generated empirical library)
+    //   - downstream processes only execute when needed
 
     preliminary_branches = ch_fasta_input_with_speclib  
         .join(ch_empirical, remainder: true)

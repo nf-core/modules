@@ -25,30 +25,93 @@ tools:
   - "quantms-utils":
       description: |
         quantms-utils is a Python package with scripts and functions for quantitative proteomics data analysis.
-        The dianncfg command converts enzyme and modification parameters to DIA-NN-compatible format.
+        Provides utilities for DIA-NN configuration, mzML statistics, and format conversion to mzTab.
       homepage: "https://github.com/bigbio/quantms-utils"
       documentation: "https://github.com/bigbio/quantms-utils"
       tool_dev_url: "https://github.com/bigbio/quantms-utils"
       licence: ["MIT"]
       identifier: "biotools:quantms-utils"
 input:
-  - - ch_ms_files:
-        type: channel
-        description: |
-          Channel containing tuples of meta maps and mass spectrometry files
-          e.g. `[[id:'sample1'], file('sample1.mzML')]`
-        pattern: "*.{mzML,mzml}"
-    - ch_fasta:
-        type: channel
-        description: |
-          Channel containing tuples of meta maps and protein sequence database in FASTA format
-          e.g. `[[id:'sample1'], file('database.fasta')]`
-        pattern: "*.{fasta,fa}"
-    - ch_enzyme_mods:
-        type: channel
-        description: |
-          Channel containing tuples of meta map, enzyme, fixed modifications, and variable modifications
-          e.g. `[[id:'sample1'], 'Trypsin', 'Carbamidomethyl (C)', 'Oxidation (M)']`
+  - ch_input:
+      type: channel
+      description: |
+        Channel containing tuples of meta maps, mass spectrometry files, and search parameters.
+        Structure: [meta, ms_file, enzyme, fixed_mods, variable_mods, precursor_tolerance,
+        fragment_tolerance, precursor_tolerance_unit, fragment_tolerance_unit]
+        e.g. `[[id:'sample1'], file('sample1.mzML'), 'Trypsin', 'Carbamidomethyl (C)',
+        'Oxidation (M)', 10, 20, 'ppm', 'ppm']`
+      pattern: "*.{mzML,mzml}"
+  - ch_searchdb:
+      type: channel
+      description: |
+        Channel containing tuples of meta maps and protein sequence database in FASTA format.
+        Structure: [meta, fasta]
+        e.g. `[[id:'uniprot_human'], file('uniprot_human.fasta')]`
+      pattern: "*.{fasta,fa}"
+  - ch_expdesign:
+      type: channel
+      description: |
+        Channel containing tuples of meta maps and experimental design files.
+        Structure: [meta, expdesign]
+        e.g. `[[id:'experiment1'], file('design.tsv')]`
+      pattern: "*.tsv"
+  - random_preanalysis:
+      type: tuple
+      description: |
+        Tuple controlling random sampling for preliminary analysis.
+        Structure: [boolean, integer, integer] for [enable_random, n_samples, seed]
+        e.g. `[true, 5, 42]` to randomly sample 5 files with seed 42
+        Set to null or [false, null, null] to use all files
+  - wf_scan_window:
+      type: integer
+      description: |
+        Scan window parameter for DIA-NN individual analysis.
+        Only used if wf_scan_window_automatic is false.
+  - wf_mass_acc_automatic:
+      type: boolean
+      description: |
+        If true, use automatic mass accuracy settings extracted from DIA-NN preliminary analysis log.
+        If false, use user-provided precursor_tolerance and fragment_tolerance from ch_input.
+  - wf_scan_window_automatic:
+      type: boolean
+      description: |
+        If true, use automatic scan window settings extracted from DIA-NN preliminary analysis log.
+        If false, use user-provided wf_scan_window parameter.
+  - wf_diann_debug:
+      type: boolean
+      description: |
+        Enable DIA-NN debug output mode for troubleshooting.
+  - wf_pg_level:
+      type: string
+      description: |
+        Protein group level for DIA-NN analysis.
+        Options: 'genes', 'proteins', etc.
+  - ch_speclib_in:
+      type: channel
+      description: |
+        Optional channel containing pre-generated spectral library file.
+        If provided, skips in-silico library generation.
+        Applied to all samples in the workflow.
+        Structure: path(speclib)
+        e.g. `file('pregenerated.speclib')`
+      pattern: "*.{speclib,tsv}"
+  - ch_empirical_library_in:
+      type: channel
+      description: |
+        Optional channel containing pre-generated empirical library file.
+        If provided, skips preliminary analysis and empirical library assembly.
+        Applied to all samples in the workflow.
+        Structure: path(empirical_library)
+        e.g. `file('empirical_library.tsv')`
+      pattern: "*.{tsv,speclib}"
+  - ch_empirical_log_in:
+      type: channel
+      description: |
+        Optional channel containing assembly log from pre-generated empirical library.
+        Required if ch_empirical_library_in is provided (for extracting mass accuracy settings).
+        Structure: path(assembly_log)
+        e.g. `file('assembly.log')`
+      pattern: "*.log"
 output:
   versions:
     - versions.yml:
@@ -61,11 +124,11 @@ output:
     - - meta:
           type: map
           description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
+            Groovy Map containing experiment and search database information
+            e.g. `[ id:'experiment1_uniprot_human' ]`
       - "*.tsv":
           type: file
-          description: Main DIA-NN report in TSV format
+          description: Main DIA-NN report in TSV format containing quantification results
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV format
@@ -73,100 +136,65 @@ output:
     - - meta:
           type: map
           description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
+            Groovy Map containing experiment and search database information
+            e.g. `[ id:'experiment1_uniprot_human' ]`
       - "*.parquet":
           type: file
-          description: Main DIA-NN report in Parquet format
+          description: Main DIA-NN report in Parquet format containing quantification results
           pattern: "*.parquet"
           ontologies:
             - edam: http://edamontology.org/format_3750 # Parquet format
-  diann_report_stats:
+  mzml_statistics:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.stats.tsv":
+      - "*.json":
           type: file
-          description: DIA-NN report statistics
-          pattern: "*.stats.tsv"
+          description: Statistics extracted from mzML files (scan counts, retention times, etc.)
+          pattern: "*.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON format
+  msstats_in:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing experiment and search database information
+            e.g. `[ id:'experiment1_uniprot_human' ]`
+      - "*_msstats_in.csv":
+          type: file
+          description: MSstats-compatible input file for statistical analysis
+          pattern: "*_msstats_in.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV format
+  out_triqler:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing experiment and search database information
+            e.g. `[ id:'experiment1_uniprot_human' ]`
+      - "*_triqler_in.tsv":
+          type: file
+          description: Triqler-compatible input file for protein quantification with uncertainty
+          pattern: "*_triqler_in.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV format
-  pr_matrix:
+  final_result:
     - - meta:
           type: map
           description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - "*.pr_matrix.tsv":
+            Groovy Map containing experiment and search database information
+            e.g. `[ id:'experiment1_uniprot_human' ]`
+      - "*.mzTab":
           type: file
-          description: Peptide-to-run matrix
-          pattern: "*.pr_matrix.tsv"
+          description: Final quantification results in mzTab format (standard proteomics exchange format)
+          pattern: "*.mzTab"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV format
-  pg_matrix:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - "*.pg_matrix.tsv":
-          type: file
-          description: Protein group matrix
-          pattern: "*.pg_matrix.tsv"
-          ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV format
-  gg_matrix:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - "*.gg_matrix.tsv":
-          type: file
-          description: Gene group matrix
-          pattern: "*.gg_matrix.tsv"
-          ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV format
-  unique_gene_matrix:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - "*.unique_genes_matrix.tsv":
-          type: file
-          description: Unique genes matrix
-          pattern: "*.unique_genes_matrix.tsv"
-          ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV format
-  empirical_library:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - "*.tsv":
-          type: file
-          description: Final empirical spectral library
-          pattern: "*.tsv"
-          ontologies:
-            - edam: http://edamontology.org/format_3240 # Spectral library format
-  log:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - "*.log":
-          type: file
-          description: DIA-NN log file
-          pattern: "*.log"
-          ontologies:
-            - edam: http://edamontology.org/format_2330 # Text format
+            - edam: http://edamontology.org/format_3681 # mzTab format
 authors:
   - "@daichengxin"
   - "@pinin4fjords"
 maintainers:
   - "@daichengxin"
+  - "@pinin4fjords"
