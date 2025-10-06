@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "quantmsutils_dianncfg"
 description: |
   Generate DIA-NN configuration arguments from enzyme and modification parameters.
@@ -27,27 +28,32 @@ input:
           e.g. `[ id:'sample1' ]`
     - enzyme:
         type: string
-        description: Enzyme name for protein digestion
+        description: Enzyme name for protein digestion (e.g., 'Trypsin', 'Trypsin/P')
         pattern: ".*"
     - fixed_modifications:
         type: string
-        description: Fixed modifications in Unimod format
+        description: Fixed modifications in Unimod format (e.g., 'Carbamidomethyl (C)')
         pattern: ".*"
     - variable_modifications:
         type: string
-        description: Variable modifications in Unimod format
+        description: Variable modifications in Unimod format (e.g., 'Oxidation (M)')
         pattern: ".*"
 output:
   diann_cfg:
     - - meta:
           type: map
           description: |
-            Groovy Map containing experiment information
-            e.g. `[ experiment_id:'exp1' ]`
-      - stdout:
-          type: string
-          description: DIA-NN configuration arguments as stdout
-          pattern: "*.txt"
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "diann_config.cfg":
+          type: file
+          description: DIA-NN configuration file containing command-line arguments
+          pattern: "diann_config.cfg"
+  log:
+    - "*.log":
+        type: file
+        description: Log file from configuration generation
+        pattern: "*.log"
   versions:
     - versions.yml:
         type: file
@@ -60,3 +66,4 @@ authors:
   - "@pinin4fjords"
 maintainers:
   - "@daichengxin"
+  - "@pinin4fjords"

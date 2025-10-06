@@ -31,6 +31,11 @@ tools:
       tool_dev_url: "https://github.com/bigbio/quantms-utils"
       licence: ["MIT"]
       identifier: "biotools:quantms-utils"
+components:
+  - diann
+  - quantmsutils/dianncfg
+  - quantmsutils/mzmlstatistics
+  - quantmsutils/diann2mztab
 input:
   - ch_input:
       type: channel
@@ -194,6 +199,7 @@ output:
             - edam: http://edamontology.org/format_3681 # mzTab format
 authors:
   - "@daichengxin"
+  - "@wanghong"
   - "@pinin4fjords"
 maintainers:
   - "@daichengxin"
