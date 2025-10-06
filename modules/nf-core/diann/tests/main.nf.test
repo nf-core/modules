@@ -45,8 +45,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path("${process.out.log[0][1]}").exists() },
+                { assert path("${process.out.predict_speclib[0][1]}").exists() },
                 { assert snapshot(
-                    process.out.predict_speclib,
                     process.out.versions
                 ).match() }
             )
@@ -97,8 +97,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path("${process.out.log[0][1]}").exists() },
+                { assert path("${process.out.empirical_library[0][1]}").exists() },
                 { assert snapshot(
-                    process.out.empirical_library,
                     process.out.versions
                 ).match() }
             )

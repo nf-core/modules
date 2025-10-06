@@ -70,7 +70,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert path("${process.out.diann_report[0][1]}").exists() },
+                { assert path("${process.out.out_triqler[0][1]}").exists() },
+                { assert path("${process.out.final_result[0][1]}").exists() },
+                { assert path("${process.out.mzml_statistics[0][1]}").exists() },
+                { assert snapshot(
+                    process.out.msstats_in,
+                    process.out.versions
+                ).match() }
             )
         }
     }
