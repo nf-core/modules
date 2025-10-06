@@ -1,0 +1,115 @@
+process DIANN {
+    tag "$meta.id"
+    label 'process_high'
+
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://containers.biocontainers.pro/s3/SingImgsRepo/diann/v1.8.1_cv1/diann_v1.8.1_cv1.img' :
+        'docker.io/biocontainers/diann:v1.8.1_cv1' }"
+
+    input:
+    tuple val(meta), path(ms_files), val(ms_file_names), path(fasta), path(library), path(quant, stageAs: 'quant/*')
+
+    output:
+    // Library outputs
+    tuple val(meta), path("*.predicted.speclib"), emit: predict_speclib, optional: true
+    tuple val(meta), path("empirical_library.*"), emit: empirical_library, optional: true
+    tuple val(meta), path("empirical_library.tsv"), emit: final_speclib, optional: true
+    tuple val(meta), path("empirical_library.tsv.skyline.speclib"), emit: skyline_speclib, optional: true
+    
+    // Quantification outputs
+    tuple val(meta), path("*.quant"), emit: diann_quant, optional: true
+    
+    // Report outputs (from final quantification)
+    tuple val(meta), path("diann_report.tsv"), emit: main_report, optional: true
+    tuple val(meta), path("diann_report.parquet"), emit: report_parquet, optional: true
+    tuple val(meta), path("diann_report.manifest.txt"), emit: report_manifest, optional: true
+    tuple val(meta), path("diann_report.protein_description.tsv"), emit: protein_description, optional: true
+    tuple val(meta), path("diann_report.stats.tsv"), emit: report_stats, optional: true
+    tuple val(meta), path("diann_report.pr_matrix.tsv"), emit: pr_matrix, optional: true
+    tuple val(meta), path("diann_report.pg_matrix.tsv"), emit: pg_matrix, optional: true
+    tuple val(meta), path("diann_report.gg_matrix.tsv"), emit: gg_matrix, optional: true
+    tuple val(meta), path("diann_report.unique_genes_matrix.tsv"), emit: unique_gene_matrix, optional: true
+    
+    // Common outputs
+    tuple val(meta), path("*.log.txt"), emit: log
+    path "versions.yml", emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "DIANN module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    
+    // Handle MS files input: use ms_files if provided, otherwise fall back to ms_file_names
+    def ms_input = ''
+    if (ms_files && ms_files != []) {
+        // ms_files provided (actual file paths for preliminary/assembly/individual analysis)
+        ms_input = ms_files instanceof List ? ms_files.collect{ "--f ${it}" }.join(' ') : "--f ${ms_files}"
+    } else if (ms_file_names && ms_file_names != []) {
+        // ms_file_names provided (just basenames for final quantification with --use-quant)
+        ms_input = ms_file_names instanceof List ? ms_file_names.collect{ "--f ${it}" }.join(' ') : "--f ${ms_file_names}"
+    }
+    
+    def fasta_input = fasta && fasta.name != 'NO_FASTA_FILE' ? "--fasta ${fasta}" : ''
+    def lib_input = library && library.name != 'NO_LIB_FILE' ? "--lib ${library}" : ''
+    
+    // Determine temp directory based on whether quant files are provided
+    def temp_dir = quant && quant.name != 'NO_QUANT_DIR' ? "--temp ./quant/" : "--temp ./"
+
+    """
+    diann \\
+        ${ms_input} \\
+        ${fasta_input} \\
+        ${lib_input} \\
+        --threads ${task.cpus} \\
+        ${temp_dir} \\
+        ${args}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        DIA-NN: \$(diann 2>&1 | grep "DIA-NN" | grep -oP "\\d+\\.\\d+(\\.\\w+)*(\\.[\\d]+)?")
+    END_VERSIONS
+    """
+
+    stub:
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "DIANN module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    # Library outputs
+    touch ${prefix}.predicted.speclib
+    touch empirical_library.speclib
+    touch empirical_library.tsv
+    touch empirical_library.tsv.skyline.speclib
+    
+    # Quant outputs
+    touch ${prefix}.quant
+    
+    # Report outputs
+    touch diann_report.tsv
+    touch diann_report.parquet
+    touch diann_report.manifest.txt
+    touch diann_report.protein_description.tsv
+    touch diann_report.stats.tsv
+    touch diann_report.pr_matrix.tsv
+    touch diann_report.pg_matrix.tsv
+    touch diann_report.gg_matrix.tsv
+    touch diann_report.unique_genes_matrix.tsv
+    
+    # Common outputs
+    touch ${prefix}.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        DIA-NN: 1.8.1
+    END_VERSIONS
+    """
+}

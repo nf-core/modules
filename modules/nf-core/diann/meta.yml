@@ -1,0 +1,117 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "diann_run"
+description: Generic DIA-NN module for running any DIA-NN operation
+keywords:
+  - proteomics
+  - mass spectrometry
+  - DIA
+  - spectral library
+  - quantification
+tools:
+  - "diann":
+      description: "DIA-NN - a fast and easy to use tool for processing data independent acquisition (DIA) proteomics data"
+      homepage: "https://github.com/vdemichev/DiaNN"
+      documentation: "https://github.com/vdemichev/DiaNN#readme"
+      tool_dev_url: "https://github.com/vdemichev/DiaNN"
+      licence: "['Custom', 'https://raw.githubusercontent.com/vdemichev/DiaNN/master/LICENSE.txt']"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1' ]`
+  - ms_files:
+      type: file
+      description: MS data file(s) in mzML, Thermo RAW, or Bruker .d format (can be single file or list)
+      pattern: "*.{mzML,raw,d}"
+  - fasta:
+      type: file
+      description: FASTA database file (optional, for searches)
+      pattern: "*.{fasta,fa}"
+  - library:
+      type: file
+      description: Spectral library file (optional, .speclib format)
+      pattern: "*.speclib"
+  - diann_cfg:
+      type: string
+      description: DIA-NN configuration string (optional, for library generation)
+  - quant:
+      type: directory
+      description: Directory containing .quant files from previous analysis (optional)
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1' ]`
+  - predict_speclib:
+      type: file
+      description: Predicted spectral library (from in-silico generation)
+      pattern: "*.predicted.speclib"
+  - empirical_library:
+      type: file
+      description: Empirical spectral library (from assembly)
+      pattern: "empirical_library.*"
+  - final_speclib:
+      type: file
+      description: Final spectral library in TSV format
+      pattern: "empirical_library.tsv"
+  - skyline_speclib:
+      type: file
+      description: Spectral library in Skyline format
+      pattern: "empirical_library.tsv.skyline.speclib"
+  - diann_quant:
+      type: file
+      description: Quantification results in .quant format
+      pattern: "*.quant"
+  - main_report:
+      type: file
+      description: Main DIA-NN report in TSV format
+      pattern: "diann_report.tsv"
+  - report_parquet:
+      type: file
+      description: Main DIA-NN report in Parquet format
+      pattern: "diann_report.parquet"
+  - report_manifest:
+      type: file
+      description: Report manifest file
+      pattern: "diann_report.manifest.txt"
+  - protein_description:
+      type: file
+      description: Protein descriptions
+      pattern: "diann_report.protein_description.tsv"
+  - report_stats:
+      type: file
+      description: Report statistics
+      pattern: "diann_report.stats.tsv"
+  - pr_matrix:
+      type: file
+      description: Precursor-level quantification matrix
+      pattern: "diann_report.pr_matrix.tsv"
+  - pg_matrix:
+      type: file
+      description: Protein group-level quantification matrix
+      pattern: "diann_report.pg_matrix.tsv"
+  - gg_matrix:
+      type: file
+      description: Gene group-level quantification matrix
+      pattern: "diann_report.gg_matrix.tsv"
+  - unique_gene_matrix:
+      type: file
+      description: Unique genes quantification matrix
+      pattern: "diann_report.unique_genes_matrix.tsv"
+  - log:
+      type: file
+      description: DIA-NN log file
+      pattern: "*.log"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@YOUR_GITHUB_USERNAME"
+maintainers:
+  - "@YOUR_GITHUB_USERNAME"

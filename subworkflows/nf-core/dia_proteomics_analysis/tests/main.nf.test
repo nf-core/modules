@@ -43,7 +43,7 @@ nextflow_process {
                 )
                 ch_expdesign = Channel.of(
                     [
-                        [id:'peakpicker_tutorial_1_design'],
+                        [id:'RD139_Narrow_UPS1_design'],
                         file(params.modules_testdata_base_path + 'proteomics/diann/RD139_Narrow_UPS1_design.tsv', checkIfExists: true)
                     ]
                 )

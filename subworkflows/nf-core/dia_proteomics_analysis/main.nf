@@ -4,15 +4,21 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { DIANN_INSILICOLIBRARYGENERATION } from '../../../modules/nf-core/diann/insilicolibrarygeneration/main'
-include { DIANN_PRELIMINARYANALYSIS      } from '../../../modules/nf-core/diann/preliminaryanalysis/main'
-include { DIANN_ASSEMBLEEMPIRICALLIBRARY } from '../../../modules/nf-core/diann/assembleempiricallibrary/main'
-include { DIANN_INDIVIDUALANALYSIS       } from '../../../modules/nf-core/diann/individualanalysis/main'
-include { DIANN_FINALQUANTIFICATION      } from '../../../modules/nf-core/diann/finalquantification/main'
+//include { DIANN_INSILICOLIBRARYGENERATION } from '../../../modules/nf-core/diann/insilicolibrarygeneration/main'
+//include { DIANN_PRELIMINARYANALYSIS      } from '../../../modules/nf-core/diann/preliminaryanalysis/main'
+//include { DIANN_ASSEMBLEEMPIRICALLIBRARY } from '../../../modules/nf-core/diann/assembleempiricallibrary/main'
+//include { DIANN_INDIVIDUALANALYSIS       } from '../../../modules/nf-core/diann/individualanalysis/main'
+//include { DIANN_FINALQUANTIFICATION      } from '../../../modules/nf-core/diann/finalquantification/main'
 include { QUANTMSUTILS_DIANNCFG          } from '../../../modules/nf-core/quantmsutils/dianncfg/main'
 include { QUANTMSUTILS_MZMLSTATISTICS    } from '../../../modules/nf-core/quantmsutils/mzmlstatistics/main'
 include { QUANTMSUTILS_DIANN2MZTAB       } from '../../../modules/nf-core/quantmsutils/diann2mztab/main'
 include { MSSTATS_MSSTATSLFQ             } from '../../../modules/nf-core/msstats/msstatslfq/main'
+
+include { DIANN as DIANN_INSILICOLIBRARYGENERATION } from '../../../modules/nf-core/diann/main'
+include { DIANN as DIANN_PRELIMINARYANALYSIS } from '../../../modules/nf-core/diann/main'
+include { DIANN as DIANN_ASSEMBLEEMPIRICALLIBRARY } from '../../../modules/nf-core/diann/main'
+include { DIANN as DIANN_INDIVIDUALANALYSIS } from '../../../modules/nf-core/diann/main'
+include { DIANN as DIANN_FINALQUANTIFICATION } from '../../../modules/nf-core/diann/main'
 
 def sortByFilename = { a, b -> file(a).getName() <=> file(b).getName() }
 
@@ -156,7 +162,7 @@ workflow DIA_PROTEOMICS_ANALYSIS {
         .combine(QUANTMSUTILS_DIANNCFG.out.diann_cfg, by: 0) // [meta_enzyme_mods, meta_fasta_enzyme, meta_fasta, fasta, cfg_file]
         .unique() // Multiple inputs might have the same config
         .map { meta_enzyme_mods, meta_fasta_enzyme, meta_fasta, fasta, cfg_file -> 
-            [meta_fasta_enzyme, fasta, cfg_file.text] 
+            [meta_fasta_enzyme + [config: cfg_file.text], [], [], fasta, [], []] // Added ms_file_names as []
         }
 
     DIANN_INSILICOLIBRARYGENERATION(ch_insilico_library_input)
@@ -165,9 +171,10 @@ workflow DIA_PROTEOMICS_ANALYSIS {
 
     // In-silico libraries have been generated for combinations of FASTA and configuration, which 
     //may have been the same over multiple inputs. Use a combine to annotate inputs with in silico libraries.
-    ch_fasta_input_with_speclib = input.ms_file_fasta 
-        .combine(ch_speclib, by: 0)
-        .map { meta_fasta_enzyme, meta_input_fasta, ms_file, speclib ->
+    ch_fasta_input_with_speclib = ch_speclib
+        .map{ meta, speclib -> [meta.findAll { key, value -> key != 'config' }, speclib] } // Filter out config from meta to allow the combine by: 0
+        .combine(input.ms_file_fasta, by: 0)
+        .map { meta_fasta_enzyme, speclib, meta_input_fasta, ms_file ->
             [meta_input_fasta, ms_file, speclib]
         }
     
@@ -198,7 +205,11 @@ workflow DIA_PROTEOMICS_ANALYSIS {
                 .randomSample(random_preanalysis_n, random_preanalysis_seed)
         )
 
-    DIANN_PRELIMINARYANALYSIS(ch_preliminary_analysis_input)
+    DIANN_PRELIMINARYANALYSIS(
+        ch_preliminary_analysis_input.map { meta, ms_file, speclib ->
+            [meta, ms_file, [], [], speclib, []]  // DIANN module input: [meta, ms_files, ms_file_names, fasta, library, quant]
+        }
+    )
     ch_versions = ch_versions.mix(DIANN_PRELIMINARYANALYSIS.out.versions)
 
     //
@@ -209,6 +220,9 @@ workflow DIA_PROTEOMICS_ANALYSIS {
         .map { [it[0].experiment] + it.drop(1)}           // [meta_exp_searchdb, ms_file, speclib, diann_quant]
         .groupTuple()                                     // [meta_exp_searchdb, [ms_file], [speclib], [diann_quant]]
         .map{ sortListsByPathName(it, 1) }                // [meta_exp_searchdb, [sorted_ms_file], [sorted_speclib], [sorted_diann_quant]]
+        .map { meta, ms_files, speclib, diann_quant ->
+            [meta, ms_files, [], [], speclib, diann_quant]    // DIANN module input: add ms_file_names and fasta placeholders
+        }
 
     DIANN_ASSEMBLEEMPIRICALLIBRARY(ch_empirical_input)
     ch_versions = ch_versions.mix(DIANN_ASSEMBLEEMPIRICALLIBRARY.out.versions)
@@ -235,14 +249,18 @@ workflow DIA_PROTEOMICS_ANALYSIS {
         .map { meta_exp, meta_input_fasta, precursor_tolerance, fragment_tolerance, precursor_tolerance_unit, fragment_tolerance_unit, ms_file, fasta, logSettings, empirical_library ->
             def mass_settings = defineMassAccuracySettings(logSettings, precursor_tolerance, fragment_tolerance, precursor_tolerance_unit, fragment_tolerance_unit, wf_scan_window, wf_mass_acc_automatic, wf_scan_window_automatic, wf_pg_level)
             def meta_with_settings = meta_input_fasta + mass_settings
-            [meta_with_settings, ms_file, fasta, empirical_library]
+            [meta_with_settings, ms_file, fasta, empirical_library]  
         }
         
     //
     // MODULE: Individual analysis
     //
 
-    DIANN_INDIVIDUALANALYSIS(ch_individual_analysis_input)
+    DIANN_INDIVIDUALANALYSIS(
+        ch_individual_analysis_input.map { meta, ms_file, fasta, empirical_library ->
+            [meta, ms_file, [], fasta, empirical_library, []]  // DIANN module input: [meta, ms_files, ms_file_names, fasta, library, quant]
+        }
+    )
     ch_versions = ch_versions.mix(DIANN_INDIVIDUALANALYSIS.out.versions)
 
     //
@@ -255,7 +273,7 @@ workflow DIA_PROTEOMICS_ANALYSIS {
         .groupTuple()                                            // [meta_exp_searchdb, [ms_file], [fasta], [empirical_library], [diann_quant]]
         .map{ sortListsByPathName(it, 1) }                       // [meta_exp_searchdb, [sorted_ms_file], [sorted_fasta], [sorted_empirical_library], [sorted_diann_quant]]
         .map { meta, ms_files, fasta, empirical_library, diann_quant ->
-            [meta, ms_files.collect{ it.name}, fasta, empirical_library, diann_quant]
+            [meta, [], ms_files.collect{ it.name}, fasta, empirical_library, diann_quant] // Use ms_file_names instead of ms_files for final quant
         }
 
     DIANN_FINALQUANTIFICATION(ch_final_quantification_input)
