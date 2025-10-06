@@ -118,85 +118,85 @@ input:
         e.g. `file('assembly.log')`
       pattern: "*.log"
 output:
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
-  diann_report:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing experiment and search database information
-            e.g. `[ id:'experiment1_uniprot_human' ]`
-      - "*.tsv":
+  - versions:
+      - versions.yml:
           type: file
-          description: Main DIA-NN report in TSV format containing quantification results
-          pattern: "*.tsv"
+          description: File containing software versions
+          pattern: "versions.yml"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV format
-  diann_report_parquet:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing experiment and search database information
-            e.g. `[ id:'experiment1_uniprot_human' ]`
-      - "*.parquet":
-          type: file
-          description: Main DIA-NN report in Parquet format containing quantification results
-          pattern: "*.parquet"
-          ontologies:
-            - edam: http://edamontology.org/format_3750 # Parquet format
-  mzml_statistics:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - "*.json":
-          type: file
-          description: Statistics extracted from mzML files (scan counts, retention times, etc.)
-          pattern: "*.json"
-          ontologies:
-            - edam: http://edamontology.org/format_3464 # JSON format
-  msstats_in:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing experiment and search database information
-            e.g. `[ id:'experiment1_uniprot_human' ]`
-      - "*_msstats_in.csv":
-          type: file
-          description: MSstats-compatible input file for statistical analysis
-          pattern: "*_msstats_in.csv"
-          ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV format
-  out_triqler:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing experiment and search database information
-            e.g. `[ id:'experiment1_uniprot_human' ]`
-      - "*_triqler_in.tsv":
-          type: file
-          description: Triqler-compatible input file for protein quantification with uncertainty
-          pattern: "*_triqler_in.tsv"
-          ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV format
-  final_result:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing experiment and search database information
-            e.g. `[ id:'experiment1_uniprot_human' ]`
-      - "*.mzTab":
-          type: file
-          description: Final quantification results in mzTab format (standard proteomics exchange format)
-          pattern: "*.mzTab"
-          ontologies:
-            - edam: http://edamontology.org/format_3681 # mzTab format
+            - edam: http://edamontology.org/format_3750 # YAML
+  - diann_report:
+      - - meta:
+            type: map
+            description: |
+              Groovy Map containing experiment and search database information
+              e.g. `[ id:'experiment1_uniprot_human' ]`
+        - "*.tsv":
+            type: file
+            description: Main DIA-NN report in TSV format containing quantification results
+            pattern: "*.tsv"
+            ontologies:
+              - edam: http://edamontology.org/format_3475 # TSV format
+  - diann_report_parquet:
+      - - meta:
+            type: map
+            description: |
+              Groovy Map containing experiment and search database information
+              e.g. `[ id:'experiment1_uniprot_human' ]`
+        - "*.parquet":
+            type: file
+            description: Main DIA-NN report in Parquet format containing quantification results
+            pattern: "*.parquet"
+            ontologies:
+              - edam: http://edamontology.org/format_3750 # Parquet format
+  - mzml_statistics:
+      - - meta:
+            type: map
+            description: |
+              Groovy Map containing sample information
+              e.g. `[ id:'sample1' ]`
+        - "*.json":
+            type: file
+            description: Statistics extracted from mzML files (scan counts, retention times, etc.)
+            pattern: "*.json"
+            ontologies:
+              - edam: http://edamontology.org/format_3464 # JSON format
+  - msstats_in:
+      - - meta:
+            type: map
+            description: |
+              Groovy Map containing experiment and search database information
+              e.g. `[ id:'experiment1_uniprot_human' ]`
+        - "*_msstats_in.csv":
+            type: file
+            description: MSstats-compatible input file for statistical analysis
+            pattern: "*_msstats_in.csv"
+            ontologies:
+              - edam: http://edamontology.org/format_3752 # CSV format
+  - out_triqler:
+      - - meta:
+            type: map
+            description: |
+              Groovy Map containing experiment and search database information
+              e.g. `[ id:'experiment1_uniprot_human' ]`
+        - "*_triqler_in.tsv":
+            type: file
+            description: Triqler-compatible input file for protein quantification with uncertainty
+            pattern: "*_triqler_in.tsv"
+            ontologies:
+              - edam: http://edamontology.org/format_3475 # TSV format
+  - final_result:
+      - - meta:
+            type: map
+            description: |
+              Groovy Map containing experiment and search database information
+              e.g. `[ id:'experiment1_uniprot_human' ]`
+        - "*.mzTab":
+            type: file
+            description: Final quantification results in mzTab format (standard proteomics exchange format)
+            pattern: "*.mzTab"
+            ontologies:
+              - edam: http://edamontology.org/format_3681 # mzTab format
 authors:
   - "@daichengxin"
   - "@wanghong"

@@ -33,9 +33,9 @@ input:
         type: file
         description: "DIA-NN precursor matrix file"
         pattern: "*.tsv"
-    - versions:
+    - "version/versions.yml":
         type: file
-        description: "DIA-NN versions file to be included in output"
+        description: "DIA-NN versions file (staged as version/versions.yml)"
         pattern: "versions.yml"
     - exp_design:
         type: file
