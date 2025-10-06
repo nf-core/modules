@@ -45,7 +45,8 @@ process DIANN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     
-    // Handle MS files input: use ms_files if provided, otherwise fall back to ms_file_names
+    // Handle MS files input: use ms_files if provided, otherwise fall back to ms_file_names. 
+    //Allows us to provide file names without staging the files, useful in certain scenarios.
     def ms_input = ''
     if (ms_files && ms_files != []) {
         // ms_files provided (actual file paths for preliminary/assembly/individual analysis)
