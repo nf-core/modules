@@ -16,8 +16,12 @@
             "type": "array",
             "description": "Keywords for the module",
             "items": {
-                "type": "string"
+                "type": "string",
+                "not": {
+                    "const": "example"
+                }
             },
+            "uniqueItems": true,
             "minItems": 3
         },
         "authors": {
