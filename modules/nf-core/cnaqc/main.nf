@@ -4,8 +4,8 @@ process CNAQC {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-cnaqc%3A1.1.2--r44hdfd78af_0':
-        'biocontainers/r-cnaqc:1.1.2--r44hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/r-cnaqc%3A1.1.3--r44hdfd78af_0':
+        'biocontainers/r-cnaqc:1.1.3--r44hdfd78af_0' }"
 
     input:
     tuple val(meta), path(snv_rds), path(cna_rds)
