@@ -69,7 +69,9 @@ input_tab = joint_table %>%
 
 ## Convert the input table into longer format
 reads_data = input_tab %>%
-  dplyr::select(chr, from, ref, alt, NV, DP, VAF, sample_id) %>%
+  dplyr::select(chr, from, ref, alt, NV, DP, VAF, sample_id,driver_label,is_driver) %>%
+  dplyr::rename(gene=driver_label) %>% 
+  dplyr::rename(driver=is_driver) %>% 
   tidyr::pivot_wider(names_from="sample_id",
                      values_from=c("NV","DP","VAF"), names_sep=".",values_fill=0)
 
@@ -89,9 +91,8 @@ viber_K = as.integer(opt[["K"]])
 message("Starting standard fit")
 st_fit = VIBER::variational_fit(nv, dp,
                                 K=viber_K,
-                                data=reads_data,
-                                description="$meta.patient"
-                                )
+                                data=reads_data)
+st_fit[["description"]]="$meta.patient"
 message("End standard fit")
 best_fit = best_fit_heuristic = st_fit
 
