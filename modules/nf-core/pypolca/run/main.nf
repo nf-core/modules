@@ -8,8 +8,6 @@ process PYPOLCA_RUN {
         'biocontainers/pypolca:0.4.0--pyhdfd78af_0' }"
 
     input:
-    // TODO nf-core: Where applicable please provide/convert compressed files as input/output
-    //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
     tuple val(meta), path(reads), path(contigs)
 
     output:
