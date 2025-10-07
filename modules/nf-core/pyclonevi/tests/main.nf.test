@@ -8,7 +8,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "pyclonevi"
 
-    test("test_pyclone_single_sample") {
+    test("pyclonevi") {
 
 
         config "./nextflow.config"
@@ -17,7 +17,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ],
+                    meta = [ id : "test", patient : "HCC1395", tumour_sample : "HCC1395_HCC1395T" ],
                     file(params.modules_testdata_base_path + 'delete_me/pyclonevi/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
                     [ 'HCC1395_HCC1395T' ]
                 ]
@@ -28,9 +28,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.versions
-                ).match() },
+                { assert snapshot(process.out.versions).match() },
                 { assert file(process.out.ctree_input[0][1]).exists() },
                 { assert file(process.out.pyclone_input[0][1][0]).exists() },
                 { assert file(process.out.pyclone_input[0][1][1]).exists() },
@@ -41,7 +39,7 @@ nextflow_process {
 
     }
 
-    test("test_pyclonevi - singlesample - stub") {
+    test("pyclonevi - stub") {
 
         options "-stub"
 
@@ -49,7 +47,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test'],
+                    meta = [ id : "test", patient : "HCC1395", tumour_sample : "HCC1395_HCC1395T" ],
                     file(params.modules_testdata_base_path + 'delete_me/pyclonevi/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
                     [ 'HCC1395_HCC1395T']
                 ]
