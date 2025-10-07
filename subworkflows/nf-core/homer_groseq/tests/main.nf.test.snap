@@ -7,7 +7,7 @@
                     {
                         "id": "test"
                     },
-                    "test.peaks.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    "test_transcripts.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                 ]
             ],
             [
@@ -26,9 +26,9 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.1"
+            "nextflow": "25.04.7"
         },
-        "timestamp": "2024-11-23T20:49:13.598633"
+        "timestamp": "2025-10-06T14:02:12.275198449"
     },
     "versions": {
         "content": [
@@ -52,7 +52,7 @@
                     {
                         "id": "test"
                     },
-                    "test.peaks.txt:md5,470ad70471ef668cab50d9c41e5b124c"
+                    "test_transcripts.txt:md5,40c6260ed6448afde7f03b94c5481f62"
                 ]
             ],
             [
@@ -60,7 +60,7 @@
                     {
                         "id": "test"
                     },
-                    "test.bed:md5,470ad70471ef668cab50d9c41e5b124c"
+                    "test.bed:md5,40c6260ed6448afde7f03b94c5481f62"
                 ]
             ],
             {
@@ -71,9 +71,9 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.1"
+            "nextflow": "25.04.7"
         },
-        "timestamp": "2024-11-23T20:47:40.376043"
+        "timestamp": "2025-10-06T13:59:23.186180977"
     },
     "Should run HOMER_GROSEQ with BED input": {
         "content": [
@@ -83,7 +83,7 @@
                     {
                         "id": "test"
                     },
-                    "test.peaks.txt:md5,0b0b174b135fd5404a9b462e27ab4ce1"
+                    "test_transcripts.txt:md5,560d3b591f1f5b0ab0a1f8a71668a84f"
                 ]
             ],
             [
@@ -91,7 +91,7 @@
                     {
                         "id": "test"
                     },
-                    "test.bed:md5,0b0b174b135fd5404a9b462e27ab4ce1"
+                    "test.bed:md5,560d3b591f1f5b0ab0a1f8a71668a84f"
                 ]
             ],
             {
@@ -102,19 +102,19 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.1"
+            "nextflow": "25.04.7"
         },
-        "timestamp": "2024-11-23T20:47:47.733612"
+        "timestamp": "2025-10-06T13:59:28.660340994"
     },
     "Test files from GROseq tutorial with uniqmap": {
         "content": [
-            15368354,
+            15368355,
             [
                 [
                     {
                         "id": "test"
                     },
-                    "test-uniqmap.GRCh38_chr21.50nt.peaks.txt:md5,3220d07ce56785d77045282345ddf1cd"
+                    "test_transcripts.txt:md5,e15075d53b1e080fd73cf7f3c46cc8c6"
                 ]
             ],
             [
@@ -122,11 +122,11 @@
                     {
                         "id": "test"
                     },
-                    "test.bed:md5,49433f826697cd237dfdb740a0cb2c54"
+                    "test.bed:md5,72d4827191c3295f737277798459c1f3"
                 ]
             ],
-            "# uniqMapDirectory = uniqmap.GRCh38_chr21.50nt.zip",
-            "# cmd = findPeaks test_tagdir -o test-uniqmap.GRCh38_chr21.50nt.peaks.txt -uniqmap uniqmap.GRCh38_chr21.50nt.zip",
+            "chr2\t254807\t44846678\tchr2-1-0\t0\t+",
+            "chr5\t66289264\t180620735\tchr5-1-1\t0\t-",
             {
                 "HOMER_GROSEQ:HOMER_POS2BED": {
                     "homer": 4.11
@@ -135,8 +135,8 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.2"
+            "nextflow": "25.04.7"
         },
-        "timestamp": "2024-12-07T17:59:14.024175"
+        "timestamp": "2025-10-06T14:02:06.815694413"
     }
 }

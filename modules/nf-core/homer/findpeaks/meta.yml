@@ -15,6 +15,14 @@ tools:
       licence: ["GPL-3.0-or-later"]
       identifier: biotools:homer
 input:
+  - style:
+      type: string
+      description: |
+        One of factor, histone, groseq, tss, dnase, super or mC. See the homer
+        findPeak documentation for more information. The choice of style does
+        affect which parameters must be passed in through `ext.args`, and affects
+        the suffix of the output file (e.g. if style is factor, then the file output
+        to the txt channel will be *_peaks.txt. See output for more information.)
   - - meta:
         type: map
         description: |
@@ -24,10 +32,19 @@ input:
         type: directory
         description: "The 'Tag Directory'"
         pattern: "tagDir"
+  - - meta2:
+        type: map
+        description: |
+          Groovy map containing sample information for the control sample
+          e.g. [ id: "control", single_end: false ]
+    - controlTagDir:
+        type: directory
+        description: "The 'Tag Directory' for the control sample"
+        pattern: "controlTagDir"
   - uniqmap:
       type: directory
       description: "(directory of binary files specifying uniquely mappable locations)
-        Download from http://biowhat.ucsd.edu/homer/groseq/"
+        Download from http://biowha t.ucsd.edu/homer/groseq/"
       pattern: "uniqmap/"
 output:
   txt:
@@ -36,7 +53,21 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.peaks.txt":
+      - "*.txt":
+          type: file
+          description: |
+            One of *_peaks.txt, *_regions, *_transcripts.txt,
+            *_tss.txt, *_superEnhancer.txt. Which depends on the `style`, e.g. for
+            style factor, the output txt file would be *_peaks.txt
+          pattern: "*.txt"
+          ontologies: []
+  gtf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.gtf":
           type: file
           description: "Peaks in txt file"
           pattern: "*.peaks.txt"
@@ -52,3 +83,4 @@ authors:
   - "@edmundmiller"
 maintainers:
   - "@edmundmiller"
+  - "@cmatkhan"

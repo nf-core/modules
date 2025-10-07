@@ -15,7 +15,6 @@ nextflow_process {
     setup {
         run("HOMER_MAKETAGDIRECTORY", alias: "MAKETAGDIR_SAMPLE1") {
             script "../../maketagdirectory/main.nf"
-            config "../../maketagdirectory/tests/bed.config"
             process {
                 """
                 input[0] = [
@@ -29,7 +28,6 @@ nextflow_process {
 
         run("HOMER_MAKETAGDIRECTORY", alias: "MAKETAGDIR_SAMPLE2") {
             script "../../maketagdirectory/main.nf"
-            config "../../maketagdirectory/tests/bed.config"
             process {
                 """
                 input[0] = [
@@ -43,22 +41,24 @@ nextflow_process {
 
         run("HOMER_FINDPEAKS", alias: "FINDPEAKS_SAMPLE1") {
             script "../../findpeaks/main.nf"
-            config "./nextflow.config"
             process {
                 """
-                input[0] = MAKETAGDIR_SAMPLE1.out.tagdir
-                input[1] = []
+                input[0] = "factor"
+                input[1] = MAKETAGDIR_SAMPLE1.out.tagdir
+                input[2] = [[:], []]
+                input[3] = []
                 """
             }
         }
 
         run("HOMER_FINDPEAKS", alias: "FINDPEAKS_SAMPLE2") {
             script "../../findpeaks/main.nf"
-            config "./nextflow.config"
             process {
                 """
-                input[0] = MAKETAGDIR_SAMPLE2.out.tagdir
-                input[1] = []
+                input[0] = "factor"
+                input[1] = MAKETAGDIR_SAMPLE2.out.tagdir
+                input[2] = [[:], []]
+                input[3] = []
                 """
             }
         }

@@ -47,7 +47,11 @@ workflow HOMER_GROSEQ {
     /*
     * Find transcripts directly from GRO-Seq
     */
-    HOMER_FINDPEAKS(HOMER_MAKETAGDIRECTORY.out.tagdir, ch_uniqmap)
+    HOMER_FINDPEAKS(
+        "groseq",
+        HOMER_MAKETAGDIRECTORY.out.tagdir,
+        [[:], []],
+        ch_uniqmap)
     ch_versions = ch_versions.mix(HOMER_FINDPEAKS.out.versions)
 
     /*

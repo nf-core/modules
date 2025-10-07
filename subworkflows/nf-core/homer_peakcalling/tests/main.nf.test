@@ -8,6 +8,7 @@ nextflow_workflow {
     tag "subworkflows_nfcore"
     tag "subworkflows/homer_peakcalling"
     tag "homer"
+    tag "unzip"
     tag "homer/maketagdirectory"
     tag "homer/makeucscfile"
     tag "homer/findpeaks"
@@ -20,16 +21,33 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of(
+                // style
+                input[0] = "factor"
+                // bam
+                input[1] = Channel.of(
                     [ [ id: 'sample1' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true) ],
                     [ [ id: 'sample2' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true) ]
                 )
-                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
-                input[3] = []
-                input[4] = []
-                input[5] = false  // merge_peaks
-                input[6] = false  // annotate_individual
+                // tagdir
+                input[2] = []
+                // fasta
+                input[3] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                // gtf
+                input[4] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
+                // control bam
+                input[5] = []
+                // control tagdir
+                input[6] = []
+                // uniqmap
+                input[7] = []
+                // merge_peaks
+                input[8] = false
+                // annotate_individual
+                input[9] = false
+                // quantify_peaks
+                input[10] = false
+                // make_bedgraph
+                input[11] = true
                 """
             }
         }
@@ -38,12 +56,15 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    path(workflow.out.bed_graph.get(0).get(1)).linesGzip.size(),
-                    workflow.out.peaks,
+                    workflow.out.tagdir,
+                    path(workflow.out.bedgraph.get(0).get(1)).linesGzip.size(),
+                    workflow.out.txt,
+                    workflow.out.gtf,
                     workflow.out.bed,
-                    workflow.out.merged_peaks,
+                    workflow.out.merged_txt,
                     workflow.out.annotated_individual,
                     workflow.out.annotated_merged,
+                    workflow.out.count_matrix,
                     path(workflow.out.versions.get(0)).yaml
                 ).match() }
             )
@@ -55,16 +76,33 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of(
+                // style
+                input[0] = "factor"
+                // bam
+                input[1] = Channel.of(
                     [ [ id: 'sample1' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true) ],
                     [ [ id: 'sample2' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true) ]
                 )
-                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
-                input[3] = []
-                input[4] = []
-                input[5] = true   // merge_peaks
-                input[6] = false  // annotate_individual
+                // tagdir
+                input[2] = []
+                // fasta
+                input[3] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                // gtf
+                input[4] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
+                // control bam
+                input[5] = []
+                // control tagdir
+                input[6] = []
+                // uniqmap
+                input[7] = []
+                // merge_peaks
+                input[8] = true
+                // annotate_individual
+                input[9] = false
+                // quantify_peaks
+                input[10] = false
+                // make_bedgraph
+                input[11] = true
                 """
             }
         }
@@ -73,12 +111,15 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    path(workflow.out.bed_graph.get(0).get(1)).linesGzip.size(),
-                    workflow.out.peaks,
+                    workflow.out.tagdir,
+                    path(workflow.out.bedgraph.get(0).get(1)).linesGzip.size(),
+                    workflow.out.txt,
+                    workflow.out.gtf,
                     workflow.out.bed,
-                    workflow.out.merged_peaks,
+                    workflow.out.merged_txt,
                     workflow.out.annotated_individual,
                     workflow.out.annotated_merged,
+                    workflow.out.count_matrix,
                     path(workflow.out.versions.get(0)).yaml
                 ).match() }
             )
@@ -90,16 +131,33 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of(
+                // style
+                input[0] = "factor"
+                // bam
+                input[1] = Channel.of(
                     [ [ id: 'sample1' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true) ],
                     [ [ id: 'sample2' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true) ]
                 )
-                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
-                input[3] = []
-                input[4] = []
-                input[5] = false  // merge_peaks
-                input[6] = true   // annotate_individual
+                // tagdir
+                input[2] = []
+                // fasta
+                input[3] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                // gtf
+                input[4] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
+                // control bam
+                input[5] = []
+                // control tagdir
+                input[6] = []
+                // uniqmap
+                input[7] = []
+                // merge_peaks
+                input[8] = false
+                // annotate_individual
+                input[9] = true
+                // quantify_peaks
+                input[10] = false
+                // make_bedgraph
+                input[11] = true
                 """
             }
         }
@@ -108,33 +166,53 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    path(workflow.out.bed_graph.get(0).get(1)).linesGzip.size(),
-                    workflow.out.peaks,
+                    workflow.out.tagdir,
+                    path(workflow.out.bedgraph.get(0).get(1)).linesGzip.size(),
+                    workflow.out.txt,
+                    workflow.out.gtf,
                     workflow.out.bed,
-                    workflow.out.merged_peaks,
+                    workflow.out.merged_txt,
                     workflow.out.annotated_individual,
                     workflow.out.annotated_merged,
+                    workflow.out.count_matrix,
                     path(workflow.out.versions.get(0)).yaml
                 ).match() }
             )
         }
     }
 
-    test("sarscov2 - bam - merge and annotate both") {
+    test("sarscov2 - bam - merge and annotate both, with quantification") {
 
         when {
             workflow {
                 """
-                input[0] = Channel.of(
+                // style
+                input[0] = "factor"
+                // bam
+                input[1] = Channel.of(
                     [ [ id: 'sample1' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true) ],
                     [ [ id: 'sample2' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true) ]
                 )
-                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
-                input[3] = []
-                input[4] = []
-                input[5] = true   // merge_peaks
-                input[6] = true   // annotate_individual
+                // tagdir
+                input[2] = []
+                // fasta
+                input[3] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                // gtf
+                input[4] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
+                // control bam
+                input[5] = []
+                // control tagdir
+                input[6] = []
+                // uniqmap
+                input[7] = []
+                // merge_peaks
+                input[8] = true
+                // annotate_individual
+                input[9] = true
+                // quantify_peaks
+                input[10] = true
+                // make_bedgraph
+                input[11] = true
                 """
             }
         }
@@ -143,35 +221,55 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    path(workflow.out.bed_graph.get(0).get(1)).linesGzip.size(),
-                    workflow.out.peaks,
+                    workflow.out.tagdir,
+                    path(workflow.out.bedgraph.get(0).get(1)).linesGzip.size(),
+                    workflow.out.txt,
+                    workflow.out.gtf,
                     workflow.out.bed,
-                    workflow.out.merged_peaks,
+                    workflow.out.merged_txt,
                     workflow.out.annotated_individual,
                     workflow.out.annotated_merged,
+                    workflow.out.count_matrix,
                     path(workflow.out.versions.get(0)).yaml
                 ).match() }
             )
         }
     }
 
-    test("sarscov2 - bed - no merge, no annotation") {
-
-        config "./bed.config"
+    test("sarscov2 - bam with control") {
 
         when {
             workflow {
                 """
-                input[0] = Channel.of(
-                    [ [ id: 'sample1' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true) ],
-                    [ [ id: 'sample2' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test2.bed', checkIfExists: true) ]
+                // style
+                input[0] = "factor"
+                // bam
+                input[1] = Channel.of(
+                    [ [ id: 'sample1' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true) ],
+                    [ [ id: 'sample2' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true) ]
                 )
-                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
-                input[3] = []
-                input[4] = []
-                input[5] = false
-                input[6] = false
+                // tagdir
+                input[2] = []
+                // fasta
+                input[3] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                // gtf
+                input[4] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
+                // control bam
+                input[5] = Channel.of(
+                    [ [ id: 'control' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true) ]
+                )
+                // control tagdir
+                input[6] = []
+                // uniqmap
+                input[7] = []
+                // merge_peaks
+                input[8] = false
+                // annotate_individual
+                input[9] = false
+                // quantify_peaks
+                input[10] = false
+                // make_bedgraph
+                input[11] = true
                 """
             }
         }
@@ -180,12 +278,10 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    path(workflow.out.bed_graph.get(0).get(1)).linesGzip.size(),
-                    workflow.out.peaks,
-                    workflow.out.bed,
-                    workflow.out.merged_peaks,
-                    workflow.out.annotated_individual,
-                    workflow.out.annotated_merged,
+                    workflow.out.tagdir,
+                    path(workflow.out.bedgraph.find {it[0].id == "sample1"}[1]).linesGzip.size(),
+                    workflow.out.txt.size(),
+                    workflow.out.bed.size(),
                     path(workflow.out.versions.get(0)).yaml
                 ).match() }
             )
@@ -200,19 +296,36 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = [
+                // style
+                input[0] = "groseq"
+                // bam
+                input[1] = [
                     [ id: 'groseq_test' ],
                     [
                         file('ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM340nnn/GSM340901/suppl/GSM340901_lib1_aligned.bed.gz', checkIfExists: true),
                         file('ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM340nnn/GSM340902/suppl/GSM340902_lib2_aligned.bed.gz', checkIfExists: true)
                     ],
                 ]
-                input[1] = file('https://hgdownload.soe.ucsc.edu/goldenPath/hg18/chromosomes/chr14.fa.gz', checkIfExists: true)
-                input[2] = []  // gtf - not needed for this test
-                input[3] = []  // control
-                input[4] = file('https://raw.githubusercontent.com/nf-core/test-datasets/nascent/reference/uniqmap.GRCh38_chr21.50nt.zip', checkIfExists: true)
-                input[5] = false  // merge_peaks
-                input[6] = false  // annotate_individual
+                // tagdir
+                input[2] = []
+                // fasta
+                input[3] = file('https://hgdownload.soe.ucsc.edu/goldenPath/hg18/chromosomes/chr14.fa.gz', checkIfExists: true)
+                // gtf
+                input[4] = []
+                // control bam
+                input[5] = []
+                // control tagdir
+                input[6] = []
+                // uniqmap
+                input[7] = file('https://raw.githubusercontent.com/nf-core/test-datasets/nascent/reference/uniqmap.GRCh38_chr21.50nt.zip', checkIfExists: true)
+                // merge_peaks
+                input[8] = false
+                // annotate_individual
+                input[9] = false
+                // quantify_peaks
+                input[10] = false
+                // make_bedgraph
+                input[11] = true
                 """
             }
         }
@@ -221,12 +334,11 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    path(workflow.out.bed_graph.get(0).get(1)).linesGzip.size(),
-                    workflow.out.peaks,
+                    workflow.out.tagdir.size(),
+                    path(workflow.out.bedgraph.get(0).get(1)).linesGzip.size(),
+                    workflow.out.txt,
+                    workflow.out.gtf,
                     workflow.out.bed,
-                    workflow.out.merged_peaks,
-                    workflow.out.annotated_individual,
-                    workflow.out.annotated_merged,
                     path(workflow.out.versions.get(0)).yaml
                 ).match() }
             )
@@ -240,15 +352,32 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of(
+                // style
+                input[0] = "factor"
+                // bam
+                input[1] = Channel.of(
                     [ [ id: 'sample1' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true) ]
                 )
-                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
-                input[3] = []
-                input[4] = []
-                input[5] = true
-                input[6] = true
+                // tagdir
+                input[2] = []
+                // fasta
+                input[3] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                // gtf
+                input[4] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
+                // control bam
+                input[5] = []
+                // control tagdir
+                input[6] = []
+                // uniqmap
+                input[7] = []
+                // merge_peaks
+                input[8] = true
+                // annotate_individual
+                input[9] = true
+                // quantify_peaks
+                input[10] = true
+                // make_bedgraph
+                input[11] = true
                 """
             }
         }

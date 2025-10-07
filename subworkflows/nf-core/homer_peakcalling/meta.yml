@@ -66,24 +66,31 @@ output:
       description: |
         HOMER tag directories for each sample
         Structure: [ val(meta), path(tagdir) ]
-  - bed_graph:
+  - bedgraph:
       type: file
       description: |
         BedGraph files for UCSC genome browser visualization, created from processed tag directories
         Structure: [ val(meta), path(bedGraph.gz) ]
       pattern: "*.bedGraph.gz"
-  - peaks:
+  - txt:
       type: file
       description: |
-        Individual peak files in HOMER format for each sample
-        Structure: [ val(meta), path(peaks.txt) ]
+        Individual output txt files in HOMER format for each sample
+        Structure: [ val(meta), path(_{peaks,regions,tss,superEnhancers,...}.txt) ]
+        The file type (and hence suffix) depends on the `style`. e.g. style = factor
+        would output *_peaks.txt
       pattern: "*.txt"
   - bed:
       type: file
       description: |
-        Individual peak files converted to BED format
+        Individual txt files converted to BED format
         Structure: [ val(meta), path(peaks.bed) ]
       pattern: "*.bed"
+  - gtf:
+      type: file
+      description: |
+        This is only created for style = groseq. A gtf file of the RNA loci inferred
+        from the experiment
   - merged_peaks:
       type: file
       description: |
