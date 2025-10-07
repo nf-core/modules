@@ -2,10 +2,12 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "stacks_refmap"
 ## TODO nf-core: Add a description of the module and list keywords
-description: write your description here
+description: ref_map.pl script from Stacks for the analysis of RAD-seq data when a reference genome is available.
 keywords:
-  - sort
-  - example
+  - rad-seq
+  - gbs
+  - variant-calling
+  - population-genomics
   - genomics
 tools:
   - "stacks":
@@ -22,31 +24,93 @@ tools:
 input:
   #
   ## TODO nf-core: Delete / customise this example input
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - input_1:
-        type: file
-        description: BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
-        ontologies: []
+  - bam_path:
+      type: directory
+      description: Directory with all the bam files to process with stacks refmap
+      pattern: "*"
+      ontologies: []
+  - popmap:
+      type: file
+      description: A tab-delimited text file with the columns sample name and population name
+      pattern: "*.tsv"
+      ontologies: []
 ## TODO nf-core: Add a description of all of the variables used as output
 output:
+  catalog_calls:
+    - catalog_calls:
+        type: file
+        description: Stacks catalog calls output file
+        pattern: "catalog.calls"
+  catalog_chrs:
+    - catalog_chrs:
+        type: file
+        description: Stacks catalog chrs output file
+        pattern: "catalog.chrs"
+  catalog_fa:
+    - catalog_fa:
+        type: file
+        description: Stacks catalog fasta output file
+        pattern: "catalog.fa.gz"
+  gstacks_log:
+    - gstacks_log:
+        type: file
+        description: Stacks gstacks log output file
+        pattern: "gstacks.log"
+  gstacks_log_distribs:
+    - gstacks_log_distribs:
+        type: file
+        description: Stacks gstacks log distribs output file
+        pattern: "gstacks.log.distribs"
+  haplotypes:
+    - haplotypes:
+        type: file
+        description: Stacks haplotypes output file
+        pattern: "populations.haplotypes.tsv"
+  hapstats:
+    - hapstats:
+        type: file
+        description: Stacks hapstats output file
+        pattern: "populations.hapstats.tsv"
+  sumstats:
+    - sumstats:
+        type: file
+        description: Stacks populations sumstats output file
+        pattern: "populations.sumstats.tsv"
+  sumstats_summary:
+    - sumstats_summary:
+        type: file
+        description: Stacks populations sumstats summary output file
+        pattern: "populations.sumstats_summary.tsv"
+  populations_log:
+    - populations_log:
+        type: file
+        description: Stacks populations log output file
+        pattern: "populations.log"
+  populations_log_distribs:
+    - populations_log_distribs:
+        type: file
+        description: Stacks populations log distribs output file
+        pattern: "populations.log.distribs"
+  ref_map_log:
+    - ref_map_log:
+        type: file
+        description: Stacks ref_map log output file
+        pattern: "ref_map.log"
   vcf:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.vcf.gz":
-          type: file
-          description: Compressed VCF file
-          pattern: "*.vcf.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
-
+    - vcf:
+        type: file
+        description: Stacks populations vcf output file
+        pattern: "populations.snps.vcf"
+  genepop:
+    - genepop:
+        type: file
+        description: Stacks populations genepop output file
+        pattern: "populations.snps.genepop"
+  structure:
+    - structure:
+        type: file
+        description: Stacks populations structure output file
+        pattern: "populations.structure"
   versions:
     - "versions.yml":
         type: file

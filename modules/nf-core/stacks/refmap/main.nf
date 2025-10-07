@@ -50,8 +50,10 @@ process STACKS_REFMAP {
     path "populations.sumstats_summary.tsv", emit: sumstats_summary
     path "populations.log", emit: populations_log
     path "populations.log.distribs", emit: populations_log_distribs
-    path "refmap.log", emit: refmap_log
-    path "populations.vcf", emit: vcf , optional: true
+    path "ref_map.log", emit: ref_map_log
+    path "populations.snps.vcf", emit: vcf , optional: true
+    path "populations.snps.genepop", emit: genepop , optional: true
+    path "populations.structure", emit: structure , optional: true
     // TODO nf-core: List additional required output channels/values here
     path "versions.yml"           , emit: versions
 
@@ -83,7 +85,7 @@ process STACKS_REFMAP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        stacks: \$(stacks --version)
+        stacks: \$(populations -v)
     END_VERSIONS
     """
 
@@ -108,12 +110,14 @@ process STACKS_REFMAP {
     touch populations.sumstats_summary.tsv
     touch populations.log
     touch populations.log.distribs
-    touch refmap.log
-    touch populations.vcf
+    touch ref_map.log
+    touch populations.snps.vcf
+    touch populations.snps.genepop
+    touch populations.structure
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        stacks: \$(stacks --version)
+        stacks: \$(populations -v)
     END_VERSIONS
     """
 }
