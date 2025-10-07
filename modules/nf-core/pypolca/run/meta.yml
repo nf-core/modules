@@ -33,19 +33,37 @@ input:
           - edam: "http://edamontology.org/format_1929" # FASTA
 
 output:
-  bam:
+  polished:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*_corrected.fasta":
+      - "output_pypolca/*_corrected.fasta":
           type: file
           description: Polished assembly
           pattern: "*.{fasta}"
           ontologies:
             - edam: "http://edamontology.org/format_1929" # FASTA
-      - "*.report":
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "output_pypolca/*.vcf":
+          type: file
+          description: variant calls
+          pattern: "*.vcf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # vcf
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "output_pypolca/*.report":
           type: file
           description: Pypolca report
           pattern: "*.report"
