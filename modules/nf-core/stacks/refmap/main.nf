@@ -22,8 +22,9 @@ process STACKS_REFMAP {
     // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'biocontainers/YOUR-TOOL-HERE' }"
+        'https://depot.galaxyproject.org/singularity/stacks:2.68--h077b44d_0':
+        'biocontainers/stacks:2.68--h077b44d_0' }"
+
 
     input:// TODO nf-core: Where applicable all sample-specific information e.g. "id", "single_end", "read_group"
     //               MUST be provided as an input via a Groovy Map called "meta".
@@ -31,11 +32,26 @@ process STACKS_REFMAP {
     //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
     // TODO nf-core: Where applicable please provide/convert compressed files as input/output
     //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-    path bam
+    path bam_path
+    path popmap
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    path "*.bam", emit: bam
+
+
+    path "catalog.calls" , emit: catalog_calls
+    path "catalog.chrs.tsv" , emit: catalog_chrs
+    path "catalog.fa.gz" , emit: catalog_fa
+    path "gstacks.log" , emit: gstacks_log
+    path "gstacks.log.distribs", emit: gstacks_log_distribs
+    path "populations.haplotypes.tsv", emit: haplotypes
+    path "populations.hapstats.tsv", emit: hapstats
+    path "populations.sumstats.tsv", emit: sumstats
+    path "populations.sumstats_summary.tsv", emit: sumstats_summary
+    path "populations.log", emit: populations_log
+    path "populations.log.distribs", emit: populations_log_distribs
+    path "refmap.log", emit: refmap_log
+    path "populations.vcf", emit: vcf , optional: true
     // TODO nf-core: List additional required output channels/values here
     path "versions.yml"           , emit: versions
 
@@ -44,6 +60,9 @@ process STACKS_REFMAP {
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "refmap_output"
+    //def bam_path = "--samples ${bam_path}" ?: ''
+    //def popmap = "--popmap ${popmap}" ?: ''
 
     // TODO nf-core: Where possible, a command MUST be provided to obtain the version number of the software e.g. 1.10
     //               If the software is unable to output a version number on the command-line then it can be manually specified
@@ -55,10 +74,12 @@ process STACKS_REFMAP {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
-    stacks \\
-        $args \\
-        -@ $task.cpus \\
-        $bam
+    ref_map.pl \\
+        --samples ${bam_path} \\
+        --popmap ${popmap} \\
+        -o . \\
+        -T $task.cpus \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -68,6 +89,7 @@ process STACKS_REFMAP {
 
     stub:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "refmap_output"
 
     // TODO nf-core: A stub section should mimic the execution of the original module as best as possible
     //               Have a look at the following examples:
@@ -75,7 +97,19 @@ process STACKS_REFMAP {
     //               Complex example: https://github.com/nf-core/modules/blob/818474a292b4860ae8ff88e149fbcda68814114d/modules/nf-core/bedtools/split/main.nf#L38-L54
     """
 
-    touch ${prefix}.bam
+    touch catalog.calls
+    touch catalog.chrs.tsv
+    touch catalog.fa.gz
+    touch gstacks.log
+    touch gstacks.log.distribs
+    touch populations.haplotypes.tsv
+    touch populations.hapstats.tsv
+    touch populations.sumstats.tsv
+    touch populations.sumstats_summary.tsv
+    touch populations.log
+    touch populations.log.distribs
+    touch refmap.log
+    touch populations.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
