@@ -25,6 +25,11 @@ input:
         pattern: "*.{fastq,fq}.gz"
         ontologies:
           - edam: "http://edamontology.org/format_1930" # FASTQ
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
     - contigs:
         type: file
         description: Genome assembly from long reads
@@ -39,7 +44,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "output_pypolca/*_corrected.fasta":
+      - "${prefix}/*_corrected.fasta":
           type: file
           description: Polished assembly
           pattern: "*.{fasta}"
@@ -51,7 +56,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "output_pypolca/*.vcf":
+      - "${prefix}/*.vcf":
           type: file
           description: variant calls
           pattern: "*.vcf"
@@ -63,7 +68,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "output_pypolca/*.report":
+      - "${prefix}/*.report":
           type: file
           description: Pypolca report
           pattern: "*.report"
