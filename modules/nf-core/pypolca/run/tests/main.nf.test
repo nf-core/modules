@@ -32,12 +32,12 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.versions).match("versions") },
-                { assert snapshot(process.out.polished).match("polished") },
-                { assert path(process.out.report[0][1]).readLines().any {it.contains('Stats BEFORE polishing')}: "Report is missing the text 'Stats BEFORE polishing'" },
-                { assert "MT192765.1" in path(process.out.polished[0][1]).fasta: "Polished genome does not include MT192765.1" },
-                { assert path(process.out.vcf[0][1]).vcf.chromosome == "MT192765.1": "Expected first chromosome in vcf to be 'MT192765.1'" },
+                { assert snapshot(
+                    process.out.polished,
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    process.out.report,
+                    process.out.versions
+                )}
             )
         }
 
