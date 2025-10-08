@@ -53,13 +53,9 @@ process PARABRICKS_STARFUSION {
 
     def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
     """
-    pbrun \\
-        starfusion \\
-        --chimeric-junction ${chimeric_junction} \\
-        --genome-lib-dir ${genome_lib_dir} \\
-        --output-dir ${prefix}_starfusion \\
-        ${num_gpus} \\
-        ${args}
+    ${args}
+    ${prefix}
+    ${num_gpus}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

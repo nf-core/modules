@@ -126,6 +126,7 @@ nextflow_process {
         when {
             params {
                 module_args = ''
+                rnafq2bam_args = ''
             }
             process {
                 """
@@ -139,7 +140,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    path(process.out.versions[0]).yaml
+                    process.out
                 ).match() }
             )
         }
