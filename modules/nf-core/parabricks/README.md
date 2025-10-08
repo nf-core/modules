@@ -42,7 +42,7 @@ For additional considerations, including information about how readgroups are ad
 
 ## rnafq2bam
 
-The `rnafq2bam` module is based on STAR version 2.7.2a. Therefore the genome lib directory required as input for this module must also be generated using this version of STAR. For convenience, a module with this version of STAR is included in this directory under `parabricks/stargenomegenerate`.
+The `rnafq2bam` module is based on STAR version `2.7.2a`. Therefore the genome lib directory required as input for this module must also be generated using this version of STAR. For convenience, a module with this version of STAR is included in this directory under `parabricks/stargenomegenerate`.
 
 ## starfusion
 
