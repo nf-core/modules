@@ -84,7 +84,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_dfam.hmm.h3m'),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_dfam.hmm.h3p')
                 ]
-                input[6] = "https://data.broadinstitute.org/Trinity/CTAT_RESOURCE_LIB/AnnotFilterRule.pm"
+                input[6] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq/test_starfusion.annotfilterrule.pm')
                 """
             }
         }
