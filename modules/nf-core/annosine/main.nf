@@ -6,7 +6,7 @@ process ANNOSINE {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/annosine2:2.0.8--pyh7e72e81_0':
-        'biocontainers/annosine2:2.0.8--pyh7e72e81_0' }"
+        'biocontainers/annosine2:2.0.9--pyh7e72e81_0' }"
 
     input:
     tuple val(meta), path(fasta)
