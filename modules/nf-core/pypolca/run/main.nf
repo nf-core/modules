@@ -11,9 +11,9 @@ process PYPOLCA_RUN {
     tuple val(meta), path(reads), path(contigs)
 
     output:
-    tuple val(meta), path("output_pypolca/*_corrected.fasta"), emit: polished
-    tuple val(meta), path("output_pypolca/*.vcf"), emit: vcf
-    tuple val(meta), path("output_pypolca/*.report"), emit: report
+    tuple val(meta), path("${prefix}/*_corrected.fasta"), emit: polished
+    tuple val(meta), path("${prefix}/*.vcf"), emit: vcf
+    tuple val(meta), path("${prefix}/*.report"), emit: report
     path "versions.yml"           , emit: versions
 
     when:
@@ -21,7 +21,7 @@ process PYPOLCA_RUN {
 
     script:
     def args = task.ext.args ?: '--careful'
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def read_files = reads instanceof List ? reads : [reads]
     def read_file_arg = read_files.size() > 1 ? "-1 ${read_files[0]} -2 ${read_files[1]}" : "-1 ${read_files[0]}"
     """
@@ -32,7 +32,8 @@ process PYPOLCA_RUN {
         -a contigs_uncompressed \\
         $read_file_arg \\
         -t ${task.cpus} \\
-        --prefix ${prefix}_pypolca \\
+        -o ${prefix} \\
+        --prefix ${prefix} \\
         $args
 
     cat <<-END_VERSIONS > versions.yml
@@ -43,14 +44,14 @@ process PYPOLCA_RUN {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo $args
 
-    mkdir output_pypolca
-    touch output_pypolca/${prefix}_corrected.fasta
-    touch output_pypolca/${prefix}.vcf
-    touch output_pypolca/${prefix}.report
+    mkdir $prefix
+    touch $prefix/${prefix}_corrected.fasta
+    touch $prefix/${prefix}.vcf
+    touch $prefix/${prefix}.report
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
