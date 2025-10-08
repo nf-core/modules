@@ -15,7 +15,6 @@ process PARABRICKS_STARFUSION {
     tuple val(meta), path("*/fusion_predictions.tsv"),              emit: fusions
     tuple val(meta), path("*/fusion_predictions.abridged.tsv"),     emit: abridged
     path "versions.yml",                                            emit: versions
-    path "compatible_versions.yml",                                 emit: compatible_versions, optional: true
 
     when:
     task.ext.when == null || task.ext.when
@@ -61,28 +60,6 @@ process PARABRICKS_STARFUSION {
         --output-dir ${prefix}_starfusion \\
         ${num_gpus} \\
         ${args}
-
-    # Capture once and build single-line compatible_with (spaces only, no tabs)
-    pbrun_version_output=\$(pbrun fq2bam --version 2>&1)
-
-    # Because of a space between BWA and mem in the version output this is handled different to the other modules
-    compat_line=\$(echo "\$pbrun_version_output" | awk -F':' '
-        /Compatible With:/ {on=1; next}
-        /^---/ {on=0}
-        on && /:/ {
-            key=\$1; val=\$2
-            gsub(/[ \\t]+/, " ", key); gsub(/^[ \\t]+|[ \\t]+\$/, "", key)
-            gsub(/[ \\t]+/, " ", val); gsub(/^[ \\t]+|[ \\t]+\$/, "", val)
-            a[++i]=key ": " val
-        }
-        END { for (j=1;j<=i;j++) printf "%s%s", (j>1?", ":""), a[j] }
-    ')
-
-    cat <<EOF > compatible_versions.yml
-    "${task.process}":
-    pbrun_version: \$(echo "\$pbrun_version_output" | awk '/^pbrun:/ {print \$2; exit}')
-    compatible_with: "\$compat_line"
-    EOF
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
