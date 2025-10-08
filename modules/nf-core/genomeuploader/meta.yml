@@ -1,0 +1,109 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: genomeuploader
+description: Upload genome bins and MAGs in FASTA format to ENA (European Nucleotide Archive)
+keywords:
+  - archiving
+  - ena
+  - mags
+  - bins
+  - upload
+tools:
+  - genomeuploader:
+      description: Python script to upload bins and MAGs in fasta format to ENA (European Nucleotide Archive).
+      homepage: https://github.com/EBI-Metagenomics/genome_uploader
+      documentation: https://github.com/EBI-Metagenomics/genome_uploader
+      tool_dev_url: https://github.com/EBI-Metagenomics/genome_uploader
+      licence: ["Apache-2.0"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information, the study_accession to upload the data, and the center name
+          e.g. `[ id:'test', study_accession:'ERP159782', center_name:'nf-core' ]`
+    - metadata_tsv:
+        type: file
+        description: TSV file containing metadata for genomes/bins to upload
+        pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  - fastas:
+      type: file
+      description: FASTA files containing genome/bin sequences to upload
+      pattern: "*.{fasta,fa,fna,fasta.gz,fa.gz,fna.gz}"
+      ontologies:
+        - edam: http://edamontology.org/format_1929 # FASTA
+        - edam: http://edamontology.org/format_3989 # GZIP format
+
+output:
+  upload_output_dir:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', study_accession:'ERP159782', center_name:'nf-core' ]`
+      - upload_output/*:
+          type: directory
+          description: Directory containing all upload outputs
+          pattern: "upload_output/*"
+          ontologies: []
+  submission:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', study_accession:'ERP159782', center_name:'nf-core' ]`
+      - upload_output/MAG_upload/submission.xml:
+          type: file
+          description: ENA submission XML file
+          pattern: "upload_output/MAG_upload/submission.xml"
+          ontologies:
+            - edam: http://edamontology.org/format_2332 # XML
+  registered_mags:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', study_accession:'ERP159782', center_name:'nf-core' ]`
+      - upload_output/MAG_upload/registered_MAGs_${prefix}.tsv:
+          type: file
+          description: TSV file mapping genome names to ENA accession numbers
+          pattern: "upload_output/MAG_upload/registered_MAGs_*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  genome_samples:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', study_accession:'ERP159782', center_name:'nf-core' ]`
+      - upload_output/MAG_upload/genome_samples.xml:
+          type: file
+          description: ENA genome samples XML file
+          pattern: "upload_output/MAG_upload/genome_samples.xml"
+          ontologies:
+            - edam: http://edamontology.org/format_2332 # XML
+  manifests:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', study_accession:'ERP159782', center_name:'nf-core' ]`
+      - upload_output/MAG_upload/manifests_${prefix}/*.manifest:
+          type: file
+          description: ENA manifest files for genome upload
+          pattern: "upload_output/MAG_upload/manifests_*/*.manifest"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+
+authors:
+  - "@mberacochea"
+maintainers:
+  - "@mberacochea"
