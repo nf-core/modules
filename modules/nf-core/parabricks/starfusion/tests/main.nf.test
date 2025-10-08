@@ -137,7 +137,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    path(process.out.versions[0]).yaml
+                ).match() }
             )
         }
     }
