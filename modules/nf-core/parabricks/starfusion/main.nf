@@ -51,15 +51,11 @@ process PARABRICKS_STARFUSION {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-
-    def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
     """
-    ${args}
-    ${prefix}
-    ${num_gpus}
-
+    touch fusion_predictions.tsv
+    touch fusion_predictions.abridged.tsv
+    
+    # Capture the full version output once and store it in a variable
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
             pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
