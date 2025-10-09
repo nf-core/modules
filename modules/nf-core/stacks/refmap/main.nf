@@ -77,7 +77,7 @@ process STACKS_REFMAP {
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
     ref_map.pl \\
-        --samples ${bam_path} \\
+        --samples ./ \\
         --popmap ${popmap} \\
         -o . \\
         -T $task.cpus \\
