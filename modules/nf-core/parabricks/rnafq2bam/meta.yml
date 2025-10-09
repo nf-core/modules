@@ -92,6 +92,28 @@ output:
           description: Chimeric junction output file
           pattern: "Chimeric.out.junction"
           ontologies: []
+  qc_metrics:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_qc_metrics":
+          type: directory
+          description: (optional) optional directory of qc metrics
+          pattern: "*_qc_metrics"
+  duplicate_metrics:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.duplicate-metrics.txt":
+          type: file
+          description: (optional) metrics calculated from marking duplicates in the
+            bam file
+          pattern: "*.duplicate-metrics.txt"
+          ontologies: []
   versions:
     - versions.yml:
         type: file

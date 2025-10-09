@@ -112,6 +112,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
+                    process.out,
                     path(process.out.versions[0]).yaml
                 ).match() }
             )
@@ -166,7 +167,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = ''
+                module_args = '--out-chim-type Junctions'
             }
             process {
                 """
@@ -188,6 +189,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
+                    process.out,
                     path(process.out.versions[0]).yaml
                 ).match() }
             )

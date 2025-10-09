@@ -16,7 +16,9 @@ process PARABRICKS_RNAFQ2BAM {
     output:
     tuple val(meta), path("*.bam"),                                 emit: bam
     tuple val(meta), path("*.bai"),                                 emit: bai
-    tuple val(meta), path("Chimeric.out.junction"),                 emit: junction, optional: true
+    tuple val(meta), path("Chimeric.out.junction"),                 emit: junction,             optional: true
+    tuple val(meta), path("*_qc_metrics"),                          emit: qc_metrics,           optional:true
+    tuple val(meta), path("*.duplicate-metrics.txt"),               emit: duplicate_metrics,    optional:true
     path "versions.yml",                                            emit: versions
 
     when:
@@ -64,11 +66,13 @@ process PARABRICKS_RNAFQ2BAM {
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def chimeric_output = args.contains("--out-chim-type") ? "touch Chimeric.out.junction" : ""
     def qc_metrics_output = args.contains("--out-qc-metrics-dir") ? "mkdir ${prefix}_qc_metrics" : ""
     def duplicate_metrics_output = args.contains("--out-duplicate-metrics") ? "touch ${prefix}.duplicate-metrics.txt" : ""
     """
     touch ${prefix}.bam
     touch ${prefix}.bam.bai
+    ${chimeric_output}
     ${qc_metrics_output}
     ${duplicate_metrics_output}
 
