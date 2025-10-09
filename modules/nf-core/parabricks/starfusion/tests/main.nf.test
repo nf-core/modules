@@ -126,7 +126,7 @@ nextflow_process {
         when {
             params {
                 module_args = ''
-                rnafq2bam_args = ''
+                rnafq2bam_args = '--out-chim-type Junctions'
             }
             process {
                 """
@@ -140,7 +140,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out
+                    process.out,
+                    path(process.out.versions[0]).yaml
                 ).match() }
             )
         }
