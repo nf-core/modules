@@ -56,11 +56,11 @@ For the full list of compatible versions, check the [Parabricks documentation](h
 
 ## Notes on Testing
 
-The Parabricks `starfusion` module requires testing on a `g4dn.12xlarge` instead of the default `g4dn.xlarge` due to higher system memory requirements. In [nf-test-gpu.yml](../../../.github/workflows/nf-test-gpu.yml), update the following line: 
+The Parabricks `starfusion` module requires testing on a `g4dn.8xlarge` instead of the default `g4dn.xlarge` due to higher system memory requirements. In [nf-test-gpu.yml](../../../.github/workflows/nf-test-gpu.yml), update the following line: 
 
 ```
 nf-test-gpu:
-    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.12xlarge/image=ubuntu24-gpu-x64"
+    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.8xlarge/image=ubuntu24-gpu-x64"
 ```
 
 Change it back before merging into master:
