@@ -53,3 +53,19 @@ The `starfusion` module is based on starfusion 1.7.0. Therefore the genome lib d
 The `compatible_with.yaml` is provided as an optional output to the stub section to make the compatible CPU version available to the end user. This section is not given for the subtools `applybqsr`, `fq2bammeth`, `genotypegvcf`, `rnafq2bam`, or `starfusion`.
 
 For the full list of compatible versions, check the [Parabricks documentation](https://docs.nvidia.com/clara/parabricks/latest/documentation/tooldocs/outputaccuracyandcompatiblecpusoftwareversions.html#).
+
+## Notes on Testing
+
+The Parabricks `starfusion` module requires testing on a `g4dn.12xlarge` instead of the default `g4dn.xlarge` due to higher system memory requirements. In [nf-test-gpu.yml](../../../.github/workflows/nf-test-gpu.yml), update the following line: 
+
+```
+nf-test-gpu:
+    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.12xlarge/image=ubuntu24-gpu-x64"
+```
+
+Change it back before merging into master:
+
+```
+nf-test-gpu:
+    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.xlarge/image=ubuntu24-gpu-x64"
+```
