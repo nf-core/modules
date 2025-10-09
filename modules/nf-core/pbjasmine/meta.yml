@@ -24,7 +24,7 @@ input:
         e.g. `[ id:'sample1' ]`
   - bam:
       type: file
-      description: Sorted BAM/CRAM file
+      description: BAM/CRAM file
       pattern: "*.{bam,cram}"
       ontologies:
       - edam: "http://edamontology.org/format_2572"     # BAM
@@ -39,7 +39,7 @@ output:
           e.g. `[ id:'sample1' ]`
     - "*.bam":
         type: file
-        description: consensus reads with jasmine modification calls
+        description: Consensus reads with jasmine modification calls
         pattern: "*.bam"
         ontologies:
         - edam: "http://edamontology.org/format_2572"     # BAM
