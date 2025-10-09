@@ -16,7 +16,7 @@ process PARABRICKS_RNAFQ2BAM {
     output:
     tuple val(meta), path("*.bam"),                                 emit: bam
     tuple val(meta), path("*.bai"),                                 emit: bai
-    tuple val(meta), path("*/Chimeric.out.junction"),               emit: junction, optional: true
+    tuple val(meta), path("Chimeric.out.junction"),                 emit: junction, optional: true
     path "versions.yml",                                            emit: versions
 
     when:
@@ -46,6 +46,10 @@ process PARABRICKS_RNAFQ2BAM {
         --out-bam ${prefix}.bam \\
         ${num_gpus} \\
         ${args}
+
+    if [[ "${args}" == *"--out-chim-type"* ]]; then
+        mv ${prefix}/Chimeric.out.junction .
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

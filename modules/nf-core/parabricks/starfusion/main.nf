@@ -12,8 +12,8 @@ process PARABRICKS_STARFUSION {
     tuple val(meta1), path(genome_lib_dir)
 
     output:
-    tuple val(meta), path("*/fusion_predictions.tsv"),              emit: fusions
-    tuple val(meta), path("*/fusion_predictions.abridged.tsv"),     emit: abridged
+    tuple val(meta), path("fusion_predictions.tsv"),                emit: fusions
+    tuple val(meta), path("fusion_predictions.abridged.tsv"),       emit: abridged
     path "versions.yml",                                            emit: versions
 
     when:
@@ -36,6 +36,9 @@ process PARABRICKS_STARFUSION {
         --output-dir ${prefix}_starfusion \\
         ${num_gpus} \\
         ${args}
+
+    mv ${prefix}_starfusion/fusion_predictions.tsv . 
+    mv ${prefix}_starfusion/fusion_predictions.abridged.tsv . 
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
