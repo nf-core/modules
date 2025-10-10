@@ -23,14 +23,12 @@ process MSISENSOR2_MSI {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def model_cmd      = models     ? "-M ${models}"     : ""
-    def tumor_bam_cmd  = tumor_bam  ? "-t ${tumor_bam}"  : ""
     """
     msisensor2 msi \\
         -b ${task.cpus} \\
         ${args} \\
-        ${model_cmd} \\
-        ${tumor_bam_cmd} \\
+        -M ${models} \\
+        -t ${tumor_bam} \\
         -o ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
