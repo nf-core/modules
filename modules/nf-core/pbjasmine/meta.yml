@@ -37,7 +37,7 @@ output:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - "*.bam":
+    - "${prefix}.bam":
         type: file
         description: Consensus reads with jasmine modification calls
         pattern: "*.bam"
