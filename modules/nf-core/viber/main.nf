@@ -4,8 +4,8 @@ process VIBER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/r-cnaqc_r-viber:18267cea84b40084':
-        'community.wave.seqera.io/library/r-cnaqc_r-viber:421cfc5931b930b5'}"
+        'oras://community.wave.seqera.io/library/r-cnaqc_r-viber:014077a3164189d5':
+        'community.wave.seqera.io/library/r-cnaqc_r-viber:2314592f7d2f9abe'}"
 
     input:
     tuple val(meta), path(rds_join), val(tumour_samples)
