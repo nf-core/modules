@@ -10,24 +10,34 @@ workflow FASTQ_SEQKIT_SANA_PAIR {
 
     ch_versions = Channel.empty()
 
-    ch_reads = ch_reads.transpose() // seqkit/sana can only receives one file at a time
-    
+    ch_reads = ch_reads
+        .branch {
+            meta, fastq ->
+                single_end: meta.single_end
+                    return [ meta, fastq ]
+                paired_end: !meta.single_end
+                    return [ meta, fastq ]
+        }
+
+    ch_reads = ch_reads.single_end.mix(ch_reads.paired_end.transpose()) // seqkit/sana can only receives one file at a time
+
     SEQKIT_SANA( ch_reads )
     ch_versions = ch_versions.mix(SEQKIT_SANA.out.versions.first())
 
     ch_sanitized_reads = SEQKIT_SANA.out.reads
+        .groupTuple(by: 0)
         .branch {
-            meta, bam ->
+            meta, fastq ->
                 single_end: meta.single_end
-                    return [ meta, bam ]
+                    return [ meta, fastq ]
                 paired_end: !meta.single_end
-                    return [ meta, bam ]
+                    return [ meta, fastq ]
         }
 
-    ch_sanitized_reads_paired = ch_sanitized_reads.paired_end
-        .groupTuple(by: 0)
+    ch_sanitized_paired_reads = ch_sanitized_reads.paired_end
         .map { meta, reads ->
-            def renamed = reads.indexed().collect { i, file_path ->
+            def sorted_reads = reads.sort { it.size() } // sorting by file size, to keep snapshot order same
+            def renamed = sorted_reads.indexed().collect { i, file_path ->
                 def base = file(file_path).getSimpleName()
                 def ext  = file(file_path).getName() - file(file_path).getSimpleName()
                 def new_name = "${base}_${i + 1}${ext}"
@@ -36,12 +46,12 @@ workflow FASTQ_SEQKIT_SANA_PAIR {
             [ meta, renamed ]
         }
 
-    SEQKIT_PAIR ( ch_sanitized_reads_paired )
+    SEQKIT_PAIR ( ch_sanitized_paired_reads )
     ch_versions = ch_versions.mix(SEQKIT_PAIR.out.versions.first())
 
-    ch_sanitized_reads.single_end.mix(SEQKIT_PAIR.out.reads, SEQKIT_PAIR.out.unpaired_reads).view()
+    ch_reads = ch_sanitized_reads.single_end.mix(SEQKIT_PAIR.out.reads, SEQKIT_PAIR.out.unpaired_reads)
 
     emit:
-    // bam      = SAMTOOLS_SORT.out.bam           // channel: [ val(meta), [ bam ] ]
-    versions = ch_versions                     // channel: [ versions.yml ]
+    reads    = ch_reads    // channel: [ val(meta), [ fastq ] ]
+    versions = ch_versions // channel: [ versions.yml ]
 }

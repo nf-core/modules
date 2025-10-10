@@ -1,44 +1,35 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fastq_seqkit_sana_pair"
-## TODO nf-core: Add a description of the subworkflow and list keywords
-description: Runs seqkit/sana for both single_end and paired_end fastq reads, and then merges any paired_end reads in a single file
+description: Sanitize and pair FASTQ files using seqkit sana and seqkit pair
 keywords:
-  - sort
-  - bam
-  - sam
-  - cram
-## TODO nf-core: Add a list of the modules and/or subworkflows used in the subworkflow
+  - fastq
+  - quality control
+  - sanitization
+  - pairing
+  - seqkit
+  - preprocessing
 components:
-  - samtools/sort
-  - samtools/index
-## TODO nf-core: List all of the channels used as input with a description and their structure
+  - seqkit/sana
+  - seqkit/pair
 input:
-  - ch_bam:
-      type: file
+  - ch_reads:
+      type: channel
       description: |
-        The input channel containing the BAM/CRAM/SAM files
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.{bam/cram/sam}"
-## TODO nf-core: List all of the channels used as output with a descriptions and their structure
+        Channel containing sample metadata and FASTQ files.
+        Structure: [ val(meta), [ fastq ] ]
+        Where meta is a map containing at least:
+        - id: sample identifier
+        - single_end: boolean indicating if data is single-end (true) or paired-end (false)
+      pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
 output:
-  - bam:
-      type: file
+  - reads:
+      type: channel
       description: |
-        Channel containing BAM files
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.bam"
-  - bai:
-      type: file
-      description: |
-        Channel containing indexed BAM (BAI) files
-        Structure: [ val(meta), path(bai) ]
-      pattern: "*.bai"
-  - csi:
-      type: file
-      description: |
-        Channel containing CSI files
-        Structure: [ val(meta), path(csi) ]
-      pattern: "*.csi"
+        Channel containing sanitized and paired FASTQ files.
+        For single-end data: returns sanitized reads
+        For paired-end data: returns properly paired reads and any unpaired reads
+        Structure: [ val(meta), [ fastq ] ]
+      pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
   - versions:
       type: file
       description: |

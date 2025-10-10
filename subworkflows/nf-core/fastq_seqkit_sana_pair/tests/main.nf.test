@@ -19,7 +19,7 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = Channel.of([
-                    [ id:'test', single_end:true ], // meta map
+                    [ id:'test_single', single_end:true ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ])
                 """
@@ -43,7 +43,7 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = Channel.of([
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test_paired', single_end:false ], // meta map
                     [
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
@@ -56,6 +56,63 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }.unique()
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - both with single broken") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                        [ id:'test_both', single_end:true ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1_broken.fastq.gz', checkIfExists: true)
+                    ],
+                    [
+                        [ id:'test_both', single_end:false ], // meta map
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        ]
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }.unique()
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id: 'test_stub' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1_broken.fastq.gz', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
                 { assert snapshot(
                     workflow.out,
                     workflow.out.versions.collect{ path(it).yaml }.unique()
