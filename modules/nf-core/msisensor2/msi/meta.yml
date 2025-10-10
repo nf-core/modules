@@ -34,12 +34,17 @@ input:
         description: BAM/CRAM/SAM index file
         pattern: "*.{bai,crai}"
         ontologies: []
-  - models:
-      type: file
-      description: Folder of MSISensor2 models (available from Github or as a product
-        of msisensor2/scan)
-      pattern: "*/*"
-      ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - models:
+        type: file
+        description: Folder of MSISensor2 models (available from Github or as a
+          product of msisensor2/scan)
+        pattern: "*/*"
+        ontologies: []
 output:
   msi:
     - - meta:
