@@ -3,9 +3,9 @@ process MSISENSOR2_MSI {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/msisensor2:0.1--hd03093a_0'
-        : 'biocontainers/msisensor2:0.1--hd03093a_0'}"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ? 
+            'https://depot.galaxyproject.org/singularity/msisensor2:0.1--hd03093a_0' :
+            'biocontainers/msisensor2:0.1--hd03093a_0'}"
 
     input:
     tuple val(meta), path(tumor_bam), path(tumor_bam_index)
