@@ -25,7 +25,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    process.out.log.collect { tuple -> file(tuple[1]).name },
+                    process.out.versions.collect { file(it).name }
+                ).match() }
             )
         }
 
