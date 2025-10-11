@@ -9,14 +9,14 @@ nextflow_process {
     tag "modkit"
     tag "modkit/callmods"
 
-    test("sarscov2 - bam") {
+    test("homo_sapiens - bam") {
 
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/bc_anchored_10_reads.sorted.bam', checkIfExists: true),
                 ]
                 """
             }
@@ -35,7 +35,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - bam - stub") {
+    test("homo_sapiens - bam - stub") {
 
         options "-stub"
 
@@ -44,7 +44,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/bc_anchored_10_reads.sorted.bam', checkIfExists: true),
                 ]
                 """
             }
