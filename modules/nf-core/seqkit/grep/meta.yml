@@ -27,15 +27,19 @@ input:
         description: >
           Fasta or fastq file containing sequences to be filtered
         pattern: "*.{fa,fna,faa,fasta,fq,fastq}[.gz]"
-  - - pattern:
-        type: file
-        description: >
-          pattern file (one record per line). If no pattern is given, a string can be
-          specified within the args using '-p pattern_string'
-        pattern: "*.{txt,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - pattern:
+      type: file
+      description: >
+        pattern file (one record per line). If no pattern is given, a string can be
+        specified within the args using '-p pattern_string'
+      pattern: "*.{txt,tsv}"
+      ontologies:
+        - edam: http://edamontology.org/format_3475 # TSV
 output:
-  - filter:
-      - meta:
+  filter:
+    - - meta:
           type: map
           description: >
             Groovy Map containing sample information e.g. [ id:'test', single_end:false
@@ -45,11 +49,15 @@ output:
           description: >
             Fasta or fastq file containing the filtered sequences
           pattern: "*.{fa,fq}[.gz]"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Joon-Klaps"
 maintainers:

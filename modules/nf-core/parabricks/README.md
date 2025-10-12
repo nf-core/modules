@@ -4,7 +4,7 @@ These nf-core modules implement functionality of the NVIDIA Clara Parabricks pro
 
 ## General considerations
 
-Parabricks is available only through a docker container: `nvcr.io/nvidia/clara/clara-parabricks:4.0.1-1`. The main entrypoint to the Parabricks is the command line program `pbrun`, which calls several sub-programs within the container. The Prabricks authors combined several common patterns into a single tool, such as `fq2bam` performing alignment, sorting, mark duplicates, and base quality score recalibration, all within a single command. Generally, the tools can be used for only a subset of the entire functionality as well.
+Parabricks is available only through a docker container: `nvcr.io/nvidia/clara/clara-parabricks:4.5.1-1`. The main entrypoint to the Parabricks is the command line program `pbrun`, which calls several sub-programs within the container. The Prabricks authors combined several common patterns into a single tool, such as `fq2bam` performing alignment, sorting, mark duplicates, and base quality score recalibration, all within a single command. Generally, the tools can be used for only a subset of the entire functionality as well.
 
 Parabricks tools must be run with at least one NVIDIA GPU with >16GB vRAM, and a usually require a large amount of resources (at least 8 threads and 30GB RAM). Please see the [resource requirements](https://docs.nvidia.com/clara/parabricks/4.0.1/GettingStarted.html) for more information. It is recommended to use fast local storage whenever possible to ensure the system is not bottlenecked by I/O.
 
@@ -28,4 +28,22 @@ Users who would like to have Enterprise Support for Clara Parabricks can purchas
 
 ## Specific tools
 
-Please see the README file for each individual tool for more information.
+### parabricks/fq2bam
+
+`fq2bam` performs alignment, sorting, (optional) marking of duplicates, and (optional) base quality score recalibration (BQSR). There is no option to control the number of threads used with this tool - all available threads on the system are used by default.
+
+Alignment and coordinate sorting are always performed. Duplicate marking can be performed by passing the option `markdups=true`. Duplicate marking and BQSR can be performed by passing the options `markdups=true` and `known_sites=$KNOWN_SITES_FILE`.
+
+Please see the `fq2bam/meta.yml` file for a detailed list of required and optional inputs and outputs.
+
+For additional considerations, including information about how readgroups are added to the resulting bam files, see the [tool documentation](https://docs.nvidia.com/clara/parabricks/latest/Documentation/ToolDocs/man_fq2bam.html).
+
+## parabricks/stargenomegenerate
+
+The `parabricks/stargenomegenerate` module is near identical to the existing `star/genomegenerate` module, however it runs on with older version of STAR (2.7.2a) that is required for Parabricks compatibility. This module does not exist in any previous versions of the `nf-core/modules` and therefore must be included here. In the future, it's possible that Parabricks will update to a newer version of STAR and this accessory module may become obselete, but for now it is required pre-processing if the Genome Lib Dir has not already been generated with this vesion of STAR.
+
+## Compatible with
+
+Is added as optional output to the stub section to make the compatible CPU version available to the end user. This section is not given for the subtools `applybqsr`, `fq2bammeth`, `genotypegvcf`, or `rnafq2bam`.
+
+For the full list of compatible versions, check the [Parabricks documentation](https://docs.nvidia.com/clara/parabricks/latest/documentation/tooldocs/outputaccuracyandcompatiblecpusoftwareversions.html#).

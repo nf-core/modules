@@ -36,26 +36,28 @@ input:
           throws an error if a pair of R1 and R2 fastq files does not have the same filename except for the "_R1"/"_R2" part.
           Renaming the files does not affect the results (see README.md for detailed tests).
         pattern: "*{R1,R2}*.fastq.gz"
-  - - reference:
-        type: directory
-        description: Folder containing all the reference indices needed by Cell Ranger
+        ontologies: []
+  - reference:
+      type: directory
+      description: Folder containing all the reference indices needed by Cell Ranger
 output:
-  - outs:
-      - meta:
-          type: file
-          description: Files containing the outputs of Cell Ranger, see official 10X Genomics
-            documentation for a complete list
-          pattern: "${meta.id}/outs/*"
+  outs:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "**/outs/**":
           type: file
-          description: Files containing the outputs of Cell Ranger, see official 10X Genomics
-            documentation for a complete list
+          description: Files containing the outputs of Cell Ranger, see official 10X
+            Genomics documentation for a complete list
           pattern: "${meta.id}/outs/*"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software version
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software version
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ggabernet"
   - "@edmundmiller"

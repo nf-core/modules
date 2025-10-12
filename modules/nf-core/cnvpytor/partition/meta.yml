@@ -1,12 +1,14 @@
 name: cnvpytor_partition
-description: partitioning read depth histograms
+description: Calculate segmentation for specified bin size (multiple bin sizes separate
+  by space)
 keywords:
-  - cnv calling
-  - partition histograms
-  - read depth
+  - cnv
+  - call
+  - partition
+  - histogram
 tools:
   - cnvpytor:
-      description: calling CNVs using read depth
+      description: Calling CNVs using read depth
       homepage: https://github.com/abyzovlab/CNVpytor
       documentation: https://github.com/abyzovlab/CNVpytor
       tool_dev_url: https://github.com/abyzovlab/CNVpytor
@@ -23,25 +25,30 @@ input:
         type: file
         description: pytor file containing read depth data
         pattern: "*.{pytor}"
-  - - bin_sizes:
-        type: string
-        description: list of binsizes separated by space e.g. "1000 10000" and "1000"
+        ontologies: []
+  - bin_sizes:
+      type: string
+      description: list of binsizes separated by space e.g. "1000 10000" default is
+        "1000"
 output:
-  - pytor:
-      - meta:
+  pytor:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - ${pytor.baseName}.pytor:
+      - ${prefix}.pytor:
           type: file
           description: pytor file
-          pattern: "*.{pytor}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          pattern: "*.pytor"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sima-r"
   - "@ramprasadn"

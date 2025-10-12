@@ -1,29 +1,83 @@
 {
-    "CRAM": {
+    "homo_sapiens - bam region - panel": {
         "content": [
+            "b84087788284d7ca02e23a0a24da2cff",
+            [
+                [
+                    {
+                        "id": "input"
+                    },
+                    "input_chr22_16650000-16750000_stats_coverage.txt.gz:md5,5682c97193f6cd8041f3bc4ef81e7252"
+                ]
+            ],
             [
                 "versions.yml:md5,c68de03046a6503cdbcf3a1495fc512f"
             ]
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.4"
         },
-        "timestamp": "2024-03-13T16:58:34.365910006"
+        "timestamp": "2025-05-19T22:59:18.246884827"
     },
-    "List_versions": {
+    "homo_sapiens - [bam, bam] region - panel": {
         "content": [
+            [
+                "VcfFile [chromosomes=[chr22], sampleCount=2, variantCount=266, phased=true]"
+            ],
+            [
+                [
+                    {
+                        "id": "input"
+                    },
+                    "input_chr22_16650000-16750000_stats_coverage.txt.gz:md5,ce67a9fd6944b74e65ab6f401b1b9bb0"
+                ]
+            ],
             [
                 "versions.yml:md5,c68de03046a6503cdbcf3a1495fc512f"
             ]
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.4"
         },
-        "timestamp": "2024-07-09T20:35:30.97466287"
+        "timestamp": "2025-05-19T23:09:13.67984812"
     },
-    "Should run with a bamlist to rename samples": {
+    "homo_sapiens - vcf region - panel": {
+        "content": [
+            "d8e9e1ec4d9d229536a23f2f69a469de",
+            [
+                "versions.yml:md5,c68de03046a6503cdbcf3a1495fc512f"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.4"
+        },
+        "timestamp": "2025-05-19T22:59:11.310995509"
+    },
+    "homo_sapiens - cram region - panel - fasta": {
+        "content": [
+            "d8e9e1ec4d9d229536a23f2f69a469de",
+            [
+                [
+                    {
+                        "id": "input"
+                    },
+                    "input_chr22_16650000-16750000_stats_coverage.txt.gz:md5,c9558dd66680731d5a360818480c1998"
+                ]
+            ],
+            [
+                "versions.yml:md5,c68de03046a6503cdbcf3a1495fc512f"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.4"
+        },
+        "timestamp": "2025-05-19T22:59:28.11190592"
+    },
+    "homo_sapiens - [bam, bam] region sample rename - panel": {
         "content": [
             [
                 [
@@ -32,88 +86,57 @@
                 ]
             ],
             [
-                "VcfFile [chromosomes=[chr21], sampleCount=2, variantCount=4719, phased=true]"
+                "VcfFile [chromosomes=[chr22], sampleCount=2, variantCount=266, phased=true]"
             ]
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.3"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.4"
         },
-        "timestamp": "2024-10-22T15:23:37.368119579"
+        "timestamp": "2025-05-19T22:59:55.383590515"
     },
-    "VCF": {
+    "homo_sapiens - vcf region - panel -- stub": {
         "content": [
-            [
-                "versions.yml:md5,c68de03046a6503cdbcf3a1495fc512f"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-03-13T16:58:05.013609832"
-    },
-    "List_coverage": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "input"
-                    },
-                    "input_chr21_16650000-16750000_stats_coverage.txt.gz:md5,ac61370fc14738b103e160b7298727b9"
+            {
+                "0": [
+                    [
+                        {
+                            "id": "input"
+                        },
+                        "input_chr22_16650000-16750000.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    
+                ],
+                "2": [
+                    "versions.yml:md5,c68de03046a6503cdbcf3a1495fc512f"
+                ],
+                "phased_variants": [
+                    [
+                        {
+                            "id": "input"
+                        },
+                        "input_chr22_16650000-16750000.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "stats_coverage": [
+                    
+                ],
+                "versions": [
+                    "versions.yml:md5,c68de03046a6503cdbcf3a1495fc512f"
                 ]
-            ]
+            },
+            {
+                "GLIMPSE2_PHASE": {
+                    "glimpse2": "2.0.0"
+                }
+            }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.4"
         },
-        "timestamp": "2024-07-09T20:35:30.943277837"
-    },
-    "BAM_coverage": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "input"
-                    },
-                    "input_chr21_16650000-16750000_stats_coverage.txt.gz:md5,9be7101ef4f599416c22fd6160c3b146"
-                ]
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-03-13T16:58:13.527360464"
-    },
-    "CRAM_coverage": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "input"
-                    },
-                    "input_chr21_16650000-16750000_stats_coverage.txt.gz:md5,a2bee17d81568dba62ce4dd430947d29"
-                ]
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-03-13T16:58:34.264826731"
-    },
-    "BAM": {
-        "content": [
-            [
-                "versions.yml:md5,c68de03046a6503cdbcf3a1495fc512f"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-03-13T16:58:13.58159608"
+        "timestamp": "2025-05-19T23:19:50.900935094"
     }
 }

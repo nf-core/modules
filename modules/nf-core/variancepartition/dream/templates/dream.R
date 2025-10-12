@@ -44,15 +44,26 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, check.nam
     return(df)
 }
 
+#
+#' Turn “null” or empty strings into actual NULL
+#'
+#' @param x Input option
+#'
+#' @return NULL or x
+#'
+nullify <- function(x) {
+  if (is.character(x) && (tolower(x) == "null" || x == "")) NULL else x
+}
 
 # Options list
 opt <- list(
-    output_prefix      = "$meta.contrast_id",       # Prefix for output files
+    output_prefix      = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
     count_file         = "$counts",                 # File containing raw counts
     sample_file        = "$samplesheet",            # File containing sample information
-    contrast_variable  = "$meta.contrast_variable", # Variable for contrast (e.g., "treatment")
-    contrast_reference    = "$meta.contrast_reference",# Reference level for the contrast
-    contrast_target       = "$meta.contrast_target",   # Target level for the contrast (e.g., "mCherry")
+    contrast_variable  = "$contrast_variable",      # Variable for contrast (e.g., "treatment")
+    contrast_reference = "$reference",              # Reference level for the contrast
+    contrast_target    = "$target",                 # Target level for the contrast (e.g., "mCherry")
+    contrast_string    = "$comparison",             # Optional full (complex) contrast expression comparison
     sample_id_col      = "sample",                  # Column name for sample IDs
     threads            = "$task.cpus",              # Number of threads for multithreading
     subset_to_contrast_samples = FALSE,            # Whether to subset to contrast samples
@@ -69,7 +80,7 @@ opt <- list(
     winsor_tail_p      = "0.05,0.1",              # Winsor tail probabilities for eBayes
     ddf                = "adaptive",              # 'Satterthwaite', 'Kenward-Roger', or 'adaptive'
     reml               = FALSE,
-    formula            = "$meta.formula",         # User-specified formula (e.g. "~ + (1 | sample_number)")
+    formula            = "$formula",              # User-specified formula (e.g. "~ + (1 | sample_number)")
     apply_voom         = FALSE                    # Whether to apply `voomWithDreamWeights`
 )
 
@@ -82,10 +93,19 @@ for (ao in names(args_opt)) {
     opt[[ao]] <- args_opt[[ao]]
 }
 
-# If there is no formula, convert string "null" to NULL
-if (!is.null(opt\$formula) && tolower(opt\$formula) == "null") {
-    opt\$formula <- NULL
-}
+# If there is no option supplied, convert string "null" to NULL
+keys <- c("formula", "contrast_string", "contrast_variable", "contrast_reference")
+opt[keys] <- lapply(opt[keys], nullify)
+
+opt\$threads      <- as.numeric(opt\$threads)
+opt\$apply_voom   <- as.logical(opt\$apply_voom)
+opt\$proportion   <- as.numeric(opt\$proportion)
+opt\$trend        <- as.logical(opt\$trend)
+opt\$robust       <- as.logical(opt\$robust)
+opt\$reml         <- as.logical(opt\$reml)
+opt\$p.value      <- as.numeric(opt\$p.value)
+opt\$lfc          <- as.numeric(opt\$lfc)
+opt\$confint      <- as.logical(opt\$confint)
 
 # Load metadata
 metadata <- read_delim_flexible(opt\$sample_file, header = TRUE, stringsAsFactors = TRUE)
@@ -147,17 +167,39 @@ fitmm <- eBayes(fitmm, proportion = opt\$proportion,
 head(fitmm\$design, 3)
 print(colnames(fitmm\$design))
 
-# Write coefficient name from contrast variable and target level (e.g., "treatmentmCherry")
-coef_name <- paste0(opt\$contrast_variable, opt\$contrast_target)
+# If contrast_string is provided, use that for makeContrast
+if (!is.null(opt\$contrast_string)) {
+    cat("Using contrast string:", opt\$contrast_string, "\n")
+    colnames(fitmm\$design) <- make.names(colnames(fitmm\$design))
+    # Use makeContrasts
+    contrast_matrix <- makeContrasts(contrast = opt\$contrast_string, levels = colnames(fitmm\$design))
+    fit2 <- contrasts.fit(fitmm, contrast_matrix)
+    fit2 <- eBayes(fit2, proportion = opt\$proportion,
+                   stdev.coef.lim = stdev_coef_lim_vals,
+                   trend = opt\$trend, robust = opt\$robust,
+                   winsor.tail.p = winsor_tail_p_vals)
+    results <- topTable(fit2,
+                        adjust.method = opt\$adjust.method,
+                        p.value = opt\$p.value, lfc = opt\$lfc, confint = opt\$confint)
 
-# Get topTable results
-results <- topTable(fitmm, coef = coef_name,
-                    adjust.method = opt\$adjust.method, p.value = opt\$p.value,
-                    lfc = opt\$lfc, confint = opt\$confint)
+} else {
+    coef_name <- paste0(opt\$contrast_variable, opt\$contrast_target)
+    cat("Using default contrast matrix:", coef_name, "\n")
+
+    results <- topTable(fitmm, coef = coef_name,
+                        adjust.method = opt\$adjust.method, p.value = opt\$p.value,
+                        lfc = opt\$lfc, confint = opt\$confint)
+}
+
+results\$gene_id <- rownames(results)
+results <- results[, c("gene_id", setdiff(names(results), "gene_id"))]
 
 # Export topTable results
 write.table(results, file = paste(opt\$output_prefix, 'dream.results.tsv', sep = '.'),
             col.names = TRUE, row.names = FALSE, sep = '\t', quote = FALSE )
+
+# Save model to file
+write(deparse(form), file=paste(opt\$output_prefix, 'dream.model.txt', sep = '.'))
 
 ################################################
 ################################################
