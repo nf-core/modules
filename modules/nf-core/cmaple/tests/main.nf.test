@@ -1,0 +1,65 @@
+nextflow_process {
+
+    name "Test Process CMAPLE"
+    script "../main.nf"
+    process "CMAPLE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cmaple"
+
+    test("setoxin - aln") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_aa' ],
+                    file(params.modules_testdata_base_path + '../../multiplesequencealign/testdata/setoxin.ref', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.log[0][1]).name,
+                    process.out.treefile,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("setoxin - aln - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_stub' ],
+                    file(params.modules_testdata_base_path + '../../multiplesequencealign/testdata/setoxin.ref', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.log[0][1]).name,
+                    process.out.treefile,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+
+    }
+
+}
