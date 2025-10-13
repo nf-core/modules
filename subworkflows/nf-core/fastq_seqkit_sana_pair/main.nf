@@ -10,16 +10,7 @@ workflow FASTQ_SEQKIT_SANA_PAIR {
 
     ch_versions = Channel.empty()
 
-    ch_reads = ch_reads
-        .branch {
-            meta, fastq ->
-                single_end: meta.single_end
-                    return [ meta, fastq ]
-                paired_end: !meta.single_end
-                    return [ meta, fastq ]
-        }
-
-    ch_reads = ch_reads.single_end.mix(ch_reads.paired_end.transpose()) // seqkit/sana can only receives one file at a time
+    ch_reads = ch_reads.transpose() // seqkit/sana can only receives one file at a time
 
     SEQKIT_SANA( ch_reads )
     ch_versions = ch_versions.mix(SEQKIT_SANA.out.versions.first())
