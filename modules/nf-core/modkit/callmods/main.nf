@@ -1,11 +1,11 @@
 process MODKIT_CALLMODS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ont-modkit:0.5.0--hcdda2d0_2':
-        'biocontainers/ont-modkit:0.5.0--hcdda2d0_2' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/ont-modkit:0.5.0--hcdda2d0_2'
+        : 'biocontainers/ont-modkit:0.5.0--hcdda2d0_2'}"
 
     input:
     tuple val(meta), path(bam)
@@ -13,7 +13,7 @@ process MODKIT_CALLMODS {
     output:
     tuple val(meta), path("*.bam"), emit: bam
     tuple val(meta), path("*.log"), emit: log
-    path "versions.yml"           , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,20 +21,22 @@ process MODKIT_CALLMODS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_callmods"
-    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${bam}" == "${prefix}.bam") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
 
     """
     modkit \\
         call-mods \\
-        $args \\
-        $bam \\
+        ${args} \\
+        ${bam} \\
         ${prefix}.bam \\
-        --threads $task.cpus \\
+        --threads ${task.cpus} \\
         --log-filepath ./${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        modkit: \$( modkit --version | sed 's/mod_kit //' )
+        modkit: \$( modkit --version | sed 's/modkit //' )
     END_VERSIONS
     """
 
@@ -43,14 +45,14 @@ process MODKIT_CALLMODS {
     def prefix = task.ext.prefix ?: "${meta.id}_callmods"
 
     """
-    echo $args
+    echo ${args}
     
     touch ${prefix}.bam
     touch ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        modkit: \$( modkit --version | sed 's/mod_kit //' )
+        modkit: \$( modkit --version | sed 's/modkit //' )
     END_VERSIONS
     """
 }
