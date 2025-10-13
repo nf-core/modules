@@ -20,11 +20,10 @@ process MODKIT_CALLMODS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}_callmods"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     if ("${bam}" == "${prefix}.bam") {
         error("Input and output names are the same, set prefix in module configuration to disambiguate!")
     }
-
     """
     modkit \\
         call-mods \\
@@ -42,7 +41,7 @@ process MODKIT_CALLMODS {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}_callmods"
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     echo ${args}
