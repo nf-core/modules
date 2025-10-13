@@ -8,7 +8,7 @@ process CMAPLE {
         'biocontainers/cmaple:1.1.0--h503566f_1' }"
 
     input:
-    tuple val(meta), path(aln)
+    tuple val(meta), path(aln), path(newick)
 
     output:
     tuple val(meta), path("*.treefile"), emit: treefile
@@ -19,13 +19,15 @@ process CMAPLE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args     = task.ext.args ?: ''
+    def prefix   = task.ext.prefix ?: "${meta.id}"
+    def tree_arg = newick ? "-t ${newick}" : ""
     """
     cmaple-aa \\
         $args \\
         -nt $task.cpus \\
         --prefix ${prefix} \\
+        ${tree_arg} \\
         -aln $aln
 
     cat <<-END_VERSIONS > versions.yml
@@ -35,7 +37,7 @@ process CMAPLE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo $args
