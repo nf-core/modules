@@ -4,8 +4,8 @@ process GATK4_APPLYBQSR {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b2/b28daf5d9bb2f0d129dcad1b7410e0dd8a9b087aaf3ec7ced929b1f57624ad98/data'
-        : 'community.wave.seqera.io/library/gatk4_gcnvkernel:e48d414933d188cd'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ce/ced519873646379e287bc28738bdf88e975edd39a92e7bc6a34bccd37153d9d0/data'
+        : 'community.wave.seqera.io/library/gatk4_gcnvkernel:edb12e4f0bf02cd3'}"
 
     input:
     tuple val(meta), path(input), path(input_index), path(bqsr_table), path(intervals)
@@ -14,17 +14,19 @@ process GATK4_APPLYBQSR {
     path dict
 
     output:
-    tuple val(meta), path("*.bam"),  emit: bam,  optional: true
-    tuple val(meta), path("*.bai"),  emit: bai,  optional: true
-    tuple val(meta), path("*.cram"), emit: cram, optional: true
-    path "versions.yml",             emit: versions
+    tuple val(meta), path("${prefix}.bam"),  emit: bam,  optional: true
+    tuple val(meta), path("${prefix}*bai"),  emit: bai,  optional: true
+    tuple val(meta), path("${prefix}.cram"), emit: cram, optional: true
+    path "versions.yml",                     emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}.cram"
+    prefix = task.ext.prefix ?: "${meta.id}"
+    // suffix can only be bam or cram, cram being the sensible default
+    def suffix = task.ext.suffix && task.ext.suffix == "bam" ? "bam" : "cram"
     def interval_command = intervals ? "--intervals ${intervals}" : ""
 
     def avail_mem = 3072
@@ -38,7 +40,7 @@ process GATK4_APPLYBQSR {
     gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         ApplyBQSR \\
         --input ${input} \\
-        --output ${prefix} \\
+        --output ${prefix}.${suffix} \\
         --reference ${fasta} \\
         --bqsr-recal-file ${bqsr_table} \\
         ${interval_command} \\
@@ -52,13 +54,14 @@ process GATK4_APPLYBQSR {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}.cram"
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def suffix = task.ext.suffix ?: "cram"
     """
-    touch ${prefix}
-    if [[ ${prefix} == *.cram ]]; then
-        touch ${prefix}.bai
+    touch ${prefix}.${suffix}
+    if [[ ${suffix} == cram ]]; then
+        touch ${prefix}.cram.bai
     else
-        touch ${prefix.replace(/\.bam$/, '.bai')}
+        touch ${prefix}.bai
     fi
 
     cat <<-END_VERSIONS > versions.yml
