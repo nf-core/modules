@@ -20,6 +20,7 @@ process WIPERTOOLS_FASTQGATHER {
     script:
     def args = task.ext.args ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}_gather"
+    fastq_string = fastq.collect{ it.name }.sort().join(" ")
 
     // Check if the output file name is in the list of input files
     if (fastq.any { it.name == "${prefix}.fastq.gz" }) {
@@ -29,7 +30,7 @@ process WIPERTOOLS_FASTQGATHER {
     """
     wipertools \\
         fastqgather \\
-        -i $fastq \\
+        -i $fastq_string \\
         -o ${prefix}.fastq.gz \\
         ${args}
 

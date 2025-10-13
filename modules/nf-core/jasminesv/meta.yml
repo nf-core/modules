@@ -29,11 +29,16 @@ input:
         type: list
         description: Optional - The BAM files from which the VCFs were created
         pattern: "*.bam"
+    - bais:
+        type: list
+        description: Optional - The BAM index files from which the VCFs were created
+        pattern: "*.bai"
     - sample_dists:
         type: file
         description: Optional - A txt file containing the distance thresholds for each
           sample
         pattern: "*.txt"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -43,6 +48,7 @@ input:
         type: file
         description: Optional - The reference FASTA file used to create the VCFs
         pattern: "*.{fasta,fa}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -53,14 +59,16 @@ input:
         description: Optional - The index of the reference FASTA file used to create
           the VCFs
         pattern: "*.fai"
-  - - chr_norm:
-        type: file
-        description: Optional - A txt file containing the chromosomes and their aliases
-          for normalization
-        pattern: "*.txt"
+        ontologies: []
+  - chr_norm:
+      type: file
+      description: Optional - A txt file containing the chromosomes and their aliases
+        for normalization
+      pattern: "*.txt"
+      ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -69,11 +77,15 @@ output:
           type: file
           description: The merged VCF file
           pattern: "*.vcf.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

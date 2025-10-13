@@ -26,9 +26,12 @@ input:
         description: Tabular (e.g. TSV/CSV) samples file with sample IDs by row and
           variables by column.
         pattern: "*.{csv,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
-  - cls:
-      - meta:
+  cls:
+    - - meta:
           type: map
           description: |
             Groovy Map containing metadata e.g. [ id:'test', variable:'treatment',
@@ -39,11 +42,14 @@ output:
             A categorical class format file (.cls) as defined by the Broad
             documentation at
             https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@pinin4fjords"
 maintainers:

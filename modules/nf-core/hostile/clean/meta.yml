@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "hostile_clean"
-description: write your description here
+description: Removes host reads from short- and long-read FASTQ sequencing files
 keywords:
   - hostile
   - decontamination
@@ -30,7 +30,12 @@ input:
         pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_1930"
-  - - reference_dir:
+  - - reference_name:
+        type: string
+        description: |
+          Name of the reference to align against and thus remove mapped reads to.
+          Typically corresponds
+    - reference_dir:
         type: directory
         description: |
           Directory containing index file(s) corresponding to the preferred aligner (bowtie2 short reads or minimap for long reads).
@@ -38,20 +43,15 @@ input:
           indices AND explicitly specify `--aligner bowtie2`
         ontologies:
           - edam: "http://edamontology.org/data_1049"
-  - - reference_name:
-        type: string
-        description: |
-          Name of the reference to align against and thus remove mapped reads to.
-          Typically corresponds
 
 output:
-  - fastq:
-      - meta:
+  fastq:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - cleaned_reads/*.fastq.gz:
+      - "*.fastq.gz":
           type: map
           description: |
             Groovy Map containing sample information
@@ -59,8 +59,8 @@ output:
           pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
           ontologies:
             - edam: "http://edamontology.org/format_1930"
-  - json:
-      - meta:
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -73,11 +73,13 @@ output:
           pattern: "*.json"
           ontologies:
             - edam: "http://edamontology.org/format_3464"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

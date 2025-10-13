@@ -1,11 +1,11 @@
 process VARLOCIRAPTOR_PREPROCESS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/varlociraptor:8.1.1--hc349b7f_0':
-        'biocontainers/varlociraptor:8.1.1--hc349b7f_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c9/c99922d373e15a47f7a4ad4692e859f99e97a00c7872214903e655f66019c772/data'
+        : 'community.wave.seqera.io/library/varlociraptor:8.8.0--0d1bd46f0f5e39af'}"
 
     input:
     tuple val(meta), path(bam), path(bai), path(candidates), path(alignment_json)
@@ -14,13 +14,13 @@ process VARLOCIRAPTOR_PREPROCESS {
 
     output:
     tuple val(meta), path("*.bcf"), emit: bcf
-    path "versions.yml"           , emit: versions
+    path "versions.yml",            emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def alignment_properties_json = alignment_json ? "--alignment-properties ${alignment_json}" : ""
     """

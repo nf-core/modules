@@ -34,7 +34,7 @@ process CUSTOM_ADDMOSTSEVERECONSEQUENCE {
 
     bgzip \\
         $args2 \\
-        --threads ${task.cpus-1} \\
+        --threads ${task.cpus} \\
         ${prefix}.vcf
 
     cat <<-END_VERSIONS > versions.yml
