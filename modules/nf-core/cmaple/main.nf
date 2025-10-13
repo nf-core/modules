@@ -25,6 +25,7 @@ process CMAPLE {
     cmaple-aa \\
         $args \\
         -nt $task.cpus \\
+        --prefix ${prefix} \\
         -aln $aln
 
     cat <<-END_VERSIONS > versions.yml
