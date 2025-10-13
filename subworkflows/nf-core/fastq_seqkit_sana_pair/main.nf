@@ -10,9 +10,7 @@ workflow FASTQ_SEQKIT_SANA_PAIR {
 
     ch_versions = Channel.empty()
 
-    ch_reads = ch_reads.transpose() // seqkit/sana can only receives one file at a time
-
-    SEQKIT_SANA( ch_reads )
+    SEQKIT_SANA( ch_reads.transpose() ) // seqkit/sana can only receive one file at a time
     ch_versions = ch_versions.mix(SEQKIT_SANA.out.versions.first())
 
     ch_sanitized_reads = SEQKIT_SANA.out.reads
