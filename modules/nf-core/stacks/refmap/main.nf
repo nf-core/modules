@@ -32,28 +32,28 @@ process STACKS_REFMAP {
     //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
     // TODO nf-core: Where applicable please provide/convert compressed files as input/output
     //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-    path bam_path
-    path popmap
+    tuple val(meta), path(bam_path)
+    tuple val(meta1), path(popmap)
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
 
 
-    path "catalog.calls" , emit: catalog_calls
-    path "catalog.chrs.tsv" , emit: catalog_chrs
-    path "catalog.fa.gz" , emit: catalog_fa
-    path "gstacks.log" , emit: gstacks_log
-    path "gstacks.log.distribs", emit: gstacks_log_distribs
-    path "populations.haplotypes.tsv", emit: haplotypes
-    path "populations.hapstats.tsv", emit: hapstats
-    path "populations.sumstats.tsv", emit: sumstats
-    path "populations.sumstats_summary.tsv", emit: sumstats_summary
-    path "populations.log", emit: populations_log
-    path "populations.log.distribs", emit: populations_log_distribs
-    path "ref_map.log", emit: ref_map_log
-    path "populations.snps.vcf", emit: vcf , optional: true
-    path "populations.snps.genepop", emit: genepop , optional: true
-    path "populations.structure", emit: structure , optional: true
+    tuple val(meta), path("catalog.calls") , emit: catalog_calls
+    tuple val(meta), path("catalog.chrs.tsv") , emit: catalog_chrs
+    tuple val(meta), path("catalog.fa.gz")  , emit: catalog_fa
+    tuple val(meta), path("gstacks.log") , emit: gstacks_log
+    tuple val(meta), path("gstacks.log.distribs"), emit: gstacks_log_distribs
+    tuple val(meta), path("populations.haplotypes.tsv"), emit: haplotypes
+    tuple val(meta), path("populations.hapstats.tsv"), emit: hapstats
+    tuple val(meta), path("populations.sumstats.tsv"), emit: sumstats
+    tuple val(meta), path("populations.sumstats_summary.tsv"), emit: sumstats_summary
+    tuple val(meta), path("populations.log"), emit: populations_log
+    tuple val(meta), path("populations.log.distribs"), emit: populations_log_distribs
+    tuple val(meta), path("ref_map.log"), emit: ref_map_log
+    tuple val(meta), path("populations.snps.vcf"), emit: vcf , optional: true
+    tuple val(meta), path("populations.snps.genepop"), emit: genepop , optional: true
+    tuple val(meta), path("populations.structure"), emit: structure , optional: true
     // TODO nf-core: List additional required output channels/values here
     path "versions.yml"           , emit: versions
 
