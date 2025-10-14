@@ -63,10 +63,21 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.bam":
+      - ${prefix}.bam:
           type: file
           description: Recalibrated BAM file
-          pattern: "*.{bam}"
+          pattern: "${prefix}.bam"
+          ontologies: []
+  bai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}*bai:
+          type: file
+          description: Recalibrated BAM index file
+          pattern: "${prefix}*bai"
           ontologies: []
   cram:
     - - meta:
@@ -74,10 +85,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.cram":
+      - ${prefix}.cram:
           type: file
           description: Recalibrated CRAM file
-          pattern: "*.{cram}"
+          pattern: "${prefix}.cram"
           ontologies: []
   versions:
     - versions.yml:

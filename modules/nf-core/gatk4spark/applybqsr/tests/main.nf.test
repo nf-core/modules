@@ -12,9 +12,11 @@ nextflow_process {
 
     test("sarscov2 - bam") {
 
-        config "./nextflow_bam.config"
-
         when {
+            params {
+                module_suffix = "bam"
+            }
+
             process {
                 """
                 input[0] = [
@@ -40,8 +42,6 @@ nextflow_process {
     }
 
     test("sarscov2 - bam in, cram out") {
-
-        config "./nextflow_cram.config"
 
         when {
             process {
@@ -73,9 +73,11 @@ nextflow_process {
 
     test("sarscov2 - bam - intervals") {
 
-        config "./nextflow_bam.config"
-
         when {
+            params {
+                module_suffix = "bam"
+            }
+
             process {
                 """
                 input[0] = [
@@ -122,8 +124,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
-                { assert snapshot(file(process.out.cram[0][1]).name).match("test.cram") }
+                { assert snapshot(
+                    process.out.versions,
+                    file(process.out.cram[0][1]).name
+                ).match() }
             )
         }
     }
@@ -152,7 +156,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
+                { assert snapshot(process.out).match() }
             )
         }
     }
@@ -160,9 +164,11 @@ nextflow_process {
     test("sarscov2 - bam - stub") {
 
         options "-stub"
-        config "./nextflow_bam.config"
-
         when {
+            params {
+                module_suffix = "bam"
+            }
+
             process {
                 """
                 input[0] = [
