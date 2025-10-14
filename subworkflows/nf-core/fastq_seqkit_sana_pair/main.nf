@@ -7,7 +7,6 @@ workflow FASTQ_SEQKIT_SANA_PAIR {
     ch_reads // channel: [ val(meta), [ fastq ] ]
 
     main:
-
     ch_versions = Channel.empty()
 
     SEQKIT_SANA( ch_reads.transpose() ) // seqkit/sana can only receive one file at a time
