@@ -87,10 +87,12 @@ nextflow_process {
                 input[0] = [
                     [id: "test"],
                     file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/purecn/purecn_ex1_intervals.txt', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/purecn/purecn_ex2_normal.txt.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/purecn/purecn_ex2_normal.txt.gz', checkIfExists: true),
+                    []
                     ]
                 input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/purecn/purecn_ex1_normal.txt.gz', checkIfExists: true)
-                input[2] = "hg38"
+                input[2] = []
+                input[3] = "hg38"
                 """
             }
         }
