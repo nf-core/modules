@@ -8,7 +8,7 @@ process DATAVZRD {
         : 'community.wave.seqera.io/library/datavzrd:2.61.0--6c44cf2748dcfbf4'}"
 
     input:
-    tuple val(meta), file(config_file), file(table)
+    tuple val(meta), path(config_file), path(table)
 
     output:
     tuple val(meta), path("${prefix}"), emit: report
