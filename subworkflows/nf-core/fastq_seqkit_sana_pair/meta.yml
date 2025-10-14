@@ -28,8 +28,8 @@ output:
   - reads:
       type: channel
       description: |
-        Channel containing sanitized and paired FASTQ files.
-        For single-end data: returns sanitized reads
+        Channel containing filtered (i.e., non-malformed) and paired FASTQ files.
+        For single-end data: returns filtered reads
         For paired-end data: returns properly paired reads and any unpaired reads
         Structure: [ val(meta), [ fastq ] ]
       pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
