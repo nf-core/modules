@@ -1,10 +1,13 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fastq_seqkit_sana_pair"
-description: Sanitize and pair FASTQ files using seqkit sana and seqkit pair
+description: |
+  Filters and reports malformed FASTQ sequences with seqkit/sana,
+  and then pairs any paired-end files using seqkit/pair
 keywords:
   - fastq
   - quality control
-  - sanitization
+  - filtering
+  - malformed
   - pairing
   - seqkit
   - preprocessing
