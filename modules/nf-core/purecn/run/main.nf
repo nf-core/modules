@@ -5,12 +5,13 @@ process PURECN_RUN {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/17/171d9cdb3db28ca8a63d87dd514a97e92af353f35b8f2173173a3dc3bb801516/data':
-        'community.wave.seqera.io/library/bioconductor-dnacopy_bioconductor-org.hs.eg.db_bioconductor-purecn_bioconductor-txdb.hsapiens.ucsc.hg19.knowngene_pruned:cc846801cfba58d6' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bb/bbc033d8d6415ce4883f464e2ae565df077f564da10858e4db29f6c89ad10d4a/data':
+        'community.wave.seqera.io/library/bioconductor-dnacopy_bioconductor-org.hs.eg.db_bioconductor-purecn_bioconductor-txdb.hsapiens.ucsc.hg19.knowngene_pruned:7fef74d5cbdeecbe' }"
 
     input:
-    tuple val(meta), path(intervals), path(coverage)
+    tuple val(meta), path(intervals), path(coverage), path(vcf)
     path normal_db
+    path mapping_bias
     val genome
 
     output:
@@ -33,6 +34,9 @@ process PURECN_RUN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def vcf_opt = vcf ? "--vcf ${vcf}": ''
+    def mapping_bias_opt = mapping_bias ? "--mapping-bias-file ${mapping_bias}": ''
+    def normaldb_opt = normal_db ? "--normaldb ${normal_db}": ''
     def VERSION = '2.12.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
@@ -41,12 +45,13 @@ process PURECN_RUN {
         --out ./ \\
         --tumor ${coverage} \\
         --sampleid ${prefix} \\
-        --normaldb ${normal_db} \\
         --intervals ${intervals} \\
         --genome ${genome} \\
         --parallel \\
         --cores ${task.cpus} \\
-        --stats-file ${prefix}_stats.txt \\
+        ${normaldb_opt} \\
+        ${mapping_bias_opt} \\
+        ${vcf_opt} \\
         ${args}
 
     cat <<-END_VERSIONS > versions.yml
@@ -56,7 +61,7 @@ process PURECN_RUN {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+    def _args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '2.12.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
