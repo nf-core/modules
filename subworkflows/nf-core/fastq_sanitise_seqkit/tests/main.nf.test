@@ -1,13 +1,13 @@
 nextflow_workflow {
 
-    name "Test Subworkflow FASTQ_SEQKIT_SANA_PAIR"
+    name "Test Subworkflow FASTQ_SANITISE_SEQKIT"
     script "../main.nf"
-    workflow "FASTQ_SEQKIT_SANA_PAIR"
+    workflow "FASTQ_SANITISE_SEQKIT"
     config './nextflow.config'
 
     tag "subworkflows"
     tag "subworkflows_nfcore"
-    tag "subworkflows/fastq_seqkit_sana_pair"
+    tag "subworkflows/fastq_sanitise_seqkit"
     tag "seqkit"
     tag "seqkit/sana"
     tag "seqkit/pair"
@@ -103,7 +103,7 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = Channel.of([
-                    [ id: 'test_stub' ],
+                    [ id: 'test_stub', single_end:true ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1_broken.fastq.gz', checkIfExists: true)
                 ])
                 """

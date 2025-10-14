@@ -5,42 +5,35 @@
                 "0": [
                     [
                         {
-                            "id": "test_stub"
+                            "id": "test_stub",
+                            "single_end": true
                         },
                         [
-                            "test_stub_1.paired.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                            "test_stub_2.paired.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                            "test_stub_single.fastq.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
                         ]
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,07a185afed81f18c828c891a4889ee8f",
-                    "versions.yml:md5,6ad9a3edb28e402eaba65a54f3cd5cc0"
+                    "versions.yml:md5,eb43849d72bd1cd3c25f42ab20bb6958"
                 ],
                 "reads": [
                     [
                         {
-                            "id": "test_stub"
+                            "id": "test_stub",
+                            "single_end": true
                         },
                         [
-                            "test_stub_1.paired.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                            "test_stub_2.paired.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                            "test_stub_single.fastq.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
                         ]
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,07a185afed81f18c828c891a4889ee8f",
-                    "versions.yml:md5,6ad9a3edb28e402eaba65a54f3cd5cc0"
+                    "versions.yml:md5,eb43849d72bd1cd3c25f42ab20bb6958"
                 ]
             },
             [
                 {
-                    "FASTQ_SEQKIT_SANA_PAIR:SEQKIT_PAIR": {
-                        "seqkit": "2.9.0"
-                    }
-                },
-                {
-                    "FASTQ_SEQKIT_SANA_PAIR:SEQKIT_SANA": {
+                    "FASTQ_SANITISE_SEQKIT:SEQKIT_SANA": {
                         "seqkit": "2.10.1"
                     }
                 }
@@ -50,7 +43,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.04.8"
         },
-        "timestamp": "2025-10-10T16:41:33.712538832"
+        "timestamp": "2025-10-14T16:02:27.5747639"
     },
     "sarscov2 - fastq - single_end": {
         "content": [
@@ -62,12 +55,12 @@
                             "single_end": true
                         },
                         [
-                            "test_single.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec"
+                            "test_single_single.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec"
                         ]
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,6ad9a3edb28e402eaba65a54f3cd5cc0"
+                    "versions.yml:md5,eb43849d72bd1cd3c25f42ab20bb6958"
                 ],
                 "reads": [
                     [
@@ -76,17 +69,17 @@
                             "single_end": true
                         },
                         [
-                            "test_single.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec"
+                            "test_single_single.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec"
                         ]
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,6ad9a3edb28e402eaba65a54f3cd5cc0"
+                    "versions.yml:md5,eb43849d72bd1cd3c25f42ab20bb6958"
                 ]
             },
             [
                 {
-                    "FASTQ_SEQKIT_SANA_PAIR:SEQKIT_SANA": {
+                    "FASTQ_SANITISE_SEQKIT:SEQKIT_SANA": {
                         "seqkit": "2.10.1"
                     }
                 }
@@ -96,7 +89,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.04.8"
         },
-        "timestamp": "2025-10-10T16:41:03.184542061"
+        "timestamp": "2025-10-14T16:02:10.950826193"
     },
     "sarscov2 - fastq - paired_end": {
         "content": [
@@ -108,14 +101,14 @@
                             "single_end": false
                         },
                         [
-                            "test_paired_1.paired.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec",
-                            "test_paired_2.paired.fastq.gz:md5,2ebae722295ea66d84075a3b042e2b42"
+                            "test_paired_R1.paired.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec",
+                            "test_paired_R2.paired.fastq.gz:md5,2ebae722295ea66d84075a3b042e2b42"
                         ]
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,07a185afed81f18c828c891a4889ee8f",
-                    "versions.yml:md5,6ad9a3edb28e402eaba65a54f3cd5cc0"
+                    "versions.yml:md5,25acc28de3640b1e18124d09a7f3515c",
+                    "versions.yml:md5,eb43849d72bd1cd3c25f42ab20bb6958"
                 ],
                 "reads": [
                     [
@@ -124,24 +117,24 @@
                             "single_end": false
                         },
                         [
-                            "test_paired_1.paired.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec",
-                            "test_paired_2.paired.fastq.gz:md5,2ebae722295ea66d84075a3b042e2b42"
+                            "test_paired_R1.paired.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec",
+                            "test_paired_R2.paired.fastq.gz:md5,2ebae722295ea66d84075a3b042e2b42"
                         ]
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,07a185afed81f18c828c891a4889ee8f",
-                    "versions.yml:md5,6ad9a3edb28e402eaba65a54f3cd5cc0"
+                    "versions.yml:md5,25acc28de3640b1e18124d09a7f3515c",
+                    "versions.yml:md5,eb43849d72bd1cd3c25f42ab20bb6958"
                 ]
             },
             [
                 {
-                    "FASTQ_SEQKIT_SANA_PAIR:SEQKIT_PAIR": {
+                    "FASTQ_SANITISE_SEQKIT:SEQKIT_PAIR": {
                         "seqkit": "2.9.0"
                     }
                 },
                 {
-                    "FASTQ_SEQKIT_SANA_PAIR:SEQKIT_SANA": {
+                    "FASTQ_SANITISE_SEQKIT:SEQKIT_SANA": {
                         "seqkit": "2.10.1"
                     }
                 }
@@ -151,7 +144,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.04.8"
         },
-        "timestamp": "2025-10-10T16:41:13.363097398"
+        "timestamp": "2025-10-14T16:02:16.79436736"
     },
     "sarscov2 - fastq - both with single broken": {
         "content": [
@@ -163,8 +156,8 @@
                             "single_end": false
                         },
                         [
-                            "test_both_1.paired.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec",
-                            "test_both_2.paired.fastq.gz:md5,2ebae722295ea66d84075a3b042e2b42"
+                            "test_both_R1.paired.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec",
+                            "test_both_R2.paired.fastq.gz:md5,2ebae722295ea66d84075a3b042e2b42"
                         ]
                     ],
                     [
@@ -173,13 +166,13 @@
                             "single_end": true
                         },
                         [
-                            "test_both.fastq.gz:md5,03b43487ca6aeecc5eb8b55bbc1fe2f3"
+                            "test_both_single.fastq.gz:md5,03b43487ca6aeecc5eb8b55bbc1fe2f3"
                         ]
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,07a185afed81f18c828c891a4889ee8f",
-                    "versions.yml:md5,6ad9a3edb28e402eaba65a54f3cd5cc0"
+                    "versions.yml:md5,25acc28de3640b1e18124d09a7f3515c",
+                    "versions.yml:md5,eb43849d72bd1cd3c25f42ab20bb6958"
                 ],
                 "reads": [
                     [
@@ -188,8 +181,8 @@
                             "single_end": false
                         },
                         [
-                            "test_both_1.paired.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec",
-                            "test_both_2.paired.fastq.gz:md5,2ebae722295ea66d84075a3b042e2b42"
+                            "test_both_R1.paired.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec",
+                            "test_both_R2.paired.fastq.gz:md5,2ebae722295ea66d84075a3b042e2b42"
                         ]
                     ],
                     [
@@ -198,23 +191,23 @@
                             "single_end": true
                         },
                         [
-                            "test_both.fastq.gz:md5,03b43487ca6aeecc5eb8b55bbc1fe2f3"
+                            "test_both_single.fastq.gz:md5,03b43487ca6aeecc5eb8b55bbc1fe2f3"
                         ]
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,07a185afed81f18c828c891a4889ee8f",
-                    "versions.yml:md5,6ad9a3edb28e402eaba65a54f3cd5cc0"
+                    "versions.yml:md5,25acc28de3640b1e18124d09a7f3515c",
+                    "versions.yml:md5,eb43849d72bd1cd3c25f42ab20bb6958"
                 ]
             },
             [
                 {
-                    "FASTQ_SEQKIT_SANA_PAIR:SEQKIT_PAIR": {
+                    "FASTQ_SANITISE_SEQKIT:SEQKIT_PAIR": {
                         "seqkit": "2.9.0"
                     }
                 },
                 {
-                    "FASTQ_SEQKIT_SANA_PAIR:SEQKIT_SANA": {
+                    "FASTQ_SANITISE_SEQKIT:SEQKIT_SANA": {
                         "seqkit": "2.10.1"
                     }
                 }
@@ -224,6 +217,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.04.8"
         },
-        "timestamp": "2025-10-10T16:41:23.99656125"
+        "timestamp": "2025-10-14T16:02:22.656481299"
     }
 }

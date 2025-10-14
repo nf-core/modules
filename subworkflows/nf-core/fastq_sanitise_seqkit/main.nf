@@ -1,7 +1,7 @@
 include { SEQKIT_SANA } from '../../../modules/nf-core/seqkit/sana/main'
 include { SEQKIT_PAIR } from '../../../modules/nf-core/seqkit/pair/main'
 
-workflow FASTQ_SEQKIT_SANA_PAIR {
+workflow FASTQ_SANITISE_SEQKIT {
 
     take:
     ch_reads // channel: [ val(meta), [ fastq ] ]
@@ -9,10 +9,29 @@ workflow FASTQ_SEQKIT_SANA_PAIR {
     main:
     ch_versions = Channel.empty()
 
-    SEQKIT_SANA( ch_reads.transpose() ) // seqkit/sana can only receive one file at a time
+    // Add strandness information to meta
+    ch_reads_with_strandness = ch_reads
+        // seqkit/sana can only receive one file at a time
+        .flatMap  { meta, reads ->
+            if (meta.single_end) {
+                return [[ meta + [strandness: 'single'], reads ]]
+            } else {
+                return [
+                    [ meta + [strandness: 'R1'], reads[0] ],
+                    [ meta + [strandness: 'R2'], reads[1] ]
+                ]
+            }
+        }
+
+    SEQKIT_SANA( ch_reads_with_strandness )
     ch_versions = ch_versions.mix(SEQKIT_SANA.out.versions.first())
 
     ch_sanitized_reads = SEQKIT_SANA.out.reads
+        .map { meta, fastq ->
+            // Remove strandness field from meta to merge back together
+            def clean_meta = meta.findAll { key, value -> key != 'strandness' }
+            return [ clean_meta, fastq ]
+        }
         .groupTuple(by: 0)
         .branch {
             meta, fastq ->
@@ -22,19 +41,7 @@ workflow FASTQ_SEQKIT_SANA_PAIR {
                     return [ meta, fastq ]
         }
 
-    ch_sanitized_paired_reads = ch_sanitized_reads.paired_end
-        .map { meta, reads ->
-            def sorted_reads = reads.sort { it.size() } // sorting by file size, to keep snapshot order same
-            def renamed = sorted_reads.indexed().collect { i, file_path ->
-                def base = file(file_path).getSimpleName()
-                def ext  = file(file_path).getName() - file(file_path).getSimpleName()
-                def new_name = "${base}_${i + 1}${ext}"
-                file(file_path).copyTo(new_name)
-            }
-            [ meta, renamed ]
-        }
-
-    SEQKIT_PAIR ( ch_sanitized_paired_reads )
+    SEQKIT_PAIR ( ch_sanitized_reads.paired_end )
     ch_versions = ch_versions.mix(SEQKIT_PAIR.out.versions.first())
 
     ch_reads = ch_sanitized_reads.single_end.mix(SEQKIT_PAIR.out.reads, SEQKIT_PAIR.out.unpaired_reads)
