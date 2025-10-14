@@ -1,0 +1,24 @@
+name: blasttblastx
+description: Run NCBI tblastx to compare six-frame translations of nucleotide sequences
+keywords:
+  - tblastx
+  - ncbi
+  - nucleotide
+  - alignment
+
+tools:
+  - blast:
+      description: NCBI BLAST+ suite
+      homepage: https://blast.ncbi.nlm.nih.gov/Blast.cgi
+      documentation: https://www.ncbi.nlm.nih.gov/books/NBK279690/
+      tool_dev_url: https://github.com/ncbi/blast
+      licence: ["Public Domain"]
+
+authors:
+  - name: Sneha Agarwal
+    email: sneha.ag6304@gmail.com
+
+output:
+  - name: result
+    description: The BLAST tabular results file (outfmt 6)
+    pattern: "tblastx_results.txt"
