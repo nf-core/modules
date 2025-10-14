@@ -45,7 +45,7 @@ output:
       - ${prefix}:
           type: directory
           description: directory with HTML report of provided CSV/TSV files
-          pattern: "/output/"
+          pattern: "${prefix}"
           ontologies: []
   versions:
     - versions.yml:
