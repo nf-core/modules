@@ -8,8 +8,8 @@ process GECCO_CONVERT {
         'biocontainers/gecco:0.9.10--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta ), path(clusters, stageAs: "gecco_results/*")
-    tuple val(meta2), path(gbk     , stageAs: "gecco_results/*")
+    tuple val(meta ), path(clusters)
+    tuple val(meta2), path(gbk)
     val(mode)
     val(format)
 
@@ -31,7 +31,7 @@ process GECCO_CONVERT {
         convert \\
         $args \\
         $mode \\
-        --input-dir gecco_results \\
+        --input-dir ./ \\
         --format ${format} \\
         --output ${prefix}
 
