@@ -26,7 +26,7 @@ nextflow_process {
         }
     }
 
-    test("candidatus_portiera_aleyrodidarum - gff") {
+    test("candidatus_portiera_aleyrodidarum - clusters - gff") {
 
         when {
             process {
@@ -51,7 +51,32 @@ nextflow_process {
 
     }
 
-    test("candidatus_portiera_aleyrodidarum - gff - stub") {
+    test("candidatus_portiera_aleyrodidarum - gbk - faa") {
+
+        when {
+            process {
+                """
+                input[0] = GECCO_RUN.out.clusters
+                input[1] = GECCO_RUN.out.gbk
+                input[2] = "gbk"
+                input[3] = "faa"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("candidatus_portiera_aleyrodidarum - clusters - gff - stub") {
 
         options "-stub"
 

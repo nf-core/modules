@@ -14,11 +14,11 @@ process GECCO_CONVERT {
     val(format)
 
     output:
-    tuple val(meta), path("*.gff")     , emit: gff     , optional: true
-    tuple val(meta), path("*.bigslice"), emit: bigslice, optional: true
-    tuple val(meta), path("*.faa")     , emit: faa     , optional: true
-    tuple val(meta), path("*.fna")     , emit: fna     , optional: true
-    path "versions.yml"                , emit: versions
+    tuple val(meta), path("*.gff")        , emit: gff     , optional: true
+    tuple val(meta), path("*.region*.gbk"), emit: bigslice, optional: true
+    tuple val(meta), path("*.faa")        , emit: faa     , optional: true
+    tuple val(meta), path("*.fna")        , emit: fna     , optional: true
+    path "versions.yml"                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
