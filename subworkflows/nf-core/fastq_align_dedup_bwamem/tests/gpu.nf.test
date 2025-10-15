@@ -3,6 +3,7 @@ nextflow_workflow {
     name "Test Subworkflow FASTQ_ALIGN_DEDUP_BWAMEM"
     script "../main.nf"
     workflow "FASTQ_ALIGN_DEDUP_BWAMEM"
+    config "../nextflow.config"
     config "./nextflow.config"
 
     tag "gpu"
