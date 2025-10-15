@@ -8,8 +8,7 @@ process GECCO_CONVERT {
         'biocontainers/gecco:0.9.10--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta ), path(clusters)
-    tuple val(meta2), path(gbk)
+    tuple val(meta), path(clusters), path(gbk)
     val(mode)
     val(format)
 
