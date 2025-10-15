@@ -26,13 +26,25 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - gecco_results:
-        type: directory
+    - clusters:
+        type: file
         description: |
-          Results from the gecco/run command;
-          either clusters folder for gff,
-          or gbk for the bigslice, faa or fna options
-        pattern: "*"
+          TSV file containing coordinates of gecco predicted clusters and BGC types.
+        pattern: "*.clusters.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - gbk:
+        type: file
+        description: |
+          Per cluster GenBank file containing sequence with annotations
+        pattern: "*.gbk"
+        ontologies:
+          - edam: "http://edamontology.org/format_1936" # GenBank
   - mode:
       type: string
       description: Either clusters or gbk folder output, depending on what is reformatted
@@ -41,24 +53,61 @@ input:
       type: string
       description: Format for the output file
       enum: ["gff", "bigslice", "faa", "fna"]
-
 output:
-  bam:
+  gff:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.bam":
-          type: file
-          description: Sorted BAM/CRAM/SAM file
-          pattern: "*.{bam,cram,sam}"
-          ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
-            - edam: "http://edamontology.org/format_2573" # CRAM
-            - edam: "http://edamontology.org/format_3462" # SAM
+      - "*.gff":
+        type: file
+        description: |
+          GFF3 converted cluster tables containing the position
+          and metadata for all the predicted clusters
+        pattern: "*.gff"
+        ontologies:
+          - edam: "http://edamontology.org/format_1975" # GFF3
+  bigslice:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.region*.gbk":
+        type: file
+        description: |
+          Converted and aliased GenBank files so that they can be loaded by BiG-SLiCE
+        pattern: "*.region*.gbk"
+        ontologies: []
+  faa:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.faa":
+        type: file
+        description: |
+          Amino-acid FASTA converted GenBank files of all the proteins in a cluster
+        pattern: "*.faa"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+  fna:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.fna":
+        type: file
+        description: |
+          Nucleotide sequence FASTA converted GenBank files from the cluster
+        pattern: "*.fna"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
   versions:
-    - "versions.yml":
+    - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
