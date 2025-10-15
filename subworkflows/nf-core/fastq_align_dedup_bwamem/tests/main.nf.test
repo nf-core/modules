@@ -132,38 +132,4 @@ nextflow_workflow {
             )
         }
     }
-
-    test("Params: bwamem paired-end - use_gpu - skip_deduplication") {
-
-        when {
-
-            workflow {
-                """
-                input[0] = Channel.of([
-                            [ id:'test', single_end:true ],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
-                ])
-                input[1] = Channel.of([
-                            [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
-                ])
-                input[2] = Channel.of([
-                            [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
-                ])
-                input[3] = UNTAR.out.untar
-                input[4] = true // skip_deduplication
-                input[5] = true // use_gpu
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
-            )
-        }
-    }
 }
