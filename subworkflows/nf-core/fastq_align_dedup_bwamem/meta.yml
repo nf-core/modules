@@ -17,8 +17,10 @@ components:
   - samtools/index
   - samtools/flagstat
   - samtools/stats
-  - picard/addorreplacereadgroup
+  - picard/addorreplacereadgroups
   - picard/markduplicates
+  - bam_sort_stats_samtools
+  - fastq_align_bwa
 input:
   - ch_reads:
       description: |

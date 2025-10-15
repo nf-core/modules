@@ -69,7 +69,6 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
         /*
          * Run Picard AddOrReplaceReadGroups to add read group (RG) to reads in bam file
          */
-
         PICARD_ADDORREPLACEREADGROUPS (
             ch_alignment,
             ch_fasta,
@@ -80,6 +79,9 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
         /*
          * Run Picard MarkDuplicates with the --REMOVE_DUPLICATES true flag
          */
+        PICARD_ADDORREPLACEREADGROUPS.out.bam.view()
+        ch.fasta.view()
+        ch.fasta_index.view()
         PICARD_REMOVEDUPLICATES (
             PICARD_ADDORREPLACEREADGROUPS.out.bam,
             ch_fasta,
