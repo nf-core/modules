@@ -4,7 +4,7 @@ These nf-core modules implement functionality of the NVIDIA Parabricks software 
 
 ## General considerations
 
-Parabricks is available only through a docker container: `nvcr.io/nvidia/clara/clara-parabricks:latest`. The main entrypoint to the Parabricks is the command line program `pbrun`, which calls several sub-programs within the container. The Parabricks authors sometimes combine several common tasks into a single tool, such as `fq2bam` performing bwa alignment, sorting, mark duplicates, and base quality score recalibration, all within a single command. Generally, the tools can be used for only a subset of the entire functionality as well.
+Parabricks is available only through a docker container: `nvcr.io/nvidia/clara/clara-parabricks:4.6.0-1`. The main entrypoint to the Parabricks is the command line program `pbrun`, which calls several sub-programs within the container. The Parabricks authors combined several common patterns into a single tool, such as `fq2bam` performing alignment, sorting, mark duplicates, and base quality score recalibration, all within a single command. Generally, the tools can be used for only a subset of the entire functionality as well.
 
 ## Hardware Requirements
 
