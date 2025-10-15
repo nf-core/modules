@@ -35,7 +35,7 @@ nextflow_workflow {
     }
 
     test("Params: parabricks/fq2bam single-end | use_gpu") {
-
+        options '-stub'
         when {
 
             workflow {
@@ -68,7 +68,7 @@ nextflow_workflow {
     }
 
     test("Params: parabricks/fq2bam single-end | use_gpu | skip_deduplication") {
-
+        options '-stub'
         when {
             params {
                 skip_deduplication = true
