@@ -80,8 +80,9 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
          * Run Picard MarkDuplicates with the --REMOVE_DUPLICATES true flag
          */
         PICARD_ADDORREPLACEREADGROUPS.out.bam.view()
-        ch.fasta.view()
-        ch.fasta_index.view()
+        ch_fasta.view()
+        ch_fasta_index.view()
+
         PICARD_REMOVEDUPLICATES (
             PICARD_ADDORREPLACEREADGROUPS.out.bam,
             ch_fasta,
