@@ -61,13 +61,13 @@ output:
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
       - "*.gff":
-        type: file
-        description: |
-          GFF3 converted cluster tables containing the position
-          and metadata for all the predicted clusters
-        pattern: "*.gff"
-        ontologies:
-          - edam: "http://edamontology.org/format_1975" # GFF3
+          type: file
+          description: |
+            GFF3 converted cluster tables containing the position
+            and metadata for all the predicted clusters
+          pattern: "*.gff"
+          ontologies:
+            - edam: "http://edamontology.org/format_1975" # GFF3
   bigslice:
     - - meta:
           type: map
@@ -75,11 +75,11 @@ output:
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
       - "*.region*.gbk":
-        type: file
-        description: |
-          Converted and aliased GenBank files so that they can be loaded by BiG-SLiCE
-        pattern: "*.region*.gbk"
-        ontologies: []
+          type: file
+          description: |
+            Converted and aliased GenBank files so that they can be loaded by BiG-SLiCE
+          pattern: "*.region*.gbk"
+          ontologies: []
   faa:
     - - meta:
           type: map
@@ -87,12 +87,12 @@ output:
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
       - "*.faa":
-        type: file
-        description: |
-          Amino-acid FASTA converted GenBank files of all the proteins in a cluster
-        pattern: "*.faa"
-        ontologies:
-          - edam: "http://edamontology.org/format_1929" # FASTA
+          type: file
+          description: |
+            Amino-acid FASTA converted GenBank files of all the proteins in a cluster
+          pattern: "*.faa"
+          ontologies:
+            - edam: "http://edamontology.org/format_1929" # FASTA
   fna:
     - - meta:
           type: map
@@ -100,12 +100,12 @@ output:
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
       - "*.fna":
-        type: file
-        description: |
-          Nucleotide sequence FASTA converted GenBank files from the cluster
-        pattern: "*.fna"
-        ontologies:
-          - edam: "http://edamontology.org/format_1929" # FASTA
+          type: file
+          description: |
+            Nucleotide sequence FASTA converted GenBank files from the cluster
+          pattern: "*.fna"
+          ontologies:
+            - edam: "http://edamontology.org/format_1929" # FASTA
   versions:
     - versions.yml:
         type: file
