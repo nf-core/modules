@@ -1,0 +1,81 @@
+nextflow_process {
+
+    name "Test Process GECCO_CONVERT"
+    script "../main.nf"
+    process "GECCO_CONVERT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gecco"
+    tag "gecco/convert"
+    tag "gecco/run"
+
+    setup {
+        run("GECCO_RUN") {
+            script "../../run/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists: true),
+                    []
+                ]
+                input[1] = []
+                """
+            }
+        }
+    }
+
+    test("candidatus_portiera_aleyrodidarum - gff") {
+
+        when {
+            process {
+                """
+                input[0] = GECCO_RUN.out.clusters
+                input[1] = GECCO_RUN.out.gbk
+                input[2] = "clusters"
+                input[3] = "gff"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("candidatus_portiera_aleyrodidarum - gff - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = GECCO_RUN.out.clusters
+                input[1] = GECCO_RUN.out.gbk
+                input[2] = "clusters"
+                input[3] = "gff"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+
+    }
+
+}

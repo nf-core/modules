@@ -1,0 +1,71 @@
+name: "gecco_convert"
+description: |
+  This command helps transforming the output files created by
+  GECCO into helpful format, should you want to use the results in
+  combination with other tools.
+keywords:
+  - bgc
+  - reformatting
+  - gff
+  - bigslice
+  - faa
+  - fna
+tools:
+  - "gecco":
+      description: "Biosynthetic Gene Cluster prediction with Conditional Random Fields."
+      homepage: "https://gecco.embl.de"
+      documentation: "https://gecco.embl.de"
+      tool_dev_url: "https://github.com/zellerlab/GECCO"
+      doi: "10.1101/2021.05.03.442509"
+      licence: ["GPL v3"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - gecco_results:
+        type: directory
+        description: |
+          Results from the gecco/run command;
+          either clusters folder for gff,
+          or gbk for the bigslice, faa or fna options
+        pattern: "*"
+  - mode:
+      type: string
+      description: Either clusters or gbk folder output, depending on what is reformatted
+      enum: ["clusters", "gbk"]
+  - format:
+      type: string
+      description: Format for the output file
+      enum: ["gff", "bigslice", "faa", "fna"]
+
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bam":
+          type: file
+          description: Sorted BAM/CRAM/SAM file
+          pattern: "*.{bam,cram,sam}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+            - edam: "http://edamontology.org/format_2573" # CRAM
+            - edam: "http://edamontology.org/format_3462" # SAM
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"
