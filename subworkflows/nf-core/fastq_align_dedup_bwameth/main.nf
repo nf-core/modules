@@ -94,6 +94,10 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
     ch_samtools_stats = SAMTOOLS_STATS.out.stats
     ch_versions       = ch_versions.mix(SAMTOOLS_STATS.out.versions)
 
+    ch_alignment.view()
+    ch_fasta.view()
+    ch_fasta_index.view()
+    
     if (!skip_deduplication) {
         /*
         * Run Picard MarkDuplicates
