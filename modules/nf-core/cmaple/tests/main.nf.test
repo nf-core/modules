@@ -9,14 +9,14 @@ nextflow_process {
     tag "cmaple"
     tag "gunzip"
 
-    test("setoxin - aa - aln") {
+    test("seatoxin - aa - aln") {
 
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test_aa' ],
-                    file(params.modules_testdata_base_path + '../../multiplesequencealign/testdata/setoxin.ref', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/anemonia_sulcata/seatoxin-ref.aln', checkIfExists: true),
                     []
                 ]
                 """
@@ -77,7 +77,7 @@ nextflow_process {
 
     }
 
-    test("setoxin - aa - aln - stub") {
+    test("seatoxin - aa - aln - stub") {
 
         options "-stub"
 
@@ -86,7 +86,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test_stub' ],
-                    file(params.modules_testdata_base_path + '../../multiplesequencealign/testdata/setoxin.ref', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/anemonia_sulcata/seatoxin-ref.aln', checkIfExists: true),
                     []
                 ]
                 """
