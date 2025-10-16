@@ -56,11 +56,11 @@ process DIANN {
         ms_input = ms_file_names instanceof List ? ms_file_names.collect{ "--f ${it}" }.join(' ') : "--f ${ms_file_names}"
     }
     
-    def fasta_input = fasta && fasta.name != 'NO_FASTA_FILE' ? "--fasta ${fasta}" : ''
-    def lib_input = library && library.name != 'NO_LIB_FILE' ? "--lib ${library}" : ''
-    
+    def fasta_input = fasta && fasta != [] ? "--fasta ${fasta}" : ''
+    def lib_input = library && library != [] ? "--lib ${library}" : ''
+
     // Determine temp directory based on whether quant files are provided
-    def temp_dir = quant && quant.name != 'NO_QUANT_DIR' ? "--temp ./quant/" : "--temp ./"
+    def temp_dir = quant && quant != [] ? "--temp ./quant/" : "--temp ./"
 
     """
     diann \\
