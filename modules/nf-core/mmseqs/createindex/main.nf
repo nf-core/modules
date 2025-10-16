@@ -1,6 +1,7 @@
 process MMSEQS_CREATEINDEX {
     tag "${meta.id}"
     label 'process_high'
+    label 'process_high_memory'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
@@ -30,7 +31,8 @@ process MMSEQS_CREATEINDEX {
         \${DB_INPUT_PATH_NAME} \\
         tmp1 \\
         ${args} \\
-        --threads ${task.cpus}
+        --threads ${task.cpus} \\
+        --split-memory-limit ${(task.memory.toGiga() * 0.8) as int}G
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
