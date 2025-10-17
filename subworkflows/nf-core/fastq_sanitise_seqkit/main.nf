@@ -14,8 +14,14 @@ workflow FASTQ_SANITISE_SEQKIT {
         // seqkit/sana can only receive one file at a time
         .flatMap  { meta, reads ->
             if (meta.single_end) {
+                if (reads instanceof List && reads.size() != 1) {
+                    error("Error: Check your meta.single_end value. Single-end reads should contain one file only.")
+                }
                 return [[ meta + [strandness: 'single'], reads ]]
             } else {
+                if (!(reads instanceof List) || reads.size() != 2) {
+                    error("Error: Check your meta.single_end value. Paired-end reads should contain two files; a forward and a reverse.")
+                }
                 return [
                     [ meta + [strandness: 'R1'], reads[0] ],
                     [ meta + [strandness: 'R2'], reads[1] ]
