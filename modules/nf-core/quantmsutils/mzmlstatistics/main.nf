@@ -1,6 +1,5 @@
 process QUANTMSUTILS_MZMLSTATISTICS {
     tag "$meta.id"
-    label 'process_very_low'
     label 'process_single'
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -16,9 +15,6 @@ process QUANTMSUTILS_MZMLSTATISTICS {
     tuple val(meta), path("*_feature_info.parquet"), emit: feature_statistics, optional: true
     path "versions.yml", emit: versions
     tuple val(meta), path("*.log"), emit: log
-
-    when:
-    task.ext.when == null || task.ext.when
 
     script:
     // Exit if running this module with -profile conda / -profile mamba
