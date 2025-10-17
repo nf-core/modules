@@ -1,4 +1,3 @@
----
 name: "leviosam2_index"
 description: Index chain files for lift over
 keywords:
@@ -11,34 +10,43 @@ tools:
       homepage: "https://github.com/milkschen/leviosam2/blob/main/workflow/README.md"
       documentation: "https://github.com/milkschen/leviosam2/blob/main/workflow/README.md"
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'reference' ]`
-  - fai:
-      type: file
-      description: FAI (FASTA index) file of the target reference
-      pattern: "*.{fai}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'reference' ]`
+    - fai:
+        type: file
+        description: FAI (FASTA index) file of the target reference
+        pattern: "*.{fai}"
+        ontologies: []
   - chain:
       type: file
       description: Chain file to index.
       pattern: "*.{chain}"
+      ontologies:
+        - edam: http://edamontology.org/format_3982 # CHAIN
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'reference' ]`
-  - clft:
-      type: file
-      description: Clft file of indexed chain
-      pattern: "*.{clft}"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  clft:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'reference' ]`
+      - "*.clft":
+          type: file
+          description: Clft file of indexed chain
+          pattern: "*.{clft}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@lgrochowalski"
 maintainers:

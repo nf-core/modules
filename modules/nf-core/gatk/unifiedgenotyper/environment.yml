@@ -1,8 +1,8 @@
-name: gatk_unifiedgenotyper
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
-  - defaults
 dependencies:
   - bioconda::gatk=3.5
-  - bioconda::tabix=1.11 ## Needed for bgzip
+  - bioconda::tabix=1.11

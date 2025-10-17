@@ -1,6 +1,6 @@
 include { BEDTOOLS_MAKEWINDOWS              } from '../../../modules/nf-core/bedtools/makewindows/main.nf'
-include { SHAPEIT5_PHASECOMMON              } from '../../../modules/nf-core/shapeit5/phasecommon/main'
-include { SHAPEIT5_LIGATE                   } from '../../../modules/nf-core/shapeit5/ligate/main'
+include { SHAPEIT5_PHASECOMMON              } from '../../../modules/nf-core/shapeit5/phasecommon/main.nf'
+include { SHAPEIT5_LIGATE                   } from '../../../modules/nf-core/shapeit5/ligate/main.nf'
 include { BCFTOOLS_INDEX as VCF_INDEX1      } from '../../../modules/nf-core/bcftools/index/main.nf'
 include { BCFTOOLS_INDEX as VCF_INDEX2      } from '../../../modules/nf-core/bcftools/index/main.nf'
 
@@ -21,7 +21,7 @@ workflow VCF_PHASE_SHAPEIT5 {
 
     // Keep the meta map and the region in two separated channel but keed id field to link them back
     ch_region = ch_vcf
-        .multiMap { meta, vcf, csi, pedigree, region ->
+        .multiMap { meta, _vcf, _csi, _pedigree, region ->
             metadata: [ meta.id, meta]
             region  : [ meta.id, region]
         }
@@ -34,7 +34,7 @@ workflow VCF_PHASE_SHAPEIT5 {
     // Link back the meta map with the file
     ch_region_file = ch_region.metadata
         .join(ch_merged_region, failOnMismatch:true, failOnDuplicate:true)
-        .map { mid, meta, region_file -> [meta, region_file]}
+        .map { _mid, meta, region_file -> [meta, region_file]}
 
     BEDTOOLS_MAKEWINDOWS(ch_region_file)
     ch_versions = ch_versions.mix(BEDTOOLS_MAKEWINDOWS.out.versions.first())
@@ -48,44 +48,50 @@ workflow VCF_PHASE_SHAPEIT5 {
         .map { meta, bed -> [meta, bed.countLines().intValue()]}
 
     ch_phase_input = ch_vcf
-        .map { meta, vcf, index, pedigree, region ->
+        .map { meta, vcf, index, pedigree, _region ->
             [meta, vcf, index, pedigree] }
         .combine(ch_chunk_output, by:0)
         .map { meta, vcf, index, pedigree, chunk ->
                 [meta + [id: "${meta.id}_${chunk.replace(":","-")}"], // The meta.id field need to be modified to be unique for each chunk
                 vcf, index, pedigree, chunk]}
 
-    SHAPEIT5_PHASECOMMON ( ch_phase_input,
-                            ch_ref,
-                            ch_scaffold,
-                            ch_map )
-    ch_versions = ch_versions.mix(SHAPEIT5_PHASECOMMON.out.versions.first())
+    SHAPEIT5_PHASECOMMON (
+        ch_phase_input,
+        ch_ref,
+        ch_scaffold,
+        ch_map
+    )
+    ch_versions = ch_versions.mix(SHAPEIT5_PHASECOMMON.out.versions)
 
     VCF_INDEX1(SHAPEIT5_PHASECOMMON.out.phased_variant)
-    ch_versions = ch_versions.mix(VCF_INDEX1.out.versions.first())
+    ch_versions = ch_versions.mix(VCF_INDEX1.out.versions)
 
     ch_ligate_input = SHAPEIT5_PHASECOMMON.out.phased_variant
         .join(VCF_INDEX1.out.csi, failOnMismatch:true, failOnDuplicate:true)
         .map{ meta, vcf, csi ->
-            newmeta = meta + [id: meta.id.split("_")[0..-2].join("_")]
+            def newmeta = meta + [id: meta.id.split("_")[0..-2].join("_")]
             [newmeta, vcf, csi]}
         .combine(ch_chunks_number, by:0)
         .map{meta, vcf, csi, chunks_num ->
             [groupKey(meta, chunks_num), vcf, csi]}
         .groupTuple()
         .map{ meta, vcf, csi ->
-                [ meta,
+            [
+                meta.target,
                 vcf.sort { a, b ->
                     def aStart = a.getName().split('-')[-2].toInteger()
                     def bStart = b.getName().split('-')[-2].toInteger()
-                    aStart <=> bStart},
-                csi]}
+                    aStart <=> bStart
+                },
+                csi
+            ]
+        }
 
     SHAPEIT5_LIGATE(ch_ligate_input)
-    ch_versions = ch_versions.mix(SHAPEIT5_LIGATE.out.versions.first())
+    ch_versions = ch_versions.mix(SHAPEIT5_LIGATE.out.versions)
 
     VCF_INDEX2(SHAPEIT5_LIGATE.out.merged_variants)
-    ch_versions = ch_versions.mix(VCF_INDEX2.out.versions.first())
+    ch_versions = ch_versions.mix(VCF_INDEX2.out.versions)
 
     emit:
     bed                 = BEDTOOLS_MAKEWINDOWS.out.bed           // channel: [ val(meta), bed ]
@@ -93,4 +99,3 @@ workflow VCF_PHASE_SHAPEIT5 {
     variants_index      = VCF_INDEX2.out.csi                     // channel: [ val(meta), csi ]
     versions            = ch_versions                            // channel: [ versions.yml ]
 }
-

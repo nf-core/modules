@@ -16,17 +16,21 @@ tools:
       documentation: "https://github.com/vgl-hub/gfastats/tree/main/instructions"
       tool_dev_url: "https://github.com/vgl-hub/gfastats"
       doi: "10.1093/bioinformatics/btac460"
-      licence: "['MIT']"
+      licence: ["MIT"]
+      identifier: biotools:gfastats
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - assembly:
-      type: file
-      description: Draft assembly file
-      pattern: "*.{fasta,fastq,gfa}(.gz)?"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - assembly:
+        type: file
+        description: Draft assembly file
+        pattern: "*.{fasta,fastq,gfa}(.gz)?"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_3975 # GFA 1
   - out_fmt:
       type: string
       description: Output format (fasta, fastq, gfa)
@@ -36,36 +40,75 @@ input:
   - target:
       type: string
       description: target specific sequence by header, optionally with coordinates (optional).
-  - agpfile:
-      type: file
-      description: converts input agp to path and replaces existing paths.
-  - include_bed:
-      type: file
-      description: generates output on a subset list of headers or coordinates in 0-based bed format.
-  - exclude_bed:
-      type: file
-      description: opposite of --include-bed. They can be combined (no coordinates).
-  - instructions:
-      type: file
-      description: set of instructions provided as an ordered list.
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - agpfile:
+        type: file
+        description: converts input agp to path and replaces existing paths.
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - include_bed:
+        type: file
+        description: generates output on a subset list of headers or coordinates in
+          0-based bed format.
+        ontologies: []
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - exclude_bed:
+        type: file
+        description: opposite of --include-bed. They can be combined (no coordinates).
+        ontologies: []
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - instructions:
+        type: file
+        description: set of instructions provided as an ordered list.
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - assembly_summary:
-      type: file
-      description: Assembly summary statistics file
-      pattern: "*.assembly_summary"
-  - assembly:
-      type: file
-      description: The assembly as modified by gfastats
-      pattern: "*.{fasta,fastq,gfa}.gz"
+  assembly_summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.assembly_summary":
+          type: file
+          description: Assembly summary statistics file
+          pattern: "*.assembly_summary"
+          ontologies: []
+  assembly:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.${out_fmt}.gz":
+          type: file
+          description: The assembly as modified by gfastats
+          pattern: "*.{fasta,fastq,gfa}.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+            - edam: http://edamontology.org/format_3975 # GFA 1
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mahesh-panchal"
 maintainers:

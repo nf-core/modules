@@ -12,51 +12,79 @@ tools:
       documentation: "https://github.com/c-zhou/yahs"
       tool_dev_url: "https://github.com/c-zhou/yahs"
       doi: "10.1093/bioinformatics/btac808"
-      licence: "['MIT']"
+      licence: ["MIT"]
+      identifier: biotools:yahs
 input:
-  # Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  #
-  - hic_map:
-      type: file
-      description: BED file containing coordinates of read alignments
-      pattern: "*.{bed,bam,bin}"
-  - fasta:
-      type: file
-      description: FASTA reference file
-      pattern: "*.{fasta,fa}"
-  - fai:
-      type: file
-      description: index of the reference file
-      pattern: "*.{fai}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: FASTA reference file
+        pattern: "*.{fasta,fa}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+    - fai:
+        type: file
+        description: index of the reference file
+        pattern: "*.{fai}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+    - hic_map:
+        type: file
+        description: BED file containing coordinates of read alignments
+        pattern: "*.{bed,bam,bin}"
+        ontologies:
+          - edam: http://edamontology.org/format_3003 # BED
+          - edam: http://edamontology.org/format_2572 # BAM
 output:
-  #Only when we have meta
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - scaffolds_fasta:
-      type: file
-      description: FASTA file with resulting contigs
-      pattern: "*scaffolds_final.fa"
-  - scaffolds_agp:
-      type: file
-      description: AGP file containing contigs placing coordinates
-      pattern: "*scaffolds_final.agp"
-  - binary:
-      type: file
-      description: BIN file with alignment results of Hi-C reads to the contigs in internal YaHS binary format
-      pattern: "*bin"
+  scaffolds_fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*_scaffolds_final.fa":
+          type: file
+          description: FASTA file with resulting contigs
+          pattern: "*_scaffolds_final.fa"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  scaffolds_agp:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*_scaffolds_final.agp":
+          type: file
+          description: AGP file containing contigs placing coordinates
+          pattern: "*_scaffolds_final.agp"
+          ontologies:
+            - edam: http://edamontology.org/format_3693 # AGP
+  binary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.bin":
+          type: file
+          description: |
+            Binary data file with alignment results of Hi-C reads
+            to the contigs in internal YaHS binary format
+          pattern: "*.bin"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ksenia-krasheninnikova"
 maintainers:
   - "@ksenia-krasheninnikova"
+  - "@yy5"

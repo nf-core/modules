@@ -4,8 +4,8 @@ process MOSDEPTH {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mosdepth:0.3.6--hd299d5a_0' :
-        'biocontainers/mosdepth:0.3.6--hd299d5a_0'}"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/00/00d32b53160c26794959da7303ee6e2107afd4d292060c9f287b0af1fddbd847/data' :
+        'community.wave.seqera.io/library/mosdepth_htslib:0f58993cb6d93294'}"
 
     input:
     tuple val(meta),  path(bam), path(bai), path(bed)
@@ -63,13 +63,13 @@ process MOSDEPTH {
     touch ${prefix}.region.dist.txt
     touch ${prefix}.summary.txt
     touch ${prefix}.per-base.d4
-    touch ${prefix}.per-base.bed.gz
+    echo "" | gzip > ${prefix}.per-base.bed.gz
     touch ${prefix}.per-base.bed.gz.csi
-    touch ${prefix}.regions.bed.gz
+    echo "" | gzip > ${prefix}.regions.bed.gz
     touch ${prefix}.regions.bed.gz.csi
-    touch ${prefix}.quantized.bed.gz
+    echo "" | gzip > ${prefix}.quantized.bed.gz
     touch ${prefix}.quantized.bed.gz.csi
-    touch ${prefix}.thresholds.bed.gz
+    echo "" | gzip > ${prefix}.thresholds.bed.gz
     touch ${prefix}.thresholds.bed.gz.csi
 
     cat <<-END_VERSIONS > versions.yml

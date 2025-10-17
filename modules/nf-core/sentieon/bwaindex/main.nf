@@ -1,66 +1,44 @@
 process SENTIEON_BWAINDEX {
-    tag "$fasta"
+    tag "${fasta}"
     label 'process_high'
     label 'sentieon'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sentieon:202308.01--h43eeafb_0' :
-        'biocontainers/sentieon:202308.01--h43eeafb_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0f1dfe59ef66d7326b43db9ab1f39ce6220b358a311078c949a208f9c9815d4e/data'
+        : 'community.wave.seqera.io/library/sentieon:202503.01--1863def31ed8e4d5'}"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path(bwa), emit: index
-    path "versions.yml"       , emit: versions
+    tuple val(meta), path("bwa"), emit: index
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    // The following code sets LD_LIBRARY_PATH in the script-section when the module is run by Singularity.
-    // That turned out to be one way of overcoming the following issue with the Singularity-Sentieon-containers from galaxy, Sentieon (LD_LIBRARY_PATH) and the way Nextflow runs Singularity-containers.
-    // The galaxy container uses a runscript which is responsible for setting LD_PRELOAD properly. Nextflow executes singularity containers using `singularity exec`, which avoids the run script, leading to the LD_LIBRARY_PATH/libstdc++.so.6 error.
-    if (workflow.containerEngine in ['singularity','apptainer']) {
-        fix_ld_library_path = 'LD_LIBRARY_PATH=/usr/local/lib/:\$LD_LIBRARY_PATH;export LD_LIBRARY_PATH'
-    } else {
-        fix_ld_library_path = ''
-    }
-
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ? "bwa/${task.ext.prefix}" : "bwa/${fasta.baseName}"
     """
-    $fix_ld_library_path
-
     mkdir bwa
 
     sentieon \\
         bwa index \\
-        $args \\
-        -p $prefix \\
-        $fasta
+        ${args} \\
+        -p ${prefix} \\
+        ${fasta}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
         bwa: \$(echo \$(sentieon bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
+        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
     END_VERSIONS
     """
 
     stub:
-    // The following code sets LD_LIBRARY_PATH in the script-section when the module is run by Singularity.
-    // That turned out to be one way of overcoming the following issue with the Singularity-Sentieon-containers from galaxy, Sentieon (LD_LIBRARY_PATH) and the way Nextflow runs Singularity-containers.
-    // The galaxy container uses a runscript which is responsible for setting LD_PRELOAD properly. Nextflow executes singularity containers using `singularity exec`, which avoids the run script, leading to the LD_LIBRARY_PATH/libstdc++.so.6 error.
-    if (workflow.containerEngine in ['singularity','apptainer']) {
-        fix_ld_library_path = 'LD_LIBRARY_PATH=/usr/local/lib/:\$LD_LIBRARY_PATH;export LD_LIBRARY_PATH'
-    } else {
-        fix_ld_library_path = ''
-    }
-
     """
-    $fix_ld_library_path
-
     mkdir bwa
 
     touch bwa/genome.amb
@@ -71,8 +49,8 @@ process SENTIEON_BWAINDEX {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
         bwa: \$(echo \$(sentieon bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
+        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
     END_VERSIONS
     """
 }

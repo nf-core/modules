@@ -13,8 +13,11 @@ process SEGEMEHL_ALIGN {
     path(index)
 
     output:
-    tuple val(meta), path("${prefix}/*"), emit: results
-    path "versions.yml"                  , emit: versions
+    tuple val(meta), path("${prefix}/${prefix}.${suffix}"), emit: alignment
+    tuple val(meta), path("${prefix}/${prefix}.trns.txt") , emit: trans_alignments, optional: true
+    tuple val(meta), path("${prefix}/${prefix}.mult.bed") , emit: multi_bed, optional: true
+    tuple val(meta), path("${prefix}/${prefix}.sngl.bed") , emit: single_bed, optional: true
+    path "versions.yml"                                   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,7 +26,7 @@ process SEGEMEHL_ALIGN {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def reads = meta.single_end ? "-q ${reads}" : "-q ${reads[0]} -p ${reads[1]}"
-    def suffix = ( args.contains("-b") || args.contains("--bamabafixoida") ) ? "bam" : "sam"
+    suffix = ( args.contains("-b") || args.contains("--bamabafixoida") ) ? "bam" : "sam"
     """
     mkdir -p $prefix
 
@@ -43,7 +46,7 @@ process SEGEMEHL_ALIGN {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = ( args.contains("-b") || args.contains("--bamabafixoida") ) ? "bam" : "sam"
+    suffix = ( args.contains("-b") || args.contains("--bamabafixoida") ) ? "bam" : "sam"
     """
     mkdir -p $prefix
     touch ${prefix}/${prefix}.${suffix}

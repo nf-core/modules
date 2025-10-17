@@ -35,4 +35,16 @@ process SNPSITES {
         snpsites: \$(snp-sites -V 2>&1 | sed 's/snp-sites //')
     END_VERSIONS
     """
+    stub:
+    """
+    touch filtered_alignment.fas
+    touch constant.sites.txt
+    CONSTANT_SITES=\$(cat constant.sites.txt)
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        snpsites: \$(snp-sites -V 2>&1 | sed 's/snp-sites //')
+    END_VERSIONS
+    """
+
 }

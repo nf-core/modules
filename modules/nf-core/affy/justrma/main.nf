@@ -12,14 +12,24 @@ process AFFY_JUSTRMA {
     tuple val(meta2), path(description)
 
     output:
-    tuple val(meta), path("*.rds")             , emit: rds
-    tuple val(meta), path("*matrix.tsv")       , emit: expression
-    tuple val(meta), path("*.annotation.tsv")  , emit: annotation, optional: true
-    path "versions.yml"                        , emit: versions
+    tuple val(meta), path("*.rds")           , emit: rds
+    tuple val(meta), path("*matrix.tsv")     , emit: expression
+    tuple val(meta), path("*.annotation.tsv"), emit: annotation, optional: true
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+    prefix = task.ext.prefix ?: "${meta.id}"
     template 'affy_justrma.R'
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}_eset.rds
+    touch ${prefix}_matrix.tsv
+    touch R_sessionInfo.log
+    touch versions.yml
+    """
 }

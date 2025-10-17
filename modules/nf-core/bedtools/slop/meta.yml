@@ -1,5 +1,6 @@
 name: bedtools_slop
-description: Adds a specified number of bases in each direction (unique values may be specified for either -l or -r)
+description: Adds a specified number of bases in each direction (unique values may
+  be specified for either -l or -r)
 keywords:
   - bed
   - slopBed
@@ -10,30 +11,41 @@ tools:
         A set of tools for genomic analysis tasks, specifically enabling genome arithmetic (merge, count, complement) on various file types.
       documentation: https://bedtools.readthedocs.io/en/latest/content/tools/slop.html
       licence: ["MIT"]
+      identifier: biotools:bedtools
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bed:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bed:
+        type: file
+        description: Input BED file
+        pattern: "*.{bed}"
+        ontologies: []
+  - sizes:
       type: file
-      description: Input BED file
-      pattern: "*.{bed}"
+      description: Chromosome sizes file
+      ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bed:
-      type: file
-      description: Slopped BED file
-      pattern: "*.{bed}"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bed":
+          type: file
+          description: Slopped BED file
+          pattern: "*.{bed}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@edmundmiller"
   - "@sruthipsuresh"

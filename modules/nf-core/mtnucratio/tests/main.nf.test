@@ -1,0 +1,55 @@
+
+nextflow_process {
+
+    name "Test Process MTNUCRATIO"
+    script "../main.nf"
+    process "MTNUCRATIO"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mtnucratio"
+
+    test("test-mtnucratio") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+				file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true)]
+				input[1] = 'mt_id'
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-mtnucratio-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+				file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true)]
+				input[1] = 'mt_id'
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

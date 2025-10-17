@@ -11,30 +11,37 @@ tools:
       homepage: https://github.com/lh3/minimap2
       documentation: https://github.com/lh3/minimap2#uguide
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: |
-        Reference database in FASTA format.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: |
+          Reference database in FASTA format.
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - index:
-      type: file
-      description: Minimap2 fasta index.
-      pattern: "*.mmi"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.mmi":
+          type: file
+          description: Minimap2 fasta index.
+          pattern: "*.mmi"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@yuukiiwa"
   - "@drpatelh"

@@ -1,27 +1,33 @@
 name: "ampir"
-description: A fast and user-friendly method to predict antimicrobial peptides (AMPs) from any given size protein dataset. ampir uses a supervised statistical machine learning approach to predict AMPs.
+description: A fast and user-friendly method to predict antimicrobial peptides (AMPs)
+  from any given size protein dataset. ampir uses a supervised statistical machine
+  learning approach to predict AMPs.
 keywords:
   - ampir
   - amp
   - antimicrobial peptide prediction
 tools:
   - "ampir":
-      description: "A toolkit to predict antimicrobial peptides from protein sequences on a genome-wide scale."
+      description: "A toolkit to predict antimicrobial peptides from protein sequences
+        on a genome-wide scale."
       homepage: "https://github.com/Legana/ampir"
       documentation: "https://cran.r-project.org/web/packages/ampir/index.html"
       tool_dev_url: "https://github.com/Legana/ampir"
       doi: "10.1093/bioinformatics/btaa653"
       licence: ["GPL v2"]
+      identifier: biotools:ampir
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - faa:
-      type: file
-      description: FASTA file containing amino acid sequences
-      pattern: "*.{faa,fasta}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - faa:
+        type: file
+        description: FASTA file containing amino acid sequences
+        pattern: "*.{faa,fasta}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
   - model:
       type: string
       description: Built-in model for AMP prediction
@@ -35,23 +41,37 @@ input:
       description: Cut-off for AMP prediction
       pattern: "[0-9].[0-9]+"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - amps_faa:
-      type: file
-      description: File containing AMP predictions in amino acid FASTA format
-      pattern: "*.{faa}"
-  - amps_tsv:
-      type: file
-      description: File containing AMP predictions in TSV format
-      pattern: "*.tsv"
+  amps_faa:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.faa":
+          type: file
+          description: File containing AMP predictions in amino acid FASTA format
+          pattern: "*.{faa}"
+          ontologies:
+            - edam: "http://edamontology.org/format_1929" # FASTA
+  amps_tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: File containing AMP predictions in TSV format
+          pattern: "*.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@jasmezz"
 maintainers:

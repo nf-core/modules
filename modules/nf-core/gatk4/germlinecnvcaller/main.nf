@@ -1,9 +1,11 @@
 process GATK4_GERMLINECNVCALLER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
-    //Conda is not supported at the moment: https://github.com/broadinstitute/gatk/issues/7811
-    container "nf-core/gatk:4.5.0.0" //Biocontainers is missing a package
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ce/ced519873646379e287bc28738bdf88e975edd39a92e7bc6a34bccd37153d9d0/data'
+        : 'community.wave.seqera.io/library/gatk4_gcnvkernel:edb12e4f0bf02cd3'}"
 
     input:
     tuple val(meta), path(tsv), path(intervals), path(ploidy), path(model)
@@ -11,43 +13,43 @@ process GATK4_GERMLINECNVCALLER {
     output:
     tuple val(meta), path("*-cnv-model/*-calls"), emit: cohortcalls, optional: true
     tuple val(meta), path("*-cnv-model/*-model"), emit: cohortmodel, optional: true
-    tuple val(meta), path("*-cnv-calls/*-calls"), emit: casecalls  , optional: true
-    path  "versions.yml"                        , emit: versions
+    tuple val(meta), path("*-cnv-calls/*-calls"), emit: casecalls,   optional: true
+    path "versions.yml",                          emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "GATK4_GERMLINECNVCALLER module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-    def args   = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def intervals_command = intervals ? "--intervals ${intervals}"         : ""
-    def ploidy_command    = ploidy    ? "--contig-ploidy-calls ${ploidy}"  : ""
-    def model_command     = model     ? "--model ${model}"                 : ""
-    def input_list        = tsv.collect{"--input $it"}.join(' ')
-    def output_command    = model     ? "--output ${prefix}-cnv-calls"     : "--output ${prefix}-cnv-model"
+    def intervals_command = intervals ? "--intervals ${intervals}" : ""
+    def ploidy_command = ploidy ? "--contig-ploidy-calls ${ploidy}" : ""
+    def model_command = model ? "--model ${model}" : ""
+    def input_list = tsv.collect { "--input ${it}" }.join(' ')
+    def output_command = model ? "--output ${prefix}-cnv-calls" : "--output ${prefix}-cnv-model"
 
     def avail_mem = 3072
     if (!task.memory) {
-        log.info '[GATK GermlineCNVCaller] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        log.info('[GATK GermlineCNVCaller] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
+    }
+    else {
+        avail_mem = (task.memory.mega * 0.8).intValue()
     }
     """
     export THEANO_FLAGS="base_compiledir=\$PWD"
+    export PYTENSOR_FLAGS="base_compiledir=\$PWD"
+    export OMP_NUM_THREADS=${task.cpus}
+    export MKL_NUM_THREADS=${task.cpus}
 
-    gatk --java-options "-Xmx${avail_mem}g -XX:-UsePerfData" \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         GermlineCNVCaller \\
-        $input_list \\
-        $ploidy_command \\
-        $output_command \\
-        --output-prefix $prefix \\
-        $args \\
-        $intervals_command \\
-        $model_command
+        ${input_list} \\
+        ${ploidy_command} \\
+        ${output_command} \\
+        --output-prefix ${prefix} \\
+        ${args} \\
+        ${intervals_command} \\
+        ${model_command}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -56,10 +58,6 @@ process GATK4_GERMLINECNVCALLER {
     """
 
     stub:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "GATK4_GERMLINECNVCALLER module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}-cnv-calls/${prefix}-calls

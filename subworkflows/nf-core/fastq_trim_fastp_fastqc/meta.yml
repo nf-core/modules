@@ -29,6 +29,12 @@ input:
       description: |
         Structure: val(save_trimmed_fail)
         Specify true to save files that failed to pass trimming thresholds ending in `*.fail.fastq.gz`
+  - val_discard_trimmed_pass:
+      type: boolean
+      description: |
+        Structure: val(discard_trimmed)
+        Specify true to not write any reads that pass trimming thresholds.
+        This can be used to use fastp for the output report only.
   - val_save_merged:
       type: boolean
       description: |
@@ -46,7 +52,7 @@ input:
         skip the fastp process if true
 output:
   - meta:
-      type: value
+      type: string
       description: Groovy Map containing sample information e.g. [ id:'test', single_end:false ]
   - reads:
       type: file

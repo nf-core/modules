@@ -1,0 +1,116 @@
+nextflow_process {
+
+    name "Test Process GATK4_SITEDEPTHTOBAF"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "GATK4_SITEDEPTHTOBAF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gatk4"
+    tag "gatk4/collectsvevidence"
+    tag "gatk4/sitedepthtobaf"
+
+    setup {
+        run("GATK4_COLLECTSVEVIDENCE") {
+            script "../../collectsvevidence/main.nf"
+            process {
+            """
+            vcf = file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz", checkIfExists: true)
+            tbi = file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz.tbi", checkIfExists: true)
+
+            input[0] = Channel.of(
+                [
+                    [ id:'tumor', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai", checkIfExists: true),
+                    vcf,
+                    tbi
+                ],
+                [
+                    [ id:'normal', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam.bai", checkIfExists: true),
+                    vcf,
+                    tbi
+                ]
+            )
+            input[1] = file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true)
+            input[2] = file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta.fai", checkIfExists: true)
+            input[3] = file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.dict", checkIfExists: true)
+            """
+            }
+        }
+    }
+
+    test("homo sapiens - bam - vcf") {
+
+        when {
+            process {
+                """
+                sitedepthtobaf_input = GATK4_COLLECTSVEVIDENCE.out.site_depths
+                                    .combine(GATK4_COLLECTSVEVIDENCE.out.site_depths_index, by:0)
+                                    .map({ meta, file, index -> [ [id:'test'], file, index ]}).groupTuple()
+
+                input[0] = sitedepthtobaf_input
+                input[1] = [
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz.tbi", checkIfExists: true)
+                ]
+                input[2] = file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta.fai", checkIfExists: true)
+                input[4] = file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.dict", checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    file(process.out.baf[0][1]).name,
+                    file(process.out.baf_tbi[0][1]).name
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo sapiens - bam - vcf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                sitedepthtobaf_input = GATK4_COLLECTSVEVIDENCE.out.site_depths
+                                    .combine(GATK4_COLLECTSVEVIDENCE.out.site_depths_index, by:0)
+                                    .map({ meta, file, index -> [ [id:'test'], file, index ]}).groupTuple()
+
+                input[0] = sitedepthtobaf_input
+                input[1] = [
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotcaller.cnn.vcf.gz.tbi", checkIfExists: true)
+                ]
+                input[2] = file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta.fai", checkIfExists: true)
+                input[4] = file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.dict", checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    file(process.out.baf[0][1]).name,
+                    file(process.out.baf_tbi[0][1]).name
+                ).match() }
+            )
+        }
+
+    }
+
+}

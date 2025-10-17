@@ -4,18 +4,17 @@ process ARRIBA_ARRIBA {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/arriba:2.4.0--h0033a41_2' :
-        'biocontainers/arriba:2.4.0--h0033a41_2' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/27/27475cdcdbcc8c0ffb6b5ca8c2e6567dbe490edb96f5df4e8f01f4f95912dcd3/data' :
+        'community.wave.seqera.io/library/arriba_wget:a3e48cf793a0b654' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta),  path(bam)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(gtf)
-    tuple val(meta4), path(blacklist)
-    tuple val(meta5), path(known_fusions)
-    tuple val(meta6), path(structural_variants)
-    tuple val(meta7), path(tags)
-    tuple val(meta8), path(protein_domains)
+    path(blacklist)
+    path(known_fusions)
+    path(cytobands)
+    path(protein_domains)
 
     output:
     tuple val(meta), path("*.fusions.tsv")          , emit: fusions
@@ -26,27 +25,26 @@ process ARRIBA_ARRIBA {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def blacklist = blacklist ? "-b $blacklist" : "-f blacklist"
-    def known_fusions = known_fusions ? "-k $known_fusions" : ""
-    def structural_variants = structural_variants ? "-d $structual_variants" : ""
-    def tags = tags ? "-t $tags" : ""
-    def protein_domains = protein_domains ? "-p $protein_domains" : ""
+
+    def blacklist_arg       = blacklist       ? "-b ${blacklist}"       : "-f blacklist"
+    def known_fusions_arg   = known_fusions   ? "-k ${known_fusions}"   : ""
+    def cytobands_arg       = cytobands       ? "-d ${cytobands}"       : ""
+    def protein_domains_arg = protein_domains ? "-p ${protein_domains}" : ""
 
     """
     arriba \\
-        -x $bam \\
-        -a $fasta \\
-        -g $gtf \\
+        -x ${bam} \\
+        -a ${fasta} \\
+        -g ${gtf} \\
         -o ${prefix}.fusions.tsv \\
         -O ${prefix}.fusions.discarded.tsv \\
-        $blacklist \\
-        $known_fusions \\
-        $structural_variants \\
-        $tags \\
-        $protein_domains \\
-        $args
+        ${blacklist_arg} \\
+        ${known_fusions_arg} \\
+        ${cytobands_arg} \\
+        ${protein_domains_arg} \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -60,7 +58,9 @@ process ARRIBA_ARRIBA {
     echo stub > ${prefix}.fusions.tsv
     echo stub > ${prefix}.fusions.discarded.tsv
 
-    echo "${task.process}:" > versions.yml
-    echo ' arriba: 2.2.1' >> versions.yml
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        arriba: \$(arriba -h | grep 'Version:' 2>&1 |  sed 's/Version:\s//')
+    END_VERSIONS
     """
 }

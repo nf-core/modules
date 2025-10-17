@@ -1,0 +1,61 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "bam_stats_mirna_mirtop"
+description: mirtop is a command line tool to annotate miRNAs and isomiRs and compute general statistics using the mirGFF3 format.
+keywords:
+  - miRNA
+  - isomirs
+  - bam
+  - stats
+components:
+  - mirtop/gff
+  - mirtop/counts
+  - mirtop/export
+  - mirtop/stats
+input:
+  - ch_bam:
+      type: file
+      description: |
+        The input channel containing the BAM/CRAM/SAM files
+        Structure: [ val(meta), path(bam) ]
+      pattern: "*.{bam/cram/sam}"
+  - ch_hairpin:
+      type: file
+      description: |
+        Input channel containing the hairpin fasta file
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.{fasta,fa}"
+  - ch_gtf_species:
+      type: file
+      description: |
+        Input channel containing the species gtf and the name of species in miRbase format
+        Structure: [ val(meta), path(gtf), val(species)]
+      pattern: "*.{gtf}"
+output:
+  - rawdata_tsv:
+      type: file
+      description: |
+        Channel containing isomiRs compatible files
+        Structure: [ val(meta), path(tsv) ]
+      pattern: "*.tsv"
+  - stats_txt:
+      type: file
+      description: |
+        Channel containing TXT file with a table with different statistics for each type of isomiRs: total counts, average counts, total sequences.
+        Structure: [ val(meta), path(txt) ]
+      pattern: "*.txt"
+  - stats_log:
+      type: file
+      description: |
+        Channel containing log files in JSON format with the same information as stats_txt
+        Structure: [ val(meta), path(log) ]
+      pattern: "*.log"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@atrigila"
+maintainers:
+  - "@atrigila"

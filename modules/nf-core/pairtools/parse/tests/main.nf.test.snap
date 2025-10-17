@@ -1,0 +1,30 @@
+{
+    "test-pairtools-parse": {
+        "content": [
+            [
+                "#chromsize: chr1 1000",
+                "#chromsize: chr2 1000",
+                "#samheader: @SQ\tSN:chr1\tLN:1000",
+                "#samheader: @SQ\tSN:chr2\tLN:1000",
+                "#samheader: @PG\tID:mock\tPN:mock\tVN:0.0.0\tCL:mock"
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.raw.pairsam.stat:md5,054bf78ee4f0a4c447ad3eeb81f1f4ae"
+                ]
+            ],
+            [
+                "versions.yml:md5,2c8cb00722749f8e3831464a5057c519"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-08-23T11:17:35.185642"
+    }
+}

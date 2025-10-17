@@ -13,6 +13,7 @@ process MAXBIN2 {
     output:
     tuple val(meta), path("*.fasta.gz")   , emit: binned_fastas
     tuple val(meta), path("*.summary")    , emit: summary
+    tuple val(meta), path("*.abundance")  , emit: abundance   , optional: true
     tuple val(meta), path("*.log.gz")     , emit: log
     tuple val(meta), path("*.marker.gz")  , emit: marker_counts
     tuple val(meta), path("*.noclass.gz") , emit: unbinned_fasta
@@ -27,7 +28,18 @@ process MAXBIN2 {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def associate_files = reads ? "-reads $reads" : "-abund $abund"
+    if (reads && abund) { error("ERROR: MaxBin2 can only accept one of `reads` or `abund`, no both. Check input.") }
+    def associate_files = ""
+    if (reads)  {
+        associate_files = "-reads $reads"
+    } else if (abund instanceof List) {
+        associate_files = (1..abund.size()).collect { n ->
+            def arg_n = n == 1 ? "" : "${n}"
+            return "-abund${arg_n} ${abund[n - 1]}"
+        }.join(" ")
+    } else {
+        associate_files = "-abund $abund"
+    }
     """
     mkdir input/ && mv $contigs input/
     run_MaxBin.pl \\
@@ -38,6 +50,24 @@ process MAXBIN2 {
         -out $prefix
 
     gzip *.fasta *.noclass *.tooshort *log *.marker
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        maxbin2: \$( run_MaxBin.pl -v | head -n 1 | sed 's/MaxBin //' )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if (reads && abund) { error("ERROR: MaxBin2 can only accept one of `reads` or `abund`, no both. Check input.") }
+    """
+    echo "" | gzip > ${prefix}.log.gz
+    echo "" | gzip > ${prefix}.marker.gz
+    echo "" | gzip > ${prefix}.marker_of_each_bin.gz
+    echo "" | gzip > ${prefix}.noclass.gz
+    touch ${prefix}.summary
+    echo "" | gzip > ${prefix}.tooshort.gz
+    echo "" | gzip > ${prefix}.001.fasta.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

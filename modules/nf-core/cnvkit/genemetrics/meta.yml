@@ -12,34 +12,43 @@ tools:
       homepage: https://cnvkit.readthedocs.io/en/stable/index.html
       documentation: https://cnvkit.readthedocs.io/en/stable/index.html
       licence: ["Apache-2.0"]
+      identifier: biotools:cnvkit
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - cnr:
-      type: file
-      description: CNR file
-      pattern: "*.cnr"
-  - cns:
-      type: file
-      description: CNS file [Optional]
-      pattern: "*.cns"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - cnr:
+        type: file
+        description: CNR file
+        pattern: "*.cnr"
+        ontologies: []
+    - cns:
+        type: file
+        description: CNS file [Optional]
+        pattern: "*.cns"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - txt:
-      type: file
-      description: TXT file
-      pattern: "*.txt"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: TSV file
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@adamrtalbot"
   - "@marrip"

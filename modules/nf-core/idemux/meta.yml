@@ -1,0 +1,79 @@
+name: idemux
+description: Demultiplex paired-end FASTQ files from QuantSeq-Pool
+keywords:
+  - demultiplex
+  - lexogen
+  - fastq
+tools:
+  - idemux:
+      description: |
+        A Lexogen tool for demultiplexing and index error correcting fastq files. Works with Lexogen i7, i5 and i1 barcodes.
+      homepage: https://github.com/Lexogen-Tools/idemux
+      documentation: https://github.com/Lexogen-Tools/idemux
+      tool_dev_url: https://github.com/Lexogen-Tools/idemux
+      licence: ["LEXOGEN"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'NVQ', lane:1 ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files
+        pattern: "Undetermined_S*.fastq.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
+    - samplesheet:
+        type: file
+        description: Input samplesheet
+        pattern: "*.{csv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+output:
+  fastq:
+    - - meta:
+          type: file
+          description: Demultiplexed sample FASTQ files
+          pattern: "*.fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+      - "[!undetermined]*.fastq.gz":
+          type: file
+          description: Demultiplexed sample FASTQ files
+          pattern: "*.fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  undetermined:
+    - - meta:
+          type: file
+          description: Demultiplexed sample FASTQ files
+          pattern: "*.fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+      - undetermined_R?.fastq.gz:
+          type: file
+          description: Optional undetermined sample FASTQ files
+          pattern: "Undetermined_R?.fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  stats:
+    - demultipexing_stats.tsv:
+        type: file
+        description: Demultiplexing Stats
+        pattern: "demultipexing_stats.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@jaanckae"
+maintainers:
+  - "@jaanckae"

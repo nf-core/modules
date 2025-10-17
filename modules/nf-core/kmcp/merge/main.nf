@@ -1,27 +1,25 @@
-
 process KMCP_MERGE {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/kmcp:0.9.1--h9ee0642_0':
-        'biocontainers/kmcp:0.9.1--h9ee0642_0' }"
-
+        'https://depot.galaxyproject.org/singularity/kmcp:0.9.4--h9ee0642_0':
+        'biocontainers/kmcp:0.9.4--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(search_out)
 
     output:
-    tuple val(meta), path("*.gz"),  emit: result
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.gz"), emit: result
+    path "versions.yml"          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}.merged"
     """
     kmcp \\
         merge \\
@@ -36,11 +34,9 @@ process KMCP_MERGE {
     END_VERSIONS
     """
     stub:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}.merged"
     """
-    touch ${prefix}
-    gzip ${prefix}
+    echo "" | gzip > ${prefix}.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

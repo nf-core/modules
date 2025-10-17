@@ -1,0 +1,89 @@
+nextflow_process {
+
+    name "Test Process PORTCULLIS_FULL"
+    script "../main.nf"
+    process "PORTCULLIS_FULL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "portcullis"
+    tag "portcullis/full"
+
+    test("portcullis_full_paired_end") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.bam', checkIfExists: true)
+                    ]
+                input[1] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/tab/test_rnaseq_SJ.out.tab', checkIfExists: true)
+                    ]
+                input[2] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.spliced_bam.get(0).get(1)).name == "portcullis_all.spliced.bam" },
+                { assert file(process.out.spliced_bai.get(0).get(1)).name == "portcullis_all.spliced.bam.bai" },
+                { assert snapshot(
+                    process.out.pass_junctions_bed,
+                    process.out.pass_junctions_tab,
+                    process.out.intron_gff,
+                    process.out.exon_gff,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("portcullis_full_paired_end_stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.bam', checkIfExists: true)
+                    ]
+                input[1] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/tab/test_rnaseq_SJ.out.tab', checkIfExists: true)
+                    ]
+                input[2] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.pass_junctions_bed,
+                    process.out.pass_junctions_tab,
+                    process.out.intron_gff,
+                    process.out.exon_gff,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+}

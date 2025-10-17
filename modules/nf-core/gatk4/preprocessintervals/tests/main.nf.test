@@ -1,0 +1,49 @@
+
+nextflow_process {
+
+    name "Test Process GATK4_PREPROCESSINTERVALS"
+    script "../main.nf"
+    process "GATK4_PREPROCESSINTERVALS"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gatk4"
+    tag "gatk4/preprocessintervals"
+
+    test("test-gatk4-preprocessintervals") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+				]
+				input[1] = [
+				    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+				]
+				input[2] = [
+				    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
+				]
+				input[3] = [[],[]]
+				input[4] = [
+				    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.blacklist_intervals.bed', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

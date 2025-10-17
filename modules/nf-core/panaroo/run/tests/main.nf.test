@@ -1,0 +1,45 @@
+
+nextflow_process {
+
+    name "Test Process PANAROO_RUN"
+    script "../main.nf"
+    process "PANAROO_RUN"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "panaroo"
+    tag "panaroo/run"
+
+    test("test-panaroo-run") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    [
+				        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test2.gff', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test3.gff', checkIfExists: true)
+				    ]
+                ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.results }, // Very large directory with many unstable files
+                { assert snapshot(
+                    file(process.out.aln[0][1]).name, // unstable
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+}

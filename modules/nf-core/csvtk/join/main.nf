@@ -4,8 +4,8 @@ process CSVTK_JOIN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/csvtk:0.26.0--h9ee0642_0':
-        'biocontainers/csvtk:0.26.0--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/csvtk:0.31.0--h9ee0642_0':
+        'biocontainers/csvtk:0.31.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(csv)
@@ -36,7 +36,6 @@ process CSVTK_JOIN {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     out_extension = args.contains('--out-delimiter "\t"') || args.contains('-D "\t"') || args.contains("-D \$'\t'") ? "tsv" : "csv"
     """

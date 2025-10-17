@@ -1,6 +1,6 @@
 process EGGNOGMAPPER {
     tag "$meta.id"
-    label 'process_long'
+    label 'process_high'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -23,11 +23,13 @@ process EGGNOGMAPPER {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def is_compressed = fasta.name.endsWith(".gz")
-    def fasta_name = fasta.name.replace(".gz", "")
-    def dbmem = task.memory.toMega() > 40000 ? '--dbmem' : ''
+    def args            = task.ext.args                 ?: ''
+    def prefix          = task.ext.prefix               ?: "${meta.id}"
+    def is_compressed   = fasta.extension == '.gz'      ? true                              : false
+    def fasta_name      = is_compressed                 ? fasta.baseName                    : "$fasta"
+    def dbmem           = task.memory.toMega() > 40000  ? '--dbmem'                         : ''
+    def database_arg    = eggnog_db                     ? "--database $eggnog_db"           : ''
+    def dmnd_db_arg     = eggnog_diamond_db             ? "--dmnd_db $eggnog_diamond_db"    : ''
     """
     if [ "$is_compressed" == "true" ]; then
         gzip -c -d $fasta > $fasta_name
@@ -38,8 +40,8 @@ process EGGNOGMAPPER {
         -i ${fasta_name} \\
         --data_dir ${eggnog_data_dir} \\
         -m diamond \\
-        --dmnd_db ${eggnog_diamond_db} \\
-        --database ${eggnog_db} \\
+        $dmnd_db_arg \\
+        $database_arg \\
         --output ${prefix} \\
         ${dbmem} \\
         $args
@@ -51,8 +53,8 @@ process EGGNOGMAPPER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args    = task.ext.args ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.emapper.annotations
     touch ${prefix}.emapper.seed_orthologs

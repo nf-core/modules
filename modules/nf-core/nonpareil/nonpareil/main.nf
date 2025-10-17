@@ -4,8 +4,8 @@ process NONPAREIL_NONPAREIL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/nonpareil:3.4.1--r42h4ac6f70_4':
-        'biocontainers/nonpareil:3.4.1--r42h4ac6f70_4' }"
+        'https://depot.galaxyproject.org/singularity/nonpareil:3.5.5--r43hdcf5f25_0':
+        'biocontainers/nonpareil:3.5.5--r43hdcf5f25_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -26,15 +26,9 @@ process NONPAREIL_NONPAREIL {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def mem_mb = task.memory.toMega()
-    def is_compressed = reads.getExtension() == "gz" ? true : false
-    def reads_name = is_compressed ? reads.getBaseName() : reads
     """
-    if [ "${is_compressed}" == "true" ]; then
-        gzip -c -d ${reads} > ${reads_name}
-    fi
-
     nonpareil \\
-        -s $reads_name \\
+        -s $reads \\
         -f $format \\
         -T ${mode} \\
         -t $task.cpus \\

@@ -14,35 +14,53 @@ tools:
       homepage: "https://taxpasta.readthedocs.io/"
       documentation: "https://taxpasta.readthedocs.io/"
       tool_dev_url: "https://github.com/taxprofiler/taxpasta"
-      licence: "['Apache-2.0']"
+      licence: ["Apache-2.0"]
+      identifier: biotools:taxpasta
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - profile:
-      type: file
-      description: profiler output file (mandatory)
-      pattern: "*"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - profile:
+        type: file
+        description: profiler output file (mandatory)
+        pattern: "*"
+        ontologies: []
+  - profiler:
+      type: string
+      description: Name of the profiler used to generate the profile (mandatory)
+      pattern: "bracken|centrifuge|diamond|ganon|kaiju|kmcp|kraken2|krakenuniq|megan6|metaphlan|motus"
+  - format:
+      type: string
+      description: Type of output file to be generated
+      pattern: "tsv|csv|ods|xlsx|arrow|parquet|biom"
   - taxonomy:
       type: directory
       description: Directory containing at a minimum nodes.dmp and names.dmp files (optional)
       pattern: "*/"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - standardised_profile:
-      type: file
-      description: Standardised taxonomic profile
-      pattern: "*.{tsv,csv,arrow,parquet,biom}"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  standardised_profile:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.{tsv,csv,arrow,parquet,biom}":
+          type: file
+          description: Standardised taxonomic profile
+          pattern: "*.{tsv,csv,arrow,parquet,biom}"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3746 # BIOM format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Midnighter"
 maintainers:

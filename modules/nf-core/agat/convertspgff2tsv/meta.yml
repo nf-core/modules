@@ -9,30 +9,46 @@ keywords:
   - tsv
 tools:
   - agat:
-      description: "AGAT is a toolkit for manipulation and getting information from GFF/GTF files"
+      description: "AGAT is a toolkit for manipulation and getting information from
+        GFF/GTF files"
       homepage: "https://github.com/NBISweden/AGAT"
       documentation: "https://agat.readthedocs.io/"
       tool_dev_url: "https://github.com/NBISweden/AGAT"
       doi: "10.5281/zenodo.3552717"
       licence: ["GPL v3"]
+      identifier: biotools:AGAT
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - gff:
-      type: file
-      description: Annotation file in GFF3/GTF format
-      pattern: "*.{gff, gtf}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - gff:
+        type: file
+        description: Annotation file in GFF3/GTF format
+        pattern: "*.{gff, gtf}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1975" # GFF3
+          - edam: "http://edamontology.org/format_2306" # GTF
 output:
-  - tsv:
-      type: file
-      description: Annotation file in TSV format
-      pattern: "*.{gtf}"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  tsv:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.tsv":
+          type: file
+          description: Annotation file in TSV format
+          pattern: "*.{gtf}"
+          ontologies:
+            - edam: http://edamontology.org/format_2306 # GTF
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@rannick"
+maintainers:
+  - "@gallvp"

@@ -1,9 +1,0 @@
-- name: pairtools flip test_pairtools_flip
-  command: nextflow run ./tests/modules/nf-core/pairtools/flip -entry test_pairtools_flip -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/pairtools/flip/nextflow.config
-  tags:
-    - pairtools/flip
-    - pairtools
-  files:
-    - path: output/pairtools/test.flip.gz # Not using MD5 checksum because the file includes the run paths, which are different under Conda
-      contains:
-        - "readid01\tchr1\t1\tchr1\t2\t+\t+\tUU"

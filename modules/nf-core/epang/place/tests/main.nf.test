@@ -1,0 +1,79 @@
+
+nextflow_process {
+
+    name "Test Process EPANG_PLACE"
+    script "../main.nf"
+    process "EPANG_PLACE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "epang"
+    tag "epang/place"
+
+    test("test-epang-place") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', model:'LG' ], // meta map
+				    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/epang/query.alnfaa.gz', checkIfExists: true),
+				    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/epang/reference.alnfaa.gz', checkIfExists: true),
+				    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/epang/reference.newick', checkIfExists: true)
+				]
+				input[1] = []
+				input[2] = []
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.epang }, // The entire folder including .command.sh, etc
+                { assert snapshot(
+					file(process.out.jplace[0][1]).name,
+					file(process.out.log[0]).name,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-epang-place-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', model:'LG' ], // meta map
+				    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/epang/query.alnfaa.gz', checkIfExists: true),
+				    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/epang/reference.alnfaa.gz', checkIfExists: true),
+				    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/epang/reference.newick', checkIfExists: true)
+				]
+				input[1] = []
+				input[2] = []
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.epang }, // The entire folder including .command.sh, etc
+                { assert snapshot(
+                    process.out.jplace,
+					file(process.out.log[0]).name,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

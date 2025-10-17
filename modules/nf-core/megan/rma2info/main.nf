@@ -4,8 +4,8 @@ process MEGAN_RMA2INFO {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/megan:6.24.20--h9ee0642_0':
-        'biocontainers/megan:6.24.20--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/megan:6.25.9--h9ee0642_0':
+        'biocontainers/megan:6.25.9--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(rma6)
@@ -34,5 +34,18 @@ process MEGAN_RMA2INFO {
     "${task.process}":
         megan: \$(echo \$(rma2info 2>&1) | grep version | sed 's/.*version //g;s/, built.*//g')
     END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def summary = megan_summary ? "-es ${prefix}.megan" : ""
+    """
+    echo "" | gzip > ${prefix}.txt.gz
+    touch ${prefix}.megan
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        megan: \$(echo \$(rma2info 2>&1) | grep version | sed 's/.*version //g;s/, built.*//g')
+    END_VERSIONSs
     """
 }

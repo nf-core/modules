@@ -4,8 +4,8 @@ process EIDO_CONVERT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://containers.biocontainers.pro/s3/SingImgsRepo/eido/0.1.9_cv1/eido_0.1.9_cv1.sif' :
-        'docker.io/biocontainers/eido:0.1.9_cv1' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4a/4aef51a3d75d6b950bb643ed5ebc1d7243d67bbf3de0410fcaa7d347e8fc0007/data' :
+        'community.wave.seqera.io/library/eido_peppy_setuptools:53ed68799568c4fa' }"
 
     input:
     path samplesheet
@@ -29,6 +29,18 @@ process EIDO_CONVERT {
         $samplesheet \\
         $args \\
         -p samples=${prefix}.${format}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        eido: \$(echo \$(eido --version 2>&1) | sed 's/^.*eido //;s/ .*//' )
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "samplesheet_converted"
+    """
+    touch ${prefix}.${format}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -1,0 +1,84 @@
+
+nextflow_process {
+
+    name "Test Process SNIPPY_RUN"
+    script "../main.nf"
+    process "SNIPPY_RUN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "snippy"
+    tag "snippy/run"
+
+    test("test-snippy-run") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+				    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+				]
+				input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					process.out.tab,
+					process.out.csv,
+					process.out.html,
+					path(process.out.vcf[0][1]).vcf.summary,
+					file(process.out.bed[0][1]).name, // empty: d41d8cd98f00b204e9800998ecf8427e
+					process.out.gff,
+					bam(process.out.bam[0][1]).getReadsMD5(),
+					file(process.out.bai[0][1]).name,
+					file(process.out.log[0][1]).name,
+					process.out.aligned_fa,
+					process.out.consensus_fa,
+					process.out.consensus_subs_fa,
+					path(process.out.raw_vcf[0][1]).vcf.summary,
+					path(process.out.filt_vcf[0][1]).vcf.summary,
+					path(process.out.vcf_gz[0][1]).vcf.summary,
+					file(process.out.vcf_csi[0][1]).name,
+					file(process.out.txt[0][1]).readLines()[3..5],
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-snippy-run-stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+				    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+				]
+				input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

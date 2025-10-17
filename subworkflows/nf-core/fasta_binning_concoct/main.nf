@@ -35,7 +35,7 @@ workflow FASTA_BINNING_CONCOCT {
     ch_versions = ch_versions.mix( CONCOCT_MERGECUTUPCLUSTERING.out.versions.first())
 
     ch_mergecutupclustering_for_extractfastabins = ch_fasta
-                                                    .join(CONCOCT_MERGECUTUPCLUSTERING.out.csv, failOnMismatch: true)
+                                                    .join(CONCOCT_MERGECUTUPCLUSTERING.out.csv, failOnMismatch: false)
 
     CONCOCT_EXTRACTFASTABINS ( ch_mergecutupclustering_for_extractfastabins )
     ch_versions = ch_versions.mix(CONCOCT_EXTRACTFASTABINS.out.versions.first())
@@ -53,4 +53,3 @@ workflow FASTA_BINNING_CONCOCT {
 
     versions = ch_versions                                         // channel: [ versions.yml ]
 }
-

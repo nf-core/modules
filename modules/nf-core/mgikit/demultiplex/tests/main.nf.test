@@ -1,0 +1,115 @@
+nextflow_process {
+
+    name "Test Process MGIKIT_DEMULTIPLEX"
+    script "modules/nf-core/mgikit/demultiplex/main.nf"
+    process "MGIKIT_DEMULTIPLEX"
+    config "./nextflow.config"
+    tag "mgikit"
+    tag "mgikit/demultiplex"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "unzip"
+
+    setup {
+        run("UNZIP") {
+            script "modules/nf-core/unzip/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: 'fc01', lane:1 ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/mgi/fc01.zip', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("run mgikit demultiplex without errors") {
+
+        when {
+            process {
+                """
+                input[0] = UNZIP.out.unzipped_archive.map{[
+                    [ id: 'test', lane:1 ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/mgi/fc01_sample_sheet.csv', checkIfExists: true),
+                    it[1]
+                ]}
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                {assert process.success},
+                {assert snapshot(process.out).match()},
+                {
+                    with(process.out) {
+                        assert fastq.size() == 1
+                        assert fastq[0][1].any { file(it).name.endsWith(".fastq.gz") }
+                        
+                        assert undetermined.size() == 1
+                        assert undetermined[0][1].any { file(it).name.startsWith("Undetermined") && file(it).name.endsWith(".fastq.gz") }
+                        
+                        assert ambiguous.size() == 0
+                        
+                        assert undetermined_reports.size() == 1
+                        assert undetermined_reports[0][1].any { file(it).name.contains("mgikit.undetermined_barcode") }
+                        
+                        assert ambiguous_reports.size() == 0
+                        
+                        assert general_info_reports.size() == 1
+                        assert file(general_info_reports[0][1]).name.contains("mgikit.general")
+                        
+                        assert index_reports.size() == 1
+                        assert file(index_reports[0][1]).name.contains("mgikit.info")
+                        
+                        assert sample_stat_reports.size() == 1
+                        assert file(sample_stat_reports[0][1]).name.contains("mgikit.sample_stats")
+                        
+                        assert qc_reports.size() == 1
+                        assert qc_reports[0][1].size() == 3
+                        
+                        assert file(versions[0]).text.contains("mgikit")
+                    }
+                }
+            )
+        }
+
+    }
+
+    test("run stub mode of mgikit demultiplex without errors") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = UNZIP.out.unzipped_archive.map{[
+                    [ id: 'test', lane:1 ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/mgi/fc01_sample_sheet.csv', checkIfExists: true),
+                    it[1]
+                ]}
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                {assert process.success},
+                {
+                    with(process.out) {
+                        assert fastq.size() == 1
+                        assert fastq[0][1].size() == 4
+                        assert undetermined.size() == 1
+                        assert undetermined[0][1].size() == 2
+                        assert general_info_reports.size() == 1
+                        assert index_reports.size() == 1
+                        assert sample_stat_reports.size() == 1
+                        assert file(versions[0]).text.contains("mgikit")
+                    }
+                }
+            )
+        }
+
+    }
+}

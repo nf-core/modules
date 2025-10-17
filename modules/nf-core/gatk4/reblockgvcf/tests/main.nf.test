@@ -13,10 +13,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [[ id:'test', single_end:false ], file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true), file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true), []]
-                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-                input[2] = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-                input[3] = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+                input[0] = [[ id:'test', single_end:false ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz.tbi', checkIfExists: true), []]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                 input[4] = []
                 input[5] = []
                 """
@@ -27,9 +27,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.vcf.get(0).get(1)).name,
-                    file(process.out.vcf.get(0).get(2)).name
-                ).match("test_gatk4_reblockgvcf") }
+                    file(process.out.vcf[0][1]).name,
+                    file(process.out.vcf[0][2]).name,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
 
@@ -39,10 +41,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [[ id:'test', single_end:false ], file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true), file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true), file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true)]
-                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-                input[2] = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-                input[3] = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+                input[0] = [[ id:'test', single_end:false ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz.tbi', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                 input[4] = []
                 input[5] = []
                 """
@@ -53,9 +55,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.vcf.get(0).get(1)).name,
-                    file(process.out.vcf.get(0).get(2)).name
-                ).match("test_gatk4_reblockgvcf_intervals") }
+                    file(process.out.vcf[0][1]).name,
+                    file(process.out.vcf[0][2]).name,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
 
@@ -68,10 +72,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [[ id:'test', single_end:false ], file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz'], checkIfExists: true), file(params.test_data['homo_sapiens']['illumina']['test_genome_vcf_gz_tbi'], checkIfExists: true), []]
-                input[1] = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-                input[2] = file(params.test_data['homo_sapiens']['genome']['genome_fasta_fai'], checkIfExists: true)
-                input[3] = file(params.test_data['homo_sapiens']['genome']['genome_dict'], checkIfExists: true)
+                input[0] = [[ id:'test', single_end:false ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.gz.tbi', checkIfExists: true), []]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                 input[4] = []
                 input[5] = []
                 """
@@ -82,9 +86,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.vcf.get(0).get(1)).name,
-                    file(process.out.vcf.get(0).get(2)).name
-                ).match("test_gatk4_reblockgvcf_stub") }
+                    file(process.out.vcf[0][1]).name,
+                    file(process.out.vcf[0][2]).name,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
 

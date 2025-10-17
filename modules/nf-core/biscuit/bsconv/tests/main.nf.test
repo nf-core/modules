@@ -1,0 +1,94 @@
+nextflow_process {
+
+    name "Test Process BISCUIT_BSCONV"
+    script "../main.nf"
+    process "BISCUIT_BSCONV"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "biscuit"
+    tag "biscuit/bsconv"
+    tag "biscuit/index"
+
+    setup {
+        run("BISCUIT_INDEX") {
+            script "../../index/main.nf"
+            process {
+            """
+            input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+            ])
+            """
+            }
+        }
+    }
+
+    test("sarscov2 paired-end [bam]") {
+
+        when {
+            process {
+                """
+                input[0] = [ [id:'test', single_end:false ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true)
+                ]
+                input[1] = [ [id:'test', single_end:false ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[2] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[3] = BISCUIT_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					bam(process.out.bam[0][1]).getReadsMD5(),
+					process.out.versions
+					).match()
+				}
+            )
+        }
+
+    }
+
+    test("sarscov2 paired-end [bam] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [id:'test', single_end:false ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true)
+                ]
+                input[1] = [ [id:'test', single_end:false ], // meta map
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[2] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[3] = BISCUIT_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					bam(process.out.bam[0][1]).getReadsMD5(),
+					process.out.versions
+					).match()
+				}
+            )
+        }
+
+    }
+
+}

@@ -1,0 +1,90 @@
+// nf-core modules test vireo
+nextflow_process {
+
+    name "Test Process VIREO"
+    script "../main.nf"
+    process "VIREO"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "vireo"
+    tag "samtools/index"
+    tag "cellsnp/modea"
+
+    test("demultiplexing") {
+        setup {
+            run("SAMTOOLS_INDEX") {
+                script "../../samtools/index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                    [ id:'sample1' ],
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true) ]
+                    """
+                }
+            } 
+            run("CELLSNP_MODEA") {
+                script "../../cellsnp/modea/main.nf"
+                process {
+                    """
+                    input[0] = SAMTOOLS_INDEX.out.bai.collect{ meta, bai -> bai }.map{ 
+                               bai -> [[id: 'sample1'], 
+                                        file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true),
+                                        bai,
+                                        file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/donor_genotype_chr21.vcf', checkIfExists: true),
+                                        file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/barcodes.tsv', checkIfExists: true)]}
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = CELLSNP_MODEA.out.cell.collect{ meta, cell -> cell }.map{ 
+                            cell -> [[id:'test'],
+                                      cell,
+                                      2,
+                                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/donor_genotype_chr21.vcf', checkIfExists: true),
+                                      []
+                                    ]}
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("demultiplexing - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [[id:'sample1'],
+                            [],
+                            2,
+                            file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/donor_genotype_chr21.vcf', checkIfExists: true),
+                            []
+                            ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

@@ -56,10 +56,12 @@ process PURECLIP {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    crosslinks_output_name = "${prefix}_pureclip_crosslinks.bed"
+    peaks_output_name      = "${prefix}_pureclip_peaks.bed"
 
     """
-    touch ${prefix}_pureclip_crosslinks.bed
-    touch ${prefix}_pureclip_peaks.bed
+    touch $crosslinks_output_name
+    touch $peaks_output_name
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

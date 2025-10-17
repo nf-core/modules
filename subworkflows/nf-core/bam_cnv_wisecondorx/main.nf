@@ -19,14 +19,14 @@ workflow BAM_CNV_WISECONDORX {
         ch_fasta,
         ch_fai
     )
-    ch_versions = ch_versions.mix(WISECONDORX_CONVERT.out.versions.first())
+    ch_versions = ch_versions.mix(WISECONDORX_CONVERT.out.versions)
 
     WISECONDORX_PREDICT(
         WISECONDORX_CONVERT.out.npz,
         ch_ref,
         ch_blacklist
     )
-    ch_versions = ch_versions.mix(WISECONDORX_PREDICT.out.versions.first())
+    ch_versions = ch_versions.mix(WISECONDORX_PREDICT.out.versions)
 
     emit:
     aberrations_bed = WISECONDORX_PREDICT.out.aberrations_bed   // channel: [ val(meta), path(bed) ]
@@ -38,4 +38,3 @@ workflow BAM_CNV_WISECONDORX {
 
     versions        = ch_versions                               // channel: path(versions.yml)
 }
-

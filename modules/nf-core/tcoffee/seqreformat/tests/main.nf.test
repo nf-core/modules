@@ -9,13 +9,13 @@ nextflow_process {
     tag "tcoffee"
     tag "tcoffee/seqreformat"
 
-    test("sarscov2 - bam") {
+    test("seatoxin") {
 
         when {
             process {
                 """
                 input[0] = [ [ id:'test' ],
-                             file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                             file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
                            ]
                 """
             }
@@ -25,8 +25,36 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.formatted_file).match("formatted_file")},
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    process.out.formatted_file,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("seatoxin - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ],
+                             file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                           ]
+                """
+            }
+        }
+
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.formatted_file,
+                    process.out.versions
+                    ).match()
+                }
             )
         }
     }

@@ -4,25 +4,28 @@ process DEEPTOOLS_BAMCOVERAGE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-eb9e7907c7a753917c1e4d7a64384c047429618a:62d1ebe2d3a2a9d1a7ad31e0b902983fa7c25fa7-0':
-        'biocontainers/mulled-v2-eb9e7907c7a753917c1e4d7a64384c047429618a:62d1ebe2d3a2a9d1a7ad31e0b902983fa7c25fa7-0' }"
+        'https://depot.galaxyproject.org/singularity/mulled-v2-eb9e7907c7a753917c1e4d7a64384c047429618a:41defd13a6f2ce014549fcc05d0b051f655777f9-0':
+        'biocontainers/mulled-v2-eb9e7907c7a753917c1e4d7a64384c047429618a:41defd13a6f2ce014549fcc05d0b051f655777f9-0' }"
 
     input:
-    tuple val(meta), path(input), path(input_index)
+    tuple val(meta) , path(input)   , path(input_index)
     path(fasta)
     path(fasta_fai)
+    tuple val(meta2), path(blacklist)
 
     output:
-    tuple val(meta), path("*.bigWig")   , emit: bigwig, optional: true
-    tuple val(meta), path("*.bedgraph") , emit: bedgraph, optional: true
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.bigWig")  , emit: bigwig  , optional: true
+    tuple val(meta), path("*.bedgraph"), emit: bedgraph, optional: true
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}.bigWig"
+    def args      = task.ext.args ?: ''
+    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def blacklist_cmd = blacklist ? "--blackListFileName ${blacklist}" : ""        
+    def extension = args.contains("--outFileFormat bedgraph") || args.contains("-of bedgraph") ? "bedgraph" : "bigWig"
 
     // cram_input is currently not working with deeptools
     // therefore it's required to convert cram to bam first
@@ -39,7 +42,8 @@ process DEEPTOOLS_BAMCOVERAGE {
             --bam $input_out \\
             $args \\
             --numberOfProcessors ${task.cpus} \\
-            --outFileName ${prefix}
+            --outFileName ${prefix}.${extension} \\
+            $blacklist_cmd
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -47,7 +51,6 @@ process DEEPTOOLS_BAMCOVERAGE {
             deeptools: \$(bamCoverage --version | sed -e "s/bamCoverage //g")
         END_VERSIONS
         """
-
     }
     else {
         """
@@ -55,7 +58,8 @@ process DEEPTOOLS_BAMCOVERAGE {
             --bam $input_out \\
             $args \\
             --numberOfProcessors ${task.cpus} \\
-            --outFileName ${prefix}
+            --outFileName ${prefix}.${extension} \\
+            $blacklist_cmd
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
@@ -64,4 +68,15 @@ process DEEPTOOLS_BAMCOVERAGE {
         """
     }
 
+    stub:
+    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def extension = args.contains("--outFileFormat bedgraph") || args.contains("-of bedgraph") ? "bedgraph" : "bigWig"
+    """
+    touch ${prefix}.${extension}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        deeptools: \$(bamCoverage --version | sed -e "s/bamCoverage //g")
+    END_VERSIONS
+    """
 }

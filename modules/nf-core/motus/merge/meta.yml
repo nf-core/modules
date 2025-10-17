@@ -15,13 +15,20 @@ tools:
       documentation: "https://github.com/motu-tool/mOTUs/wiki"
       tool_dev_url: "https://github.com/motu-tool/mOTUs"
       doi: "10.1186/s40168-022-01410-z"
-      licence: "['GPL v3']"
+      licence: ["GPL v3"]
+      identifier: ""
 input:
-  - input:
-      type: file
-      description: |
-        List of output files (more than one) from motus profile,
-        or a single directory containing motus output files.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - input:
+        type: file
+        description: |
+          List of output files (more than one) from motus profile,
+          or a single directory containing motus output files.
+        ontologies: []
   - db:
       type: directory
       description: |
@@ -34,19 +41,39 @@ input:
         this itself without having the motus database present and configured with the tool
         so here we take it from what is already reported by the upstream module.
       pattern: "versions.yml"
+      ontologies:
+        - edam: http://edamontology.org/format_3750 # YAML
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - txt:
-      type: file
-      description: OTU table in txt format, if BIOM format not requested
-      pattern: "*.txt"
-  - biom:
-      type: file
-      description: OTU table in biom format, if BIOM format requested
-      pattern: "*.biom"
+  txt:
+    - - meta:
+          type: file
+          description: OTU table in txt format, if BIOM format not requested
+          pattern: "*.txt"
+          ontologies: []
+      - "*.txt":
+          type: file
+          description: OTU table in txt format, if BIOM format not requested
+          pattern: "*.txt"
+          ontologies: []
+  biom:
+    - - meta:
+          type: file
+          description: OTU table in txt format, if BIOM format not requested
+          pattern: "*.txt"
+          ontologies: []
+      - "*.biom":
+          type: file
+          description: OTU table in biom format, if BIOM format requested
+          pattern: "*.biom"
+          ontologies:
+            - edam: http://edamontology.org/format_3746 # BIOM format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

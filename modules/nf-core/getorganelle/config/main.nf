@@ -2,7 +2,7 @@ process GETORGANELLE_CONFIG {
     tag "${organelle_type}"
     label 'process_single'
 
-    conda "bioconda::getorganelle=1.7.7.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/getorganelle:1.7.7.0--pyh7cba7a3_0':
         'biocontainers/getorganelle:1.7.7.0--pyh7cba7a3_0' }"
@@ -35,7 +35,7 @@ process GETORGANELLE_CONFIG {
     def args = task.ext.args ?: ''
     """
     mkdir -p getorganelle/{LabelDatabase,SeedDatabase}
-    touch getorganelle/{LabelDatabase,SeedDatabase}/${organnel_type}.fasta
+    touch getorganelle/{LabelDatabase,SeedDatabase}/${organelle_type}.fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

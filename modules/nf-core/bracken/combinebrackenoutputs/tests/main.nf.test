@@ -1,0 +1,103 @@
+nextflow_process {
+
+    name "Test Process BRACKEN_COMBINEBRACKENOUTPUTS"
+    script "../main.nf"
+    process "BRACKEN_COMBINEBRACKENOUTPUTS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bracken"
+    tag "bracken/combinebrackenoutputs"
+    tag "bracken/bracken"
+    tag "kraken2/kraken2"
+    tag "untar"
+
+    setup {
+        run ("UNTAR") {
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = [[],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2_bracken.tar.gz', checkIfExists: true)]
+                """
+            }
+        }
+
+        run("KRAKEN2_KRAKEN2") {
+            script "../../../kraken2/kraken2/main.nf"
+            process {
+                """
+                input[0] = Channel.of(
+                                [
+                                    [id: 'test', single_end: true], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                    [id: 'test2', single_end: true], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true),
+                                ]
+                            )
+                input[1] = UNTAR.out.untar.map{it[1]}
+                input[2] = false
+                input[3] = false
+                """
+            }
+        }
+
+        run("BRACKEN_BRACKEN") {
+            script "../../bracken/main.nf"
+            process {
+                """
+                input[0] = KRAKEN2_KRAKEN2.out.report
+                input[1] = UNTAR.out.untar.map{it[1]}
+                """
+            }
+        }
+
+    }
+
+    test("sarscov2 - fastq - fastq") {
+
+        setup {
+
+        }
+
+        when {
+            process {
+                """
+                input[0] = BRACKEN_BRACKEN.out.reports
+                                            .map{it[1]}
+                                            .collect()
+                                            .map{ [ [id: 'db'], it ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+    test("sarscov2 - fastq - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = BRACKEN_BRACKEN.out.reports
+                                            .map{it[1]}
+                                            .collect()
+                                            .map{ [ [id: 'db'], it ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

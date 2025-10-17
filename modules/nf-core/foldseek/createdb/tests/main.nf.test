@@ -8,27 +8,43 @@ nextflow_process {
     tag "foldseek"
     tag "foldseek/createdb"
 
-    test("Should build a protein structures database") {
+    test("proteomics - pdb") {
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
-                input[0] = [ [id:'test'], file(params.test_data['proteomics']['pdb']['tim1_pdb'], checkIfExists: true) ]
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'proteomics/pdb/1tim.pdb', checkIfExists: true) ]
                 """
             }
         }
 
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.db).match("db") },
-                { assert process.out.versions }
+            { assert process.success },
+            { assert snapshot(process.out).match() }
             )
         }
 
     }
 
+    test("proteomics - pdb - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'proteomics/pdb/1tim.pdb', checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
 }

@@ -15,11 +15,11 @@ nextflow_process {
                 """
                 input[0] = [
                             [ id:'test', single_end:false ], // meta map
-                            file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
-                            file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram_crai'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true)
                 ]
-                input[1] = [ file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true) ] // positions
-                input[2] = [ file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ] //fasta
+                input[1] = [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true) ] // positions
+                input[2] = [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ] //fasta
                 """
             }
         }
@@ -42,11 +42,11 @@ nextflow_process {
                 """
                 input[0] = [
                             [ id:'test', single_end:false ], // meta map
-                            file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram'], checkIfExists: true),
-                            file(params.test_data['homo_sapiens']['illumina']['test_paired_end_sorted_cram_crai'], checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true)
                 ]
-                input[1] = [ file(params.test_data['homo_sapiens']['genome']['genome_bed'], checkIfExists: true) ] // positions
-                input[2] = [ file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true) ] //fasta
+                input[1] = [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true) ] // positions
+                input[2] = [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ] //fasta
                 """
             }
         }

@@ -1,4 +1,3 @@
-
 process SHINYNGS_APP {
     tag "$meta.id"
     label 'process_single'
@@ -15,8 +14,8 @@ process SHINYNGS_APP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-shinyngs:1.8.5--r43hdfd78af_0' :
-        'biocontainers/r-shinyngs:1.8.5--r43hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4f/4fc080dc45831489dd70b8183314a5a6f840064d6c78f3466790df0fba1503d0/data' :
+        'community.wave.seqera.io/library/r-shinyngs:2.2.4--2bf759f8be585e75' }"
 
     input:
     tuple val(meta), path(sample), path(feature_meta), path(assay_files)    // Experiment-level info
@@ -49,8 +48,23 @@ process SHINYNGS_APP {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        r-base: \$(echo \$(R --version 2>&1) | sed 's/^.*R version //; s/ .*\$//')
         r-shinyngs: \$(Rscript -e "library(shinyngs); cat(as.character(packageVersion('shinyngs')))")
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: meta.id
+
+    """
+    mkdir -p $prefix
+    touch ${prefix}/data.rds
+    touch ${prefix}/app.R
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        r-shinyngs: \$(Rscript -e "library(shinyngs); cat(as.character(packageVersion('shinyngs')))")
+    END_VERSIONS
+    """
+
 }

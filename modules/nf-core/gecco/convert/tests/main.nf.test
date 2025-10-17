@@ -1,0 +1,118 @@
+nextflow_process {
+
+    name "Test Process GECCO_CONVERT"
+    script "../main.nf"
+    process "GECCO_CONVERT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gecco"
+    tag "gecco/convert"
+    tag "gecco/run"
+
+    setup {
+        run("GECCO_RUN") {
+            script "../../run/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test_gecco', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists: true),
+                    []
+                ]
+                input[1] = []
+                """
+            }
+        }
+    }
+
+    test("candidatus_portiera_aleyrodidarum - clusters - gff") {
+
+        when {
+            process {
+                """
+                input[0] = GECCO_RUN.out.clusters
+                            .mix(GECCO_RUN.out.gbk)
+                            .groupTuple(by:0)
+                            .map { meta, paths ->
+                                [meta, paths[0], paths[1]]
+                            }
+                input[1] = "clusters"
+                input[2] = "gff"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("candidatus_portiera_aleyrodidarum - gbk - faa") {
+
+        when {
+            process {
+                """
+                input[0] = GECCO_RUN.out.clusters
+                            .mix(GECCO_RUN.out.gbk)
+                            .groupTuple(by:0)
+                            .map { meta, paths ->
+                                [meta, paths[0], paths[1]]
+                            }
+                input[1] = "gbk"
+                input[2] = "faa"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("candidatus_portiera_aleyrodidarum - clusters - gff - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = GECCO_RUN.out.clusters
+                            .mix(GECCO_RUN.out.gbk)
+                            .groupTuple(by:0)
+                            .map { meta, paths ->
+                                [meta, paths[0], paths[1]]
+                            }
+                input[1] = "clusters"
+                input[2] = "gff"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+
+    }
+
+}

@@ -8,48 +8,80 @@ keywords:
   - vrhyme
 tools:
   - "vrhyme":
-      description: "vRhyme functions by utilizing coverage variance comparisons and supervised machine learning classification of sequence features to construct viral metagenome-assembled genomes (vMAGs)."
+      description: "vRhyme functions by utilizing coverage variance comparisons and
+        supervised machine learning classification of sequence features to construct
+        viral metagenome-assembled genomes (vMAGs)."
       homepage: https://github.com/AnantharamanLab/vRhyme
       documentation: https://github.com/AnantharamanLab/vRhyme
       tool_dev_url: https://github.com/AnantharamanLab/vRhyme
       doi: 10.1093/nar/gkac341
-      licence: "['GPL v3', 'GPL v3 license']"
+      licence: ["GPL v3", "GPL v3 license"]
+      identifier: biotools:vrhyme
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: Preprocessed FASTQ file containing sample reads
-      pattern: "*.{fastq}"
-  - fasta:
-      type: file
-      description: Contigs/scaffolds identified as viral
-      pattern: "*.{fna,fasta,fa}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test']
+    - reads:
+        type: file
+        description: Preprocessed FASTQ file containing sample reads
+        pattern: "*.{fastq}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing fasta information
+          e.g. [ id:'test']
+    - fasta:
+        type: file
+        description: Contigs/scaffolds identified as viral
+        pattern: "*.{fna,fasta,fa,fasta.gz,fa.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - bins:
-      type: directory
-      description: Directory containing bin FASTA files
-      pattern: "**/vRhyme_best_bins_fasta/"
-  - membership:
-      type: file
-      description: TSV file describing the contig/scaffold membership of each bin
-      pattern: "vRhyme_best_bins.*.membership.tsv"
-  - summary:
-      type: file
-      description: TSV file summarizing the attributes of each bin
-      pattern: "vRhyme_best_bins.*.summary.tsv"
+  bins:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - vRhyme_best_bins_fasta/:
+          type: directory
+          description: Directory containing bin FASTA files
+          pattern: "**/vRhyme_best_bins_fasta/"
+  membership:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "**/vRhyme_best_bins.*.membership.tsv":
+          type: file
+          description: TSV file describing the contig/scaffold membership of each bin
+          pattern: "vRhyme_best_bins.*.membership.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "**/vRhyme_best_bins.*.summary.tsv":
+          type: file
+          description: TSV file summarizing the attributes of each bin
+          pattern: "vRhyme_best_bins.*.summary.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@CarsonJM"
 maintainers:

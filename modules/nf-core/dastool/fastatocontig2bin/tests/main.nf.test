@@ -1,0 +1,83 @@
+nextflow_process {
+
+    name "Test Process DASTOOL_FASTATOCONTIG2BIN"
+    script "../main.nf"
+    process "DASTOOL_FASTATOCONTIG2BIN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "dastool"
+    tag "dastool/fastatocontig2bin"
+    tag "metabat2/metabat2"
+    tag "metabat2/jgisummarizebamcontigdepths"
+
+    setup {
+        run("METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS") {
+            script "../../../metabat2/jgisummarizebamcontigdepths/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/illumina/bam/test1.sorted.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/illumina/bam/test1.sorted.bam.bai", checkIfExists: true),
+                    ]
+                """
+            }
+        }
+        run("METABAT2_METABAT2") {
+            script "../../../metabat2/metabat2/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz", checkIfExists: true)
+                ]).join(METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS.out.depth)
+                """
+            }
+        }
+    }
+
+    test("dastool fastatocontig2bin - bacteroides fragilis") {
+
+        when {
+            process {
+                """
+                input[0] = METABAT2_METABAT2.out.fasta.collect()
+                input[1] = 'fa'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("dastool fastatocontig2bin - bacteroides fragilis - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = METABAT2_METABAT2.out.fasta.collect()
+                input[1] = 'fa'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
+

@@ -1,0 +1,65 @@
+name: "sigprofiler"
+description: mutational signature deconvolution of cancer cells
+keywords:
+  - mutational signatures
+  - SBSs, DBSs, IDs
+  - cancer genomics
+tools:
+  - sigprofilermatrixgenerator:
+      description: Sigprofilermatrixgenerator is a Python-based tool. It creates
+        mutational matrices for all types of somatic mutations (SBS, DBS, and IDs)
+      documentation: https://osf.io/s93d5/wiki/home/
+      tool_dev_url: https://github.com/AlexandrovLab/SigProfilerMatrixGenerator/tree/master/SigProfilerMatrixGenerator
+      doi: "10.1186/s12864-019-6041-2"
+      licence: ["BSD-2-clause"]
+      identifier: biotools:sigprofilermatrixgenerator
+  - sigprofilerextractor:
+      description: SigProfilerExtractor is a Python-based tool. It allows de novo
+        extraction of mutational signatures from data generated in a matrix
+        format, identification of the number of operative mutational signatures,
+        and their activities in each sample.
+      documentation: https://osf.io/t6j7u/wiki/home/
+      tool_dev_url: https://github.com/AlexandrovLab/SigProfilerExtractor
+      doi: "10.1016/j.xgen.2022.100179 "
+      licence: ["BSD-2-clause"]
+      identifier: biotools:sigprofilerextractor
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - tsv_list:
+        type: file
+        description: joint tsv file with validated mutations by CNAqc
+        pattern: "*.{tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  - genome:
+      type: string
+      description: Reference genome name to use with SigProfiler (e.g. "GRCh37",
+        "GRCh38")
+      ontologies: []
+  - genome_installed_path:
+      type: file
+      description: path to installed reference genome (optional)
+      ontologies: []
+output:
+  results_sigprofiler:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test' ]
+      - "results/*":
+          type: directory
+          description: folder with saved output results
+          pattern: "results/*"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@kdavydzenka"

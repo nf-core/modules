@@ -1,0 +1,90 @@
+nextflow_process {
+
+    name "Test Process BCFTOOLS_CONSENSUS"
+    script "../main.nf"
+    process "BCFTOOLS_CONSENSUS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bcftools"
+    tag "bcftools/consensus"
+
+    test("bcftools - test") {
+
+        tag "bcftools_consensus"
+
+        when {
+            process{
+                """
+                input[0] = [
+                    [ id:'test'],
+                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            ) 
+        }
+    }
+
+    test("bcftools - test - no mask") {
+
+        tag "bcftools_consensus"
+
+        when {
+            process{
+                """
+                input[0] = [
+                    [ id:'test'],
+                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            ) 
+        }
+    }
+
+    test("bcftools - stub - test") {
+
+        tag "stub"
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['illumina']['test_vcf_gz_tbi'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true),
+                    file(params.test_data['sarscov2']['genome']['test_bed'], checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match()}
+            )
+        }
+    }
+}

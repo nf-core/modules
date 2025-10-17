@@ -34,4 +34,15 @@ process GAPPA_EXAMINEGRAFT {
         gappa: \$(echo \$(gappa --version 2>&1 | sed 's/v//' ))
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.newick
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gappa: \$(echo \$(gappa --version 2>&1 | sed 's/v//' ))
+    END_VERSIONS
+    """
 }

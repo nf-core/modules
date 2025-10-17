@@ -1,9 +1,10 @@
-name: untarfiles
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
-  - defaults
+
 dependencies:
-  - conda-forge::sed=4.7
   - bioconda::grep=3.4
+  - conda-forge::sed=4.8
   - conda-forge::tar=1.34

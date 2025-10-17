@@ -4,13 +4,13 @@ process NGSBITS_SAMPLEGENDER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ngs-bits:2023_02--py311ha0b7adc_2':
-        'biocontainers/ngs-bits:2023_02--py311ha0b7adc_2' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2b/2be56a07ac1d5a447a10fd061be4d6144620bec00bac834f58c2bdef0330147f/data':
+        'community.wave.seqera.io/library/ngs-bits:2025_09--f6ea3a4494373ed6' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
     tuple val(meta2), path(fasta)
-    tuple val(meta2), path(fai)
+    tuple val(meta3), path(fai)
     val method
 
     output:

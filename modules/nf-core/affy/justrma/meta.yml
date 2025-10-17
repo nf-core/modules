@@ -13,46 +13,79 @@ tools:
       tool_dev_url: "https://github.com/Bioconductor/affy"
       doi: "10.1093/bioinformatics/btg405"
       licence: ["LGPL >=2.0"]
+      identifier: biotools:affy
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - samplesheet:
-      type: file
-      description: |
-        CSV or TSV format sample sheet with sample metadata and CEL file names
-  - celfiles_dir:
-      type: list
-      description: Path to a directory containing CEL files
-      pattern: "*.{CEL,CEL.gz}"
-  - description:
-      type: file
-      description: |
-        Optional description file in MIAME format
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - samplesheet:
+        type: file
+        description: |
+          CSV or TSV format sample sheet with sample metadata and CEL file names
+        ontologies:
+          - edam: "http://edamontology.org/format_3752" # CSV
+          - edam: "http://edamontology.org/format_3475" # TSV
+    - celfiles_dir:
+        type: list
+        description: Path to a directory containing CEL files
+        pattern: "*.{CEL,CEL.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1638" # CEL
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - description:
+        type: file
+        description: |
+          Optional description file in MIAME format
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - expression:
-      type: file
-      description: TSV-format intensity matrix
-      pattern: "matrix.tsv"
-  - annotation:
-      type: file
-      description: TSV-format annotation table
-      pattern: "*.annotation.tsv"
-  - rds:
-      type: file
-      description: Serialised ExpressionSet object
-      pattern: "*.rds"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.rds":
+          type: file
+          description: Serialised ExpressionSet object
+          pattern: "*.rds"
+          ontologies: []
+  expression:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*matrix.tsv":
+          type: file
+          description: TSV-format intensity matrix
+          pattern: "matrix.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  annotation:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.annotation.tsv":
+          type: file
+          description: TSV-format annotation table
+          pattern: "*.annotation.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@pinin4fjords"
 maintainers:

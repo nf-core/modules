@@ -1,0 +1,31 @@
+
+nextflow_process {
+
+    name "Test Process FASTTREE"
+    script "../main.nf"
+    process "FASTTREE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fasttree"
+
+    test("test-fasttree") {
+
+        when {
+            process {
+                """
+                input[0] = [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true) ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

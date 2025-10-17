@@ -1,0 +1,136 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fastq_align_dedup_bismark"
+description: Align BS-Seq reads to a reference genome using bismark, deduplicate and sort
+keywords:
+  - bismark
+  - 3-letter genome
+  - map
+  - methylation
+  - 5mC
+  - methylseq
+  - bisulphite
+  - bisulfite
+  - bam
+components:
+  - bismark/align
+  - samtools/sort
+  - samtools/index
+  - bismark/deduplicate
+  - bismark/methylationextractor
+  - bismark/coverage2cytosine
+  - bismark/report
+  - bismark/summary
+input:
+  - ch_reads:
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+        Structure: [ val(meta), [ path(reads) ] ]
+      pattern: "*.{fastq,fastq.gz}"
+  - ch_fasta:
+      type: file
+      description: |
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.{fa,fa.gz}"
+  - ch_bismark_index:
+      description: |
+        Bismark genome index files
+        Structure: [ val(meta), path(index) ]
+      pattern: "BismarkIndex"
+  - skip_deduplication:
+      type: boolean
+      description: |
+        Skip deduplication of aligned reads
+  - cytosine_report:
+      type: boolean
+      description: |
+        Produce coverage2cytosine reports that relates methylation calls back to genomic cytosine contexts
+output:
+  - bam:
+      type: file
+      description: |
+        Channel containing aligned or deduplicated BAM files.
+        Structure: [ val(meta), path(bam) ]
+      pattern: "*.bam"
+  - bai:
+      type: file
+      description: |
+        Channel containing aligned or deduplicated BAM index files.
+        Structure: [ val(meta), path(bam.bai) ]
+      pattern: "*.bai"
+  - coverage2cytosine_coverage:
+      type: file
+      description: |
+        Channel containing coverage information from coverage2cytosine.
+        Structure: [ val(meta), path(coverage.txt) ]
+      pattern: "*.cov.gz"
+  - coverage2cytosine_report:
+      type: file
+      description: |
+        Channel containing report from coverage2cytosine summarizing cytosine methylation coverage.
+        Structure: [ val(meta), path(report.txt) ]
+      pattern: "*report.txt.gz"
+  - coverage2cytosine_summary:
+      type: file
+      description: |
+        Channel containing summary information from coverage2cytosine.
+        Structure: [ val(meta), path(summary.txt) ]
+      pattern: "*cytosine_context_summary.txt"
+  - methylation_bedgraph:
+      type: file
+      description: |
+        Channel containing methylation data in bedGraph format.
+        Structure: [ val(meta), path(methylation.bedgraph) ]
+      pattern: "*.bedGraph.gz"
+  - methylation_calls:
+      type: file
+      description: |
+        Channel containing methylation call data.
+        Structure: [ val(meta), path(calls.txt) ]
+      pattern: "*.txt.gz"
+  - methylation_coverage:
+      type: file
+      description: |
+        Channel containing methylation coverage data.
+        Structure: [ val(meta), path(coverage.txt) ]
+      pattern: "*.cov.gz"
+  - methylation_report:
+      type: file
+      description: |
+        Channel containing methylation report detailing methylation patterns.
+        Structure: [ val(meta), path(report.txt) ]
+      pattern: "*_splitting_report.txt"
+  - methylation_mbias:
+      type: file
+      description: |
+        Channel containing M-bias report showing methylation bias across read positions.
+        Structure: [ val(meta), path(mbias.txt) ]
+      pattern: "*.M-bias.txt"
+  - bismark_report:
+      type: file
+      description: |
+        Channel containing Bismark report with mapping and methylation statistics.
+        Structure: [ val(meta), path(bismark_report.txt) ]
+      pattern: "*report.{html,txt}"
+  - bismark_summary:
+      type: file
+      description: |
+        Channel containing Bismark summary report.
+        Structure: [ val(meta), path(bismark_summary.txt) ]
+      pattern: "*report.{html,txt}"
+  - multiqc:
+      type: file
+      description: |
+        Channel containing MultiQC report aggregating results across samples.
+        Structure: [ val(meta), path(multiqc_report.html) ]
+      pattern: "*.html"
+  - versions:
+      type: file
+      description: |
+        File containing software versions.
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@sateeshperi"
+maintainers:
+  - "@sateeshperi"

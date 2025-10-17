@@ -1,16 +1,64 @@
 {
-    "versions": {
+    "test without lambda reference": {
         "content": [
+            400,
             [
-                "versions.yml:md5,5fe28ea455482c9fe88603ddcc461881"
+                "versions.yml:md5,74a27493c09d0c481f6e52b517e12023"
             ]
         ],
-        "timestamp": "2023-10-20T08:27:24.592662298"
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-10-31T15:14:36.37897815"
     },
-    "number_of_lines": {
+    "test with lambda reference": {
         "content": [
-            400
+            15984,
+            [
+                "versions.yml:md5,74a27493c09d0c481f6e52b517e12023"
+            ]
         ],
-        "timestamp": "2023-10-20T08:27:24.581289647"
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-10-31T15:14:31.324993049"
+    },
+    "test-chopper-stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test_out"
+                        },
+                        "test_out.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "1": [
+                    "versions.yml:md5,74a27493c09d0c481f6e52b517e12023"
+                ],
+                "fastq": [
+                    [
+                        {
+                            "id": "test_out"
+                        },
+                        "test_out.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,74a27493c09d0c481f6e52b517e12023"
+                ]
+            },
+            [
+                "versions.yml:md5,74a27493c09d0c481f6e52b517e12023"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
+        },
+        "timestamp": "2024-10-31T15:29:08.715579423"
     }
 }

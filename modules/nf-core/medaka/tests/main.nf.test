@@ -12,10 +12,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ 
+                input[0] = [
                     [ id:'test', single_end:true ], // meta map
-                    file(params.test_data['sarscov2']['nanopore']['test_fastq_gz'], checkIfExists: true),
-                    file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 """
             }
@@ -24,7 +24,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    path(process.out.assembly[0][1]).linesGzip.join()[0..99],
+                    process.out.versions
+                    ).match()
+                }
             )
         }
 

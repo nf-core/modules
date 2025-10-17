@@ -1,0 +1,39 @@
+
+nextflow_process {
+
+    name "Test Process PAIRTOOLS_SELECT"
+    script "../main.nf"
+    process "PAIRTOOLS_SELECT"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pairtools"
+    tag "pairtools/select"
+
+    test("test-pairtools-select") {
+        
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+				file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pairtools/mock.pairsam', checkIfExists: true) ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					path(process.out.selected[0][1]).linesGzip[3..7],
+					path(process.out.unselected[0][1]).linesGzip[3..7],
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+    
+}

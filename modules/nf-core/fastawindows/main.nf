@@ -37,4 +37,23 @@ process FASTAWINDOWS {
         fasta_windows: \$(fasta_windows --version | cut -d' ' -f3)
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir -p fw_out
+
+    touch fw_out/${prefix}_freq_windows.tsv
+    touch fw_out/${prefix}_mononuc_windows.tsv
+    touch fw_out/${prefix}_dinuc_windows.tsv
+    touch fw_out/${prefix}_trinuc_windows.tsv
+    touch fw_out/${prefix}_tetranuc_windows.tsv
+
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        fasta_windows: \$(fasta_windows --version | cut -d' ' -f3)
+    END_VERSIONS
+    """
 }

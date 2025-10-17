@@ -13,30 +13,39 @@ tools:
       tool_dev_url: "https://github.com/pangenome/odgi"
       doi: "10.1093/bioinformatics/btac308"
       licence: ["MIT"]
+      identifier: biotools:odgi
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - graph:
-      type: file
-      description: Pangenome graph in GFA v1.0 format or in ODGI binary format
-      pattern: "*.{gfa,og}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - graph:
+        type: file
+        description: Pangenome graph in GFA v1.0 format or in ODGI binary format
+        pattern: "*.{gfa,og}"
+        ontologies:
+          - edam: http://edamontology.org/format_3975 # GFA 1
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - gfa:
-      type: file
-      description: File containing a pangenome graph in GFA v1.0 format.
-      pattern: "*.{gfa}"
+  gfa:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.gfa":
+          type: file
+          description: File containing a pangenome graph in GFA v1.0 format.
+          pattern: "*.{gfa}"
+          ontologies:
+            - edam: http://edamontology.org/format_3975 # GFA 1
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@subwaystation"
 maintainers:

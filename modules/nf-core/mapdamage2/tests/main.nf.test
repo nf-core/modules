@@ -1,0 +1,80 @@
+
+nextflow_process {
+
+    name "Test Process MAPDAMAGE2"
+    script "../main.nf"
+    process "MAPDAMAGE2"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mapdamage2"
+
+    test("test-mapdamage2") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+				]
+				input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					file(process.out.runtime_log[0][1]).name,
+					file(process.out.fragmisincorporation_plot[0][1]).name,
+					process.out.length_plot,
+					file(process.out.misincorporation[0][1]).readLines()[3..7],
+					file(process.out.lgdistribution[0][1]).readLines()[0],
+					file(process.out.dnacomp[0][1]).readLines()[3..7],
+					file(process.out.stats_out_mcmc_hist[0][1]).name,
+					file(process.out.stats_out_mcmc_iter[0][1]).name,
+					file(process.out.stats_out_mcmc_trace[0][1]).name,
+					file(process.out.stats_out_mcmc_iter_summ_stat[0][1]).name,
+					file(process.out.stats_out_mcmc_post_pred[0][1]).name,
+					file(process.out.stats_out_mcmc_correct_prob[0][1]).name,
+					process.out.dnacomp_genome,
+					process.out.rescaled,
+					file(process.out.pctot_freq[0][1]).readLines()[3..7],
+					file(process.out.pgtoa_freq[0][1]).readLines()[3..7],
+					process.out.fasta,
+					process.out.folder,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-mapdamage2-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+				]
+				input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

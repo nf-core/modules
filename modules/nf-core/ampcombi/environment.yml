@@ -1,7 +1,10 @@
-name: ampcombi
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
-  - defaults
+
 dependencies:
   - bioconda::ampcombi=0.1.7
+  - pandas=1.5.2
+  - python=3.11

@@ -17,20 +17,40 @@ tools:
       documentation: https://github.com/brentp/bwa-meth
       arxiv: arXiv:1401.1129
       licence: ["MIT"]
+      identifier: ""
 input:
-  - fasta:
-      type: file
-      description: Input genome fasta file
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Input genome fasta file
+        ontologies: []
+  - use_mem2:
+      type: boolean
+      description: |
+        If true, use bwameth index-mem2 for indexing. If false, use bwameth index (default: false)
 output:
-  - index:
-      type: dir
-      description: Directory containing bwameth genome index
-      pattern: "index"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  index:
+    - - meta:
+          type: directory
+          description: Directory containing bwameth genome index
+          pattern: "index"
+      - BwamethIndex:
+          type: directory
+          description: Directory containing bwameth genome index
+          pattern: "index"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@phue"
 maintainers:
   - "@phue"
+  - "@sateeshperi"

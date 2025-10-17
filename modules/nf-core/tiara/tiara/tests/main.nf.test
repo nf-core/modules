@@ -1,0 +1,42 @@
+
+nextflow_process {
+
+    name "Test Process TIARA_TIARA"
+    script "../main.nf"
+    process "TIARA_TIARA"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "tiara"
+    tag "tiara/tiara"
+
+    test("illumina-contigs-fa") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					process.out.classifications,
+					file(process.out.log[0][1]).name,
+					process.out.fasta,
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

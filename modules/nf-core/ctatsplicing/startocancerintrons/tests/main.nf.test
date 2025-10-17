@@ -1,0 +1,186 @@
+nextflow_process {
+
+    name "Test Process CTATSPLICING_STARTOCANCERINTRONS"
+    script "../main.nf"
+    process "CTATSPLICING_STARTOCANCERINTRONS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ctatsplicing"
+    tag "ctatsplicing/startocancerintrons"
+    tag "ctatsplicing/prepgenomelib"
+    tag "star/align"
+    tag "samtools/index"
+    tag "starfusion/build"
+
+    test("homo_sapiens - bam - junctions") {
+
+        config './nextflow.config'
+        setup {
+            run("STARFUSION_BUILD") {
+                script "../../../starfusion/build/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'minigenome_fasta' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.fa')
+                    ]
+                    input[1] = [
+                        [ id:'minigenome_gtf' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/minigenome.gtf')
+                    ]
+                    input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/CTAT_HumanFusionLib.mini.dat.gz')
+                    input[3] = "homo_sapiens"
+                    input[4] = "http://ftp.ebi.ac.uk/pub/databases/Pfam/releases/Pfam37.4/Pfam-A.hmm.gz"
+                    input[5] = [
+                        "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm",
+                        "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3f",
+                        "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3i",
+                        "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3m",
+                        "https://www.dfam.org/releases/Dfam_3.8/infrastructure/dfamscan/homo_sapiens_dfam.hmm.h3p"
+                    ]
+                    input[6] = "https://data.broadinstitute.org/Trinity/CTAT_RESOURCE_LIB/AnnotFilterRule.pm"
+                    """
+                }
+            }
+            run("CTATSPLICING_PREPGENOMELIB") {
+                script "../../prepgenomelib/main.nf"
+                process {
+                    """
+                    input[0] = STARFUSION_BUILD.out.reference
+                    input[1] = [
+                        file("https://data.broadinstitute.org/Trinity/CTAT_RESOURCE_LIB/CANCER_SPLICING_LIB_SUPPLEMENT/cancer_introns.GRCh38.Jun232020.tsv.gz", checkIfExists:true)
+                    ]
+                    """
+                }
+            }
+            run("STAR_ALIGN") {
+                script "../../../star/align/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id:'test', single_end:true ], // meta map
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ])
+                    input[1] = CTATSPLICING_PREPGENOMELIB.out.reference.map{ meta, reference ->
+                        [ meta, "\$reference/ref_genome.fa.star.idx" ]
+                    }
+                    input[2] = CTATSPLICING_PREPGENOMELIB.out.reference.map{ meta, reference ->
+                        [ meta, "\$reference/ref_annot.gtf" ]
+                    }
+                    input[3] = false
+                    input[4] = 'illumina'
+                    input[5] = false
+                    """
+                }
+            }
+            run("SAMTOOLS_INDEX") {
+                script "../../../samtools/index/main.nf"
+                process {
+                    """
+                    input[0] = STAR_ALIGN.out.bam_sorted_aligned
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = STAR_ALIGN.out.spl_junc_tab
+                    .join(STAR_ALIGN.out.junction, by:[0])
+                    .join(STAR_ALIGN.out.bam, by:[0])
+                    .join(SAMTOOLS_INDEX.out.bai, by:[0])
+                input[1] = CTATSPLICING_PREPGENOMELIB.out.reference
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.cancer_introns,
+                    process.out.cancer_introns_prelim,
+                    file(process.out.introns[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - bam - junctions - stub") {
+
+        options "-stub"
+        config './nextflow.config'
+        setup {
+            run("CTATSPLICING_PREPGENOMELIB") {
+                script "../../prepgenomelib/main.nf"
+                process {
+                    """
+                    new File('ctat_genome_lib_build_dir').mkdirs()
+                    input[0] = [[id:"ctat_genome_lib_build_dir"],file("ctat_genome_lib_build_dir/")]
+                    input[1] = [
+                        file("https://data.broadinstitute.org/Trinity/CTAT_RESOURCE_LIB/CANCER_SPLICING_LIB_SUPPLEMENT/cancer_introns.GRCh38.Jun232020.tsv.gz", checkIfExists:true)
+                    ]
+                    """
+                }
+            }
+                run("STAR_ALIGN") {
+                script "../../../star/align/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id:'test', single_end:true ], // meta map
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ])
+                    input[1] = CTATSPLICING_PREPGENOMELIB.out.reference.map{ meta, reference ->
+                        [ meta, "\$reference/ref_genome.fa.star.idx" ]
+                    }
+                    input[2] = CTATSPLICING_PREPGENOMELIB.out.reference.map{ meta, reference ->
+                        [ meta, "\$reference/ref_annot.gtf" ]
+                    }
+                    input[3] = false
+                    input[4] = 'illumina'
+                    input[5] = false
+                    """
+                }
+            }
+            run("SAMTOOLS_INDEX") {
+                script "../../../samtools/index/main.nf"
+                process {
+                    """
+                    input[0] = STAR_ALIGN.out.bam_sorted_aligned
+                    """
+                }
+
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = STAR_ALIGN.out.spl_junc_tab
+                    .join(STAR_ALIGN.out.junction, by:[0])
+                    .join(STAR_ALIGN.out.bam, by:[0])
+                    .join(SAMTOOLS_INDEX.out.bai, by:[0])
+                input[1] = CTATSPLICING_PREPGENOMELIB.out.reference
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

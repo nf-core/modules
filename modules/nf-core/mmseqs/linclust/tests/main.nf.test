@@ -8,6 +8,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "mmseqs"
     tag "mmseqs/linclust"
+    tag "untar"
 
     test("Should cluster an mmseqs database") {
 
@@ -16,7 +17,7 @@ nextflow_process {
                 script "modules/nf-core/untar/main.nf"
                 process {
                     """
-                    input[0] = [ [id:'test'], file(params.test_data['sarscov2']['genome']['mmseqs_tar_gz'], checkIfExists: true) ]
+                    input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/mmseqs.tar.gz', checkIfExists: true) ]
                     """
                 }
             }
@@ -35,17 +36,20 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.db_cluster.size() == 1 },
                 {
-                    with(process.out.db_cluster) {
-                        File folder = new File(get(0).get(1))
-                        File[] listOfFiles = folder.listFiles()
-                        listOfFiles = listOfFiles.sort { it.name }
-                        assert listOfFiles.length == 4
-                        assert snapshot("${get(0).get(1)}/${listOfFiles[0].name}").match("test_output_cluster.0")
-                        assert snapshot("${get(0).get(1)}/${listOfFiles[2].name}").match("test_output_cluster.dbtype")
-                        assert snapshot("${get(0).get(1)}/${listOfFiles[3].name}").match("test_output_cluster.index")
-                    }
-                },
-                { assert process.out.versions }
+                    def all_files = file(process.out.db_cluster[0][1]).listFiles()
+                    def all_file_names = all_files.collect { it.name }.toSorted()
+                    def stable_file_names = [
+                        'test_output_cluster.dbtype',
+                        'test_output_cluster.index'
+                    ]
+                    def stable_files = all_files.findAll { it.name in stable_file_names }.toSorted()
+
+                    assert snapshot(
+                        all_file_names,
+                        stable_files,
+                        process.out.versions[0]
+                    ).match()
+                }
             )
         }
     }

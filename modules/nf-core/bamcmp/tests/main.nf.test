@@ -1,0 +1,107 @@
+nextflow_process {
+
+    name "Test Process BAMCMP"
+    script "../main.nf"
+    process "BAMCMP"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bamcmp"
+    tag "bwa/index"
+    tag "bwa/mem"
+
+    test("bamcmp - human cov2") {
+
+    setup {
+
+            run("BWA_INDEX", alias: "BWA_INDEX_HUMAN") {
+                script "../../bwa/index/main.nf"
+                process {
+                    """
+                    input[0] = [[ id:'homo_sapiens_genome' ],
+                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                    """
+                }
+            }
+
+            run("BWA_INDEX", alias: "BWA_INDEX_COV2") {
+                script "../../bwa/index/main.nf"
+                process {
+                    """
+                    input[0] = [[ id:'sarscov2_genome' ],
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+                    """
+                }
+            }
+
+            run("BWA_MEM", alias: "BWA_MEM_HUMAN") {
+                script "../../bwa/mem/main.nf"
+                process {
+                    """
+                    input[0] = [[ id:'test' ],
+                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
+                    input[1] = BWA_INDEX_HUMAN.out.index
+                    input[2] = [[ id:'homo_sapiens_genome' ],
+                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                    input[3] = true
+                    """
+                }
+            }
+
+            run("BWA_MEM", alias: "BWA_MEM_COV2") {
+                script "../../bwa/mem/main.nf"
+                process {
+                    """
+                    input[0] = [[ id:'test' ],
+                                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
+                    input[1] = BWA_INDEX_COV2.out.index
+                    input[2] = [[ id:'sarscov2_genome' ],
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+                    input[3] = true
+                    """
+                }
+            }
+
+        }
+
+        when {
+            process {
+                """
+                input[0] = BWA_MEM_HUMAN.out.bam.join(BWA_MEM_COV2.out.bam)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("bamcmp - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

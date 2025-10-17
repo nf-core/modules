@@ -1,4 +1,5 @@
 process PIGZ_UNCOMPRESS {
+    tag "$meta.id"
     label 'process_low'
     //stageInMode 'copy' // this directive can be set in case the original input should be kept
 
@@ -8,11 +9,11 @@ process PIGZ_UNCOMPRESS {
         'biocontainers/pigz:2.8' }"
 
     input:
-    path zip
+    tuple val(meta), path(zip)
 
     output:
-    path "${uncompressed_filename}" , emit: file
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path("${uncompressed_filename}") , emit: file
+    path "versions.yml"                               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,7 +31,7 @@ process PIGZ_UNCOMPRESS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz[[:space:]]*//' )
     END_VERSIONS
     """
 
@@ -38,11 +39,11 @@ process PIGZ_UNCOMPRESS {
     def args = task.ext.args ?: ''
     uncompressed_filename = zip.toString() - '.gz'
     """
-    touch ${zip.dropRight(3)}
+    touch $uncompressed_filename
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\w*//' ))
+        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz[[:space:]]*//' )
     END_VERSIONS
     """
 }

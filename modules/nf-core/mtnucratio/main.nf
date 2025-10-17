@@ -34,4 +34,17 @@ process MTNUCRATIO {
         mtnucratio: \$(echo \$(mtnucratio --version 2>&1) | head -n1 | sed 's/Version: //')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${prefix}.mtnucratio
+    touch ${prefix}.json
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        mtnucratio: \$(echo \$(mtnucratio --version 2>&1) | head -n1 | sed 's/Version: //')
+    END_VERSIONS
+    """
 }

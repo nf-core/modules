@@ -1,9 +1,0 @@
-- name: picard collectinsertsizemetrics test_picard_collectinsertsizemetrics
-  command: nextflow run ./tests/modules/nf-core/picard/collectinsertsizemetrics -entry test_picard_collectinsertsizemetrics -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/picard/collectinsertsizemetrics/nextflow.config
-  tags:
-    - picard/collectinsertsizemetrics
-    - picard
-  files:
-    - path: output/picard/test.pdf
-    - path: output/picard/test.txt
-    - path: output/picard/versions.yml

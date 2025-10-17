@@ -1,0 +1,127 @@
+nextflow_process {
+
+    name "Test Process CIRCULARMAPPER_REALIGNSAMFILE"
+    script "../main.nf"
+    process "CIRCULARMAPPER_REALIGNSAMFILE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "circularmapper"
+    tag "circularmapper/realignsamfile"
+    tag "bwa/aln"
+    tag "bwa/index"
+    tag "bwa/samse"
+    tag "circularmapper/circulargenerator"
+
+    test("sarscov2 - bam - fasta") {
+
+        setup {
+
+            run("CIRCULARMAPPER_CIRCULARGENERATOR") {
+                script "../../circulargenerator/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                        ]
+                input[1] = [ [ id:'test' ], 500 ]
+                input[2] = [ [ id:'test' ],  "MT192765.1" ]
+                    """
+                }
+            }
+
+            run("BWA_INDEX") {
+            script "../../../bwa/index/main.nf"
+                process {
+                    """
+                    input[0] = CIRCULARMAPPER_CIRCULARGENERATOR.out.fasta
+                    """
+                }
+            }
+
+            run("BWA_ALN") {
+                script "../../../bwa/aln/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:true ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
+                    input [1] = BWA_INDEX.out.index
+                    """
+                }
+            }
+
+            run("BWA_SAMSE") {
+                script "../../../bwa/samse/main.nf"
+                process {
+                    """
+                    fastq = Channel.of([
+                        [ id:'test', single_end:true ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ])
+
+                    input[0] = fastq.join(BWA_ALN.out.sai)
+                    input[1] = BWA_INDEX.out.index
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = BWA_SAMSE.out.bam
+                input[1] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                input[2] = [ [ id:'test' ], 500 ]
+                input[3] = CIRCULARMAPPER_CIRCULARGENERATOR.out.elongated
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: "test" ], //meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [ [ id:'test' ], 500 ]
+                input[3] = [
+                    [ id:'test' ], // meta map
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

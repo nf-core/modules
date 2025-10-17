@@ -1,4 +1,3 @@
----
 name: "peka"
 description: Runs PEKA CLIP peak k-mer analysis
 keywords:
@@ -9,55 +8,157 @@ keywords:
   - k-mer
 tools:
   - "peka":
-      description: "Positionally-enriched k-mer analysis (PEKA) is a software package for identifying enriched protein-RNA binding motifs from CLIP datasets"
+      description: "Positionally-enriched k-mer analysis (PEKA) is a software package
+        for identifying enriched protein-RNA binding motifs from CLIP datasets"
       homepage: "https://github.com/ulelab/peka"
       documentation: "https://github.com/ulelab/peka"
       tool_dev_url: "https://github.com/ulelab/peka"
       doi: "10.1186/s13059-022-02755-2"
-      licence: "['GPL v3']"
+      licence: ["GPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - peaks:
-      type: file
-      description: BED file of peak regions
-      pattern: "*.{bed,bed.gz}"
-  - crosslinks:
-      type: file
-      description: BED file of crosslinks
-      pattern: "*.{bed,bed.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - peaks:
+        type: file
+        description: BED file of peak regions
+        pattern: "*.{bed,bed.gz}"
+        ontologies: []
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - crosslinks:
+        type: file
+        description: BED file of crosslinks
+        pattern: "*.{bed,bed.gz}"
+        ontologies: []
   - fasta:
       type: file
       description: Genome reference sequence used
       pattern: "*.{fa,fasta}"
+      ontologies: []
   - fai:
       type: file
       description: FAI file corresponding to the reference sequence
       pattern: "*.{fai}"
+      ontologies: []
   - gtf:
       type: file
       description: A segmented GTF used to annotate peaks
       pattern: "*.{gtf}"
+      ontologies: []
 output:
-  - cluster:
-      type: file
-      description: TSV file of summed occurrence distributions of k-mers within defined clusters
-      pattern: "*.tsv"
-  - distribution:
-      type: file
-      description: TSV file with calculated PEKA score and occurrence distribution for all possible k-mers
-      pattern: "*.tsv"
-  - pdf:
-      type: file
-      description: PDF file with graphs showing k-mer occurrence distributions around thresholded crosslink sites
-      pattern: "*.pdf"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  cluster:
+    - - meta:
+          type: file
+          description: TSV file of summed occurrence distributions of k-mers within
+            defined clusters
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+      - "*mer_cluster_distribution*":
+          type: file
+          description: TSV file of summed occurrence distributions of k-mers within
+            defined clusters
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  distribution:
+    - - meta:
+          type: file
+          description: TSV file of summed occurrence distributions of k-mers within
+            defined clusters
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+      - "*mer_distribution*":
+          type: file
+          description: TSV file with calculated PEKA score and occurrence distribution
+            for all possible k-mers
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  rtxn:
+    - - meta:
+          type: file
+          description: TSV file of summed occurrence distributions of k-mers within
+            defined clusters
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+      - "*rtxn*":
+          type: file
+          description: rtxn file
+          pattern: "*rtxn*"
+          ontologies: []
+  pdf:
+    - - meta:
+          type: file
+          description: TSV file of summed occurrence distributions of k-mers within
+            defined clusters
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+      - "*.pdf":
+          type: file
+          description: PDF file with graphs showing k-mer occurrence distributions around
+            thresholded crosslink sites
+          pattern: "*.pdf"
+          ontologies: []
+  tsites:
+    - - meta:
+          type: file
+          description: TSV file of summed occurrence distributions of k-mers within
+            defined clusters
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+      - "*thresholded_sites*.bed.gz":
+          type: file
+          description: BED file of thresholded sites
+          pattern: "*thresholded_sites*.bed.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  oxn:
+    - - meta:
+          type: file
+          description: TSV file of summed occurrence distributions of k-mers within
+            defined clusters
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+      - "*oxn*.bed.gz":
+          type: file
+          description: BED file of oxn sites
+          pattern: "*oxn*.bed.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  clust:
+    - - meta:
+          type: file
+          description: TSV file of summed occurrence distributions of k-mers within
+            defined clusters
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+      - "*_clusters.csv":
+          type: file
+          description: CSV file of clusters
+          pattern: "*_clusters.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@kkuret"
   - "@codeprimate123"

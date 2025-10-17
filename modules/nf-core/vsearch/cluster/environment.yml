@@ -1,8 +1,9 @@
-name: vsearch_cluster
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
-  - defaults
+
 dependencies:
-  - bioconda::vsearch=2.21.1
   - bioconda::samtools=1.16.1
+  - bioconda::vsearch=2.21.1

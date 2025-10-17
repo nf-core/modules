@@ -22,6 +22,7 @@ nextflow_workflow {
     tag "snapaligner"
     tag "snapaligner/index"
     tag "snapaligner/align"
+    tag "strobealign"
 
     test("test_fastq_align_bowtie2_SE") {
         setup {
@@ -29,7 +30,7 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/bowtie2/build/main.nf"
                 process {
                     """
-                    input[0] = Channel.value([ [ id:'genome' ],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)])
+                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                     """
                 }
             }
@@ -37,9 +38,9 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([[ id:'test', single_end:true ], [file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)]])
+                input[0] = Channel.of([[ id:'test', single_end:true ], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]])
                 input[1] = BOWTIE2_BUILD.out.index
-                input[2] = Channel.value([ [ id:'genome' ],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)])
+                input[2] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                 input[3] = "bowtie2"
                 input[4] = true
                 """
@@ -63,7 +64,7 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/bowtie2/build/main.nf"
                 process {
                     """
-                    input[0] = Channel.value([ [ id:'genome' ],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)])
+                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                     """
                 }
             }
@@ -71,9 +72,9 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([[ id:'test', single_end:false ], [file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true), file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)]])
+                input[0] = Channel.of([[ id:'test', single_end:false ], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]])
                 input[1] = BOWTIE2_BUILD.out.index
-                input[2] = Channel.of([ [ id:'genome' ],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)])
+                input[2] = Channel.of([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                 input[3] = "bowtie2"
                 input[4] = true
                 """
@@ -96,7 +97,7 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/bwa/index/main.nf"
                 process {
                     """
-                    input[0] = Channel.value([ [ id:'genome' ],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)])
+                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                     """
                 }
             }
@@ -104,9 +105,9 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([[ id:'test', single_end:true ], [file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)]])
+                input[0] = Channel.of([[ id:'test', single_end:true ], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]])
                 input[1] = BWA_INDEX.out.index
-                input[2] = Channel.of([ [ id:'genome' ],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)])
+                input[2] = Channel.of([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                 input[3] = "bwamem"
                 input[4] = true
                 """
@@ -115,8 +116,14 @@ nextflow_workflow {
 
         then {
             assertAll(
-                { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert workflow.success },
+                { assert snapshot(
+                    file(workflow.out.bam[0][1]).name,
+                    workflow.out.bam_index,
+                    workflow.out.reports,
+                    workflow.out.versions,
+                    ).match()
+                }
             )
         }
     }
@@ -126,7 +133,7 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/bwa/index/main.nf"
                 process {
                     """
-                    input[0] = Channel.value([ [ id:'genome' ],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)])
+                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                     """
                 }
             }
@@ -134,9 +141,9 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([[ id:'test', single_end:false ], [file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true), file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)]])
+                input[0] = Channel.of([[ id:'test', single_end:false ], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]])
                 input[1] = BWA_INDEX.out.index
-                input[2] = Channel.of([ [ id:'genome' ],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)])
+                input[2] = Channel.of([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                 input[3] = "bwamem"
                 input[4] = true
                 """
@@ -145,8 +152,14 @@ nextflow_workflow {
 
         then {
             assertAll(
-                { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert workflow.success },
+                { assert snapshot(
+                    file(workflow.out.bam[0][1]).name,
+                    workflow.out.bam_index,
+                    workflow.out.reports,
+                    workflow.out.versions,
+                    ).match()
+                }
             )
         }
     }
@@ -156,7 +169,7 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/bwamem2/index/main.nf"
                 process {
                     """
-                    input[0] = Channel.value([ [ id:'genome' ],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)])
+                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                     """
                 }
             }
@@ -164,9 +177,9 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([[ id:'test', single_end:true ], [file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)]])
+                input[0] = Channel.of([[ id:'test', single_end:true ], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]])
                 input[1] = BWAMEM2_INDEX.out.index
-                input[2] = Channel.of([ [ id:'genome' ],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)])
+                input[2] = Channel.of([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                 input[3] = "bwamem2"
                 input[4] = true
                 """
@@ -175,8 +188,14 @@ nextflow_workflow {
 
         then {
             assertAll(
-                { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert workflow.success },
+                { assert snapshot(
+                    file(workflow.out.bam[0][1]).name,
+                    workflow.out.bam_index,
+                    workflow.out.reports,
+                    workflow.out.versions,
+                    ).match()
+                }
             )
         }
     }
@@ -186,7 +205,7 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/bwamem2/index/main.nf"
                 process {
                     """
-                    input[0] = Channel.value([ [ id:'genome' ],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)])
+                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                     """
                 }
             }
@@ -194,9 +213,9 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([[ id:'test', single_end:false ], [file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true), file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)]])
+                input[0] = Channel.of([[ id:'test', single_end:false ], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]])
                 input[1] = BWAMEM2_INDEX.out.index
-                input[2] = Channel.of([ [ id:'genome' ],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)])
+                input[2] = Channel.of([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                 input[3] = "bwamem2"
                 input[4] = true
                 """
@@ -205,8 +224,14 @@ nextflow_workflow {
 
         then {
             assertAll(
-                { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert workflow.success },
+                { assert snapshot(
+                    file(workflow.out.bam[0][1]).name,
+                    workflow.out.bam_index,
+                    workflow.out.reports,
+                    workflow.out.versions,
+                    ).match()
+                }
             )
         }
     }
@@ -216,7 +241,7 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/dragmap/hashtable/main.nf"
                 process {
                     """
-                    input[0] = Channel.value([ [ id:'genome' ],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)])
+                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                     """
                 }
             }
@@ -224,9 +249,9 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([[ id:'test', single_end:true ], [file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)]])
+                input[0] = Channel.of([[ id:'test', single_end:true ], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]])
                 input[1] = DRAGMAP_HASHTABLE.out.hashmap
-                input[2] = Channel.of([ [ id:'genome' ],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)])
+                input[2] = Channel.of([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                 input[3] = "dragmap"
                 input[4] = true
                 """
@@ -250,7 +275,7 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/dragmap/hashtable/main.nf"
                 process {
                     """
-                    input[0] = Channel.value([ [ id:'genome' ],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)])
+                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                     """
                 }
             }
@@ -258,9 +283,9 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([[ id:'test', single_end:false ], [file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true), file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)]])
+                input[0] = Channel.of([[ id:'test', single_end:false ], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]])
                 input[1] = DRAGMAP_HASHTABLE.out.hashmap
-                input[2] = Channel.of([ [ id:'genome' ],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)])
+                input[2] = Channel.of([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                 input[3] = "dragmap"
                 input[4] = true
                 """
@@ -284,7 +309,7 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/snapaligner/index/main.nf"
                 process {
                     """
-                    input[0] = Channel.value([ [ id:'genome' ],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true), [], [], []])
+                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true), [], [], []])
                     """
                 }
             }
@@ -292,9 +317,9 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([[ id:'test', single_end:true ], [file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true)]])
+                input[0] = Channel.of([[ id:'test', single_end:true ], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]])
                 input[1] = SNAPALIGNER_INDEX.out.index
-                input[2] = Channel.of([ [ id:'genome' ],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)])
+                input[2] = Channel.of([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                 input[3] = "snap"
                 input[4] = true
                 """
@@ -314,7 +339,7 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/snapaligner/index/main.nf"
                 process {
                     """
-                    input[0] = Channel.value([ [ id:'genome' ],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true), [], [], []])
+                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true), [], [], []])
                     """
                 }
             }
@@ -322,10 +347,50 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([[ id:'test', single_end:false ], [file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true), file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true)]])
+                input[0] = Channel.of([[ id:'test', single_end:false ], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]])
                 input[1] = SNAPALIGNER_INDEX.out.index
-                input[2] = Channel.of([ [ id:'genome' ],file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)])
+                input[2] = Channel.of([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                 input[3] = "snap"
+                input[4] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
+    test ("test_fastq_align_strobealign_SE"){
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([[ id:'test', single_end:true ], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]])
+                input[1] = [[:],[]]
+                input[2] = Channel.of([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                input[3] = "strobealign"
+                input[4] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(workflow.out).match()}
+            )
+        }
+    }
+    test ("test_fastq_align_strobealign_PE"){
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([[ id:'test', single_end:false ], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]])
+                input[1] = [[:],[]]
+                input[2] = Channel.of([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                input[3] = "strobealign"
                 input[4] = true
                 """
             }

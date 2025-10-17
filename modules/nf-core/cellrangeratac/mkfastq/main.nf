@@ -2,8 +2,7 @@ process CELLRANGERATAC_MKFASTQ {
     tag "mkfastq"
     label 'process_medium'
 
-    container "nf-core/cellranger-atac:2.1.0"
-
+    container "nf-core/cellranger-atac-mkfastq:2.1.0"
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "CELLRANGERATAC_MKFASTQ module does not support Conda. Please use Docker / Singularity / Podman instead."
@@ -37,7 +36,7 @@ process CELLRANGERATAC_MKFASTQ {
     stub:
     """
     mkdir -p "${bcl.getSimpleName()}/outs/fastq_path/"
-    touch ${bcl.getSimpleName()}/outs/fastq_path/fake_file.fastq.gz
+    echo "" | gzip > ${bcl.getSimpleName()}/outs/fastq_path/fake_file.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

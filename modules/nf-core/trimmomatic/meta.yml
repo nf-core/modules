@@ -10,44 +10,86 @@ tools:
       homepage: "http://www.usadellab.org/cms/?page=trimmomatic"
       documentation: "https://github.com/usadellab/Trimmomatic"
       doi: "10.1093/bioinformatics/btu170"
-      licence: "['GPL v3']"
+      licence: ["GPL v3"]
+      identifier: biotools:trimmomatic
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: |
-        Input FastQ files of size 1 or 2 for single-end and paired-end data, respectively.
-      pattern: "*.fastq.gz"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          Input FastQ files of size 1 or 2 for single-end and paired-end data, respectively.
+        pattern: "*.fastq.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - trimmed_reads:
-      type: file
-      description: The trimmed/modified paired end fastq reads
-      pattern: "*.paired.trim*.fastq.gz"
-  - unpaired_reads:
-      type: file
-      description: The trimmed/modified unpaired end fastq reads
-      pattern: "*.unpaired.trim_*.fastq.gz"
-  - log:
-      type: file
-      description: trimmomatic log file
-      pattern: "*.log"
-  - summary:
-      type: file
-      description: trimmomatic summary file of surviving and dropped reads
-      pattern: "*.summary"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  trimmed_reads:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.paired.trim*.fastq.gz":
+          type: file
+          description: The trimmed/modified paired end fastq reads
+          pattern: "*.paired.trim*.fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  unpaired_reads:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.unpaired.trim_*.fastq.gz":
+          type: file
+          description: The trimmed/modified unpaired end fastq reads
+          pattern: "*.unpaired.trim_*.fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  trim_log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_trim.log":
+          type: file
+          description: trimmomatic log file, from the trim_log parameter
+          pattern: "*.log"
+          ontologies: []
+  out_log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_out.log":
+          type: file
+          description: log of output from the standard out
+          pattern: "*.log"
+          ontologies: []
+  summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.summary":
+          type: file
+          description: trimmomatic summary file of surviving and dropped reads
+          pattern: "*.summary"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@alyssa-ab"
 maintainers:

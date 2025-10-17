@@ -1,0 +1,60 @@
+nextflow_workflow {
+
+    name "Test Subworkflow MMSEQS_CONTIG_TAXONOMY"
+    script "../main.nf"
+    workflow "MMSEQS_CONTIG_TAXONOMY"
+    config './nextflow.config'
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/mmseqs_contig_taxonomy"
+    tag "gunzip"
+    tag "mmseqs/createdb"
+    tag "mmseqs/databases"
+    tag "mmseqs/taxonomy"
+    tag "mmseqs/createtsv"
+
+    test("mmseqs_contig_taxonomy - bacteroides_fragilis - contig") {
+
+        setup {
+            run("GUNZIP") {
+                script "modules/nf-core/gunzip/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                                [id:'bacteroides_fragilis'],
+                                file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                            ]
+                    )
+                    """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                input[0] = GUNZIP.out.gunzip
+                //input[1] = '/Net/Groups/ccdata/users/AIbrahim/nf-core/modules/mmseqs_database'
+                input[1] = []
+                input[2] = 'Kalamari'
+                """
+            }
+        }
+
+        then{
+            assertAll(
+                { assert workflow.success},
+                { assert workflow.out.db_contig.get(0).get(1) ==~ ".*/bacteroides_fragilis" },
+                { assert snapshot (
+                        workflow.out.versions,
+                        file(workflow.out.taxonomy[0][1]).readLines()[0].contains("NZ_CP069563.1"),
+                        file(workflow.out.db_taxonomy.get(0).get(1)).list().sort(),
+                        file(workflow.out.db_contig.get(0).get(1)).name,
+                        file(workflow.out.db_mmseqs.get(0)).name,
+                        ).match()
+                },
+            )
+        }
+    }
+}

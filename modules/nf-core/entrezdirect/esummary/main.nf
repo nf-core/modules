@@ -35,4 +35,18 @@ process ENTREZDIRECT_ESUMMARY {
         esummary: \$(esummary -version)
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if (!uid && !uids_file) error "No input. Valid input: an identifier or a .txt file with identifiers"
+    if (uid && uids_file) error "Only one input is required: a single identifier or a .txt file with identifiers"
+    """
+    touch ${prefix}.xml
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        esummary: \$(esummary -version)
+    END_VERSIONS
+    """
 }

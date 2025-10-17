@@ -4,15 +4,15 @@ process MMSEQS_DATABASES {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mmseqs2:15.6f452--pl5321h6a68c12_0':
-        'biocontainers/mmseqs2:15.6f452--pl5321h6a68c12_0' }"
+        'https://depot.galaxyproject.org/singularity/mmseqs2:17.b804f--hd6d6fdc_1':
+        'biocontainers/mmseqs2:17.b804f--hd6d6fdc_1' }"
 
     input:
     val database
 
     output:
-    path "${prefix}/" , emit: database
-    path "versions.yml"     , emit: versions
+    path "${prefix}/"   , emit: database
+    path "versions.yml" , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,7 +28,6 @@ process MMSEQS_DATABASES {
         ${prefix}/database \\
         tmp/ \\
         --threads ${task.cpus} \\
-        --compressed 1 \\
         ${args}
 
     cat <<-END_VERSIONS > versions.yml

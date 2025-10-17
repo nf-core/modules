@@ -1,0 +1,57 @@
+
+nextflow_process {
+
+    name "Test Process GFATOOLS_STAT"
+    script "../main.nf"
+    process "GFATOOLS_STAT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gfatools"
+    tag "gfatools/stat"
+
+    test("test-gfatools-stat") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gfa/assembly.gfa', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-gfatools-stat-stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gfa/assembly.gfa', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

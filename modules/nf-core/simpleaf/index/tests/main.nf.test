@@ -9,19 +9,20 @@ nextflow_process {
     tag "simpleaf"
     tag "simpleaf/index"
 
+    // test piscem
     test("Homo sapiens - genome index - expanded - fasta + gtf") {
 
         when {
             process {
                 """
-                genome_fasta = file(params.test_data['homo_sapiens']['genome']['genome_fasta'], checkIfExists: true)
-                gtf = file(params.test_data['homo_sapiens']['genome']['genome_gtf'], checkIfExists: true)
+                genome_fasta = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                gtf = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
                 meta = [ 'id': 'human_genome']
 
-                input[0] = Channel.of([ meta, genome_fasta ])
-                input[1] = Channel.of([ meta, gtf ])
+                input[0] = Channel.of([ meta, genome_fasta, gtf ])
+                input[1] = Channel.of([[],[]])
                 input[2] = Channel.of([[],[]])
-
+                input[3] = Channel.of([[],[]])
                 """
             }
         }
@@ -29,12 +30,19 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    path("${process.out.index[0][1]}/ctg_offsets.bin"),
-                    path("${process.out.index[0][1]}/duplicate_clusters.tsv"),
-                    path("${process.out.index[0][1]}/mphf.bin"),
-                    process.out.versions)
-                    .match() }
+                { assert file("${process.out.index.get(0).get(1)}/piscem_idx_cfish.json").exists() },
+                { assert file("${process.out.index.get(0).get(1)}/piscem_idx.ctab").exists() },
+                { assert file("${process.out.index.get(0).get(1)}/piscem_idx.ectab").exists() },
+                { assert file("${process.out.index.get(0).get(1)}/piscem_idx.json").exists() },
+                { assert file("${process.out.index.get(0).get(1)}/piscem_idx.refinfo").exists() },
+                { assert file("${process.out.index.get(0).get(1)}/piscem_idx.sshash").exists() },
+                { assert file("${process.out.index.get(0).get(1)}/simpleaf_index.json").exists() },
+                { assert file("${process.out.ref.get(0).get(1)}/roers_ref.fa").exists() },
+                { assert file("${process.out.ref.get(0).get(1)}/t2g_3col.tsv").exists() },
+                { assert file("${process.out.ref.get(0).get(1)}/gene_id_to_name.tsv").exists() },
+                { assert file("${process.out.ref.get(0).get(1)}/roers_make-ref.json").exists() },
+                { assert file("${process.out.t2g.get(0).get(1)}").exists() },
+                { assert snapshot(process.out.versions).match() },
             )
         }
 
@@ -45,12 +53,13 @@ nextflow_process {
         when {
             process {
                 """
-                transcriptome_fasta = file(params.test_data['homo_sapiens']['genome']['transcriptome_fasta'], checkIfExists: true)
+                transcriptome_fasta = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true)
                 meta = [ 'id': 'human_transcriptome']
 
-                input[0] = Channel.of([[],[]])
-                input[1] = Channel.of([[],[]])
-                input[2] = Channel.of([ meta, transcriptome_fasta ])
+                input[0] = Channel.of([[],[],[]])
+                input[1] = Channel.of([ meta, transcriptome_fasta ])
+                input[2] = Channel.of([[],[]])
+                input[3] = Channel.of([[],[]])
                 """
             }
         }
@@ -58,12 +67,74 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    path("${process.out.index[0][1]}/ctg_offsets.bin"),
-                    path("${process.out.index[0][1]}/duplicate_clusters.tsv"),
-                    path("${process.out.index[0][1]}/mphf.bin"),
-                    process.out.versions)
-                    .match() }
+                { assert file("${process.out.index.get(0).get(1)}/piscem_idx_cfish.json").exists() },
+                { assert file("${process.out.index.get(0).get(1)}/piscem_idx.ctab").exists() },
+                { assert file("${process.out.index.get(0).get(1)}/piscem_idx.ectab").exists() },
+                { assert file("${process.out.index.get(0).get(1)}/piscem_idx.json").exists() },
+                { assert file("${process.out.index.get(0).get(1)}/piscem_idx.refinfo").exists() },
+                { assert file("${process.out.index.get(0).get(1)}/piscem_idx.sshash").exists() },
+                { assert file("${process.out.index.get(0).get(1)}/simpleaf_index.json").exists() },
+                { assert snapshot(process.out.versions).match() },
+            )
+        }
+    }
+
+    test("Homo sapiens - probe index - direct - probe csv") {
+        when {
+            process {
+                """
+                probe_csv = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/spaceranger/human-brain-cancer-11-mm-capture-area-ffpe-2-standard_v2_ffpe_cytassist/CytAssist_11mm_FFPE_Human_Glioblastoma_probe_set.csv', checkIfExists: true)
+                meta = [ 'id': 'CytAssist_11mm_FFPE_Human_Glioblastoma_probe_set']
+
+                input[0] = Channel.of([[],[],[]])
+                input[1] = Channel.of([[],[]])
+                input[2] = Channel.of([ meta, probe_csv ])
+                input[3] = Channel.of([[],[]])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file("${process.out.index.get(0).get(1)}/piscem_idx_cfish.json").exists() },
+                { assert file("${process.out.index.get(0).get(1)}/piscem_idx.ctab").exists() },
+                { assert file("${process.out.index.get(0).get(1)}/piscem_idx.ectab").exists() },
+                { assert file("${process.out.index.get(0).get(1)}/piscem_idx.json").exists() },
+                { assert file("${process.out.index.get(0).get(1)}/piscem_idx.refinfo").exists() },
+                { assert file("${process.out.index.get(0).get(1)}/piscem_idx.sshash").exists() },
+                { assert file("${process.out.index.get(0).get(1)}/simpleaf_index.json").exists() },
+                { assert snapshot(process.out.versions).match() },
+            )
+        }
+    }
+
+    test("Homo sapiens - feature index - direct - feature csv") {
+        when {
+            process {
+                """
+                feature_csv = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/sc5p_v2_hs_PBMC_10k_multi_5gex_5fb_b_t_feature_ref.csv', checkIfExists: true)
+                meta = [ 'id': 'sc5p_v2_hs_PBMC_10k_multi_5gex_5fb_b_t_feature_ref']
+
+                input[0] = Channel.of([[],[],[]])
+                input[1] = Channel.of([[],[]])
+                input[2] = Channel.of([[],[]])
+                input[3] = Channel.of([ meta, feature_csv ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file("${process.out.index.get(0).get(1)}/piscem_idx_cfish.json").exists() },
+                { assert file("${process.out.index.get(0).get(1)}/piscem_idx.ctab").exists() },
+                { assert file("${process.out.index.get(0).get(1)}/piscem_idx.ectab").exists() },
+                { assert file("${process.out.index.get(0).get(1)}/piscem_idx.json").exists() },
+                { assert file("${process.out.index.get(0).get(1)}/piscem_idx.refinfo").exists() },
+                { assert file("${process.out.index.get(0).get(1)}/piscem_idx.sshash").exists() },
+                { assert file("${process.out.index.get(0).get(1)}/simpleaf_index.json").exists() },
+                { assert snapshot(process.out.versions).match() },
             )
         }
     }
@@ -73,12 +144,13 @@ nextflow_process {
         when {
             process {
                 """
-                transcriptome_fasta = file(params.test_data['homo_sapiens']['genome']['transcriptome_fasta'], checkIfExists: true)
+                transcriptome_fasta = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true)
                 meta = [ 'id': 'human_transcriptome']
 
-                input[0] = Channel.of([[],[]])
-                input[1] = Channel.of([[],[]])
-                input[2] = Channel.of([ meta, transcriptome_fasta ])
+                input[0] = Channel.of([[],[],[]])
+                input[1] = Channel.of([ [], [] ])
+                input[2] = Channel.of([ [], [] ])
+                input[3] = Channel.of([ [], [] ])
                 """
             }
         }
@@ -90,5 +162,4 @@ nextflow_process {
             )
         }
     }
-
 }

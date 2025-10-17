@@ -1,0 +1,42 @@
+
+nextflow_process {
+
+    name "Test Process PLASMIDFINDER"
+    script "../main.nf"
+    process "PLASMIDFINDER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "plasmidfinder"
+
+    test("test-plasmidfinder") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					file(process.out.json[0][1]).name, // unstable
+					file(process.out.txt[0][1]).readLines()[3..7],
+					process.out.tsv,
+					file(process.out.genome_seq[0][1]).name, // empty
+					file(process.out.plasmid_seq[0][1]).name, // empty
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

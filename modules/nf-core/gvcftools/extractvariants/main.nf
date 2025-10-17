@@ -34,4 +34,16 @@ process GVCFTOOLS_EXTRACTVARIANTS {
         gvcftools: \$(extract_variants --help 2>&1 | grep version | sed 's/version: //')
     END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    echo | gzip > ${prefix}.vcf.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        gvcftools: \$(extract_variants --help 2>&1 | grep version | sed 's/version: //')
+    END_VERSIONS
+    """
 }

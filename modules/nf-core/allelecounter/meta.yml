@@ -6,46 +6,64 @@ keywords:
   - coverage
 tools:
   - allelecounter:
-      description: Takes a file of locations and a [cr|b]am file and generates a count of coverage of each allele at that location (given any filter settings)
+      description: Takes a file of locations and a [cr|b]am file and generates a count
+        of coverage of each allele at that location (given any filter settings)
       homepage: https://github.com/cancerit/alleleCount
       documentation: https://github.com/cancerit/alleleCount
       tool_dev_url: https://github.com/cancerit/alleleCount
       licence: ["GPL 3.0"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - input:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-  - input_index:
-      type: file
-      description: BAM/CRAM/SAM index file
-      pattern: "*.{bai,crai,sai}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input:
+        type: file
+        description: BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_3462" # CRAM
+          - edam: "http://edamontology.org/format_2573" # SAM
+    - input_index:
+        type: file
+        description: BAM/CRAM/SAM index file
+        pattern: "*.{bai,crai,sai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327" # BAI
+          - edam: "http://edamontology.org/format_3462" # CRAI
   - loci:
       type: file
       description: loci file <CHR><tab><POS1>
       pattern: "*.{tsv}"
+      ontologies:
+        - edam: "http://edamontology.org/format_3475" # TSV
   - fasta:
       type: file
       description: Input genome fasta file. Required when passing CRAM files.
+      ontologies:
+        - edam: "http://edamontology.org/format_1929" # FASTA
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - allelecount:
-      type: file
-      description: Allele count file
-      pattern: "*.{alleleCount}"
+  allelecount:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.alleleCount":
+          type: file
+          description: Allele count file
+          pattern: "*.{alleleCount}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@fullama"
   - "@fbdtemme"
