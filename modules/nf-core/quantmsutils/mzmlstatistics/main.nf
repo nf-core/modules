@@ -17,6 +17,9 @@ process QUANTMSUTILS_MZMLSTATISTICS {
     path "versions.yml", emit: versions
     tuple val(meta), path("*.log"), emit: log
 
+    when:
+    task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
 
