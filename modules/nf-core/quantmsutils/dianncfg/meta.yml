@@ -1,9 +1,9 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "quantmsutils_dianncfg"
 description: |
-  Generate DIA-NN configuration arguments from enzyme and modification parameters.
+  Generate DIA-NN configuration arguments from enzyme and Unimod modification parameters.
   This module uses quantms-utils to convert enzyme and modification specifications into DIA-NN-compatible command-line arguments.
-  It validates modifications against the Unimod database and handles special cases for labeling reagents.
+  Only supports Unimod modifications. For custom modifications, pass arguments directly to the DIANN module.
 keywords:
   - quantms-utils
   - diann
