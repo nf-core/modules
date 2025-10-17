@@ -64,7 +64,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.predicted.speclib":
+      - "${prefix}.predicted.speclib":
           type: file
           description: |
             Predicted spectral library from in-silico generation.
@@ -76,7 +76,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.speclib":
+      - "${prefix}.speclib":
           type: file
           description: |
             Empirical spectral library refined from experimental data.
@@ -89,7 +89,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.tsv.skyline.speclib":
+      - "${prefix}.tsv.skyline.speclib":
           type: file
           description: |
             Spectral library in Skyline format for use with Skyline software.
@@ -111,7 +111,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.tsv":
+      - "${prefix}.tsv":
           type: file
           description: |
             Main DIA-NN report in TSV format containing peptide and protein quantification.
@@ -123,7 +123,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.parquet":
+      - "${prefix}.parquet":
           type: file
           description: |
             Main DIA-NN report in Parquet format for efficient data access.
@@ -135,7 +135,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.manifest.txt":
+      - "${prefix}.manifest.txt":
           type: file
           description: |
             Report manifest file listing all output files.
@@ -147,7 +147,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.protein_description.tsv":
+      - "${prefix}.protein_description.tsv":
           type: file
           description: |
             Protein descriptions extracted from FASTA headers.
@@ -159,7 +159,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.stats.tsv":
+      - "${prefix}.stats.tsv":
           type: file
           description: |
             Report statistics including identification and quantification metrics.
@@ -171,7 +171,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.pr_matrix.tsv":
+      - "${prefix}.pr_matrix.tsv":
           type: file
           description: |
             Precursor-level quantification matrix (peptides across runs).
@@ -183,7 +183,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.pg_matrix.tsv":
+      - "${prefix}.pg_matrix.tsv":
           type: file
           description: |
             Protein group-level quantification matrix.
@@ -195,7 +195,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.gg_matrix.tsv":
+      - "${prefix}.gg_matrix.tsv":
           type: file
           description: |
             Gene group-level quantification matrix.
@@ -207,7 +207,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.unique_genes_matrix.tsv":
+      - "${prefix}.unique_genes_matrix.tsv":
           type: file
           description: |
             Unique genes quantification matrix.
