@@ -77,9 +77,9 @@ output:
       - "*.speclib":
           type: file
           description: |
-            Final/empirical spectral library in .speclib format.
-            Produced by empirical library assembly or other library generation steps.
-            Filename is determined by the prefix (task.ext.prefix or meta.id).
+            Empirical spectral library refined from experimental data.
+            Produced by the library assembly step, which combines predicted library
+            information with actual MS measurements to improve search accuracy.
           pattern: "*.speclib"
   skyline_speclib:
     - - meta:
