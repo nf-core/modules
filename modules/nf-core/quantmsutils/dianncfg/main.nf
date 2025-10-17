@@ -2,6 +2,7 @@ process QUANTMSUTILS_DIANNCFG {
     tag "$meta.id"
     label 'process_tiny'
 
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/quantms-utils:0.0.23--pyh7e72e81_0' :
         'biocontainers/quantms-utils:0.0.23--pyh7e72e81_0' }"
@@ -18,10 +19,6 @@ process QUANTMSUTILS_DIANNCFG {
     task.ext.when == null || task.ext.when
 
     script:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "QUANTMSUTILS_DIANNCFG module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
     def args = task.ext.args ?: ''
 
     """
@@ -38,10 +35,6 @@ process QUANTMSUTILS_DIANNCFG {
     """
 
     stub:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "QUANTMSUTILS_DIANNCFG module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
     def args = task.ext.args ?: ''
 
     """
