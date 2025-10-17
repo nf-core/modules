@@ -44,14 +44,14 @@ process DIANN {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}" ?: "diann"
     
-    // Handle MS files input: use ms_files if provided, otherwise fall back to ms_file_names. 
-    //Allows us to provide file names without staging the files, useful in certain scenarios.
+    // Handle MS files input: two modes depending on whether we need actual files or just names
+    // - ms_files: Actual file paths - used when DIA-NN needs to read raw MS data
+    // - ms_file_names: Just basenames - used with --use-quant when DIA-NN only needs file names
+    //   to match against preprocessed .quant files in quant/ directory, avoiding unnecessary file staging
     def ms_input = ''
     if (ms_files && ms_files != []) {
-        // ms_files provided (actual file paths for preliminary/assembly/individual analysis)
         ms_input = ms_files instanceof List ? ms_files.collect{ "--f ${it}" }.join(' ') : "--f ${ms_files}"
     } else if (ms_file_names && ms_file_names != []) {
-        // ms_file_names provided (just basenames for final quantification with --use-quant)
         ms_input = ms_file_names instanceof List ? ms_file_names.collect{ "--f ${it}" }.join(' ') : "--f ${ms_file_names}"
     }
     
