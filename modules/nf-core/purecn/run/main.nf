@@ -18,6 +18,7 @@ process PURECN_RUN {
     tuple val(meta), path("*.pdf")                             , emit: pdf
     tuple val(meta), path("*_local_optima.pdf")                , emit: local_optima_pdf
     tuple val(meta), path("*_dnacopy.seg")                     , emit: seg
+    tuple val(meta), path("${meta.id}.csv")                    , emit: csv
     tuple val(meta), path("*_genes.csv")                       , emit: genes_csv                   , optional: true
     tuple val(meta), path("*_amplification_pvalues.csv")       , emit: amplification_pvalues_csv   , optional: true
     tuple val(meta), path("*.vcf.gz")                          , emit: vcf_gz                      , optional: true
@@ -26,6 +27,7 @@ process PURECN_RUN {
     tuple val(meta), path("*_chromosomes.pdf")                 , emit: chr_pdf                     , optional: true
     tuple val(meta), path("*_segmentation.pdf")                , emit: segmentation_pdf            , optional: true
     tuple val(meta), path("*_multisample.seg")                 , emit: multisample_seg             , optional: true
+    tuple val(meta), path("*.log"),                            , emit: log, optional: true
     path "versions.yml"                                        , emit: versions
 
     when:
