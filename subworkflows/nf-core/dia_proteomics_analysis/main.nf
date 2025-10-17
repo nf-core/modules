@@ -7,6 +7,7 @@
 include { QUANTMSUTILS_DIANNCFG          } from '../../../modules/nf-core/quantmsutils/dianncfg/main'
 include { QUANTMSUTILS_MZMLSTATISTICS    } from '../../../modules/nf-core/quantmsutils/mzmlstatistics/main'
 include { QUANTMSUTILS_DIANN2MZTAB       } from '../../../modules/nf-core/quantmsutils/diann2mztab/main'
+include { THERMORAWFILEPARSER            } from '../../../modules/nf-core/thermorawfileparser/main'
 
 include { DIANN as DIANN_INSILICOLIBRARYGENERATION } from '../../../modules/nf-core/diann/main'
 include { DIANN as DIANN_PRELIMINARYANALYSIS } from '../../../modules/nf-core/diann/main'
@@ -151,6 +152,33 @@ workflow DIA_PROTEOMICS_ANALYSIS {
 
     ch_versions = Channel.empty()
     (random_preanalysis, random_preanalysis_n, random_preanalysis_seed) = random_preanalysis ?: [false, null, null]
+
+    //
+    // MODULE: Convert RAW files to mzML if needed
+    //
+    ch_input
+        .branch {
+            raw: it[1].toString().toLowerCase().endsWith('.raw')
+            other: true
+        }
+        .set { ch_input_branched }
+
+    THERMORAWFILEPARSER(ch_input_branched.raw.map { meta, ms_file, enzyme, fixed_mods, variable_mods, precursor_tolerance, fragment_tolerance, precursor_tolerance_unit, fragment_tolerance_unit ->
+        [meta, ms_file]
+    })
+    ch_versions = ch_versions.mix(THERMORAWFILEPARSER.out.versions)
+
+    // Reconstruct the input channel with converted files
+    ch_input_converted = THERMORAWFILEPARSER.out.spectra
+        .join(ch_input_branched.raw.map { meta, ms_file, enzyme, fixed_mods, variable_mods, precursor_tolerance, fragment_tolerance, precursor_tolerance_unit, fragment_tolerance_unit ->
+            [meta, enzyme, fixed_mods, variable_mods, precursor_tolerance, fragment_tolerance, precursor_tolerance_unit, fragment_tolerance_unit]
+        })
+        .map { meta, mzml, enzyme, fixed_mods, variable_mods, precursor_tolerance, fragment_tolerance, precursor_tolerance_unit, fragment_tolerance_unit ->
+            [meta, mzml, enzyme, fixed_mods, variable_mods, precursor_tolerance, fragment_tolerance, precursor_tolerance_unit, fragment_tolerance_unit]
+        }
+
+    // Combine converted and non-RAW files
+    ch_input = ch_input_branched.other.mix(ch_input_converted)
 
     //
     // Generate all combinations of inputs and create channel views with appropriate metadata
