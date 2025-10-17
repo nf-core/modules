@@ -6,8 +6,9 @@ process PURECN_COVERAGE {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/92/926f2b12a939f84566b934f3fd6136d33137130ed6563f70c3edf6664cdcc5c0/data':
-        'community.wave.seqera.io/library/bioconductor-org.hs.eg.db_bioconductor-purecn_bioconductor-txdb.hsapiens.ucsc.hg19.knowngene_bioconductor-txdb.hsapiens.ucsc.hg38.knowngene_r-optparse:53ad9839eb9a0de2' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bb/bbc033d8d6415ce4883f464e2ae565df077f564da10858e4db29f6c89ad10d4a/data':
+        'community.wave.seqera.io/library/bioconductor-dnacopy_bioconductor-org.hs.eg.db_bioconductor-purecn_bioconductor-txdb.hsapiens.ucsc.hg19.knowngene_pruned:7fef74d5cbdeecbe' }"
+
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -26,7 +27,7 @@ process PURECN_COVERAGE {
 
     script:
     def args = task.ext.args ?: ''
-    def VERSION = '2.4.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '2.12.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     if (task.stageInMode != 'link') {
         error "purecn/coverage can not handle staging files with symlinks. Please change the stageInmode option to 'Link'"
@@ -53,7 +54,7 @@ process PURECN_COVERAGE {
     def png          = args.contains("--skip-gc-norm") ? "" : "touch ${prefix}.png"
     def loess_qc_txt = args.contains("--skip-gc-norm") ? "" : "touch ${prefix}_loess_qc.txt"
     def loess_txt    = args.contains("--skip-gc-norm") ? "" : "echo | gzip > ${prefix}_loess.txt.gz"
-    def VERSION = '2.4.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def VERSION = '2.12.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     if (task.stageInMode != 'link') {
         error "purecn/coverage can not handle staging files with symlinks. Please change the stageInmode option to 'Link'"

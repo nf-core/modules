@@ -64,13 +64,8 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    file(process.out.database.get(0)).list().sort(),
-                    path(process.out.versions[0]).yaml,
-                    file(process.out.versions[0]).name,
-                    ).match()
-                }
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
             )
         }
     }
@@ -130,12 +125,8 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(
-                        file(process.out.database.get(0)).list().sort(),
-                        file(process.out.versions[0]).name,
-                    ).match()
-                }
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
             )
         }
     }

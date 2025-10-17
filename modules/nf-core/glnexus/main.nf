@@ -4,11 +4,11 @@ process GLNEXUS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/glnexus:1.4.1--h40d77a6_0' :
-        'biocontainers/glnexus:1.4.1--h40d77a6_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6c/6cf504ad8e4ebda286609fa3c1a5f9af68dbca9ec06bb4428e219e84754bd140/data' :
+        'community.wave.seqera.io/library/bcftools_glnexus:cf380f1a6410f606' }"
 
     input:
-    tuple val(meta), path(gvcfs)
+    tuple val(meta), path(gvcfs), path(custom_config)
     tuple val(meta2), path(bed)
 
     output:

@@ -1,0 +1,162 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "slamdunk_all"
+description: Complete SLAMseq analysis pipeline including read mapping, filtering, SNP calling, and quantification
+keywords:
+  - slamseq
+  - rna-seq
+  - mapping
+  - snp
+  - quantification
+tools:
+  - "slamdunk":
+      description: "Slamdunk is a software tool for SLAMseq data analysis that performs mapping, filtering, SNP calling, and quantification of metabolic RNA labeling experiments."
+      homepage: "http://t-neumann.github.io/slamdunk/docs.html"
+      documentation: "http://t-neumann.github.io/slamdunk/docs.html"
+      tool_dev_url: "https://github.com/t-neumann/slamdunk"
+      doi: "10.1186/s12859-019-2849-7"
+      licence: ["GNU Affero General Public License v3 (AGPL v3)"]
+      identifier: biotools:slamdunk
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - input:
+        type: file
+        description: Input FASTQ file(s) for SLAMseq analysis
+        pattern: "*.{bam,fastq,fq,fastq.gz,fq.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1930" # FASTQ
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'reference' ]`
+    - fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fasta,fa,fas,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing annotation information
+          e.g. `[ id:'annotation' ]`
+    - bed:
+        type: file
+        description: BED file with 3'UTR coordinates
+        pattern: "*.bed"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing annotation information
+          e.g. `[ id:'annotation' ]`
+    - filter_bed:
+        type: file
+        description: BED file with 3'UTR coordinates to filter multimappers
+        pattern: "*.bed"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "outputs/map/*.bam":
+          type: file
+          description: Mapped BAM file
+          pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+  filtered_bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "outputs/filter/*.bam":
+          type: file
+          description: Filtered BAM file with multimapper and PCR duplicate removal
+          pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+  filtered_bai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "outputs/filter/*.bam.bai":
+          type: file
+          description: BAM index file for filtered BAM
+          pattern: "*.bam.bai"
+          ontologies:
+            - edam: "http://edamontology.org/format_3327" # BAI
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "outputs/snp/*.vcf":
+          type: file
+          description: VCF file containing called SNPs/variants
+          pattern: "*.vcf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "outputs/count/*.tsv":
+          type: file
+          description: TSV file with T>C conversion counts and rates
+          pattern: "*.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  plus_bedgraph:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "outputs/count/*_plus.bedgraph":
+          type: file
+          description: BedGraph file with coverage on plus strand
+          pattern: "*_plus.bedgraph"
+          ontologies:
+            - edam: "http://edamontology.org/format_3583" # BedGraph
+  mins_bedgraph:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "outputs/count/*_mins.bedgraph":
+          type: file
+          description: BedGraph file with coverage on minus strand
+          pattern: "*_mins.bedgraph"
+          ontologies:
+            - edam: "http://edamontology.org/format_3583" # BedGraph
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+authors:
+  - "@haidyi"
+maintainers:
+  - "@haidyi"

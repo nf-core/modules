@@ -4,8 +4,8 @@ process SAMSHEE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3a/3afa0f69cc7ab7e3f9a80582958b8fa33d6673cb914e0f5bdc1c883f61e16073/data' :
-        'community.wave.seqera.io/library/samshee_python:96db61572eca797e' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/87/874139c488abfe0d65786bdbafea96a0768554c1a5e8e70a332708954b96dee7/data' :
+        'community.wave.seqera.io/library/samshee_python:df66f39f919076ff' }"
 
     input:
     tuple val(meta), path(samplesheet)

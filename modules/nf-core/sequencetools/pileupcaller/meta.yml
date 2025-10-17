@@ -29,39 +29,45 @@ input:
     - mpileup:
         type: file
         description: samtools mpileup output.
-  - - snpfile:
-        type: file
-        description: |
-          Eigenstrat format .snp file of the sites in the mpileup file to call genotypes on.
-          Only alleles matching the Ref and Alt alleles of the provided snp file will be called.
-  - - sample_names_fn:
-        type: file
-        description: File containing the sample names
+        ontologies: []
+  - snpfile:
+      type: file
+      description: |
+        Eigenstrat format .snp file of the sites in the mpileup file to call genotypes on.
+        Only alleles matching the Ref and Alt alleles of the provided snp file will be called.
+      ontologies: []
+  - sample_names_fn:
+      type: file
+      description: File containing the sample names
+      ontologies: []
 output:
   #Only when we have meta
-  - eigenstrat:
-      - meta:
+  eigenstrat:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.geno":
           type: file
-          description: A tuple containing the output Eigenstrat-formatted geno, snp and
-            ind files.
+          description: A tuple containing the output Eigenstrat-formatted geno, snp
+            and ind files.
           pattern: "*.{geno,snp,ind}.txt"
+          ontologies: []
       - "*.snp":
           type: file
-          description: A tuple containing the output Eigenstrat-formatted geno, snp and
-            ind files.
+          description: A tuple containing the output Eigenstrat-formatted geno, snp
+            and ind files.
           pattern: "*.{geno,snp,ind}.txt"
+          ontologies: []
       - "*.ind":
           type: file
-          description: A tuple containing the output Eigenstrat-formatted geno, snp and
-            ind files.
+          description: A tuple containing the output Eigenstrat-formatted geno, snp
+            and ind files.
           pattern: "*.{geno,snp,ind}.txt"
-  - plink:
-      - meta:
+          ontologies: []
+  plink:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -71,18 +77,21 @@ output:
           description: A tuple containing the output Plink-formatted bed, bim and fam
             files.
           pattern: "*.{bed,bim,fam}"
+          ontologies: []
       - "*.bim":
           type: file
           description: A tuple containing the output Plink-formatted bed, bim and fam
             files.
           pattern: "*.{bed,bim,fam}"
+          ontologies: []
       - "*.fam":
           type: file
           description: A tuple containing the output Plink-formatted bed, bim and fam
             files.
           pattern: "*.{bed,bim,fam}"
-  - freqsum:
-      - meta:
+          ontologies: []
+  freqsum:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -91,11 +100,15 @@ output:
           type: file
           description: The output freqsum-formatted file.
           pattern: "*.freqsum.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@TCLamnidis"
 maintainers:

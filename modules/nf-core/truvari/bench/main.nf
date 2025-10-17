@@ -4,8 +4,8 @@ process TRUVARI_BENCH {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/truvari:4.1.0--pyhdfd78af_0':
-        'biocontainers/truvari:4.1.0--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/truvari:5.3.0--pyhdfd78af_0':
+        'biocontainers/truvari:5.3.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi), path(truth_vcf), path(truth_tbi), path(bed)
@@ -13,16 +13,16 @@ process TRUVARI_BENCH {
     tuple val(meta3), path(fai)
 
     output:
-    tuple val(meta), path("*.fn.vcf.gz")            , emit: fn_vcf
-    tuple val(meta), path("*.fn.vcf.gz.tbi")        , emit: fn_tbi
-    tuple val(meta), path("*.fp.vcf.gz")            , emit: fp_vcf
-    tuple val(meta), path("*.fp.vcf.gz.tbi")        , emit: fp_tbi
-    tuple val(meta), path("*.tp-base.vcf.gz")       , emit: tp_base_vcf
-    tuple val(meta), path("*.tp-base.vcf.gz.tbi")   , emit: tp_base_tbi
-    tuple val(meta), path("*.tp-comp.vcf.gz")       , emit: tp_comp_vcf
-    tuple val(meta), path("*.tp-comp.vcf.gz.tbi")   , emit: tp_comp_tbi
-    tuple val(meta), path("*.summary.json")         , emit: summary
-    path "versions.yml"                             , emit: versions
+    tuple val(meta), path("*.fn.vcf.gz")         , emit: fn_vcf
+    tuple val(meta), path("*.fn.vcf.gz.tbi")     , emit: fn_tbi
+    tuple val(meta), path("*.fp.vcf.gz")         , emit: fp_vcf
+    tuple val(meta), path("*.fp.vcf.gz.tbi")     , emit: fp_tbi
+    tuple val(meta), path("*.tp-base.vcf.gz")    , emit: tp_base_vcf
+    tuple val(meta), path("*.tp-base.vcf.gz.tbi"), emit: tp_base_tbi
+    tuple val(meta), path("*.tp-comp.vcf.gz")    , emit: tp_comp_vcf
+    tuple val(meta), path("*.tp-comp.vcf.gz.tbi"), emit: tp_comp_tbi
+    tuple val(meta), path("*.summary.json")      , emit: summary
+    path "versions.yml"                          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -58,17 +58,15 @@ process TRUVARI_BENCH {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
-    touch ${prefix}.fn.vcf.gz
+    echo | gzip > ${prefix}.fn.vcf.gz
     touch ${prefix}.fn.vcf.gz.tbi
-    touch ${prefix}.fp.vcf.gz
+    echo | gzip > ${prefix}.fp.vcf.gz
     touch ${prefix}.fp.vcf.gz.tbi
-    touch ${prefix}.tp-base.vcf.gz
+    echo | gzip > ${prefix}.tp-base.vcf.gz
     touch ${prefix}.tp-base.vcf.gz.tbi
-    touch ${prefix}.tp-comp.vcf.gz
+    echo | gzip > ${prefix}.tp-comp.vcf.gz
     touch ${prefix}.tp-comp.vcf.gz.tbi
     touch ${prefix}.summary.json
 

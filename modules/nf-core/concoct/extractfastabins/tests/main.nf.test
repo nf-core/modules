@@ -90,10 +90,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                        process.out,
+                        path(process.out.versions[0]).yaml
+                    ).match() 
+                }
             )
         }
-
     }
 
     test("sarscov2 - bam - stub") {
@@ -115,10 +118,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                        process.out,
+                        path(process.out.versions[0]).yaml
+                    ).match() 
+                }
             )
         }
-
     }
-
 }

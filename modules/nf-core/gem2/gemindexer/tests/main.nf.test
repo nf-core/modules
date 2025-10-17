@@ -1,0 +1,56 @@
+nextflow_process {
+
+    name "Test Process GEM2_GEMINDEXER"
+
+    script "../main.nf"
+    process "GEM2_GEMINDEXER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gem2"
+    tag "gem2/gemindexer"
+
+    test("test_gem2_gemindexer") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test',single_end:false],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta',checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.index,
+                    file(process.out.log[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+    
+    
+    test("test_gem2_gemindexer -- stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test',single_end:false],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta',checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

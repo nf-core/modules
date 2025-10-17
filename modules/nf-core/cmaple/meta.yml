@@ -1,0 +1,82 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: cmaple
+description: Efficient phylogenetic tree reconstruction for sequences using the CMAPLE algorithm
+keywords:
+  - phylogeny
+  - phylogenetic tree
+  - maximum likelihood
+  - dna
+  - amino acid
+  - alignment
+  - tree reconstruction
+  - cmaple
+  - iqtree
+tools:
+  - cmaple:
+      description: |
+        CMAPLE (Comprehensive Maximum-likelihood Analysis for Phylogenetic Likelihood Estimation)
+        is an efficient implementation of the MAPLE algorithm for phylogenetic tree reconstruction,
+        particularly optimized for pathogen sequences with low divergence such as SARS-CoV-2.
+        It is integrated within IQ-TREE.
+      homepage: "https://github.com/iqtree/cmaple"
+      documentation: "https://github.com/iqtree/cmaple/wiki/User-Manual"
+      tool_dev_url: "https://github.com/iqtree/cmaple"
+      doi: "10.1093/molbev/msae134"
+      licence: ["GPL-2.0"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - aln:
+        type: file
+        description: Multiple sequence alignment file in FASTA, PHYLIP, or MAPLE format
+        pattern: "*.{fa,fasta,faa,fna,fas,aln,afa,phy,phylip,maple}"
+    - newick:
+        type: file
+        description: A Newick formatted tree based on multiple sequence alignment
+        pattern: "*.{newick,nwk,treefile}"
+        ontologies:
+          - edam: http://edamontology.org/format_1910 # newick
+
+output:
+  treefile:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.treefile":
+          type: file
+          description: Maximum likelihood phylogenetic tree in Newick format
+          pattern: "*.treefile"
+          ontologies:
+            - edam: http://edamontology.org/format_1910 # newick
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.log":
+          type: file
+          description: Log file containing detailed information about the tree reconstruction process
+          pattern: "*.log"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Textual format
+
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"
