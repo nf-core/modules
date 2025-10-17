@@ -107,8 +107,8 @@ input:
         If provided, skips preliminary analysis and empirical library assembly.
         Applied to all samples in the workflow.
         Structure: path(empirical_library)
-        e.g. `file('empirical_library.tsv')`
-      pattern: "*.{tsv,speclib}"
+        e.g. `file('empirical_library.speclib')`
+      pattern: "*.speclib"
   - ch_empirical_log_in:
       type: channel
       description: |

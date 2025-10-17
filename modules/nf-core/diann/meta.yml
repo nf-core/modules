@@ -64,38 +64,35 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.predicted.speclib":
           type: file
-          description: Predicted spectral library from in-silico generation
-          pattern: "*.predicted.speclib"
-  empirical_library:
-    - - meta:
-          type: map
           description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - "empirical_library.*":
-          type: file
-          description: Empirical spectral library in .speclib format (from assembly)
-          pattern: "empirical_library.*"
+            Predicted spectral library from in-silico generation.
+            Filename is determined by the prefix (task.ext.prefix or meta.id).
+          pattern: "*.predicted.speclib"
   final_speclib:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "empirical_library.tsv":
+      - "*.speclib":
           type: file
-          description: Final spectral library in TSV format
-          pattern: "empirical_library.tsv"
+          description: |
+            Final/empirical spectral library in .speclib format.
+            Produced by empirical library assembly or other library generation steps.
+            Filename is determined by the prefix (task.ext.prefix or meta.id).
+          pattern: "*.speclib"
   skyline_speclib:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "empirical_library.tsv.skyline.speclib":
+      - "*.tsv.skyline.speclib":
           type: file
-          description: Spectral library in Skyline format for use with Skyline software
-          pattern: "empirical_library.tsv.skyline.speclib"
+          description: |
+            Spectral library in Skyline format for use with Skyline software.
+            Filename is determined by the prefix (task.ext.prefix or meta.id).
+          pattern: "*.tsv.skyline.speclib"
   diann_quant:
     - - meta:
           type: map
@@ -112,90 +109,108 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "diann_report.tsv":
+      - "*.tsv":
           type: file
-          description: Main DIA-NN report in TSV format containing peptide and protein quantification
-          pattern: "diann_report.tsv"
+          description: |
+            Main DIA-NN report in TSV format containing peptide and protein quantification.
+            Filename is determined by the prefix (task.ext.prefix or meta.id).
+          pattern: "*.tsv"
   report_parquet:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "diann_report.parquet":
+      - "*.parquet":
           type: file
-          description: Main DIA-NN report in Parquet format for efficient data access
-          pattern: "diann_report.parquet"
+          description: |
+            Main DIA-NN report in Parquet format for efficient data access.
+            Filename is determined by the prefix (task.ext.prefix or meta.id).
+          pattern: "*.parquet"
   report_manifest:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "diann_report.manifest.txt":
+      - "*.manifest.txt":
           type: file
-          description: Report manifest file listing all output files
-          pattern: "diann_report.manifest.txt"
+          description: |
+            Report manifest file listing all output files.
+            Filename is determined by the prefix (task.ext.prefix or meta.id).
+          pattern: "*.manifest.txt"
   protein_description:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "diann_report.protein_description.tsv":
+      - "*.protein_description.tsv":
           type: file
-          description: Protein descriptions extracted from FASTA headers
-          pattern: "diann_report.protein_description.tsv"
+          description: |
+            Protein descriptions extracted from FASTA headers.
+            Filename is determined by the prefix (task.ext.prefix or meta.id).
+          pattern: "*.protein_description.tsv"
   report_stats:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "diann_report.stats.tsv":
+      - "*.stats.tsv":
           type: file
-          description: Report statistics including identification and quantification metrics
-          pattern: "diann_report.stats.tsv"
+          description: |
+            Report statistics including identification and quantification metrics.
+            Filename is determined by the prefix (task.ext.prefix or meta.id).
+          pattern: "*.stats.tsv"
   pr_matrix:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "diann_report.pr_matrix.tsv":
+      - "*.pr_matrix.tsv":
           type: file
-          description: Precursor-level quantification matrix (peptides across runs)
-          pattern: "diann_report.pr_matrix.tsv"
+          description: |
+            Precursor-level quantification matrix (peptides across runs).
+            Filename is determined by the prefix (task.ext.prefix or meta.id).
+          pattern: "*.pr_matrix.tsv"
   pg_matrix:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "diann_report.pg_matrix.tsv":
+      - "*.pg_matrix.tsv":
           type: file
-          description: Protein group-level quantification matrix
-          pattern: "diann_report.pg_matrix.tsv"
+          description: |
+            Protein group-level quantification matrix.
+            Filename is determined by the prefix (task.ext.prefix or meta.id).
+          pattern: "*.pg_matrix.tsv"
   gg_matrix:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "diann_report.gg_matrix.tsv":
+      - "*.gg_matrix.tsv":
           type: file
-          description: Gene group-level quantification matrix
-          pattern: "diann_report.gg_matrix.tsv"
+          description: |
+            Gene group-level quantification matrix.
+            Filename is determined by the prefix (task.ext.prefix or meta.id).
+          pattern: "*.gg_matrix.tsv"
   unique_gene_matrix:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "diann_report.unique_genes_matrix.tsv":
+      - "*.unique_genes_matrix.tsv":
           type: file
-          description: Unique genes quantification matrix
-          pattern: "diann_report.unique_genes_matrix.tsv"
+          description: |
+            Unique genes quantification matrix.
+            Filename is determined by the prefix (task.ext.prefix or meta.id).
+          pattern: "*.unique_genes_matrix.tsv"
   log:
     - - meta:
           type: map
