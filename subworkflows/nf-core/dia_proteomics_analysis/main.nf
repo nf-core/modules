@@ -319,13 +319,13 @@ workflow DIA_PROTEOMICS_ANALYSIS {
     // Derive suggested settings from DIA-NN log
     //
 
-    ch_empirical_output = DIANN_ASSEMBLEEMPIRICALLIBRARY.out.empirical_library // [meta_exp_searchdb, empirical_library]
-        .join(DIANN_ASSEMBLEEMPIRICALLIBRARY.out.log)                          // [meta_exp_searchdb, empirical_library, diann_log]
+    ch_empirical_output = DIANN_ASSEMBLEEMPIRICALLIBRARY.out.final_speclib // [meta_exp_searchdb, empirical_library]
+        .join(DIANN_ASSEMBLEEMPIRICALLIBRARY.out.log)                       // [meta_exp_searchdb, empirical_library, diann_log]
         .mix(ch_empirical)
         .map{ meta_exp_searchdb, empirical_library, diann_log ->
             def logSettings = extractDiannMassAccuracyFromLog(diann_log)
             [meta_exp_searchdb, logSettings, empirical_library]
-        }                                                                      // [meta_exp_searchdb, logSettings, empirical_library]
+        }                                                                    // [meta_exp_searchdb, logSettings, empirical_library]
 
     //
     // Generate mass accuracy settings combining the settings from the log and the settings from the input
