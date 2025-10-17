@@ -58,8 +58,9 @@ process DIANN {
     def fasta_input = fasta && fasta != [] ? "--fasta ${fasta}" : ''
     def lib_input = library && library != [] ? "--lib ${library}" : ''
 
-    // Determine temp directory based on whether quant files are provided
-    def temp_dir = quant && quant != [] ? "--temp ./quant/" : "--temp ./"
+    // When quant files are provided, set temp directory and enable --use-quant
+    // These flags must be used together: --temp points to quant files, --use-quant tells DIA-NN to use them
+    def quant_args = quant && quant != [] ? "--temp ./quant/ --use-quant" : "--temp ./"
 
     """
     diann \\
@@ -69,7 +70,7 @@ process DIANN {
         --threads ${task.cpus} \\
         --out-lib ${prefix} \\
         --out ${prefix}.tsv \\
-        ${temp_dir} \\
+        ${quant_args} \\
         ${args}
 
     cat <<-END_VERSIONS > versions.yml
