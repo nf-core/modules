@@ -24,7 +24,9 @@ input:
     - ms_files:
         type: file
         description: |
-          MS data file(s) in mzML, Thermo RAW, or Bruker .d format (can be single file or list).
+          MS data file(s) in mzML or Bruker .d format (can be single file or list).
+          Thermo RAW files are only supported on Linux with DIA-NN 2.0+; older versions
+          require conversion to mzML or .d format first.
           For preliminary/assembly/individual analysis, these are actual file paths.
           For final quantification with --use-quant, this should be an empty list.
         pattern: "*.{mzML,raw,d}"
