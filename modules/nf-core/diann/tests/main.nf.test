@@ -55,6 +55,8 @@ nextflow_process {
 
     test("proteomics - preliminary analysis") {
         config "./nextflow_preliminaryanalysis.config"
+        tag 'foo'
+
 
         when {
             process {
@@ -97,7 +99,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path("${process.out.log[0][1]}").exists() },
-                { assert path("${process.out.empirical_library[0][1]}").exists() },
+                { assert path("${process.out.final_speclib[0][1]}").exists() },
                 { assert snapshot(
                     process.out.versions
                 ).match() }

@@ -11,24 +11,23 @@ process DIANN {
 
     output:
     // Library outputs
-    tuple val(meta), path("*.predicted.speclib"), emit: predict_speclib, optional: true
-    tuple val(meta), path("empirical_library.*"), emit: empirical_library, optional: true
-    tuple val(meta), path("empirical_library.tsv"), emit: final_speclib, optional: true
-    tuple val(meta), path("empirical_library.tsv.skyline.speclib"), emit: skyline_speclib, optional: true
+    tuple val(meta), path("${prefix}.predicted.speclib"), emit: predict_speclib, optional: true
+    tuple val(meta), path("${prefix}.speclib"), emit: final_speclib, optional: true
+    tuple val(meta), path("${prefix}.tsv.skyline.speclib"), emit: skyline_speclib, optional: true
     
     // Quantification outputs
     tuple val(meta), path("*.quant"), emit: diann_quant, optional: true
     
     // Report outputs (from final quantification)
-    tuple val(meta), path("diann_report.tsv"), emit: main_report, optional: true
-    tuple val(meta), path("diann_report.parquet"), emit: report_parquet, optional: true
-    tuple val(meta), path("diann_report.manifest.txt"), emit: report_manifest, optional: true
-    tuple val(meta), path("diann_report.protein_description.tsv"), emit: protein_description, optional: true
-    tuple val(meta), path("diann_report.stats.tsv"), emit: report_stats, optional: true
-    tuple val(meta), path("diann_report.pr_matrix.tsv"), emit: pr_matrix, optional: true
-    tuple val(meta), path("diann_report.pg_matrix.tsv"), emit: pg_matrix, optional: true
-    tuple val(meta), path("diann_report.gg_matrix.tsv"), emit: gg_matrix, optional: true
-    tuple val(meta), path("diann_report.unique_genes_matrix.tsv"), emit: unique_gene_matrix, optional: true
+    tuple val(meta), path("${prefix}.tsv"), emit: main_report, optional: true
+    tuple val(meta), path("${prefix}.parquet"), emit: report_parquet, optional: true
+    tuple val(meta), path("${prefix}.manifest.txt"), emit: report_manifest, optional: true
+    tuple val(meta), path("${prefix}.protein_description.tsv"), emit: protein_description, optional: true
+    tuple val(meta), path("${prefix}.stats.tsv"), emit: report_stats, optional: true
+    tuple val(meta), path("${prefix}.pr_matrix.tsv"), emit: pr_matrix, optional: true
+    tuple val(meta), path("${prefix}.pg_matrix.tsv"), emit: pg_matrix, optional: true
+    tuple val(meta), path("${prefix}.gg_matrix.tsv"), emit: gg_matrix, optional: true
+    tuple val(meta), path("${prefix}.unique_genes_matrix.tsv"), emit: unique_gene_matrix, optional: true
     
     // Common outputs
     tuple val(meta), path("*.log.txt"), emit: log
@@ -43,7 +42,7 @@ process DIANN {
         error "DIANN module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}" ?: "diann"
     
     // Handle MS files input: use ms_files if provided, otherwise fall back to ms_file_names. 
     //Allows us to provide file names without staging the files, useful in certain scenarios.
@@ -68,6 +67,8 @@ process DIANN {
         ${fasta_input} \\
         ${lib_input} \\
         --threads ${task.cpus} \\
+        --out-lib ${prefix} \\
+        --out ${prefix}.tsv \\
         ${temp_dir} \\
         ${args}
 
@@ -82,28 +83,28 @@ process DIANN {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "DIANN module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}" ?: "diann"
 
     """
     # Library outputs
     touch ${prefix}.predicted.speclib
-    touch empirical_library.speclib
-    touch empirical_library.tsv
-    touch empirical_library.tsv.skyline.speclib
+    touch ${prefix}.speclib
+    touch ${prefix}.tsv
+    touch ${prefix}.tsv.skyline.speclib
     
     # Quant outputs
     touch ${prefix}.quant
     
     # Report outputs
-    touch diann_report.tsv
-    touch diann_report.parquet
-    touch diann_report.manifest.txt
-    touch diann_report.protein_description.tsv
-    touch diann_report.stats.tsv
-    touch diann_report.pr_matrix.tsv
-    touch diann_report.pg_matrix.tsv
-    touch diann_report.gg_matrix.tsv
-    touch diann_report.unique_genes_matrix.tsv
+    touch ${prefix}.tsv
+    touch ${prefix}.parquet
+    touch ${prefix}.manifest.txt
+    touch ${prefix}.protein_description.tsv
+    touch ${prefix}.stats.tsv
+    touch ${prefix}.pr_matrix.tsv
+    touch ${prefix}.pg_matrix.tsv
+    touch ${prefix}.gg_matrix.tsv
+    touch ${prefix}.unique_genes_matrix.tsv
     
     # Common outputs
     touch ${prefix}.log
