@@ -51,9 +51,9 @@ input:
         type: directory
         description: |
           Directory containing .quant files from previous DIA-NN analysis.
-          Required for empirical library assembly and final quantification.
-          Use a placeholder directory (e.g., 'NO_QUANT_DIR') if not needed.
-          Files are staged as 'quant/*' in the work directory.
+          When provided, enables --use-quant mode to reuse cached quantification results,
+          improving performance for empirical library assembly and final quantification.
+          Pass empty list [] if not needed. Files are staged as 'quant/*' in the work directory.
 
 output:
   predict_speclib:
