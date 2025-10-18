@@ -63,9 +63,8 @@ process GATK4_CNNSCOREVARIANTS {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
-    echo "" | gzip -c > ${prefix}.cnn.vcf.gz
+    echo | gzip -c > ${prefix}.cnn.vcf.gz
     touch ${prefix}.cnn.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
