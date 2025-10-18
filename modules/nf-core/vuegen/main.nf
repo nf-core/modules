@@ -1,7 +1,7 @@
 process VUEGEN {
     label 'process_single'
     conda "${moduleDir}/environment.yml"
-    container "dtu_biosustain_dsp/vuegen:v0.3.2-nextflow"
+    container "dtu_biosustain_dsp/vuegen:v0.5.1-nextflow"
 
     input:
         val input_type
