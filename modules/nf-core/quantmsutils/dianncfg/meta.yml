@@ -1,0 +1,69 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "quantmsutils_dianncfg"
+description: |
+  Generate DIA-NN configuration arguments from enzyme and Unimod modification parameters.
+  This module uses quantms-utils to convert enzyme and modification specifications into DIA-NN-compatible command-line arguments.
+  Only supports Unimod modifications. For custom modifications, pass arguments directly to the DIANN module.
+keywords:
+  - quantms-utils
+  - diann
+  - configuration
+  - enzyme
+  - modifications
+tools:
+  - "quantms-utils":
+      description: |
+        quantms-utils is a Python package with scripts and functions for quantitative proteomics data analysis.
+        The dianncfg command converts enzyme and modification parameters to DIA-NN-compatible format.
+      homepage: "https://github.com/bigbio/quantms-utils"
+      documentation: "https://github.com/bigbio/quantms-utils"
+      tool_dev_url: "https://github.com/bigbio/quantms-utils"
+      licence: ["MIT"]
+      identifier: "biotools:quantms-utils"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - enzyme:
+        type: string
+        description: Enzyme name for protein digestion (e.g., 'Trypsin', 'Trypsin/P')
+        pattern: ".*"
+    - fixed_modifications:
+        type: string
+        description: Fixed modifications in Unimod format (e.g., 'Carbamidomethyl (C)')
+        pattern: ".*"
+    - variable_modifications:
+        type: string
+        description: Variable modifications in Unimod format (e.g., 'Oxidation (M)')
+        pattern: ".*"
+output:
+  diann_cfg:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "diann_config.cfg":
+          type: file
+          description: DIA-NN configuration file containing command-line arguments
+          pattern: "diann_config.cfg"
+  log:
+    - "*.log":
+        type: file
+        description: Log file from configuration generation
+        pattern: "*.log"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@daichengxin"
+  - "@pinin4fjords"
+maintainers:
+  - "@daichengxin"
+  - "@pinin4fjords"

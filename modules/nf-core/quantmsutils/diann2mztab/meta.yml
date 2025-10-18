@@ -1,0 +1,104 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "quantmsutils_diann2mztab"
+description: "Convert DIA-NN results to mzTab, MSstats, and Triqler formats using quantms-utils"
+keywords:
+  - "quantms-utils"
+  - "diann"
+  - "mztab"
+  - "msstats"
+  - "triqler"
+  - "proteomics"
+tools:
+  - "quantms-utils":
+      description: "quantms-utils is a Python package for proteomics data processing"
+      homepage: "https://github.com/bigbio/quantms-utils"
+      documentation: "https://quantms-utils.readthedocs.io/"
+      tool_dev_url: "https://github.com/bigbio/quantms-utils"
+      licence: ["MIT"]
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', name:'test', condition:'test' ]
+    - report:
+        type: file
+        description: "DIA-NN main report file (tsv or parquet)"
+        pattern: "*.{tsv,parquet}"
+    - report_pg:
+        type: file
+        description: "DIA-NN protein group matrix file"
+        pattern: "*.tsv"
+    - report_pr:
+        type: file
+        description: "DIA-NN precursor matrix file"
+        pattern: "*.tsv"
+    - "version/versions.yml":
+        type: file
+        description: "DIA-NN versions file (staged as version/versions.yml)"
+        pattern: "versions.yml"
+    - exp_design:
+        type: file
+        description: "Experimental design file describing sample conditions"
+        pattern: "*.tsv"
+    - ms_information:
+        type: file
+        description: "MS statistics/information files in parquet format"
+        pattern: "*.parquet"
+    - fasta:
+        type: file
+        description: "FASTA database file used for the search"
+        pattern: "*.{fasta,fa}"
+output:
+  out_msstats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', name:'test', condition:'test' ]
+      - "*msstats_in.csv":
+          type: file
+          description: "MSstats input file for statistical analysis"
+          pattern: "*msstats_in.csv"
+  out_triqler:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', name:'test', condition:'test' ]
+      - "*triqler_in.tsv":
+          type: file
+          description: "Triqler input file for protein quantification with uncertainty"
+          pattern: "*triqler_in.tsv"
+  out_mztab:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', name:'test', condition:'test' ]
+      - "*.mzTab":
+          type: file
+          description: "mzTab output file (standard proteomics exchange format)"
+          pattern: "*.mzTab"
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', name:'test', condition:'test' ]
+      - "*.log":
+          type: file
+          description: "Log file from conversion process"
+          pattern: "*.log"
+  versions:
+    - versions.yml:
+        type: file
+        description: "File containing software versions"
+        pattern: "versions.yml"
+authors:
+  - "@daichengxin"
+  - "@wanghong"
+  - "@pinin4fjords"
+maintainers:
+  - "@daichengxin"
+  - "@pinin4fjords"

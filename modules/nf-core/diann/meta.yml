@@ -1,0 +1,235 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "diann"
+description: Generic DIA-NN module for running any DIA-NN operation including in-silico library generation, preliminary analysis, empirical library assembly, individual analysis, and final quantification
+keywords:
+  - proteomics
+  - mass spectrometry
+  - DIA
+  - spectral library
+  - quantification
+tools:
+  - "diann":
+      description: "DIA-NN - a fast and easy to use tool for processing data independent acquisition (DIA) proteomics data"
+      homepage: "https://github.com/vdemichev/DiaNN"
+      documentation: "https://github.com/vdemichev/DiaNN#readme"
+      tool_dev_url: "https://github.com/vdemichev/DiaNN"
+      licence: ['Custom', 'https://raw.githubusercontent.com/vdemichev/DiaNN/master/LICENSE.txt']
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - ms_files:
+        type: file
+        description: |
+          MS data file(s) in mzML or Bruker .d format (can be single file or list).
+          Thermo RAW files are only supported on Linux with DIA-NN 2.0+; older versions
+          require conversion to mzML or .d format first.
+          For preliminary/assembly/individual analysis, these are actual file paths.
+          For final quantification with --use-quant, this should be an empty list.
+        pattern: "*.{mzML,raw,d}"
+    - ms_file_names:
+        type: string
+        description: |
+          MS file basenames (not paths) as strings (can be single name or list).
+          Used for final quantification step with --use-quant where only filenames are needed.
+          For other analysis steps, this should be an empty list.
+          Example: ['sample1.mzML', 'sample2.mzML'] or []
+    - fasta:
+        type: file
+        description: |
+          FASTA database file for peptide searches.
+          Use a placeholder file (e.g., 'NO_FASTA_FILE') if not needed for the specific analysis step.
+        pattern: "*.{fasta,fa}"
+    - library:
+        type: file
+        description: |
+          Spectral library file in .speclib or .tsv format.
+          Use a placeholder file (e.g., 'NO_LIB_FILE') if not needed for the specific analysis step.
+        pattern: "*.{speclib,tsv}"
+    - quant:
+        type: directory
+        description: |
+          Directory containing .quant files from previous DIA-NN analysis.
+          When provided, enables --use-quant mode to reuse cached quantification results,
+          improving performance for empirical library assembly and final quantification.
+          Pass empty list [] if not needed. Files are staged as 'quant/*' in the work directory.
+
+output:
+  predict_speclib:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.predicted.speclib":
+          type: file
+          description: |
+            Predicted spectral library from in-silico generation.
+            Filename is determined by the prefix (task.ext.prefix or meta.id).
+          pattern: "*.predicted.speclib"
+  final_speclib:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.speclib":
+          type: file
+          description: |
+            Empirical spectral library refined from experimental data.
+            Produced by the library assembly step, which combines predicted library
+            information with actual MS measurements to improve search accuracy.
+          pattern: "*.speclib"
+  skyline_speclib:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.tsv.skyline.speclib":
+          type: file
+          description: |
+            Spectral library in Skyline format for use with Skyline software.
+            Filename is determined by the prefix (task.ext.prefix or meta.id).
+          pattern: "*.tsv.skyline.speclib"
+  diann_quant:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.quant":
+          type: file
+          description: Quantification results in .quant format (intermediate output for empirical library assembly and final quantification)
+          pattern: "*.quant"
+  main_report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.tsv":
+          type: file
+          description: |
+            Main DIA-NN report in TSV format containing peptide and protein quantification.
+            Filename is determined by the prefix (task.ext.prefix or meta.id).
+          pattern: "*.tsv"
+  report_parquet:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.parquet":
+          type: file
+          description: |
+            Main DIA-NN report in Parquet format for efficient data access.
+            Filename is determined by the prefix (task.ext.prefix or meta.id).
+          pattern: "*.parquet"
+  report_manifest:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.manifest.txt":
+          type: file
+          description: |
+            Report manifest file listing all output files.
+            Filename is determined by the prefix (task.ext.prefix or meta.id).
+          pattern: "*.manifest.txt"
+  protein_description:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.protein_description.tsv":
+          type: file
+          description: |
+            Protein descriptions extracted from FASTA headers.
+            Filename is determined by the prefix (task.ext.prefix or meta.id).
+          pattern: "*.protein_description.tsv"
+  report_stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.stats.tsv":
+          type: file
+          description: |
+            Report statistics including identification and quantification metrics.
+            Filename is determined by the prefix (task.ext.prefix or meta.id).
+          pattern: "*.stats.tsv"
+  pr_matrix:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.pr_matrix.tsv":
+          type: file
+          description: |
+            Precursor-level quantification matrix (peptides across runs).
+            Filename is determined by the prefix (task.ext.prefix or meta.id).
+          pattern: "*.pr_matrix.tsv"
+  pg_matrix:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.pg_matrix.tsv":
+          type: file
+          description: |
+            Protein group-level quantification matrix.
+            Filename is determined by the prefix (task.ext.prefix or meta.id).
+          pattern: "*.pg_matrix.tsv"
+  gg_matrix:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.gg_matrix.tsv":
+          type: file
+          description: |
+            Gene group-level quantification matrix.
+            Filename is determined by the prefix (task.ext.prefix or meta.id).
+          pattern: "*.gg_matrix.tsv"
+  unique_gene_matrix:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.unique_genes_matrix.tsv":
+          type: file
+          description: |
+            Unique genes quantification matrix.
+            Filename is determined by the prefix (task.ext.prefix or meta.id).
+          pattern: "*.unique_genes_matrix.tsv"
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.log.txt":
+          type: file
+          description: DIA-NN log file containing run information and recommended settings
+          pattern: "*.log.txt"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"
