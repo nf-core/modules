@@ -1,0 +1,104 @@
+nextflow_process {
+
+    name "Test Process ENTREZDIRECT_XTRACT"
+    
+    script "../main.nf"
+    process "ENTREZDIRECT_XTRACT"
+   
+    tag "modules"
+    tag "modules_nfcore"
+    tag "entrezdirect"
+    tag "entrezdirect/esummary"
+    tag "entrezdirect/xtract"
+   
+    test("assembly") {
+        setup {
+            run("ENTREZDIRECT_ESUMMARY") {
+                script "../../esummary/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id:'test_assembly'],// meta map
+                        '191021',
+                        []
+                    ]
+                    input[1] = "assembly"
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = ENTREZDIRECT_ESUMMARY.out.xml
+                input[1] = "DocumentSummary"
+                input[2] = "SpeciesName BioprojectAccn FtpPath_GenBank"
+                input[3] = ","
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("genome") {
+        
+        setup {
+            run("ENTREZDIRECT_ESUMMARY") {
+                script "../../esummary/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id:'test_genome'],// meta map
+                        '768',
+                        []
+                    ]
+                    input[1] = 'genome'
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = ENTREZDIRECT_ESUMMARY.out.xml
+                input[1] = 'DocumentSummary'
+                input[2] = 'TaxId Organism_Name Project_Accession Assembly_Accession'
+                input[3] = ","
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("genome - stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [[id: "test"], []]
+                input[1] = 'DocumentSummary'
+                input[2] = 'TaxId Organism_Name Project_Accession Assembly_Accession'
+                input[3] = ","
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

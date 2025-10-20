@@ -1,0 +1,153 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "hasheddrops"
+description: Generating cell hashing calls from a matrix of count data.
+keywords:
+  - demultiplexing
+  - hashing-based deconvolution
+  - single-cell
+tools:
+  - "hasheddrops":
+      description: "Demultiplex cell barcodes into their samples of origin based on
+        the most abundant hash tag oligo (HTO). Also identify potential doublets based
+        on the presence of multiple significant HTOs."
+      homepage: "https://rdrr.io/github/MarioniLab/DropletUtils/man/hashedDrops.html"
+      documentation: "https://rdrr.io/github/MarioniLab/DropletUtils/man/hashedDrops.html"
+      tool_dev_url: "https://github.com/MarioniLab/DropletUtils"
+      doi: "10.18129/B9.bioc.DropletUtils"
+      licence: ["GPL-3"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - hto_matrix:
+        type: file
+        description: |
+          Directory that contains the HTO matrix in a 10X format.
+        ontologies:
+          - edam: "http://edamontology.org/data_3917" # count matrix
+    - runEmptyDrops:
+        type: boolean
+        description: |
+          Run EmptyDrops() before hashedDrops() ("TRUE") or not ("FALSE").
+    - rna_matrix:
+        type: file
+        description: |
+          Path to RNA count matrix, which is only uses if runEmptyDrops == "TRUE".
+        ontologies:
+          - edam: "http://edamontology.org/data_3917" # count matrix
+
+output:
+  empty_drops_plot:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_emptyDrops.png":
+          type: file
+          description: |
+            EmptyDrops results plot
+          pattern: "_emptyDrops.png"
+          ontologies: []
+  empty_drops_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_emptyDrops.csv":
+          type: file
+          description: |
+            EmptyDrops results in CSV format
+          pattern: "_emptyDrops.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  empty_drops_rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_emptyDrops.rds":
+          type: file
+          description: |
+            EmptyDrops results in RDS format
+          pattern: "_emptyDrops.rds"
+          ontologies: []
+  results:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_results_hasheddrops.csv":
+          type: file
+          description: |
+            HashedDrops results
+          pattern: "_results_hasheddrops.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  id_to_hash:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_id_to_hash.csv":
+          type: file
+          description: |
+            A table mapping integer indices used by hashedDrops results (e.g. the column `Best` or `Second`) to HTO names (or combinations of HTO names joined with `+` if `combinations` is speficied in `ext.args`).
+          pattern: "_id_to_hash.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_hasheddrops.rds":
+          type: file
+          description: |
+            HashedDrops results in RDS format
+          pattern: "_hasheddrops.rds"
+          ontologies: []
+  plot:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_plot_hasheddrops.png":
+          type: file
+          description: |
+            HashedDrops plot
+          pattern: "_plot_hasheddrops.png"
+          ontologies: []
+  params:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_params_hasheddrops.csv":
+          type: file
+          description: |
+            The used parameters to call hashedDrops() in the R-Script.
+          pattern: "_params_hasheddrops.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions.
+
+        ontologies: []
+authors:
+  - "@LuisHeinzlmeier"
+maintainers:
+  - "@LuisHeinzlmeier"

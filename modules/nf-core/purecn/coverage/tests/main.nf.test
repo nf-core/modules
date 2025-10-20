@@ -1,0 +1,92 @@
+nextflow_process {
+
+    name "Test Process PURECN_COVERAGE"
+    script "../main.nf"
+    process "PURECN_COVERAGE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "purecn"
+    tag "purecn/coverage"
+    config './nextflow.config'
+
+    test("homo_sapiens - skip_gc") {
+        when {
+            params {
+                module_args = "--skip-gc-norm"
+            }
+            process {
+                """
+                input[0] =  [ [ id:'test' ],
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/purecn/purecn_ex1.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/purecn/purecn_ex1.bam.bai', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/purecn/purecn_ex1_intervals.txt', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - stub") {
+        options "-stub"
+
+        when {
+            params {
+                module_args = ""
+            }
+            process {
+                """
+                input[0] =  [ [ id:'test' ],
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/purecn/purecn_ex1.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/purecn/purecn_ex1.bam.bai', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/purecn/purecn_ex1_intervals.txt', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - skip_gc - stub") {
+        options "-stub"
+
+        when {
+            params {
+                module_args = "--skip-gc-norm"
+            }
+            process {
+                """
+                input[0] =  [ [ id:'test' ],
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/purecn/purecn_ex1.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/purecn/purecn_ex1.bam.bai', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/purecn/purecn_ex1_intervals.txt', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

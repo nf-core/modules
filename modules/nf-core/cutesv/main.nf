@@ -4,7 +4,7 @@ process CUTESV {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cutesv:1.0.12--pyhdfd78af_0' :
+        'https://depot.galaxyproject.org/singularity/cutesv:2.0.2--pyhdfd78af_0' :
         'biocontainers/cutesv:2.0.2--pyhdfd78af_0' }"
 
     input:
@@ -29,6 +29,16 @@ process CUTESV {
         . \\
         --threads $task.cpus \\
         $args
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        cuteSV: \$( cuteSV --version 2>&1 | sed 's/cuteSV //g' )
+    END_VERSIONS
+    """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}" 
+    """
+    touch "${prefix}.vcf"
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         cuteSV: \$( cuteSV --version 2>&1 | sed 's/cuteSV //g' )

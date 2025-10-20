@@ -1,0 +1,88 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "minimac4_impute"
+description: Imputation of genotypes using a reference panel
+keywords:
+  - impute
+  - haploype
+  - genomics
+tools:
+  - "minimac4":
+      description: "Computationally efficient genotype imputation"
+      homepage: "https://github.com/statgen/Minimac4"
+      documentation: "https://github.com/statgen/Minimac4"
+      tool_dev_url: "https://github.com/statgen/Minimac4"
+      doi: "10.1038/ng.3656"
+      licence: ["GPL v3-or-later"]
+      identifier: biotools:minimac4
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - target_vcf:
+        type: file
+        description: Target VCF/BCF file
+        pattern: "*.{vcf,bcf,vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+          - edam: "http://edamontology.org/format_3020"
+    - target_index:
+        type: file
+        description: Target VCF/BCF file index
+        pattern: "*.{csi,tbi}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3700"
+    - ref_msav:
+        type: file
+        description: Reference compressed MSAV file obtain through `minimac4 --compress-reference`
+        pattern: "*.{msav}"
+        ontologies: []
+    - sites_vcf:
+        type: file
+        description: Sites VCF/BCF file containing the sites to impute
+        pattern: "*.{vcf,bcf,vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+          - edam: "http://edamontology.org/format_3020"
+    - sites_index:
+        type: file
+        description: Sites VCF/BCF file index
+        pattern: "*.{csi,tbi}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3700"
+    - map:
+        type: file
+        description: Genetic map file
+        pattern: "*.map"
+        ontologies:
+          - edam: "http://edamontology.org/data_1278"
+
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.{bcf,sav,vcf.gz,vcf,ubcf,usav}":
+          type: file
+          description: Imputed variants file
+          pattern: "*.{bcf,sav,vcf.gz,vcf,ubcf,usav}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
+            - edam: "http://edamontology.org/format_3020"
+
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@LouisLeNezet"
+maintainers:
+  - "@LouisLeNezet"

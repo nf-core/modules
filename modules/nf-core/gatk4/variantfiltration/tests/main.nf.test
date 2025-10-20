@@ -9,7 +9,7 @@ nextflow_process {
     tag "gatk4"
     tag "gatk4/variantfiltration"
 
-    test("test_gatk4_variantfiltration_vcf_input") {
+    test("gatk4_variantfiltration - human - vcf - fasta") {
 
         when {
             process {
@@ -31,6 +31,10 @@ nextflow_process {
                     [ id:'genome' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                 ]
+                input[4] = [
+                    [ id:'genome' ], // meta map
+                    []
+                ]
                 """
             }
         }
@@ -39,14 +43,55 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions,
-                                  file(process.out.vcf.get(0).get(1)).name,
+                                  path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
                                   file(process.out.tbi.get(0).get(1)).name).match() },
             )
         }
 
     }
 
-    test("test_gatk4_variantfiltration_gz_input") {
+    test("gatk4_variantfiltration - human - vcf - fasta.gz") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf.idx', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'genome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.gz', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'genome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.gz.fai', checkIfExists: true)
+                ]
+                input[3] = [
+                    [ id:'genome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
+                ]
+                input[4] = [
+                    [ id:'genome' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.gz.gzi', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions,
+                                  path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                                  file(process.out.tbi.get(0).get(1)).name).match() },
+            )
+        }
+
+    }
+
+    test("gatk4_variantfiltration - human - vcf.gz - fasta") {
 
         when {
             process {
@@ -68,6 +113,10 @@ nextflow_process {
                     [ id:'genome' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                 ]
+                input[4] = [
+                    [ id:'genome' ], // meta map
+                    []
+                ]
                 """
             }
         }
@@ -76,7 +125,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions,
-                                  file(process.out.vcf.get(0).get(1)).name,
+                                  path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
                                   file(process.out.tbi.get(0).get(1)).name).match() },
             )
         }
@@ -84,4 +133,3 @@ nextflow_process {
     }
 
 }
-

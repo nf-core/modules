@@ -4,8 +4,8 @@ process LAST_TRAIN {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/db/db0b5de918238f07ec1ca668be942397da85e26aa582f8927ac37c70896303cf/data'
-        : 'community.wave.seqera.io/library/last:1608--f41c047f7dc37e30'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0d/0d27a2649f1291ff817dc8f73357ffac206424cd972d3855421e4258acc600f7/data'
+        : 'community.wave.seqera.io/library/last:1611--e1193b3871fa0975'}"
 
     input:
     tuple val(meta), path(fastx)
@@ -34,7 +34,9 @@ process LAST_TRAIN {
 
     echo "id\tsubstitution_percent_identity\tlast -t\tlast -a\tlast -A\tlast -b\tlast -B\tlast -S"         > ${prefix}.train.tsv
     printf "\$(basename ${prefix}.train .target.train)\t"                                                 >> ${prefix}.train.tsv
-    grep 'substitution percent identity' ${prefix}.train | tail -n 1 | awk '{print \$5}' | tr '\\n' '\\t' >> ${prefix}.train.tsv
+    # Do not take the last 'substitution percent identity' value; it is calculated from a matrix rounded to integers
+    grep 'substitution percent identity' ${prefix}.train |
+        tail -n 2 | head -n 1 | awk '{print \$5}'                                        | tr '\\n' '\\t' >> ${prefix}.train.tsv
     grep 'last -t' ${prefix}.train | tail -n 1 | awk '{print \$2}'   | sed -e 's/-t//'   | tr '\\n' '\\t' >> ${prefix}.train.tsv
     grep 'last -a' ${prefix}.train | tail -n 1 | awk '{print \$3}'                       | tr '\\n' '\\t' >> ${prefix}.train.tsv
     grep 'last -A' ${prefix}.train | tail -n 1 | awk '{print \$3}'                       | tr '\\n' '\\t' >> ${prefix}.train.tsv

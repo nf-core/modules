@@ -25,12 +25,13 @@ input:
         type: file
         description: File containing the centrifuge classification report
         pattern: "*.{txt}"
-  - - db:
-        type: directory
-        description: Path to directory containing centrifuge database files
+        ontologies: []
+  - db:
+      type: directory
+      description: Path to directory containing centrifuge database files
 output:
-  - kreport:
-      - meta:
+  kreport:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -41,11 +42,14 @@ output:
             File containing kraken-style report from centrifuge
             out files.
           pattern: "*.{txt}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sofstam"
   - "@jfy133"

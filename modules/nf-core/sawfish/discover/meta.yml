@@ -1,0 +1,299 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: sawfish_discover
+description: SV candidate discovery from PacBio HiFi data
+keywords:
+  - sawfish
+  - structural-variant calling
+  - CNV calling
+  - Pacbio
+tools:
+  - "sawfish":
+      description: "Joint structural variant and copy number variant caller for HiFi
+        sequencing data"
+      homepage: "https://github.com/PacificBiosciences/sawfish"
+      documentation: "https://github.com/PacificBiosciences/sawfish/tree/main/docs"
+      doi: "10.1093/bioinformatics/btaf136"
+      licence:
+        ["Pacific Biosciences Software License (https://github.com/PacificBiosciences/sawfish/blob/main/LICENSE.md)"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM file
+        pattern: "*.{bam,cram}"
+        ontologies: []
+    - bai:
+        type: file
+        description: Index of BAM/CAM file
+        pattern: "*.{bai,crai}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'fasta' ]
+    - fasta:
+        type: file
+        description: Reference genome in FASTA format
+        pattern: "*.{fasta,fa}"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing additional information
+          e.g. [ id:'cn' ]
+    - expected_cn_bed:
+        type: file
+        description: Expected copy number BED file
+        pattern: "*.bed"
+        ontologies: []
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing additional information
+          e.g. [ id:'maf' ]
+    - maf_vcf:
+        type: file
+        description: |
+          Variant file used to generate minor allele frequency track for this sample,
+          in VCF or BCF format.
+        pattern: "*.{vcf.gz,bcf.gz}"
+        ontologies: []
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing additional information
+          e.g. [ id:'cnv' ]
+    - cnv_exclude_regions_bed:
+        type: file
+        description: BED file containing regions to exclude from CNV calling
+        pattern: "*.bed"
+        ontologies: []
+output:
+  assembly_regions:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}/assembly.regions.bed:
+          type: file
+          description: Assembly regions BED file
+          pattern: "*.bed"
+          ontologies: []
+  candidate_sv_bcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}/candidate.sv.bcf:
+          type: file
+          description: Candidate SV BCF file
+          pattern: "*.bcf"
+          ontologies: []
+  candidate_sv_bcf_csi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}/candidate.sv.bcf.csi:
+          type: file
+          description: Candidate SV BCF CSI file
+          pattern: "*.csi"
+          ontologies: []
+  contig_alignment_bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}/contig.alignment.bam:
+          type: file
+          description: Contig alignment BAM file
+          pattern: "*.bam"
+          ontologies: []
+  contig_alignment_bam_csi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}/contig.alignment.bam.csi:
+          type: file
+          description: Contig alignment BAM CSI file
+          pattern: "*.csi"
+          ontologies: []
+  copynum_bedgraph:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}/copynum.bedgraph:
+          type: file
+          description: Copy number BEDGraph file
+          pattern: "*.bedgraph"
+          ontologies: []
+  copynum_mpack:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}/copynum.mpack:
+          type: file
+          description: Copy number mpack file
+          pattern: "*.mpack"
+          ontologies: []
+  debug_breakpoint_clusters:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}/debug.breakpoint_clusters.bed:
+          type: file
+          description: Debug breakpoint clusters BED file
+          pattern: "*.bed"
+          ontologies: []
+  debug_cluster_refinement:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}/debug.cluster.refinement.txt:
+          type: file
+          description: Debug cluster refinement text file
+          pattern: "*.txt"
+          ontologies: []
+  discover_settings:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}/discover.settings.json:
+          type: file
+          description: Discover settings JSON file
+          pattern: "*.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  genome_gclevels:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}/genome.gclevels.mpack:
+          type: file
+          description: Genome GC levels mpack file
+          pattern: "*.mpack"
+          ontologies: []
+  max_depth:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}/max.depth.bed:
+          type: file
+          description: Max depth BED file
+          pattern: "*.bed"
+          ontologies: []
+  run_stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}/run.stats.json:
+          type: file
+          description: Run statistics JSON file
+          pattern: "*.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  sample_gcbias:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}/sample.gcbias.mpack:
+          type: file
+          description: Sample GC bias mpack file
+          pattern: "*.mpack"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}/sawfish.log:
+          type: file
+          description: Sawfish log file
+          pattern: "*.log"
+          ontologies: []
+  depth_mpack:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}/depth.mpack:
+          type: file
+          description: Depth mpack file
+          pattern: "*.mpack"
+          ontologies: []
+  maf_mpack:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}/maf.mpack:
+          type: file
+          description: MAF mpack file
+          pattern: "*.mpack"
+          ontologies: []
+  expected_cn:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}/expected.copy.number.bed:
+          type: file
+          description: Expected copy number BED file
+          pattern: "*.bed"
+          ontologies: []
+  discover_dir:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}:
+          type: directory
+          description: Directory containing all discover output files
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+authors:
+  - "@padraicc"
+maintainers:
+  - "@padraicc"

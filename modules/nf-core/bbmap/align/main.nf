@@ -4,8 +4,8 @@ process BBMAP_ALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/bbmap_samtools_pigz:2a066f0214cc5eb0' :
-        'community.wave.seqera.io/library/bbmap_samtools_pigz:79703e935236b43b' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5aae5977ff9de3e01ff962dc495bfa23f4304c676446b5fdf2de5c7edfa2dc4e/data' :
+        'community.wave.seqera.io/library/bbmap_pigz:07416fe99b090fa9' }"
 
     input:
     tuple val(meta), path(fastq)
