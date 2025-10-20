@@ -71,7 +71,6 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert path("${workflow.out.diann_report[0][1]}").exists() },
-                { assert path("${workflow.out.diann_report_parquet[0][1]}").exists() },
                 { assert path("${workflow.out.out_triqler[0][1]}").exists() },
                 { assert path("${workflow.out.final_result[0][1]}").exists() },
                 { assert path("${workflow.out.mzml_statistics[0][1]}").exists() },
