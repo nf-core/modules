@@ -22,7 +22,7 @@ process BFTOOLS_SHOWINF {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    export BF_FLAGS='-XX:+DisplayVMOutputToStdErr -Xlog:all=warn:stderr'
+    export BF_FLAGS='-XX:+DisplayVMOutputToStderr -Xlog:all=warn:stderr'
     showinf -nopix -no-upgrade -omexml-only \\
         $args \\
         $image > ${prefix}.xml
