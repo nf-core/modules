@@ -15,7 +15,7 @@ process PICRUST2_PIPELINE {
     tuple val(meta), path("${prefix}/*_reduced.tre"), emit: trees
     tuple val(meta), path("${prefix}/*_metagenome_out/pred_metagenome_unstrat.tsv.gz"), emit: function_abundances
     tuple val(meta), path("${prefix}/pathways_out/path_abun_unstrat.tsv.gz"), emit: pathway_abundances
-    path "versions.yml", emit: versions
+    path 'versions.yml', emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,7 +33,7 @@ process PICRUST2_PIPELINE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        PICRUSt2: \$(picrust2_pipeline.py --version | sed 's/PICRUSt2 //')
+        picrust2: \$( picrust2_pipeline.py --version | sed 's/PICRUSt2 //' )
     END_VERSIONS
     """
 
@@ -50,7 +50,7 @@ process PICRUST2_PIPELINE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        PICRUSt2: \$(picrust2_pipeline.py --version | sed 's/PICRUSt2 //')
+        picrust2: \$( picrust2_pipeline.py --version | sed 's/PICRUSt2 //' )
     END_VERSIONS
     """
 }
