@@ -45,11 +45,25 @@ process PARABRICKS_FQ2BAM {
     def interval_file_command = interval_file ? (interval_file instanceof List ? interval_file.collect { "--interval-file ${it}" }.join(' ') : "--interval-file ${interval_file}") : ""
 
     def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
+
     """
+    fasta_basename=\$(basename ${fasta})
+    fasta_symlink=${index}/\$fasta_basename
+
+    cd ${index} && \
+        ln -s ../\$fasta_basename \$fasta_basename && \
+        cd -
+
+    echo \$fasta_basename
+    echo \$fasta_symlink
+    echo ${index}
+    ls -la ${index}
+    head -n10 \$fasta_symlink
+
     pbrun \\
         fq2bam \\
         --preserve-file-symlinks \\
-        --ref ${fasta} \\
+        --ref \$fasta_symlink \\
         ${in_fq_command} \\
         --out-bam ${prefix}.${extension} \\
         ${known_sites_command} \\
