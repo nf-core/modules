@@ -31,10 +31,13 @@ print(opt)
 library(dplyr)
 library(CNAqc)
 
-SNV = readRDS("$snv_rds")
-SNV = SNV[["$meta.tumour_sample"]]
-SNV = SNV\$mutations
-SNV = SNV %>% dplyr::mutate(mutation_id = paste(chr,from,to,ref,alt,sep = ':'))
+SNV = readRDS("$snv_rds") %>%
+  purrr::pluck("$meta.tumor_sample", "mutations") %>% 
+  dplyr::mutate(mutation_id = paste(chr,from,to,ref,alt,sep = ':'))
+
+# SNV = SNV[["$meta.tumour_sample"]]
+# SNV = SNV\$mutations
+# SNV = SNV %>% dplyr::mutate(mutation_id = paste(chr,from,to,ref,alt,sep = ':'))
 
 CNA = readRDS("$cna_rds")
 
@@ -45,32 +48,18 @@ x = CNAqc::init(
   ref = opt[["genome"]])
 
 x = CNAqc::analyze_peaks(x,
-                         matching_strategy = opt[["matching_strategy"]],
-                        #  karyotypes =  eval(parse(text=opt[["karyotypes"]])),
-                        #  min_karyotype_size = as.numeric(opt[["min_karyotype_size"]]),
-                         min_absolute_karyotype_mutations = as.numeric(opt[["min_absolute_karyotype_mutations"]]),
-                        #  p_binsize_peaks = as.numeric(opt[["p_binsize_peaks"]]),
-                        #  matching_epsilon = eval(parse(text=opt[["matching_epsilon"]])),
-                         purity_error = as.numeric(opt[["purity_error"]]),
-                        #  VAF_tolerance = as.numeric(opt[["vaf_tolerance"]]),
-                        #  n_bootstrap = as.numeric(opt[["n_bootstrap"]]),
-                        #  kernel_adjust = as.numeric(opt[["kernel_adjust"]]),
-                        #  KDE = eval(parse(text = opt[["kde"]])),
-                        #  starting_state_subclonal_evolution = opt[["starting_state_subclonal_evolution"]],
-                        #  cluster_subclonal_CCF = as.logical(opt[["cluster_subclonal_CCF"]]),
-                        #  min_VAF = 0.01
-                         )
+                          matching_strategy = opt[["matching_strategy"]],
+                          min_absolute_karyotype_mutations = as.numeric(opt[["min_absolute_karyotype_mutations"]]),
+                          purity_error = as.numeric(opt[["purity_error"]]))
 
-x = CNAqc::compute_CCF(
-  x,
-#   karyotypes = eval(parse(text=opt[["karyotypes"]])),
-  muts_per_karyotype = as.numeric(opt[["muts_per_karyotype"]]) #,
-#   cutoff_QC_PASS = as.numeric(opt[["cutoff_QC_PASS"]]),
-#   method = opt[["method"]]
+x = CNAqc::compute_CCF(x,
+                        muts_per_karyotype = as.numeric(opt[["muts_per_karyotype"]])
 )
 
+# this is needed in order to plot the results without the 0 VAF mutations
 tmp_x <- x
-mut <- tmp_x\$mutations %>% dplyr::filter(VAF > 0)
+mut <- CNAqc::Mutations(tmp_x) %>% 
+  dplyr::filter(VAF > 0)
 tmp_x\$mutations <- mut
 
 pl = ggpubr::ggarrange(
@@ -96,8 +85,6 @@ pl_exp = ggpubr::annotate_figure(pl_exp, top = ggpubr::text_grob("$meta.tumour_s
 pl_qc = ggpubr::ggarrange(
   plotlist = list(
     CNAqc::plot_peaks_analysis(tmp_x, what = 'common', empty_plot = FALSE),
-    #CNAqc::plot_peaks_analysis(tmp_x, what = 'general', empty_plot = FALSE),
-    #CNAqc::plot_peaks_analysis(tmp_x, what = 'subclonal', empty_plot = FALSE),
     CNAqc::plot_qc(tmp_x),
     CNAqc::plot_CCF(tmp_x, assembly_plot = TRUE, empty_plot = FALSE)), 
   nrow = 3,
