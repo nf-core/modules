@@ -10,7 +10,6 @@ process EIDO_CONVERT {
     input:
     path samplesheet
     val format
-    path pep_input_base_dir
 
     output:
     path "versions.yml"           , emit: versions
