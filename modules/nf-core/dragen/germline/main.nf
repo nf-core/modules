@@ -399,8 +399,13 @@ process DRAGEN {
     """
 
     stub:
+    def VERSION = "4.2.7"
     """
     touch \$(date +%Y%m%d)_usage.txt
-    echo "dragen: version" > versions.yml
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        dragen: ${VERSION}
+    END_VERSIONS
     """
 }
