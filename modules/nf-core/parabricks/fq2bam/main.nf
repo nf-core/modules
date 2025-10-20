@@ -2,8 +2,6 @@ process PARABRICKS_FQ2BAM {
     tag "${meta.id}"
     label 'process_high'
     label 'process_gpu'
-    // needed by the module to work properly can be removed when fixed upstream - see: https://github.com/nf-core/modules/issues/7226
-    stageInMode 'copy'
 
     container "nvcr.io/nvidia/clara/clara-parabricks:4.6.0-1"
 
@@ -47,23 +45,19 @@ process PARABRICKS_FQ2BAM {
     def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
 
     """
-    fasta_basename=\$(basename ${fasta})
-    fasta_symlink=${index}/\$fasta_basename
+    # The section below creates a symlink to the reference fasta file in the index directory 
+    # It is a Parabricks requirement that these files be in the same place 
+    # As of Parabricks version 4.6 the symlink is sufficient and we no longer need to copy the file 
 
+    fasta_basename=\$(basename ${fasta})
     cd ${index} && \
         ln -s ../\$fasta_basename \$fasta_basename && \
         cd -
 
-    echo \$fasta_basename
-    echo \$fasta_symlink
-    echo ${index}
-    ls -la ${index}
-    head -n10 \$fasta_symlink
-
     pbrun \\
         fq2bam \\
         --preserve-file-symlinks \\
-        --ref \$fasta_symlink \\
+        --ref ${index}/\$fasta_basename \\
         ${in_fq_command} \\
         --out-bam ${prefix}.${extension} \\
         ${known_sites_command} \\
