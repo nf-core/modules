@@ -3,7 +3,7 @@ include { FASTQ_ALIGN_BWA                                   } from '../../nf-cor
 include { PICARD_ADDORREPLACEREADGROUPS                     } from '../../../modules/nf-core/picard/addorreplacereadgroups/main'
 include { PICARD_MARKDUPLICATES                             } from '../../../modules/nf-core/picard/markduplicates/main'  
 include { PARABRICKS_FQ2BAM                                 } from '../../../modules/nf-core/parabricks/fq2bam/main'
-include { SAMTOOLS_INDEX as SAMTOOLS_INDEX_DEDUPLICATED     } from '../../../modules/nf-core/samtools/index/main'
+include { SAMTOOLS_INDEX                                    } from '../../../modules/nf-core/samtools/index/main'
 
 workflow FASTQ_ALIGN_DEDUP_BWAMEM {
 
@@ -92,13 +92,13 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
         /*
          * Run samtools index on deduplicated alignment
          */
-        SAMTOOLS_INDEX_DEDUPLICATED (
+        SAMTOOLS_INDEX (
             PICARD_MARKDUPLICATES.out.bam
         )
         ch_alignment       = PICARD_MARKDUPLICATES.out.bam
-        ch_alignment_index = SAMTOOLS_INDEX_DEDUPLICATED.out.bai
+        ch_alignment_index = SAMTOOLS_INDEX.out.bai
         ch_picard_metrics  = PICARD_MARKDUPLICATES.out.metrics
-        ch_versions        = ch_versions.mix(SAMTOOLS_INDEX_DEDUPLICATED.out.versions.first())
+        ch_versions        = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
     }
 
     /*
