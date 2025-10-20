@@ -1,0 +1,105 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "vclust_align"
+description: The align command performs pairwise sequence alignments of viral genomes
+  and provides similarity measures like ANI and coverage (alignment fraction)
+keywords:
+  - cluster
+  - virus
+  - filter
+  - contig
+  - scaffold
+  - phage
+tools:
+  - "vclust":
+      description: "Fast and accurate tool for calculating ANI and clustering virus
+        genomes and metagenomes."
+      homepage: "https://afproject.org/vclust/"
+      documentation: "https://github.com/refresh-bio/vclust/wiki"
+      tool_dev_url: "https://github.com/refresh-bio/vclust"
+      doi: "10.1038/s41592-025-02701-7"
+      licence: ["GPL v3-or-later"]
+      identifier: "biotools:vclust"
+
+input:
+  # Only when we have meta
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Input fasta file containing sequences needed for filtering
+        pattern: "*.{fasta,fna,fa}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - filter:
+        type: file
+        description: Input txt file containing sequences relationships for filtering  (generated
+          with vclust prefilter)
+        pattern: "*.txt"
+        ontologies:
+          - edam: "http://edamontology.org/format_2330" # TXT
+          - edam: "http://edamontology.org/format_2082" # MATRIX
+  - save_alignment:
+      type: boolean
+      default: false
+      description: |
+        Save the pairwise alignments to a blast-like file.
+      pattern: "*.aln.tsv"
+
+output:
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.tsv:
+          type: file
+          description: Sorted TSV file
+          pattern: "*.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  ids:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.ids.tsv":
+          type: file
+          description: File containing sequence IDs and their number of parts
+          pattern: "*.ids.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  aln:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.aln.tsv":
+          type: file
+          description: |
+            File similar to the BLASTn tabular output file,
+            includes information on each local alignment between two genomes.
+
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@Joon-klaps"
+maintainers:
+  - "@Joon-klaps"

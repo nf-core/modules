@@ -24,14 +24,15 @@ input:
         type: file
         description: Sorted BAM file
         pattern: "*.bam"
-  - - fasta:
-        type: file
-        description: The reference sequence used for mapping and generating the BAM
-          file
-        pattern: "*.fa"
+        ontologies: []
+  - fasta:
+      type: file
+      description: The reference sequence used for mapping and generating the BAM file
+      pattern: "*.fa"
+      ontologies: []
 output:
-  - variants:
-      - meta:
+  variants:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,15 +41,21 @@ output:
           type: file
           description: File containing identified variants in a gff-like format
           pattern: "*.variants.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
       - "*.depth.tsv":
           type: file
           description: File containing identified variants in a gff-like format
           pattern: "*.variants.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Joon-Klaps"
 maintainers:

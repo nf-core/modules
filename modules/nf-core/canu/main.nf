@@ -4,8 +4,8 @@ process CANU {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/canu:2.2--ha47f30e_0':
-        'biocontainers/canu:2.2--ha47f30e_0' }"
+        'https://depot.galaxyproject.org/singularity/canu:2.3--h3fb4750_1':
+        'biocontainers/canu:2.3--h3fb4750_1' }"
 
     input:
     tuple val(meta), path(reads)
@@ -34,13 +34,38 @@ process CANU {
     """
     canu \\
         -p ${prefix} \\
-        $mode \\
         genomeSize=${genomesize} \\
         $args \\
         maxThreads=$task.cpus \\
-        $reads
+        $mode $reads
 
     gzip *.fasta
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        canu: \$(echo \$(canu --version 2>&1) | sed 's/^.*canu //; s/Using.*\$//' )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    def trimmed_cmd = args.contains("-trimmed") ? "-trimmed" : ""
+    def corrected_cmd = args.contains("-corrected") ? "-corrected" : ""
+    """
+    echo "" | gzip > ${prefix}.contigs.fasta.gz
+    echo "" | gzip > ${prefix}.unassembled.fasta.gz
+    if [ "${corrected_cmd}" != "" ]; then
+        echo "" | gzip > ${prefix}.correctedReads.fasta.gz
+    fi
+
+    if [ "${trimmed_cmd}" != "" ]; then
+        echo "" | gzip > ${prefix}.trimmedReads.fasta.gz
+    fi
+    touch ${prefix}.contigs.layout
+    touch ${prefix}.contigs.layout.readToTig
+    touch ${prefix}.contigs.layout.tigInfo
+    touch ${prefix}.report
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

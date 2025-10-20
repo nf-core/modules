@@ -24,17 +24,17 @@ input:
         type: directory
         description: Childs' k-mers (all, from WGS reads)
         pattern: "*.meryl"
-  - - maternal_meryl:
-        type: directory
-        description: Haplotype1 k-mers (all, ex. maternal)
-        pattern: "*.meryl"
-  - - paternal_meryl:
-        type: directory
-        description: Haplotype2 k-mers (all, ex. paternal)
-        pattern: "*.meryl"
+  - maternal_meryl:
+      type: directory
+      description: Haplotype1 k-mers (all, ex. maternal)
+      pattern: "*.meryl"
+  - paternal_meryl:
+      type: directory
+      description: Haplotype2 k-mers (all, ex. paternal)
+      pattern: "*.meryl"
 output:
-  - mat_hapmer_meryl:
-      - meta:
+  mat_hapmer_meryl:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -43,8 +43,8 @@ output:
           type: directory
           description: Inherited maternal hap-mer dbs
           pattern: "*_mat.hapmer.meryl"
-  - pat_hapmer_meryl:
-      - meta:
+  pat_hapmer_meryl:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,8 +53,8 @@ output:
           type: directory
           description: Inherited paternal hap-mer dbs
           pattern: "*_pat.hapmer.meryl"
-  - inherited_hapmers_fl_png:
-      - meta:
+  inherited_hapmers_fl_png:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,8 +64,9 @@ output:
           description: k-mer distribution of the inherited dbs and cutoffs used to generate
             hap-mer dbs
           pattern: "*_inherited_hapmers.fl.png"
-  - inherited_hapmers_ln_png:
-      - meta:
+          ontologies: []
+  inherited_hapmers_ln_png:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -75,8 +76,9 @@ output:
           description: k-mer distribution of the inherited dbs and cutoffs used to generate
             hap-mer dbs
           pattern: "*_inherited_hapmers.ln.png"
-  - inherited_hapmers_st_png:
-      - meta:
+          ontologies: []
+  inherited_hapmers_st_png:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -86,11 +88,14 @@ output:
           description: k-mer distribution of the inherited dbs and cutoffs used to generate
             hap-mer dbs
           pattern: "*_inherited_hapmers.st.png"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@GallVp"
 maintainers:

@@ -10,6 +10,7 @@ nextflow_process {
     tag "portcullis/full"
 
     test("portcullis_full_paired_end") {
+        config "./nextflow.config"
 
         when {
             process {
@@ -33,9 +34,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert file(process.out.spliced_bam.get(0).get(1)).name == "portcullis_all.spliced.bam" },
+                { assert file(process.out.spliced_bai.get(0).get(1)).name == "portcullis_all.spliced.bam.bai" },
                 { assert snapshot(
-                    process.out.bed,
-                    process.out.tab,
+                    process.out.pass_junctions_bed,
+                    process.out.pass_junctions_tab,
+                    process.out.intron_gff,
+                    process.out.exon_gff,
                     process.out.versions
                     ).match()
                 }
@@ -70,8 +75,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bed,
-                    process.out.tab,
+                    process.out.pass_junctions_bed,
+                    process.out.pass_junctions_tab,
+                    process.out.intron_gff,
+                    process.out.exon_gff,
                     process.out.versions
                     ).match()
                 }

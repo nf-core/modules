@@ -1,0 +1,131 @@
+nextflow_process {
+
+    name "Test Process INFERNAL_CMSEARCH"
+    script "../main.nf"
+    process "INFERNAL_CMSEARCH"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gunzip"
+    tag "infernal"
+    tag "infernal/cmsearch"
+
+
+    test("rfam rrna - bacteroides fragilis") {
+
+        setup {
+            run("GUNZIP") {
+                script "../../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'delete_me/infernal/rRNA.cm', checkIfExists: true)
+                ]).combine(GUNZIP.out.gunzip, by: 0)
+                input[1] = true
+                input[2] = true
+                """
+            }
+        }
+
+        then {
+            // Output file lines with comments can contain timestamps and runtimes - strip them out :)
+            def txtout = new File("${outputDir}/txtout.txt")
+            path(process.out.output[0][1]).linesGzip.findAll { ! it.startsWith("#") }.each { txtout << ("${it}\n") }
+
+            def tblout = new File("${outputDir}/tblout.txt")
+            path(process.out.target_summary[0][1]).linesGzip.findAll { ! it.startsWith("#") }.each { tblout << ("${it}\n") }
+
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    txtout.toPath(),
+                    tblout.toPath(),
+                    process.out.alignments,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("rfam rrna - ecoli - gz") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'delete_me/infernal/rRNA.cm', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                ]
+                input[1] = true
+                input[2] = true
+                """
+            }
+        }
+
+        then {
+            // Output file lines with comments can contain timestamps and runtimes - strip them out :)
+            def txtout = new File("${outputDir}/txtout.txt")
+            path(process.out.output[0][1]).linesGzip.findAll { ! it.startsWith("#") }.collect { txtout.write(it) }
+
+            def tblout = new File("${outputDir}/tblout.txt")
+            path(process.out.target_summary[0][1]).linesGzip.findAll { ! it.startsWith("#") }.collect { tblout.write(it) }
+
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    txtout.toPath(),
+                    tblout.toPath(),
+                    process.out.alignments,
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("rfam rrna - ecoli - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'delete_me/infernal/rRNA.cm', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                ]
+                input[1] = true
+                input[2] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

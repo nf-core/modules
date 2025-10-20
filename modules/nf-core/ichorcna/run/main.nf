@@ -39,7 +39,7 @@ process ICHORCNA_RUN {
     def map    = map_wig           ? "mapWig='${map_wig}',"                 : 'mapWig=NULL,'
     def centro = centromere        ? "centromere='${centromere}',"          : ''
     def rep    = rep_time_wig      ? "repTimeWig='${rep_time_wig}',"        : 'repTimeWig=NULL,'
-    def exons  = exons             ? "exons.bed='${exons}',"                : ''
+    def exon   = exons             ? "exons.bed='${exons}',"                : ''
     """
     #!/usr/bin/env Rscript
     library("ichorCNA")
@@ -55,7 +55,7 @@ process ICHORCNA_RUN {
         $map
         $centro
         $rep
-        $exons
+        $exon
         $args
         outDir="."
     )

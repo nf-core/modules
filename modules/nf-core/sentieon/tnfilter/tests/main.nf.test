@@ -1,0 +1,135 @@
+nextflow_process {
+
+    name "Test Process SENTIEON_TNFILTER"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "SENTIEON_TNFILTER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "sentieon"
+    tag "sentieon/tnfilter"
+    config './nextflow.config'
+
+    test("vcf, index, stats only") {
+
+        when {
+            params {
+                module_args  = ''
+                module_args2 = '--tumor_sample tumour --normal_sample normal'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'delete_me/tnfilter/sample4_vs_sample3.tnhaplotyper2.vcf.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'delete_me/tnfilter/sample4_vs_sample3.tnhaplotyper2.vcf.gz.tbi', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'delete_me/tnfilter/sample4_vs_sample3.tnhaplotyper2.vcf.gz.stats', checkIfExists:true),
+                    [],
+                    [],
+                    []
+                    ]
+                input[1] = [[id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists:true)
+                    ]
+                input[2] = [[id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists:true)
+                    ]
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).vcf.summary,
+                    file(process.out.tbi[0][1]).name,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("with contamination/orientation data") {
+
+        when {
+            params {
+                module_args  = ''
+                module_args2 = '--tumor_sample tumour --normal_sample normal'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'delete_me/tnfilter/sample4_vs_sample3.tnhaplotyper2.vcf.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'delete_me/tnfilter/sample4_vs_sample3.tnhaplotyper2.vcf.gz.tbi', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'delete_me/tnfilter/sample4_vs_sample3.tnhaplotyper2.vcf.gz.stats', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'delete_me/tnfilter/sample4_vs_sample3.tnhaplotyper2.contamination_data.tsv', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'delete_me/tnfilter/sample4_vs_sample3.tnhaplotyper2.segments', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'delete_me/tnfilter/sample4_vs_sample3.tnhaplotyper2.orientation_data.tsv', checkIfExists:true)
+                    ]
+                input[1] = [[id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists:true)
+                    ]
+                input[2] = [[id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists:true)
+                    ]
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).vcf.summary,
+                    file(process.out.tbi[0][1]).name,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("vcf, index, stats only - stub") {
+        options '-stub'
+        when {
+            params {
+                module_args  = ''
+                module_args2 = '--tumor_sample tumour --normal_sample normal'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'delete_me/tnfilter/sample4_vs_sample3.tnhaplotyper2.vcf.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'delete_me/tnfilter/sample4_vs_sample3.tnhaplotyper2.vcf.gz.tbi', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'delete_me/tnfilter/sample4_vs_sample3.tnhaplotyper2.vcf.gz.stats', checkIfExists:true),
+                    [],
+                    [],
+                    []
+                    ]
+                input[1] = [[id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists:true)
+                    ]
+                input[2] = [[id:'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists:true)
+                    ]
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                    ).match()
+                }
+            )
+        }
+    }
+}
