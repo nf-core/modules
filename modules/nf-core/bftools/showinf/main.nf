@@ -38,7 +38,7 @@ process BFTOOLS_SHOWINF {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    export BF_FLAGS='-XX:+DisplayVMOutputToStdErr -Xlog:all=warn:stderr'
+    export BF_FLAGS='-XX:+DisplayVMOutputToStderr -Xlog:all=warn:stderr'
     echo '<?xml version="1.0" encoding="UTF-8">' > ${prefix}.xml
 
     cat <<-END_VERSIONS > versions.yml
