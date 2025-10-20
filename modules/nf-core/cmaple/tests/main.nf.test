@@ -1,0 +1,106 @@
+nextflow_process {
+
+    name "Test Process CMAPLE"
+    script "../main.nf"
+    process "CMAPLE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cmaple"
+    tag "gunzip"
+
+    test("seatoxin - aa - aln") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_aa' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/anemonia_sulcata/seatoxin-ref.aln', checkIfExists: true),
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.log[0][1]).name,
+                    process.out.treefile,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("haemophilus_influenzae - dna - newick - aln") {
+
+        setup {
+            run("GUNZIP") {
+                script "../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id: 'test_gunzip' ],
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.aln.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip.map{[
+                    [ id: 'test_dna' ],
+                    it[1],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.aln.nwk', checkIfExists: true)
+                ]}
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.log[0][1]).name,
+                    process.out.treefile,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("seatoxin - aa - aln - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_stub' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/anemonia_sulcata/seatoxin-ref.aln', checkIfExists: true),
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+}
