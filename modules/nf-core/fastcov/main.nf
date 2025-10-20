@@ -3,9 +3,9 @@ process FASTCOV {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' ? 
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fe/fe768c866b4ae4f2c8948ea7a274ce66d590eedb1cf967495dbd0fb84643a7e2/data': 
-        'community.wave.seqera.io/library/fastcov:0.1.3--84def91a6ef27f61' }"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/fastcov:0.1.3--hdfd78af_0':
+        'biocontainers/fastcov:0.1.3--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam), path(index)
@@ -13,6 +13,7 @@ process FASTCOV {
 
     output:
     tuple val(meta), path("${prefix}.${file_ext}"), emit: coverage_plot
+    tuple val(meta), path("log.txt")              , emit: log
     path "versions.yml"                           , emit: versions
 
     when:
@@ -25,9 +26,9 @@ process FASTCOV {
     def VERSION = '0.1.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     fastcov.py \\
-      -o ${prefix}.${file_ext} \\
-      ${args} \\
-      ${bam}
+        -o ${prefix}.${file_ext} \\
+        ${args} \\
+        ${bam} > log.txt 2>&1
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -42,7 +43,10 @@ process FASTCOV {
     def VERSION = '0.1.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
+    echo $args
+
     touch ${prefix}.${file_ext}
+    touch log.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
