@@ -1,0 +1,127 @@
+name: myloasm
+description: |
+  Myloasm is a de novo metagenome assembler for long-read sequencing data.
+  It takes sequencing reads and outputs polished contigs in a single command.
+keywords:
+  - assembly
+  - metagenome
+  - long-read
+  - pacbio
+  - nanopore
+tools:
+  - myloasm:
+      description: Myloasm is a long-read assembler for metagenomes
+      homepage: https://myloasm-docs.github.io
+      documentation: https://myloasm-docs.github.io
+      tool_dev_url: https://github.com/bluenote-1577/myloasm/tree/main
+      doi: 10.1101/2025.09.05.674543
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - reads:
+        type: file
+        description: Input long reads in FASTQ or FASTA format (FASTQ preferred for
+          base quality information)
+        pattern: "*.{fastq,fq,fastq.gz,fq.gz,fasta,fa,fasta.gz,fa.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_1929 # FASTA
+output:
+  results:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}:
+          type: directory
+          description: Directory containing all myloasm output files and folders
+          pattern: "*"
+  contigs:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}/assembly_primary.fa:
+          type: file
+          description: Primary assembly contigs in FASTA format
+          pattern: "assembly_primary.fa"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA format
+  gfa:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}/final_contig_graph.gfa:
+          type: file
+          description: Final contig graph in GFA format
+          pattern: "final_contig_graph.gfa"
+          ontologies:
+            - edam: http://edamontology.org/format_3975 # GFA 1
+  contigs_alt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}/alternate_assemblies/assembly_alternate.fa:
+          type: file
+          description: Alternative assembly contigs in FASTA format
+          pattern: "assembly_alternate.fa"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA format
+  contigs_dup:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}/alternate_assemblies/duplicated_contigs.fa:
+          type: file
+          description: Duplicated contigs in FASTA format
+          pattern: "duplicated_contigs.fa"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA format
+  mapping:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}/3-mapping/map_to_unitigs.paf.gz:
+          type: file
+          description: Mapping of reads to unitigs in PAF format (compressed)
+          pattern: "map_to_unitigs.paf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}/*.log:
+          type: file
+          description: MyloAsm log files containing assembly process information
+          pattern: "*.log"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"

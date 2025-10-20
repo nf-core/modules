@@ -2,9 +2,10 @@
 name: "fastqutils_info"
 description: Performs quality control of FASTQ files
 keywords:
-  - sort
-  - example
+  - fastq
+  - qualitycontrol
   - genomics
+  - sequencing
 tools:
   - "fastqutils":
       description: "Validation and manipulation of FASTQ files, scRNA-seq barcode pre-processing
@@ -31,9 +32,9 @@ input:
           - edam: "http://edamontology.org/format_25722"
           - edam: "http://edamontology.org/format_2573"
           - edam: "http://edamontology.org/format_3462"
-
           - edam: http://edamontology.org/format_1930 # FASTQ
 output:
+  # The tool will throw errors upon broken fastq files
   info:
     - - meta:
           type: map
@@ -41,15 +42,13 @@ output:
       - "*.txt":
           type: file
           description: Contains info if process ran successfully
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # TXT
   versions:
     - versions.yml:
         type: file
         description: File containing software versions
-        pattern:
-          "versions.yml"
-          # The tool will throw errors upon broken fastq files
-
+        pattern: "versions.yml"
         ontologies:
           - edam: http://edamontology.org/format_3750 # YAML
 authors:

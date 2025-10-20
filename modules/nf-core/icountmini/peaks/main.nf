@@ -36,7 +36,7 @@ process ICOUNTMINI_PEAKS {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo "" | gzip > ${prefix}.peaks.bed.gz
+    echo | gzip > ${prefix}.peaks.bed.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

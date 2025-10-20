@@ -4,8 +4,8 @@ process BISMARK_DEDUPLICATE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bismark:0.24.2--hdfd78af_0' :
-        'biocontainers/bismark:0.24.2--hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/38/38e61d14ccaed82f60c967132963eb467d0fa4bccb7a21404c49b4f377735f03/data' :
+        'community.wave.seqera.io/library/bismark:0.25.1--1f50935de5d79c47' }"
 
     input:
     tuple val(meta), path(bam)
