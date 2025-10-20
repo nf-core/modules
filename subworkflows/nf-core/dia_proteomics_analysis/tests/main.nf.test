@@ -1,8 +1,8 @@
-nextflow_process {
+nextflow_workflow {
 
     name "Test Subworkflow DIA_PROTEOMICS_ANALYSIS"
     script "../main.nf"
-    process "DIA_PROTEOMICS_ANALYSIS"
+    workflow "DIA_PROTEOMICS_ANALYSIS"
     config "./nextflow.config"
 
     tag "subworkflows"
@@ -12,7 +12,6 @@ nextflow_process {
     tag "quantmsutils/dianncfg"
     tag "quantmsutils/mzmlstatistics"
     tag "quantmsutils/diann2mztab"
-    tag "thermorawfileparser"
     tag "proteomics"
     tag "dia_proteomics_analysis"
     tag "untar"
@@ -34,7 +33,7 @@ nextflow_process {
     test("proteomics - complete DIA analysis pipeline") {
 
         when {
-            process {
+            workflow {
                 """
                 ch_input  = UNTAR.out.untar.map{ meta, dir ->  
                     def mzmlFile = dir.resolve('RD139_Narrow_UPS1_0_1fmol_inj1.mzML')
@@ -70,14 +69,15 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },
-                { assert path("${process.out.diann_report[0][1]}").exists() },
-                { assert path("${process.out.out_triqler[0][1]}").exists() },
-                { assert path("${process.out.final_result[0][1]}").exists() },
-                { assert path("${process.out.mzml_statistics[0][1]}").exists() },
+                { assert workflow.success },
+                { assert path("${workflow.out.diann_report[0][1]}").exists() },
+                { assert path("${workflow.out.diann_report_parquet[0][1]}").exists() },
+                { assert path("${workflow.out.out_triqler[0][1]}").exists() },
+                { assert path("${workflow.out.final_result[0][1]}").exists() },
+                { assert path("${workflow.out.mzml_statistics[0][1]}").exists() },
                 { assert snapshot(
-                    process.out.msstats_in,
-                    process.out.versions
+                    workflow.out.msstats_in,
+                    workflow.out.versions
                 ).match() }
             )
         }

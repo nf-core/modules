@@ -36,7 +36,6 @@ components:
   - quantmsutils/dianncfg
   - quantmsutils/mzmlstatistics
   - quantmsutils/diann2mztab
-  - thermorawfileparser
 input:
   - ch_input:
       type: channel
@@ -46,8 +45,9 @@ input:
         fragment_tolerance, precursor_tolerance_unit, fragment_tolerance_unit]
         e.g. `[[id:'sample1'], file('sample1.mzML'), 'Trypsin', 'Carbamidomethyl (C)',
         'Oxidation (M)', 10, 20, 'ppm', 'ppm']`
-        Supports mzML and Thermo RAW files. RAW files are automatically converted to mzML using ThermoRawFileParser.
-      pattern: "*.{mzML,mzml,raw,RAW}"
+        Note: For Thermo RAW file conversion to mzML, the ThermoRawFileParser module is available
+        in nf-core/modules and can be used upstream of this subworkflow.
+      pattern: "*.{mzML,mzml}"
   - ch_searchdb:
       type: channel
       description: |
