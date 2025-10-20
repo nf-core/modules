@@ -1,14 +1,15 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "custom_addmostsevereconsequence"
 description: Annotate a VEP annotated VCF with the most severe consequence field
 keywords:
-  - sort
-  - example
-  - genomics
+  - annotation
+  - vep
+  - consequence
+  - vcf
 tools:
   - "custom":
-      description: "Custom module to annotate a VEP annotated VCF with the most severe consequence field"
+      description: "Custom module to annotate a VEP annotated VCF with the most severe
+        consequence field"
       tool_dev_url: "https://github.com/nf-core/modules/blob/master/modules/nf-core/custom/addmostsevereconsequence/main.nf"
       licence: ["MIT"]
       identifier: ""
@@ -23,6 +24,7 @@ input:
         type: file
         description: VEP annotated VCF file
         pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -33,24 +35,29 @@ input:
         description: File with VEP variant consequences, one per line.
         pattern: "*"
 
+        ontologies: []
 output:
-  - vcf:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - "*.vcf.gz":
-        type: file
-        description: Annotated VCF file
-        pattern: "*.vcf.gz"
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.vcf.gz":
+          type: file
+          description: Annotated VCF file
+          pattern: "*.vcf.gz"
 
-  - versions:
-    - "versions.yml":
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ramprasadn"
   - "@fellen31"

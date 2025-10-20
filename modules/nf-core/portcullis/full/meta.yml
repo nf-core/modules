@@ -53,21 +53,8 @@ input:
         ontologies:
           - edam: "http://edamontology.org/format_1332"
 output:
-  - log:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'sample1', single_end:false ]
-      - "*.portcullis.log":
-          type: file
-          description: Log file containing Portcullis execution details, processing steps,
-            and filtering statistics
-          pattern: "*.log"
-          ontologies:
-            - edam: "http://edamontology.org/format_2330"
-  - pass_junctions_bed:
-      - meta:
+  pass_junctions_bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -79,8 +66,8 @@ output:
           pattern: "*.pass.junctions.bed"
           ontologies:
             - edam: "http://edamontology.org/format_3003"
-  - pass_junctions_tab:
-      - meta:
+  pass_junctions_tab:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -92,8 +79,22 @@ output:
           pattern: "*.pass.junctions.tab"
           ontologies:
             - eadam: "http://edamontology.org/format_3475"
-  - intron_gff:
-      - meta:
+            - edam: http://edamontology.org/format_3475 # TSV
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1', single_end:false ]
+      - "*.portcullis.log":
+          type: file
+          description: Log file containing Portcullis execution details, processing
+            steps, and filtering statistics
+          pattern: "*.log"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  intron_gff:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -105,8 +106,8 @@ output:
           pattern: "*.intron.gff3"
           ontologies:
             - edam: "http://edamontology.org/format_1975"
-  - exon_gff:
-      - meta:
+  exon_gff:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -118,39 +119,39 @@ output:
           pattern: "*.exon.gff3"
           ontologies:
             - edam: "http://edamontology.org/format_1975"
-  - spliced_bam:
-      - meta:
+  spliced_bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'sample1', single_end:false ]
-      - "*.bam":
+      - "*.spliced.bam":
           type: file
           description: |
             BAM file after filtering original BAM file by removing alignments associated with bad junctions
-          pattern: "*.bam"
+          pattern: "*.spliced.bam"
           ontologies:
             - edam: "http://edamontology.org/format_2572"
-  - spliced_bai:
-      - meta:
+  spliced_bai:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'sample1', single_end:false ]
-      - "*.bai":
+      - "*.spliced.bam.bai":
           type: file
           description: |
             Index of the output BAM file
-          pattern: "*.bai"
+          pattern: "*spliced.bam.bai"
           ontologies:
             - edam: "http://edamontology.org/format_3327"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: "http://edamontology.org/format_3750"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750"
 authors:
   - "@jblancoheredia"
 maintainer:

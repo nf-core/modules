@@ -30,10 +30,12 @@ input:
         type: file
         description: Sorted and indexed BAM/CRAM/SAM file
         pattern: "*.bam"
+        ontologies: []
     - bai:
         type: file
         description: BAM index file
         pattern: "*.bai"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -43,6 +45,7 @@ input:
         type: file
         description: Reference file used to generate BAM file
         pattern: ".{fasta,fa,fna}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -52,6 +55,7 @@ input:
         type: file
         description: Index of reference file used to generate BAM file
         pattern: ".fai"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -61,6 +65,7 @@ input:
         type: file
         description: GATK dict file for reference
         pattern: ".dict"
+        ontologies: []
   - - meta5:
         type: map
         description: |
@@ -70,28 +75,27 @@ input:
         type: file
         description: Optional input VCF file(s) with known indels
         pattern: ".vcf"
+        ontologies: []
 output:
-  - intervals:
-      - meta:
+  intervals:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.intervals":
           type: file
-          description: File containing intervals that represent sites of extant and potential
-            indels.
+          description: File containing intervals that represent sites of extant and
+            potential indels.
           pattern: "*.intervals"
-      - s:
-          type: file
-          description: File containing intervals that represent sites of extant and potential
-            indels.
-          pattern: "*.intervals"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

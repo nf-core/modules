@@ -28,33 +28,26 @@ input:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - tumor_bam_index:
         type: file
         description: BAM/CRAM/SAM index file
         pattern: "*.{bai,crai}"
-    - normal_bam:
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - models:
         type: file
-        description: BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
-    - normal_bam_index:
-        type: file
-        description: BAM/CRAM/SAM index file
-        pattern: "*.{bai,crai}"
-    - intervals:
-        type: file
-        description: BED
-        pattern: "*.bed"
-  - - scan:
-        type: file
-        description: Input scan file from MSIsensor2 scan module
-  - - models:
-        type: file
-        description: Folder of MSISensor2 models (available from Github or as a product
-          of msisensor2/scan)
+        description: Folder of MSISensor2 models (available from Github or as a
+          product of msisensor2/scan)
         pattern: "*/*"
+        ontologies: []
 output:
-  - msi:
-      - meta:
+  msi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -62,8 +55,9 @@ output:
       - ${prefix}:
           type: file
           description: MSI classifications as a text file
-  - distribution:
-      - meta:
+          ontologies: []
+  distribution:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -71,8 +65,9 @@ output:
       - ${prefix}_dis:
           type: file
           description: Read count distributions of MSI regions
-  - somatic:
-      - meta:
+          ontologies: []
+  somatic:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -80,11 +75,14 @@ output:
       - ${prefix}_somatic:
           type: file
           description: Somatic MSI regions detected.
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@adamrtalbot"
 maintainers:

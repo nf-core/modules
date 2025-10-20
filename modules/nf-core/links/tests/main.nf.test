@@ -7,7 +7,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "links"
 
-    test("LINKS - LINKS test data") {
+    test("LINKS - sarscov2 test data - contigs") {
         config './nextflow.config'
 
         when {
@@ -18,11 +18,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/scaffolding/LINKS/contigs.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true),
                 ]
                 input[1] = [
                     [ id:'test'], 
-                    file(params.modules_testdata_base_path + 'genomics/scaffolding/LINKS/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                 ]
                 """
             }
@@ -48,7 +48,7 @@ nextflow_process {
 
     }
 
-    test("LINKS - longstitch test data 1") {
+    test("LINKS - sarscov2 test data - scaffolds") {
         config './nextflow.config'
 
         when {
@@ -59,11 +59,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/scaffolding/longstitch/test_scaffolds1.fa', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/scaffolds.fasta', checkIfExists: true),
                 ]
                 input[1] = [
                     [ id:'test'], 
-                    file(params.modules_testdata_base_path + 'genomics/scaffolding/longstitch/test_reads1.fa.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true),
                 ]
                 """
             }
@@ -74,53 +74,13 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.log[0][1]).name,
-                    file(process.out.pairing_issues[0][1]).name,
+                    process.out.pairing_issues,
                     process.out.scaffolds_csv,
                     process.out.scaffolds_fasta,
                     process.out.bloom,
                     file(process.out.scaffolds_graph[0][1]).name,
-                    file(process.out.assembly_correspondence[0][1]).name,
-                    file(process.out.tigpair_checkpoint[0][1]).name,
-                    process.out.versions
-                    ).match()
-                }
-            )
-        }
-
-    }
-    test("LINKS - longstitch test data 2") {
-        config './nextflow.config'
-
-        when {
-            params {
-                module_args = "-d 1000,2000,3000,4000,5000,6000,7000,8000,9000,10000,12000,14000,16000,18000,20000"
-            }
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/scaffolding/longstitch/test_scaffolds2.fa', checkIfExists: true),
-                ]
-                input[1] = [
-                    [ id:'test'], 
-                    file(params.modules_testdata_base_path + 'genomics/scaffolding/longstitch/test_reads2.fa.gz', checkIfExists: true),
-                ]
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    file(process.out.log[0][1]).name,
-                    file(process.out.pairing_issues[0][1]).name,
-                    process.out.scaffolds_csv,
-                    process.out.scaffolds_fasta,
-                    process.out.bloom,
-                    file(process.out.scaffolds_graph[0][1]).name,
-                    file(process.out.assembly_correspondence[0][1]).name,
-                    file(process.out.tigpair_checkpoint[0][1]).name,
+                    process.out.assembly_correspondence,
+                    process.out.tigpair_checkpoint,
                     process.out.versions
                     ).match()
                 }
@@ -140,12 +100,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], 
-                    file(params.modules_testdata_base_path + 'genomics/scaffolding/LINKS/contigs.fasta', checkIfExists: true),
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                 ]
                 input[1] = [
-                    [ id:'test' ], 
-                    file(params.modules_testdata_base_path + 'genomics/scaffolding/LINKS/genome.fasta', checkIfExists: true),
+                    [ id:'test'], 
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true),
                 ]
                 """
             }

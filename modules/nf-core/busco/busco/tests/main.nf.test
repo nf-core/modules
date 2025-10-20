@@ -24,7 +24,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                 ]
                 input[1] = 'genome'
-                input[2] = 'bacteria_odb12' // Launch with 'auto' to use --auto-lineage, and specified lineages // 'auto' removed from test due to memory issues
+                input[2] = 'bacteria_odb10' // Launch with 'auto' to use --auto-lineage, and specified lineages // 'auto' removed from test due to memory issues
                 input[3] = [] // Download busco lineage
                 input[4] = [] // No config
                 input[5] = false // Clean intermediates
@@ -92,7 +92,7 @@ nextflow_process {
                     ]
                 ]
                 input[1] = 'genome'
-                input[2] = 'bacteria_odb12'
+                input[2] = 'bacteria_odb10'
                 input[3] = []
                 input[4] = []
                 input[5] = false
@@ -163,72 +163,6 @@ nextflow_process {
 
     }
 
-    test("test_busco_eukaryote_metaeuk") {
-
-        config './nextflow.config'
-
-        when {
-            params {
-                busco_args = '--tar --metaeuk'
-            }
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                ]
-                input[1] = 'genome'
-                input[2] = 'eukaryota_odb10'
-                input[3] = []
-                input[4] = []
-                input[5] = false
-                """
-            }
-        }
-
-        then {
-            assert process.success
-
-            with(path(process.out.short_summaries_txt[0][1]).text) {
-                assert contains('BUSCO version')
-                assert contains('The lineage dataset is')
-                assert contains('BUSCO was run in mode')
-                assert contains('Complete BUSCOs')
-                assert contains('Missing BUSCOs')
-                assert contains('Dependencies and versions')
-            }
-
-            with(path(process.out.short_summaries_json[0][1]).text) {
-                assert contains('one_line_summary')
-                assert contains('mode')
-                assert contains('dataset')
-            }
-
-            assert snapshot(
-                    process.out.batch_summary[0][1],
-                    process.out.full_table[0][1],
-                    process.out.missing_busco_list[0][1],
-                    process.out.versions[0]
-                ).match()
-
-            with(file(process.out.seq_dir[0][1]).listFiles().collect { it.name }) {
-                assert contains('single_copy_busco_sequences.tar.gz')
-                assert contains('multi_copy_busco_sequences.tar.gz')
-                assert contains('fragmented_busco_sequences.tar.gz')
-            }
-
-            with(path(process.out.log[0][1]).text) {
-                assert contains('DEBUG:busco.run_BUSCO')
-                assert contains('Results from dataset')
-                assert contains('how to cite BUSCO')
-
-            }
-
-            assert process.out.single_copy_proteins == []
-            assert process.out.translated_dir == []
-        }
-
-    }
 
     test("test_busco_eukaryote_augustus") {
 
@@ -292,7 +226,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
                 ]
                 input[1] = 'proteins'
-                input[2] = 'bacteria_odb12'
+                input[2] = 'bacteria_odb10'
                 input[3] = []
                 input[4] = []
                 input[5] = false
@@ -358,7 +292,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists: true)
                 ]
                 input[1] = 'transcriptome'
-                input[2] = 'bacteria_odb12'
+                input[2] = 'bacteria_odb10'
                 input[3] = []
                 input[4] = []
                 input[5] = false
@@ -423,7 +357,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                 ]
                 input[1] = 'genome'
-                input[2] = 'bacteria_odb12'
+                input[2] = 'bacteria_odb10'
                 input[3] = []
                 input[4] = []
                 input[5] = true
@@ -467,7 +401,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                 ]
                 input[1] = 'genome'
-                input[2] = 'bacteria_odb12'
+                input[2] = 'bacteria_odb10'
                 input[3] = []
                 input[4] = []
                 input[5] = false
