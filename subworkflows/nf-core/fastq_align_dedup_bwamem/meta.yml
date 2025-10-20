@@ -11,12 +11,8 @@ keywords:
   - fastq
   - bam
 components:
-  - bwa/mem
   - parabricks/fq2bam
-  - samtools/sort
   - samtools/index
-  - samtools/flagstat
-  - samtools/stats
   - picard/addorreplacereadgroups
   - picard/markduplicates
   - bam_sort_stats_samtools
@@ -37,7 +33,7 @@ input:
       type: file
       description: |
         Structure: [ val(meta), path(fasta index) ]
-  - ch_bwame _index:
+  - ch_bwamem_index:
       description: |
         Bwa-mem genome index files
         Structure: [ val(meta), path(index) ]
@@ -69,6 +65,12 @@ output:
         File containing samtools flagstat output
         Structure: [ val(meta), path(flagstat) ]
       pattern: "*.flagstat"
+  - samtools_idxstats:
+      type: file
+      description: |
+        File containing samtools idxstats output
+        Structure: [ val(meta), path(idxstats) ]
+      pattern: "*.idxstats"
   - samtools_stats:
       type: file
       description: |

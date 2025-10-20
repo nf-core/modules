@@ -1,7 +1,7 @@
 include { BAM_SORT_STATS_SAMTOOLS                           } from '../../nf-core/bam_sort_stats_samtools/main'
 include { FASTQ_ALIGN_BWA                                   } from '../../nf-core/fastq_align_bwa/main'
 include { PICARD_ADDORREPLACEREADGROUPS                     } from '../../../modules/nf-core/picard/addorreplacereadgroups/main'
-include { PICARD_MARKDUPLICATES as PICARD_REMOVEDUPLICATES  } from '../../../modules/nf-core/picard/markduplicates/main'  
+include { PICARD_MARKDUPLICATES                             } from '../../../modules/nf-core/picard/markduplicates/main'  
 include { PARABRICKS_FQ2BAM                                 } from '../../../modules/nf-core/parabricks/fq2bam/main'
 include { SAMTOOLS_INDEX as SAMTOOLS_INDEX_DEDUPLICATED     } from '../../../modules/nf-core/samtools/index/main'
 
@@ -33,22 +33,24 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
             ch_reads,
             ch_fasta,
             ch_bwamem_index,
-            ch_reads.map { meta, _ -> tuple(meta, []) }, // interval file
-            ch_reads.map { meta, _ -> tuple(meta, []) }, // known sites
+            [[],[]], // interval file
+            [[],[]], // known sites
             'bam' // output format
         )
         ch_alignment = PARABRICKS_FQ2BAM.out.bam
-        ch_versions  = ch_versions.mix(PARABRICKS_FQ2BAM.out.versions)
+        ch_versions  = ch_versions.mix(PARABRICKS_FQ2BAM.out.versions.first())
         
         // FQ2BAM can also sort and markduplicates
         BAM_SORT_STATS_SAMTOOLS ( 
             ch_alignment,
             ch_fasta
         )
+        ch_alignment = BAM_SORT_STATS_SAMTOOLS.out.bam
+        ch_alignment_index = BAM_SORT_STATS_SAMTOOLS.out.bai
         ch_stats    = BAM_SORT_STATS_SAMTOOLS.out.stats    // channel: [ val(meta), path(stats) ]
         ch_flagstat = BAM_SORT_STATS_SAMTOOLS.out.flagstat // channel: [ val(meta), path(flagstat) ]
         ch_idxstats = BAM_SORT_STATS_SAMTOOLS.out.idxstats // channel: [ val(meta), path(idxstats) ]
-        ch_versions = ch_versions.mix(BAM_SORT_STATS_SAMTOOLS.out.versions)
+        ch_versions = ch_versions.mix(BAM_SORT_STATS_SAMTOOLS.out.versions.first())
     }
     else {
         FASTQ_ALIGN_BWA (
@@ -74,29 +76,29 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
             ch_fasta,
             ch_fasta_index
         )
-        ch_versions = ch_versions.mix(PICARD_ADDORREPLACEREADGROUPS.out.versions)
+        ch_versions = ch_versions.mix(PICARD_ADDORREPLACEREADGROUPS.out.versions.first())
 
         /*
          * Run Picard MarkDuplicates with the --REMOVE_DUPLICATES true flag
          */
 
-        PICARD_REMOVEDUPLICATES (
+        PICARD_MARKDUPLICATES (
             PICARD_ADDORREPLACEREADGROUPS.out.bam,
             ch_fasta,
             ch_fasta_index
         )
-        ch_versions = ch_versions.mix(PICARD_REMOVEDUPLICATES.out.versions)
+        ch_versions = ch_versions.mix(PICARD_MARKDUPLICATES.out.versions.first())
 
         /*
          * Run samtools index on deduplicated alignment
          */
         SAMTOOLS_INDEX_DEDUPLICATED (
-            PICARD_REMOVEDUPLICATES.out.bam
+            PICARD_MARKDUPLICATES.out.bam
         )
-        ch_alignment       = PICARD_REMOVEDUPLICATES.out.bam
+        ch_alignment       = PICARD_MARKDUPLICATES.out.bam
         ch_alignment_index = SAMTOOLS_INDEX_DEDUPLICATED.out.bai
-        ch_picard_metrics  = PICARD_REMOVEDUPLICATES.out.metrics
-        ch_versions        = ch_versions.mix(SAMTOOLS_INDEX_DEDUPLICATED.out.versions)
+        ch_picard_metrics  = PICARD_MARKDUPLICATES.out.metrics
+        ch_versions        = ch_versions.mix(SAMTOOLS_INDEX_DEDUPLICATED.out.versions.first())
     }
 
     /*
