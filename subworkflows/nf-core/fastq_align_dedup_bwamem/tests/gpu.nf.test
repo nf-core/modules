@@ -3,7 +3,6 @@ nextflow_workflow {
     name "Test Subworkflow FASTQ_ALIGN_DEDUP_BWAMEM"
     script "../main.nf"
     workflow "FASTQ_ALIGN_DEDUP_BWAMEM"
-    config "../nextflow.config"
     config "./nextflow.config"
 
     tag "gpu"
@@ -16,38 +15,36 @@ nextflow_workflow {
     tag "untar"
 
     setup {
-        run("UNTAR") {
-            script "../../../../modules/nf-core/untar/main.nf"
-            process {
-                """
-                input[0] = [
-                    [:],
-                    file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Bwameth_Index.tar.gz', checkIfExists: true)
-                ]
-                """
+        run("BWA_INDEX") {
+            script "../../../../modules/nf-core/bwa/index/main.nf"
+                process {
+                    """
+                    input[0] = Channel.value([ [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ])
+                    """
+                }
             }
         }
-    }
 
-    test("Params: parabricks/fq2bam single-end | use_gpu | stub") {
-        options '-stub'
+    test("Params: parabricks/fq2bam single-end | use_gpu ") {
         when {
 
             workflow {
                 """
                 input[0] = Channel.of([
                             [ id:'test', single_end:true ],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz', checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ])
                 input[1] = Channel.of([
                             [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ])
                 input[2] = Channel.of([
                             [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ])
-                input[3] = UNTAR.out.untar
+                input[3] = BWA_INDEX.out.index
                 input[4] = false // skip_deduplication
                 input[5] = true // use_gpu
                 """
@@ -62,8 +59,7 @@ nextflow_workflow {
         }
     }
 
-    test("Params: parabricks/fq2bam single-end | use_gpu | skip_deduplication | stub") {
-        options '-stub'
+    test("Params: parabricks/fq2bam single-end | use_gpu | skip_deduplication") {
         when {
             params {
                 skip_deduplication = true
@@ -74,17 +70,17 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                             [ id:'test', single_end:true ],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz', checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ])
                 input[1] = Channel.of([
                             [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ])
                 input[2] = Channel.of([
                             [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ])
-                input[3] = UNTAR.out.untar
+                input[3] = BWA_INDEX.out.index
                 input[4] = true // skip_deduplication
                 input[5] = true // use_gpu
                 """
@@ -102,4 +98,70 @@ nextflow_workflow {
         }
     }
 
+    test("Params: parabricks/fq2bam single-end | use_gpu | stub") {
+        options '-stub'
+        when {
+
+            workflow {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:true ],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
+                            [:],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = Channel.of([
+                            [:],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ])
+                input[3] = BWA_INDEX.out.index
+                input[4] = false // skip_deduplication
+                input[5] = true // use_gpu
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+
+    test("Params: parabricks/fq2bam paired-end | use_gpu | skip_deduplication") {
+
+        when {
+
+            workflow {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:true ],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
+                            [:],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = Channel.of([
+                            [:],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ])
+                input[3] = BWA_INDEX.out.index
+                input[4] = true // skip_deduplication
+                input[5] = true // use_gpu
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
 }
