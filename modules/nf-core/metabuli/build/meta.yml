@@ -1,0 +1,59 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "metabuli_build"
+description: Builds a database for classification with metabuli from FASTA files and a taxonomy
+keywords:
+  - database
+  - taxonomic classification
+  - classification
+  - metagenomics
+tools:
+  - "metabuli":
+      description: "Metabuli: specific and sensitive metagenomic classification via
+        joint analysis of DNA and amino acid"
+      homepage: "https://github.com/steineggerlab/Metabuli"
+      documentation: "https://github.com/steineggerlab/Metabuli"
+      tool_dev_url: "https://github.com/steineggerlab/Metabuli"
+      doi: "10.1101/2023.05.31.543018"
+      licence: ["GPL v3"]
+      identifier: biotools:metabuli
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - fasta:
+        type: file
+        description: Fasta file with input assemblies
+  - - taxonomy_names:
+        type: file
+        description: File describing individual members of a taxonomic tree
+  - - taxonomy_nodes:
+        type: file
+        description: File describing parent-child relationships of a taxonomic tree
+  - - taxonomy_merged:
+        type: file
+        description: Optional input to map old/deprecated TaxID to new ones
+  - - accession2taxid:
+        type: directory
+        description: TSV file (with no header) of first column with mapping accession (from first part of each fasta entry) and second column the corresponding TaxID
+
+output:
+  - db:
+      - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - $prefix:
+          type: directory
+          description: metabuli database directory for classification
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@pawelciurkaardigen"
+  - "@MichalStachowiakArdigen"
+maintainers:
+  - "@pawelciurkaardigen"
+  - "@MichalStachowiakArdigen"
