@@ -50,9 +50,7 @@ process PARABRICKS_FQ2BAM {
     # As of Parabricks version 4.6 the symlink is sufficient and we no longer need to copy the file
 
     fasta_basename=\$(basename ${fasta})
-    cd ${index} && \
-        ln -sf ../${fasta} \$fasta_basename && \
-        cd ..
+    ln -sf ${fasta} ${index}/\$fasta_basename
 
     pbrun \\
         fq2bam \\
