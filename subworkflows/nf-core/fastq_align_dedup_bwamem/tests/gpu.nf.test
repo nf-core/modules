@@ -21,7 +21,7 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
                 ])
                 """
             }
@@ -33,7 +33,7 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
                 ])
                 """
             }
@@ -154,7 +154,7 @@ nextflow_workflow {
                 skip_deduplication = true
                 use_gpu            = true
                 bwa_prefix = 'genome.fa'
-            }
+            }sa
             workflow {
                 """
                 input[0] = Channel.of([
