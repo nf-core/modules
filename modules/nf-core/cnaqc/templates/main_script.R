@@ -1,43 +1,95 @@
 #!/usr/bin/env Rscript
 
-parse_args = function(x) {
-    x = gsub("\\\\[","",x)
-    x = gsub("\\\\]","",x)
-    # giving errors when we have lists like c(xxx, xxx) since it will separate it
-    # args_list = unlist(strsplit(x, ', ')[[1]])
-    args_list = unlist(strsplit(x, ", (?=[^)]*(?:\\\\(|\$))", perl=TRUE))
-    # args_vals = lapply(args_list, function(x) strsplit(x, split=":")[[1]])
-    args_vals = lapply(args_list, function(x) {
-        x_splt = strsplit(x, split=":")[[1]]
-        c(x_splt[1],  paste(x_splt[2:length(x_splt)], collapse=":"))
-    })
+# parse_args = function(x) {
+#     x = gsub("\\\\[","",x)
+#     x = gsub("\\\\]","",x)
+#     # giving errors when we have lists like c(xxx, xxx) since it will separate it
+#     # args_list = unlist(strsplit(x, ', ')[[1]])
+#     args_list = unlist(strsplit(x, ", (?=[^)]*(?:\\\\(|\$))", perl=TRUE))
+#     # args_vals = lapply(args_list, function(x) strsplit(x, split=":")[[1]])
+#     args_vals = lapply(args_list, function(x) {
+#         x_splt = strsplit(x, split=":")[[1]]
+#         c(x_splt[1],  paste(x_splt[2:length(x_splt)], collapse=":"))
+#     })
 
-    # Ensure the option vectors are length 2 (key/ value) to catch empty ones
-    args_vals = lapply(args_vals, function(z){ length(z) = 2; z})
+#     # Ensure the option vectors are length 2 (key/ value) to catch empty ones
+#     args_vals = lapply(args_vals, function(z){ length(z) = 2; z})
 
-    parsed_args = structure(lapply(args_vals, function(x) x[2]), names = lapply(args_vals, function(x) x[1]))
-    parsed_args[! is.na(parsed_args)]
+#     parsed_args = structure(lapply(args_vals, function(x) x[2]), names = lapply(args_vals, function(x) x[1]))
+#     parsed_args[! is.na(parsed_args)]
+# }
+
+# opt = list(
+#     prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix')
+# )
+# args_opt = parse_args('$task.ext.args')
+# for ( ao in names(args_opt)) opt[[ao]] = args_opt[[ao]]
+# print(opt)
+
+# parse arguments
+parse_args <- function(x){
+  args_list <- unlist(strsplit(x, ' ?--')[[1]])[-1]
+  args_vals <- lapply(args_list, function(x) scan(text=x, what='character', quiet = TRUE))
+
+  # Ensure the option vectors are length 2 (key/ value) to catch empty ones
+  args_vals <- lapply(args_vals, function(z){ length(z) <- 2; z})
+
+  parsed_args <- structure(lapply(args_vals, function(x) x[2]), names = lapply(args_vals, function(x) x[1]))
+  parsed_args[! is.na(parsed_args)]
 }
 
-opt = list(
-    prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix')
+# Set defaults and classes
+
+opt <- list(
+  prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
+  genome = 'GRCh38', 
+  genome_coords = NULL, 
+  karyotypes = c("1:0", "1:1", "2:0", "2:1", "2:2"),
+  min_absolute_karyotype_mutations = 100, 
+  matching_strategy = 'rightmost', 
+  min_karyotype_size = 0,
+  p_binsize_peaks = 0.005,
+  matching_epsilon = NULL,
+  purity_error = 0.05,
+  VAF_tolerance = 0.015,
+  n_bootstrap = 1,
+  kernel_adjust = 1,
+  KDE = TRUE,
+  starting_state_subclonal_evolution = "1:1",
+  cluster_subclonal_CCF = FALSE,
+  min_VAF = 0,
+  muts_per_karyotype = 25, 
+  cutoff_QC_PASS = 0.1,
+  method = "ENTROPY"
 )
-args_opt = parse_args('$task.ext.args')
-for ( ao in names(args_opt)) opt[[ao]] = args_opt[[ao]]
-print(opt)
+opt_types <- lapply(opt, class)
+
+# Apply parameter overrides
+
+args_opt <- parse_args('$task.ext.args')
+for ( ao in names(args_opt)){
+  if (! ao %in% names(opt)){
+    stop(paste("Invalid option:", ao))
+  }else{
+
+    # Preserve classes from defaults where possible
+    if (! is.null(opt[[ao]])){
+      args_opt[[ao]] <- as(args_opt[[ao]], opt_types[[ao]])
+    }
+    opt[[ao]] <- args_opt[[ao]]
+  }
+}
 
 # Script #####
+
+# load libraries
 
 library(dplyr)
 library(CNAqc)
 
 SNV = readRDS("$snv_rds") %>%
-  purrr::pluck("$meta.tumor_sample", "mutations") %>% 
+  purrr::pluck("$tumour_sample", "mutations") %>% 
   dplyr::mutate(mutation_id = paste(chr,from,to,ref,alt,sep = ':'))
-
-# SNV = SNV[["$meta.tumour_sample"]]
-# SNV = SNV\$mutations
-# SNV = SNV %>% dplyr::mutate(mutation_id = paste(chr,from,to,ref,alt,sep = ':'))
 
 CNA = readRDS("$cna_rds")
 
@@ -80,7 +132,7 @@ pl_exp = ggpubr::ggarrange(
   nrow = 5,
   heights = c(.5,.5,.5,1,5)
 )
-pl_exp = ggpubr::annotate_figure(pl_exp, top = ggpubr::text_grob("$meta.tumour_sample", size = 14))
+pl_exp = ggpubr::annotate_figure(pl_exp, top = ggpubr::text_grob("$tumour_sample", size = 14))
 
 pl_qc = ggpubr::ggarrange(
   plotlist = list(
@@ -89,7 +141,7 @@ pl_qc = ggpubr::ggarrange(
     CNAqc::plot_CCF(tmp_x, assembly_plot = TRUE, empty_plot = FALSE)), 
   nrow = 3,
   heights = c(1,1.5,1)) 
-pl_qc = ggpubr::annotate_figure(pl_qc, top = ggpubr::text_grob("$meta.tumour_sample", size = 14))
+pl_qc = ggpubr::annotate_figure(pl_qc, top = ggpubr::text_grob("$tumour_sample", size = 14))
 
 saveRDS(object = x, file = paste0(opt[["prefix"]], "_qc.rds"))
 saveRDS(object = pl_exp, file = paste0(opt[["prefix"]], "_data_plot.rds"))
