@@ -1,0 +1,78 @@
+nextflow_process {
+
+    name "Test Process QUANTMSUTILS_MZMLSTATISTICS"
+    script "../main.nf"
+    process "QUANTMSUTILS_MZMLSTATISTICS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "quantmsutils"
+    tag "quantmsutils/mzmlstatistics"
+    tag "untar"
+
+    setup {
+        run("UNTAR") {
+            script "../../../../nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id:'test_sample'],
+                    file(params.modules_testdata_base_path + 'proteomics/diann/RD139_Narrow_UPS1_0_1fmol_inj1.mzML.tar.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("proteomics - mzML statistics") {
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.map{ meta, dir ->  
+                    def mzmlFile = dir.resolve('RD139_Narrow_UPS1_0_1fmol_inj1.mzML')
+                    [meta, mzmlFile]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path("${process.out.ms_statistics[0][1]}").exists() },
+                { assert path("${process.out.log[0][1]}").exists() },
+                { assert snapshot(
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("proteomics - mzML statistics - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.map{ meta, dir ->  
+                    def mzmlFile = dir.resolve('RD139_Narrow_UPS1_0_1fmol_inj1.mzML')
+                    [meta, mzmlFile]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path("${process.out.ms_statistics[0][1]}").exists() },
+                { assert snapshot(
+                    process.out.versions,
+                    process.out.log
+                ).match() }
+            )
+        }
+    }
+}

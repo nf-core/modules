@@ -1,0 +1,85 @@
+nextflow_workflow {
+
+    name "Test Subworkflow DIA_PROTEOMICS_ANALYSIS"
+    script "../main.nf"
+    workflow "DIA_PROTEOMICS_ANALYSIS"
+    config "./nextflow.config"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/dia_proteomics_analysis"
+    tag "diann"
+    tag "quantmsutils/dianncfg"
+    tag "quantmsutils/mzmlstatistics"
+    tag "quantmsutils/diann2mztab"
+    tag "proteomics"
+    tag "dia_proteomics_analysis"
+    tag "untar"
+
+    setup {
+        run("UNTAR") {
+            script "../../../../modules/nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id:'test_sample'],
+                    file(params.modules_testdata_base_path + 'proteomics/diann/RD139_Narrow_UPS1_0_1fmol_inj1.mzML.tar.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("proteomics - complete DIA analysis pipeline") {
+
+        when {
+            workflow {
+                """
+                ch_input  = UNTAR.out.untar.map{ meta, dir ->  
+                    def mzmlFile = dir.resolve('RD139_Narrow_UPS1_0_1fmol_inj1.mzML')
+                    [meta, mzmlFile, 'Trypsin', 'Carbamidomethyl (C)', 'Oxidation (M)', 20, 20, 'ppm', 'ppm']
+                }
+                ch_fasta = Channel.of(
+                    [
+                        [id:'ecoli'],
+                        file(params.modules_testdata_base_path + 'proteomics/diann/REF_EColi_K12_UPS1_combined_subset_100.fasta', checkIfExists: true)
+                    ]
+                )
+                ch_expdesign = Channel.of(
+                    [
+                        [id:'RD139_Narrow_UPS1_design'],
+                        file(params.modules_testdata_base_path + 'proteomics/diann/RD139_Narrow_UPS1_design.tsv', checkIfExists: true)
+                    ]
+                )
+                input[0] = ch_input
+                input[1] = ch_fasta
+                input[2] = ch_expdesign
+                input[3] = [true, 1, 42]
+                input[4] = 20
+                input[5] = false
+                input[6] = false
+                input[7] = false
+                input[8] = 1  // pg_level: 1 = protein groups
+                input[9] = Channel.empty()
+                input[10] = Channel.empty()
+                input[11] = Channel.empty()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert path("${workflow.out.diann_report[0][1]}").exists() },
+                { assert path("${workflow.out.out_triqler[0][1]}").exists() },
+                { assert path("${workflow.out.final_result[0][1]}").exists() },
+                { assert path("${workflow.out.mzml_statistics[0][1]}").exists() },
+                { assert snapshot(
+                    workflow.out.msstats_in,
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+
+}
