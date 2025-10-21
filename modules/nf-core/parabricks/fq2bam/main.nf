@@ -43,21 +43,17 @@ process PARABRICKS_FQ2BAM {
     def interval_file_command  = interval_file ? (interval_file instanceof List ? interval_file.collect { "--interval-file ${it}" }.join(' ') : "--interval-file ${interval_file}") : ""
 
     def num_gpus   = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
-    def low_memory = task.accelerator && task.accelerator.request > 1 ? '--low-memory' : ''
     """
     # The section below creates a symlink to the reference fasta file in the index directory
     # It is a Parabricks requirement that these files be in the same place
     # As of Parabricks version 4.6 the symlink is sufficient and we no longer need to copy the file
 
-    fasta_basename=\$(basename ${fasta})
-    cd ${index} && \
-        ln -s ../\$fasta_basename \$fasta_basename && \
-        cd -
+    cd ${index} && ln -sf ../${fasta} ${fasta} && cd ..
 
     pbrun \\
         fq2bam \\
         --preserve-file-symlinks \\
-        --ref ${index}/\$fasta_basename \\
+        --ref ${index}/${fasta} \\
         ${in_fq_command} \\
         --out-bam ${prefix}.${extension} \\
         ${known_sites_command} \\
@@ -66,7 +62,6 @@ process PARABRICKS_FQ2BAM {
         ${num_gpus} \\
         --bwa-cpu-thread-pool ${task.cpus} \\
         --monitor-usage \\
-        ${low_memory} \\
         ${args}
 
     cat <<-END_VERSIONS > versions.yml
