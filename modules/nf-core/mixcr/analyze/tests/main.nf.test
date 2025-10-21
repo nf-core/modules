@@ -1,0 +1,68 @@
+nextflow_process {
+
+    name "Test Process MIXCR_ANALYZE"
+    script "../main.nf"
+    process "MIXCR_ANALYZE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mixcr"
+    tag "mixcr/analyze"
+
+    test("10xgenomics vdj - fastq") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/vdj/subsampled_5k_human_antiCMV_T_TBNK_connect_VDJ_S1_L001_R1_001.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + '/genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/vdj/subsampled_5k_human_antiCMV_T_TBNK_connect_VDJ_S1_L001_R2_001.fastq.gz', checkIfExists: true) ]
+                ]
+                input[1] = "10x-sc-xcr-vdj"
+                input[2] = "hsa"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out.clones,
+                        file(process.out.vdjca[0][1]).name,
+                        file(process.out.clns[0][1]).name,
+                        process.out.versions,
+                        path(process.out.versions[0]).yaml
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("10xgenomics vdj - fastqs - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/vdj/subsampled_5k_human_antiCMV_T_TBNK_connect_VDJ_S1_L001_R1_001.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + '/genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/vdj/subsampled_5k_human_antiCMV_T_TBNK_connect_VDJ_S1_L001_R2_001.fastq.gz', checkIfExists: true) ]
+                ]
+                input[1] = "10x-sc-xcr-vdj"
+                input[2] = "hsa"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match()}
+            )
+        }
+
+    }
+
+}
