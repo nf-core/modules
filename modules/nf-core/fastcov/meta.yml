@@ -1,0 +1,73 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: fastcov
+description: Generate a coverage plot from one or more bam files
+keywords:
+  - coverage
+  - bam
+  - map
+tools:
+  - fastcov:
+      description: "Generate a coverage plot from one or more bam files"
+      homepage: "https://github.com/RaverJay/fastcov/"
+      documentation: "https://github.com/RaverJay/fastcov/blob/main/README.md"
+      tool_dev_url: "https://github.com/RaverJay/fastcov/tree/main"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: BAM file
+        pattern: "*.bam"
+        ontologies: []
+    - index:
+        type: file
+        description: BAM index file
+        pattern: "*.bai"
+        ontologies: []
+  - file_ext:
+      type: string
+      description: output plot file extension string, e.g. `png` or `pdf`
+output:
+  coverage_plot:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+          pattern: "*.{png,svg,pdf}"
+      - ${prefix}.${file_ext}:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+          pattern: "*.{png,svg,pdf}"
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "log.txt":
+          type: file
+          description: Log output redirected to a text file
+          pattern: "log.txt"
+          ontologies:
+            - edam: "http://edamontology.org/data_1678" # Log file
+            - edam: "http://edamontology.org/format_2330" # Plain text
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+authors:
+  - "@davidfischer"
+maintainers:
+  - "@davidfischer"
