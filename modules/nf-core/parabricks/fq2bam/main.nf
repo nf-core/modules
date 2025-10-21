@@ -51,8 +51,8 @@ process PARABRICKS_FQ2BAM {
 
     fasta_basename=\$(basename ${fasta})
     cd ${index} && \
-        ln -s ../\$fasta_basename \$fasta_basename && \
-        cd -
+        ln -sf ../${fasta} \$fasta_basename && \
+        cd ..
 
     pbrun \\
         fq2bam \\
