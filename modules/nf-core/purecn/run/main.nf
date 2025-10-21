@@ -18,6 +18,7 @@ process PURECN_RUN {
     tuple val(meta), path("*.pdf")                             , emit: pdf
     tuple val(meta), path("*_local_optima.pdf")                , emit: local_optima_pdf
     tuple val(meta), path("*_dnacopy.seg")                     , emit: seg
+    tuple val(meta), path("${prefix}.csv")                     , emit: csv
     tuple val(meta), path("*_genes.csv")                       , emit: genes_csv                   , optional: true
     tuple val(meta), path("*_amplification_pvalues.csv")       , emit: amplification_pvalues_csv   , optional: true
     tuple val(meta), path("*.vcf.gz")                          , emit: vcf_gz                      , optional: true
@@ -26,6 +27,7 @@ process PURECN_RUN {
     tuple val(meta), path("*_chromosomes.pdf")                 , emit: chr_pdf                     , optional: true
     tuple val(meta), path("*_segmentation.pdf")                , emit: segmentation_pdf            , optional: true
     tuple val(meta), path("*_multisample.seg")                 , emit: multisample_seg             , optional: true
+    tuple val(meta), path("*.log")                             , emit: log, optional: true
     path "versions.yml"                                        , emit: versions
 
     when:
@@ -33,7 +35,7 @@ process PURECN_RUN {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def vcf_opt = vcf ? "--vcf ${vcf}": ''
     def mapping_bias_opt = mapping_bias ? "--mapping-bias-file ${mapping_bias}": ''
     def normaldb_opt = normal_db ? "--normaldb ${normal_db}": ''
@@ -62,13 +64,14 @@ process PURECN_RUN {
 
     stub:
     def _args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '2.12.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     touch ${prefix}.pdf
     touch ${prefix}_local_optima.pdf
     touch ${prefix}_dnacopy.seg
+    touch ${prefix}.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
