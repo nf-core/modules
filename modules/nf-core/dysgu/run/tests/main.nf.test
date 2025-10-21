@@ -1,15 +1,14 @@
 nextflow_process {
 
-    name "Test Process DYSGU"
+    name "Test Process DYSGU_RUN"
     script "../main.nf"
-    process "DYSGU"
-    config "./nextflow.config"
+    process "DYSGU_RUN"
     tag "modules"
     tag "modules_nfcore"
-    tag "dysgu"
+    tag "dysgu/run"
 
 
-    test("human - bam") {
+    test("human - bam - defaults") {
 
         when {
             process {
@@ -19,9 +18,15 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
                 ]
                 input[1] = [ [ id:'reference'], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [ [ id:'reference'], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
                 ]
+                input[3] = [[:], []]
+                input[4] = [[:], []]
+                input[5] = [[:], []]
+                input[6] = [[:], []]
                 """
             }
         }
@@ -29,15 +34,16 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2") }
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys:["tbi", "vcf"])
+                ).match() }
             )
         }
 
     }
 
 
-    test("human - cram") {
+    test("human - cram - all files") {
 
         when {
             process {
@@ -47,8 +53,22 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.recalibrated.sorted.cram.crai', checkIfExists: true)
                 ]
                 input[1] = [ [ id:'reference'], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [ [ id:'reference'], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[3] = [ [ id:'sites'], 
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz')
+                ]
+                input[4] = [ [ id:'bed'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/annotated.bed')
+                ]
+                input[5] = [ [ id:'search'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed')
+                ]
+                input[6] = [ [ id:'exclude'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/SNP_GRCh38_hg38_wChr.bed')
                 ]
                 """
             }
@@ -57,13 +77,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
-                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2") }
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys:["tbi", "vcf"])
+                ).match() }
             )
         }
 
     }
-
 
     test("human - bam - stub") {
 
@@ -77,9 +97,15 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
                 ]
                 input[1] = [ [ id:'reference'], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [ [ id:'reference'], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
                 ]
+                input[3] = [[:], []]
+                input[4] = [[:], []]
+                input[5] = [[:], []]
+                input[6] = [[:], []]
                 """
             }
         }
@@ -87,7 +113,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                ).match() }
             )
         }
 
