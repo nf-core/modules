@@ -16,16 +16,29 @@ nextflow_workflow {
 
     setup {
         run("BWA_INDEX") {
-            script "../../../../modules/nf-core/bwa/index/main.nf"
-                process {
-                    """
-                    input[0] = Channel.value([ [ id:'genome' ],
+            script "../../../bwa/index/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                    ])
-                    """
-                }
+                ])
+                """
             }
         }
+
+        run("BWA_INDEX", alias: 'BWA_INDEX_PE') {
+            script "../../../bwa/index/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                """
+            }
+        }
+    }
 
     test("Params: parabricks/fq2bam single-end | use_gpu ") {
         when {
@@ -150,7 +163,7 @@ nextflow_workflow {
                             [:],
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ])
-                input[3] = BWA_INDEX.out.index
+                input[3] = BWA_INDEX_PE.out.index
                 input[4] = true // skip_deduplication
                 input[5] = true // use_gpu
                 """
