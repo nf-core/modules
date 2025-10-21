@@ -16,7 +16,7 @@ nextflow_workflow {
 
     setup {
         run("BWA_INDEX") {
-            script "../../../bwa/index/main.nf"
+            script "../../../../bwa/index/main.nf"
             process {
                 """
                 input[0] = Channel.of([
@@ -28,7 +28,7 @@ nextflow_workflow {
         }
 
         run("BWA_INDEX", alias: 'BWA_INDEX_PE') {
-            script "../../../bwa/index/main.nf"
+            script "../../../../bwa/index/main.nf"
             process {
                 """
                 input[0] = Channel.of([
