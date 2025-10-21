@@ -1,4 +1,4 @@
-name: dysgu
+name: dysgu_run
 
 description: Dysgu calls structural variants (SVs) from mapped sequencing reads.
   It is designed for accurate and efficient detection of structural variations.
@@ -27,14 +27,14 @@ input:
         description: Input BAM file
         pattern: "*.{bam,cram}"
         ontologies: 
-          - http://edamontology.org/format_2572 # BAM
-          - http://edamontology.org/format_3462 # CRAM
+          - edam: http://edamontology.org/format_2572 # BAM
+          - edam: http://edamontology.org/format_3462 # CRAM
     - index:
         type: file
         description: BAM index file
         pattern: "*.{bai,crai}"
         ontologies:
-          - http://edamontology.org/format_3327 # BAI
+          - edam: http://edamontology.org/format_3327 # BAI
   - - meta2:
         type: map
         description: |
@@ -45,7 +45,7 @@ input:
         description: Genome reference FASTA file
         pattern: "*.{fa,fasta}"
         ontologies:
-          - http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - meta3:
         type: map
         description: |
@@ -66,7 +66,7 @@ input:
         description: Known sites VCF file
         pattern: "*.{vcf,vcf.gz}"
         ontologies:
-          - http://edamontology.org/format_3016 # VCF
+          - edam: http://edamontology.org/format_3016 # VCF
   - - meta5:
         type: map
         description: |
@@ -77,7 +77,7 @@ input:
         description: Regions to include BED file
         pattern: "*.bed"
         ontologies:
-          - http://edamontology.org/format_3003 # BED
+          - edam: http://edamontology.org/format_3003 # BED
   - - meta6:
         type: map
         description: |
@@ -88,7 +88,7 @@ input:
         description: Regions to search BED file
         pattern: "*.bed"
         ontologies:
-          - http://edamontology.org/format_3003 # BED
+          - edam: http://edamontology.org/format_3003 # BED
   - - meta7:
         type: map
         description: |
@@ -99,7 +99,7 @@ input:
         description: Regions to exclude BED file
         pattern: "*.bed"
         ontologies:
-          - http://edamontology.org/format_3003 # BED
+          - edam: http://edamontology.org/format_3003 # BED
 output:
   vcf:
     - - meta:
@@ -112,7 +112,7 @@ output:
           description: VCF file with identified structural variants
           pattern: "*.{vcf.gz}"
           ontologies:
-            - http://edamontology.org/format_3016 # VCF
+            - edam: http://edamontology.org/format_3016 # VCF
   tbi:
     - - meta:
           type: map
