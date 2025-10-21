@@ -61,6 +61,7 @@ nextflow_process {
                 // Ref: https://forums.developer.nvidia.com/t/problem-with-gpu/256825/6
                 // Parabricks’s fq2bam requires 24GB of memory.
                 // Using --low-memory for testing
+                bwa_prefix = 'genome.fa'
             }
             process {
                 """
@@ -102,6 +103,7 @@ nextflow_process {
         when {
             params {
                 module_args = ''
+                bwa_prefix = ''
             }
             process {
                 """
@@ -143,6 +145,7 @@ nextflow_process {
                 // Ref: https://forums.developer.nvidia.com/t/problem-with-gpu/256825/6
                 // Parabricks’s fq2bam requires 24GB of memory.
                 // Using --low-memory for testing
+                bwa_prefix = 'genome.fasta'
             }
             process {
                 """
@@ -186,6 +189,7 @@ nextflow_process {
         when {
             params {
                 module_args = ''
+                bwa_prefix = ''
             }
             process {
                 """
@@ -229,6 +233,7 @@ nextflow_process {
                 // Ref: https://forums.developer.nvidia.com/t/problem-with-gpu/256825/6
                 // Parabricks’s fq2bam requires 24GB of memory.
                 // Using --low-memory for testing
+                bwa_prefix = 'genome.fasta'
             }
             process {
                 """
@@ -272,6 +277,7 @@ nextflow_process {
         when {
             params {
                 module_args = ''
+                bwa_prefix = ''
             }
             process {
                 """
