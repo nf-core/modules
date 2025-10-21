@@ -42,7 +42,10 @@ nextflow_workflow {
 
     test("Params: parabricks/fq2bam single-end | use_gpu ") {
         when {
-
+            params {
+                use_gpu    = true
+                bwa_prefix = 'genome.fa'
+            }
             workflow {
                 """
                 input[0] = Channel.of([
@@ -77,8 +80,8 @@ nextflow_workflow {
             params {
                 skip_deduplication = true
                 use_gpu            = true
+                bwa_prefix = 'genome.fa'
             }
-
             workflow {
                 """
                 input[0] = Channel.of([
@@ -147,7 +150,11 @@ nextflow_workflow {
     test("Params: parabricks/fq2bam paired-end | use_gpu | skip_deduplication") {
 
         when {
-
+            params {
+                skip_deduplication = true
+                use_gpu            = true
+                bwa_prefix = 'genome.fa'
+            }
             workflow {
                 """
                 input[0] = Channel.of([
