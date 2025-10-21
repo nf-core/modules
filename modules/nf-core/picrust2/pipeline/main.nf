@@ -11,7 +11,7 @@ process PICRUST2_PIPELINE {
     tuple val(meta), path(sequences), path(otu_table)
 
     output:
-    tuple val(meta), path("${prefix}/")
+    tuple val(meta), path("${prefix}/"), emit: output_dir
     tuple val(meta), path("${prefix}/*_reduced.tre"), emit: trees
     tuple val(meta), path("${prefix}/*_metagenome_out/pred_metagenome_unstrat.tsv.gz"), emit: function_abundances
     tuple val(meta), path("${prefix}/pathways_out/path_abun_unstrat.tsv.gz"), emit: pathway_abundances

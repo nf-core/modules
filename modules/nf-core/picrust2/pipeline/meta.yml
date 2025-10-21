@@ -1,57 +1,90 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-# # TODO nf-core: Add a description of the module and list keywords
 name: "picrust2_pipeline"
-description: write your description here
+description: Predict metagenome functional content from marker gene sequences
+  and OTU/ASV abundance data
 keywords:
-  - sort
-  - example
-  - genomics
+  - metagenomics
+  - functional prediction
+  - 16S
+  - microbiome
 tools:
-  ## TODO nf-core: Add a description and other details for the software below
   - "picrust2":
-      description: "PICRUSt: Phylogenetic Investigation of Communities by Reconstruction
+      description: "PICRUSt2: Phylogenetic Investigation of Communities by Reconstruction
         of Unobserved States"
-      homepage: "None"
-      documentation: "None"
+      homepage: "https://github.com/picrust/picrust2/wiki"
+      documentation: "https://github.com/picrust/picrust2/wiki"
       tool_dev_url: "https://github.com/picrust/picrust2"
-      doi: ""
+      doi: "10.1038/s41587-020-0548-6"
       licence: ["GPL v3"]
-      identifier: null
+      identifier: biotools:picrust2
 
 input:
-  ### TODO nf-core: Add a description of all of the variables used as input
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - bam:
+    - sequences:
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
-        ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
-          - edam: "http://edamontology.org/format_2573" # CRAM
-          - edam: "http://edamontology.org/format_3462" # SAM
+        description: FASTA file containing study sequences (e.g., 16S rRNA
+          sequences)
+        pattern: "*.{fasta,fa,fna}"
+        ontologies: []
+    - otu_table:
+        type: file
+        description: OTU/ASV abundance table in BIOM or TSV format
+        pattern: "*.{biom,tsv,txt}"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3746 # BIOM format
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
-  ### TODO nf-core: Add a description of all of the variables used as output
-  bam:
+  output_dir:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.bam":
+      - ${prefix}/:
+          type: directory
+          description: Complete output directory of PICRUSt2 pipeline
+  trees:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/*_reduced.tre:
           type: file
-          description: Sorted BAM/CRAM/SAM file
-          pattern: "*.{bam,cram,sam}"
+          description: Phylogenetic trees with reduced marker gene sequences
+          pattern: "*_reduced.tre"
+          ontologies: []
+  function_abundances:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/*_metagenome_out/pred_metagenome_unstrat.tsv.gz:
+          type: file
+          description: Predicted metagenome functional abundances (unstratified)
+          pattern: "pred_metagenome_unstrat.tsv.gz"
           ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
-            - edam: "http://edamontology.org/format_2573" # CRAM
-            - edam: "http://edamontology.org/format_3462" # SAM
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  pathway_abundances:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/pathways_out/path_abun_unstrat.tsv.gz:
+          type: file
+          description: Predicted pathway abundances (unstratified)
+          pattern: "path_abun_unstrat.tsv.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
   versions:
-    - "versions.yml":
+    - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
