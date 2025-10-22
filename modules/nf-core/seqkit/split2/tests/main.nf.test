@@ -219,4 +219,37 @@ nextflow_process {
 
     }
 
+    test("single_end - length - no_compression") {
+
+        config "./length.config"
+
+        setup {
+            run("GUNZIP") {
+                script "../../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id:'test', single_end:true ], // meta map
+                                 [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true) ]
+                         ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
 }
