@@ -1,7 +1,9 @@
 process VUEGEN {
     label 'process_single'
     conda "${moduleDir}/environment.yml"
-    container "dtu_biosustain_dsp/vuegen:v0.5.1-nextflow"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    ? 'oras://community.wave.seqera.io/library/vuegen_python:1adb57ecbfa02088'
+    : 'community.wave.seqera.io/library/vuegen_python:236414fc5cfce774'}"
 
     input:
         val input_type
