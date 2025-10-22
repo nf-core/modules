@@ -5,18 +5,21 @@ process PARABRICKS_RNAFQ2BAM {
     // needed by the module to work properly can be removed when fixed upstream - see: https://github.com/nf-core/modules/issues/7226
     stageInMode 'copy'
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.5.1-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.6.0-1"
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta),  path(reads)
     tuple val(meta1), path(fasta)
     tuple val(meta2), path(index)
     tuple val(meta3), path(genome_lib_dir)
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
-    tuple val(meta), path("*.bai"), emit: bai
-    path "versions.yml",            emit: versions
+    tuple val(meta), path("*.bam"),                                 emit: bam
+    tuple val(meta), path("*.bai"),                                 emit: bai
+    tuple val(meta), path("Chimeric.out.junction"),                 emit: junction,             optional: true
+    tuple val(meta), path("*_qc_metrics"),                          emit: qc_metrics,           optional:true
+    tuple val(meta), path("*.duplicate-metrics.txt"),               emit: duplicate_metrics,    optional:true
+    path "versions.yml",                                            emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,6 +49,10 @@ process PARABRICKS_RNAFQ2BAM {
         ${num_gpus} \\
         ${args}
 
+    if [[ "${args}" == *"--out-chim-type"* ]]; then
+        mv ${prefix}/Chimeric.out.junction .
+    fi
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
             pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
@@ -59,11 +66,13 @@ process PARABRICKS_RNAFQ2BAM {
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def chimeric_output = args.contains("--out-chim-type") ? "touch Chimeric.out.junction" : ""
     def qc_metrics_output = args.contains("--out-qc-metrics-dir") ? "mkdir ${prefix}_qc_metrics" : ""
     def duplicate_metrics_output = args.contains("--out-duplicate-metrics") ? "touch ${prefix}.duplicate-metrics.txt" : ""
     """
     touch ${prefix}.bam
     touch ${prefix}.bam.bai
+    ${chimeric_output}
     ${qc_metrics_output}
     ${duplicate_metrics_output}
 
