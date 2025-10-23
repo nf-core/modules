@@ -2,7 +2,7 @@ process PARABRICKS_FQ2BAM {
     tag "${meta.id}"
     label 'process_high'
     label 'process_gpu'
-    // needed by the module to run on a cluster because we need to copy the fasta reference
+    // needed by the module to run on a cluster because we need to copy the fasta reference, see https://github.com/nf-core/modules/issues/9230
     stageInMode 'copy'
 
     container "nvcr.io/nvidia/clara/clara-parabricks:4.6.0-1"
