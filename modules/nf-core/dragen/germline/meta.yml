@@ -1,7 +1,12 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "dragen"
-description: The DRAGEN DNA Germline Pipeline accelerates the secondary analysis of NGS data by harnessing the tremendous power available on the DRAGEN Platform. The pipeline includes highly optimized algorithms for mapping, aligning, sorting, duplicate marking, and haplotype variant calling. In addition to haplotype variant calling, the pipeline supports calling of copy number and structural variants as well as detection of repeat expansions and targeted calls.
+description: The DRAGEN DNA Germline Pipeline accelerates the secondary analysis
+  of NGS data by harnessing the tremendous power available on the DRAGEN
+  Platform. The pipeline includes highly optimized algorithms for mapping,
+  aligning, sorting, duplicate marking, and haplotype variant calling. In
+  addition to haplotype variant calling, the pipeline supports calling of copy
+  number and structural variants as well as detection of repeat expansions and
+  targeted calls.
 keywords:
   - check fingerprint
   - copy number variation
@@ -18,9 +23,14 @@ keywords:
   - variant deduplication
 tools:
   - "dragen":
-      description: "The Illumina DRAGEN™ Bio-IT Platform is based on the highly reconfigurable DRAGEN Bio-IT Processor, which is integrated on a Field Programmable Gate Array (FPGA) card and is available in a preconfigured server that can be seamlessly integrated into bioinformatics workflows. The platform can be loaded with highly optimized algorithms for many different NGS secondary analysis pipelines."
+      description: "The Illumina DRAGEN™ Bio-IT Platform is based on the highly reconfigurable
+        DRAGEN Bio-IT Processor, which is integrated on a Field Programmable Gate Array
+        (FPGA) card and is available in a preconfigured server that can be seamlessly
+        integrated into bioinformatics workflows. The platform can be loaded with highly
+        optimized algorithms for many different NGS secondary analysis pipelines."
       homepage: "https://support-docs.illumina.com/SW/dragen_v42/Content/SW/FrontPages/DRAGEN.htm?searchText=explify-ref-db-dir"
       documentation: "https://support-docs.illumina.com/SW/dragen_v42/Content/SW/FrontPages/DRAGEN.htm?searchText=explify-ref-db-dir"
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -32,57 +42,74 @@ input:
         type: file
         description: FASTQ (may be gzipped), ora, BAM or CRAM files
         pattern: "*.{fastq,fq,ora,bam,cram}{,.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
   - checkfingerprint_expected_vcf:
       type: file
       description: Input expected genotypes (VCF) for checkfingerprint comparison
       pattern: "*.vcf"
+      ontologies: []
   - cnv_combined_counts:
       type: file
       description: Specify combined PON file
       pattern: "*.combined.counts.txt.gz"
+      ontologies:
+        - edam: http://edamontology.org/format_3989 # GZIP format
   - cnv_exclude_bed:
       type: file
       description: Regions to exclude for CNV processing
       pattern: "*.bed"
+      ontologies: []
   - cnv_population_b_allele_vcf:
       type: file
       description: CNV population SNP input VCF file
       pattern: "*.vcf"
+      ontologies: []
   - cnv_segmentation_bed:
       type: file
       description: Intervals to limit segmentation to
       pattern: "*.bed"
+      ontologies: []
   - cnv_target_bed:
       type: file
       description: CNV target BED file
       pattern: "*.bed"
+      ontologies: []
   - cram_reference:
       type: file
       description: Reference file in FASTA format (only used for decompression)
       pattern: "*.{fasta,fa}"
+      ontologies: []
   - dbsnp:
       type: file
       description: Variant annotation database VCF (or .vcf.gz) file
       pattern: "*.vcf{,.gz}"
+      ontologies: []
   - fastqc_adapter_file:
       type: file
       description: FASTA file containing adapter sequences
       pattern: "*.{fasta,fa}"
+      ontologies: []
   - fastqc_kmer_file:
       type: file
       description: FASTA file containing kmers of interest
       pattern: "*.{fasta,fa}"
+      ontologies: []
   - ora_reference:
       type: directory
-      description: Path to the directory that contains the compression reference and index file
+      description: Path to the directory that contains the compression reference
+        and index file
   - qc_coverage_region:
       type: file
       description: bed files to report coverage on, max 3
       pattern: "*.bed"
+      ontologies: []
   - qc_cross_cont_vcf:
       type: file
-      description: Variant file (.vcf/.vcf.gz) with population allele frequencies to estimate sample contamination
+      description: Variant file (.vcf/.vcf.gz) with population allele frequencies
+        to estimate sample contamination
       pattern: "*.vcf{,.gz}"
+      ontologies: []
   - ref_dir:
       type: directory
       description: Directory with reference and hash tables
@@ -90,33 +117,50 @@ input:
       type: file
       description: FASTA file containing repeat genotypes
       pattern: "*.{fasta,fa}"
+      ontologies: []
   - repeat_genotype_specs:
       type: file
       description: Repeat variant catalog file
+      ontologies: []
   - sv_call_regions_bed:
       type: file
-      description: BED file containing the set of regions to call (optionally gzip or bgzip compressed)
+      description: BED file containing the set of regions to call (optionally gzip
+        or bgzip compressed)
       pattern: "*.bed{,.gz}"
+      ontologies: []
   - sv_exclusion_bed:
       type: file
-      description: BED file containing the set of exclusion regions for SV calling (optionally gzip or bzip compressed)
+      description: BED file containing the set of exclusion regions for SV calling
+        (optionally gzip or bzip compressed)
       pattern: "*.bed"
+      ontologies: []
   - sv_forcegt_vcf:
       type: file
-      description: Specify a VCF of structural variants for forced genotyping, meaning these variants will be scored and emitted in the output VCF even if not found in the sample data. These variants will be merged with any additional variants discovered directly from the sample data.
+      description: Specify a VCF of structural variants for forced genotyping,
+        meaning these variants will be scored and emitted in the output VCF even
+        if not found in the sample data. These variants will be merged with any
+        additional variants discovered directly from the sample data.
       pattern: "*.vcf"
+      ontologies: []
   - sv_systematic_noise:
       type: file
-      description: Systematic noise BEDPE file containing the set of noisy paired regions for SV calling (optionally gzip or bzip compressed).
+      description: Systematic noise BEDPE file containing the set of noisy paired
+        regions for SV calling (optionally gzip or bzip compressed).
       pattern: "*.bed{,.gz}"
+      ontologies: []
   - trim_adapter_read:
       type: file
-      description: Files of adapter sequences to trim from the 3' end of read 1 and 2
+      description: Files of adapter sequences to trim from the 3' end of read 1
+        and 2
       pattern: "*.{fasta,fa}"
+      ontologies: []
   - trim_adapter_read_5prime:
       type: file
-      description: FASTA files that contains adapter sequences to trim from the 5' end of Read 1 and 2; The sequences should be in reverse order (with respect to their appearance in the FASTQ) but not complemented
+      description: FASTA files that contains adapter sequences to trim from the 5'
+        end of Read 1 and 2; The sequences should be in reverse order (with
+        respect to their appearance in the FASTQ) but not complemented
       pattern: "*.{fasta,fa}"
+      ontologies: []
   - variant_annotation_data:
       type: directory
       description: Location of downloaded Nirvana annotation files
@@ -124,58 +168,78 @@ input:
       type: file
       description: Combine variants in the same phase set bed file.
       pattern: "*.bed"
+      ontologies: []
   - vc_excluded_regions_bed:
       type: file
-      description: Excluded regions bed specifying where variants will be hard filtered
+      description: Excluded regions bed specifying where variants will be hard
+        filtered
       pattern: "*.bed"
+      ontologies: []
   - vc_forcegt_vcf:
       type: file
-      description: List of small variants to force genotype. Can be .vcf or .vcf.gz file
+      description: List of small variants to force genotype. Can be .vcf or
+        .vcf.gz file
       pattern: "*.vcf{,.gz}"
+      ontologies: []
   - vc_log_bed:
       type: file
       description: Log information for regions in this BED file
       pattern: "*.bed"
+      ontologies: []
   - vc_mapping_metrics:
       type: file
       description: File containing mapping metrics
+      ontologies: []
   - vc_ml_dir:
       type: directory
       description: directory containing machine learning package
   - vc_ntd_error_params:
       type: file
       description: Params file for per-nucleotide error rate calibration
+      ontologies: []
   - vc_roh_blacklist_bed:
       type: file
       description: Blacklist BED file for ROH
       pattern: "*.bed"
+      ontologies: []
   - vc_snp_error_cal_bed:
       type: file
-      description: BED file containing regions from which to estimate nucleotide substitution biases
+      description: BED file containing regions from which to estimate nucleotide
+        substitution biases
       pattern: "*.bed"
+      ontologies: []
   - vc_systematic_noise:
       type: file
-      description: Site specific noise file. This file enables the systematic-noise filter and improves specificity during somatic variant calling
+      description: Site specific noise file. This file enables the
+        systematic-noise filter and improves specificity during somatic variant
+        calling
+      ontologies: []
   - vc_target_bed:
       type: file
       description: Target BED file
       pattern: "*.bed"
+      ontologies: []
   - vd_eh_vcf:
       type: file
       description: Expansion hunter vcf (optionally .gzip compressed)
       pattern: "*.vcf{,.gz}"
+      ontologies: []
   - vd_small_variant_vcf:
       type: file
       description: Small variant vcf (optionally .gzip compressed)
       pattern: "*.vcf{,.gz}"
+      ontologies: []
   - vd_sv_vcf:
       type: file
       description: Structural variant vcf (optionally .gzip compressed)
       pattern: "*.vcf{,.gz}"
+      ontologies: []
   - vntr_catalog_bed:
       type: file
-      description: BED file specifying the TR regions for the VNTR Caller to act upon
+      description: BED file specifying the TR regions for the VNTR Caller to act
+        upon
       pattern: "*.bed"
+      ontologies: []
 output:
   replay_json:
     - - meta:
@@ -1358,135 +1422,174 @@ output:
           description: BED file containing read coverage report
           pattern: "*_read_cov_report.bed"
   partitions_txt:
-    - "./sort_spill/partitions.txt":
+    - ./sort_spill/partitions.txt:
         type: file
         description: Partitions file for sort spill
         pattern: "./sort_spill/partitions.txt"
+        ontologies: []
   alignmentStatsSummary_txt:
-    - "./sv/results/stats/alignmentStatsSummary.txt":
+    - ./sv/results/stats/alignmentStatsSummary.txt:
         type: file
         description: Alignment statistics summary
         pattern: "./sv/results/stats/alignmentStatsSummary.txt"
+        ontologies: []
   candidate_metrics_csv:
-    - "./sv/results/stats/candidate_metrics.csv":
+    - ./sv/results/stats/candidate_metrics.csv:
         type: file
         description: Candidate metrics
         pattern: "./sv/results/stats/candidate_metrics.csv"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
   diploidSV_sv_metrics_csv:
-    - "./sv/results/stats/diploidSV.sv_metrics.csv":
+    - ./sv/results/stats/diploidSV.sv_metrics.csv:
         type: file
         description: Diploid SV metrics
         pattern: "./sv/results/stats/diploidSV.sv_metrics.csv"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
   graph_metrics_csv:
-    - "./sv/results/stats/graph_metrics.csv":
+    - ./sv/results/stats/graph_metrics.csv:
         type: file
         description: Graph metrics
         pattern: "./sv/results/stats/graph_metrics.csv"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
   svCandidateGenerationStats_tsv:
-    - "./sv/results/stats/svCandidateGenerationStats.tsv":
+    - ./sv/results/stats/svCandidateGenerationStats.tsv:
         type: file
         description: Structural variant candidate generation statistics
         pattern: "./sv/results/stats/svCandidateGenerationStats.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
   svCandidateGenerationStats_xml:
-    - "./sv/results/stats/svCandidateGenerationStats.xml":
+    - ./sv/results/stats/svCandidateGenerationStats.xml:
         type: file
-        description: Structural variant candidate generation statistics (XML format)
+        description: Structural variant candidate generation statistics (XML
+          format)
         pattern: "./sv/results/stats/svCandidateGenerationStats.xml"
+        ontologies:
+          - edam: http://edamontology.org/format_2332 # XML
   svLocusGraphStats_tsv:
-    - "./sv/results/stats/svLocusGraphStats.tsv":
+    - ./sv/results/stats/svLocusGraphStats.tsv:
         type: file
         description: Structural variant locus graph statistics
         pattern: "./sv/results/stats/svLocusGraphStats.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
   candidateSV_vcf_gz:
-    - "./sv/results/variants/candidateSV.vcf.gz":
+    - ./sv/results/variants/candidateSV.vcf.gz:
         type: file
         description: Candidate structural variants (VCF format)
         pattern: "./sv/results/variants/candidateSV.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
   candidateSV_vcf_gz_tbi:
-    - "./sv/results/variants/candidateSV.vcf.gz.tbi":
+    - ./sv/results/variants/candidateSV.vcf.gz.tbi:
         type: file
         description: Candidate structural variants index (VCF format)
         pattern: "./sv/results/variants/candidateSV.vcf.gz.tbi"
+        ontologies: []
   diploidSV_vcf_gz:
-    - "./sv/results/variants/diploidSV.vcf.gz":
+    - ./sv/results/variants/diploidSV.vcf.gz:
         type: file
         description: Gzipped VCF file containing diploid structural variants
         pattern: "./sv/results/variants/diploidSV.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
   diploidSV_vcf_gz_tbi:
-    - "./sv/results/variants/diploidSV.vcf.gz.tbi":
+    - ./sv/results/variants/diploidSV.vcf.gz.tbi:
         type: file
         description: Candidate structural variants index (VCF format)
         pattern: "./sv/results/variants/diploidSV.vcf.gz.tbi"
+        ontologies: []
   alignmentStats_xml:
-    - "./sv/workspace/alignmentStats.xml":
+    - ./sv/workspace/alignmentStats.xml:
         type: file
         description: Alignment statistics in XML format
         pattern: "./sv/workspace/alignmentStats.xml"
+        ontologies:
+          - edam: http://edamontology.org/format_2332 # XML
   chromDepth_txt:
-    - "./sv/workspace/chromDepth.txt":
+    - ./sv/workspace/chromDepth.txt:
         type: file
         description: Chromosome depth statistics
         pattern: "./sv/workspace/chromDepth.txt"
+        ontologies: []
   edgeRuntimeLog_txt:
-    - "./sv/workspace/edgeRuntimeLog.txt":
+    - ./sv/workspace/edgeRuntimeLog.txt:
         type: file
         description: Edge runtime log file
         pattern: "./sv/workspace/edgeRuntimeLog.txt"
+        ontologies: []
   genomeSegmentScanDebugInfo_txt:
-    - "./sv/workspace/genomeSegmentScanDebugInfo.txt":
+    - ./sv/workspace/genomeSegmentScanDebugInfo.txt:
         type: file
         description: Genome segment scan debug information
         pattern: "./sv/workspace/genomeSegmentScanDebugInfo.txt"
+        ontologies: []
   config_log_txt:
-    - "./sv/workspace/logs/config_log.txt":
+    - ./sv/workspace/logs/config_log.txt:
         type: file
         description: Configuration log file
         pattern: "./sv/workspace/logs/config_log.txt"
+        ontologies: []
   svLocusGraph_bin:
-    - "./sv/workspace/svLocusGraph.bin":
+    - ./sv/workspace/svLocusGraph.bin:
         type: file
         description: Binary file containing the SV locus graph
         pattern: "./sv/workspace/svLocusGraph.bin"
+        ontologies: []
   body_txt:
-    - "body.txt":
+    - body.txt:
         type: file
         description: Body log file
         pattern: "body.txt"
+        ontologies: []
   dragen_time_metrics_csv:
-    - "dragen.time_metrics.csv":
+    - dragen.time_metrics.csv:
         type: file
         description: Dragen time metrics
         pattern: "dragen.time_metrics.csv"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
   header_txt:
-    - "header.txt":
+    - header.txt:
         type: file
         description: Header log file
         pattern: "header.txt"
+        ontologies: []
   match_log_small_indel_dedup_txt:
-    - "match_log.small_indel_dedup.txt":
+    - match_log.small_indel_dedup.txt:
         type: file
         description: Small indel deduplication log file
         pattern: "match_log.small_indel_dedup.txt"
+        ontologies: []
   match_log_smn_dedup_txt:
-    - "match_log.smn_dedup.txt":
+    - match_log.smn_dedup.txt:
         type: file
         description: SMN deduplication log file
         pattern: "match_log.smn_dedup.txt"
+        ontologies: []
   streaming_log_csv:
-    - "streaming_log_*.csv":
+    - streaming_log_*.csv:
         type: file
         description: Streaming log files
         pattern: "streaming_log_*.csv"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
   usage_txt:
     - "*_usage.txt":
         type: file
         description: Usage log files
         pattern: "*_usage.txt"
+        ontologies: []
   versions:
     - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@marrip"
   - "@xuyangyuio"
