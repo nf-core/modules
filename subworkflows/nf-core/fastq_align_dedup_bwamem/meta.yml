@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fastq_align_dedup_bwamem"
-description: Performs alignment of DNA or TAPS-treated reads using bwamem or parabricks/fq2bam, sort and deduplicate
+description: Performs alignment of DNA or TAPS-treated reads using bwamem, sort and deduplicate
 keywords:
   - bwamem
   - alignment
@@ -11,11 +11,9 @@ keywords:
   - fastq
   - bam
 components:
-  - parabricks/fq2bam
   - samtools/index
   - picard/addorreplacereadgroups
   - picard/markduplicates
-  - bam_sort_stats_samtools
   - fastq_align_bwa
 input:
   - ch_reads:
@@ -43,10 +41,6 @@ input:
       type: boolean
       description: |
         Skip deduplication of aligned reads
-  - use_gpu:
-      type: boolean
-      description: |
-        Use GPU for alignment
 output:
   - bam:
       type: file

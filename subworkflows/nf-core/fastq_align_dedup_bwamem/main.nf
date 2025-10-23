@@ -1,8 +1,6 @@
-include { BAM_SORT_STATS_SAMTOOLS                           } from '../../nf-core/bam_sort_stats_samtools/main'
 include { FASTQ_ALIGN_BWA                                   } from '../../nf-core/fastq_align_bwa/main'
 include { PICARD_ADDORREPLACEREADGROUPS                     } from '../../../modules/nf-core/picard/addorreplacereadgroups/main'
 include { PICARD_MARKDUPLICATES                             } from '../../../modules/nf-core/picard/markduplicates/main'  
-include { PARABRICKS_FQ2BAM                                 } from '../../../modules/nf-core/parabricks/fq2bam/main'
 include { SAMTOOLS_INDEX                                    } from '../../../modules/nf-core/samtools/index/main'
 
 workflow FASTQ_ALIGN_DEDUP_BWAMEM {
@@ -25,47 +23,18 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
     ch_multiqc_files                 = Channel.empty()
     ch_versions                      = Channel.empty()
 
-    if (use_gpu) {
-        /*
-        * Align with parabricks GPU enabled fq2bammeth implementation of bwameth
-        */
-        PARABRICKS_FQ2BAM (
-            ch_reads,
-            ch_fasta,
-            ch_bwamem_index,
-            [[],[]], // interval file
-            [[],[]], // known sites
-            'bam' // output format
-        )
-        ch_alignment = PARABRICKS_FQ2BAM.out.bam
-        ch_versions  = ch_versions.mix(PARABRICKS_FQ2BAM.out.versions.first())
-        
-        // FQ2BAM can also sort and markduplicates
-        BAM_SORT_STATS_SAMTOOLS ( 
-            ch_alignment,
-            ch_fasta
-        )
-        ch_alignment        = BAM_SORT_STATS_SAMTOOLS.out.bam
-        ch_alignment_index  = BAM_SORT_STATS_SAMTOOLS.out.bai
-        ch_stats            = BAM_SORT_STATS_SAMTOOLS.out.stats    // channel: [ val(meta), path(stats) ]
-        ch_flagstat         = BAM_SORT_STATS_SAMTOOLS.out.flagstat // channel: [ val(meta), path(flagstat) ]
-        ch_idxstats         = BAM_SORT_STATS_SAMTOOLS.out.idxstats // channel: [ val(meta), path(idxstats) ]
-        ch_versions         = ch_versions.mix(BAM_SORT_STATS_SAMTOOLS.out.versions.first())
-    }
-    else {
-        FASTQ_ALIGN_BWA (
-            ch_reads,
-            ch_bwamem_index,
-            true, // val_sort_bam hardcoded to true
-            ch_fasta
-        )
-        ch_alignment        = ch_alignment.mix(FASTQ_ALIGN_BWA.out.bam)
-        ch_alignment_index  = ch_alignment.mix(FASTQ_ALIGN_BWA.out.bai)
-        ch_stats            = ch_alignment.mix(FASTQ_ALIGN_BWA.out.stats)    // channel: [ val(meta), path(stats) ]
-        ch_flagstat         = ch_alignment.mix(FASTQ_ALIGN_BWA.out.flagstat) // channel: [ val(meta), path(flagstat) ]
-        ch_idxstats         = ch_alignment.mix(FASTQ_ALIGN_BWA.out.idxstats) // channel: [ val(meta), path(idxstats) ]
-        ch_versions         = ch_versions.mix(FASTQ_ALIGN_BWA.out.versions.first())
-    }
+    FASTQ_ALIGN_BWA (
+        ch_reads,
+        ch_bwamem_index,
+        true, // val_sort_bam hardcoded to true
+        ch_fasta
+    )
+    ch_alignment        = ch_alignment.mix(FASTQ_ALIGN_BWA.out.bam)
+    ch_alignment_index  = ch_alignment.mix(FASTQ_ALIGN_BWA.out.bai)
+    ch_stats            = ch_alignment.mix(FASTQ_ALIGN_BWA.out.stats)    // channel: [ val(meta), path(stats) ]
+    ch_flagstat         = ch_alignment.mix(FASTQ_ALIGN_BWA.out.flagstat) // channel: [ val(meta), path(flagstat) ]
+    ch_idxstats         = ch_alignment.mix(FASTQ_ALIGN_BWA.out.idxstats) // channel: [ val(meta), path(idxstats) ]
+    ch_versions         = ch_versions.mix(FASTQ_ALIGN_BWA.out.versions.first())
 
     if (!skip_deduplication) {
         /*
