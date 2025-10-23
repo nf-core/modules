@@ -22,28 +22,16 @@ tools:
       homepage: "https://support-docs.illumina.com/SW/dragen_v42/Content/SW/FrontPages/DRAGEN.htm?searchText=explify-ref-db-dir"
       documentation: "https://support-docs.illumina.com/SW/dragen_v42/Content/SW/FrontPages/DRAGEN.htm?searchText=explify-ref-db-dir"
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false , sex:'female']`;
-        options for sex: male, female, none, auto
-  - fastq:
-      type: file
-      description: FASTQ files to send to card (may be gzipped)
-      pattern: "*.{fastq,fq}{,.gz}"
-  - ora:
-      type: file
-      description: Specifies the input files for compression or decompression
-      pattern: "*.ora"
-  - bam:
-      type: file
-      description: Input BAM file to send to card
-      pattern: "*.bam"
-  - cram:
-      type: file
-      description: Input CRAM file to send to card
-      pattern: "*.cram"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false , sex:'female']`;
+          options for sex: male, female, none, auto
+    - input:
+        type: file
+        description: FASTQ (may be gzipped), ora, BAM or CRAM files
+        pattern: "*.{fastq,fq,ora,bam,cram}{,.gz}"
   - checkfingerprint_expected_vcf:
       type: file
       description: Input expected genotypes (VCF) for checkfingerprint comparison
@@ -184,6 +172,10 @@ input:
       type: file
       description: Structural variant vcf (optionally .gzip compressed)
       pattern: "*.vcf{,.gz}"
+  - vntr_catalog_bed:
+      type: file
+      description: BED file specifying the TR regions for the VNTR Caller to act upon
+      pattern: "*.bed"
 output:
   replay_json:
     - - meta:
