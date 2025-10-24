@@ -1,0 +1,124 @@
+nextflow_process {
+
+    name "Test Process HOMER_MERGEPEAKS"
+    script "../main.nf"
+    process "HOMER_MERGEPEAKS"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "homer"
+    tag "homer/mergepeaks"
+    tag "homer/findpeaks"
+    tag "homer/maketagdirectory"
+
+    setup {
+        run("HOMER_MAKETAGDIRECTORY", alias: "MAKETAGDIR_SAMPLE1") {
+            script "../../maketagdirectory/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'sample1' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                """
+            }
+        }
+
+        run("HOMER_MAKETAGDIRECTORY", alias: "MAKETAGDIR_SAMPLE2") {
+            script "../../maketagdirectory/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'sample2' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test2.bed', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                """
+            }
+        }
+
+        run("HOMER_FINDPEAKS", alias: "FINDPEAKS_SAMPLE1") {
+            script "../../findpeaks/main.nf"
+            process {
+                """
+                input[0] = "factor"
+                input[1] = MAKETAGDIR_SAMPLE1.out.tagdir
+                input[2] = [[:], []]
+                input[3] = []
+                """
+            }
+        }
+
+        run("HOMER_FINDPEAKS", alias: "FINDPEAKS_SAMPLE2") {
+            script "../../findpeaks/main.nf"
+            process {
+                """
+                input[0] = "factor"
+                input[1] = MAKETAGDIR_SAMPLE2.out.tagdir
+                input[2] = [[:], []]
+                input[3] = []
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - bed - merge two peak files") {
+
+        when {
+            process {
+                """
+                peaks = Channel.empty()
+                    .mix(
+                        FINDPEAKS_SAMPLE1.out.txt.map { it[1] },
+                        FINDPEAKS_SAMPLE2.out.txt.map { it[1] }
+                    )
+                    .collect()
+                    .map { [ [id:'merged'], it ] }
+
+                input[0] = peaks
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.txt[0][1]).name,
+                    process.out.versions
+                ).match()
+                }
+            )
+        }
+    }
+
+    test("sarscov2 - bed - merge two peak files - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                peaks = Channel.empty()
+                    .mix(
+                        FINDPEAKS_SAMPLE1.out.txt.map { it[1] },
+                        FINDPEAKS_SAMPLE2.out.txt.map { it[1] }
+                    )
+                    .collect()
+                    .map { [ [id:'merged'], it ] }
+
+                input[0] = peaks
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match("stub") }
+            )
+        }
+    }
+}
