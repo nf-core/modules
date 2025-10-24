@@ -1,7 +1,9 @@
 process VUEGEN {
     label 'process_single'
     conda "${moduleDir}/environment.yml"
-    container "dtu_biosustain_dsp/vuegen:v0.3.2-nextflow"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    ? 'oras://community.wave.seqera.io/library/vuegen_python:1adb57ecbfa02088'
+    : 'community.wave.seqera.io/library/vuegen_python:236414fc5cfce774'}"
 
     input:
         val input_type
@@ -36,7 +38,7 @@ process VUEGEN {
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-            vuegen: \$( vuegen --version | sed -e "s/vuegen //g" )
+            vuegen: \$( python -c "import vuegen; print(vuegen.__version__)" )
         END_VERSIONS
         """
 
@@ -48,7 +50,7 @@ process VUEGEN {
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-            vuegen: \$( vuegen --version | sed -e "s/vuegen //g" )
+            vuegen: \$( python -c "import vuegen; print(vuegen.__version__)" )
         END_VERSIONS
         """
 }
