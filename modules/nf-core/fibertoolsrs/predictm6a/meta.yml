@@ -1,59 +1,58 @@
 name: "fibertoolsrs_predictm6a"
 description: Predict m6A positions using HiFi kinetics data and encode the results in the MM and ML bam tags. Also adds nucleosome (nl, ns) and MTase sensitive patches (al, as)
 keywords:
-- methylation
-- genomics
-- bam
-- m6A
-- nucleosome
-- fiberseq
+  - methylation
+  - genomics
+  - bam
+  - m6A
+  - nucleosome
+  - fiberseq
 tools:
-- "fibertoolsrs":
-    description: "Mitchell Vollger's rust tools for fiberseq data."
-    homepage: "https://fiberseq.github.io/fibertools/fibertools.html"
-    documentation: "https://fiberseq.github.io/fibertools/fibertools.html"
-    tool_dev_url: "https://github.com/fiberseq/fibertools-rs"
-    doi: "10.5281/zenodo.14782951"
-    licence: ['MIT']
-    identifier: ""
+  - "fibertoolsrs":
+      description: "Mitchell Vollger's rust tools for fiberseq data."
+      homepage: "https://fiberseq.github.io/fibertools/fibertools.html"
+      documentation: "https://fiberseq.github.io/fibertools/fibertools.html"
+      tool_dev_url: "https://github.com/fiberseq/fibertools-rs"
+      doi: "10.5281/zenodo.14782951"
+      licence: ["MIT"]
+      identifier: ""
 
 input:
-- -
-    meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1' ]`
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM file
-      pattern: "*.{bam,cram}"
-      ontologies:
-      - edam: "http://edamontology.org/format_2572"     # BAM
-      - edam: "http://edamontology.org/format_2573"     # CRAM
-
-output:
-  bam:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - "*.bam":
+    - bam:
         type: file
-        description: bam file with m6A calls in new/extended MM and ML bam tags
-        pattern: "*.bam"
-        ontologies: 
-        - edam: "http://edamontology.org/format_2572"   # BAM
+        description: Sorted BAM/CRAM file
+        pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_2573" # CRAM
+
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bam":
+          type: file
+          description: bam file with m6A calls in new/extended MM and ML bam tags
+          pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
   versions:
-  - "versions.yml":
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-      ontologies:
-      - edam: "http://edamontology.org/format_3750"     # YAML
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 
 authors:
-- "@mrvollger"
+  - "@YiJin-Xiong"
 maintainers:
-- "@mrvollger"
+  - "@YiJin-Xiong"
