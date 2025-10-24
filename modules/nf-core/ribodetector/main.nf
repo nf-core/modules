@@ -11,11 +11,10 @@ process RIBODETECTOR {
 	tuple val(meta), path(fastq)
 	val length
 
-
 	output:
 	tuple val(meta), path("*.nonrna*.fastq.gz"), emit: fastq
-	tuple val(meta), path("*.log"), emit: log
-	path "versions.yml"           , emit: versions
+	tuple val(meta), path("*.log")             , emit: log
+	path "versions.yml"                        , emit: versions
 
 	when:
 	task.ext.when == null || task.ext.when
@@ -23,7 +22,6 @@ process RIBODETECTOR {
 	script:
 	def args = task.ext.args ?: ''
 	def prefix = task.ext.prefix ?: "${meta.id}"
-	
 	ribodetector_bin = task.accelerator ? "ribodetector" : "ribodetector_cpu"
 	ribodetector_mem = task.accelerator ? "-m $task.memory.toGiga()" : ""
 	output = meta.single_end ? "${prefix}.nonrna.fastq.gz" : "${prefix}.nonrna.1.fastq.gz ${prefix}.nonrna.2.fastq.gz"
@@ -43,7 +41,6 @@ process RIBODETECTOR {
 		ribodetector: \$(ribodetector --version | sed 's/ribodetector //g')
 	END_VERSIONS
 	"""
-	
 
 	stub:
 	def args = task.ext.args ?: ''
@@ -52,8 +49,8 @@ process RIBODETECTOR {
 	"""
 	echo $args
 	
-	touch ${prefix}.nonrna.1.fastq.gz
-	touch ${prefix}.nonrna.2.fastq.gz
+	echo | gzip > ${prefix}.nonrna.1.fastq.gz  
+    echo | gzip > ${prefix}.nonrna.2.fastq.gz  
 	touch ${prefix}.log
 
 	cat <<-END_VERSIONS > versions.yml
