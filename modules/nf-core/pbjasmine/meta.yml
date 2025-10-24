@@ -1,56 +1,56 @@
 name: "pbjasmine"
 description: Identify specific base modifications in PacBio HiFi reads by analyzing polymerase kinetic signatures
 keywords:
-- genomics
-- methylation
-- bam
-- pacbio
+  - genomics
+  - methylation
+  - bam
+  - pacbio
 tools:
-- "pbjasmine":
-    description: "Call select base modifications in PacBio HiFi reads."
-    homepage: "https://github.com/pacificbiosciences/jasmine"
-    documentation: "https://github.com/pacificbiosciences/jasmine"
-    tool_dev_url: "https://github.com/pacificbiosciences/jasmine"
-    doi: "no DOI available"
-    licence: ['BSD-3-clause-Clear']
-    identifier: ""
+  - "pbjasmine":
+      description: "Call select base modifications in PacBio HiFi reads."
+      homepage: "https://github.com/pacificbiosciences/jasmine"
+      documentation: "https://github.com/pacificbiosciences/jasmine"
+      tool_dev_url: "https://github.com/pacificbiosciences/jasmine"
+      doi: "no DOI available"
+      licence: ["BSD-3-clause-Clear"]
+      identifier: ""
 
 input:
-- - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1' ]`
-  - bam:
-      type: file
-      description: BAM/CRAM file
-      pattern: "*.{bam,cram}"
-      ontologies:
-      - edam: "http://edamontology.org/format_2572"     # BAM
-      - edam: "http://edamontology.org/format_2573"     # CRAM
-
-output:
-  bam:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - "${prefix}.bam":
+    - bam:
         type: file
-        description: Consensus reads with jasmine modification calls
-        pattern: "*.bam"
+        description: BAM/CRAM file
+        pattern: "*.{bam,cram}"
         ontologies:
-        - edam: "http://edamontology.org/format_2572"     # BAM
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_2573" # CRAM
+
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.bam":
+          type: file
+          description: Consensus reads with jasmine modification calls
+          pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
   versions:
-  - "versions.yml":
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-      ontologies:
-      - edam: "http://edamontology.org/format_3750"     # YAML
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 
 authors:
-- "@YiJin-Xiong"
+  - "@YiJin-Xiong"
 maintainers:
-- "@YiJin-Xiong"
+  - "@YiJin-Xiong"
