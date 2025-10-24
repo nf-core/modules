@@ -12,13 +12,14 @@ process LIMMA_DIFFERENTIAL {
     tuple val(meta2), path(samplesheet), path(intensities)
 
     output:
-    tuple val(meta), path("*.limma.results.tsv")          , emit: results
-    tuple val(meta), path("*.limma.mean_difference.png")  , emit: md_plot
-    tuple val(meta), path("*.MArrayLM.limma.rds")         , emit: rdata
-    tuple val(meta), path("*.limma.model.txt")            , emit: model
-    tuple val(meta), path("*.R_sessionInfo.log")          , emit: session_info
-    tuple val(meta), path("*.normalised_counts.tsv")      , emit: normalised_counts, optional: true
-    path "versions.yml"                                   , emit: versions
+    tuple val(meta), path("*.limma.results.tsv")                                                , emit: results
+    tuple val(meta), path("*.limma.mean_difference.png")                                        , emit: md_plot
+    tuple val(meta), path("*.MArrayLM.limma.rds")                                               , emit: rdata
+    tuple val(meta), path("*.limma.model.txt")                                                  , emit: model
+    tuple val(meta), path("*.R_sessionInfo.log")                                                , emit: session_info
+    tuple val(meta), path("*.normalised_counts.tsv")                                            , emit: normalised_counts, optional: true
+    tuple val("${task.process}"), val('r-base'), env("R_BASE_VERSION")                          , topic: versions, emit: versions1
+    tuple val("${task.process}"), val('bioconductor-limma'), env("BIOCONDUCTOR_LIMMA_VERSION")  , topic: versions, emit: versions2
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,16 +44,11 @@ process LIMMA_DIFFERENTIAL {
     close(a)
     a <- file("${prefix}.R_sessionInfo.log", "w")
     close(a)
-    ## VERSIONS FILE
+
     r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
     limma.version <- as.character(packageVersion('limma'))
-    writeLines(
-        c(
-            '"${task.process}":',
-            paste('    r-base:', r.version),
-            paste('    bioconductor-limma:', limma.version)
-        ),
-        'versions.yml'
-    )
+
+    Sys.setenv('R_BASE_VERSION' = r.version)
+    Sys.setenv('BIOCONDUCTOR_LIMMA_VERSION' = limma.version)
     """
 }
