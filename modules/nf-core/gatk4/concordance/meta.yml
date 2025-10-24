@@ -1,19 +1,27 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "gatk4_concordance"
 description: Evaluate concordance of an input VCF against a validated truth VCF
- 
+
 keywords:
   - concordance
   - gatk4
-  - variants
+  - gatk
+  - genomics
+  - variant calling
+  - genotyping
   - vcf
+  - comparison
+
 tools:
   - "gatk4":
       description: "Genome Analysis Toolkit (GATK4)"
       homepage: "https://gatk.broadinstitute.org/hc/en-us"
+      documentation: "https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s"
       tool_dev_url: "https://github.com/broadinstitute/gatk"
       doi: "10.1158/1538-7445.AM2017-3590"
       licence: ["BSD-3-clause"]
-      identifier: ""
+      identifier: "biotools:gatk"
+
 input:
   - - meta:
         type: map
@@ -25,18 +33,20 @@ input:
         description: Evaluation VCF file created with a variant caller
         pattern: "*.vcf.gz"
         ontologies:
+          - edam: "http://edamontology.org/format_3016"
           - edam: http://edamontology.org/format_3989 # GZIP format
     - vcf_tbi:
         type: file
         description: Index file for the evaluation VCF
         pattern: "*.vcf.gz.tbi"
-        ontologies: 
+        ontologies:
           - edam: "http://edamontology.org/format_3616"
     - truth:
         type: file
         description: Truth VCF file created with a variant caller
         pattern: "*.vcf.gz"
         ontologies:
+          - edam: "http://edamontology.org/format_3016"
           - edam: http://edamontology.org/format_3989 # GZIP format
     - truth_tbi:
         type: file
@@ -51,40 +61,44 @@ input:
           e.g. `[ id:'bed' ]`
     - intervals:
         type: file
-        description: Bed file with the genomic regions included in the library (optional)
-        ontologies: http://edamontology.org/format_3003
+        description: Bed file with the genomic regions included in the library
+          (optional)
+        pattern: "*.bed"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
   - - meta3:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'fasta' ]`         
+          e.g. `[ id:'fasta' ]`
     - fasta:
-          type: file
-          description: Reference FASTA file
-          pattern: "*.{fasta,fa}"
-          ontologies:
-            - edam: "http://edamontology.org/format_1929" # FASTA     
+        type: file
+        description: Reference FASTA file
+        pattern: "*.{fasta,fa}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
   - - meta4:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'fai' ]`      
+          e.g. `[ id:'fai' ]`
     - fai:
         type: file
         description: Index of the reference FASTA file
-          file
         pattern: "*.fai"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_2330"
   - - meta5:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'dict' ]`      
+          e.g. `[ id:'dict' ]`
     - dict:
         type: file
         description: Sequence dictionary of the reference FASTA file
         pattern: "*.dict"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_2330"
 
 output:
   summary:
@@ -95,41 +109,42 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.tsv":
           type: file
-          description: A tab-delimited file containing the metrics with number of TPs, FPs, FNs, Precision, Recall and F1 statistics
+          description: A tab-delimited file containing the metrics with number of
+            TPs, FPs, FNs, Precision, Recall and F1 statistics
           pattern: "*.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: "http://edamontology.org/format_3475"
   tpfn:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*tpfn.vcf":
+      - "*.tpfn.vcf": 
           type: file
-          description: Truth VCF file with tagged with TP or FN in "INFO/STATUS"
+          description: Eval VCF file with tagged with TP or FN in "INFO/STATUS"
           pattern: "*.vcf"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: "http://edamontology.org/format_3989"
   tpfp:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*tpfn.vcf":
+      - "*.tpfp.vcf": 
           type: file
           description: Eval VCF file with tagged with TP or FP in "INFO/STATUS"
           pattern: "*.vcf"
           ontologies:
-            - edam: http://edamontology.org/format_3989                    
+            - edam: "http://edamontology.org/format_3989"
   versions:
-    - "versions.yml":
+    - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
         ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+          - edam: "http://edamontology.org/format_3750"
 
 authors:
   - "@kubranarci"
