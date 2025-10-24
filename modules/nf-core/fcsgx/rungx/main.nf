@@ -28,7 +28,7 @@ process FCSGX_RUNGX {
     def database = ramdisk_path ?: gxdb
     ( ramdisk_path ?
     """
-    if [ -d "${database}" ]; then
+    if [ -d ${database}" ]; then
         echo "ERROR: Database exists in memory, and may be in use by another process" >&2
         ls -l ${database}
         exit 1
