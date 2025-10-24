@@ -1,4 +1,4 @@
-include { FASTQ_ALIGN_BWA                                   } from '../../nf-core/fastq_align_bwa/main'
+include { FASTQ_ALIGN_BWA                                   } from '../fastq_align_bwa/main'
 include { PICARD_ADDORREPLACEREADGROUPS                     } from '../../../modules/nf-core/picard/addorreplacereadgroups/main'
 include { PICARD_MARKDUPLICATES                             } from '../../../modules/nf-core/picard/markduplicates/main'  
 include { SAMTOOLS_INDEX                                    } from '../../../modules/nf-core/samtools/index/main'
