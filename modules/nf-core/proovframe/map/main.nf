@@ -12,7 +12,7 @@ process PROOVFRAME_MAP {
     tuple val(meta2), path(fasta)
 
     output:
-    tuple val(meta2), path("*.tsv"), emit: tsv
+    tuple val(meta), path("*.tsv"), emit: tsv
     path "versions.yml"            , emit: versions
 
     when:
