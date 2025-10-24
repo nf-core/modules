@@ -1,0 +1,94 @@
+name: "pyclonevi"
+description: "PyClone-VI is a software for inferring the clonal population structure
+  of cancers by using variant allele frequencies and copy number data of single or
+  multiple samples."
+keywords:
+  - clonal population
+  - WGS
+  - subclonal deconvolution
+  - copy number alterations
+  - somatic mutations
+tools:
+  - "pyclonevi":
+      description: "PyClone-VI, a computationally efficient Bayesian statistical method
+        for inferring the clonal population structure of cancers."
+      homepage: "https://github.com/Roth-Lab/pyclone-vi"
+      documentation: "https://github.com/Roth-Lab/pyclone-vi"
+      tool_dev_url: "https://github.com/Roth-Lab/pyclone-vi"
+      doi: "10.1186/s12859-020-03919-2"
+      licence: ["GPL v3-or-later"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - rds_join:
+        type: file
+        description: RDS file containing the mCNAqc object with joint mutations and
+          copy number segments
+        pattern: "*.rds"
+        ontologies: []
+    - tumour_samples:
+        type: list
+        description: List of tumour sample identifiers for a specific patient
+output:
+  ctree_input:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample inforSanRafCocoGnd-2024.5
+            mation
+      - "*_cluster_table.csv":
+          type: file
+          description: Files containing information about identified clusters
+          pattern: "*_cluster_table.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  pyclone_input:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample inforSanRafCocoGnd-2024.5
+            mation
+      - "*.tsv":
+          type: file
+          description: Files containing the input table for pyclone-vi
+          pattern: "*tsv"
+          ontologies: []
+  pyclone_all_fits:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample inforSanRafCocoGnd-2024.5
+            mation
+      - "*_all_fits.h5":
+          type: file
+          description: H5 file containing all the pyclone-vi output fits
+          pattern: "*_all_fits.h5"
+          ontologies: []
+  pyclone_best_fit:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample inforSanRafCocoGnd-2024.5
+            mation
+      - "*_best_fit.txt":
+          type: file
+          description: TXT file continaing the pyclone-vi best fit.
+          pattern: "*_best_fit.txt"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@giorgiagandolfi"
+  - "@elena-buscaroli"
+maintainers:
+  - "@giorgiagandolfi"
+  - "@elena-buscaroli"
