@@ -9,7 +9,7 @@ keywords:
 tools:
   - "graphtyper":
       description: A graph-based variant caller capable of genotyping population-scale
-        short read data sets while incoperating previously discovered variants.
+        short read data sets while incorporating previously discovered variants.
       homepage: "https://github.com/DecodeGenetics/graphtyper"
       documentation: "https://github.com/DecodeGenetics/graphtyper/wiki/User-guide"
       tool_dev_url: "https://github.com/DecodeGenetics/graphtyper"
@@ -26,11 +26,13 @@ input:
         type: file
         description: BAM/CRAM file
         pattern: "*.{bam,cram}"
+        ontologies: []
     - bai:
         type: file
         description: BAM index file. This is automatically found base on BAM input file
           name
         pattern: "*.{bai}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -40,6 +42,7 @@ input:
         type: file
         description: Reference fasta file
         pattern: "*.{fa, fasta, fas}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -47,18 +50,20 @@ input:
           e.g. [ id:'genome' ]
     - ref_fai:
         type: file
-        description: Reference index file. This is automatically found based on referece
+        description: Reference index file. This is automatically found based on reference
           input file name.
         pattern: "*.{.fai}"
-  - - region_file:
-        type: file
-        description: File with a list of chromosome/locations in reference genome to
-          genotype. One region per line in the format <chr>:<start>-<stop>. This or
-          `--region` (in ext.args) must be specified.
-        pattern: "*"
+        ontologies: []
+  - region_file:
+      type: file
+      description: File with a list of chromosome/locations in reference genome to genotype.
+        One region per line in the format <chr>:<start>-<stop>. This or `--region` (in
+        ext.args) must be specified.
+      pattern: "*"
+      ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -67,8 +72,9 @@ output:
           type: file
           description: VCF file with genotyped variants
           pattern: "*.{vcf.gz}"
-  - tbi:
-      - meta:
+          ontologies: []
+  tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -77,11 +83,14 @@ output:
           type: file
           description: VCF index file
           pattern: "*.{vcf.gz.tbi}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@zachary-foster"
 maintainers:

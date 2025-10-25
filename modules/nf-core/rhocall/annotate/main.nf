@@ -24,6 +24,8 @@ process RHOCALL_ANNOTATE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def az_bed = bed ? "-b ${bed}" : ''
     """
+    export MPLCONFIGDIR=\$PWD
+
     rhocall \\
         annotate \\
         $args \\
@@ -41,6 +43,8 @@ process RHOCALL_ANNOTATE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    export MPLCONFIGDIR=\$PWD
+
     touch ${prefix}_rhocall.vcf
 
     cat <<-END_VERSIONS > versions.yml

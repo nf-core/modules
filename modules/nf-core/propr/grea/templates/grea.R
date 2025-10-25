@@ -51,66 +51,44 @@ read_delim_flexible <- function(file, header = TRUE, row.names = 1, check.names 
     )
 }
 
-#' Converts the .gmt file into a df
+#' Loads the .gmt file  and converts it into a knowledge database
 #'
-#' @param file_gmt_path path of the .gmt file provided by mygene module.
-#' @return output dataframe a Dataframe: 1st column = GOterm, 2nd = Description, 3d to end = genes.
-process_gmt_file <- function(file_gmt_path) {
+#' @param filename path of the .gmt file
+#' @param nodes vector of node (eg. gene) names. Note that this set should be as
+#' complete as possible. So it should not only contain the target genes but also
+#' the background genes.
+#' @return a list with:
+#'     `db` A knowledge database (matrix) where each row is a graph node (eg. gene)
+#'      and each column is a concept (eg. GO term, pathway, etc).
+#'     `description` A list of descriptions for each concept.
+load_gmt <- function(filename, nodes) {
 
-    lines <- readLines(file_gmt_path)
-    data_list <- list()
+    # read gmt file
+    gmt <- readLines(filename)
+    gmt <- strsplit(gmt, "\\t")
 
-    for (line in lines) {
-        fields <- strsplit(line, "\\t")[[1]] # Split the line based on the tab character
-        go_term <- fields[1] # Extract the GO term
+    # initialize database matrix
+    db <- matrix(0, nrow = length(nodes), ncol = length(gmt))
+    rownames(db) <- nodes
+    colnames(db) <- sapply(gmt, function(entry) entry[[1]])
 
-        # Create a data frame with the GO term in the first column
-        # Fill in missing values with NA to ensure consistent column lengths
-        data_list[[go_term]] <- data.frame(GOterm = go_term,
-                                        Description = fields[2],
-                                        GeneIDs = c(fields[3:length(fields)], rep(NA, max(0, 3 - length(fields)))))
+    # description of the concepts
+    description <- list()
+
+    # for concept in gmt
+    for (i in 1:length(gmt)) {
+
+        # get concept and description
+        concept <- gmt[[i]][[1]]
+        description[[concept]] <- gmt[[i]][[2]]
+
+        # fill 1 if gene is in concept
+        nodes_in_concept <- gmt[[i]][-c(1, 2)]
+        nodes_in_concept <- nodes_in_concept[nodes_in_concept %in% nodes]
+        db[nodes_in_concept, i] <- 1
     }
 
-    gmt_df <- do.call(rbind, data_list) # Combine all data frames into a single data frame
-    gmt_df\$GeneIDs <- as.character(gmt_df\$GeneIDs) # Convert gene IDs to character to avoid coercion
-
-    return(gmt_df)
-}
-
-#' Converts the .gmt data frame into a knowledge matrix (contingency table)
-#'
-#' @param gmt_df .gmt df created by process_gmt_file
-#' @return output dataframe. A knowledge database where each row is a graph node (gene)
-#'  and each column is a concept (GO term).
-gmt_to_K<- function(gmt_df){
-
-    summ_df <- as.data.frame(gmt_df\$GeneIDs)
-    summ_df <- cbind(summ_df, as.data.frame(gmt_df\$GOterm))
-    colnames(summ_df)<- c("GeneIDs", "GOterm")
-    summ_df<- unique(summ_df)
-
-    summ_df\$value <- 1
-
-    K <- table(summ_df\$GeneIDs, summ_df\$GOterm)
-    K <- as.data.frame.matrix(K)
-
-    return(K)
-}
-
-#' Expands knowledge matrix with missing genes to ensure same number of rows for A and K
-#'
-#' @param adjacency_matrix gene x gene correlation or proportionality adjacency matrix (output propr/propd)
-#' @return output dataframe. A knowledge database where each row is a graph node (gene)
-#'  and each column is a concept (GO term).
-add_missing <- function(adjacency_matrix, knowledge_matrix){
-
-    missing_genes <- setdiff(rownames(adjacency_matrix), rownames(knowledge_matrix))
-    extra_rows <- data.frame(matrix(0, nrow = length(missing_genes), ncol = ncol(knowledge_matrix)))
-    rownames(extra_rows) <- missing_genes
-    colnames(extra_rows) <- colnames(knowledge_matrix)
-
-    knowledge_matrix <- rbind(knowledge_matrix, extra_rows)
-    return(knowledge_matrix)
+    return(list(db = db, description = description))
 }
 
 ################################################
@@ -119,53 +97,70 @@ add_missing <- function(adjacency_matrix, knowledge_matrix){
 ################################################
 ################################################
 
+# Set defaults and classes
+
 opt <- list(
-    adj              = '$adj',
-    gmt              = '$gmt',
     prefix           = ifelse('$task.ext.prefix' == 'null', '$meta.id',  '$task.ext.prefix'),
-    permutation      = 100,
-    fixseed          = TRUE,
+
+    # input data
+    adj              = '$adjacency',    # adjacency matrix
+    gmt              = '$gmt',          # knowledge database .gmt file
+
+    # parameters for gene sets
+    set_min          = 15,              # minimum number of genes in a set
+    set_max          = 500,             # maximum number of genes in a set
+
+    # parameters for permutation test
+    permutation      = 100,             # number of permutations to perform
+
+    # other parameters
+    seed             = NA,              # seed for reproducibility
+    round_digits     = NA,              # number of digits to round results
     ncores           = as.integer('$task.cpus')
 )
 
 opt_types <- list(
+    prefix           = 'character',
     adj              = 'character',
     gmt              = 'character',
-    prefix           = 'character',
+    set_min          = 'numeric',
+    set_max          = 'numeric',
     permutation      = 'numeric',
-    fixseed          = 'logical',
+    seed             = 'numeric',
+    round_digits     = 'numeric',
     ncores           = 'numeric'
 )
 
 # Apply parameter overrides
-args_opt <- parse_args('$task.ext.args')
 
+args_ext <- ifelse('$task.ext.args' == 'null', '', '$task.ext.args')
+args_opt <- parse_args(args_ext)
 for ( ao in names(args_opt)){
     if (! ao %in% names(opt)){
         stop(paste("Invalid option:", ao))
     } else {
 
         # Preserve classes from defaults where possible
-        if (! is.null(opt[[ao]])){
-            args_opt[[ao]] <- as(args_opt[[ao]], opt_types[[ao]])
-        }
-        # set NA
-        if (args_opt[[ao]] %in% c('NA', NA, 'null')){
-            args_opt[[ao]] <- NA
-        }
+        args_opt[[ao]] <- as(args_opt[[ao]], opt_types[[ao]])
+
+        # handle NA, and avoid errors when NA is provided by user as character
+        if (args_opt[[ao]] %in% c('NA', NA)) args_opt[[ao]] <- NA
+
+        # replace values
         opt[[ao]] <- args_opt[[ao]]
     }
 }
 
 # Check if required parameters have been provided
+
 required_opts <- c('adj', 'gmt') # defines a vector required_opts containing the names of the required parameters.
 missing <- required_opts[unlist(lapply(opt[required_opts], is.null)) | ! required_opts %in% names(opt)]
 if (length(missing) > 0){
     stop(paste("Missing required options:", paste(missing, collapse=', ')))
 }
 
-
 # Check file inputs are valid
+
 for (file_input in c('adj', 'gmt')){
     if (is.null(opt[[file_input]])) {
         stop(paste("Please provide", file_input), call. = FALSE)
@@ -173,6 +168,12 @@ for (file_input in c('adj', 'gmt')){
     if (! file.exists(opt[[file_input]])){
         stop(paste0('Value of ', file_input, ': ', opt[[file_input]], ' is not a valid file'))
     }
+}
+
+# check parameters are valid
+
+if (opt\$permutation < 0) {
+    stop('permutation should be a positive integer')
 }
 
 ################################################
@@ -189,20 +190,63 @@ library(propr)
 ################################################
 ################################################
 
-# Read gene x gene adjacency matrix
-A <- read_delim_flexible(opt\$adj, header = TRUE, row.names = 1, check.names = TRUE)
+# set seed when required
 
-# Read and process gene x GO term matrix
-gmt_df <- process_gmt_file(opt\$gmt)
-K <- gmt_to_K(gmt_df)
-
-# Ensure same number of rows (genes)
-if (nrow(A) != nrow(K)){
-    K <- add_missing(A, K)
+if (!is.na(opt\$seed)) {
+    warning('Setting seed ', opt\$seed, ' for reproducibility')
+    set.seed(opt\$seed)
 }
 
-# Run Graflex
-G <- runGraflex(A, K, opt\$permutation, opt\$fixseed)
+# load adjacency matrix
+# this matrix should have gene x gene dimensions
+
+message("Loading input data")
+
+adj <- as.matrix(read_delim_flexible(
+    opt\$adj,
+    header = TRUE,
+    row.names = 1,
+    check.names = FALSE
+))
+if (nrow(adj) != ncol(adj)) {
+    stop('Adjacency matrix should be a squared matrix that reflects the connections between all the nodes')
+}
+if (!all(rownames(adj) == colnames(adj))) {
+    stop('Adjacency matrix row names are not equal to column names')
+}
+
+# load and process knowledge database
+
+gmt <- load_gmt(
+    opt\$gmt,
+    rownames(adj)  # adj should contain all the nodes (target and background)
+)
+
+# filter gene sets
+# gene sets with less than set_min or more than set_max genes are removed
+
+idx <- which(colSums(gmt\$db) > opt\$set_min & colSums(gmt\$db) < opt\$set_max)
+if (length(idx) == 0){
+    stop("No gene set pass the filter of set_min=", opt\$set_min, " and set_max=", opt\$set_max)
+}
+gmt\$db <- gmt\$db[, idx]
+gmt\$description <- gmt\$description[idx]
+
+# run GREA
+# Basically, it calculates the odds ratio of the graph being enriched in each concept,
+# and the FDR of the odds ratio through permutation tests
+
+message("Running GREA")
+
+odds <- runGraflex(
+    adj,
+    gmt\$db,
+    p=opt\$permutation,
+    ncores=opt\$ncores
+)
+odds\$Description <- sapply(odds\$Concept, function(concept)
+    gmt\$description[[concept]]
+)
 
 ################################################
 ################################################
@@ -210,14 +254,19 @@ G <- runGraflex(A, K, opt\$permutation, opt\$fixseed)
 ################################################
 ################################################
 
+if (!is.na(opt\$round_digits)) {
+    for (col in c('Odds', 'LogOR', 'FDR.under', 'FDR.over')){
+        odds[,col] <- round(odds[,col], opt\$round_digits)
+    }
+}
+
 write.table(
-    G,
-    file      = paste0(opt\$prefix, '.go.tsv'),
+    odds,
+    file      = paste0(opt\$prefix, '.grea.tsv'),
     col.names = TRUE,
-    row.names = TRUE,
+    row.names = FALSE,
     sep       = '\\t',
     quote     = FALSE
-
 )
 
 ################################################
@@ -236,13 +285,11 @@ sink()
 ################################################
 ################################################
 
-r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
 propr.version <- as.character(packageVersion('propr'))
 
 writeLines(
     c(
         '"${task.process}":',
-        paste('    r-base:', r.version),
         paste('    r-propr:', propr.version)
     ),
 'versions.yml')

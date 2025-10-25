@@ -4,16 +4,16 @@ process GALAH {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/galah%3A0.3.1--h031d066_3':
-        'biocontainers/galah:0.3.1--h031d066_3' }"
+        'https://depot.galaxyproject.org/singularity/galah:0.4.2--h7b50bb2_1':
+        'biocontainers/galah:0.4.2--h7b50bb2_1' }"
 
     input:
     tuple val(meta), path(bins), path(qc_table), val(qc_format)
 
     output:
-    tuple val(meta), path("*.tsv")                    , emit: tsv
-    tuple val(meta), path("${prefix}-dereplicated/*") , emit: dereplicated_bins
-    path "versions.yml"                               , emit: versions
+    tuple val(meta), path("*.tsv")      , emit: tsv
+    tuple val(meta), path("${prefix}/*"), emit: dereplicated_bins
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,21 +21,22 @@ process GALAH {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def qc_args = (qc_format == "checkm") ? "--checkm-tab-table ${qc_table}" : "--genome-info ${qc_table}"
-    def qc_input = qc_table ? qc_args : ""
-    def valid_qc_format = qc_format in ["checkm", "genome_info"]
-    if( qc_table && !valid_qc_format ) {
-        error "Invalid qc_format supplied! qc_format should be either 'checkm' or 'genome_info'."
+    def qc_input = ""
+    if(qc_format == "checkm2") {
+        qc_input = "--checkm2-quality-report ${qc_table}"
+    } else if(qc_format == "checkm") {
+        qc_input = "--checkm-tab-table ${qc_table}"
+    } else if(qc_format == "genome-info") {
+        qc_input = "--genome-info ${qc_table}"
     }
     """
-    mkdir ${prefix}-dereplicated
-
     galah cluster \\
         --threads ${task.cpus} \\
         --genome-fasta-files ${bins} \\
         ${qc_input} \\
-        --output-cluster-definition ${prefix}-dereplicated_bins.tsv \\
-        --output-representative-fasta-directory ${prefix}-dereplicated
+        --output-cluster-definition ${prefix}.tsv \\
+        --output-representative-fasta-directory ${prefix} \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -44,12 +45,11 @@ process GALAH {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir ${prefix}-dereplicated/
-    touch ${prefix}-dereplicated/test.fa
-    touch ${prefix}-dereplicated_bins.tsv
+    mkdir ${prefix}/
+    touch ${prefix}/test.fa
+    touch ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

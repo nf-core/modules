@@ -12,37 +12,37 @@ nextflow_process {
     tag "gunzip"
     tag "prodigal"
 
-    setup {
-        run("DEEPBGC_DOWNLOAD") {
-            script "../..//download/main.nf"
-            process {
-                """
-                """
-            }
-        }
-        run("GUNZIP") {
-            script "../../../gunzip/main.nf"
-            process {
-                """
-                input[0] =  Channel.fromList([
-                    tuple([ id:'test_gbk', single_end:false ], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists: true))
-                ])
-                """
-            }
-        }
-        run("PRODIGAL") {
-            script "../../../prodigal/main.nf"
-            process {
-                """
-                input[0] =  GUNZIP.out.gunzip
-                input[1] =  'gbk'
-                """
-            }
-        }
-    }
-
     test("deepbgc pipeline gbk - bacteroides fragilis - test1_contigs.fa.gz") {
+
+        setup {
+            run("DEEPBGC_DOWNLOAD") {
+                script "../..//download/main.nf"
+                process {
+                    """
+                    """
+                }
+            }
+            run("GUNZIP") {
+                script "../../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] =  Channel.fromList([
+                        tuple([ id:'test_gbk', single_end:false ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists: true))
+                    ])
+                    """
+                }
+            }
+            run("PRODIGAL") {
+                script "../../../prodigal/main.nf"
+                process {
+                    """
+                    input[0] =  GUNZIP.out.gunzip
+                    input[1] =  'gbk'
+                    """
+                }
+            }
+        }
 
         when {
             process {
@@ -56,17 +56,50 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("gbk_versions") },
-                { assert snapshot(process.out.json).match("gbk_json") },
-                { assert path(process.out.log.get(0).get(1)).exists() },
-                { assert path(process.out.bgc_gbk.get(0).get(1)).exists() },
-                { assert path(process.out.full_gbk.get(0).get(1)).exists() }
+                { assert snapshot(
+                    file(process.out.bgc_gbk[0][1]).name,
+                    file(process.out.full_gbk[0][1]).name,
+                    file(process.out.log[0][1]).name,
+                    file(process.out.readme[0][1]).name,
+                    process.out.json,
+                    process.out.versions).match()
+                }
             )
         }
 
     }
 
     test("deepbgc pipeline fa - bacteroides fragilis - test1_contigs.fa.gz") {
+
+        setup {
+            run("DEEPBGC_DOWNLOAD") {
+                script "../..//download/main.nf"
+                process {
+                    """
+                    """
+                }
+            }
+            run("GUNZIP") {
+                script "../../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] =  Channel.fromList([
+                        tuple([ id:'test_gbk', single_end:false ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists: true))
+                    ])
+                    """
+                }
+            }
+            run("PRODIGAL") {
+                script "../../../prodigal/main.nf"
+                process {
+                    """
+                    input[0] =  GUNZIP.out.gunzip
+                    input[1] =  'gbk'
+                    """
+                }
+            }
+        }
 
         when {
             process {
@@ -80,21 +113,106 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("fa_versions") },
-                { assert snapshot(process.out.bgc_gbk).match("fa_bgc_gbk") },
-                { assert snapshot(process.out.bgc_png).match("fa_bgc_png") },
-                { assert snapshot(process.out.score_png).match("fa_score_png") },
-                { assert snapshot(process.out.pfam_tsv).match("fa_pfam_tsv") },
-                { assert path(process.out.json.get(0).get(1)).exists() },
-                { assert path(process.out.log.get(0).get(1)).exists() },
-                { assert path(process.out.bgc_tsv.get(0).get(1)).exists() },
-                { assert path(process.out.full_gbk.get(0).get(1)).exists() }
+                { assert snapshot(
+                    file(process.out.bgc_tsv[0][1]).name,
+                    file(process.out.full_gbk[0][1]).name,
+                    file(process.out.json[0][1]).name,
+                    file(process.out.log[0][1]).name,
+                    process.out.bgc_gbk,
+                    process.out.bgc_png,
+                    process.out.pfam_tsv,
+                    process.out.score_png,
+                    process.out.versions).match()
+                }
+            )
+        }
+    }
+
+    test("deepbgc pipeline gbk - bacteroides fragilis - test1_contigs.fa.gz - stub") {
+
+        options "-stub"
+
+        setup {
+            run("DEEPBGC_DOWNLOAD") {
+                script "../..//download/main.nf"
+                process {
+                    """
+                    """
+                }
+            }
+            run("GUNZIP") {
+                script "../../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] =  Channel.fromList([
+                        tuple([ id:'test_gbk', single_end:false ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists: true))
+                    ])
+                    """
+                }
+            }
+            run("PRODIGAL") {
+                script "../../../prodigal/main.nf"
+                process {
+                    """
+                    input[0] =  GUNZIP.out.gunzip
+                    input[1] =  'gbk'
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input [0] = PRODIGAL.out.gene_annotations
+                input [1] = DEEPBGC_DOWNLOAD.out.db
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
             )
         }
     }
 
     test("deepbgc pipeline fa - bacteroides fragilis - test1_contigs.fa.gz - stub") {
+
         options "-stub"
+
+        setup {
+            run("DEEPBGC_DOWNLOAD") {
+                script "../..//download/main.nf"
+                process {
+                    """
+                    """
+                }
+            }
+            run("GUNZIP") {
+                script "../../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] =  Channel.fromList([
+                        tuple([ id:'test_gbk', single_end:false ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists: true))
+                    ])
+                    """
+                }
+            }
+            run("PRODIGAL") {
+                script "../../../prodigal/main.nf"
+                process {
+                    """
+                    input[0] =  GUNZIP.out.gunzip
+                    input[1] =  'gbk'
+                    """
+                }
+            }
+        }
+
         when {
             process {
                 """
@@ -111,6 +229,5 @@ nextflow_process {
             )
         }
     }
-
 }
 

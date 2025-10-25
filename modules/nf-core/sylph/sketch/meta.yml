@@ -25,17 +25,19 @@ input:
         type: file
         description: Input fastq files
         pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
-  - - reference:
-        type: file
-        description: Reference genome file in FASTA format
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - reference:
+      type: file
+      description: Reference genome file in FASTA format
+      ontologies: []
 output:
-  - sketch_fastq_genome:
-      - meta:
+  sketch_fastq_genome:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-          pattern: "my_sketches/*.sylsp"
+            e.g. [ id:'test']
       - my_sketches/*.sylsp:
           type: map
           description: |
@@ -48,11 +50,13 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "my_sketches/*.sylsp"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jiahang1234"
   - "@sofstam"

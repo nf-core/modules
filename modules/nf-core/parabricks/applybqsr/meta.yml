@@ -10,8 +10,8 @@ tools:
   - "parabricks":
       description: "NVIDIA Clara Parabricks GPU-accelerated genomics tools"
       homepage: "https://www.nvidia.com/en-us/clara/genomics/"
-      documentation: "https://docs.nvidia.com/clara/parabricks/"
-      licence: ["https://docs.nvidia.com/clara/parabricks/3.8.0/gettingstarted.html#licensing"]
+      documentation: "https://docs.nvidia.com/clara/parabricks/latest/index.html"
+      licence: ["custom"]
       identifier: ""
 input:
   - - meta:
@@ -23,6 +23,8 @@ input:
         type: file
         description: BAM file
         pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
   - - meta2:
         type: map
         description: |
@@ -31,7 +33,8 @@ input:
     - bam_index:
         type: file
         description: BAM index file
-        pattern: "*.bai"
+        pattern: "*.bam.bai"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -41,6 +44,7 @@ input:
         type: file
         description: Table from calculating BQSR. Output from parabricks/fq2bam or gatk4/baserecalibrator.
         pattern: "*.table"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -49,6 +53,7 @@ input:
     - intervals:
         type: file
         description: intervals
+        ontologies: []
   - - meta5:
         type: map
         description: |
@@ -58,9 +63,11 @@ input:
         type: file
         description: Reference fasta - must be unzipped.
         pattern: "*.fasta"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
@@ -69,8 +76,10 @@ output:
           type: file
           description: BAM file after applying BQSR.
           pattern: "*.bam"
-  - bai:
-      - meta:
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+  bai:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
@@ -78,13 +87,17 @@ output:
       - "*.bai":
           type: file
           description: bai index corresponding to output bam file.
-          pattern: "*.bai"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions.
-          pattern: "versions.yml"
+          pattern: "*.bam.bai"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions.
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@bsiranosian"
 maintainers:
   - "@bsiranosian"
+  - "@famosab"

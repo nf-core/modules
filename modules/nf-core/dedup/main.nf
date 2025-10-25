@@ -34,7 +34,20 @@ process DEDUP {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         dedup: \$( echo \$(dedup --version 2>&1) | tail -n 1 | sed 's/.* v//')
+    END_VERSIONS
+    """
 
+    stub:
+    prefix   = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.paired_end.dedup.json
+    touch ${prefix}.paired_end.hist
+    touch ${prefix}.paired_end.log
+    touch ${prefix}.paired_end_rmdup.bam
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        dedup: \$( echo \$(dedup --version 2>&1) | tail -n 1 | sed 's/.* v//')
     END_VERSIONS
     """
 }

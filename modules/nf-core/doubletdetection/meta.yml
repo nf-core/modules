@@ -10,6 +10,7 @@ tools:
       tool_dev_url: "https://github.com/JonathanShor/DoubletDetection"
       doi: "10.5281/zenodo.6349517"
       licence: ["MIT"]
+      identifier: biotools:DoubletDetection
 
 input:
   - - meta:
@@ -23,9 +24,10 @@ input:
         description: H5AD anndata object
         pattern: "*.h5ad"
 
+        ontologies: []
 output:
-  - h5ad:
-      - meta:
+  h5ad:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,8 +37,9 @@ output:
           description: H5AD anndata object
           pattern: "*.h5ad"
 
-  - predictions:
-      - meta:
+          ontologies: []
+  predictions:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -46,12 +49,15 @@ output:
           description: pandas dataframe containing the doublet classification
           pattern: "*.pkl"
 
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@LeonHafner"
 maintainers:

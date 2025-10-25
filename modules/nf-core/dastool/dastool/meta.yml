@@ -31,20 +31,26 @@ input:
         type: file
         description: fasta file
         pattern: "*.{fa.gz,fas.gz,fasta.gz}"
+
+        ontologies: []
     - bins:
         type: file
         description: "FastaToContig2Bin tabular file generated with dastool/fastatocontig2bin"
         pattern: "*.tsv"
-  - - proteins:
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+    - proteins:
         type: file
         description: Predicted proteins in prodigal fasta format (>scaffoldID_geneNo)
         pattern: "*.{fa.gz,fas.gz,fasta.gz}"
-  - - db_directory:
-        type: file
-        description: (optional) Directory of single copy gene database.
+        ontologies: []
+  - db_directory:
+      type: file
+      description: (optional) Directory of single copy gene database.
+      ontologies: []
 output:
-  - log:
-      - meta:
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,8 +59,9 @@ output:
           type: file
           description: Log file of the run
           pattern: "*.log"
-  - summary:
-      - meta:
+          ontologies: []
+  summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -63,8 +70,9 @@ output:
           type: file
           description: Summary of output bins including quality and completeness estimates
           pattern: "*summary.txt"
-  - contig2bin:
-      - meta:
+          ontologies: []
+  contig2bin:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -73,8 +81,9 @@ output:
           type: file
           description: Scaffolds to bin file of output bins
           pattern: "*.contig2bin.txt"
-  - eval:
-      - meta:
+          ontologies: []
+  eval:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -83,8 +92,9 @@ output:
           type: file
           description: Quality and completeness estimates of input bin sets
           pattern: "*.eval"
-  - bins:
-      - meta:
+          ontologies: []
+  bins:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -93,8 +103,9 @@ output:
           type: file
           description: Final refined bins in fasta format
           pattern: "*.fa"
-  - pdfs:
-      - meta:
+          ontologies: []
+  pdfs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -104,28 +115,31 @@ output:
           description: Plots showing the amount of high quality bins and score distribution
             of bins per method
           pattern: "*.pdf"
-  - fasta_proteins:
-      - meta:
+          ontologies: []
+  candidates_faa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.candidates.faa":
           type: file
-          description: Output from prodigal if not already supplied
-          pattern: "*.proteins.faa"
-  - candidates_faa:
-      - meta:
+          description: FAA file
+          pattern: "*.candidates.faa"
+          ontologies: []
+  fasta_proteins:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.faa":
+      - "*_proteins.faa":
           type: file
-          description: FAA file
-          pattern: "*.faa"
-  - fasta_archaea_scg:
-      - meta:
+          description: Output from prodigal if not already supplied
+          pattern: "*_proteins.faa"
+          ontologies: []
+  fasta_archaea_scg:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -134,8 +148,9 @@ output:
           type: file
           description: Results of archaeal single-copy-gene prediction
           pattern: "*.archaea.scg"
-  - fasta_bacteria_scg:
-      - meta:
+          ontologies: []
+  fasta_bacteria_scg:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -144,8 +159,9 @@ output:
           type: file
           description: Results of bacterial single-copy-gene prediction
           pattern: "*.bacteria.scg"
-  - b6:
-      - meta:
+          ontologies: []
+  b6:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -154,8 +170,9 @@ output:
           type: file
           description: Results in b6 format
           pattern: "*.b6"
-  - seqlength:
-      - meta:
+          ontologies: []
+  seqlength:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -164,11 +181,14 @@ output:
           type: file
           description: Summary of contig lengths
           pattern: "*.seqlength"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@maxibor"
   - "@jfy133"

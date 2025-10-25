@@ -2,7 +2,7 @@ process CELLRANGER_MULTI {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/cellranger:8.0.0"
+    container "nf-core/cellranger:9.0.1"
 
     input:
     val meta
@@ -24,6 +24,7 @@ process CELLRANGER_MULTI {
     path cmo_barcodes          , stageAs: "references/cmo/barcodes/*"
     path cmo_barcode_assignment, stageAs: "references/cmo/sample_barcode_assignment/*"
     path frna_sampleinfo       , stageAs: "references/frna/*"
+    path ocm_barcodes          , stageAs: "references/ocm/barcodes/*"
     val skip_renaming
 
     output:
@@ -38,6 +39,10 @@ process CELLRANGER_MULTI {
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "CELLRANGER_MULTI module does not support Conda. Please use Docker / Singularity / Podman instead."
+    }
+    // add mutually exclusive input checker
+    if ([ocm_barcodes, cmo_barcodes, frna_sampleinfo].count { it } >= 2) {
+        error "The ocm barcodes; cmo barcodes and frna probes are mutually exclusive features. Please use only one per sample, or reach out in slack in case it is really intended."
     }
     args   = task.ext.args   ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
@@ -59,8 +64,9 @@ process CELLRANGER_MULTI {
     include_vdj  = vdj_fastqs.first().getName() != 'fastqs' && vdj_reference           ? '[vdj]'                 : ''
     include_beam = beam_fastqs.first().getName() != 'fastqs' && beam_control_panel     ? '[antigen-specificity]' : ''
     include_cmo  = cmo_fastqs.first().getName() != 'fastqs' && cmo_barcodes            ? '[samples]'             : ''
-    include_fb   = ab_fastqs.first().getName() != 'fastqs' && fb_reference             ? '[feature]'             : ''
+    include_fb = (ab_fastqs.first().getName() != 'fastqs' || crispr_fastqs.first().getName() != 'fastqs') && fb_reference ? '[feature]' : ''
     include_frna = gex_frna_probeset_name && frna_sampleinfo                           ? '[samples]'             : ''
+    include_ocm  = ocm_barcodes                                                        ? '[samples]'             : ''
 
     gex_reference_path = include_gex ? "reference,./${gex_reference_name}" : ''
     fb_reference_path  = include_fb  ? "reference,./${fb_reference_name}"  : ''
@@ -82,6 +88,7 @@ process CELLRANGER_MULTI {
     // these references get appended directly to config file
     beam_csv_text  = include_beam && beam_control_panel.size() > 0 ? beam_control_panel : ''
     cmo_csv_text   = include_cmo  && cmo_barcodes.size() > 0       ? cmo_barcodes       : ''
+    ocm_csv_text   = include_ocm  && ocm_barcodes.size() > 0       ? ocm_barcodes       : ''
     frna_csv_text  = include_frna && frna_sampleinfo.size() > 0    ? frna_sampleinfo    : ''
 
     // the feature barcodes section get options for either CRISPR or antibody capture assays

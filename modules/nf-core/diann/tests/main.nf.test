@@ -1,0 +1,167 @@
+nextflow_process {
+
+    name "Test Process DIANN"
+    script "../main.nf"
+    process "DIANN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "diann"
+    tag "untar"
+
+    setup {
+        run("UNTAR") {
+            script "../../../nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'proteomics/diann/RD139_Narrow_UPS1_0_1fmol_inj1.mzML.tar.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("proteomics - in-silico library generation") {
+        config "./nextflow.config"
+        
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id:'ecoli_test', config: '--cut K*,R*,!*P --fixed-mod Carbamidomethyl,57.021464,C --var-mod Oxidation,15.994915,M'],
+                    [], // ms_files
+                    [], // ms_file_names
+                    file(params.modules_testdata_base_path + 'proteomics/diann/REF_EColi_K12_UPS1_combined_subset_100.fasta', checkIfExists: true),
+                    [], // library
+                    []  // quant
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path("${process.out.log[0][1]}").exists() },
+                { assert path("${process.out.predict_speclib[0][1]}").exists() },
+                { assert snapshot(
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("proteomics - preliminary analysis") {
+        config "./nextflow_preliminaryanalysis.config"
+        tag 'foo'
+
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.map{ meta, dir ->  
+                    def mzmlFile = dir.resolve('RD139_Narrow_UPS1_0_1fmol_inj1.mzML')
+                    [meta, mzmlFile, [], [], file(params.modules_testdata_base_path + 'proteomics/diann/lib.predicted.speclib', checkIfExists: true), []]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path("${process.out.log[0][1]}").exists() },
+                { assert snapshot(
+                    process.out.diann_quant,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("proteomics - assemble empirical library") {
+        config "./nextflow_assembleempiricallibrary.config"
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.map{ meta, dir ->  
+                    def mzmlFile = dir.resolve('RD139_Narrow_UPS1_0_1fmol_inj1.mzML')
+                    [[id:'test_exp'], [mzmlFile], [], [], file(params.modules_testdata_base_path + 'proteomics/diann/lib.predicted.speclib', checkIfExists: true), [file(params.modules_testdata_base_path + 'proteomics/diann/preliminary_analysis.quant', checkIfExists: true)]]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path("${process.out.log[0][1]}").exists() },
+                { assert path("${process.out.final_speclib[0][1]}").exists() },
+                { assert snapshot(
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("proteomics - individual analysis") {
+        config "./nextflow_individualanalysis.config"
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.map{ meta, dir ->  
+                    def mzmlFile = dir.resolve('RD139_Narrow_UPS1_0_1fmol_inj1.mzML')
+                    [meta, mzmlFile, [], file(params.modules_testdata_base_path + 'proteomics/diann/REF_EColi_K12_UPS1_combined_subset_100.fasta', checkIfExists: true), file(params.modules_testdata_base_path + 'proteomics/diann/empirical_library.speclib', checkIfExists: true), []]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path("${process.out.log[0][1]}").exists() },
+                { assert snapshot(
+                    process.out.diann_quant,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("proteomics - final quantification") {
+        config "./nextflow_finalquantification.config"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id:'test_exp'],
+                    [], // ms_files (not used in final quant)
+                    ['RD139_Narrow_UPS1_0_1fmol_inj1.mzML'], // ms_file_names (basenames for --use-quant)
+                    file(params.modules_testdata_base_path + 'proteomics/diann/REF_EColi_K12_UPS1_combined_subset_100.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'proteomics/diann/empirical_library.speclib', checkIfExists: true),
+                    [file(params.modules_testdata_base_path + 'proteomics/diann/individual_analysis.quant', checkIfExists: true)]
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path("${process.out.log[0][1]}").exists() },
+                { assert snapshot(
+                    process.out.report_stats,
+                    process.out.pr_matrix,
+                    process.out.pg_matrix,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+}

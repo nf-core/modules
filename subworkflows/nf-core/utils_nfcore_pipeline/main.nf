@@ -206,22 +206,20 @@ def logColours(monochrome_logs=true) {
 // Return a single report from an object that may be a Path or List
 //
 def getSingleReport(multiqc_reports) {
-    switch (multiqc_reports) {
-        case Path:
-            return multiqc_reports
-        case List:
-            switch (multiqc_reports.size()) {
-                case 0:
-                    log.warn("[${workflow.manifest.name}] No reports found from process 'MULTIQC'")
-                    return null
-                case 1:
-                    return multiqc_reports.first()
-                default:
-                    log.warn("[${workflow.manifest.name}] Found multiple reports from process 'MULTIQC', will use only one")
-                    return multiqc_reports.first()
-            }
-        default:
+    if (multiqc_reports instanceof Path) {
+        return multiqc_reports
+    } else if (multiqc_reports instanceof List) {
+        if (multiqc_reports.size() == 0) {
+            log.warn("[${workflow.manifest.name}] No reports found from process 'MULTIQC'")
             return null
+        } else if (multiqc_reports.size() == 1) {
+            return multiqc_reports.first()
+        } else {
+            log.warn("[${workflow.manifest.name}] Found multiple reports from process 'MULTIQC', will use only one")
+            return multiqc_reports.first()
+        }
+    } else {
+        return null
     }
 }
 

@@ -1,0 +1,56 @@
+nextflow_process {
+
+    name "Test Process CUSTOM_TABULARTOGSEAGCT"
+    script "../main.nf"
+    process "CUSTOM_TABULARTOGSEAGCT"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "custom_tabulartogseagct"
+    tag "custom"
+    tag "custom/tabulartogseagct"
+
+    test("test_custom_tabulartogseagct") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'treatment_mCherry_hND6_', variable:'treatment', reference:'mCherry', target:'hND6', blocking:''],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/all.normalised_counts.tsv",checkIfExists: true)
+                ]
+                """
+
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test_custom_tabulartogseagct - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'treatment_mCherry_hND6_', variable:'treatment', reference:'mCherry', target:'hND6', blocking:''],
+                    file(params.modules_testdata_base_path + "genomics/mus_musculus/rnaseq_expression/all.normalised_counts.tsv",checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

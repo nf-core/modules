@@ -37,7 +37,6 @@ nextflow_process {
                 { assert snapshot(process.out.versions).match() }
             )
         }
-
     }
 
     test("cnvkit batch wgs - bam") {
@@ -67,7 +66,6 @@ nextflow_process {
                 { assert snapshot(process.out.versions).match() }
             )
         }
-
     }
 
     test("cnvkit batch wgs - cram") {
@@ -97,7 +95,6 @@ nextflow_process {
                 { assert snapshot(process.out.versions).match() }
             )
         }
-
     }
 
     test("cnvkit batch tumouronly mode - bam") {
@@ -127,7 +124,6 @@ nextflow_process {
                 { assert snapshot(process.out.versions).match() }
             )
         }
-
     }
 
     test("cnvkit batch tumouronly mode - cram") {
@@ -155,6 +151,44 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.versions).match() }
+            )
+        }
+    }
+
+    test("cnvkit batch tumour only mode, no reference - bam") {
+
+        config "./batch_tumouronly.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true),
+                    []
+                ]
+                input[1] = [[:],[]]
+                input[2] = [[:],[]]
+                input[3] = [ [id:'targets'], [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)] ]
+                input[4] = [[:],[]]
+                input[5] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        file(process.out.bed.flatten()[1]).name, // empty file
+                        file(process.out.bed.flatten()[2]).name, // empty file
+                        process.out.cnn,
+                        process.out.cnr,
+                        process.out.cns,
+                        process.out.versions
+                    ).match()
+                }
             )
         }
 
@@ -185,7 +219,6 @@ nextflow_process {
                 { assert snapshot(process.out.versions).match() }
             )
         }
-
     }
 
 
@@ -214,7 +247,6 @@ nextflow_process {
                 { assert snapshot(process.out.versions).match() }
             )
         }
-
     }
 
 
@@ -248,12 +280,11 @@ nextflow_process {
                 { assert snapshot(process.out.versions).match() }
             )
         }
-
     }
 
 
     test("cnvkit batch - bam - stub") {
-
+        tag "stub"
         options "-stub"
 
         when {
@@ -277,13 +308,12 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bed,
+                    file(process.out.bed.flatten()[1]).name, // empty file
+                    file(process.out.bed.flatten()[2]).name, // empty file,
                     process.out.versions
                     ).match()
                 }
             )
         }
-
     }
-
 }

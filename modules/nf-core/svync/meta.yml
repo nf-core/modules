@@ -25,17 +25,21 @@ input:
         type: file
         description: The input VCF file containing structural variants
         pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
     - tbi:
         type: file
         description: The index of the input VCF file containing structural variants
         pattern: "*.tbi"
+        ontologies: []
     - config:
         type: file
         description: The config stating how the standardization should happen
         pattern: "*.{yml,yaml}"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,11 +48,26 @@ output:
           type: file
           description: The standardized VCF file
           pattern: "*.vcf.gz"
-  - versions:
-      - versions.yml:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.tbi":
           type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          description: The index of the standardized VCF file
+          pattern: "*.tbi"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

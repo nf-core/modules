@@ -1,12 +1,12 @@
 process MGIKIT_DEMULTIPLEX {
     tag {"$run_id"}
-    label 'process_high'
+    label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mgikit:0.1.6--h4c94732_0' :
-        'biocontainers/mgikit:0.1.6--h4c94732_0' }"
+        'https://depot.galaxyproject.org/singularity/mgikit:2.1.0--h3ab6199_0' :
+        'biocontainers/mgikit:2.1.0--h3ab6199_0' }"
 
     input:
     tuple val(meta), path(samplesheet), path(run_dir)

@@ -79,4 +79,48 @@ nextflow_function {
             )
         }
     }
+
+    test("Test Function getSingleReport with a single file") {
+        function "getSingleReport"
+
+        when {
+            function {
+                """
+                input[0] = file(params.modules_testdata_base_path + '/generic/tsv/test.tsv', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert function.success },
+                { assert function.result.contains("test.tsv") }
+            )
+        }
+    }
+
+    test("Test Function getSingleReport with multiple files") {
+        function "getSingleReport"
+
+        when {
+            function {
+                """
+                input[0] = [
+                    file(params.modules_testdata_base_path + '/generic/tsv/test.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + '/generic/tsv/network.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + '/generic/tsv/expression.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert function.success },
+                { assert function.result.contains("test.tsv") },
+                { assert !function.result.contains("network.tsv") },
+                { assert !function.result.contains("expression.tsv") }
+            )
+        }
+    }
 }

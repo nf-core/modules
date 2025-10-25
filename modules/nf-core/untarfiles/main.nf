@@ -10,8 +10,8 @@ process UNTARFILES {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/grep_sed_tar:40b34489f8e82876' :
-        'community.wave.seqera.io/library/grep_sed_tar:16f6591cd62505b3' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/88/88e03525287eaeb8bb74114aaee2c67118c1cdcfb99ee52e3ddc71a1acce35d4/data' :
+        'community.wave.seqera.io/library/grep_sed_tar:db2951cd23a1ffde' }"
 
     input:
     tuple val(meta), path(archive)

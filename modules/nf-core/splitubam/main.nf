@@ -37,10 +37,10 @@ process SPLITUBAM {
     def create_cmd = ""
     if (match) {
         def n_splits = match[0][1].toInteger()
-        (1..n_splits).each { i ->
+        create_cmd = (1..n_splits).collect { i ->
             def formattedIteration = String.format('%03d', i)
-            create_cmd += "touch ${formattedIteration}.${bam}.bam\n"
-        }
+            "touch ${formattedIteration}.${bam}.bam"
+        }.join(" ")
     } else { error("No `--split N` detected in args") }
     """
     $create_cmd

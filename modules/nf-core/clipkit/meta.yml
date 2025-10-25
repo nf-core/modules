@@ -1,11 +1,12 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "clipkit"
-description: ClipKIT is a fast and flexible alignment trimming tool that keeps phylogenetically informative sites and removes those that display characteristics poor phylogenetic signal.
+description: ClipKIT is a fast and flexible alignment trimming tool that keeps phylogenetically
+  informative sites and removes those that display characteristics poor phylogenetic
+  signal.
 keywords:
-  - sort
-  - example
-  - genomics
+  - alignment
+  - trimming
+  - phylogeny
 tools:
   - "clipkit":
       description: "Alignment trimming software for phylogenetics."
@@ -15,7 +16,6 @@ tools:
       doi: "10.1371/journal.pbio.3001007"
       licence: ["MIT"]
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -26,24 +26,41 @@ input:
         type: file
         description: Multiple sequence alignment file in various supported formats.
         pattern: "*.{fa,fasta,fa,fna,faa,alnfaa,aln,sto,stk,mauve,alignment,clustal}"
-
+        ontologies: []
+  - out_format:
+      type: string
+      description: Output format (aln,msa,fas,etc.), default is clipkit.
+      pattern: "*"
 output:
-  - clipkit:
-      - meta:
+  clipkit:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.clipkit":
+      - ${prefix}.${out_extension}:
           type: file
           description: Trimmed multiple sequence alignment file
-          pattern: "*.clipkit"
-  - versions:
-      - "versions.yml":
+          pattern: "*.*"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}.log:
           type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-
+          description: Log file with statistics from the tool's execution
+          pattern: "*.log"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@vagkaratzas"
 maintainers:
