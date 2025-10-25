@@ -1,7 +1,7 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "proovframe_map"
-description: frame-shift correction for long read (meta)genomics - maps proteins to reads
+description: frame-shift correction for long read (meta)genomics - maps proteins to
+  reads
 keywords:
   - frame-shift correction
   - long-read sequencing
@@ -32,8 +32,8 @@ input:
         pattern: "*.{fasta,fa}"
 
 output:
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -42,11 +42,11 @@ output:
           type: file
           description: Output TSV file with the frameshift-aware protein to read alignments
           pattern: "*.tsv"
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
 authors:
   - "@manuelcarbajo"
@@ -54,3 +54,4 @@ authors:
   - "@vagkaratzas"
 maintainers:
   - "@vagkaratzas"
+  - "@Ge94"

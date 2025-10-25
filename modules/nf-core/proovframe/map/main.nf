@@ -8,25 +8,25 @@ process PROOVFRAME_MAP {
         'biocontainers/proovframe:0.9.7--hdfd78af_1' }"
 
     input:
-    tuple val(meta), path(faa)
-    tuple val(meta2), path(fasta)
+    tuple val(meta), path(faa), path(fasta)
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml"            , emit: versions
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta2.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     proovframe \\
         map \\
         ${args} \\
+        --threads ${task.cpus} \\
         -a ${faa} \\
-        -o ${prefix}.tsv  \\
+        -o ${prefix}.tsv \\
         ${fasta}
 
     cat <<-END_VERSIONS > versions.yml
@@ -37,7 +37,7 @@ process PROOVFRAME_MAP {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta2.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tsv
 
