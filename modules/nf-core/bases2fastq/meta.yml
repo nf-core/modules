@@ -59,10 +59,21 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - output/*.html:
+      - output/*_QC.html:
           type: file
           description: QC HTML report
-          pattern: "output/*.html"
+          pattern: "output//*_QC.html"
+          ontologies: []
+  multiqc_report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - output/multiqc_report.html:
+          type: file
+          description: Multiqc HTML report
+          pattern: "output/multiqc_report.html"
           ontologies: []
   run_stats:
     - - meta:
