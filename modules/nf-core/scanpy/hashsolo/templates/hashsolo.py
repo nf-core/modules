@@ -36,7 +36,7 @@ class Arguments:
 
         self.prefix               = "$task.ext.prefix" if "$task.ext.prefix" != "null" else "$meta.id"
 
-        self.path_assignment = self.prefix + "_hashsolo.csv"
+        self.path_assignment = self.prefix + "_assignment_hashsolo.csv"
         # self.path_plot       = self.prefix + "_hashsolo.jpg"
         self.path_h5ad       = self.prefix + "_hashsolo.h5ad"
         self.path_params     = self.prefix + "_params_hashsolo.csv"

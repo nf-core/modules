@@ -1,63 +1,5 @@
 {
-    "homo_sapiens tumor_normal - bam tumor bam norma - fasta scan": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test:md5,a3290f7539dbbf83777e8590156c0e28"
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test_dis:md5,d47b22c13092707ed64645f118e82cc1"
-                ]
-            ],
-            "test_somatic",
-            [
-                "versions.yml:md5,480c67c1e3dbe85f05032337a19e9383"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
-        },
-        "timestamp": "2025-05-26T13:24:17.764060279"
-    },
-    "homo_sapiens tumor_only - bam - fasta scan": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test:md5,a3290f7539dbbf83777e8590156c0e28"
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test_dis:md5,236e814ddeb95e21a17b48250f92250d"
-                ]
-            ],
-            "test_somatic",
-            [
-                "versions.yml:md5,480c67c1e3dbe85f05032337a19e9383"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
-        },
-        "timestamp": "2025-05-26T12:43:47.482107418"
-    },
-    "homo_sapiens tumor_only - bam - [] - models": {
+    "homo_sapiens tumor_only - bam - models": {
         "content": [
             [
                 [
@@ -78,15 +20,20 @@
             "test_somatic",
             [
                 "versions.yml:md5,480c67c1e3dbe85f05032337a19e9383"
-            ]
+            ],
+            {
+                "MSISENSOR2_MSI": {
+                    "msisensor2": 0.1
+                }
+            }
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2025-05-26T12:44:05.766946329"
+        "timestamp": "2025-10-10T12:21:27.277789"
     },
-    "homo_sapiens tumor_only - bam -- stub": {
+    "homo_sapiens tumor_only - bam - stub": {
         "content": [
             {
                 "0": [
@@ -114,14 +61,6 @@
                     ]
                 ],
                 "3": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_germline:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "4": [
                     "versions.yml:md5,480c67c1e3dbe85f05032337a19e9383"
                 ],
                 "distribution": [
@@ -130,14 +69,6 @@
                             "id": "test"
                         },
                         "test_dis:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "germline": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_germline:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "msi": [
@@ -168,38 +99,8 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2025-05-26T13:23:49.743930133"
-    },
-    "homo_sapiens tumor_normal - bam tumor bam normal - fasta scan": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test:md5,a3290f7539dbbf83777e8590156c0e28"
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test_dis:md5,d47b22c13092707ed64645f118e82cc1"
-                ]
-            ],
-            "test_somatic",
-            "test_germline",
-            [
-                "versions.yml:md5,480c67c1e3dbe85f05032337a19e9383"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
-        },
-        "timestamp": "2025-05-26T13:25:27.760733976"
+        "timestamp": "2025-10-10T12:21:31.692084"
     }
 }
