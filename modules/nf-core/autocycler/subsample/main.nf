@@ -45,7 +45,7 @@ process AUTOCYCLER_SUBSAMPLE {
     """
 
     mkdir $prefix
-    touch ${prefix}/sample_00.fastq
+    touch ${prefix}/sample_00.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
