@@ -2,64 +2,64 @@
 name: "modkit_callmods"
 description: Call mods from a modbam, creates a new modbam with probabilities set to 100% if a base modification is called or 0% if called canonical
 keywords:
-- methylation
-- ont
-- long-read
+  - methylation
+  - ont
+  - long-read
 tools:
-- "modkit":
-    description: "A bioinformatics tool for working with modified bases in Oxford Nanopore sequencing data."
-    homepage: "https://nanoporetech.github.io/modkit/"
-    documentation: "https://nanoporetech.github.io/modkit/"
-    tool_dev_url: "https://github.com/nanoporetech/modkit"
-    doi: "no DOI available"
-    licence: ['Oxford Nanopore Technologies PLC. Public License Version 1.0']
-    identifier: ""
+  - "modkit":
+      description: "A bioinformatics tool for working with modified bases in Oxford Nanopore sequencing data."
+      homepage: "https://nanoporetech.github.io/modkit/"
+      documentation: "https://nanoporetech.github.io/modkit/"
+      tool_dev_url: "https://github.com/nanoporetech/modkit"
+      doi: "no DOI available"
+      licence: ["Oxford Nanopore Technologies PLC. Public License Version 1.0"]
+      identifier: ""
 
 input:
-- - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1' ]`
-  - bam:
-      type: file
-      description: BAM file
-      pattern: "*.bam"
-      ontologies:
-      - edam: "http://edamontology.org/format_2572"     # BAM
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: BAM file
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
 
 output:
   bam:
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
-    - "*.bam":
-        type: file
-        description: BAM file with base modification probabilities
-        ontologies:
-        - edam: "http://edamontology.org/format_2572"     # BAM
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bam":
+          type: file
+          description: BAM file with base modification probabilities
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
   log:
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
-    - "*.log":
-        type: file
-        description: File for debug logs to be written to
-        ontologies:
-        - edam: "http://edamontology.org/data_1678"     # log
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.log":
+          type: file
+          description: File for debug logs to be written to
+          ontologies:
+            - edam: "http://edamontology.org/data_1678" # log
   versions:
-  - "versions.yml":
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-      ontologies:
-      - edam: "http://edamontology.org/format_3750"     # YAML
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 
 authors:
-- "@YiJin-Xiong"
+  - "@YiJin-Xiong"
 maintainers:
-- "@YiJin-Xiong"
+  - "@YiJin-Xiong"
