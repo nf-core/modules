@@ -1,0 +1,71 @@
+
+nextflow_process {
+
+    name "Test Process SAMTOOLS_SPLITHEADER"
+    script "../main.nf"
+    process "SAMTOOLS_SPLITHEADER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "samtools"
+    tag "samtools/splitheader"
+
+    test("test-samtools-splitheader") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					file(process.out.readgroup[0][1]).readLines(),
+					file(process.out.programs[0][1]).readLines(),
+					file(process.out.sequences[0][1]).readLines(),
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+    test("test-samtools-splitheader - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+					file(process.out.readgroup[0][1]).readLines(),
+					file(process.out.programs[0][1]).readLines(),
+					file(process.out.sequences[0][1]).readLines(),
+					process.out.versions
+					).match()
+				}
+            )
+        }
+    }
+
+}

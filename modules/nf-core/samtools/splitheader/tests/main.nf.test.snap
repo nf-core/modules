@@ -1,0 +1,46 @@
+{
+    "test-samtools-splitheader": {
+        "content": [
+            [
+                "@RG\tID:1\tLB:lib1\tPL:ILLUMINA\tSM:test\tPU:barcode1"
+            ],
+            [
+                "@PG\tID:minimap2\tPN:minimap2\tVN:2.17-r941\tCL:minimap2 -ax sr tests/data/fasta/sarscov2/GCA_011545545.1_ASM1154554v1_genomic.fna tests/data/fastq/dna/sarscov2_1.fastq.gz tests/data/fastq/dna/sarscov2_2.fastq.gz",
+                "@PG\tID:samtools\tPN:samtools\tPP:minimap2\tVN:1.11\tCL:samtools view -Sb sarscov2_aln.sam",
+                "@PG\tID:samtools.1\tPN:samtools\tPP:samtools\tVN:1.22.1\tCL:samtools view -H test.paired_end.bam"
+            ],
+            [
+                "@SQ\tSN:MT192765.1\tLN:29829"
+            ],
+            [
+                "versions.yml:md5,1c199f83f54556a51c500ed49ea6102a"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.2"
+        },
+        "timestamp": "2025-10-27T10:16:40.848026"
+    },
+    "test-samtools-splitheader - stub": {
+        "content": [
+            [
+                "@RG\tID:test\tSM:test\tPL:ILLUMINA"
+            ],
+            [
+                "@PG\tID:samtools.4\tPN:samtools\tPP:samtools.3\tVN:1.22.1\tCL:samtools view -H test.paired_end.bam"
+            ],
+            [
+                "@SQ\tSN:chr1\tLN:10000"
+            ],
+            [
+                "versions.yml:md5,1c199f83f54556a51c500ed49ea6102a"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.2"
+        },
+        "timestamp": "2025-10-27T10:16:43.794756"
+    }
+}

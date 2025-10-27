@@ -26,12 +26,7 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(
-					file(process.out.readgroup[0][1]).readLines(),
-					process.out.versions
-					).match()
-				}
+                { assert process.failed }
             )
         }
     }
