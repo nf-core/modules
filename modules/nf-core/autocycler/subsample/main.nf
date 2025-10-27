@@ -1,0 +1,55 @@
+
+process AUTOCYCLER_SUBSAMPLE {
+    tag "$meta.id"
+    label 'process_low'
+
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/autocycler:0.5.2--h3ab6199_0':
+        'biocontainers/autocycler:0.5.2--h3ab6199_0' }"
+
+    input:
+    // TODO nf-core: Where applicable please provide/convert compressed files as input/output
+    //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
+    tuple val(meta), path(reads)
+    val genome_size
+
+    output:
+    tuple val(meta), path("$prefix/*.fastq.gz"), emit: subsampled_reads
+    path "versions.yml"           , emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    autocycler subsample \\
+        $args \\
+        --reads $reads \\
+        --out_dir ${prefix} \\
+        --genome_size $genome_size
+
+    gzip $prefix/*.fastq
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        autocycler: \$(autocycler --version |  sed 's/^[^ ]* //')
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+
+    mkdir $prefix
+    touch ${prefix}/sample_00.fastq
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        autocycler: \$(autocycler --version |  sed 's/^[^ ]* //')
+    END_VERSIONS
+    """
+}
