@@ -45,10 +45,9 @@ output:
       - bamstats:
           type: string
           description: The name of the tool
-      - bamstats --version | sed "s/^.*bamstats == version://; s/Using.*\$//" | sed "s/built.*//:
+      - 'bamstats --version | grep "version: " | sed -e s"/version: //':
           type: string
-          description: The version of bamstats used
-
+          description: The version of the tool
 topics:
   - versions:
       - - process:
