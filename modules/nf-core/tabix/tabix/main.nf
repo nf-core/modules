@@ -13,7 +13,7 @@ process TABIX_TABIX {
     output:
     tuple val(meta), path("*.tbi"), optional:true, emit: tbi
     tuple val(meta), path("*.csi"), optional:true, emit: csi
-    path  "versions.yml"          , emit: versions
+    tuple val("${task.process}"), val('tabix'), eval("tabix -h 2>&1 | tail -1"),     topic: versions, emit: versions1
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,21 +25,12 @@ process TABIX_TABIX {
         --threads $task.cpus \\
         $args \\
         $tab
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tabix: \$(echo \$(tabix -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
-    END_VERSIONS
+        
     """
 
     stub:
     """
     touch ${tab}.tbi
     touch ${tab}.csi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tabix: \$(echo \$(tabix -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
-    END_VERSIONS
     """
 }
