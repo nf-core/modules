@@ -16,7 +16,7 @@ process TRIMGALORE {
     tuple val(meta), path("*unpaired{,_1,_2}.fq.gz")                  , emit: unpaired, optional: true
     tuple val(meta), path("*.html")                                    , emit: html, optional: true
     tuple val(meta), path("*.zip")                                     , emit: zip, optional: true
-    path "versions.yml"					                               , emit: versions
+    tuple val("${task.process}"), val('trim_galore'), eval("echo \$(trim_galore --version 2>&1) | sed 's/^.*version //; s/Last.*\$//'"), topic: versions, emit: versions_trim_galore
 
     when:
     task.ext.when == null || task.ext.when
@@ -55,7 +55,6 @@ process TRIMGALORE {
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-            trimgalore: \$(echo \$(trim_galore --version 2>&1) | sed 's/^.*version //; s/Last.*\$//')
             cutadapt: \$(cutadapt --version)
             pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
         END_VERSIONS
@@ -75,7 +74,6 @@ process TRIMGALORE {
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-            trimgalore: \$(echo \$(trim_galore --version 2>&1) | sed 's/^.*version //; s/Last.*\$//')
             cutadapt: \$(cutadapt --version)
             pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
         END_VERSIONS
@@ -99,7 +97,6 @@ process TRIMGALORE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        trimgalore: \$(echo \$(trim_galore --version 2>&1) | sed 's/^.*version //; s/Last.*\$//')
         cutadapt: \$(cutadapt --version)
         pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
     END_VERSIONS
