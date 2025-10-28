@@ -4,7 +4,7 @@ process VEMBRANE_FILTER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
+        'https://depot.galaxyproject.org/singularity/vembrane:2.4.0--pyhdfd78af_0':
         'biocontainers/vembrane:2.4.0--pyhdfd78af_0' }"
 
     input:
