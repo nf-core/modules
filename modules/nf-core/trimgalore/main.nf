@@ -17,6 +17,8 @@ process TRIMGALORE {
     tuple val(meta), path("*.html")                                    , emit: html, optional: true
     tuple val(meta), path("*.zip")                                     , emit: zip, optional: true
     tuple val("${task.process}"), val('trim_galore'), eval("echo \$(trim_galore --version 2>&1) | sed -E 's/.*version[[:space:]]+([0-9.]+).*/\\1/'"), topic: versions, emit: versions_trim_galore
+    tuple val("${task.process}"), val('cutadapt'), eval("echo \$(cutadapt --version 2>&1)"), topic: versions, emit: versions_cutadapt
+    tuple val("${task.process}"), val('pigz'), eval("echo \$( pigz --version 2>&1 | sed 's/pigz //g' )"), topic: versions, emit: versions_pigz
 
     when:
     task.ext.when == null || task.ext.when
@@ -71,12 +73,6 @@ process TRIMGALORE {
             --gzip \\
             ${prefix}_1.fastq.gz \\
             ${prefix}_2.fastq.gz
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            cutadapt: \$(cutadapt --version)
-            pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
-        END_VERSIONS
         """
     }
 
@@ -94,11 +90,5 @@ process TRIMGALORE {
     }
     """
     ${output_command}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cutadapt: \$(cutadapt --version)
-        pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
-    END_VERSIONS
     """
 }
