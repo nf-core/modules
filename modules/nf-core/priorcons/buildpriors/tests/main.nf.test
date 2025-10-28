@@ -9,7 +9,7 @@ nextflow_process {
     tag "priorcons"
     tag "priorcons/buildpriors"
 
-    test("rsv - fasta alignment") {
+    test("build_priors_testfiles") {
 
         when {
             params {
@@ -38,7 +38,7 @@ nextflow_process {
 
     }
 
-    test("rsv - fasta alignment - stub") {
+    test("build_priors_testfiles - stub") {
 
         options "-stub"
 
