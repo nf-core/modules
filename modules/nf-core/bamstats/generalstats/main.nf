@@ -11,7 +11,7 @@ process BAMSTATS_GENERALSTATS {
 
     output:
     tuple val(meta), path("*.json"), emit: json
-    path "versions.yml"            , emit: versions
+    tuple val("${task.process}"), val("bamstats"), eval('bamstats --version | grep "version: " | sed -e s"/version: //"'), topic: versions, emit: versions_bamstats
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,11 +28,6 @@ process BAMSTATS_GENERALSTATS {
         $args \\
         -c $task.cpus \\
         -o ${prefix}.json
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bamstats: \$(echo \$(bamstats --version 2>&1) | sed 's/^.*bamstats == version://; s/Using.*\$//' | sed 's/built.*//' )
-    END_VERSIONS
     """
 
     stub:
@@ -41,10 +36,5 @@ process BAMSTATS_GENERALSTATS {
 
     """
     touch ${prefix}.json
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bamstats: \$(echo \$(bamstats --version 2>&1) | sed 's/^.*bamstats == version://; s/Using.*\$//' | sed 's/built.*//' )
-    END_VERSIONS
     """
 }
