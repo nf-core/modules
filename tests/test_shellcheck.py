@@ -2,8 +2,10 @@ import json
 import os
 import re
 import subprocess
+import sys
 import textwrap
 
+from tqdm.auto import tqdm
 
 def extract_shell_scripts(nf_content):
     # Match script or shell blocks with triple quotes, excluding groovy in between
@@ -102,25 +104,29 @@ def process_nf_file(nf_file):
     return run_shellcheck(script_files, nf_content, positions, nf_file)
 
 def main():
-    nf_files = []
-    for root, dirs, files in os.walk('.'):
-        for file in files:
-            if file.endswith('.nf'):
-                nf_file = os.path.join(root, file)
-                nf_files.append(nf_file)
+    if len(sys.argv) == 1:
+        nf_files = []
+        for root, dirs, files in os.walk('.'):
+            for file in files:
+                if file.endswith(".nf"):
+                    nf_file = os.path.join(root, file)
+                    nf_files.append(nf_file)
+    else:
+        nf_files = [x for x in sys.argv if x.endswith(".nf")]
     markdown_output = []
     json_output = []
-    for i, nf_file in enumerate(nf_files):
-        print(f"Processing {nf_file} ({i+1}/{len(nf_files)})")
+    for i, nf_file in enumerate(tqdm(nf_files, desc="Shellchecking modified .nf files")):
         (md_i, js_i) = process_nf_file(nf_file)
         markdown_output.extend(md_i)
         json_output.extend(js_i)
 
-    with open("shellcheck_output.md", "w") as md_file:
-        md_file.writelines(markdown_output)
+    if markdown_output:
+        with open("shellcheck_output.md", "w") as md_file:
+            md_file.writelines(markdown_output)
 
-    with open("shellcheck_output.json", "w") as json_file:
-        json.dump(json_output, json_file, indent=4)
+    if json_output:
+        with open("shellcheck_output.json", "w") as json_file:
+            json.dump(json_output, json_file, indent=4)
 
 if __name__ == "__main__":
     main()

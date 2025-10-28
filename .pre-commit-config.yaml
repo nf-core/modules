@@ -58,3 +58,15 @@ repos:
     rev: pre-commit
     hooks:
       - id: lint-subworkflows
+
+  - repo: local
+    hooks:
+      - id: shellcheck
+        name: "Run shellcheck on .nf shell scripts"
+        entry: python tests/test_shellcheck.py
+        pass_filenames: true
+        language: python
+        verbose: true
+        additional_dependencies:
+         - "shellcheck-py"
+         - "tqdm"
