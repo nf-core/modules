@@ -92,7 +92,7 @@ output:
       - bismark:
           type: string
           description: The tool name
-      - 'bismark -v 2>&1 | sed "s/^.*Bismark Version: v//; s/Copyright.*\$//':
+      - 'bismark --version | grep Version | sed -e "s/Bismark Version: v//" | xargs':
           type: string
           description: The version of the tool
 topics:
