@@ -58,7 +58,7 @@ output:
       - trinity:
           type: string
           description: The tool name
-      -  Trinity --version | grep 'Trinity version' | sed 's/.*Trinity-v//':
+      - Trinity --version | grep 'Trinity version' | sed 's/.*Trinity-v//':
           type: string
           description: The command used to generate the version of the tool
 topics:
