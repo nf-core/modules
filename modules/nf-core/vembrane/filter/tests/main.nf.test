@@ -1,0 +1,110 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test vembrane
+nextflow_process {
+
+    name "Test Process VEMBRANE"
+    script "../main.nf"
+    process "VEMBRANE_FILTER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "vembrane"
+    tag "vembrane/filter"
+
+    test("homo sapiens - vcf") {
+
+        //
+        // (the module requires running more than one process to generate the required output)
+        // add the 'setup' method here.
+        // You can find more information about how to use a 'setup' method in the docs (https://nf-co.re/docs/contributing/modules#steps-for-creating-nf-test-for-chained-modules).
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.rnaseq.vcf', checkIfExists: true),
+                ]
+                input[1] = "'QUAL >= 30'"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.filtered_variant).match() }
+            )
+        }
+
+    }
+
+    test("homo sapiens - vcf.gz") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.vcf.gz', checkIfExists: true),
+                ]
+                input[1] = "'QUAL >= 30'"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.filtered_variant
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("homo sapiens - bcf") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.bcf', checkIfExists: true),
+                ]
+                input[1] = "'QUAL >= 30'"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.filtered_variant).match() }
+            )
+        }
+
+    }
+
+test("homo sapiens - bcf.gz") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bcf.gz', checkIfExists: true),
+                ]
+                input[1] = "'QUAL >= 30'"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.filtered_variant).match() }
+            )
+        }
+
+    }
+
+}

@@ -1,0 +1,62 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+# # TODO nf-core: Add a description of the module and list keywords
+name: "vembrane_filter"
+description: write your description here
+keywords:
+  - filter
+  - table
+  - sort
+tools:
+  ## TODO nf-core: Add a description and other details for the software below
+  - "vembrane":
+      description: "Filter VCF/BCF files with Python expressions."
+      homepage: "https://github.com/vembrane/vembrane/tree/main"
+      documentation: "https://github.com/vembrane/vembrane/blob/main/docs/filter.md"
+      tool_dev_url: "https://github.com/vembrane/vembrane.git"
+      doi: "10.1093/bioinformatics/btac810"
+      licence: ["MIT"]
+      identifier: biotools:vembrane/filter
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - variant:
+        type: file
+        description: |
+          Path to the VCF/BCF file to be filtered.
+          e.g. 'file.vcf', 'file.vcf.gz', 'file.bcf', 'file.bcf.gz'
+        ontologies: []
+  - expression:
+      type: string
+      description: |
+        The filter expression can be any valid python expression that evaluates to a value of type bool.
+        e.g. 'ANN["SYMBOL"] == "CDH2"'
+      ontologies: []
+
+output:
+  filtered_variant:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.{vcf,bcf,vcf.gz,bcf.gz}":
+          type: file
+          description: VCF normalized output file
+          pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@trangdo-hsc"
+  - "@mkatsanto"
+maintainers:
+  - "@trangdo-hsc"
