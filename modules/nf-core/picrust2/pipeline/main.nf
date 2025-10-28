@@ -11,10 +11,10 @@ process PICRUST2_PIPELINE {
     tuple val(meta), path(sequences), path(otu_table)
 
     output:
-    tuple val(meta), path("${prefix}/"), emit: output_dir
-    tuple val(meta), path("${prefix}/*_reduced.tre"), emit: trees
+    tuple val(meta), path("${prefix}/")                              , emit: output_dir
+    tuple val(meta), path("${prefix}/*_reduced.tre")                 , emit: trees
     tuple val(meta), path("${prefix}_metagenome_*_abundances.tsv.gz"), emit: function_abundances
-    tuple val(meta), path("${prefix}_pathway_abundances.tsv.gz"), emit: pathway_abundances
+    tuple val(meta), path("${prefix}_pathway_abundances.tsv.gz")     , emit: pathway_abundances
     path 'versions.yml', emit: versions
 
     when:
