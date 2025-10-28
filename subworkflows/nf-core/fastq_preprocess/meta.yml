@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fastq_preprocess"
+description: Subworkflow that preprocesses fasta files
+keywords:
+  - fasta
+  - seqkit
+  - preprocessing
+components:
+  - seqkit_sana_pair
+  - seqkit/seq
+  - seqkit/replace
+  - seqkit/rmdup
+
+input:
+  - sequences:
+      type: file
+      description: |
+        Fasta file.
+output:
+  - versions:
+      type: file
+      description: |
+        Versions file containing the software versions used in the workflow.
+  - reads:
+      type: file
+      description: |
+        Processed fasta file.
+authors:
+  - "@maia-munteanu"
+maintainers:
+  - "@maia-munteanu"
+  - "@vagkaratzas"
