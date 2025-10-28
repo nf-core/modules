@@ -14,14 +14,14 @@ process AUTOCYCLER_SUBSAMPLE {
 
     output:
     tuple val(meta), path("$prefix/*.fastq.gz"), emit: subsampled_reads
-    path "versions.yml"           , emit: versions
+    path "versions.yml",                         emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
     """
     autocycler subsample \\
         $args \\
@@ -38,8 +38,8 @@ process AUTOCYCLER_SUBSAMPLE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
     """
 
     mkdir $prefix

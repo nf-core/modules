@@ -12,15 +12,15 @@ process AUTOCYCLER_RESOLVE {
 
     output:
     tuple val(meta), path("3_bridged.gfa"), emit: bridged
-    tuple val(meta), path("4_merged.gfa"), emit: merged
-    tuple val(meta), path("5_final.gfa"), emit: resolved
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("4_merged.gfa"),  emit: merged
+    tuple val(meta), path("5_final.gfa"),   emit: resolved
+    path "versions.yml",                    emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     autocycler resolve \\
@@ -34,7 +34,7 @@ process AUTOCYCLER_RESOLVE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch 3_bridged.gfa

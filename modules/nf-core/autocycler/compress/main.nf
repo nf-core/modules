@@ -12,17 +12,16 @@ process AUTOCYCLER_COMPRESS {
     tuple val(meta), path(assemblies)
 
     output:
-    tuple val(meta), path("$prefix/*.gfa"), emit: gfa
+    tuple val(meta), path("$prefix/*.gfa"),  emit: gfa
     tuple val(meta), path("$prefix/*.yaml"), emit: stats
-
-    path "versions.yml"           , emit: versions
+    path "versions.yml",                     emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
     """
     autocycler compress \\
         $args \\

@@ -12,16 +12,16 @@ process AUTOCYCLER_COMBINE {
 
     output:
     tuple val(meta), path("$prefix/consensus_assembly.fasta"), emit: fasta
-    tuple val(meta), path("$prefix/consensus_assembly.gfa"), emit: gfa
-    tuple val(meta), path("$prefix/consensus_assembly.yaml"), emit: stats
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("$prefix/consensus_assembly.gfa"),   emit: gfa
+    tuple val(meta), path("$prefix/consensus_assembly.yaml"),  emit: stats
+    path "versions.yml",                                       emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
     """
     autocycler combine \\
         $args \\
@@ -35,8 +35,8 @@ process AUTOCYCLER_COMBINE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
     """
     mkdir $prefix
     touch $prefix/consensus_assembly.{fasta,gfa,yaml}

@@ -11,20 +11,19 @@ process AUTOCYCLER_CLUSTER {
     tuple val(meta), path(gfa)
 
     output:
-    tuple val(meta), path("clustering/qc_pass/*/*.gfa"), emit: clusters
+    tuple val(meta), path("clustering/qc_pass/*/*.gfa"),  emit: clusters
     tuple val(meta), path("clustering/qc_pass/*/*.yaml"), emit: clusterstats
-    tuple val(meta), path("clustering/*.newick"), emit: newick
-    tuple val(meta), path("clustering/*.tsv"), emit: tsv
-    tuple val(meta), path("clustering/*.phylip"), emit: pairwisedistances
-    tuple val(meta), path("clustering/*.yaml"), emit: stats
-
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("clustering/*.newick"),         emit: newick
+    tuple val(meta), path("clustering/*.tsv"),            emit: tsv
+    tuple val(meta), path("clustering/*.phylip"),         emit: pairwisedistances
+    tuple val(meta), path("clustering/*.yaml"),           emit: stats
+    path "versions.yml",                                  emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     autocycler cluster \\
@@ -38,7 +37,7 @@ process AUTOCYCLER_CLUSTER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir clustering/qc_pass/cluster_000 -p

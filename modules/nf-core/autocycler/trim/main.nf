@@ -11,15 +11,15 @@ process AUTOCYCLER_TRIM {
     tuple val(meta), path(gfa)
 
     output:
-    tuple val(meta), path("*.gfa"), emit: gfa
+    tuple val(meta), path("*.gfa"),  emit: gfa
     tuple val(meta), path("*.yaml"), emit: stats
-    path "versions.yml"           , emit: versions
+    path "versions.yml",             emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     autocycler trim \\
@@ -34,7 +34,7 @@ process AUTOCYCLER_TRIM {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
 
