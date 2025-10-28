@@ -19,7 +19,7 @@ process SAMTOOLS_SORT {
     tuple val(meta), path("${prefix}.${extension}.crai"),   emit: crai, optional: true
     tuple val(meta), path("${prefix}.${extension}.csi"),    emit: csi,  optional: true
     tuple val(meta), path("${prefix}.${extension}.bai"),    emit: bai,  optional: true
-    tuple val("${task.process}"), val('samtools'), eval("samtools version 2>&1 | tail -1"), topic: versions, emit: versions_samtools
+    tuple val("${task.process}"), val('samtools'), eval("samtools --version 2>&1 | head -1 | sed 's/^.*samtools //'"), topic: versions, emit: versions_samtools
     
     when:
     task.ext.when == null || task.ext.when
