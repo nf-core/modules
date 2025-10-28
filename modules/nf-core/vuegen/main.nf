@@ -20,6 +20,15 @@ process VUEGEN {
     script:
         def args = task.ext.args ?: ''
         """
+        # Fix Quarto for apptainer
+        # https://github.com/mahesh-panchal/quarto-docker-singularity-problem
+        ENV_QUARTO="\${ENV_QUARTO:-/opt/conda/etc/conda/activate.d/quarto.sh}"
+        set +u
+        if [ -z "\${QUARTO_DENO}" ] && [ -f "\${ENV_QUARTO}" ]; then
+            source "\${ENV_QUARTO}"
+        fi
+        set -u
+        
         # Validate quarto_check flag if using a conda environment
         if [[ "${task.conda}" != "null" ]]; then
             QUARTO_CHECK_FLAG="--quarto_checks"
