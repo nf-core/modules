@@ -14,7 +14,7 @@ process BWAMEM2_INDEX {
 
     output:
     tuple val(meta), path("bwamem2"), emit: index
-    tuple val("${task.process}"), val('bwa-mem2'), eval("bwa-mem2 version 2>&1 | tail -1"),                            topic: versions, emit: versions1
+    tuple val("${task.process}"), val('bwa-mem2'), eval("bwa-mem2 version 2>&1 | tail -1"), topic: versions, emit: versions_bwamem2
 
     when:
     task.ext.when == null || task.ext.when
