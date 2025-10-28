@@ -14,7 +14,7 @@ process TRINITY {
     output:
     tuple val(meta), path("*.fa.gz")    , emit: transcript_fasta
     tuple val(meta), path("*.log")      , emit: log
-    tuple val("${task.process}"), val('trinity'), eval("Trinity --version | grep 'Trinity version:' | sed 's/Trinity version: Trinity-v//'"), topic: versions, emit: versions_trinity
+    tuple val("${task.process}"), val('trinity'), eval("Trinity --version | grep 'Trinity version' | sed 's/.*Trinity-v//'"), topic: versions, emit: versions_trinity
 
     when:
     task.ext.when == null || task.ext.when
