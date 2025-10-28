@@ -49,7 +49,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}.bam":
+      - ${prefix}.bam:
           type: file
           description: Sorted BAM file
           pattern: "*.{bam}"
@@ -60,7 +60,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}.cram":
+      - ${prefix}.cram:
           type: file
           description: Sorted CRAM file
           pattern: "*.{cram}"
@@ -71,19 +71,18 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}.sam":
+      - ${prefix}.sam:
           type: file
           description: Sorted SAM file
           pattern: "*.{sam}"
           ontologies: []
-
   crai:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}.${extension}.crai":
+      - ${prefix}.${extension}.crai:
           type: file
           description: CRAM index file (optional)
           pattern: "*.crai"
@@ -94,7 +93,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}.${extension}.csi":
+      - ${prefix}.${extension}.csi:
           type: file
           description: BAM index file (optional)
           pattern: "*.csi"
@@ -105,7 +104,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}.${extension}.bai":
+      - ${prefix}.${extension}.bai:
           type: file
           description: BAM index file (optional)
           pattern: "*.bai"
@@ -117,9 +116,6 @@ output:
       - samtools:
           type: string
           description: The tool name
-      - samtools version 2>&1 | tail -1:
-          type: string
-          description: The command used to generate the version of the tool
 topics:
   - versions:
       - - process:
