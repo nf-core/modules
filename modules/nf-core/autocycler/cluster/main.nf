@@ -42,8 +42,8 @@ process AUTOCYCLER_CLUSTER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir clustering/qc_pass/cluster_000 -p
-    touch clustering.{newick,yaml,tsv}
-    touch pairwise_distances.phylip
+    touch clustering/clustering.{newick,yaml,tsv}
+    touch clustering/pairwise_distances.phylip
     touch clustering/qc_pass/cluster_000/0_untrimmed.{gfa,yaml}
 
     cat <<-END_VERSIONS > versions.yml
