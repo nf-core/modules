@@ -18,8 +18,8 @@ process PORTCULLIS_FULL {
     tuple val(meta), path("*.portcullis.log")    , emit: log
     tuple val(meta), path("*.intron.gff3")       , emit: intron_gff , optional: true
     tuple val(meta), path("*.exon.gff3")         , emit: exon_gff   , optional: true
-    tuple val(meta), path("*.bam")               , emit: spliced_bam, optional: true
-    tuple val(meta), path("*.bai")               , emit: spliced_bai, optional: true
+    tuple val(meta), path("*.spliced.bam")       , emit: spliced_bam, optional: true
+    tuple val(meta), path("*.spliced.bam.bai")   , emit: spliced_bai, optional: true
     path "versions.yml"                          , emit: versions
 
     when:

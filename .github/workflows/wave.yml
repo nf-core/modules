@@ -13,9 +13,9 @@ env:
   # renovate: datasource=github-releases depName=seqeralabs/wave-cli versioning=semver
   WAVE_VERSION: "1.5.0"
   # renovate: datasource=github-releases depName=askimed/nf-test versioning=semver
-  NFT_VER: "0.9.2"
+  NFT_VER: "0.9.3"
   # renovate: datasource=github-releases depName=nextflow/nextflow versioning=semver
-  NXF_VER: "24.10.1"
+  NXF_VER: "25.04.8"
 
 jobs:
   generate-matrix:
@@ -31,7 +31,7 @@ jobs:
 
       - name: Find conda differences
         id: conda-diff
-        uses: tj-actions/changed-files@ed68ef82c095e0d48ec87eccea555d944a631a4c # v46
+        uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v47
         with:
           json: true
           escape_json: false
@@ -40,7 +40,7 @@ jobs:
 
       - name: Find Dockerfile differences
         id: docker-diff
-        uses: tj-actions/changed-files@ed68ef82c095e0d48ec87eccea555d944a631a4c # v46
+        uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v47
         with:
           json: true
           escape_json: false

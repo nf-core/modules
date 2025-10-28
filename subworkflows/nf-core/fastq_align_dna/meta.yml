@@ -9,12 +9,14 @@ keywords:
   - bwamem2
   - dragmap
   - snapaligner
+  - strobealign
 components:
   - bowtie2/align
   - bwa/mem
   - bwamem2/mem
   - dragmap/align
   - snapaligner/align
+  - strobealign
 input:
   - meta:
       type: map
@@ -53,6 +55,7 @@ input:
         - bwamem2
         - dragmap
         - snap
+        - strobealign
   - sort_bam:
       type: boolean
       description: sort output
