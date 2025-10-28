@@ -41,7 +41,7 @@ process PRIORCONS_BUILDPRIORS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     priorcons \\
-        buildpriors \\
+        build-priors \\
         --input ${alignment} \\
         --ref ${ref_id} \\
         --output ${prefix}.parquet \\
