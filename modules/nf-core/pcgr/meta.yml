@@ -1,0 +1,71 @@
+name: "pcgrtemplate"
+description: write your description here
+keywords:
+  - sort
+  - genomics
+tools:
+  ## TODO nf-core: Add a description and other details for the software below
+  - "Personal Cancer Genome Reporter (PCGR)":
+      description: "The Personal Cancer Genome Reporter (PCGR) is a stand-alone software package for functional annotation and translation of individual tumor genomes for precision cancer medicine. It interprets primarily somatic SNVs/InDels and copy number aberrations, and has additional support for interpretation of bulk RNA-seq expression data. The software classifies variants both with respect to oncogenicity, and actionability. Interactive HTML output reports allow the user to interrogate the clinical impact of the molecular findings in an individual tumor."
+      homepage: "https://github.com/sigven/pcgr"
+      documentation: "https://github.com/sigven/pcgr/blob/main/README.md"
+      tool_dev_url: ""
+      doi: "https://doi.org/10.1093/bioinformatics/btx817, https://doi.org/10.1002/ijc.33749"
+      licence: "MIT"
+      identifier: null
+
+input:
+  ### TODO nf-core: Add a description of all of the variables used as input
+  variant_Files:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - vcf:
+          type: file
+          description: "Sorted vcf file"
+          pattern: "*.{vcf}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+      - tbi:
+          type: file
+          description: "Tabix index for the sorted vcf file"
+          pattern: "*.{vcf}"
+      - cna:
+          type: file
+          description: File with cna information
+  pcgr_dir:
+    -- path:
+          type: directory
+          description: "Directory with pcgr information"
+   vep_cache:
+    -- path:
+          type: directory
+          description: "Path to vep_cache"
+
+
+output:
+  ### TODO nf-core: Add a description of all of the variables used as output
+  pcgr_reports:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*":
+          type: file
+          description: pcgr_reports
+          pattern: "*."
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+authors:
+  - "@Colorstorm"
+maintainers:
+  - "@Colorstorm"
