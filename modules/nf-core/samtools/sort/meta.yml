@@ -116,6 +116,9 @@ output:
       - samtools:
           type: string
           description: The tool name
+      - samtools version 2>&1 | tail -1:
+          type: string
+          description: The command used to generate the version of the tool
 topics:
   - versions:
       - - process:
