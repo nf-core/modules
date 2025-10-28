@@ -5,8 +5,12 @@ nextflow_process {
     process "AUTOCYCLER_COMBINE"
 
     tag "modules"
-    tag "modules_"
+    tag "modules_nfcore"
     tag "autocycler"
+    tag "autocycler/compress"
+    tag "autocycler/cluster"
+    tag "autocycler/trim"
+    tag "autocycler/resolve"
     tag "autocycler/combine"
 
     test("sarscov2 - assemblies -fasta") {

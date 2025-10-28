@@ -40,7 +40,8 @@ output:
           description: Assembly graph with bridges resolved.
           pattern: "3_bridged.gfa"
           ontologies:
-            - edam: "http://edamontology.org/format_3975" #GFA1  merged:
+            - edam: "http://edamontology.org/format_3975" #GFA1
+  merged:
     - - meta:
           type: map
           description: |
@@ -51,7 +52,8 @@ output:
           description: Merged assembly graph after bridging.
           pattern: "4_merged.gfa"
           ontologies:
-            - edam: "http://edamontology.org/format_3975" #GFA1  resolved:
+            - edam: "http://edamontology.org/format_3975" #GFA1
+  resolved:
     - - meta:
           type: map
           description: |
@@ -62,7 +64,8 @@ output:
           description: Final resolved assembly graph.
           pattern: "5_final.gfa"
           ontologies:
-            - edam: "http://edamontology.org/format_3975" #GFA1  versions:
+            - edam: "http://edamontology.org/format_3975" #GFA1
+  versions:
     - "versions.yml":
         type: file
         description: File containing software versions

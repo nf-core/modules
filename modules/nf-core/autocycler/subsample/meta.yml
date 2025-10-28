@@ -39,7 +39,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*/*.fastq.gz":
+      - "$prefix/*.fastq.gz":
           type: file
           description: Subsampled reads produced by Autocycler.
           pattern: "*/*.fastq.gz"
