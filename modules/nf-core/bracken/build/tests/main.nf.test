@@ -9,6 +9,7 @@ nextflow_process {
     tag "bracken"
     tag "bracken/build"
     tag "untar"
+    tag 'poo'
     
 
     setup {
@@ -98,7 +99,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = KRAKEN2_BUILD.out.db_separated
+                input[0] = [[id: 'kraken2db_forbuilding'], [], [], [], []]
                 """
             }
         }
