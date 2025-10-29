@@ -54,12 +54,6 @@ process TRIMGALORE {
             --cores ${cores} \\
             --gzip \\
             ${prefix}.fastq.gz
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            cutadapt: \$(cutadapt --version)
-            pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
-        END_VERSIONS
         """
     }
     else {
