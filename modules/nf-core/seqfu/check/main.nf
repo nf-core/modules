@@ -23,7 +23,7 @@ process SEQFU_CHECK {
 
     """
     if [ -d "${reads}" ]; then
-    seqfu check\\
+    seqfu check \\
             $args \\
             --dir ${reads} > ${prefix}_check.tsv
     else
