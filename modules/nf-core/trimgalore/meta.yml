@@ -89,30 +89,17 @@ output:
             e.g. [ id:'test', single_end:false ]
           pattern: "*_{fastqc.zip}"
   versions_trim_galore:
-    - - meta:
+    - trimgalore:
           type: map
           description: |
             Groovy Map containing sample information
-      -"versions.yml":
-          type: map
-          description: |
-            Groovy Map containing sample information
-
   versions_cutadapt:
-      - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-      -"versions.yml":
+      - cutadapt:
           type: map
           description: |
             Groovy Map containing sample information
   versions_pigz:
-      - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-      -"versions.yml":
+      - pigz:
           type: map
           description: |
             Groovy Map containing sample information
