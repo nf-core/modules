@@ -1,0 +1,78 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "pbcpgtools_alignedbamtocpgscores"
+description: Converts aligned BAM files into CpG methylation scores using pb-cpg-tools.
+keywords:
+  - methylation
+  - cpg
+  - pacbio
+tools:
+  - "pbcpgtools":
+      description: "Collection of tools for the analysis of CpG data"
+      homepage: "https://github.com/PacificBiosciences/pb-CpG-tools"
+      documentation: "https://github.com/PacificBiosciences/pb-CpG-tools#readme"
+      tool_dev_url: "https://github.com/PacificBiosciences/pb-CpG-tools"
+      licence: ["Pacific Biosciences Software License Agreement"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: BAM/CRAM file
+        pattern: "*.{bam,cram}"
+        ontologies: []
+    - bai:
+        type: file
+        description: Index of BAM/CRAM file
+        pattern: "*.{bai,crai,csi}"
+        ontologies: []
+
+output:
+  ### TODO nf-core: Add a description of all of the variables used as output
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bed.gz":
+          type: file
+          description: Zipped BED file with CpG methylation scores
+          pattern: "*.{bed.gz}"
+          ontologies: []
+  bed_index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bed.gz.tbi":
+          type: file
+          description: Index of zipped BED file
+          pattern: "*.{.bed.gz.tbi}"
+          ontologies: []
+  bigwig:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bw":
+          type: file
+          description: Bigwig file for visualization in IGV
+          pattern: "*.{bw}"
+          ontologies: []
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies: []
+
+authors:
+  - "@inemesb"
+maintainers:
+  - "@inemesb"
