@@ -1,6 +1,6 @@
 process DEACON_FILTER {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -8,26 +8,30 @@ process DEACON_FILTER {
         'biocontainers/deacon:0.5.0--h4349ce8_0' }"
 
     input:
-    tuple val(meta), path(index), path(fastq)
+    tuple val(meta), path(index), path(reads)
 
     output:
-    tuple val(meta), path("*_filtered.fq"), emit: fastq_filtered
-    path "versions.yml"                      , emit: versions
+    tuple val(meta), path("${prefix}*.fq") , emit: fastq_filtered
+    tuple val(meta), path("${prefix}.json"), emit: log
+    path "versions.yml"			   , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def read_type = (reads instanceof List) ? "-o ${prefix}_1.fq -O ${prefix}_2.fq" : "> ${prefix}.fq"
 
     """
     deacon \\
         filter \\
         --threads ${task.cpus} \\
         $args \\
+	--summary ${prefix}.json \\
         -d $index \\
-        $fastq > ${prefix}_filtered.fq
+        $reads \\
+        ${read_type}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -36,9 +40,10 @@ process DEACON_FILTER {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${fastq.baseName}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_filtered.fq
+    touch ${prefix}.fq
+    touch ${prefix}.json
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

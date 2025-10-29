@@ -1,3 +1,5 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test deacon/filter
 nextflow_process {
 
     name "Test Process DEACON_FILTER"
@@ -8,22 +10,23 @@ nextflow_process {
     tag "modules_nfcore"
     tag "deacon"
     tag "deacon/filter"
+    tag "deacon/index"
 
-    setup {
-        run("DEACON_INDEX") {
-            script "../../index/main.nf"
-            process {
-                """
-                input[0] = [
-                            [ id:'test', single_end:true ], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                ]
-                """
+    test("sarscov2 - fastq - single-end") {
+
+        setup {
+            run("DEACON_INDEX") {
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                                [ id:'test', single_end:true ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                    """
+                }
             }
         }
-    }
-
-    test("filter sarscov2 - single-end fastq") {
 
         when {
             process {
@@ -31,7 +34,7 @@ nextflow_process {
                 filter_fastq_ch = Channel.of(
                     [
                         [ id:'test', single_end:true ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                     ]
                 )
                 input[0] = DEACON_INDEX.out.index.join(filter_fastq_ch)
@@ -43,18 +46,78 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        process.out,
-                        process.out.versions.collect { path(it).yaml }
-                    ).match()
+                    process.out,
+                    process.out.versions.collect { path(it).yaml }
+                ).match()
                 }
             )
         }
 
     }
 
-    test("filter sarscov2 - single-end fastq - stub") {
+    test("sarscov2 - fastq - paired-end") {
+
+        setup {
+            run("DEACON_INDEX") {
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                                [ id:'test', single_end:false ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                filter_fastq_ch = Channel.of(
+                    [
+                        [ id:'test', single_end:false ], // meta map
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ]
+                )
+                input[0] = DEACON_INDEX.out.index.join(filter_fastq_ch)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect { path(it).yaml }
+                ).match()
+                }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fastq - single-end - stub") {
 
         options "-stub"
+
+        setup {
+            run("DEACON_INDEX") {
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                                [ id:'test', single_end:true ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
 
         when {
             process {
@@ -74,9 +137,56 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        process.out,
-                        process.out.versions.collect { path(it).yaml }
-                    ).match()
+                    process.out,
+                    process.out.versions.collect { path(it).yaml }
+                ).match()
+                }
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - paired-end - stub") {
+
+        options "-stub"
+
+        setup {
+            run("DEACON_INDEX") {
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                                [ id:'test', single_end:false ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                filter_fastq_ch = Channel.of(
+                    [
+                        [ id:'test', single_end:false ], // meta map
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ]
+                )
+                input[0] = DEACON_INDEX.out.index.join(filter_fastq_ch)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect { path(it).yaml }
+                ).match()
                 }
             )
         }
