@@ -17,7 +17,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_vcf'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.rnaseq.vcf', checkIfExists: true)
                 ]
                 input[1] = 'CHROM, POS, REF, ALT, QUAL'
                 """
@@ -39,7 +39,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['popgen']['plink_case_control_bcf_gz'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bcf.gz', checkIfExists: true)
                 ]
                 input[1] = 'CHROM, POS, REF, ALT, QUAL'
                 """
@@ -61,13 +61,12 @@ nextflow_process {
         when {
             params {
                 vembrane_args = '--separator ,'
-                vembrane_prefix = 'test.csv'
             }
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_vcf'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.rnaseq.vcf', checkIfExists: true)
                 ]
                 input[1] = 'CHROM, POS, REF, ALT'
                 """
@@ -89,13 +88,12 @@ nextflow_process {
         when {
             params {
                 vembrane_args = '--header "Chromosome,Position,Variant_ID,Quality"'
-                vembrane_prefix = 'test.custom_header'
             }
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_vcf'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.rnaseq.vcf', checkIfExists: true)
                 ]
                 input[1] = 'CHROM, POS, ID, QUAL'
                 """
@@ -119,7 +117,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file(params.test_data['homo_sapiens']['illumina']['test_rnaseq_vcf'], checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.rnaseq.vcf', checkIfExists: true)
                 ]
                 input[1] = 'CHROM, POS, REF, ALT, QUAL'
                 """
