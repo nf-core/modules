@@ -21,7 +21,6 @@ process AUTOCYCLER_RESOLVE {
 
     script:
     def args   = task.ext.args   ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     autocycler resolve \\
         $args \\
@@ -35,7 +34,6 @@ process AUTOCYCLER_RESOLVE {
 
     stub:
     def args   = task.ext.args   ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch 3_bridged.gfa
     touch 4_merged.gfa

@@ -20,7 +20,6 @@ process AUTOCYCLER_TRIM {
 
     script:
     def args   = task.ext.args   ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     autocycler trim \\
         $args \\
@@ -35,7 +34,6 @@ process AUTOCYCLER_TRIM {
 
     stub:
     def args   = task.ext.args   ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
 
     touch 2_trimmed.gfa

@@ -24,7 +24,6 @@ process AUTOCYCLER_CLUSTER {
 
     script:
     def args   = task.ext.args   ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     autocycler cluster \\
         $args \\
@@ -38,7 +37,6 @@ process AUTOCYCLER_CLUSTER {
 
     stub:
     def args   = task.ext.args   ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir clustering/qc_pass/cluster_000 -p
     touch clustering/clustering.{newick,yaml,tsv}
