@@ -4,8 +4,8 @@ process PCGR_GETREF {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b6/b6d21ecd9fb81d5efb452bbcd06a72a23bb7dcc215610d1f92bf55dfe5a4eeee/data'
-        : 'community.wave.seqera.io/library/coreutils_gzip_tar_wget:7fb7ade7a5b63d7a'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/51/517cc3a46129fc586191412f29246889124f4654640a53230aa203a2bcc1d7dc/data'
+        : 'community.wave.seqera.io/library/coreutils_curl_gzip_tar:17a6ea9a6766c02a'}"
 
     input:
     tuple val(meta), val(bundleversion), val(genome)
@@ -20,7 +20,7 @@ process PCGR_GETREF {
     script:
     def bundle = "pcgr_ref_data.${bundleversion}.${genome}.tgz"
     """
-    wget https://insilico.hpc.uio.no/pcgr/${bundle}
+    curl -O https://insilico.hpc.uio.no/pcgr/${bundle}
     gzip -dc ${bundle} | tar xvf -
 
     mkdir ${bundleversion}
@@ -28,7 +28,9 @@ process PCGR_GETREF {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        wget: \$(wget --version | head -1 | cut -d ' ' -f 3)
+        curl: \$(curl --version | head -1 | cut -d ' ' -f 2)
+        tar: \$(tar --version | head -1 | cut -d ' ' -f 4)
+        gzip: \$(gzip --version | head -1 | cut -d ' ' -f 2)
     END_VERSIONS
     """
 
@@ -38,7 +40,9 @@ process PCGR_GETREF {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        wget: \$(wget --version | head -1 | cut -d ' ' -f 3)
+        curl: \$(curl --version | head -1 | cut -d ' ' -f 2)
+        tar: \$(tar --version | head -1 | cut -d ' ' -f 4)
+        gzip: \$(gzip --version | head -1 | cut -d ' ' -f 2)
     END_VERSIONS
     """
 }
