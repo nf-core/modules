@@ -29,7 +29,7 @@ env:
   NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # renovate: datasource=github-releases depName=nextflow/nextflow versioning=semver
-  NXF_VER: "24.10.1"
+  NXF_VER: "25.04.8"
 
 jobs:
   pre-commit:
@@ -134,7 +134,7 @@ jobs:
         with:
           python-version: "3.13"
 
-      - uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4
+      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         id: cache-pip
         with:
           path: ~/.cache/pip
