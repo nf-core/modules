@@ -1,10 +1,10 @@
 //
-// Read QC
+// Short read sequencing data QC using different tools
 //
-include { FASTQC                            } from '../../../modules/nf-core/fastqc/main'
-include { SEQFU_STATS                       } from '../../../modules/nf-core/seqfu/stats/main'
+include { FASTQC       } from '../../../modules/nf-core/fastqc/main'
+include { SEQFU_STATS  } from '../../../modules/nf-core/seqfu/stats/main'
 include { SEQKIT_STATS } from '../../../modules/nf-core/seqkit/stats/main'
-include { SEQTK_COMP                        } from '../../../modules/nf-core/seqtk/comp/main'
+include { SEQTK_COMP   } from '../../../modules/nf-core/seqtk/comp/main'
 
 workflow FASTQ_GENERATE_STATISTICS {
 
@@ -24,33 +24,19 @@ workflow FASTQ_GENERATE_STATISTICS {
         ch_versions = ch_versions.mix(FASTQC.out.versions.first())
     }
 
-    //
-    // Read QC with seqfu stats
-    //
     if (!skip_seqfu_stats) {
         SEQFU_STATS ( ch_reads )
         ch_versions = ch_versions.mix(SEQFU_STATS.out.versions.first())
-
     }
 
-
-    //
-    // Read QC with seqkit stats
-    //
     if (!skip_seqkit_stats) {
         SEQKIT_STATS ( ch_reads )
         ch_versions = ch_versions.mix(SEQKIT_STATS.out.versions.first())
     }
 
-
-    //
-    // Read QC with seqtk comp
-    //
     if (!skip_seqtk_comp) {
         SEQTK_COMP ( ch_reads )
         ch_versions = ch_versions.mix(SEQTK_COMP.out.versions.first())
-
-
     }
 
     emit:
@@ -61,5 +47,4 @@ workflow FASTQ_GENERATE_STATISTICS {
     seqkit_stats  = SEQKIT_STATS.out.stats
     seqtk_stats   = SEQTK_COMP.out.seqtk_stats
     versions      = ch_versions
-
 }
