@@ -11,26 +11,23 @@ process SEQFU_CHECK {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*_check.tsv"), emit: check
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("${prefix}.tsv"), emit: check
+    path "versions.yml"                   , emit: versions
 
     when:                                  
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}_check"
+    prefix = task.ext.prefix ?: "${meta.id}"
+
+    def dirFlag = (reads instanceof List ? reads.every { it.isDirectory() } : reads.isDirectory()) ? "--dir" : ""
 
     """
-    if [ -d "${reads}" ]; then
-    seqfu check \\
-            $args \\
-            --dir ${reads} > ${prefix}.tsv
-    else
-        seqfu check\\
-            $args \\
-            ${reads} > ${prefix}.tsv
-    fi 
+    seqfu \\
+        check \\
+        ${args} \\
+        ${dirFlag} ${reads} > ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -40,11 +37,12 @@ process SEQFU_CHECK {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo $args
     
     touch ${prefix}.tsv
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         seqfu: \$(seqfu --version)
