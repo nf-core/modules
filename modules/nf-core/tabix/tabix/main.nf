@@ -13,7 +13,7 @@ process TABIX_TABIX {
     output:
     tuple val(meta), path("*.tbi")                                                                          , optional:true     , emit: tbi
     tuple val(meta), path("*.csi")                                                                          , optional:true     , emit: csi
-    tuple val("${task.process}"), val('tabix'), eval("tabix -h 2>&1 | grep -oP 'Version:\\s*\\K[^\\s]+'")   , topic: versions   , emit: versions1
+    tuple val("${task.process}"), val('tabix'), eval("tabix -h 2>&1 | grep -oP 'Version:\\s*\\K[^\\s]+'")   , topic: 'versions'   , emit: versions1
 
     when:
     task.ext.when == null || task.ext.when
