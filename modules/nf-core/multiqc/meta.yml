@@ -80,17 +80,20 @@ output:
       - multiqc:
           type: string
           description: The tool name
+      - multiqc --version | sed "s/.* //g:
+          type: string
+          description: The command used to generate the version of the tool
 topics:
-- versions:
-    - - process:
-          type: string
-          description: The process the versions were collected from
-      - tool:
-          type: string
-          description: The tool name
-      - version:
-          type: string
-          description: The version of the tool
+  - versions:
+      - - process:
+            type: string
+            description: The process the versions were collected from
+        - tool:
+            type: string
+            description: The tool name
+        - version:
+            type: string
+            description: The version of the tool
 authors:
   - "@abhi18av"
   - "@bunop"
