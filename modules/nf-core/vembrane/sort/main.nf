@@ -1,19 +1,19 @@
 process VEMBRANE_SORT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vembrane:2.4.0--pyhdfd78af_0':
-        'biocontainers/vembrane:2.4.0--pyhdfd78af_0'}"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/vembrane:2.4.0--pyhdfd78af_0'
+        : 'biocontainers/vembrane:2.4.0--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(vcf)
     val expression
 
     output:
-    tuple val(meta), path("*.vcf"), emit: vcf
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.vcf*"), emit: vcf
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,12 +21,15 @@ process VEMBRANE_SORT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def suffix = args.contains('--output-fmt vcf.gz') ? 'vcf.gz' :
+                 args.contains('--output-fmt bcf') ? 'bcf' :
+                 args.contains('--output-fmt bcf.gz') ? 'bcf.gz' : 'vcf'
     """
     vembrane sort \\
-        $args \\
-        --output ${prefix}.vcf \\
-        '$expression' \\
-        $vcf
+        ${args} \\
+        --output ${prefix}.${suffix} \\
+        '${expression}' \\
+        ${vcf}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -35,9 +38,13 @@ process VEMBRANE_SORT {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def suffix = args.contains('--output-fmt vcf.gz') ? 'vcf.gz' :
+                 args.contains('--output-fmt bcf') ? 'bcf' :
+                 args.contains('--output-fmt bcf.gz') ? 'bcf.gz' : 'vcf'
     """
-    touch ${prefix}.vcf
+    touch ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

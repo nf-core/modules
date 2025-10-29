@@ -15,7 +15,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.rnaseq.vcf', checkIfExists: true)
                 ]
                 input[1] = 'QUAL'
@@ -42,7 +42,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.rnaseq.vcf', checkIfExists: true)
                 ]
                 input[1] = 'CHROM, POS'
@@ -69,10 +69,104 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.rnaseq.vcf', checkIfExists: true)
                 ]
                 input[1] = 'desc(QUAL)'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+
+    test("homo_sapiens - [vcf] - vcf - compressed_output") {
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                vembrane_args = '--output-fmt vcf.gz'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test_gz' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.rnaseq.vcf', checkIfExists: true)
+                ]
+                input[1] = 'QUAL'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - [vcf] - vcf - depth_sort") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_depth' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.rnaseq.vcf', checkIfExists: true)
+                ]
+                input[1] = 'INFO["DP"] if "DP" in INFO else 0'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - [vcf] - vcf - numeric_expression") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_numeric' ], // meta map  
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.rnaseq.vcf', checkIfExists: true)
+                ]
+                input[1] = 'POS % 1000'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - [vcf] - vcf - multi_field_sort") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_multi' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.rnaseq.vcf', checkIfExists: true)
+                ]
+                input[1] = '(CHROM, POS, QUAL)'
                 """
             }
         }
@@ -93,7 +187,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test_stub' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.rnaseq.vcf', checkIfExists: true)
                 ]
                 input[1] = 'QUAL'
@@ -104,7 +198,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
             )
         }
     }
