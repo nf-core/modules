@@ -28,7 +28,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out,
                     file(process.out.tbi[0][1]).name,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }
@@ -53,7 +53,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out,
                     file(process.out.tbi[0][1]).name,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }
@@ -79,7 +79,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out,
                     file(process.out.tbi[0][1]).name,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }
@@ -105,7 +105,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out,
                     file(process.out.csi[0][1]).name,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }
@@ -132,7 +132,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out,
                     file(process.out.csi[0][1]).name,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }
