@@ -38,7 +38,7 @@ process DEACON_FILTER {
     stub:
     def prefix = task.ext.prefix ?: "${fastq.baseName}"
     """
-    touch ${prefix}_filtered.fq.gz
+    touch ${prefix}_filtered.fq
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
