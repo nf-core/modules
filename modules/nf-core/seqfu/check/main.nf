@@ -29,7 +29,7 @@ process SEQFU_CHECK {
     else
         seqfu check\\
             $args \\
-            ${reads} > ${prefix}_check.tsv
+            ${reads} > ${prefix}.tsv
     fi 
 
     cat <<-END_VERSIONS > versions.yml
