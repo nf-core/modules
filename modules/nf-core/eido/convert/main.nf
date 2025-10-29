@@ -4,13 +4,12 @@ process EIDO_CONVERT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4a/4aef51a3d75d6b950bb643ed5ebc1d7243d67bbf3de0410fcaa7d347e8fc0007/data' :
-        'community.wave.seqera.io/library/eido_peppy_setuptools:53ed68799568c4fa' }"
+        'oras://community.wave.seqera.io/library/eido_peppy:2522b1352d5d6547' :
+        'community.wave.seqera.io/library/eido_peppy:3721c3f85cc3d076' }"
 
     input:
     path samplesheet
     val format
-    path pep_input_base_dir
 
     output:
     path "versions.yml"           , emit: versions
