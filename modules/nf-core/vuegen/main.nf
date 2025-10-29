@@ -2,7 +2,7 @@ process VUEGEN {
     label 'process_single'
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-    ? 'oras://community.wave.seqera.io/library/vuegen_python:1adb57ecbfa02088'
+    ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fa/fadd4c6459b24fc3964d47d72dbf809e425054e08f1aec9d56c8bec40b4b3a47/data'
     : 'community.wave.seqera.io/library/vuegen_python:236414fc5cfce774'}"
 
     input:
