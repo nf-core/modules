@@ -20,7 +20,11 @@ process VUEGEN {
     script:
         def args = task.ext.args ?: ''
         """
-        # Fix Quarto for apptainer
+        # Set environment variables needed for Quarto rendering
+        # (needed for apptainer/singularity)
+        export XDG_CACHE_HOME="./.xdg_cache_home"
+        export XDG_DATA_HOME="./.xdg_data_home"
+        # Fix Quarto for apptainer: activate conda environment
         # https://github.com/mahesh-panchal/quarto-docker-singularity-problem
         ENV_QUARTO="\${ENV_QUARTO:-/opt/conda/etc/conda/activate.d/quarto.sh}"
         set +u
@@ -28,7 +32,7 @@ process VUEGEN {
             source "\${ENV_QUARTO}"
         fi
         set -u
-        
+
         # Validate quarto_check flag if using a conda environment
         if [[ "${task.conda}" != "null" ]]; then
             QUARTO_CHECK_FLAG="--quarto_checks"
