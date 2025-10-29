@@ -8,9 +8,11 @@ nextflow_process {
     tag "modules_nfcore"
     tag "bracken"
     tag "bracken/build"
-    tag "untar"
+    tag "gunzip"
+    tag "kraken2"
+    tag "kraken2/add"
+    tag "kraken2/build"
     
-
     setup {
 
         run("GUNZIP") {
