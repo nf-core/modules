@@ -35,7 +35,7 @@
                             "id": "test_single",
                             "single_end": true
                         },
-                        "test_single_mqc.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test_single.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "4": [
@@ -44,7 +44,7 @@
                             "id": "test_single",
                             "single_end": true
                         },
-                        "test_single.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test_single_mqc.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "5": [
@@ -53,13 +53,23 @@
                             "id": "test_single",
                             "single_end": true
                         },
-                        "test_single.seqtk_stats.tsv:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "test_single.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "6": [
+                    [
+                        {
+                            "id": "test_single",
+                            "single_end": true
+                        },
+                        "test_single.seqtk_stats.tsv:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "7": [
                     "versions.yml:md5,5cd377fecf8c1a6bb9aa657313e882d4",
                     "versions.yml:md5,7518d6130f9f32acd21e5ebaaeb02c82",
                     "versions.yml:md5,b3a5ec7e12cfad248f89471add43438f",
+                    "versions.yml:md5,bd055fdc48b00af8df08c1f30575bfd6",
                     "versions.yml:md5,d1c67dc2d4ff10a37e0f6e53e243548e"
                 ],
                 "fastqc_html": [
@@ -78,6 +88,15 @@
                             "single_end": true
                         },
                         "test_single.zip:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "seqfu_check": [
+                    [
+                        {
+                            "id": "test_single",
+                            "single_end": true
+                        },
+                        "test_single.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "seqfu_multiqc": [
@@ -120,15 +139,43 @@
                     "versions.yml:md5,5cd377fecf8c1a6bb9aa657313e882d4",
                     "versions.yml:md5,7518d6130f9f32acd21e5ebaaeb02c82",
                     "versions.yml:md5,b3a5ec7e12cfad248f89471add43438f",
+                    "versions.yml:md5,bd055fdc48b00af8df08c1f30575bfd6",
                     "versions.yml:md5,d1c67dc2d4ff10a37e0f6e53e243548e"
                 ]
-            }
+            },
+            [
+                {
+                    "FASTQ_GENERATE_STATISTICS:SEQKIT_STATS": {
+                        "seqkit": "2.9.0"
+                    }
+                },
+                {
+                    "FASTQ_GENERATE_STATISTICS:SEQTK_COMP": {
+                        "seqtk": "1.4-r122"
+                    }
+                },
+                {
+                    "FASTQ_GENERATE_STATISTICS:FASTQC": {
+                        "fastqc": "0.12.1"
+                    }
+                },
+                {
+                    "FASTQ_GENERATE_STATISTICS:SEQFU_CHECK": {
+                        "seqfu": "1.22.3"
+                    }
+                },
+                {
+                    "FASTQ_GENERATE_STATISTICS:SEQFU_STATS": {
+                        "seqfu": "1.22.3"
+                    }
+                }
+            ]
         ],
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2025-10-29T11:34:01.386422"
+        "timestamp": "2025-10-29T14:41:59.333124"
     },
     "sarscov2 - fastq - single_end": {
         "content": [
@@ -174,6 +221,7 @@
                 "versions.yml:md5,5cd377fecf8c1a6bb9aa657313e882d4",
                 "versions.yml:md5,7518d6130f9f32acd21e5ebaaeb02c82",
                 "versions.yml:md5,b3a5ec7e12cfad248f89471add43438f",
+                "versions.yml:md5,bd055fdc48b00af8df08c1f30575bfd6",
                 "versions.yml:md5,d1c67dc2d4ff10a37e0f6e53e243548e"
             ]
         ],
@@ -181,7 +229,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2025-10-28T15:09:25.829745"
+        "timestamp": "2025-10-29T14:41:27.268467"
     },
     "sarscov2 - fastq - paired_end": {
         "content": [
@@ -229,6 +277,7 @@
                 "versions.yml:md5,5cd377fecf8c1a6bb9aa657313e882d4",
                 "versions.yml:md5,7518d6130f9f32acd21e5ebaaeb02c82",
                 "versions.yml:md5,b3a5ec7e12cfad248f89471add43438f",
+                "versions.yml:md5,bd055fdc48b00af8df08c1f30575bfd6",
                 "versions.yml:md5,d1c67dc2d4ff10a37e0f6e53e243548e"
             ]
         ],
@@ -236,7 +285,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2025-10-28T15:25:48.333977"
+        "timestamp": "2025-10-29T14:41:46.656957"
     },
     "sarscov2 - fastq - paired_end - stub": {
         "content": [
@@ -274,7 +323,7 @@
                             "id": "test_paired",
                             "single_end": false
                         },
-                        "test_paired_mqc.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test_paired.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "4": [
@@ -283,7 +332,7 @@
                             "id": "test_paired",
                             "single_end": false
                         },
-                        "test_paired.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test_paired_mqc.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "5": [
@@ -292,13 +341,23 @@
                             "id": "test_paired",
                             "single_end": false
                         },
-                        "test_paired.seqtk_stats.tsv:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "test_paired.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "6": [
+                    [
+                        {
+                            "id": "test_paired",
+                            "single_end": false
+                        },
+                        "test_paired.seqtk_stats.tsv:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "7": [
                     "versions.yml:md5,5cd377fecf8c1a6bb9aa657313e882d4",
                     "versions.yml:md5,7518d6130f9f32acd21e5ebaaeb02c82",
                     "versions.yml:md5,b3a5ec7e12cfad248f89471add43438f",
+                    "versions.yml:md5,bd055fdc48b00af8df08c1f30575bfd6",
                     "versions.yml:md5,d1c67dc2d4ff10a37e0f6e53e243548e"
                 ],
                 "fastqc_html": [
@@ -317,6 +376,15 @@
                             "single_end": false
                         },
                         "test_paired.zip:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "seqfu_check": [
+                    [
+                        {
+                            "id": "test_paired",
+                            "single_end": false
+                        },
+                        "test_paired.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "seqfu_multiqc": [
@@ -359,14 +427,42 @@
                     "versions.yml:md5,5cd377fecf8c1a6bb9aa657313e882d4",
                     "versions.yml:md5,7518d6130f9f32acd21e5ebaaeb02c82",
                     "versions.yml:md5,b3a5ec7e12cfad248f89471add43438f",
+                    "versions.yml:md5,bd055fdc48b00af8df08c1f30575bfd6",
                     "versions.yml:md5,d1c67dc2d4ff10a37e0f6e53e243548e"
                 ]
-            }
+            },
+            [
+                {
+                    "FASTQ_GENERATE_STATISTICS:SEQKIT_STATS": {
+                        "seqkit": "2.9.0"
+                    }
+                },
+                {
+                    "FASTQ_GENERATE_STATISTICS:SEQTK_COMP": {
+                        "seqtk": "1.4-r122"
+                    }
+                },
+                {
+                    "FASTQ_GENERATE_STATISTICS:FASTQC": {
+                        "fastqc": "0.12.1"
+                    }
+                },
+                {
+                    "FASTQ_GENERATE_STATISTICS:SEQFU_CHECK": {
+                        "seqfu": "1.22.3"
+                    }
+                },
+                {
+                    "FASTQ_GENERATE_STATISTICS:SEQFU_STATS": {
+                        "seqfu": "1.22.3"
+                    }
+                }
+            ]
         ],
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2025-10-29T11:34:12.410712"
+        "timestamp": "2025-10-29T14:42:13.823178"
     }
 }

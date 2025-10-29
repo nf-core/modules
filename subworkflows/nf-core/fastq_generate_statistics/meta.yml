@@ -10,6 +10,7 @@ keywords:
   - seqtk
 components:
   - fastqc
+  - seqfu/check
   - seqfu/stats
   - seqkit/stats
   - seqtk/comp
@@ -44,6 +45,10 @@ output:
       type: file
       description: FastQC report archive
       pattern: "*_fastqc.zip"
+  - seqfu_check:
+      type: file
+      description: seqfu check tsv report
+      pattern: "*.tsv"
   - seqfu_stats:
       type: file
       description: seqfu stats tsv report

@@ -8,6 +8,7 @@ nextflow_workflow {
     tag "subworkflows/fastq_generate_statistics"
     tag "fastqc"
     tag "seqfu"
+    tag "seqfu/check"
     tag "seqfu/stats"
     tag "seqkit"
     tag "seqkit/stats"
@@ -26,6 +27,7 @@ nextflow_workflow {
                 input[2] = false
                 input[3] = false
                 input[4] = false
+                input[5] = false
                 """
             }
         }
@@ -59,6 +61,7 @@ nextflow_workflow {
                 input[2] = false
                 input[3] = false
                 input[4] = false
+                input[5] = false
                 """
             }
         }
@@ -94,13 +97,17 @@ nextflow_workflow {
                 input[2] = false
                 input[3] = false
                 input[4] = false
+                input[5] = false
                 """
             }
         }
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }.unique()
+                ).match() }
             )
         }
     }
@@ -122,13 +129,17 @@ nextflow_workflow {
                 input[2] = false
                 input[3] = false
                 input[4] = false
+                input[5] = false
                 """
             }
         }
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }.unique()
+                ).match() }
             )
         }
     }
