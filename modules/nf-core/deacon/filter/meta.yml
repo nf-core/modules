@@ -37,7 +37,7 @@ input:
         description: List of input FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
         pattern: "*.{fastq,fastq.gz,fqs,fqs.gz,fq,fq.gz}"
         ontologies:
-          - edam : "http://edamontology.org/format_1930" # FASTQ
+          - edam: "http://edamontology.org/format_1930" # FASTQ
 
 output:
   fastq_filtered:
@@ -51,7 +51,7 @@ output:
           description: List of output filtered FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
           pattern: "*.fq"
           ontologies:
-            - edam : "http://edamontology.org/format_1930" # FASTQ
+            - edam: "http://edamontology.org/format_1930" # FASTQ
   log:
     - - meta:
           type: map
@@ -63,7 +63,7 @@ output:
           description: JSON file containing summary of results.
           pattern: "*.json"
           ontologies:
-            - edam : "http://edamontology.org/format_3464" # JSON
+            - edam: "http://edamontology.org/format_3464" # JSON
 
   versions:
     - versions.yml:
@@ -79,3 +79,4 @@ authors:
 maintainers:
   - "@Baksic-Ivan"
   - "@Omer0191"
+  - "@vagkaratzas"

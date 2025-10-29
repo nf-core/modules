@@ -28,7 +28,7 @@ process DEACON_FILTER {
         filter \\
         --threads ${task.cpus} \\
         $args \\
-	--summary ${prefix}.json \\
+	    --summary ${prefix}.json \\
         -d $index \\
         $reads \\
         ${read_type}
