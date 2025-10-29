@@ -89,12 +89,11 @@ output:
             e.g. [ id:'test', single_end:false ]
           pattern: "*_{fastqc.zip}"
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+      - versions:
+          type: file
+          description: |
+            File containing software versions used in this module.
+          pattern: "versions.yml"
 authors:
   - "@drpatelh"
   - "@ewels"
