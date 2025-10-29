@@ -13,7 +13,7 @@ process VEMBRANE_SORT {
 
     output:
     tuple val(meta), path("*.vcf*"), emit: vcf
-    path "versions.yml"            , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,9 +21,11 @@ process VEMBRANE_SORT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = args.contains('--output-fmt vcf.gz') ? 'vcf.gz' :
-                 args.contains('--output-fmt bcf') ? 'bcf' :
-                 args.contains('--output-fmt bcf.gz') ? 'bcf.gz' : 'vcf'
+    def suffix = args.contains('--output-fmt vcf.gz')
+        ? 'vcf.gz'
+        : args.contains('--output-fmt bcf')
+            ? 'bcf'
+            : args.contains('--output-fmt bcf.gz') ? 'bcf.gz' : 'vcf'
     """
     vembrane sort \\
         ${args} \\
@@ -40,9 +42,11 @@ process VEMBRANE_SORT {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = args.contains('--output-fmt vcf.gz') ? 'vcf.gz' :
-                 args.contains('--output-fmt bcf') ? 'bcf' :
-                 args.contains('--output-fmt bcf.gz') ? 'bcf.gz' : 'vcf'
+    def suffix = args.contains('--output-fmt vcf.gz')
+        ? 'vcf.gz'
+        : args.contains('--output-fmt bcf')
+            ? 'bcf'
+            : args.contains('--output-fmt bcf.gz') ? 'bcf.gz' : 'vcf'
     """
     touch ${prefix}.${suffix}
 
