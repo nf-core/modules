@@ -33,7 +33,7 @@ process PRIORCONS_BUILDPRIORS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        priorcons: \$(priorcons --version 2>&1 | head -n1 | sed 's/.*version //; s/ .*//')
+        priorcons: \$(priorcons --version 2>&1 | sed 's/priorcons //')
     END_VERSIONS
     """
 
@@ -44,7 +44,7 @@ process PRIORCONS_BUILDPRIORS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        priorcons: \$(priorcons --version 2>&1 | head -n1 | sed 's/.*version //; s/ .*//')
+        priorcons: \$(priorcons --version 2>&1 | sed 's/priorcons //')
     END_VERSIONS
     """
 }
