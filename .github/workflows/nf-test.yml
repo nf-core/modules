@@ -184,7 +184,7 @@ jobs:
             BRANCH_NAME=$(echo "${{ github.head_ref || github.ref_name }}" | sed 's/[^a-zA-Z0-9._-]/_/g')
 
             # S3 destination path
-            S3_BASE="s3://nf-core-resource-optimization/co2reports/modules/${DATE}/${BRANCH_NAME}/${{ matrix.profile }}/${{ matrix.shard }}"
+            S3_BASE="s3://nf-core-co2-reports/modules/${DATE}/${BRANCH_NAME}/${{ matrix.profile }}/${{ matrix.shard }}"
 
             # Upload each CO2 trace file
             for file in $CO2_FILES; do
