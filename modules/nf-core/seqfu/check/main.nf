@@ -45,7 +45,7 @@ process SEQFU_CHECK {
     """
     echo $args
     
-    touch ${prefix}_check.tsv
+    touch ${prefix}.tsv
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         seqfu: \$(seqfu --version)
