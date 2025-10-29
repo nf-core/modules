@@ -23,7 +23,7 @@ process KRAKEN2_BUILD {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    runclean = cleaning ? "kraken2-build --clean --db database/" : ""
+    run_clean = cleaning ? "kraken2-build --clean --db database/" : ""
     """
     kraken2-build \\
         --build \\
@@ -31,7 +31,7 @@ process KRAKEN2_BUILD {
         --threads ${task.cpus} \\
         --db database/
 
-    ${runclean}
+    ${run_clean}
 
     mv database/ ${prefix}/
 
