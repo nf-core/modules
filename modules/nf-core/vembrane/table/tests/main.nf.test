@@ -1,4 +1,3 @@
-
 nextflow_process {
 
     name "Test Process VEMBRANE_TABLE"
@@ -38,7 +37,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bcf.gz', checkIfExists: true)
                 ]
                 input[1] = 'CHROM, POS, REF, ALT, QUAL'
@@ -65,7 +64,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.rnaseq.vcf', checkIfExists: true)
                 ]
                 input[1] = 'CHROM, POS, REF, ALT'
@@ -92,7 +91,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.rnaseq.vcf', checkIfExists: true)
                 ]
                 input[1] = 'CHROM, POS, ID, QUAL'
@@ -116,7 +115,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.rnaseq.vcf', checkIfExists: true)
                 ]
                 input[1] = 'CHROM, POS, REF, ALT, QUAL'
