@@ -37,6 +37,7 @@ nextflow_workflow {
                 { assert snapshot(
                     file(workflow.out.fastqc_html[0][1]).name,
                     file(workflow.out.fastqc_zip[0][1]).name,
+                    workflow.out.seqfu_check,
                     workflow.out.seqfu_stats,
                     workflow.out.seqfu_multiqc,
                     workflow.out.seqkit_stats,
@@ -73,6 +74,7 @@ nextflow_workflow {
                     file(workflow.out.fastqc_zip[0][1][0]).name,
                     file(workflow.out.fastqc_html[0][1][1]).name,
                     file(workflow.out.fastqc_zip[0][1][1]).name,
+                    workflow.out.seqfu_check,
                     workflow.out.seqfu_stats,
                     workflow.out.seqfu_multiqc,
                     workflow.out.seqkit_stats,
