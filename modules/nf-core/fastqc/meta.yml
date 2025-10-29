@@ -63,6 +63,17 @@ output:
       - fastqc --version | sed "/FastQC v/!d; s/.*v//":
           type: string
           description: The command used to generate the version of the tool
+  topics:
+    - versions:
+      - - process:
+            type: string
+            description: The process the versions were collected from
+        - tool:
+            type: string
+            description: The tool name
+        - version:
+            type: string
+            description: The version of the tool
 authors:
   - "@drpatelh"
   - "@grst"
