@@ -1,3 +1,16 @@
+def downloadZenodoApiEntry(zenodo_id) {
+    // Download metadata from Zenodo API, setting "Accept: application/json" header
+    def api_url  = "https://zenodo.org/api/records/${zenodo_id}"
+    def conn     = new URL(api_url).openConnection()
+    conn.setRequestProperty('Accept', 'application/json')
+    conn.setRequestProperty('User-Agent', "Nextflow ${nextflow.version ?: ''}".trim())
+
+    def api_text = conn.getInputStream().getText('UTF-8')
+    def parser   = new groovy.json.JsonSlurper()
+
+    return parser.parseText(api_text)
+}
+
 process CHECKM2_DATABASEDOWNLOAD {
     label 'process_single'
 
@@ -17,12 +30,12 @@ process CHECKM2_DATABASEDOWNLOAD {
     task.ext.when == null || task.ext.when
 
     script:
-    def args        = task.ext.args ?: ''
-    zenodo_id       = db_zenodo_id ?: 14897628  // Default to version 3 if no ID provided
-    api_data        = (new groovy.json.JsonSlurper()).parseText(file("https://zenodo.org/api/records/${zenodo_id}").text)
-    db_version      = api_data.metadata.version
-    checksum        = api_data.files[0].checksum.replaceFirst(/^md5:/, "md5=")
-    meta            = [id: 'checkm2_db', version: db_version]
+    def args   = task.ext.args ?: ''
+    zenodo_id  = db_zenodo_id ?: 14897628  // Default to version 3 if no ID provided
+    api_data   = downloadZenodoApiEntry(zenodo_id)
+    db_version = api_data.metadata.version
+    checksum   = api_data.files[0].checksum.replaceFirst(/^md5:/, "md5=")
+    meta       = [id: 'checkm2_db', version: db_version]
     """
     # Automatic download is broken when using singularity/apptainer (https://github.com/chklovski/CheckM2/issues/73)
     # So it's necessary to download the database manually

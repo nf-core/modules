@@ -5,7 +5,7 @@
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
                 "<?xml-stylesheet type=\"text/xsl\" href=\"https://www.openms.de/xml-stylesheet/IdXML.xsl\" ?>",
                 "<IdXML version=\"1.5\" xsi:noNamespaceSchemaLocation=\"https://www.openms.de/xml-schema/IdXML_1_5.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">",
-                "\t<SearchParameters id=\"SP_0\" db=\"UP000005640_9606_decoy.fasta\" db_version=\"\" taxonomy=\"\" mass_type=\"monoisotopic\" charges=\"2:5\" enzyme=\"unspecific cleavage\" missed_cleavages=\"1\" precursor_peak_tolerance=\"5\" precursor_peak_tolerance_ppm=\"true\" peak_mass_tolerance=\"0.50025\" peak_mass_tolerance_ppm=\"false\" >",
+                "\t<SearchParameters id=\"SP_0\" db=\"UP000005640_9606_decoy.fasta\" db_version=\"\" taxonomy=\"\" mass_type=\"monoisotopic\" charges=\"2:5\" enzyme=\"unspecific cleavage\" missed_cleavages=\"1\" precursor_peak_tolerance=\"0\" precursor_peak_tolerance_ppm=\"true\" peak_mass_tolerance=\"0.50025\" peak_mass_tolerance_ppm=\"false\" >",
                 "\t\t<FixedModification name=\"Carbamidomethyl (C)\" />",
                 "\t\t<VariableModification name=\"Oxidation (M)\" />",
                 "\t\t\t\t<UserParam type=\"string\" name=\"CometAdapter:1:in\" value=\"test.mzML\"/>",
@@ -36,24 +36,24 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.6"
         },
-        "timestamp": "2024-09-13T13:57:34.932657501"
+        "timestamp": "2025-05-11T06:19:57.627706958"
     },
     "versions": {
         "content": [
             {
                 "OPENMSTHIRDPARTY_COMETADAPTER": {
-                    "CometAdapter": "3.3.0",
-                    "Comet": "2023.01 rev. 2"
+                    "CometAdapter": "3.4.1",
+                    "Comet": "2024.01 rev. 1"
                 }
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.8"
         },
-        "timestamp": "2025-01-27T09:42:28.84181934"
+        "timestamp": "2025-10-28T08:16:50.757046344"
     }
 }

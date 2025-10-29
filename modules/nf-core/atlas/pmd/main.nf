@@ -23,16 +23,15 @@ process ATLAS_PMD {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def pool_rg_txt = pool_rg_txt ? "poolReadGroups=${pool_rg_txt}" : ""
+    def args    = task.ext.args   ?: ''
+    def pool_rg_txt_cmd = pool_rg_txt ? "poolReadGroups=${pool_rg_txt}" : ""
     """
     atlas \\
-        $pool_rg_txt \\
+        ${pool_rg_txt_cmd} \\
         task=PMD \\
         bam=${bam} \\
         fasta=${fasta} \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -1,0 +1,116 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "trnascanse"
+description: Detection of tRNA sequences using covariance models
+keywords:
+  - covariance models
+  - trna
+  - genome annotation
+tools:
+  - "trnascanse":
+      description: "tRNA detection in large-scale genomic sequences"
+      homepage: "http://lowelab.ucsc.edu/tRNAscan-SE/help.html"
+      documentation: "http://lowelab.ucsc.edu/tRNAscan-SE/help.html"
+      tool_dev_url: "https://github.com/UCSC-LoweLab/tRNAscan-SE"
+      doi: "10.1093/nar/gkab688"
+      licence: ["GPL v3", "GPL v3-or-later"]
+      identifier: biotools:trnascan-se
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: |
+          Fasta file for tRNA annotation. Can be gzipped.
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+
+output:
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.tsv":
+          type: file
+          description: TSV summary output of tRNA annotations
+          pattern: "*.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.log":
+          type: file
+          description: tRNAScan-SE log file
+          pattern: "*.log"
+          ontologies:
+            - edam: "http://edamontology.org/data_3671"
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.stats":
+          type: file
+          description: Unstructured results file describing tRNA annotations
+          pattern: "*.stats"
+          ontologies:
+            - edam: "http://edamontology.org/data_3671"
+  fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.fasta":
+          type: file
+          description: |
+            (optional) FASTA output of annotated tRNA sequences
+          pattern: "*.fasta.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_1929"
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  gff:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.gff":
+          type: file
+          description: |
+            (optional) GFF annotation of tRNA sequences in input fasta
+          ontologies:
+            - edam: "http://edamontology.org/format_1975"
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bed":
+          type: file
+          description: |
+            (optional) BED annotation of tRNA sequences in input fasta
+          ontologies:
+            - edam: "http://edamontology.org/format_3003"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750"
+authors:
+  - "@prototaxites"
+maintainers:
+  - "@prototaxites"

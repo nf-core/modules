@@ -1,0 +1,131 @@
+nextflow_process {
+
+    name "Test Process PLINK2_VCF2BGEN"
+    script "../main.nf"
+    process "PLINK2_VCF2BGEN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "plink2"
+    tag "plink2/vcf2bgen"
+
+    test("plink2 - vcf2bgen - vcf - double-id") {
+        config "./nextflow.config"
+ 
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true),
+                    'DS',
+                    true,
+                    'double-id'
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert process.out.bgen_file.get(0).get(1) ==~ ".*.bgen" },
+                { assert process.out.sample_file.get(0).get(1) ==~ ".*.sample" },
+                { assert process.out.log_file.get(0).get(1) ==~ ".*.log" },
+                { assert snapshot(process.out.versions).match("versions") },
+                { assert snapshot(process.out.sample_file).match("doubleid-samplefile") },
+                { assert snapshot(process.out.bgen_file).match("doubleid-bgenfile") }            )
+        }
+
+    }
+
+    test("plink2 - vcf2bgen - vcf - const-fid") {
+        config "./nextflow.config"
+        
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true),
+                    'DS',
+                    true,
+                    'double-id'
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert process.out.bgen_file.get(0).get(1) ==~ ".*.bgen" },
+                { assert process.out.sample_file.get(0).get(1) ==~ ".*.sample" },
+                { assert process.out.log_file.get(0).get(1) ==~ ".*.log" },
+                { assert snapshot(process.out.sample_file).match("constfid-samplefile") },
+                { assert snapshot(process.out.bgen_file).match("constfid-bgenfile") }
+            )
+        }
+
+    }
+
+    test("plink2 - vcf2bgen - vcf - ref-last") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true),
+                    'DS',
+                    true,
+                    'double-id'
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert process.out.bgen_file.get(0).get(1) ==~ ".*.bgen" },
+                { assert process.out.sample_file.get(0).get(1) ==~ ".*.sample" },
+                { assert process.out.log_file.get(0).get(1) ==~ ".*.log" },
+                { assert snapshot(process.out.sample_file).match("reflast-samplefile") },
+                { assert snapshot(process.out.bgen_file).match("reflast-bgenfile") }
+            )
+        }
+
+    }
+
+    test("plink2 - vcf2bgen - stub") {
+        config "./nextflow.config"
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true),
+                    'DS',
+                    true,
+                    'double-id'
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert process.out.bgen_file.get(0).get(1) ==~ ".*.bgen" },
+                { assert process.out.sample_file.get(0).get(1) ==~ ".*.sample" },
+                { assert process.out.log_file.get(0).get(1) ==~ ".*.log" }
+            )
+        }
+
+    }
+
+}

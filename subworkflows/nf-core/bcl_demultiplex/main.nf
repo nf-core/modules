@@ -49,7 +49,7 @@ workflow BCL_DEMULTIPLEX {
             ch_fastq    = ch_fastq.mix(BCLCONVERT.out.fastq)
             ch_interop  = ch_interop.mix(BCLCONVERT.out.interop)
             ch_reports  = ch_reports.mix(BCLCONVERT.out.reports)
-            ch_versions = ch_versions.mix(BCLCONVERT.out.versions)
+            ch_versions = ch_versions.mix(BCLCONVERT.out.versions.first())
         }
 
         // MODULE: bcl2fastq
@@ -60,7 +60,7 @@ workflow BCL_DEMULTIPLEX {
             ch_interop  = ch_interop.mix(BCL2FASTQ.out.interop)
             ch_reports  = ch_reports.mix(BCL2FASTQ.out.reports)
             ch_stats    = ch_stats.mix(BCL2FASTQ.out.stats)
-            ch_versions = ch_versions.mix(BCL2FASTQ.out.versions)
+            ch_versions = ch_versions.mix(BCL2FASTQ.out.versions.first())
         }
 
         // Generate meta for each fastq

@@ -1,0 +1,83 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "rnaquast"
+description: Assess the quality of an RNAseq assembly with or without a reference
+  genome
+keywords:
+  - rna assembly
+  - rnaseq
+  - de novo
+  - quality control
+tools:
+  - "rnaquast":
+      description: "rnaQUAST is a tool for evaluating RNA-Seq assemblies using reference
+        genome and gene database. In addition, rnaQUAST is also capable of estimating
+        gene database coverage by raw reads and de novo quality assessment using third-party
+        software."
+      homepage: "https://github.com/ablab/rnaquast"
+      documentation: "https://github.com/ablab/rnaquast"
+      tool_dev_url: "https://github.com/ablab/rnaquast"
+      doi: "10.1093/bioinformatics/btw218"
+      licence: ["GPL v2-or-later"]
+      identifier: biotools:rnaQUAST
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Specifies the transcriptome assembly FASTA file(s) to be evaluated.
+        pattern: "*.{fasta,fa}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - reference:
+        type: file
+        description: Provides the reference genome FASTA file against which transcripts
+          will be aligned.
+        pattern: "*.{fasta,fa}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - gtf:
+        type: file
+        description: Supplies the reference gene annotation file in GTF format for evaluating
+          transcript accuracy and completeness.
+        pattern: "*.{gff,gtf}"
+        ontologies:
+          - edam: http://edamontology.org/format_2305 # GFF
+          - edam: http://edamontology.org/format_2306 # GTF
+output:
+  results:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "${prefix}"
+      - ${prefix}:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "${prefix}"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"

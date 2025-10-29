@@ -27,10 +27,11 @@ input:
         type: file
         description: OME-TIFF or TIFF file for core detection and extraction.
         pattern: "*.{ome.tif,tif,tiff}"
+        ontologies: []
 output:
   #
-  - cores:
-      - meta:
+  cores:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,18 +40,20 @@ output:
           type: file
           description: Complete/Incomplete tissue cores
           pattern: "*.{tif}"
-  - masks:
-      - meta:
+          ontologies: []
+  masks:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "masks/*.tif":
+      - masks/*.tif:
           type: file
           description: Binary masks for the Complete/Incomplete tissue cores
           pattern: "./masks/*.{tif}"
-  - tma_map:
-      - meta:
+          ontologies: []
+  tma_map:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -59,8 +62,9 @@ output:
           type: file
           description: A TMA map showing labels and outlines
           pattern: "TMA_MAP.tif"
-  - centroids:
-      - meta:
+          ontologies: []
+  centroids:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -69,11 +73,14 @@ output:
           type: file
           description: A text file listing centroids of each core in format Y, X
           pattern: "centroidsY-X.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@arozhada"
   - "@MargotCh"

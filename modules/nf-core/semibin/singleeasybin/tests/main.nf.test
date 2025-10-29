@@ -1,0 +1,70 @@
+nextflow_process {
+
+    name "Test Process SEMIBIN_SINGLEEASYBIN"
+
+    script "../main.nf"
+    process "SEMIBIN_SINGLEEASYBIN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "semibin"
+    tag "semibin/singleeasybin"
+    config './nextflow.config'
+
+    test("bacteroides_fragilis") {
+
+        when {
+            params {
+                module_args  = ''
+                module_args2 = '--ml-threshold 0 --minfasta-kbs 0 --min-len 0 --environment global'
+            }
+            process {
+                """
+                input[0] = [
+                        [id:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/bam/test1_contigs.sorted.bam', checkIfExists:true)
+                        ]
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+
+    test("bacteroides_fragilis - stub") {
+        options '-stub'
+        when {
+            params {
+                module_args  = ''
+                module_args2 = '--ml-threshold 0 --minfasta-kbs 0 --min-len 0 --environment global'
+            }
+            process {
+                """
+                input[0] = [
+                        [id:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/bam/test1_contigs.sorted.bam', checkIfExists:true)
+                        ]
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                    ).match() }
+            )
+        }
+    }
+
+}

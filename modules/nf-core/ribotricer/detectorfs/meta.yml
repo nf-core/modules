@@ -25,10 +25,12 @@ input:
         type: file
         description: "BAM/CRAM/SAM file"
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - bai:
         type: file
         description: "Index for sorted BAM/CRAM/SAM file"
         pattern: "*.{bai}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -38,9 +40,11 @@ input:
         type: file
         description: "TSV file with candidate ORFs from 'ribotricer prepareorfs'"
         pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
-  - protocol:
-      - meta:
+  protocol:
+    - - meta:
           type: map
           description: |
             Groovy Map containing riboseq sample information
@@ -50,8 +54,9 @@ output:
           description: "txt file containing inferred protocol if it was inferred (not
             supplied as input)"
           pattern: "*_protocol.txt"
-  - bam_summary:
-      - meta:
+          ontologies: []
+  bam_summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing riboseq sample information
@@ -60,8 +65,9 @@ output:
           type: file
           description: "Text summary of reads found in the BAM"
           pattern: "*_bam_summary.txt"
-  - read_length_dist:
-      - meta:
+          ontologies: []
+  read_length_dist:
+    - - meta:
           type: map
           description: |
             Groovy Map containing riboseq sample information
@@ -70,8 +76,9 @@ output:
           type: file
           description: "PDF-format read length distribution as quality control"
           pattern: "*_read_length_dist.pdf"
-  - metagene_profile_5p:
-      - meta:
+          ontologies: []
+  metagene_profile_5p:
+    - - meta:
           type: map
           description: |
             Groovy Map containing riboseq sample information
@@ -80,8 +87,10 @@ output:
           type: file
           description: "Metagene profile aligning with the start codon"
           pattern: "*_metagene_profiles_5p.tsv"
-  - metagene_profile_3p:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  metagene_profile_3p:
+    - - meta:
           type: map
           description: |
             Groovy Map containing riboseq sample information
@@ -90,8 +99,10 @@ output:
           type: file
           description: "Metagene profile aligning with the stop codon"
           pattern: "*_metagene_profiles_3p.tsv"
-  - metagene_plots:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  metagene_plots:
+    - - meta:
           type: map
           description: |
             Groovy Map containing riboseq sample information
@@ -100,8 +111,9 @@ output:
           type: file
           description: "Metagene plots for quality control"
           pattern: "*_metagene_plots.pdf"
-  - psite_offsets:
-      - meta:
+          ontologies: []
+  psite_offsets:
+    - - meta:
           type: map
           description: |
             Groovy Map containing riboseq sample information
@@ -112,8 +124,9 @@ output:
             "If the P-site offsets are not provided, txt file containing the
             derived relative offsets"
           pattern: "*_psite_offsets.txt"
-  - pos_wig:
-      - meta:
+          ontologies: []
+  pos_wig:
+    - - meta:
           type: map
           description: |
             Groovy Map containing riboseq sample information
@@ -122,8 +135,9 @@ output:
           type: file
           description: "Positive strand WIG file for visualization in Genome Browser"
           pattern: "*_pos.wig"
-  - neg_wig:
-      - meta:
+          ontologies: []
+  neg_wig:
+    - - meta:
           type: map
           description: |
             Groovy Map containing riboseq sample information
@@ -132,8 +146,9 @@ output:
           type: file
           description: "Negative strand WIG file for visualization in Genome Browser"
           pattern: "*_neg.wig"
-  - orfs:
-      - meta:
+          ontologies: []
+  orfs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing riboseq sample information
@@ -144,11 +159,15 @@ output:
             "TSV with ORFs assessed as translating in this BAM file. You can output
             all ORFs regardless of the translation status with option --report_all"
           pattern: "*_translating_ORFs.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@pinin4fjords"
 maintainers:

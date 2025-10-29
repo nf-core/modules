@@ -2,6 +2,7 @@ nextflow_process {
 
     name "Test Process REPEATMASKER_REPEATMASKER"
     script "../main.nf"
+    config "./nextflow.config"
     process "REPEATMASKER_REPEATMASKER"
 
     tag "modules"
@@ -10,14 +11,14 @@ nextflow_process {
     tag "repeatmasker/repeatmasker"
 
     test("sarscov2 - genome - fasta") {
-
-        config "./nextflow.config"
-
         when {
+            params {
+                repeatmasker_args = '-no_is -gff' // Not required but significantly cuts the runtime
+            }
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = []
@@ -26,14 +27,47 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.masked,
                     process.out.out,
                     process.out.gff,
-                    process.out.versions
-                    ).match() },
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() },
+                { assert file(process.out.tbl[0][1]).text.contains('run with rmblastn') }
+            )
+        }
+
+    }
+
+    test("sarscov2 - genome - fasta.gz") {
+        when {
+            params {
+                repeatmasker_args = '-no_is -gff' // Not required but significantly cuts the runtime
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.masked,
+                    process.out.out,
+                    process.out.gff,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() },
                 { assert file(process.out.tbl[0][1]).text.contains('run with rmblastn') }
             )
         }
@@ -45,10 +79,13 @@ nextflow_process {
         options '-stub'
 
         when {
+            params {
+                repeatmasker_args = '-gff'
+            }
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = []
@@ -57,10 +94,11 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
+            assert process.success
+            assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+            ).match()
         }
 
     }

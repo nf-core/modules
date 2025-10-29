@@ -25,13 +25,15 @@ input:
         type: file
         description: A Purge dups statistic file
         pattern: "*.stat"
+        ontologies: []
     - cutoff:
         type: file
         description: A Purge dups cutoff file
         pattern: "*.cutoffs"
+        ontologies: []
 output:
-  - png:
-      - meta:
+  png:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,11 +42,14 @@ output:
           type: file
           description: A png file of the read depth coverage.
           pattern: "*.png"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mahesh-panchal"
 maintainers:
