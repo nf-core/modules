@@ -11,8 +11,8 @@ process SEQFU_CHECK {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*_check.tsv")    , emit: check
-    path "versions.yml"                     , emit: versions
+    tuple val(meta), path("*_check.tsv"), emit: check
+    path "versions.yml"                 , emit: versions
 
     when:                                  
     task.ext.when == null || task.ext.when
