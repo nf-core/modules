@@ -7,8 +7,14 @@ nextflow_workflow {
 
     tag "subworkflows"
     tag "subworkflows_nfcore"
+    tag "subworkflows/fastq_sanitise_seqkit"
     tag "subworkflows/fastq_preprocess"
     tag "seqkit"
+    tag "seqkit/sana"
+    tag "seqkit/pair"
+    tag "seqkit/seq"
+    tag "seqkit/replace"
+    tag "seqkit/rmdup"
 
     test("sarscov2 - fastq - single_end") {
 
@@ -31,8 +37,8 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.reads,
-                    workflow.out.versions
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }.unique()
                 ).match() }
             )
         }
@@ -62,8 +68,8 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.reads,
-                    workflow.out.versions
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }.unique()
                 ).match() }
             )
         }
@@ -76,11 +82,11 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of(
                     [
-                        [ id:'test_both_single', single_end:true ], // meta map
+                        [ id:'test_both', single_end:true ], // meta map
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1_broken.fastq.gz', checkIfExists: true)
                     ],
                     [
-                        [ id:'test_both_paired', single_end:false ], // meta map
+                        [ id:'test_both', single_end:false ], // meta map
                         [
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
@@ -99,8 +105,8 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.reads,
-                    workflow.out.versions
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }.unique()
                 ).match() }
             )
         }
@@ -129,8 +135,8 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.reads,
-                    workflow.out.versions
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }.unique()
                 ).match() }
             )
         }
