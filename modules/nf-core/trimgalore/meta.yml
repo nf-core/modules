@@ -16,93 +16,55 @@ tools:
       licence: ["GPL-3.0-or-later"]
       identifier: ""
 input:
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - reads:
-        type: file
-        description: |
-          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-          respectively.
-        ontologies: []
+  - reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+      ontologies: []
 output:
-  reads:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
+  - reads:
+      type: array # Because the main.nf emits a tuple: tuple val(meta), path(reads)
+      description: Trimmed FastQ file(s).
+      pattern: "*{3prime,5prime,trimmed,val}{,_1,_2}.fq.gz"
+      # The meta map structure is defined implicitly by the 'type: array' 
+      # matching the tuple val(meta) in main.nf
+  -log:
+      type: file # Because the main.nf emits a tuple: tuple val(meta), path(reads)
+      description: Trimmed FastQ file(s).
+      pattern: "*_{report.txt}"
+      # The meta map structure is defined implicitly by the 'type: array' 
+      # matching the tuple val(meta) in main.nf
+  -unpaired:
+      type: file
+      description: |
+           Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*{3prime,5prime,trimmed,val}{,_1,_2}.fq.gz":
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-          pattern: "*{3prime,5prime,trimmed,val}{,_1,_2}.fq.gz"
-  log:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*report.txt":
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-          pattern: "*_{report.txt}"
-  unpaired:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*unpaired{,_1,_2}.fq.gz":
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-          pattern: "*unpaired*.fq.gz"
-  html:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.html":
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-          pattern: "*_{fastqc.html}"
-  zip:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.zip":
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-          pattern: "*_{fastqc.zip}"
-  versions_trim_galore:
-    - trimgalore:
-          type: map
-          description: |
-            Groovy Map containing sample information
-  versions_cutadapt:
-      - cutadapt:
-          type: map
-          description: |
-            Groovy Map containing sample information
-  versions_pigz:
-      - pigz:
-          type: map
-          description: |
-            Groovy Map containing sample information
+      pattern: "*unpaired*.fq.gz"
+  -html:
+      type: file
+      description: |
+         Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+      pattern: "*_{fastqc.html}"
+  -zip:
+      type: file
+      description: |
+        Groovy Map containing sample information
+           e.g. [ id:'test', single_end:false ]
+      pattern: "*_{fastqc.zip}"
+  - versions_trim_galore:
+       type: array # Matches the tuple structure in main.nf: [task.process, 'trim_galore', version]
+       description: Trim Galore! version information.
+       pattern: "*" # Matches the content of the tuple
+  - versions_cutadapt:
+        type: array # Matches the tuple structure in main.nf: [task.process, 'cutadapt', version]
+        description: Cutadapt version information (Trim Galore! dependency).
+        pattern: "*"
+  - versions_pigz:
+       type: array # Matches the tuple structure in main.nf: [task.process, 'pigz', version]
+       description: pigz version information (used for parallel compression/decompression).
+       pattern: "*"
 authors:
   - "@drpatelh"
   - "@ewels"
