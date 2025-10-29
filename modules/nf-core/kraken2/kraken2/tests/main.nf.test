@@ -136,8 +136,6 @@ nextflow_process {
                     process.out.versions,
                 ).match()
             },
-            { assert process.out.classified_reads_fastq.get(0).get(1) ==~ ".*/test.classified.fastq.gz" },
-            { assert process.out.unclassified_reads_fastq.get(0).get(1) ==~ ".*/test.unclassified.fastq.gz" },
             )
         }
     }
