@@ -41,7 +41,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
-                    file('https://github.com/nf-core/test-datasets/raw/refs/heads/bacass/nanopore/subset15000.fq.gz', checkIfExists: true), // reads
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true), // reads
                 ]
                 input[1] = 30000 // genome size
                 """
