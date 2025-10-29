@@ -16,7 +16,7 @@ process TRIMGALORE {
     tuple val(meta), path("*unpaired{,_1,_2}.fq.gz")                  , emit: unpaired, optional: true
     tuple val(meta), path("*.html")                                    , emit: html, optional: true
     tuple val(meta), path("*.zip")                                     , emit: zip, optional: true
-    tuple val("${task.process}"), val('trim_galore'), eval("echo \$(trim_galore --version 2>&1) | sed -E 's/.*version[[:space:]]+([0-9.]+).*/\\1/'"), topic: versions, emit: versions_trim_galore
+    tuple val("${task.process}"), val('trim_galore'), eval("echo \$(trim_galore --version 2>/dev/null) | sed -E 's/.*version[[:space:]]+([0-9.]+).*/\\1/' || echo 'not found'"), topic: versions, emit: versions_trim_galore
     tuple val("${task.process}"), val('cutadapt'), eval("echo \$(cutadapt --version 2>&1)"), topic: versions, emit: versions_cutadapt
     tuple val("${task.process}"), val('pigz'), eval("echo \$( pigz --version 2>&1 | sed 's/pigz //g' )"), topic: versions, emit: versions_pigz
 
