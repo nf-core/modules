@@ -8,7 +8,6 @@ process SEQFU_CHECK {
         'biocontainers/seqfu:1.22.3--hc29b5fc_1' }"
 
     input:
-
     tuple val(meta), path(reads)
 
     output:
