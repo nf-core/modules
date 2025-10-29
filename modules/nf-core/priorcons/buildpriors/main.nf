@@ -2,7 +2,6 @@ process PRIORCONS_BUILDPRIORS {
     tag "$meta.id"
     label 'process_low'
 
-    // TODO nf-core: See section in main README for further information regarding finding and adding container addresses to the section below.
     // TODO pending the container and singularity image being available with priorcons installed.
     conda "${moduleDir}/environment.yml"
     // container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
