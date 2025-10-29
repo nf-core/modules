@@ -22,6 +22,8 @@ process AUTOCYCLER_SUBSAMPLE {
     script:
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
+    // fix random seed for reproducibility if not specified in command line
+    if (!(args ==~ /.*--seed.*/)) {args += " --seed 42"}
     """
     autocycler subsample \\
         $args \\
