@@ -15,16 +15,11 @@ components:
   - deacon/index
   - deacon/filter
 input:
-  - ch_fasta:
+  - ch_fasta_reads:
       type: file
       description: |
-        Input genome fasta file.
-        Structure: [ val(meta), path(fasta) ]
-  - ch_reads:
-      description: |
-        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-        respectively.
-        Structure: [ val(meta), [ path(reads) ] ]
+        Input genome fasta file and a list of FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
+        Structure: [ val(meta), path(fasta), [ path(reads) ] ]
 output:
   - index:
       type: file
