@@ -70,7 +70,6 @@ nextflow_process {
         when {
             process {
                 """
-                AUTOCYCLER_RESOLVE.out.resolved.view{println it}
                 input[0] = AUTOCYCLER_RESOLVE.out.resolved
                 """
             }
