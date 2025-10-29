@@ -11,7 +11,7 @@ process DEACON_FILTER {
     tuple val(meta), path(index), path(fastq)
 
     output:
-    tuple val(meta), path("*_filtered.fq.gz"), emit: fastq_filtered
+    tuple val(meta), path("*_filtered.fq"), emit: fastq_filtered
     path "versions.yml"                      , emit: versions
 
     when:
@@ -27,7 +27,7 @@ process DEACON_FILTER {
         --threads ${task.cpus} \\
         $args \\
         -d $index \\
-        $fastq > ${prefix}_filtered.fq.gz
+        $fastq > ${prefix}_filtered.fq
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
