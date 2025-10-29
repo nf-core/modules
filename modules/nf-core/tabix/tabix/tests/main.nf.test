@@ -27,7 +27,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out,
-                    file(process.out.tbi[0][1]).name
+                    file(process.out.tbi[0][1]).name,
+                    process.out.versions
                 ).match() }
             )
         }
@@ -51,7 +52,9 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out,
-                    file(process.out.tbi[0][1]).name).match() }
+                    file(process.out.tbi[0][1]).name,
+                    process.out.versions
+                ).match() }
             )
         }
 
@@ -75,7 +78,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out,
-                    file(process.out.tbi[0][1]).name
+                    file(process.out.tbi[0][1]).name,
+                    process.out.versions
                 ).match() }
             )
         }
@@ -100,7 +104,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out,
-                    file(process.out.csi[0][1]).name
+                    file(process.out.csi[0][1]).name,
+                    process.out.versions
                 ).match() }
             )
         }
@@ -126,7 +131,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out,
-                    file(process.out.csi[0][1]).name
+                    file(process.out.csi[0][1]).name,
+                    process.out.versions
                 ).match() }
             )
         }

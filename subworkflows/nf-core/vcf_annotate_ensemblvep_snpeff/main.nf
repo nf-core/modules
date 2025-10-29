@@ -129,6 +129,8 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
         TABIX_BGZIP(
             SNPEFF_SNPEFF.out.vcf
         )
+        ch_versions = ch_versions.mix(TABIX_BGZIP.out.versions.first())
+        
         ch_snpeff_output = TABIX_BGZIP.out.output
     } else {
         ch_snpeff_output  = ch_vep_output
