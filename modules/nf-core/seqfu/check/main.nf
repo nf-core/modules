@@ -25,7 +25,7 @@ process SEQFU_CHECK {
     if [ -d "${reads}" ]; then
     seqfu check \\
             $args \\
-            --dir ${reads} > ${prefix}_check.tsv
+            --dir ${reads} > ${prefix}.tsv
     else
         seqfu check\\
             $args \\
