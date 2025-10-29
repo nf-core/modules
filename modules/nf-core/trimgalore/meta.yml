@@ -88,13 +88,34 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*_{fastqc.zip}"
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+  versions_trim_galore:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      -"versions.yml":
+          type: map
+          description: |
+            Groovy Map containing sample information
+
+  versions_cutadapt:
+      - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      -"versions.yml":
+          type: map
+          description: |
+            Groovy Map containing sample information
+  versions_pigz:
+      - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      -"versions.yml":
+          type: map
+          description: |
+            Groovy Map containing sample information
 authors:
   - "@drpatelh"
   - "@ewels"
