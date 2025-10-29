@@ -3,7 +3,7 @@
 //
 include { FASTQC                            } from '../../../modules/nf-core/fastqc/main'
 include { SEQFU_STATS                       } from '../../../modules/nf-core/seqfu/stats/main'
-include { SEQKIT_STATS                      } from '../../../modules/nf-core/seqkit/stats/main'
+include { SEQKIT_STATS } from '../../../modules/nf-core/seqkit/stats/main'
 include { SEQTK_COMP                        } from '../../../modules/nf-core/seqtk/comp/main'
 
 workflow FASTQ_GENERATE_STATISTICS {
@@ -19,10 +19,6 @@ workflow FASTQ_GENERATE_STATISTICS {
 
     ch_versions = Channel.empty()
 
-
-    //
-    // Read QC with FastQC
-    //
     if (!skip_fastqc) {
         FASTQC( ch_reads )
         ch_versions = ch_versions.mix(FASTQC.out.versions.first())
@@ -58,12 +54,12 @@ workflow FASTQ_GENERATE_STATISTICS {
     }
 
     emit:
-    fastqc_html     = FASTQC.out.html
-    fastqc_zip      = FASTQC.out.zip
-    seqfu_stats     = SEQFU_STATS.out.stats
-    seqfu_multiqc   = SEQFU_STATS.out.multiqc
-    seqkit_stats    = SEQKIT_STATS.out.stats
-    seqtk_stats     = SEQTK_COMP.out.seqtk_stats
-    versions        = ch_versions
+    fastqc_html   = FASTQC.out.html
+    fastqc_zip    = FASTQC.out.zip
+    seqfu_stats   = SEQFU_STATS.out.stats
+    seqfu_multiqc = SEQFU_STATS.out.multiqc
+    seqkit_stats  = SEQKIT_STATS.out.stats
+    seqtk_stats   = SEQTK_COMP.out.seqtk_stats
+    versions      = ch_versions
 
 }

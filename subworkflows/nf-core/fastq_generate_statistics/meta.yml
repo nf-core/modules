@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "fastq_generate_statistics"
-description: Read QC
+description: Generate statistics for short read sequencing data using multiple tools
 keywords:
   - fastq
   - qc
@@ -14,11 +14,6 @@ components:
   - seqkit/stats
   - seqtk/comp
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - reads:
       type: file
       description: |
@@ -48,7 +43,7 @@ output:
   - fastqc_zip:
       type: file
       description: FastQC report archive
-      pattern: "*_{fastqc.zip}"
+      pattern: "*_fastqc.zip"
   - seqfu_stats:
       type: file
       description: seqfu stats tsv report
