@@ -23,8 +23,8 @@ input:
         type: map
         description: |
           Groovy Map containing reference information.
-          e.g. [ id:'test', single_end:false ]
-    - "*.idx":
+          e.g. [ id:'test', single_end:true ]
+    - index:
         type: file
         description: Deacon minimizer index file
         pattern: "*.idx"
@@ -38,16 +38,16 @@ input:
     
 
 output:
-  index:
+  fastq_filtered:
     - meta:
         type: map
         description: |
           Groovy Map containing reference information.
-          e.g. [ id:'test', single_end:false ]
-    - "*_filtered.fq.gz":
+          e.g. [ id:'test', single_end:true ]
+    - "*_filtered.fq":
         type: file
         description: List of output filtered FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
-        pattern: "*_filtered.fq.gz"
+        pattern: "*_filtered.fq"
         ontologies: []
   versions:
     - versions.yml:
@@ -64,3 +64,4 @@ authors:
 maintainers:
   - "@Baksic-Ivan"
   - "@Omer0191"
+
