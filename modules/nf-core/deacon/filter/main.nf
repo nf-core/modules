@@ -4,8 +4,8 @@ process DEACON_FILTER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/deacon:0.12.0--h4349ce8_0':
-        'biocontainers/deacon:0.12.0--h4349ce8_0' }"
+        'https://depot.galaxyproject.org/singularity/deacon:0.5.0--h4349ce8_0':
+        'biocontainers/deacon:0.5.0--h4349ce8_0' }"
 
     input:
     tuple val(meta), path(index), path(fastq)
@@ -27,7 +27,7 @@ process DEACON_FILTER {
         --threads ${task.cpus} \\
         $args \\
         -d $index \\
-        $fastq > ${prefix}.fq.gz
+        $fastq > ${prefix}_filtered.fq.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
