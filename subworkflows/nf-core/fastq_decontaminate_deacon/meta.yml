@@ -1,44 +1,49 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fastq_decontaminate_deacon"
-## TODO nf-core: Add a description of the subworkflow and list keywords
-description: Sort SAM/BAM/CRAM file
+description: |
+  Decontaminate FastQ files by filtering reads that match a reference genome using Deacon
 keywords:
-  - sort
-  - bam
-  - sam
-  - cram
-## TODO nf-core: Add a list of the modules and/or subworkflows used in the subworkflow
+  - filter
+  - index
+  - fasta
+  - fastq
+  - genome
+  - reference
+  - minimizer
+  - decontamination
 components:
-  - samtools/sort
-  - samtools/index
-## TODO nf-core: List all of the channels used as input with a description and their structure
+  - deacon/index
+  - deacon/filter
 input:
-  - ch_bam:
+  - ch_fasta:
       type: file
       description: |
-        The input channel containing the BAM/CRAM/SAM files
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.{bam/cram/sam}"
-## TODO nf-core: List all of the channels used as output with a descriptions and their structure
+        Input genome fasta file.
+        Structure: [ val(meta), path(fasta) ]
+  - ch_reads:
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+        Structure: [ val(meta), [ path(reads) ] ]
 output:
-  - bam:
+  - index:
       type: file
       description: |
-        Channel containing BAM files
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.bam"
-  - bai:
+        Deacon minimizer index file
+        Structure: [ val(meta), path(index) ]
+      pattern: ".idx"
+  - fastq_filtered:
       type: file
       description: |
-        Channel containing indexed BAM (BAI) files
-        Structure: [ val(meta), path(bai) ]
-      pattern: "*.bai"
-  - csi:
+        List of output filtered FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
+        Structure: [ val(meta), path(${prefix}*.fq) ]
+      pattern: "*.fq"
+  - summary:
       type: file
       description: |
-        Channel containing CSI files
-        Structure: [ val(meta), path(csi) ]
-      pattern: "*.csi"
+        JSON file containing summary of results.
+        Structure: [ val(meta), path(${prefix}.json) ]
+      pattern: "*.json"
   - versions:
       type: file
       description: |
@@ -47,5 +52,7 @@ output:
       pattern: "versions.yml"
 authors:
   - "@Baksic-Ivan"
+  - "@Omer0191"
 maintainers:
   - "@Baksic-Ivan"
+  - "@Omer0191"

@@ -1,35 +1,42 @@
-// TODO nf-core: If in doubt look at other nf-core/subworkflows to see how we are doing things! :)
-//               https://github.com/nf-core/modules/tree/master/subworkflows
-//               You can also ask for help via your pull request or on the #subworkflows channel on the nf-core Slack workspace:
-//               https://nf-co.re/join
-// TODO nf-core: A subworkflow SHOULD import at least two modules
-
-include { SAMTOOLS_SORT      } from '../../../modules/nf-core/samtools/sort/main'
-include { SAMTOOLS_INDEX     } from '../../../modules/nf-core/samtools/index/main'
+include { DEACON_INDEX  } from '../../../modules/nf-core/deacon/index/main'
+include { DEACON_FILTER } from '../../../modules/nf-core/deacon/filter/main'
 
 workflow FASTQ_DECONTAMINATE_DEACON {
 
     take:
-    // TODO nf-core: edit input (take) channels
-    ch_bam // channel: [ val(meta), [ bam ] ]
+    ch_fasta // [ val(meta), [ fasta ] ]
+    ch_reads // [ val(meta), [ reads ] ]
 
     main:
 
     ch_versions = Channel.empty()
 
-    // TODO nf-core: substitute modules here for the modules of your subworkflow
+    // Check if fastqs are single-end or paired-end and run Deacon accordingly
+    ch_reads = ch_reads
+        .map  { meta, reads ->
+            if (meta.single_end) {
+                if (reads instanceof List && reads.size() != 1) {
+                    error("Error: Check your meta.single_end value. Single-end reads should contain one file only.")
+                }
+                return [ meta, reads ]
+            } else {
+                if (!(reads instanceof List) || reads.size() != 2) {
+                    error("Error: Check your meta.single_end value. Paired-end reads should contain two files; a forward and a reverse.")
+                }
+                return [ meta, reads ]
+            }
+        }
 
-    SAMTOOLS_SORT ( ch_bam )
-    ch_versions = ch_versions.mix(SAMTOOLS_SORT.out.versions.first())
+    DEACON_INDEX ( ch_fasta )
+    ch_versions = ch_versions.mix(DEACON_INDEX.out.versions.first())
 
-    SAMTOOLS_INDEX ( SAMTOOLS_SORT.out.bam )
-    ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
+    DEACON_FILTER(DEACON_INDEX.out.index.join(ch_reads))
+    ch_versions = ch_versions.mix(DEACON_FILTER.out.versions.first())
 
     emit:
-    // TODO nf-core: edit emitted channels
-    bam      = SAMTOOLS_SORT.out.bam           // channel: [ val(meta), [ bam ] ]
-    bai      = SAMTOOLS_INDEX.out.bai          // channel: [ val(meta), [ bai ] ]
-    csi      = SAMTOOLS_INDEX.out.csi          // channel: [ val(meta), [ csi ] ]
+    index          = DEACON_INDEX.out.index           // channel: [ val(meta), [ index ] ]
+    fastq_filtered = DEACON_FILTER.out.fastq_filtered // channel: [ val(meta), [ fastq ] ]
+    summary        = DEACON_FILTER.out.log            // channel: [ val(meta), [ log ] ]
 
-    versions = ch_versions                     // channel: [ versions.yml ]
+    versions = ch_versions                            // channel: [ versions.yml ]
 }
