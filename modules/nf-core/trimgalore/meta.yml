@@ -88,12 +88,18 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*_{fastqc.zip}"
-  versions:
-      - versions:
-          type: file
-          description: |
-            File containing software versions used in this module.
-          pattern: "versions.yml"
+  versions_trim_galore:
+    - - "${task.process}"
+      - "trim_galore"
+      - "trim_galore --version 2>&1 | grep -Eo '[0-9]+(\\.[0-9]+)+'"
+  versions_cutadapt:
+    - - "${task.process}"
+      - "cutadapt"
+      - "echo $(cutadapt --version 2>&1)"
+  versions_pigz:
+    - - "${task.process}"
+      - "pigz"
+      - "echo $(pigz --version 2>&1 | sed 's/pigz //g')"
 authors:
   - "@drpatelh"
   - "@ewels"
