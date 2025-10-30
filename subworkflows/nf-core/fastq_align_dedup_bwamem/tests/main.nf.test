@@ -18,7 +18,6 @@ nextflow_workflow {
     tag "fastq_align_bwa"
     tag "picard/markduplicates"
     tag "picard/addorreplacereadgroups"
-    tag "samtools/index"
     tag "untar"
 
     setup {
@@ -27,7 +26,7 @@ nextflow_workflow {
             process {
                 """
                 input[0] = Channel.value([ [ id:'genome' ],
-                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ])
                 """
             }

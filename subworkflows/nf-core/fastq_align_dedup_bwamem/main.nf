@@ -40,7 +40,6 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
         ch_alignment = PARABRICKS_FQ2BAM.out.bam
         ch_versions  = ch_versions.mix(PARABRICKS_FQ2BAM.out.versions.first())
         
-        // FQ2BAM can also sort and markduplicates
         BAM_SORT_STATS_SAMTOOLS ( 
             ch_alignment,
             ch_fasta
