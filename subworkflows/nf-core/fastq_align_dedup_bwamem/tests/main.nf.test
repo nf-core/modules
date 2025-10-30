@@ -8,19 +8,17 @@ nextflow_workflow {
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "subworkflows/fastq_align_dedup_bwamem"
-    tag "subworkflows/fastq_align_bwa"
     tag "bwa/index"
-    tag "bwa/mem"
-    tag "samtools"
+    tag "parabricks/fq2bam"
     tag "samtools/sort"
     tag "samtools/index"
     tag "samtools/flagstat"
     tag "samtools/stats"
-    tag "samtools/idxstats"
     tag "bam_sort_stats_samtools"
     tag "fastq_align_bwa"
     tag "picard/markduplicates"
     tag "picard/addorreplacereadgroups"
+    tag "samtools/index"
     tag "untar"
 
     setup {
@@ -28,10 +26,9 @@ nextflow_workflow {
             script "../../../../modules/nf-core/bwa/index/main.nf"
             process {
                 """
-                input[0] = [ 
-                    [ id:'genome' ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                ]
+                input[0] = Channel.value([ [ id:'genome' ],
+                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
                 """
             }
         }
@@ -108,6 +105,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
+                { assert workflow.success },
                 { assert snapshot(
                     workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
                     workflow.out.bai.collect { meta, bai -> file(bai).name },
@@ -151,6 +149,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
+                { assert workflow.success },
                 { assert snapshot(
                     workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
                     workflow.out.bai.collect { meta, bai -> file(bai).name },
@@ -193,10 +192,16 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-               { assert snapshot(
-                    workflow.out,
-                    workflow.out.versions.collect{ path(it).yaml }
-                ).match() }
+                { assert snapshot(
+                    workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
+                    workflow.out.bai.collect { meta, bai -> file(bai).name },
+                    workflow.out.samtools_flagstat,
+                    workflow.out.samtools_stats,
+                    workflow.out.samtools_index_stats,
+                    workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
+                    workflow.out.multiqc.flatten().collect { path -> file(path).name },
+                    workflow.out.versions
+                    ).match() }
             )
         }
     }
