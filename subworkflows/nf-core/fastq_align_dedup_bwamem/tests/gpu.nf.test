@@ -154,7 +154,7 @@ nextflow_workflow {
                 skip_deduplication = true
                 use_gpu            = true
                 bwa_prefix = 'genome.fa'
-            }sa
+            }
             workflow {
                 """
                 input[0] = Channel.of([
