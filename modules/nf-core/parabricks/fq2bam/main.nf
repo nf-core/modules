@@ -2,8 +2,6 @@ process PARABRICKS_FQ2BAM {
     tag "${meta.id}"
     label 'process_high'
     label 'process_gpu'
-    // needed by the module to run on a cluster because we need to copy the fasta reference, see https://github.com/nf-core/modules/issues/9230
-    stageInMode 'copy'
 
     container "nvcr.io/nvidia/clara/clara-parabricks:4.6.0-1"
 
@@ -44,14 +42,22 @@ process PARABRICKS_FQ2BAM {
     def known_sites_output_cmd = known_sites   ? "--out-recal-file ${prefix}.table" : ""
     def interval_file_command  = interval_file ? (interval_file instanceof List ? interval_file.collect { "--interval-file ${it}" }.join(' ') : "--interval-file ${interval_file}") : ""
 
-    def num_gpus   = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
-    """
-    INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
-    cp ${fasta} \$INDEX
+    def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
+    """    
+    # The section below creates a symlink to the reference and index files in a new ref/ folder
+    # It is a Parabricks requirement that these files be in the same place
+    # As of Parabricks version 4.6 the symlink is sufficient and we no longer need to copy the file
+
+    mkdir ref
+    for f in ${index}/*; do
+        cd ref && ln -sf ../\$f \$(basename \$f) && cd -
+    done
+    cd ref && ln -sf ../${fasta} ${fasta} && cd -
 
     pbrun \\
         fq2bam \\
-        --ref \$INDEX \\
+        --preserve-file-symlinks \\
+        --ref ref/${fasta} \\
         ${in_fq_command} \\
         --out-bam ${prefix}.${extension} \\
         ${known_sites_command} \\
