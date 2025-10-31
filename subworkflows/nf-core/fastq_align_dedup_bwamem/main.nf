@@ -14,6 +14,8 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
     ch_bwamem_index      // channel: [ val(meta), [ bwam index ] ]
     skip_deduplication   // boolean: whether to deduplicate alignments
     use_gpu              // boolean: whether to use GPU or CPU for bwamem alignment
+    interval_file        // channel: [ val(meta), [ interval file ] ]
+    known_sites          // channel: [ val(meta), [ known sites ] ]
 
     main:
 

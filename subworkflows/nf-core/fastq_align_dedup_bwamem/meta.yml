@@ -47,6 +47,16 @@ input:
       type: boolean
       description: |
         Use GPU for alignment
+  - interval_file:
+      type: file
+      description: |
+        Structure: [ val(meta), path(interval file) ]
+      pattern: "*.{bed,intervals}"
+  - known_sites:
+      type: file
+      description: |
+        Structure: [ val(meta), path(known sites) ]
+      pattern: "*.{vcf,vcf.gz}"
 output:
   - bam:
       type: file
