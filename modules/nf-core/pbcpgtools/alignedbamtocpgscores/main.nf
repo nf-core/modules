@@ -1,14 +1,3 @@
-// TODO nf-core: If in doubt look at other nf-core/modules to see how we are doing things! :)
-//               https://github.com/nf-core/modules/tree/master/modules/nf-core/
-//               You can also ask for help via your pull request or on the #modules channel on the nf-core Slack workspace:
-//               https://nf-co.re/join
-// TODO nf-core: A module file SHOULD only define input and output files as command-line parameters.
-//               All other parameters MUST be provided using the "task.ext" directive, see here:
-//               https://www.nextflow.io/docs/latest/process.html#ext
-//               where "task.ext" is a string.
-//               Any parameters that need to be evaluated in the context of a particular sample
-//               e.g. single-end/paired-end data MUST also be defined and evaluated appropriately.
-
 process PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES {
     tag "$meta.id"
     label 'process_medium'
@@ -43,7 +32,7 @@ process PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pbcpgtools: \$(aligned_bam_to_cpg_scores --version)
+        pbcpgtools: \$(aligned_bam_to_cpg_scores --version | sed 's/aligned_bam_to_cpg_scores //')
     END_VERSIONS
     """
 
@@ -56,9 +45,17 @@ process PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES {
     touch ${prefix}.combined.bed.gz.tbi
     touch ${prefix}.combined.bw
 
+    echo "" | gzip > ${prefix}.hap1.bed.gz
+    touch ${prefix}.hap1.bed.gz.tbi
+    touch ${prefix}.hap1.bw
+
+    echo "" | gzip > ${prefix}.hap2.bed.gz
+    touch ${prefix}.hap2.bed.gz.tbi
+    touch ${prefix}.hap2.bw
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pbcpgtools: \$(aligned_bam_to_cpg_scores --version)
+        pbcpgtools: \$(aligned_bam_to_cpg_scores --version | sed 's/aligned_bam_to_cpg_scores //')
     END_VERSIONS
     """
 }
