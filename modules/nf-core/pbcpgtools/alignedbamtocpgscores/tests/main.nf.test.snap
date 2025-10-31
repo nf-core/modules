@@ -1,5 +1,5 @@
 {
-    "nanopore - bam - notphased": {
+    "pacbio - bam - notphased": {
         "content": [
             {
                 "0": [
@@ -62,9 +62,9 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.7"
         },
-        "timestamp": "2025-10-29T11:03:27.20552685"
+        "timestamp": "2025-10-30T11:20:04.273642798"
     },
-    "nanopore - bam - notphased - stub": {
+    "pacbio - bam - phased": {
         "content": [
             {
                 "0": [
@@ -72,7 +72,11 @@
                         {
                             "id": "test"
                         },
-                        "test.combined.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        [
+                            "test.combined.bed.gz:md5,861084b58d048a2a957a86068ec39bcf",
+                            "test.hap1.bed.gz:md5,db37b440b02203f38c0d7c20b3dd62f3",
+                            "test.hap2.bed.gz:md5,b5b7a4539d3906bd938010644b779196"
+                        ]
                     ]
                 ],
                 "1": [
@@ -80,7 +84,11 @@
                         {
                             "id": "test"
                         },
-                        "test.combined.bed.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        [
+                            "test.combined.bed.gz.tbi:md5,4325f78aeb593d00de8b56cffbc77712",
+                            "test.hap1.bed.gz.tbi:md5,b9813e40b7d3365fb312ad35ac117bab",
+                            "test.hap2.bed.gz.tbi:md5,0213f587a323929cd2180862b01e8044"
+                        ]
                     ]
                 ],
                 "2": [
@@ -88,7 +96,11 @@
                         {
                             "id": "test"
                         },
-                        "test.combined.bw:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        [
+                            "test.combined.bw:md5,77a572a00645df6743459805bd397cb9",
+                            "test.hap1.bw:md5,df389b5415312c1da05a762177f7b50e",
+                            "test.hap2.bw:md5,b87e364ef8cf80790ddef4963fa5e55c"
+                        ]
                     ]
                 ],
                 "3": [
@@ -99,7 +111,11 @@
                         {
                             "id": "test"
                         },
-                        "test.combined.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        [
+                            "test.combined.bed.gz:md5,861084b58d048a2a957a86068ec39bcf",
+                            "test.hap1.bed.gz:md5,db37b440b02203f38c0d7c20b3dd62f3",
+                            "test.hap2.bed.gz:md5,b5b7a4539d3906bd938010644b779196"
+                        ]
                     ]
                 ],
                 "bed_index": [
@@ -107,7 +123,11 @@
                         {
                             "id": "test"
                         },
-                        "test.combined.bed.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        [
+                            "test.combined.bed.gz.tbi:md5,4325f78aeb593d00de8b56cffbc77712",
+                            "test.hap1.bed.gz.tbi:md5,b9813e40b7d3365fb312ad35ac117bab",
+                            "test.hap2.bed.gz.tbi:md5,0213f587a323929cd2180862b01e8044"
+                        ]
                     ]
                 ],
                 "bigwig": [
@@ -115,7 +135,11 @@
                         {
                             "id": "test"
                         },
-                        "test.combined.bw:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        [
+                            "test.combined.bw:md5,77a572a00645df6743459805bd397cb9",
+                            "test.hap1.bw:md5,df389b5415312c1da05a762177f7b50e",
+                            "test.hap2.bw:md5,b87e364ef8cf80790ddef4963fa5e55c"
+                        ]
                     ]
                 ],
                 "versions": [
@@ -127,6 +151,95 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.7"
         },
-        "timestamp": "2025-10-29T11:03:31.429890506"
+        "timestamp": "2025-10-30T16:39:34.804751846"
+    },
+    "pacbio - bam - phased - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test.combined.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "test.hap1.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "test.hap2.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        ]
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test.combined.bed.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.hap1.bed.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.hap2.bed.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test.combined.bw:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.hap1.bw:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.hap2.bw:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "3": [
+                    "versions.yml:md5,8321e8b769578dda2f05f2b1d833bc80"
+                ],
+                "bed": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test.combined.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "test.hap1.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "test.hap2.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        ]
+                    ]
+                ],
+                "bed_index": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test.combined.bed.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.hap1.bed.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.hap2.bed.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "bigwig": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test.combined.bw:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.hap1.bw:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.hap2.bw:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,8321e8b769578dda2f05f2b1d833bc80"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.7"
+        },
+        "timestamp": "2025-10-31T09:45:02.484082977"
     }
 }
