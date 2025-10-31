@@ -35,8 +35,8 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
             ch_reads,
             ch_fasta,
             ch_bwamem_index,
-            [[],[]], // interval file
-            [[],[]], // known sites
+            interval_file, // interval file
+            known_sites, // known sites
             'bam' // output format
         )
         ch_alignment = PARABRICKS_FQ2BAM.out.bam
