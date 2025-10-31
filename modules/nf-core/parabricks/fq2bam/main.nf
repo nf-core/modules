@@ -43,21 +43,37 @@ process PARABRICKS_FQ2BAM {
     def interval_file_command  = interval_file ? (interval_file instanceof List ? interval_file.collect { "--interval-file ${it}" }.join(' ') : "--interval-file ${interval_file}") : ""
 
     def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
+    
+    if (!fasta && extension=="cram") error "Fasta reference is required for CRAM output"
+    
     """    
-    # The section below creates a symlink to the reference and index files in a new ref/ folder
-    # It is a Parabricks requirement that these files be in the same place
-    # As of Parabricks version 4.6 the symlink is sufficient and we no longer need to copy the file
+    # The section below checks if the reference is present with the index files. 
+    # If it is not, then we create a dummy reference file to allow Parabricks to run without erroring out 
+    # For BAMs, this index file is empty, for CRAMs we symlink the fasta to the expected index path 
 
-    mkdir ref
-    for f in ${index}/*; do
-        cd ref && ln -sf ../\$f \$(basename \$f) && cd -
-    done
-    cd ref && ln -sf ../${fasta} ${fasta} && cd -
+    INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
+
+    echo "Inferred reference at: \$INDEX"
+    
+    dummy_index=0 
+    ref_path=${fasta}
+
+    if [[ "${extension}" == "bam" ]] && [ ! -e \$INDEX ]; then
+        echo "BAM requested but ref path does not exist. Creating dummy reference."
+        dummy_index=1
+        touch \$INDEX
+        ref_path="\$INDEX"
+    elif [[ "${extension}" == "cram" ]] && [ ! -e \$INDEX ]; then
+        echo "CRAM requested but ref does not follow pattern. Creating symlink."
+        dummy_index=1
+        ln -sf \$(realpath ${fasta}) \$(realpath \$INDEX)
+        ref_path="\$INDEX"
+    fi
 
     pbrun \\
         fq2bam \\
         --preserve-file-symlinks \\
-        --ref ref/${fasta} \\
+        --ref \$ref_path \\
         ${in_fq_command} \\
         --out-bam ${prefix}.${extension} \\
         ${known_sites_command} \\
@@ -67,6 +83,11 @@ process PARABRICKS_FQ2BAM {
         --bwa-cpu-thread-pool ${task.cpus} \\
         --monitor-usage \\
         ${args}
+
+    # Remove the dummy index if we added one 
+    if [ dummy_index ]; then 
+        rm \$INDEX
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
