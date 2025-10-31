@@ -63,6 +63,8 @@ nextflow_workflow {
                 input[3] = BWA_INDEX.out.index
                 input[4] = false // skip_deduplication
                 input[5] = true // use_gpu
+                input[6] = Channel.empty() // interval_file
+                input[7] = Channel.empty() // known_sites
                 """
             }
         }
@@ -109,6 +111,8 @@ nextflow_workflow {
                 input[3] = BWA_INDEX.out.index
                 input[4] = true // skip_deduplication
                 input[5] = true // use_gpu
+                input[6] = Channel.empty() // interval_file
+                input[7] = Channel.empty() // known_sites
                 """
             }
         }
@@ -152,6 +156,8 @@ nextflow_workflow {
                 input[3] = BWA_INDEX.out.index
                 input[4] = false // skip_deduplication
                 input[5] = true // use_gpu
+                input[6] = Channel.empty() // interval_file
+                input[7] = Channel.empty() // known_sites
                 """
             }
         }
@@ -192,6 +198,8 @@ nextflow_workflow {
                 input[3] = BWA_INDEX_PE.out.index
                 input[4] = true // skip_deduplication
                 input[5] = true // use_gpu
+                input[6] = Channel.empty() // interval_file
+                input[7] = Channel.empty() // known_sites
                 """
             }
         }
