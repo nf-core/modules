@@ -11,10 +11,15 @@
             automerge: false,
         },
         {
-            matchManagers: ["github-actions", "npm", "pip_requirements", "pip_setup"],
-            excludePackagePatterns: ["biocontainers/*"],
+            matchManagers: [
+                "github-actions",
+                "npm",
+                "pip_requirements",
+                "pip_setup",
+            ],
             groupName: "Infrastructural dependencies",
             schedule: ["before 6am on Monday"],
+            matchPackageNames: ["!/biocontainers/*/"],
         },
     ],
     customManagers: [
