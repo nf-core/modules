@@ -10,6 +10,12 @@
             matchDatasources: ["conda", "pypi", "docker"],
             automerge: false,
         },
+        {
+            matchManagers: ["github-actions", "npm", "pip_requirements", "pip_setup"],
+            excludePackagePatterns: ["biocontainers/*"],
+            groupName: "Infrastructural dependencies",
+            schedule: ["before 6am on Monday"],
+        },
     ],
     customManagers: [
         {
