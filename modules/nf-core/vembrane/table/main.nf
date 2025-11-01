@@ -41,7 +41,7 @@ process VEMBRANE_TABLE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vembrane: \$(vembrane --version 2>&1 | head -n1 | sed 's/vembrane //')
+        vembrane: \$(vembrane --version | sed '1!d;s/.* //')
     END_VERSIONS
     """
 }
