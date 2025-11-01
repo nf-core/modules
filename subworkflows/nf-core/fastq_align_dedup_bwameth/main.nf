@@ -64,7 +64,6 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
         ''
     )
     ch_alignment = SAMTOOLS_SORT.out.bam
-    ch_versions  = ch_versions.mix(SAMTOOLS_SORT.out.versions)
 
     /*
      * Run samtools index on alignment
