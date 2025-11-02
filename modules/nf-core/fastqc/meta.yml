@@ -70,3 +70,26 @@ maintainers:
   - "@grst"
   - "@ewels"
   - "@FelixKrueger"
+containers:
+    docker:
+        linux_amd64:
+            # renovate: datasource=docker depName=community.wave.seqera.io/library/fastqc versioning=semver
+            name: community.wave.seqera.io/library/fastqc:0.12.1--5cfd0f3cb6760c42
+            build_id: 5cfd0f3cb6760c42_1
+            scan_id: 6fc310277b74
+        linux_arm64:
+            # renovate: datasource=docker depName=community.wave.seqera.io/library/fastqc versioning=semver
+            name: community.wave.seqera.io/library/fastqc:0.12.1--d3caca66b4f3d3b0
+            build_id: d3caca66b4f3d3b0_1
+            scan_id: d9a1db848b9b
+    singularity:
+        linux_amd64:
+            # renovate: datasource=docker depName=community.wave.seqera.io/library/fastqc versioning=semver
+            name: oras://community.wave.seqera.io/library/fastqc:0.12.1--0827550dd72a3745
+            https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b2/b280a35770a70ed67008c1d6b6db118409bc3adbb3a98edcd55991189e5116f6/data
+            build_id: 0827550dd72a3745_1
+        linux_arm64:
+            # renovate: datasource=docker depName=community.wave.seqera.io/library/fastqc versioning=semver
+            name: oras://community.wave.seqera.io/library/fastqc:0.12.1--b2ccdee5305e5859
+            https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/76/76e744b425a6b4c7eb8f12e03fa15daf7054de36557d2f0c4eb53ad952f9b0e3/data
+            build_id: b2ccdee5305e5859_1
