@@ -171,6 +171,14 @@ jobs:
           total_shards: ${{ env.TOTAL_SHARDS }}
           paths: "${{ join(fromJson(steps.filter.outputs.filtered_paths), ' ') }}"
 
+      - name: Configure AWS credentials for CO2 reports
+        if: always() && steps.filter.outputs.filtered_paths != '[]'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.CO2_REPORTS_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CO2_REPORTS_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.CO2_REPORTS_AWS_REGION }}
+
       - name: Upload CO2 footprint reports to S3
         if: always() && steps.filter.outputs.filtered_paths != '[]'
         shell: bash
