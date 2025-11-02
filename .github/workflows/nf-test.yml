@@ -201,7 +201,8 @@ jobs:
               echo "Uploaded: $file -> ${S3_BASE}/${filename}"
             done
           else
-            echo "No CO2 footprint trace files found"
+            echo "ERROR: No CO2 footprint trace files found"
+            exit 1
           fi
 
   confirm-pass-nf-test:
