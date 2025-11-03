@@ -11,10 +11,16 @@ process PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES {
     tuple val(meta), path(bam), path(bai)
 
     output:
-    tuple val(meta), path("*.bed.gz"),      emit: bed
-    tuple val(meta), path("*.bed.gz.tbi"),  emit: bed_index
-    tuple val(meta), path("*.bw"),          emit: bigwig
-    path "versions.yml",                    emit: versions
+    tuple val(meta), path("*.combined.bed.gz")    , emit: combined_bed
+    tuple val(meta), path("*.combined.bed.gz.tbi"), emit: combined_bed_index
+    tuple val(meta), path("*.combined.bw")        , emit: combined_bigwig
+    tuple val(meta), path("*.hap1.bed.gz")        , emit: hap1_bed          , optional: true
+    tuple val(meta), path("*.hap1.bed.gz.tbi")    , emit: hap1_bed_index    , optional: true
+    tuple val(meta), path("*.hap1.bw")            , emit: hap1_bigwig       , optional: true
+    tuple val(meta), path("*.hap2.bed.gz")        , emit: hap2_bed          , optional: true
+    tuple val(meta), path("*.hap2.bed.gz.tbi")    , emit: hap2_bed_index    , optional: true
+    tuple val(meta), path("*.hap2.bw")            , emit: hap2_bigwig       , optional: true
+    path "versions.yml"                           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,7 +28,6 @@ process PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     aligned_bam_to_cpg_scores \\
         --bam ${bam} \\
@@ -32,15 +37,13 @@ process PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pbcpgtools: \$(aligned_bam_to_cpg_scores --version | sed 's/aligned_bam_to_cpg_scores //')
+        pbcpgtools: \$(aligned_bam_to_cpg_scores --version | sed 's/.* //')
     END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
-
     echo "" | gzip > ${prefix}.combined.bed.gz
     touch ${prefix}.combined.bed.gz.tbi
     touch ${prefix}.combined.bw
@@ -55,7 +58,7 @@ process PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        pbcpgtools: \$(aligned_bam_to_cpg_scores --version | sed 's/aligned_bam_to_cpg_scores //')
+        pbcpgtools: \$(aligned_bam_to_cpg_scores --version | sed 's/.* //')
     END_VERSIONS
     """
 }
