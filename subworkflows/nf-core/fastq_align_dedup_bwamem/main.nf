@@ -33,12 +33,12 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
         * Align with parabricks GPU enabled fq2bammeth implementation of bwameth
         */
         PARABRICKS_FQ2BAM (
-            ch_reads,
-            ch_fasta,
-            ch_bwamem_index,
-            interval_file, // interval file
-            known_sites, // known sites
-            output_fmt // output format
+            ch_reads,           // channel: [ val(meta), [ reads ] ]
+            ch_fasta,           // channel: [ val(meta), [ fasta ] ]
+            ch_bwamem_index,    // channel: [ val(meta), [ bwamem index ] ]
+            interval_file,      // channel: [ val(meta), [ interval file ] ]
+            known_sites,        // channel: [ val(meta), [ known sites ] ]
+            output_fmt          // string: output format
         )
         ch_alignment = PARABRICKS_FQ2BAM.out.bam
         ch_versions  = ch_versions.mix(PARABRICKS_FQ2BAM.out.versions.first())

@@ -57,8 +57,8 @@ nextflow_workflow {
                 input[3] = BWA_INDEX.out.index
                 input[4] = false            // deduplicate
                 input[5] = true             // use_gpu
-                input[6] = [[:], [] ]       // interval_file
-                input[7] = [[:], [] ]       // known_sites
+                input[6] = Channel.empty()  // interval_file
+                input[7] = Channel.empty()  // known_sites
                 input[8] = "bam"            // output_fmt
                 """
             }
@@ -101,8 +101,8 @@ nextflow_workflow {
                 input[3] = BWA_INDEX.out.index
                 input[4] = true             // skip_deduplication
                 input[5] = true             // use_gpu
-                input[6] = [[:], [] ]       // interval_file
-                input[7] = [[:], [] ]       // known_sites
+                input[6] = Channel.empty()  // interval_file
+                input[7] = Channel.empty()  // known_sites
                 input[8] = "bam"            // output_fmt
                 """
             }
@@ -149,8 +149,8 @@ nextflow_workflow {
                 input[3] = BWA_INDEX.out.index
                 input[4] = true             // skip_deduplication
                 input[5] = true             // use_gpu
-                input[6] = [[:], [] ]       // interval_file
-                input[7] = [[:], [] ]       // known_sites
+                input[6] = Channel.empty()  // interval_file
+                input[7] = Channel.empty()  // known_sites
                 input[8] = "bam"            // output_fmt
                 """
             }
@@ -194,8 +194,8 @@ nextflow_workflow {
                 input[3] = BWA_INDEX.out.index
                 input[4] = false            // deduplicate
                 input[5] = true             // use_gpu
-                input[6] = [[:], [] ]       // interval_file
-                input[7] = [[:], [] ]       // known_sites
+                input[6] = Channel.empty()  // interval_file
+                input[7] = Channel.empty()  // known_sites
                 input[8] = "bam"            // output_fmt
                 """
             }
