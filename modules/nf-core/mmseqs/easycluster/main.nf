@@ -1,21 +1,20 @@
-
 process MMSEQS_EASYCLUSTER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mmseqs2:17.b804f--hd6d6fdc_1':
-        'biocontainers/mmseqs2:17.b804f--hd6d6fdc_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fe/fe49c17754753d6cd9a31e5894117edaf1c81e3d6053a12bf6dc8f3af1dffe23/data'
+        : 'community.wave.seqera.io/library/mmseqs2:18.8cc5c--af05c9a98d9f6139'}"
 
     input:
     tuple val(meta), path(sequence)
 
     output:
-    tuple val(meta), path("*rep_seq.fasta") , emit: representatives
+    tuple val(meta), path("*rep_seq.fasta"), emit: representatives
     tuple val(meta), path("*all_seqs.fasta"), emit: fasta
-    tuple val(meta), path("*.tsv")          , emit: tsv
-    path "versions.yml"                     , emit: versions
+    tuple val(meta), path("*.tsv"), emit: tsv
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,7 +28,7 @@ process MMSEQS_EASYCLUSTER {
         ${sequence} \\
         ${prefix} \\
         tmp1 \\
-        $args \\
+        ${args} \\
         --threads ${task.cpus}
 
     cat <<-END_VERSIONS > versions.yml
@@ -42,6 +41,7 @@ process MMSEQS_EASYCLUSTER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    echo ${args}
 
     touch ${prefix}.tsv
     touch ${prefix}_rep_seq.fasta
