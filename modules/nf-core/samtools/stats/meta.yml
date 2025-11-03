@@ -62,10 +62,9 @@ output:
       - samtools:
           type: string
           description: Name of the tool
-      - samtools version | sed "1!d;s/.* //":
+      - samtools version | sed "1!d;s/.* //:
           type: string
-          description: Version of samtools used
-
+          description: The command used to generate the version of the tool
 topics:
   - versions:
       - - process:
