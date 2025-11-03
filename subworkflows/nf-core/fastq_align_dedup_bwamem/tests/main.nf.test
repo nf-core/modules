@@ -8,17 +8,21 @@ nextflow_workflow {
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "subworkflows/fastq_align_dedup_bwamem"
+    tag "subworkflows/fastq_align_bwa"
+    tag "bwa"
     tag "bwa/index"
+    tag "bwa/mem"
     tag "parabricks/fq2bam"
+    tag "samtools"
     tag "samtools/sort"
     tag "samtools/index"
+    tag "samtools/idxstats"
     tag "samtools/flagstat"
     tag "samtools/stats"
     tag "bam_sort_stats_samtools"
     tag "fastq_align_bwa"
     tag "picard/markduplicates"
     tag "picard/addorreplacereadgroups"
-    tag "untar"
 
     setup {
         run("BWA_INDEX") {
@@ -108,7 +112,6 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert workflow.success },
                 { assert snapshot(
                     workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
                     workflow.out.bai.collect { meta, bai -> file(bai).name },
@@ -153,7 +156,6 @@ nextflow_workflow {
 
         then {
             assertAll(
-                { assert workflow.success },
                 { assert workflow.success },
                 { assert snapshot(
                     workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
@@ -200,17 +202,10 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
-                    workflow.out.bai.collect { meta, bai -> file(bai).name },
-                    workflow.out.samtools_flagstat,
-                    workflow.out.samtools_stats,
-                    workflow.out.samtools_index_stats,
-                    workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
-                    workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
-                    ).match() }
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
             )
         }
     }
-
 }

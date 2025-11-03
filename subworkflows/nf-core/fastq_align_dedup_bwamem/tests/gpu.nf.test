@@ -12,7 +12,18 @@ nextflow_workflow {
     tag "parabricks/fq2bam"
     tag "samtools/index"
     tag "picard/markduplicates"
-    tag "untar"
+    tag "bwa"
+    tag "bwa/index"
+    tag "parabricks/fq2bam"
+    tag "samtools"
+    tag "samtools/sort"
+    tag "samtools/index"
+    tag "samtools/idxstats"
+    tag "samtools/flagstat"
+    tag "samtools/stats"
+    tag "bam_sort_stats_samtools"
+    tag "picard/markduplicates"
+    tag "picard/addorreplacereadgroups"
 
     setup {
         run("BWA_INDEX") {
@@ -21,31 +32,15 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [ id:'test' ], // meta map
-                    file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
-                ])
-                """
-            }
-        }
-
-        run("BWA_INDEX", alias: 'BWA_INDEX_PE') {
-            script "../../../../modules/nf-core/bwa/index/main.nf"
-            process {
-                """
-                input[0] = Channel.of([
-                    [ id:'test' ], // meta map
-                    file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ])
                 """
             }
         }
     }
 
-    test("Params: parabricks/fq2bam single-end | use_gpu ") {
+    test("Sarscov2 fasta - SE - deduplicate - with GPU parabricks/fq2bam") {
         when {
-            params {
-                use_gpu    = true
-                bwa_prefix = 'genome.fa'
-            }
             workflow {
                 """
                 input[0] = Channel.of([
@@ -61,10 +56,10 @@ nextflow_workflow {
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ])
                 input[3] = BWA_INDEX.out.index
-                input[4] = false // skip_deduplication
-                input[5] = true // use_gpu
-                input[6] = Channel.empty() // interval_file
-                input[7] = Channel.empty() // known_sites
+                input[4] = false            // deduplicate
+                input[5] = true             // use_gpu
+                input[6] = [[:], [] ]       // interval_file
+                input[7] = [[:], [] ]       // known_sites
                 """
             }
         }
@@ -87,13 +82,8 @@ nextflow_workflow {
         }
     }
 
-    test("Params: parabricks/fq2bam single-end | use_gpu | skip_deduplication") {
+    test("Sarscov2 fasta - SE - skip deduplication - with GPU parabricks/fq2bam") {
         when {
-            params {
-                skip_deduplication = true
-                use_gpu            = true
-                bwa_prefix = 'genome.fa'
-            }
             workflow {
                 """
                 input[0] = Channel.of([
@@ -109,10 +99,10 @@ nextflow_workflow {
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ])
                 input[3] = BWA_INDEX.out.index
-                input[4] = true // skip_deduplication
-                input[5] = true // use_gpu
-                input[6] = Channel.empty() // interval_file
-                input[7] = Channel.empty() // known_sites
+                input[4] = true             // skip_deduplication
+                input[5] = true             // use_gpu
+                input[6] = [[:], [] ]       // interval_file
+                input[7] = [[:], [] ]       // known_sites
                 """
             }
         }
@@ -135,49 +125,9 @@ nextflow_workflow {
         }
     }
 
-    test("Params: parabricks/fq2bam single-end | use_gpu | stub") {
-        options '-stub'
-        when {
-
-            workflow {
-                """
-                input[0] = Channel.of([
-                            [ id:'test', single_end:true ],
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
-                ])
-                input[1] = Channel.of([
-                            [:],
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                ])
-                input[2] = Channel.of([
-                            [:],
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
-                ])
-                input[3] = BWA_INDEX.out.index
-                input[4] = false // skip_deduplication
-                input[5] = true // use_gpu
-                input[6] = Channel.empty() // interval_file
-                input[7] = Channel.empty() // known_sites
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
-            )
-        }
-    }
-
-    test("Params: parabricks/fq2bam paired-end | use_gpu | skip_deduplication") {
+    test("Sarscov2 fasta - PE - skip deduplication - with GPU parabricks/fq2bam") {
 
         when {
-            params {
-                skip_deduplication = true
-                use_gpu            = true
-                bwa_prefix = 'genome.fa'
-            }
             workflow {
                 """
                 input[0] = Channel.of([
@@ -195,11 +145,11 @@ nextflow_workflow {
                             [:],
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ])
-                input[3] = BWA_INDEX_PE.out.index
-                input[4] = true // skip_deduplication
-                input[5] = true // use_gpu
-                input[6] = Channel.empty() // interval_file
-                input[7] = Channel.empty() // known_sites
+                input[3] = BWA_INDEX.out.index
+                input[4] = true             // skip_deduplication
+                input[5] = true             // use_gpu
+                input[6] = [[:], [] ]       // interval_file
+                input[7] = [[:], [] ]       // known_sites
                 """
             }
         }
@@ -217,6 +167,44 @@ nextflow_workflow {
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
                     workflow.out.versions
                     ).match()
+                }
+            )
+        }
+    }
+
+    test("Sarscov2 fasta - SE - skip deduplication - with GPU parabricks/fq2bam - stub") {
+        options '-stub'
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:true ],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
+                            [:],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = Channel.of([
+                            [:],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ])
+                input[3] = BWA_INDEX.out.index
+                input[4] = false            // deduplicate
+                input[5] = true             // use_gpu
+                input[6] = [[:], [] ]       // interval_file
+                input[7] = [[:], [] ]       // known_sites
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match()
                 }
             )
         }

@@ -14,6 +14,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
     ch_bwamem_index      // channel: [ val(meta), [ bwam index ] ]
     skip_deduplication   // boolean: whether to deduplicate alignments
     use_gpu              // boolean: whether to use GPU or CPU for bwamem alignment
+    output_fmt           // string: output format for parabricks fq2bam (e.g., 'bam' or 'cram')
     interval_file        // channel: [ val(meta), [ interval file ] ]
     known_sites          // channel: [ val(meta), [ known sites ] ]
 
@@ -37,7 +38,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
             ch_bwamem_index,
             interval_file, // interval file
             known_sites, // known sites
-            'bam' // output format
+            output_fmt // output format
         )
         ch_alignment = PARABRICKS_FQ2BAM.out.bam
         ch_versions  = ch_versions.mix(PARABRICKS_FQ2BAM.out.versions.first())
