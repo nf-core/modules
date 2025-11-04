@@ -1,0 +1,59 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "pcgr_getref"
+description: Get reference to run Personal Cancer Genome Reporter (PCGR)
+keywords:
+  - cancer
+  - reference
+  - pcgr
+  - mtb
+tools:
+  - pcgr:
+      description: "The Personal Cancer Genome Reporter (PCGR) is a stand-alone software package for functional annotation and translation of individual tumor genomes for precision cancer medicine"
+      homepage: "https://sigven.github.io/pcgr/index.html"
+      documentation: "https://sigven.github.io/pcgr/articles/running.html"
+      tool_dev_url: "https://github.com/sigven/pcgr/"
+      doi: "10.1093/bioinformatics/btx817"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bundleversion:
+        type: string
+        description: PCGR reference data bundle version
+        pattern: "*[0-9]*"
+        ontologies: []
+    - genome:
+        type: string
+        description: PCGR reference genome version
+        pattern: "grch37|grch38"
+        ontologies: []
+
+output:
+  pcgrref:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${bundleversion}":
+          type: directory
+          description: PCGR reference data directory
+          pattern: "{bundleversion}/"
+          ontologies: []
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+authors:
+  - "@famosab"
+maintainers:
+  - "@famosab"
