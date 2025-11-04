@@ -64,6 +64,30 @@ output:
           pattern: "*_scaffolds_final.agp"
           ontologies:
             - edam: http://edamontology.org/format_3693 # AGP
+  initial_break_agp:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*_{initial,no}_break*.agp":
+          type: file
+          description: AGP file describing initial contig breaks
+          pattern: "*_{initial,no}_break*.agp"
+          ontologies:
+            - edam: http://edamontology.org/format_3693 # AGP
+  round_agp:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*_r*.agp":
+          type: file
+          description: AGP file describing intermediate scaffolding rounds
+          pattern: "*_r*.agp"
+          ontologies:
+            - edam: http://edamontology.org/format_3693 # AGP
   binary:
     - - meta:
           type: map
@@ -76,6 +100,18 @@ output:
             Binary data file with alignment results of Hi-C reads
             to the contigs in internal YaHS binary format
           pattern: "*.bin"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.log":
+          type: file
+          description: Log file describing YaHS run
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Textual format
   versions:
     - versions.yml:
         type: file
