@@ -134,6 +134,7 @@ nextflow_process {
             { assert snapshot(
                     process.out.report,
                     process.out.versions,
+                    process.out.classified_reads_assignment,
                 ).match()
             },
             )
