@@ -11,10 +11,13 @@ process YAHS {
     tuple val(meta), path(fasta), path(fai), path(hic_map)
 
     output:
-    tuple val(meta), path("*_scaffolds_final.fa") , emit: scaffolds_fasta,  optional: true
-    tuple val(meta), path("*_scaffolds_final.agp"), emit: scaffolds_agp  ,  optional: true
-    tuple val(meta), path("*.bin")                , emit: binary
-    path "versions.yml"                           , emit: versions
+    tuple val(meta), path("*_scaffolds_final.fa")     , emit: scaffolds_fasta   ,  optional: true
+    tuple val(meta), path("*_scaffolds_final.agp")    , emit: scaffolds_agp     ,  optional: true
+    tuple val(meta), path("*_{initial,no}_break*.agp"), emit: initial_break_agp ,  optional: true
+    tuple val(meta), path("*_r*.agp")                 , emit: round_agp         ,  optional: true
+    tuple val(meta), path("*.bin")                    , emit: binary
+    tuple val(meta), path("*.log")                    , emit: log
+    path "versions.yml"                               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,7 +30,8 @@ process YAHS {
         -o ${prefix} \\
         ${args} \\
         ${fasta} \\
-        ${hic_map}
+        ${hic_map} \\
+        2>| >( tee ${prefix}.log >&2 )
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -40,7 +44,12 @@ process YAHS {
     """
     touch ${prefix}_scaffolds_final.fa
     touch ${prefix}_scaffolds_final.agp
+    touch ${prefix}_inital_break_01.agp
+    touch ${prefix}_no_break.agp
+    touch ${prefix}_r01.agp
+    touch ${prefix}_r01_break.agp
     touch ${prefix}.bin
+    touch ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
