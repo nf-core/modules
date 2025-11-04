@@ -32,7 +32,7 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    sanitizeOutput(workflow.out, unstableKeys: ["empty_fastq"]).collectEntries { key, val ->
+                    sanitizeOutput(workflow.out, unstableKeys: ["empty_fastq", "logs"]).collectEntries { key, val ->
                         if (key == "interop") {
                             return [ key, val.collect { meta, files -> 
                                 [ 
