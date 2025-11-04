@@ -451,7 +451,7 @@ if (!is.null(opt\$periodicity_threshold)) {
 
     filtered.ls <- riboWaltz::length_filter(data = reads.ls,
                                 length_filter_mode = "periodicity",
-                                periodicity_threshold = opt\$periodicity_threshold)
+                                periodicity_threshold = as.integer(opt\$periodicity_threshold))
 } else {
 
     filtered.ls <- reads.ls
@@ -533,8 +533,8 @@ message("Generating diagnostic plots...")
 # Define min and max length if not provided as a param
 if (is.null(opt\$length_range)) {
 
-    min_rl <- as.integer(min(psite_offset.dt[,"length"]))
-    max_rl <- as.integer(max(psite_offset.dt[,"length"]))
+    min_length <- as.integer(min(psite_offset.dt[,"length"]))
+    max_length <- as.integer(max(psite_offset.dt[,"length"]))
 }
 
 lapply(names(reads.ls), save_length_distribution_plot, dt.ls = reads.ls)
