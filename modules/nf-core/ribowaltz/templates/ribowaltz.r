@@ -451,7 +451,7 @@ if (!is.null(opt\$periodicity_threshold)) {
 
     filtered.ls <- riboWaltz::length_filter(data = reads.ls,
                                 length_filter_mode = "periodicity",
-                                periodicity_threshold = opt\$periodicity_threshold)
+                                periodicity_threshold = as.integer(opt\$periodicity_threshold))
 } else {
 
     filtered.ls <- reads.ls
@@ -533,8 +533,8 @@ message("Generating diagnostic plots...")
 # Define min and max length if not provided as a param
 if (is.null(opt\$length_range)) {
 
-    min_rl <- as.integer(min(psite_offset.dt[,"length"]))
-    max_rl <- as.integer(max(psite_offset.dt[,"length"]))
+    min_length <- as.integer(min(psite_offset.dt[,"length"]))
+    max_length <- as.integer(max(psite_offset.dt[,"length"]))
 }
 
 lapply(names(reads.ls), save_length_distribution_plot, dt.ls = reads.ls)
@@ -548,7 +548,7 @@ lapply(sample_name.ls, save_psite_region_plot, dt.ls = filtered_psite.ls, annota
 # Compute the percentage of P-sites falling in the three possible translation reading frames for 5’ UTRs, CDSs and 3’ UTRs.
 # Plots should show an enrichment of P-sites in the first frame on the coding sequence but not the UTRs, as expected for ribosome protected fragments from protein coding mRNAs.
 lapply(sample_name.ls, save_frame_plots, dt.ls = filtered_psite.ls, annotation.df = annotation.dt,
-        min_length = min_rl, max_length = max_rl)
+        min_length = min_length, max_length = max_length)
 
 # Trinucleotide periodicity along coding sequences: metaprofiles (the merge of single, transcript-specific profiles) based on P-sites mapping around the start and the stop codon of annotated CDSs.
 lapply(sample_name.ls, save_metaprofile_psite_plot, df.ls = filtered_psite.ls, annotation.df = annotation.dt)
