@@ -44,7 +44,6 @@ process GLIMPSE_PHASE {
     """
 
     stub:
-    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_${input_region.replace(":","_")}"
     def suffix = task.ext.suffix ?: "vcf.gz"
     """
