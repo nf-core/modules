@@ -24,7 +24,7 @@ process YAHS {
 
     script:
     def args      = task.ext.args ?: ''
-    prefix    = task.ext.prefix ?: "${meta.id}"
+    prefix        = task.ext.prefix ?: "${meta.id}"
     def agp_input = agp ? "-a ${agp}" : ""
     """
     yahs \\
