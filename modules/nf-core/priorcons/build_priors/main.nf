@@ -2,11 +2,10 @@ process PRIORCONS_BUILDPRIORS {
     tag "$meta.id"
     label 'process_low'
 
-    // TODO pending the container and singularity image being available with priorcons installed.
     conda "${moduleDir}/environment.yml"
-    // container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-    //     'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-    //     'biocontainers/YOUR-TOOL-HERE' }"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    'https://depot.galaxyproject.org/singularity/priorcons:0.1.0--pyhdfd78af_0' :
+    'biocontainers/priorcons:0.1.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(alignment)  // Input alignment FASTA file

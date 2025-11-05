@@ -7,21 +7,18 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "priorcons"
-    tag "priorcons/buildpriors"
+    tag "priorcons/build_priors"
 
     test("build_priors_testfiles") {
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = [
-                    [ id:'rsv_test' ],
-                    file('https://raw.githubusercontent.com/GERMAN00VP/PriorCons/b518f3725b2cc8820222ea52024a0a63f9e6dfe1/rsv_files/build_priors_testfiles/build_priors_test.aln', checkIfExists: true)
+                    [ id:'sample1' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
                 ]
-                input[1] = 'RSV_BD'
+                input[1] = 'sample1'
                 """
             }
         }
@@ -43,16 +40,13 @@ nextflow_process {
         options "-stub"
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = [
-                    [ id:'rsv_test' ],
-                    file('https://raw.githubusercontent.com/GERMAN00VP/PriorCons/b518f3725b2cc8820222ea52024a0a63f9e6dfe1/rsv_files/build_priors_testfiles/build_priors_test.aln', checkIfExists: true)
+                    [ id:'sample1' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
                 ]
-                input[1] = 'RSV_BD'
+                input[1] = 'sample1'
                 """
             }
         }
