@@ -13,7 +13,7 @@ process VEMBRANE_FILTER {
 
     output:
     tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: filtered_variant
-    path "versions.yml"           , emit: versions
+    path "versions.yml"                               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,31 +26,24 @@ process VEMBRANE_FILTER {
     vembrane filter \\
         ${args} \\
         ${expression} \\
-        -o ${prefix}_filtered.vcf \\
-        $variant
+        -o ${prefix}.filtered.vcf \\
+        ${variant}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vembrane: \$(vembrane --version)
+        vembrane: \$(vembrane --version | sed '1!d;s/.* //')
     END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    echo $args
-
-    vembrane filter \\
-        ${args} \\
-        ${expression} \\
-        -o ${prefix}_filtered.vcf \\
-        $variant
+    touch ${prefix}.filtered.vcf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        vembrane: \$(vembrane --version)
+        vembrane: \$(vembrane --version | sed '1!d;s/.* //')
     END_VERSIONS
     """
 }

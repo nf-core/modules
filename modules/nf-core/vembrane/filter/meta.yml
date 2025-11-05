@@ -3,8 +3,11 @@ name: "vembrane_filter"
 description: write your description here
 keywords:
   - filter
-  - table
-  - sort
+  - vcf
+  - bcf
+  - genomics
+  - variant
+  - annotation
 tools:
   - "vembrane":
       description: "Filter VCF/BCF files with Python expressions."
@@ -20,7 +23,7 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test' ]
     - variant:
         type: file
         description: |
@@ -40,10 +43,10 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*.{vcf,bcf,vcf.gz,bcf.gz}":
           type: file
-          description: VCF normalized output file
+          description: Filtered VCF output file
           pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
           ontologies: []
   versions:
