@@ -8,7 +8,7 @@ process YAHS {
         'biocontainers/yahs:1.2.2--h577a1d6_1' }"
 
     input:
-    tuple val(meta), path(fasta), path(fai), path(hic_map)
+    tuple val(meta), path(fasta), path(fai), path(hic_map), path(agp)
 
     output:
     tuple val(meta), path("*_scaffolds_final.fa")     , emit: scaffolds_fasta   ,  optional: true
@@ -23,11 +23,13 @@ process YAHS {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args      = task.ext.args ?: ''
+    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def agp_input = agp ? "-a ${agp}" : ""
     """
     yahs \\
         -o ${prefix} \\
+        ${agp_input} \\
         ${args} \\
         ${fasta} \\
         ${hic_map} \\
