@@ -11,13 +11,14 @@ process YAHS {
     tuple val(meta), path(fasta), path(fai), path(hic_map), path(agp)
 
     output:
-    tuple val(meta), path("${prefix}_scaffolds_final.fa")     , emit: scaffolds_fasta   ,  optional: true
-    tuple val(meta), path("${prefix}_scaffolds_final.agp")    , emit: scaffolds_agp     ,  optional: true
-    tuple val(meta), path("${prefix}_{initial,no}_break*.agp"), emit: initial_break_agp ,  optional: true
-    tuple val(meta), path("${prefix}_r*_*.agp")               , emit: round_agp         ,  optional: true
-    tuple val(meta), path("${prefix}.bin")                    , emit: binary
-    tuple val(meta), path("${prefix}.log")                    , emit: log
-    path "versions.yml"                                       , emit: versions
+    // note: typo in yahs file outputs - it writes "inital", not "initial"
+    tuple val(meta), path("${prefix}_scaffolds_final.fa")    , emit: scaffolds_fasta   ,  optional: true
+    tuple val(meta), path("${prefix}_scaffolds_final.agp")   , emit: scaffolds_agp     ,  optional: true
+    tuple val(meta), path("${prefix}_{inital,no}_break*.agp"), emit: initial_break_agp ,  optional: true
+    tuple val(meta), path("${prefix}_r*_*.agp")              , emit: round_agp         ,  optional: true
+    tuple val(meta), path("${prefix}.bin")                   , emit: binary
+    tuple val(meta), path("${prefix}.log")                   , emit: log
+    path "versions.yml"                                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
