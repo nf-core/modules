@@ -3,12 +3,10 @@ process PRIORCONS_INTEGRATE_CONSENSUS {
     tag "$meta.id"
     label 'process_low'
 
-    // Activate conda env
     conda "${moduleDir}/environment.yml"
-
-    //container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-    //'https://depot.galaxyproject.org/singularity/priorcons:0.1.0--pyhdfd78af_0' :
-    //'quay.io/biocontainers/priorcons:0.1.0--pyhdfd78af_0' }"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    'https://depot.galaxyproject.org/singularity/priorcons:0.1.0--pyhdfd78af_0' :
+    'biocontainers/priorcons:0.1.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(input_aln), val(ref_id), path(prior_parquet)

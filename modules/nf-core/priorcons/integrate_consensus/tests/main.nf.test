@@ -10,7 +10,7 @@ nextflow_process {
     tag "priorcons"
     tag "priorcons/integrate_consensus"
 
-    test("rsv - alignment and priors") {
+    test("integrate_consensus_testfiles") {
 
         when {
             process {
@@ -33,7 +33,7 @@ nextflow_process {
         }
     }
 
-    test("rsv - alignment and priors - stub") {
+    test("integrate_consensus_testfiles - stub") {
 
         options "-stub"
 
