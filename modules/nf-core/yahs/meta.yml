@@ -39,6 +39,14 @@ input:
         ontologies:
           - edam: http://edamontology.org/format_3003 # BED
           - edam: http://edamontology.org/format_2572 # BAM
+    - agp:
+        type: file
+        description: |
+          Optional AGP file describing a set of scaffolds from the input contigs
+          to use as a start point
+        pattern: "*.agp"
+        ontologies:
+          - edam: http://edamontology.org/format_3693 # AGP
 output:
   scaffolds_fasta:
     - - meta:
