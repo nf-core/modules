@@ -9,23 +9,20 @@ nextflow_workflow {
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "subworkflows/vcf_vembrane"
+    tag "vcf_vembrane"
+
     tag "tabix"
     tag "tabix/bgziptabix"
-    tag "tabix/tabix"
     tag "vembrane"
     tag "vembrane/filter"
     tag "vembrane/sort"
     tag "vembrane/table"
-    tag "bcftools"
-    tag "bcftools/filter"
-    tag "bcftools/norm"
 
     test("homo_sapiens - vcf - vcf_processing") {
 
         when {
             workflow {
                 """
-                // Define samplesheet channel with VCF, tabix index, and CNA files
                 input[0] = Channel.of([
                     [
                         sample: 'sample1',
@@ -64,7 +61,6 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                // Define samplesheet channel with compressed VCF and tabix index
                 input[0] = Channel.of([
                     [
                         sample: 'sample2',
@@ -102,7 +98,6 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                // Define samplesheet channel with BCF file
                 input[0] = Channel.of([
                     [
                         sample: 'sample3',
@@ -141,7 +136,6 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                // Define samplesheet channel with BCF file
                 input[0] = Channel.of([
                     [
                         sample: 'sample3',
@@ -409,7 +403,6 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                // Define samplesheet channel with BCF file
                 input[0] = Channel.of([
                     [
                         sample: 'sample3',

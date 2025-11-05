@@ -1,7 +1,4 @@
 include { TABIX_BGZIPTABIX as TABIX_BGZIPTABIX   } from '../../../modules/nf-core/tabix/bgziptabix/main'
-include { TABIX_TABIX as TABIX_TABIX_VCF         } from '../../../modules/nf-core/tabix/tabix/main'
-include { TABIX_TABIX as TABIX_TABIX_VEMBRANE    } from '../../../modules/nf-core/tabix/tabix/main'
-
 include { VEMBRANE_FILTER                        } from '../../../modules/nf-core/vembrane/filter/main'
 include {
     VEMBRANE_SORT as VEMBRANE_SORT_DEFAULT ;
@@ -57,7 +54,7 @@ workflow VCF_VEMBRANE {
     }
 
     emit:
-    filtered_ch // channel: [ meta, path(vcf_file), path(tbi_file) ]
-    tsv_ch      // channel: [ meta, path(table_file) ] or empty
+    filtered_ch               // channel: [ meta, path(vcf_file), path(tbi_file) ]
+    tsv_ch                    // channel: [ meta, path(table_file) ] or empty
     versions    = ch_versions // channel: [ path(versions.yml) ]
 }
