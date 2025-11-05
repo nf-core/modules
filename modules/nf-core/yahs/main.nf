@@ -11,20 +11,20 @@ process YAHS {
     tuple val(meta), path(fasta), path(fai), path(hic_map), path(agp)
 
     output:
-    tuple val(meta), path("*_scaffolds_final.fa")     , emit: scaffolds_fasta   ,  optional: true
-    tuple val(meta), path("*_scaffolds_final.agp")    , emit: scaffolds_agp     ,  optional: true
-    tuple val(meta), path("*_{initial,no}_break*.agp"), emit: initial_break_agp ,  optional: true
-    tuple val(meta), path("*_r*.agp")                 , emit: round_agp         ,  optional: true
-    tuple val(meta), path("*.bin")                    , emit: binary
-    tuple val(meta), path("*.log")                    , emit: log
-    path "versions.yml"                               , emit: versions
+    tuple val(meta), path("${prefix}_scaffolds_final.fa")     , emit: scaffolds_fasta   ,  optional: true
+    tuple val(meta), path("${prefix}_scaffolds_final.agp")    , emit: scaffolds_agp     ,  optional: true
+    tuple val(meta), path("${prefix}_{initial,no}_break*.agp"), emit: initial_break_agp ,  optional: true
+    tuple val(meta), path("${prefix}_r*_*.agp")               , emit: round_agp         ,  optional: true
+    tuple val(meta), path("${prefix}.bin")                    , emit: binary
+    tuple val(meta), path("${prefix}.log")                    , emit: log
+    path "versions.yml"                                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args      = task.ext.args ?: ''
-    def prefix    = task.ext.prefix ?: "${meta.id}"
+    prefix    = task.ext.prefix ?: "${meta.id}"
     def agp_input = agp ? "-a ${agp}" : ""
     """
     yahs \\
@@ -42,7 +42,7 @@ process YAHS {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_scaffolds_final.fa
     touch ${prefix}_scaffolds_final.agp

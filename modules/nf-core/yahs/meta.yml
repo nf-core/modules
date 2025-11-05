@@ -54,10 +54,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*_scaffolds_final.fa":
+      - ${prefix}_scaffolds_final.fa:
           type: file
           description: FASTA file with resulting contigs
-          pattern: "*_scaffolds_final.fa"
+          pattern: "${prefix}_scaffolds_final.fa"
           ontologies:
             - edam: http://edamontology.org/format_1929 # FASTA
   scaffolds_agp:
@@ -66,10 +66,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*_scaffolds_final.agp":
+      - ${prefix}_scaffolds_final.agp:
           type: file
           description: AGP file containing contigs placing coordinates
-          pattern: "*_scaffolds_final.agp"
+          pattern: "${prefix}_scaffolds_final.agp"
           ontologies:
             - edam: http://edamontology.org/format_3693 # AGP
   initial_break_agp:
@@ -78,10 +78,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*_{initial,no}_break*.agp":
+      - ${prefix}_{initial,no}_break*.agp:
           type: file
           description: AGP file describing initial contig breaks
-          pattern: "*_{initial,no}_break*.agp"
+          pattern: "${prefix}_{initial,no}_break*.agp"
           ontologies:
             - edam: http://edamontology.org/format_3693 # AGP
   round_agp:
@@ -90,10 +90,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*_r*.agp":
+      - ${prefix}_r*_*.agp:
           type: file
-          description: AGP file describing intermediate scaffolding rounds
-          pattern: "*_r*.agp"
+          description: AGP file describing intermediate rounds of scaffolding
+          pattern: "${prefix}_{initial,no}_break*.agp"
           ontologies:
             - edam: http://edamontology.org/format_3693 # AGP
   binary:
@@ -102,12 +102,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*.bin":
+      - ${prefix}.bin:
           type: file
           description: |
             Binary data file with alignment results of Hi-C reads
             to the contigs in internal YaHS binary format
-          pattern: "*.bin"
+          pattern: "${prefix}.bin"
           ontologies: []
   log:
     - - meta:
@@ -115,9 +115,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*.log":
+      - ${prefix}.log:
           type: file
           description: Log file describing YaHS run
+          pattern: "${prefix}.log"
           ontologies:
             - edam: "http://edamontology.org/format_2330" # Textual format
   versions:
