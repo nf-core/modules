@@ -1,0 +1,60 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "vcf_vembrane"
+description: Filter and/or sort and optionally produce a TSV table for a VCF with vembrane.
+keywords:
+  - vcf
+  - variant
+  - filtering
+  - sorting
+  - vembrane
+  - bgzip
+  - tabix
+  - table
+  - tsv
+components:
+  - vembrane/filter
+  - vembrane/sort
+  - vembrane/table
+  - tabix/bgziptabix
+input:
+  - ch_vcf:
+      type: tuple
+      description: |
+        Input channel containing metadata and a VCF/BCF file to process.
+        Structure: [ val(meta), path(vcf) ]
+  - filter_expression:
+      type: val
+      description: |
+        Vembrane filter expression to select variants.
+        If empty or 'null', the filtering step is skipped.
+  - sort_expression:
+      type: val
+      description: |
+        Vembrane sort expression used for optional intermediate sorting.
+        If empty or 'null', this step is skipped.
+        A final CHROM,POS sort is always applied.
+  - table_expression:
+      type: val
+      description: |
+        Vembrane table expression to generate a TSV table.
+        If empty or 'null', table generation is skipped.
+output:
+  - filtered_ch:
+      type: file
+      description: |
+        Final filtered and sorted VCF file, bgzipped and indexed with Tabix.
+      pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+  - tsv_ch:
+      type: file
+      description: |
+        Optional vembrane table (TSV) generated if a table expression is provided.
+      pattern: "*.{tsv}"
+  - versions:
+      type: file
+      description: |
+        File containing software version information aggregated from all components.
+      pattern: "versions.yml"
+authors:
+  - "@dhtt"
+maintainers:
+  - "@dhtt"
