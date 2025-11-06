@@ -2,13 +2,13 @@ process GENOMAD_DOWNLOAD {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/genomad:1.11.0--pyhdfd78af_0':
-        'biocontainers/genomad:1.11.0--pyhdfd78af_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f3/f367c7e7112f39b159ef871c046709d0213285c2cb98388ca5defd73846b6eda/data'
+        : 'community.wave.seqera.io/library/genomad_rich-click:f0535431e035ccee'}"
 
     output:
-    path "genomad_db/"  , emit: genomad_db
-    path "versions.yml" , emit: versions
+    path "genomad_db/" , emit: genomad_db
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -17,7 +17,9 @@ process GENOMAD_DOWNLOAD {
     def args = task.ext.args ?: ''
     """
     genomad \\
-        download-database .
+        download-database \\
+        ${args} \\
+        .
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
