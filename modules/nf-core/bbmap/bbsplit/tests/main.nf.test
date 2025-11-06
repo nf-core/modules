@@ -132,7 +132,7 @@ nextflow_process {
 
             assertAll(
                 { assert process.success },
-                { assert path(process.out.log[0][1]).text.contains("If you wish to regenerate the index") },
+                { assert path(process.out.log[0][1]).text.contains("already exists; skipping merge") },
                 { assert filesExist : "One or more files to exclude do not exist" },
                 { assert snapshot(
                     filteredFiles,
