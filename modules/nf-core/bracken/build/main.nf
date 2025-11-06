@@ -12,7 +12,7 @@ process BRACKEN_BUILD {
 
     output:
     tuple val(meta), path("bracken-database/", includeInputs: true), emit: db
-    tuple val(meta), path("bracken-database/database*", includeInputs: true), emit: bracken_files
+    tuple val(meta), path("bracken-database/database*", includeInputs: true), path("bracken-database/*k2d", includeInputs: true), path("bracken-database/*map", includeInputs: true), path("bracken-database/library/added/*", includeInputs: true), path("bracken-database/taxonomy/*", includeInputs: true), emit: db_separated
     path "versions.yml", emit: versions
 
     when:
@@ -39,9 +39,14 @@ process BRACKEN_BUILD {
     """
     echo ${args}
     mkdir bracken-database/
+    mkdir -p bracken-database/library/added bracken-database/taxonomy
     touch bracken-database/database100mers.kmer_distrib
     touch bracken-database/database100mers.kraken
     touch bracken-database/database.kraken
+    touch bracken-database/{hash,opts,tax}.k2d
+    touch bracken-database/seqid2taxid.map
+    touch bracken-database/library/added/test.fa
+    touch bracken-database/taxonomy/{nodes,names}.dmp
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
