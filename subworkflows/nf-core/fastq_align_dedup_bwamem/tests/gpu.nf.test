@@ -38,6 +38,9 @@ nextflow_workflow {
         }
     }
 
+    println "DEBUG: BWA_INDEX.out.index contents:"
+    println BWA_INDEX.out.index.view()
+
     test("Sarscov2 fasta - SE - deduplicate - with GPU parabricks/fq2bam") {
         when {
             workflow {
@@ -55,11 +58,11 @@ nextflow_workflow {
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ])
                 input[3] = BWA_INDEX.out.index
-                input[4] = false                    // deduplicate
-                input[5] = true                     // use_gpu
-                input[6] = Channel.of([[:], []])    // interval_file
-                input[7] = Channel.of([[:], []])    // known_sites
-                input[8] = "bam"                    // output_fmt
+                input[4] = false                                                            // deduplicate
+                input[5] = true                                                             // use_gpu
+                input[6] = Channel.of([[:], file('dummy.interval', checkIfExists: false)])  // interval_file
+                input[7] = Channel.of([[:], file('dummy.vcf', checkIfExists: false)])       // know_sites
+                input[8] = "bam"                                                            // output_fmt
                 """
             }
         }
