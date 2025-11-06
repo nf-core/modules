@@ -36,12 +36,17 @@ nextflow_workflow {
                 """
             }
         }
-    println "DEBUG: Running BWA_INDEX.out.index.view()..."
-    BWA_INDEX.out.index.view()
     }
 
     test("Sarscov2 fasta - SE - deduplicate - with GPU parabricks/fq2bam") {
         when {
+            def result = run("BWA_INDEX") // run the module again here if you want to debug
+            println "DEBUG: BWA_INDEX result outputs:"
+            result.out.each { k, v -> println "${k} -> ${v}" }
+
+            // if you want to inspect a specific channel:
+            println "DEBUG: index channel contents:"
+            result.out.index.view()
             workflow {
                 """
                 input[0] = Channel.of([
