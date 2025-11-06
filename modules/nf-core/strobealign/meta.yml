@@ -10,14 +10,14 @@ keywords:
   - bam
   - sam
 tools:
-- "strobealign":
-    description: "Align short reads using dynamic seed size with strobemers"
-    homepage: "https://github.com/ksahlin/strobealign"
-    documentation: "https://github.com/ksahlin/strobealign?tab=readme-ov-file#usage"
-    tool_dev_url: "https://github.com/ksahlin/strobealign"
-    doi: "10.1186/s13059-022-02831-7"
-    licence: ['MIT']
-    identifier: biotools:strobealign
+  - "strobealign":
+      description: "Align short reads using dynamic seed size with strobemers"
+      homepage: "https://github.com/ksahlin/strobealign"
+      documentation: "https://github.com/ksahlin/strobealign?tab=readme-ov-file#usage"
+      tool_dev_url: "https://github.com/ksahlin/strobealign"
+      doi: "10.1186/s13059-022-02831-7"
+      licence: ["MIT"]
+      identifier: biotools:strobealign
 
 input:
   - - meta:
@@ -136,7 +136,7 @@ output:
         ontologies:
           - edam: http://edamontology.org/format_3750 # YAML
 authors:
-- "@matthdsm"
+  - "@matthdsm"
 maintainers:
-- "@matthdsm"
-- "@nvnieuwk"
+  - "@matthdsm"
+  - "@nvnieuwk"
