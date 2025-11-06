@@ -10,7 +10,20 @@
                         [
                             "database.kraken:md5,d41d8cd98f00b204e9800998ecf8427e",
                             "database100mers.kmer_distrib:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "database100mers.kraken:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            "database100mers.kraken:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "hash.k2d:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            [
+                                [
+                                    "test.fa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                                ]
+                            ],
+                            "opts.k2d:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "seqid2taxid.map:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "tax.k2d:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            [
+                                "names.dmp:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "nodes.dmp:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            ]
                         ]
                     ]
                 ],
@@ -23,23 +36,22 @@
                             "database.kraken:md5,d41d8cd98f00b204e9800998ecf8427e",
                             "database100mers.kmer_distrib:md5,d41d8cd98f00b204e9800998ecf8427e",
                             "database100mers.kraken:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ],
+                        [
+                            "hash.k2d:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "opts.k2d:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "tax.k2d:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ],
+                        "seqid2taxid.map:md5,d41d8cd98f00b204e9800998ecf8427e",
+                        "test.fa:md5,d41d8cd98f00b204e9800998ecf8427e",
+                        [
+                            "names.dmp:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "nodes.dmp:md5,d41d8cd98f00b204e9800998ecf8427e"
                         ]
                     ]
                 ],
                 "2": [
                     "versions.yml:md5,5b37ba214e1f8e4bd4276d6ab1000915"
-                ],
-                "bracken_files": [
-                    [
-                        {
-                            "id": "kraken2db_forbuilding"
-                        },
-                        [
-                            "database.kraken:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "database100mers.kmer_distrib:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "database100mers.kraken:md5,d41d8cd98f00b204e9800998ecf8427e"
-                        ]
-                    ]
                 ],
                 "db": [
                     [
@@ -49,7 +61,43 @@
                         [
                             "database.kraken:md5,d41d8cd98f00b204e9800998ecf8427e",
                             "database100mers.kmer_distrib:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "database100mers.kraken:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "hash.k2d:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            [
+                                [
+                                    "test.fa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                                ]
+                            ],
+                            "opts.k2d:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "seqid2taxid.map:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "tax.k2d:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            [
+                                "names.dmp:md5,d41d8cd98f00b204e9800998ecf8427e",
+                                "nodes.dmp:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            ]
+                        ]
+                    ]
+                ],
+                "db_separated": [
+                    [
+                        {
+                            "id": "kraken2db_forbuilding"
+                        },
+                        [
+                            "database.kraken:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "database100mers.kmer_distrib:md5,d41d8cd98f00b204e9800998ecf8427e",
                             "database100mers.kraken:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ],
+                        [
+                            "hash.k2d:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "opts.k2d:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "tax.k2d:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ],
+                        "seqid2taxid.map:md5,d41d8cd98f00b204e9800998ecf8427e",
+                        "test.fa:md5,d41d8cd98f00b204e9800998ecf8427e",
+                        [
+                            "names.dmp:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "nodes.dmp:md5,d41d8cd98f00b204e9800998ecf8427e"
                         ]
                     ]
                 ],
@@ -62,7 +110,7 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.7"
         },
-        "timestamp": "2025-11-06T09:15:42.147866626"
+        "timestamp": "2025-11-06T13:53:33.430205264"
     },
     "bracken - db": {
         "content": [
