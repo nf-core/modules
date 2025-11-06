@@ -46,18 +46,27 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}/:
+      - bracken-database/:
           type: directory
-          description: Bracken compatible Kraken2 database directory containing kraken2 database files and the additional bracken kmer distribution files
-          pattern: "*/"
+          description: |
+            Directory contains the database that can be used to perform taxonomic classification
+
+            IMPORTANT: this output directory will be hardcoded as 'bracken-database/' inside the module
+            to prevent issues of containers following symlinks in symlinks.
+
+            To give a user the option to provide custom name for the database directory within a pipeline, you should
+            customise this name using during pipeline output publication via the pipeline's publishDir or workflow output customisation options.
+          pattern: "bracken-database/"
+          ontologies:
+            - edam: http://edamontology.org/data_1049 # Directory
   bracken_files:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}/database*:
-          type: directory
+      - bracken-database/database*:
+          type: file
           description: Bracken kmer distribution files
           pattern: "database*"
   versions:

@@ -61,9 +61,9 @@ output:
       type: directory
       description: |
         Channel containing KRAKEN2 (and BRACKEN) database directory files.
-        Use `ext.prefix` in a modules.conf file to change default name
+        Use publishDir in a modules.conf file to change default name for user
         Structure: [ val(meta), path(db) ]
-      pattern: "*/"
+      pattern: "bracken-database/"
   - versions:
       type: file
       description: |

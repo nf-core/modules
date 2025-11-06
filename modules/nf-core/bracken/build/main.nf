@@ -8,11 +8,11 @@ process BRACKEN_BUILD {
         : 'community.wave.seqera.io/library/bracken:3.1--22a4e66ce04c5e01'}"
 
     input:
-    tuple val(meta), path(k2d, stageAs: "kraken2db_forbuilding/"), path(map, stageAs: "kraken2db_forbuilding/"), path(library, stageAs: "kraken2db_forbuilding/library/added/"), path(taxonomy, stageAs: "kraken2db_forbuilding/taxonomy/")
+    tuple val(meta), path(k2d, stageAs: "bracken-database/"), path(map, stageAs: "bracken-database/"), path(library, stageAs: "bracken-database/library/added/"), path(taxonomy, stageAs: "bracken-database/taxonomy/")
 
     output:
-    tuple val(meta), path("${prefix}/", includeInputs: true), emit: db
-    tuple val(meta), path("${prefix}/database*", includeInputs: true), emit: bracken_files
+    tuple val(meta), path("bracken-database/", includeInputs: true), emit: db
+    tuple val(meta), path("bracken-database/database*", includeInputs: true), emit: bracken_files
     path "versions.yml", emit: versions
 
     when:
@@ -25,9 +25,7 @@ process BRACKEN_BUILD {
     bracken-build \\
         ${args} \\
         -t ${task.cpus} \\
-        -d kraken2db_forbuilding/
-
-    mv kraken2db_forbuilding/ ${prefix}/
+        -d bracken-database/
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -40,10 +38,10 @@ process BRACKEN_BUILD {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo ${args}
-    mkdir kraken2db_forbuilding/
-    touch kraken2db_forbuilding/database100mers.kmer_distrib
-    touch kraken2db_forbuilding/database100mers.kraken
-    touch kraken2db_forbuilding/database.kraken
+    mkdir bracken-database/
+    touch bracken-database/database100mers.kmer_distrib
+    touch bracken-database/database100mers.kraken
+    touch bracken-database/database.kraken
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

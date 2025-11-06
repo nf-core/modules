@@ -64,10 +64,17 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}:
+      - kraken2-database:
           type: directory
-          description: contains the database that can be used to perform taxonomic classification
-          pattern: "*/"
+          description: |
+            Directory contains the database that can be used to perform taxonomic classification
+
+            IMPORTANT: this output directory will be hardcoded as 'kraken2-database/' inside the module
+            to prevent issues of containers following symlinks in symlinks.
+
+            To give a user the option to provide custom name for the database directory within a pipeline, you should
+            customise this name using during pipeline output publication via the pipeline's publishDir or workflow output customisation options.
+          pattern: "kraken2-database/"
           ontologies:
             - edam: http://edamontology.org/data_1049 # Directory
   db_separated:
@@ -76,19 +83,19 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}/*k2d:
+      - kraken2-database/*k2d:
           type: file
           description: Kraken2 k2d binary database files
           pattern: "*.k2d"
-      - ${prefix}/*map:
+      - kraken2-database/*map:
           type: file
           description: Kraken2 k2d binary database taxonomy to sequencing mapping file
           pattern: "*.map"
-      - ${prefix}/library/added/*:
+      - kraken2-database/library/added/*:
           type: file
           description: Kraken2 masked FASTA files used to build the database
           pattern: "*.fasta"
-      - ${prefix}/taxonomy/*:
+      - kraken2-database/taxonomy/*:
           type: file
           description: Kraken2 nodes.dmp, names.dmp, and .accession2taxid taxonomy files
           pattern: "*.{dmp,accession2taxid}"
