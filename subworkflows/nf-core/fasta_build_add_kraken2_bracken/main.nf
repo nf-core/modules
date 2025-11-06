@@ -28,7 +28,7 @@ workflow FASTA_BUILD_ADD_KRAKEN2_BRACKEN {
     ch_versions = ch_versions.mix(KRAKEN2_BUILD.out.versions.first())
 
     if (val_runbrackenbuild) {
-        BRACKEN_BUILD(KRAKEN2_BUILD.out.db)
+        BRACKEN_BUILD(KRAKEN2_BUILD.out.db_separated)
         ch_final_db = BRACKEN_BUILD.out.db
         ch_versions = ch_versions.mix(BRACKEN_BUILD.out.versions.first())
     }
