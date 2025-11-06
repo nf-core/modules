@@ -49,4 +49,14 @@ process PICARD_MERGESAMFILES {
         END_VERSIONS
         """
     }
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bam
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        picard: \$( echo \$(picard MergeSamFiles --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
+    END_VERSIONS
+    """
 }
