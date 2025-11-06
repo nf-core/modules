@@ -38,9 +38,6 @@ nextflow_workflow {
         }
     }
 
-    println "DEBUG: BWA_INDEX.out.index contents:"
-    println BWA_INDEX.out.index.view()
-
     test("Sarscov2 fasta - SE - deduplicate - with GPU parabricks/fq2bam") {
         when {
             workflow {
