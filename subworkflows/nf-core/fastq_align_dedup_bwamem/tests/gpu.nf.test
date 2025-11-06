@@ -53,12 +53,11 @@ nextflow_workflow {
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ])
                 input[3] = BWA_INDEX.out.index
-                    .map { meta, index_files -> tuple(meta, index_files[0]) }
-                input[4] = false                    // deduplicate
-                input[5] = true                     // use_gpu
-                input[6] = [[:], [] ]    // interval_file
-                input[7] = [[:], [] ]    // known_sites
-                input[8] = "bam"                    // output_fmt
+                input[4] = false            // skip_deduplication
+                input[5] = true             // use_gpu
+                input[6] = [[:], [] ]       // interval_file
+                input[7] = [[:], [] ]       // known_sites
+                input[8] = "bam"            // output_fmt
                 """
             }
         }
