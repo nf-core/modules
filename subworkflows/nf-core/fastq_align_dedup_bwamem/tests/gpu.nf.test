@@ -55,11 +55,11 @@ nextflow_workflow {
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ])
                 input[3] = BWA_INDEX.out.index
-                input[4] = false            // deduplicate
-                input[5] = true             // use_gpu
-                input[6] = Channel.empty()  // interval_file
-                input[7] = Channel.empty()  // known_sites
-                input[8] = "bam"            // output_fmt
+                input[4] = false                    // deduplicate
+                input[5] = true                     // use_gpu
+                input[6] = Channel.of([[:], []])    // interval_file
+                input[7] = Channel.of([[:], []])    // known_sites
+                input[8] = "bam"                    // output_fmt
                 """
             }
         }
@@ -99,11 +99,11 @@ nextflow_workflow {
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ])
                 input[3] = BWA_INDEX.out.index
-                input[4] = true             // skip_deduplication
-                input[5] = true             // use_gpu
-                input[6] = Channel.empty()  // interval_file
-                input[7] = Channel.empty()  // known_sites
-                input[8] = "bam"            // output_fmt
+                input[4] = true                     // skip_deduplication
+                input[5] = true                     // use_gpu
+                input[6] = Channel.of([[:], []])    // interval_file
+                input[7] = Channel.of([[:], []])    // known_sites
+                input[8] = "bam"                    // output_fmt
                 """
             }
         }
@@ -147,11 +147,11 @@ nextflow_workflow {
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ])
                 input[3] = BWA_INDEX.out.index
-                input[4] = true             // skip_deduplication
-                input[5] = true             // use_gpu
-                input[6] = Channel.empty()  // interval_file
-                input[7] = Channel.empty()  // known_sites
-                input[8] = "bam"            // output_fmt
+                input[4] = true                     // skip_deduplication
+                input[5] = true                     // use_gpu
+                input[6] = Channel.of([[:], []])    // interval_file
+                input[7] = Channel.of([[:], []])    // known_sites
+                input[8] = "bam"                    // output_fmt
                 """
             }
         }
@@ -192,11 +192,11 @@ nextflow_workflow {
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ])
                 input[3] = BWA_INDEX.out.index
-                input[4] = false            // deduplicate
-                input[5] = true             // use_gpu
-                input[6] = Channel.empty()  // interval_file
-                input[7] = Channel.empty()  // known_sites
-                input[8] = "bam"            // output_fmt
+                input[4] = false                    // deduplicate
+                input[5] = true                     // use_gpu
+                input[6] = Channel.of([[:], []])    // interval_file
+                input[7] = Channel.of([[:], []])    // known_sites
+                input[8] = "bam"                    // output_fmt
                 """
             }
         }
