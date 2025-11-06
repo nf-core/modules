@@ -8,8 +8,7 @@
                             "sample": "sample2",
                             "id": "test.compressed.vcf.gz"
                         },
-                        "test.compressed.vcf.gz.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                        "test.compressed.vcf.gz.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.compressed.vcf.gz.sorted.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "1": [
@@ -24,20 +23,11 @@
                 "2": [
                     "versions.yml:md5,08fee093bf6af4649a45cad8ade3f3d1",
                     "versions.yml:md5,5b74a770c72e21036318216d48083778",
+                    "versions.yml:md5,6e5575f8d3c5170509258774d0b6755f",
                     "versions.yml:md5,d335efda62ea0a5f8ef342189cfa89bf",
                     "versions.yml:md5,e16dd9ca26468b1bb0a75f47230e574d"
                 ],
-                "filtered_ch": [
-                    [
-                        {
-                            "sample": "sample2",
-                            "id": "test.compressed.vcf.gz"
-                        },
-                        "test.compressed.vcf.gz.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                        "test.compressed.vcf.gz.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "tsv_ch": [
+                "tsv": [
                     [
                         {
                             "sample": "sample2",
@@ -46,9 +36,19 @@
                         "test.compressed.vcf.gz.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
+                "vcf": [
+                    [
+                        {
+                            "sample": "sample2",
+                            "id": "test.compressed.vcf.gz"
+                        },
+                        "test.compressed.vcf.gz.sorted.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
                 "versions": [
                     "versions.yml:md5,08fee093bf6af4649a45cad8ade3f3d1",
                     "versions.yml:md5,5b74a770c72e21036318216d48083778",
+                    "versions.yml:md5,6e5575f8d3c5170509258774d0b6755f",
                     "versions.yml:md5,d335efda62ea0a5f8ef342189cfa89bf",
                     "versions.yml:md5,e16dd9ca26468b1bb0a75f47230e574d"
                 ]
@@ -58,74 +58,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-11-05T10:10:41.125259"
-    },
-    "homo_sapiens - vcf.gz - compressed_vcf_processing": {
-        "content": [
-            [
-                [
-                    {
-                        "sample": "sample2",
-                        "id": "test.compressed.vcf.gz"
-                    },
-                    "test.compressed.vcf.gz.vcf.gz:md5,2e9b4d041530ee5d70f452afc59162c6",
-                    "test.compressed.vcf.gz.vcf.gz.tbi:md5,07dceae8451cc045bb39d4119a92cd83"
-                ]
-            ],
-            [
-                [
-                    {
-                        "sample": "sample2",
-                        "id": "test.compressed.vcf.gz"
-                    },
-                    "test.compressed.vcf.gz.tsv:md5,3b53f771be16032e12843968e7cbebc7"
-                ]
-            ],
-            [
-                "versions.yml:md5,08fee093bf6af4649a45cad8ade3f3d1",
-                "versions.yml:md5,5b74a770c72e21036318216d48083778",
-                "versions.yml:md5,d335efda62ea0a5f8ef342189cfa89bf",
-                "versions.yml:md5,e16dd9ca26468b1bb0a75f47230e574d"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-11-05T10:09:14.260503"
-    },
-    "homo_sapiens - vcf - empty_sort_expression": {
-        "content": [
-            [
-                [
-                    {
-                        "sample": "sample6",
-                        "id": "test.no_filter.vcf"
-                    },
-                    "test.no_filter.vcf.vcf.gz:md5,3ac29d2975ff9ab2d215d37888c5a7e6",
-                    "test.no_filter.vcf.vcf.gz.tbi:md5,61b3896c02fa78fe12f9be7d571b98cf"
-                ]
-            ],
-            [
-                [
-                    {
-                        "sample": "sample6",
-                        "id": "test.no_filter.vcf"
-                    },
-                    "test.no_filter.vcf.tsv:md5,3b53f771be16032e12843968e7cbebc7"
-                ]
-            ],
-            [
-                "versions.yml:md5,08fee093bf6af4649a45cad8ade3f3d1",
-                "versions.yml:md5,5b74a770c72e21036318216d48083778",
-                "versions.yml:md5,e16dd9ca26468b1bb0a75f47230e574d"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-11-05T10:10:16.655084"
+        "timestamp": "2025-11-06T16:06:54.703207"
     },
     "homo_sapiens - bcf.gz - compressed_binary_bcf_processing - stub": {
         "content": [
@@ -136,8 +69,7 @@
                             "sample": "sample3",
                             "id": "test.binary.bcf"
                         },
-                        "test.binary.bcf.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                        "test.binary.bcf.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.binary.bcf.sorted.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "1": [
@@ -152,20 +84,11 @@
                 "2": [
                     "versions.yml:md5,08fee093bf6af4649a45cad8ade3f3d1",
                     "versions.yml:md5,5b74a770c72e21036318216d48083778",
+                    "versions.yml:md5,6e5575f8d3c5170509258774d0b6755f",
                     "versions.yml:md5,d335efda62ea0a5f8ef342189cfa89bf",
                     "versions.yml:md5,e16dd9ca26468b1bb0a75f47230e574d"
                 ],
-                "filtered_ch": [
-                    [
-                        {
-                            "sample": "sample3",
-                            "id": "test.binary.bcf"
-                        },
-                        "test.binary.bcf.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                        "test.binary.bcf.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "tsv_ch": [
+                "tsv": [
                     [
                         {
                             "sample": "sample3",
@@ -174,9 +97,19 @@
                         "test.binary.bcf.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
+                "vcf": [
+                    [
+                        {
+                            "sample": "sample3",
+                            "id": "test.binary.bcf"
+                        },
+                        "test.binary.bcf.sorted.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
                 "versions": [
                     "versions.yml:md5,08fee093bf6af4649a45cad8ade3f3d1",
                     "versions.yml:md5,5b74a770c72e21036318216d48083778",
+                    "versions.yml:md5,6e5575f8d3c5170509258774d0b6755f",
                     "versions.yml:md5,d335efda62ea0a5f8ef342189cfa89bf",
                     "versions.yml:md5,e16dd9ca26468b1bb0a75f47230e574d"
                 ]
@@ -186,32 +119,16 @@
             "nf-test": "0.9.3",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-11-05T10:10:56.780866"
+        "timestamp": "2025-11-06T16:07:10.203677"
     },
     "homo_sapiens - bcf.gz - compressed_binary_bcf_processing": {
         "content": [
-            [
-                [
-                    {
-                        "sample": "sample3",
-                        "id": "test.binary.bcf"
-                    },
-                    "test.binary.bcf.vcf.gz:md5,8830bbbd93c116afa25cb04593871cc3",
-                    "test.binary.bcf.vcf.gz.tbi:md5,4cb176febbc8c26d717a6c6e67b9c905"
-                ]
-            ],
-            [
-                [
-                    {
-                        "sample": "sample3",
-                        "id": "test.binary.bcf"
-                    },
-                    "test.binary.bcf.tsv:md5,90ec29592bf6f2e180a4c835ce9733b7"
-                ]
-            ],
+            null,
+            null,
             [
                 "versions.yml:md5,08fee093bf6af4649a45cad8ade3f3d1",
                 "versions.yml:md5,5b74a770c72e21036318216d48083778",
+                "versions.yml:md5,6e5575f8d3c5170509258774d0b6755f",
                 "versions.yml:md5,d335efda62ea0a5f8ef342189cfa89bf",
                 "versions.yml:md5,e16dd9ca26468b1bb0a75f47230e574d"
             ]
@@ -220,32 +137,16 @@
             "nf-test": "0.9.3",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-11-05T10:09:59.717369"
+        "timestamp": "2025-11-06T16:06:14.444498"
     },
     "homo_sapiens - vcf - vcf_processing": {
         "content": [
-            [
-                [
-                    {
-                        "sample": "sample1",
-                        "id": "HCC1395.HCC1395T.strelka.somatic_indels"
-                    },
-                    "HCC1395.HCC1395T.strelka.somatic_indels.vcf.gz:md5,704e0e78ddfa8e3bc73901e29fee873d",
-                    "HCC1395.HCC1395T.strelka.somatic_indels.vcf.gz.tbi:md5,a60c44170d9f10783f4bfa469d3e89c8"
-                ]
-            ],
-            [
-                [
-                    {
-                        "sample": "sample1",
-                        "id": "HCC1395.HCC1395T.strelka.somatic_indels"
-                    },
-                    "HCC1395.HCC1395T.strelka.somatic_indels.tsv:md5,3b53f771be16032e12843968e7cbebc7"
-                ]
-            ],
+            null,
+            null,
             [
                 "versions.yml:md5,08fee093bf6af4649a45cad8ade3f3d1",
                 "versions.yml:md5,5b74a770c72e21036318216d48083778",
+                "versions.yml:md5,6e5575f8d3c5170509258774d0b6755f",
                 "versions.yml:md5,d335efda62ea0a5f8ef342189cfa89bf",
                 "versions.yml:md5,e16dd9ca26468b1bb0a75f47230e574d"
             ]
@@ -254,7 +155,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-11-05T10:09:29.503647"
+        "timestamp": "2025-11-06T16:05:45.128539"
     },
     "homo_sapiens - vcf - vcf_processing - stub": {
         "content": [
@@ -265,8 +166,7 @@
                             "sample": "sample1",
                             "id": "HCC1395.HCC1395T.strelka.somatic_indels"
                         },
-                        "HCC1395.HCC1395T.strelka.somatic_indels.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                        "HCC1395.HCC1395T.strelka.somatic_indels.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "HCC1395.HCC1395T.strelka.somatic_indels.sorted.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "1": [
@@ -281,20 +181,11 @@
                 "2": [
                     "versions.yml:md5,08fee093bf6af4649a45cad8ade3f3d1",
                     "versions.yml:md5,5b74a770c72e21036318216d48083778",
+                    "versions.yml:md5,6e5575f8d3c5170509258774d0b6755f",
                     "versions.yml:md5,d335efda62ea0a5f8ef342189cfa89bf",
                     "versions.yml:md5,e16dd9ca26468b1bb0a75f47230e574d"
                 ],
-                "filtered_ch": [
-                    [
-                        {
-                            "sample": "sample1",
-                            "id": "HCC1395.HCC1395T.strelka.somatic_indels"
-                        },
-                        "HCC1395.HCC1395T.strelka.somatic_indels.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                        "HCC1395.HCC1395T.strelka.somatic_indels.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "tsv_ch": [
+                "tsv": [
                     [
                         {
                             "sample": "sample1",
@@ -303,9 +194,19 @@
                         "HCC1395.HCC1395T.strelka.somatic_indels.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
+                "vcf": [
+                    [
+                        {
+                            "sample": "sample1",
+                            "id": "HCC1395.HCC1395T.strelka.somatic_indels"
+                        },
+                        "HCC1395.HCC1395T.strelka.somatic_indels.sorted.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
                 "versions": [
                     "versions.yml:md5,08fee093bf6af4649a45cad8ade3f3d1",
                     "versions.yml:md5,5b74a770c72e21036318216d48083778",
+                    "versions.yml:md5,6e5575f8d3c5170509258774d0b6755f",
                     "versions.yml:md5,d335efda62ea0a5f8ef342189cfa89bf",
                     "versions.yml:md5,e16dd9ca26468b1bb0a75f47230e574d"
                 ]
@@ -315,7 +216,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-11-05T10:10:33.316856"
+        "timestamp": "2025-11-06T16:06:46.519708"
     },
     "homo_sapiens - bcf - binary_vcf_processing - stub": {
         "content": [
@@ -326,8 +227,7 @@
                             "sample": "sample3",
                             "id": "test.binary.bcf"
                         },
-                        "test.binary.bcf.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                        "test.binary.bcf.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.binary.bcf.sorted.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "1": [
@@ -342,20 +242,11 @@
                 "2": [
                     "versions.yml:md5,08fee093bf6af4649a45cad8ade3f3d1",
                     "versions.yml:md5,5b74a770c72e21036318216d48083778",
+                    "versions.yml:md5,6e5575f8d3c5170509258774d0b6755f",
                     "versions.yml:md5,d335efda62ea0a5f8ef342189cfa89bf",
                     "versions.yml:md5,e16dd9ca26468b1bb0a75f47230e574d"
                 ],
-                "filtered_ch": [
-                    [
-                        {
-                            "sample": "sample3",
-                            "id": "test.binary.bcf"
-                        },
-                        "test.binary.bcf.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                        "test.binary.bcf.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "tsv_ch": [
+                "tsv": [
                     [
                         {
                             "sample": "sample3",
@@ -364,9 +255,19 @@
                         "test.binary.bcf.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
+                "vcf": [
+                    [
+                        {
+                            "sample": "sample3",
+                            "id": "test.binary.bcf"
+                        },
+                        "test.binary.bcf.sorted.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
                 "versions": [
                     "versions.yml:md5,08fee093bf6af4649a45cad8ade3f3d1",
                     "versions.yml:md5,5b74a770c72e21036318216d48083778",
+                    "versions.yml:md5,6e5575f8d3c5170509258774d0b6755f",
                     "versions.yml:md5,d335efda62ea0a5f8ef342189cfa89bf",
                     "versions.yml:md5,e16dd9ca26468b1bb0a75f47230e574d"
                 ]
@@ -376,31 +277,15 @@
             "nf-test": "0.9.3",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-11-05T10:10:48.887261"
+        "timestamp": "2025-11-06T16:07:02.474982"
     },
     "homo_sapiens - vcf - empty_filter_expression": {
         "content": [
-            [
-                [
-                    {
-                        "sample": "sample6",
-                        "id": "test.no_filter.vcf"
-                    },
-                    "test.no_filter.vcf.vcf.gz:md5,f313df4d57feee25f5ed8ebb1e0976f1",
-                    "test.no_filter.vcf.vcf.gz.tbi:md5,ce11a962f73226e1947cad84c2a4a0c8"
-                ]
-            ],
-            [
-                [
-                    {
-                        "sample": "sample6",
-                        "id": "test.no_filter.vcf"
-                    },
-                    "test.no_filter.vcf.tsv:md5,5c354ce49f67a4cab3b34a05abb8a087"
-                ]
-            ],
+            null,
+            null,
             [
                 "versions.yml:md5,5b74a770c72e21036318216d48083778",
+                "versions.yml:md5,6e5575f8d3c5170509258774d0b6755f",
                 "versions.yml:md5,d335efda62ea0a5f8ef342189cfa89bf",
                 "versions.yml:md5,e16dd9ca26468b1bb0a75f47230e574d"
             ]
@@ -409,32 +294,16 @@
             "nf-test": "0.9.3",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-11-05T10:10:08.49124"
+        "timestamp": "2025-11-06T16:06:22.066855"
     },
     "homo_sapiens - bcf - binary_vcf_processing": {
         "content": [
-            [
-                [
-                    {
-                        "sample": "sample3",
-                        "id": "test.binary.bcf"
-                    },
-                    "test.binary.bcf.vcf.gz:md5,20ffca9969407e52a7ae8be748c5980c",
-                    "test.binary.bcf.vcf.gz.tbi:md5,be3ce07b66f62b19a7da9212bdc82a67"
-                ]
-            ],
-            [
-                [
-                    {
-                        "sample": "sample3",
-                        "id": "test.binary.bcf"
-                    },
-                    "test.binary.bcf.tsv:md5,01833d5acb1b81b509cc79de8701e9d8"
-                ]
-            ],
+            null,
+            null,
             [
                 "versions.yml:md5,08fee093bf6af4649a45cad8ade3f3d1",
                 "versions.yml:md5,5b74a770c72e21036318216d48083778",
+                "versions.yml:md5,6e5575f8d3c5170509258774d0b6755f",
                 "versions.yml:md5,d335efda62ea0a5f8ef342189cfa89bf",
                 "versions.yml:md5,e16dd9ca26468b1bb0a75f47230e574d"
             ]
@@ -443,25 +312,50 @@
             "nf-test": "0.9.3",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-11-05T10:09:48.971757"
+        "timestamp": "2025-11-06T16:06:04.664874"
+    },
+    "homo_sapiens - vcf.gz - compressed_vcf_processing": {
+        "content": [
+            null,
+            null,
+            [
+                "versions.yml:md5,08fee093bf6af4649a45cad8ade3f3d1",
+                "versions.yml:md5,5b74a770c72e21036318216d48083778",
+                "versions.yml:md5,6e5575f8d3c5170509258774d0b6755f",
+                "versions.yml:md5,d335efda62ea0a5f8ef342189cfa89bf",
+                "versions.yml:md5,e16dd9ca26468b1bb0a75f47230e574d"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.6"
+        },
+        "timestamp": "2025-11-06T16:05:55.000001"
+    },
+    "homo_sapiens - vcf - empty_sort_expression": {
+        "content": [
+            null,
+            null,
+            [
+                "versions.yml:md5,08fee093bf6af4649a45cad8ade3f3d1",
+                "versions.yml:md5,5b74a770c72e21036318216d48083778",
+                "versions.yml:md5,6e5575f8d3c5170509258774d0b6755f",
+                "versions.yml:md5,e16dd9ca26468b1bb0a75f47230e574d"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.04.6"
+        },
+        "timestamp": "2025-11-06T16:06:29.904095"
     },
     "homo_sapiens - vcf - empty_table_expression": {
         "content": [
-            [
-                [
-                    {
-                        "sample": "sample6",
-                        "id": "test.no_filter.vcf"
-                    },
-                    "test.no_filter.vcf.vcf.gz:md5,4443b4157a05fe1f36d3015a9c76eba8",
-                    "test.no_filter.vcf.vcf.gz.tbi:md5,6da9f8ed5ef74ed287e1ac20874beca3"
-                ]
-            ],
-            [
-                
-            ],
+            null,
+            null,
             [
                 "versions.yml:md5,08fee093bf6af4649a45cad8ade3f3d1",
+                "versions.yml:md5,6e5575f8d3c5170509258774d0b6755f",
                 "versions.yml:md5,d335efda62ea0a5f8ef342189cfa89bf",
                 "versions.yml:md5,e16dd9ca26468b1bb0a75f47230e574d"
             ]
@@ -470,6 +364,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-11-05T10:10:25.374835"
+        "timestamp": "2025-11-06T16:06:38.677247"
     }
 }

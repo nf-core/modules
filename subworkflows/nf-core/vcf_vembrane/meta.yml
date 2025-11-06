@@ -3,11 +3,10 @@ name: "vcf_vembrane"
 description: Filter and/or sort and optionally produce a TSV table for a VCF with vembrane.
 keywords:
   - vcf
-  - variant
   - filtering
   - sorting
+  - indexing
   - vembrane
-  - bgzip
   - tabix
   - table
   - tsv
@@ -18,41 +17,38 @@ components:
   - tabix/bgziptabix
 input:
   - ch_vcf:
-      type: tuple
+      type: channel
       description: |
-        Input channel containing metadata and a VCF/BCF file to process.
-        Structure: [ val(meta), path(vcf) ]
+        Channel containing sample metadata and VCF files
+        Structure: [ meta, vcf ]
   - filter_expression:
-      type: val
-      description: |
-        Vembrane filter expression to select variants.
-        If empty or 'null', the filtering step is skipped.
+      type: string
+      description: Expression for vembrane filter (optional - can be empty string or null)
+      required: false
   - sort_expression:
-      type: val
-      description: |
-        Vembrane sort expression used for optional intermediate sorting.
-        If empty or 'null', this step is skipped.
-        A final CHROM,POS sort is always applied.
+      type: string
+      description: Expression for vembrane sort (optional - can be empty string or null)
+      required: false
   - table_expression:
-      type: val
-      description: |
-        Vembrane table expression to generate a TSV table.
-        If empty or 'null', table generation is skipped.
+      type: string
+      description: Expression for vembrane table generation (optional - can be empty string or null)
+      required: false
 output:
-  - filtered_ch:
-      type: file
+  - vcf:
+      type: channel
       description: |
-        Final filtered and sorted VCF file, bgzipped and indexed with Tabix.
-      pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
-  - tsv_ch:
-      type: file
+        Processed and sorted VCF files
+        Structure: [ meta, vcf, tbi ]
+      pattern: "*.{vcf,vcf.gz,bcf,bcf.gz,.tbi}"
+  - tsv:
+      type: channel
       description: |
-        Optional vembrane table (TSV) generated if a table expression is provided.
-      pattern: "*.{tsv}"
+        TSV table files generated from VCF (empty channel if table_expression not provided)
+        Structure: [ meta, tsv ]
+      pattern: "*.tsv"
   - versions:
       type: file
-      description: |
-        File containing software version information aggregated from all components.
+      description: File containing software versions
       pattern: "versions.yml"
 authors:
   - "@dhtt"
