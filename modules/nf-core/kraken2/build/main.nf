@@ -14,6 +14,7 @@ process KRAKEN2_BUILD {
 
     output:
     tuple val(meta), path("${prefix}"), emit: db
+    tuple val(meta), path("${prefix}/*k2d"), path("${prefix}/*map"), path("${prefix}/library/added/*"), path("${prefix}/taxonomy/*"), optional: true, emit: db_separated
     path "versions.yml", emit: versions
 
     when:
