@@ -14,7 +14,7 @@ process KRAKEN2_BUILD {
 
     output:
     tuple val(meta), path("kraken2-database"), emit: db
-    tuple val(meta), path("kraken2-database/*k2d"), path("kraken2-database/*map"), path("kraken2-database/library/added/*"), path("kraken2-database/taxonomy/*"), optional: true, emit: db_separated
+    tuple val(meta), path("kraken2-database/*k2d", includeInputs: true), path("kraken2-database/*map", includeInputs: true), path("kraken2-database/library/added/*", includeInputs: true), path("kraken2-database/taxonomy/*", includeInputs: true), optional: true, emit: db_separated
     path "versions.yml", emit: versions
 
     when:
