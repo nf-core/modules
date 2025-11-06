@@ -9,8 +9,8 @@ process PROOVFRAME_MAP {
 
     input:
     tuple val(meta), path(fasta)
-    path(faa)
-    path(db)
+    tuple val(meta2), path(faa)
+    tuple val(meta3), path(db)
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv

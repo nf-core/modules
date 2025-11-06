@@ -18,8 +18,14 @@ nextflow_process {
                     [ id:'fa', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
-                input[2] = file(params.modules_testdata_base_path + 'proteomics/database/UP000005640_9606.dmnd', checkIfExists: true)
+                input[1] = [
+                    [ id:'fa', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'fa', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'proteomics/database/UP000005640_9606.dmnd', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -43,8 +49,11 @@ nextflow_process {
                     [ id:'fa', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
-                input[2] = []
+                input[1] = [
+                    [ id:'fa', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
+                ]
+                input[2] = [[:], []]
                 """
             }
         }
@@ -69,8 +78,14 @@ nextflow_process {
                     [ id:'test2', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
-                input[2] = file(params.modules_testdata_base_path + 'proteomics/database/UP000005640_9606.dmnd', checkIfExists: true)
+                input[1] = [
+                    [ id:'fa', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'fa', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'proteomics/database/UP000005640_9606.dmnd', checkIfExists: true)
+                ]
                 """
             }
         }
