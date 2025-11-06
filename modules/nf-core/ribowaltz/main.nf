@@ -8,7 +8,7 @@ process RIBOWALTZ {
         'biocontainers/ribowaltz:2.0--r43hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta) , path(bam)
     tuple val(meta2), path(gtf)
     tuple val(meta3), path(fasta)
 
