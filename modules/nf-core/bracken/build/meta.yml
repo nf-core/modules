@@ -23,10 +23,22 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-    - kraken2db:
-        type: directory
-        description: A Kraken2 database directory
-        pattern: "*/"
+    - k2d:
+        type: file
+        description: Kraken2 k2d binary database files
+        pattern: "*.k2d"
+    - map:
+        type: file
+        description: Kraken2 k2d binary database taxonomy to sequencing mapping file
+        pattern: "*.map"
+    - library:
+        type: file
+        description: Kraken2 masked FASTA files used to build the database
+        pattern: "*.fasta"
+    - taxonomy:
+        type: file
+        description: Kraken2 nodes.dmp, names.dmp, and .accession2taxid taxonomy files
+        pattern: "*.{dmp,accession2taxid}"
 output:
   db:
     - - meta:
@@ -34,9 +46,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - kraken2db:
+      - ${prefix}/:
           type: directory
-          description: A Kraken2 database directory with required bracken files inside
+          description: Bracken compatible Kraken2 database directory containing kraken2 database files and the additional bracken kmer distribution files
           pattern: "*/"
   bracken_files:
     - - meta:
@@ -44,10 +56,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${kraken2db}/database*:
+      - ${prefix}/database*:
           type: directory
-          description: Bracken files required to extend the Kraken2 database
-          pattern: "*/"
+          description: Bracken kmer distribution files
+          pattern: "database*"
   versions:
     - versions.yml:
         type: file

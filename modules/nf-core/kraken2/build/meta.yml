@@ -37,8 +37,8 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - seqid2taxid_map:
         type: file
-        description: File mapping sequence IDs to taxonomy IDs, either generated
-          or premade.
+        description: File mapping sequence IDs to taxonomy IDs, either generated or
+          premade.
         pattern: "seqid2taxid.map"
         ontologies:
           - edam: http://edamontology.org/data_3028 # Taxonomy
@@ -49,8 +49,8 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - taxonomy_files:
         type: file
-        description: Files present in the <name>/taxonomy/ directory, including
-          nodes.dmp, names.dmp, and .accession2taxid files.
+        description: Files present in the <name>/taxonomy/ directory, including nodes.dmp,
+          names.dmp, and .accession2taxid files.
         pattern: "*"
         ontologies:
           - edam: http://edamontology.org/data_3028 # Taxonomy
@@ -70,6 +70,28 @@ output:
           pattern: "*/"
           ontologies:
             - edam: http://edamontology.org/data_1049 # Directory
+  db_separated:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}/*k2d:
+          type: file
+          description: Kraken2 k2d binary database files
+          pattern: "*.k2d"
+      - ${prefix}/*map:
+          type: file
+          description: Kraken2 k2d binary database taxonomy to sequencing mapping file
+          pattern: "*.map"
+      - ${prefix}/library/added/*:
+          type: file
+          description: Kraken2 masked FASTA files used to build the database
+          pattern: "*.fasta"
+      - ${prefix}/taxonomy/*:
+          type: file
+          description: Kraken2 nodes.dmp, names.dmp, and .accession2taxid taxonomy files
+          pattern: "*.{dmp,accession2taxid}"
   versions:
     - versions.yml:
         type: file
