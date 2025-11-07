@@ -59,7 +59,6 @@ process LONGPHASE_PHASE {
     def mod_command = mods ? "echo '' | bgzip -c > ${prefix}_mod.vcf.gz" : ""
     """
     echo $args
-
     echo "" | bgzip -c > ${prefix}.vcf.gz
 
     $sv_command
