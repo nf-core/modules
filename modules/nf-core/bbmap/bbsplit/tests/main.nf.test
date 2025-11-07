@@ -102,7 +102,12 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.log[0][1]).text.contains("If you wish to regenerate the index") },
-                { assert snapshot(process.out).match()}
+                { assert snapshot(
+                    process.out.primary_fastq,
+                    process.out.all_fastq,
+                    process.out.stats,
+                    process.out.versions
+                ).match()}
             )
         }
     }
