@@ -4,8 +4,8 @@ process SOUPORCELL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/92/92c054bdfc9170bd58c09de480160923d35dd67008650733f3d03588520082b1/data' :
-        'community.wave.seqera.io/library/souporcell:2.5--2b23aea4d0753391' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9a/9a69c552c52aa5b3636a7a596f9406b2ec3e165809ccd58a012b9ea285ba6ecd/data' :
+        'community.wave.seqera.io/library/souporcell_gxx:f648658dde2cdd53' }"
 
     input:
     tuple val(meta), path(bam), path(barcodes), val(clusters)
@@ -37,7 +37,7 @@ process SOUPORCELL {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        souporcell: 2.5
+        souporcell: \$(souporcell_pipeline.py --version 2>&1 || echo "N/A")
     END_VERSIONS
     """
 
@@ -52,7 +52,7 @@ process SOUPORCELL {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        souporcell: 2.5
+        souporcell: \$(souporcell_pipeline.py --version 2>&1 || echo "N/A")
     END_VERSIONS
     """
 }
