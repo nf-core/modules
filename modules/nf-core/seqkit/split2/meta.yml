@@ -22,7 +22,7 @@ input:
     - reads:
         type: file
         description: FastQ files
-        pattern: "*.{fq.gz/fastq.gz}"
+        pattern: "*.{f[aq].gz/fast[aq].gz}"
         ontologies: []
 output:
   reads:
@@ -31,10 +31,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "**/*.gz":
+      - ${prefix}/*:
           type: file
           description: Split fastq files
-          pattern: "*.{fq.gz/fastq.gz}"
+          pattern: "*.{f[aq][.gz]/fast[aq][.gz]}"
           ontologies: []
   versions:
     - versions.yml:
