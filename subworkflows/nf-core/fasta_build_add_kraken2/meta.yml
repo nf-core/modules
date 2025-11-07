@@ -51,9 +51,9 @@ output:
       type: directory
       description: |
         Channel containing KRAKEN2 database directory files.
-        Use `ext.prefix` in a modules.conf file to change default name
+        Use publishDir in a modules.conf file to change default name for user
         Structure: [ val(meta), path(db) ]
-      pattern: "*/"
+      pattern: "kraken2-database/"
   - versions:
       type: file
       description: |
