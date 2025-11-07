@@ -73,13 +73,13 @@ process BBMAP_BBSPLIT {
     # disturbed, which bbsplit doesn't like. Fix the time stamps in its summaries.
     # This needs to be done via Java to match what bbmap does.
     if [ "$use_index" == "true" ]; then
-        cp -rL input_index index_writable
+        rm -rf index_writable &&  cp -rL input_index index_writable
 
         for summary_file in \$(find index_writable/ref/genome -name summary.txt); do
             # Extract the path from summary.txt and update it to point to index_writable
             src=\$(grep '^source' "\$summary_file" | cut -f2- -d\$'\\t' | sed 's|.*/ref/|index_writable/ref/|')
             mod=\$(echo "System.out.println(java.nio.file.Files.getLastModifiedTime(java.nio.file.Paths.get(\\"\$src\\")).toMillis());" | jshell -J-Djdk.lang.Process.launchMechanism=vfork -)
-            sed "s|^last modified.*|last modified\\t\$mod|" "\$summary_file" > \${summary_file}.tmp && mv \${summary_file}.tmp \${summary_file}
+            sed -e 's|bbsplit/ref|index_writable/ref|' -e "s|^last modified.*|last modified\\t\$mod|" "\$summary_file" > \${summary_file}.tmp && mv \${summary_file}.tmp \${summary_file}
         done
     fi
 
@@ -115,11 +115,14 @@ process BBMAP_BBSPLIT {
     other_ref_names.eachWithIndex { name, index ->
         other_refs += "echo '' | gzip > ${prefix}_${name}.fastq.gz"
     }
+    def will_build_index = only_build_index || (!index && primary_ref && other_ref_names && other_ref_paths)
     """
-    if [ ! -d bbsplit ]; then
-        mkdir bbsplit
+    # Create index directory if building an index (either only_build_index or on-the-fly)
+    if [ "${will_build_index}" == "true" ]; then
+        mkdir -p bbsplit
     fi
 
+    # Only create output files if splitting (not just building index)
     if ! (${only_build_index}); then
         echo '' | gzip >  ${prefix}_primary.fastq.gz
         ${other_refs}
