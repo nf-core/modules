@@ -23,6 +23,7 @@ process SOUPORCELL {
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
     def args = task.ext.args ?: ""
+    def VERSION = '2.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions. (See this issue: https://github.com/wheaton5/souporcell/issues/262)
     """
     mkdir -p temp
     export TMPDIR=./temp
@@ -37,12 +38,14 @@ process SOUPORCELL {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        souporcell: \$(souporcell_pipeline.py --version 2>&1 || echo "N/A")
+        souporcell: $VERSION
+        gxx: \$( g++ --version | head -n1 | awk '{print \$NF}' )
     END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def VERSION = '2.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions. (See this issue: https://github.com/wheaton5/souporcell/issues/262)
     """
     mkdir -p ${prefix}
 
@@ -52,7 +55,8 @@ process SOUPORCELL {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        souporcell: \$(souporcell_pipeline.py --version 2>&1 || echo "N/A")
+        souporcell: $VERSION
+        gxx: \$( g++ --version | head -n1 | awk '{print \$NF}' )
     END_VERSIONS
     """
 }
