@@ -3,7 +3,6 @@ nextflow_process {
     name "Test Process PRIORCONS_BUILDPRIORS"
     script "../main.nf"
     process "PRIORCONS_BUILDPRIORS"
-
     tag "modules"
     tag "modules_nfcore"
     tag "priorcons"
@@ -24,15 +23,18 @@ nextflow_process {
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    process.out.priors
-                ).match() }
-            )
-        }
+                    assertAll(
+                        { assert process.success },
+                        {
+                            assert snapshot(
+                                process.out.versions,
+                                process.out.priors
+                            ).match()
+                        }
+                    )
 
+
+        }
     }
 
     test("build_priors_testfiles - stub") {
@@ -54,13 +56,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    process.out.priors
-                ).match() }
+                {
+                    assert snapshot(
+                        process.out.versions,
+                        process.out.priors
+                    ).match()
+                }
             )
         }
-
     }
-
 }

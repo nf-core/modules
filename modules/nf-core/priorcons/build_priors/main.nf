@@ -12,7 +12,7 @@ process PRIORCONS_BUILDPRIORS {
     val   ref_id                       // Reference sequence ID
 
     output:
-    tuple val(meta), path("*.parquet"), emit: priors
+    tuple val(meta), path("${meta.id}.parquet"), emit: priors
     path "versions.yml"               , emit: versions
 
     when:
