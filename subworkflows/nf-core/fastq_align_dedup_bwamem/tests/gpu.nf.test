@@ -30,7 +30,7 @@ nextflow_workflow {
             script "../../../../modules/nf-core/bwa/index/main.nf"
             process {
                 """
-                input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                input[0] = Channel.value([ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                 """
             }
         }
