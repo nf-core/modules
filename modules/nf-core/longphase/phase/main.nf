@@ -62,7 +62,6 @@ process LONGPHASE_PHASE {
     echo "" | bgzip -c > ${prefix}.vcf.gz
 
     $sv_command
-
     $mod_command
 
     cat <<-END_VERSIONS > versions.yml
