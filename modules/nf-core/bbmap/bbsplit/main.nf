@@ -10,7 +10,7 @@ process BBMAP_BBSPLIT {
 
     input:
     tuple val(meta), path(reads)
-    path  index
+    path  index, name: 'input_index'
     path  primary_ref
     tuple val(other_ref_names), path(other_ref_paths)
     val   only_build_index
@@ -46,6 +46,7 @@ process BBMAP_BBSPLIT {
     def fastq_out=''
     def index_files=''
     def refstats_cmd=''
+    def use_index = index ? true : false
 
     if (only_build_index) {
         if (primary_ref && other_ref_names && other_ref_paths) {
@@ -55,7 +56,7 @@ process BBMAP_BBSPLIT {
         }
     } else {
         if (index) {
-            index_files = "path=$index"
+            index_files = "path=index_writable"
         } else if (primary_ref && other_ref_names && other_ref_paths) {
             index_files = "ref_primary=${primary_ref} ${other_refs.join(' ')}"
         } else {
@@ -67,12 +68,14 @@ process BBMAP_BBSPLIT {
     }
     """
 
-    # When we stage in the index files the time stamps get disturbed, which
-    # bbsplit doesn't like. Fix the time stamps in its summaries. This needs to
-    # be done via Java to match what bbmap does
+    # If using a pre-built index, copy it to avoid modifying input files in place,
+    # then fix timestamps. When we stage in the index files the time stamps get
+    # disturbed, which bbsplit doesn't like. Fix the time stamps in its summaries.
+    # This needs to be done via Java to match what bbmap does.
+    if [ "$use_index" == "true" ]; then
+        cp -rL input_index index_writable
 
-    if [ $index ]; then
-        for summary_file in \$(find $index/ref/genome -name summary.txt); do
+        for summary_file in \$(find index_writable/ref/genome -name summary.txt); do
             src=\$(grep '^source' "\$summary_file" | cut -f2- -d\$'\\t' | sed 's|.*/bbsplit|bbsplit|')
             mod=\$(echo "System.out.println(java.nio.file.Files.getLastModifiedTime(java.nio.file.Paths.get(\\"\$src\\")).toMillis());" | jshell -J-Djdk.lang.Process.launchMechanism=vfork -)
             sed "s|^last modified.*|last modified\\t\$mod|" "\$summary_file" > \${summary_file}.tmp && mv \${summary_file}.tmp \${summary_file}
@@ -92,11 +95,12 @@ process BBMAP_BBSPLIT {
 
     # Summary files will have an absolute path that will make the index
     # impossible to use in other processes- we can fix that
-
-    for summary_file in \$(find bbsplit/ref/genome -name summary.txt); do
-        src=\$(grep '^source' "\$summary_file" | cut -f2- -d\$'\\t' | sed 's|.*/bbsplit|bbsplit|')
-        sed "s|^source.*|source\\t\$src|" "\$summary_file" > \${summary_file}.tmp && mv \${summary_file}.tmp \${summary_file}
-    done
+    if [ -d bbsplit/ref/genome ]; then
+        for summary_file in \$(find bbsplit/ref/genome -name summary.txt); do
+            src=\$(grep '^source' "\$summary_file" | cut -f2- -d\$'\\t' | sed 's|.*/bbsplit|bbsplit|')
+            sed "s|^source.*|source\\t\$src|" "\$summary_file" > \${summary_file}.tmp && mv \${summary_file}.tmp \${summary_file}
+        done
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
