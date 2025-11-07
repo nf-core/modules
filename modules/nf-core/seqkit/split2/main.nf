@@ -11,7 +11,7 @@ process SEQKIT_SPLIT2 {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("**/*.gz"), emit: reads
+    tuple val(meta), path("${prefix}/*"), emit: reads
     path "versions.yml"             , emit: versions
 
     when:
@@ -19,7 +19,7 @@ process SEQKIT_SPLIT2 {
 
     script:
     def args   = task.ext.args   ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     if (meta.single_end) {
         """
         seqkit \\
@@ -52,7 +52,7 @@ process SEQKIT_SPLIT2 {
     }
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     if (meta.single_end) {
         """
         mkdir -p ${prefix}
