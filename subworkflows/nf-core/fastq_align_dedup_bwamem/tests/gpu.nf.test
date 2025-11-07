@@ -99,9 +99,9 @@ nextflow_workflow {
                 input[3] = BWA_INDEX.out.index
                 input[4] = true                     // skip_deduplication
                 input[5] = true                     // use_gpu
-                input[6] = Channel.of([[:], []])    // interval_file
-                input[7] = Channel.of([[:], []])    // known_sites
-                input[8] = "bam"                    // output_fmt
+                input[6] = "bam"                    // output_fmt
+                input[7] = Channel.of([[:], []])    // interval_file
+                input[8] = Channel.of([[:], []])    // known_sites
                 """
             }
         }
@@ -147,9 +147,9 @@ nextflow_workflow {
                 input[3] = BWA_INDEX.out.index
                 input[4] = true                     // skip_deduplication
                 input[5] = true                     // use_gpu
-                input[6] = Channel.of([[:], []])    // interval_file
-                input[7] = Channel.of([[:], []])    // known_sites
-                input[8] = "bam"                    // output_fmt
+                input[6] = "bam"            // output_fmt
+                input[7] = [[:], [] ]       // interval_file
+                input[8] = [[:], [] ]       // known_sites
                 """
             }
         }
@@ -192,9 +192,9 @@ nextflow_workflow {
                 input[3] = BWA_INDEX.out.index
                 input[4] = false                    // deduplicate
                 input[5] = true                     // use_gpu
-                input[6] = Channel.of([[:], []])    // interval_file
-                input[7] = Channel.of([[:], []])    // known_sites
-                input[8] = "bam"                    // output_fmt
+                input[6] = "bam"            // output_fmt
+                input[7] = [[:], [] ]       // interval_file
+                input[8] = [[:], [] ]       // known_sites
                 """
             }
         }

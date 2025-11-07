@@ -47,6 +47,10 @@ input:
       type: boolean
       description: |
         Use GPU for alignment
+  - output_fmt:
+      type: string
+      description: Output format for the alignment. Options are 'bam' or 'cram'
+      pattern: "{bam,cram}"
   - interval_file:
       type: file
       description: |
