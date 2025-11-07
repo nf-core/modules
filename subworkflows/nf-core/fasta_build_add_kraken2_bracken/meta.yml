@@ -64,6 +64,13 @@ output:
         Use publishDir in a modules.conf file to change default name for user
         Structure: [ val(meta), path(db) ]
       pattern: "bracken-database/"
+  - db_separated:
+      type: file
+      description: |
+        Channel containing a list of KRAKEN2 (and BRACKEN) database directory files as separate elements of a tuple.
+        Use publishDir in a modules.conf file to change default name for user
+        Structure: [ val(meta), path(k2d_files), path(map_files), path(added_files), path(taxonomy_files) ]
+
   - versions:
       type: file
       description: |
