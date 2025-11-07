@@ -36,23 +36,25 @@ input:
       description: Python expression (or tuple of expressions) returning orderable values to sort by
 
 output:
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - "*.{vcf,bcf,bcf.gz}":
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.{vcf,bcf,bcf.gz}":
+          type: file
+          description: Sorted VCF/BCF file
+          pattern: "*.{vcf,bcf,bcf.gz}"
+          ontologies:
+            - edam: http://edamontology.org/format_3016 # VCF
+  versions:
+    - versions.yml:
         type: file
-        description: Sorted VCF/BCF file
-        pattern: "*.{vcf,bcf,bcf.gz}"
+        description: File containing software versions
+        pattern: "versions.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3016 # VCF
-  - versions.yml:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-      ontologies:
-        - edam: http://edamontology.org/format_3750 # YAML
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
 - "@mkatsanto"
 - "@trangdo-hsc"
