@@ -11,23 +11,27 @@ process AUTOCYCLER_CLUSTER {
     tuple val(meta), path(gfa)
 
     output:
-    tuple val(meta), path("clustering/qc_pass/*/*.gfa"),  emit: clusters
-    tuple val(meta), path("clustering/qc_pass/*/*.yaml"), emit: clusterstats
-    tuple val(meta), path("clustering/*.newick"),         emit: newick
-    tuple val(meta), path("clustering/*.tsv"),            emit: tsv
-    tuple val(meta), path("clustering/*.phylip"),         emit: pairwisedistances
-    tuple val(meta), path("clustering/*.yaml"),           emit: stats
-    path "versions.yml",                                  emit: versions
+    tuple val(meta), path("$prefix/clustering/qc_pass/*/*.gfa"),  emit: clusters
+    tuple val(meta), path("$prefix/clustering/qc_pass/*/*.yaml"), emit: clusterstats
+    tuple val(meta), path("$prefix/clustering/*.newick"),         emit: newick
+    tuple val(meta), path("$prefix/clustering/*.tsv"),            emit: tsv
+    tuple val(meta), path("$prefix/clustering/*.phylip"),         emit: pairwisedistances
+    tuple val(meta), path("$prefix/clustering/*.yaml"),           emit: stats
+    path "versions.yml",                                          emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args   = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
     """
     autocycler cluster \\
         $args \\
         -a .
+
+    mkdir $prefix
+    mv clustering $prefix
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -37,11 +41,13 @@ process AUTOCYCLER_CLUSTER {
 
     stub:
     def args   = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
+
     """
-    mkdir clustering/qc_pass/cluster_000 -p
-    touch clustering/clustering.{newick,yaml,tsv}
-    touch clustering/pairwise_distances.phylip
-    touch clustering/qc_pass/cluster_000/0_untrimmed.{gfa,yaml}
+    mkdir $prefix/clustering/qc_pass/cluster_000 -p
+    touch $prefix/clustering/clustering.{newick,yaml,tsv}
+    touch $prefix/clustering/pairwise_distances.phylip
+    touch $prefix/clustering/qc_pass/cluster_000/0_untrimmed.{gfa,yaml}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
