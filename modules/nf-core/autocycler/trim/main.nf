@@ -11,8 +11,8 @@ process AUTOCYCLER_TRIM {
     tuple val(meta), path(gfa)
 
     output:
-    tuple val(meta), path("*.gfa"),  emit: gfa
-    tuple val(meta), path("*.yaml"), emit: stats
+    tuple val(meta), path("$prefix/*.gfa"),  emit: gfa
+    tuple val(meta), path("$prefix/*.yaml"), emit: stats
     path "versions.yml",             emit: versions
 
     when:
@@ -20,11 +20,15 @@ process AUTOCYCLER_TRIM {
 
     script:
     def args   = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
     """
     autocycler trim \\
         $args \\
         --threads $task.cpus \\
         -c .
+
+    mkdir $prefix
+    mv 2_trimmed.{gfa,yaml} $prefix
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -34,10 +38,12 @@ process AUTOCYCLER_TRIM {
 
     stub:
     def args   = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
     """
 
-    touch 2_trimmed.gfa
-    touch 2_trimmed.yaml
+    mkdir $prefix
+    touch $prefix/2_trimmed.gfa
+    touch $prefix/2_trimmed.yaml
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
