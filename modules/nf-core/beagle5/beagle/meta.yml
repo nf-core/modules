@@ -25,27 +25,38 @@ input:
         description: target VCF input file to be imputed and or phased
         pattern: "*.{vcf,vcf.gz}"
         ontologies: []
-  - refpanel:
-      type: file
-      description: target reference panel
-      ontologies: []
-  - genmap:
-      type: file
-      description: a PLINK format genetic map with cM units
-      pattern: "*.{map,map.gz,map.zip}"
-      ontologies: []
-  - exclsamples:
-      type: file
-      description: text file containing samples one sample per line to be excluded from
-        the analysis
-      pattern: "*.*"
-      ontologies: []
-  - exclmarkers:
-      type: file
-      description: text file containing markers one marker per line to be excluded from
-        the analysis
-      pattern: "*.*"
-      ontologies: []
+    - vcf_index:
+        type: file
+        description: target VCF input file index
+        pattern: "*.{vcf,vcf.gz}.{tbi,csi}"
+        ontologies: []
+    - refpanel:
+        type: file
+        description: target reference panel
+        ontologies: []
+        pattern: "*.{vcf,vcf.gz}"
+    - refpanel_index:
+        type: file
+        description: target reference panel index
+        ontologies: []
+        pattern: "*.{vcf,vcf.gz}.{tbi,csi}"
+    - genmap:
+        type: file
+        description: a PLINK format genetic map with cM units
+        pattern: "*.{map,map.gz,map.zip}"
+        ontologies: []
+    - exclsamples:
+        type: file
+        description: text file containing samples one sample per line to be excluded from
+          the analysis
+        pattern: "*.*"
+        ontologies: []
+    - exclmarkers:
+        type: file
+        description: text file containing markers one marker per line to be excluded from
+          the analysis
+        pattern: "*.*"
+        ontologies: []
 output:
   vcf:
     - - meta:
