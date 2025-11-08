@@ -28,10 +28,10 @@ process CUSTOM_GETCHROMSIZES {
     task.ext.when == null || task.ext.when
 
     script:
+    assert false: deprecation_message
+    
     def args = task.ext.args ?: ''  
     """
-    >&2 echo "${deprecation_message}"
-
     samtools faidx $fasta
     cut -f 1,2 ${fasta}.fai > ${fasta}.sizes
 
@@ -43,8 +43,6 @@ process CUSTOM_GETCHROMSIZES {
 
     stub:
     """
-    >&2 echo "${deprecation_message}"
-    
     touch ${fasta}.fai
     touch ${fasta}.sizes
     if [[ "${fasta.extension}" == "gz" ]]; then
