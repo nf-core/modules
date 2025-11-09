@@ -5,7 +5,6 @@ keywords:
   - hostile
   - decontamination
   - human removal
-  - download
   - host removal
   - clean
 tools:
@@ -34,7 +33,6 @@ input:
         type: string
         description: |
           Name of the reference to align against and thus remove mapped reads to.
-          Typically corresponds
     - reference_dir:
         type: directory
         description: |
@@ -52,10 +50,9 @@ output:
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.fastq.gz":
-          type: map
+          type: file
           description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            Cleaned FASTQ files with host reads removed
           pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
           ontologies:
             - edam: "http://edamontology.org/format_1930"
@@ -66,10 +63,9 @@ output:
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.json":
-          type: map
+          type: file
           description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            JSON report containing statistics from hostile cleaning
           pattern: "*.json"
           ontologies:
             - edam: "http://edamontology.org/format_3464"

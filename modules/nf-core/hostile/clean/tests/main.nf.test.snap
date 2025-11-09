@@ -54,8 +54,18 @@
     },
     "fastq - paired-end": {
         "content": [
-            1066944,
-            1066944,
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    [
+                        "test_1.clean_1.fastq.gz:md5,6de988b85909e6529bad0022703bcab2",
+                        "test_2.clean_2.fastq.gz:md5,539acd65e93bf16a5ace7d6034e704c7"
+                    ]
+                ]
+            ],
             [
                 "versions.yml:md5,ada5e72cc34942b0eccc41d073c4247f"
             ],
@@ -67,10 +77,10 @@
             true
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
         },
-        "timestamp": "2025-09-11T09:45:49.548712599"
+        "timestamp": "2025-11-09T16:15:42.374481236"
     },
     "fastq - single-end": {
         "content": [
