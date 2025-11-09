@@ -76,7 +76,8 @@ output:
           description: |
             Converted and aliased GenBank files so that they can be loaded by BiG-SLiCE
           pattern: "*.region*.gbk"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_1936" # GenBank
   faa:
     - - meta:
           type: map
