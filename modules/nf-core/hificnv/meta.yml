@@ -77,7 +77,6 @@ output:
           type: file
           description: "Copy number bedGraph file"
           pattern: "*.copynum.bedgraph"
-          optional: true
   depth:
     - - meta:
           type: map
@@ -109,7 +108,6 @@ output:
           type: file
           description: "Copy number variants in VCF format"
           pattern: "*.{vcf.gz}"
-          optional: true
   versions:
     - "versions.yml":
         type: file

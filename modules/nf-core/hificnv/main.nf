@@ -14,11 +14,11 @@ process HIFICNV {
     tuple val(meta4), path(expected_cn)
 
     output:
-    tuple val(meta), path("*.copynum.bedgraph"), emit: copynum, optional: true
+    tuple val(meta), path("*.copynum.bedgraph"), emit: copynum
     tuple val(meta), path("*.depth.bw"),         emit: depth
     tuple val(meta), path("*.maf.bw"),           emit: maf, optional: true
-    tuple val(meta), path("*.vcf.gz"),           emit: vcf, optional: true
-    path "versions.yml",                          emit: versions
+    tuple val(meta), path("*.vcf.gz"),           emit: vcf
+    path "versions.yml",                         emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,32 +29,20 @@ process HIFICNV {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     // handle optional inputs
-    def maf_arg         = maf         ? "--maf '${maf}'"                 : ""
-    def exclude_arg     = exclude     ? "--exclude '${exclude}'"         : ""
-    def expected_cn_arg = expected_cn ? "--expected-cn '${expected_cn}'" : ""
+    def maf_arg         = maf         ? "--maf ${maf}"                 : ""
+    def exclude_arg     = exclude     ? "--exclude ${exclude}"         : ""
+    def expected_cn_arg = expected_cn ? "--expected-cn ${expected_cn}" : ""
 
-    def cmd_parts = [
-        "hificnv",
-        "--bam '${bam}'",
-        "--ref '${ref}'",
-        maf_arg, exclude_arg, expected_cn_arg,
-        "--threads ${task.cpus}",
-        "--output-prefix '${prefix}'",
-        args
-    ].findAll { it } // remove empties
-
-    // Note: hificnv may exit with non-zero code in certain valid scenarios
-    // (e.g., when no CNVs are detected), so we handle exit codes manually
     """
-    # Disable immediate exit on error
-    set +e
-    ${cmd_parts.join(' \\\n    ')}
-
-    # Capture exit code
-    exit_code=\$?
-
-    # Re-enable exit on error for other commands
-    set -e
+    hificnv \\
+        --bam ${bam} \\
+        --ref ${ref} \\
+        ${maf_arg} \\
+        ${exclude_arg} \\
+        ${expected_cn_arg} \\
+        --threads ${task.cpus} \\
+        --output-prefix ${prefix} \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -67,13 +55,10 @@ process HIFICNV {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    # Create mandatory output files
     touch ${prefix}.depth.bw
-
-    # Create optional output files
     touch ${prefix}.copynum.bedgraph
-    echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.maf.bw
+    echo "" | gzip > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
