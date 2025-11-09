@@ -46,7 +46,7 @@ input:
     - fasta:
         type: file
         description: The reference fasta file
-        pattern: "*.fasta"
+        pattern: "*.{fasta,fasta.gz}"
         ontologies: []
   - - meta3:
         type: map
@@ -56,7 +56,12 @@ input:
     - fai:
         type: file
         description: Index of reference fasta file
-        pattern: "*.fasta.fai"
+        pattern: "*.{fasta.fai,fasta.fai.gz}"
+        ontologies: []
+    - gzi:
+        type: file
+        description: Index of bgzipped reference fasta file
+        pattern: "*.fasta.gz.gzi"
         ontologies: []
   - - meta4:
         type: map
@@ -154,4 +159,3 @@ authors:
 maintainers:
   - "@GCJMackenzie"
   - "@ramprasadn"
-  
