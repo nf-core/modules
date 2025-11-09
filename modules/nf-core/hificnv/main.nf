@@ -23,7 +23,6 @@ process HIFICNV {
     when:
     task.ext.when == null || task.ext.when
 
-
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -53,11 +52,12 @@ process HIFICNV {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def create_maf = maf ? "touch ${prefix}.maf.bw" : ""
 
     """
     touch ${prefix}.depth.bw
     touch ${prefix}.copynum.bedgraph
-    touch ${prefix}.maf.bw
+    ${create_maf}
     echo "" | gzip > ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
