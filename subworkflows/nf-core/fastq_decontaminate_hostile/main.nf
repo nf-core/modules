@@ -23,7 +23,7 @@ workflow FASTQ_DECONTAMINATE_HOSTILE {
         HOSTILE_FETCH( index_name )
         out_reference = HOSTILE_FETCH.out.reference
         ch_versions = ch_versions.mix(HOSTILE_FETCH.out.versions.first())
-    } 
+    }
     else {
         out_reference = ch_reference
     }

@@ -1,40 +1,80 @@
 {
-    "fastq - single-end - with reference": {
+    "fastq - single-end - with reference - stub": {
         "content": [
-            {
-                "0": [
-                    
-                ],
-                "1": [
-                    
-                ],
-                "2": [
-                    
-                ],
-                "3": [
-                    
-                ],
-                "fastq": [
-                    
-                ],
-                "json": [
-                    
-                ],
-                "reference": [
-                    
-                ],
-                "versions": [
-                    
-                ]
-            },
             [
-                
+                [
+                    {
+                        "id": "test_single",
+                        "single_end": true
+                    },
+                    "test_single.clean_1.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                ]
+            ],
+            [
+                {
+                    "FASTQ_DECONTAMINATE_HOSTILE:HOSTILE_CLEAN": {
+                        "hostile": "2.0.2"
+                    }
+                }
             ]
         ],
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2025-10-29T16:31:04.258325"
+        "timestamp": "2025-11-09T16:20:51.754086"
+    },
+    "fastq - single-end - with reference": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test_single",
+                        "single_end": true
+                    },
+                    "test_1.clean.fastq.gz:md5,9224ada21765cb3ad5fc05f40df78f17"
+                ]
+            ],
+            [
+                {
+                    "FASTQ_DECONTAMINATE_HOSTILE:HOSTILE_CLEAN": {
+                        "hostile": "2.0.2"
+                    }
+                }
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-11-09T16:19:05.883679"
+    },
+    "fastq - paired-end - with reference": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test_paired",
+                        "single_end": false
+                    },
+                    [
+                        "test_1.clean_2.fastq.gz:md5,1f845555fec53c15f8dedb94314bcfa4",
+                        "test_2.clean_1.fastq.gz:md5,1f22550372a0af19085eeb7f61879284"
+                    ]
+                ]
+            ],
+            [
+                {
+                    "FASTQ_DECONTAMINATE_HOSTILE:HOSTILE_CLEAN": {
+                        "hostile": "2.0.2"
+                    }
+                }
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-11-09T16:20:44.38349"
     }
 }

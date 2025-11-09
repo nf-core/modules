@@ -27,48 +27,18 @@ nextflow_workflow {
         }
     }
 
-test("DEBUG - check channels") {
-    when {
-        workflow {
-            """
-            // Check what BOWTIE2_BUILD produced
-            BOWTIE2_BUILD.out.index.view { "BOWTIE2_BUILD.out.index contains: \$it" }
-            
-            // Try to map it
-            def mapped = BOWTIE2_BUILD.out.index.map { meta, index -> 
-                println "Meta: \$meta"
-                println "Index path: \$index"
-                println "Index exists: \${index.exists()}"
-                println "Index contents: \${index.list()}"
-                tuple('genome', index)
-            }
-            
-            mapped.view { "After mapping: \$it" }
-            
-            input[0] = null
-            input[1] = mapped
-            input[2] = Channel.of([
-                [ id:'test_single', single_end:true ],
-                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
-            ])
-            """
-    }
-    }
-
-    then {
-        assert workflow.success
-    }
-}
-
     test("fastq - single-end - with reference") {
         when {
+            params {
+                module_args = "--aligner bowtie2"
+            }
             workflow {
                 """
-                input[0] = null  // index_name
+                input[0] = null
                 input[1] = BOWTIE2_BUILD.out.index.map { meta, index ->  tuple('genome', index) }
                 input[2] = Channel.of([
-                    [ id:'test_single', single_end:true ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    [ id:'test_single', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ])
                 """
             }
@@ -78,50 +48,53 @@ test("DEBUG - check channels") {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out,
+                    workflow.out.fastq,
                     workflow.out.versions.collect{ path(it).yaml }.unique()
                 ).match() }
             )
         }
     }
 
-    // test("fastq - paired-end - with reference") {
-    //     when {
-    //         workflow {
-    //             """
-    //             input[0] = null  // index_name
-    //             input[1] = BOWTIE2_BUILD.out.index.map { ['genome', it[1]] }  // ch_reference
-    //             input[2] = Channel.of([
-    //                 [ id:'test_paired', single_end:false ], // meta map
-    //                 [
-    //                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-    //                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
-    //                 ]
-    //             ])
-    //             """
-    //         }
-    //     }
+    test("fastq - paired-end - with reference") {
+        when {
+            params {
+                module_args = "--aligner bowtie2"
+            }
+            workflow {
+                """
+                input[0] = null
+                input[1] = BOWTIE2_BUILD.out.index.map { meta, index ->  tuple('genome', index) }
+                input[2] = Channel.of([
+                    [ id:'test_paired', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                """
+            }
+        }
 
-    //     then {
-    //         assertAll(
-    //             { assert workflow.success },
-    //             { assert snapshot(
-    //                 workflow.out,
-    //                 workflow.out.versions.collect{ path(it).yaml }.unique()
-    //             ).match() }
-    //         )
-    //     }
-    // }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.fastq,
+                    workflow.out.versions.collect{ path(it).yaml }.unique()
+                ).match() }
+            )
+        }
+    }
 
     // test("fastq - single-end - with index_name") {
     //     when {
     //         workflow {
     //             """
-    //             input[0] = "human-t2t-hla"  // index_name
-    //             input[1] = Channel.empty()  // ch_reference
+    //             input[0] = "human-t2t-hla"
+    //             input[1] = Channel.empty()
     //             input[2] = Channel.of([
-    //                 [ id:'test_single', single_end:true ], // meta map
-    //                 file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+    //                 [ id:'test_single', single_end:true ],
+    //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
     //             ])
     //             """
     //         }
@@ -131,38 +104,41 @@ test("DEBUG - check channels") {
     //         assertAll(
     //             { assert workflow.success },
     //             { assert snapshot(
-    //                 workflow.out,
+    //                 workflow.out.fastq,
     //                 workflow.out.versions.collect{ path(it).yaml }.unique()
     //             ).match() }
     //         )
     //     }
     // }
 
-    // test("fastq - single-end - with reference - stub") {
+    test("fastq - single-end - with reference - stub") {
 
-    //     options "-stub"
+        options "-stub"
 
-    //     when {
-    //         workflow {
-    //             """
-    //             input[0] = null  // index_name
-    //             input[1] = BOWTIE2_BUILD.out.index.map { ['genome', it[1]] }  // ch_reference
-    //             input[2] = Channel.of([
-    //                 [ id:'test_single', single_end:true ], // meta map
-    //                 file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
-    //             ])
-    //             """
-    //         }
-    //     }
+        when {
+            params {
+                module_args = "--aligner bowtie2"
+            }
+            workflow {
+                """
+                input[0] = null
+                input[1] = BOWTIE2_BUILD.out.index.map { ['genome', it[1]] }
+                input[2] = Channel.of([
+                    [ id:'test_single', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ])
+                """
+            }
+        }
 
-    //     then {
-    //         assertAll(
-    //             { assert workflow.success },
-    //             { assert snapshot(
-    //                 workflow.out,
-    //                 workflow.out.versions.collect{ path(it).yaml }.unique()
-    //             ).match() }
-    //         )
-    //     }
-    // }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.fastq,
+                    workflow.out.versions.collect{ path(it).yaml }.unique()
+                ).match() }
+            )
+        }
+    }
 }
