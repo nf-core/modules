@@ -8,7 +8,6 @@ workflow FASTQ_FETCH_CLEAN_HOSTILE {
     ch_reference    // channel: [ val(reference_name), path(reference_dir) ] (optional)
     index_name      // val (optional)
 
-
     main:
     ch_versions = Channel.empty()
 
@@ -33,7 +32,7 @@ workflow FASTQ_FETCH_CLEAN_HOSTILE {
     ch_versions = ch_versions.mix(HOSTILE_CLEAN.out.versions.first())
 
     emit:
-        reference   = out_reference                  // channel: [ val(reference_name), path(reference_dir) ] (optional, if index_name is provided)
+        reference   = out_reference                  // channel: [ val(reference_name), path(reference_dir) ]
         fastq       = HOSTILE_CLEAN.out.fastq       // channel: [ val(meta), [ *.fastq.gz ] ]
         json        = HOSTILE_CLEAN.out.json        // channel: [ val(meta), [ *.json ] ]
         versions    = ch_versions                   // channel: [ versions.yml ]
