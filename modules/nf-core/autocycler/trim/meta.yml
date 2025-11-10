@@ -35,7 +35,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.gfa":
+      - "$prefix/*.gfa":
           type: file
           description: Trimmed assembly graphs emitted by Autocycler.
           pattern: "*.gfa"
@@ -47,7 +47,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.yaml":
+      - "$prefix/*.yaml":
           type: file
           description: Trimming statistics for each cluster.
           pattern: "*.yaml"
