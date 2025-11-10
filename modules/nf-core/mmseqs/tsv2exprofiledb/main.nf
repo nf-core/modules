@@ -4,14 +4,14 @@ process MMSEQS_TSV2EXPROFILEDB {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/mmseqs2:17.b804f--hd6d6fdc_1'
-        : 'biocontainers/mmseqs2:17.b804f--hd6d6fdc_1'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fe/fe49c17754753d6cd9a31e5894117edaf1c81e3d6053a12bf6dc8f3af1dffe23/data'
+        : 'community.wave.seqera.io/library/mmseqs2:18.8cc5c--af05c9a98d9f6139'}"
 
     input:
     path database
 
     output:
-    path (database)    , emit: db_exprofile
+    path (database), emit: db_exprofile
     path "versions.yml", emit: versions
 
     when:
