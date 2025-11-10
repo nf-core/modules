@@ -16,7 +16,7 @@ process BBMAP_BBSPLIT {
     val   only_build_index
 
     output:
-    path "bbsplit"                            , optional:true, emit: index
+    path "bbsplit_index"                      , optional:true, emit: index
     tuple val(meta), path('*primary*fastq.gz'), optional:true, emit: primary_fastq
     tuple val(meta), path('*fastq.gz')        , optional:true, emit: all_fastq
     tuple val(meta), path('*txt')             , optional:true, emit: stats
@@ -50,7 +50,7 @@ process BBMAP_BBSPLIT {
 
     if (only_build_index) {
         if (primary_ref && other_ref_names && other_ref_paths) {
-            index_files = 'ref_primary=' +primary_ref + ' ' + other_refs.join(' ') + ' path=bbsplit'
+            index_files = 'ref_primary=' +primary_ref + ' ' + other_refs.join(' ') + ' path=bbsplit_build'
         } else {
             log.error 'ERROR: Please specify as input a primary fasta file along with names and paths to non-primary fasta files.'
         }
@@ -79,7 +79,7 @@ process BBMAP_BBSPLIT {
             # Extract the path from summary.txt and update it to point to index_writable
             src=\$(grep '^source' "\$summary_file" | cut -f2- -d\$'\\t' | sed 's|.*/ref/|index_writable/ref/|')
             mod=\$(echo "System.out.println(java.nio.file.Files.getLastModifiedTime(java.nio.file.Paths.get(\\"\$src\\")).toMillis());" | jshell -J-Djdk.lang.Process.launchMechanism=vfork -)
-            sed -e 's|bbsplit/ref|index_writable/ref|' -e "s|^last modified.*|last modified\\t\$mod|" "\$summary_file" > \${summary_file}.tmp && mv \${summary_file}.tmp \${summary_file}
+            sed -e 's|bbsplit_index/ref|index_writable/ref|' -e "s|^last modified.*|last modified\\t\$mod|" "\$summary_file" > \${summary_file}.tmp && mv \${summary_file}.tmp \${summary_file}
         done
     fi
 
@@ -96,11 +96,14 @@ process BBMAP_BBSPLIT {
 
     # Summary files will have an absolute path that will make the index
     # impossible to use in other processes- we can fix that
-    if [ -d bbsplit/ref/genome ]; then
-        for summary_file in \$(find bbsplit/ref/genome -name summary.txt); do
-            src=\$(grep '^source' "\$summary_file" | cut -f2- -d\$'\\t' | sed 's|.*/bbsplit|bbsplit|')
+    if [ -d bbsplit_build/ref/genome ]; then
+        for summary_file in \$(find bbsplit_build/ref/genome -name summary.txt); do
+            src=\$(grep '^source' "\$summary_file" | cut -f2- -d\$'\\t' | sed 's|.*/bbsplit_build|bbsplit_index|')
             sed "s|^source.*|source\\t\$src|" "\$summary_file" > \${summary_file}.tmp && mv \${summary_file}.tmp \${summary_file}
         done
+
+        # Atomically rename the completed index
+        mv bbsplit_build bbsplit_index
     fi
 
     cat <<-END_VERSIONS > versions.yml
@@ -119,7 +122,7 @@ process BBMAP_BBSPLIT {
     """
     # Create index directory if building an index (either only_build_index or on-the-fly)
     if [ "${will_build_index}" == "true" ]; then
-        mkdir -p bbsplit
+        mkdir -p bbsplit_index
     fi
 
     # Only create output files if splitting (not just building index)
