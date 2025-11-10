@@ -11,20 +11,26 @@ process AUTOCYCLER_RESOLVE {
     tuple val(meta), path(gfa)
 
     output:
-    tuple val(meta), path("3_bridged.gfa"), emit: bridged
-    tuple val(meta), path("4_merged.gfa"),  emit: merged
-    tuple val(meta), path("5_final.gfa"),   emit: resolved
-    path "versions.yml",                    emit: versions
+    tuple val(meta), path("$prefix/3_bridged.gfa"), emit: bridged
+    tuple val(meta), path("$prefix/4_merged.gfa"),  emit: merged
+    tuple val(meta), path("$prefix/5_final.gfa"),   emit: resolved
+    path "versions.yml",                            emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
     """
     autocycler resolve \\
         $args \\
         -c .
+
+    mkdir $prefix
+    mv 3_bridged.gfa $prefix
+    mv 4_merged.gfa $prefix
+    mv 5_final.gfa $prefix
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -33,11 +39,13 @@ process AUTOCYCLER_RESOLVE {
     """
 
     stub:
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args   ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}"
     """
-    touch 3_bridged.gfa
-    touch 4_merged.gfa
-    touch 5_final.gfa
+    mkdir $prefix
+    touch $prefix/3_bridged.gfa
+    touch $prefix/4_merged.gfa
+    touch $prefix/5_final.gfa
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
