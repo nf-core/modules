@@ -35,7 +35,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "3_bridged.gfa":
+      - "$prefix/3_bridged.gfa":
           type: file
           description: Assembly graph with bridges resolved.
           pattern: "3_bridged.gfa"
@@ -47,7 +47,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "4_merged.gfa":
+      - "$prefix/4_merged.gfa":
           type: file
           description: Merged assembly graph after bridging.
           pattern: "4_merged.gfa"
@@ -59,7 +59,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "5_final.gfa":
+      - "$prefix/5_final.gfa":
           type: file
           description: Final resolved assembly graph.
           pattern: "5_final.gfa"
