@@ -1,11 +1,11 @@
 process DEACON_INDEX {
     tag "$fasta"
-    label 'process_single'
+    label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/deacon:0.5.0--h4349ce8_0':
-        'biocontainers/deacon:0.5.0--h4349ce8_0' }"
+        'https://depot.galaxyproject.org/singularity/deacon:0.12.0--h4349ce8_0':
+        'biocontainers/deacon:0.12.0--h4349ce8_0' }"
 
     input:
     tuple val(meta), path(fasta)

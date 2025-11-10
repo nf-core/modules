@@ -1,7 +1,7 @@
 include { DEACON_INDEX  } from '../../../modules/nf-core/deacon/index/main'
 include { DEACON_FILTER } from '../../../modules/nf-core/deacon/filter/main'
 
-workflow FASTQ_DECONTAMINATE_DEACON {
+workflow FASTQ_INDEX_FILTER_DEACON {
 
     take:
     ch_fasta_reads // [ val(meta), [ fasta ], [ reads ] ]
