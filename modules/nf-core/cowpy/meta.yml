@@ -1,0 +1,49 @@
+name: "cowpy"
+description: Print any text in a cow or other characters
+keywords:
+  - cowpy
+  - hello
+  - ascii_art
+tools:
+  - "cowpy":
+      description: "Print any text in a cow or other characters"
+      homepage: "https://github.com/jeffbuttars/cowpy"
+      documentation: "https://github.com/jeffbuttars/cowpy"
+      tool_dev_url: "https://github.com/jeffbuttars/cowpy"
+      licence: ["Apache-2.0"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - text:
+        type: file
+        description: text file
+        pattern: "*.{txt}"
+        ontologies: []
+output:
+  txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+          pattern: "*.txt"
+      - ${prefix}.txt:
+          type: file
+          description: test file
+          pattern: "*.txt"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@maxulysse"
+maintainers:
+  - "@maxulysse"

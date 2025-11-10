@@ -31,9 +31,10 @@ input:
         type: file
         description: BAM file
         pattern: "*.bam"
+        ontologies: []
 output:
-  - data:
-      - meta:
+  data:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -42,11 +43,17 @@ output:
           type: file
           description: Output file
           pattern: "*.{bed,fasta,fastq,json,pileup,sam,yaml}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+            - edam: http://edamontology.org/format_3464 # JSON
+            - edam: http://edamontology.org/format_3750 # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sguizard"
 maintainers:

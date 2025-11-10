@@ -1,0 +1,109 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "autocycler_cluster"
+description: Cluster replicons in compressed assemblies with Autocycler.
+keywords:
+  - autocycler
+  - genome-assembly
+  - clustering
+  - long-read
+tools:
+  - autocycler:
+      description: "A tools for generating consensus long-read assemblies for bacterial genomes."
+      homepage: "https://github.com/rrwick/Autocycler/wiki"
+      documentation: "https://github.com/rrwick/Autocycler/wiki"
+      tool_dev_url: "https://github.com/rrwick/Autocycler"
+      doi: "10.1093/bioinformatics/btaf474"
+      licence: ["GPL-3.0"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - gfa:
+        type: file
+        description: |
+          Assembly graph files produced by the compression step.
+        pattern: "*/*.gfa"
+
+output:
+  clusters:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "$prefix/clustering/qc_pass/*/*.gfa":
+          type: file
+          description: Aassembly graphs of clustered contigs.
+          pattern: "clustering/qc_pass/*/*.gfa"
+          ontologies:
+            - edam: "http://edamontology.org/format_3975" #GFA1
+  clusterstats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "$prefix/clustering/qc_pass/*/*.yaml":
+          type: file
+          description: Per-cluster metrics reported by Autocycler.
+          pattern: "clustering/qc_pass/*/*.yaml"
+          ontologies:
+            - edam: "http://edamontology.org/format_3750" # YAML
+  newick:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "$prefix/clustering/*.newick":
+          type: file
+          description: Newick tree relating contigs.
+          pattern: "clustering/*.newick"
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "$prefix/clustering/*.tsv":
+          type: file
+          description: Tabular summary of cluster relationships.
+          pattern: "clustering/*.tsv"
+  pairwisedistances:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "$prefix/clustering/*.phylip":
+          type: file
+          description: Pairwise distance matrix in PHYLIP format.
+          pattern: "clustering/*.phylip"
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "$prefix/clustering/*.yaml":
+          type: file
+          description: Run-level statistics for the clustering step.
+          pattern: "clustering/*.yaml"
+          ontologies:
+            - edam: "http://edamontology.org/format_3750" # YAML
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+authors:
+  - "@dwells-eit"
+maintainers:
+  - "@dwells-eit"

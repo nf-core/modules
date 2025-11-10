@@ -13,11 +13,12 @@ workflow BCL_DEMULTIPLEX {
         demultiplexer   // bclconvert or bcl2fastq
 
     main:
-        ch_versions      = Channel.empty()
-        ch_fastq         = Channel.empty()
-        ch_reports       = Channel.empty()
-        ch_stats         = Channel.empty()
-        ch_interop       = Channel.empty()
+        ch_versions      = channel.empty()
+        ch_fastq         = channel.empty()
+        ch_reports       = channel.empty()
+        ch_stats         = channel.empty()
+        ch_interop       = channel.empty()
+        ch_logs          = channel.empty()
 
         // Split flowcells into separate channels containing run as tar and run as path
         // https://nextflow.slack.com/archives/C02T98A23U7/p1650963988498929
@@ -49,7 +50,8 @@ workflow BCL_DEMULTIPLEX {
             ch_fastq    = ch_fastq.mix(BCLCONVERT.out.fastq)
             ch_interop  = ch_interop.mix(BCLCONVERT.out.interop)
             ch_reports  = ch_reports.mix(BCLCONVERT.out.reports)
-            ch_versions = ch_versions.mix(BCLCONVERT.out.versions)
+            ch_logs     = ch_logs.mix(BCLCONVERT.out.logs)
+            ch_versions = ch_versions.mix(BCLCONVERT.out.versions.first())
         }
 
         // MODULE: bcl2fastq
@@ -60,7 +62,7 @@ workflow BCL_DEMULTIPLEX {
             ch_interop  = ch_interop.mix(BCL2FASTQ.out.interop)
             ch_reports  = ch_reports.mix(BCL2FASTQ.out.reports)
             ch_stats    = ch_stats.mix(BCL2FASTQ.out.stats)
-            ch_versions = ch_versions.mix(BCL2FASTQ.out.versions)
+            ch_versions = ch_versions.mix(BCL2FASTQ.out.versions.first())
         }
 
         // Generate meta for each fastq
@@ -120,9 +122,9 @@ workflow BCL_DEMULTIPLEX {
             meta.single_end = fastq.size() == 1
             return [meta, fastq.flatten()]
         }
-        .branch {
-            fastq       : it[0].empty == false
-            empty_fastq : it[0].empty == true
+        .branch { meta, _fastq ->
+            fastq       : meta.empty == false
+            empty_fastq : meta.empty == true
         }
         .set{ch_fastq_with_meta}
 
@@ -132,5 +134,6 @@ workflow BCL_DEMULTIPLEX {
         reports     = ch_reports
         stats       = ch_stats
         interop     = ch_interop
+        logs        = ch_logs
         versions    = ch_versions
 }

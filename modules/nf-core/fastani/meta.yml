@@ -24,13 +24,15 @@ input:
         type: file
         description: Fasta file(s) to be queried
         pattern: "*.fasta"
-  - - reference:
-        type: file
-        description: Fasta file(s) to be used as reference for the query
-        pattern: "*.fasta"
+        ontologies: []
+  - reference:
+      type: file
+      description: Fasta file(s) to be used as reference for the query
+      pattern: "*.fasta"
+      ontologies: []
 output:
-  - ani:
-      - meta:
+  ani:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,11 +41,14 @@ output:
           type: file
           description: Results of the query
           pattern: "*.ani.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@abhi18av"
 maintainers:

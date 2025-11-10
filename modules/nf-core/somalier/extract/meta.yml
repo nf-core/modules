@@ -32,9 +32,11 @@ input:
     - input:
         type: file
         description: BAM/CRAM/SAM/BCF/VCF/GVCF or jointly-called VCF file
+        ontologies: []
     - input_index:
         type: file
         description: index file of the input data, e.g., bam.bai, cram.crai
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -44,6 +46,7 @@ input:
         type: file
         description: The reference fasta file
         pattern: "*.{fasta,fna,fas,fa}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -53,6 +56,7 @@ input:
         type: file
         description: FASTA index file
         pattern: "*.fai"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -62,9 +66,11 @@ input:
         type: file
         description: sites file in VCF format which can be taken from https://github.com/brentp/somalier
         pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
 output:
-  - extract:
-      - meta:
+  extract:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -73,11 +79,14 @@ output:
           type: file
           description: binary output file based on extracted sites
           pattern: "*.{somalier}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ashotmarg"
   - "@nvnieuwk"

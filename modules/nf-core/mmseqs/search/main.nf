@@ -3,9 +3,9 @@ process MMSEQS_SEARCH {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mmseqs2:17.b804f--hd6d6fdc_1':
-        'biocontainers/mmseqs2:17.b804f--hd6d6fdc_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fe/fe49c17754753d6cd9a31e5894117edaf1c81e3d6053a12bf6dc8f3af1dffe23/data'
+        : 'community.wave.seqera.io/library/mmseqs2:18.8cc5c--af05c9a98d9f6139'}"
 
     input:
     tuple val(meta), path(db_query)
@@ -13,7 +13,7 @@ process MMSEQS_SEARCH {
 
     output:
     tuple val(meta), path("${prefix}/"), emit: db_search
-    path "versions.yml"               , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,7 +40,7 @@ process MMSEQS_SEARCH {
         \$DB_TARGET_PATH_NAME \\
         ${prefix}/${prefix} \\
         tmp1 \\
-        $args \\
+        ${args} \\
         --threads ${task.cpus}
 
     cat <<-END_VERSIONS > versions.yml
@@ -52,8 +52,11 @@ process MMSEQS_SEARCH {
     stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    if ("$db_query" == "${prefix}" || "$db_target" == "${prefix}"  ) error "Input and output names of databases are the same, set prefix in module configuration to disambiguate!"
+    if ("${db_query}" == "${prefix}" || "${db_target}" == "${prefix}") {
+        error("Input and output names of databases are the same, set prefix in module configuration to disambiguate!")
+    }
     """
+    echo ${args}
     mkdir -p ${prefix}
     touch ${prefix}/${prefix}.{0..9}
     touch ${prefix}/${prefix}.dbtype
