@@ -38,19 +38,19 @@ output:
         pattern: "output_archive/*/POSEIDON.yml"
         ontologies: []
   geno:
-    - output_archive/*/*.bed:
+    - "output_archive/*/*.{geno,bed,vcf,geno.gz,bed.gz,vcf.gz}":
         type: file
         description: The genotype files of any newly downloaded package(s).
         pattern: "output_archive/*/*.{geno,bed,vcf,geno.gz,bed.gz,vcf.gz}"
         ontologies: []
   snp:
-    - output_archive/*/*bim:
+    - "output_archive/*/*.{snp,bim,snp.gz,bim.gz}":
         type: file
         description: The SNP information files of any newly downloaded package(s).
         pattern: "output_archive/*/*.{snp,bim,snp.gz,bim.gz}"
         ontologies: []
   ind:
-    - output_archive/*/*.fam:
+    - "output_archive/*/*.{ind,fam,ind.gz,fam.gz}":
         type: file
         description: The individual information files of any newly downloaded package(s).
         pattern: "output_archive/*/*.{ind,fam,ind.gz,fam.gz}"
