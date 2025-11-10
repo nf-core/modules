@@ -58,6 +58,17 @@ process PARABRICKS_FQ2BAM {
     dummy_index=0 
     ref_path=${fasta}
 
+    # Set up cleanup trap to ensure we clean up the dummy index even on error
+    # only cleanup the dummy index or symlink if we created it
+    # checked via the dummy_index variable
+    cleanup() {
+        if [ \$dummy_index -eq 1 ]; then
+            rm -f \$INDEX
+        fi
+    }
+    # always cleanup; on success or failure
+    trap cleanup EXIT
+
     if [[ "${extension}" == "bam" ]] && [ ! -e \$INDEX ]; then
         echo "BAM requested but ref path does not exist. Creating dummy reference."
         dummy_index=1
