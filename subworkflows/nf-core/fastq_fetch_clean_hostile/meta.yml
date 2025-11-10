@@ -44,7 +44,7 @@ output:
       description: |
         Channel containing sample metadata and cleaned FASTQ files.
         Structure: [ val(meta), path(*.fastq.gz) ]
-        pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
+      pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
   - json:
       type: channel
       description: |
