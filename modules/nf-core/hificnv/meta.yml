@@ -25,8 +25,8 @@ input:
           e.g. `[ id:'test', single_end:false ]`
     - bam:
         type: file
-        description: "Sorted BAM file from PacBio HiFi reads"
-        pattern: "*.{bam}"
+        description: "Sorted BAM or CRAM file from PacBio HiFi reads"
+        pattern: "*.{bam,cram}"
     - bai:
         type: file
         description: BAM index file (CSI, CRAI, or BAI format)
