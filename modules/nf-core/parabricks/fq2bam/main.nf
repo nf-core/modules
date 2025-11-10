@@ -95,11 +95,6 @@ process PARABRICKS_FQ2BAM {
         --monitor-usage \\
         ${args}
 
-    # Remove the dummy index if we added one 
-    if [ dummy_index ]; then 
-        rm \$INDEX
-    fi
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
             pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
