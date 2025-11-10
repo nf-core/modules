@@ -3,7 +3,7 @@ process FGBIO_COPYUMIFROMREADNAME {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ ['singularity', 'apptainer'].contains(workflow.containerEngine) ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5f/5f3f7e07c7f261ec7fd86168d8a273624cc0aace8e28eb20e37ddfb2f8f9c75b/data' :
         'community.wave.seqera.io/library/fgbio:3.0.0--c1b70e1869d6fa49' }"
 
