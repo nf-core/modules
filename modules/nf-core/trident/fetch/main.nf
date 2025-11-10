@@ -12,15 +12,15 @@ process TRIDENT_FETCH {
 
     output:
     // All outputs are optional as fetch will check if the package already exists in the provided archive directories, and skip download if so.
-    path "*/POSEIDON.yml", emit: poseidon_yml, optional: true
-    path "*/*.{bed,geno,vcf}{,.gz}", emit: geno, optional: true
-    path "*/*.{bim,snp,vcf}{,.gz}", emit: snp, optional: true
-    path "*/*.{fam,ind,vcf}{,.gz}", emit: ind, optional: true
-    path "*/*.janno", emit: janno, optional: true
-    path "*/*.ssf", emit: ssf, optional: true
-    path "*/*.bib", emit: bib, optional: true
-    path "*/CHANGELOG.md", emit: changelog, optional: true
-    path "*/README.md", emit: readme, optional: true
+    path "output_archive/*/POSEIDON.yml", emit: poseidon_yml, optional: true
+    path "output_archive/*/*.{bed,geno,vcf}{,.gz}", emit: geno, optional: true
+    path "output_archive/*/*.{bim,snp,vcf}{,.gz}", emit: snp, optional: true
+    path "output_archive/*/*.{fam,ind,vcf}{,.gz}", emit: ind, optional: true
+    path "output_archive/*/*.janno", emit: janno, optional: true
+    path "output_archive/*/*.ssf", emit: ssf, optional: true
+    path "output_archive/*/*.bib", emit: bib, optional: true
+    path "output_archive/*/CHANGELOG.md", emit: changelog, optional: true
+    path "output_archive/*/README.md", emit: readme, optional: true
     path "versions.yml", emit: versions
 
     when:
@@ -35,7 +35,7 @@ process TRIDENT_FETCH {
     def archives = archive_dir ? '-d ' + archive_dir.join(" -d ") : ''
     """
     trident fetch\\
-        -d . \\
+        -d output_archive/ \\
         ${archives} \\
         ${args} \\
         ${fetch_string} \\
