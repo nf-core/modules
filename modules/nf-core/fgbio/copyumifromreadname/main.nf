@@ -3,9 +3,9 @@ process FGBIO_COPYUMIFROMREADNAME {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ ['singularity', 'apptainer'].contains(workflow.containerEngine) ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5f/5f3f7e07c7f261ec7fd86168d8a273624cc0aace8e28eb20e37ddfb2f8f9c75b/data' :
-        'community.wave.seqera.io/library/fgbio:3.0.0--c1b70e1869d6fa49' }"
+    container workflow.containerEngine in ['singularity', 'apptainer'] ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5f/5f3f7e07c7fd86168d8a273624cc0aace8e28eb20e37ddfb2f8f9c75b/data' :
+        'community.wave.seqera.io/library/fgbio:3.0.0--c1b70e1869d6fa49'
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -13,7 +13,7 @@ process FGBIO_COPYUMIFROMREADNAME {
     output:
     tuple val(meta), path("*.bam"), emit: bam
     tuple val(meta), path("*.bai"), emit: bai
-    tuple val("${task.process}"), val("fgbio"), eval("fgbio --version 2>&1 | grep -oE '[0-9]+(\\.[0-9]+)+'"), topic: versions, emit: versions_fgbio
+    tuple val(task.process), val("fgbio"), eval("fgbio --version 2>&1 | grep -oE '[0-9]+(\\.[0-9]+)+'"), topic: versions, emit: versions_fgbio
 
     when:
     task.ext.when == null || task.ext.when
