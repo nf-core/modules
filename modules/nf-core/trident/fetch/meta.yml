@@ -32,52 +32,63 @@ input:
 
 output:
   poseidon_yml:
-    - "output_archive/*/POSEIDON.yml":
+    - output_archive/*/POSEIDON.yml:
         type: file
         description: The POSEIDON.yml file of any newly downloaded package(s).
         pattern: "output_archive/*/POSEIDON.yml"
+        ontologies: []
   geno:
-    - "output_archive/*/*.{geno,bed,vcf}{,.gz}":
+    - output_archive/*/*.bed:
         type: file
         description: The genotype files of any newly downloaded package(s).
-        pattern: "output_archive/*/*.{geno,bed,vcf}{,.gz}"
+        pattern: "output_archive/*/*.{geno,bed,vcf,geno.gz,bed.gz,vcf.gz}"
+        ontologies: []
   snp:
-    - "output_archive/*/*.{snp,bim}{,.gz}":
+    - output_archive/*/*bim:
         type: file
         description: The SNP information files of any newly downloaded package(s).
-        pattern: "output_archive/*/*.{snp,bim}{,.gz}"
+        pattern: "output_archive/*/*.{snp,bim,snp.gz,bim.gz}"
+        ontologies: []
   ind:
-    - "output_archive/*/*.{ind,fam}{,.gz}":
+    - output_archive/*/*.fam:
         type: file
         description: The individual information files of any newly downloaded package(s).
-        pattern: "output_archive/*/*.{ind,fam}{,.gz}"
+        pattern: "output_archive/*/*.{ind,fam,ind.gz,fam.gz}"
+        ontologies: []
   janno:
-    - "output_archive/*/*.janno":
+    - output_archive/*/*.janno:
         type: file
-        description: The .janno annotation files of any newly downloaded package(s).
+        description: The .janno annotation files of any newly downloaded
+          package(s).
         pattern: "output_archive/*/*.janno"
+        ontologies: []
   ssf:
-    - "output_archive/*/*.ssf":
+    - output_archive/*/*.ssf:
         type: file
         description: The .ssf files of any newly downloaded package(s).
         pattern: "output_archive/*/*.ssf"
+        ontologies: []
   bib:
-    - "output_archive/*/*.bib":
+    - output_archive/*/*.bib:
         type: file
-        description: The .bib bibliography files of any newly downloaded package(s).
+        description: The .bib bibliography files of any newly downloaded
+          package(s).
         pattern: "output_archive/*/*.bib"
-  readme:
-    - "output_archive/*/README.md":
-        type: file
-        description: The README.md files of any newly downloaded package(s).
-        pattern: "output_archive/*/README.md"
+        ontologies: []
   changelog:
-    - "output_archive/*/CHANGELOG.md":
+    - output_archive/*/CHANGELOG.md:
         type: file
         description: The CHANGELOG.md files of any newly downloaded package(s).
         pattern: "output_archive/*/CHANGELOG.md"
+        ontologies: []
+  readme:
+    - output_archive/*/README.md:
+        type: file
+        description: The README.md files of any newly downloaded package(s).
+        pattern: "output_archive/*/README.md"
+        ontologies: []
   versions:
-    - "versions.yml":
+    - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
