@@ -13,9 +13,8 @@ tools:
       homepage: "https://www.poseidon-adna.org/"
       documentation: "https://www.poseidon-adna.org/#/trident?id=fetch-command"
       tool_dev_url: "https://github.com/poseidon-framework/poseidon-hs/"
-      doi: "https://doi.org/10.7554/eLife.98317.1"
+      doi: "10.7554/eLife.98317.1"
       licence: ["MIT"]
-      identifier: null
 
 input:
   - - archive_dir:
@@ -33,41 +32,50 @@ input:
 
 output:
   poseidon_yml:
-    - type: file
-      description: The POSEIDON.yml file of any newly downloaded package(s).
-      pattern: "*/POSEIDON.yml"
+    - "output_archive/*/POSEIDON.yml":
+        type: file
+        description: The POSEIDON.yml file of any newly downloaded package(s).
+        pattern: "output_archive/*/POSEIDON.yml"
   geno:
-    - type: file
-      description: The genotype files of any newly downloaded package(s).
-      pattern: "*/*.{geno,bed,vcf}{,.gz}"
+    - "output_archive/*/*.{geno,bed,vcf}{,.gz}":
+        type: file
+        description: The genotype files of any newly downloaded package(s).
+        pattern: "output_archive/*/*.{geno,bed,vcf}{,.gz}"
   snp:
-    - type: file
-      description: The SNP information files of any newly downloaded package(s).
-      pattern: "*/*.{snp,bim}{,.gz}"
+    - "output_archive/*/*.{snp,bim}{,.gz}":
+        type: file
+        description: The SNP information files of any newly downloaded package(s).
+        pattern: "output_archive/*/*.{snp,bim}{,.gz}"
   ind:
-    - type: file
-      description: The individual information files of any newly downloaded package(s).
-      pattern: "*/*.{ind,fam}{,.gz}"
+    - "output_archive/*/*.{ind,fam}{,.gz}":
+        type: file
+        description: The individual information files of any newly downloaded package(s).
+        pattern: "output_archive/*/*.{ind,fam}{,.gz}"
   janno:
-    - type: file
-      description: The .janno annotation files of any newly downloaded package(s).
-      pattern: "*/*.janno"
+    - "output_archive/*/*.janno":
+        type: file
+        description: The .janno annotation files of any newly downloaded package(s).
+        pattern: "output_archive/*/*.janno"
   ssf:
-    - type: file
-      description: The .ssf files of any newly downloaded package(s).
-      pattern: "*/*.ssf"
+    - "output_archive/*/*.ssf":
+        type: file
+        description: The .ssf files of any newly downloaded package(s).
+        pattern: "output_archive/*/*.ssf"
   bib:
-    - type: file
-      description: The .bib bibliography files of any newly downloaded package(s).
-      pattern: "*/*.bib"
+    - "output_archive/*/*.bib":
+        type: file
+        description: The .bib bibliography files of any newly downloaded package(s).
+        pattern: "output_archive/*/*.bib"
   readme:
-    - type: file
-      description: The README.md files of any newly downloaded package(s).
-      pattern: "*/README.md"
+    - "output_archive/*/README.md":
+        type: file
+        description: The README.md files of any newly downloaded package(s).
+        pattern: "output_archive/*/README.md"
   changelog:
-    - type: file
-      description: The CHANGELOG.md files of any newly downloaded package(s).
-      pattern: "*/CHANGELOG.md"
+    - "output_archive/*/CHANGELOG.md":
+        type: file
+        description: The CHANGELOG.md files of any newly downloaded package(s).
+        pattern: "output_archive/*/CHANGELOG.md"
   versions:
     - "versions.yml":
         type: file
