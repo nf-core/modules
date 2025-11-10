@@ -4,8 +4,8 @@ process METHBAT_PROFILE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/methbat:0.16.0--h9ee0642_0':
-        'biocontainers/methbat:0.16.0--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/methbat:0.16.1--h9ee0642_0':
+        'biocontainers/methbat:0.16.1--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(files, stageAs: "inputs/*")
