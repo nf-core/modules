@@ -2,7 +2,7 @@ process BASICPY {
     tag "$meta.id"
     label 'process_single'
 
-    container "docker.io/labsyspharm/basicpy-docker-mcmicro:1.2.0-patch2"
+    container "docker.io/labsyspharm/basicpy-docker-mcmicro:1.2.0-patch3"
 
     input:
     tuple val(meta), path(image)
