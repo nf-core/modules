@@ -4,8 +4,8 @@ process FGBIO_COPYUMIFROMREADNAME {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/87/87626ef674e2f19366ae6214575a114fe80ce598e796894820550731706a84be/data' :
-        'community.wave.seqera.io/library/fgbio:2.4.0--913bad9d47ff8ddc' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5f/5f3f7e07c7f261ec7fd86168d8a273624cc0aace8e28eb20e37ddfb2f8f9c75b/data' :
+        'community.wave.seqera.io/library/fgbio:3.0.0--c1b70e1869d6fa49' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -13,11 +13,10 @@ process FGBIO_COPYUMIFROMREADNAME {
     output:
     tuple val(meta), path("*.bam"), emit: bam
     tuple val(meta), path("*.bai"), emit: bai
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val("fgbio"), eval("fgbio --version 2>&1 | grep -oE '[0-9]+(\\.[0-9]+)+' "), topic: versions, emit: versions_fgbio
 
     when:
     task.ext.when == null || task.ext.when
-
 
     script:
     def args = task.ext.args ?: ''
@@ -41,24 +40,12 @@ process FGBIO_COPYUMIFROMREADNAME {
         ${args} \\
         --input ${bam} \\
         --output ${prefix}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fgbio: \$( echo \$(fgbio --version 2>&1 | tr -d '[:cntrl:]' ) | sed -e 's/^.*Version: //;s/\\[.*\$//')
-    END_VERSIONS
     """
-
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}_umi_extracted"
     """
-
     touch ${prefix}.bam
     touch ${prefix}.bai
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fgbio: \$(fgbio --version)
-    END_VERSIONS
     """
 }

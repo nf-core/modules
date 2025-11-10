@@ -66,14 +66,27 @@ output:
           pattern: "*.{bai}"
           ontologies:
             - edam: "http://edamontology.org/format_3327" # BAI
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+  versions_fgbio:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fastqc:
+          type: string
+          description: The tool name
+      - fgbio --version 2>&1 | grep -oE '[0-9]+(\\.[0-9]+:
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  - versions:
+      - - process:
+            type: string
+            description: The process the versions were collected from
+        - tool:
+            type: string
+            description: The tool name
+        - version:
+            type: string
+            description: The version of the tool
 authors:
   - "@sppearce"
 maintainers:
