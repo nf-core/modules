@@ -1,0 +1,71 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "autocycler_compress"
+description: Package candidate assemblies for clustering by Autocycler.
+keywords:
+  - autocycler
+  - genome-assembly
+  - compression
+  - long-read
+tools:
+  - autocycler:
+      description: "A tools for generating consensus long-read assemblies for bacterial genomes."
+      homepage: "https://github.com/rrwick/Autocycler/wiki"
+      documentation: "https://github.com/rrwick/Autocycler/wiki"
+      tool_dev_url: "https://github.com/rrwick/Autocycler"
+      doi: "10.1093/bioinformatics/btaf474"
+      licence: ["GPL-3.0"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - assemblies:
+        type: file
+        description: |
+          Candidate assembly files (typically FASTA) generated for the sample.
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+          - edam: "http://edamontology.org/format_3989" # GZIP
+
+output:
+  gfa:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "$prefix/*.gfa":
+          type: file
+          description: Assembly graph files ready for clustering.
+          pattern: "$prefix/*.gfa"
+          ontologies:
+            - edam: "http://edamontology.org/format_3975" #GFA1
+
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "$prefix/*.yaml":
+          type: file
+          description: Summary statistics generated during compression.
+          pattern: "*/*.yaml"
+          ontologies:
+            - edam: "http://edamontology.org/format_3750" # YAML
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+authors:
+  - "@dwells-eit"
+maintainers:
+  - "@dwells-eit"

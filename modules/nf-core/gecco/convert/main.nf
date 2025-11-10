@@ -1,11 +1,11 @@
 process GECCO_CONVERT {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gecco:0.9.10--pyhdfd78af_0':
-        'biocontainers/gecco:0.9.10--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gecco:0.10.0--pyhdfd78af_0':
+        'biocontainers/gecco:0.10.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(clusters), path(gbk)
@@ -24,15 +24,15 @@ process GECCO_CONVERT {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}" // IMPORTANT: -o ${prefix} does not work in 0.10.0
     """
     gecco \\
         convert \\
         $args \\
+        --jobs $task.cpus \\
         $mode \\
         --input-dir ./ \\
-        --format ${format} \\
-        --output ${prefix}
+        --format ${format}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
