@@ -55,7 +55,6 @@ process SOUPORCELL {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         souporcell: $VERSION
-        gxx: \$( g++ --version | head -n1 | awk '{print \$NF}' )
     END_VERSIONS
     """
 }
