@@ -147,7 +147,7 @@ if (as.logical(opt\$apply_voom)) {
     vobjDream <- voomWithDreamWeights(dge, form, metadata, BPPARAM = param)
 } else {
     # Assume countMatrix roughly follows a normal distribution
-    vobjDream<- DGEList(countMatrix)
+    vobjDream<- countMatrix
 }
 
 # Fit the DREAM model with ddf and reml options
