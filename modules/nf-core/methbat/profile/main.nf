@@ -8,11 +8,12 @@ process METHBAT_PROFILE {
         'biocontainers/methbat:0.16.1--h9ee0642_0' }"
 
     input:
-    tuple val(meta), path(files, stageAs: "inputs/*")
+    tuple val(meta), path(files)
     tuple val(meta2), path(regions)
 
     output:
     tuple val(meta), path("*.tsv"), emit: region_profile
+    tuple val(meta), path("*.bed"), emit: asm_bed, optional: true
     path "versions.yml"           , emit: versions
 
     when:
@@ -23,7 +24,7 @@ process METHBAT_PROFILE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     methbat profile \\
-        --input-prefix inputs/${prefix} \\
+        --input-prefix \$(find . -name '*combined.bed.gz' | sed 's/\\.combined.bed.gz\$//') \\
         --input-regions ${regions} \\
         --output-region-profile ${prefix}.tsv \\
         $args \\
@@ -35,9 +36,12 @@ process METHBAT_PROFILE {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def make_bed = args.contains('--output-asm-bed') ? "touch ${args.split('--output-asm-bed')[1].trim().tokenize(' ')[0]}" : ""
     """
     touch ${prefix}.tsv
+    ${make_bed}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
