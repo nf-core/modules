@@ -44,7 +44,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.tsv,
-                    process.out.versions,
+                    path(process.out.versions[0]).yaml,
                     path(process.out.vcf[0][1]).vcf.sampleCount == 69
                 ).match() }
             )
@@ -97,7 +97,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.tsv,
-                    process.out.versions,
+                    path(process.out.versions[0]).yaml,
                     path(process.out.vcf[0][1]).vcf.sampleCount == 69
                 ).match() }
             )
