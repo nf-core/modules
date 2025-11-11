@@ -65,7 +65,7 @@ nextflow_process {
 
     }
 
-    test("kraken2 - db") {
+    test("bracken - db") {
 
         when {
             process {
@@ -82,9 +82,9 @@ nextflow_process {
                         file("${process.out.db[0][1]}/database100mers.kmer_distrib").name,
                         file("${process.out.db[0][1]}/database100mers.kraken").name,
                         file("${process.out.db[0][1]}/database.kraken").name,
-                        file("${process.out.bracken_files[0][1]}/database100mers.kmer_distrib").name,
-                        file("${process.out.bracken_files[0][1]}/database100mers.kraken").name,
-                        file("${process.out.bracken_files[0][1]}/database.kraken").name,
+                        file("${process.out.db_separated[0][1]}/database100mers.kmer_distrib").name,
+                        file("${process.out.db_separated[0][1]}/database100mers.kraken").name,
+                        file("${process.out.db_separated[0][1]}/database.kraken").name,
                         process.out.versions
                     ).match()
                 }
@@ -93,7 +93,7 @@ nextflow_process {
 
     }
 
-    test("kraken2 - db - stub") {
+    test("bracken - db - stub") {
 
         options "-stub"
 
