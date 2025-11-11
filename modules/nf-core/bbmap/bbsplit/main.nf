@@ -73,7 +73,7 @@ process BBMAP_BBSPLIT {
     # disturbed, which bbsplit doesn't like. Fix the time stamps in its summaries.
     # This needs to be done via Java to match what bbmap does.
     if [ "$use_index" == "true" ]; then
-        rm -rf index_writable &&  cp -rL input_index index_writable
+        cp -rL input_index index_writable
 
         for summary_file in \$(find index_writable/ref/genome -name summary.txt); do
             # Extract the path from summary.txt and update it to point to index_writable
