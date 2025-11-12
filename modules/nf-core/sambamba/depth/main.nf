@@ -8,7 +8,7 @@ process SAMBAMBA_DEPTH {
         'biocontainers/sambamba:1.0.1--he614052_3' }"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), path(bam), path(bai)
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
