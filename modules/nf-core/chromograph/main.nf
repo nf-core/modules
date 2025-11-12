@@ -74,6 +74,6 @@ process CHROMOGRAPH {
 
 // Helper function to generate touch commands
 def touchCmd(euploidy, input_file) {
-    def chrs = euploidy ? (1..22) + ['X', 'Y'] : [1]
+    def chrs = euploidy ? (1..22) + ['X', 'Y', 'M'] : [1]
     input_file ? chrs.collect { chr -> "touch ${input_file}_chr${chr}.png" }.join('\n') : ''
 }
