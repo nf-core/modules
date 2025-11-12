@@ -1,9 +1,10 @@
-name: "sylph_sketch"
+name: "sylph_sketchsamples"
 description: Sketching/indexing sequencing reads
 keywords:
   - sketch
   - metagenomics
   - sylph
+  - samples
   - indexing
 tools:
   - sylph:
@@ -27,12 +28,8 @@ input:
         pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1930 # FASTQ
-  - reference:
-      type: file
-      description: Reference genome file in FASTA format
-      ontologies: []
 output:
-  sketch_fastq_genome:
+  sylsp:
     - - meta:
           type: map
           description: |
@@ -41,13 +38,8 @@ output:
       - my_sketches/*.sylsp:
           type: map
           description: |
-            Output sylph sketch files of input reads for profiling
+            Output sylph sketch files for profiling
           pattern: "my_sketches/*.sylsp"
-      - database.syldb:
-          type: map
-          description: |
-            Output sylph database files for profiling against database
-          pattern: "*.syldb"
   versions:
     - versions.yml:
         type: file
@@ -60,3 +52,4 @@ authors:
   - "@sofstam"
 maintainers:
   - "@sofstam"
+  - "@jfy133"
