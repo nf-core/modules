@@ -9,6 +9,7 @@ process SAMBAMBA_DEPTH {
 
     input:
     tuple val(meta), path(bam), path(bai)
+    val(mode)
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
@@ -18,12 +19,16 @@ process SAMBAMBA_DEPTH {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: 'base' // mandatory, choose one of region|window|base
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    if (!['region','window','base'].contains(mode)) {
+        error "Mode needs to be one of: region, window, base"
+    }
 
     """
     sambamba \\
         depth \\
+        $mode \\
         $args \\
         -t $task.cpus \\
         -o ${prefix}.bed \\
