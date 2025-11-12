@@ -1,18 +1,17 @@
-process SYLPH_SKETCH {
+process SYLPH_SKETCHSAMPLES {
     tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/sylph:0.7.0--h919a2d8_0'
-        : 'biocontainers/sylph:0.7.0--h919a2d8_0'}"
+        ? 'https://depot.galaxyproject.org/singularity/sylph:0.9.0--ha6fb395_0'
+        : 'biocontainers/sylph:0.9.0--ha6fb395_0'}"
 
     input:
     tuple val(meta), path(reads)
-    path reference
 
     output:
-    tuple val(meta), path('my_sketches/*.sylsp'), path('database.syldb'), emit: sketch_fastq_genome
+    tuple val(meta), path('my_sketches/*.sylsp'), emit: sylsp
     path "versions.yml", emit: versions
 
     when:
@@ -26,7 +25,6 @@ process SYLPH_SKETCH {
     sylph sketch \\
         ${args} \\
         ${fastq} \\
-        -g ${reference} \\
         -S ${prefix} \\
         -d my_sketches \\
         -t ${task.cpus}
