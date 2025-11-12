@@ -19,17 +19,17 @@ nextflow_process {
                 input[4] = [[:],[]]
                 input[5] = [[:],[]]
                 input[6] = [
-                        [ id:'test', single_end:false ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/updsites.bed', checkIfExists: true)
-                            ]
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/updsites.bed', checkIfExists: true)
+                ]
                 """
             }
         }
 
         then {
             assertAll(
-            {assert process.success},
-            {assert process.out.plots.get(0).get(1) ==~ ".*/test"}
+            { assert process.success },
+            { assert snapshot(process.out).match() }
             )
         }
 

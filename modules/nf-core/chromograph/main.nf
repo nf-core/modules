@@ -17,8 +17,8 @@ process CHROMOGRAPH {
     tuple val(meta7), path(sites)
 
     output:
-    tuple val(meta), path("${prefix}"), emit: plots
-    path "versions.yml"               , emit: versions
+    tuple val(meta), path("*"), emit: plots
+    path "versions.yml"       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -58,7 +58,7 @@ process CHROMOGRAPH {
         $ideogram_param \\
         $regions_param \\
         $sites_param \\
-        --outd ${prefix}
+        --outd .
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
