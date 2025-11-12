@@ -1,6 +1,6 @@
 process SAMBAMBA_DEPTH {
     tag "$meta.id"
-    label '--process_low'
+    label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -18,12 +18,12 @@ process SAMBAMBA_DEPTH {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args = task.ext.args ?: 'base' // mandatory, choose one of region|window|base
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     sambamba \\
-        depth
+        depth \\
         $args \\
         -t $task.cpus \\
         -o ${prefix}.bed \\
