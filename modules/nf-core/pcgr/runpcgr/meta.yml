@@ -1,0 +1,82 @@
+name: "pcgr"
+description: "The Personal Cancer Genome Reporter (PCGR) is a stand-alone software
+  package for functional annotation and translation of individual tumor genomes for
+  precision cancer medicine. It interprets primarily somatic SNVs/InDels and copy
+  number aberrations, and has additional support for interpretation of bulk RNA-seq
+  expression data. The software classifies variants both with respect to oncogenicity
+  and actionability, producing interactive HTML output reports."
+keywords:
+  - vcf_postprocessing
+  - report_generating
+  - pcgr
+
+tools:
+  - "Personal Cancer Genome Reporter (PCGR)":
+      description: "Software package for functional annotation and translation of tumor
+        genomes for precision cancer medicine."
+      homepage: "https://github.com/sigven/pcgr"
+      documentation: "https://github.com/sigven/pcgr/blob/main/README.md"
+      tool_dev_url: "https://github.com/sigven/pcgr"
+      doi: "10.1093/bioinformatics/btx817"
+      licence:
+        - MIT
+      identifier: "biotools:pcgr"
+
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information
+    - vcf:
+        type: file
+        description: Sorted vcf file
+        pattern: "*.{vcf}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
+  - vep_dir:
+      type: directory
+      description: Directory with the vep cache.
+  - refdata_dir:
+      type: directory
+      description: Directory with references for pcgr
+  - cna:
+      type: file
+      description: cna file
+      pattern: "*.txt"
+      required: false
+      ontologies: []
+  - cpsr:
+      type: file
+      description: cpsr file
+      pattern: "*.*"
+      required: false
+      ontologies: []
+  - cpsr_yaml:
+      type: file
+      description: cpsr yaml file
+      pattern: "*.{yml,yaml}"
+      required: false
+      ontologies:
+        - edam: http://edamontology.org/format_3750 # YAML
+
+output:
+  pcgr_reports:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - ${meta.id}:
+          type: directory
+          description: Directory containing ouptut from pcgr
+          pattern: "*"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+authors:
+  - "@Colorstorm"
+maintainers:
+  - "@Colorstorm"
