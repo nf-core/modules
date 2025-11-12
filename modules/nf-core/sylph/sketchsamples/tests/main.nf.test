@@ -1,21 +1,21 @@
 nextflow_process {
 
-    name "Test Process SYLPH_SKETCH"
+    name "Test Process SYLPH_SKETCHSAMPLES"
     script "../main.nf"
-    process "SYLPH_SKETCH"
+    process "SYLPH_SKETCHSAMPLES"
     tag "modules"
     tag "modules_nfcore"
     tag "sylph"
-    tag "sylph/sketch"
+    tag "sylph/sketchsamples"
 
     test("sarscov2 illumina single-end [fastq_gz]") {
         when {
             process {
                 """
-                input[0] = [ [ id:'test', single_end:true ], // meta map
-                            [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
-                           ]
-                input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                input[0] = [ 
+                                [ id:'test', single_end:true ], // meta map
+                                [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true) ]
+                            ]
                 """
             }
         }
@@ -32,11 +32,12 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test', single_end:false ], // meta map
-                             [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
-                               file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
-                           ]
-                input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
+                input[0] = [ 
+                            [ id:'test', single_end:false ], // meta map
+                            [ 
+                                file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
+                                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
+                            ]
                 """
             }
         }
@@ -60,7 +61,6 @@ nextflow_process {
                              [ file(params.test_data['sarscov2']['illumina']['test_1_fastq_gz'], checkIfExists: true),
                                file(params.test_data['sarscov2']['illumina']['test_2_fastq_gz'], checkIfExists: true) ]
                            ]
-                input[1] = file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
                 """
             }
         }
