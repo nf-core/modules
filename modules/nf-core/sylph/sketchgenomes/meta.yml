@@ -1,0 +1,51 @@
+name: "sylph_sketchgenomes"
+description: Sylph profile command for taxonoming profiling of genomes
+keywords:
+  - profile
+  - metagenomics
+  - sylph
+  - classification
+  - genomes
+  - sketch
+tools:
+  - sylph:
+      description: Sylph quickly enables querying of genomes against even low-coverage
+        shotgun metagenomes to find nearest neighbour ANI.
+      homepage: https://github.com/bluenote-1577/sylph
+      documentation: https://github.com/bluenote-1577/sylph
+      tool_dev_url: https://github.com/bluenote-1577/sylph
+      doi: 10.1038/s41587-024-02412-y
+      licence: ["MIT"]
+      identifier: biotools:sylph
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - fasta:
+        type: file
+        description: List of reference genome FASTA file to convert to sylph database file
+        pattern: "*.{fasta,fas,fa,fna}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA format
+output:
+  syldb:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.syldb":
+          type: file
+          description: Sylph database sketch file for profiling
+          pattern: "*.syldb"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@jfy133"
+maintainers:
+  - "@jfy133"
