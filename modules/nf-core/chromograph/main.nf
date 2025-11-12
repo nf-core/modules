@@ -4,9 +4,9 @@ process CHROMOGRAPH {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/chromograph:1.3.1--pyhdfd78af_2':
-        'biocontainers/chromograph:1.3.1--pyhdfd78af_2' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/chromograph:1.3.1--pyhdfd78af_2'
+        : 'biocontainers/chromograph:1.3.1--pyhdfd78af_2'}"
 
     input:
     tuple val(meta), path(autozyg)
@@ -19,31 +19,31 @@ process CHROMOGRAPH {
 
     output:
     tuple val(meta), path("*.png"), emit: plots
-    path "versions.yml"           , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args           = task.ext.args ?: ''
-    def autozyg_param  = autozyg       ? "--autozyg ${autozyg}"   : ''
-    def coverage_param = coverage      ? "--coverage ${coverage}" : ''
-    def exome_param    = exome         ? "--exom ${exome}"        : ''
-    def fracsnp_param  = fracsnp       ? "--fracsnp ${fracsnp}"   : ''
-    def ideogram_param = ideogram      ? "--ideogram ${ideogram}" : ''
-    def regions_param  = regions       ? "--regions ${regions}"   : ''
-    def sites_param    = sites         ? "--sites ${sites}"       : ''
+    def args = task.ext.args ?: ''
+    def autozyg_param = autozyg ? "--autozyg ${autozyg}" : ''
+    def coverage_param = coverage ? "--coverage ${coverage}" : ''
+    def exome_param = exome ? "--exom ${exome}" : ''
+    def fracsnp_param = fracsnp ? "--fracsnp ${fracsnp}" : ''
+    def ideogram_param = ideogram ? "--ideogram ${ideogram}" : ''
+    def regions_param = regions ? "--regions ${regions}" : ''
+    def sites_param = sites ? "--sites ${sites}" : ''
 
     """
     chromograph \\
-        $args \\
-        $autozyg_param \\
-        $coverage_param \\
-        $exome_param \\
-        $fracsnp_param \\
-        $ideogram_param \\
-        $regions_param \\
-        $sites_param \\
+        ${args} \\
+        ${autozyg_param} \\
+        ${coverage_param} \\
+        ${exome_param} \\
+        ${fracsnp_param} \\
+        ${ideogram_param} \\
+        ${regions_param} \\
+        ${sites_param} \\
         --outd .
 
     cat <<-END_VERSIONS > versions.yml
@@ -74,6 +74,6 @@ process CHROMOGRAPH {
 
 // Helper function to generate touch commands
 def touchCmd(euploidy, input_file) {
-    def chrs = euploidy ? (1..22) + ['X','Y'] : [1]
+    def chrs = euploidy ? (1..22) + ['X', 'Y'] : [1]
     input_file ? chrs.collect { chr -> "touch ${input_file}_chr${chr}.png" }.join('\n') : ''
 }
