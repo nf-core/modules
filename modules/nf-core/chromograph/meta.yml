@@ -88,10 +88,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}:
+      - "*.png":
           type: file
-          description: Directory containing the plots in png format
-          pattern: "*.png"
+          description: Plot(s) in PNG format
           ontologies: []
   versions:
     - versions.yml:
