@@ -33,7 +33,7 @@ input:
     - regions:
         type: file
         description: Background profile with regions of interest
-        pattern: "*.{tsv, csv}"
+        pattern: "*.{tsv,csv}"
         ontologies:
           - edam: http://edamontology.org/format_3475 # TSV
           - edam: http://edamontology.org/format_3752 # CSV
@@ -47,7 +47,7 @@ output:
       - "*.tsv":
           type: file
           description: Methylation profile for regions of interest
-          pattern: "*.{tsv}"
+          pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   asm_bed:
@@ -58,9 +58,10 @@ output:
             e.g. `[ id:'test' ]`
       - "*.bed":
           type: file
-          description: BED file with individual ASM CpG loci
-          pattern: "*.{bed}"
-          ontologies: []
+          description: BED file with individual ASM CpG loci, produced by '--output-asm-bed' flag
+          pattern: "*.bed"
+          ontologies:
+          - edam: "http://edamontology.org/format_3586" # bed12
   versions:
     - versions.yml:
         type: file

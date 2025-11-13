@@ -12,22 +12,35 @@ nextflow_process {
     tag "pbcpgtools"
     tag "pbcpgtools/alignedbamtocpgscores"
 
-    test("pacbio - bam - notphased") {
-
-        setup {
-            run("PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES") {
-                script "../../../pbcpgtools/alignedbamtocpgscores/main.nf"
-                process {
-                    """
-                    input[0] = Channel.fromList([
-                                    tuple([ id:'test' ], // meta map
-                                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam', checkIfExists: true),
-                                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true))
-                                ])
-                    """
-                }
+    setup {
+        run("PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES") {
+            script "../../../pbcpgtools/alignedbamtocpgscores/main.nf"
+            process {
+                """
+                input[0] = channel.fromList([
+                                tuple([ id:'test' ], // meta map
+                                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam', checkIfExists: true),
+                                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true))
+                            ])
+                """
             }
         }
+
+        run("PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES", alias: "PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES_PHASED") {
+            script "../../../pbcpgtools/alignedbamtocpgscores/main.nf"
+            process {
+                """
+                input[0] = channel.fromList([
+                                tuple([ id:'test' ], // meta map
+                                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.phased.bam', checkIfExists: true),
+                                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.phased.bam.bai', checkIfExists: true))
+                            ])
+                """
+            }
+        }
+    }
+
+    test("pacbio - bam - notphased") {
 
         when {
             params{
@@ -44,7 +57,6 @@ nextflow_process {
                 input[1] = [
                     [ id:'test'], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/tsv/methbat_background_profile_small.tsv', checkIfExists: true)
-
                 ]
                 """
 
@@ -54,28 +66,16 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                        process.out,
+                        process.out.versions.collect{ path(it).yaml }
+                    ).match() }
             )
         }
 
     }
 
     test("pacbio - bam - phased") {
-
-        setup {
-            run("PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES") {
-                script "../../../pbcpgtools/alignedbamtocpgscores/main.nf"
-                process {
-                    """
-                    input[0] = Channel.fromList([
-                                    tuple([ id:'test' ], // meta map
-                                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.phased.bam', checkIfExists: true),
-                                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.phased.bam.bai', checkIfExists: true))
-                                ])
-                    """
-                }
-            }
-        }
 
         when {
             params{
@@ -84,19 +84,18 @@ nextflow_process {
             process {
 
                 """
-                input[0] = PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES.out.combined_bed
-                    .join(PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES.out.combined_bed_index)
-                    .join(PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES.out.hap1_bed)
-                    .join(PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES.out.hap1_bed_index)
-                    .join(PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES.out.hap2_bed)
-                    .join(PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES.out.hap2_bed_index)
+                input[0] = PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES_PHASED.out.combined_bed
+                    .join(PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES_PHASED.out.combined_bed_index)
+                    .join(PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES_PHASED.out.hap1_bed)
+                    .join(PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES_PHASED.out.hap1_bed_index)
+                    .join(PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES_PHASED.out.hap2_bed)
+                    .join(PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES_PHASED.out.hap2_bed_index)
                     .map { meta, combined_bed, combined_index, hap1_bed, hap1_index, hap2_bed, hap2_index ->
                     [ meta, [combined_bed, combined_index, hap1_bed, hap1_index, hap2_bed, hap2_index] ] }
 
                 input[1] = [
                     [ id:'test'], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/tsv/methbat_background_profile_small.tsv', checkIfExists: true)
-
                 ]
                 """
 
@@ -106,28 +105,16 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                        process.out,
+                        process.out.versions.collect{ path(it).yaml }
+                    ).match() }
             )
         }
 
     }
 
     test("pacbio - bam - optionalbed") {
-
-        setup {
-            run("PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES") {
-                script "../../../pbcpgtools/alignedbamtocpgscores/main.nf"
-                process {
-                    """
-                    input[0] = Channel.fromList([
-                                    tuple([ id:'test' ], // meta map
-                                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam', checkIfExists: true),
-                                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true))
-                                ])
-                    """
-                }
-            }
-        }
 
         when {
             params{
@@ -138,13 +125,11 @@ nextflow_process {
                 """
                 input[0] = PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES.out.combined_bed
                     .join(PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES.out.combined_bed_index)
-                    .map { meta, combined_bed, combined_index -> [ meta, [combined_bed, combined_index] ]
-                    }
+                    .map { meta, combined_bed, combined_index -> [ meta, [combined_bed, combined_index] ] }
 
                 input[1] = [
                     [ id:'test'], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/tsv/methbat_background_profile_small.tsv', checkIfExists: true)
-
                 ]
                 """
 
@@ -156,12 +141,9 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.region_profile,
+                    file(process.out.asm_bed[0][1]).name, // Check filename only
                     process.out.versions,
-                    process.out.asm_bed.collect { 
-                        it.collect { 
-                            it instanceof String && file(it).exists() ? file(it).name : it 
-                        } // check filename only
-                    }
+                    process.out.versions.collect{ path(it).yaml }
                     ).match() }
             )
         }
@@ -169,21 +151,6 @@ nextflow_process {
     }
 
     test("pacbio - bam - withlabels") {
-
-        setup {
-            run("PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES") {
-                script "../../../pbcpgtools/alignedbamtocpgscores/main.nf"
-                process {
-                    """
-                    input[0] = Channel.fromList([
-                                    tuple([ id:'test' ], // meta map
-                                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam', checkIfExists: true),
-                                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true))
-                                ])
-                    """
-                }
-            }
-        }
 
         when {
             params{
@@ -194,13 +161,11 @@ nextflow_process {
                 """
                 input[0] = PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES.out.combined_bed
                     .join(PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES.out.combined_bed_index)
-                    .map { meta, combined_bed, combined_index -> [ meta, [combined_bed, combined_index] ]
-                    }
+                    .map { meta, combined_bed, combined_index -> [ meta, [combined_bed, combined_index] ] }
 
                 input[1] = [
                     [ id:'test'], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/tsv/methbat_background_profile_small.tsv', checkIfExists: true)
-
                 ]
                 """
 
@@ -210,13 +175,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
-                {
-                    // Check if output tsv contains labels MALE and FEMALE
-                    def profileFile = file(process.out.region_profile[0][1]).text
-                    assert profileFile.contains("MALE")
-                    assert profileFile.contains("FEMALE")
-                }
+                { assert snapshot(
+                        process.out,
+                        process.out.versions.collect{ path(it).yaml }
+                    ).match() },
+                { assert path(process.out.region_profile[0][1]).text.contains('MALE') },
+                { assert path(process.out.region_profile[0][1]).text.contains('FEMALE') }
             )
         }
 
@@ -225,21 +189,6 @@ nextflow_process {
     test("pacbio - bam - optionalbed - stub") {
 
         options "-stub"
-
-        setup {
-            run("PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES") {
-                script "../../../pbcpgtools/alignedbamtocpgscores/main.nf"
-                process {
-                    """
-                    input[0] = Channel.fromList([
-                                    tuple([ id:'test' ], // meta map
-                                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam', checkIfExists: true),
-                                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true))
-                                ])
-                    """
-                }
-            }
-        }
 
         when {
             params{
@@ -250,13 +199,11 @@ nextflow_process {
                 """
                 input[0] = PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES.out.combined_bed
                     .join(PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES.out.combined_bed_index)
-                    .map { meta, combined_bed, combined_index -> [ meta, [combined_bed, combined_index] ]
-                    }
+                    .map { meta, combined_bed, combined_index -> [ meta, [combined_bed, combined_index] ] }
 
                 input[1] = [
                     [ id:'test'], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/tsv/methbat_background_profile_small.tsv', checkIfExists: true)
-
                 ]
                 """
 
@@ -266,7 +213,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                        process.out,
+                        process.out.versions.collect{ path(it).yaml }
+                    ).match() }
             )
         }
 
@@ -275,21 +225,6 @@ nextflow_process {
     test("pacbio - bam - stub") {
 
         options "-stub"
-
-        setup {
-            run("PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES") {
-                script "../../../pbcpgtools/alignedbamtocpgscores/main.nf"
-                process {
-                    """
-                    input[0] = Channel.fromList([
-                                    tuple([ id:'test' ], // meta map
-                                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam', checkIfExists: true),
-                                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA037562_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true))
-                                ])
-                    """
-                }
-            }
-        }
 
         when {
             params{
@@ -300,13 +235,11 @@ nextflow_process {
                 """
                 input[0] = PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES.out.combined_bed
                     .join(PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES.out.combined_bed_index)
-                    .map { meta, combined_bed, combined_index -> [ meta, [combined_bed, combined_index] ]
-                    }
+                    .map { meta, combined_bed, combined_index -> [ meta, [combined_bed, combined_index] ] }
 
                 input[1] = [
                     [ id:'test'], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/tsv/methbat_background_profile_small.tsv', checkIfExists: true)
-
                 ]
                 """
 
@@ -316,7 +249,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                        process.out,
+                        process.out.versions.collect{ path(it).yaml }
+                    ).match() }
             )
         }
 
