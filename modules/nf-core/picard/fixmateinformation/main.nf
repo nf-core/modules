@@ -36,7 +36,8 @@ process PICARD_FIXMATEINFORMATION {
         -Xmx${avail_mem}M \\
         --INPUT ${bam} \\
         --OUTPUT ${prefix}.bam \\
-        --VALIDATION_STRINGENCY ${STRINGENCY}
+        --VALIDATION_STRINGENCY ${STRINGENCY} \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

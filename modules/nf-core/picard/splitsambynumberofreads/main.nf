@@ -63,7 +63,6 @@ process PICARD_SPLITSAMBYNUMBEROFREADS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     if (!split_to_N_reads) {
         split_arg = "--SPLIT_TO_N_FILES ${split_to_N_files}"
@@ -71,7 +70,6 @@ process PICARD_SPLITSAMBYNUMBEROFREADS {
     else {
         split_arg = "--SPLIT_TO_N_READS ${split_to_N_reads}"
     }
-    def avail_mem = 3072
     def ext = input.name.tokenize('.')[-1]
     if ( !['bam', 'cram', 'sam'].contains(ext) )
         ext = 'bam'
