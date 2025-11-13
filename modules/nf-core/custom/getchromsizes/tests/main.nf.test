@@ -93,7 +93,6 @@ nextflow_process {
             assertAll (
                 { assert process.failed },
                 { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
-
             )
         }
     }
