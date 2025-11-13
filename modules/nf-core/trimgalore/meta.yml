@@ -41,17 +41,14 @@ output:
     - - meta
       - "*.zip"
   versions_trim_galore:
-    type: array
-    description: Trim Galore! version information.
-    pattern: "*"
+    - - meta
+      - "*"
   versions_cutadapt:
-    type: array
-    description: Cutadapt version information (Trim Galore! dependency).
-    pattern: "*"
+    - - meta
+      - "*"
   versions_pigz:
-    type: array
-    description: pigz version information (used for parallel compression/decompression).
-    pattern: "*"
+    - - meta
+      - "*"
 authors:
   - "@drpatelh"
   - "@ewels"
