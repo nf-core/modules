@@ -16,15 +16,10 @@ tools:
       licence: ["GPL-3.0-or-later"]
       identifier: ""
 input:
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - reads:
-        type: file
-        description: |
-          List of input FastQ files of size 1 (single-end) or 2 (paired-end).
+  - reads:
+      type: file
+      description: |
+        List of input FastQ files of size 1 (single-end) or 2 (paired-end).
 output:
   reads:
     - - meta
