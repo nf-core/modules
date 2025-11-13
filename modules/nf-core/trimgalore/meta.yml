@@ -41,15 +41,15 @@ output:
     - - meta
       - "*.zip"
   versions_trim_galore:
-    type: string # Matches the tuple [task.process, 'trim_galore', version]
+    type: array
     description: Trim Galore! version information.
     pattern: "*"
   versions_cutadapt:
-    type: string
+    type: array
     description: Cutadapt version information (Trim Galore! dependency).
     pattern: "*"
   versions_pigz:
-    type: string
+    type: array
     description: pigz version information (used for parallel compression/decompression).
     pattern: "*"
 authors:
