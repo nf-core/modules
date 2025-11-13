@@ -22,7 +22,7 @@ process GETORGANELLE_FROMREADS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     get_organelle_from_reads.py \\
@@ -48,8 +48,9 @@ process GETORGANELLE_FROMREADS {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
+    echo "${args}"
     touch results/${prefix}.${organelle_type}.fasta.gz
 
     cat <<-END_VERSIONS > versions.yml
