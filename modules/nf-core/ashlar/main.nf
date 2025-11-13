@@ -34,6 +34,7 @@ process ASHLAR {
     if ( !ffp_validated ) { error "Please input only zero, one, or N ffp files, where N is the number of input images" }
 
     """
+    export JAVA_TOOL_OPTIONS='-XX:+PerfDisableSharedMem'
 
     ashlar \\
         -o ${prefix}.ome.tif \\
@@ -62,6 +63,8 @@ process ASHLAR {
     if ( !ffp_validated ) { error "Please input only zero, one, or N ffp files, where N is the number of input images" }
 
     """
+    export JAVA_TOOL_OPTIONS='-XX:+PerfDisableSharedMem'
+
     touch ${prefix}.ome.tif
 
     cat <<-END_VERSIONS > versions.yml

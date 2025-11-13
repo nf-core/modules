@@ -46,10 +46,10 @@ output:
           description: |
             Groovy Map containing reference information.
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}*.fq":
+      - "${prefix}*.fq.gz":
           type: file
-          description: List of output filtered FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
-          pattern: "*.fq"
+          description: List of output filtered FastQ files of size 1 and 2, for single-end and paired-end data, respectively.
+          pattern: "*.fq.gz"
           ontologies:
             - edam: "http://edamontology.org/format_1930" # FASTQ
   log:
@@ -64,7 +64,6 @@ output:
           pattern: "*.json"
           ontologies:
             - edam: "http://edamontology.org/format_3464" # JSON
-
   versions:
     - versions.yml:
         type: file
