@@ -1,4 +1,4 @@
-process SYLPH_PROFILE {
+process SYLPH_SKETCHGENOMES {
     tag "${meta.id}"
     label 'process_high'
 
@@ -8,11 +8,10 @@ process SYLPH_PROFILE {
         : 'biocontainers/sylph:0.9.0--ha6fb395_0'}"
 
     input:
-    tuple val(meta), path(reads)
-    path database
+    tuple val(meta), path(fasta, stageAs: 'genomes/')
 
     output:
-    tuple val(meta), path('*.tsv'), emit: profile_out
+    tuple val(meta), path('*.syldb'), emit: syldb
     path "versions.yml", emit: versions
 
     when:
@@ -21,30 +20,31 @@ process SYLPH_PROFILE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input = meta.single_end ? "${reads}" : "-1 ${reads[0]} -2 ${reads[1]}"
     """
-    sylph profile \\
+    ls -1 genomes/* > genomes.txt
+
+    sylph sketch \\
         -t ${task.cpus} \\
         ${args} \\
-        ${database}\\
-        ${input} \\
-        -o ${prefix}.tsv
+        --gl genomes.txt \\
+        -o ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sylph: \$(sylph -V | awk '{print \$2}')
+        sylph: \$(sylph -V|awk '{print \$2}')
     END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input = meta.single_end ? "${reads}" : "-1 ${reads[0]} -2 ${reads[1]}"
+    def args = task.ext.args ?: ''
     """
-    touch ${prefix}.tsv
+    echo "${args}"
+    touch ${prefix}.syldb
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sylph: \$(sylph -V | awk '{print \$2}')
+        sylph: \$(sylph -V|awk '{print \$2}')
     END_VERSIONS
     """
 }
