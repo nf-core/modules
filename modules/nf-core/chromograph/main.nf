@@ -48,7 +48,7 @@ process CHROMOGRAPH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        chromograph: \$(echo \$(chromograph --version) | sed 's/.* //' )
+        chromograph: \$(chromograph --version | sed 's/.* //' )
     END_VERSIONS
     """
 
@@ -67,7 +67,7 @@ process CHROMOGRAPH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        chromograph: \$(echo \$(chromograph --version) | sed 's/.* //' )
+        chromograph: \$(chromograph --version | sed 's/.* //' )
     END_VERSIONS
     """
 }
