@@ -2,7 +2,7 @@ process KAIJU_MKFMI {
     tag "${meta.id}"
     label 'process_high'
 
-    conda "bioconda::kaiju=1.10.0"
+    conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/kaiju:1.10.0--h43eeafb_0'
         : 'biocontainers/kaiju:1.10.0--h43eeafb_0'}"
