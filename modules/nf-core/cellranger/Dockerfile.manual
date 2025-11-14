@@ -8,7 +8,7 @@ LABEL authors="Gisela Gabernet <gisela.gabernet@gmail.com>" \
 
 # Install procps and clean apt cache
 RUN apt-get update --allow-releaseinfo-change \
-    && apt-get install -y \
+    && apt-get install -y --no-install-recommends \
     cpio \
     procps \
     rpm2cpio \
@@ -20,9 +20,9 @@ ENV CELLRANGER_VER=10.0.0
 COPY cellranger-$CELLRANGER_VER.tar.gz /opt/cellranger-$CELLRANGER_VER.tar.gz
 
 # Install cellranger
+WORKDIR /opt
 RUN \
-    cd /opt && \
-    tar -xzvf cellranger-$CELLRANGER_VER.tar.gz && \
-    export PATH=/opt/cellranger-$CELLRANGER_VER:$PATH && \
-    ln -s /opt/cellranger-$CELLRANGER_VER/cellranger /usr/bin/cellranger && \
-    rm -rf /opt/cellranger-$CELLRANGER_VER.tar.gz
+    tar -xzvf "cellranger-$CELLRANGER_VER.tar.gz" && \
+    export PATH="/opt/cellranger-$CELLRANGER_VER:$PATH" && \
+    ln -s "/opt/cellranger-$CELLRANGER_VER/cellranger" /usr/bin/cellranger && \
+    rm -rf "/opt/cellranger-$CELLRANGER_VER.tar.gz"
