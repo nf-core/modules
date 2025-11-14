@@ -8,8 +8,8 @@ export PS1='\[\e[3;36m\]\w ->\[\e[0m\\] '
 # Update Nextflow
 nextflow self-update
 
-# Install pre-commit hooks
-pre-commit install --install-hooks
+# Install prek hooks
+prek install --install-hooks
 
 # Update welcome message
 echo "Welcome to nf-core/modules devcontainer!" > /usr/local/etc/vscode-dev-containers/first-run-notice.txt
