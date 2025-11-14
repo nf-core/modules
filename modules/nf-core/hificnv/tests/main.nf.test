@@ -104,7 +104,7 @@ nextflow_process {
                     [ id:'genome' ], // meta2
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true)
                 ]
-                input[2] = Channel.of('chr19:45760000-45770300\\t45760000\\t45770300\\tchr19_bogus\\t2')
+                input[2] = channel.of('chr19:45760000-45770300\\t45760000\\t45770300\\tchr19_bogus\\t2')
                             .collectFile(name: 'exclude.bed', newLine: false)
                             .map { file -> [ [ id: 'exclude' ], file ] }
                 input[3] = [
