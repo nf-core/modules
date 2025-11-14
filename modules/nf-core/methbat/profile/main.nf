@@ -8,7 +8,7 @@ process METHBAT_PROFILE {
         'biocontainers/methbat:0.16.1--h9ee0642_0' }"
 
     input:
-    tuple val(meta), path(files)
+    tuple val(meta) , path(files)
     tuple val(meta2), path(regions)
 
     output:
@@ -22,12 +22,13 @@ process METHBAT_PROFILE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def in_prefix = files[0].name.toString().replaceAll(/\.((combined)|(hap1)|(hap2))\.bed\.gz(?:\.tbi)?$/, '')
     """
     methbat profile \\
-        --input-prefix \$(find . -name '*combined.bed.gz' | sed 's/\\.combined.bed.gz\$//') \\
+        --input-prefix ${in_prefix} \\
         --input-regions ${regions} \\
         --output-region-profile ${prefix}.tsv \\
-        $args \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
