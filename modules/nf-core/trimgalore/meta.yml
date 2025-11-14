@@ -15,7 +15,7 @@ tools:
       documentation: https://github.com/FelixKrueger/TrimGalore/blob/master/Docs/Trim_Galore_User_Guide.md
       licence: ["GPL-3.0-or-later"]
       identifier: ""
-iinput:
+input:
   - - meta:
         type: map
         description: |
@@ -43,14 +43,19 @@ output:
     - - meta
       - "*.zip"
   versions_trim_galore:
-    - - meta
-      - "*"
+    - - "${task.process}"
+      - "trim_galore"
+      - "trim_galore --version 2>&1 | grep -Eo '[0-9]+(\\.[0-9]+)+'"
+
   versions_cutadapt:
-    - - meta
-      - "*"
+    - - "${task.process}"
+      - "cutadapt"
+      - "echo $(cutadapt --version 2>&1)"
+
   versions_pigz:
-    - - meta
-      - "*"
+    - - "${task.process}"
+      - "pigz"
+      - "echo $( pigz --version 2>&1 | sed 's/pigz //g' )"
 authors:
   - "@drpatelh"
   - "@ewels"
