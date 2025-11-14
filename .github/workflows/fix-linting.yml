@@ -36,6 +36,8 @@ jobs:
         id: prek
         uses: j178/prek-action@v1
         continue-on-error: true
+        with:
+          extra-args: ""
 
       - name: Post nothing-to-do comment
         if: steps.prek.outcome == 'success'
