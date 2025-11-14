@@ -76,7 +76,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true),
                     ]).collect()
-                        .join(VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES_NORMAL.out.alignment_properties_json)
+                        .join(VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES_TUMOR.out.alignment_properties_json)
                         .map{ meta, bam, bai, candidates, fasta, fai, alignment_json -> [meta, bam, bai, candidates, alignment_json, fasta, fai] }
                 """
             }
@@ -122,7 +122,7 @@ nextflow_process {
                             [meta1,
                             [vcf1,vcf2],
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/varlociraptor/scenario.yml', checkIfExists:true),
-                            ["normal","tumor"]]}
+                            ["normal","normal"]]}
                 """
             }
         }
