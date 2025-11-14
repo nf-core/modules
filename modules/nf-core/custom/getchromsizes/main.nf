@@ -43,15 +43,7 @@ process CUSTOM_GETCHROMSIZES {
 
     stub:
     """
-    touch ${fasta}.fai
-    touch ${fasta}.sizes
-    if [[ "${fasta.extension}" == "gz" ]]; then
-        touch ${fasta}.gzi
-    fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        getchromsizes: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
+    >&2 echo "${deprecation_message}"
+    false
     """
 }
