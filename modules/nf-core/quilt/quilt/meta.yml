@@ -162,14 +162,22 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - rdata: {}
+      - "RData":
+          type: directory
+          description: |
+            Folder of RData objects generated during the imputation process.
+          pattern: "RData"
   plots:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - plots: {}
+      - "plots":
+          type: directory
+          description: |
+            Folder of plots generated during the imputation process.
+          pattern: "plots"
   versions:
     - versions.yml:
         type: file
