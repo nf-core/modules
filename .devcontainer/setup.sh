@@ -9,6 +9,7 @@ export PS1='\[\e[3;36m\]\w ->\[\e[0m\\] '
 nextflow self-update
 
 # Install prek hooks
+pip install prek
 prek install --install-hooks
 
 # Update welcome message
