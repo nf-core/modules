@@ -4,13 +4,11 @@ process VARLOCIRAPTOR_CALLVARIANTS {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c9/c99922d373e15a47f7a4ad4692e859f99e97a00c7872214903e655f66019c772/data'
-        : 'community.wave.seqera.io/library/varlociraptor:8.8.0--0d1bd46f0f5e39af'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/83/834c886cf862aade1d5d28a4a750b0676dfbced7300b10a795d5ebb993fa2586/data'
+        : 'community.wave.seqera.io/library/varlociraptor:8.9.0--7199b2ed2f0e184f'}"
 
     input:
-    tuple val(meta), path(vcfs)
-    path scenario
-    val scenario_aliases
+    tuple val(meta), path(vcfs), path(scenario), val(scenario_aliases)
 
     output:
     tuple val(meta), path("*.bcf"), emit: bcf
