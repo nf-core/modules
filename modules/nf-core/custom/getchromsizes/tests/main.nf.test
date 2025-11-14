@@ -25,7 +25,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.failed },
-                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
+                { assert process.errorReport.contains("WARNING: The getchromsizes process has been deprecated.") }
             )
         }
     }
@@ -46,7 +46,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.failed },
-                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
+                { assert process.errorReport.contains("WARNING: The getchromsizes process has been deprecated.") }```
             )
         }
     }
@@ -69,7 +69,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.failed },
-                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
+                { assert process.errorReport.contains("WARNING: The getchromsizes process has been deprecated.") }```
             )
         }
     }
@@ -92,7 +92,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.failed },
-                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
+                { assert process.errorReport.contains("WARNING: The getchromsizes process has been deprecated.") }```
             )
         }
     }
