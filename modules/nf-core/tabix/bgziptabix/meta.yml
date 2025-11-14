@@ -25,7 +25,7 @@ input:
         description: Sorted tab-delimited genome file
         ontologies: []
 output:
-  gz_tbi:
+  gz_index:
     - - meta:
           type: map
           description: |
@@ -37,27 +37,10 @@ output:
           pattern: "*.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
-      - "*.tbi":
+      - "*.{tbi,csi}":
           type: file
-          description: tabix index file
-          pattern: "*.tbi"
-          ontologies: []
-  gz_csi:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.gz":
-          type: file
-          description: bgzipped tab-delimited genome file
-          pattern: "*.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
-      - "*.csi":
-          type: file
-          description: csi index file
-          pattern: "*.csi"
+          description: Tabix index file (either tbi or csi)
+          pattern: "*.{tbi,csi}"
           ontologies: []
   versions:
     - versions.yml:

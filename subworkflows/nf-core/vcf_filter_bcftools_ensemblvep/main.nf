@@ -43,8 +43,8 @@ workflow VCF_FILTER_BCFTOOLS_ENSEMBLVEP {
         )
         ch_versions = ch_versions.mix(TABIX_BGZIPTABIX.out.versions)
 
-        ch_vcf = TABIX_BGZIPTABIX.out.gz_tbi.map { meta, vcf, _tbi -> [ meta, vcf ] }
-        ch_tbi = TABIX_BGZIPTABIX.out.gz_tbi.map { meta, _vcf, tbi -> [ meta, tbi ] }
+        ch_vcf = TABIX_BGZIPTABIX.out.gz_index.map { meta, vcf, _tbi -> [ meta, vcf ] }
+        ch_tbi = TABIX_BGZIPTABIX.out.gz_index.map { meta, _vcf, tbi -> [ meta, tbi ] }
     }
 
     emit:

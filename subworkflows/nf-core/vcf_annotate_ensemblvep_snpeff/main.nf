@@ -190,7 +190,7 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
     ch_versions = ch_versions.mix(TABIX_TABIX.out.versions)
 
     def ch_vcf_tbi = ch_tabix_input.bgzip
-        .join(TABIX_TABIX.out.tbi, failOnDuplicate: true, failOnMismatch: true)
+        .join(TABIX_TABIX.out.index, failOnDuplicate: true, failOnMismatch: true)
         .mix(ch_tabix_input.unzip)
 
     emit:
