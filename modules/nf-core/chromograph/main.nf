@@ -1,6 +1,6 @@
 process CHROMOGRAPH {
     // $meta.id can be [] because autozyg is not required, so use all ids
-    tag "${[meta, meta2, meta3, meta4, meta5, meta6, meta7].collect { meta_map -> meta_map.id }.findAll { id -> id }.join('_') ?: 'chromograph'}"
+    tag "${[meta, meta2, meta3, meta4, meta5, meta6, meta7].collect { meta_map -> meta_map.id }.findAll().unique().join('_') ?: 'chromograph'}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
