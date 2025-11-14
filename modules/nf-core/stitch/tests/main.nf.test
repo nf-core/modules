@@ -29,7 +29,9 @@ def ch_bam = """Channel.of([
 
 def ch_params = """Channel.of([
     ${pathgenome}dbsnp_138.hg38.first_10_biallelic_sites.tsv', checkIfExists: true),
-    [], [], 'chr21', 2, 1
+    [],
+    file("https://github.com/rwdavies/QUILT/raw/refs/heads/master/maps/hg38/CEU-chr21-final.b38.txt.gz", checkIfExists: true),
+    [], 'chr21', 2, 1
 ])"""
 
 // reference genome
@@ -164,8 +166,8 @@ nextflow_process {
                     .join ( STITCH_GENERATE_INPUTS.out.rdata )
                     .combine( $ch_params )
                     .map {
-                        meta, target, rdata, positions, _emptytarget, _emptyrdata, chr, k, nGen  ->
-                        [ meta, [], [], [], [], positions, target, rdata, chr, k, nGen ]
+                        meta, target, rdata, positions, _emptytarget, genetic_map, _emptyrdata, chr, k, nGen  ->
+                        [ meta, [], [], [], [], positions, target, genetic_map, rdata, chr, k, nGen ]
                     }
                 input[1] = [[id: null], [], []]
                 input[2] = $seed
@@ -269,7 +271,7 @@ nextflow_process {
 
     test("test_with_bam - bgen - stub") {
     
-       options "-stub"
+        options "-stub"
     
         when {
             params {
@@ -289,7 +291,7 @@ nextflow_process {
                     .combine( filelist )
                     .combine( samplename )
                     .combine( $ch_params )
-                input[1] = $ch_ref
+                input[1] = [[id: null], [], []]
                 input[2] = $seed
                 """
             }
@@ -305,8 +307,8 @@ nextflow_process {
 
     test("test_with_bam - vcf - stub") {
     
-       options "-stub"
-       
+        options "-stub"
+
         when {
             params {
                 stitch_args2 = "--chrStart 8522360 --chrEnd 8522670"
@@ -325,7 +327,7 @@ nextflow_process {
                     .combine( filelist )
                     .combine( samplename )
                     .combine( $ch_params )
-                input[1] = $ch_ref
+                input[1] = [[id: null], [], []]
                 input[2] = $seed
                 """
             }
