@@ -118,16 +118,11 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = VARLOCIRAPTOR_PREPROCESS_NORMAL.out.bcf
-                    .map { meta, bcf -> bcf }
-                    .concat(VARLOCIRAPTOR_PREPROCESS_TUMOR.out.bcf.map { meta, bcf -> bcf })
-                    .collect()
-                    .map { it ->
-                        [ [id:'test'],
-                          [it[0], it[1]],
-                          file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/varlociraptor/scenario.yml', checkIfExists:true),
-                          ["normal","tumor"] ]
-                    }
+                input[0] = VARLOCIRAPTOR_PREPROCESS_NORMAL.out.bcf.concat(VARLOCIRAPTOR_PREPROCESS_TUMOR.out.bcf).collect().map{meta1,vcf1,meta2,vcf2->
+                            [meta1,
+                            [vcf1,vcf2],
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/varlociraptor/scenario.yml', checkIfExists:true),
+                            ["normal","tumor"]]}
                 """
             }
         }
