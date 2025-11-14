@@ -27,7 +27,6 @@ process PICARD_EXTRACTFINGERPRINT {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def reference = fasta ? "--REFERENCE_SEQUENCE ${fasta}" : ""
-    def bam_name = bam.simpleName
 
     def avail_mem = 3072
     if (!task.memory) {

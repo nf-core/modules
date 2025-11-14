@@ -1,10 +1,12 @@
-name: "sylph_sketch"
-description: Sketching/indexing sequencing reads
+name: "sylph_sketchgenomes"
+description: Sylph profile command for taxonoming profiling of genomes
 keywords:
-  - sketch
+  - profile
   - metagenomics
   - sylph
-  - indexing
+  - classification
+  - genomes
+  - sketch
 tools:
   - sylph:
       description: Sylph quickly enables querying of genomes against even low-coverage
@@ -21,32 +23,20 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'test', single_end:false ]`
-    - reads:
+    - fasta:
         type: file
-        description: Input fastq files
-        pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
+        description: List of reference genome FASTA file to convert to sylph database file
+        pattern: "*.{fasta,fas,fa,fna}"
         ontologies:
-          - edam: http://edamontology.org/format_1930 # FASTQ
-  - reference:
-      type: file
-      description: Reference genome file in FASTA format
-      ontologies: []
+          - edam: http://edamontology.org/format_1929 # FASTA format
 output:
-  sketch_fastq_genome:
+  syldb:
     - - meta:
           type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test']
-      - my_sketches/*.sylsp:
-          type: map
-          description: |
-            Output sylph sketch files of input reads for profiling
-          pattern: "my_sketches/*.sylsp"
-      - database.syldb:
-          type: map
-          description: |
-            Output sylph database files for profiling against database
+          description: Groovy Map containing sample information
+      - "*.syldb":
+          type: file
+          description: Sylph database sketch file for profiling
           pattern: "*.syldb"
   versions:
     - versions.yml:
@@ -56,7 +46,6 @@ output:
         ontologies:
           - edam: http://edamontology.org/format_3750 # YAML
 authors:
-  - "@jiahang1234"
-  - "@sofstam"
+  - "@jfy133"
 maintainers:
-  - "@sofstam"
+  - "@jfy133"

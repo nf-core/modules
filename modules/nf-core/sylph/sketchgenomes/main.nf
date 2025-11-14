@@ -1,17 +1,17 @@
-process DIAMOND_CLUSTER {
+process SYLPH_SKETCHGENOMES {
     tag "${meta.id}"
-    label 'process_medium'
+    label 'process_high'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/diamond:2.1.16--h13889ed_0'
-        : 'biocontainers/diamond:2.1.16--h13889ed_0'}"
+        ? 'https://depot.galaxyproject.org/singularity/sylph:0.9.0--ha6fb395_0'
+        : 'biocontainers/sylph:0.9.0--ha6fb395_0'}"
 
     input:
-    tuple val(meta), path(db)
+    tuple val(meta), path(fasta, stageAs: 'genomes/')
 
     output:
-    tuple val(meta), path("*.tsv"), emit: tsv
+    tuple val(meta), path('*.syldb'), emit: syldb
     path "versions.yml", emit: versions
 
     when:
@@ -20,33 +20,31 @@ process DIAMOND_CLUSTER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def mem = task.memory.toKilo() + 'K'
-    def memarg = "-M ${mem}"
     """
-    diamond \\
-        cluster \\
+    ls -1 genomes/* > genomes.txt
+
+    sylph sketch \\
+        -t ${task.cpus} \\
         ${args} \\
-        ${memarg} \\
-        -p ${task.cpus} \\
-        -d ${db} \\
-        -o ${prefix}.tsv
+        --gl genomes.txt \\
+        -o ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        diamond: \$(diamond --version |& sed '1!d ; s/diamond version //')
+        sylph: \$(sylph -V|awk '{print \$2}')
     END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
     """
     echo "${args}"
-    touch ${prefix}.tsv
+    touch ${prefix}.syldb
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        diamond: \$(diamond --version |& sed '1!d ; s/diamond version //')
+        sylph: \$(sylph -V|awk '{print \$2}')
     END_VERSIONS
     """
 }
