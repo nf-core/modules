@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "chromograph"
 description: Chromograph is a python package to create PNG images from genetics data
   such as BED and WIG files.
@@ -88,10 +88,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}:
+      - "*.png":
           type: file
-          description: Directory containing the plots in png format
-          pattern: "*.png"
+          description: Plot(s) in PNG format
           ontologies: []
   versions:
     - versions.yml:
