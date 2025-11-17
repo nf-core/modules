@@ -1,20 +1,20 @@
 nextflow_process {
 
     name "Test Process ICOUNTMINI_SUMMARY"
-    
+
     script "../main.nf"
     process "ICOUNTMINI_SUMMARY"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "icountmini"
     tag "icountmini/segment"
     tag "icountmini/summary"
-   
+
     setup {
         run("ICOUNTMINI_SEGMENT") {
             script "../../segment/main.nf"
-            
+
             process {
                 """
                 input[0] = [
@@ -26,11 +26,11 @@ nextflow_process {
             }
         }
     }
-    
+
     test("homo_sapiens - bed - gtf") {
-        
+
         when {
-            
+
             process {
                 """
                 input[0] = [
@@ -48,12 +48,12 @@ nextflow_process {
             )
         }
     }
-    
-    
+
+
     test("homo_sapiens - bed - gtf -- stub") {
         options '-stub'
         when {
-            
+
             process {
                 """
                 input[0] = [

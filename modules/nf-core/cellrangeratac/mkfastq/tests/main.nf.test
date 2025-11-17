@@ -1,20 +1,20 @@
 nextflow_process {
 
     name "Test Process CELLRANGERATAC_MKFASTQ"
-    
+
     script "../main.nf"
     process "CELLRANGERATAC_MKFASTQ"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "untar"
     tag "cellrangeratac"
     tag "cellrangeratac/mkfastq"
-   
+
     setup {
         run("UNTAR") {
             script "../../../untar/main.nf"
-            
+
             process {
                 """
                 input[0] = [[],file("https://cf.10xgenomics.com/supp/cell-atac/cellranger-atac-tiny-bcl-1.0.0.tar.gz", checkIfExists:true)]
@@ -22,9 +22,9 @@ nextflow_process {
             }
         }
     }
-    
+
     test("test_cellrangeratac_mkfastq_simple") {
-        
+
         when {
             process {
                 """
@@ -43,7 +43,7 @@ nextflow_process {
     setup {
         run("UNTAR") {
             script "../../../untar/main.nf"
-            
+
             process {
                 """
                 input[0] = [[],file("https://cf.10xgenomics.com/supp/cell-atac/cellranger-atac-tiny-bcl-1.0.0.tar.gz", checkIfExists:true)]
@@ -51,9 +51,9 @@ nextflow_process {
             }
         }
     }
-    
+
     test("test_cellrangeratac_mkfastq_illumina") {
-        
+
         when {
             process {
                 """
@@ -69,8 +69,8 @@ nextflow_process {
             )
         }
     }
-    
-    
+
+
     test("test_cellrangeratac_mkfastq_simple -- stub") {
         options '-stub'
         when {
@@ -88,8 +88,8 @@ nextflow_process {
             )
         }
     }
-    
-    
+
+
     test("test_cellrangeratac_mkfastq_illumina -- stub") {
         options '-stub'
         when {

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import sys 
+import sys
 import shlex
 import os
 import shutil
@@ -79,7 +79,7 @@ def input_processing(data, prefix, genome):
     df = df.rename(columns={'Indiv': 'Sample', 'chr': 'chrom', 'from': 'pos_start', 'to': 'pos_end'})
     df["ID"] = df["Sample"]
     return df.loc[:, ['Project', 'Sample', 'ID', 'Genome', 'mut_type', 'chrom', 'pos_start', 'pos_end', 'ref', 'alt', 'Type']]
-    
+
 if __name__ == '__main__':
 
     prefix = opt["prefix"]
@@ -104,16 +104,16 @@ if __name__ == '__main__':
         if not opt.get("genome_installed_path"):
             raise ValueError("download_genome_sigprofiler is False but no genome_installed_path was provided.")
         print(f"Using pre-installed genome at: {opt['genome_installed_path']}")
-        
+
 
 
     # Mutation counts matrix generation
     generate_count_matrix = (
         f"SigProfilerMatrixGenerator matrix_generator "
         f"{prefix} {genome} {prefix} --volume {opt["volume"]}"
-    )  
+    )
     subprocess.run(generate_count_matrix, shell=True)
-    
+
     matrix_files = {
             "SBS96": os.path.join("output", "SBS", f"{prefix}.SBS96.all"),
             "DBS78": os.path.join("output", "DBS", f"{prefix}.DBS78.all"),
@@ -182,5 +182,5 @@ if __name__ == '__main__':
         f.write("    pandas: "+pandas_version+"\\n")
         f.write("    sigProfilerPlotting: "+sigProfilerPlotting_version+"\\n")
 
-    
+
 

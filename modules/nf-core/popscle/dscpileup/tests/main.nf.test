@@ -42,7 +42,7 @@ nextflow_process {
 
         when {
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'sample1' ], // meta map
                     file(params.modules_testdata_base_path + '/genomics/homo_sapiens/demultiplexing/chr21.bam', checkIfExists: true),

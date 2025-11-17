@@ -14,17 +14,17 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                            [ id: 'test' ], 
+                            [ id: 'test' ],
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
                 ]
                 input[1] = [
-                            [ id: 'test' ], 
+                            [ id: 'test' ],
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
                 ]
                 input[2] = [
-                            [ id: 'test' ], 
+                            [ id: 'test' ],
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3.gz', checkIfExists: true)
-                ]                
+                ]
                 """
             }
         }
@@ -49,7 +49,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                            [ id: 'test' ], 
+                            [ id: 'test' ],
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
                 ]
                 input[1] = [[:],[]]
@@ -79,17 +79,17 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                            [ id: 'test1' ], 
+                            [ id: 'test1' ],
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
                 ]
                 input[1] = [
-                            [ id: 'test1' ], 
+                            [ id: 'test1' ],
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
                 ]
                 input[2] = [
-                            [ id: 'test1' ], 
+                            [ id: 'test1' ],
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3.gz', checkIfExists: true)
-                ]                
+                ]
                 """
             }
         }

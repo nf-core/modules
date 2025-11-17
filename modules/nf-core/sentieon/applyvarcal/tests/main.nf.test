@@ -4,15 +4,15 @@ nextflow_process {
     config "./nextflow.config"
     script "../main.nf"
     process "SENTIEON_APPLYVARCAL"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "sentieon"
     tag "sentieon/applyvarcal"
     config './nextflow.config'
-   
+
     test("homo sapiens") {
-        
+
         when {
             params {
                 module_args  = ''
@@ -44,8 +44,8 @@ nextflow_process {
             )
         }
     }
-    
-    
+
+
     test("homo sapiens -- stub") {
         options '-stub'
         when {

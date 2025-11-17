@@ -22,7 +22,7 @@ include { DIANN as DIANN_FINALQUANTIFICATION } from '../../../modules/nf-core/di
 
 /**
  * Comparator function to sort file paths by filename
- * 
+ *
  * @param a First file path
  * @param b Second file path
  * @return Comparison result for sorting (negative, zero, or positive integer)
@@ -31,15 +31,15 @@ def sortByFilename = { a, b -> file(a).getName() <=> file(b).getName() }
 
 /**
  * Sort all lists in a tuple based on the filename order of a reference list
- * 
+ *
  * This function takes a tuple where the first element is metadata and the remaining
  * elements are lists. It sorts all lists in the tuple according to the filename order
  * of the list at the specified index.
- * 
+ *
  * @param tuple A tuple with structure [meta, list1, list2, ..., listN] where meta is preserved
  * @param sortIndex The index (1-based) of the list to use as the sorting reference
  * @return A new tuple with the same structure but all lists sorted by the reference list's filename order
- * 
+ *
  * Example:
  *   Input:  [[meta], [file_c, file_a, file_b], [data_c, data_a, data_b]], 1
  *   Output: [[meta], [file_a, file_b, file_c], [data_a, data_b, data_c]]
@@ -49,7 +49,7 @@ def sortListsByPathName = { tuple, sortIndex ->
     def sortOrder = tuple[sortIndex].withIndex()
         .sort { it[0].name }
         .collect { it[1] }
-    
+
     [meta] + (1..<tuple.size()).collect { i ->
         sortOrder.collect { j -> tuple[i][j] }
     }
@@ -57,11 +57,11 @@ def sortListsByPathName = { tuple, sortIndex ->
 
 /**
  * Extract mass accuracy settings from DIA-NN log file
- * 
+ *
  * Parses the DIA-NN log file to extract recommended mass accuracy settings for MS1 and MS2,
  * as well as the scan window. These values are extracted from the "Averaged recommended settings"
  * line in the log output.
- * 
+ *
  * @param diann_log Path object pointing to the DIA-NN log file
  * @return Map containing extracted settings with keys:
  *         - mass_acc_ms1: MS1 mass accuracy (precursor tolerance) in ppm
@@ -84,17 +84,17 @@ def extractDiannMassAccuracyFromLog = { diann_log ->
 
 /**
  * Define mass accuracy settings for DIA-NN analysis
- * 
+ *
  * Determines the final mass accuracy settings to use based on a combination of:
  * - Settings extracted from DIA-NN log file (automatic recommendations)
  * - User-provided workflow parameters
  * - Tolerance units (must be in ppm for manual settings to be used)
- * 
+ *
  * The function uses the following priority:
  * 1. If automatic mass accuracy or scan window is enabled, use log-extracted values
  * 2. If both tolerances are in ppm units, use user-provided values
  * 3. Otherwise, fall back to log-extracted values
- * 
+ *
  * @param logSettings Map of settings extracted from DIA-NN log (mass_acc_ms1, mass_acc_ms2, scan_window)
  * @param precursor_tolerance User-provided precursor (MS1) tolerance value
  * @param fragment_tolerance User-provided fragment (MS2) tolerance value
@@ -108,7 +108,7 @@ def extractDiannMassAccuracyFromLog = { diann_log ->
  */
 def defineMassAccuracySettings = { logSettings, precursor_tolerance, fragment_tolerance, precursor_tolerance_unit, fragment_tolerance_unit, wf_scan_window, wf_mass_acc_automatic, wf_scan_window_automatic, wf_pg_level ->
     def mass_acc_ms1, mass_acc_ms2, scan_window
-    
+
     if (wf_mass_acc_automatic || wf_scan_window_automatic) {
         mass_acc_ms1 = logSettings.mass_acc_ms1
         mass_acc_ms2 = logSettings.mass_acc_ms2
@@ -122,7 +122,7 @@ def defineMassAccuracySettings = { logSettings, precursor_tolerance, fragment_to
         mass_acc_ms2 = logSettings.mass_acc_ms2
         scan_window = logSettings.scan_window
     }
-    
+
     [mass_acc_ms1: mass_acc_ms1, mass_acc_ms2: mass_acc_ms2, scan_window: scan_window, pg_level: wf_pg_level]
 }
 
@@ -165,26 +165,26 @@ workflow DIA_PROTEOMICS_ANALYSIS {
         .combine(ch_speclib_in.ifEmpty(null))
         .combine(ch_empirical_library_in.ifEmpty(null))
         .combine(ch_empirical_log_in.ifEmpty(null))
-        .multiMap{ 
-            meta_exp, 
+        .multiMap{
+            meta_exp,
             expdesign,
-            meta_fasta, 
-            fasta, 
-            meta_input, 
-            ms_file, 
-            enzyme, 
-            fixed_mods, 
-            variable_mods, 
-            precursor_tolerance, 
-            fragment_tolerance, 
-            precursor_tolerance_unit, 
+            meta_fasta,
+            fasta,
+            meta_input,
+            ms_file,
+            enzyme,
+            fixed_mods,
+            variable_mods,
+            precursor_tolerance,
+            fragment_tolerance,
+            precursor_tolerance_unit,
             fragment_tolerance_unit,
             speclib,
             empirical_lib,
             empirical_log ->
 
             def dia_params = [fragment_tolerance, fragment_tolerance_unit, precursor_tolerance, precursor_tolerance_unit, enzyme, fixed_mods, variable_mods].join(';')
-            
+
             meta_input = meta_input + [
                 'enzyme': enzyme,
                 'fixed_mods': fixed_mods,
@@ -230,11 +230,11 @@ workflow DIA_PROTEOMICS_ANALYSIS {
 
     ch_config_input = input.enzyme_mods.unique() // [meta_enzyme_mods, enzyme, fixed_mods, variable_mods]
         .combine(ch_speclib.ifEmpty(null))
-        .filter{tuple -> tuple.any { it == null }} 
+        .filter{tuple -> tuple.any { it == null }}
         .map{ meta, enzyme, fixed_mods, variable_mods, _ ->
             [meta, enzyme, fixed_mods, variable_mods]
         }
-    
+
     QUANTMSUTILS_DIANNCFG(ch_config_input)
     ch_versions = ch_versions.mix(QUANTMSUTILS_DIANNCFG.out.versions)
 
@@ -245,7 +245,7 @@ workflow DIA_PROTEOMICS_ANALYSIS {
     ch_insilico_library_input = input.search_db_by_enzyme    // [meta_enzyme_mods, meta_fasta_enzyme, meta_fasta, fasta]
         .combine(QUANTMSUTILS_DIANNCFG.out.diann_cfg, by: 0) // [meta_enzyme_mods, meta_fasta_enzyme, meta_fasta, fasta, cfg_file]
         .unique() // Multiple inputs might have the same config
-        .map { meta_enzyme_mods, meta_fasta_enzyme, meta_fasta, fasta, cfg_file -> 
+        .map { meta_enzyme_mods, meta_fasta_enzyme, meta_fasta, fasta, cfg_file ->
             [meta_fasta_enzyme + [config: cfg_file.text], [], [], fasta, [], []] // Added ms_file_names as []
         }
 
@@ -253,7 +253,7 @@ workflow DIA_PROTEOMICS_ANALYSIS {
     ch_speclib = ch_speclib.mix(DIANN_INSILICOLIBRARYGENERATION.out.predict_speclib)
     ch_versions = ch_versions.mix(DIANN_INSILICOLIBRARYGENERATION.out.versions)
 
-    // In-silico libraries have been generated for combinations of FASTA and configuration, which 
+    // In-silico libraries have been generated for combinations of FASTA and configuration, which
     // may have been the same over multiple inputs. Use a combine to annotate inputs with in silico libraries.
     ch_fasta_input_with_speclib = ch_speclib
         .map{ meta, speclib -> [meta.findAll { key, value -> key != 'config' }, speclib] } // Filter out config from meta to allow the combine by: 0
@@ -261,7 +261,7 @@ workflow DIA_PROTEOMICS_ANALYSIS {
         .map { meta_fasta_enzyme, speclib, meta_input_fasta, ms_file ->
             [meta_input_fasta, ms_file, speclib]
         }
-    
+
     //
     // MODULE: Preliminary analysis
     //
@@ -272,7 +272,7 @@ workflow DIA_PROTEOMICS_ANALYSIS {
     //   - filter keeps only tuples containing null (i.e., no pre-generated empirical library)
     //   - downstream processes only execute when needed
 
-    preliminary_branches = ch_fasta_input_with_speclib  
+    preliminary_branches = ch_fasta_input_with_speclib
         .join(ch_empirical, remainder: true)
         .filter { tuple ->
             tuple.any { it == null } // ch_empirical was an empty channel
@@ -280,7 +280,7 @@ workflow DIA_PROTEOMICS_ANALYSIS {
         .map { meta_input_fasta, ms_file, speclib, _ ->
             [meta_input_fasta, ms_file, speclib]
         }
-        .branch { 
+        .branch {
             random_preanalysis: random_preanalysis
             no_random_preanalysis: no_random_preanalysis
         }
@@ -337,9 +337,9 @@ workflow DIA_PROTEOMICS_ANALYSIS {
         .map { meta_exp, meta_input_fasta, precursor_tolerance, fragment_tolerance, precursor_tolerance_unit, fragment_tolerance_unit, ms_file, fasta, logSettings, empirical_library ->
             def mass_settings = defineMassAccuracySettings(logSettings, precursor_tolerance, fragment_tolerance, precursor_tolerance_unit, fragment_tolerance_unit, wf_scan_window, wf_mass_acc_automatic, wf_scan_window_automatic, wf_pg_level)
             def meta_with_settings = meta_input_fasta + mass_settings
-            [meta_with_settings, ms_file, fasta, empirical_library]  
+            [meta_with_settings, ms_file, fasta, empirical_library]
         }
-        
+
     //
     // MODULE: Individual analysis
     //
@@ -393,8 +393,8 @@ workflow DIA_PROTEOMICS_ANALYSIS {
     // MODULE: Convert results
     //
 
-    // We need some DIAN-NN parameters to convert the results to mzTab. This just takes the first 
-    // config from the input, which is what quantms does, but we should consider if these need to 
+    // We need some DIAN-NN parameters to convert the results to mzTab. This just takes the first
+    // config from the input, which is what quantms does, but we should consider if these need to
     // be input-wise values
 
     ch_first_config = input.ms_file

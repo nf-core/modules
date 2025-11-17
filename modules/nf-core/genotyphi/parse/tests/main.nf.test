@@ -15,7 +15,7 @@ nextflow_process {
     setup {
         run("MYKROBE_PREDICT") {
             script "../../../mykrobe/predict/main.nf"
-            
+
             process {
                 """
                 input[0] = [
@@ -30,7 +30,7 @@ nextflow_process {
 
     test("sarscov2 - json") {
         when {
-            
+
             process {
                 """
                 input[0] = MYKROBE_PREDICT.out.json
@@ -48,7 +48,7 @@ nextflow_process {
     test("sarscov2 - json -- stub") {
         options "-stub"
         when {
-            
+
             process {
                 """
                 input[0] = MYKROBE_PREDICT.out.json

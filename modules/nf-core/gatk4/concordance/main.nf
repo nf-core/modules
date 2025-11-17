@@ -57,8 +57,8 @@ process GATK4_CONCORDANCE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.summary.tsv 
-    touch ${prefix}.tpfp.vcf 
+    touch ${prefix}.summary.tsv
+    touch ${prefix}.tpfp.vcf
     touch ${prefix}.tpfn.vcf
 
     cat <<-END_VERSIONS > versions.yml

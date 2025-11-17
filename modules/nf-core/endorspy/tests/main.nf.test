@@ -4,7 +4,7 @@ nextflow_process {
     config "./nextflow.config"
     script "../main.nf"
     process "ENDORSPY"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "endorspy"
@@ -16,7 +16,7 @@ nextflow_process {
     setup {
         run("SAMTOOLS_FLAGSTAT", alias: "SAMTOOLS_FLAGSTAT1") {
             script "../../samtools/flagstat/main.nf"
-            
+
             process {
                 """
                 input[0] = [
@@ -27,9 +27,9 @@ nextflow_process {
                 """
             }
         }
-        
+
         run("SAMTOOLS_VIEW") {
-            script "../../samtools/view/main.nf"                
+            script "../../samtools/view/main.nf"
             process {
                 """
                 input[0] = [
@@ -43,20 +43,20 @@ nextflow_process {
                 """
             }
         }
-        
+
         run("SAMTOOLS_INDEX") {
             script "../../samtools/index/main.nf"
-            
+
             process {
                 """
                 input[0] = SAMTOOLS_VIEW.out.bam
                 """
             }
         }
-        
+
         run("SAMTOOLS_FLAGSTAT", alias: "SAMTOOLS_FLAGSTAT2") {
             script "../../samtools/flagstat/main.nf"
-            
+
             process {
                 """
                 input[0] = SAMTOOLS_VIEW.out.bam
@@ -66,10 +66,10 @@ nextflow_process {
                 """
             }
         }
-        
+
         run("SAMTOOLS_FLAGSTAT", alias: "SAMTOOLS_FLAGSTAT3") {
             script "../../samtools/flagstat/main.nf"
-            
+
             process {
                 """
                 input[0] = SAMTOOLS_VIEW.out.bam
@@ -80,7 +80,7 @@ nextflow_process {
             }
         }
     }
-   
+
     test("sarscov2 - bam") {
         when {
             params {
