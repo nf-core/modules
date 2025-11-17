@@ -25,13 +25,15 @@ process VGAN_HAPLOCART {
     def reads_args = (meta.single_end || is_interleaved ) ? "-fq1 ${reads}" : "-fq1 ${reads[0]} -fq2 ${reads[1]}"
     def interleaved = is_interleaved ? "-i" : ""
     """
+    mkdir tmp
     vgan haplocart \\
         $args \\
         -t $task.cpus \\
         $reads_args \\
         $interleaved \\
         -o ${prefix}.output.txt \\
-        -pf ${prefix}.posterior.txt
+        -pf ${prefix}.posterior.txt \\
+        -z tmp
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
