@@ -1,0 +1,110 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTQ_FETCH_CLEAN_HOSTILE"
+    script "../main.nf"
+    workflow "FASTQ_FETCH_CLEAN_HOSTILE"
+    config './nextflow.config'
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fastq_fetch_clean_hostile"
+    tag "hostile"
+    tag "hostile/fetch"
+    tag "hostile/clean"
+    tag "bowtie2/build"
+
+    setup {
+        run("BOWTIE2_BUILD") {
+            script "../../../../modules/nf-core/bowtie2/build/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("fastq - single-end - with reference") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test_single', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = BOWTIE2_BUILD.out.index.map { meta, index ->  tuple('genome', index) }
+                input[2] = null
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.fastq,
+                    workflow.out.versions.collect{ path(it).yaml }.unique()
+                ).match() }
+            )
+        }
+    }
+
+    test("fastq - paired-end - with reference") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test_paired', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = BOWTIE2_BUILD.out.index.map { meta, index ->  tuple('genome', index) }
+                input[2] = null
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.fastq,
+                    workflow.out.versions.collect{ path(it).yaml }.unique()
+                ).match() }
+            )
+        }
+    }
+
+    test("fastq - single-end - with reference - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test_single', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = BOWTIE2_BUILD.out.index.map { ['genome', it[1]] }
+                input[2] = null
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.fastq,
+                    workflow.out.versions.collect{ path(it).yaml }.unique()
+                ).match() }
+            )
+        }
+    }
+}
