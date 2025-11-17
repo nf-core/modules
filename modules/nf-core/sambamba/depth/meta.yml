@@ -24,16 +24,18 @@ input:
         type: file
         description: BAM file
         pattern: "*.{bam}"
+        ontologies: []
     - bai:
         type: file
         description: BAI file
         pattern: "*.{bai}"
-  - - mode:
-        type: string
-        description: Analysis mode can be region, window, base
-        pattern: "region|window|base"
+        ontologies: []
+  - mode:
+      type: string
+      description: Analysis mode can be region, window, base
+      pattern: "region|window|base"
 output:
-  stats:
+  bed:
     - - meta:
           type: map
           description: Groovy Map containing sample information
