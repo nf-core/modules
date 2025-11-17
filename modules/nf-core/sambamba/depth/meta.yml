@@ -28,6 +28,10 @@ input:
         type: file
         description: BAI file
         pattern: "*.{bai}"
+    - mode:
+        type: string
+        description: Analysis mode can be region, window, base
+        pattern: "region|window|base"
 output:
   stats:
     - - meta:
