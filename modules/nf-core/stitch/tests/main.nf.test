@@ -30,7 +30,7 @@ def ch_bam = """Channel.of([
 def ch_params = """Channel.of([
     ${pathgenome}dbsnp_138.hg38.first_10_biallelic_sites.tsv', checkIfExists: true),
     [],
-    file("https://github.com/rwdavies/QUILT/raw/refs/heads/master/maps/hg38/CEU-chr21-final.b38.txt.gz", checkIfExists: true),
+    ${pathgenome}genome.GRCh38.stitch.chr21.txt.gz', checkIfExists: true),
     [], 'chr21', 2, 1
 ])"""
 
