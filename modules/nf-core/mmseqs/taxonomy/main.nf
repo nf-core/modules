@@ -1,27 +1,29 @@
 process MMSEQS_TAXONOMY {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mmseqs2:17.b804f--hd6d6fdc_1':
-        'biocontainers/mmseqs2:17.b804f--hd6d6fdc_1' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fe/fe49c17754753d6cd9a31e5894117edaf1c81e3d6053a12bf6dc8f3af1dffe23/data'
+        : 'community.wave.seqera.io/library/mmseqs2:18.8cc5c--af05c9a98d9f6139'}"
 
     input:
     tuple val(meta), path(db_query)
-    path(db_target)
+    path db_target
 
     output:
     tuple val(meta), path("${prefix}_taxonomy"), emit: db_taxonomy
-    path "versions.yml"                        , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: "*.dbtype" //represents the db_query
-    def args3 = task.ext.args3 ?: "*.dbtype" //represents the db_target
+    def args2 = task.ext.args2 ?: "*.dbtype"
+    //represents the db_query
+    def args3 = task.ext.args3 ?: "*.dbtype"
+    //represents the db_target
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
@@ -37,7 +39,7 @@ process MMSEQS_TAXONOMY {
         \$DB_TARGET_PATH_NAME \\
         ${prefix}_taxonomy/${prefix} \\
         tmp1 \\
-        $args \\
+        ${args} \\
         --threads ${task.cpus}
 
     cat <<-END_VERSIONS > versions.yml
@@ -49,8 +51,8 @@ process MMSEQS_TAXONOMY {
     stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-
     """
+    echo ${args}
     mkdir -p ${prefix}_taxonomy
     touch ${prefix}_taxonomy/${prefix}.{0..25}
     touch ${prefix}_taxonomy/${prefix}.dbtype

@@ -1,0 +1,68 @@
+nextflow_process {
+
+    name "Test Process FASTCOV"
+    script "../main.nf"
+    process "FASTCOV"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fastcov"
+
+    test("sarscov2 - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [ file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)],
+                    [ file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)]
+                ]
+                input[1] = 'png'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.coverage_plot[0][1]).name,
+                    file(process.out.log[0][1]).name
+                ).match() },
+                { assert snapshot(process.out.versions).match("versions") }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [ file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)],
+                    [ file(params.modules_testdata_base_path + '/genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)]
+                ]
+                input[1] = 'png'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+
+    }
+
+}
