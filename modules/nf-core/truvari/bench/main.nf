@@ -22,6 +22,7 @@ process TRUVARI_BENCH {
     tuple val(meta), path("*.tp-comp.vcf.gz")    , emit: tp_comp_vcf
     tuple val(meta), path("*.tp-comp.vcf.gz.tbi"), emit: tp_comp_tbi
     tuple val(meta), path("*.summary.json")      , emit: summary
+    tuple val(meta), path("*.log.txt")           , emit: log
     path "versions.yml"                          , emit: versions
 
     when:
@@ -50,6 +51,7 @@ process TRUVARI_BENCH {
     mv ${prefix}/tp-comp.vcf.gz     ./${prefix}.tp-comp.vcf.gz
     mv ${prefix}/tp-comp.vcf.gz.tbi ./${prefix}.tp-comp.vcf.gz.tbi
     mv ${prefix}/summary.json       ./${prefix}.summary.json
+    mv ${prefix}/log.txt            ./${prefix}.log.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -69,6 +71,7 @@ process TRUVARI_BENCH {
     echo | gzip > ${prefix}.tp-comp.vcf.gz
     touch ${prefix}.tp-comp.vcf.gz.tbi
     touch ${prefix}.summary.json
+    touch ${prefix}.log.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
