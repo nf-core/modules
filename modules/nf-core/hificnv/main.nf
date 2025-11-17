@@ -8,7 +8,7 @@ process HIFICNV {
         'community.wave.seqera.io/library/hificnv:1.0.1--b7e433ac6789e2d2' }"
 
     input:
-    tuple val(meta), path(bam), path(bai), path(maf)
+    tuple val(meta) , path(bam), path(bai), path(maf)
     tuple val(meta2), path(ref)
     tuple val(meta3), path(exclude)
     tuple val(meta4), path(expected_cn)
