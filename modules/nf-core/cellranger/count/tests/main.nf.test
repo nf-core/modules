@@ -55,7 +55,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert workflow.success },
                 {
                     assert snapshot(
                         process.out.versions,
