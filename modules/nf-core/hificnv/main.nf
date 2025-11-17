@@ -15,16 +15,16 @@ process HIFICNV {
 
     output:
     tuple val(meta), path("*.copynum.bedgraph"), emit: copynum
-    tuple val(meta), path("*.depth.bw"),         emit: depth
-    tuple val(meta), path("*.maf.bw"),           emit: maf, optional: true
-    tuple val(meta), path("*.vcf.gz"),           emit: vcf
-    path "versions.yml",                         emit: versions
+    tuple val(meta), path("*.depth.bw")        , emit: depth
+    tuple val(meta), path("*.maf.bw")          , emit: maf     , optional: true
+    tuple val(meta), path("*.vcf.gz")          , emit: vcf
+    path "versions.yml"                        , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     // handle optional inputs
