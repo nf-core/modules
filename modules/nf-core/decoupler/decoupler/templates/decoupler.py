@@ -4,20 +4,20 @@ import os
 import shlex
 import sys
 
+import decoupler as dc
+import matplotlib.pyplot as plt
+import numba
+import pandas as pd
+
 os.environ["NUMBA_CACHE_DIR"] = "./tmp"
 os.environ["MPLCONFIGDIR"] = "./tmp"
 os.environ["NUMBA_DISABLE_CACHE"] = "1"
 
-import numba
-
 numba.config.DISABLE_CACHE = True
-
-import decoupler as dc
-import matplotlib.pyplot as plt
-import pandas as pd
 
 mat = pd.read_csv("${mat}", sep="\t", index_col=0)
 net = pd.read_csv("${net}", sep="\t")
+annot: str = "${annot}"
 
 
 def parse_ext_args(args_string: str):

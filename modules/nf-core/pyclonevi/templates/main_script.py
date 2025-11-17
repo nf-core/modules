@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+import subprocess
+
+import numpy as np
+import pandas as pd
+
 
 def parse_args(x):
     x = x.replace("[", "")
@@ -19,12 +24,6 @@ for ao_k, ao_v in args_opt.items():
 print("$tumour_samples")
 
 # Script #####
-
-import subprocess
-
-import numpy as np
-import pandas as pd
-
 
 # input data preprocessing
 def create_pyclone_input(input_data, patient_id, output_data):

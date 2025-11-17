@@ -173,17 +173,17 @@ if __name__ == "__main__":
 
     # Write version
     python_version = ".".join(map(str, sys.version_info[:3]))
-    SigProfilerAssignment_version = version("SigProfilerAssignment")
-    SigProfilerExtractor_version = version("SigProfilerExtractor")
-    SigProfilerMatrixGenerator_version = version("SigProfilerMatrixGenerator")
+    sig_profiler_assignment_version = version("SigProfilerAssignment")
+    sig_profiler_extractor_version = version("SigProfilerExtractor")
+    sig_profiler_matrix_generator_version = version("SigProfilerMatrixGenerator")
     pandas_version = pd.__version__
-    sigProfilerPlotting_version = version("sigProfilerPlotting")
+    sig_profiler_plotting_version = version("sigProfilerPlotting")
 
     with open("versions.yml", "a") as f:
         f.write('"${task.process}":' + "\\n")
         f.write("    python: " + python_version + "\\n")
-        f.write("    SigProfilerAssignment: " + SigProfilerAssignment_version + "\\n")
-        f.write("    SigProfilerExtractor: " + SigProfilerExtractor_version + "\\n")
-        f.write("    SigProfilerMatrixGenerator: " + SigProfilerMatrixGenerator_version + "\\n")
+        f.write("    SigProfilerAssignment: " + sig_profiler_assignment_version + "\\n")
+        f.write("    SigProfilerExtractor: " + sig_profiler_extractor_version + "\\n")
+        f.write("    SigProfilerMatrixGenerator: " + sig_profiler_matrix_generator_version + "\\n")
         f.write("    pandas: " + pandas_version + "\\n")
-        f.write("    sigProfilerPlotting: " + sigProfilerPlotting_version + "\\n")
+        f.write("    sigProfilerPlotting: " + sig_profiler_plotting_version + "\\n")
