@@ -11,9 +11,8 @@ process TABIX_TABIX {
     tuple val(meta), path(tab)
 
     output:
-    tuple val(meta), path("*.tbi"), optional:true, emit: tbi
-    tuple val(meta), path("*.csi"), optional:true, emit: csi
-    path  "versions.yml"          , emit: versions
+    tuple val(meta), path("*.{tbi,csi}"), emit: index
+    path  "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,18 +27,19 @@ process TABIX_TABIX {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        tabix: \$(echo \$(tabix -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
+        tabix: \$(tabix --version | sed '1!d;s/.* //' )
     END_VERSIONS
     """
 
     stub:
+    def args = task.ext.args ?: ''
+    def index = args.contains("-C ") || args.contains("--csi") ? "csi" : "tbi"
     """
-    touch ${tab}.tbi
-    touch ${tab}.csi
+    touch ${tab}.${index}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        tabix: \$(echo \$(tabix -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
+        tabix: \$(tabix --version | sed '1!d;s/.* //' )
     END_VERSIONS
     """
 }
