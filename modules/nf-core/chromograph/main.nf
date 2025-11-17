@@ -25,14 +25,14 @@ process CHROMOGRAPH {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def autozyg_param = autozyg ? "--autozyg ${autozyg}" : ''
-    def coverage_param = coverage ? "--coverage ${coverage}" : ''
-    def exome_param = exome ? "--exom ${exome}" : ''
-    def fracsnp_param = fracsnp ? "--fracsnp ${fracsnp}" : ''
-    def ideogram_param = ideogram ? "--ideogram ${ideogram}" : ''
-    def regions_param = regions ? "--regions ${regions}" : ''
-    def sites_param = sites ? "--sites ${sites}" : ''
+    def args           = task.ext.args ?: ''
+    def autozyg_param  = autozyg       ? "--autozyg ${autozyg}"   : ''
+    def coverage_param = coverage      ? "--coverage ${coverage}" : ''
+    def exome_param    = exome         ? "--exom ${exome}"        : ''
+    def fracsnp_param  = fracsnp       ? "--fracsnp ${fracsnp}"   : ''
+    def ideogram_param = ideogram      ? "--ideogram ${ideogram}" : ''
+    def regions_param  = regions       ? "--regions ${regions}"   : ''
+    def sites_param    = sites         ? "--sites ${sites}"       : ''
 
     """
     chromograph \\
