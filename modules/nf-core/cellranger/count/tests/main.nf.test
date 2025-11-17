@@ -55,13 +55,16 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert workflow.success },
                 {
                     assert snapshot(
                         process.out.versions,
                         process.out.outs[0][1].findAll { file(it).name !in [
                             'web_summary.html', // unstable checksum
+                            'possorted_genome_bam.bam', // unstable checksum because the header includes the filename, but checking for equality of the indexes should ensure identical content
+                            'possorted_genome_bam.bam.bai', // unstable checksum despite identical content, verified with samtools idxstats
                             'barcodes.tsv.gz' // empty file in test data -> would raise linting error
-                        ]}
+                        ]},
                     ).match()
                 },
                 { assert file(process.out.outs.get(0).get(1).find { file(it).name == 'web_summary.html' }).exists() },
