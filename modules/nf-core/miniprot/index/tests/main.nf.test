@@ -11,7 +11,7 @@ nextflow_process {
     tag "miniprot/index"
 
     test("test-miniprot-index") {
-        
+
         when {
             process {
                 """
@@ -28,7 +28,7 @@ nextflow_process {
             )
         }
     }
-    
+
     test("test-miniprot-index-stub") {
         options '-stub'
         when {
@@ -47,5 +47,5 @@ nextflow_process {
             )
         }
     }
-    
+
 }
