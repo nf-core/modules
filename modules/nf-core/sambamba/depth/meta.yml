@@ -24,12 +24,14 @@ input:
         type: file
         description: BAM file
         pattern: "*.{bam}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
     - bai:
         type: file
         description: BAI file
         pattern: "*.{bai}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
   - mode:
       type: string
       description: Analysis mode can be region, window, base
