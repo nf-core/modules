@@ -21,7 +21,12 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1']`
-    - "*.mzML": {}
+    - "*.mzML":
+        type: file
+        description: mzML files for proteomics search
+        pattern: "*.mzML"
+        ontologies:
+          - edam: http://edamontology.org/format_3244 # mzML
   - - meta2:
         type: map
         description: |
@@ -30,8 +35,9 @@ input:
     - fasta_proteome:
         type: file
         description: proteome database in fasta format
-        pattern: "*.{fasta, fasta.gz}"
-        ontologies: []
+        pattern: "*.{fasta,fasta.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - meta3:
         type: map
         description: |
@@ -40,7 +46,7 @@ input:
     - base_config:
         type: file
         description: sage configuration json
-        pattern: "*.{json}"
+        pattern: "*.json"
         ontologies:
           - edam: http://edamontology.org/format_3464 # JSON
 output:

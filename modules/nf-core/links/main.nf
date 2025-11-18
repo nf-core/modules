@@ -43,7 +43,7 @@ process LINKS {
     for read_file in ${reads};
         do
             if [[ \$read_file == *.gz ]];
-            then 
+            then
                 gzip -dc \$read_file > \$(basename \$read_file .gz)
                 echo \$(basename \$read_file .gz) >> readfile.fof
             else

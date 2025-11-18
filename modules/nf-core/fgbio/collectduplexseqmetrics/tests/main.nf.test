@@ -36,7 +36,7 @@ nextflow_process {
                 process.out.versions,
                 file(process.out.duplex_qc[0][1]).name)
                 .match() }
-                
+
             )
         }
 

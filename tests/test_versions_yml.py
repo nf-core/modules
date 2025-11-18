@@ -44,18 +44,18 @@ def test_ensure_valid_version_yml(workflow_dir):
             )
         )
 
-    assert (
-        "END_VERSIONS" not in versions_yml
-    ), "END_VERSIONS detected in versions.yml. This is a sign of an ill-formatted HEREDOC"
+    assert "END_VERSIONS" not in versions_yml, (
+        "END_VERSIONS detected in versions.yml. This is a sign of an ill-formatted HEREDOC"
+    )
 
     # Raises an exception if yaml is not valid
     versions = yaml.safe_load(versions_yml)
-    assert (
-        len(versions) == 1
-    ), "The top-level of versions.yml must contain exactly one entry: the process name as dict key"
+    assert len(versions) == 1, (
+        "The top-level of versions.yml must contain exactly one entry: the process name as dict key"
+    )
     software_versions = next(iter(versions.values()))
     assert len(software_versions), "There must be at least one version emitted."
     for tool, version in software_versions.items():
-        assert re.match(
-            r"^\d.*|^[a-f0-9]{40}$", str(version)
-        ), f"Version number for {tool} must start with a number, or be a Git SHA commit id. "
+        assert re.match(r"^\d.*|^[a-f0-9]{40}$", str(version)), (
+            f"Version number for {tool} must start with a number, or be a Git SHA commit id. "
+        )

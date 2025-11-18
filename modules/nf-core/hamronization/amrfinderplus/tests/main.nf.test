@@ -15,8 +15,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map                                                                                                                           
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/amrfinderplus/test_output_prot.tsv", checkIfExists: true)                              
+                    [ id:'test', single_end:false ], // meta map
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/amrfinderplus/test_output_prot.tsv", checkIfExists: true)
                 ]
                 input[1] = 'tsv'
                 input[2] = '4.0.23'
@@ -42,8 +42,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map                                                                                                                           
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/amrfinderplus/test_output_prot.tsv", checkIfExists: true)                              
+                    [ id:'test', single_end:false ], // meta map
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/amrfinderplus/test_output_prot.tsv", checkIfExists: true)
                 ]
                 input[1] = 'tsv'
                 input[2] = '4.0.23'

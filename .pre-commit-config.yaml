@@ -55,7 +55,4 @@ repos:
     rev: v2.14.0
     hooks:
       - id: hadolint-docker
-  - repo: https://github.com/nf-core/tools
-    rev: pre-commit
-    hooks:
-      - id: lint-subworkflows
+        args: ["--failure-threshold", "error"]

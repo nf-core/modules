@@ -11,7 +11,7 @@ nextflow_process {
 
     test("plink2 - vcf2bgen - vcf - double-id") {
         config "./nextflow.config"
- 
+
         when {
             process {
                 """
@@ -41,7 +41,7 @@ nextflow_process {
 
     test("plink2 - vcf2bgen - vcf - const-fid") {
         config "./nextflow.config"
-        
+
         when {
             process {
                 """
