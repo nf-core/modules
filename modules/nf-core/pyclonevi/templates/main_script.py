@@ -25,6 +25,7 @@ print("$tumour_samples")
 
 # Script #####
 
+
 # input data preprocessing
 def create_pyclone_input(input_data, patient_id, output_data):
     df = pd.read_csv(input_data, sep="\t", header=0)
