@@ -42,8 +42,11 @@ output:
           description: >
             Groovy Map containing sample information e.g. [ id:'test', single_end:false
             ]
+      - id:
+          type: directory
+          description: Directory containing SRA data files
           pattern: "*/*.sra"
-      - id: {}
+          ontologies: []
   versions:
     - versions.yml:
         type: file

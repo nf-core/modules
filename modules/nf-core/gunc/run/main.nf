@@ -40,7 +40,7 @@ process GUNC_RUN {
     stub:
     """
     touch maxCSS_level.tsv all_levels.tsv
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         gunc: \$( gunc --version )

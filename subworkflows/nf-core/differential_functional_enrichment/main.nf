@@ -51,7 +51,7 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
             features:
                 [ meta_with_method, features_sheet, features_id, features_symbol]
         }
-    
+
     // In the case of GSEA, it needs additional files coming from other channels that other methods don't use
     // here we define the input channel for the GSEA section
 

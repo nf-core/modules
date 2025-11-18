@@ -100,4 +100,3 @@ process JUPYTERNOTEBOOK {
     END_VERSIONS
     """
 }
-

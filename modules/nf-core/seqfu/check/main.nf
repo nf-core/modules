@@ -14,7 +14,7 @@ process SEQFU_CHECK {
     tuple val(meta), path("${prefix}.tsv"), emit: check
     path "versions.yml"                   , emit: versions
 
-    when:                                  
+    when:
     task.ext.when == null || task.ext.when
 
     script:
@@ -40,7 +40,7 @@ process SEQFU_CHECK {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo $args
-    
+
     touch ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml

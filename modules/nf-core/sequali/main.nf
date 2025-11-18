@@ -55,4 +55,3 @@ process SEQUALI {
     END_VERSIONS
     """
 }
-

@@ -13,7 +13,7 @@ nextflow_process {
         config "./split_csv.config"
         when {
             process {
-                """                
+                """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'generic/csv/test.csv', checkIfExists: true)
@@ -25,11 +25,11 @@ nextflow_process {
             assertAll(
                 // check the process ran successfully
                 { assert process.success },
-                // check meta 
+                // check meta
                 { assert snapshot(process.out.split[0][0]).match('split_csv_meta') },
                 // check each of the resulting split files
-                { 
-                    process.out.split[0][1].eachWithIndex { split, i -> 
+                {
+                    process.out.split[0][1].eachWithIndex { split, i ->
                         assert snapshot(path(split)).match("split_csv_${i}")
                     }
                 },
@@ -43,7 +43,7 @@ nextflow_process {
         config "./split_fastq_gz.config"
         when {
             process {
-                """                
+                """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
@@ -55,11 +55,11 @@ nextflow_process {
             assertAll(
                 // check the process ran successfully
                 { assert process.success },
-                // check meta 
+                // check meta
                 { assert snapshot(process.out.split[0][0]).match('split_fastq_gz_meta') },
                 // check each of the resulting split files
-                { 
-                    process.out.split[0][1].eachWithIndex { split, i -> 
+                {
+                    process.out.split[0][1].eachWithIndex { split, i ->
                         assert snapshot(path(split)).match("split_fastq_gz_${i}")
                     }
                 },
@@ -74,7 +74,7 @@ nextflow_process {
         config "./split_fastq_gz.config"
         when {
             process {
-                """                
+                """
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
@@ -86,11 +86,11 @@ nextflow_process {
             assertAll(
                 // check the process ran successfully
                 { assert process.success },
-                // check meta 
+                // check meta
                 { assert snapshot(process.out.split[0][0]).match('split_stub_meta') },
                 // check each of the resulting split files
-                { 
-                    process.out.split[0][1].eachWithIndex { split, i -> 
+                {
+                    process.out.split[0][1].eachWithIndex { split, i ->
                         assert snapshot(path(split)).match("split_stub_${i}")
                     }
                 },

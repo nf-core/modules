@@ -24,7 +24,7 @@ RUN apt-get update \
 # Link hostname cmd to fix hardcoded path
 RUN ln -s /bin/hostname /usr/bin/hostname
 # Install bcl-convert
-ADD bcl-convert-4.4.6-2.el8.x86_64.rpm bcl-convert.rpm
+COPY bcl-convert-4.4.6-2.el8.x86_64.rpm bcl-convert.rpm
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN rpm2cpio bcl-convert.rpm | cpio -idmv \
     && rm bcl-convert.rpm

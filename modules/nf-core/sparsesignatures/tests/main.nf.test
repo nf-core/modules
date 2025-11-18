@@ -24,7 +24,7 @@ nextflow_process {
                     [ id:'test_grch37'],
                     file(params.modules_testdata_base_path + 'delete_me/sparsesignatures/test_GRCh37/MSeq_Set06_joint_table.tsv', checkIfExists: true)
                 ]
-                input[1] = "GRCh37" 
+                input[1] = "GRCh37"
                 """
             }
         }
@@ -60,7 +60,7 @@ nextflow_process {
                     [ id:'test_grch37'], // meta map
                     file(params.modules_testdata_base_path + 'delete_me/sparsesignatures/test_GRCh37/MSeq_Set06_joint_table.tsv', checkIfExists: true)
                 ]
-                input[1] = "GRCh37" 
+                input[1] = "GRCh37"
                 """
             }
         }
@@ -90,7 +90,7 @@ nextflow_process {
                     [ id:'test_grch38' ], // meta map
                     file(params.modules_testdata_base_path + 'delete_me/sparsesignatures/test_GRCh38/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true)
                 ]
-                input[1] = "GRCh38" 
+                input[1] = "GRCh38"
                 """
             }
         }
@@ -111,7 +111,7 @@ nextflow_process {
         }
     }
 
-    
+
     test("test_sparsesignatures - GRCh38 - stub") {
 
         options "-stub"
@@ -123,7 +123,7 @@ nextflow_process {
                     [ id:'test_grch38' ],
                     file(params.modules_testdata_base_path + 'delete_me/sparsesignatures/test_GRCh38/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true)
                 ]
-                input[1] = "GRCh38" 
+                input[1] = "GRCh38"
                 """
             }
         }

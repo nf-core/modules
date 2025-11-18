@@ -46,5 +46,5 @@ process PLINK_GENOME {
        plink: \$(echo \$(plink --version 2>&1) | sed 's/^PLINK v//' | sed 's/..-bit.*//' )
    END_VERSIONS
    """
-   
+
 }

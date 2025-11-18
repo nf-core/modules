@@ -21,7 +21,7 @@ process DEEPTOOLS_MULTIBIGWIGSUMMARY {
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "all_bigwig"
-    def blacklist_cmd = blacklist ? "--blackListFileName ${blacklist}" : ""        
+    def blacklist_cmd = blacklist ? "--blackListFileName ${blacklist}" : ""
     def label  = labels ? "--labels ${labels.join(' ')}" : ''
     """
     multiBigwigSummary bins \\

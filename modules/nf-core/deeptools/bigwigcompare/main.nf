@@ -10,7 +10,7 @@ process DEEPTOOLS_BIGWIGCOMPARE {
     input:
     tuple val(meta) , path(bigwig1)     , path(bigwig2)
     tuple val(meta2), path(blacklist)
-    
+
     output:
     tuple val(meta), path("*.{bigWig,bedgraph}"), emit: output
     path "versions.yml"                         , emit: versions
@@ -21,9 +21,9 @@ process DEEPTOOLS_BIGWIGCOMPARE {
     script:
     def args = task.ext.args                                  ?: ""
     def prefix = task.ext.prefix                              ?: "${meta.id}"
-    def blacklist_cmd = blacklist                             ? "--blackListFileName ${blacklist}" : ""        
+    def blacklist_cmd = blacklist                             ? "--blackListFileName ${blacklist}" : ""
     def extension = args.contains("--outFileFormat bedgraph") ? "bedgraph"                         : "bigWig"
-    
+
     """
     bigwigCompare \\
         --bigwig1 $bigwig1 \\
@@ -44,7 +44,7 @@ process DEEPTOOLS_BIGWIGCOMPARE {
     def prefix = task.ext.prefix                              ?: "${meta.id}"
     def extension = args.contains("--outFileFormat bedgraph") ? "bedgraph" : "bigWig"
 
-    """   
+    """
     touch ${prefix}.${extension}
 
     cat <<-END_VERSIONS > versions.yml

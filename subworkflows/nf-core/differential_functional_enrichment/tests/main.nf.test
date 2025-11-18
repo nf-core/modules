@@ -43,9 +43,9 @@ nextflow_workflow {
                 input[2] = Channel.of([[], []])
                 input[3] = Channel.of([
                     ['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'],
-                    [],  // 
-                    '',  // 
-                    ''   // 
+                    [],  //
+                    '',  //
+                    ''   //
                 ])
                 """
             }
@@ -123,7 +123,7 @@ nextflow_workflow {
 
                 ch_featuresheet = ch_input
                     .map { meta, file, genesets, background, method ->
-                        [meta, [], '', '']  
+                        [meta, [], '', '']
                     }
 
                 input[0] = ch_input
@@ -317,7 +317,7 @@ nextflow_workflow {
                     }
                 ch_featuresheet = ch_input
                     .map { meta, file, genesets, background, method ->
-                        [meta, [], '', '']  
+                        [meta, [], '', '']
                     }
                 input[0] = ch_input
                 input[1] = Channel.of([[], [], [], [], [], []])
@@ -495,24 +495,24 @@ nextflow_workflow {
                         ]
                     ],
                     file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/treatment_mCherry_hND6_.deseq2.results.tsv", checkIfExists: true),
-                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/progeny/mouse_network.tsv", checkIfExists: true),  
-                    [],  
-                    'decoupler'  
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/progeny/mouse_network.tsv", checkIfExists: true),
+                    [],
+                    'decoupler'
                 ])
 
                 ch_contrasts = Channel.of([[], [], [], [], [], []])
                 ch_samplesheet = Channel.of([[], []])
                 ch_featuresheet = Channel.of([
                     [
-                        'id':'treatment_mCherry_hND6',  
+                        'id':'treatment_mCherry_hND6',
                         'method_differential':'deseq2',
                         'params': [
                             'differential_method': 'deseq2'
                         ]
                     ],
                     file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/differentialabundance/modules_testdata/Mus_musculus.anno.tsv", checkIfExists: true),
-                    'gene_id',      
-                    'gene_name'     
+                    'gene_id',
+                    'gene_name'
                 ])
 
                 input[0] = ch_input
@@ -565,10 +565,10 @@ nextflow_workflow {
                 input[1] = Channel.of([[], [], [], [], [], []])
                 input[2] = Channel.of([[], []])
                 input[3] = Channel.of([
-                    ['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'],  
-                    [],  
-                    '',  
-                    ''   
+                    ['id':'Condition_genotype_WT_KO', 'variable':'Condition genotype', 'reference':'WT', 'target':'KO', 'blocking':'batch'],
+                    [],
+                    '',
+                    ''
                 ])
                 """
             }

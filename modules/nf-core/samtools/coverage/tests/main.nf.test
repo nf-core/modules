@@ -22,7 +22,7 @@ nextflow_process {
                 input[1] = Channel.of([
                     [:], // meta map
                     []
-                ])      
+                ])
                 input[2] = Channel.of([
                     [:], // meta map
                     []
@@ -125,7 +125,7 @@ nextflow_process {
                 { assert process.stdout.toString().contains("CRAM input file provided but no reference FASTA and/or FAI index for said reference, both are required for CRAM input.") },
             )
         }
-    }    
+    }
 
 
     test("test_samtools_coverage_stub") {

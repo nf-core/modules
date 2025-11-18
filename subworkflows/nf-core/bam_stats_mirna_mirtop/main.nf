@@ -34,4 +34,3 @@ workflow BAM_STATS_MIRNA_MIRTOP {
     stats_log      = MIRTOP_STATS.out.log                   // channel: [ val(meta), [ log ] ]
     versions       = ch_versions                            // channel: [ versions.yml ]
 }
-

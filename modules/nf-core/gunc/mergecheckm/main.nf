@@ -41,6 +41,6 @@ process GUNC_MERGECHECKM {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         gunc: \$( gunc --version )
-    END_VERSIONS 
+    END_VERSIONS
     """
 }

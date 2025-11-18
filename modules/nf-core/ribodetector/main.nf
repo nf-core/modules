@@ -35,7 +35,7 @@ process RIBODETECTOR {
 		--log ${prefix}.log \\
 		${ribodetector_mem} \\
 		${args}
-	
+
 	cat <<-END_VERSIONS > versions.yml
 	"${task.process}":
 		ribodetector: \$(ribodetector --version | sed 's/ribodetector //g')
@@ -48,9 +48,9 @@ process RIBODETECTOR {
 
 	"""
 	echo $args
-	
-	echo | gzip > ${prefix}.nonrna.1.fastq.gz  
-    echo | gzip > ${prefix}.nonrna.2.fastq.gz  
+
+	echo | gzip > ${prefix}.nonrna.1.fastq.gz
+    echo | gzip > ${prefix}.nonrna.2.fastq.gz
 	touch ${prefix}.log
 
 	cat <<-END_VERSIONS > versions.yml

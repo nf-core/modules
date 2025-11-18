@@ -23,7 +23,7 @@ process EIGSCIS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def phasing_track = bed ? "--phasing-track ${bed}" : ""
-    
+
     """
     cooltools \\
         eigs-cis ${args} \\

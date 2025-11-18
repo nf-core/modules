@@ -41,7 +41,7 @@ nextflow_process {
                 input[0] = [
                     [ id:'test_run' ], file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/fwd_oriented.fa', checkIfExists: true)
                 ]
-                
+
                 input[1] = [
                     [ id:'test_run' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true),

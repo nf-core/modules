@@ -22,7 +22,7 @@ process CRISPRESSO2 {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    
+
     // Handle single-end vs paired-end reads
     def read_inputs = ""
     if (reads instanceof Path || reads.size() == 1) {
@@ -49,9 +49,9 @@ process CRISPRESSO2 {
     """
     #!/usr/bin/env bash
     set -e
-    
+
     mkdir -p CRISPResso_on_${prefix}
-    touch CRISPResso_on_${prefix}/${prefix}.html  
+    touch CRISPResso_on_${prefix}/${prefix}.html
     touch CRISPResso_on_${prefix}/CRISPResso_report.html
     touch CRISPResso_on_${prefix}/CRISPResso_mapping_statistics.txt
     touch CRISPResso_on_${prefix}/quantification_of_editing_frequency.txt

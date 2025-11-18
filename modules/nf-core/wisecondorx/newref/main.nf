@@ -23,7 +23,7 @@ process WISECONDORX_NEWREF {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.2.9' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
-    inputs.each { input -> 
+    inputs.each { input ->
         if("${input}" == "${prefix}.npz") error "${input} has the same name as the output file, set prefix in module configuration to disambiguate!"
     }
 
@@ -45,7 +45,7 @@ process WISECONDORX_NEWREF {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def VERSION = '1.2.9' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
-    inputs.each { input -> 
+    inputs.each { input ->
         if("${input}" == "${prefix}.npz") error "${input} has the same name as the output file, set prefix in module configuration to disambiguate!"
     }
 

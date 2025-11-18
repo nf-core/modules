@@ -1,16 +1,16 @@
 nextflow_process {
 
     name "Test Process ENTREZDIRECT_XTRACT"
-    
+
     script "../main.nf"
     process "ENTREZDIRECT_XTRACT"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "entrezdirect"
     tag "entrezdirect/esummary"
     tag "entrezdirect/xtract"
-   
+
     test("assembly") {
         setup {
             run("ENTREZDIRECT_ESUMMARY") {
@@ -46,7 +46,7 @@ nextflow_process {
     }
 
     test("genome") {
-        
+
         setup {
             run("ENTREZDIRECT_ESUMMARY") {
                 script "../../esummary/main.nf"

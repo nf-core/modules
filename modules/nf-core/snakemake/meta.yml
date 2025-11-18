@@ -57,7 +57,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - .snakemake: {}
+      - .snakemake:
+          type: directory
+          description: Hidden directory containing Snakemake execution logs and metadata
+          pattern: ".snakemake"
+          ontologies: []
   versions:
     - versions.yml:
         type: file

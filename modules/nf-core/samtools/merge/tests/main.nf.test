@@ -19,7 +19,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test'], 
+                    [ id:'test'],
                     [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true) ]
@@ -73,7 +73,7 @@ nextflow_process {
             }
         }
 
-        then {           
+        then {
             def fasta = 'https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/genome/genome.fasta'
             assert process.success
             assertAll(
