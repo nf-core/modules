@@ -57,7 +57,7 @@ nextflow_process {
                         path(process.out.html.get(0)).getText().contains("s__Severe_acute_respiratory_syndrome-related_coronavirus"),
                         path(process.out.html.get(0)).getText().contains("testreport1"),
                         path(process.out.html.get(0)).getText().contains("testreport2")
-                    ).match() 
+                    ).match()
                 }
             )
         }

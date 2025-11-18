@@ -13,13 +13,13 @@ keywords:
 tools:
   - "biomformat":
       description: |
-        Biological Observation Matrix (BIOM) format. 
+        Biological Observation Matrix (BIOM) format.
         This package includes basic tools for converting, summarizing, and adding metadata to biom-format files.
       homepage: "http://biom-format.org/index.html"
       documentation: "http://biom-format.org/documentation/index.html"
       tool_dev_url: "https://github.com/biocore/biom-format"
       doi: "10.1186/2047-217X-1-7"
-      licence: ['BSD License']
+      licence: ["BSD License"]
       identifier: biotools:biomformat
 
 input:
@@ -58,12 +58,12 @@ output:
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV/TAB format
   versions:
-  - "versions.yml":
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-      ontologies:
-        - edam: http://edamontology.org/format_3750 # YAML
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jcbioinformatics"
 maintainers:
