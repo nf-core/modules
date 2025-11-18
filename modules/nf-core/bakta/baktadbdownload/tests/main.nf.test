@@ -30,7 +30,7 @@ nextflow_process {
     }
 
     test("Bakta database download - stub") {
-    
+
         options "-stub"
 
         when {
@@ -44,7 +44,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.db + 
+                    process.out.db +
                     process.out.versions
                     ).match() }
             )
