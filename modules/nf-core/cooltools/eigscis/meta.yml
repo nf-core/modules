@@ -24,32 +24,37 @@ input:
         type: file
         description: cool file
         pattern: "*.cool"
-  - - bed:
-        type: file
-        description: bed file, phasing track for orienting and ranking eigenvectors,provided as /path/to/track::track_value_column_name
-        pattern: "*.bed"
-
+        ontologies: []
+  - bed:
+      type: file
+      description: bed file, phasing track for orienting and ranking eigenvectors,provided
+        as /path/to/track::track_value_column_name
+      pattern: "*.bed"
+      ontologies: []
 output:
   result:
-    - meta:
-        type: map
-        description: Groovy Map containing sample information e.g. id:'test'
-    - "*compartment*":
-        type: file
-        description: BED-like file for compartment track
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. id:'test'
+      - "*compartment*":
+          type: file
+          description: BED-like file for compartment track
+          ontologies: []
   bigwig:
-    - meta:
-        type: map
-        description: Groovy Map containing sample information e.g. id:'test'
-    - "*.bw":
-        type: file
-        description: bigwig file for compartment track
-        ontologies:
-          - edam: "http://edamontology.org/format_3006" # bigWig
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. id:'test'
+      - "*.bw":
+          type: file
+          description: bigwig file for compartment track
+          ontologies:
+            - edam: "http://edamontology.org/format_3006" # bigWig
   versions:
     - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Thibault-Poinsignon"
