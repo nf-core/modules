@@ -61,7 +61,7 @@ process HIFICNV {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        hificnv: \$(hificnv --version 2>&1 | sed 's/^.*hificnv //; s/ .*\$//')
+        hificnv: \$(hificnv --version 2>&1 | sed 's/.* //')
     END_VERSIONS
     """
 }
