@@ -12,6 +12,7 @@ License: GPL-3 License
 import platform
 from pathlib import Path
 
+
 def format_yaml_like(data: dict, indent: int = 0) -> str:
     """Formats a dictionary to a YAML-like string.
 
@@ -30,6 +31,7 @@ def format_yaml_like(data: dict, indent: int = 0) -> str:
         else:
             yaml_str += f"{spaces}{key}: {value}\\n"
     return yaml_str
+
 
 def get_rrna_intervals(file_in: Path, file_out: Path):
     """
@@ -53,19 +55,16 @@ def get_rrna_intervals(file_in: Path, file_out: Path):
     with file_out.open("w") as out:
         out.writelines(out_lines)
 
+
 # Main
-gtf_path  = Path("${gtf}")
-prefix    = "${prefix}"
-out_gtf   = Path(f"{prefix}_rrna_intervals.gtf")
+gtf_path = Path("${gtf}")
+prefix = "${prefix}"
+out_gtf = Path(f"{prefix}_rrna_intervals.gtf")
 
 get_rrna_intervals(gtf_path, out_gtf)
 
 # Versions
-versions = {
-    "${task.process}": {
-        "python": platform.python_version()
-    }
-}
+versions = {"${task.process}": {"python": platform.python_version()}}
 
 with open("versions.yml", "w") as v:
     v.write(format_yaml_like(versions))

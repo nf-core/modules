@@ -4,14 +4,14 @@ nextflow_process {
     config "./nextflow.config"
     script "../main.nf"
     process "COOLER_ZOOMIFY"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "cooler"
     tag "cooler/zoomify"
-    
+
     test("test_cooler_zoomify") {
-        
+
         when {
             params {
                 module_args = '-r 2,4,8'
@@ -35,8 +35,8 @@ nextflow_process {
             )
         }
     }
-    
-    
+
+
     test("test_cooler_zoomify -- stub") {
 
         options '-stub'
