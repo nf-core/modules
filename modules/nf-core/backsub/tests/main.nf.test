@@ -11,9 +11,11 @@ nextflow_process {
 
     test("Should run without failures") {
         when {
+            params {
+                module_args = '--pixel-size 0.65'
+            }
             process {
                 """
-                // define inputs of the process here. Example:
                 input[0] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'imaging/background_subtraction/cycif_tonsil_registered.ome.tif', checkIfExists: true)
@@ -28,9 +30,43 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert process.out.backsub_tif },
-                { assert snapshot(process.out.markerout).match("markerout") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    process.out.backsub_tif,
+                    process.out.markerout,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("Should run without failures - stub") {
+        options "-stub"
+        
+        when {
+            params {
+                module_args = '--pixel-size 0.65'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'imaging/background_subtraction/cycif_tonsil_registered.ome.tif', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'imaging/background_subtraction/markers.csv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(
+                    process.out.backsub_tif,
+                    process.out.markerout,
+                    process.out.versions
+                ).match() }
             )
         }
     }
