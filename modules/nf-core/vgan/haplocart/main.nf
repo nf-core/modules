@@ -25,7 +25,9 @@ process VGAN_HAPLOCART {
     def reads_args = (meta.single_end || is_interleaved ) ? "-fq1 ${reads}" : "-fq1 ${reads[0]} -fq2 ${reads[1]}"
     def interleaved = is_interleaved ? "-i" : ""
     """
-    cp -r /usr/local/share/vgan/hcfiles tmp_hcfiles
+    if [ "\${CONDA_PREFIX}" = "" ]; then
+        cp -r /usr/local/share/vgan/hcfiles tmp_hcfiles
+    fi
     vgan haplocart \\
         $args \\
         -t $task.cpus \\
