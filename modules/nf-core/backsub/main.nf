@@ -10,7 +10,7 @@ process BACKSUB {
     tuple val(meta2), path(markerfile)
 
     output:
-    tuple val(meta), path("*.ome.tiff"), emit: backsub_tif
+    tuple val(meta), path("*.ome.tif"), emit: backsub_tif
     tuple val(meta2), path("*.csv")   , emit: markerout
     path "versions.yml"               , emit: versions
 
@@ -20,12 +20,12 @@ process BACKSUB {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if ("$image" == "${prefix}.ome.tiff") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("$image" == "${prefix}.ome.tif") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     backsub \
         --input $image \
         --markers $markerfile \
-        --output "${prefix}.ome.tiff" \
+        --output "${prefix}.ome.tif" \
         --marker-output "${prefix}.csv" \
         $args
 
@@ -38,7 +38,7 @@ process BACKSUB {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch "${prefix}.ome.tiff"
+    touch "${prefix}.ome.tif"
     touch "${prefix}.csv"
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
