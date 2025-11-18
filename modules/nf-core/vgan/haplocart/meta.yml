@@ -32,19 +32,21 @@ input:
 output:
   - meta:
       type: map
-      description: Groovy Map containing reference information.
+      description: Groovy Map containing sample information.
   - txt:
       type: file
       description: HaploCart output file with predicted mtDNA haplogroup
-      pattern: "*.{txt}"
+      pattern: "*.txt"
   - posterior:
       type: file
       description: HaploCart posterior output file
-      pattern: "*.{posterior.txt}"
+      pattern: "*.posterior.txt"
   - versions:
       type: file
       description: File containing software versions
       pattern: "versions.yml"
 
 authors:
+  - "@JoshuaDanielRubin"
+maintainers:
   - "@JoshuaDanielRubin"
