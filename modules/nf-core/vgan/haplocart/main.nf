@@ -4,8 +4,8 @@ process VGAN_HAPLOCART {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vgan:3.0.0--h9ee0642_0':
-        'biocontainers/vgan:3.0.0--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/vgan:3.1.0--h9ee0642_0':
+        'biocontainers/vgan:3.1.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(reads)
