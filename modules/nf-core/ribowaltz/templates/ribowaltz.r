@@ -57,7 +57,7 @@ parse_args <- function(x){
 export_offsets <- function(sample_name, df) {
 
     df <- dplyr::filter(df, sample == sample_name)
-    data.table::fwrite(df, paste0(getwd(), "/", sample_name, ".offset.tsv.gz"), sep = "\t")
+    data.table::fwrite(df, paste0(getwd(), "/", sample_name, ".psite_offset.tsv.gz"), sep = "\t")
     return(df)
 
 }
