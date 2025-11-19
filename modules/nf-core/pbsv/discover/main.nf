@@ -3,8 +3,8 @@ process PBSV_DISCOVER {
     label 'process_single'
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pbsv:2.9.0--h9ee0642_0':
-        'biocontainers/pbsv:2.9.0--h9ee0642_0' }"
+        'oras://community.wave.seqera.io/library/pbsv:2.11.0--64a2437cb4119823':
+        'community.wave.seqera.io/library/pbsv:2.11.0--c85e7f17330a07c9' }"
 
     input:
     tuple val(meta), path(bam)
