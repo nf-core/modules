@@ -1,0 +1,85 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+# # TODO nf-core: Add a description of the module and list keywords
+name: "tetranscripts"
+description: Runs TEtranscripts which summarises transposable element content of a bam file.
+keywords:
+  - transposable
+  - TE
+  - transcriptomics
+tools:
+  - "tetranscripts":
+      description: "A package for including transposable elements in differential enrichment
+        analysis of sequencing datasets."
+      homepage: "https://github.com/mhammell-laboratory/TEtranscripts"
+      documentation: "https://hammelllab.labsites.cshl.edu/software/#TEtranscripts"
+      tool_dev_url: "https://github.com/mhammell-laboratory/TEtranscripts"
+      doi: "https://doi.org/10.1093%2Fbioinformatics%2Fbtv422"
+      licence: ["GPL v3"]
+      identifier: biotools:tetranscripts
+
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[
+          id:'sample1' ]`
+    - bam_t:
+      type: file
+      description: A BAM file for the treatment condition
+      pattern: "*.{bam}"
+
+    - bam_c:
+      type: file
+      description: A BAM file for the control condition
+      pattern: "*.{bam}"
+
+    - bai_t:
+      type: file
+      description: A BAM index file for the treatment condition
+      pattern: "*.{bai}"
+      optional: true
+
+    - g_gtf:
+      type: file
+      description: A GTF file for alignment to the genome
+      pattern: "*.{gtf}"
+
+    - te_gtf:
+     type: file
+     description: A curated GTF file containing additional columns for alignment to transposable elements
+     pattern: "*.{gtf}"
+
+output:
+  gene_expression_data:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+    - cntTable:
+       - meta:
+          type: map
+          description: Groovy map containing sample information
+       - "*.{cntTable}":
+          type: file
+          description: Counts table of transposable element families
+          pattern: "*.cntTable"
+
+    - r:
+      - meta:
+         type: map
+         description: Groovy map containing sample information
+       - "*.{R}"":
+          type: file
+          description: Differential gene expression analysis file
+          pattern: "*.R"
+
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: versions.yml
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@hanalysis"
+maintainers:
+  - "@hanalysis"
