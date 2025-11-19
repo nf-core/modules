@@ -564,10 +564,16 @@ message("riboWaltz analysis successfully completed!")
 
 r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
 ribowaltz.version <- as.character(packageVersion('riboWaltz'))
+dplyr.version <- as.character(packageVersion('dplyr'))
+genomicfeatures.version <- as.character(packageVersion('GenomicFeatures'))
 
 writeLines(
     c(
         '"${task.process}":',
-        paste('    bioconductor-ribowaltz:', ribowaltz.version)
+        paste('    r-base:', r.version),
+        paste('    bioconductor-ribowaltz:', ribowaltz.version),
+        paste('    r-dplyr:', dplyr.version),
+        paste('    bioconductor-genomicfeatures:', genomicfeatures.version)
     ),
-'versions.yml')
+    'versions.yml'
+)
