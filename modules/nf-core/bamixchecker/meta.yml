@@ -1,0 +1,125 @@
+name: bamixchecker
+description: Sample matching checkup tool for NGS datasets.
+keywords:
+  - genotype
+  - match
+  - genomics
+tools:
+  - bamixchecker:
+      description: "Sample matching checkup tool for NGS datasets."
+      homepage: "https://bamixchecker.readthedocs.io/en/latest/"
+      documentation: "https://bamixchecker.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/heinc1010/BAMixChecker"
+      doi: "10.1093/bioinformatics/btz479"
+      licence: ["MIT"]
+      identifier: biotools:BAMixChecker
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bams:
+        type: file
+        description: |
+          BAM/CRAM files and their indexes.
+        pattern: "*.{bam, cram}*"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference sequence information
+          e.g. `[ build:'gh38' ]`
+    - fasta:
+        type: file
+        description: |
+          Reference genome fasta file.
+        pattern: "*.{fasta,fa}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference sequence information
+          e.g. `[ build:'gh38' ]`
+    - fai:
+        type: file
+        description: |
+          Reference genome index file.
+        pattern: "*.{fai}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference sequence information
+          e.g. `[ build:'gh38' ]`
+    - dict:
+        type: file
+        description: |
+          Reference genome dictionary file.
+        pattern: "*.{dict}"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing target file information
+          e.g. `[ panel:'SureSelect Human All Exon V8' ]`
+    - target_bed:
+        type: file
+        description: |
+          Optional BED file for targeted sequencing data.
+          If not applicable, either provide a genome bed file, or an empty file instead!
+        pattern: "*.{bed}"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing information on custom SNP list
+          e.g. `[ build:'gh38' ]`
+    - nhSNP:
+        type: file
+        description: |
+          Optional SNP list for sample matching check-up in BED format (needed for non-human organism).
+          If not applicable, must provide an empty file instead!
+        pattern: "*.{bed}"
+output:
+  - heatmap:
+      - meta:
+          type: file
+          description: Sample mismatch check-up analysis heatmap
+          pattern: "*.pdf"
+      - BAMixChecker/*.pdf:
+          type: file
+          description: Sample mismatch check-up analysis heatmap
+          pattern: "*.pdf"
+  - total_result:
+      - meta:
+          type: file
+          description: Sample mismatch analysis final results
+          pattern: "Total_result.txt"
+      - BAMixChecker/Total_result.txt:
+          type: file
+          description: Sample mismatch analysis final results
+          pattern: "Total_result.txt"
+  - html:
+      - meta:
+          type: file
+          description: Sample mismatch check-up analysis report
+          pattern: "BAMixChecker*.html"
+      - BAMixChecker/*.html:
+          type: file
+          description: Sample mismatch check-up analysis report
+          pattern: "BAMixChecker*.html"
+  - results:
+      - meta:
+          type: file
+          description: Sample mismatch analysis results
+          pattern: "*_samples.txt"
+      - BAMixChecker/*_samples.txt:
+          type: file
+          description: Sample mismatch analysis results
+          pattern: "*_samples.txt"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@abenjak"
+maintainers:
+  - "@abenjak"
