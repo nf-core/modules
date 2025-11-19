@@ -30,7 +30,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
 
     if (use_gpu) {
         /*
-        * Align with parabricks GPU enabled fq2bammeth implementation of bwameth
+        * Align with parabricks GPU enabled fq2bam implementation of bwa-mem
         */
         PARABRICKS_FQ2BAM (
             ch_reads,           // channel: [ val(meta), [ reads ] ]
