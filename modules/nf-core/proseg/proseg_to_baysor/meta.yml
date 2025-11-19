@@ -42,7 +42,7 @@ output:
     - - meta:
           type: map
           description: Groovy Map containing sample information
-      - '*baysor-cell-polygons.geojson':
+      - "*baysor-cell-polygons.geojson":
           type: file
           description: "Path to the cell polygons file."
           pattern: "*baysor-cell-polygons.geojson"
@@ -52,19 +52,19 @@ output:
     - - meta:
           type: map
           description: Groovy Map containing sample information
-      - '*baysor-transcript-metadata.csv':
+      - "*baysor-transcript-metadata.csv":
           type: file
           description: Transcript ids, genes, revised positions, assignment probability, etc.
           pattern: "*baysor-transcript-metadata.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
   versions:
-      - 'versions.yml':
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: http://edamontology.org/format_3750 # YAML
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 
 authors:
   - "@derrik-gratz"

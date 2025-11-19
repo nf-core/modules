@@ -11,7 +11,7 @@ nextflow_process {
     tag "picard/mergesamfiles"
 
     test("test-picard-mergesamfiles") {
-        
+
         when {
             process {
                 """
@@ -35,7 +35,7 @@ nextflow_process {
             )
         }
     }
-    
+
     test("test-picard-mergesamfiles-stub") {
         options '-stub'
         when {

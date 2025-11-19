@@ -4,7 +4,7 @@ process CELLRANGERARC_COUNT {
 
     container "nf-core/cellranger-arc:2.0.2"
 
-    // Exit if running this module with -profile conda / -profile mamba 
+    // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         exit 1, "CELLRANGERARC_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
     }

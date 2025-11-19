@@ -21,7 +21,7 @@ process DEEPTOOLS_MULTIBAMSUMMARY {
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "all_bam"
-    def blacklist_cmd = blacklist ? "--blackListFileName ${blacklist}" : ""        
+    def blacklist_cmd = blacklist ? "--blackListFileName ${blacklist}" : ""
     def label  = labels ? "--labels ${labels.join(' ')}" : ''
     """
     multiBamSummary bins \\
