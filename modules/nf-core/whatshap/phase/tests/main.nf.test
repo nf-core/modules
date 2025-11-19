@@ -54,8 +54,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.vcf[0][1]).vcf.summary,
-                    file(process.out.vcf[0][1]).vcf.variantsMD5,
+                    path(process.out.vcf.get(0).get(1)).vcf.summary,
+                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
                     ).match() }
             )
         }
