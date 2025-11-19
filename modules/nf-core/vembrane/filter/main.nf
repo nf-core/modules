@@ -12,7 +12,7 @@ process VEMBRANE_FILTER {
     val expression
 
     output:
-    tuple val(meta), path("*.{vcf,bcf,bcf.gz}"), emit: filtered_variant
+    tuple val(meta), path("*.{vcf,bcf,bcf.gz}"), emit: vcf
     path "versions.yml"                        , emit: versions
 
     when:
