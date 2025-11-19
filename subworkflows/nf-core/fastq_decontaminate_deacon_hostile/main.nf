@@ -4,32 +4,52 @@
 //               https://nf-co.re/join
 // TODO nf-core: A subworkflow SHOULD import at least two modules
 
-include { SAMTOOLS_SORT      } from '../../../modules/nf-core/samtools/sort/main'
-include { SAMTOOLS_INDEX     } from '../../../modules/nf-core/samtools/index/main'
+include { FASTQ_FETCH_CLEAN_HOSTILE } from '../fastq_fetch_clean_hostile/main'
+include { FASTQ_INDEX_FILTER_DEACON } from '../fastq_index_filter_deacon/main'
 
 workflow FASTQ_DECONTAMINATE_DEACON_HOSTILE {
 
     take:
     // TODO nf-core: edit input (take) channels
-    ch_bam // channel: [ val(meta), [ bam ] ]
+    ch_reads                // channel: [ val(meta), [ reads ] ]
+    ch_fasta                // channel: [ val(meta), [ fasta ] ]
+    ch_reference            // channel: [ val(reference_name), path(reference_dir) ] (optional)
+    index_name              // val (optional)
+    decontaminator          // string (enum): 'hostile' or 'deacon'
 
     main:
 
     ch_versions = Channel.empty()
 
-    // TODO nf-core: substitute modules here for the modules of your subworkflow
+    if (decontaminator != "hostile" && decontaminator != "deacon"){
+        error("Unknown decontaminator '${decontaminator}'")
+    }
 
-    SAMTOOLS_SORT ( ch_bam )
-    ch_versions = ch_versions.mix(SAMTOOLS_SORT.out.versions.first())
+    // Fastq decontamination
+    if (decontaminator == "hostile") {
+        FASTQ_FETCH_CLEAN_HOSTILE (
+            ch_reads,
+            ch_reference,
+            index_name
+        )
+        fastq_filtered = FASTQ_FETCH_CLEAN_HOSTILE.out.fastq
+        ch_versions = ch_versions.mix(FASTQ_FETCH_CLEAN_HOSTILE.out.versions)
+        additional_files = FASTQ_FETCH_CLEAN_HOSTILE.out.reference
+            .mix(FASTQ_FETCH_CLEAN_HOSTILE.out.json)
 
-    SAMTOOLS_INDEX ( SAMTOOLS_SORT.out.bam )
-    ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
+    } else if (decontaminator == "deacon") {
+        FASTQ_INDEX_FILTER_DEACON (
+            ch_reads.join(ch_fasta)
+        )
+        fastq_filtered = FASTQ_INDEX_FILTER_DEACON.out.fastq_filtered
+        ch_versions = ch_versions.mix(FASTQ_INDEX_FILTER_DEACON.out.versions)
+        additional_files = FASTQ_INDEX_FILTER_DEACON.out.index
+            .mix(FASTQ_INDEX_FILTER_DEACON.out.log)
+    }
+
 
     emit:
-    // TODO nf-core: edit emitted channels
-    bam      = SAMTOOLS_SORT.out.bam           // channel: [ val(meta), [ bam ] ]
-    bai      = SAMTOOLS_INDEX.out.bai          // channel: [ val(meta), [ bai ] ]
-    csi      = SAMTOOLS_INDEX.out.csi          // channel: [ val(meta), [ csi ] ]
-
-    versions = ch_versions                     // channel: [ versions.yml ]
+    fastq_filtered      = fastq_filtered    // channel: [ val(meta), [ fastq ] ]
+    additional_files    = additional_files  // channel: file
+    versions            = ch_versions       // channel: [ versions.yml ]
 }
