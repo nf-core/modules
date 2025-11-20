@@ -1563,6 +1563,12 @@ output:
         description: Usage log files
         pattern: "*_usage.txt"
         ontologies: []
+  all:
+    - "*":
+        type: file
+        description: all output files
+        pattern: "*"
+        ontologies: []
   versions:
     - versions.yml:
         type: file
