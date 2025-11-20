@@ -4,12 +4,12 @@ nextflow_process {
     config "./nextflow.config"
     script "../main.nf"
     process "SEQUENCETOOLS_PILEUPCALLER"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "sequencetools"
     tag "sequencetools/pileupcaller"
-   
+
     test("freqsum") {
         when {
             params {

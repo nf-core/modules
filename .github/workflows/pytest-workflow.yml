@@ -29,7 +29,7 @@ env:
   NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # renovate: datasource=github-releases depName=nextflow-io/nextflow versioning=semver
-  NXF_VER: "24.10.2"
+  NXF_VER: "24.10.9"
 
 jobs:
   pytest-changes:
@@ -76,8 +76,6 @@ jobs:
         profile: [conda, docker, singularity]
         exclude:
           - tags: nf-test
-          - profile: conda
-            tags: backsub
           - profile: conda
             tags: bases2fastq
           - profile: singularity

@@ -27,7 +27,7 @@ process BIOMFORMAT_CONVERT {
     biom convert \\
         -i ${biom} \\
         -o ${output} \\
-        ${args} 
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

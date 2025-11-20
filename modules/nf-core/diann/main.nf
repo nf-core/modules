@@ -14,10 +14,10 @@ process DIANN {
     tuple val(meta), path("${prefix}.predicted.speclib"), emit: predict_speclib, optional: true
     tuple val(meta), path("${prefix}.speclib"), emit: final_speclib, optional: true
     tuple val(meta), path("${prefix}.tsv.skyline.speclib"), emit: skyline_speclib, optional: true
-    
+
     // Quantification outputs
     tuple val(meta), path("*.quant"), emit: diann_quant, optional: true
-    
+
     // Report outputs (from final quantification)
     tuple val(meta), path("${prefix}.tsv"), emit: main_report, optional: true
     tuple val(meta), path("${prefix}.parquet"), emit: report_parquet, optional: true
@@ -28,7 +28,7 @@ process DIANN {
     tuple val(meta), path("${prefix}.pg_matrix.tsv"), emit: pg_matrix, optional: true
     tuple val(meta), path("${prefix}.gg_matrix.tsv"), emit: gg_matrix, optional: true
     tuple val(meta), path("${prefix}.unique_genes_matrix.tsv"), emit: unique_gene_matrix, optional: true
-    
+
     // Common outputs
     tuple val(meta), path("*.log.txt"), emit: log
     path "versions.yml", emit: versions
@@ -43,7 +43,7 @@ process DIANN {
     }
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}" ?: "diann"
-    
+
     // Handle MS files input: two modes depending on whether we need actual files or just names
     // - ms_files: Actual file paths - used when DIA-NN needs to read raw MS data
     // - ms_file_names: Just basenames - used with --use-quant when DIA-NN only needs file names
@@ -54,7 +54,7 @@ process DIANN {
     } else if (ms_file_names && ms_file_names != []) {
         ms_input = ms_file_names instanceof List ? ms_file_names.collect{ "--f ${it}" }.join(' ') : "--f ${ms_file_names}"
     }
-    
+
     def fasta_input = fasta && fasta != [] ? "--fasta ${fasta}" : ''
     def lib_input = library && library != [] ? "--lib ${library}" : ''
 
@@ -92,10 +92,10 @@ process DIANN {
     touch ${prefix}.speclib
     touch ${prefix}.tsv
     touch ${prefix}.tsv.skyline.speclib
-    
+
     # Quant outputs
     touch ${prefix}.quant
-    
+
     # Report outputs
     touch ${prefix}.tsv
     touch ${prefix}.parquet
@@ -106,7 +106,7 @@ process DIANN {
     touch ${prefix}.pg_matrix.tsv
     touch ${prefix}.gg_matrix.tsv
     touch ${prefix}.unique_genes_matrix.tsv
-    
+
     # Common outputs
     touch ${prefix}.log
 
