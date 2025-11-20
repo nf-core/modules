@@ -16,7 +16,7 @@ workflow VCF_ANNOTATE_ENSEMBLVEP {
     ch_extra_files    // channel: [ path(file1), path(file2)... ] (optional)
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     ENSEMBLVEP_VEP(
         ch_vcf,
