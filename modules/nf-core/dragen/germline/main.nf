@@ -400,7 +400,7 @@ process DRAGEN {
     stub:
     def VERSION = "4.2.7"
     """
-    touch \$(date +%Y%m%d)_usage.txt
+    touch 20251120_usage.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
