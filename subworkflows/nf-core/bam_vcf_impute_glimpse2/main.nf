@@ -8,15 +8,17 @@ include { BCFTOOLS_INDEX as INDEX_LIGATE } from '../../../modules/nf-core/bcftoo
 workflow MULTIPLE_IMPUTE_GLIMPSE2 {
 
     take:
-    ch_input    // channel (mandatory): [ meta, vcf, csi, infos ]
-    ch_ref      // channel (mandatory): [ meta, vcf, csi, region ]
-    ch_map      // channel (optional): [ meta, map ]
-    ch_fasta    // channel  (optional): [ meta, fasta, index ]
-    chunk_model // string: model used to chunk the reference panel
+    ch_input       // channel (mandatory): [ meta, vcf, csi, infos ]
+    ch_ref         // channel (mandatory): [ meta, vcf, csi, region ]
+    ch_chunks      // channel (optional) : [ meta, regionin, regionout ]
+    ch_map         // channel (optional) : [ meta, map ]
+    ch_fasta       // channel  (optional): [ meta, fasta, index ]
+    chunk_model    // val (optional)     : model file for chunking
+    splitreference // val (optional)     : boolean to activate/deactivate split reference step
 
     main:
 
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     // Chunk reference panel
     ch_ref_map = ch_ref.combine(ch_map, by: 0)
