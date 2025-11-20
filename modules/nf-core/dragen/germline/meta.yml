@@ -1341,36 +1341,16 @@ output:
           type: file
           description: BED file containing coverage report
           pattern: "*_cov_report.bed"
-  evidence_bam:
+  evidence:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
-      - ${prefix}_evidence.bam:
+      - ${prefix}_evidence.{b,cr,s}am:
           type: file
-          description: Sorted BAM file containing evidence reads
-          pattern: "*_evidence.bam"
-  evidence_cram:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
-      - ${prefix}_evidence.cram:
-          type: file
-          description: Sorted CRAM file containing evidence reads
-          pattern: "*_evidence.cram"
-  evidence_sam:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
-      - ${prefix}_evidence.sam:
-          type: file
-          description: Sorted SAM file containing evidence reads
-          pattern: "*_evidence.sam"
+          description: Sorted BAM, CRAM or SAM file containing evidence reads
+          pattern: "*_evidence.{b,cr,s}am"
   fine_hist_csv:
     - - meta:
           type: map

@@ -156,9 +156,7 @@ process DRAGEN {
     tuple val(meta), path("${prefix}_chr_start-end.impute.phase.vcf.gz")     , optional: true, emit: chr_start_end_impute_phase_vcf_gz
     tuple val(meta), path("${prefix}_contig_mean_cov.csv")                   , optional: true, emit: contig_mean_cov_csv
     tuple val(meta), path("${prefix}_cov_report.bed")                        , optional: true, emit: cov_report_bed
-    tuple val(meta), path("${prefix}_evidence.bam")                          , optional: true, emit: evidence_bam
-    tuple val(meta), path("${prefix}_evidence.cram")                         , optional: true, emit: evidence_cram
-    tuple val(meta), path("${prefix}_evidence.sam")                          , optional: true, emit: evidence_sam
+    tuple val(meta), path("${prefix}_evidence.{b,cr,s}am")                   , optional: true, emit: evidence
     tuple val(meta), path("${prefix}_fine_hist.csv")                         , optional: true, emit: fine_hist_csv
     tuple val(meta), path("${prefix}_full_res.bed")                          , optional: true, emit: full_res_bed
     tuple val(meta), path("${prefix}_hist.csv")                              , optional: true, emit: hist_csv
