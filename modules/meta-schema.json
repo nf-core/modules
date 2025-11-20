@@ -110,6 +110,38 @@
                 }
             }
         },
+        "topics": {
+            "type": "object",
+            "description": "Topics of the module",
+            "patternProperties": {
+                ".*": {
+                    "type": "array",
+                    "items": {
+                        "oneOf": [
+                            {
+                                "type": "object",
+                                "patternProperties": {
+                                    ".*": {
+                                        "$ref": "#/definitions/elementProperties"
+                                    }
+                                }
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "patternProperties": {
+                                        ".*": {
+                                            "$ref": "#/definitions/elementProperties"
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        },
         "tools": {
             "type": "array",
             "description": "Tools used by the module",
