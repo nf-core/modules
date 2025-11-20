@@ -187,7 +187,7 @@ process DRAGEN {
     path "match_log.smn_dedup.txt"                                           , optional: true, emit: match_log_smn_dedup_txt
     path "streaming_log_*.csv"                                               , optional: true, emit: streaming_log_csv
     path "*_usage.txt"                                                       , emit: usage_txt
-    path "*"                                                                 , emit: all
+    path "**"                                                                , emit: all
     path "versions.yml"                                                      , emit: versions
 
     when:
