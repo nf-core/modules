@@ -87,17 +87,32 @@ def dumpParametersToJSON(outdir) {
 def checkCondaChannels() {
     def parser = new org.yaml.snakeyaml.Yaml()
     def channels = []
-    try {
-        def config = parser.load("conda config --show channels".execute().text)
-        channels = config.channels
-    }
-    catch (NullPointerException e) {
-        log.debug(e)
-        log.warn("Could not verify conda channel configuration.")
+
+    // Helper function: execute shell command and parse channel output
+    def getChannels = { String cmd ->
+        try {
+            def process = cmd.execute()
+            process.waitForOrKill(10000)  // 10s timeout
+            if (process.exitValue() == 0) {
+                return parser.load(process.text)?.channels
+            } else {
+                log.debug("Non-zero exit for command: $cmd")
+            }
+        } catch (Exception e) {
+            log.debug("Failed to execute '$cmd': ${e.message}")
+        }
         return null
     }
-    catch (IOException e) {
-        log.debug(e)
+
+    try {
+        channels = getChannels("conda config --show channels")
+                ?: getChannels("micromamba config list channels")
+
+        if (!channels) {
+            throw new IllegalStateException("Both conda and micromamba commands failed or returned no channels")
+        }
+    }
+    catch (Exception e) {
         log.warn("Could not verify conda channel configuration.")
         return null
     }
