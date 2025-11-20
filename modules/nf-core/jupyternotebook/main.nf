@@ -1,5 +1,3 @@
-include { dump_params_yml; indent_code_block } from "./parametrize"
-
 process JUPYTERNOTEBOOK {
     tag "$meta.id"
     label 'process_low'
@@ -18,9 +16,9 @@ process JUPYTERNOTEBOOK {
     path input_files
 
     output:
-    tuple val(meta), path("*.html"), emit: report
+    tuple val(meta), path("*.html")    , emit: report
     tuple val(meta), path("artifacts/"), emit: artifacts, optional: true
-    path "versions.yml"            , emit: versions
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,28 +37,27 @@ process JUPYTERNOTEBOOK {
     //  * allows to pass nested maps instead of just single values
     def params_cmd = ""
     def render_cmd = ""
+    def meta_string = meta.collect { key, value -> "${key}: ${value}" }.join('\n')
+    def params_string = parameters.collect { key, value -> "${key}: ${value}" }.join('\n')
     if (parametrize) {
-        nb_params = [:]
         if (implicit_params) {
-            nb_params["cpus"] = task.cpus
-            nb_params["artifact_dir"] = "artifacts"
-            nb_params["input_dir"] = "./"
+            params_cmd += 'echo cpus: ' + task.cpus + ' >> ./.params.yml \n'
+            params_cmd += 'echo "artifact_dir: artifacts"  >> ./.params.yml \n'
+            params_cmd += 'echo "input_dir: ./"  >> ./.params.yml \n'
         }
         if (meta_params) {
-            nb_params["meta"] = meta
+            params_cmd += 'echo "' + meta_string + '" >> ./.params.yml \n'
         }
-        nb_params += parameters
-        params_cmd = dump_params_yml(nb_params)
+        params_cmd += 'echo "' + params_string + '" >> ./.params.yml'
         render_cmd = "papermill -f .params.yml"
     } else {
         render_cmd = "papermill"
     }
-
     """
     set -o pipefail
 
-    # Dump .params.yml heredoc (section will be empty if parametrization is disabled)
-    ${indent_code_block(params_cmd, 4)}
+    # write .params.yml file if required
+    $params_cmd
 
     # Create output directory
     mkdir artifacts
@@ -71,10 +68,28 @@ process JUPYTERNOTEBOOK {
     export OMP_NUM_THREADS="$task.cpus"
     export NUMBA_NUM_THREADS="$task.cpus"
 
+    # Set temporary directory to remove warning about Matplotlib creating temporary directory
+    export MPLCONFIGDIR=./tmp
+
     # Convert notebook to ipynb using jupytext, execute using papermill, convert using nbconvert
     jupytext --to notebook --output - --set-kernel ${kernel} ${notebook} > ${notebook}.ipynb
     ${render_cmd} ${notebook}.ipynb ${notebook}.executed.ipynb
     jupyter nbconvert --stdin --to html --output ${prefix}.html < ${notebook}.executed.ipynb
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        jupytext: \$(jupytext --version)
+        ipykernel: \$(python -c "import ipykernel; print(ipykernel.__version__)")
+        nbconvert: \$(jupyter nbconvert --version)
+        papermill: \$(papermill --version | cut -f1 -d' ')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.html
+    mkdir artifacts
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -1,0 +1,86 @@
+nextflow_process {
+
+    name "Test Process DSSP_MKDSSP"
+    script "../main.nf"
+    process "DSSP_MKDSSP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "dssp"
+    tag "dssp/mkdssp"
+
+    test("proteomics - pdb - dssp") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/pdb/1tim.pdb', checkIfExists: true)
+                ]
+                input[1] = "dssp"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("proteomics - pdb - mmcif") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/pdb/1tim.pdb', checkIfExists: true)
+                ]
+                input[1] = "mmcif"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("proteomics - pdb - dssp - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/pdb/1tim.pdb', checkIfExists: true)
+                ]
+                input[1] = "dssp"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+
+    }
+
+}

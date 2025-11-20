@@ -1,0 +1,70 @@
+nextflow_process {
+
+    name "Test Process GEM2_GEMMAPPABILITY"
+    script "../main.nf"
+    process "GEM2_GEMMAPPABILITY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gem2"
+    tag "gem2/gemmappability"
+    tag "gem2/gemindexer"
+
+    setup {
+        run("GEM2_GEMINDEXER") {
+            script "../../gemindexer/main.nf"
+
+            process {
+                """
+                input[0] = [
+                    [id:'test',single_end:false],// meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta',checkIfExists:true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = GEM2_GEMINDEXER.out.index
+                input[1] = "100"
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+
+    test("sarscov2 - fasta -- stub") {
+        options '-stub'
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = GEM2_GEMINDEXER.out.index
+                input[1] = "100"
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}

@@ -3,6 +3,9 @@ name: "spotiflow"
 description: Spotiflow, accurate and efficient spot detection with stereographic flow.
 keywords:
   - imaging
+  - image
+  - microscopy
+  - transcriptomics
   - spatial
   - spot
   - detection
@@ -28,9 +31,10 @@ input:
         type: file
         description: 2D TIF Image file with the spots to be detected
         pattern: "*.{tif,tiff,png,jpg,jpeg}"
+        ontologies: []
 output:
-  - spots:
-      - meta:
+  spots:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,11 +43,15 @@ output:
           type: file
           description: CSV file with the X, Y positions of the detected spots.
           pattern: "*.{csv}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@migueLib"
 maintainers:

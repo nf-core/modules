@@ -29,18 +29,21 @@ env:
   NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # renovate: datasource=github-releases depName=nextflow-io/nextflow versioning=semver
-  NXF_VER: "24.10.1"
+  NXF_VER: "24.10.9"
 
 jobs:
   pytest-changes:
     name: pytest-changes
-    runs-on: ubuntu-latest
+    runs-on:
+      - runs-on=${{ github.run_id }}-pytest-changes
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
     outputs:
       tags: ${{ steps.filter.outputs.changes }}
       modules: ${{ steps.tags.outputs.modules }}
       subworkflows: ${{ steps.tags.outputs.subworkflows }}
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
         with:
           fetch-depth: 2 # To retrieve the preceding commit.
 
@@ -62,7 +65,7 @@ jobs:
           echo ${{ steps.tags.outputs.subworkflows }}
 
   pytest:
-    runs-on: ${{ github.event.inputs.runners  || 'self-hosted' }}
+    runs-on: ${{ github.event.inputs.runners || 'self-hosted' }}
     name: pytest
     needs: [pytest-changes]
     if: needs.pytest-changes.outputs.tags != '[]'
@@ -73,8 +76,6 @@ jobs:
         profile: [conda, docker, singularity]
         exclude:
           - tags: nf-test
-          - profile: conda
-            tags: backsub
           - profile: conda
             tags: bases2fastq
           - profile: singularity
@@ -98,25 +99,15 @@ jobs:
           - profile: conda
             tags: cellpose
           - profile: conda
-            tags: cellrangerarc/count
-          - profile: conda
             tags: cellrangerarc/mkfastq
           - profile: conda
-            tags: cellrangerarc/mkref
-          - profile: conda
-            tags: cellrangeratac/count
-          - profile: conda
             tags: cellrangeratac/mkfastq
-          - profile: conda
-            tags: cellrangeratac/mkref
           - profile: conda
             tags: checkm2/databasedownload
           - profile: conda
             tags: checkm2/predict
           - profile: conda
             tags: controlfreec/makegraph2
-          - profile: conda
-            tags: coreograph
           - profile: conda
             tags: deepcell/mesmer
           - profile: conda
@@ -149,10 +140,6 @@ jobs:
             tags: happy/sompy
           - profile: conda
             tags: hlala/preparegraph
-          - profile: conda
-            tags: ilastik/multicut
-          - profile: conda
-            tags: ilastik/pixelclassification
           - profile: conda
             tags: imputeme/vcftoprs
           - profile: conda
@@ -232,6 +219,8 @@ jobs:
           - profile: conda
             tags: svanalyzer/svbenchmark
           - profile: conda
+            tags: svtk/standardize
+          - profile: conda
             tags: universc
           - profile: singularity
             tags: universc
@@ -240,14 +229,14 @@ jobs:
     env:
       NXF_ANSI_LOG: false
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
 
       - name: Set up Python
-        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
+        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6
         with:
-          python-version: "3.11"
+          python-version: "3.14"
 
-      - uses: actions/cache@6849a6489940f00c2f30c0fb92c6274307ccb58a # v4
+      - uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         id: cache-pip-pytest
         with:
           path: ~/.cache/pip
@@ -258,12 +247,12 @@ jobs:
       - name: Install Python dependencies
         run: python -m pip install --upgrade pip pytest-workflow cryptography
 
-      - uses: actions/setup-java@8df1039502a15bceb9433410b1a100fbe190c53b # v4
+      - uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5
         with:
           distribution: "temurin"
           java-version: "17"
 
-      - name: Setup Nextflow
+      - name: Set up Nextflow
         uses: nf-core/setup-nextflow@v2
         with:
           version: ${{ env.NXF_VER }}
@@ -278,20 +267,13 @@ jobs:
           mkdir -p $NXF_SINGULARITY_CACHEDIR
           mkdir -p $NXF_SINGULARITY_LIBRARYDIR
 
-      - name: Set up miniconda
-        uses: conda-incubator/setup-miniconda@d2e6a045a86077fb6cad6f5adf368e9076ddaa8d # v3
+      - name: Set up Conda
+        if: matrix.profile == 'conda'
+        uses: conda-incubator/setup-miniconda@505e6394dae86d6a5c7fbb6e3fb8938e3e863830 # v3
         with:
-          miniconda-version: "latest"
-          channels: conda-forge,bioconda
-          python-version: "3.11"
-
-      - name: Conda setup
-        run: |
-          conda clean -a
-          conda install -n base conda-libmamba-solver
-          conda config --set solver libmamba
-          echo $(realpath $CONDA)/condabin >> $GITHUB_PATH
-          echo $(realpath python) >> $GITHUB_PATH
+          auto-update-conda: true
+          conda-solver: libmamba
+          conda-remove-defaults: true
 
       # Test the module
       - name: Run pytest-workflow
@@ -306,7 +288,7 @@ jobs:
           batcat --decorations=always --color=always /home/ubuntu/pytest_workflow_*/*/log.{out,err}
 
       - name: Setting global variables
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         id: parsed
         with:
           script: |
@@ -315,7 +297,7 @@ jobs:
 
       - name: Upload logs on failure
         if: failure()
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:
           name: logs-${{ matrix.profile }}-${{ steps.parsed.outputs.result }}
           path: |
@@ -327,8 +309,11 @@ jobs:
             !/home/ubuntu/pytest_workflow_*/*/work/singularity
             !${{ github.workspace }}/.singularity
 
-  confirm-pass:
-    runs-on: ubuntu-latest
+  confirm-pass-pytest:
+    runs-on:
+      - runs-on=${{ github.run_id }}-confirm-pass-pytest
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
     needs: [pytest-changes, pytest]
     if: always()
     steps:

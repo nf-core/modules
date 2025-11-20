@@ -26,65 +26,75 @@ input:
         description: |
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
+        ontologies: []
 output:
-  - reads:
-      - meta:
+  reads:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*{3prime,5prime,trimmed,val}*.fq.gz":
-          type: file
+      - "*{3prime,5prime,trimmed,val}{,_1,_2}.fq.gz":
+          type: map
           description: |
-            List of input adapter trimmed FastQ files of size 1 and 2 for
-            single-end and paired-end data, respectively.
-          pattern: "*{3prime,5prime,trimmed,val}*.fq.gz"
-  - log:
-      - meta:
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*{3prime,5prime,trimmed,val}{,_1,_2}.fq.gz"
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*report.txt":
-          type: file
-          description: Trim Galore! trimming report
-          pattern: "*_{report.txt}"
-  - unpaired:
-      - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*unpaired*.fq.gz":
-          type: file
+          pattern: "*_{report.txt}"
+  unpaired:
+    - - meta:
+          type: map
           description: |
-            FastQ files containing unpaired reads from read 1 or read 2
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*unpaired{,_1,_2}.fq.gz":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*unpaired*.fq.gz"
-  - html:
-      - meta:
+  html:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.html":
-          type: file
-          description: FastQC report (optional)
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*_{fastqc.html}"
-  - zip:
-      - meta:
+  zip:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.zip":
-          type: file
-          description: FastQC report archive (optional)
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
           pattern: "*_{fastqc.zip}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@drpatelh"
   - "@ewels"

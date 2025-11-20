@@ -26,36 +26,43 @@ input:
         type: file
         description: BAM files containing mapped reads
         pattern: "*.bam"
+        ontologies: []
     - annotation:
         type: file
         description: Genomic features annotation in GTF or SAF
         pattern: "*.{gtf,saf}"
+        ontologies: []
 output:
-  - counts:
-      - meta:
+  counts:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*featureCounts.txt":
+      - "*featureCounts.tsv":
           type: file
           description: Counts of reads mapping to features
-          pattern: "*featureCounts.txt"
-  - summary:
-      - meta:
+          pattern: "*featureCounts.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*featureCounts.txt.summary":
+      - "*featureCounts.tsv.summary":
           type: file
           description: Summary log file
-          pattern: "*.featureCounts.txt.summary"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          pattern: "*.featureCounts.tsv.summary"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ntoda03"
 maintainers:

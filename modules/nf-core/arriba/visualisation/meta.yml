@@ -1,0 +1,99 @@
+name: arriba_visualisation
+description: Arriba is a command-line tool for the detection of gene fusions
+  from RNA-Seq data.
+keywords:
+  - visualisation
+  - arriba
+  - fusion
+  - RNA-Seq
+tools:
+  - arriba:
+      description: Fast and accurate gene fusion detection from RNA-Seq data
+      homepage: https://github.com/suhrig/arriba
+      documentation: https://arriba.readthedocs.io/en/latest/
+      tool_dev_url: https://github.com/suhrig/arriba
+      doi: "10.1101/gr.257246.119"
+      licence: ["MIT"]
+      identifier: biotools:Arriba
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_3462" # CRAM
+          - edam: "http://edamontology.org/format_2573" # SAM
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.bai"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327" # BAI
+    - fusions:
+        type: file
+        description: Arriba fusions file
+        pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - gtf:
+        type: file
+        description: Annotation GTF file
+        pattern: "*.gtf"
+        ontologies:
+          - edam: "http://edamontology.org/format_2306" # GTF
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - protein_domains:
+        type: file
+        description: Protein domain annotation files
+        pattern: "*.gff3"
+        ontologies:
+          - edam: "http://edamontology.org/format_1975" # GFF3
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - cytobands:
+        type: file
+        description: Coordinates of the Giemsa staining bands needed to draw
+          ideograms
+        pattern: ".tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+output:
+  pdf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.pdf":
+          type: file
+          description: File contains fusions visualisation
+          pattern: "*.pdf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3508" # PDF
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+authors:
+  - "@rannick"

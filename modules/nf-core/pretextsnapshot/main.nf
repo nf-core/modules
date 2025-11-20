@@ -19,7 +19,7 @@ process PRETEXTSNAPSHOT {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}."
+    def prefix = task.ext.prefix ?: "${meta.id}_"
     """
     PretextSnapshot \\
         $args \\
@@ -27,6 +27,15 @@ process PRETEXTSNAPSHOT {
         --prefix $prefix \\
         --folder .
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        pretextsnapshot: \$(echo \$(PretextSnapshot --version 2>&1) | sed 's/^.*PretextSnapshot Version //' )
+    END_VERSIONS
+    """
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}_"
+    """
+    touch ${prefix}scaffold_{1,2,3,4}.png
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         pretextsnapshot: \$(echo \$(PretextSnapshot --version 2>&1) | sed 's/^.*PretextSnapshot Version //' )

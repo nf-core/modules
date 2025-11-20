@@ -37,4 +37,27 @@ nextflow_process {
 
     }
 
+    test("homo_sapiens (stub) - fasta - gtf") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                input[2] = 'homo_sapiens_chr22_reference'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match() },
+            )
+        }
+
+    }
+
 }

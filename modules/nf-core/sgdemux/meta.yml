@@ -21,81 +21,91 @@ input:
     - sample_sheet:
         type: file
         description: sample_sheet file (either a Singular Genomics sample sheet, or
-          a two column csv wih Sample_Barcode and Sample_ID)
+          a two column csv with Sample_Barcode and Sample_ID)
         pattern: "*.{csv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
     - fastqs_dir:
         type: directory
         description: "Input directory containing bgzipped (not gzip) FASTQ files"
 output:
-  - sample_fastq:
-      - meta:
+  sample_fastq:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - output/*_R*.fastq.gz:
+      - ${prefix}/*_R*.fastq.gz:
           type: file
           description: Demultiplexed per-sample FASTQ files
-          pattern: "output/*_R*.fastq.gz"
-  - metrics:
-      - meta:
+          pattern: "${prefix}/*_R*.fastq.gz"
+          ontologies: []
+  metrics:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - output/metrics.tsv:
+      - ${prefix}/metrics.tsv:
           type: file
           description: |
             Demultiplexing summary stats; control_reads_omitted failing_reads_omitted, total_templates
-          pattern: "output/metrics.tsv"
-  - most_frequent_unmatched:
-      - meta:
+          pattern: "${prefix}/metrics.tsv"
+          ontologies: []
+  most_frequent_unmatched:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - output/most_frequent_unmatched.tsv:
+      - ${prefix}/most_frequent_unmatched.tsv:
           type: file
           description: |
             File containing approx. counts of barcodes that did not match the expected barcodes
-          pattern: "output/most_frequence_unmatched.tsv"
-  - per_project_metrics:
-      - meta:
+          pattern: "${prefix}/most_frequence_unmatched.tsv"
+          ontologies: []
+  per_project_metrics:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - output/per_project_metrics.tsv:
+      - ${prefix}/per_project_metrics.tsv:
           type: file
           description: Summary metrics for samples in the same project
-          pattern: "output/per_project_metrics.tsv"
-  - per_sample_metrics:
-      - meta:
+          pattern: "${prefix}/per_project_metrics.tsv"
+          ontologies: []
+  per_sample_metrics:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - output/per_sample_metrics.tsv:
+      - ${prefix}/per_sample_metrics.tsv:
           type: file
           description: Summary metrics for each sample
-          pattern: "output/per_sample_metrics.tsv"
-  - sample_barcode_hop_metrics:
-      - meta:
+          pattern: "${prefix}/per_sample_metrics.tsv"
+          ontologies: []
+  sample_barcode_hop_metrics:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - output/sample_barcode_hop_metrics.tsv:
+      - ${prefix}/sample_barcode_hop_metrics.tsv:
           type: file
           description: |
             File output for dual-indexed runs with barcodes which are unexpected combinations of
             expected barcodes e.g. expected barcodes = AA-TT/GG-CC and observed barcodes = AA-CC/GG-TT
-          pattern: "output/sample_barcode_hop_metrics/tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          pattern: "${prefix}/sample_barcode_hop_metrics/tsv"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nh13"
   - "@sam-white04"

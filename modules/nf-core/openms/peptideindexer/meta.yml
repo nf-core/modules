@@ -20,36 +20,36 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - id_file:
+          e.g. `[ id:'sample1' ]`
+    - idxml:
         type: file
         description: idXML identification file
-        pattern: "*.{idXML}"
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - id_fasta:
+        pattern: "*.idXML"
+        ontologies: []
+    - fasta:
         type: file
         description: Input sequence database in FASTA format
         pattern: "*.fasta"
+        ontologies: []
 output:
-  - id_file_pi:
-      - meta:
+  indexed_idxml:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1' ]`
       - "*.idXML":
           type: file
           description: Refreshed idXML identification file
-          pattern: "*.{idXML}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          pattern: "*.idXML"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jonasscheid"
 maintainers:

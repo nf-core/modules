@@ -1,0 +1,90 @@
+nextflow_process {
+
+    name "Test Process PROSEG_TO_BAYSOR"
+    script "../main.nf"
+    process "PROSEG_TO_BAYSOR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "proseg/proseg_to_baysor"
+    tag "proseg/proseg"
+    tag "proseg"
+    tag "segmentation"
+    tag "cell_segmentation"
+
+
+    setup {
+        run("PROSEG") {
+            script "../../proseg/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id: "test_run_proseg"],
+                    file(params.modules_testdata_base_path + "spatial_omics/xenium/homo_sapiens/spatial_gene_expression.csv", checkIfExists: true)
+                ]
+                input[1] = 'xenium'
+                input[2] = ['csv.gz', 'csv.gz', 'csv.gz']
+                """
+            }
+        }
+    }
+
+    test("proseg-to-baysor - transcripts.csv") {
+
+        when {
+            process {
+                """
+                PROSEG.out.transcript_metadata
+                    .set { transcript_ch }
+
+                PROSEG.out.cell_polygons
+                    .set { polygons_ch }
+
+                input[0] = transcript_ch
+                input[1] = polygons_ch
+                """
+            }
+        }
+        then {
+            def lines = file(process.out.baysor_transcript_metadata[0][1]).readLines().size()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml,
+                    "transcript metadata lines: $lines",
+                    "transcript metadata header: ${file(process.out.baysor_transcript_metadata[0][1]).readLines()[0]}",
+                    "cell_polygons - minimum file size > 5kb: ${file(process.out.baysor_cell_polygons[0][1]).length() >= 5000}"
+                ).match() }
+            )
+        }
+
+    }
+
+    test("proseg-to-baysor stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                PROSEG.out.transcript_metadata
+                    .set { transcript_ch }
+
+                PROSEG.out.cell_polygons
+                    .set { polygons_ch }
+
+                input[0] = transcript_ch
+                input[1] = polygons_ch
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions) }
+            )
+        }
+    }
+}

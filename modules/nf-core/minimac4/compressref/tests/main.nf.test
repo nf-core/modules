@@ -1,0 +1,65 @@
+nextflow_process {
+
+    name "Test Process MINIMAC4_COMPRESSREF"
+    script "../main.nf"
+    process "MINIMAC4_COMPRESSREF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "minimac4"
+    tag "minimac4/compressref"
+
+    test("homo sapiens - vcf") {
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'input', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists: true),
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.msav.collect{ file(it[1]).name },
+                    ["versions.yml": path(process.out.versions.get(0)).yaml]
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo sapiens - vcf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'input', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists: true),
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.msav,
+                    ["versions.yml": path(process.out.versions.get(0)).yaml]
+                ).match() }
+            )
+        }
+
+    }
+
+}

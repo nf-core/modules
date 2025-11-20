@@ -1,0 +1,73 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: scanpy_pca
+description: Perform principal component analysis (PCA) on single-cell RNA-seq data using Scanpy
+keywords:
+  - pca
+  - principal-component-analysis
+  - scanpy
+  - single-cell
+  - dimensionality-reduction
+tools:
+  - scanpy:
+      description: Single-Cell Analysis in Python
+      homepage: https://scanpy.readthedocs.io
+      documentation: https://scanpy.readthedocs.io/en/stable/api/generated/scanpy.pp.pca.html
+      tool_dev_url: https://github.com/scverse/scanpy
+      doi: 10.1186/s13059-017-1382-0
+      licence: ["BSD-3-Clause"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - h5ad:
+        type: file
+        description: AnnData object in h5ad format
+        pattern: "*.{h5ad}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3590" # HDF5 format
+  - key_added:
+      type: string
+      description: |
+        Key to add to obsm with PCA coordinates, usually 'X_pca'
+
+output:
+  h5ad:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.h5ad":
+          type: file
+          description: AnnData object with PCA coordinates added
+          pattern: "*.h5ad"
+          ontologies:
+            - edam: "http://edamontology.org/format_3590" # HDF5 format
+  obsm:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "X_*.pkl":
+          type: file
+          description: Pickle file containing PCA coordinates matrix
+          pattern: "X_*.pkl"
+          ontologies:
+            - edam: "http://edamontology.org/format_3553" # Pickle format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+
+authors:
+  - "@nictru"
+maintainers:
+  - "@nictru"

@@ -40,17 +40,15 @@ process TRANSDECODER_LONGORF {
     """
 
     stub:
-    def args        = task.ext.args         ?: ''
-    def prefix      = task.ext.prefix       ?: "${meta.id}"
     def fasta_no_gz = fasta.toString()      - '.gz'
     output_dir_name = "${meta.id}/${fasta_no_gz}.transdecoder_dir"
     """
     mkdir -p $output_dir_name
 
-    touch $output_dir_name/longest_orfs.pep
-    touch $output_dir_name/longest_orfs.gff3
-    touch $output_dir_name/longest_orfs.cds
-    touch $output_dir_name/base_freqs.dat
+    touch ${output_dir_name}/longest_orfs.pep
+    touch ${output_dir_name}/longest_orfs.gff3
+    touch ${output_dir_name}/longest_orfs.cds
+    touch ${output_dir_name}/base_freqs.dat
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

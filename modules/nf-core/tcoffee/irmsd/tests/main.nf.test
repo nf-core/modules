@@ -19,7 +19,6 @@ nextflow_process {
                 input[0] = [ [ id:'test' ],
                                 file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/structures/seatoxin-ref.tar.gz", checkIfExists: true)
                             ]
-
                 """
             }
         }
@@ -31,7 +30,6 @@ nextflow_process {
                 input[0] = [ [ id:'test' ],
                             file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin.ref", checkIfExists: true)
                             ]
-
                 """
             }
         }
@@ -49,16 +47,15 @@ nextflow_process {
                 input[1] = UNTAR.out.untar.map { meta,dir -> [[ id:'test' ], file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/templates/seatoxin-ref_template.txt", checkIfExists: true) ,file(dir).listFiles().collect()]}
                 """
             }
-
         }
 
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.irmsd.get(0).get(1)).getText().contains("1ahl") }
+                { assert path(process.out.irmsd.get(0).get(1)).getText().contains("1ahl") },
+                { assert snapshot(process.out.versions).match()}
             )
         }
-
     }
 
     test("seatoxin - compressed") {
@@ -76,7 +73,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.irmsd.get(0).get(1)).getText().contains("1ahl") }
+                { assert path(process.out.irmsd.get(0).get(1)).getText().contains("1ahl") },
+                { assert snapshot(process.out.versions).match()}
             )
         }
 
@@ -96,7 +94,6 @@ nextflow_process {
                 input[1] = UNTAR.out.untar.map { meta,dir -> [[ id:'test' ], file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/templates/seatoxin-ref_template.txt", checkIfExists: true) ,file(dir).listFiles().collect()]}
                 """
             }
-
         }
 
         then {
@@ -105,6 +102,5 @@ nextflow_process {
                 { assert snapshot(process.out).match()}
             )
         }
-
     }
 }

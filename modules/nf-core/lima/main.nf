@@ -4,8 +4,8 @@ process LIMA {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/lima:2.9.0--h9ee0642_1' :
-        'biocontainers/lima:2.9.0--h9ee0642_1' }"
+        'https://depot.galaxyproject.org/singularity/lima:2.12.0--h9ee0642_1' :
+        'biocontainers/lima:2.12.0--h9ee0642_1' }"
 
     input:
     tuple val(meta), path(ccs)
@@ -69,8 +69,6 @@ process LIMA {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch dummy.counts
     touch dummy.report

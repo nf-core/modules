@@ -24,29 +24,34 @@ input:
     - vcf:
         type: file
         description: |
-          The vcf file to be qeuried.
+          The vcf file to be queried.
         pattern: "*.{vcf.gz, vcf}"
+        ontologies: []
     - tbi:
         type: file
         description: |
           The tab index for the VCF file to be inspected.
         pattern: "*.tbi"
-  - - regions:
-        type: file
-        description: |
-          Optionally, restrict the operation to regions listed in this file.
-  - - targets:
-        type: file
-        description: |
-          Optionally, restrict the operation to regions listed in this file (doesn't rely upon index files)
-  - - samples:
-        type: file
-        description: |
-          Optional, file of sample names to be included or excluded.
-          e.g. 'file.tsv'
+        ontologies: []
+  - regions:
+      type: file
+      description: |
+        Optionally, restrict the operation to regions listed in this file.
+      ontologies: []
+  - targets:
+      type: file
+      description: |
+        Optionally, restrict the operation to regions listed in this file (doesn't rely upon index files)
+      ontologies: []
+  - samples:
+      type: file
+      description: |
+        Optional, file of sample names to be included or excluded.
+        e.g. 'file.tsv'
+      ontologies: []
 output:
-  - output:
-      - meta:
+  output:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,11 +59,14 @@ output:
       - "*.${suffix}":
           type: file
           description: BCFTools query output file
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@abhi18av"
   - "@drpatelh"

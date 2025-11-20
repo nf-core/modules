@@ -1,0 +1,83 @@
+nextflow_process {
+
+    name "Test Process FORCE_TILEEXTENT"
+    script "../main.nf"
+    process "FORCE_TILEEXTENT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "force"
+    tag "force/tileextent"
+
+    test("force-tile-extent - gpkg") {
+
+        when {
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + "earth_sciences/vector/gpkg/crete.gpkg")
+                input[1] = file(params.modules_testdata_base_path + "earth_sciences/datacubes/datacube-definition.prj")
+                input[2] = []
+                input[3] = []
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("force-tile-extent - shp") {
+
+        when {
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + "/earth_sciences/vector/shp/denmark.shp")
+                input[1] = file(params.modules_testdata_base_path + "/earth_sciences/datacubes/datacube-definition.prj")
+                input[2] = file(params.modules_testdata_base_path + "/earth_sciences/vector/shp/denmark.dbf")
+                input[3] = file(params.modules_testdata_base_path + "/earth_sciences/vector/shp/denmark.prj")
+                input[4] = file(params.modules_testdata_base_path + "/earth_sciences/vector/shp/denmark.shx")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("force-tile-extent - gpkg - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + "earth_sciences/vector/gpkg/crete.gpkg")
+                input[1] = file(params.modules_testdata_base_path + "earth_sciences/datacubes/datacube-definition.prj")
+                input[2] = []
+                input[3] = []
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

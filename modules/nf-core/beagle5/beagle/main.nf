@@ -4,15 +4,11 @@ process BEAGLE5_BEAGLE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/beagle:5.2_21Apr21.304--hdfd78af_0':
-        'biocontainers/beagle:5.2_21Apr21.304--hdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/beagle:5.5_27Feb25.75f--hdfd78af_0':
+        'biocontainers/beagle:5.5_27Feb25.75f--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(vcf)
-    path(refpanel)
-    path(genmap)
-    path(exclsamples)
-    path(exclmarkers)
+    tuple val(meta), path(vcf), path(vcf_index), path(refpanel), path(refpanel_index), path(genmap), path(exclsamples), path(exclmarkers)
 
     output:
     tuple val(meta), path("*.vcf.gz")     , emit: vcf

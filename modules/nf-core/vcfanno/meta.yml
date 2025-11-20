@@ -26,45 +26,69 @@ input:
         type: file
         description: query VCF file
         pattern: "*.{vcf, vcf.gz}"
+        ontologies: []
     - tbi:
         type: file
         description: tabix index file for the query VCF
         pattern: "*.tbi"
+        ontologies: []
     - specific_resources:
         type: map
         description: A list of sample specific reference files defined in toml config,
           must also include indices if bgzipped.
-  - - toml:
-        type: file
-        description: configuration file with reference file basenames
-        pattern: "*.toml"
-  - - lua:
-        type: file
-        description: Lua file for custom annotations
-        pattern: "*.lua"
-  - - resources:
-        type: map
-        description: List of reference files defined in toml config, must also include
-          indices if bgzipped.
+  - toml:
+      type: file
+      description: configuration file with reference file basenames
+      pattern: "*.toml"
+      ontologies: []
+  - lua:
+      type: file
+      description: Lua file for custom annotations
+      pattern: "*.lua"
+      ontologies: []
+  - resources:
+      type: map
+      description: List of reference files defined in toml config, must also include
+        indices if bgzipped.
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.vcf":
-          type: file
-          description: Annotated VCF file
-          pattern: "*.vcf"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          pattern: "*.vcf.gz"
+      - "*.vcf.gz":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.vcf.gz"
+  tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.vcf.gz"
+      - "*.vcf.gz.tbi":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.vcf.gz.tbi"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@projectoriented"
   - "@matthdsm"
+  - "@nvnieuwk"
 maintainers:
   - "@projectoriented"
   - "@matthdsm"
+  - "@nvnieuwk"

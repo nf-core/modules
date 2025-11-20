@@ -10,20 +10,22 @@ nextflow_process {
     tag "motus/downloaddb"
     tag "motus/preplong"
 
-    setup {
-        run("MOTUS_DOWNLOADDB") {
-            script "modules/nf-core/motus/downloaddb/main.nf"
-            process {
-                """
-                input[0] = Channel.of([
-                    file('https://raw.githubusercontent.com/motu-tool/mOTUs/master/motus/downloadDB.py')
-                ])
-                """
-            }
-        }
-    }
+
 
     test("sarscov2 - fasta") {
+
+        setup {
+            run("MOTUS_DOWNLOADDB") {
+                script "modules/nf-core/motus/downloaddb/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        file('https://raw.githubusercontent.com/motu-tool/mOTUs/master/motus/downloadDB.py')
+                    ])
+                    """
+                }
+            }
+        }
 
         when {
             process {
@@ -48,6 +50,7 @@ nextflow_process {
 
     test("sarscov2 - fasta - stub") {
 
+
         options "-stub"
 
         when {
@@ -57,7 +60,7 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test_2.fastq.gz', checkIfExists: true)
                 ]
-                input[1] =  MOTUS_DOWNLOADDB.out.db
+                input[1] =  []
                 """
             }
         }

@@ -9,7 +9,15 @@
                     {
                         "id": "test"
                     },
-                    "genome_taxonomy.tsv:md5,44c6cf5ff4c836f66648457ae8deb0d5"
+                    "genome_marker_classification.tsv:md5,de269060914046f669d27aa6672810ec"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "genome_taxonomy.tsv:md5,be8ac66e3ea3a89ee6f41e08db79d0d6"
                 ]
             ],
             [
@@ -52,7 +60,7 @@
                     {
                         "id": "test"
                     },
-                    "genome_virus_genes.tsv:md5,f84d8a9fce3c92c49e78672bea16561f"
+                    "genome_virus_genes.tsv:md5,f7970779d28256f8adc8347ffc98932c"
                 ]
             ],
             [
@@ -68,14 +76,18 @@
                     {
                         "id": "test"
                     },
-                    "genome_virus_summary.tsv:md5,8cbcf95c2ab397da26b6dca8014e86f4"
+                    "genome_virus_summary.tsv:md5,eb4e79de60543c796bec70df30273ca5"
                 ]
             ],
             [
-                "versions.yml:md5,cebe18512f616530fff490a64e595cb6"
+                "versions.yml:md5,9268a8dfeec21e983bbee7de567b5f1b"
             ]
         ],
-        "timestamp": "2024-01-03T00:05:48.225084591"
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-11-17T10:29:39.259513772"
     },
     "sarscov2 - genome - fasta - stub": {
         "content": [
@@ -88,7 +100,7 @@
                         {
                             "id": "test"
                         },
-                        "genome_taxonomy.tsv:md5,44c6cf5ff4c836f66648457ae8deb0d5"
+                        "genome_marker_classification.tsv:md5,de269060914046f669d27aa6672810ec"
                     ]
                 ],
                 "10": [
@@ -96,7 +108,7 @@
                         {
                             "id": "test"
                         },
-                        "genome_virus_genes.tsv:md5,f84d8a9fce3c92c49e78672bea16561f"
+                        "genome_virus.fna.gz:md5,483f4a5dfe60171c86ee9b7e6dff908b"
                     ]
                 ],
                 "11": [
@@ -104,7 +116,7 @@
                         {
                             "id": "test"
                         },
-                        "genome_virus_proteins.faa.gz:md5,6850bd46dcb921e5cfb23bfbb8fcc12b"
+                        "genome_virus_genes.tsv:md5,f7970779d28256f8adc8347ffc98932c"
                     ]
                 ],
                 "12": [
@@ -112,18 +124,26 @@
                         {
                             "id": "test"
                         },
-                        "genome_virus_summary.tsv:md5,8cbcf95c2ab397da26b6dca8014e86f4"
+                        "genome_virus_proteins.faa.gz:md5,6850bd46dcb921e5cfb23bfbb8fcc12b"
                     ]
                 ],
                 "13": [
-                    "versions.yml:md5,cebe18512f616530fff490a64e595cb6"
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "genome_virus_summary.tsv:md5,eb4e79de60543c796bec70df30273ca5"
+                    ]
+                ],
+                "14": [
+                    "versions.yml:md5,9268a8dfeec21e983bbee7de567b5f1b"
                 ],
                 "2": [
                     [
                         {
                             "id": "test"
                         },
-                        "genome_provirus.tsv:md5,93a6bca59b0bf7f57c0b9b60d2e57082"
+                        "genome_taxonomy.tsv:md5,be8ac66e3ea3a89ee6f41e08db79d0d6"
                     ]
                 ],
                 "3": [
@@ -131,13 +151,21 @@
                         {
                             "id": "test"
                         },
-                        "genome_compositions.tsv:md5,9168bea9fe82a979a698d259e1bb906a"
+                        "genome_provirus.tsv:md5,93a6bca59b0bf7f57c0b9b60d2e57082"
                     ]
                 ],
                 "4": [
-                    
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "genome_compositions.tsv:md5,9168bea9fe82a979a698d259e1bb906a"
+                    ]
                 ],
                 "5": [
+                    
+                ],
+                "6": [
                     [
                         {
                             "id": "test"
@@ -145,7 +173,7 @@
                         "genome_plasmid.fna.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "6": [
+                "7": [
                     [
                         {
                             "id": "test"
@@ -153,7 +181,7 @@
                         "genome_plasmid_genes.tsv:md5,55818cae5a57381b77778076e99605e6"
                     ]
                 ],
-                "7": [
+                "8": [
                     [
                         {
                             "id": "test"
@@ -161,20 +189,12 @@
                         "genome_plasmid_proteins.faa.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "8": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "genome_plasmid_summary.tsv:md5,8c4ddaa8a90da779c11537be0fddb799"
-                    ]
-                ],
                 "9": [
                     [
                         {
                             "id": "test"
                         },
-                        "genome_virus.fna.gz:md5,483f4a5dfe60171c86ee9b7e6dff908b"
+                        "genome_plasmid_summary.tsv:md5,8c4ddaa8a90da779c11537be0fddb799"
                     ]
                 ],
                 "aggregated_classification": [
@@ -189,6 +209,14 @@
                             "id": "test"
                         },
                         "genome_compositions.tsv:md5,9168bea9fe82a979a698d259e1bb906a"
+                    ]
+                ],
+                "marker_classification": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "genome_marker_classification.tsv:md5,de269060914046f669d27aa6672810ec"
                     ]
                 ],
                 "plasmid_fasta": [
@@ -236,11 +264,11 @@
                         {
                             "id": "test"
                         },
-                        "genome_taxonomy.tsv:md5,44c6cf5ff4c836f66648457ae8deb0d5"
+                        "genome_taxonomy.tsv:md5,be8ac66e3ea3a89ee6f41e08db79d0d6"
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,cebe18512f616530fff490a64e595cb6"
+                    "versions.yml:md5,9268a8dfeec21e983bbee7de567b5f1b"
                 ],
                 "virus_fasta": [
                     [
@@ -255,7 +283,7 @@
                         {
                             "id": "test"
                         },
-                        "genome_virus_genes.tsv:md5,f84d8a9fce3c92c49e78672bea16561f"
+                        "genome_virus_genes.tsv:md5,f7970779d28256f8adc8347ffc98932c"
                     ]
                 ],
                 "virus_proteins": [
@@ -271,11 +299,15 @@
                         {
                             "id": "test"
                         },
-                        "genome_virus_summary.tsv:md5,8cbcf95c2ab397da26b6dca8014e86f4"
+                        "genome_virus_summary.tsv:md5,eb4e79de60543c796bec70df30273ca5"
                     ]
                 ]
             }
         ],
-        "timestamp": "2024-01-03T00:07:52.60021527"
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-11-17T10:30:28.400394867"
     }
 }

@@ -27,13 +27,15 @@ input:
         type: file
         description: Compressed or uncompressed nanopore reads in fasta or fastq formats.
         pattern: "*.{fa,fna,faa,fasta,fq,fastq}{,.gz,.bz2,.xz}"
-  - - output_format:
-        type: string
-        description: "Specifies the output format. One of these formats: fasta, fastq;
-          fasta.gz, fastq.gz; fasta.bz2, fastq.bz2; fasta.lzma, fastq.lzma."
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - output_format:
+      type: string
+      description: "Specifies the output format. One of these formats: fasta, fastq;
+        fasta.gz, fastq.gz; fasta.bz2, fastq.bz2; fasta.lzma, fastq.lzma."
 output:
-  - stats:
-      - meta:
+  stats:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -42,21 +44,27 @@ output:
           type: file
           description: Summary report of reads statistics.
           pattern: "*.{stats,json}"
-  - reads:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  reads:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*_filtered.${output_format}":
+      - ${prefix}.${output_format}:
           type: file
           description: Filtered reads.
           pattern: "*.{fasta,fastq}{,.gz,.bz2,.lzma}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@LilyAnderssonLee"
 maintainers:

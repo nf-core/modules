@@ -4,8 +4,8 @@ process ELPREP_MERGE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/elprep:5.1.2--he881be0_0':
-        'biocontainers/elprep:5.1.2--he881be0_0' }"
+        'https://depot.galaxyproject.org/singularity/elprep:5.1.3--he881be0_1':
+        'biocontainers/elprep:5.1.3--he881be0_1' }"
 
     input:
     tuple val(meta), path(bam)
@@ -33,8 +33,21 @@ process ELPREP_MERGE {
         output/${prefix}.${suffix} \\
         $args \\
         ${single_end} \\
+        --log-path . \\
         --nr-of-threads $task.cpus
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        elprep: \$(elprep 2>&1 | head -n2 | tail -n1 |sed 's/^.*version //;s/ compiled.*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix      = task.ext.prefix ?: "${meta.id}"
+    def suffix      = args.contains("--output-type sam") ? "sam" : "bam"
+    """
+    mkdir -p output
+    touch output/${prefix}.${suffix}
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         elprep: \$(elprep 2>&1 | head -n2 | tail -n1 |sed 's/^.*version //;s/ compiled.*\$//')

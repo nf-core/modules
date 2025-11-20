@@ -1,0 +1,88 @@
+nextflow_process {
+
+    name "Test Process DEACON_INDEX"
+    script "../main.nf"
+    process "DEACON_INDEX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "deacon"
+    tag "deacon/index"
+
+    test("index sarscov2 - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out.index,
+                        process.out.versions.collect { path(it).yaml }
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("index sarscov2 - fasta gzipped") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("index sarscov2 - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+}

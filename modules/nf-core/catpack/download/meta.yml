@@ -1,0 +1,104 @@
+name: "catpack_download"
+description: Downloads the required files for either Nr or GTDB for building into
+  a CAT database
+keywords:
+  - taxonomic classification
+  - classification
+  - database
+  - download
+tools:
+  - "catpack":
+      description: "CAT/BAT: tool for taxonomic classification of contigs and metagenome-assembled
+        genomes (MAGs)"
+      homepage: "https://github.com/MGXlab/CAT_pack"
+      documentation: "https://github.com/MGXlab/CAT_pack"
+      tool_dev_url: "https://github.com/MGXlab/CAT_pack"
+      doi: "10.1186/s13059-019-1817-x"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - db:
+        type: string
+        description: Which database to download
+        pattern: "nr|GTDB"
+
+output:
+  fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}/*.${db}.gz:
+          type: file
+          description: FASTA file containing all the NCBI NR or GTDB sequences
+          pattern: "*.${db}.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_1929"
+  names:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}/*.names.dmp:
+          type: file
+          description: NCBI taxonomy-style names.dmp text file
+          pattern: "*.names.dmp"
+          ontologies:
+            - edam: "http://edamontology.org/format_1964"
+  nodes:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}/*.nodes.dmp:
+          type: file
+          description: NCBI taxonomy-style nodes.dmp text file
+          pattern: "*.nodes.dmp"
+          ontologies:
+            - edam: "http://edamontology.org/format_1964"
+  acc2tax:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}/*accession2taxid*.gz:
+          type: file
+          description: NCBI taxonomy names accession to taxonomy file
+          pattern: "*accession2taxid*"
+          ontologies:
+            - edam: "http://edamontology.org/format_1964"
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}/*.log:
+          type: file
+          description: Log file of the download process
+          pattern: "*.log"
+          ontologies:
+            - edam: "http://edamontology.org/format_1964"
+
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@jfy133"
+maintainers:
+  - "@jfy133"

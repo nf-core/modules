@@ -28,6 +28,7 @@ input:
         type: file
         description: fasta file
         pattern: "*.{fa,fasta}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -37,6 +38,7 @@ input:
         type: file
         description: index for fasta file
         pattern: "*.{fai}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -46,9 +48,10 @@ input:
         type: file
         description: sequence dictionary file
         pattern: "*.{dict}"
+        ontologies: []
 output:
-  - shift_fa:
-      - meta:
+  shift_fa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing fasta information
@@ -57,8 +60,9 @@ output:
           type: file
           description: Shifted fasta file
           pattern: "*.{fa,fasta}"
-  - shift_fai:
-      - meta:
+          ontologies: []
+  shift_fai:
+    - - meta:
           type: map
           description: |
             Groovy Map containing fasta information
@@ -67,8 +71,9 @@ output:
           type: file
           description: Index file for the shifted fasta file
           pattern: "*.{fai}"
-  - shift_back_chain:
-      - meta:
+          ontologies: []
+  shift_back_chain:
+    - - meta:
           type: map
           description: |
             Groovy Map containing fasta information
@@ -77,8 +82,9 @@ output:
           type: file
           description: The shiftback chain file to use when lifting over
           pattern: "*.{back_chain}"
-  - dict:
-      - meta:
+          ontologies: []
+  dict:
+    - - meta:
           type: map
           description: |
             Groovy Map containing fasta information
@@ -87,8 +93,9 @@ output:
           type: file
           description: sequence dictionary file
           pattern: "*.{dict}"
-  - intervals:
-      - meta:
+          ontologies: []
+  intervals:
+    - - meta:
           type: map
           description: |
             Groovy Map containing fasta information
@@ -97,12 +104,9 @@ output:
           type: file
           description: Intervals file for the fasta file
           pattern: "*.{intervals}"
-      - s:
-          type: file
-          description: Intervals file for the fasta file
-          pattern: "*.{intervals}"
-  - shift_intervals:
-      - meta:
+          ontologies: []
+  shift_intervals:
+    - - meta:
           type: map
           description: |
             Groovy Map containing fasta information
@@ -111,15 +115,14 @@ output:
           type: file
           description: Intervals file for the shifted fasta file
           pattern: "*.{shifted.intervals}"
-      - s:
-          type: file
-          description: Intervals file for the shifted fasta file
-          pattern: "*.{shifted.intervals}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ramprasadn"
 maintainers:

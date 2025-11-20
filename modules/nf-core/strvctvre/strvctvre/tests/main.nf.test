@@ -1,0 +1,88 @@
+nextflow_process {
+
+    name "Test Process STRVCTVRE_STRVCTVRE"
+    script "../main.nf"
+    process "STRVCTVRE_STRVCTVRE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "strvctvre"
+    tag "strvctvre/strvctvre"
+
+    // Only stub tests because of the big dependencies
+
+    test("homo_sapiens - vcf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/sv_query.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/sv_query.vcf.gz.tbi', checkIfExists: true),
+                    "GRCh38"
+                ]
+                input[1] = [
+                    [ id: 'ref' ],
+                    []
+                ]
+                input[2] = [
+                    [ id: 'data' ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - bed - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true),
+                    [],
+                    "GRCh38"
+                ]
+                input[1] = [
+                    [ id: 'ref' ],
+                    []
+                ]
+                input[2] = [
+                    [ id: 'data' ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+
+    }
+
+}

@@ -21,7 +21,7 @@ License: Apache 2.0 (same as the mygene library)
 
 class Arguments:
     """
-    Parses the argments, including the ones coming from $task.ext.args.
+    Parses the arguments, including the ones coming from $task.ext.args.
     """
 
     def __init__(self) -> None:

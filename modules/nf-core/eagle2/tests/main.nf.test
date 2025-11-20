@@ -1,0 +1,104 @@
+nextflow_process {
+
+    name "Test Process EAGLE2"
+    script "../main.nf"
+    process "EAGLE2"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "eagle2"
+
+    config "./nextflow.config"
+
+    test("homo sapiens - vcf, [], map") {
+        when {
+            params {
+                eagle2_args = "--vcfOutFormat z --chrom chr22"
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'input', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists: true),
+                    [], [],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.GRCh38.eagle.22.map.gz", checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.phased_variants.collect{ meta, vcf -> [meta, file(vcf).name]},
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("homo sapiens - vcf, ref, map") {
+        when {
+            params {
+                eagle2_args = "--chrom chr22"
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'input', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.GRCh38.eagle.22.map.gz", checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.phased_variants.collect{ meta, vcf -> [meta, file(vcf).name]},
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("homo sapiens - vcf, [], [] - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                eagle2_args = "--vcfOutFormat b"
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'input', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists: true),
+                    [], [], []
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions.get(0)).yaml
+                ).match() }
+            )
+        }
+
+    }
+
+}

@@ -1,0 +1,54 @@
+// nf-core modules test pangolin/updatedata
+nextflow_process {
+
+    name "Test Process PANGOLIN_UPDATEDATA"
+    script "../main.nf"
+    process "PANGOLIN_UPDATEDATA"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pangolin"
+    tag "pangolin/updatedata"
+
+    test("str - testdb") {
+
+        when {
+            process {
+                """
+                input[0] = 'testdb'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.db[0].toString()).listFiles().collect { it.name }.toSorted(), // A mix of empty and non-empty files
+                    process.out.versions
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("str - testdb - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = 'testdb'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

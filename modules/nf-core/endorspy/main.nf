@@ -12,20 +12,19 @@ process ENDORSPY {
 
     output:
     tuple val(meta), path("*_mqc.json"), emit: json
-    path "versions.yml"           , emit: versions
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def optionalraw = stats_raw ? "-r ${stats_raw}" : ''
+    def optionalraw = stats_raw  ? "-r ${stats_raw}" : ''
     def optionalqualityfiltered = stats_qualityfiltered ? "-q ${stats_qualityfiltered}" : ''
-    def optionaldeduplicated = stats_deduplicated ? "-d ${stats_deduplicated}" : ''
+    def optionaldeduplicated    = stats_deduplicated    ? "-d ${stats_deduplicated}"    : ''
 
     if ( stats_qualityfiltered && !stats_raw && !stats_deduplicated ) error "ERROR: only input channel stats_qualityfiltered provided. No stats can be calculated. Add at least one additional input channel: stats_raw or stats_deduplicated"
-
 
     """
     endorspy \\
@@ -36,6 +35,16 @@ process ENDORSPY {
         -o json \\
         -n $prefix
 
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        endorspy: \$(echo \$(endorspy --version 2>&1) | sed 's/^endorS.py //' )
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}_mqc.json
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         endorspy: \$(echo \$(endorspy --version 2>&1) | sed 's/^endorS.py //' )

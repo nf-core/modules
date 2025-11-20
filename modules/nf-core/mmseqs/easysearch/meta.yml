@@ -1,6 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "mmseqs_easysearch"
-description: Searches for the sequences of a fasta file in a databse using MMseqs2
+description: Searches for the sequences of a fasta file in a database using MMseqs2
 keywords:
   - protein sequence
   - databases
@@ -26,6 +25,7 @@ input:
         type: file
         description: Fasta file
         pattern: "*.{fa,fasta}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -35,8 +35,8 @@ input:
         type: directory
         description: an MMseqs2 database with target data, e.g. uniref90
 output:
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing input fasta file information
@@ -45,11 +45,15 @@ output:
           type: file
           description: tsv file with the results of the search
           pattern: "*.{tsv}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@luisas"
 maintainers:

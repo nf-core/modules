@@ -4,8 +4,8 @@ process FCSGX_RUNGX {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ncbi-fcs-gx:0.5.4--h4ac6f70_1':
-        'biocontainers/ncbi-fcs-gx:0.5.4--h4ac6f70_1' }"
+        'https://depot.galaxyproject.org/singularity/ncbi-fcs-gx:0.5.5--h9948957_0':
+        'biocontainers/ncbi-fcs-gx:0.5.5--h9948957_0' }"
 
     input:
     tuple val(meta), val(taxid), path(fasta)
@@ -25,12 +25,22 @@ process FCSGX_RUNGX {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def mv_database_to_ram = ramdisk_path ? "rclone copy $gxdb $ramdisk_path/$task.index/" : ''
-    def database = ramdisk_path ? "$ramdisk_path/$task.index/" : gxdb // Use task.index to make memory location unique
+    def database = ramdisk_path ?: gxdb
+    ( ramdisk_path ?
     """
-    # Copy DB to RAM-disk when supplied. Otherwise, the tool is very slow.
-    $mv_database_to_ram
+    if [ -d "${database}" ]; then
+        echo "ERROR: Database exists in memory, and may be in use by another process" >&2
+        ls -l ${database}
+        exit 1
+    fi
+    # Clean up shared memory on exit
+    trap "rm -rf ${database}" EXIT
+    # Copy DB to RAM-disk when supplied. Otherwise, rungx is very slow.
+    rclone copy ${gxdb} ${database}
 
+    """: "")
+    <<
+    """
     export GX_NUM_CORES=${task.cpus}
     run_gx.py \\
         --fasta ${fasta} \\

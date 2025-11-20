@@ -1,0 +1,97 @@
+nextflow_process {
+
+    name "Test Process HMMER_ESLALIMASK"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "HMMER_ESLALIMASK"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hmmer"
+    tag "hmmer/hmmalign"
+    tag "hmmer/eslalimask"
+
+    setup {
+        run("HMMER_HMMALIGN") {
+            script "../../hmmalign/main.nf"
+
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/hmmer/e_coli_k12_16s.fna.gz')
+                ]
+                input[1] = file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/hmmer/bac.16S_rRNA.hmm.gz')
+                """
+            }
+        }
+    }
+
+    test("ecoli - hmm no optional output files - []") {
+        when {
+            params {
+                module_args = "--rf-is-mask"
+            }
+            process {
+                """
+                input[0] = HMMER_HMMALIGN.out.sto
+                    .map{ meta, file -> [meta, file, false, false, false, false, false, false] }
+                input[1] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("ecoli - hmm with optional output files - []") {
+        when {
+            params {
+                module_args = "-pg"
+            }
+            process {
+                """
+                input[0] = HMMER_HMMALIGN.out.sto
+                    .map{ meta, file -> [meta, file, true, true, true, true, true, true] }
+                input[1] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("ecoli - hmm with optional output files - [] -- stub") {
+        options '-stub'
+        when {
+            params {
+                module_args = "--rf-is-mask"
+            }
+            process {
+                """
+                input[0] = HMMER_HMMALIGN.out.sto
+                    .map{ meta, file -> [meta, file, true, true, true, true, true, true] }
+                input[1] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+}

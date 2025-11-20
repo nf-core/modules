@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "coptr_merge"
 description: Merge reads that were mapped to multiple indices
@@ -26,14 +25,15 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - bams:
         type: file
-        description: bam files to merge. Assumes that the reads were mapped to different indices.
+        description: bam files to merge. Assumes that the reads were mapped to different
+          indices.
         pattern: "*.bam"
         ontologies:
           - edam: "http://edamontology.org/format_2572"
 
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,12 +45,14 @@ output:
           ontologies:
             - edam: "http://edamontology.org/format_2572"
 
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
 
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@ramirobarrantes"
 maintainers:

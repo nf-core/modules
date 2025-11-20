@@ -25,7 +25,11 @@ nextflow_process {
             then {
                 assertAll(
                         { assert process.success },
-                        { assert snapshot(process.out.alignment).match("alignment - uncompressed")},
+                        { assert snapshot(
+                                process.out.alignment,
+                                process.out.versions
+                            ).match("alignment - uncompressed")
+                        },
                         )
             }
         }
@@ -45,7 +49,11 @@ nextflow_process {
             then {
                 assertAll(
                         { assert process.success },
-                        { assert snapshot(process.out.alignment).match("alignment - compressed")},
+                        { assert snapshot(
+                                process.out.alignment,
+                                process.out.versions
+                            ).match("alignment - compressed")
+                        },
                         )
             }
         }
@@ -65,7 +73,11 @@ nextflow_process {
             then {
                 assertAll(
                         { assert process.success },
-                        { assert snapshot(process.out.alignment).match("perm-all")},
+                        { assert snapshot(
+                                process.out.alignment,
+                                process.out.versions
+                            ).match("perm-all")
+                        },
                         )
             }
         }

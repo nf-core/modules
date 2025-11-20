@@ -5,8 +5,8 @@ process PICARD_RENAMESAMPLEINVCF {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:3.3.0--hdfd78af_0' :
-        'biocontainers/picard:3.3.0--hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/08/0861295baa7c01fc593a9da94e82b44a729dcaf8da92be8e565da109aa549b25/data' :
+        'community.wave.seqera.io/library/picard:3.4.0--e9963040df0a9bf6' }"
 
     input:
     tuple val(meta), path(vcf)
@@ -20,7 +20,7 @@ process PICARD_RENAMESAMPLEINVCF {
 
     script:
     def args = task.ext.args ?: ''
-    def extended_args = args.contains("--NEW_SAMPLE_NAME") ? $args : "${args} --NEW_SAMPLE_NAME ${meta.id}"
+    def extended_args = args.contains("--NEW_SAMPLE_NAME") ? args : "${args} --NEW_SAMPLE_NAME ${meta.id}"
     def prefix = task.ext.prefix ?: "${meta.id}"
     def avail_mem = 3072
     if (!task.memory) {
@@ -44,10 +44,9 @@ process PICARD_RENAMESAMPLEINVCF {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_renam.vcf.gz
+    echo "" | gzip > ${prefix}_renam.vcf.gz
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         picard: \$(picard RenameSampleInVcf --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)

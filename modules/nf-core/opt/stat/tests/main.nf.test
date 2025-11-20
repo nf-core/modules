@@ -1,0 +1,63 @@
+nextflow_process {
+
+    name "Test Process OPT_STAT"
+    script "../main.nf"
+    process "OPT_STAT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "opt"
+    tag "opt/stat"
+
+    test("testrun panel probe sequences") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_run' ],
+                    file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/probe2targets.tsv', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'test_run' ],
+                    file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/fwd_oriented.fa', checkIfExists: true)
+                ]
+                input[2] = []
+                // input[2] = [file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/gene_synonyms.csv', checkIfExists: true)]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("testrun panel probe sequences -stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_run' ],
+                    file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/probe2targets.tsv', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'test_run' ],
+                    file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/fwd_oriented.fa', checkIfExists: true)
+                ]
+                input[2] = []
+                // input[2] = [file('https://raw.githubusercontent.com/khersameesh24/test-datasets/opt/testdata/gene_synonyms.csv', checkIfExists: true)]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

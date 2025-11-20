@@ -1,5 +1,5 @@
 name: "gatk4_asereadcounter"
-description: Calculates the allele-specific read counts for alle-specific expression
+description: Calculates the allele-specific read counts for allele-specific expression
   analysis of RNAseq data
 keywords:
   - allele-specific
@@ -27,18 +27,22 @@ input:
         type: file
         description: BAM file
         pattern: "*.{bam}"
+        ontologies: []
     - bai:
         type: file
         description: index file for BAM file
         pattern: "*.{bai}"
+        ontologies: []
     - vcf:
         type: file
         description: VCF file
         pattern: "*.{vcf.gz}"
+        ontologies: []
     - tbi:
         type: file
         description: index file for VCF file
         pattern: "*.{vcf.gz.tbi}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -48,6 +52,7 @@ input:
         type: file
         description: fasta file
         pattern: "*.{fasta,fa}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -57,6 +62,7 @@ input:
         type: file
         description: fasta index file
         pattern: "*.{fai}"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -66,21 +72,25 @@ input:
         type: file
         description: dictionary file
         pattern: "*.{dict}"
-  - - intervals:
-        type: file
-        description: interval file
+        ontologies: []
+  - intervals:
+      type: file
+      description: interval file
+      ontologies: []
 output:
-  - csv:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  csv:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Lucpen"
 maintainers:

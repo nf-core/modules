@@ -1,15 +1,31 @@
-.github/workflows/** @nf-core/a-team
-tests/config @nf-core/a-team
+# Everything is OWNED by infrastructure and ops
+* @nf-core/infrastructure @nf-core/ops
+# Except for modules and subworkflows
+modules
+subworkflows
 
-# Opt-in
-modules/nf-core/bedtools/** @edmundmiller
-modules/nf-core/dragmap/** @edmundmiller
-modules/nf-core/ensemblvep/** @maxulysse
-modules/nf-core/gatk4/** @maxulysse
-modules/nf-core/homer/** @edmundmiller
-modules/nf-core/snpeff/** @maxulysse
-modules/nf-core/pints/caller/** @edmundmiller
-modules/nf-core/preseq/ccurve/** @edmundmiller
-modules/nf-core/preseq/lcextrap/** @edmundmiller
-subworkflows/nf-core/homer/** @edmundmiller
-modules/nf-core/**/Dockerfile @edmundmiller @maxulysse
+# Opt-in for specific modules, subworkflows or files
+Dockerfile @edmundmiller @maxulysse
+modules/nf-core/bwa/index @maxulysse
+modules/nf-core/bwa/mem @maxulysse
+modules/nf-core/bwamem2 @maxulysse
+modules/nf-core/bedtools @edmundmiller
+modules/nf-core/deseq2 @pinin4fjords
+modules/nf-core/dragmap @edmundmiller
+modules/nf-core/ensemblvep @maxulysse
+modules/nf-core/gatk4 @maxulysse
+modules/nf-core/gatk4spark @maxulysse
+modules/nf-core/homer @edmundmiller
+modules/nf-core/limma @pinin4fjords
+modules/nf-core/pints/caller @edmundmiller
+modules/nf-core/preseq/ccurve @edmundmiller
+modules/nf-core/preseq/lcextrap @edmundmiller
+modules/nf-core/shinyngs @pinin4fjords
+modules/nf-core/snpeff @maxulysse
+subworkflows/nf-core/archive_extract @maxulysse
+subworkflows/nf-core/abundance_differential_filter @pinin4fjords
+subworkflows/nf-core/fastq_qc_trim_filter_setstrandedness @pinin4fjords
+subworkflows/nf-core/homer @edmundmiller
+subworkflows/nf-core/vcf_annotate_ensemblvep @maxulysse
+subworkflows/nf-core/vcf_annotate_ensemblvep_snpeff @maxulysse
+subworkflows/nf-core/vcf_annotate_snpeff @maxulysse
