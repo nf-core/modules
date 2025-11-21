@@ -118,7 +118,7 @@ workflow BAM_VCF_IMPUTE_GLIMPSE2 {
         )
 
     emit:
-    ch_chunks     = ch_chunks          // channel: [ val(meta), txt ]
+    ch_chunks     = ch_chunks          // channel: [ val(meta), regionin, regionout ]
     ch_vcf_index  = ch_vcf_index       // channel: [ val(meta), vcf, csi ]
 
     versions      = ch_versions        // channel: [ versions.yml ]
