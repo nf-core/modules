@@ -444,8 +444,8 @@ nextflow_workflow {
                     [panel: 'ref_panel', chr: "21"], [], [], "chr21"
                 ]) // reference
                 input[2] = Channel.of(
-                    [[panel: 'ref_panel 2', chr: "22"], [], []],
-                    [[panel: 'ref_panel', chr: "21"], [], []]
+                    [[panel: 'ref_panel 2', chr: "22"], "chr22:16570065-16597215", "chr22:16570065-16592216"],
+                    [[panel: 'ref_panel', chr: "21"], "chr21:16570065-16597215", "chr21:16570065-16592216"]
                 ) // chunks
                 input[3] = Channel.of([
                     [panel: 'ref_panel', chr: "22"], []
