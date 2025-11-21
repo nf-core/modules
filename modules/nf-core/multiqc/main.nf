@@ -15,10 +15,10 @@ process MULTIQC {
     path(sample_names)
 
     output:
-    path "*multiqc_report.html", emit: report
-    path "*_data"              , emit: data
-    path "*_plots"             , optional:true, emit: plots
-    path "versions.yml"        , emit: versions
+    path "*.html"      , emit: report
+    path "*_data"      , emit: data
+    path "*_plots"     , optional:true, emit: plots
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
