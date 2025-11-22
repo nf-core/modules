@@ -1,84 +1,66 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-# # TODO nf-core: Add a description of the module and list keywords
 name: "mmseqs_createtaxdb"
-description: write your description here
+description: Adds taxonomy information to an existing MMseqs2 database
 keywords:
-  - sort
-  - example
-  - genomics
+  - protein sequence
+  - databases
+  - clustering
+  - searching
+  - taxonomy
 tools:
-  ## TODO nf-core: Add a description and other details for the software below
   - "mmseqs":
       description: "MMseqs2: ultra fast and sensitive sequence search and clustering
         suite"
-      homepage: "None"
-      documentation: "None"
-      tool_dev_url: "None"
-      doi: ""
-      licence: ["MIT"]
-      identifier: biotools:MMseqs2
-
+      homepage: "https://github.com/soedinglab/MMseqs2"
+      documentation: "https://mmseqs.com/latest/userguide.pdf"
+      tool_dev_url: "https://github.com/soedinglab/MMseqs2"
+      doi: "10.1093/bioinformatics/btw006"
+      licence: ["GPL v3"]
+      identifier: biotools:mmseqs
 input:
-  # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
   - - meta:
         type: map
-        description: Groovy Map containing sample information. e.g. `[
-          id:'sample1' ]`
-    - sequence_set:
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - db:
+        type: directory
+        description: |
+          Directory containing the MMseqs2 database
+        pattern: "*"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - taxdump_dir:
+        type: directory
+        description: |
+          Directory containing NCBI taxonomy dump files (names.dmp, nodes.dmp, merged.dmp).
+          If not provided, the module will attempt to download them from NCBI
+        pattern: "*"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - tax_mapping_file:
         type: file
-        description: sequence_set file
-        pattern: "*.{fastq-like,fasta-like}"
-        ontologies:
-          - edam: http://edamontology.org/data_0850 # Sequence set
-          - edam: http://edamontology.org/format_2182 # FASTQ-like format (text)
-          - edam: http://edamontology.org/format_2200 # FASTA-like (text)
+        description: |
+          File mapping sequence IDs to taxonomy IDs.
+          If not provided, the module will attempt to download the Uniprot id mapping file
+        pattern: "*"
 output:
-  # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
-  sequence_search_results:
+  db_with_taxonomy:
     - - meta:
           type: map
-          description: Groovy Map containing sample information. e.g. `[
-            id:'sample1' ]`
-      - "*.{blast}":
-          type: file
-          description: sequence_search_results file
-          pattern: "*.{blast}"
-          ontologies:
-            - edam: http://edamontology.org/data_0857 # Sequence search results
-            - edam: http://edamontology.org/format_1333 # BLAST results
-  sequence_cluster:
-    - - meta:
-          type: map
-          description: Groovy Map containing sample information. e.g. `[
-            id:'sample1' ]`
-      - "*.{}":
-          type: file
-          description: sequence_cluster file
-          pattern: "*.{}"
-          ontologies:
-            - edam: http://edamontology.org/data_1235 # Sequence cluster
-  taxonomy:
-    - - meta:
-          type: map
-          description: Groovy Map containing sample information. e.g. `[
-            id:'sample1' ]`
-      - "*.{}":
-          type: file
-          description: taxonomy file
-          pattern: "*.{}"
-          ontologies:
-            - edam: http://edamontology.org/data_3028 # Taxonomy
-  versions_mmseqs:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - mmseqs:
-          type: string
-          description: The name of the tool
-      - mmseqs --version:
-          type: eval
-          description: The expression to obtain the version of the tool
-topics:
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - db:
+          type: directory
+          description: |
+            Directory containing the database with added taxonomy information
+          pattern: "*"
   versions:
     - - ${task.process}:
           type: string
