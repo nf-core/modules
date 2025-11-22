@@ -5,41 +5,162 @@ nextflow_workflow {
     name "Test Subworkflow FASTQ_DECONTAMINATE_DEACON_HOSTILE"
     script "../main.nf"
     workflow "FASTQ_DECONTAMINATE_DEACON_HOSTILE"
+    config './nextflow.config'
 
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "subworkflows/fastq_decontaminate_deacon_hostile"
     // TODO nf-core: Add tags for all modules used within this subworkflow. Example:
-    tag "samtools"
-    tag "samtools/sort"
-    tag "samtools/index"
+    tag "hostile"
+    tag "hostile/fetch"
+    tag "hostile/clean"
+    tag "bowtie2/build"
+    tag "deacon"
+    tag "deacon/filter"
+    tag "deacon/index"
 
-
-    // TODO nf-core: Change the test name preferably indicating the test-data and file-format used
-    test("sarscov2 - bam - single_end") {
-
-        when {
-            workflow {
+    setup {
+        run("BOWTIE2_BUILD") {
+            script "../../../../modules/nf-core/bowtie2/build/main.nf"
+            process {
                 """
-                // TODO nf-core: define inputs of the workflow here. Example:
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                ]
-                input[1] = [
-                    [ id:'genome' ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 """
             }
         }
+    }
+
+    test("sarscov2 - fastq - single-end - hostile") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test_single', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = null
+                input[2] = BOWTIE2_BUILD.out.index.map { meta, index ->  tuple('genome', index) }
+                input[3] = null
+                input[4] = 'hostile'
+                """
+            }
+        }
         then {
-            assert workflow.success
             assertAll(
+                { assert workflow.success },
                 { assert snapshot(
-                    workflow.out
-                    //TODO nf-core: Add all required assertions to verify the test output.
+                    workflow.out.fastq_filtered,
+                    workflow.out.additional_files[0],
+                    file(workflow.out.additional_files[1][1]).name,
+                    workflow.out.versions.collect { path(it).yaml }
                 ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - paired-end - hostile") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test_paired', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = null
+                input[2] = BOWTIE2_BUILD.out.index.map { meta, index ->  tuple('genome', index) }
+                input[3] = null
+                input[4] = 'hostile'
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.fastq_filtered,
+                    workflow.out.additional_files[0],
+                    file(workflow.out.additional_files[1][1]).name,
+                    workflow.out.versions.collect { path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - single-end - deacon") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test', single_end:true ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
+                )
+                input[1] = Channel.of(
+                    [
+                        [ id:'test', single_end:true ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                )
+                input[2] = null
+                input[3] = null
+                input[4] = 'deacon'
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.fastq_filtered,
+                    workflow.out.additional_files[0][1],
+                    file(workflow.out.additional_files[0][2]).name,
+                    workflow.out.versions.collect { path(it).yaml }
+                ).match()}
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - paired-end - deacon") {
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test', single_end:false ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ]
+                )
+                input[1] = Channel.of(
+                    [
+                        [ id:'test', single_end:false ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                )
+                input[2] = null
+                input[3] = null
+                input[4] = 'deacon'
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.fastq_filtered,
+                    workflow.out.additional_files[0][1],
+                    file(workflow.out.additional_files[0][2]).name,
+                    workflow.out.versions.collect { path(it).yaml }
+                ).match()}
             )
         }
     }

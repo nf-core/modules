@@ -35,16 +35,16 @@ workflow FASTQ_DECONTAMINATE_DEACON_HOSTILE {
         fastq_filtered = FASTQ_FETCH_CLEAN_HOSTILE.out.fastq
         ch_versions = ch_versions.mix(FASTQ_FETCH_CLEAN_HOSTILE.out.versions)
         additional_files = FASTQ_FETCH_CLEAN_HOSTILE.out.reference
-            .mix(FASTQ_FETCH_CLEAN_HOSTILE.out.json)
+            .concat(FASTQ_FETCH_CLEAN_HOSTILE.out.json)
 
     } else if (decontaminator == "deacon") {
         FASTQ_INDEX_FILTER_DEACON (
-            ch_reads.join(ch_fasta)
+            ch_fasta.join(ch_reads)
         )
         fastq_filtered = FASTQ_INDEX_FILTER_DEACON.out.fastq_filtered
         ch_versions = ch_versions.mix(FASTQ_INDEX_FILTER_DEACON.out.versions)
         additional_files = FASTQ_INDEX_FILTER_DEACON.out.index
-            .mix(FASTQ_INDEX_FILTER_DEACON.out.log)
+            .join(FASTQ_INDEX_FILTER_DEACON.out.summary)
     }
 
 
