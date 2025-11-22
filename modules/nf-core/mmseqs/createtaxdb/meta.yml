@@ -1,0 +1,95 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+# # TODO nf-core: Add a description of the module and list keywords
+name: "mmseqs_createtaxdb"
+description: write your description here
+keywords:
+  - sort
+  - example
+  - genomics
+tools:
+  ## TODO nf-core: Add a description and other details for the software below
+  - "mmseqs":
+      description: "MMseqs2: ultra fast and sensitive sequence search and clustering
+        suite"
+      homepage: "None"
+      documentation: "None"
+      tool_dev_url: "None"
+      doi: ""
+      licence: ["MIT"]
+      identifier: biotools:MMseqs2
+
+input:
+  # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[
+          id:'sample1' ]`
+    - sequence_set:
+        type: file
+        description: sequence_set file
+        pattern: "*.{fastq-like,fasta-like}"
+        ontologies:
+          - edam: http://edamontology.org/data_0850 # Sequence set
+          - edam: http://edamontology.org/format_2182 # FASTQ-like format (text)
+          - edam: http://edamontology.org/format_2200 # FASTA-like (text)
+output:
+  # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
+  sequence_search_results:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - "*.{blast}":
+          type: file
+          description: sequence_search_results file
+          pattern: "*.{blast}"
+          ontologies:
+            - edam: http://edamontology.org/data_0857 # Sequence search results
+            - edam: http://edamontology.org/format_1333 # BLAST results
+  sequence_cluster:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - "*.{}":
+          type: file
+          description: sequence_cluster file
+          pattern: "*.{}"
+          ontologies:
+            - edam: http://edamontology.org/data_1235 # Sequence cluster
+  taxonomy:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - "*.{}":
+          type: file
+          description: taxonomy file
+          pattern: "*.{}"
+          ontologies:
+            - edam: http://edamontology.org/data_3028 # Taxonomy
+  versions_mmseqs:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mmseqs:
+          type: string
+          description: The name of the tool
+      - mmseqs --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mmseqs:
+          type: string
+          description: The name of the tool
+      - mmseqs --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@dialvarezs"
+maintainers:
+  - "@dialvarezs"
