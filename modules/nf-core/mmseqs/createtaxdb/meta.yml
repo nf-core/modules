@@ -49,6 +49,7 @@ input:
           File mapping sequence IDs to taxonomy IDs.
           If not provided, the module will attempt to download the Uniprot id mapping file
         pattern: "*"
+        ontologies: []
 output:
   db_with_taxonomy:
     - - meta:
@@ -61,14 +62,14 @@ output:
           description: |
             Directory containing the database with added taxonomy information
           pattern: "*"
-  versions:
+  versions_mmseqs:
     - - ${task.process}:
           type: string
           description: The name of the process
       - mmseqs:
           type: string
           description: The name of the tool
-      - mmseqs --version:
+      - "mmseqs | grep 'Version' | sed 's/MMseqs2 Version: //'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:

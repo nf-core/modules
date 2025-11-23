@@ -8,6 +8,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "mmseqs"
     tag "mmseqs/createtaxdb"
+    tag "untar"
 
     test("sarscov2 - mmseqs db") {
 
@@ -64,8 +65,11 @@ nextflow_process {
 
             assert process.success
             assertAll(
-                { assert snapshot(mapping_file).match("mapping_file")},
-                { assert snapshot(taxonomy_file.getName()).match("taxonomy_file")},
+                { assert snapshot(
+                        mapping_file.getName(), // mapping file will be empty in this test data
+                        taxonomy_file.getName() // taxonomy file is not stable and it's binary, so just check the name
+                    ).match()
+                },
                 { assert snapshot(process.out.versions).match("versions") }
             )
         }

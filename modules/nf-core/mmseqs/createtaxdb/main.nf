@@ -14,7 +14,7 @@ process MMSEQS_CREATETAXDB {
 
     output:
     tuple val(meta), path(db), emit: db_with_taxonomy
-    tuple val("${task.process}"), val('mmseqs'), eval("mmseqs | grep 'Version' | sed 's/MMseqs2 Version: //'"), topic: versions, emit: versions
+    tuple val("${task.process}"), val('mmseqs'), eval("mmseqs | grep 'Version' | sed 's/MMseqs2 Version: //'"), topic: versions, emit: versions_mmseqs
 
     when:
     task.ext.when == null || task.ext.when
