@@ -70,7 +70,7 @@ nextflow_process {
                         taxonomy_file.getName() // taxonomy file is not stable and it's binary, so just check the name
                     ).match()
                 },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.versions_mmseqs).match("versions") }
             )
         }
 
