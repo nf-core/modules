@@ -1,44 +1,60 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fastq_decontaminate_deacon_hostile"
-## TODO nf-core: Add a description of the subworkflow and list keywords
-description: Sort SAM/BAM/CRAM file
+description: Decontaminate FastQ files by filtering reads that match a reference genome using Deacon or Hostile
 keywords:
-  - sort
-  - bam
-  - sam
-  - cram
-## TODO nf-core: Add a list of the modules and/or subworkflows used in the subworkflow
+  - hostile
+  - deacon
+  - filter
+  - index
+  - fasta
+  - fastq
+  - genome
+  - reference
+  - minimizer
+  - decontamination
 components:
+  - hostile/fetch
+  - hostile/clean
   - samtools/sort
   - samtools/index
-## TODO nf-core: List all of the channels used as input with a description and their structure
+  - fastq_fetch_clean_hostile
+  - fastq_index_filter_deacon
 input:
-  - ch_bam:
+  - ch_reads:
       type: file
       description: |
-        The input channel containing the BAM/CRAM/SAM files
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.{bam/cram/sam}"
-## TODO nf-core: List all of the channels used as output with a descriptions and their structure
+        List of FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
+        Structure: [ val(meta), [ path(reads) ] ]
+  - ch_fasta:
+      type: file
+      description: |
+        Input genome fasta file used by Deacon.
+        Structure: [ val(meta), [ path(fasta) ] ]
+  - ch_reference:
+      type: directory
+      description: |
+        Directory containing index file(s) corresponding to the preferred aligner (bowtie2 short reads or minimap for long reads) used by Hostile.
+        Note that single end data is assumed to be long reads. If you have single-end short read you must supply both the BowTie2
+        indices AND explicitly specify `--aligner bowtie2`
+  - index_name:
+      type: string
+      description: Name of the reference genome index to download for Hostile fetch if the reference is not provided.
+  - decontaminator:
+      type: string
+      description: Name of the deacontamination tool to use. Either 'deacon' or 'hostile'.
 output:
-  - bam:
+  - fastq_filtered:
       type: file
       description: |
-        Channel containing BAM files
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.bam"
-  - bai:
-      type: file
+        List of output filtered FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
+        Structure: [ val(meta), path(${prefix}*.fq.gz) ]
+      pattern: "*.fq.gz"
+  - additional_files:
+      type: channel
       description: |
-        Channel containing indexed BAM (BAI) files
-        Structure: [ val(meta), path(bai) ]
-      pattern: "*.bai"
-  - csi:
-      type: file
-      description: |
-        Channel containing CSI files
-        Structure: [ val(meta), path(csi) ]
-      pattern: "*.csi"
+        Additional output files depending on the decontamination tool used.
+        Structure: [ val(meta), path(${prefix}*.json), path(index) ] if Deacon is used
+        Structure: [ al(reference_name), path(reference_dir), val(meta), path(*.json) ] if Hostile is used
   - versions:
       type: file
       description: |
