@@ -36,6 +36,32 @@ nextflow_process {
 
     }
 
+    test("sarscov2 single-end [fastqc] - custom prefix") {
+        config "./custom_prefix.config"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of(file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastqc/test_fastqc.zip', checkIfExists: true))
+                input[1] = []
+                input[2] = []
+                input[3] = []
+                input[4] = []
+                input[5] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.report[0] ==~ ".*/custom_prefix.html" },
+                { assert process.out.data[0] ==~ ".*/custom_prefix_data" }
+            )
+        }
+
+    }
+
     test("sarscov2 single-end [fastqc] [config]") {
 
         when {
