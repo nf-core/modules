@@ -1,0 +1,92 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "VCF_IMPUTE_MINIMAC4"
+description: |
+  Subworkflow to impute VCF files using MINIMAC4 software. The subworkflow
+  takes VCF files, phased reference panel, and genetic maps to perform imputation
+  and outputs phased and imputed VCF files. MINIMAC4 requires reference panels
+  to be compressed into MSAV format before imputation.
+keywords:
+  - VCF
+  - imputation
+  - minimac4
+  - phasing
+  - MSAV
+components:
+  - minimac4/compressref
+  - minimac4/impute
+  - bcftools/index
+input:
+  - ch_input:
+      description: Channel with input data
+      structure:
+        - meta:
+          type: map
+          description: |
+            Metadata map containing sample information
+            Need to have "id" as sample name and "chr" as chromosome name
+        - vcf:
+          type: file
+          description: Input VCF files
+          pattern: "*.{vcf,bcf,vcf.gz}"
+        - index:
+          type: file
+          description: Input index file
+          pattern: "*.{tbi,csi}"
+  - ch_panel:
+      description: Channel with phased reference panel data
+      structure:
+        - meta:
+          type: map
+          description: |
+            Metadata map that will be combined with the input data map
+            Need to have the "chr" as chromosome name and "id" as panel name
+        - vcf:
+          type: file
+          description: Reference panel VCF files by chromosomes
+          pattern: "*.{vcf,bcf,vcf.gz}"
+        - index:
+          type: file
+          description: Reference panel VCF index files
+          pattern: "*.{tbi,csi}"
+  - ch_map:
+      description: Channel with genetic map data
+      structure:
+        - meta:
+          type: map
+          description: |
+            Metadata map containing chromosome information
+            Need to have "chr" as chromosome name
+        - map:
+          type: file
+          description: Minimac format genetic map files
+          pattern: "*.map"
+output:
+  - vcf_tbi:
+      description: Channel with imputed and phased VCF files
+      structure:
+        - meta:
+          type: map
+          description: |
+            Metadata map combined with the input data map.
+            It contains the "id" as sample name and "chr" as chromosome name.
+            {"tools" : "minimac4"} is added.
+        - vcf:
+          type: file
+          description: VCF imputed and phased file by sample
+          pattern: "*.{vcf,bcf,vcf.gz}"
+        - index:
+          type: file
+          description: VCF index file
+          pattern: "*.{tbi,csi}"
+  - versions:
+      description: Channel containing software versions file
+      structure:
+        - versions.yml:
+            type: file
+            description: File containing versions of the software used
+authors:
+  - "@LouisLeNezet"
+  - "@gichas"
+maintainers:
+  - "@LouisLeNezet"
+  - "@gichas"

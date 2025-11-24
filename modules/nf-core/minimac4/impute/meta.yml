@@ -58,6 +58,10 @@ input:
         pattern: "*.map"
         ontologies:
           - edam: "http://edamontology.org/data_1278"
+    - region:
+        type: string
+        description: Region to perform imputation
+        pattern: "(chr)?\\d*:\\d*-\\d*"
 
 output:
   vcf:

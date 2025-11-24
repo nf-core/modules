@@ -1,0 +1,133 @@
+{
+    "Impute with minimac4 one vcf no map, no posfile, no chunks": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "NA12878",
+                        "chr": "chr22",
+                        "panel": "1000GP"
+                    },
+                    "NA12878_chr22.ligate.vcf.gz",
+                    "NA12878_chr22.ligate.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=903, phased=true, phasedAutodetect=true]",
+                    [
+                        "NA12878"
+                    ],
+                    "c4327d84f0355b88979ec03dd037514b"
+                ]
+            ],
+            [
+                {
+                    "VCF_IMPUTE_MINIMAC4:MINIMAC4_COMPRESSREF": {
+                        "minimac4": "4.1.6"
+                    }
+                },
+                {
+                    "VCF_IMPUTE_MINIMAC4:MINIMAC4_IMPUTE": {
+                        "minimac4": "4.1.6"
+                    }
+                },
+                {
+                    "VCF_IMPUTE_MINIMAC4:GLIMPSE2_LIGATE": {
+                        "glimpse2": "2.0.0"
+                    }
+                },
+                {
+                    "VCF_IMPUTE_MINIMAC4:BCFTOOLS_INDEX_2": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "VCF_IMPUTE_MINIMAC4:BCFTOOLS_INDEX_1": {
+                        "bcftools": 1.22
+                    }
+                }
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-11-24T15:22:55.551734766"
+    },
+    "Impute with minimac4 one vcf no map": {
+        "content": [
+            [
+                
+            ],
+            [
+                
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-11-24T15:11:22.043248658"
+    },
+    "Impute with minimac4 one vcf with map, posfile, chunks, panel as vcf": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "NA12878",
+                        "chr": "chr21"
+                    },
+                    "NA12878_chr21.ligate.vcf.gz",
+                    "NA12878_chr21.ligate.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr21], sampleCount=1, variantCount=836, phased=true, phasedAutodetect=true]",
+                    [
+                        "NA12878"
+                    ],
+                    "c050a070d8be392619d318e2fff91ffc"
+                ],
+                [
+                    {
+                        "id": "NA12878",
+                        "chr": "chr22"
+                    },
+                    "NA12878_chr22.ligate.vcf.gz",
+                    "NA12878_chr22.ligate.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=903, phased=true, phasedAutodetect=true]",
+                    [
+                        "NA12878"
+                    ],
+                    "be422cc0fa79826edbaad1f9208640a1"
+                ]
+            ],
+            [
+                {
+                    "VCF_IMPUTE_MINIMAC4:MINIMAC4_COMPRESSREF": {
+                        "minimac4": "4.1.6"
+                    }
+                },
+                {
+                    "VCF_IMPUTE_MINIMAC4:MINIMAC4_IMPUTE": {
+                        "minimac4": "4.1.6"
+                    }
+                },
+                {
+                    "VCF_IMPUTE_MINIMAC4:GLIMPSE2_LIGATE": {
+                        "glimpse2": "2.0.0"
+                    }
+                },
+                {
+                    "VCF_IMPUTE_MINIMAC4:BCFTOOLS_INDEX_2": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "VCF_IMPUTE_MINIMAC4:BCFTOOLS_INDEX_1": {
+                        "bcftools": 1.22
+                    }
+                }
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-11-24T15:29:32.291827852"
+    }
+}
