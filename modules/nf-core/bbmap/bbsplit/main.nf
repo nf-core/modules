@@ -46,7 +46,6 @@ process BBMAP_BBSPLIT {
     def fastq_out=''
     def index_files=''
     def refstats_cmd=''
-    def use_index = index ? true : false
 
     if (only_build_index) {
         if (primary_ref && other_ref_names && other_ref_paths) {
@@ -56,7 +55,9 @@ process BBMAP_BBSPLIT {
         }
     } else {
         if (index) {
-            index_files = "path=index_writable"
+            // When using a pre-built index, point directly to it without ref= argument
+            // This avoids timestamp checks and eliminates the need to copy the index
+            index_files = "path=input_index"
         } else if (primary_ref && other_ref_names && other_ref_paths) {
             index_files = "ref_primary=${primary_ref} ${other_refs.join(' ')}"
         } else {
@@ -67,21 +68,6 @@ process BBMAP_BBSPLIT {
         refstats_cmd = 'refstats=' + prefix + '.stats.txt'
     }
     """
-
-    # If using a pre-built index, copy it to avoid modifying input files in place,
-    # then fix timestamps. When we stage in the index files the time stamps get
-    # disturbed, which bbsplit doesn't like. Fix the time stamps in its summaries.
-    # This needs to be done via Java to match what bbmap does.
-    if [ "$use_index" == "true" ]; then
-        cp -rL input_index index_writable
-
-        for summary_file in \$(find index_writable/ref/genome -name summary.txt); do
-            # Extract the path from summary.txt and update it to point to index_writable
-            src=\$(grep '^source' "\$summary_file" | cut -f2- -d\$'\\t' | sed 's|.*/ref/|index_writable/ref/|')
-            mod=\$(echo "System.out.println(java.nio.file.Files.getLastModifiedTime(java.nio.file.Paths.get(\\"\$src\\")).toMillis());" | jshell -J-Djdk.lang.Process.launchMechanism=vfork -)
-            sed -e 's|bbsplit_index/ref|index_writable/ref|' -e "s|^last modified.*|last modified\\t\$mod|" "\$summary_file" > \${summary_file}.tmp && mv \${summary_file}.tmp \${summary_file}
-        done
-    fi
 
     # Run BBSplit
 
