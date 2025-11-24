@@ -25,7 +25,7 @@ process QUILT_QUILT {
     def args                        =   task.ext.args   ?: ''
     def prefix                      =   task.ext.prefix ?: "${meta.id}"
     def suffix                      =   task.ext.suffix ?: "vcf.gz"
-    def extensions                  =   bams.collect { it.extension }
+    def extensions                  =   bams.collect { path -> path.extension }
     def extension                   =   extensions.flatten().unique()
     def list_command                =   extension == ["bam"]  ? "--bamlist="                        :
                                         extension == ["cram"] ? "--reference=${fasta} --cramlist="  : ""
@@ -33,6 +33,9 @@ process QUILT_QUILT {
     def posfile_command             =   posfile               ? "--posfile=${posfile}"              : ""
     def phasefile_command           =   phasefile             ? "--phasefile=${phasefile}"          : ""
     def samplename_command          =   samplename            ? "--sampleNames_file=${samplename}"  : ""
+    def start_command               =   regions_start         ? "--regionStart=$regions_start"      : ""
+    def end_command                 =   regions_end           ? "--regionEnd=$regions_end"        : ""
+    def buffer_command              =   buffer                ? "--buffer=$buffer"                  : ""
 
     if (!(args ==~ /.*--seed.*/)) {args += " --seed=1"}
 
@@ -52,10 +55,10 @@ process QUILT_QUILT {
         $phasefile_command \\
         $samplename_command \\
         --chr=$chr \\
-        --regionStart=$regions_start \\
-        --regionEnd=$regions_end \\
+        $start_command \\
+        $end_command \\
+        $buffer_command \\
         --nGen=$ngen \\
-        --buffer=$buffer \\
         --nCores=$task.cpus \\
         --outputdir="." \\
         --reference_haplotype_file=$reference_haplotype_file \\
