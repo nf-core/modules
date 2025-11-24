@@ -22,7 +22,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], 
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'delete_me/sigprofiler/test_GRCh38/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
                 ]
                 input[1] = "GRCh38"
@@ -32,7 +32,7 @@ nextflow_process {
         }
 
         then {
-            def (meta, resultPaths) = process.out.results_sigprofiler[0]  
+            def (meta, resultPaths) = process.out.results_sigprofiler[0]
 
             // Convert the list of output paths to a File object list
             def allPaths = resultPaths.collect { new File(it.toString()) }
@@ -62,8 +62,8 @@ nextflow_process {
                     ]
                 ]
             }
-            
-            assertAll( 
+
+            assertAll(
                 { assert process.success },
                 { assert snapshot(
                     process.out.versions,
@@ -75,7 +75,7 @@ nextflow_process {
 
                     // Collect existing + missing files per context
                     def filesStatus = [:]
-                    contextExpectedFiles.findAll { context, _ -> context in expectedContexts } 
+                    contextExpectedFiles.findAll { context, _ -> context in expectedContexts }
                                         .each { context, files ->
                         def status = files.collectEntries { relativePath ->
                             def f = new File(resultsDir, relativePath)
@@ -83,7 +83,7 @@ nextflow_process {
                         }
                         filesStatus[context] = status
                     }
-                    
+
                     filesStatus.each { context, status ->
                         def missing = status.findAll { it.value == "missing" }.keySet()
                         if (missing) {
@@ -121,11 +121,11 @@ nextflow_process {
             assertAll(
                 { assert process.failed },
                 { assert process.errorReport.contains("Invalid value for 'make_decomposition_plots'") }
-            ) 
+            )
         }
-    } 
+    }
 
- 
+
     test("test_sigprofiler - download False but no genome_installed_path") {
         config "./nextflow.config"
 
@@ -151,7 +151,7 @@ nextflow_process {
             )
         }
     }
-          
+
 
 
     test("test_sigprofiler - single_sample - stub") {
@@ -160,12 +160,12 @@ nextflow_process {
 
         when {
             process {
-                """ 
+                """
                 input[0] = [
-                    [ id:'test' ], 
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'delete_me/sigprofiler/test_GRCh38/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
                 ]
-                input[1] = "GRCh38" 
+                input[1] = "GRCh38"
                 input[2] = []
                 """
             }
@@ -174,14 +174,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { 
+                {
                     assert snapshot([
                         results: process.out.results_sigprofiler,
                         versions: process.out.versions
                     ]).match()
                 }
-            ) 
-            
+            )
+
         }
     }
 

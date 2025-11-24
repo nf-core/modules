@@ -42,7 +42,7 @@
             "type": "array",
             "description": "Extra arguments for the module",
             "items": {
-                "type" : "object",
+                "type": "object",
                 "properties": {
                     "description": {
                         "type": "string",
@@ -55,9 +55,19 @@
             "type": "array",
             "description": "Input channels for the module",
             "items": {
-                "oneOf": [{
-                    "type": "array",
-                    "items": {
+                "oneOf": [
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "patternProperties": {
+                                ".*": {
+                                    "$ref": "#/definitions/elementProperties"
+                                }
+                            }
+                        }
+                    },
+                    {
                         "type": "object",
                         "patternProperties": {
                             ".*": {
@@ -65,20 +75,44 @@
                             }
                         }
                     }
-                },
-                {
-                    "type": "object",
-                    "patternProperties": {
-                        ".*": {
-                            "$ref": "#/definitions/elementProperties"
-                        }
-                    }}
                 ]
             }
         },
         "output": {
             "type": "object",
             "description": "Output channels for the module",
+            "patternProperties": {
+                ".*": {
+                    "type": "array",
+                    "items": {
+                        "oneOf": [
+                            {
+                                "type": "object",
+                                "patternProperties": {
+                                    ".*": {
+                                        "$ref": "#/definitions/elementProperties"
+                                    }
+                                }
+                            },
+                            {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "patternProperties": {
+                                        ".*": {
+                                            "$ref": "#/definitions/elementProperties"
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "topics": {
+            "type": "object",
+            "description": "Topics of the module",
             "patternProperties": {
                 ".*": {
                     "type": "array",
@@ -200,7 +234,7 @@
                 "type": {
                     "type": "string",
                     "description": "Type of the channel element",
-                    "enum": ["map", "file", "directory", "string", "integer", "float", "boolean", "list"]
+                    "enum": ["map", "file", "directory", "string", "integer", "float", "boolean", "list", "eval"]
                 },
                 "description": {
                     "type": "string",

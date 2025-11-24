@@ -59,7 +59,7 @@ output:
           pattern: "bracken-database/"
           ontologies:
             - edam: http://edamontology.org/data_1049 # Directory
-  bracken_files:
+  db_separated:
     - - meta:
           type: map
           description: |
@@ -69,6 +69,22 @@ output:
           type: file
           description: Bracken kmer distribution files
           pattern: "database*"
+      - bracken-database/*k2d:
+          type: file
+          description: Kraken2 k2d binary database files
+          pattern: "*.k2d"
+      - bracken-database/*map:
+          type: file
+          description: Kraken2 k2d binary database taxonomy to sequencing mapping file
+          pattern: "*.map"
+      - bracken-database/library/added/*:
+          type: file
+          description: Kraken2 masked FASTA files used to build the database
+          pattern: "*.fasta"
+      - bracken-database/taxonomy/*:
+          type: file
+          description: Kraken2 nodes.dmp, names.dmp, and .accession2taxid taxonomy files
+          pattern: "*.{dmp,accession2taxid}"
   versions:
     - versions.yml:
         type: file

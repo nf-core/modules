@@ -15,10 +15,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'template' ], // meta map
-                    file(params.modules_testdata_base_path + "generic/config/config_template.yte.yaml", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "generic/config/config_template.yte.yaml", checkIfExists: true),
+                    [],
+                    [ 'sex': 'female' ] // map
                 ]
-                input[1] = []
-                input[2] = [ 'sex': 'female' ] // map
                 """
             }
         }
@@ -41,10 +41,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'template' ], // meta map
-                    file(params.modules_testdata_base_path + "generic/config/config_template.yte.yaml", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "generic/config/config_template.yte.yaml", checkIfExists: true),
+                    [],
+                    [ 'sex': 'female' ] // map
                 ]
-                input[1] = []
-                input[2] = [ 'sex': 'female' ] // map
                 """
             }
         }
@@ -68,10 +68,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'template' ], // meta map
-                    file(params.modules_testdata_base_path + "generic/config/config_template.yte.yaml", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "generic/config/config_template.yte.yaml", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "generic/config/yte_map_file.yaml", checkIfExists: true),
+                    [] // map
                 ]
-                input[1] = file(params.modules_testdata_base_path + "generic/config/yte_map_file.yaml", checkIfExists: true)
-                input[2] = [] // map
                 """
             }
         }
@@ -94,10 +94,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'template' ], // meta map
-                    file(params.modules_testdata_base_path + "generic/config/config_template.yte.yaml", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "generic/config/config_template.yte.yaml", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "generic/config/yte_map_file.yaml", checkIfExists: true),
+                    [] // map
                 ]
-                input[1] = file(params.modules_testdata_base_path + "generic/config/yte_map_file.yaml", checkIfExists: true)
-                input[2] = [] // map
                 """
             }
         }

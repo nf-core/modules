@@ -2,7 +2,7 @@ process INTEGRONFINDER {
     tag "$meta.id"
     label 'process_low'
 
-    containerOptions workflow.containerEngine == 'singularity' ? 
+    containerOptions workflow.containerEngine == 'singularity' ?
         '--env MPLCONFIGDIR=/tmp/mplconfigdir' :
         '-e MPLCONFIGDIR=/tmp/mplconfigdir'
 
@@ -28,7 +28,7 @@ process INTEGRONFINDER {
     def args                = task.ext.args ?: ''
     def is_compressed_fasta = fasta.getName().endsWith(".gz") ? true : false
     def fasta_name          = fasta.getName().replace(".gz", "")
-    
+
     """
     if [ "$is_compressed_fasta" == "true" ]; then
         gzip -c -d $fasta > $fasta_name

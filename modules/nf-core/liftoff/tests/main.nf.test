@@ -52,8 +52,8 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = [ 
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.fasta.gz', checkIfExists: true) 
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.fasta.gz', checkIfExists: true)
                     ]
                 input[2] = [
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.gtf', checkIfExists: true)
