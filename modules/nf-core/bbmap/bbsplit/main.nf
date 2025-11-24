@@ -68,12 +68,25 @@ process BBMAP_BBSPLIT {
     }
     """
 
-    # If using a pre-built index, copy it to avoid modifying input files in place,
-    # then fix timestamps. When we stage in the index files the time stamps get
-    # disturbed, which bbsplit doesn't like. Fix the time stamps in its summaries.
+    # If using a pre-built index, create writable structure: symlink all files except
+    # summary.txt (which we copy to modify). When we stage in the index files the time
+    # stamps get disturbed, which bbsplit doesn't like. Fix the time stamps in summaries.
     # This needs to be done via Java to match what bbmap does.
     if [ "$use_index" == "true" ]; then
-        cp -rL input_index index_writable
+        # Create directory structure
+        for d in input_index/ref/*/*; do
+            mkdir -p "index_writable/\${d#input_index/}"
+        done
+
+        # Symlink all files except summary.txt (which we copy)
+        for f in input_index/ref/*/*/*; do
+            target="index_writable/\${f#input_index/}"
+            if [[ \$(basename "\$f") == "summary.txt" ]]; then
+                cp "\$f" "\$target"
+            else
+                ln -s "\$(readlink -f "\$f")" "\$target"
+            fi
+        done
 
         for summary_file in \$(find index_writable/ref/genome -name summary.txt); do
             # Extract the path from summary.txt and update it to point to index_writable
