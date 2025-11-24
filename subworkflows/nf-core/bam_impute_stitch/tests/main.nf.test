@@ -7,15 +7,15 @@ nextflow_workflow {
     workflow "BAM_IMPUTE_STITCH"
 
     tag "subworkflows"
-    tag "subworkflows_local"
+    tag "subworkflows_nfcore"
     tag "subworkflows/bam_impute_stitch"
     tag "bam_impute_stitch"
 
     tag "stitch"
     tag "bcftools"
-    tag "bcftools_index"
+    tag "bcftools/index"
     tag "glimpse2"
-    tag "glimpse2_ligate"
+    tag "glimpse2/ligate"
 
     test("Impute with stitch one individual, no renaming, posfile, no chunks, no map, no fasta") {
         when {
@@ -57,6 +57,7 @@ nextflow_workflow {
                         path(it[1]).vcf.header.getGenotypeSamples().sort(),
                         path(it[1]).vcf.variantsMD5
                     ]},
+                    workflow.out.versions,
                     workflow.out.versions.collect{ path(it).yaml }
                 ).match() }
             )

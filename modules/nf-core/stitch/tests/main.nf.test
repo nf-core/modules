@@ -56,8 +56,11 @@ nextflow_process {
     config "./nextflow.config"
 
     test("test_no_seed") {
-
         when {
+            params {
+                stitch_args2 = ""
+            }
+
             process {
                 """
                 filelist = Channel.of(
@@ -162,8 +165,8 @@ nextflow_process {
                     .join ( STITCH_GENERATE_INPUTS.out.rdata )
                     .combine( $ch_params )
                     .map {
-                        meta, target, rdata, positions, _emptytarget, genetic_map, _emptyrdata, chr, k, nGen  ->
-                        [ meta, [], [], [], [], positions, target, genetic_map, rdata, chr, k, nGen ]
+                        meta, target, rdata, positions, _emptytarget, genetic_map, _emptyrdata, chr, start, end, k, nGen  ->
+                        [ meta, [], [], [], [], positions, target, genetic_map, rdata, chr, start, end, k, nGen ]
                     }
                 input[1] = [[id: null], [], []]
                 input[2] = $seed
@@ -189,6 +192,9 @@ nextflow_process {
 
     test("test_with_bam") {
         when {
+            params {
+                stitch_args2 = ""
+            }
             process {
                 """
                 filelist = Channel.of(
@@ -223,6 +229,10 @@ nextflow_process {
 
     test("test_with_bam and renaming") {
         when {
+            params {
+                stitch_args2 = ""
+            }
+
             process {
                 """
                 filelist = Channel.of(
@@ -298,6 +308,10 @@ nextflow_process {
     test("test_with_bam - vcf - stub") {
         options "-stub"
         when {
+            params {
+                stitch_args2 = ""
+            }
+
             process {
                 """
                 filelist = Channel.of(

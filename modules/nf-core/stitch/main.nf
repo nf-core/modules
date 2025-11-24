@@ -33,7 +33,7 @@ process STITCH {
     def suffix               = bgen_output ? "bgen" : "vcf.gz"
 
     def crams_list = collected_crams instanceof Collection ? collected_crams : [collected_crams]
-    def reads_ext = crams_list ? crams_list.collect { it.extension }.unique() : []
+    def reads_ext = crams_list ? crams_list.collect {path -> path.extension }.unique() : []
 
     if ( reads_ext.size() > 1 ) {
         error "STITCH process: Mixed input read file types detected: ${reads_ext}. Please provide either all BAM or all CRAM files."
