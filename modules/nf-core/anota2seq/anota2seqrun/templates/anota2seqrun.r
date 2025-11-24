@@ -331,7 +331,7 @@ contrast_matrix <- matrix(
     nrow = 2,
     dimnames = list(sort(c(opt\$reference_level, opt\$target_level)), NULL)
 )
-                                                                                 
+
 ads <- anota2seqRun(
     ads,
     contrasts = contrast_matrix,

@@ -45,7 +45,7 @@ process MODKIT_CALLMODS {
 
     """
     echo ${args}
-    
+
     touch ${prefix}.bam
     touch ${prefix}.log
 

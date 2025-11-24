@@ -14,7 +14,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ 
+                input[0] = [
                     [ id:'test', single_end:true, strandedness:'forward' ], // meta map
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
@@ -38,11 +38,11 @@ nextflow_process {
     test("sarscov2 [bam] - single_end - stub") {
 
         options '-stub'
-        
+
         when {
             process {
                 """
-                input[0] = [ 
+                input[0] = [
                     [ id:'test', single_end:true, strandedness:'forward' ], // meta map
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)

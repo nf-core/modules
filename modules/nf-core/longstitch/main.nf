@@ -49,7 +49,7 @@ process LONGSTITCH {
     // defs need to happen before ifs; https://github.com/nextflow-io/nextflow/issues/804
     def valid_commands = ["run", "tigmint-ntLink-arks", "tigmint-ntLink", "ntLink-arks"] // run is equivalent to tigmint-ntLink
     def valid_longmaps = [ "ont", "pb", "hifi" ]
-    def longmap_val = longmap ? longmap : "ont" 
+    def longmap_val = longmap ? longmap : "ont"
     def arg_longmap = "longmap=${longmap_val}"
     def arg_span = span ? "span=${span}" : ""
     def arg_genomesize = genomesize ? "G=${genomesize}" : ""
@@ -122,28 +122,28 @@ process LONGSTITCH {
     """
     touch ${prefix}.tigmint-ntLink.fa
     touch ${prefix}.tigmint-ntLink-arks.fa
-    touch ${prefix}.ntLink-arks.fa                          
-    touch ${prefix}.k21.w100.z1000.n_stub.scaffold.dot                                  
-    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub.dist.gv                       
+    touch ${prefix}.ntLink-arks.fa
+    touch ${prefix}.k21.w100.z1000.n_stub.scaffold.dot
+    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub.dist.gv
     touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub_l1.assembly_correspondence.tsv
-    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub_l1.gv                         
-    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub_l1.log                        
-    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub_l1.scaffolds                  
-    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub_l1.scaffolds.fa               
-    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub_l1.tigpair_checkpoint.tsv     
-    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub_main.tsv                      
-    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub_original.gv                   
-    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub.tigpair_checkpoint.tsv        
-    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds.fa                             
-    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds.renamed.fa                      
-    touch ${prefix}.k21.w100.z1000.stitch.abyss-scaffold.fa                        
-    touch ${prefix}.k21.w100.z1000.stitch.path                                     
-    touch ${prefix}.k21.w100.z1000.trimmed_scafs.agp                               
-    touch ${prefix}.k21.w100.z1000.trimmed_scafs.fa                                
-    touch ${prefix}.k21.w100.z1000.trimmed_scafs.path                              
-    touch ${prefix}.k21.w100.z1000.trimmed_scafs.tsv                               
-    touch ${prefix}.k21.w100.z1000.verbose_mapping.tsv                             
-    touch ${prefix}.k21.w100.tsv                                              
+    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub_l1.gv
+    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub_l1.log
+    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub_l1.scaffolds
+    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub_l1.scaffolds.fa
+    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub_l1.tigpair_checkpoint.tsv
+    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub_main.tsv
+    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub_original.gv
+    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub.tigpair_checkpoint.tsv
+    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds.fa
+    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds.renamed.fa
+    touch ${prefix}.k21.w100.z1000.stitch.abyss-scaffold.fa
+    touch ${prefix}.k21.w100.z1000.stitch.path
+    touch ${prefix}.k21.w100.z1000.trimmed_scafs.agp
+    touch ${prefix}.k21.w100.z1000.trimmed_scafs.fa
+    touch ${prefix}.k21.w100.z1000.trimmed_scafs.path
+    touch ${prefix}.k21.w100.z1000.trimmed_scafs.tsv
+    touch ${prefix}.k21.w100.z1000.verbose_mapping.tsv
+    touch ${prefix}.k21.w100.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
