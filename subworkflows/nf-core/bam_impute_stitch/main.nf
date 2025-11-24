@@ -1,7 +1,7 @@
-include { STITCH                             } from '../../../modules/nf-core/stitch'
+include { STITCH                             } from '../../../modules/nf-core/stitch/main'
 include { GLIMPSE2_LIGATE                    } from '../../../modules/nf-core/glimpse2/ligate/main'
-include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_1 } from '../../../modules/nf-core/bcftools/index'
-include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_2 } from '../../../modules/nf-core/bcftools/index'
+include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_1 } from '../../../modules/nf-core/bcftools/index/main'
+include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_2 } from '../../../modules/nf-core/bcftools/index/main'
 
 workflow BAM_IMPUTE_STITCH {
 
