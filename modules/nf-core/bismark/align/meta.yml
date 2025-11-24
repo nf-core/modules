@@ -96,16 +96,16 @@ output:
           type: string
           description: The version of the tool
 topics:
-  - versions:
-      - - process:
-            type: string
-            description: The process the versions were collected from
-        - tool:
-            type: string
-            description: The tool name
-        - version:
-            type: string
-            description: The version of the tool
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bismark:
+          type: string
+          description: The tool name
+      - 'bismark --version | grep Version | sed -e "s/Bismark Version: v//" | xargs':
+          type: string
+          description: The version of the tool
 authors:
   - "@phue"
 maintainers:
