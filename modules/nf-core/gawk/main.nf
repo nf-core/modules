@@ -33,7 +33,7 @@ process GAWK {
     output     = disable_redirect_output ? "" : output_cmd
     cleanup    = lst_gz ? "rm ${lst_gz.collect{ file -> file - ~/\.gz$/ }.join(" ")}" : ""
 
-    input.collect{ file -> 
+    input.collect{ file ->
         assert file.name != "${prefix}.${suffix}" : "Input and output names are the same, set prefix in module configuration to disambiguate!"
     }
 
