@@ -32,6 +32,7 @@ input:
     - intervals:
         type: file
         description: Bed file with the genomic regions included in the library (optional)
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -41,6 +42,7 @@ input:
         type: file
         description: The reference fasta file
         pattern: "*.fasta"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -50,6 +52,7 @@ input:
         type: file
         description: Index of reference fasta file
         pattern: "*.fasta.fai"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -59,21 +62,26 @@ input:
         type: file
         description: GATK sequence dictionary
         pattern: "*.dict"
+        ontologies: []
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: file
           description: Output file with split reads (BAM/SAM/CRAM)
           pattern: "*.{bam,sam,cram}"
+          ontologies: []
       - "*.bam":
           type: file
           description: Output file with split reads (BAM/SAM/CRAM)
           pattern: "*.{bam,sam,cram}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@kevinmenden"
 maintainers:

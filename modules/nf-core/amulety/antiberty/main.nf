@@ -5,7 +5,7 @@ process AMULETY_ANTIBERTY {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/amulety_igblast:b2a7736f645c40e5':
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/33/33a7125e32c3f338b1af9ba1961e39b1f263860c98ee3c3f0e2f432e3e72b8c8/data':
         'community.wave.seqera.io/library/amulety_igblast:659eaa872785adeb' }"
 
     input:
@@ -20,14 +20,14 @@ process AMULETY_ANTIBERTY {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     amulety \\
         antiberty \\
-        $args \\
-        $tsv \\
-        $chain \\
+        ${args} \\
+        ${tsv} \\
+        ${chain} \\
         ${prefix}.tsv
 
     cat <<-END_VERSIONS > versions.yml
@@ -37,7 +37,6 @@ process AMULETY_ANTIBERTY {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tsv

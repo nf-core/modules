@@ -45,7 +45,9 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
 
     assert false: deprecation_message
     def args = task.ext.args ?: ''
-    cp_cmd = session.config.conda && session.config.conda.enabled ? "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" : "cp -r /usr/local/lib/python3.10/site-packages/antismash antismash_dir;"
+    cp_cmd = workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1 ?
+        "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" :
+        "cp -r /usr/local/lib/python3.10/site-packages/antismash antismash_dir;"
     """
     download-antismash-databases \\
         --database-dir antismash_db \\
@@ -71,7 +73,9 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
 
     assert false: deprecation_message
     def args = task.ext.args ?: ''
-    cp_cmd = session.config.conda && session.config.conda.enabled ? "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" : "cp -r /usr/local/lib/python3.10/site-packages/antismash antismash_dir;"
+    cp_cmd = workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1 ?
+        "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" :
+        "cp -r /usr/local/lib/python3.10/site-packages/antismash antismash_dir;"
     """
     echo "download-antismash-databases --database-dir antismash_db ${args}"
 

@@ -4,8 +4,8 @@ process AGAT_SPKEEPLONGESTISOFORM {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/agat:1.4.2--pl5321hdfd78af_0':
-        'biocontainers/agat:1.4.2--pl5321hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/03/033434db0bd6ba28660401e1059286f36641fd8ce55faa11973fe5eaf312adcd/data' :
+        'community.wave.seqera.io/library/agat:1.5.1--ae3cd948ce5e9795' }"
 
     input:
     tuple val(meta), path(gxf)
@@ -19,16 +19,16 @@ process AGAT_SPKEEPLONGESTISOFORM {
     task.ext.when == null || task.ext.when
 
     script:
-    def args         = task.ext.args ?: ''
-    def config_param = config ? "--config $config" : ""
-    def prefix       = meta.id ?: gff.getBaseName()
+    def args         = task.ext.args   ?: ''
+    def prefix       = task.ext.prefix ?: "${meta.id}"
+    def config_param = config ? "--config ${config}" : ""
     output           = "${prefix}.longest.gff"
     """
     agat_sp_keep_longest_isoform.pl \\
-        --gff $gxf \\
-        $config_param \\
-        --out $output \\
-        $args
+        --gff ${gxf} \\
+        ${config_param} \\
+        --out ${output} \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -37,7 +37,7 @@ process AGAT_SPKEEPLONGESTISOFORM {
     """
 
     stub:
-    def prefix = meta.id ?: gff.getBaseName()
+    def prefix = task.ext.prefix ?: "${meta.id}"
     output     = "${prefix}.longest.gff"
     """
     touch ${output}

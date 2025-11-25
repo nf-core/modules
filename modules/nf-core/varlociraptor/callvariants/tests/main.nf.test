@@ -11,287 +11,90 @@ nextflow_process {
     tag "varlociraptor/preprocess"
     tag "varlociraptor/callvariants"
 
+    setup {
+        run("VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES", alias: "VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES_NORMAL") {
+            script "../../estimatealignmentproperties/main.nf"
+
+            process {
+                """
+                input[0] = [
+                    [id:'test_normal'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true),
+                    ]
+                """
+            }
+        }
+
+        run("VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES", alias: "VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES_TUMOR") {
+            script "../../estimatealignmentproperties/main.nf"
+
+            process {
+                """
+                input[0] = [
+                    [id:'test_tumor'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam.bai', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true),
+                    ]
+                """
+            }
+        }
+
+        run("VARLOCIRAPTOR_PREPROCESS", alias: "VARLOCIRAPTOR_PREPROCESS_NORMAL") {
+            script "../../preprocess/main.nf"
+
+            process {
+                """
+                input[0] = channel.of([
+                    [id:'test_normal'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
+                    ]).collect()
+                        .join(VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES_NORMAL.out.alignment_properties_json)
+                        .map{ meta, bam, bai, candidates, fasta, fai, alignment_json -> [meta, bam, bai, candidates, alignment_json, fasta, fai] }
+                """
+            }
+        }
+
+        run("VARLOCIRAPTOR_PREPROCESS", alias: "VARLOCIRAPTOR_PREPROCESS_TUMOR") {
+            script "../../preprocess/main.nf"
+
+            process {
+                """
+                input[0] = channel.of([
+                    [id:'test_tumor'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam.bai', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test2.genome.vcf', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true),
+                    ]).collect()
+                        .join(VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES_TUMOR.out.alignment_properties_json)
+                        .map{ meta, bam, bai, candidates, fasta, fai, alignment_json -> [meta, bam, bai, candidates, alignment_json, fasta, fai] }
+                """
+            }
+        }
+    }
+
     test("scenario_singlesample") {
 
-        setup {
-            run("VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES", alias: "VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES_NORMAL") {
-                script "../../estimatealignmentproperties/main.nf"
-
-                process {
-                    """
-                    input[0] = [
-                        [id:'test_normal'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true),
-                        ]
-                    input[1] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
-                        ]
-                    input[2] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
-                        ]
-                    """
-                }
-            }
-
-            run("VARLOCIRAPTOR_PREPROCESS", alias: "VARLOCIRAPTOR_PREPROCESS_NORMAL") {
-                script "../../preprocess/main.nf"
-
-                process {
-                    """
-                    input[0] = Channel.of([
-                        [id:'test_normal'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists:true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists:true),
-                        ]).collect().join(VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES_NORMAL.out.alignment_properties_json)
-                    input[1] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
-                        ]
-                    input[2] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
-                        ]
-                    """
-                }
-            }
-        }
         when {
             process {
                 """
-                input[0] = VARLOCIRAPTOR_PREPROCESS_NORMAL.out.bcf.map{meta1,vcf->[meta1,vcf,[]]}
-                input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/varlociraptor/scenario.yml', checkIfExists:true))
-                input[2] = "normal"
-                """
-            }
-        }
-        then {
-            assert process.success
-            assertAll(
-                { assert snapshot(
-                    file(process.out.bcf[0][1]).name,
-                    //path(process.out.bcf[0][1]).vcf.variantsMD5,
-                    // Error: BCF magic header info not found with current version of nf-test htjsk
-                    // Might be linked to https://github.com/samtools/htsjdk/issues/946 and block gzipped BCF
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
-                ).match() }
-            )
-        }
-    }
-    test("scenario_multisample") {
-
-        setup {
-            run("VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES", alias: "VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES_NORMAL") {
-                script "../../estimatealignmentproperties/main.nf"
-
-                process {
-                    """
-                    input[0] = [
-                        [id:'test_normal'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true),
-                        ]
-                    input[1] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
-                        ]
-                    input[2] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
-                        ]
-                    """
-                }
-            }
-
-            run("VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES", alias: "VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES_TUMOR") {
-                script "../../estimatealignmentproperties/main.nf"
-
-                process {
-                    """
-                    input[0] = [
-                        [id:'test_tumor'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists:true),
-                        ]
-                    input[1] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
-                        ]
-                    input[2] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
-                        ]
-                    """
-                }
-            }
-
-            run("VARLOCIRAPTOR_PREPROCESS", alias: "VARLOCIRAPTOR_PREPROCESS_NORMAL") {
-                script "../../preprocess/main.nf"
-
-                process {
-                    """
-                    input[0] = Channel.of([
-                        [id:'test_normal'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists:true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists:true),
-                        ]).collect().join(VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES_NORMAL.out.alignment_properties_json)
-                    input[1] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
-                        ]
-                    input[2] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
-                        ]
-                    """
-                }
-            }
-
-            run("VARLOCIRAPTOR_PREPROCESS", alias: "VARLOCIRAPTOR_PREPROCESS_TUMOR") {
-                script "../../preprocess/main.nf"
-
-                process {
-                    """
-                    input[0] = Channel.of([
-                        [id:'test_tumor'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists:true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam.bai', checkIfExists:true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test2.genome.vcf', checkIfExists:true),
-                        ]).collect().join(VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES_TUMOR.out.alignment_properties_json)
-                    input[1] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
-                        ]
-                    input[2] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
-                        ]
-                    """
-                }
-            }
-        }
-        when {
-            process {
-                """
-                input[0] = VARLOCIRAPTOR_PREPROCESS_NORMAL.out.bcf.concat(VARLOCIRAPTOR_PREPROCESS_TUMOR.out.bcf).collect().map{meta1,vcf1,meta2,vcf2->[meta1,[vcf1,vcf2],[]]}
-                input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/varlociraptor/scenario.yml', checkIfExists:true))
-                input[2] = ["normal","normal"]
-                """
-            }
-        }
-        then {
-            assert process.success
-            assertAll(
-                { assert snapshot(
-                    file(process.out.bcf[0][1]).name,
-                    //path(process.out.bcf[0][1]).vcf.variantsMD5,
-                    // Error: BCF magic header info not found with current version of nf-test htjsk
-                    // Might be linked to https://github.com/samtools/htsjdk/issues/946 and block gzipped BCF
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
-                ).match() }
-            )
-        }
-    }
-    test("tumor_normal") {
-
-        setup {
-            run("VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES", alias: "VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES_NORMAL") {
-                script "../../estimatealignmentproperties/main.nf"
-
-                process {
-                    """
-                    input[0] = [
-                        [id:'test_normal'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists:true),
-                        ]
-                    input[1] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists:true)
-                        ]
-                    input[2] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists:true)
-                        ]
-                    """
-                }
-            }
-
-            run("VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES", alias: "VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES_TUMOR") {
-                script "../../estimatealignmentproperties/main.nf"
-
-                process {
-                    """
-                    input[0] = [
-                        [id:'test_tumor'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists:true),
-                        ]
-                    input[1] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists:true)
-                        ]
-                    input[2] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists:true)
-                        ]
-                    """
-                }
-            }
-
-            run("VARLOCIRAPTOR_PREPROCESS", alias: "VARLOCIRAPTOR_PREPROCESS_NORMAL") {
-                script "../../preprocess/main.nf"
-
-                process {
-                    """
-                    input[0] = Channel.of([
-                        [id:'test_normal'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists:true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists:true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.genome_21.somatic_sv.vcf.gz', checkIfExists:true),
-                        ]).collect().join(VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES_NORMAL.out.alignment_properties_json)
-                    input[1] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists:true)
-                        ]
-                    input[2] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists:true)
-                        ]
-                    """
-                }
-            }
-
-            run("VARLOCIRAPTOR_PREPROCESS", alias: "VARLOCIRAPTOR_PREPROCESS_TUMOR") {
-                script "../../preprocess/main.nf"
-
-                process {
-                    """
-                    input[0] = Channel.of([
-                        [id:'test_tumor'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists:true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists:true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.genome_21.somatic_sv.vcf.gz', checkIfExists:true),
-                        ]).collect().join(VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES_TUMOR.out.alignment_properties_json)
-                    input[1] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists:true)
-                        ]
-                    input[2] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists:true)
-                        ]
-                    """
-                }
-            }
-        }
-        when {
-            process {
-                """
-                input[0] = VARLOCIRAPTOR_PREPROCESS_NORMAL.out.bcf.combine(VARLOCIRAPTOR_PREPROCESS_TUMOR.out.bcf).collect().map{meta1,vcf1,meta2,vcf2->[meta1,vcf1,vcf2]}
-                input[1] = []
-                input[2] = []
+                input[0] = VARLOCIRAPTOR_PREPROCESS_NORMAL.out.bcf
+                    .map { meta, vcf ->
+                        [ meta,
+                          vcf,
+                          file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/varlociraptor/scenario.yml', checkIfExists:true),
+                          "normal" ]
+                    }
                 """
             }
         }
@@ -310,14 +113,48 @@ nextflow_process {
         }
     }
 
-    test("tumor_normal -- stub") {
+    test("normal_multisample") {
+
+        when {
+            process {
+                """
+                input[0] = VARLOCIRAPTOR_PREPROCESS_NORMAL.out.bcf.concat(VARLOCIRAPTOR_PREPROCESS_TUMOR.out.bcf).collect().map{meta1,vcf1,meta2,vcf2->
+                            [meta1,
+                            [vcf1,vcf2],
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/varlociraptor/scenario.yml', checkIfExists:true),
+                            ["normal","normal"]]}
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    file(process.out.bcf[0][1]).name,
+                    //path(process.out.bcf[0][1]).vcf.variantsMD5,
+                    // Error: BCF magic header info not found with current version of nf-test htjsk
+                    // Might be linked to https://github.com/samtools/htsjdk/issues/946 and block gzipped BCF
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+    test("scenario_singlesample - stub") {
+
         options '-stub'
+
         when {
             process {
                 """
-                input[0] = [[id: 'test'], [], []]
-                input[1] = []
-                input[2] = []
+                input[0] = VARLOCIRAPTOR_PREPROCESS_NORMAL.out.bcf
+                    .map { meta, vcf ->
+                        [ meta,
+                          vcf,
+                          file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/varlociraptor/scenario.yml', checkIfExists:true),
+                          "normal" ]
+                    }
                 """
             }
         }
@@ -325,11 +162,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    file(process.out.bcf[0][1]).name,
-                    //path(process.out.bcf[0][1]).vcf.variantsMD5,
-                    // Error: BCF magic header info not found with current version of nf-test htjsk
-                    // Might be linked to https://github.com/samtools/htsjdk/issues/946 and block gzipped BCF
-                    process.out.versions,
+                    process.out,
                     path(process.out.versions[0]).yaml
                 ).match() }
             )

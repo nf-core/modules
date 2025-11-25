@@ -1,7 +1,6 @@
-process DECOUPLER {
+process DECOUPLER_DECOUPLER {
     tag "$meta.id"
     label 'process_medium'
-
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/dc/dc0ee6d6033b9f04c6377ad3b1cf5f924e3243626ab8d7be836d9d6617f8da4e/data' :
@@ -9,12 +8,13 @@ process DECOUPLER {
 
     input:
     tuple val(meta), path(mat)
-    path(net)
-    path(gtf)
+    tuple val(meta2), path(net)
+    tuple val(meta3), path(annot)
 
     output:
-    tuple val(meta), path("*estimate__decoupler.tsv"), emit: dc_estimate
-    tuple val(meta), path("*pvals__decoupler.tsv"), emit: dc_pvals
+    tuple val(meta), path("*estimate_decoupler.tsv"), emit: dc_estimate
+    tuple val(meta), path("*pvals_decoupler.tsv"), emit: dc_pvals
+    tuple val(meta), path("*estimate_decoupler_plot.png"), emit: png
     path("versions.yml"), emit: versions
 
     when:
@@ -25,8 +25,9 @@ process DECOUPLER {
 
     stub:
     """
-    touch mlm_estimate__decoupler.tsv
-    touch mlm_pvals__decoupler.tsv
+    touch deseq2_estimate_decoupler.tsv
+    touch deseq2_pvals_decoupler.tsv
+    touch deseq2_estimate_decoupler_plot.png
     touch versions.yml
     """
 }

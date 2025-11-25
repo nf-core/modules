@@ -1,15 +1,15 @@
 nextflow_process {
 
     name "Test Process TRUVARI_BENCH"
-    
+
     script "../main.nf"
     process "TRUVARI_BENCH"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "truvari"
     tag "truvari/bench"
-   
+
     test("without bed") {
 
         when {
@@ -25,11 +25,11 @@ nextflow_process {
                     ]
                 input[1] = [
                     [id:'fasta'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                     ]
                 input[2] = [
                     [id:'fai'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
                     ]
                 """
             }
@@ -47,6 +47,7 @@ nextflow_process {
                     path(process.out.tp_comp_vcf[0][1]).vcf.summary,
                     file(process.out.tp_comp_tbi[0][1]).name,
                     path(process.out.versions[0]).yaml,
+                    file(process.out.log[0][1]).name,
                     process.out.summary,
                     process.out.versions
                     ).match()
@@ -54,10 +55,10 @@ nextflow_process {
             )
         }
     }
-    
-    
+
+
     test("with bed") {
-        
+
         when {
             process {
                 """
@@ -71,11 +72,11 @@ nextflow_process {
                     ]
                 input[1] = [
                     [id:'fasta'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists:true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                     ]
                 input[2] = [
                     [id:'fai'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists:true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
                     ]
                 """
             }
@@ -93,6 +94,7 @@ nextflow_process {
                     path(process.out.tp_comp_vcf[0][1]).vcf.summary,
                     file(process.out.tp_comp_tbi[0][1]).name,
                     path(process.out.versions[0]).yaml,
+                    file(process.out.log[0][1]).name,
                     process.out.summary,
                     process.out.versions
                     ).match()
@@ -100,8 +102,8 @@ nextflow_process {
             )
         }
     }
-    
-    
+
+
     test("without bed -- stub") {
         options '-stub'
         when {
@@ -117,11 +119,11 @@ nextflow_process {
                     ]
                 input[1] = [
                     [id:'fasta'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                     ]
                 input[2] = [
                     [id:'fai'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
                     ]
                 """
             }

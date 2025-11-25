@@ -17,11 +17,33 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [ id:'test' ], // meta map
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/scdownstream/samples/SAMN14430799_raw_matrix_5k.h5ad", checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679759_raw_matrix.h5ad', checkIfExists: true)
                 ])
                 """
             }
         }
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert file(workflow.out.h5ad.get(0).get(1)).exists()},
+                { assert snapshot(workflow.out.versions).match()}
+            )
+        }
+    }
+
+    test("h5ad - h5ad_removebackground_barcodes_cellbender_anndata - stub") {
+        options '-stub'
+        when {
+            workflow {
+                """
+                input[0] = Channel.value([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679759_raw_matrix.h5ad', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
         then {
             assertAll(
                 { assert workflow.success},

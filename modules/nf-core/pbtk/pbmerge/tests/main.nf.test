@@ -1,0 +1,71 @@
+nextflow_process {
+
+    name "Test Process PBTK_PBMERGE"
+    script "../main.nf"
+    process "PBTK_PBMERGE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pbtk"
+    tag "pbtk/pbmerge"
+
+    test("pbtk - pbmerge - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ], // meta map
+				    [
+				        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.bam', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.singletons.bam', checkIfExists: true)
+				    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    bam(process.out.bam[0][1], stringency: "silent").getHeader(),
+                    bam(process.out.bam[0][1], stringency: "silent").getReadsMD5(),
+                    process.out.pbi.collect { file(it[1]).getName() }, // unstable
+                    process.out.versions
+                ).match() }
+            )
+        }
+
+    }
+
+    test("pbtk - pbmerge - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ], // meta map
+				    [
+				        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.bam', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.singletons.bam', checkIfExists: true)
+				    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml).match() }
+            )
+        }
+
+    }
+
+}

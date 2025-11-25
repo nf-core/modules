@@ -2,7 +2,7 @@ process BASICPY {
     tag "$meta.id"
     label 'process_single'
 
-    container "docker.io/labsyspharm/basicpy-docker-mcmicro:1.2.0-patch1"
+    container "docker.io/labsyspharm/basicpy-docker-mcmicro:1.2.0-patch3"
 
     input:
     tuple val(meta), path(image)
@@ -20,7 +20,7 @@ process BASICPY {
         error "Basicpy module does not support Conda. Please use Docker / Singularity instead."
     }
     def args    = task.ext.args   ?: ''
-    def VERSION = "1.2.0-patch1" // WARN: Version information not provided by tool on CLI. Please update this string when bumping
+    def VERSION = "1.2.0" // WARN: Version information not provided by tool on CLI. Please update this string when bumping
     """
     /opt/main.py -i $image -o . $args
 
@@ -36,7 +36,7 @@ process BASICPY {
         error "Basicpy module does not support Conda. Please use Docker / Singularity instead."
     }
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def VERSION = "1.2.0-patch1" // WARN: Version information not provided by tool on CLI. Please update this string when bumping
+    def VERSION = "1.2.0" // WARN: Version information not provided by tool on CLI. Please update this string when bumping
     """
     touch ${prefix}.-dfp.tiff
     touch ${prefix}.-ffp.tiff

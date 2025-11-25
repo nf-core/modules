@@ -1,18 +1,18 @@
 nextflow_process {
 
     name "Test Process COOLER_BALANCE"
-    
+
     script "../main.nf"
     process "COOLER_BALANCE"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "cooler"
     tag "cooler/balance"
-   
+
     test("test_cooler_balance") {
         when {
-            
+
             process {
                 """
                 input[0] = [
@@ -39,7 +39,7 @@ nextflow_process {
         options "-stub"
 
         when {
-            
+
             process {
                 """
                 input[0] = input[0] = [

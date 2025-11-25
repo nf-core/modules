@@ -4,8 +4,8 @@ process PICARD_CROSSCHECKFINGERPRINTS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:3.3.0--hdfd78af_0' :
-        'biocontainers/picard:3.3.0--hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/08/0861295baa7c01fc593a9da94e82b44a729dcaf8da92be8e565da109aa549b25/data' :
+        'community.wave.seqera.io/library/picard:3.4.0--e9963040df0a9bf6' }"
 
     input:
     tuple val(meta),  path(input1), path(input1_index), path(input2), path(input2_index), path(haplotype_map)
@@ -22,8 +22,8 @@ process PICARD_CROSSCHECKFINGERPRINTS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def input1_cmd = input1.collect{"--INPUT $it"}.join(' ')
-    def input2_cmd = input2.collect{"--SECOND_INPUT $it"}.join(' ')
+    def input1_cmd = input1.collect{ f1 -> "--INPUT $f1"}.join(' ')
+    def input2_cmd = input2.collect{ f2 -> "--SECOND_INPUT $f2"}.join(' ')
     def reference_cmd = fasta ? "--REFERENCE_SEQUENCE $fasta" : ""
 
     def avail_mem = 3072

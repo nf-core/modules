@@ -1,0 +1,95 @@
+nextflow_process {
+
+    name "Test Process VIZGENPOSTPROCESSING_PREPARESEGMENTATION"
+    script "../main.nf"
+    process "VIZGENPOSTPROCESSING_PREPARESEGMENTATION"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "vizgenpostprocessing"
+    tag "vizgenpostprocessing/preparesegmentation"
+
+    test("nuclei - json, images, csv") {
+
+        when {
+            params {
+                module_args = '--tile-size 200 --tile-overlap 20'
+            }
+            process {
+                """
+                // Create test directory and files before process execution
+                testDir = file("tmpdir", type: 'dir')
+                testDir.mkdir()
+
+                // Download source file
+                sourceUrl = 'https://github.com/nf-core/test-datasets/raw/modules/data/imaging/segmentation/nuclear_image.tif'
+                sourceFile = file(sourceUrl)
+
+                // Create renamed copies
+                sourceFile.copyTo(file("\${testDir}/mosaic_DAPI_z3.tif"))
+                sourceFile.copyTo(file("\${testDir}/mosaic_PolyT_z3.tif"))
+
+                // Create transform file
+                transformFile = file("\${testDir}/micron_to_mosaic_pixel_transform.csv")
+                transformFile.text = "2 0 0\\n0 2 0\\n0 0 1"
+
+                input[0] = [
+                    [ id:'test' ],
+                    testDir,
+                    transformFile
+                ]
+                input[1] = file('https://raw.githubusercontent.com/Vizgen/vpt-plugin-cellpose2/refs/heads/develop/example_analysis_algorithm/cellpose2_nuclei.json', checkIfExists: true)
+                input[2] = "mosaic_(?P<stain>[\\\\w|-]+)_z(?P<z>[0-9]+).tif"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.segmentation_files[0][1]).name, // Algorithm JSON file is not stable as it contains a timestamp
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+    test("nuclei - json, images, csv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                // Create test directory and files before process execution
+                testDir = file("tmpdir", type: 'dir')
+                testDir.mkdir()
+
+                transformFile = file("\${testDir}/micron_to_mosaic_pixel_transform.csv")
+
+                input[0] = [
+                    [ id:'test' ],
+                    testDir,
+                    transformFile
+                ]
+                input[1] = file('https://raw.githubusercontent.com/Vizgen/vpt-plugin-cellpose2/refs/heads/develop/example_analysis_algorithm/cellpose2_nuclei.json', checkIfExists: true)
+                input[2] = "mosaic_(?P<stain>[\\\\w|-]+)_z(?P<z>[0-9]+).tif"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+
+    }
+
+}

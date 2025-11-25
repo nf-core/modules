@@ -97,6 +97,16 @@ for (ao in names(args_opt)) {
 keys <- c("formula", "contrast_string", "contrast_variable", "contrast_reference")
 opt[keys] <- lapply(opt[keys], nullify)
 
+opt\$threads      <- as.numeric(opt\$threads)
+opt\$apply_voom   <- as.logical(opt\$apply_voom)
+opt\$proportion   <- as.numeric(opt\$proportion)
+opt\$trend        <- as.logical(opt\$trend)
+opt\$robust       <- as.logical(opt\$robust)
+opt\$reml         <- as.logical(opt\$reml)
+opt\$p.value      <- as.numeric(opt\$p.value)
+opt\$lfc          <- as.numeric(opt\$lfc)
+opt\$confint      <- as.logical(opt\$confint)
+
 # Load metadata
 metadata <- read_delim_flexible(opt\$sample_file, header = TRUE, stringsAsFactors = TRUE)
 rownames(metadata) <- metadata[[opt\$sample_id_col]]
@@ -137,7 +147,7 @@ if (as.logical(opt\$apply_voom)) {
     vobjDream <- voomWithDreamWeights(dge, form, metadata, BPPARAM = param)
 } else {
     # Assume countMatrix roughly follows a normal distribution
-    vobjDream<- DGEList(countMatrix)
+    vobjDream<- countMatrix
 }
 
 # Fit the DREAM model with ddf and reml options
@@ -180,6 +190,9 @@ if (!is.null(opt\$contrast_string)) {
                         adjust.method = opt\$adjust.method, p.value = opt\$p.value,
                         lfc = opt\$lfc, confint = opt\$confint)
 }
+
+results\$gene_id <- rownames(results)
+results <- results[, c("gene_id", setdiff(names(results), "gene_id"))]
 
 # Export topTable results
 write.table(results, file = paste(opt\$output_prefix, 'dream.results.tsv', sep = '.'),

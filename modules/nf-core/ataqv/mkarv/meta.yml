@@ -4,7 +4,6 @@ keywords:
   - ataqv
   - ATAC-seq
   - qc
-  - ataqv
   - mkarv
 tools:
   - "ataqv":
@@ -18,21 +17,25 @@ tools:
       licence: ["GPL v3"]
       identifier: biotools:ataqv
 input:
-  - - '"jsons/*"':
-        type: file
-        description: JSON files
-        pattern: "*.json"
+  - jsons/*:
+      type: file
+      description: JSON files
+      pattern: "*.json"
+      ontologies:
+        - edam: http://edamontology.org/format_3464 # JSON
 output:
-  - html:
-      - html:
-          type: directory
-          description: Web application to visualize results in HTML format
-          pattern: "*.html"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  html:
+    - html:
+        type: directory
+        description: Web application to visualize results in HTML format
+        pattern: "*.html"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@bjlang"
 maintainers:

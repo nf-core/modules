@@ -22,13 +22,15 @@ input:
         type: file
         description: RunManifest file
         pattern: "*.{csv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
     - run_dir:
         type: directory
         description: "Input run directory containing optionally containing a RunManifest.json
           if run_manifest is not supplied"
 output:
-  - sample_fastq:
-      - meta:
+  sample_fastq:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -37,8 +39,10 @@ output:
           type: file
           description: Demultiplexed sample FASTQ files
           pattern: "output/Samples/*/*_R*.fastq.gz"
-  - sample_json:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  sample_json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,18 +51,32 @@ output:
           type: file
           description: Demultiplexed sample stats
           pattern: "output/Samples/*/*.json"
-  - qc_report:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  qc_report:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - output/*.html:
+      - output/*_QC.html:
           type: file
           description: QC HTML report
-          pattern: "output/*.html"
-  - run_stats:
-      - meta:
+          pattern: "output//*_QC.html"
+          ontologies: []
+  multiqc_report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - output/multiqc_report.html:
+          type: file
+          description: Multiqc HTML report
+          pattern: "output/multiqc_report.html"
+          ontologies: []
+  run_stats:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -67,8 +85,9 @@ output:
           type: file
           description: QC HTML report
           pattern: "output/*.html"
-  - generated_run_manifest:
-      - meta:
+          ontologies: []
+  generated_run_manifest:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -77,8 +96,10 @@ output:
           type: file
           description: Updated Run Manifest JSON from the run_manifest csv
           pattern: "output/RunManifest.json"
-  - metrics:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  metrics:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -87,8 +108,10 @@ output:
           type: file
           description: Sample metrics
           pattern: "output/Metrics.csv"
-  - unassigned:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  unassigned:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -97,11 +120,15 @@ output:
           type: file
           description: Unassigned Sequences
           pattern: "output/UnassignedSequences.csv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@edmundmiller"
 maintainers:

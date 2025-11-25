@@ -1,0 +1,97 @@
+nextflow_process {
+
+    name "Test Process CTREE"
+    script "../main.nf"
+    process "CTREE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ctree"
+
+    test("test mobster rds input") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id : "test" ],
+                    file(params.modules_testdata_base_path + "delete_me/ctree/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_mobster_st_best_fit.rds", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+
+    }
+
+    test("test mobster rds input - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id : "test" ],
+                    file(params.modules_testdata_base_path + "delete_me/ctree/HCC1395_WXS_HCC1395_HCC1395_HCC1395T_mobster_st_best_fit.rds", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("test pyclonevi tsv input") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id : "test" ],
+                    file(params.modules_testdata_base_path + "delete_me/ctree/HCC1395_WXS_HCC1395_cluster_table.csv", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.versions).match() }
+            )
+        }
+
+    }
+
+    test("test pyclonevi tsv input - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id : "test" ],
+                    file(params.modules_testdata_base_path + "delete_me/ctree/HCC1395_WXS_HCC1395_cluster_table.csv", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

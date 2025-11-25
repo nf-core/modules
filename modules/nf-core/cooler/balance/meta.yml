@@ -4,7 +4,6 @@ keywords:
   - cooler/balance
   - cooler
   - cool
-  - cooler
 tools:
   - "cooler":
       description: Sparse binary format for genomic interaction matrices
@@ -24,12 +23,13 @@ input:
         type: file
         description: Path to COOL file
         pattern: "*.{cool,mcool}"
+        ontologies: []
     - resolution:
         type: integer
         description: Resolution
 output:
-  - cool:
-      - meta:
+  cool:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,11 +38,14 @@ output:
           type: file
           description: Output COOL file balancing weights
           pattern: "*.cool"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nservant"
   - "@muffato"

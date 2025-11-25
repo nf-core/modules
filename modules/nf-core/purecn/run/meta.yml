@@ -33,16 +33,26 @@ input:
         description: Coverage file generated from Coverage.R
         pattern: "*.txt"
         ontologies: []
-  - - normal_db:
+    - vcf:
         type: file
-        description: normal pannel database
-        ontologies: []
-  - - genome:
-        type: string
-        description: Genome build
+        description: VCF containing variant calls
+        pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
+  - normal_db:
+      type: file
+      description: Normal panel database
+      ontologies: []
+  - mapping_bias:
+      type: file
+      description: Mapping bias file generated with normal panel
+      ontologies: []
+  - genome:
+      type: string
+      description: Genome build
 output:
-  - pdf:
-      - meta:
+  pdf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -52,8 +62,9 @@ output:
           description: |
             PDF file containing copy number plots
           pattern: "*.pdf"
-  - local_optima_pdf:
-      - meta:
+          ontologies: []
+  local_optima_pdf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -63,8 +74,9 @@ output:
           description: |
             PDF file containing local optima plots
           pattern: "*_local_optima.pdf"
-  - seg:
-      - meta:
+          ontologies: []
+  seg:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -74,8 +86,22 @@ output:
           description: |
             Tab-delimited file containing segmentation results
           pattern: "*_dnacopy.seg"
-  - genes_csv:
-      - meta:
+          ontologies: []
+  csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}.csv:
+          type: file
+          description: |
+            Tab-delimited file containing sample purity, ploidy
+            and flags information
+          pattern: "${prefix}.csv"
+          ontologies: []
+  genes_csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -85,8 +111,10 @@ output:
           description: |
             CSV file containing gene copy number calls. Optional
           pattern: "*_genes.csv"
-  - amplification_pvalues_csv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  amplification_pvalues_csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -96,8 +124,10 @@ output:
           description: |
             CSV file containing amplification p-values. Optional
           pattern: "*_amplification_pvalues.csv"
-  - vcf_gz:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  vcf_gz:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -107,8 +137,10 @@ output:
           description: |
             GZipped VCF file containing SNV calls. Optional
           pattern: "*.vcf.gz"
-  - variants_csv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  variants_csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -118,8 +150,10 @@ output:
           description: |
             CSV file containing SNV calls. Optional
           pattern: "*_variants.csv"
-  - loh_csv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  loh_csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -129,8 +163,10 @@ output:
           description: |
             CSV file containing LOH calls. Optional
           pattern: "*_loh.csv"
-  - chr_pdf:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  chr_pdf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -140,8 +176,9 @@ output:
           description: |
             PDF file containing chromosome plots. Optional
           pattern: "*_chromosomes.pdf"
-  - segmentation_pdf:
-      - meta:
+          ontologies: []
+  segmentation_pdf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -151,8 +188,9 @@ output:
           description: |
             PDF file containing segmentation plots. Optional
           pattern: "*_segmentation.pdf"
-  - multisample_seg:
-      - meta:
+          ontologies: []
+  multisample_seg:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -161,13 +199,25 @@ output:
           type: file
           description: multisample segmentation results
           pattern: "*_multisample.seg"
-  - versions:
-      - versions.yml:
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.log":
           type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies:
-            - edam: http://edamontology.org/format_3750 # YAML
+          description: Log file of the analysis
+          pattern: "*.log"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 
 authors:
   - "@aldosr"

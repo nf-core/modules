@@ -25,22 +25,29 @@ input:
         type: file
         description: Input SV VCF file
         pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
     - tbi:
         type: file
         description: Input SV VCF index file
         pattern: "*.vcf.gz.tbi"
+        ontologies: []
     - truth_vcf:
         type: file
         description: Input VCF file with truth SVs
         pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
     - truth_tbi:
         type: file
         description: Input VCF index file with truth SVs
         pattern: "*.vcf.gz.tbi"
+        ontologies: []
     - bed:
         type: file
         description: BED file containing regions to compare
         pattern: "*.bed"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -50,6 +57,7 @@ input:
         type: file
         description: Reference FASTA file
         pattern: "*.{fasta,fa,fna}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -59,9 +67,10 @@ input:
         type: file
         description: Reference FASTA index file
         pattern: "*.fai"
+        ontologies: []
 output:
-  - fn_vcf:
-      - meta:
+  fn_vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -70,8 +79,10 @@ output:
           type: file
           description: VCF file with false negatives
           pattern: "*.fn.vcf.gz"
-  - fn_tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  fn_tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -80,8 +91,9 @@ output:
           type: file
           description: VCF index file with false negatives
           pattern: "*.fn.vcf.gz.tbi"
-  - fp_vcf:
-      - meta:
+          ontologies: []
+  fp_vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -90,8 +102,10 @@ output:
           type: file
           description: VCF file with false positives
           pattern: "*.fp.vcf.gz"
-  - fp_tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  fp_tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -100,8 +114,9 @@ output:
           type: file
           description: VCF index file with false positives
           pattern: "*.fp.vcf.gz.tbi"
-  - tp_base_vcf:
-      - meta:
+          ontologies: []
+  tp_base_vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -110,8 +125,10 @@ output:
           type: file
           description: VCF file with base true positives
           pattern: "*.tp-base.vcf.gz"
-  - tp_base_tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tp_base_tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -120,8 +137,9 @@ output:
           type: file
           description: VCF index file with base true positives
           pattern: "*.tp-base.vcf.gz.tbi"
-  - tp_comp_vcf:
-      - meta:
+          ontologies: []
+  tp_comp_vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -130,8 +148,10 @@ output:
           type: file
           description: VCF file with compared true positives
           pattern: "*.tp-comp.vcf.gz"
-  - tp_comp_tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tp_comp_tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -140,8 +160,9 @@ output:
           type: file
           description: VCF index file with compared true positives
           pattern: "*.tp-comp.vcf.gz.tbi"
-  - summary:
-      - meta:
+          ontologies: []
+  summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -150,11 +171,27 @@ output:
           type: file
           description: Summary JSON file with results from the benchmark
           pattern: "*.summary.json"
-  - versions:
-      - versions.yml:
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.log.txt":
           type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          description: Log file from Truvari run
+          pattern: "*.log.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_1964
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@nvnieuwk"
 maintainers:
