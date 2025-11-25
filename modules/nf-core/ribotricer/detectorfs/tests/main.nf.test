@@ -28,7 +28,7 @@ nextflow_process {
             process {
             """
             input[0] = GUNZIP.out.gunzip.map{[
-                [id:'homo_sapiens_chr20'], 
+                [id:'homo_sapiens_chr20'],
                 it[1],
                 file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)
             ]}
@@ -45,7 +45,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ 
+                input[0] = [
                     [ id:'test', single_end:true, strandedness:'forward' ], // meta map
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
@@ -72,7 +72,7 @@ nextflow_process {
             )
         }
     }
-    
+
     test("human chr20 - bam - filtered - reverse") {
 
         config './nextflow.filtered.config'
@@ -80,7 +80,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ 
+                input[0] = [
                     [ id:'test', single_end:true, strandedness:'reverse' ], // meta map
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
@@ -107,7 +107,7 @@ nextflow_process {
             )
         }
     }
-    
+
     test("human chr20 - bam - filtered - unspecified strand") {
 
         config './nextflow.filtered.config'
@@ -115,7 +115,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ 
+                input[0] = [
                     [ id:'test', single_end:true ], // meta map
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
@@ -150,7 +150,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ 
+                input[0] = [
                     [ id:'test', single_end:true, strandedness:'forward' ], // meta map
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
@@ -178,17 +178,17 @@ nextflow_process {
         }
 
     }
-    
+
     test("human chr20 - bam - filtered - forward - stub") {
 
         options '-stub'
-        
+
         config './nextflow.filtered.config'
 
         when {
             process {
                 """
-                input[0] = [ 
+                input[0] = [
                     [ id:'test', single_end:true, strandedness:'forward' ], // meta map
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
@@ -215,9 +215,9 @@ nextflow_process {
             )
         }
     }
-    
+
     test("human chr20 - bam - filtered - reverse - stub") {
-        
+
         options '-stub'
 
         config './nextflow.filtered.config'
@@ -225,7 +225,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ 
+                input[0] = [
                     [ id:'test', single_end:true, strandedness:'reverse' ], // meta map
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
@@ -252,9 +252,9 @@ nextflow_process {
             )
         }
     }
-    
+
     test("human chr20 - bam - filtered - unspecified strand - stub") {
-        
+
         options '-stub'
 
         config './nextflow.filtered.config'
@@ -262,7 +262,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ 
+                input[0] = [
                     [ id:'test', single_end:true ], // meta map
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
@@ -293,13 +293,13 @@ nextflow_process {
     test("human chr20 - bam - all - forward - stub") {
 
         options '-stub'
-        
+
         config './nextflow.all.config'
 
         when {
             process {
                 """
-                input[0] = [ 
+                input[0] = [
                     [ id:'test', single_end:true, strandedness:'forward' ], // meta map
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
@@ -328,7 +328,3 @@ nextflow_process {
 
     }
 }
-
-
-
-

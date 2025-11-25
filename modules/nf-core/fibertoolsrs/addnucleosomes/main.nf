@@ -42,7 +42,7 @@ process FIBERTOOLSRS_ADDNUCLEOSOMES {
 
     """
     echo $args
-    
+
     touch ${prefix}.bam
 
     cat <<-END_VERSIONS > versions.yml

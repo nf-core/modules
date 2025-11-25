@@ -45,7 +45,7 @@ process MYLOASM {
     prefix   = task.ext.prefix ?: "${meta.id}"
     """
     echo $args
-    
+
     mkdir -p ${prefix}/alternate_assemblies
     mkdir -p ${prefix}/3-mapping
     touch ${prefix}/assembly_primary.fa

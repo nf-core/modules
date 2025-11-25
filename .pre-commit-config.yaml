@@ -3,6 +3,7 @@ repos:
     rev: "v3.1.0"
     hooks:
       - id: prettier
+        entry: prettier --experimental-cli --write --ignore-unknown --no-cache
         additional_dependencies:
           - prettier@3.6.2
 
@@ -54,7 +55,4 @@ repos:
     rev: v2.14.0
     hooks:
       - id: hadolint-docker
-  - repo: https://github.com/nf-core/tools
-    rev: pre-commit
-    hooks:
-      - id: lint-subworkflows
+        args: ["--failure-threshold", "error"]
