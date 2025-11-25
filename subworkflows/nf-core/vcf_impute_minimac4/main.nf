@@ -25,7 +25,7 @@ workflow VCF_IMPUTE_MINIMAC4 {
     }
 
     ch_panel_branched.other.map{
-        error "ERROR: ch_panel files must be either VCF/BCF or MSAV." 
+        error "ERROR: ch_panel files must be either VCF/BCF or MSAV."
     }
 
     // Compress reference panel to MSAV format
