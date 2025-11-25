@@ -128,6 +128,7 @@ nextflow_workflow {
     }
 
     test("homo_sapiens - empty channels - stub") {
+        tag "test"
         options "-stub"
         when {
             params{
@@ -141,9 +142,15 @@ nextflow_workflow {
                     file(params.pipelines_testdata_base_path + "hum_data/individuals/NA12878/NA12878.s.bcf.csi", checkIfExist:true)
                 ])
                 input[1] = channel.of(
-                    [[id: "1000GP", chr: "chr22"],[],[]],
-                    [[id: "1000GP", chr: "chr21"],[],[]]
-                )
+                [
+                    [id: "1000GP", chr: "chr22"],
+                    file(params.pipelines_testdata_base_path + "hum_data/panel/chr22/1000GP.chr22.s.norel.vcf.gz", checkIfExist:true),
+                    file(params.pipelines_testdata_base_path + "hum_data/panel/chr22/1000GP.chr22.s.norel.vcf.gz.csi", checkIfExist:true)
+                ],[
+                    [id: "1000GP", chr: "chr21"],
+                    file(params.pipelines_testdata_base_path + "hum_data/panel/chr21/1000GP.chr21.s.norel.vcf.gz", checkIfExist:true),
+                    file(params.pipelines_testdata_base_path + "hum_data/panel/chr21/1000GP.chr21.s.norel.vcf.gz.csi", checkIfExist:true)
+                ])
                 input[2] = channel.of(
                     [[id: "1000GP", chr: "chr22"],[],[]],
                     [[id: "1000GP", chr: "chr21"],[],[]]
@@ -232,9 +239,15 @@ nextflow_workflow {
                     file(params.pipelines_testdata_base_path + "hum_data/individuals/NA12878/NA12878.s.bcf.csi", checkIfExist:true)
                 ])
                 input[1] = channel.of(
-                    [[id: "1000GP", chr: "chr22"],[],[]],
-                    [[id: "1000GP", chr: "chr21"],[],[]]
-                )
+                [
+                    [id: "1000GP", chr: "chr22"],
+                    file(params.pipelines_testdata_base_path + "hum_data/panel/chr22/1000GP.chr22.s.norel.vcf.gz", checkIfExist:true),
+                    file(params.pipelines_testdata_base_path + "hum_data/panel/chr22/1000GP.chr22.s.norel.vcf.gz.csi", checkIfExist:true)
+                ],[
+                    [id: "1000GP", chr: "chr21"],
+                    file(params.pipelines_testdata_base_path + "hum_data/panel/chr21/1000GP.chr21.s.norel.vcf.gz", checkIfExist:true),
+                    file(params.pipelines_testdata_base_path + "hum_data/panel/chr21/1000GP.chr21.s.norel.vcf.gz.csi", checkIfExist:true)
+                ])
                 input[2] = channel.of(
                     [[id: "1000GP", chr: "chr22"],[],[]],
                     [[id: "1000GP_2", chr: "chr21"],[],[]] // Wrong panel
@@ -255,7 +268,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.failed },
-                { assert workflow.errorMessage.contains("ERROR: join operation resulted in an empty channel. Please provide a valid ch_chunks and ch_map channel as input.") }
+                { assert workflow.errorMessage.contains("ERROR: join operation resulted in an empty channel. Please provide a valid ch_posfile, ch_chunks and ch_map channel as input.") }
             )
         }
     }
