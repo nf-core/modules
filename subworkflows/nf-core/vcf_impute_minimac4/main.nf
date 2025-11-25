@@ -96,5 +96,5 @@ workflow VCF_IMPUTE_MINIMAC4 {
 
     emit:
     vcf_index  = ch_vcf_index // channel: [ [id, chr, tools], vcf, index ]
-    versions = ch_versions        // channel: [ versions.yml ]
+    versions = ch_versions    // channel: [ versions.yml ]
 }
