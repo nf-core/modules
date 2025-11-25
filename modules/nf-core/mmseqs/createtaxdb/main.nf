@@ -25,8 +25,7 @@ process MMSEQS_CREATETAXDB {
     taxdump_opt = taxdump_dir ? "--ncbi-tax-dump ${taxdump_dir}" : ""
     tax_mapping_opt = taxdump_dir && tax_mapping_file ? "--tax-mapping-file ${tax_mapping_file}" : ""
     """
-    # Find the database file and remove its extension to get the base path
-    # Sort to get the base name first (e.g., 'mmseqs' before 'mmseqs_aln')
+    # Find database files, remove extension, and sort to get base name first (e.g., 'mmseqs' before 'mmseqs_aln')
     DB_INPUT_PATH_NAME=\$(find -L "${db}/" -maxdepth 1 -name "${args2}" | sed 's/\\.[^.]*\$//' | sort | head -1)
 
     mmseqs createtaxdb \\
@@ -42,8 +41,7 @@ process MMSEQS_CREATETAXDB {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: "*.dbtype"
     """
-    # Find the database file and remove its extension to get the base path
-    # Sort to get the base name first (e.g., 'mmseqs' before 'mmseqs_aln')
+    # Find database files, remove extension, and sort to get base name first (e.g., 'mmseqs' before 'mmseqs_aln')
     DB_INPUT_PATH_NAME=\$(find -L "${db}/" -maxdepth 1 -name "${args2}" | sed 's/\\.[^.]*\$//' | sort | head -1)
 
     echo ${args}
