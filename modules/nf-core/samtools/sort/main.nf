@@ -20,7 +20,7 @@ process SAMTOOLS_SORT {
     tuple val(meta), path("${prefix}.${extension}.csi"),    emit: csi,  optional: true
     tuple val(meta), path("${prefix}.${extension}.bai"),    emit: bai,  optional: true
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
-    
+
     when:
     task.ext.when == null || task.ext.when
 
@@ -73,6 +73,6 @@ process SAMTOOLS_SORT {
     """
     touch ${prefix}.${extension}
     ${index}
-    
+
     """
 }
