@@ -39,7 +39,7 @@ process QSV_CAT {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo ${args}
-    
+
     touch ${prefix}.${out_format}
     """
 }
