@@ -26,7 +26,7 @@ process MMSEQS_CREATETAXDB {
     tax_mapping_opt = taxdump_dir && tax_mapping_file ? "--tax-mapping-file ${tax_mapping_file}" : ""
     """
     # Find the database file and remove its extension to get the base path
-    DB_INPUT_PATH_NAME=\$(find -L "${db}/" -maxdepth 1 -name "${args2}" -print -quit | sed 's/\\.[^.]*\$//')
+    DB_INPUT_PATH_NAME=\$(find -L "${db}/" -maxdepth 1 -name "${args2}" | sed 's/\\.[^.]*\$//' | sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
 
     mmseqs createtaxdb \\
       \${DB_INPUT_PATH_NAME} \\
@@ -42,7 +42,7 @@ process MMSEQS_CREATETAXDB {
     def args2 = task.ext.args2 ?: "*.dbtype"
     """
     # Find the database file and remove its extension to get the base path
-    DB_INPUT_PATH_NAME=\$(find -L "${db}/" -maxdepth 1 -name "${args2}" -print -quit | sed 's/\\.[^.]*\$//')
+    DB_INPUT_PATH_NAME=\$(find -L "${db}/" -maxdepth 1 -name "${args2}" | sed 's/\\.[^.]*\$//' | sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
 
     echo ${args}
     touch "${db}/\$(basename \${DB_INPUT_PATH_NAME})_mapping"
