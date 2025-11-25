@@ -11,8 +11,8 @@ process PBMARKDUP {
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path("*.{bam,f*a,/.*f.*\\.gz/}") , emit: markduped
-    path "versions.yml"                               , emit: versions
+    tuple val(meta), path("${prefix}.${suffix}"), emit: markduped
+    path "versions.yml"                         , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,8 +20,8 @@ process PBMARKDUP {
     script:
     def args  = task.ext.args  ?: ''
 
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = input.getExtension()
+    prefix = task.ext.prefix ?: "${meta.id}"
+    suffix = input.getExtension()
 
     """
     pbmarkdup \\
@@ -37,8 +37,8 @@ process PBMARKDUP {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = input.getExtension()
+    prefix = task.ext.prefix ?: "${meta.id}"
+    suffix = input.getExtension()
     """
     touch ${prefix}.${suffix}
 
