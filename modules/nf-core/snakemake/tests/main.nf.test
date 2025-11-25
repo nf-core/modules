@@ -18,7 +18,7 @@ nextflow_process {
             []
         ]
 // Snakefile
-    Channel.of('''
+    channel.of('''
 rule all:
     input: "hello.txt"
 
@@ -42,12 +42,13 @@ rule hello_world:
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.outputs, process.out.versions).match() }
+                { assert snapshot(
+                    process.out.outputs,
+                    process.out.versions_snakemake
+                ).match() }
             )
         }
-
     }
-
 }
