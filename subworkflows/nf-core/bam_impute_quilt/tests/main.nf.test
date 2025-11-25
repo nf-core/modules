@@ -9,7 +9,6 @@ nextflow_workflow {
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "subworkflows/bam_impute_quilt"
-    tag "bam_impute_quilt"
 
     tag "quilt"
     tag "quilt/quilt"
@@ -151,6 +150,7 @@ nextflow_workflow {
     }
 
     test("homo_sapiens - empty channels - stub") {
+        tag "test"
         options "-stub"
         when {
             params{
