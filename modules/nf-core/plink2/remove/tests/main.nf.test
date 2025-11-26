@@ -14,7 +14,7 @@ nextflow_process {
 
         when {
             process {
-                """          
+                """
                  input[0] = [
                         [id:"test"],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
@@ -39,7 +39,7 @@ nextflow_process {
 
         when {
             process {
-                """          
+                """
                  input[0] = [
                         [id:"test"],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pgen', checkIfExists: true),
@@ -59,14 +59,14 @@ nextflow_process {
         }
 
     }
-    
+
      test("human - bed/bim/fam - remove - stub") {
 
         options "-stub"
 
         when {
             process {
-                """          
+                """
                  input[0] = [
                         [id:"test"],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
@@ -93,7 +93,7 @@ nextflow_process {
 
         when {
             process {
-                """          
+                """
                  input[0] = [
                         [id:"test"],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pgen', checkIfExists: true),
@@ -112,6 +112,6 @@ nextflow_process {
             )
         }
 
-    }   
-    
+    }
+
 }

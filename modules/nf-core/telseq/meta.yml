@@ -27,7 +27,11 @@ tools:
       licence: ["MIT"]
       identifier: "biotools:samtools"
 input:
-  - - meta: {}
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
     - bam:
         type: file
         description: BAM/CRAM/SAM file

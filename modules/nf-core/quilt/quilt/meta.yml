@@ -109,13 +109,13 @@ input:
         description: Buffer of region to perform imputation over. So imputation is run
           form regionStart-buffer to regionEnd+buffer, and reported for regionStart
           to regionEnd, including the bases of regionStart and regionEnd.
-    - genetic_map_file:
+    - genetic_map:
         type: file
         description: (Optional) File with genetic map information, a file with 3 white-space
           delimited entries giving position (1-based), genetic rate map in cM/Mbp, and
           genetic map in cM. If no file included, rate is based on physical distance
           and expected rate (expRate).
-        pattern: "*.{txt.gz}"
+        pattern: "*.{txt,map}{,gz}"
         ontologies: []
   - - meta2:
         type: map
@@ -125,7 +125,12 @@ input:
     - fasta:
         type: file
         description: (Optional) File with reference genome.
-        pattern: "*.{txt.gz}"
+        pattern: "*.{fa,fasta}"
+        ontologies: []
+    - fasta_fai:
+        type: file
+        description: (Optional) File with reference genome index.
+        pattern: "*.{fai}"
         ontologies: []
 output:
   vcf:
@@ -157,14 +162,22 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - RData: {}
+      - "RData":
+          type: directory
+          description: |
+            Folder of RData objects generated during the imputation process.
+          pattern: "RData"
   plots:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - plots: {}
+      - "plots":
+          type: directory
+          description: |
+            Folder of plots generated during the imputation process.
+          pattern: "plots"
   versions:
     - versions.yml:
         type: file
