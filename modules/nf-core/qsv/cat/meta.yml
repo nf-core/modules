@@ -29,14 +29,10 @@ input:
       type: string
       description: Concatenation mode (rows, columns or rowskey)
       pattern: "^(rows|columns|rowskey)$"
-  - in_format:
-      type: string
-      description: Input format (csv, tab, or a delimiting character)
-      pattern: "*"
   - out_format:
       type: string
-      description: Output format (csv, tab, or a delimiting character)
-      pattern: "*"
+      description: Output format (.csv for comma delimiter, .ssv for semicolon, and .tsv or .tab for tab)
+      pattern: "^(csv|ssv|tsv|tab)$"
 output:
   csv:
     - - meta:
@@ -47,7 +43,7 @@ output:
       - ${prefix}.${out_format}:
           type: file
           description: Concatenated CSV/TSV file
-          pattern: "*.{csv,tsv}"
+          pattern: "*.{csv,tsv,tab,ssv}"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
             - edam: http://edamontology.org/format_3475 # TSV

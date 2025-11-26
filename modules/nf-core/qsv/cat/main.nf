@@ -8,9 +8,8 @@ process QSV_CAT {
         : 'community.wave.seqera.io/library/qsv:5.1.0--9a6a0c23d3b279b5'}"
 
     input:
-    tuple val(meta), path(csv, name: 'inputs/csv*/*')
+    tuple val(meta), path(csv, name: 'inputs/in*/*')
     val mode
-    val in_format
     val out_format
 
     output:
@@ -23,14 +22,12 @@ process QSV_CAT {
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
     def args = task.ext.args ?: ''
-    def delimiter = in_format == "tsv" ? "\t" : (in_format == "csv" ? "," : in_format)
     """
     qsv \\
         cat \\
         ${mode} \\
         ${args} \\
         -o ${prefix}.${out_format} \\
-        --delimiter '${delimiter}' \\
         ${csv}
     """
 
