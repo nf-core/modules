@@ -52,7 +52,7 @@ nextflow_process {
                 ]
                 input[1]= [
                     [ id:'map'],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.GRCh38.glimpse.chr22.map.gz", checkIfExists:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.glimpse.map", checkIfExists:true)
                 ]
                 """
             }

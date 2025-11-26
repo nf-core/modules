@@ -3,6 +3,9 @@ nextflow_process {
     name "Test Process GLIMPSE2_CONCORDANCE"
     script "../main.nf"
     process "GLIMPSE2_CONCORDANCE"
+
+    config "./nextflow.config"
+
     tag "glimpse2"
     tag "glimpse2/concordance"
     tag "glimpse2/phase"
@@ -11,22 +14,21 @@ nextflow_process {
     tag "modules"
 
     test("test glimpse2 concordance") {
-        config "./nextflow.config"
 
         when {
             params {
-                glimpse2_concordance_args = "--gt-val --af-tag AF"
+                glimpse2_concordance_args = "--gt-val --af-tag AF --seed 1"
             }
             process {
                 """
                 target = Channel.of([
                     [id: "input"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz",checkIfExists:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi",checkIfExists:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi",checkIfExists:true)
                 ])
                 truth = Channel.of([
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz",checkIfExists:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz.csi",checkIfExists:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz.csi",checkIfExists:true)
                 ])
                 allele_freq = Channel.of([
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz",checkIfExists:true),
@@ -48,11 +50,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.errors_cal.collect{ file(it[1]).name },
-                    process.out.errors_grp.collect{ file(it[1]).name },
-                    process.out.errors_spl.collect{ file(it[1]).name },
-                    process.out.rsquare_grp.collect{ file(it[1]).name },
-                    process.out.rsquare_spl.collect{ file(it[1]).name },
+                    process.out.errors_cal,
+                    process.out.errors_grp,
+                    process.out.errors_spl,
+                    process.out.rsquare_grp,
+                    process.out.rsquare_spl,
                     process.out.versions
                 ).match() }
             )
@@ -61,8 +63,6 @@ nextflow_process {
     }
 
     test("test list of region and rsquare per site") {
-        config "./nextflow.config"
-
         when {
             params {
                 glimpse2_concordance_args = "--gt-val --af-tag AF --out-r2-per-site"
@@ -71,12 +71,12 @@ nextflow_process {
                 """
                 target = Channel.of([
                     [id: "input"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz",checkIfExists:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi",checkIfExists:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi",checkIfExists:true)
                 ])
                 truth = Channel.of([
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz",checkIfExists:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz.csi",checkIfExists:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz.csi",checkIfExists:true)
                 ])
                 allele_freq = Channel.of([
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz",checkIfExists:true),
@@ -99,12 +99,12 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.errors_cal.collect{ file(it[1]).name },
-                    process.out.errors_grp.collect{ file(it[1]).name },
-                    process.out.errors_spl.collect{ file(it[1]).name },
-                    process.out.rsquare_grp.collect{ file(it[1]).name },
-                    process.out.rsquare_spl.collect{ file(it[1]).name },
-                    process.out.rsquare_per_site.collect{ file(it[1]).name },
+                    process.out.errors_cal,
+                    process.out.errors_grp,
+                    process.out.errors_spl,
+                    process.out.rsquare_grp,
+                    process.out.rsquare_spl,
+                    process.out.rsquare_per_site,
                     process.out.versions
                 ).match() }
             )

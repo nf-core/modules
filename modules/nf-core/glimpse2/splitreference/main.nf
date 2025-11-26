@@ -24,7 +24,7 @@ process GLIMPSE2_SPLITREFERENCE {
 
     output:
         tuple val(meta), path("*.bin"), emit: bin_ref
-        path "versions.yml"           , emit: versions
+        tuple val("${task.process}"), val('glimpse2'), eval("GLIMPSE2_split_reference --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1"), topic: versions, emit: versions
 
     when:
         task.ext.when == null || task.ext.when
@@ -43,21 +43,11 @@ process GLIMPSE2_SPLITREFERENCE {
         --output-region $output_region \\
         --thread $task.cpus \\
         --output ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        glimpse2: "\$(GLIMPSE2_split_reference --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}_${output_region.replace(":","_")}"
     """
     touch ${prefix}.bin
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        glimpse2: "\$(GLIMPSE2_split_reference --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
-    END_VERSIONS
     """
 }
