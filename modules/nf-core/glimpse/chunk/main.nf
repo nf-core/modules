@@ -12,7 +12,7 @@ process GLIMPSE_CHUNK {
 
     output:
     tuple val(meta), path("*.txt"), emit: chunk_chr
-    tuple val("${task.process}"), val('glimpse'), eval("GLIMPSE_chunk --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]'"), topic: versions, emit: versions
+    tuple val("${task.process}"), val('glimpse'), eval("GLIMPSE_chunk --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]'"), topic: versions, emit: versions_glimpse
 
     when:
     task.ext.when == null || task.ext.when
