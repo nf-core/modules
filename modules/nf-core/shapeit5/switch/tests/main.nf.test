@@ -4,6 +4,8 @@ nextflow_process {
     script "../main.nf"
     process "SHAPEIT5_SWITCH"
 
+    config "./nextflow.config"
+
     tag "modules"
     tag "modules_nfcore"
     tag "shapeit5"
@@ -12,13 +14,9 @@ nextflow_process {
     tag "bcftools/index"
 
     test("homo sapiens - vcf, scaffold, []") {
-        config "./nextflow.config"
         setup {
             run("SHAPEIT5_PHASECOMMON") {
                 script "../../../shapeit5/phasecommon"
-                params {
-                    shapeit5_phasecommon_args = "--filter-maf 0.001 --seed 1"
-                }
                 process {
                     """
                     input[0] = Channel.of([
@@ -41,6 +39,9 @@ nextflow_process {
         }
 
         when {
+            params {
+                shapeit5_phasecommon_args = "--filter-maf 0.001 --seed 1"
+            }
             process {
                 """
                 input[0] = SHAPEIT5_PHASECOMMON.out.phased_variant
@@ -68,6 +69,9 @@ nextflow_process {
     test("homo sapiens - vcf, scaffold, [] - stub") {
         options "-stub"
         when {
+            params {
+                shapeit5_phasecommon_args = "--filter-maf 0.001 --seed 1"
+            }
             process {
                 """
                 input[0] = Channel.of([

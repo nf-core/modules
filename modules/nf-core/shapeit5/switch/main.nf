@@ -12,7 +12,7 @@ process SHAPEIT5_SWITCH {
 
     output:
         tuple val(meta), path("*.txt.gz"), emit: errors
-        tuple val("${task.process}"), val('shapeit5'), eval("SHAPEIT5_switch | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -n 1"), topic: versions, emit: versions
+        tuple val("${task.process}"), val('shapeit5'), eval("SHAPEIT5_switch | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -n 1"), topic: versions, emit: versions_shapeit5
 
     when:
         task.ext.when == null || task.ext.when
