@@ -39,7 +39,7 @@ nextflow_process {
                     process.out.phased_variant.collect{
                         meta, vcf -> [ meta, file(vcf).name ] // Only file name tested due to bcf format
                     },
-                    process.out.versions
+                    ["versions": process.out.versions_shapeit5]
                 ).match() }
             )
         }
@@ -74,7 +74,7 @@ nextflow_process {
                     process.out.phased_variant.collect{
                         meta, vcf -> [ meta, file(vcf).name ] // Only file name tested due to bcf format
                     },
-                    process.out.versions
+                    ["versions": process.out.versions_shapeit5]
                 ).match() }
             )
         }
