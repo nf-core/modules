@@ -12,7 +12,7 @@ process MINIMAC4_IMPUTE {
 
     output:
     tuple val(meta), path("*.{bcf,sav,vcf.gz,vcf,ubcf,usav}"), emit: vcf
-    path "versions.yml"                                      , emit: versions
+    tuple val("${task.process}"), val('minimac4'), eval("minimac4 --version |& sed '1!d ; s/minimac v//'"), topic: versions, emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,11 +38,6 @@ process MINIMAC4_IMPUTE {
         $map_cmd \\
         --threads $task.cpus \\
         -o ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        minimac4: \$(minimac4 --version |& sed '1!d ; s/minimac v//')
-    END_VERSIONS
     """
 
     stub:
@@ -56,12 +51,8 @@ process MINIMAC4_IMPUTE {
                     args.contains("--output-format usav")   || args.contains("-O usav")   ? "usav"   :
                     "vcf.gz"
     def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
+
     """
     ${create_cmd} ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        minimac4: \$(minimac4 --version |& sed '1!d ; s/minimac v//')
-    END_VERSIONS
     """
 }
