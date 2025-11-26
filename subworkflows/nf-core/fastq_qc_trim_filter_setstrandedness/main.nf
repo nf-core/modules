@@ -1,11 +1,12 @@
 include { BBMAP_BBSPLIT                      } from '../../../modules/nf-core/bbmap/bbsplit'
 include { CAT_FASTQ                          } from '../../../modules/nf-core/cat/fastq/main'
+include { RIBODETECTOR                       } from '../../../modules/nf-core/ribodetector/main'
 include { SORTMERNA                          } from '../../../modules/nf-core/sortmerna/main'
 include { SORTMERNA as SORTMERNA_INDEX       } from '../../../modules/nf-core/sortmerna/main'
 include { FQ_LINT                            } from '../../../modules/nf-core/fq/lint/main'
 include { FQ_LINT as FQ_LINT_AFTER_TRIMMING  } from '../../../modules/nf-core/fq/lint/main'
 include { FQ_LINT as FQ_LINT_AFTER_BBSPLIT   } from '../../../modules/nf-core/fq/lint/main'
-include { FQ_LINT as FQ_LINT_AFTER_SORTMERNA } from '../../../modules/nf-core/fq/lint/main'
+include { FQ_LINT as FQ_LINT_AFTER_RIBO_REMOVAL } from '../../../modules/nf-core/fq/lint/main'
 
 include { FASTQ_SUBSAMPLE_FQ_SALMON          } from '../fastq_subsample_fq_salmon'
 include { FASTQ_FASTQC_UMITOOLS_TRIMGALORE   } from '../fastq_fastqc_umitools_trimgalore'
@@ -102,8 +103,10 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     trimmer              // string (enum): 'fastp' or 'trimgalore'
     min_trimmed_reads    // integer: > 0
     save_trimmed         // boolean: true/false
-    remove_ribo_rna      // boolean: true/false: whether to run sortmerna to remove rrnas
-    with_umi             // boolean: true/false: Enable UMI-based read deduplication.
+    remove_ribo_rna           // boolean: true/false: whether to remove rrnas
+    ribo_removal_tool         // string (enum): 'sortmerna' or 'ribodetector'
+    ribodetector_read_length  // integer: read length for ribodetector (required if ribo_removal_tool == 'ribodetector')
+    with_umi                  // boolean: true/false: Enable UMI-based read deduplication.
     umi_discard_read     // integer: 0, 1 or 2
     stranded_threshold   // float: The fraction of stranded reads that must be assigned to a strandedness for confident assignment. Must be at least 0.5
     unstranded_threshold // float: The difference in fraction of stranded reads assigned to 'forward' and 'reverse' below which a sample is classified as 'unstranded'
@@ -259,37 +262,52 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     // MODULE: Remove ribosomal RNA reads
     //
     if (remove_ribo_rna) {
-        ch_sortmerna_fastas = ch_rrna_fastas
-            .collect()
-            .map { ['rrna_refs', it] }
+        if (ribo_removal_tool == 'sortmerna') {
+            ch_sortmerna_fastas = ch_rrna_fastas
+                .collect()
+                .map { ['rrna_refs', it] }
 
-        if (make_sortmerna_index) {
-            SORTMERNA_INDEX(
-                [[], []],
+            if (make_sortmerna_index) {
+                SORTMERNA_INDEX(
+                    [[], []],
+                    ch_sortmerna_fastas,
+                    [[], []],
+                )
+                ch_sortmerna_index = SORTMERNA_INDEX.out.index.first()
+            }
+
+            SORTMERNA(
+                ch_filtered_reads,
                 ch_sortmerna_fastas,
-                [[], []],
+                ch_sortmerna_index,
             )
-            ch_sortmerna_index = SORTMERNA_INDEX.out.index.first()
+
+            SORTMERNA.out.reads.set { ch_filtered_reads }
+
+            ch_multiqc_files = ch_multiqc_files.mix(SORTMERNA.out.log)
+
+            ch_versions = ch_versions.mix(SORTMERNA.out.versions.first())
         }
 
-        SORTMERNA(
-            ch_filtered_reads,
-            ch_sortmerna_fastas,
-            ch_sortmerna_index,
-        )
+        if (ribo_removal_tool == 'ribodetector') {
+            RIBODETECTOR(
+                ch_filtered_reads,
+                ribodetector_read_length,
+            )
 
-        SORTMERNA.out.reads.set { ch_filtered_reads }
+            RIBODETECTOR.out.fastq.set { ch_filtered_reads }
 
-        ch_multiqc_files = ch_multiqc_files.mix(SORTMERNA.out.log)
+            ch_multiqc_files = ch_multiqc_files.mix(RIBODETECTOR.out.log)
 
-        ch_versions = ch_versions.mix(SORTMERNA.out.versions.first())
+            ch_versions = ch_versions.mix(RIBODETECTOR.out.versions.first())
+        }
 
         if (!skip_linting) {
-            FQ_LINT_AFTER_SORTMERNA(
+            FQ_LINT_AFTER_RIBO_REMOVAL(
                 ch_filtered_reads
             )
-            ch_lint_log = ch_lint_log.mix(FQ_LINT_AFTER_SORTMERNA.out.lint)
-            ch_filtered_reads = ch_filtered_reads.join(FQ_LINT_AFTER_SORTMERNA.out.lint.map { it[0] })
+            ch_lint_log = ch_lint_log.mix(FQ_LINT_AFTER_RIBO_REMOVAL.out.lint)
+            ch_filtered_reads = ch_filtered_reads.join(FQ_LINT_AFTER_RIBO_REMOVAL.out.lint.map { it[0] })
         }
     }
 
