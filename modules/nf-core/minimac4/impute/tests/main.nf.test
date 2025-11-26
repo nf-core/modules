@@ -56,7 +56,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.vcf.collect{ [
+                    process.out.vcf.collect{ it -> [
                         file(it[1]).name,
                         path(it[1]).vcf.summary,
                         path(it[1]).vcf.variantsMD5
@@ -94,7 +94,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.vcf.collect{ [
+                    process.out.vcf.collect{ it -> [
                         file(it[1]).name,
                         path(it[1]).vcf.summary,
                         path(it[1]).vcf.variantsMD5

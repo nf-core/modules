@@ -26,7 +26,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.msav.collect{ file(it[1]).name },
+                    process.out.msav.collect{  it -> file(it[1]).name },
                     process.out.versions
                 ).match() }
             )
