@@ -47,11 +47,6 @@ input:
           Region to be considered in --input-plain (e.g. chr20:1000000-2000000 or chr20).
           For chrX, please treat PAR and non-PAR regions as different choromosome in order to avoid mixing ploidy.
         pattern: "chrXX:leftBufferPosition-rightBufferPosition"
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
     - scaffold:
         type: file
         description: Scaffold of haplotypes in VCF/BCF format.
@@ -67,14 +62,9 @@ input:
         description: |
           Region to be considered in --scaffold (e.g. chr20:1000000-2000000 or chr20).
         pattern: "chrXX:leftBufferPosition-rightBufferPosition"
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
     - map:
         type: file
-        description: File containing the genetic map.
+        description: File containing the genetic map in Glimpse format.
         pattern: "*.gmap"
         ontologies: []
 output:
