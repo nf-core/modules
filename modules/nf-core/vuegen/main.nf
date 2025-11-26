@@ -2,7 +2,7 @@ process VUEGEN {
     label 'process_single'
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-    ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fa/fadd4c6459b24fc3964d47d72dbf809e425054e08f1aec9d56c8bec40b4b3a47/data'
+    ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8e/8edb9c53d92007e32ac9f045ee4b4ea2054175db434831b46410c0bbc188d8b1/data'
     : 'community.wave.seqera.io/library/vuegen_python:236414fc5cfce774'}"
 
     input:
@@ -39,6 +39,14 @@ process VUEGEN {
         else
             QUARTO_CHECK_FLAG=""
         fi
+
+        # for apptainer, create and bind TinyTeX directory
+        Rscript -e "
+            dir.create(path = 'rlib', showWarnings = FALSE, recursive = TRUE)
+            install.packages('tinytex', lib = 'rlib', repos='https://cloud.r-project.org/')
+        "
+
+        quarto install tinytex
 
         # Execute VueGen based on the input type
         if [ "${input_type}" == "config" ]; then
