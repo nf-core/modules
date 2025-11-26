@@ -19,7 +19,7 @@ process GLIMPSE_CONCORDANCE {
     tuple val(meta), path("*.error.spl.txt.gz")  , emit: errors_spl
     tuple val(meta), path("*.rsquare.grp.txt.gz"), emit: rsquare_grp
     tuple val(meta), path("*.rsquare.spl.txt.gz"), emit: rsquare_spl
-    tuple val("${task.process}"), val('glimpse'), eval("GLIMPSE_concordance --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]'"), topic: versions, emit: versions
+    tuple val("${task.process}"), val('glimpse'), eval("GLIMPSE_concordance --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]'"), topic: versions, emit: versions_glimpse
 
     when:
     task.ext.when == null || task.ext.when

@@ -16,6 +16,7 @@ nextflow_process {
             process {
                 """
                 input[0] = channel.of([
+                    [ id: "NA12878" ],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz",checkIfExists:true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi",checkIfExists:true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.sites.vcf.gz",checkIfExists:true),
@@ -38,7 +39,7 @@ nextflow_process {
                     process.out.errors_cal,
                     process.out.errors_spl,
                     process.out.rsquare_spl,
-                    process.out.versions
+                    ["versions": process.out.versions_glimpse]
                 ).match() }
             )
         }
