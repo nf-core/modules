@@ -12,7 +12,7 @@ process MINIMAC4_COMPRESSREF {
 
     output:
     tuple val(meta), path("*.msav"), emit: msav
-    tuple val("${task.process}"), val('minimac4'), eval("minimac4 --version |& sed '1!d ; s/minimac v//'"), topic: versions, emit: versions
+    path "versions.yml"            , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,12 +25,22 @@ process MINIMAC4_COMPRESSREF {
         --compress-reference $ref\\
         $args \\
         --threads $task.cpus \\
-        -o ${prefix}.msav \\
+        -o ${prefix}.msav
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        minimac4: \$(minimac4 --version |& sed '1!d ; s/minimac v//')
+    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.msav
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        minimac4: \$(minimac4 --version |& sed '1!d ; s/minimac v//')
+    END_VERSIONS
     """
 }
