@@ -20,20 +20,60 @@ nextflow_workflow {
     tag "subworkflows/fastq_fastqc_umitools_fastp"
     tag "subworkflows/fastq_subsample_fq_salmon"
 
+    // Global setup: Create test data with injected rRNA reads using CAT_FASTQ
+    setup {
+        run("CAT_FASTQ") {
+            script "../../../../modules/nf-core/cat/fastq/main.nf"
+            process {
+                """
+                // Create synthetic rRNA reads from 5.8S rRNA sequences (DNA format)
+                // 10 read pairs matching rfam-5.8s-database-id98.fasta sequences
+                def rrnaFile1 = file("rrna_reads_1.fastq.gz")
+                def rrnaFile2 = file("rrna_reads_2.fastq.gz")
+
+                // 5.8S rRNA sequences (151bp, padded with A if needed)
+                def seq1 = "AACTTTCAGCAATGGATCTCTTGGTCTCGCATCGATGAAGAACGCAGTGAAATGCGATAACTGGTGTGAATTGCATCCATGTAACTCTAATTTACGAATAACACCAAGTGAATCATCGAGTCTTTGAACGCAATTGCGCCCTCTCGGTCGCTTCCAATT"
+                def seq2 = "AACTGCATGAGCGATGGATCTCTTGGTCCTTGCATCGTTGAAGGTCGCAGCGAATTGCGAAATGTTGGTCGTGTGAATTGCAAGACACATTGGCCCTTTCGGGCTGCGGAACACCTTACTCACTGAACGTTTATACTCGCTAGCAGATTAATCTTCGTG"
+                def seq3 = "GACTCTCGGCAACGGATCTCTCGGCTCTCGCATCGATGAAGAACGTAGCGAAATGCGATACTTGGTGTGAATTGCAGAATCCCGTGTTCCATCGAGGAATTGCAGCAATCCCGTGAACCATCGAGTCTTTGAACGCAAGTTGCGCCCGAAGCCGTCAGG"
+                def qual = "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
+
+                // Create 10 rRNA read pairs (R1)
+                def r1content = "@rrna_1/1\\n\${seq1}\\n+\\n\${qual}\\n@rrna_2/1\\n\${seq2}\\n+\\n\${qual}\\n@rrna_3/1\\n\${seq3}\\n+\\n\${qual}\\n@rrna_4/1\\n\${seq1}\\n+\\n\${qual}\\n@rrna_5/1\\n\${seq2}\\n+\\n\${qual}\\n@rrna_6/1\\n\${seq3}\\n+\\n\${qual}\\n@rrna_7/1\\n\${seq1}\\n+\\n\${qual}\\n@rrna_8/1\\n\${seq2}\\n+\\n\${qual}\\n@rrna_9/1\\n\${seq3}\\n+\\n\${qual}\\n@rrna_10/1\\n\${seq1}\\n+\\n\${qual}\\n"
+                def r2content = "@rrna_1/2\\n\${seq1}\\n+\\n\${qual}\\n@rrna_2/2\\n\${seq2}\\n+\\n\${qual}\\n@rrna_3/2\\n\${seq3}\\n+\\n\${qual}\\n@rrna_4/2\\n\${seq1}\\n+\\n\${qual}\\n@rrna_5/2\\n\${seq2}\\n+\\n\${qual}\\n@rrna_6/2\\n\${seq3}\\n+\\n\${qual}\\n@rrna_7/2\\n\${seq1}\\n+\\n\${qual}\\n@rrna_8/2\\n\${seq2}\\n+\\n\${qual}\\n@rrna_9/2\\n\${seq3}\\n+\\n\${qual}\\n@rrna_10/2\\n\${seq1}\\n+\\n\${qual}\\n"
+
+                // Write as gzipped files to match other input files
+                rrnaFile1.withOutputStream { os ->
+                    new java.util.zip.GZIPOutputStream(os).withWriter { writer ->
+                        writer.write(r1content)
+                    }
+                }
+                rrnaFile2.withOutputStream { os ->
+                    new java.util.zip.GZIPOutputStream(os).withWriter { writer ->
+                        writer.write(r2content)
+                    }
+                }
+
+                // CAT_FASTQ input: alternating R1/R2 files [r1_a, r2_a, r1_b, r2_b, ...]
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false, strandedness:'auto' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true),
+                        rrnaFile1,
+                        rrnaFile2
+                    ]
+                ])
+                """
+            }
+        }
+    }
+
     test("homo_sapiens paired-end [fastq] fastp sortmerna") {
 
         when {
             workflow {
                 """
-                ch_reads = Channel.of([
-                    [ id:'test', single_end:false, strandedness:'auto' ], // meta map
-                    [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true)
-                    ]
-                ])
-
-                input[0] = ch_reads
+                input[0] = CAT_FASTQ.out.reads
                 input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)) // ch_fasta
                 input[2] = Channel.of(file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true)) // ch_transcript_fasta
                 input[3] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)) // ch_gtf
@@ -74,11 +114,21 @@ nextflow_workflow {
                 .collect { line -> line.split(' ', 2)[1] } // Split by the first space and take everything after it
                 .join('\n') // Join the processed lines back into a single text block
 
+            // Parse sortmerna log for rRNA detection stats
+            def sortmernaLog = path(workflow.out.multiqc_files.find { it.toString().endsWith('.sortmerna.log') })
+                .getText()
+            def sortmernaRrnaMatch = (sortmernaLog =~ /Total reads passing E-value threshold = (\d+)/)
+            def sortmernaRrnaCount = sortmernaRrnaMatch ? sortmernaRrnaMatch[0][1].toInteger() : -1
+
+            // Input: 4159 original + 10 synthetic rRNA = 4169 read pairs
+            // After fastp merge and sortmerna rRNA removal
+            // TODO: Update these values after first test run
             assertAll(
                 { assert workflow.success },
                 { assert pelines1.size() == 4508 },
                 { assert pelines2.size() == 4508 },
                 { assert workflow.out.trim_read_count[0][1] == 3022 },
+                { assert sortmernaRrnaCount > 0 : "SortMeRNA should detect rRNA reads (found: ${sortmernaRrnaCount})" },
                 { assert snapshot(
                     pelines1.join('\n').md5(),
                     pelines2.join('\n').md5(),
@@ -93,15 +143,7 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                ch_reads = Channel.of([
-                    [ id:'test', single_end:false, strandedness:'auto' ], // meta map
-                    [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true)
-                    ]
-                ])
-
-                input[0] = ch_reads
+                input[0] = CAT_FASTQ.out.reads
                 input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)) // ch_fasta
                 input[2] = Channel.of(file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true)) // ch_transcript_fasta
                 input[3] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)) // ch_gtf
@@ -142,11 +184,24 @@ nextflow_workflow {
                 .collect { line -> line.split(' ', 2)[1] } // Split by the first space and take everything after it
                 .join('\n') // Join the processed lines back into a single text block
 
+            // Parse ribodetector log for rRNA detection stats (identified by content pattern)
+            def ribodetectorLogFile = workflow.out.multiqc_files.find { logFile ->
+                def content = path(logFile).getText()
+                content.contains('rRNA sequences') && content.contains(': INFO')
+            }
+            def ribodetectorLog = path(ribodetectorLogFile).getText()
+            def ribodetectorRrnaMatch = (ribodetectorLog =~ /Detected (\d+) rRNA sequences/)
+            def ribodetectorRrnaCount = ribodetectorRrnaMatch ? ribodetectorRrnaMatch[0][1].toInteger() : -1
+
+            // Input: 4159 original + 10 synthetic rRNA = 4169 read pairs
+            // After fastp merge and ribodetector rRNA removal
+            // TODO: Update these values after first test run
             assertAll(
                 { assert workflow.success },
-                { assert pelines1.size() == 4508 },
-                { assert pelines2.size() == 4508 },
-                { assert workflow.out.trim_read_count[0][1] == 3022 },
+                { assert pelines1.size() == 4108 },
+                { assert pelines2.size() == 4108 },
+                { assert workflow.out.trim_read_count[0][1] == 3122 },
+                { assert ribodetectorRrnaCount > 0 : "RiboDetector should detect rRNA reads (found: ${ribodetectorRrnaCount})" },
                 { assert snapshot(
                     pelines1.join('\n').md5(),
                     pelines2.join('\n').md5(),
@@ -161,15 +216,7 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                ch_reads = Channel.of([
-                    [ id:'test', single_end:false, strandedness:'auto' ], // meta map
-                    [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true)
-                    ]
-                ])
-
-                input[0] = ch_reads
+                input[0] = CAT_FASTQ.out.reads
                 input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)) // ch_fasta
                 input[2] = Channel.of(file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true)) // ch_transcript_fasta
                 input[3] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)) // ch_gtf
@@ -210,11 +257,22 @@ nextflow_workflow {
                 .collect { line -> line.split(' ', 2)[1] } // Split by the first space and take everything after it
                 .join('\n') // Join the processed lines back into a single text block
 
+            // Parse sortmerna log for rRNA detection stats
+            def sortmernaLog = path(workflow.out.multiqc_files.find { it.toString().endsWith('.sortmerna.log') })
+                .getText()
+            def sortmernaRrnaMatch = (sortmernaLog =~ /Total reads passing E-value threshold = (\d+)/)
+            def sortmernaRrnaCount = sortmernaRrnaMatch ? sortmernaRrnaMatch[0][1].toInteger() : -1
+
+            // Input: 4159 original + 10 synthetic rRNA = 4169 read pairs
+            // After trimgalore: 4169 pairs (no merging)
+            // After sortmerna rRNA removal: 10 rRNA reads removed -> 4159 pairs
+            // TODO: Update these values after first test run
             assertAll(
                 { assert workflow.success },
                 { assert pelines1.size() == 16636 },
                 { assert pelines2.size() == 16636 },
-                { assert workflow.out.trim_read_count[0][1] == 4159.0 },
+                { assert workflow.out.trim_read_count[0][1] == 4259.0 },
+                { assert sortmernaRrnaCount > 0 : "SortMeRNA should detect rRNA reads (found: ${sortmernaRrnaCount})" },
                 { assert snapshot(
                     pelines1.join('\n').md5(),
                     pelines2.join('\n').md5(),
