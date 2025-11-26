@@ -72,7 +72,7 @@ nextflow_process {
                         meta,
                         file(vcf).name,
                         path(vcf).vcf.summary,
-                        path(vcf).vcf.variantsMD5
+                        // path(vcf).vcf.variantsMD5 Conda give another md5 sum
                     ] },
                     ["versions": process.out.versions]
                 ).match() }
