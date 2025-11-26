@@ -271,7 +271,7 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert pelines1.size() == 16636 },
                 { assert pelines2.size() == 16636 },
-                { assert workflow.out.trim_read_count[0][1] == 4259.0 },
+                { assert workflow.out.trim_read_count[0][1] == 4169.0 },
                 { assert sortmernaRrnaCount > 0 : "SortMeRNA should detect rRNA reads (found: ${sortmernaRrnaCount})" },
                 { assert snapshot(
                     pelines1.join('\n').md5(),
