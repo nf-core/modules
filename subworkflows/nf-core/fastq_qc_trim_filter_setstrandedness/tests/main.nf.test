@@ -212,8 +212,8 @@ nextflow_workflow {
 
             assertAll(
                 { assert workflow.success },
-                { assert pelines1.size() == 4508 },
-                { assert pelines2.size() == 4508 },
+                { assert pelines1.size() == 16636 },
+                { assert pelines2.size() == 16636 },
                 { assert workflow.out.trim_read_count[0][1] == 4159.0 },
                 { assert snapshot(
                     pelines1.join('\n').md5(),
