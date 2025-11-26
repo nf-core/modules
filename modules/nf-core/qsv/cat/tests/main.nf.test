@@ -100,8 +100,8 @@ nextflow_process {
                     [ id:'test' ],
                     [
                         file(params.modules_testdata_base_path + 'generic/csv/test.csv', checkIfExists: true),
-                        file('https://raw.githubusercontent.com/dialvarezs/nfcore-test-datasets/refs/heads/add-csv-examples/data/generic/csv/test2.csv', checkIfExists: true),
-                        file('https://raw.githubusercontent.com/dialvarezs/nfcore-test-datasets/refs/heads/add-csv-examples/data/generic/csv/test3.csv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/csv/test2.csv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/csv/test3.csv', checkIfExists: true),
                     ]
                 ]
                 input[1] = "rowskey"
