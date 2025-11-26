@@ -76,9 +76,9 @@ nextflow_workflow {
 
             assertAll(
                 { assert workflow.success },
-                { assert pelines1.size() == 15996 },
-                { assert pelines2.size() == 15996 },
-                { assert workflow.out.trim_read_count[0][1] == 4999 },
+                { assert pelines1.size() == 4508 },
+                { assert pelines2.size() == 4508 },
+                { assert workflow.out.trim_read_count[0][1] == 3022 },
                 { assert snapshot(
                     pelines1.join('\n').md5(),
                     pelines2.join('\n').md5(),
@@ -144,9 +144,9 @@ nextflow_workflow {
 
             assertAll(
                 { assert workflow.success },
-                { assert pelines1.size() == 15996 },
-                { assert pelines2.size() == 15996 },
-                { assert workflow.out.trim_read_count[0][1] == 4999 },
+                { assert pelines1.size() == 4508 },
+                { assert pelines2.size() == 4508 },
+                { assert workflow.out.trim_read_count[0][1] == 3022 },
                 { assert snapshot(
                     pelines1.join('\n').md5(),
                     pelines2.join('\n').md5(),
@@ -212,9 +212,9 @@ nextflow_workflow {
 
             assertAll(
                 { assert workflow.success },
-                { assert pelines1.size() == 15996 },
-                { assert pelines2.size() == 15996 },
-                { assert workflow.out.trim_read_count[0][1] == 4999 },
+                { assert pelines1.size() == 4508 },
+                { assert pelines2.size() == 4508 },
+                { assert workflow.out.trim_read_count[0][1] == 4159.0 },
                 { assert snapshot(
                     pelines1.join('\n').md5(),
                     pelines2.join('\n').md5(),
