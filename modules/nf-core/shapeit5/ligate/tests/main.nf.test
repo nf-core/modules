@@ -56,7 +56,7 @@ nextflow_process {
                             path(vcf).vcf.variantsMD5
                         ]
                     },
-                    process.out.versions
+                    ["versions": process.out.versions_shapeit5]
                 ).match() }
             )
         }

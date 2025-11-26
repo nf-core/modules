@@ -12,7 +12,7 @@ process SHAPEIT5_LIGATE {
 
     output:
     tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: merged_variants
-    tuple val("${task.process}"), val('shapeit5'), eval("SHAPEIT5_ligate | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -n 1"), topic: versions, emit: versions
+    tuple val("${task.process}"), val('shapeit5'), eval("SHAPEIT5_ligate | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -n 1"), topic: versions, emit: versions_shapeit5
 
     when:
     task.ext.when == null || task.ext.when
