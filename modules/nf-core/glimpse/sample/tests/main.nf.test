@@ -11,16 +11,55 @@ nextflow_process {
     tag "glimpse"
     tag "glimpse/sample"
     tag "glimpse/phase"
+    tag "bcftools"
+    tag "bcftools/index"
 
     test("test_glimpse_sample") {
+        setup {
+            run("GLIMPSE_PHASE") {
+                script "../../phase/main.nf"
+                process {
+                """
+                ch_sample = Channel.of('NA12878 2').collectFile(name: 'sampleinfos.txt')
+                region    = channel.of(["chr21:16570000-16610000","chr21:16570000-16610000"])
+                input_vcf = channel.of([
+                    [ id:'input'], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists: true)
+                ])
+                ref_panel = channel.of([
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz.csi", checkIfExists: true)
+                ])
+                ch_map   = channel.of([
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.glimpse.map", checkIfExists: true)
+                ])
+
+                input[0]      = input_vcf
+                    | combine(ch_sample)
+                    | combine(region)
+                    | map { meta, vcf, index, sample, regionI, regionO ->
+                        [[id: meta.id, region : regionI], vcf, index, sample, regionI, regionO]
+                    }
+                    | combine(ref_panel)
+                    | combine(ch_map)
+                """
+                }
+            }
+            run("BCFTOOLS_INDEX") {
+                script "../../../bcftools/index/main.nf"
+                process {
+                """
+                input[0] = GLIMPSE_PHASE.out.phased_variants
+                """
+                }
+            }
+        }
         when {
             process {
                 """
-                input[0] = channel.of([
-                    [ id:'input'], // meta map
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExists: true)
-                ])
+                input[0] = GLIMPSE_PHASE.out.phased_variants
+                    .join(BCFTOOLS_INDEX.out.csi)
                 """
             }
         }
@@ -29,10 +68,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.haplo_sampled.collect{ it -> [
-                        file(it[1]).name,
-                        path(it[1]).vcf.summary,
-                        path(it[1]).vcf.variantsMD5
+                    process.out.haplo_sampled.collect{ meta, vcf -> [
+                        meta,
+                        file(vcf).name,
+                        path(vcf).vcf.summary,
+                        path(vcf).vcf.variantsMD5
                     ] },
                     process.out.versions
                 ).match() }
