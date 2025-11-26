@@ -49,7 +49,7 @@ process SHAPEIT5_PHASERARE {
         --scaffold-region $scaffold_region \\
         --thread $task.cpus \\
         --output ${prefix}.${suffix}
-    
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         shapeit5: "\$(SHAPEIT5_phase_rare | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -n 1)"
