@@ -22,7 +22,7 @@ process GLIMPSE2_CHUNK {
 
     output:
     tuple val(meta), path("*.txt"), emit: chunk_chr
-    tuple val("${task.process}"), val('glimpse2'), eval("GLIMPSE2_chunk --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1"), topic: versions, emit: versions
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,6 +41,11 @@ process GLIMPSE2_CHUNK {
         --region $region \\
         --threads $task.cpus \\
         --output ${prefix}.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        glimpse2: "\$(GLIMPSE2_chunk --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
+    END_VERSIONS
     """
 
     stub:
@@ -48,5 +53,10 @@ process GLIMPSE2_CHUNK {
 
     """
     echo "${meta.id}\t${region}\t0\t0\t0\t0\t0\t0" > ${prefix}.txt
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        glimpse2: "\$(GLIMPSE2_chunk --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
+    END_VERSIONS
     """
 }
