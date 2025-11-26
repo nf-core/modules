@@ -22,46 +22,22 @@ nextflow_workflow {
     tag "subworkflows/fastq_subsample_fq_salmon"
 
     // Global setup: Inject synthetic rRNA reads into test data using CAT_FASTQ
+    // The rRNA reads (from generic/fastq/) are 5.8S rRNA sequences that will be detected
+    // by both SortMeRNA (alignment-based, 100% detection) and RiboDetector (ML-based, ~70% detection)
     setup {
         run("CAT_FASTQ") {
             script "../../../../modules/nf-core/cat/fastq/main.nf"
             process {
                 """
-                // Create synthetic rRNA reads from 5.8S rRNA sequences (DNA format)
-                // 10 read pairs matching rfam-5.8s-database-id98.fasta sequences
-                def rrnaFile1 = file("rrna_reads_1.fastq.gz")
-                def rrnaFile2 = file("rrna_reads_2.fastq.gz")
-
-                // 5.8S rRNA sequences (159bp)
-                def seq1 = "AACTTTCAGCAATGGATCTCTTGGTCTCGCATCGATGAAGAACGCAGTGAAATGCGATAACTGGTGTGAATTGCATCCATGTAACTCTAATTTACGAATAACACCAAGTGAATCATCGAGTCTTTGAACGCAATTGCGCCCTCTCGGTCGCTTCCAATT"
-                def seq2 = "AACTGCATGAGCGATGGATCTCTTGGTCCTTGCATCGTTGAAGGTCGCAGCGAATTGCGAAATGTTGGTCGTGTGAATTGCAAGACACATTGGCCCTTTCGGGCTGCGGAACACCTTACTCACTGAACGTTTATACTCGCTAGCAGATTAATCTTCGTG"
-                def seq3 = "GACTCTCGGCAACGGATCTCTCGGCTCTCGCATCGATGAAGAACGTAGCGAAATGCGATACTTGGTGTGAATTGCAGAATCCCGTGTTCCATCGAGGAATTGCAGCAATCCCGTGAACCATCGAGTCTTTGAACGCAAGTTGCGCCCGAAGCCGTCAGG"
-                def qual = "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
-
-                // Create 10 rRNA read pairs (R1)
-                def r1content = "@rrna_1/1\\n\${seq1}\\n+\\n\${qual}\\n@rrna_2/1\\n\${seq2}\\n+\\n\${qual}\\n@rrna_3/1\\n\${seq3}\\n+\\n\${qual}\\n@rrna_4/1\\n\${seq1}\\n+\\n\${qual}\\n@rrna_5/1\\n\${seq2}\\n+\\n\${qual}\\n@rrna_6/1\\n\${seq3}\\n+\\n\${qual}\\n@rrna_7/1\\n\${seq1}\\n+\\n\${qual}\\n@rrna_8/1\\n\${seq2}\\n+\\n\${qual}\\n@rrna_9/1\\n\${seq3}\\n+\\n\${qual}\\n@rrna_10/1\\n\${seq1}\\n+\\n\${qual}\\n"
-                def r2content = "@rrna_1/2\\n\${seq1}\\n+\\n\${qual}\\n@rrna_2/2\\n\${seq2}\\n+\\n\${qual}\\n@rrna_3/2\\n\${seq3}\\n+\\n\${qual}\\n@rrna_4/2\\n\${seq1}\\n+\\n\${qual}\\n@rrna_5/2\\n\${seq2}\\n+\\n\${qual}\\n@rrna_6/2\\n\${seq3}\\n+\\n\${qual}\\n@rrna_7/2\\n\${seq1}\\n+\\n\${qual}\\n@rrna_8/2\\n\${seq2}\\n+\\n\${qual}\\n@rrna_9/2\\n\${seq3}\\n+\\n\${qual}\\n@rrna_10/2\\n\${seq1}\\n+\\n\${qual}\\n"
-
-                // Write as gzipped files to match other input files
-                rrnaFile1.withOutputStream { os ->
-                    new java.util.zip.GZIPOutputStream(os).withWriter { writer ->
-                        writer.write(r1content)
-                    }
-                }
-                rrnaFile2.withOutputStream { os ->
-                    new java.util.zip.GZIPOutputStream(os).withWriter { writer ->
-                        writer.write(r2content)
-                    }
-                }
-
                 // CAT_FASTQ input: alternating R1/R2 files [r1_a, r2_a, r1_b, r2_b, ...]
+                // Even indices -> R1 files, odd indices -> R2 files
                 input[0] = Channel.of([
                     [ id:'test', single_end:false, strandedness:'auto' ],
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true),
-                        rrnaFile1,
-                        rrnaFile2
+                        file(params.modules_testdata_base_path + 'generic/fastq/rrna_reads_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/fastq/rrna_reads_2.fastq.gz', checkIfExists: true)
                     ]
                 ])
                 """
