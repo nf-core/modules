@@ -198,8 +198,12 @@ nextflow_workflow {
                 .join('\n') // Join the processed lines back into a single text block
 
             // Parse ribodetector log for rRNA detection stats
-            def ribodetectorLog = path(workflow.out.multiqc_files.find { it.toString().endsWith('.ribodetector.log') })
-                .getText()
+            // Debug: print all files in multiqc_files
+            println "DEBUG multiqc_files: ${workflow.out.multiqc_files}"
+            def ribodetectorLogFile = workflow.out.multiqc_files.find { it.toString().endsWith('.ribodetector.log') }
+            println "DEBUG ribodetector log file: ${ribodetectorLogFile}"
+            def ribodetectorLog = ribodetectorLogFile ? path(ribodetectorLogFile).getText() : ""
+            println "DEBUG ribodetector log content: ${ribodetectorLog}"
             def ribodetectorRrnaMatch = (ribodetectorLog =~ /Detected (\d+) rRNA sequences/)
             def ribodetectorRrnaCount = ribodetectorRrnaMatch ? ribodetectorRrnaMatch[0][1].toInteger() : -1
 
