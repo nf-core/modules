@@ -12,7 +12,7 @@ process GLIMPSE_SAMPLE {
 
     output:
     tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: haplo_sampled
-    tuple val("${task.process}"), val('glimpse'), eval("GLIMPSE_sample --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]'"), topic: versions, emit: versions
+    path "versions.yml"                               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,6 +28,11 @@ process GLIMPSE_SAMPLE {
         --input $input \\
         --thread $task.cpus \\
         --output ${prefix}.${suffix}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        glimpse: "\$(GLIMPSE_sample --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
+    END_VERSIONS
     """
 
     stub:
@@ -36,5 +41,10 @@ process GLIMPSE_SAMPLE {
 
     """
     touch ${prefix}.${suffix}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        glimpse: "\$(GLIMPSE_sample --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
+    END_VERSIONS
     """
 }

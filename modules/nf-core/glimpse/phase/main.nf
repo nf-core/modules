@@ -12,7 +12,8 @@ process GLIMPSE_PHASE {
 
     output:
         tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: phased_variants
-        tuple val("${task.process}"), val('glimpse'), eval("GLIMPSE_phase --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]'"), topic: versions, emit: versions
+        path "versions.yml"                               , emit: versions
+
     when:
         task.ext.when == null || task.ext.when
 
@@ -35,6 +36,11 @@ process GLIMPSE_PHASE {
         --output-region $output_region \\
         --thread $task.cpus \\
         --output ${prefix}.${suffix}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        glimpse: "\$(GLIMPSE_phase --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
+    END_VERSIONS
     """
 
     stub:
@@ -43,5 +49,10 @@ process GLIMPSE_PHASE {
 
     """
     touch ${prefix}.${suffix}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        glimpse: "\$(GLIMPSE_phase --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
+    END_VERSIONS
     """
 }
