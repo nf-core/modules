@@ -12,7 +12,7 @@ process SHAPEIT5_LIGATE {
 
     output:
     tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: merged_variants
-    tuple val("${task.process}"), val('shapeit5'), eval("SHAPEIT5_ligate | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -n 1"), topic: versions, emit: versions_shapeit5
+    path "versions.yml"                               , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,6 +29,11 @@ process SHAPEIT5_LIGATE {
         --input all_files.txt \\
         --thread $task.cpus \\
         --output ${prefix}.${suffix}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        shapeit5: "\$(SHAPEIT5_ligate | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -n 1)"
+    END_VERSIONS
     """
 
     stub:
@@ -37,5 +42,10 @@ process SHAPEIT5_LIGATE {
     def create_cmd = suffix.endsWith(".gz") ? "echo '' | gzip >" : "touch"
     """
     ${create_cmd} ${prefix}.${suffix}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        shapeit5: "\$(SHAPEIT5_ligate | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -n 1)"
+    END_VERSIONS
     """
 }

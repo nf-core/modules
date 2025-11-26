@@ -12,7 +12,7 @@ process SHAPEIT5_SWITCH {
 
     output:
         tuple val(meta), path("*.txt.gz"), emit: errors
-        tuple val("${task.process}"), val('shapeit5'), eval("SHAPEIT5_switch | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -n 1"), topic: versions, emit: versions_shapeit5
+        path "versions.yml"              , emit: versions
 
     when:
         task.ext.when == null || task.ext.when
@@ -33,6 +33,11 @@ process SHAPEIT5_SWITCH {
         $pedigree_cmd \\
         --thread $task.cpus \\
         --output ${prefix}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        shapeit5: "\$(SHAPEIT5_switch | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -n 1)"
+    END_VERSIONS
     """
 
     stub:
@@ -48,5 +53,10 @@ process SHAPEIT5_SWITCH {
     ${create_cmd} ${prefix}.type.switch.txt.gz
     ${create_cmd} ${prefix}.variant.switch.txt.gz
     ${create_cmd} ${prefix}.variant.typing.txt.gz
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        shapeit5: "\$(SHAPEIT5_switch | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -n 1)"
+    END_VERSIONS
     """
 }
