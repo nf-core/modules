@@ -22,7 +22,6 @@ nextflow_workflow {
     tag "bcftools/pluginfilltags"
 
     test("homo_sapiens - panel - [] - [] - []") {
-        tag "test"
         when {
             params {
                 bcftools_pluginfilltags_args = "--write-index"
