@@ -1,3 +1,16 @@
+/*
+ * Test Strategy:
+ * The original test data (test_rnaseq) contains no detectable rRNA sequences.
+ * To properly test rRNA removal functionality, we inject 10 synthetic rRNA read pairs
+ * derived from 5.8S rRNA sequences (rfam-5.8s-database-id98.fasta) into the test data.
+ *
+ * rRNA Removal Method Comparison:
+ * - SortMeRNA (alignment-based): Detects 20/20 reads (100%) - counts individual reads
+ *   Uses sequence alignment against reference database, highly sensitive for known sequences.
+ * - RiboDetector (ML-based): Detects 7/10 pairs (70%) - counts read pairs
+ *   Uses pre-trained neural network model, may miss atypical or less common rRNA variants.
+ */
+
 nextflow_workflow {
 
     name "Test Subworkflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS"
@@ -20,7 +33,7 @@ nextflow_workflow {
     tag "subworkflows/fastq_fastqc_umitools_fastp"
     tag "subworkflows/fastq_subsample_fq_salmon"
 
-    // Global setup: Create test data with injected rRNA reads using CAT_FASTQ
+    // Global setup: Inject synthetic rRNA reads into test data using CAT_FASTQ
     setup {
         run("CAT_FASTQ") {
             script "../../../../modules/nf-core/cat/fastq/main.nf"
@@ -121,14 +134,14 @@ nextflow_workflow {
             def sortmernaRrnaCount = sortmernaRrnaMatch ? sortmernaRrnaMatch[0][1].toInteger() : -1
 
             // Input: 4159 original + 10 synthetic rRNA = 4169 read pairs
-            // After fastp merge: 3022 merged reads (1137 pairs)
-            // After sortmerna rRNA removal: 20 rRNA reads detected (10 pairs), 1127 pairs remain = 4508 lines
+            // After fastp merge: 1137 pairs (3022 merged reads)
+            // SortMeRNA removes all 10 synthetic rRNA pairs (20 individual reads), leaving 1127 pairs
             assertAll(
                 { assert workflow.success },
-                { assert pelines1.size() == 4508 },
+                { assert pelines1.size() == 4508 },  // 1127 pairs × 4 lines/read
                 { assert pelines2.size() == 4508 },
                 { assert workflow.out.trim_read_count[0][1] == 3022 },
-                { assert sortmernaRrnaCount == 20 },
+                { assert sortmernaRrnaCount == 20 },  // 10 pairs = 20 individual reads (100% detection)
                 { assert snapshot(
                     pelines1.join('\n').md5(),
                     pelines2.join('\n').md5(),
@@ -194,14 +207,14 @@ nextflow_workflow {
             def ribodetectorRrnaCount = ribodetectorRrnaMatch ? ribodetectorRrnaMatch[0][1].toInteger() : -1
 
             // Input: 4159 original + 10 synthetic rRNA = 4169 read pairs
-            // After fastp merge: 3022 merged reads (1137 pairs)
-            // After ribodetector rRNA removal: 7 rRNA detected, 1130 pairs remain = 4520 lines
+            // After fastp merge: 1137 pairs (3022 merged reads)
+            // RiboDetector removes 7 of 10 synthetic rRNA pairs (70% detection), leaving 1130 pairs
             assertAll(
                 { assert workflow.success },
-                { assert pelines1.size() == 4520 },
+                { assert pelines1.size() == 4520 },  // 1130 pairs × 4 lines/read
                 { assert pelines2.size() == 4520 },
                 { assert workflow.out.trim_read_count[0][1] == 3022 },
-                { assert ribodetectorRrnaCount == 7 },
+                { assert ribodetectorRrnaCount == 7 },  // 7 pairs detected (70% - ML model misses some)
                 { assert snapshot(
                     pelines1.join('\n').md5(),
                     pelines2.join('\n').md5(),
@@ -264,14 +277,14 @@ nextflow_workflow {
             def sortmernaRrnaCount = sortmernaRrnaMatch ? sortmernaRrnaMatch[0][1].toInteger() : -1
 
             // Input: 4159 original + 10 synthetic rRNA = 4169 read pairs
-            // After trimgalore: 4169 pairs (no merging)
-            // After sortmerna rRNA removal: 20 rRNA reads detected (10 pairs), 4159 pairs remain = 16636 lines
+            // After trimgalore: 4169 pairs (no merging, unlike fastp)
+            // SortMeRNA removes all 10 synthetic rRNA pairs (20 individual reads), leaving 4159 pairs
             assertAll(
                 { assert workflow.success },
-                { assert pelines1.size() == 16636 },
+                { assert pelines1.size() == 16636 },  // 4159 pairs × 4 lines/read
                 { assert pelines2.size() == 16636 },
                 { assert workflow.out.trim_read_count[0][1] == 4169.0 },
-                { assert sortmernaRrnaCount == 20 },
+                { assert sortmernaRrnaCount == 20 },  // 10 pairs = 20 individual reads (100% detection)
                 { assert snapshot(
                     pelines1.join('\n').md5(),
                     pelines2.join('\n').md5(),
