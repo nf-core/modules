@@ -1,15 +1,3 @@
-/*
- * Test Strategy:
- * The original test data (test_rnaseq) contains no detectable rRNA sequences.
- * To properly test rRNA removal functionality, we inject 10 synthetic rRNA read pairs
- * derived from 5.8S rRNA sequences (rfam-5.8s-database-id98.fasta) into the test data.
- *
- * rRNA Removal Method Comparison:
- * - SortMeRNA (alignment-based): Detects 20/20 reads (100%) - counts individual reads
- *   Uses sequence alignment against reference database, highly sensitive for known sequences.
- * - RiboDetector (ML-based): Detects 7/10 pairs (70%) - counts read pairs
- *   Uses pre-trained neural network model, may miss atypical or less common rRNA variants.
- */
 
 nextflow_workflow {
 
