@@ -63,7 +63,6 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
         [[:],[]], // [ [meta], [fasta]]
         ''
     )
-    ch_versions = ch_versions.mix(SAMTOOLS_SORT.out.versions)
 
     /*
      * MODULE: Run samtools index on aligned or deduplicated bam
