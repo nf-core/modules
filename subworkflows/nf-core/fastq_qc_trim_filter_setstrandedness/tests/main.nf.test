@@ -121,14 +121,14 @@ nextflow_workflow {
             def sortmernaRrnaCount = sortmernaRrnaMatch ? sortmernaRrnaMatch[0][1].toInteger() : -1
 
             // Input: 4159 original + 10 synthetic rRNA = 4169 read pairs
-            // After fastp merge and sortmerna rRNA removal
-            // TODO: Update these values after first test run
+            // After fastp merge: 3022 merged reads (1137 pairs)
+            // After sortmerna rRNA removal: 20 rRNA reads detected (10 pairs), 1127 pairs remain = 4508 lines
             assertAll(
                 { assert workflow.success },
                 { assert pelines1.size() == 4508 },
                 { assert pelines2.size() == 4508 },
                 { assert workflow.out.trim_read_count[0][1] == 3022 },
-                { assert sortmernaRrnaCount > 0 : "SortMeRNA should detect rRNA reads (found: ${sortmernaRrnaCount})" },
+                { assert sortmernaRrnaCount == 20 },
                 { assert snapshot(
                     pelines1.join('\n').md5(),
                     pelines2.join('\n').md5(),
@@ -194,14 +194,14 @@ nextflow_workflow {
             def ribodetectorRrnaCount = ribodetectorRrnaMatch ? ribodetectorRrnaMatch[0][1].toInteger() : -1
 
             // Input: 4159 original + 10 synthetic rRNA = 4169 read pairs
-            // After fastp merge and ribodetector rRNA removal
-            // TODO: Update these values after first test run
+            // After fastp merge: 3022 merged reads (1137 pairs)
+            // After ribodetector rRNA removal: 7 rRNA detected, 1130 pairs remain = 4520 lines
             assertAll(
                 { assert workflow.success },
-                { assert pelines1.size() == 4108 },
-                { assert pelines2.size() == 4108 },
-                { assert workflow.out.trim_read_count[0][1] == 3122 },
-                { assert ribodetectorRrnaCount > 0 : "RiboDetector should detect rRNA reads (found: ${ribodetectorRrnaCount})" },
+                { assert pelines1.size() == 4520 },
+                { assert pelines2.size() == 4520 },
+                { assert workflow.out.trim_read_count[0][1] == 3022 },
+                { assert ribodetectorRrnaCount == 7 },
                 { assert snapshot(
                     pelines1.join('\n').md5(),
                     pelines2.join('\n').md5(),
@@ -265,14 +265,13 @@ nextflow_workflow {
 
             // Input: 4159 original + 10 synthetic rRNA = 4169 read pairs
             // After trimgalore: 4169 pairs (no merging)
-            // After sortmerna rRNA removal: 10 rRNA reads removed -> 4159 pairs
-            // TODO: Update these values after first test run
+            // After sortmerna rRNA removal: 20 rRNA reads detected (10 pairs), 4159 pairs remain = 16636 lines
             assertAll(
                 { assert workflow.success },
                 { assert pelines1.size() == 16636 },
                 { assert pelines2.size() == 16636 },
                 { assert workflow.out.trim_read_count[0][1] == 4169.0 },
-                { assert sortmernaRrnaCount > 0 : "SortMeRNA should detect rRNA reads (found: ${sortmernaRrnaCount})" },
+                { assert sortmernaRrnaCount == 20 },
                 { assert snapshot(
                     pelines1.join('\n').md5(),
                     pelines2.join('\n').md5(),
