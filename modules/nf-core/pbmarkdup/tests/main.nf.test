@@ -15,6 +15,10 @@ nextflow_process {
 
         when {
 
+            params {
+                pbmarkdup_args = "--clobber --dup-file output.dup.fasta"
+            }
+
             process {
                 """
                 input[0] = Channel.of(
@@ -36,16 +40,51 @@ nextflow_process {
 
     }
 
-    test("acropora cervicornis - bam") {
-
+    test("acropora cervicornis - bam - multiple tests with dupfile and log") {
         when {
+
+            params {
+                pbmarkdup_args = "--clobber --dup-file ${prefix}.dup.bam --log-level INFO"
+            }
 
             process {
                 """
                 input[0] = Channel.of(
                     [
                         [ id:'test' ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/eukaryotes/acropora_cervicornis/m84093_241116_151316_s2.hifi_reads.bc2028.resubset.bam', checkIfExists: true)
+                        [ file('https://github.com/sainsachiko/test-datasets/raw/refs/heads/modules/data/genomics/eukaryotes/acropora_cervicornis/m84093_241116_151316_s2.hifi_reads.bc2028.subset.1.bam', checkIfExists: true),
+                          file('https://github.com/sainsachiko/test-datasets/raw/refs/heads/modules/data/genomics/eukaryotes/acropora_cervicornis/m84093_241116_151316_s2.hifi_reads.bc2028.subset.2.bam', checkIfExists: true) 
+                        ]
+                    ]
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("acropora cervicornis - bam - multiple tests remove duplicates") {
+        when {
+
+            params {
+                pbmarkdup_args = "--clobber --rmdup"
+            }
+
+            process {
+                """
+                input[0] = Channel.of(
+                    [
+                        [ id:'test' ], // meta map
+                        [ file('https://github.com/sainsachiko/test-datasets/raw/refs/heads/modules/data/genomics/eukaryotes/acropora_cervicornis/m84093_241116_151316_s2.hifi_reads.bc2028.subset.1.bam', checkIfExists: true),
+                          file('https://github.com/sainsachiko/test-datasets/raw/refs/heads/modules/data/genomics/eukaryotes/acropora_cervicornis/m84093_241116_151316_s2.hifi_reads.bc2028.subset.2.bam', checkIfExists: true) 
+                        ]
                     ]
                 )
                 """
@@ -66,6 +105,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                pbmarkdup_args = ""
+            }
 
             process {
                 """
