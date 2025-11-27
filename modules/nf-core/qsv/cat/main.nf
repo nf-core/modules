@@ -11,6 +11,7 @@ process QSV_CAT {
     tuple val(meta), path(csv, name: 'inputs/in*/*')
     val mode
     val out_format
+    val skip_input_format_check
 
     output:
     tuple val(meta), path("${prefix}.${out_format}"), emit: csv
@@ -22,9 +23,7 @@ process QSV_CAT {
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
     def args = task.ext.args ?: ''
-    // QSV by default checks input format based on the file extension,
-    // and the only way to skip this check is to set an env variable
-    def skip_format_check_cmd = task.ext.skip_format_check ? 'export QSV_SKIP_FORMAT_CHECK=1' : ''
+    def skip_format_check_cmd = skip_input_format_check ? 'export QSV_SKIP_FORMAT_CHECK=1' : ''
     """
     ${skip_format_check_cmd}
 
