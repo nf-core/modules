@@ -1,0 +1,218 @@
+nextflow_workflow {
+
+    name "Test Subworkflow BAM_IMPUTE_STITCH"
+    script "../main.nf"
+    config "./nextflow.config"
+
+    workflow "BAM_IMPUTE_STITCH"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/bam_impute_stitch"
+
+    tag "stitch"
+    tag "bcftools"
+    tag "bcftools/index"
+    tag "glimpse2"
+    tag "glimpse2/ligate"
+
+    test("Impute with stitch one individual, no renaming, posfile, no chunks, no map, no fasta") {
+        when {
+            workflow {
+                """
+                bampath  = channel.of("NA12878.chr21_22.1X.bam").collectFile(name: 'bampath.txt', newLine: true)
+                input[0] = channel.of([
+                    [id: "allid"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam", checkIfExist:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai", checkIfExist:true)
+                ]).combine(bampath).combine(channel.of([[]])) // input
+                input[1] = channel.of([
+                    [id: "1000GP", chr: "chr22"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.posfile", checkIfExist:true)
+                ]) // posfile
+                input[2] = channel.of(
+                    [[chr: "chr22", id: "1000GP"], "chr22", [], []]
+                ) // chunks
+                input[3] = channel.of([ [id: "1000GP", chr: "chr22"], [] ]) // map
+                input[4] = channel.of([ [id: "GRCh38"], [], [] ]).collect()
+                input[5] = 2
+                input[6] = 100
+                input[7] = 1
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.vcf_index.collect{[
+                        it[0],
+                        path(it[1]).getFileName().toString(),
+                        path(it[2]).getFileName().toString(),
+                        path(it[1]).vcf.summary,
+                        path(it[1]).vcf.header.getGenotypeSamples().sort(),
+                        path(it[1]).vcf.variantsMD5
+                    ]},
+                    workflow.out.versions,
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+
+    test("Impute with stitch two individual bam, renaming, posfile, chunks, map, no fasta") {
+        when {
+            workflow {
+                """
+                bampath = Channel.of(
+                    "NA12878.chr21_22.1X.bam",
+                    "NA19401.chr21_22.1X.bam"
+                ).collectFile(name: 'bampath.txt', newLine: true)
+                bamname = Channel.of(
+                    "MySample1",
+                    "MySample2"
+                ).collectFile(name: 'bamname.txt', newLine: true)
+                ch_samples = channel.of([
+                    [id: "allid"],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam", checkIfExist:true),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA19401.chr21_22.1X.bam", checkIfExist:true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai", checkIfExist:true),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA19401.chr21_22.1X.bam.bai", checkIfExist:true)
+                    ]
+                ])
+                input[0] = ch_samples.combine(bampath).combine(bamname) // input
+                input[1] = channel.of([
+                    [id: "1000GP", chr: "chr22"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.posfile", checkIfExist:true)
+                ],[
+                    [id: "1000GP", chr: "chr21"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.posfile", checkIfExist:true)
+                ]) // posfile
+                input[2] = channel.of(
+                    [[chr: "chr22", id: "1000GP"], "chr22", 16570065, 16592216],
+                    [[chr: "chr22", id: "1000GP"], "chr22", 16592229, 16609999],
+                    [[chr: "chr21", id: "1000GP"], "chr21", 16570065, 16592216],
+                    [[chr: "chr21", id: "1000GP"], "chr21", 16592229, 16609999]
+                ) // chunks
+                input[3] = Channel.of([
+                    [id: "1000GP", chr: "chr22"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.stitch.map", checkIfExist:true)
+                ],[
+                    [id: "1000GP", chr: "chr21"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.stitch.map", checkIfExist:true)
+                ]) // map
+                input[4] = channel.of([ [id: "GRCh38"], [], [] ]).collect()
+                input[5] = 2
+                input[6] = 100
+                input[7] = 1
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.vcf_index.collect{[
+                        it[0],
+                        path(it[1]).getFileName().toString(),
+                        path(it[2]).getFileName().toString(),
+                        path(it[1]).vcf.summary,
+                        path(it[1]).vcf.header.getGenotypeSamples().sort(),
+                        path(it[1]).vcf.variantsMD5
+                    ]},
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - empty channels - stub") {
+        options "-stub"
+        when {
+            workflow {
+                """
+                bampath = Channel.of("NA12878.chr21_22.1X.bam").collectFile(name: 'bampath.txt', newLine: true)
+                bamname = Channel.of("MySample1").collectFile(name: 'bamname.txt', newLine: true)
+                ch_samples = channel.of([
+                    [id: "allid"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam", checkIfExist:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai", checkIfExist:true)
+                ])
+                input[0] = ch_samples.combine(bampath).combine(bamname) // input
+                input[1] = channel.of(
+                    [[id: "1000GP", chr: "chr22"], []],
+                    [[id: "1000GP", chr: "chr21"], []]
+                ) // posfile
+                input[2] = channel.of(
+                    [[chr: "chr22", id: "1000GP"], "chr22", 16570065, 16592216],
+                    [[chr: "chr22", id: "1000GP"], "chr22", 16592229, 16609999],
+                    [[chr: "chr21", id: "1000GP"], "chr21", 16570065, 16592216],
+                    [[chr: "chr21", id: "1000GP"], "chr21", 16592229, 16609999]
+                ) // chunks
+                input[3] = Channel.of(
+                    [[id: "1000GP", chr: "chr22"], []],
+                    [[id: "1000GP", chr: "chr21"], []]
+                ) // map
+                input[4] = channel.of([ [id: "GRCh38"], [], [] ]).collect()
+                input[5] = 2
+                input[6] = 100
+                input[7] = 1
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - error empty joint - stub") {
+        options "-stub"
+        when {
+            workflow {
+                """
+                bampath = Channel.of("NA12878.chr21_22.1X.bam").collectFile(name: 'bampath.txt', newLine: true)
+                bamname = Channel.of("MySample1").collectFile(name: 'bamname.txt', newLine: true)
+                ch_samples = channel.of([
+                    [id: "allid"],
+                    file(params.pipelines_testdata_base_path + "hum_data/individuals/NA12878/NA12878.s.bam", checkIfExist:true),
+                    file(params.pipelines_testdata_base_path + "hum_data/individuals/NA12878/NA12878.s.bam.bai", checkIfExist:true)
+                ])
+                input[0] = ch_samples.combine(bampath).combine(bamname) // input
+                input[1] = channel.of(
+                    [[id: "otherpanel", chr: "chr22"], []], // Wrong panel given
+                    [[id: "1000GP", chr: "chr21"], []]
+                ) // posfile
+                input[2] = channel.of(
+                    [[chr: "chr22", id: "1000GP"], "chr22", 16570065, 16592216],
+                    [[chr: "chr22", id: "1000GP"], "chr22", 16592229, 16609999],
+                    [[chr: "chr21", id: "1000GP"], "chr21", 16570065, 16592216],
+                    [[chr: "chr21", id: "1000GP"], "chr21", 16592229, 16609999]
+                ) // chunks
+                input[3] = Channel.of(
+                    [[id: "1000GP", chr: "chr22"], []],
+                    [[id: "otherpanel", chr: "chr21"], []]  // Wrong panel given
+                ) // map
+                input[4] = channel.of([ [id: "GRCh38"], [], [] ]).collect()
+                input[5] = 2
+                input[6] = 100
+                input[7] = 1
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.failed },
+                { assert workflow.errorMessage.contains("ERROR: join operation resulted in an empty channel. Please provide a valid ch_chunks and ch_map channel as input.") }
+            )
+        }
+    }
+}
