@@ -17,6 +17,7 @@ nextflow_workflow {
     tag "fq/lint"
     tag "sortmerna"
     tag "ribodetector"
+    tag "seqkit/stats"
     tag "subworkflows/fastq_fastqc_umitools_trimgalore"
     tag "subworkflows/fastq_fastqc_umitools_fastp"
     tag "subworkflows/fastq_subsample_fq_salmon"
@@ -80,15 +81,14 @@ nextflow_workflow {
                 // rRNA removal options
                 input[19] = true           // remove_ribo_rna
                 input[20] = 'sortmerna'    // ribo_removal_tool
-                input[21] = null           // ribodetector_read_length (not needed for sortmerna)
 
                 // UMI options
-                input[22] = false          // with_umi
-                input[23] = 0              // umi_discard_read
+                input[21] = false          // with_umi
+                input[22] = 0              // umi_discard_read
 
                 // Strandedness thresholds
-                input[24] = 0.8            // stranded_threshold
-                input[25] = 0.1            // unstranded_threshold
+                input[23] = 0.8            // stranded_threshold
+                input[24] = 0.1            // unstranded_threshold
                 """
             }
         }
@@ -130,6 +130,8 @@ nextflow_workflow {
 
     test("homo_sapiens paired-end [fastq] fastp ribodetector") {
 
+        tag 'foo'
+
         when {
             workflow {
                 """
@@ -163,15 +165,14 @@ nextflow_workflow {
                 // rRNA removal options
                 input[19] = true           // remove_ribo_rna
                 input[20] = 'ribodetector' // ribo_removal_tool
-                input[21] = 151            // ribodetector_read_length
 
                 // UMI options
-                input[22] = false          // with_umi
-                input[23] = 0              // umi_discard_read
+                input[21] = false          // with_umi
+                input[22] = 0              // umi_discard_read
 
                 // Strandedness thresholds
-                input[24] = 0.8            // stranded_threshold
-                input[25] = 0.1            // unstranded_threshold
+                input[23] = 0.8            // stranded_threshold
+                input[24] = 0.1            // unstranded_threshold
                 """
             }
         }
@@ -248,15 +249,14 @@ nextflow_workflow {
                 // rRNA removal options
                 input[19] = true           // remove_ribo_rna
                 input[20] = 'sortmerna'    // ribo_removal_tool
-                input[21] = null           // ribodetector_read_length (not needed for sortmerna)
 
                 // UMI options
-                input[22] = false          // with_umi
-                input[23] = 0              // umi_discard_read
+                input[21] = false          // with_umi
+                input[22] = 0              // umi_discard_read
 
                 // Strandedness thresholds
-                input[24] = 0.8            // stranded_threshold
-                input[25] = 0.1            // unstranded_threshold
+                input[23] = 0.8            // stranded_threshold
+                input[24] = 0.1            // unstranded_threshold
                 """
             }
         }

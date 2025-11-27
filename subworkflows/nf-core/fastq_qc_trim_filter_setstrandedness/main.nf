@@ -1,6 +1,7 @@
 include { BBMAP_BBSPLIT                         } from '../../../modules/nf-core/bbmap/bbsplit'
 include { CAT_FASTQ                             } from '../../../modules/nf-core/cat/fastq/main'
 include { RIBODETECTOR                          } from '../../../modules/nf-core/ribodetector/main'
+include { SEQKIT_STATS                          } from '../../../modules/nf-core/seqkit/stats/main'
 include { SORTMERNA                             } from '../../../modules/nf-core/sortmerna/main'
 include { SORTMERNA as SORTMERNA_INDEX          } from '../../../modules/nf-core/sortmerna/main'
 include { FQ_LINT                               } from '../../../modules/nf-core/fq/lint/main'
@@ -83,6 +84,29 @@ def multiqcTsvFromList(tsv_data, header) {
     return tsv_string
 }
 
+//
+// Function that parses seqkit stats TSV output to extract the mean read length
+// for use with RiboDetector's -l parameter
+//
+def getReadLengthFromSeqkitStats(stats_file) {
+    def lines = stats_file.text.readLines()
+    if (lines.size() < 2) {
+        return 100 // Default fallback
+    }
+
+    def header = lines[0].split('\t')
+    def avgLenIdx = header.findIndexOf { it == 'avg_len' }
+    if (avgLenIdx < 0) {
+        return 100 // Default fallback if column not found
+    }
+
+    // Calculate mean avg_len across all files in the stats output
+    def avgLens = lines[1..-1].collect { it.split('\t')[avgLenIdx] as float }
+    def meanAvgLen = avgLens.sum() / avgLens.size()
+
+    return Math.round(meanAvgLen) as int
+}
+
 workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     take:
     // Input channels
@@ -115,7 +139,6 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     // rRNA removal options
     remove_ribo_rna           // boolean: true/false: whether to remove rRNA
     ribo_removal_tool         // string (enum): 'sortmerna' or 'ribodetector'
-    ribodetector_read_length  // integer: read length for ribodetector (required if ribo_removal_tool == 'ribodetector')
 
     // UMI options
     with_umi             // boolean: true/false: Enable UMI-based read deduplication.
@@ -302,9 +325,26 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         }
 
         if (ribo_removal_tool == 'ribodetector') {
+            // Run seqkit stats to determine average read length
+            SEQKIT_STATS(
+                ch_filtered_reads
+            )
+
+            ch_versions = ch_versions.mix(SEQKIT_STATS.out.versions.first())
+
+            // Join stats with reads and calculate read length for RiboDetector
+            ch_filtered_reads
+                .join(SEQKIT_STATS.out.stats)
+                .multiMap { meta, reads, stats ->
+                    def readLength = getReadLengthFromSeqkitStats(stats)
+                    reads: [meta, reads]
+                    length: readLength
+                }
+                .set { ch_reads_with_length }
+
             RIBODETECTOR(
-                ch_filtered_reads,
-                ribodetector_read_length,
+                ch_reads_with_length.reads,
+                ch_reads_with_length.length,
             )
 
             RIBODETECTOR.out.fastq.set { ch_filtered_reads }

@@ -15,6 +15,7 @@ components:
   - cat/fastq
   - fq/lint
   - ribodetector
+  - seqkit/stats
   - sortmerna
   - fastq_subsample_fq_salmon
   - fastq_fastqc_umitools_trimgalore
@@ -140,9 +141,6 @@ input:
       type: string
       description: Specifies the rRNA removal tool to use
       enum: ["sortmerna", "ribodetector"]
-  - ribodetector_read_length:
-      type: integer
-      description: Read length for RiboDetector (required when `ribo_removal_tool` is `ribodetector`)
   - with_umi:
       type: boolean
       description: Enable UMI-based read deduplication
