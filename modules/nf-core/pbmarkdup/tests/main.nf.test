@@ -16,7 +16,7 @@ nextflow_process {
         when {
 
             params {
-                pbmarkdup_args = "--clobber --dup-file output.dup.fasta"
+                pbmarkdup_args = "--clobber"
             }
 
             process {
@@ -53,7 +53,7 @@ nextflow_process {
                     [
                         [ id:'test' ], // meta map
                         [ file('https://github.com/sainsachiko/test-datasets/raw/refs/heads/modules/data/genomics/eukaryotes/acropora_cervicornis/m84093_241116_151316_s2.hifi_reads.bc2028.subset.1.bam', checkIfExists: true),
-                          file('https://github.com/sainsachiko/test-datasets/raw/refs/heads/modules/data/genomics/eukaryotes/acropora_cervicornis/m84093_241116_151316_s2.hifi_reads.bc2028.subset.2.bam', checkIfExists: true) 
+                          file('https://github.com/sainsachiko/test-datasets/raw/refs/heads/modules/data/genomics/eukaryotes/acropora_cervicornis/m84093_241116_151316_s2.hifi_reads.bc2028.subset.2.bam', checkIfExists: true)
                         ]
                     ]
                 )
@@ -83,7 +83,7 @@ nextflow_process {
                     [
                         [ id:'test' ], // meta map
                         [ file('https://github.com/sainsachiko/test-datasets/raw/refs/heads/modules/data/genomics/eukaryotes/acropora_cervicornis/m84093_241116_151316_s2.hifi_reads.bc2028.subset.1.bam', checkIfExists: true),
-                          file('https://github.com/sainsachiko/test-datasets/raw/refs/heads/modules/data/genomics/eukaryotes/acropora_cervicornis/m84093_241116_151316_s2.hifi_reads.bc2028.subset.2.bam', checkIfExists: true) 
+                          file('https://github.com/sainsachiko/test-datasets/raw/refs/heads/modules/data/genomics/eukaryotes/acropora_cervicornis/m84093_241116_151316_s2.hifi_reads.bc2028.subset.2.bam', checkIfExists: true)
                         ]
                     ]
                 )

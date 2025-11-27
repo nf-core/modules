@@ -13,7 +13,7 @@ process PBMARKDUP {
     output:
     tuple val(meta), path("${prefix}.${suffix}"), emit: markduped
     tuple val(meta), path("${dupfile_name}")    , emit: dupfile   , optional: true
-    tuple val(meta), path("*.pbmarkdup.log")    , emit: logs      , optional: true
+    tuple val(meta), path("*.pbmarkdup.log")    , emit: log       , optional: true
     path "versions.yml"                         , emit: versions
 
     when:
@@ -28,15 +28,15 @@ process PBMARKDUP {
     def file_list = input.collect { it.getName() }.join(' ')
 
     // Check file name collisions between input, output, and duplicate file
-    if (file_list.contains("${prefix}.${suffix}")) 
+    if (file_list.contains("${prefix}.${suffix}"))
         error """Output file `${prefix}.${suffix}` conflicts with an input file.
         Please change the output `$prefix` or input file names."""
     if (dupfile_name) {
-        if (file_list.contains(dupfile_name)) 
+        if (file_list.contains(dupfile_name))
             error """Duplicate file `$dupfile_name` conflicts with an input file.
             Please change the duplicate file name `$dupfile_name` or input file names."""
 
-        if (dupfile_name == "${prefix}.${suffix}") 
+        if (dupfile_name == "${prefix}.${suffix}")
             error """Duplicate file `$dupfile_name` cannot be the same as the output file name.
             Please change the duplicate file name `$dupfile_name` or output prefix `$prefix`."""
     }
