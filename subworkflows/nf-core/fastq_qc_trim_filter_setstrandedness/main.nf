@@ -1,15 +1,16 @@
-include { BBMAP_BBSPLIT                      } from '../../../modules/nf-core/bbmap/bbsplit'
-include { CAT_FASTQ                          } from '../../../modules/nf-core/cat/fastq/main'
-include { SORTMERNA                          } from '../../../modules/nf-core/sortmerna/main'
-include { SORTMERNA as SORTMERNA_INDEX       } from '../../../modules/nf-core/sortmerna/main'
-include { FQ_LINT                            } from '../../../modules/nf-core/fq/lint/main'
-include { FQ_LINT as FQ_LINT_AFTER_TRIMMING  } from '../../../modules/nf-core/fq/lint/main'
-include { FQ_LINT as FQ_LINT_AFTER_BBSPLIT   } from '../../../modules/nf-core/fq/lint/main'
-include { FQ_LINT as FQ_LINT_AFTER_SORTMERNA } from '../../../modules/nf-core/fq/lint/main'
-
-include { FASTQ_SUBSAMPLE_FQ_SALMON          } from '../fastq_subsample_fq_salmon'
-include { FASTQ_FASTQC_UMITOOLS_TRIMGALORE   } from '../fastq_fastqc_umitools_trimgalore'
-include { FASTQ_FASTQC_UMITOOLS_FASTP        } from '../fastq_fastqc_umitools_fastp'
+include { BBMAP_BBSPLIT                         } from '../../../modules/nf-core/bbmap/bbsplit'
+include { CAT_FASTQ                             } from '../../../modules/nf-core/cat/fastq/main'
+include { RIBODETECTOR                          } from '../../../modules/nf-core/ribodetector/main'
+include { SEQKIT_STATS                          } from '../../../modules/nf-core/seqkit/stats/main'
+include { SORTMERNA                             } from '../../../modules/nf-core/sortmerna/main'
+include { SORTMERNA as SORTMERNA_INDEX          } from '../../../modules/nf-core/sortmerna/main'
+include { FQ_LINT                               } from '../../../modules/nf-core/fq/lint/main'
+include { FQ_LINT as FQ_LINT_AFTER_TRIMMING     } from '../../../modules/nf-core/fq/lint/main'
+include { FQ_LINT as FQ_LINT_AFTER_BBSPLIT      } from '../../../modules/nf-core/fq/lint/main'
+include { FQ_LINT as FQ_LINT_AFTER_RIBO_REMOVAL } from '../../../modules/nf-core/fq/lint/main'
+include { FASTQ_SUBSAMPLE_FQ_SALMON             } from '../fastq_subsample_fq_salmon'
+include { FASTQ_FASTQC_UMITOOLS_TRIMGALORE      } from '../fastq_fastqc_umitools_trimgalore'
+include { FASTQ_FASTQC_UMITOOLS_FASTP           } from '../fastq_fastqc_umitools_fastp'
 
 //
 // Function to determine library type by comparing type counts.
@@ -83,8 +84,32 @@ def multiqcTsvFromList(tsv_data, header) {
     return tsv_string
 }
 
+//
+// Function that parses seqkit stats TSV output to extract the mean read length
+// for use with RiboDetector's -l parameter
+//
+def getReadLengthFromSeqkitStats(stats_file) {
+    def lines = stats_file.text.readLines()
+    if (lines.size() < 2) {
+        return 100 // Default fallback
+    }
+
+    def header = lines[0].split('\t')
+    def avgLenIdx = header.findIndexOf { it == 'avg_len' }
+    if (avgLenIdx < 0) {
+        return 100 // Default fallback if column not found
+    }
+
+    // Calculate mean avg_len across all files in the stats output
+    def avgLens = lines[1..-1].collect { it.split('\t')[avgLenIdx] as float }
+    def meanAvgLen = avgLens.sum() / avgLens.size()
+
+    return Math.round(meanAvgLen) as int
+}
+
 workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     take:
+    // Input channels
     ch_reads             // channel: [ val(meta), [ reads ] ]
     ch_fasta             // channel: /path/to/genome.fasta
     ch_transcript_fasta  // channel: /path/to/transcript.fasta
@@ -93,22 +118,35 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     ch_sortmerna_index   // channel: /path/to/sortmerna/index/ (optional)
     ch_bbsplit_index     // channel: /path/to/bbsplit/index/ (optional)
     ch_rrna_fastas       // channel: one or more fasta files containing rrna sequences to be passed to SortMeRNA (optional)
+
+    // Skip options
     skip_bbsplit         // boolean: Skip BBSplit for removal of non-reference genome reads.
     skip_fastqc          // boolean: true/false
     skip_trimming        // boolean: true/false
     skip_umi_extract     // boolean: true/false
+    skip_linting         // boolean: true/false
+
+    // Index generation
     make_salmon_index    // boolean: Whether to create salmon index before running salmon quant
     make_sortmerna_index // boolean: Whether to create a sortmerna index before running sortmerna
+
+    // Trimming options
     trimmer              // string (enum): 'fastp' or 'trimgalore'
     min_trimmed_reads    // integer: > 0
     save_trimmed         // boolean: true/false
-    remove_ribo_rna      // boolean: true/false: whether to run sortmerna to remove rrnas
+    fastp_merge          // boolean: true/false: whether to stitch paired end reads together in FASTP output
+
+    // rRNA removal options
+    remove_ribo_rna           // boolean: true/false: whether to remove rRNA
+    ribo_removal_tool         // string (enum): 'sortmerna' or 'ribodetector'
+
+    // UMI options
     with_umi             // boolean: true/false: Enable UMI-based read deduplication.
     umi_discard_read     // integer: 0, 1 or 2
+
+    // Strandedness thresholds
     stranded_threshold   // float: The fraction of stranded reads that must be assigned to a strandedness for confident assignment. Must be at least 0.5
     unstranded_threshold // float: The difference in fraction of stranded reads assigned to 'forward' and 'reverse' below which a sample is classified as 'unstranded'
-    skip_linting         // boolean: true/false
-    fastp_merge          // boolean: true/false: whether to stitch paired end reads together in FASTP output
 
     main:
 
@@ -259,37 +297,68 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     // MODULE: Remove ribosomal RNA reads
     //
     if (remove_ribo_rna) {
-        ch_sortmerna_fastas = ch_rrna_fastas
-            .collect()
-            .map { ['rrna_refs', it] }
+        if (ribo_removal_tool == 'sortmerna') {
+            ch_sortmerna_fastas = ch_rrna_fastas
+                .collect()
+                .map { [[id: 'rrna_refs'], it] }
 
-        if (make_sortmerna_index) {
-            SORTMERNA_INDEX(
-                [[], []],
+            if (make_sortmerna_index) {
+                SORTMERNA_INDEX(
+                    [[], []],
+                    ch_sortmerna_fastas,
+                    [[], []],
+                )
+                ch_sortmerna_index = SORTMERNA_INDEX.out.index.first()
+            }
+
+            SORTMERNA(
+                ch_filtered_reads,
                 ch_sortmerna_fastas,
-                [[], []],
+                ch_sortmerna_index,
             )
-            ch_sortmerna_index = SORTMERNA_INDEX.out.index.first()
+
+            SORTMERNA.out.reads.set { ch_filtered_reads }
+
+            ch_multiqc_files = ch_multiqc_files.mix(SORTMERNA.out.log)
+
+            ch_versions = ch_versions.mix(SORTMERNA.out.versions.first())
         }
-
-        SORTMERNA(
-            ch_filtered_reads,
-            ch_sortmerna_fastas,
-            ch_sortmerna_index,
-        )
-
-        SORTMERNA.out.reads.set { ch_filtered_reads }
-
-        ch_multiqc_files = ch_multiqc_files.mix(SORTMERNA.out.log)
-
-        ch_versions = ch_versions.mix(SORTMERNA.out.versions.first())
-
-        if (!skip_linting) {
-            FQ_LINT_AFTER_SORTMERNA(
+        else if (ribo_removal_tool == 'ribodetector') {
+            // Run seqkit stats to determine average read length
+            SEQKIT_STATS(
                 ch_filtered_reads
             )
-            ch_lint_log = ch_lint_log.mix(FQ_LINT_AFTER_SORTMERNA.out.lint)
-            ch_filtered_reads = ch_filtered_reads.join(FQ_LINT_AFTER_SORTMERNA.out.lint.map { it[0] })
+
+            ch_versions = ch_versions.mix(SEQKIT_STATS.out.versions.first())
+
+            // Join stats with reads and calculate read length for RiboDetector
+            ch_filtered_reads
+                .join(SEQKIT_STATS.out.stats)
+                .multiMap { meta, reads, stats ->
+                    def readLength = getReadLengthFromSeqkitStats(stats)
+                    reads: [meta, reads]
+                    length: readLength
+                }
+                .set { ch_reads_with_length }
+
+            RIBODETECTOR(
+                ch_reads_with_length.reads,
+                ch_reads_with_length.length,
+            )
+
+            RIBODETECTOR.out.fastq.set { ch_filtered_reads }
+
+            ch_multiqc_files = ch_multiqc_files.mix(RIBODETECTOR.out.log)
+
+            ch_versions = ch_versions.mix(RIBODETECTOR.out.versions.first())
+        }
+
+        if (!skip_linting) {
+            FQ_LINT_AFTER_RIBO_REMOVAL(
+                ch_filtered_reads
+            )
+            ch_lint_log = ch_lint_log.mix(FQ_LINT_AFTER_RIBO_REMOVAL.out.lint)
+            ch_filtered_reads = ch_filtered_reads.join(FQ_LINT_AFTER_RIBO_REMOVAL.out.lint.map { it[0] })
         }
     }
 
