@@ -264,7 +264,7 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         if (ribo_removal_tool == 'sortmerna') {
             ch_sortmerna_fastas = ch_rrna_fastas
                 .collect()
-                .map { ['rrna_refs', it] }
+                .map { [[id: 'rrna_refs'], it] }
 
             if (make_sortmerna_index) {
                 SORTMERNA_INDEX(
