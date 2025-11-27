@@ -77,6 +77,12 @@ input:
         type: string
         description: Name of the chromosome to impute. Should match a chromosome name
           in the reference genome.
+    - start:
+        type: integer
+        description: Start position of the region to impute.
+    - end:
+        type: integer
+        description: End position of the region to impute.
     - K:
         type: integer
         description: Number of ancestral haplotypes to use for imputation. Refer to
