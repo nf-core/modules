@@ -47,7 +47,7 @@ output:
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
             - edam: http://edamontology.org/format_3475 # TSV
-  versions_qsv:
+  versions_qsv: &versions
     - - ${task.process}:
           type: string
           description: The name of the process
@@ -57,6 +57,8 @@ output:
       - "qsv --version | cut -d' ' -f2 | cut -d'-' -f1":
           type: eval
           description: The expression to obtain the version of the tool
+topics:
+  versions: *versions
 authors:
   - "@dialvarezs"
 maintainers:
