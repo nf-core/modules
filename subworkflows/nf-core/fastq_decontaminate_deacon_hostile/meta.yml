@@ -15,8 +15,8 @@ keywords:
 components:
   - hostile/fetch
   - hostile/clean
-  - samtools/sort
-  - samtools/index
+  - deacon/index
+  - deacon/filter
   - fastq_fetch_clean_hostile
   - fastq_index_filter_deacon
 input:
@@ -28,7 +28,7 @@ input:
   - ch_fasta:
       type: file
       description: |
-        Input genome fasta file used by Deacon.
+        Input genome fasta file used by Deacon. Meta must match the meta of ch_reads.
         Structure: [ val(meta), [ path(fasta) ] ]
   - ch_reference:
       type: directory
@@ -41,7 +41,8 @@ input:
       description: Name of the reference genome index to download for Hostile fetch if the reference is not provided.
   - decontaminator:
       type: string
-      description: Name of the deacontamination tool to use. Either 'deacon' or 'hostile'.
+      description: Name of the deacontamination tool to use.
+      enum: ["deacon", "hostile"]
 output:
   - fastq_filtered:
       type: file
@@ -49,12 +50,29 @@ output:
         List of output filtered FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
         Structure: [ val(meta), path(${prefix}*.fq.gz) ]
       pattern: "*.fq.gz"
-  - additional_files:
+  - reference:
       type: channel
       description: |
-        Additional output files depending on the decontamination tool used.
-        Structure: [ val(meta), path(${prefix}*.json), path(index) ] if Deacon is used
-        Structure: [ al(reference_name), path(reference_dir), val(meta), path(*.json) ] if Hostile is used
+        Channel containing reference name and directory with index files for Hostile.
+        Structure: [ val(reference_name), path(reference_dir) ]
+  - json:
+      type: channel
+      description: |
+        Channel containing sample metadata and Hostile cleaning log in JSON format.
+        Structure: [ val(meta), path(*.json) ]
+      pattern: "*.json"
+  - index:
+      type: file
+      description: |
+        Deacon minimizer index file.
+        Structure: [ val(meta), path(index) ]
+      pattern: ".idx"
+  - summary:
+      type: file
+      description: |
+        JSON file containing summary of results.
+        Structure: [ val(meta), path(${prefix}.json) ]
+      pattern: "*.json"
   - versions:
       type: file
       description: |
