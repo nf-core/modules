@@ -103,7 +103,7 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     trimmer              // string (enum): 'fastp' or 'trimgalore'
     min_trimmed_reads    // integer: > 0
     save_trimmed         // boolean: true/false
-    remove_ribo_rna           // boolean: true/false: whether to remove rrnas
+    remove_ribo_rna           // boolean: true/false: whether to remove rRNA
     ribo_removal_tool         // string (enum): 'sortmerna' or 'ribodetector'
     ribodetector_read_length  // integer: read length for ribodetector (required if ribo_removal_tool == 'ribodetector')
     with_umi                  // boolean: true/false: Enable UMI-based read deduplication.

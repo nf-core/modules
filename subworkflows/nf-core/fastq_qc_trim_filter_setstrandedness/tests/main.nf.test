@@ -181,7 +181,7 @@ nextflow_workflow {
                 { assert snapshot(
                     pelines1.join('\n').md5(),
                     pelines2.join('\n').md5(),
-                    processed_ribo_removal_lint_report
+                    processed_ribo_removal_lint_report.md5()
                 ).match() }
             )
         }
@@ -251,7 +251,7 @@ nextflow_workflow {
                 { assert snapshot(
                     pelines1.join('\n').md5(),
                     pelines2.join('\n').md5(),
-                    processed_ribo_removal_lint_report
+                    processed_ribo_removal_lint_report.md5()
                 ).match() }
             )
         }

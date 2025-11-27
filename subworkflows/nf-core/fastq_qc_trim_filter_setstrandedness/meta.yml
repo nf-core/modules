@@ -130,10 +130,10 @@ input:
       description: Enable the removal of reads derived from ribosomal RNA
   - ribo_removal_tool:
       type: string
-      description: Specifies the rRNA removal tool to use - available options are 'sortmerna' (alignment-based) and 'ribodetector' (ML-based)
+      description: Specifies the rRNA removal tool to use - available options are `sortmerna` (alignment-based) and `ribodetector` (ML-based)
   - ribodetector_read_length:
       type: integer
-      description: Read length for RiboDetector (required when ribo_removal_tool is 'ribodetector')
+      description: Read length for RiboDetector (required when `ribo_removal_tool` is `ribodetector`)
   - with_umi:
       type: boolean
       description: Enable UMI-based read deduplication
