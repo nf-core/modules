@@ -323,8 +323,7 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
 
             ch_versions = ch_versions.mix(SORTMERNA.out.versions.first())
         }
-
-        if (ribo_removal_tool == 'ribodetector') {
+        else if (ribo_removal_tool == 'ribodetector') {
             // Run seqkit stats to determine average read length
             SEQKIT_STATS(
                 ch_filtered_reads
