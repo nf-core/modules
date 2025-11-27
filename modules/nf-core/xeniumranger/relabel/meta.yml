@@ -33,18 +33,13 @@ input:
       ontologies: []
 output:
   outs:
-    - - meta:
-          type: file
-          description: Files containing the outputs of Cell Ranger, see official 10X
-            Genomics documentation for a complete list
-          pattern: "${meta.id}/outs/*"
-          ontologies: []
-      - "**/outs/**":
-          type: file
-          description: Files containing the outputs of xenium ranger, see official 10X
-            Genomics documentation for a complete list of outputs
-          pattern: "${meta.id}/outs/*"
-          ontologies: []
+    - meta:
+        type: map
+        description: Groovy Map containing sample information e.g. [ id:'test' ]
+    - "${meta.id}":
+        type: directory
+        description: Directory containing the outputs of Xenium Ranger
+        pattern: "${meta.id}"
   versions:
     - versions.yml:
         type: file

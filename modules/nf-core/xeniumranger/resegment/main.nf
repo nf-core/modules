@@ -2,17 +2,13 @@ process XENIUMRANGER_RESEGMENT {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/xeniumranger:3.0.1"
+    container "nf-core/xeniumranger:4.0"
 
     input:
-    tuple val(meta), path(xenium_bundle)
-    val(expansion_distance)
-    val(dapi_filter)
-    val(boundary_stain)
-    val(interior_stain)
+    tuple val(meta), path(xenium_bundle, stageAs: "bundle/")
 
     output:
-    tuple val(meta), path("**/outs/**"), emit: outs
+    tuple val(meta), path("${prefix}"), emit: outs
     path "versions.yml", emit: versions
 
     when:
@@ -24,27 +20,17 @@ process XENIUMRANGER_RESEGMENT {
         error "XENIUMRANGER_RESEGMENT module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ""
-    def prefix = task.ext.prefix ?: "${meta.id}"
-
-    def expansion_distance = expansion_distance ? "--expansion-distance=\"${expansion_distance}\"": ""
-    def dapi_filter = dapi_filter ? "--dapi-filter=\"${dapi_filter}\"": ""
-
-    // Do not use boundary stain in analysis, but keep default interior stain and DAPI
-    def boundary_stain = boundary_stain ? "--boundary-stain=disable": ""
-    // Do not use interior stain in analysis, but keep default boundary stain and DAPI
-    def interior_stain = interior_stain ? "--interior-stain=disable": ""
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     xeniumranger resegment \\
-        --id="${prefix}" \\
+        --id="XENIUMRANGER_RESEGMENT" \\
         --xenium-bundle="${xenium_bundle}" \\
-        ${expansion_distance} \\
-        ${dapi_filter} \\
-        ${boundary_stain} \\
-        ${interior_stain} \\
         --localcores=${task.cpus} \\
         --localmem=${task.memory.toGiga()} \\
         ${args}
+
+    mv XENIUMRANGER_RESEGMENT/outs ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -57,10 +43,10 @@ process XENIUMRANGER_RESEGMENT {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "XENIUMRANGER_RESEGMENT module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p "${prefix}/outs/"
-    touch "${prefix}/outs/fake_file.txt"
+    mkdir -p "${prefix}"
+    touch "${prefix}/fake_file.txt"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
