@@ -4,8 +4,8 @@ process GECCO_CONVERT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gecco:0.10.0--pyhdfd78af_0':
-        'biocontainers/gecco:0.10.0--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/gecco:0.10.1--pyhdfd78af_0':
+        'biocontainers/gecco:0.10.1--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(clusters), path(gbk)
@@ -13,18 +13,18 @@ process GECCO_CONVERT {
     val(format)
 
     output:
-    tuple val(meta), path("*.gff")        , emit: gff     , optional: true
-    tuple val(meta), path("*.region*.gbk"), emit: bigslice, optional: true
-    tuple val(meta), path("*.faa")        , emit: faa     , optional: true
-    tuple val(meta), path("*.fna")        , emit: fna     , optional: true
-    path "versions.yml"                   , emit: versions
+    tuple val(meta), path("${prefix}/*.gff")        , emit: gff     , optional: true
+    tuple val(meta), path("${prefix}/*.region*.gbk"), emit: bigslice, optional: true
+    tuple val(meta), path("${prefix}/*.faa")        , emit: faa     , optional: true
+    tuple val(meta), path("${prefix}/*.fna")        , emit: fna     , optional: true
+    path "versions.yml"                             , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}" // IMPORTANT: -o ${prefix} does not work in 0.10.0
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     gecco \\
         convert \\
@@ -32,7 +32,8 @@ process GECCO_CONVERT {
         --jobs $task.cpus \\
         $mode \\
         --input-dir ./ \\
-        --format ${format}
+        --format ${format} \\
+        --output ${prefix}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -42,11 +43,12 @@ process GECCO_CONVERT {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo $args
 
-    touch ${prefix}.gff
+    mkdir ${prefix}
+    touch ${prefix}/${prefix}.gff
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
