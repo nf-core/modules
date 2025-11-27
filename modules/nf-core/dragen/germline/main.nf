@@ -398,7 +398,7 @@ process DRAGEN {
     """
 
     stub:
-    def VERSION = "4.2.7"
+    def VERSION = "stub"
     """
     touch 20251120_usage.txt
 
