@@ -1,16 +1,15 @@
-include { BBMAP_BBSPLIT                      } from '../../../modules/nf-core/bbmap/bbsplit'
-include { CAT_FASTQ                          } from '../../../modules/nf-core/cat/fastq/main'
-include { RIBODETECTOR                       } from '../../../modules/nf-core/ribodetector/main'
-include { SORTMERNA                          } from '../../../modules/nf-core/sortmerna/main'
-include { SORTMERNA as SORTMERNA_INDEX       } from '../../../modules/nf-core/sortmerna/main'
-include { FQ_LINT                            } from '../../../modules/nf-core/fq/lint/main'
-include { FQ_LINT as FQ_LINT_AFTER_TRIMMING  } from '../../../modules/nf-core/fq/lint/main'
-include { FQ_LINT as FQ_LINT_AFTER_BBSPLIT   } from '../../../modules/nf-core/fq/lint/main'
+include { BBMAP_BBSPLIT                         } from '../../../modules/nf-core/bbmap/bbsplit'
+include { CAT_FASTQ                             } from '../../../modules/nf-core/cat/fastq/main'
+include { RIBODETECTOR                          } from '../../../modules/nf-core/ribodetector/main'
+include { SORTMERNA                             } from '../../../modules/nf-core/sortmerna/main'
+include { SORTMERNA as SORTMERNA_INDEX          } from '../../../modules/nf-core/sortmerna/main'
+include { FQ_LINT                               } from '../../../modules/nf-core/fq/lint/main'
+include { FQ_LINT as FQ_LINT_AFTER_TRIMMING     } from '../../../modules/nf-core/fq/lint/main'
+include { FQ_LINT as FQ_LINT_AFTER_BBSPLIT      } from '../../../modules/nf-core/fq/lint/main'
 include { FQ_LINT as FQ_LINT_AFTER_RIBO_REMOVAL } from '../../../modules/nf-core/fq/lint/main'
-
-include { FASTQ_SUBSAMPLE_FQ_SALMON          } from '../fastq_subsample_fq_salmon'
-include { FASTQ_FASTQC_UMITOOLS_TRIMGALORE   } from '../fastq_fastqc_umitools_trimgalore'
-include { FASTQ_FASTQC_UMITOOLS_FASTP        } from '../fastq_fastqc_umitools_fastp'
+include { FASTQ_SUBSAMPLE_FQ_SALMON             } from '../fastq_subsample_fq_salmon'
+include { FASTQ_FASTQC_UMITOOLS_TRIMGALORE      } from '../fastq_fastqc_umitools_trimgalore'
+include { FASTQ_FASTQC_UMITOOLS_FASTP           } from '../fastq_fastqc_umitools_fastp'
 
 //
 // Function to determine library type by comparing type counts.
