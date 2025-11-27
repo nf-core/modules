@@ -1,0 +1,74 @@
+nextflow_process {
+
+    name "Test Process DRAGEN"
+    script "../main.nf"
+    process "DRAGEN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "dragen"
+    tag "dragen/germline"
+
+    test("dragen - stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                ]
+                input[1] = []
+                input[2] = []
+                input[3] = []
+                input[4] = []
+                input[5] = []
+                input[6] = []
+                input[7] = []
+                input[8] = []
+                input[9] = []
+                input[10] = []
+                input[11] = []
+                input[12] = []
+                input[13] = []
+                input[14] = []
+                input[15] = []
+                input[16] = []
+                input[17] = []
+                input[18] = []
+                input[19] = []
+                input[20] = []
+                input[21] = []
+                input[22] = []
+                input[23] = []
+                input[24] = []
+                input[25] = []
+                input[26] = []
+                input[27] = []
+                input[28] = []
+                input[29] = []
+                input[30] = []
+                input[31] = []
+                input[32] = []
+                input[33] = []
+                input[34] = []
+                input[35] = []
+                input[36] = []
+                input[37] = []
+                input[38] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+
+    }
+}
