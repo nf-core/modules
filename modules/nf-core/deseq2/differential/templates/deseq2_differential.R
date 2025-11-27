@@ -231,6 +231,7 @@ for (file_input in c('count_file', 'sample_file')){
 
 library(DESeq2)
 library(BiocParallel)
+library(limma)
 
 ################################################
 ################################################
@@ -426,16 +427,24 @@ dds <- DESeq(
 if (!is.null(opt\$contrast_string)) {
   coef_names <- resultsNames(dds)
   if (!(opt\$contrast_string %in% coef_names)) {
-    stop(sprintf(
-      "Contrast '%s' not in design. Available coefficients: %s",
-      opt\$contrast_string,
-      paste(coef_names, collapse = ", ")
-    ))
+    # Use contrast_string as limma formula
+    design_mat <- model.matrix(as.formula(model), data = as.data.frame(colData(dds)))
+    colnames(design_mat) <- make.names(colnames(design_mat))
+    contrast_mat <- limma::makeContrasts(contrasts = opt\$contrast_string, levels = colnames(design_mat))
+    numeric_contrast <- as.numeric(contrast_mat)
+    if (length(numeric_contrast) != ncol(design_mat)) {
+      stop("Generated contrast vector length does not match number of columns in design matrix.")
+    }
+    # Run DESeq2 results with numeric contrast
+    comp.results <- run_results(contrast = numeric_contrast)
+    if (opt\$shrink_lfc) {
+      comp.shrunk <- run_shrink(contrast = numeric_contrast)
   }
-
+  } else {
   comp.results <- run_results(name = opt\$contrast_string)
   if (opt\$shrink_lfc) {
     comp.results <- run_shrink(coef = opt\$contrast_string)
+    }
   }
 } else {
   contrast_var_tg_ref <- c(contrast_variable,
