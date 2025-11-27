@@ -40,14 +40,6 @@ process VUEGEN {
             QUARTO_CHECK_FLAG=""
         fi
 
-        # for apptainer, create and bind TinyTeX directory
-        Rscript -e "
-            dir.create(path = 'rlib', showWarnings = FALSE, recursive = TRUE)
-            install.packages('tinytex', lib = 'rlib', repos='https://cloud.r-project.org/')
-        "
-
-        quarto install tinytex
-
         # Execute VueGen based on the input type
         if [ "${input_type}" == "config" ]; then
             echo "Running VueGen with config file: $input_path"
