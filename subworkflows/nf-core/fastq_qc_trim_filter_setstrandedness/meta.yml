@@ -110,6 +110,9 @@ input:
   - skip_umi_extract:
       type: boolean
       description: Skip the UMI extraction from the read in case the UMIs have been moved to the headers in advance of the pipeline run
+  - skip_linting:
+      type: boolean
+      description: Whether to skip linting of FastQ files
   - make_salmon_index:
       type: boolean
       description: Whether to create salmon index before running salmon quant
@@ -118,19 +121,25 @@ input:
       description: Whether to create sortmerna index before running sortmerna
   - trimmer:
       type: string
-      description: Specifies the trimming tool to use - available options are 'trimgalore' and 'fastp'
+      description: Specifies the trimming tool to use
+      enum: ["trimgalore", "fastp"]
   - min_trimmed_reads:
       type: integer
       description: Minimum number of trimmed reads below which samples are removed from further processing
   - save_trimmed:
       type: boolean
       description: Save the trimmed FastQ files in the results directory?
+  - fastp_merge:
+      type: boolean
+      description: |
+        For FASTP, save merged fastqs stitching together read1 and read2 for paired end reads
   - remove_ribo_rna:
       type: boolean
       description: Enable the removal of reads derived from ribosomal RNA
   - ribo_removal_tool:
       type: string
-      description: Specifies the rRNA removal tool to use - available options are `sortmerna` (alignment-based) and `ribodetector` (ML-based)
+      description: Specifies the rRNA removal tool to use
+      enum: ["sortmerna", "ribodetector"]
   - ribodetector_read_length:
       type: integer
       description: Read length for RiboDetector (required when `ribo_removal_tool` is `ribodetector`)
@@ -147,13 +156,6 @@ input:
   - unstranded_threshold:
       type: float
       description: The difference in fraction of stranded reads assigned to 'forward' and 'reverse' below which a sample is classified as 'unstranded'.
-  - skip_linting:
-      type: boolean
-      description: Whether to skip linting of FastQ files
-  - fastp_merge:
-      type: boolean
-      description: |
-        For FASTP, save merged fastqs stitching together read1 and read2 for paired end reads
 
 output:
   - reads:
