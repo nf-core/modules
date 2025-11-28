@@ -8,7 +8,7 @@ process STITCH {
         'biocontainers/r-stitch:1.7.3--r44h64f727c_0' }"
 
     input:
-    tuple val(meta), path(collected_crams), path(collected_crais), path(cramlist), path(samplename), path(posfile), path(input, stageAs: "input"), path(genetic_map), path(rdata, stageAs: "RData_in"), val(chromosome_name), val(K), val(nGen)
+    tuple val(meta), path(collected_crams), path(collected_crais), path(cramlist), path(samplename), path(posfile), path(input, stageAs: "input"), path(genetic_map), path(rdata, stageAs: "RData_in"), val(chromosome_name), val(start), val(end), val(K), val(nGen)
     tuple val(meta2), path(fasta), path(fasta_fai)
     val(seed)
 
@@ -32,7 +32,12 @@ process STITCH {
     bgen_output              = args2.contains( "--output_format bgen" )
     def suffix               = bgen_output ? "bgen" : "vcf.gz"
 
-    def reads_ext            = collected_crams                   ? collected_crams.extension.unique() : []
+    def crams_list = collected_crams instanceof Collection ? collected_crams : [collected_crams]
+    def reads_ext = crams_list ? crams_list.collect {path -> path.extension }.unique() : []
+
+    if ( reads_ext.size() > 1 ) {
+        error "STITCH process: Mixed input read file types detected: ${reads_ext}. Please provide either all BAM or all CRAM files."
+    }
     def cramlist_cmd         = cramlist && reads_ext == ["cram"] ? "--cramlist ${cramlist}"           : ""
     def bamlist_cmd          = cramlist && reads_ext == ["bam" ] ? "--bamlist ${cramlist}"            : ""
 

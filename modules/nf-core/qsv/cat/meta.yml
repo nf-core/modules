@@ -1,0 +1,68 @@
+name: qsv_cat
+description: Concatenate two or more CSV (or TSV) tables into a single table
+keywords:
+  - concatenate
+  - tsv
+  - csv
+tools:
+  - csvtk:
+      description: Blazing-fast Data-Wrangling toolkit
+      homepage: https://qsv.dathere.com
+      documentation: https://github.com/dathere/qsv
+      tool_dev_url: https://github.com/dathere/qsv
+      licence: ["MIT", "UNLICENSE"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - csv:
+        type: file
+        description: CSV/TSV formatted files
+        pattern: "*.{csv,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+          - edam: http://edamontology.org/format_3475 # TSV
+  - mode:
+      type: string
+      description: Concatenation mode (rows, columns or rowskey)
+      pattern: "^(rows|columns|rowskey)$"
+  - out_format:
+      type: string
+      description: Output format (.csv for comma delimiter, .ssv for semicolon, and .tsv or .tab for tab)
+      pattern: "^(csv|ssv|tsv|tab)$"
+  - skip_input_format_check:
+      type: boolean
+      description: Skip input format check (by default QSV checks input format based on file extension)
+output:
+  csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}.${out_format}:
+          type: file
+          description: Concatenated CSV/TSV file
+          pattern: "*.{csv,tsv,tab,ssv}"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_qsv: &versions
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - qsv:
+          type: string
+          description: The name of the tool
+      - "qsv --version | cut -d' ' -f2 | cut -d'-' -f1":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions: *versions
+authors:
+  - "@dialvarezs"
+maintainers:
+  - "@dialvarezs"
