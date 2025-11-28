@@ -33,6 +33,8 @@ process SNAKEMAKE {
         ${cores} \\
         --snakefile ${snakefile}
     """
+    export XDG_CACHE_HOME=\$PWD/snakemake_cache
+    mkdir -p \$XDG_CACHE_HOME
 
     stub:
     def args = task.ext.args ?: ''
