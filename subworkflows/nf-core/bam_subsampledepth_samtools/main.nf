@@ -40,7 +40,6 @@ workflow BAM_SUBSAMPLEDEPTH_SAMTOOLS {
         [],
         []
     )
-    ch_versions = ch_versions.mix(SAMTOOLS_VIEW.out.versions.first())
 
     // Aggregate bam and index
     ch_bam_subsampled = SAMTOOLS_VIEW.out.bam.mix(SAMTOOLS_VIEW.out.cram, SAMTOOLS_VIEW.out.sam)
