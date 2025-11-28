@@ -1,0 +1,54 @@
+name: "orfipy"
+description: orfipy is a tool written in python/cython to extract ORFs in an
+  extremely and fast and flexible manner.
+keywords:
+  - orfipy
+  - orfs
+  - open reading frames
+tools:
+  - "orfipy":
+      description: "orfipy: fast and flexible search for open reading frames in fasta
+        sequences"
+      homepage: "https://github.com/urmi-21/orfipy"
+      documentation: "https://github.com/urmi-21/orfipy/blob/master/README.md"
+      tool_dev_url: "https://github.com/urmi-21/orfipy"
+      licence: ["MIT"]
+      identifier: biotools:orfipy
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', fasta ]
+    - infile:
+        type: file
+        description: Input file, in plain Fasta/Fastq or gzipped format,
+          containing Nucletide sequences
+        pattern: "*.{fasta,fa,fastq,fastq.gz,fq,fa.gz,fq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+output:
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', fasta ]
+      - orfipy_outs/${prefix}.bed:
+          type: file
+          description: Output BED file containing ORF coordinates
+          pattern: "orfipy_outs/{id}.bed"
+          ontologies:
+            - edam: http://edamontology.org/format_3673 # BED
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: versions.yml
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@khersameesh24"
+maintainers:
+  - "@khersameesh24"
