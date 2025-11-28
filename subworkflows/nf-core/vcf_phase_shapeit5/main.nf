@@ -51,16 +51,17 @@ workflow VCF_PHASE_SHAPEIT5 {
         .map { meta, vcf, index, pedigree, _region ->
             [meta, vcf, index, pedigree] }
         .combine(ch_chunk_output, by:0)
-        .map { meta, vcf, index, pedigree, chunk ->
-                [meta + [id: "${meta.id}_${chunk.replace(":","-")}"], // The meta.id field need to be modified to be unique for each chunk
-                vcf, index, pedigree, chunk]}
+        .combine(ch_ref, by:0)
+        .combine(ch_scaffold, by:0)
+        .combine(ch_map, by:0)
+        .map { meta, vcf, index, pedigree, chunk, ref, ref_index, scaf, scaf_index, map ->
+            [
+                meta + [id: "${meta.id}_${chunk.replace(":","-")}"], // The meta.id field need to be modified to be unique for each chunk
+                vcf, index, pedigree, chunk, ref, ref_index, scaf, scaf_index, map
+            ]
+        }
 
-    SHAPEIT5_PHASECOMMON (
-        ch_phase_input,
-        ch_ref,
-        ch_scaffold,
-        ch_map
-    )
+    SHAPEIT5_PHASECOMMON (ch_phase_input)
     ch_versions = ch_versions.mix(SHAPEIT5_PHASECOMMON.out.versions)
 
     VCF_INDEX1(SHAPEIT5_PHASECOMMON.out.phased_variant)
