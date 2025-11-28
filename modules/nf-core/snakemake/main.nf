@@ -34,10 +34,14 @@ process SNAKEMAKE {
         --snakefile ${snakefile}
     """
 
+
     stub:
     def args = task.ext.args ?: ''
     def cores = task.cpus ? "--cores ${task.cpus}" : "--cores all"
     """
+    export XDG_CACHE_HOME=\$PWD/snakemake_cache
+    mkdir -p \$XDG_CACHE_HOME
+
     snakemake \\
         ${args} \\
         --snakefile ${snakefile} \\
