@@ -23,7 +23,6 @@ workflow FASTQ_GENERATE_STATISTICS {
 
     if (!skip_fastqc) {
         FASTQC( ch_reads )
-        ch_versions = ch_versions.mix(FASTQC.out.versions.first())
     }
 
     if (!skip_seqfu_check){

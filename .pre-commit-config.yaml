@@ -4,6 +4,10 @@ repos:
     hooks:
       - id: prettier
         entry: prettier --experimental-cli --write --ignore-unknown --no-cache
+        exclude: |
+          (?x)^(
+              .*\.snap$
+          )$
         additional_dependencies:
           - prettier@3.6.2
 

@@ -140,13 +140,27 @@ output:
           description: index for the "unselected" file
           pattern: "*.unselected.{csi,crai}"
           ontologies: []
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - samtools:
+          type: string
+          description: Name of the tool
+      - samtools --version | head -1 | sed -e "s/samtools //:
+          type: string
+          description: Version of samtools used
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - samtools:
+          type: string
+          description: Name of the tool
+      - samtools --version | head -1 | sed -e "s/samtools //:
+          type: string
+          description: Version of samtools used
 authors:
   - "@drpatelh"
   - "@joseespinosa"

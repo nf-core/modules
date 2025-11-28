@@ -71,7 +71,6 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
         )
         fastqc_raw_html = FASTQC_RAW.out.html
         fastqc_raw_zip = FASTQC_RAW.out.zip
-        ch_versions = ch_versions.mix(FASTQC_RAW.out.versions.first())
     }
 
     umi_reads = reads_only
@@ -141,7 +140,6 @@ workflow FASTQ_FASTQC_UMITOOLS_FASTP {
             )
             fastqc_trim_html = FASTQC_TRIM.out.html
             fastqc_trim_zip = FASTQC_TRIM.out.zip
-            ch_versions = ch_versions.mix(FASTQC_TRIM.out.versions.first())
         }
     }
 
