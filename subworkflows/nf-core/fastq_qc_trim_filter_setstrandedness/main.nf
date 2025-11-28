@@ -1,5 +1,10 @@
 include { BBMAP_BBSPLIT                         } from '../../../modules/nf-core/bbmap/bbsplit'
+include { BOWTIE2_ALIGN                         } from '../../../modules/nf-core/bowtie2/align/main'
+include { BOWTIE2_ALIGN as BOWTIE2_ALIGN_PE     } from '../../../modules/nf-core/bowtie2/align/main'
+include { BOWTIE2_BUILD                         } from '../../../modules/nf-core/bowtie2/build/main'
 include { CAT_FASTQ                             } from '../../../modules/nf-core/cat/fastq/main'
+include { SAMTOOLS_VIEW as SAMTOOLS_VIEW_BOWTIE2 } from '../../../modules/nf-core/samtools/view/main'
+include { SAMTOOLS_FASTQ as SAMTOOLS_FASTQ_BOWTIE2 } from '../../../modules/nf-core/samtools/fastq/main'
 include { RIBODETECTOR                          } from '../../../modules/nf-core/ribodetector/main'
 include { SEQKIT_STATS                          } from '../../../modules/nf-core/seqkit/stats/main'
 include { SORTMERNA                             } from '../../../modules/nf-core/sortmerna/main'
@@ -116,8 +121,9 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     ch_gtf               // channel: /path/to/genome.gtf
     ch_salmon_index      // channel: /path/to/salmon/index/ (optional)
     ch_sortmerna_index   // channel: /path/to/sortmerna/index/ (optional)
+    ch_bowtie2_index     // channel: /path/to/bowtie2/index/ (optional)
     ch_bbsplit_index     // channel: /path/to/bbsplit/index/ (optional)
-    ch_rrna_fastas       // channel: one or more fasta files containing rrna sequences to be passed to SortMeRNA (optional)
+    ch_rrna_fastas       // channel: one or more fasta files containing rrna sequences to be passed to SortMeRNA/Bowtie2 (optional)
 
     // Skip options
     skip_bbsplit         // boolean: Skip BBSplit for removal of non-reference genome reads.
@@ -129,6 +135,7 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     // Index generation
     make_salmon_index    // boolean: Whether to create salmon index before running salmon quant
     make_sortmerna_index // boolean: Whether to create a sortmerna index before running sortmerna
+    make_bowtie2_index   // boolean: Whether to create a bowtie2 index before running bowtie2
 
     // Trimming options
     trimmer              // string (enum): 'fastp' or 'trimgalore'
@@ -138,7 +145,7 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
 
     // rRNA removal options
     remove_ribo_rna           // boolean: true/false: whether to remove rRNA
-    ribo_removal_tool         // string (enum): 'sortmerna' or 'ribodetector'
+    ribo_removal_tool         // string (enum): 'sortmerna', 'ribodetector', or 'bowtie2'
 
     // UMI options
     with_umi             // boolean: true/false: Enable UMI-based read deduplication.
@@ -351,6 +358,86 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
             ch_multiqc_files = ch_multiqc_files.mix(RIBODETECTOR.out.log)
 
             ch_versions = ch_versions.mix(RIBODETECTOR.out.versions.first())
+        }
+        else if (ribo_removal_tool == 'bowtie2') {
+            if (make_bowtie2_index) {
+                // Collect all fastas into a single file for index building
+                // Convert U to T since rRNA references may contain RNA (U) but reads are DNA (T)
+                ch_rrna_fastas
+                    .collectFile(name: 'rrna_combined.fasta', newLine: true)
+                    .map { fasta ->
+                        def content = fasta.text.replaceAll('U', 'T').replaceAll('u', 't')
+                        def convertedFasta = file("${fasta.parent}/rrna_combined_dna.fasta")
+                        convertedFasta.text = content
+                        [[id: 'rrna_refs'], convertedFasta]
+                    }
+                    .set { ch_combined_fasta }
+
+                BOWTIE2_BUILD(
+                    ch_combined_fasta
+                )
+                ch_bowtie2_index = BOWTIE2_BUILD.out.index.first()
+                ch_versions = ch_versions.mix(BOWTIE2_BUILD.out.versions.first())
+            }
+
+            // Branch reads by single-end vs paired-end for different filtering strategies
+            ch_filtered_reads
+                .branch { meta, reads ->
+                    single_end: meta.single_end
+                    paired_end: !meta.single_end
+                }
+                .set { ch_reads_for_bowtie2 }
+
+            // For single-end reads: bowtie2's --un-gz works correctly
+            // save_unaligned=true outputs unmapped reads directly
+            BOWTIE2_ALIGN(
+                ch_reads_for_bowtie2.single_end,
+                ch_bowtie2_index,
+                [[], []],  // No reference fasta needed
+                true,      // save_unaligned - for single-end this works correctly
+                false,     // sort_bam - not needed
+            )
+
+            ch_multiqc_files = ch_multiqc_files.mix(BOWTIE2_ALIGN.out.log)
+            ch_versions = ch_versions.mix(BOWTIE2_ALIGN.out.versions.first())
+
+            // For paired-end reads: bowtie2's --un-conc-gz outputs pairs that didn't
+            // align concordantly, which INCLUDES pairs where one mate aligned.
+            // We need to filter via samtools to get pairs where BOTH mates are unmapped.
+            BOWTIE2_ALIGN_PE(
+                ch_reads_for_bowtie2.paired_end,
+                ch_bowtie2_index,
+                [[], []],  // No reference fasta needed for BAM output
+                false,     // save_unaligned - we'll extract from BAM instead
+                false,     // sort_bam - not needed
+            )
+
+            ch_multiqc_files = ch_multiqc_files.mix(BOWTIE2_ALIGN_PE.out.log)
+            ch_versions = ch_versions.mix(BOWTIE2_ALIGN_PE.out.versions.first())
+
+            // Filter BAM for read pairs where BOTH mates are unmapped (flag 12 = 4 + 8)
+            // This removes any pair where at least one mate aligned to rRNA
+            SAMTOOLS_VIEW_BOWTIE2(
+                BOWTIE2_ALIGN_PE.out.bam.map { meta, bam -> [meta, bam, []] },
+                [[], []],  // No reference fasta
+                [],        // No qname file
+                []         // No index format
+            )
+
+            ch_versions = ch_versions.mix(SAMTOOLS_VIEW_BOWTIE2.out.versions.first())
+
+            // Convert filtered BAM back to paired FASTQ
+            SAMTOOLS_FASTQ_BOWTIE2(
+                SAMTOOLS_VIEW_BOWTIE2.out.bam,
+                false  // not interleaved
+            )
+
+            ch_versions = ch_versions.mix(SAMTOOLS_FASTQ_BOWTIE2.out.versions.first())
+
+            // Combine single-end and paired-end results
+            BOWTIE2_ALIGN.out.fastq
+                .mix(SAMTOOLS_FASTQ_BOWTIE2.out.fastq)
+                .set { ch_filtered_reads }
         }
 
         if (!skip_linting) {
