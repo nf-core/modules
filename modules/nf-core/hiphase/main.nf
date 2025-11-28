@@ -4,8 +4,8 @@ process HIPHASE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hiphase:1.4.5--h9ee0642_0':
-        'biocontainers/hiphase:1.4.5--h9ee0642_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d4/d418cdbaff565e9c563c441c72d480f2605bb529712dd026068f1d0a7b246617/data':
+        'community.wave.seqera.io/library/hiphase:1.5.0--f36e5874e9287052' }"
 
     input:
     tuple val(meta), path(vcf), path(csi)
