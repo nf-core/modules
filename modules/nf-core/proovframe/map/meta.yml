@@ -33,21 +33,21 @@ input:
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
     - faa:
-          type: file
-          description: A proteome fasta file to create a database of guide protein sequences
-            from
-          pattern: "*.{faa,fasta,fa}"
-          ontologies: []
+        type: file
+        description: A proteome fasta file to create a database of guide protein sequences
+          from
+        pattern: "*.{faa,fasta,fa}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
     - db:
-          type: file
-          description: A previously generated diamond database of guide protein sequences
-          pattern: "*.{dmnd}"
-          ontologies: []
+        type: file
+        description: A previously generated diamond database of guide protein sequences
+        pattern: "*.{dmnd}"
+        ontologies: []
 output:
   tsv:
     - - meta:

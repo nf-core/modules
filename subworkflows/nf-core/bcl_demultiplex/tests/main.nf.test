@@ -34,13 +34,13 @@ nextflow_workflow {
                 { assert snapshot(
                     sanitizeOutput(workflow.out, unstableKeys: ["empty_fastq", "logs"]).collectEntries { key, val ->
                         if (key == "interop") {
-                            return [ key, val.collect { meta, files -> 
-                                [ 
+                            return [ key, val.collect { meta, files ->
+                                [
                                     meta,
-                                    files.collect { interop_file -> 
+                                    files.collect { interop_file ->
                                         if (interop_file.endsWith("IndexMetricsOut.bin")) {
                                             file(interop_file).name
-                                        } else { 
+                                        } else {
                                             interop_file
                                         }
                                     }
@@ -77,13 +77,13 @@ nextflow_workflow {
                 { assert snapshot(
                     sanitizeOutput(workflow.out).collectEntries { key, val ->
                         if (key == "interop") {
-                            return [ key, val.collect { meta, files -> 
-                                [ 
+                            return [ key, val.collect { meta, files ->
+                                [
                                     meta,
-                                    files.collect { interop_file -> 
+                                    files.collect { interop_file ->
                                         if (interop_file.endsWith("IndexMetricsOut.bin")) {
                                             file(interop_file).name
-                                        } else { 
+                                        } else {
                                             interop_file
                                         }
                                     }
