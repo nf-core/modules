@@ -112,6 +112,11 @@ nextflow_workflow {
             def ribodetectorRrnaMatch = (ribodetectorLog =~ /Detected (\d+) rRNA sequences/)
             def ribodetectorRrnaCount = ribodetectorRrnaMatch ? ribodetectorRrnaMatch[0][1].toInteger() : -1
 
+            // Sort FASTQ reads before MD5 to handle ribodetector's non-deterministic output order
+            // (multiprocessing causes variable read ordering even with --seed set)
+            def sortedLines1 = pelines1.collate(4).sort { it[0] }.flatten()
+            def sortedLines2 = pelines2.collate(4).sort { it[0] }.flatten()
+
             // Input: 4159 original + 10 synthetic rRNA = 4169 read pairs
             // RiboDetector removes 7 of 10 synthetic rRNA pairs (70% detection), leaving 4162 pairs
             assertAll(
@@ -120,8 +125,8 @@ nextflow_workflow {
                 { assert pelines2.size() == 16648 },
                 { assert ribodetectorRrnaCount == 7 },  // 7 pairs detected (70% - ML model misses some)
                 { assert snapshot(
-                    pelines1.join('\n').md5(),
-                    pelines2.join('\n').md5()
+                    sortedLines1.join('\n').md5(),
+                    sortedLines2.join('\n').md5()
                 ).match() }
             )
         }
