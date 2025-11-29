@@ -1,7 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "ribodetector"
-description: Accurate and rapid RiboRNA sequences Detector based on deep
-  learning
+description: Accurate and rapid RiboRNA sequences Detector based on deep learning
 keywords:
   - RNA
   - RNAseq
@@ -16,10 +15,10 @@ keywords:
 tools:
   - ribodetector:
       description: Accurate and rapid RiboRNA sequences detector based on deep learning.
-        RiboDetector uses a deep learning approach to identify rRNA sequences in
-        ribosome profiling (Ribo-seq) data. It can be used to filter out rRNA reads
-        from Ribo-seq datasets, improving the quality of downstream analyses. As of version
-        0.3.1, Ribodetector doesn't support setting a random seed, so results may not be fully
+        RiboDetector uses a deep learning approach to identify rRNA sequences in ribosome
+        profiling (Ribo-seq) data. It can be used to filter out rRNA reads from Ribo-seq
+        datasets, improving the quality of downstream analyses. As of version 0.3.1,
+        Ribodetector doesn't support setting a random seed, so results may not be fully
         deterministic across runs.
       homepage: "https://github.com/hzi-bifo/RiboDetector"
       documentation: "https://github.com/hzi-bifo/RiboDetector"
@@ -67,13 +66,27 @@ output:
           description: Log file from RiboDetector
           pattern: "*.log"
           ontologies: []
+  versions_ribodetector:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - ribodetector:
+          type: string
+          description: Name of the tool
+      - ribodetector --version | sed "s/ribodetector //:
+          type: string
+          description: Version of ribodetector used
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: versions.yml
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - ribodetector:
+          type: string
+          description: Name of the tool
+      - ribodetector --version | sed "s/ribodetector //:
+          type: string
+          description: Version of ribodetector used
 authors:
   - "@maxibor"
 maintainers:
