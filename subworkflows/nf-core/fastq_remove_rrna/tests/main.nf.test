@@ -163,7 +163,7 @@ nextflow_workflow {
 
             // Input: 4159 original + 10 synthetic rRNA = 4169 read pairs
             // Bowtie2 aligns 17 individual mates to rRNA
-            // Using samtools -f 12 removes any pair where EITHER mate aligned, leaving 4159 pairs
+            // Using samtools -f 12 keeps only pairs where BOTH mates are unmapped, leaving 4159 pairs
             assertAll(
                 { assert workflow.success },
                 { assert pelines1.size() == 16636 },  // 4159 pairs × 4 lines/read

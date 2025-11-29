@@ -96,7 +96,7 @@ workflow FASTQ_REMOVE_RRNA {
 
         ch_filtered_reads = RIBODETECTOR.out.fastq
         ch_multiqc_files = ch_multiqc_files.mix(RIBODETECTOR.out.log)
-        ch_versions = ch_versions.mix(RIBODETECTOR.out.versions.first())
+        // Note: ribodetector versions collected via topic
     }
     else if (ribo_removal_tool == 'bowtie2') {
         if (make_bowtie2_index) {
@@ -138,7 +138,7 @@ workflow FASTQ_REMOVE_RRNA {
         )
 
         ch_multiqc_files = ch_multiqc_files.mix(BOWTIE2_ALIGN.out.log)
-        ch_versions = ch_versions.mix(BOWTIE2_ALIGN.out.versions.first())
+        ch_versions = ch_versions.mix(BOWTIE2_ALIGN.out.versions)
 
         // For paired-end reads: bowtie2's --un-conc-gz outputs pairs that didn't
         // align concordantly, which INCLUDES pairs where one mate aligned.
@@ -152,7 +152,7 @@ workflow FASTQ_REMOVE_RRNA {
         )
 
         ch_multiqc_files = ch_multiqc_files.mix(BOWTIE2_ALIGN_PE.out.log)
-        ch_versions = ch_versions.mix(BOWTIE2_ALIGN_PE.out.versions.first())
+        ch_versions = ch_versions.mix(BOWTIE2_ALIGN_PE.out.versions)
 
         // Filter BAM for read pairs where BOTH mates are unmapped (flag 12 = 4 + 8)
         // This removes any pair where at least one mate aligned to rRNA
@@ -162,8 +162,7 @@ workflow FASTQ_REMOVE_RRNA {
             [],        // No qname file
             []         // No index format
         )
-
-        ch_versions = ch_versions.mix(SAMTOOLS_VIEW_BOWTIE2.out.versions.first())
+        // Note: samtools/view versions collected via topic
 
         // Convert filtered BAM back to paired FASTQ
         SAMTOOLS_FASTQ_BOWTIE2(
@@ -171,7 +170,7 @@ workflow FASTQ_REMOVE_RRNA {
             false  // not interleaved
         )
 
-        ch_versions = ch_versions.mix(SAMTOOLS_FASTQ_BOWTIE2.out.versions.first())
+        ch_versions = ch_versions.mix(SAMTOOLS_FASTQ_BOWTIE2.out.versions)
 
         // Combine single-end and paired-end results
         BOWTIE2_ALIGN.out.fastq
