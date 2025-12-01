@@ -115,6 +115,7 @@ output:
           type: file
           description: BAM/SAM file
           pattern: "*.{bam,sam}"
+          ontologies: []
   logs:
     - - meta:
           type: map
@@ -125,6 +126,7 @@ output:
           type: file
           description: Log file
           pattern: "elprep-*.log"
+          ontologies: []
   metrics:
     - - meta:
           type: map
@@ -135,6 +137,7 @@ output:
           type: file
           description: Metrics file
           pattern: "*.{metrics.txt}"
+          ontologies: []
   recall:
     - - meta:
           type: map
@@ -145,6 +148,7 @@ output:
           type: file
           description: Recall file
           pattern: "*.{recall}"
+          ontologies: []
   gvcf:
     - - meta:
           type: map
@@ -155,6 +159,7 @@ output:
           type: file
           description: VCF file
           pattern: "*.{vcf.gz}"
+          ontologies: []
   table:
     - - meta:
           type: map
@@ -165,6 +170,7 @@ output:
           type: file
           description: Table
           pattern: "*.{table}"
+          ontologies: []
   activity_profile:
     - - meta:
           type: map
@@ -175,6 +181,7 @@ output:
           type: file
           description: Activity profile
           pattern: "*.{activity_profile.igv}"
+          ontologies: []
   assembly_regions:
     - - meta:
           type: map
@@ -185,6 +192,7 @@ output:
           type: file
           description: Assembly regions
           pattern: "*.{assembly_regions.igv}"
+          ontologies: []
   versions:
     - versions.yml:
         type: file
