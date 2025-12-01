@@ -12,7 +12,8 @@ tools:
   - pbmarkdup:
       description: |
         pbmarkdup identifies and marks duplicate reads in PacBio HiFi (CCS) data. It clusters
-        highly similar CCS reads to detect PCR duplicates and flags them in the BAM output
+        highly similar CCS reads to detect PCR duplicates and flags them in the output files 
+        (BAM,FASTQ,FASTA) (duplicate bit 0x400), optionally removing duplicates.
         (duplicate bit 0x400), optionally removing duplicates.
       homepage: https://github.com/PacificBiosciences/pbmarkdup
       documentation: https://github.com/PacificBiosciences/pbmarkdup
