@@ -1,0 +1,81 @@
+// nf-core modules test plastid
+nextflow_process {
+
+    name "Test Process PLASTID_PSITE"
+    script "../main.nf"
+    process "PLASTID_PSITE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "plastid"
+    tag "plastid/psite"
+
+    test("human chr20 bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'SRX11780887' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam", checkIfExists: true)
+                    ]
+                input[1] = [
+                    [ id:'SRX11780887' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam.bai", checkIfExists: true)
+                    ]
+                input[2] = file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/plastid/Homo_sapiens.GRCh38.111_chr20_rois.txt", checkIfExists: true)
+                input[3] = 23 // min_length
+                input[4] = 35 // max_length
+                input[5] = true // require_upstream
+                input[6] = 12 // default_offset
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.metagene_profiles).match('metagene_profiles') },
+                { assert snapshot(process.out.p_offsets_png).match('p_offsets_png') },
+                { assert snapshot(process.out.p_offsets).match('p_offsets') },
+                { assert snapshot(process.out.versions).match('versions') }
+            )
+        }
+    }
+
+    test("human chr20 bam -stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'SRX11780887' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam", checkIfExists: true)
+                    ]
+                input[1] = [
+                    [ id:'SRX11780887' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam.bai", checkIfExists: true)
+                    ]
+                input[2] = file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/plastid/Homo_sapiens.GRCh38.111_chr20_rois.txt", checkIfExists: true)
+                input[3] = 23 // min_length
+                input[4] = 35 // max_length
+                input[5] = true // require_upstream
+                input[6] = 12 // default_offset
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.metagene_profiles).match('metagene_profiles_stub') },
+                { assert snapshot(process.out.p_offsets_png).match('p_offsets_png_stub') },
+                { assert snapshot(process.out.p_offsets).match('p_offsets_stub') },
+                { assert snapshot(process.out.versions).match('versions_stub') }
+            )
+        }
+    }
+
+}

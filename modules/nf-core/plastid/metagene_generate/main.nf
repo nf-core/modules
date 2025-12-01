@@ -1,0 +1,44 @@
+process PLASTID_METAGENE_GENERATE {
+    tag "$gtf"
+    label "process_low"
+
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/plastid:0.6.1--py39had3e4b6_2':
+        'biocontainers/plastid:0.6.1--py39had3e4b6_2' }"
+
+    input:
+    path gtf
+    val landmark
+
+    output:
+    path "*_rois.txt"  , emit: rois_txt
+    path "*_rois.bed"  , emit: rois_bed
+    path "versions.yml", emit: versions
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    """
+    metagene generate "${gtf.baseName}" --landmark "$landmark" --annotation_files "$gtf" $args
+    sed -i '/^##/d' *_rois.* # remove variable comment header
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        plastid: 0.6.1
+    END_VERSIONS
+    """
+
+    stub:
+    """
+    touch ${gtf.baseName}_rois.txt
+    touch ${gtf.baseName}_rois.bed
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        plastid: 0.6.1
+    END_VERSIONS
+    """
+}

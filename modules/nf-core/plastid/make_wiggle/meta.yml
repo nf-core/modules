@@ -1,0 +1,90 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "plastid_make_wiggle"
+description: Create wiggle or bedGraph files from alignment files after
+  applying a read mapping rule (e.g. to map ribosome-protected footprints at
+  their P-sites), for visualization in a genome browser
+keywords:
+  - genomics
+  - riboseq
+  - psite
+  - wiggle
+  - bedgraph
+tools:
+  - "plastid":
+      description: "Nucleotide-resolution analysis of next-generation sequencing and genomics data"
+      homepage: "https://github.com/joshuagryphon/plastid"
+      documentation: "https://plastid.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/joshuagryphon/plastid"
+      doi: "http://dx.doi.org/10.1186/s12864-016-3278-x"
+      licence: ["BSD-3-clause"]
+      identifier: biotools:plastid
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: Genome BAM file
+        pattern: "*.bam"
+        ontologies:
+          - edam: http://edamontology.org/format_2572 # BAM
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam_index:
+        type: file
+        description: Genome BAM index file
+        pattern: "*.bai"
+        ontologies:
+          - edam: http://edamontology.org/format_3327 # BAI
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - p_offsets:
+        type: file
+        description: Selected p-site offset for each read length (output from plastid_psites)
+        pattern: "*_p_offsets.txt"
+        ontologies: []
+  - min_length:
+      type: integer
+      description: Minimum length of reads to consider
+  - output_format:
+      type: string
+      description: `variable_step` or `bedgraph`
+  - fiveprime_variable:
+      type: boolean
+      description: |
+        Map read alignment to a variable offset from 5' position of read, with
+        offset determined by read length
+output:
+  tracks:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.${extension}":
+          type: file
+          description: wig/bedgraph tracks for forward and reverse strands
+          pattern: "*.${extension}"
+          ontologies:
+            - edam: http://edamontology.org/format_3005 # wig
+            - edam: http://edamontology.org/format_3583 # bedgraph
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@suhrig"
+maintainers:
+  - "@suhrig"

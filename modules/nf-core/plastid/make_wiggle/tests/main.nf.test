@@ -1,0 +1,81 @@
+// nf-core modules test plastid
+nextflow_process {
+
+    name "Test Process PLASTID_MAKE_WIGGLE"
+    script "../main.nf"
+    process "PLASTID_MAKE_WIGGLE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "plastid"
+    tag "plastid/make_wiggle"
+
+    test("human chr20 bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'SRX11780887' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam", checkIfExists: true)
+                    ]
+                input[1] = [
+                    [ id:'SRX11780887' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam.bai", checkIfExists: true)
+                    ]
+                input[2] = [
+                    [ id:'SRX11780887' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/plastid/SRX11780887_p_offsets.txt", checkIfExists: true)
+                    ]
+                input[3] = 23 // min_length
+                input[4] = 'variable_step' // output_format
+                input[5] = true // fiveprime_variable
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.tracks).match('wig') },
+                { assert snapshot(process.out.versions).match('versions') }
+            )
+        }
+    }
+
+    test("human chr20 bam -stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'SRX11780887' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam", checkIfExists: true)
+                    ]
+                input[1] = [
+                    [ id:'SRX11780887' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam.bai", checkIfExists: true)
+                    ]
+                input[2] = [
+                    [ id:'SRX11780887' ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/plastid/SRX11780887_p_offsets.txt", checkIfExists: true)
+                    ]
+                input[3] = 23 // min_length
+                input[4] = 'variable_step' // output_format
+                input[5] = true // fiveprime_variable
+                """
+           }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.tracks).match('wig_stub') },
+                { assert snapshot(process.out.versions).match('versions_stub') }
+            )
+        }
+    }
+
+}
