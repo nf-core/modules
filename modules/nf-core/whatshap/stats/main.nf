@@ -31,16 +31,21 @@ process WHATSHAP_STATS {
     //               https://github.com/nf-core/modules/blob/master/modules/nf-core/bwa/index/main.nf
     // TODO nf-core: Where applicable please provide/convert compressed files as input/output
     //               e.g. "*.fastq.gz" and NOT "*.fastq", "*.bam" and NOT "*.sam" etc.
-    tuple val(meta), path(bam)
+    tuple val(meta), path(vcf), path(tbi)
 
     output:
     // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.stats.tsv")        , emit: stats
+    tuple val(meta), path("*.blocks.gtf.gz")    , emit: blocks
+    tuple val(meta), path("*.blocks.gtf.gz.tbi"), emit: blocks_index
     // TODO nf-core: List additional required output channels/values here
     // TODO nf-core: Update the command here to obtain the version number of the software used in this module
     // TODO nf-core: If multiple software packages are used in this module, all MUST be added here
     //               by copying the line below and replacing the current tool with the extra tool(s)
     tuple val("${task.process}"), val('whatshap'), eval("whatshap --version"), topic: versions, emit: versions_whatshap
+    tuple val("${task.process}"), val('bgzip'), eval("bgzip --version | head -n 1 | sed 's/bgzip (htslib) //g'"), topic: versions, emit: versions_bgzip
+    tuple val("${task.process}"), val('tabix'), eval("tabix --version | head -n 1 | sed 's/tabix (htslib) //g'"), topic: versions, emit: versions_tabix
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -58,15 +63,22 @@ process WHATSHAP_STATS {
     // TODO nf-core: Please replace the example samtools command below with your module's command
     // TODO nf-core: Please indent the command appropriately (4 spaces!!) to help with readability ;)
     """
-    whatshap \\
+    whatshap stats \\
         $args \\
+        --sample ${meta.id} \\
+        --tsv ${prefix}.stats.tsv \\
+        --gtf ${prefix}.blocks.gtf \\
+        $vcf
+
+    bgzip \\
         -@ $task.cpus \\
-        -o ${prefix}.bam \\
-        $bam
+        ${prefix}.blocks.gtf
+
+    tabix \\
+        ${prefix}.blocks.gtf.gz
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     // TODO nf-core: A stub section should mimic the execution of the original module as best as possible
     //               Have a look at the following examples:
@@ -76,8 +88,8 @@ process WHATSHAP_STATS {
     //               - The definition of args `def args = task.ext.args ?: ''` above.
     //               - The use of the variable in the script `echo $args ` below.
     """
-    echo $args
-    
-    touch ${prefix}.bam
+    touch ${prefix}.stats.tsv
+    echo | gzip > ${prefix}.blocks.gtf.gz
+    touch ${prefix}.blocks.gtf.gz.tbi
     """
 }
