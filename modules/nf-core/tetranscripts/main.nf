@@ -27,7 +27,7 @@ process TETRANSCRIPTS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    tetranscripts \\
+    TEtranscripts \\
 	-t $bam_t \\
 	-c $bam_c \\
 	--GTF $g_gtf \\

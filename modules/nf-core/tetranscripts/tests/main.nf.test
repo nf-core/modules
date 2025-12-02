@@ -23,12 +23,12 @@ nextflow_process {
                 
                 input[0] = [
                     [ id:'ctrl_bam' ],
-                    file('/scratch/prj/ppn_rnp_networks/users/hannah.jones/CLIP_nf_pipeline_TEs/clipseq/modules/local/tetranscripts/tests/test_data/PTBP1_Hs_HEK293_siMATR3_R1_10k.bam', checkIfExists: true),
+                    file('/scratch/prj/ppn_rnp_networks/users/hannah.jones/CLIP_nf_pipeline_TEs/clipseq/modules/local/tetranscripts/tests/test_data/PTBP1_Hs_HEK293_siMATR3_R1_abb.bam', checkIfExists: true),
                 ]
 
 		input[1] = [
                     [ id:'test_bam' ],
-                    file('/scratch/prj/ppn_rnp_networks/users/hannah.jones/CLIP_nf_pipeline_TEs/clipseq/modules/local/tetranscripts/tests/test_data/PTBP1_Hs_HEK293_siCtrl_2_R1_10k.bam', checkIfExists: true),
+                    file('/scratch/prj/ppn_rnp_networks/users/hannah.jones/CLIP_nf_pipeline_TEs/clipseq/modules/local/tetranscripts/tests/test_data/PTBP1_Hs_HEK293_siCtrl_2_R1_abb.bam', checkIfExists: true),
                 ]
 		input[2] = [
                     [ id:'genome_gtf' ],
@@ -65,20 +65,20 @@ nextflow_process {
                 """
 		input[0] = [
                     [ id:'ctrl_bam' ],
-                    file('/scratch/prj/ppn_rnp_networks/users/hannah.jones/CLIP_nf_pipeline_TEs/clipseq/modules/local/tetranscripts/tests/test_>
+                    file('/scratch/prj/ppn_rnp_networks/users/hannah.jones/CLIP_nf_pipeline_TEs/clipseq/modules/local/tetranscripts/tests/test_data/PTBP1_Hs_HEK293_siMATR3_R1_abb.bam', checkIfExists: true),
                 ]
 
                 input[1] = [
                     [ id:'test_bam' ],
-                    file('/scratch/prj/ppn_rnp_networks/users/hannah.jones/CLIP_nf_pipeline_TEs/clipseq/modules/local/tetranscripts/tests/test_>
+                    file('/scratch/prj/ppn_rnp_networks/users/hannah.jones/CLIP_nf_pipeline_TEs/clipseq/modules/local/tetranscripts/tests/test_data/PTBP1_Hs_HEK293_siCtrl_2_R1_abb.bam', checkIfExists: true),
                 ]
                 input[2] = [
                     [ id:'genome_gtf' ],
-                    file('/scratch/prj/ppn_rnp_networks/users/hannah.jones/CLIP_nf_pipeline_TEs/clipseq/modules/local/tetranscripts/tests/test_>
+                    file('/scratch/prj/ppn_rnp_networks/users/hannah.jones/CLIP_nf_pipeline_TEs/clipseq/modules/local/tetranscripts/tests/test_data/Homo_sapiens.GRCh38.109_Chr22.gtf', checkIfExists: true),
                 ]
                 input[3] = [
                     [ id:'test4' ],
-                    file('/scratch/prj/ppn_rnp_networks/users/hannah.jones/CLIP_nf_pipeline_TEs/clipseq/modules/local/tetranscripts/tests/test_>
+                    file('/scratch/prj/ppn_rnp_networks/users/hannah.jones/CLIP_nf_pipeline_TEs/clipseq/modules/local/tetranscripts/tests/test_data/GRCh38_GENCODE_rmsk_TE_2_Chr22.gtf', checkIfExists: true),
                 ]                
 
                 """
