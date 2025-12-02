@@ -1,67 +1,61 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-# # TODO nf-core: Add a description of the module and list keywords
 name: "whatshap_stats"
-description: write your description here
+description: Compute statistics from phased variant file using Whatshap
 keywords:
-  - sort
-  - example
-  - genomics
+  - vcf
+  - whatshap
+  - stats
+  - phasing
+  - phase
 tools:
-  ## TODO nf-core: Add a description and other details for the software below
   - "whatshap":
-      description: "Phase genomic variants using DNA sequencing reads (haplotype assembly)."
+      description: Phase genomic variants using DNA sequencing reads (haplotype
+        assembly).
+      args_id: "$args"
       homepage: "https://whatshap.readthedocs.io"
       documentation: "https://whatshap.readthedocs.io"
       tool_dev_url: "https://github.com/whatshap/whatshap"
-      doi: ""
+      doi: "10.1101/085050"
       licence: ["MIT"]
       identifier: biotools:whatshap
-
 input:
-  ### TODO nf-core: Add a description of all of the variables used as input
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
-    - bam:
+          e.g. [ id:'sample1' ]
+    - vcf:
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
+        description: Phased variant vcf file
+        pattern: "*.vcf"
         ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
-          - edam: "http://edamontology.org/format_2573" # CRAM
-          - edam: "http://edamontology.org/format_3462" # SAM
-
+          - edam: "http://edamontology.org/format_3016" # VCF
 output:
-  ### TODO nf-core: Add a description of all of the variables used as output
-  bam:
+  tsv:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - "*.bam":
+            e.g. [ id:'sample1' ]
+      - "*.tsv":
           type: file
-          description: Sorted BAM/CRAM/SAM file
-          pattern: "*.{bam,cram,sam}"
+          description: Tab-separated file containing statistics computed by
+            Whatshap
+          pattern: "*.tsv"
           ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
-            - edam: "http://edamontology.org/format_2573" # CRAM
-            - edam: "http://edamontology.org/format_3462" # SAM
+            - edam: "http://edamontology.org/format_3475" # TSV
+  txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - "*.txt":
+          type: file
+          description: Standard output from Whatshap stats command
+          pattern: "*.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # TXT
   versions_whatshap:
-    - - "${task.process}":
-          type: string
-          description: The name of the process
-      - "whatshap":
-          type: string
-          description: The name of the tool
-      - "whatshap --version":
-          type: eval
-          description: The expression to obtain the version of the tool
-
-topics:
-  versions:
     - - ${task.process}:
           type: string
           description: The name of the process
@@ -69,8 +63,19 @@ topics:
           type: string
           description: The name of the tool
       - whatshap --version:
-          type: eval
+          type: string
           description: The expression to obtain the version of the tool
+topics:
+  - versions:
+      - - process:
+            type: string
+            description: The process the versions were collected from
+        - tool:
+            type: string
+            description: The tool name
+        - version:
+            type: string
+            description: The version of the tool
 authors:
   - "@eliottBo"
 maintainers:
