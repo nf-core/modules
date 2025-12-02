@@ -2,10 +2,10 @@
 FROM python:3.12-slim-trixie
 
 
-# Disable manual feedback for apt-get, update package list, install security updates,
-# and install packages (procps, and system dependencies for tinytex and kaleido).
+# Disable manual feedback for apt-get, update package list, install security updates, 
+# and install packages (procps, and system dependencies for tinytex and kaleido). 
 # Then clean up the package list and remove the cache.
-RUN export DEBIAN_FRONTEND=noninteractive && \
+RUN export DEBIAN_FRONTEND=noninteractive && \ 
     apt-get update && \
     apt-get -y upgrade && \
     apt-get install -y --no-install-recommends \
@@ -29,12 +29,15 @@ USER appuser
 # Set the working directory
 WORKDIR /home/appuser
 
-# Install TinyTeX for pdf reports
+# Install TinyTeX for pdf reports 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN perl -mFile::Find /dev/null && \
     wget -qO- "https://yihui.org/tinytex/install-bin-unix.sh" | sh && \
-    "$(find ~/.TinyTeX/bin -maxdepth 1 -type d | tail -n1)"/tlmgr \
-    install koma-script caption
+    ~/.TinyTeX/bin/*/tlmgr \
+    install \
+    koma-script \
+    caption \
+    luaotfload
 
 # Set permissions for the appuser home directory
 RUN chmod -R 777 /home/appuser
@@ -44,4 +47,6 @@ ENV XDG_RUNTIME_DIR=/tmp \
     XDG_CACHE_HOME=/tmp/quarto_cache_home \
     XDG_DATA_HOME=/tmp/quarto_data_home \
     PATH="${PATH}:/home/appuser/bin" \
+    TEXMFVAR=/tmp/texmf-var \
+    TEXMFHOME=/tmp/texmf-home \
     PYTHONFAULTHANDLER=1
