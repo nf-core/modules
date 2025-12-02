@@ -8,7 +8,7 @@ process STITCH {
         'biocontainers/r-stitch:1.7.3--r44h64f727c_0' }"
 
     input:
-    tuple val(meta), path(collected_crams), path(collected_crais), path(cramlist), path(samplename), path(posfile), path(input, stageAs: "input"), path(rdata, stageAs: "RData_in"), val(chromosome_name), val(K), val(nGen)
+    tuple val(meta), path(collected_crams), path(collected_crais), path(cramlist), path(samplename), path(posfile), path(input, stageAs: "input"), path(genetic_map), path(rdata, stageAs: "RData_in"), val(chromosome_name), val(start), val(end), val(K), val(nGen)
     tuple val(meta2), path(fasta), path(fasta_fai)
     val(seed)
 
@@ -27,18 +27,30 @@ process STITCH {
     def prefix               = task.ext.prefix ?: "${meta.id}"
     def args                 = task.ext.args   ?: ""
     def args2                = task.ext.args2  ?: ""
-    def generate_input_only  = args2.contains( "--generateInputOnly TRUE" )
-    def bgen_output          = args2.contains( "--output_format bgen" )
-    def suffix               = bgen_output     ? "bgen"    : "vcf.gz"
-    def reads_ext            = collected_crams             ? collected_crams.extension.unique()                                : []
-    def rsync_cmd            = rdata                       ? "rsync -rL ${rdata}/ RData"                                       : ""
-    def stitch_cmd           = seed                        ? "Rscript <(cat \$(which STITCH.R) | tail -n +2 | cat <(echo 'set.seed(${seed})') -)" : "STITCH.R"
-    def cramlist_cmd         = cramlist && reads_ext == ["cram"] ? "--cramlist ${cramlist}"                                    : ""
-    def bamlist_cmd          = cramlist && reads_ext == ["bam" ] ? "--bamlist ${cramlist}"                                     : ""
+
+    generate_input_only      = args2.contains( "--generateInputOnly TRUE" )
+    bgen_output              = args2.contains( "--output_format bgen" )
+    def suffix               = bgen_output ? "bgen" : "vcf.gz"
+
+    def crams_list = collected_crams instanceof Collection ? collected_crams : [collected_crams]
+    def reads_ext = crams_list ? crams_list.collect {path -> path.extension }.unique() : []
+
+    if ( reads_ext.size() > 1 ) {
+        error "STITCH process: Mixed input read file types detected: ${reads_ext}. Please provide either all BAM or all CRAM files."
+    }
+    def cramlist_cmd         = cramlist && reads_ext == ["cram"] ? "--cramlist ${cramlist}"           : ""
+    def bamlist_cmd          = cramlist && reads_ext == ["bam" ] ? "--bamlist ${cramlist}"            : ""
+
     def reference_cmd        = fasta                       ? "--reference ${fasta}"                                            : ""
     def regenerate_input_cmd = input && rdata && !cramlist ? "--regenerateInput FALSE --originalRegionName ${chromosome_name}" : ""
-    def rsync_version_cmd    = rdata                       ? "rsync: \$(rsync --version | head -n1 | sed 's/^rsync  version //; s/ .*\$//')" : ""
-    def samplename_cmd       = samplename                  ? "--sampleNames_file ${samplename}"                               : ""
+    def samplename_cmd       = samplename                  ? "--sampleNames_file ${samplename}"                                : ""
+    def genetic_map_command  = genetic_map                 ? "--genetic_map_file=${genetic_map}"                               : ""
+
+    // Rsync and Stitch command to copy RData from previous run if available
+    def rsync_cmd            = rdata ? "rsync -rL ${rdata}/ RData" : ""
+    def rsync_version_cmd    = rdata ? "rsync: \$(rsync --version | head -n1 | sed 's/^rsync  version //; s/ .*\$//')" : ""
+    def stitch_cmd           = seed  ? "Rscript <(cat \$(which STITCH.R) | tail -n +2 | cat <(echo 'set.seed(${seed})') -)" : "STITCH.R"
+
     """
     ${rsync_cmd} ${args}
 
@@ -54,6 +66,7 @@ process STITCH {
         ${reference_cmd} \\
         ${regenerate_input_cmd} \\
         ${samplename_cmd} \\
+        ${genetic_map_command} \\
         --output_filename ${prefix}.${suffix} \\
         ${args2}
 
@@ -70,10 +83,10 @@ process STITCH {
     def _args                = task.ext.args        ?: ""
     def args2                = task.ext.args2       ?: ""
     def nb_samples           = collected_crams.size()
-    def generate_input_only  = args2.contains( "--generateInputOnly TRUE" )
-    def bgen_output          = args2.contains( "--output_format bgen" )
+    generate_input_only      = args2.contains( "--generateInputOnly TRUE" )
+    bgen_output              = args2.contains( "--output_format bgen" )
     def generate_plots_cmd   = !generate_input_only
-    def generate_file_cmd    = !generate_input_only ? bgen_output ? "touch ${prefix}.bgen" : "echo '' | gzip > ${prefix}.vcf.gz"            : ""
+    def generate_file_cmd    = !generate_input_only ? bgen_output ? "touch ${prefix}.bgen" : "echo '' | gzip > ${prefix}.vcf.gz"      : ""
     def rsync_version_cmd    = rdata                ? "rsync: \$(rsync --version | head -n1 | sed 's/^rsync  version //; s/ .*\$//')" : ""
     """
     mkdir -p input

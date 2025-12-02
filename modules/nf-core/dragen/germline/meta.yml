@@ -1,0 +1,1584 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "dragen"
+description: The DRAGEN DNA Germline Pipeline accelerates the secondary analysis
+  of NGS data by harnessing the tremendous power available on the DRAGEN
+  Platform. The pipeline includes highly optimized algorithms for mapping,
+  aligning, sorting, duplicate marking, and haplotype variant calling. In
+  addition to haplotype variant calling, the pipeline supports calling of copy
+  number and structural variants as well as detection of repeat expansions and
+  targeted calls.
+keywords:
+  - check fingerprint
+  - copy number variation
+  - fastqc
+  - genomics
+  - germline
+  - quality control
+  - repeat expansion detection
+  - structural variation
+  - trimming
+  - variable number tandem repeat detection
+  - variant annotation
+  - variant calling
+  - variant deduplication
+tools:
+  - "dragen":
+      description: "The Illumina DRAGEN™ Bio-IT Platform is based on the highly reconfigurable
+        DRAGEN Bio-IT Processor, which is integrated on a Field Programmable Gate Array
+        (FPGA) card and is available in a preconfigured server that can be seamlessly
+        integrated into bioinformatics workflows. The platform can be loaded with highly
+        optimized algorithms for many different NGS secondary analysis pipelines."
+      homepage: "https://support-docs.illumina.com/SW/dragen_v42/Content/SW/FrontPages/DRAGEN.htm?searchText=explify-ref-db-dir"
+      documentation: "https://support-docs.illumina.com/SW/dragen_v42/Content/SW/FrontPages/DRAGEN.htm?searchText=explify-ref-db-dir"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false , sex:'female']`;
+          options for sex: male, female, none, auto
+    - input:
+        type: file
+        description: FASTQ (may be gzipped), ora, BAM or CRAM files
+        pattern: "*.{fastq,fq,ora,bam,cram}{,.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - checkfingerprint_expected_vcf:
+      type: file
+      description: Input expected genotypes (VCF) for checkfingerprint comparison
+      pattern: "*.vcf"
+      ontologies: []
+  - cnv_combined_counts:
+      type: file
+      description: Specify combined PON file
+      pattern: "*.combined.counts.txt.gz"
+      ontologies:
+        - edam: http://edamontology.org/format_3989 # GZIP format
+  - cnv_exclude_bed:
+      type: file
+      description: Regions to exclude for CNV processing
+      pattern: "*.bed"
+      ontologies: []
+  - cnv_population_b_allele_vcf:
+      type: file
+      description: CNV population SNP input VCF file
+      pattern: "*.vcf"
+      ontologies: []
+  - cnv_segmentation_bed:
+      type: file
+      description: Intervals to limit segmentation to
+      pattern: "*.bed"
+      ontologies: []
+  - cnv_target_bed:
+      type: file
+      description: CNV target BED file
+      pattern: "*.bed"
+      ontologies: []
+  - cram_reference:
+      type: file
+      description: Reference file in FASTA format (only used for decompression)
+      pattern: "*.{fasta,fa}"
+      ontologies: []
+  - dbsnp:
+      type: file
+      description: Variant annotation database VCF (or .vcf.gz) file
+      pattern: "*.vcf{,.gz}"
+      ontologies: []
+  - fastqc_adapter_file:
+      type: file
+      description: FASTA file containing adapter sequences
+      pattern: "*.{fasta,fa}"
+      ontologies: []
+  - fastqc_kmer_file:
+      type: file
+      description: FASTA file containing kmers of interest
+      pattern: "*.{fasta,fa}"
+      ontologies: []
+  - ora_reference:
+      type: directory
+      description: Path to the directory that contains the compression reference
+        and index file
+  - qc_coverage_region:
+      type: file
+      description: bed files to report coverage on, max 3
+      pattern: "*.bed"
+      ontologies: []
+  - qc_cross_cont_vcf:
+      type: file
+      description: Variant file (.vcf/.vcf.gz) with population allele frequencies
+        to estimate sample contamination
+      pattern: "*.vcf{,.gz}"
+      ontologies: []
+  - ref_dir:
+      type: directory
+      description: Directory with reference and hash tables
+  - repeat_genotype_ref_fasta:
+      type: file
+      description: FASTA file containing repeat genotypes
+      pattern: "*.{fasta,fa}"
+      ontologies: []
+  - repeat_genotype_specs:
+      type: file
+      description: Repeat variant catalog file
+      ontologies: []
+  - sv_call_regions_bed:
+      type: file
+      description: BED file containing the set of regions to call (optionally gzip
+        or bgzip compressed)
+      pattern: "*.bed{,.gz}"
+      ontologies: []
+  - sv_exclusion_bed:
+      type: file
+      description: BED file containing the set of exclusion regions for SV calling
+        (optionally gzip or bzip compressed)
+      pattern: "*.bed"
+      ontologies: []
+  - sv_forcegt_vcf:
+      type: file
+      description: Specify a VCF of structural variants for forced genotyping,
+        meaning these variants will be scored and emitted in the output VCF even
+        if not found in the sample data. These variants will be merged with any
+        additional variants discovered directly from the sample data.
+      pattern: "*.vcf"
+      ontologies: []
+  - sv_systematic_noise:
+      type: file
+      description: Systematic noise BEDPE file containing the set of noisy paired
+        regions for SV calling (optionally gzip or bzip compressed).
+      pattern: "*.bed{,.gz}"
+      ontologies: []
+  - trim_adapter_read:
+      type: file
+      description: Files of adapter sequences to trim from the 3' end of read 1
+        and 2
+      pattern: "*.{fasta,fa}"
+      ontologies: []
+  - trim_adapter_read_5prime:
+      type: file
+      description: FASTA files that contains adapter sequences to trim from the 5'
+        end of Read 1 and 2; The sequences should be in reverse order (with
+        respect to their appearance in the FASTQ) but not complemented
+      pattern: "*.{fasta,fa}"
+      ontologies: []
+  - variant_annotation_data:
+      type: directory
+      description: Location of downloaded Nirvana annotation files
+  - vc_combine_phased_variants_distance_bed:
+      type: file
+      description: Combine variants in the same phase set bed file.
+      pattern: "*.bed"
+      ontologies: []
+  - vc_excluded_regions_bed:
+      type: file
+      description: Excluded regions bed specifying where variants will be hard
+        filtered
+      pattern: "*.bed"
+      ontologies: []
+  - vc_forcegt_vcf:
+      type: file
+      description: List of small variants to force genotype. Can be .vcf or
+        .vcf.gz file
+      pattern: "*.vcf{,.gz}"
+      ontologies: []
+  - vc_log_bed:
+      type: file
+      description: Log information for regions in this BED file
+      pattern: "*.bed"
+      ontologies: []
+  - vc_mapping_metrics:
+      type: file
+      description: File containing mapping metrics
+      ontologies: []
+  - vc_ml_dir:
+      type: directory
+      description: directory containing machine learning package
+  - vc_ntd_error_params:
+      type: file
+      description: Params file for per-nucleotide error rate calibration
+      ontologies: []
+  - vc_roh_blacklist_bed:
+      type: file
+      description: Blacklist BED file for ROH
+      pattern: "*.bed"
+      ontologies: []
+  - vc_snp_error_cal_bed:
+      type: file
+      description: BED file containing regions from which to estimate nucleotide
+        substitution biases
+      pattern: "*.bed"
+      ontologies: []
+  - vc_systematic_noise:
+      type: file
+      description: Site specific noise file. This file enables the
+        systematic-noise filter and improves specificity during somatic variant
+        calling
+      ontologies: []
+  - vc_target_bed:
+      type: file
+      description: Target BED file
+      pattern: "*.bed"
+      ontologies: []
+  - vd_eh_vcf:
+      type: file
+      description: Expansion hunter vcf (optionally .gzip compressed)
+      pattern: "*.vcf{,.gz}"
+      ontologies: []
+  - vd_small_variant_vcf:
+      type: file
+      description: Small variant vcf (optionally .gzip compressed)
+      pattern: "*.vcf{,.gz}"
+      ontologies: []
+  - vd_sv_vcf:
+      type: file
+      description: Structural variant vcf (optionally .gzip compressed)
+      pattern: "*.vcf{,.gz}"
+      ontologies: []
+  - vntr_catalog_bed:
+      type: file
+      description: BED file specifying the TR regions for the VNTR Caller to act
+        upon
+      pattern: "*.bed"
+      ontologies: []
+output:
+  replay_json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}-replay.json:
+          type: file
+          description: Contains the exact set of parameters that specifies the analysis
+          pattern: "*-replay.json"
+  coverage_metrics_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.*_coverage_metrics.csv:
+          type: file
+          description: Provides metrics over a region, a target region, or a QC coverage region
+          pattern: "*.*_coverage_metrics.csv"
+  SJ_saturation_txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.SJ.saturation.txt:
+          type: file
+          description: Measures sequencing saturation of the library
+          pattern: "*.SJ.saturation.txt"
+  baf_bedgraph_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.baf.bedgraph.gz:
+          type: file
+          description: Contains b-allele counting
+          pattern: "*.baf.bedgraph.gz"
+  baf_bw:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.baf.bw:
+          type: file
+          description: BigWig file containing variants
+          pattern: "*.baf.bw"
+  baf_seg:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.baf.seg:
+          type: file
+          description: Contains segmentation of b-allele loci
+          pattern: "*.baf.seg"
+  baf_seq_bw:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.baf.seq.bw:
+          type: file
+          description: BigWig representation of the BAF segments
+          pattern: "*.baf.seq.bw"
+  ballele_counts_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.ballele.counts.gz:
+          type: file
+          description: TSV-file containing b-allele counts
+          pattern: "*.ballele.counts.gz"
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.bam:
+          type: file
+          description: Contains aligned reads
+          pattern: "*.bam"
+  bam_bai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.bam.bai:
+          type: file
+          description: Index file for the BAM file
+          pattern: "*.bam.bai"
+  bam_md5sum:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.bam.md5sum:
+          type: file
+          description: MD5 checksum file for the BAM file
+          pattern: "*.bam.md5sum"
+  cnv_excluded_intervals_bed_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.cnv.excluded_intervals.bed.gz:
+          type: file
+          description: Contains excluded intervals from CNV analysis
+          pattern: "*.cnv.excluded_intervals.bed.gz"
+  cnv_gff3:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.cnv.gff3:
+          type: file
+          description: GFF3 representation of the CNV events
+          pattern: "*.cnv.gff3"
+  cnv_igv_session_xml:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.cnv.igv_session.xml:
+          type: file
+          description: IGV session XML file is prepopulated with track files
+          pattern: "*.cnv.igv_session.xml"
+  cnv_pon_correlation_txt_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.cnv.pon_correlation.txt.gz:
+          type: file
+          description: PON Correlation File
+          pattern: "*.cnv.pon_correlation.txt.gz"
+  cnv_pon_metrics_tsv_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.cnv.pon_metrics.tsv.gz:
+          type: file
+          description: PON Metrics File
+          pattern: "*.cnv.pon_metrics.tsv.gz"
+  cnv_purity_coverage_models_tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.cnv.purity.coverage.models.tsv:
+          type: file
+          description: Describes the different tested models and their log-likelihood
+          pattern: "*.cnv.purity.coverage.models.tsv"
+  cnv_segdups_joint_coverage_tsv_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.cnv.segdups.joint_coverage.tsv.gz:
+          type: file
+          description: Contains normalized joint coverage
+          pattern: "*.cnv.segdups.joint_coverage.tsv.gz"
+  cnv_segdups_rescued_intervals_tsv_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.cnv.segdups.rescued_intervals.tsv.gz:
+          type: file
+          description: Contains rescued intervals
+          pattern: "*.cnv.segdups.rescued_intervals.tsv.gz"
+  cnv_segdups_site_ratios_tsv_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.cnv.segdups.site_ratios.tsv.gz:
+          type: file
+          description: Contains proportion of coverage to associate to the first and to the second interval
+          pattern: "*.cnv.segdups.site_ratios.tsv.gz"
+  cnv_vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.cnv.vcf:
+          type: file
+          description: VCF file containing CNV variants
+          pattern: "*.cnv.vcf"
+  cnv_vcf_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.cnv.vcf.gz:
+          type: file
+          description: Gzipped VCF file containing CNV variants
+          pattern: "*.cnv.vcf.gz"
+  cnv_vcf_gz_md5sum:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.cnv.vcf.gz.md5sum:
+          type: file
+          description: MD5 checksum file for the gzipped CNV VCF
+          pattern: "*.cnv.vcf.gz.md5sum"
+  cnv_vcf_gz_tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.cnv.vcf.gz.tbi:
+          type: file
+          description: Index file for the gzipped CNV VCF
+          pattern: "*.cnv.vcf.gz.tbi"
+  cnv_metrics_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.cnv_metrics.csv:
+          type: file
+          description: Contains CNV metrics
+          pattern: "*.cnv_metrics.csv"
+  cnv_sv_vcf_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.cnv_sv.vcf.gz:
+          type: file
+          description: Gzipped VCF file containing CNV structural variants
+          pattern: "*.cnv_sv.vcf.gz"
+  combined_counts_txt_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.combined.counts.txt.gz:
+          type: file
+          description: Column-wise concatenation of individual counts used to form the panel of normals
+          pattern: "*.combined.counts.txt.gz"
+  cram:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.cram:
+          type: file
+          description: Contains aligned reads in CRAM format
+          pattern: "*.cram"
+  cram_crai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.cram.crai:
+          type: file
+          description: Index file for the CRAM file
+          pattern: "*.cram.crai"
+  cram_md5sum:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.cram.md5sum:
+          type: file
+          description: MD5 checksum file for the CRAM file
+          pattern: "*.cram.md5sum"
+  excluded_intervals_bed_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.excluded_intervals.bed.gz:
+          type: file
+          description: Gzipped BED file containing excluded intervals
+          pattern: "*.excluded_intervals.bed.gz"
+  fastqc_metrics_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.fastqc_metrics.csv:
+          type: file
+          description: FastQC metrics file
+          pattern: "*.fastqc_metrics.csv"
+  fragment_length_hist_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.fragment_length_hist.csv:
+          type: file
+          description: Contains insert length distribution
+          pattern: "*.fragment_length_hist.csv"
+  g_vcf_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.g.vcf.gz:
+          type: file
+          description: Gzipped VCF file containing genomic variants
+          pattern: "*.g.vcf.gz"
+  g_vcf_gz_tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.g.vcf.gz.tbi:
+          type: file
+          description: Index file for the gzipped VCF
+          pattern: "*.g.vcf.gz.tbi"
+  gc_metrics_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.gc_metrics.csv:
+          type: file
+          description: Contains GC content metrics
+          pattern: "*.gc_metrics.csv"
+  hard_filtered_baf_bw:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.hard-filtered.baf.bw:
+          type: file
+          description: BigWig file containing hard-filtered BAF segments
+          pattern: "*.hard-filtered.baf.bw"
+  hard_filtered_gvcf_gz_md5sum:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.hard-filtered.gvcf.gz.md5sum:
+          type: file
+          description: MD5 checksum file for the gzipped hard-filtered GVCF
+          pattern: "*.hard-filtered.gvcf.gz.md5sum"
+  hard_filtered_vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.hard-filtered.vcf:
+          type: file
+          description: VCF file containing hard-filtered variants
+          pattern: "*.hard-filtered.vcf"
+  hard_filtered_vcf_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.hard-filtered.vcf.gz:
+          type: file
+          description: Gzipped VCF file containing hard-filtered variants
+          pattern: "*.hard-filtered.vcf.gz"
+  hard_filtered_vcf_gz_md5sum:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.hard-filtered.vcf.gz.md5sum:
+          type: file
+          description: MD5 checksum file for the gzipped hard-filtered VCF
+          pattern: "*.hard-filtered.vcf.gz.md5sum"
+  hard_filtered_vcf_gz_tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.hard-filtered.vcf.gz.tbi:
+          type: file
+          description: Index file for the gzipped hard-filtered VCF
+          pattern: "*.hard-filtered.vcf.gz.tbi"
+  improper_pairs_bw:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.improper.pairs.bw:
+          type: file
+          description: BigWig file containing improper read pairs
+          pattern: "*.improper.pairs.bw"
+  impute_chunk_out_txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.impute.chunk.out.txt:
+          type: file
+          description: Contains chunk regions to be passed along to the internal phase step
+          pattern: "*.impute.chunk.out.txt"
+  impute_phase_out_txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.impute.phase.out.txt:
+          type: file
+          description: List containing all VCF files
+          pattern: "*.impute.phase.out.txt"
+  impute_vcf_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.impute.vcf.gz:
+          type: file
+          description: Gzipped VCF file containing imputed variants
+          pattern: "*.impute.vcf.gz"
+  insert_stats_tab:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.insert-stats.tab:
+          type: file
+          description: Contains insert size statistics
+          pattern: "*.insert-stats.tab"
+  mapping_metrics_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.mapping_metrics.csv:
+          type: file
+          description: Contains mapping metrics
+          pattern: "*.mapping_metrics.csv"
+  multiomics_barcodeSummary_tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.multiomics.barcodeSummary.tsv:
+          type: file
+          description: Contains barcode summary information
+          pattern: "*.multiomics.barcodeSummary.tsv"
+  multiomics_barcodes_tsv_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.multiomics.barcodes.tsv.gz:
+          type: file
+          description: Gzipped File containing barcode summary information
+          pattern: "*.multiomics.barcodes.tsv.gz"
+  multiomics_features_tsv_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.multiomics.features.tsv.gz:
+          type: file
+          description: Gzipped file containing multiomics features
+          pattern: "*.multiomics.features.tsv.gz"
+  multiomics_filtered_barcodes_tsv_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.multiomics.filtered.barcodes.tsv.gz:
+          type: file
+          description: Gzipped file containing filtered barcode information
+          pattern: "*.multiomics.filtered.barcodes.tsv.gz"
+  multiomics_matrix_mtx_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.multiomics.matrix.mtx.gz:
+          type: file
+          description: Gzipped matrix file containing multiomics data
+          pattern: "*.multiomics.matrix.mtx.gz"
+  multiomics_metrics_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.multiomics.metrics.csv:
+          type: file
+          description: Contains multiomics metrics
+          pattern: "*.multiomics.metrics.csv"
+  pcr_model_log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.pcr-mode*.log:
+          type: file
+          description: Log file containing PCR model information
+          pattern: "*.pcr-mode*.log"
+  ploidy_vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.ploidy.vcf:
+          type: file
+          description: Contains ploidy information in VCF format
+          pattern: "*.ploidy.vcf"
+  ploidy_vcf_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.ploidy.vcf.gz:
+          type: file
+          description: Gzipped VCF file containing ploidy information
+          pattern: "*.ploidy.vcf.gz"
+  ploidy_vcf_gz_md5sum:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.ploidy.vcf.gz.md5sum:
+          type: file
+          description: MD5 checksum file for the gzipped ploidy VCF
+          pattern: "*.ploidy.vcf.gz.md5sum"
+  ploidy_vcf_gz_tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.ploidy.vcf.gz.tbi:
+          type: file
+          description: Index file for the gzipped ploidy VCF
+          pattern: "*.ploidy.vcf.gz.tbi"
+  ploidy_estimation_metrics_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.ploidy_estimation_metrics.csv:
+          type: file
+          description: Contains metrics related to ploidy estimation
+          pattern: "*.ploidy_estimation_metrics.csv"
+  preprocess_vcf_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.preprocess.vcf.gz:
+          type: file
+          description: Gzipped VCF file containing preprocessed variants
+          pattern: "*.preprocess.vcf.gz"
+  quant_genes_sf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.quant.genes.sf:
+          type: file
+          description: Contains gene quantification results in Salmon format
+          pattern: "*.quant.genes.sf"
+  quant_metrics_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.quant.metrics.csv:
+          type: file
+          description: Contains quantification metrics in CSV format
+          pattern: "*.quant.metrics.csv"
+  quant_sf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.quant.sf:
+          type: file
+          description: Contains quantification results in Salmon format
+          pattern: "*.quant.sf"
+  quant_transcript_coverage_txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.quant.transcript_coverage.txt:
+          type: file
+          description: Contains transcript coverage information
+          pattern: "*.quant.transcript_coverage.txt"
+  quant_transcript_fragment_lengths_txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.quant.transcript_fragment_lengths.txt:
+          type: file
+          description: Contains transcript fragment lengths
+          pattern: "*.quant.transcript_fragment_lengths.txt"
+  realigned_regions_bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.realigned-regions.bed:
+          type: file
+          description: Contains regions that have been realigned
+          pattern: "*.realigned-regions.bed"
+  repeats_bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.repeats.bam:
+          type: file
+          description: Contains reads aligned to repeat regions
+          pattern: "*.repeats.bam"
+  repeats_vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.repeats.vcf:
+          type: file
+          description: Contains variants in repeat regions
+          pattern: "*.repeats.vcf"
+  repeats_vcf_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.repeats.vcf.gz:
+          type: file
+          description: Gzipped VCF file with variants in repeat regions
+          pattern: "*.repeats.vcf.gz"
+  repeats_vcf_gz_tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.repeats.vcf.gz.tbi:
+          type: file
+          description: Index file for the gzipped repeats VCF
+          pattern: "*.repeats.vcf.gz.tbi"
+  roh_bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.roh.bed:
+          type: file
+          description: Contains regions of homozygosity
+          pattern: "*.roh.bed"
+  roh_metrics_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.roh_metrics.csv:
+          type: file
+          description: Contains metrics related to regions of homozygosity
+          pattern: "*.roh_metrics.csv"
+  sam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.sam:
+          type: file
+          description: Contains aligned read data in SAM format
+          pattern: "*.sam"
+  seg:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.seg:
+          type: file
+          description: Contains segmentation of genomic regions
+          pattern: "*.seg"
+  seg_bw:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.seg.bw:
+          type: file
+          description: BigWig file containing segmentation data
+          pattern: "*.seg.bw"
+  seg_c_partial_y:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.seg.c.partial.Y:
+          type: file
+          description: Contains partial Y chromosome segmentation data
+          pattern: "*.seg.c.partial.Y"
+  seg_called:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.seg.called:
+          type: file
+          description: Contains called segmentation data
+          pattern: "*.seg.called"
+  seg_called_merged:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.seg.called.merged:
+          type: file
+          description: Contains merged segmentation data
+          pattern: "*.seg.called.merged"
+  select_gvcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.select.gvcf:
+          type: file
+          description: Contains selected genomic variants in GVCF format
+          pattern: "*.select.gvcf"
+  small_indel_dedup:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.small_indel_dedup:
+          type: file
+          description: Contains deduplicated small indel variants
+          pattern: "*.small_indel_dedup"
+  smn_dedup:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.smn_dedup:
+          type: file
+          description: Contains deduplicated SMN variants
+          pattern: "*.smn_dedup"
+  snperror_samples_log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.snperror-sampler.log:
+          type: file
+          description: Log file containing information about SNP error sampling
+          pattern: "*.snperror-sampler.log"
+  sv_vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.sv.vcf:
+          type: file
+          description: VCF file containing structural variants
+          pattern: "*.sv.vcf"
+  sv_vcf_gz_tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.sv.vcf.gz.tbi:
+          type: file
+          description: Index file for the gzipped SV VCF
+          pattern: "*.sv.vcf.gz.tbi"
+  sv_metrics_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.sv_metrics.csv:
+          type: file
+          description: Contains metrics related to structural variants
+          pattern: "*.sv_metrics.csv"
+  target_counts_bw:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.target.counts.bw:
+          type: file
+          description: BigWig file containing target counts
+          pattern: "*.target.counts.bw"
+  target_counts_diploid_bw:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.target.counts.diploid.bw:
+          type: file
+          description: BigWig file containing diploid target counts
+          pattern: "*.target.counts.diploid.bw"
+  target_counts_gc_corrected_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.target.counts.gc-corrected.gz:
+          type: file
+          description: Gzipped file containing GC-corrected target counts
+          pattern: "*.target.counts.gc-corrected.gz"
+  target_counts_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.target.counts.gz:
+          type: file
+          description: Gzipped file containing target counts
+          pattern: "*.target.counts.gz"
+  targeted_json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.targeted.json:
+          type: file
+          description: JSON file containing targeted sequencing information
+          pattern: "*.targeted.json"
+  targeted_vcf_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.targeted.vcf.gz:
+          type: file
+          description: Gzipped VCF file containing targeted variants
+          pattern: "*.targeted.vcf.gz"
+  time_metrics_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.time_metrics.csv:
+          type: file
+          description: Contains time metrics for the workflow
+          pattern: "*.time_metrics.csv"
+  tn_bw:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.tn.bw:
+          type: file
+          description: BigWig file containing TN (Tumor Normal) data
+          pattern: "*.tn.bw"
+  tn_tsv_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.tn.tsv.gz:
+          type: file
+          description: Contains TN data in gzipped TSV format
+          pattern: "*.tn.tsv.gz"
+  trimmer_metrics_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.trimmer_metrics.csv:
+          type: file
+          description: Contains metrics from the trimmer
+          pattern: "*.trimmer_metrics.csv"
+  vc_hethom_ratio_metrics_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.vc_hethom_ratio_metrics.csv:
+          type: file
+          description: Contains heterozygous to homozygous ratio metrics
+          pattern: "*.vc_hethom_ratio_metrics.csv"
+  vc_metrics_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.vc_metrics.csv:
+          type: file
+          description: Contains variant calling metrics
+          pattern: "*.vc_metrics.csv"
+  vcf_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.vcf.gz:
+          type: file
+          description: Gzipped VCF file containing genomic variants
+          pattern: "*.vcf.gz"
+  vcf_gz_md5sum:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.vcf.gz.md5sum:
+          type: file
+          description: MD5 checksum file for the gzipped VCF
+          pattern: "*.vcf.gz.md5sum"
+  vcf_gz_tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.vcf.gz.tbi:
+          type: file
+          description: Index file for the gzipped VCF
+          pattern: "*.vcf.gz.tbi"
+  wgs_contig_mean_cov_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.wgs_contig_mean_cov.csv:
+          type: file
+          description: Contains WGS contig mean coverage metrics
+          pattern: "*.wgs_contig_mean_cov.csv"
+  wgs_coverage_metrics_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.wgs_coverage_metrics.csv:
+          type: file
+          description: Contains WGS coverage metrics
+          pattern: "*.wgs_coverage_metrics.csv"
+  wgs_fine_hist_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.wgs_fine_hist.csv:
+          type: file
+          description: Contains WGS fine histogram data
+          pattern: "*.wgs_fine_hist.csv"
+  wgs_hist_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.wgs_hist.csv:
+          type: file
+          description: Contains WGS histogram data
+          pattern: "*.wgs_hist.csv"
+  wgs_overall_mean_cov_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}.wgs_overall_mean_cov.csv:
+          type: file
+          description: Contains WGS overall mean coverage metrics
+          pattern: "*.wgs_overall_mean_cov.csv"
+  callability_bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}_callability.bed:
+          type: file
+          description: BED file containing callability regions
+          pattern: "*_callability.bed"
+  chr_start_end_impute_phase_vcf_gz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}_chr_start-end.impute.phase.vcf.gz:
+          type: file
+          description: Gzipped VCF file containing phased imputed variants
+          pattern: "*_chr_start-end.impute.phase.vcf.gz"
+  contig_mean_cov_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}_contig_mean_cov.csv:
+          type: file
+          description: Contains WGS contig mean coverage metrics
+          pattern: "*_contig_mean_cov.csv"
+  cov_report_bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}_cov_report.bed:
+          type: file
+          description: BED file containing coverage report
+          pattern: "*_cov_report.bed"
+  evidence:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}_evidence.{b,cr,s}am:
+          type: file
+          description: Sorted BAM, CRAM or SAM file containing evidence reads
+          pattern: "*_evidence.{b,cr,s}am"
+  fine_hist_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}_fine_hist.csv:
+          type: file
+          description: Contains fine histogram data
+          pattern: "*_fine_hist.csv"
+  full_res_bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}_full_res.bed:
+          type: file
+          description: BED file containing full resolution data
+          pattern: "*_full_res.bed"
+  hist_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}_hist.csv:
+          type: file
+          description: Contains histogram data
+          pattern: "*_hist.csv"
+  overall_mean_cov_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}_overall_mean_cov.csv:
+          type: file
+          description: Contains overall mean coverage metrics
+          pattern: "*_overall_mean_cov.csv"
+  read_cov_report_bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false, sex:'female' ]`
+      - ${prefix}_read_cov_report.bed:
+          type: file
+          description: BED file containing read coverage report
+          pattern: "*_read_cov_report.bed"
+  partitions_txt:
+    - ./sort_spill/partitions.txt:
+        type: file
+        description: Partitions file for sort spill
+        pattern: "./sort_spill/partitions.txt"
+        ontologies: []
+  alignmentStatsSummary_txt:
+    - ./sv/results/stats/alignmentStatsSummary.txt:
+        type: file
+        description: Alignment statistics summary
+        pattern: "./sv/results/stats/alignmentStatsSummary.txt"
+        ontologies: []
+  candidate_metrics_csv:
+    - ./sv/results/stats/candidate_metrics.csv:
+        type: file
+        description: Candidate metrics
+        pattern: "./sv/results/stats/candidate_metrics.csv"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+  diploidSV_sv_metrics_csv:
+    - ./sv/results/stats/diploidSV.sv_metrics.csv:
+        type: file
+        description: Diploid SV metrics
+        pattern: "./sv/results/stats/diploidSV.sv_metrics.csv"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+  graph_metrics_csv:
+    - ./sv/results/stats/graph_metrics.csv:
+        type: file
+        description: Graph metrics
+        pattern: "./sv/results/stats/graph_metrics.csv"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+  svCandidateGenerationStats_tsv:
+    - ./sv/results/stats/svCandidateGenerationStats.tsv:
+        type: file
+        description: Structural variant candidate generation statistics
+        pattern: "./sv/results/stats/svCandidateGenerationStats.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  svCandidateGenerationStats_xml:
+    - ./sv/results/stats/svCandidateGenerationStats.xml:
+        type: file
+        description: Structural variant candidate generation statistics (XML
+          format)
+        pattern: "./sv/results/stats/svCandidateGenerationStats.xml"
+        ontologies:
+          - edam: http://edamontology.org/format_2332 # XML
+  svLocusGraphStats_tsv:
+    - ./sv/results/stats/svLocusGraphStats.tsv:
+        type: file
+        description: Structural variant locus graph statistics
+        pattern: "./sv/results/stats/svLocusGraphStats.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  candidateSV_vcf_gz:
+    - ./sv/results/variants/candidateSV.vcf.gz:
+        type: file
+        description: Candidate structural variants (VCF format)
+        pattern: "./sv/results/variants/candidateSV.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
+  candidateSV_vcf_gz_tbi:
+    - ./sv/results/variants/candidateSV.vcf.gz.tbi:
+        type: file
+        description: Candidate structural variants index (VCF format)
+        pattern: "./sv/results/variants/candidateSV.vcf.gz.tbi"
+        ontologies: []
+  diploidSV_vcf_gz:
+    - ./sv/results/variants/diploidSV.vcf.gz:
+        type: file
+        description: Gzipped VCF file containing diploid structural variants
+        pattern: "./sv/results/variants/diploidSV.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
+  diploidSV_vcf_gz_tbi:
+    - ./sv/results/variants/diploidSV.vcf.gz.tbi:
+        type: file
+        description: Candidate structural variants index (VCF format)
+        pattern: "./sv/results/variants/diploidSV.vcf.gz.tbi"
+        ontologies: []
+  alignmentStats_xml:
+    - ./sv/workspace/alignmentStats.xml:
+        type: file
+        description: Alignment statistics in XML format
+        pattern: "./sv/workspace/alignmentStats.xml"
+        ontologies:
+          - edam: http://edamontology.org/format_2332 # XML
+  chromDepth_txt:
+    - ./sv/workspace/chromDepth.txt:
+        type: file
+        description: Chromosome depth statistics
+        pattern: "./sv/workspace/chromDepth.txt"
+        ontologies: []
+  edgeRuntimeLog_txt:
+    - ./sv/workspace/edgeRuntimeLog.txt:
+        type: file
+        description: Edge runtime log file
+        pattern: "./sv/workspace/edgeRuntimeLog.txt"
+        ontologies: []
+  genomeSegmentScanDebugInfo_txt:
+    - ./sv/workspace/genomeSegmentScanDebugInfo.txt:
+        type: file
+        description: Genome segment scan debug information
+        pattern: "./sv/workspace/genomeSegmentScanDebugInfo.txt"
+        ontologies: []
+  config_log_txt:
+    - ./sv/workspace/logs/config_log.txt:
+        type: file
+        description: Configuration log file
+        pattern: "./sv/workspace/logs/config_log.txt"
+        ontologies: []
+  svLocusGraph_bin:
+    - ./sv/workspace/svLocusGraph.bin:
+        type: file
+        description: Binary file containing the SV locus graph
+        pattern: "./sv/workspace/svLocusGraph.bin"
+        ontologies: []
+  body_txt:
+    - body.txt:
+        type: file
+        description: Body log file
+        pattern: "body.txt"
+        ontologies: []
+  dragen_time_metrics_csv:
+    - dragen.time_metrics.csv:
+        type: file
+        description: Dragen time metrics
+        pattern: "dragen.time_metrics.csv"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+  header_txt:
+    - header.txt:
+        type: file
+        description: Header log file
+        pattern: "header.txt"
+        ontologies: []
+  match_log_small_indel_dedup_txt:
+    - match_log.small_indel_dedup.txt:
+        type: file
+        description: Small indel deduplication log file
+        pattern: "match_log.small_indel_dedup.txt"
+        ontologies: []
+  match_log_smn_dedup_txt:
+    - match_log.smn_dedup.txt:
+        type: file
+        description: SMN deduplication log file
+        pattern: "match_log.smn_dedup.txt"
+        ontologies: []
+  streaming_log_csv:
+    - streaming_log_*.csv:
+        type: file
+        description: Streaming log files
+        pattern: "streaming_log_*.csv"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+  usage_txt:
+    - "*_usage.txt":
+        type: file
+        description: Usage log files
+        pattern: "*_usage.txt"
+        ontologies: []
+  all:
+    - "**":
+        type: file
+        description: all output files
+        pattern: "**"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@asr081"
+  - "@marrip"
+  - "@xuyangyuio"
+maintainers:
+  - "@marrip"

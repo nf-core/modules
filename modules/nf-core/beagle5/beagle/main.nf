@@ -8,16 +8,12 @@ process BEAGLE5_BEAGLE {
         'biocontainers/beagle:5.5_27Feb25.75f--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(vcf)
-    path(refpanel)
-    path(genmap)
-    path(exclsamples)
-    path(exclmarkers)
+    tuple val(meta), path(vcf), path(vcf_index), path(refpanel), path(refpanel_index), path(genmap), path(exclsamples), path(exclmarkers)
 
     output:
-    tuple val(meta), path("*.vcf.gz")     , emit: vcf
-    tuple val(meta), path("*.log")        , emit: log
-    path "versions.yml"                   , emit: versions
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
+    tuple val(meta), path("*.log")   , emit: log
+    path "versions.yml"              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,6 +42,18 @@ process BEAGLE5_BEAGLE {
         ${map_command} \\
         ${excludesamples_command} \\
         ${excludemarkers_command} \\
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        beagle: \$(beagle 2>&1 |head -n1 | sed -rn 's/beagle\\.(.*)\\.jar \\(version (.*)\\)/\\2rev\\1/p')
+    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}.bglout"
+    """
+    echo | gzip > ${prefix}.vcf.gz
+    touch ${prefix}.log
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

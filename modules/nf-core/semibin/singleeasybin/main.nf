@@ -4,8 +4,8 @@ process SEMIBIN_SINGLEEASYBIN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/semibin:2.2.0--pyhdfd78af_0':
-        'biocontainers/semibin:2.2.0--pyhdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0d/0d205dadfeb5d37829b4fbde39319b07e2971884670ff7e84df4cc4d809ff8a5/data':
+        'community.wave.seqera.io/library/semibin_igraph:fcb667d6c87bf3fd' }"
 
     input:
     tuple val(meta), path(fasta), path(bam)

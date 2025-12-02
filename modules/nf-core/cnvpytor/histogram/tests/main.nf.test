@@ -4,16 +4,16 @@ nextflow_process {
     config "./nextflow.config"
     script "../main.nf"
     process "CNVPYTOR_HISTOGRAM"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "cnvpytor"
     tag "cnvpytor/histogram"
-   
-    
-    
+
+
+
     test("test_cnvpytor_histogram") {
-        
+
         when {
             params {
                 module_args = '10000 100000'
@@ -35,8 +35,8 @@ nextflow_process {
             )
         }
     }
-    
-    
+
+
     test("test_cnvpytor_histogram -- stub") {
         options '-stub'
         when {

@@ -2,10 +2,10 @@
 
 import anndata as ad
 import scvi
+import yaml
 from scipy.sparse import csr_matrix
 from scvi.external import SCAR
 from threadpoolctl import threadpool_limits
-import yaml
 
 threadpool_limits(int("${task.cpus}"))
 
@@ -45,11 +45,7 @@ del adata.uns["_scvi_uuid"], adata.uns["_scvi_manager_uuid"]
 adata.write_h5ad("${prefix}.h5ad")
 
 # Versions
-versions = {
-    "${task.process}": {
-        "scvi": scvi.__version__
-    }
-}
+versions = {"${task.process}": {"scvi": scvi.__version__}}
 
 with open("versions.yml", "w") as f:
     f.write(yaml.dump(versions))
