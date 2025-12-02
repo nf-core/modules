@@ -53,7 +53,7 @@ workflow BAM_VARIANT_DEMIX_BOOT_FREYJA {
 
 
     //
-    // Perform bootstrapping to get more accurate estimates of abundancies
+    // Perform bootstrapping to get more accurate estimates of abundances
     //
     ch_lineages   = Channel.empty()
     ch_summarized = Channel.empty()

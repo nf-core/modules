@@ -4,12 +4,12 @@ process BISMARK_METHYLATIONEXTRACTOR {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bismark:0.24.0--hdfd78af_0' :
-        'biocontainers/bismark:0.24.0--hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/38/38e61d14ccaed82f60c967132963eb467d0fa4bccb7a21404c49b4f377735f03/data' :
+        'community.wave.seqera.io/library/bismark:0.25.1--1f50935de5d79c47' }"
 
     input:
     tuple val(meta), path(bam)
-    path index
+    tuple val(meta2), path(index)
 
     output:
     tuple val(meta), path("*.bedGraph.gz")         , emit: bedgraph
@@ -36,13 +36,29 @@ process BISMARK_METHYLATIONEXTRACTOR {
     def seqtype  = meta.single_end ? '-s' : '-p'
     """
     bismark_methylation_extractor \\
-        $bam \\
+        ${bam} \\
         --bedGraph \\
         --counts \\
         --gzip \\
         --report \\
-        $seqtype \\
-        $args
+        ${seqtype} \\
+        ${args}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        bismark: \$(echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
+    END_VERSIONS
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo | gzip > ${prefix}.bedGraph.gz
+    echo | gzip > ${prefix}.txt.gz
+    echo | gzip > ${prefix}.cov.gz
+    touch ${prefix}_splitting_report.txt
+    touch ${prefix}.M-bias.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

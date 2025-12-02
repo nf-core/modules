@@ -1,0 +1,291 @@
+nextflow_process {
+
+    name "Test Process SENTIEON_TNHAPLOTYPER2"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "SENTIEON_TNHAPLOTYPER2"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "picard"
+    tag "picard/addorreplacereadgroups"
+    tag "sentieon"
+    tag "sentieon/tnhaplotyper2"
+    config './nextflow.config'
+
+    setup {
+        run("PICARD_ADDORREPLACEREADGROUPS", alias: "NORMAL_ADDORREPLACEREADGROUPS") {
+            script "../../../picard/addorreplacereadgroups/main.nf"
+            config './nextflow.config'
+            process {
+                """
+                input[0] = [[id:'test'],
+                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists:true)]
+                    ]
+                input[1] = [[],[]]
+                input[2] = [[],[]]
+                """
+            }
+        }
+
+        run("PICARD_ADDORREPLACEREADGROUPS", alias: "TUMOUR_ADDORREPLACEREADGROUPS") {
+            script "../../../picard/addorreplacereadgroups/main.nf"
+            config './nextflow.config'
+
+            process {
+                """
+                input[0] = [[id:'test'],
+                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists:true)]
+                    ]
+                input[1] = [[],[]]
+                input[2] = [[],[]]
+                """
+            }
+        }
+    }
+
+    test("tumour normal") {
+
+        when {
+            params {
+                module_args  = ''
+                module_args2 = '--tumor_sample tumour --normal_sample normal'
+                module_args3 = ''
+                module_args4 = ''
+            }
+            process {
+                """
+                input[0] = NORMAL_ADDORREPLACEREADGROUPS.out.bam
+                    .join( NORMAL_ADDORREPLACEREADGROUPS.out.bai)
+                    .join( TUMOUR_ADDORREPLACEREADGROUPS.out.bam)
+                    .join( TUMOUR_ADDORREPLACEREADGROUPS.out.bai)
+                    .map{
+                    meta,normal_bam,normal_bai,tumour_bam,tumour_bai->
+                    [[id:'test'],[normal_bam,tumour_bam],[normal_bai,tumour_bai],[]]
+                    }
+                input[1] = [[:],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.dict', checkIfExists:true)]
+                input[2] = [[:],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists:true)]
+                input[3] = [[:],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists:true)]
+                input[4] = [[:],[]]
+                input[5] = [[:],[]]
+                input[6] = [[:],[]]
+                input[7] = [[:],[]]
+                input[8] = false
+                input[9] = false
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).vcf.summary,
+                    file(process.out.index[0][1]).name,
+                    process.out.stats,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+    test("tumour normal, with dbsnp and PoN") {
+
+        when {
+            params {
+                module_args  = ''
+                module_args2 = '--tumor_sample tumour --normal_sample normal'
+                module_args3 = ''
+                module_args4 = ''
+            }
+            process {
+                """
+                input[0] = NORMAL_ADDORREPLACEREADGROUPS.out.bam
+                    .join(NORMAL_ADDORREPLACEREADGROUPS.out.bai)
+                    .join(TUMOUR_ADDORREPLACEREADGROUPS.out.bam)
+                    .join(TUMOUR_ADDORREPLACEREADGROUPS.out.bai)
+                    .map{
+                    meta,normal_bam,normal_bai,tumour_bam,tumour_bai->
+                    [[id:'test'],[normal_bam,tumour_bam],[normal_bai,tumour_bai],[]]
+                    }
+                input[1] = [[:],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.dict', checkIfExists:true)]
+                input[2] = [[:],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists:true)]
+                input[3] = [[:],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists:true)]
+                input[4] = [[:],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz', checkIfExists:true)]
+                input[5] = [[:],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz.tbi', checkIfExists:true)]
+                input[6] = [[:],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz', checkIfExists:true)]
+                input[7] = [[:],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz.tbi', checkIfExists:true)]
+                input[8] = false
+                input[9] = false
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).vcf.summary,
+                    file(process.out.index[0][1]).name,
+                    process.out.stats,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+    test("tumour normal, with dbsnp and PoN, emit additional files") {
+
+        when {
+            params {
+                module_args  = ''
+                module_args2 = '--tumor_sample tumour --normal_sample normal'
+                module_args3 = '--tumor_sample tumour'
+                module_args4 = '--tumor_sample tumour --normal_sample normal'
+            }
+            process {
+                """
+                input[0] = NORMAL_ADDORREPLACEREADGROUPS.out.bam
+                    .join(NORMAL_ADDORREPLACEREADGROUPS.out.bai)
+                    .join(TUMOUR_ADDORREPLACEREADGROUPS.out.bam)
+                    .join(TUMOUR_ADDORREPLACEREADGROUPS.out.bai)
+                    .map{
+                    meta,normal_bam,normal_bai,tumour_bam,tumour_bai->
+                    [[id:'test'],[normal_bam,tumour_bam],[normal_bai,tumour_bai],[]]
+                    }
+                input[1] = [[:],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.dict', checkIfExists:true)]
+                input[2] = [[:],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists:true)]
+                input[3] = [[:],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists:true)]
+                input[4] = [[:],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz', checkIfExists:true)]
+                input[5] = [[:],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz.tbi', checkIfExists:true)]
+                input[6] = [[:],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz', checkIfExists:true)]
+                input[7] = [[:],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz.tbi', checkIfExists:true)]
+                input[8] = true
+                input[9] = true
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).vcf.summary,
+                    file(process.out.index[0][1]).name,
+                    process.out.stats,
+                    process.out.orientation_data,
+                    process.out.contamination_data,
+                    process.out.contamination_segments,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+    test("tumour only") {
+
+        when {
+            params {
+                module_args  = ''
+                module_args2 = '--tumor_sample tumour'
+                module_args3 = '--tumor_sample tumour'
+                module_args4 = '--tumor_sample tumour'
+            }
+            process {
+                """
+                input[0] = TUMOUR_ADDORREPLACEREADGROUPS.out.bam
+                    .join(TUMOUR_ADDORREPLACEREADGROUPS.out.bai)
+                    .map{
+                    meta,tumour_bam,tumour_bai->
+                    [meta,tumour_bam,tumour_bai,[]]
+                    }
+                input[1] = [[:],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.dict', checkIfExists:true)]
+                input[2] = [[:],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists:true)]
+                input[3] = [[:],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists:true)]
+                input[4] = [[:],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz', checkIfExists:true)]
+                input[5] = [[:],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz.tbi', checkIfExists:true)]
+                input[6] = [[:],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz', checkIfExists:true)]
+                input[7] = [[:],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz.tbi', checkIfExists:true)]
+                input[8] = true
+                input[9] = true
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).vcf.summary,
+                    file(process.out.index[0][1]).name,
+                    process.out.stats,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+    test("tumour normal - stub") {
+        options '-stub'
+        when {
+            params {
+                module_args  = ''
+                module_args2 = '--tumor_sample tumour --normal_sample normal'
+                module_args3 = ''
+                module_args4 = ''
+            }
+            process {
+                """
+                input[0] = [[id:'test'],[],[],[]]
+                input[1] = [[:],[]]
+                input[2] = [[:],[]]
+                input[3] = [[:],[]]
+                input[4] = [[:],[]]
+                input[5] = [[:],[]]
+                input[6] = [[:],[]]
+                input[7] = [[:],[]]
+                input[8] = false
+                input[9] = false
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("tumour normal, emit additional files -stub") {
+        options '-stub'
+        when {
+            params {
+                module_args  = ''
+                module_args2 = '--tumor_sample tumour --normal_sample normal'
+                module_args3 = ''
+                module_args4 = ''
+            }
+            process {
+                """
+                input[0] = [[id:'test'],[],[],[]]
+                input[1] = [[:],[]]
+                input[2] = [[:],[]]
+                input[3] = [[:],[]]
+                input[4] = [[:],[]]
+                input[5] = [[:],[]]
+                input[6] = [[:],[]]
+                input[7] = [[:],[]]
+                input[8] = false
+                input[9] = false
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

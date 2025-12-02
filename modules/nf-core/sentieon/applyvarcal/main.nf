@@ -1,12 +1,12 @@
 process SENTIEON_APPLYVARCAL {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
     label 'sentieon'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/sentieon:202308.02--ffce1b7074ce9924' :
-        'nf-core/sentieon:202308.02--c641bc397cbf79d5' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0f1dfe59ef66d7326b43db9ab1f39ce6220b358a311078c949a208f9c9815d4e/data'
+        : 'community.wave.seqera.io/library/sentieon:202503.01--1863def31ed8e4d5'}"
 
     input:
     tuple val(meta), path(vcf), path(vcf_tbi), path(recal), path(recal_index), path(tranches)
@@ -15,26 +15,31 @@ process SENTIEON_APPLYVARCAL {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    tuple val(meta), path("*.tbi")   , emit: tbi
-    path "versions.yml"              , emit: versions
+    tuple val(meta), path("*.tbi"),    emit: tbi
+    path "versions.yml",               emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64 ?
-        "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; " :
-        ""
+    def args2 = task.ext.args2 ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}_applyvarcal"
+    def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64
+        ? "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; "
+        : ""
     """
-    $sentieonLicense
+    ${sentieonLicense}
 
-    sentieon driver -r ${fasta}  --algo ApplyVarCal \\
-        -v $vcf \\
-        --recal $recal \\
-        --tranches_file $tranches \\
-        $args \\
+    sentieon driver \\
+        -r ${fasta}  \\
+        -t ${task.cpus} \\
+        ${args} \\
+        --algo ApplyVarCal \\
+        -v ${vcf} \\
+        --recal ${recal} \\
+        --tranches_file ${tranches} \\
+        ${args2} \\
         ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
@@ -44,9 +49,9 @@ process SENTIEON_APPLYVARCAL {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_applyvarcal"
     """
-    touch ${prefix}.vcf.gz
+    echo | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml

@@ -4,12 +4,13 @@ process BISCUIT_PILEUP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-d94f582b04a3edcede1215189c0d881506640fd9:6519548ea4f3d6a526c78ad0350c58f867f28574-0':
-        'biocontainers/mulled-v2-d94f582b04a3edcede1215189c0d881506640fd9:6519548ea4f3d6a526c78ad0350c58f867f28574-0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5b/5b542bbe1f99afd494ef07423ea8b52f2b8a081b85f92db2726c283c78da3cf0/data':
+        'community.wave.seqera.io/library/biscuit_samtools:84373c8a97fa63b8' }"
 
     input:
     tuple val(meta), path(normal_bams), path(normal_bais), path(tumor_bam), path(tumor_bai)
-    path index
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(index)
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
@@ -22,18 +23,18 @@ process BISCUIT_PILEUP {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def biscuit_cpus = (int) Math.max(Math.floor(task.cpus*0.9),1)
-    def bgzip_cpus = task.cpus-biscuit_cpus
+    def biscuit_cpus = [(task.cpus * 0.9) as int, 1].max()
+    def bgzip_cpus = (task.cpus - biscuit_cpus < 1) ? biscuit_cpus : (task.cpus - biscuit_cpus)
     if ( tumor_bam != [] && normal_bams.toList().size() > 1 ) error "[BISCUIT_PILEUP] error: Tumor BAM provided with more than one normal BAM"
     if ( tumor_bam.toList().size() > 1 ) error "[BISCUIT_PILEUP] error: more than one tumor BAM provided"
     input = ( tumor_bam==[] ) ? "${normal_bams}" : "-S -T ${tumor_bam} -I ${normal_bams}"
     """
-    INDEX=`find -L ./ -name "*.bis.amb" | sed 's/\\.bis.amb\$//'`
+    ln -sf \$(readlink $fasta) $index/$fasta
 
     biscuit pileup \\
         -@ $biscuit_cpus \\
         $args \\
-        \$INDEX \\
+        $index/$fasta \\
         $input \\
         | bgzip -@ $bgzip_cpus $args2 > ${prefix}.vcf.gz
 

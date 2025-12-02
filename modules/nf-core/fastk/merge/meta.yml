@@ -11,46 +11,64 @@ tools:
       homepage: "https://github.com/thegenemyers/FASTK"
       tool_dev_url: "https://github.com/thegenemyers/FASTK"
       license: ["https://github.com/thegenemyers/FASTK/blob/master/LICENSE"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fastk_hist:
-      type: file
-      description: A histogram files from the program FastK
-      pattern: "*.hist"
-  - fastk_ktab:
-      type: file
-      description: Histogram ktab files from the program FastK (option -t)
-      pattern: "*.ktab*"
-  - fastk_prof:
-      type: file
-      description: Histogram profile files from the program FastK (option -p)
-      pattern: "*.{prof,pidx}*"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - hist:
+        type: file
+        description: FastK histogram file
+        ontologies: []
+    - ktab:
+        type: file
+        description: FastK ktab file
+        ontologies: []
+    - prof:
+        type: file
+        description: FastK prof file
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - fastk_hist:
-      type: file
-      description: A histogram files from the program FastK
-      pattern: "*.hist"
-  - fastk_ktab:
-      type: file
-      description: Histogram ktab files from the program FastK (option -t)
-      pattern: "*.ktab*"
-  - fastk_prof:
-      type: file
-      description: Histogram profile files from the program FastK (option -p)
-      pattern: "*.{prof,pidx}*"
+  hist:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.hist":
+          type: file
+          description: FastK histogram file
+          pattern: "*.hist"
+          ontologies: []
+  ktab:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.ktab*":
+          type: file
+          description: FastK ktab file
+          pattern: "*.ktab"
+  prof:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.{prof,pidx}*":
+          type: file
+          description: FastK prof file
+          pattern: "*.{prof,pidx}"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mahesh-panchal"
 maintainers:

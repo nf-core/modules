@@ -5,8 +5,8 @@ process PINTS_CALLER {
     conda "${moduleDir}/environment.yml"
     // NOTE Stopped publishing at 1.1.9 https://quay.io/repository/biocontainers/pypints?tab=tags
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/pints_caller:650ef63c9768bb5a' :
-        'community.wave.seqera.io/library/pints_caller:b1e6404513917871' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f1/f1a9e30012e1b41baf9acd1ff94e01161138d8aa17f4e97aa32f2dc4effafcd1/data' :
+        'community.wave.seqera.io/library/pybedtools_bedtools_htslib_pip_pypints:39699b96998ec5f6' }"
 
     input:
     tuple val(meta), path(bams), path(bais)

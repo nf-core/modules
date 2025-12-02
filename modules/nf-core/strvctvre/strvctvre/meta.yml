@@ -1,0 +1,81 @@
+name: "strvctvre_strvctvre"
+description: a structural variant classifier for exonic deletions and
+  duplications
+keywords:
+  - structural variants
+  - sv
+  - deletions
+  - duplications
+  - annotations
+tools:
+  - "strvctvre":
+      description: "StrVCTVRE, a structural variant classifier for exonic deletions
+        and duplications"
+      homepage: "https://github.com/andrewSharo/StrVCTVRE/tree/master"
+      documentation: "https://github.com/andrewSharo/StrVCTVRE/tree/master"
+      tool_dev_url: "https://github.com/andrewSharo/StrVCTVRE/tree/master"
+      licence: ["MIT"]
+      identifier: biotools:strvctvre
+
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[
+          id:'sample1' ]`
+    - sv_file:
+        type: file
+        description: Structural variants file in VCF or BED format
+        pattern: "*.{vcf,bed}"
+    - sv_file_index:
+        type: file
+        description: Index file for the structural variants file VCF file
+        pattern: "*.tbi"
+    - assembly:
+        type: string
+        description: Genome assembly version, has to be one of 'GRCh38' or 'GRCh37'
+        enum: ["GRCh38", "GRCh37"]
+  - - meta2:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[
+          id:'sample1' ]`
+    - phylop:
+        type: file
+        description: PhyloP bigWig file (fetched from https://hgdownload.cse.ucsc.edu/goldenpath/hg38/phyloP100way/)
+        pattern: "*.bw"
+  - - meta3:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[
+          id:'sample1' ]`
+    - data_directory:
+        type: directory
+        description: Directory containing the StrVCTVRE data files (fetched from https://github.com/andrewSharo/StrVCTVRE/tree/master/data)
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - "*.vcf":
+          type: file
+          description: Structural variants file in VCF format
+          pattern: "*.vcf"
+  bed:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - "*.bed":
+          type: file
+          description: Structural variants file in BED format
+          pattern: "*.bed"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: versions.yml
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@nvnieuwk"
+maintainers:
+  - "@nvnieuwk"

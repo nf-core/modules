@@ -11,39 +11,63 @@ tools:
       homepage: https://ccb.jhu.edu/software/FLASH/
       doi: 10.1093/bioinformatics/btr507
       licence: ["GPL v3+"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: |
-        List of input FastQ files of size 2; i.e., paired-end data.
-      pattern: "*fastq.gz"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 2; i.e., paired-end data.
+        pattern: "*fastq.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - merged:
-      type: file
-      description: The merged fastq reads
-      pattern: ".extendedFrags.fastq.gz"
-  - notcombined:
-      type: file
-      description: Not combined reads from flash
-      pattern: ".notCombined_*.fastq.gz"
-  - histogram:
-      type: file
-      description: HistogramNumeric histogram of merged read lengths.
-      pattern: ".hist"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  merged:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.extendedFrags.fastq.gz:
+          type: file
+          description: The merged fastq reads
+          pattern: ".extendedFrags.fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  notcombined:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.notCombined_*.fastq.gz:
+          type: file
+          description: Not combined reads from flash
+          pattern: ".notCombined_*.fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  histogram:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.hist:
+          type: file
+          description: HistogramNumeric histogram of merged read lengths.
+          pattern: ".hist"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Erkison"
 maintainers:

@@ -13,34 +13,47 @@ tools:
       tool_dev_url: "https://github.com/mskcc/vcf2maf"
       doi: "10.5281/zenodo.593251"
       licence: ["Apache-2.0"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: |
+          vcf to convert to MAF format. Must be uncompressed.
+        ontologies: []
+  - fasta:
       type: file
       description: |
-        vcf to convert to MAF format. Must be uncompressed.
+        Path to reference genome fasta file.
+      ontologies: []
   - vep_cache:
       type: file
       description: |
         Path to VEP cache dir. Required for correct running of VEP.
+      ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - maf:
-      type: file
-      description: MAF file produced from VCF
-      pattern: "*.maf"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  maf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.maf":
+          type: file
+          description: MAF file produced from VCF
+          pattern: "*.maf"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@adamrtalbot"
 maintainers:

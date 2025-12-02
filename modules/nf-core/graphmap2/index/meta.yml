@@ -11,20 +11,27 @@ tools:
       homepage: https://github.com/lbcb-sci/graphmap2
       documentation: https://github.com/lbcb-sci/graphmap2#graphmap2---a-highly-sensitive-and-accurate-mapper-for-long-error-prone-reads
       licence: ["MIT"]
+      identifier: biotools:Graphmap2
 input:
   - fasta:
       type: file
       description: |
         Reference database in FASTA format.
+      ontologies: []
 output:
-  - gmidx:
-      type: file
-      description: Graphmap2 fasta index in gmidx format
-      pattern: "*.gmidx"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  index:
+    - "*.gmidx":
+        type: file
+        description: Index file in gmidx format
+        pattern: "*.gmidx"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@yuukiiwa"
   - "@drpatelh"

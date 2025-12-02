@@ -10,12 +10,16 @@ nextflow_process {
     tag "bwameth"
     tag "bwameth/index"
 
-    test("test-bwameth-index") {
-        
+    test("sarscov2 genome [fasta]") {
+
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[1] = false
                 """
             }
         }
@@ -27,5 +31,27 @@ nextflow_process {
             )
         }
     }
-    
+
+    test("sarscov2 genome [fasta] - mem2") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[1] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
 }

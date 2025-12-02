@@ -4,11 +4,11 @@ process BCFTOOLS_PLUGINSPLIT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bcftools:1.20--h8b25389_0':
-        'biocontainers/bcftools:1.20--h8b25389_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/47/474a5ea8dc03366b04df884d89aeacc4f8e6d1ad92266888e7a8e7958d07cde8/data':
+        'community.wave.seqera.io/library/bcftools_htslib:0a3fa2654b52006f' }"
 
     input:
-    tuple val(meta), path(vcf), path(tbi)
+    tuple val(meta), path(vcf, stageAs: "input/*"), path(tbi, stageAs: "input/*")
     path(samples)
     path(groups)
     path(regions)
@@ -25,7 +25,6 @@ process BCFTOOLS_PLUGINSPLIT {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
 
     def samples_arg = samples ? "--samples-file ${samples}" : ""
     def groups_arg  = groups  ? "--groups-file ${groups}"   : ""
@@ -40,9 +39,7 @@ process BCFTOOLS_PLUGINSPLIT {
         ${groups_arg} \\
         ${regions_arg} \\
         ${targets_arg} \\
-        --output ${prefix}
-
-    mv ${prefix}/* .
+        --output .
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -52,7 +49,6 @@ process BCFTOOLS_PLUGINSPLIT {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
 
     def extension = args.contains("--output-type b") || args.contains("-Ob") ? "bcf.gz" :
                 args.contains("--output-type u") || args.contains("-Ou") ? "bcf" :
@@ -65,11 +61,15 @@ process BCFTOOLS_PLUGINSPLIT {
                 ""
     def determination_file = samples ?: targets
     def create_cmd = extension.matches("vcf|bcf") ? "touch " : "echo '' | gzip > "
-    def create_files = "cut -f 3 ${determination_file} | sed -e 's/\$/.${extension}/' > files.txt; while IFS= read -r filename; do ${create_cmd} \"\$filename\"; done < files.txt"
-    def create_index = index.matches("csi|tbi") ? "cut -f 3 ${determination_file} | sed -e 's/\$/.${extension}.${index}/' > indices.txt; touch \$(<indices.txt)" : ""
     """
-    ${create_files}
-    ${create_index}
+    cut -f 3 ${determination_file} | sed -e 's/\$/.${extension}/' > files.txt
+    while IFS= read -r filename;
+        do ${create_cmd} "./\$filename";
+        if [ -n "${index}" ]; then
+            index_file=\$(sed -e 's/\$/.${index}/' <<< \$filename);
+            touch ./\$index_file;
+        fi;
+    done < files.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

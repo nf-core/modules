@@ -1,5 +1,6 @@
 name: "circexplorer2_parse"
-description: CIRCexplorer2 parses fusion junction files from multiple aligners to prepare them for CIRCexplorer2 annotate.
+description: CIRCexplorer2 parses fusion junction files from multiple aligners to
+  prepare them for CIRCexplorer2 annotate.
 keywords:
   - parse
   - circrna
@@ -11,30 +12,38 @@ tools:
       documentation: "https://circexplorer2.readthedocs.io/en/latest/"
       doi: "10.1101/gr.202895.115"
       licence: ["MIT License"]
+      identifier: biotools:CIRCexplorer2
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fusions:
-      type: file
-      description: BAM (BWA), BED (Segemehl), TXT (MapSplice), or Junction (STAR) file. Aligner will be autodetected based on file suffix.
-      pattern: "*.{bam,junction,bed,txt}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fusions:
+        type: file
+        description: BAM (BWA), BED (Segemehl), TXT (MapSplice), or Junction (STAR)
+          file. Aligner will be autodetected based on file suffix.
+        pattern: "*.{bam,junction,bed,txt}"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bed:
-      type: file
-      description: Standardized fusion junction file suitable for CIRCexplorer2 annotate module.
-      pattern: "*.{bam,cram,sam}"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  junction:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bed":
+          type: file
+          description: BED file
+          pattern: "*.bed"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@BarryDigby"
 maintainers:

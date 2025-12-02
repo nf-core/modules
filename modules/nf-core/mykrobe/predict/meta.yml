@@ -12,38 +12,54 @@ tools:
       tool_dev_url: "https://github.com/Mykrobe-tools/mykrobe"
       doi: "10.1038/ncomms10063"
       licence: ["MIT"]
+      identifier: biotools:Mykrobe
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - seqs:
-      type: file
-      description: BAM or FASTQ file
-      pattern: "*.{bam,fastq.gz,fq.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - seqs:
+        type: file
+        description: BAM or FASTQ file
+        pattern: "*.{bam,fastq.gz,fq.gz}"
+        ontologies: []
   - species:
       type: string
       description: Species to make AMR prediction against
       pattern: "*"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - csv:
-      type: file
-      description: AMR predictions in CSV format
-      pattern: "*.csv"
-  - json:
-      type: file
-      description: AMR predictions in JSON format
-      pattern: "*.json"
+  csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.csv:
+          type: file
+          description: AMR predictions in CSV format
+          pattern: "*.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.json:
+          type: file
+          description: AMR predictions in JSON format
+          pattern: "*.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@rpetit3"
 maintainers:

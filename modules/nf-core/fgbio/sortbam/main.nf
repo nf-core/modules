@@ -4,8 +4,8 @@ process FGBIO_SORTBAM {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fgbio:2.2.1--hdfd78af_0' :
-        'biocontainers/fgbio:2.2.1--hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b4/b4047e3e517b57fae311eab139a12f0887d898b7da5fceeb2a1029c73b9e3904/data' :
+        'community.wave.seqera.io/library/fgbio:2.5.21--368dab1b4f308243' }"
 
     input:
     tuple val(meta), path(bam)

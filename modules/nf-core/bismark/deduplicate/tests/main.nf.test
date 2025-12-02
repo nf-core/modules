@@ -3,39 +3,61 @@ nextflow_process {
     name "Test Process BISMARK_DEDUPLICATE"
     script "../main.nf"
     process "BISMARK_DEDUPLICATE"
+
     tag "bismark"
     tag "bismark/deduplicate"
     tag "modules"
     tag "modules_nfcore"
 
-    test("Should run bismark/deduplicate without failures") {
+    test("sarscov2 paired-end methylated [bam]") {
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
-                input[0] = [
+                input[0] = Channel.of([
                             [ id:'test', single_end:false ],
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.bam', checkIfExists: true)
-                           ]
+                ])
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     process.out.bam.collect { bam(it[1]).getReadsMD5() },
                     process.out.report,
-                    process.out.versions
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
                     ).match()
                 }
             )
         }
-
     }
 
+    test("sarscov2 paired-end methylated [bam] | stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:false ],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.bam', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
 }

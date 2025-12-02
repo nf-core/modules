@@ -16,43 +16,67 @@ tools:
       documentation: http://www.htslib.org/doc/samtools.html
       doi: 10.1093/bioinformatics/btp352
       licence: ["MIT"]
+      identifier: biotools:samtools
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - input:
-      type: file
-      description: BAM/CRAM file from alignment
-      pattern: "*.{bam,cram}"
-  - input_index:
-      type: file
-      description: BAI/CRAI file from alignment
-      pattern: "*.{bai,crai}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'genome' ]
-  - fasta:
-      type: file
-      description: Reference file the CRAM was created with (optional)
-      pattern: "*.{fasta,fa}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input:
+        type: file
+        description: BAM/CRAM file from alignment
+        pattern: "*.{bam,cram}"
+        ontologies: []
+    - input_index:
+        type: file
+        description: BAI/CRAI file from alignment
+        pattern: "*.{bai,crai}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: Reference file the CRAM was created with (optional)
+        pattern: "*.{fasta,fa}"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - stats:
-      type: file
-      description: File containing samtools stats output
-      pattern: "*.{stats}"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.stats":
+          type: file
+          description: File containing samtools stats output
+          pattern: "*.{stats}"
+          ontologies: []
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - samtools:
+          type: string
+          description: Name of the tool
+      - samtools version | sed "1!d;s/.* //:
+          type: string
+          description: The command used to generate the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - samtools version | sed "1!d;s/.* //:
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@drpatelh"
   - "@FriederikeHanssen"

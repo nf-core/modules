@@ -18,53 +18,98 @@ tools:
       tool_dev_url: https://bitbucket.org/berkeleylab/checkv/src/master/
       doi: "10.1038/s41587-020-00774-7"
       licence: ["BSD License"]
+      identifier: biotools:checkv
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: fasta file
-      pattern: "*.{fasta,fna,fa}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: fasta file
+        pattern: "*.{fasta,fna,fa}"
+        ontologies: []
   - db:
       type: directory
       description: Directory pointing to checkV database
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'sample', bin:'1' ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - quality_summary:
-      type: file
-      description: CheckV's main output containing integrated results from the three main modules (contamination, completeness, complete genomes) with overall quality of contigs
-      pattern: "${prefix}/quality_summary.tsv"
-  - completeness:
-      type: file
-      description: CheckV's detailed overview table on estimating completeness
-      pattern: "${prefix}/completeness.tsv"
-  - contamination:
-      type: file
-      description: CheckV's detailed overview table on estimating contamination
-      pattern: "${prefix}/contamination.tsv"
-  - complete_genomes:
-      type: file
-      description: CheckV's detailed overview table on the identified putative complete genomes
-      pattern: "${prefix}/complete_genomes.tsv"
-  - proviruses:
-      type: file
-      description: CheckV's extracted proviruses contigs
-      pattern: "${prefix}/proviruses.fna"
-  - viruses:
-      type: file
-      description: CheckV's extracted virus contigs
-      pattern: "${prefix}/viruses.fna"
+  quality_summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample', bin:'1' ]
+      - ${prefix}/quality_summary.tsv:
+          type: file
+          description: CheckV's main output containing integrated results from the three
+            main modules (contamination, completeness, complete genomes) with overall
+            quality of contigs
+          pattern: "${prefix}/quality_summary.tsv"
+          ontologies: []
+  completeness:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample', bin:'1' ]
+      - ${prefix}/completeness.tsv:
+          type: file
+          description: CheckV's detailed overview table on estimating completeness
+          pattern: "${prefix}/completeness.tsv"
+          ontologies: []
+  contamination:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample', bin:'1' ]
+      - ${prefix}/contamination.tsv:
+          type: file
+          description: CheckV's detailed overview table on estimating contamination
+          pattern: "${prefix}/contamination.tsv"
+          ontologies: []
+  complete_genomes:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample', bin:'1' ]
+      - ${prefix}/complete_genomes.tsv:
+          type: file
+          description: CheckV's detailed overview table on the identified putative complete
+            genomes
+          pattern: "${prefix}/complete_genomes.tsv"
+          ontologies: []
+  proviruses:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample', bin:'1' ]
+      - ${prefix}/proviruses.fna:
+          type: file
+          description: CheckV's extracted proviruses contigs
+          pattern: "${prefix}/proviruses.fna"
+          ontologies: []
+  viruses:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample', bin:'1' ]
+      - ${prefix}/viruses.fna:
+          type: file
+          description: CheckV's extracted virus contigs
+          pattern: "${prefix}/viruses.fna"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@Joon-Klaps"
 maintainers:

@@ -4,17 +4,18 @@ process FGBIO_GROUPREADSBYUMI {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fgbio:2.2.1--hdfd78af_0' :
-        'biocontainers/fgbio:2.2.1--hdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b4/b4047e3e517b57fae311eab139a12f0887d898b7da5fceeb2a1029c73b9e3904/data' :
+        'community.wave.seqera.io/library/fgbio:2.5.21--368dab1b4f308243' }"
 
     input:
     tuple val(meta), path(bam)
     val(strategy)
 
     output:
-    tuple val(meta), path("*.bam")         , emit: bam
-    tuple val(meta), path("*histogram.txt"), emit: histogram
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), path("*.bam")            , emit: bam
+    tuple val(meta), path("*histogram.txt")   , emit: histogram
+    tuple val(meta), path("*read-metrics.txt"), emit: read_metrics
+    path "versions.yml"                       , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -44,7 +45,8 @@ process FGBIO_GROUPREADSBYUMI {
         $args \\
         -i $bam \\
         -o ${prefix}.bam \\
-        -f ${prefix}_histogram.txt
+        -f ${prefix}_histogram.txt \\
+        --grouping-metrics ${prefix}_read-metrics.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -58,6 +60,7 @@ process FGBIO_GROUPREADSBYUMI {
     """
     touch ${prefix}.bam
     touch ${prefix}_histogram.txt
+    touch ${prefix}_read-metrics.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

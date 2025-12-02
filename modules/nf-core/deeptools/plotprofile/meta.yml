@@ -7,44 +7,58 @@ keywords:
   - matrix
 tools:
   - deeptools:
-      description: A set of user-friendly tools for normalization and visualization of deep-sequencing data
+      description: A set of user-friendly tools for normalization and visualization
+        of deep-sequencing data
       documentation: https://deeptools.readthedocs.io/en/develop/index.html
       tool_dev_url: https://github.com/deeptools/deepTools
       doi: "10.1093/nar/gku365"
       licence: ["GPL v3"]
+      identifier: biotools:deeptools
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - matrix:
-      type: file
-      description: |
-        gzipped matrix file produced by deeptools_
-        computematrix deeptools utility
-      pattern: "*.{mat.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - matrix:
+        type: file
+        description: |
+          gzipped matrix file produced by deeptools_
+          computematrix deeptools utility
+        pattern: "*.{mat.gz}"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - pdf:
-      type: file
-      description: |
-        Output figure containing resulting plot
-      pattern: "*.{plotProfile.pdf}"
-  - matrix:
-      type: file
-      description: |
-        File containing the matrix of values
-        used to generate the profile
-      pattern: "*.{plotProfile.mat.tab}"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  pdf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.pdf":
+          type: file
+          description: |
+            Output figure containing resulting plot
+          pattern: "*.{plotProfile.pdf}"
+          ontologies: []
+  table:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tab":
+          type: file
+          description: Output table
+          pattern: "*.tab"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@edmundmiller"
   - "@drpatelh"

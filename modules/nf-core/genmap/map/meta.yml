@@ -15,50 +15,79 @@ tools:
       tool_dev_url: https://github.com/cpockrandt/genmap
       doi: "10.1093/bioinformatics/btaa222"
       licence: ["BSD-3-Clause"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - index:
-      type: directory
-      description: index directory
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing regions information
-        e.g. [ id:'test', single_end:false ]
-  - regions:
-      type: file
-      description: optional - a bed file with regions to define the mappability off
-      pattern: "*.bed"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - index:
+        type: directory
+        description: index directory
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing regions information
+          e.g. [ id:'test', single_end:false ]
+    - regions:
+        type: file
+        description: optional - a bed file with regions to define the mappability off
+        pattern: "*.bed"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - wig:
-      type: file
-      description: genmap wig mappability file
-      pattern: "*.wig"
-  - bedgraph:
-      type: file
-      description: genmap bedgraph mappability file
-      pattern: "*.bedgraph"
-  - txt:
-      type: file
-      description: genmap text mappability file
-      pattern: "*.txt"
-  - csv:
-      type: file
-      description: genmap csv mappability file
-      pattern: "*.csv"
+  wig:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.wig":
+          type: file
+          description: genmap wig mappability file
+          pattern: "*.wig"
+          ontologies: []
+  bedgraph:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bedgraph":
+          type: file
+          description: genmap bedgraph mappability file
+          pattern: "*.bedgraph"
+          ontologies: []
+  txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt":
+          type: file
+          description: genmap text mappability file
+          pattern: "*.txt"
+          ontologies: []
+  csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.csv":
+          type: file
+          description: genmap csv mappability file
+          pattern: "*.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jianhong"
   - "@nvnieuwk"

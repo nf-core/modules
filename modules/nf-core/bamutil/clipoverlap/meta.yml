@@ -1,0 +1,66 @@
+name: "bamutil_clipoverlap"
+description: clips overlapping read pairs. When two mates overlap, this tool will
+  clip the record's whose clipped region would have the lowest average quality.
+keywords:
+  - bam
+  - clipping
+  - clipOverlap
+  - bamUtil
+tools:
+  - "bamutil":
+      description: "Programs that perform operations on SAM/BAM files, all built into
+        a single executable, bam."
+      homepage: "https://genome.sph.umich.edu/wiki/BamUtil"
+      documentation: "https://genome.sph.umich.edu/wiki/BamUtil:_clipOverlap"
+      tool_dev_url: "https://github.com/statgen/bamUtil"
+      doi: "10.1101/gr.176552.114"
+      licence: ["GPL v3"]
+      identifier: biotools:bamutil
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: Coordinate/ReadName sorted BAM/SAM/uncompressedBAM file
+        pattern: "*.{bam,sam,ubam}"
+
+        ontologies: []
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.bam":
+          type: file
+          description: Coordinate/ReadName sorted BAM/SAM/uncompressedBAM file
+          pattern: "*.{bam}"
+          ontologies: []
+  stats_log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.log":
+          type: file
+          description: basic overlap statistics when unabled with --stats
+          pattern: "*.{log}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@Y-Pei"
+maintainers:
+  - "@Y-Pei"

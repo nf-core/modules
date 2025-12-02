@@ -11,30 +11,45 @@ tools:
       documentation: "https://labsyspharm.github.io/ashlar/"
       doi: "10.1093/bioinformatics/btac544"
       licence: ["MIT"]
+      identifier: biotools:ASHLAR
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - images:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - images:
+        type: file
+        description: Overlapping tile image data in formats from most commercial microscopes
+        pattern: "*.{ome.tiff,ome.tif,rcpnl,btf,nd2,tiff,tif,czi}"
+        ontologies: []
+  - opt_dfp:
       type: file
-      description: Overlapping tile image data in formats from most commercial microscopes
-      pattern: "*.{ome.tiff,ome.tif,rcpnl,btf,nd2,tiff,tif,czi}"
+      description: Optional dark field image data
+      ontologies: []
+  - opt_ffp:
+      type: file
+      description: Optional flat field image data
+      ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - tif:
-      type: file
-      description: A pyramidal, tiled OME-TIFF file created from input images.
-      pattern: "*.ome.tif"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  tif:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.ome.tif":
+          type: file
+          description: A pyramidal, tiled OME-TIFF file created from input images.
+          pattern: "*.ome.tif"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@RobJY"
   - "@jmuhlich"

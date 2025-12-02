@@ -13,46 +13,75 @@ tools:
       tool_dev_url: "https://github.com/rastanton/GAMMA"
       doi: "10.1093/bioinformatics/btab607"
       licence: ["Apache License 2.0"]
+      identifier: biotools:gamma
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: FASTA file
-      pattern: "*.{fa,fasta}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: FASTA file
+        pattern: "*.{fa,fasta}"
+        ontologies: []
   - db:
       type: file
       description: Database in FASTA format
       pattern: "*.{fa,fasta}"
+      ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - gamma:
-      type: file
-      description: GAMMA file with annotated gene matches
-      pattern: "*.{gamma}"
-  - psl:
-      type: file
-      description: PSL file with all gene matches found
-      pattern: "*.{psl}"
-  - gff:
-      type: file
-      description: GFF file
-      pattern: "*.{gff}"
-  - fasta:
-      type: file
-      description: multifasta file of the gene matches
-      pattern: "*.{fasta}"
+  gamma:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.gamma":
+          type: file
+          description: GAMMA file with annotated gene matches
+          pattern: "*.{gamma}"
+          ontologies: []
+  psl:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.psl":
+          type: file
+          description: PSL file with all gene matches found
+          pattern: "*.{psl}"
+          ontologies: []
+  gff:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.gff":
+          type: file
+          description: GFF file
+          pattern: "*.{gff}"
+          ontologies: []
+  fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fasta":
+          type: file
+          description: multifasta file of the gene matches
+          pattern: "*.{fasta}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sateeshperi"
   - "@rastanton"

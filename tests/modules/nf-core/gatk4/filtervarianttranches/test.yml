@@ -1,9 +1,0 @@
-- name: gatk4 filtervarianttranches test_gatk4_filtervarianttranches
-  command: nextflow run ./tests/modules/nf-core/gatk4/filtervarianttranches -entry test_gatk4_filtervarianttranches -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/gatk4/filtervarianttranches/nextflow.config
-  tags:
-    - gatk4/filtervarianttranches
-    - gatk4
-  files:
-    - path: output/gatk4/test.filtered.vcf.gz
-    - path: output/gatk4/test.filtered.vcf.gz.tbi
-    - path: output/gatk4/versions.yml

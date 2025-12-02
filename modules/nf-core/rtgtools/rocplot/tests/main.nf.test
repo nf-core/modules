@@ -35,8 +35,8 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz.tbi', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz.tbi', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true)
                     ]
                     input[1] = UNTAR.out.untar
                     println(projectDir)

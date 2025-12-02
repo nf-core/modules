@@ -13,25 +13,29 @@ tools:
       tool_dev_url: https://github.com/bbuchfink/diamond
       doi: "10.1038/s41592-021-01101-x"
       licence: ["GPL v3.0"]
+      identifier: biotools:diamond
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: Input fasta file containing query sequences
-      pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing db information
-        e.g. [ id:'test2', single_end:false ]
-  - db:
-      type: file
-      description: File of the indexed DIAMOND database
-      pattern: "*.dmnd"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Input fasta file containing query sequences
+        pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing db information
+          e.g. [ id:'test2', single_end:false ]
+    - db:
+        type: file
+        description: File of the indexed DIAMOND database
+        pattern: "*.dmnd"
+        ontologies: []
   - out_ext:
       type: string
       description: |
@@ -47,47 +51,105 @@ input:
         used for in conjunction with the 'txt' out_ext option (--outfmt 6). Options:
         qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - blast:
-      type: file
-      description: File containing blastp hits
-      pattern: "*.{blast}"
-  - xml:
-      type: file
-      description: File containing blastp hits
-      pattern: "*.{xml}"
-  - txt:
-      type: file
-      description: File containing hits in tabular BLAST format.
-      pattern: "*.{txt}"
-  - daa:
-      type: file
-      description: File containing hits DAA format
-      pattern: "*.{daa}"
-  - sam:
-      type: file
-      description: File containing aligned reads in SAM format
-      pattern: "*.{sam}"
-  - tsv:
-      type: file
-      description: Tab separated file containing taxonomic classification of hits
-      pattern: "*.{tsv}"
-  - paf:
-      type: file
-      description: File containing aligned reads in pairwise mapping format format
-      pattern: "*.{paf}"
-  - log:
-      type: file
-      description: Log file containing stdout information
-      pattern: "*.{log}"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  blast:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.blast":
+          type: file
+          description: File containing blastp hits
+          pattern: "*.{blast}"
+          ontologies:
+            - edam: http://edamontology.org/format_3836 # BLAST XML v2 results format
+  xml:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.xml":
+          type: file
+          description: File containing blastp hits
+          pattern: "*.{xml}"
+          ontologies:
+            - edam: http://edamontology.org/format_2332 # XML
+  txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt":
+          type: file
+          description: File containing hits in tabular BLAST format.
+          pattern: "*.{txt}"
+          ontologies: []
+  daa:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.daa":
+          type: file
+          description: File containing hits DAA format
+          pattern: "*.{daa}"
+          ontologies: []
+  sam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.sam":
+          type: file
+          description: File containing aligned reads in SAM format
+          pattern: "*.{sam}"
+          ontologies:
+            - edam: http://edamontology.org/format_2573 # SAM
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: Tab separated file containing taxonomic classification of hits
+          pattern: "*.{tsv}"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  paf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.paf":
+          type: file
+          description: File containing aligned reads in pairwise mapping format format
+          pattern: "*.{paf}"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: Log file containing stdout information
+          pattern: "*.{log}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@spficklin"
   - "@jfy133"

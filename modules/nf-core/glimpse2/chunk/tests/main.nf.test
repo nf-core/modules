@@ -3,25 +3,25 @@ nextflow_process {
     name "Test Process GLIMPSE2_CHUNK"
     script "../main.nf"
     process "GLIMPSE2_CHUNK"
+
+    config "./nextflow.config"
+
     tag "glimpse2"
     tag "glimpse2/chunk"
     tag "modules_nfcore"
     tag "modules"
 
     test("Should run without map") {
-        config "modules/nf-core/glimpse2/chunk/tests/nextflow.config"
-
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true),
-                    "chr21"
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
+                    "chr22:16570000-16610000", []
                 ]
-                input[1]= [[ id:'map'],[]]
-                input[2]= "recursive"
+                input[1]= "recursive"
                 """
             }
         }
@@ -32,23 +32,20 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
 
     test("Should run with map") {
-        config "modules/nf-core/glimpse2/chunk/tests/nextflow.config"
-
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf", checkIfExists: true),
-                    file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/1000GP.chr21.noNA12878.s.bcf.csi", checkIfExists: true),
-                    "chr21"
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
+                    "chr22:16570000-16610000",
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/phaseimpute/hum_data/reference_genome/GRCh38_chr22.glimpse.map", checkIfExists: true)
                 ]
-                input[1]= [[ id:'map'],file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/glimpse/chr21.b38.gmap.gz", checkIfExists: true)]
-                input[2]= "recursive"
+                input[1]= "recursive"
                 """
             }
         }
@@ -56,10 +53,39 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.chunk_chr,
+                    process.out.versions
+                ).match() }
             )
         }
+    }
 
+    test("Should run without map -- stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
+                    "chr22", []
+                ]
+                input[1]= "recursive"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
     }
 
 }

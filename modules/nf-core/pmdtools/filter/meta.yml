@@ -13,20 +13,23 @@ tools:
       tool_dev_url: https://github.com/pontussk/PMDtools
       doi: "10.1073/pnas.1318934111"
       licence: ["GPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: BAM file
-      pattern: "*.bam"
-  - bai:
-      type: file
-      description: BAM index file
-      pattern: "*.bai"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM file
+        pattern: "*.bam"
+        ontologies: []
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.bai"
+        ontologies: []
   - threshold:
       type: float
       description: Post-mortem damage score threshold
@@ -34,20 +37,26 @@ input:
       type: file
       description: FASTA file
       pattern: "*.{fa,fasta}"
+      ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - bam:
-      type: file
-      description: Filtered BAM file
-      pattern: "*.bam"
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bam":
+          type: file
+          description: Filtered BAM file
+          pattern: "*.bam"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@alexandregilardet"
 maintainers:

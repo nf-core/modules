@@ -4,8 +4,8 @@ process BCFTOOLS_CALL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bcftools:1.20--h8b25389_0':
-        'biocontainers/bcftools:1.20--h8b25389_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/47/474a5ea8dc03366b04df884d89aeacc4f8e6d1ad92266888e7a8e7958d07cde8/data':
+        'community.wave.seqera.io/library/bcftools_htslib:0a3fa2654b52006f' }"
 
     input:
     tuple val(meta), path(vcf), path(index)
@@ -47,13 +47,11 @@ process BCFTOOLS_CALL {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def index = args.contains("--write-index=tbi") || args.contains("-W=tbi") ? "tbi" :
-                args.contains("--write-index=csi") || args.contains("-W=csi") ? "csi" :
-                args.contains("--write-index") || args.contains("-W") ? "csi" :
-                ""
-
-    def create_index = index.matches("csi|tbi") ? "touch ${prefix}.vcf.gz.${index}" : ""
-
+    def stub_index = args.contains("--write-index=tbi") || args.contains("-W=tbi") ? "tbi" :
+                     args.contains("--write-index=csi") || args.contains("-W=csi") ? "csi" :
+                     args.contains("--write-index")     || args.contains("-W") ? "csi" :
+                     ""
+    def create_index = stub_index.matches("csi|tbi") ? "touch ${prefix}.vcf.gz.${stub_index}" : ""
     """
     echo "" | gzip > ${prefix}.vcf.gz
     ${create_index}

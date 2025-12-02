@@ -4,8 +4,8 @@ process FGBIO_COLLECTDUPLEXSEQMETRICS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-51891ad0b60843e4aade9cde2eb5d40c5ae92b80:72c944cdea5caff7f03b96034968ce2a4f1737bc-0':
-        'biocontainers/mulled-v2-51891ad0b60843e4aade9cde2eb5d40c5ae92b80:72c944cdea5caff7f03b96034968ce2a4f1737bc-0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b4/b4047e3e517b57fae311eab139a12f0887d898b7da5fceeb2a1029c73b9e3904/data' :
+        'community.wave.seqera.io/library/fgbio:2.5.21--368dab1b4f308243' }"
 
     input:
     tuple val(meta), path(grouped_bam)
@@ -26,7 +26,7 @@ process FGBIO_COLLECTDUPLEXSEQMETRICS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def intervals = interval_list ? "--intervals ${bed}" : ""
+    def intervals = interval_list ? "--intervals ${interval_list}" : ""
     def mem_gb = 8
 
     if (!task.memory) {

@@ -1,0 +1,90 @@
+nextflow_process {
+
+    name "Test Process RIPGREP"
+    script "../main.nf"
+    process "RIPGREP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ripgrep"
+
+    test("generic - csv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'generic/csv/test.csv', checkIfExists: true),
+                ]
+
+                input[1] = 'Robert' // pattern
+
+                input[2] = false // compress
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("generic - csv - compress") {
+
+            when {
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'generic/csv/test.csv', checkIfExists: true),
+                    ]
+
+                    input[1] = 'Robert' // pattern
+
+                    input[2] = true // compress
+                    """
+                }
+            }
+
+            then {
+                assertAll(
+                    { assert process.success },
+                    { assert snapshot(process.out).match() }
+                )
+            }
+    }
+
+    test("generic - csv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'generic/csv/test.csv', checkIfExists: true),
+                ]
+
+                input[1] = 'Robert' // pattern
+
+                input[2] = false // compress
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

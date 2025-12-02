@@ -4,8 +4,8 @@ process TCOFFEE_CONSENSUS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/t-coffee_pigz:f47b85d70360f1a0':
-        'community.wave.seqera.io/library/t-coffee_pigz:6c9b2f8b97ee55e5' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5e/5e5c1c07cc0099dacea172348bc78f9a9baab592ce3ece89873703b9e963d269/data':
+        'community.wave.seqera.io/library/t-coffee_pigz:c98a6c87c62d9df6' }"
 
 
     input:
@@ -14,8 +14,9 @@ process TCOFFEE_CONSENSUS {
     val(compress)
 
     output:
-    tuple val(meta), path("*.{aln,aln.gz}"), emit: alignment
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), path("*.{aln,aln.gz}")          , emit: alignment
+    tuple val(meta), path("*.{score_html,sp_ascii}") , emit: eval, optional: true
+    path "versions.yml"                              , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,11 +35,6 @@ process TCOFFEE_CONSENSUS {
         -thread ${task.cpus} \
         -outfile $outfile \
         $write_output
-
-    if [ -f stdout ] && [ "$compress" = true ]; then
-        pigz -cp ${task.cpus} < stdout > ${prefix}.aln.gz
-        rm stdout
-    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

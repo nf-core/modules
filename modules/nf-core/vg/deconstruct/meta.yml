@@ -1,5 +1,6 @@
 name: vg_deconstruct
-description: Deconstruct snarls present in a variation graph in GFA format to variants in VCF format
+description: Deconstruct snarls present in a variation graph in GFA format to variants
+  in VCF format
 keywords:
   - vcf
   - gfa
@@ -15,38 +16,50 @@ tools:
       homepage: https://github.com/vgteam/vg
       documentation: https://github.com/vgteam/vg/wiki
       licence: ["MIT"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - gfa:
-      type: file
-      description: Variation graph in GFA format
-      pattern: "*.{gfa}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - gfa:
+        type: file
+        description: Variation graph in GFA format
+        pattern: "*.{gfa}"
+        ontologies:
+          - edam: http://edamontology.org/format_3975 # GFA 1
   - pb:
       type: file
-      description: Optional snarls file (from vg snarls) to avoid recomputing. Usually ends with "pb". See "vg snarls".
+      description: Optional snarls file (from vg snarls) to avoid recomputing. Usually
+        ends with "pb". See "vg snarls".
       pattern: "*.{pb}"
+      ontologies: []
   - gbwt:
       type: file
-      description: Optional GBWT file (from vg gbwt) so to only consider alt traversals that correspond to GBWT threads FILE.
+      description: Optional GBWT file (from vg gbwt) so to only consider alt traversals
+        that correspond to GBWT threads FILE.
       pattern: "*.{gbwt}"
+      ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: Variants in VCF format
-      pattern: "*.{vcf}"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf":
+          type: file
+          description: Variants in VCF format
+          pattern: "*.{vcf}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@heuermh, @subwaystation"
 maintainers:

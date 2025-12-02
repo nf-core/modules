@@ -16,37 +16,54 @@ tools:
       tool_dev_url: "https://github.com/BinPro/CONCOCT"
       doi: "10.1038/nmeth.3103"
       licence: ["FreeBSD"]
+      identifier: biotools:concoct
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: (Uncompressed) FASTA file containing contigs
-      pattern: "*.{fasta,fna,fa,fas}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: (Uncompressed) FASTA file containing contigs
+        pattern: "*.{fasta,fna,fa,fas}"
+        ontologies: []
   - bed:
       type: boolean
-      description: Specify whether to generate a BED file describing where each contig was cut up
+      description: Specify whether to generate a BED file describing where each contig
+        was cut up
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - fasta:
-      type: file
-      description: Cut up fasta file in non-overlapping or overlapping parts of equal length.
-      pattern: "*.fasta"
-  - bed:
-      type: file
-      description: Optional BED File containing locations on original contigs where they were cut up.
-      pattern: "*.bed"
+  fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fasta":
+          type: file
+          description: Cut up fasta file in non-overlapping or overlapping parts of
+            equal length.
+          pattern: "*.fasta"
+          ontologies: []
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bed":
+          type: file
+          description: Optional BED File containing locations on original contigs where
+            they were cut up.
+          pattern: "*.bed"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

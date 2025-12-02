@@ -5,8 +5,8 @@ include { TABIX_TABIX      } from '../../../modules/nf-core/tabix/tabix/main'
 workflow VCF_EXTRACT_RELATE_SOMALIER {
     take:
         ch_vcfs                 // channel: [mandatory] [ val(meta), path(vcf), path(tbi), val(count) ]
-        ch_fasta                // channel: [mandatory] [ path(fasta) ]
-        ch_fasta_fai            // channel: [mandatory] [ path(fai) ]
+        ch_fasta                // channel: [mandatory] [ val(meta), path(fasta) ]
+        ch_fasta_fai            // channel: [mandatory] [ val(meta), path(fai) ]
         ch_somalier_sites       // channel: [mandatory] [ path(somalier_sites_vcf) ]
         ch_peds                 // channel: [mandatory] [ val(meta), path(ped) ]
         ch_sample_groups        // channel: [optional]  [ path(txt) ]
@@ -16,7 +16,7 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
     ch_versions         = Channel.empty()
 
     ch_input = ch_vcfs
-        .branch { meta, vcf, tbi, count ->
+        .branch { meta, vcf, tbi, _count ->
             tbi: tbi != []
                 return [ meta, vcf, tbi ]
             no_tbi: tbi == []
@@ -27,10 +27,8 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
         ch_input.no_tbi
     )
 
-    ch_versions = ch_versions.mix(TABIX_TABIX.out.versions.first())
-
     ch_somalierextract_input = ch_input.no_tbi
-        .join(TABIX_TABIX.out.tbi)
+        .join(TABIX_TABIX.out.index)
         .mix(ch_input.tbi)
 
     SOMALIER_EXTRACT(
@@ -40,27 +38,29 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
         ch_somalier_sites
     )
 
-    ch_versions = ch_versions.mix(SOMALIER_EXTRACT.out.versions.first())
+    ch_versions = ch_versions.mix(SOMALIER_EXTRACT.out.versions)
 
     ch_somalierrelate_input = SOMALIER_EXTRACT.out.extract
         .join(ch_vcfs, failOnDuplicate: true, failOnMismatch: true)
-        .map { meta, extract, vcf, tbi, count ->
-            new_meta = val_common_id ? meta + [id:meta[val_common_id]] : meta
+        .map { meta, extract, _vcf, _tbi, count ->
+            def new_meta = val_common_id ? meta + [id:meta[val_common_id]] : meta
             [ count ? groupKey(new_meta, count): new_meta, extract ]
         }
         .groupTuple()
         .join(ch_peds, failOnDuplicate: true, failOnMismatch: true)
         .map { meta, extract, ped ->
-            extract2 = extract[0] instanceof ArrayList ? extract[0] : extract
-            [ meta, extract2, ped ]
-        }
+            def extract2 = extract[0] instanceof ArrayList ? extract[0] : extract
+            def sorted_extract = extract2.sort { a, b -> file(a).name <=> file(b).name }
+            def new_meta = meta instanceof nextflow.extension.GroupKey ? meta.target : meta
+            [ new_meta, sorted_extract, ped ]
+        } // Sort and flatten the extract list, remove the GroupKey wrapper if present
 
     SOMALIER_RELATE(
         ch_somalierrelate_input,
         ch_sample_groups
     )
 
-    ch_versions = ch_versions.mix(SOMALIER_EXTRACT.out.versions)
+    ch_versions = ch_versions.mix(SOMALIER_RELATE.out.versions)
 
     emit:
     extract        = SOMALIER_EXTRACT.out.extract       // channel: [ val(meta), path(extract) ]

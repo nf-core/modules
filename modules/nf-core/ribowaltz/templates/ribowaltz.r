@@ -57,7 +57,7 @@ parse_args <- function(x){
 export_offsets <- function(sample_name, df) {
 
     df <- dplyr::filter(df, sample == sample_name)
-    data.table::fwrite(df, paste0(getwd(), "/", sample_name, ".offset.tsv.gz"), sep = "\t")
+    data.table::fwrite(df, paste0(getwd(), "/", sample_name, ".psite_offset.tsv.gz"), sep = "\t")
     return(df)
 
 }
@@ -100,8 +100,8 @@ export_codon_coverage_tables <- function(sample_name, df.ls, annotation.df) {
 #' @param sample_name string specifying the sample name associated with the BAM file
 #' @param cds_coverage dataframe produced by the riboWaltz cds_coverage function with P-sites counts over the entire CDS of transcripts
 #' @param cds_window_coverage dataframe produced by the riboWaltz cds_coverage function with P-sites counts over the defined CDS window of transcripts using the start_nts and stop_nts params
-#' @param exclude_start number of nucleotides from start codon that were excluded when defining the CDS window for counting (provide same calue as start_nts param)
-#' @param exclude_stop number of nucleotides from stop codon that were excluded when defining the CDS window for counting (provide same calue as stop_nts param)
+#' @param exclude_start number of nucleotides from start codon that were excluded when defining the CDS window for counting (provide same value as start_nts param)
+#' @param exclude_stop number of nucleotides from stop codon that were excluded when defining the CDS window for counting (provide same value as stop_nts param)
 #'
 #' @return This function does not return a value. It creates and saves two TSV files to disk.
 
@@ -119,7 +119,7 @@ export_cds_coverage_tables <- function(sample_name, cds_coverage, cds_window_cov
 #' Export plots read-length distribution of reads used for P-site offset identification produced by the `riboWaltz::rlength_distr` function
 #'
 #' @param sample_name string specifying the sample name associated with the BAM file
-#' @param df_list dataframe list containig data for all samples
+#' @param df_list dataframe list containing data for all samples
 #'
 #' @return This function does not return a value. It creates and saves a PDF file to disk.
 
@@ -451,7 +451,7 @@ if (!is.null(opt\$periodicity_threshold)) {
 
     filtered.ls <- riboWaltz::length_filter(data = reads.ls,
                                 length_filter_mode = "periodicity",
-                                periodicity_threshold = opt\$periodicity_threshold)
+                                periodicity_threshold = as.integer(opt\$periodicity_threshold))
 } else {
 
     filtered.ls <- reads.ls
@@ -533,8 +533,8 @@ message("Generating diagnostic plots...")
 # Define min and max length if not provided as a param
 if (is.null(opt\$length_range)) {
 
-    min_rl <- as.integer(min(psite_offset.dt[,"length"]))
-    max_rl <- as.integer(max(psite_offset.dt[,"length"]))
+    min_length <- as.integer(min(psite_offset.dt[,"length"]))
+    max_length <- as.integer(max(psite_offset.dt[,"length"]))
 }
 
 lapply(names(reads.ls), save_length_distribution_plot, dt.ls = reads.ls)
@@ -548,7 +548,7 @@ lapply(sample_name.ls, save_psite_region_plot, dt.ls = filtered_psite.ls, annota
 # Compute the percentage of P-sites falling in the three possible translation reading frames for 5’ UTRs, CDSs and 3’ UTRs.
 # Plots should show an enrichment of P-sites in the first frame on the coding sequence but not the UTRs, as expected for ribosome protected fragments from protein coding mRNAs.
 lapply(sample_name.ls, save_frame_plots, dt.ls = filtered_psite.ls, annotation.df = annotation.dt,
-        min_length = min_rl, max_length = max_rl)
+        min_length = min_length, max_length = max_length)
 
 # Trinucleotide periodicity along coding sequences: metaprofiles (the merge of single, transcript-specific profiles) based on P-sites mapping around the start and the stop codon of annotated CDSs.
 lapply(sample_name.ls, save_metaprofile_psite_plot, df.ls = filtered_psite.ls, annotation.df = annotation.dt)
@@ -556,7 +556,7 @@ lapply(sample_name.ls, save_metaprofile_psite_plot, df.ls = filtered_psite.ls, a
 # Codon usage
 lapply(names(filtered_psite.ls), plot_codon_usage, psite_info_ls = filtered_psite.ls, frequency_normalization = opt\$frequency_normalization)
 
-message("riboWaltz analysis succesfully completed!")
+message("riboWaltz analysis successfully completed!")
 
 # =========
 # Export versions
@@ -564,10 +564,16 @@ message("riboWaltz analysis succesfully completed!")
 
 r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
 ribowaltz.version <- as.character(packageVersion('riboWaltz'))
+dplyr.version <- as.character(packageVersion('dplyr'))
+genomicfeatures.version <- as.character(packageVersion('GenomicFeatures'))
 
 writeLines(
     c(
         '"${task.process}":',
-        paste('    bioconductor-ribowaltz:', ribowaltz.version)
+        paste('    r-base:', r.version),
+        paste('    bioconductor-ribowaltz:', ribowaltz.version),
+        paste('    r-dplyr:', dplyr.version),
+        paste('    bioconductor-genomicfeatures:', genomicfeatures.version)
     ),
-'versions.yml')
+    'versions.yml'
+)

@@ -1,4 +1,3 @@
----
 name: "bracken_build"
 description: Extends a Kraken2 database to be compatible with Bracken
 keywords:
@@ -8,39 +7,91 @@ keywords:
   - build
 tools:
   - "bracken":
-      description: "Bracken (Bayesian Reestimation of Abundance with KrakEN) is a highly accurate statistical method that computes the abundance of species in DNA sequences from a metagenomics sample."
+      description: "Bracken (Bayesian Reestimation of Abundance with KrakEN) is a highly
+        accurate statistical method that computes the abundance of species in DNA sequences
+        from a metagenomics sample."
       homepage: "https://ccb.jhu.edu/software/bracken/"
       documentation: "https://ccb.jhu.edu/software/bracken/"
       tool_dev_url: "https://github.com/jenniferlu717/Bracken/"
       doi: "10.7717/peerj-cs.104 "
       licence: ["GPL v3"]
+      identifier: biotools:bracken
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - kraken2db:
-      type: directory
-      description: A Kraken2 database directory
-      pattern: "*/"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - k2d:
+        type: file
+        description: Kraken2 k2d binary database files
+        pattern: "*.k2d"
+    - map:
+        type: file
+        description: Kraken2 k2d binary database taxonomy to sequencing mapping file
+        pattern: "*.map"
+    - library:
+        type: file
+        description: Kraken2 masked FASTA files used to build the database
+        pattern: "*.fasta"
+    - taxonomy:
+        type: file
+        description: Kraken2 nodes.dmp, names.dmp, and .accession2taxid taxonomy files
+        pattern: "*.{dmp,accession2taxid}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - db:
-      type: directory
-      description: A Kraken2 database directory with required bracken files in side
-      pattern: "*/"
+  db:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - bracken-database/:
+          type: directory
+          description: |
+            Directory contains the database that can be used to perform taxonomic classification
 
+            IMPORTANT: this output directory will be hardcoded as 'bracken-database/' inside the module
+            to prevent issues of containers following symlinks in symlinks.
+
+            To give a user the option to provide custom name for the database directory within a pipeline, you should
+            customise this name using during pipeline output publication via the pipeline's publishDir or workflow output customisation options.
+          pattern: "bracken-database/"
+          ontologies:
+            - edam: http://edamontology.org/data_1049 # Directory
+  db_separated:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - bracken-database/database*:
+          type: file
+          description: Bracken kmer distribution files
+          pattern: "database*"
+      - bracken-database/*k2d:
+          type: file
+          description: Kraken2 k2d binary database files
+          pattern: "*.k2d"
+      - bracken-database/*map:
+          type: file
+          description: Kraken2 k2d binary database taxonomy to sequencing mapping file
+          pattern: "*.map"
+      - bracken-database/library/added/*:
+          type: file
+          description: Kraken2 masked FASTA files used to build the database
+          pattern: "*.fasta"
+      - bracken-database/taxonomy/*:
+          type: file
+          description: Kraken2 nodes.dmp, names.dmp, and .accession2taxid taxonomy files
+          pattern: "*.{dmp,accession2taxid}"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

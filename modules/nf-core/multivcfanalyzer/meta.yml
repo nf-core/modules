@@ -1,5 +1,6 @@
 name: "multivcfanalyzer"
-description: SNP table generator from GATK UnifiedGenotyper with functionality geared for aDNA
+description: SNP table generator from GATK UnifiedGenotyper with functionality geared
+  for aDNA
 keywords:
   - vcf
   - ancient DNA
@@ -9,29 +10,55 @@ keywords:
   - SNP table
 tools:
   - "multivcfanalyzer":
-      description: "MultiVCFAnalyzer is a VCF file post-processing tool tailored for aDNA. License on Github repository."
+      description: "MultiVCFAnalyzer is a VCF file post-processing tool tailored for
+        aDNA. License on Github repository."
       homepage: "https://github.com/alexherbig/MultiVCFAnalyzer"
       documentation: "https://github.com/alexherbig/MultiVCFAnalyzer"
       tool_dev_url: "https://github.com/alexherbig/MultiVCFAnalyzer"
       doi: "10.1038/nature13591"
       licence: ["GPL >=3"]
+      identifier: ""
 input:
-  - vcfs:
-      type: file
-      description: One or a list of uncompressed VCF file
-      pattern: "*.vcf"
-  - fasta:
-      type: file
-      description: Reference genome VCF was generated against
-      pattern: "*.{fasta,fna,fa}"
-  - snpeff_results:
-      type: file
-      description: Results from snpEff in txt format (Optional)
-      pattern: "*.txt"
-  - gff:
-      type: file
-      description: GFF file corresponding to reference genome fasta (Optional)
-      pattern: "*.gff"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - vcfs:
+        type: file
+        description: One or a list of uncompressed VCF file
+        pattern: "*.vcf"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fasta:
+        type: file
+        description: Reference genome VCF was generated against
+        pattern: "*.{fasta,fna,fa}"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - snpeff_results:
+        type: file
+        description: Results from snpEff in txt format (Optional)
+        pattern: "*.txt"
+        ontologies: []
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - gff:
+        type: file
+        description: GFF file corresponding to reference genome fasta (Optional)
+        pattern: "*.gff"
+        ontologies: []
   - allele_freqs:
       type: boolean
       description: |
@@ -55,65 +82,137 @@ input:
       description: |
         Fraction of which whereby if a call falls above this value, and lower
         than the homozygous threshold, a base will be called 'heterozygous'.
-  - gff_exclude:
-      type: file
-      description: |
-        file listing positions that will be 'filtered' (i.e. ignored)
-        (Optional)
-      pattern: "*.vcf"
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - gff_exclude:
+        type: file
+        description: |
+          file listing positions that will be 'filtered' (i.e. ignored)
+          (Optional)
+        pattern: "*.vcf"
+        ontologies: []
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - bam:
-      type: file
-      description: Sorted BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-  - full_alignment:
-      type: file
-      description: Fasta a fasta file of all positions contained in the VCF files i.e. including ref calls
-      pattern: ".fasta.gz"
-  - info_txt:
-      type: file
-      description: Information about the run
-      pattern: ".txt"
-  - snp_alignment:
-      type: file
-      description: A fasta file of just SNP positions with samples only
-      pattern: ".fasta.gz"
-  - snp_genome_alignment:
-      type: file
-      description: A fasta file of just SNP positions with reference genome
-      pattern: ".fasta.gz"
-  - snpstatistics:
-      type: file
-      description: Some basic statistics about the SNP calls of each sample
-      pattern: ".tsv"
-  - snptable:
-      type: file
-      description: Basic SNP table of combined positions taken from each VCF file
-      pattern: ".tsv"
-  - snptable_snpeff:
-      type: file
-      description: Input file for SnpEff
-      pattern: ".tsv"
-  - snptable_uncertainty:
-      type: file
-      description: Same as above, but with lower case characters indicating uncertain calls
-      pattern: ".tsv"
-  - structure_genotypes:
-      type: file
-      description: Input file for STRUCTURE
-      pattern: ".tsv"
-  - structure_genotypes_nomissing:
-      type: file
-      description: Alternate input file for STRUCTURE
-      pattern: ".tsv"
-  - json:
-      type: file
-      description: Summary statistics in MultiQC JSON format
-      pattern: ".json"
+  full_alignment:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - fullAlignment.fasta.gz:
+          type: file
+          description: Fasta a fasta file of all positions contained in the VCF files
+            i.e. including ref calls
+          pattern: ".fasta.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  info_txt:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - info.txt:
+          type: file
+          description: Information about the run
+          pattern: ".txt"
+          ontologies: []
+  snp_alignment:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - snpAlignment.fasta.gz:
+          type: file
+          description: A fasta file of just SNP positions with samples only
+          pattern: ".fasta.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  snp_genome_alignment:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - snpAlignmentIncludingRefGenome.fasta.gz:
+          type: file
+          description: A fasta file of just SNP positions with reference genome
+          pattern: ".fasta.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  snpstatistics:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - snpStatistics.tsv:
+          type: file
+          description: Some basic statistics about the SNP calls of each sample
+          pattern: ".tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  snptable:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - snpTable.tsv:
+          type: file
+          description: Basic SNP table of combined positions taken from each VCF file
+          pattern: ".tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  snptable_snpeff:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - snpTableForSnpEff.tsv:
+          type: file
+          description: Input file for SnpEff
+          pattern: ".tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  snptable_uncertainty:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - snpTableWithUncertaintyCalls.tsv:
+          type: file
+          description: Same as above, but with lower case characters indicating uncertain
+            calls
+          pattern: ".tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  structure_genotypes:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - structureGenotypes.tsv:
+          type: file
+          description: Input file for STRUCTURE
+          pattern: ".tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  structure_genotypes_nomissing:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - structureGenotypes_noMissingData-Columns.tsv:
+          type: file
+          description: Alternate input file for STRUCTURE
+          pattern: ".tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  json:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - MultiVCFAnalyzer.json:
+          type: file
+          description: Summary statistics in MultiQC JSON format
+          pattern: ".json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@jfy133"
 maintainers:

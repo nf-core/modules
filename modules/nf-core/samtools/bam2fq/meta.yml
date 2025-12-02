@@ -11,16 +11,18 @@ tools:
       description: Tools for dealing with SAM, BAM and CRAM files
       documentation: http://www.htslib.org/doc/1.1/samtools.html
       licence: ["MIT"]
+      identifier: biotools:samtools
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - inputbam:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - inputbam:
+        type: file
+        description: BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+        ontologies: []
   - split:
       type: boolean
       description: |
@@ -30,21 +32,27 @@ input:
         Choosing FALSE will produce a single file, which will be interleaved in case
         the input contains paired reads.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - reads:
-      type: file
-      description: |
-        FASTQ files, which will be either a group of 4 files (read_1, read_2, other and singleton)
-        or a single interleaved .fq.gz file if the user chooses not to split the reads.
-      pattern: "*.fq.gz"
+  reads:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fq.gz":
+          type: file
+          description: |
+            FASTQ files, which will be either a group of 4 files (read_1, read_2, other and singleton)
+            or a single interleaved .fq.gz file if the user chooses not to split the reads.
+          pattern: "*.fq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@lescai"
 maintainers:

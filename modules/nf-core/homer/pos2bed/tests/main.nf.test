@@ -34,6 +34,7 @@ nextflow_process {
             process {
                 """
                 input[0] = HOMER_MAKETAGDIRECTORY.out.tagdir
+                input[1] = []
                 """
             }
         }

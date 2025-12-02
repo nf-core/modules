@@ -36,7 +36,7 @@ process FAQCS {
             --prefix ${prefix} \\
             -t $task.cpus \\
             $args \\
-            2> >(tee ${prefix}.log >&2)
+            2>| >(tee ${prefix}.log >&2)
 
 
         if [[ -f ${prefix}.unpaired.trimmed.fastq ]]; then
@@ -70,7 +70,7 @@ process FAQCS {
             --prefix ${meta.id} \\
             -t $task.cpus \\
             $args \\
-            2> >(tee ${prefix}.log >&2)
+            2>| >(tee ${prefix}.log >&2)
 
         # Unpaired
         if [[ -f ${prefix}.unpaired.trimmed.fastq ]]; then

@@ -4,8 +4,8 @@ process SAMTOOLS_COVERAGE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.20--h50ea8bc_0' :
-        'biocontainers/samtools:1.20--h50ea8bc_0' }"
+        'https://depot.galaxyproject.org/singularity/samtools:1.22.1--h96c455f_0' :
+        'biocontainers/samtools:1.22.1--h96c455f_0' }"
 
     input:
     tuple val(meta), path(input), path(input_index)
@@ -22,12 +22,17 @@ process SAMTOOLS_COVERAGE {
     script:
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def reference = fasta ? "--reference ${fasta}" : ""
+
+    if (input.name.endsWith('.cram') && (!fasta || !fai)) {
+        error "CRAM input file provided but no reference FASTA and/or FAI index for said reference, both are required for CRAM input."
+    }
     """
     samtools \\
         coverage \\
         $args \\
         -o ${prefix}.txt \\
-        --reference ${fasta} \\
+        $reference \\
         $input
 
     cat <<-END_VERSIONS > versions.yml
@@ -37,7 +42,6 @@ process SAMTOOLS_COVERAGE {
     """
 
     stub:
-    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt

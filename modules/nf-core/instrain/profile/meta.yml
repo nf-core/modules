@@ -1,5 +1,8 @@
 name: "instrain_profile"
-description: inStrain is python program for analysis of co-occurring genome populations from metagenomes that allows highly accurate genome comparisons, analysis of coverage, microdiversity, and linkage, and sensitive SNP detection with gene localization and synonymous non-synonymous identification
+description: inStrain is python program for analysis of co-occurring genome populations
+  from metagenomes that allows highly accurate genome comparisons, analysis of coverage,
+  microdiversity, and linkage, and sensitive SNP detection with gene localization
+  and synonymous non-synonymous identification
 keywords:
   - instrain
   - metagenomics
@@ -13,64 +16,122 @@ tools:
       tool_dev_url: https://github.com/MrOlm/instrain
       doi: 10.1038/s41587-020-00797-0
       licence: ["MIT"]
+      identifier: biotools:instrain
 input:
-  - meta:
-      type: map
-      description: Groovy Map containing sample information e.g. [ id:'test']
-  - bam:
-      type: file
-      description: Path to .bam file to be profiled
-      pattern: "*.{bam,sam}"
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information e.g. [ id:'test']
+    - bam:
+        type: file
+        description: Path to .bam file to be profiled
+        pattern: "*.{bam,sam}"
+        ontologies: []
   - genome_fasta:
       type: file
-      description: Path to .fasta file to be profiled; MUST be the .fasta file that was mapped to to create the .bam file
+      description: Path to .fasta file to be profiled; MUST be the .fasta file that
+        was mapped to to create the .bam file
       pattern: "*.{fasta,fna,fa}"
+      ontologies: []
   - genes_fasta:
       type: file
       description: Path to .fna file of genes to be profiled (OPTIONAL)
       pattern: "*.{fasta,fna,fa}"
+      ontologies: []
   - stb_file:
       type: file
       description: Path to .stb (scaffold to bin) file to be profiled (OPTIONAL)
       pattern: "*.stb"
+      ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - profile:
-      type: directory
-      description: InStrain profile folder
-      pattern: "*.IS/"
-  - gene_info:
-      type: file
-      description: Gene information
-      pattern: "*.tsv"
-  - genome_info:
-      type: file
-      description: Genome information
-      pattern: "*.tsv"
-  - linkage:
-      type: file
-      description: Linkage information
-      pattern: "*.tsv"
-  - mapping_info:
-      type: file
-      description: Mapping information
-      pattern: "*.tsv"
-  - scaffold_info:
-      type: file
-      description: Scaffold information
-      pattern: "*.tsv"
-  - snvs:
-      type: file
-      description: SNVs
-      pattern: "*.tsv"
+  profile:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.IS":
+          type: directory
+          description: InStrain profile folder
+          pattern: "*.IS/"
+  snvs:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.IS/output/*.IS_SNVs.tsv":
+          type: file
+          description: SNVs
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  gene_info:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.IS/output/*.IS_gene_info.tsv":
+          type: file
+          description: Gene information
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  genome_info:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.IS/output/*.IS_genome_info.tsv":
+          type: file
+          description: Genome information
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  linkage:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.IS/output/*.IS_linkage.tsv":
+          type: file
+          description: Linkage information
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  mapping_info:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.IS/output/*.IS_mapping_info.tsv":
+          type: file
+          description: Mapping information
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  scaffold_info:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.IS/output/*.IS_scaffold_info.tsv":
+          type: file
+          description: Scaffold information
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@mrolm"
 maintainers:

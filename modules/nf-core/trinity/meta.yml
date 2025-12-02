@@ -13,35 +13,65 @@ tools:
       tool_dev_url: "https://github.com/trinityrnaseq/trinityrnaseq/"
       doi: "10.1038/nbt.1883"
       licence: ["BSD-3-clause"]
+      identifier: biotools:trinity
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: |
-        List of input fasta/fastq reads to be assembled into a transcriptome.
-      pattern: "*.{fa|fasta|fq|fastq}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input fasta/fastq reads to be assembled into a transcriptome.
+        pattern: "*.{fa,fasta,fq,fastq}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - transcript_fasta:
-      type: file
-      description: de novo assembled transcripts fasta file compressed
-      pattern: "*.fa.gz"
-  - log:
-      type: file
-      description: Log from trinity
-      pattern: "*.log"
+  transcript_fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fa.gz":
+          type: file
+          description: de novo assembled transcripts fasta file compressed
+          pattern: "*.fa.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: Log from trinity
+          pattern: "*.log"
+          ontologies: []
+  versions_trinity:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - trinity:
+          type: string
+          description: The tool name
+      - Trinity --version | grep 'Trinity version' | sed 's/.*Trinity-v//':
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - trinity:
+          type: string
+          description: The tool name
+      - Trinity --version | grep 'Trinity version' | sed 's/.*Trinity-v//':
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@timslittle"
   - "@gallvp"

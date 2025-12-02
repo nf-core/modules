@@ -14,30 +14,38 @@ tools:
       documentation: https://bioinf.shenwei.me/seqkit/
       doi: 10.1371/journal.pone.0163962
       licence: ["MIT"]
+      identifier: biotools:seqkit
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - text:
-      type: file
-      description: Text file in tabular format
-      pattern: "*.txt[.gz,.zst]"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - text:
+        type: file
+        description: Text file in tabular format
+        pattern: "*.txt[.gz,.zst]"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fastx:
-      type: file
-      description: Sequence file in fasta/q format
-      pattern: "*.{fa,fq}[.gz,.zst]"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  fastx:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.f*":
+          type: file
+          description: Sequence file in fasta/q format
+          pattern: "*.{fa,fq}[.gz,.zst]"
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@heuermh"
 maintainers:

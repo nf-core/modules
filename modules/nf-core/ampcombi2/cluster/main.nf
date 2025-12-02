@@ -4,8 +4,8 @@ process AMPCOMBI2_CLUSTER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ampcombi:0.2.2--pyhdfd78af_0':
-        'biocontainers/ampcombi:0.2.2--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/ampcombi:2.0.1--pyhdfd78af_0':
+        'biocontainers/ampcombi:2.0.1--pyhdfd78af_0' }"
 
     input:
     path(summary_file)
@@ -24,7 +24,7 @@ process AMPCOMBI2_CLUSTER {
     """
     ampcombi cluster \\
         --ampcombi_summary ${summary_file} \\
-        $args \\
+        ${args} \\
         --threads ${task.cpus}
 
     cat <<-END_VERSIONS > versions.yml
@@ -34,7 +34,6 @@ process AMPCOMBI2_CLUSTER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     """
     touch Ampcombi_summary_cluster.tsv
     touch Ampcombi_summary_cluster_representative_seq.tsv

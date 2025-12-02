@@ -40,7 +40,7 @@ process PILON {
     PILON_JAR=\$(dirname \$(which pilon))/../share/pilon*/pilon.jar
     java -Xmx${mem_mb}M -jar \$PILON_JAR \\
         --genome $fasta \\
-        --output ${meta.id} \\
+        --output ${prefix} \\
         $args \\
         --$pilon_mode $bam
 

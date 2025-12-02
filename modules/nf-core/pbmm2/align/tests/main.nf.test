@@ -1,0 +1,67 @@
+nextflow_process {
+
+    name "Test Process PBMM2_ALIGN"
+    script "../main.nf"
+    process "PBMM2_ALIGN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pbmm2"
+    tag "pbmm2/align"
+
+    test("pbmm2 - bam") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true),
+                ]
+
+                input[1] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("pbmm2  - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true),
+                ]
+
+                input[1] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

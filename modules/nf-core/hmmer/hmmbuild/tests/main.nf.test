@@ -16,9 +16,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id: 'PF14720' ], // meta map
-				    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/hmmer/PF14720_seed.alnfaa.gz', checkIfExists: true)
-				]
+                                [ id: 'PF14720' ], // meta map
+                                file(params.modules_testdata_base_path + 'delete_me/hmmer/PF14720_seed.alnfaa.gz', checkIfExists: true)
+                            ]
 				input[1] = []
 
                 """
@@ -46,9 +46,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id: 'PF14720' ], // meta map
-				    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/hmmer/PF14720_seed.alnfaa.gz', checkIfExists: true)
-				]
+                                [ id: 'PF14720' ], // meta map
+                                file(params.modules_testdata_base_path + 'delete_me/hmmer/PF14720_seed.alnfaa.gz', checkIfExists: true)
+                            ]
 				input[1] = []
 
                 """

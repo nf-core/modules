@@ -16,22 +16,29 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
+                input[0] = Channel.of([
 				    [ id:'test', single_end:false ], // meta map
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
-				]
-				input[1] = true
-				input[2] = true
-				input[3] = []
-                input[4] = []
-                input[5] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.elfasta', checkIfExists: true)
-                input[6] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.elsites', checkIfExists: true)
-                input[7] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
-                input[8] = []
-                input[9] = []
-				input[10] = true
-				input[11] = true
-
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true),
+                    [],
+                    [],
+                    []
+				]) // meta, bam, bai, target_regions, bqsr_table, recall
+				input[1] = [[],[]] // reference sequences
+                input[2] = [
+                    [ id:'elfasta' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.elfasta', checkIfExists: true)
+                ] // meta2, reference_elfasta
+                input[3] = [
+                    [ id: 'sites' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.elsites', checkIfExists: true)
+                ] // elsites
+				input[4] = true  // haplotypecaller
+				input[5] = true  // bqsr
+                input[6] = false // bqsr_tables_only
+				input[7] = true  // get_activity_profile
+				input[8] = true  // get_assembly_regions
                 """
             }
         }
@@ -41,10 +48,10 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.logs }, // name is unstable
                 { assert snapshot(
-					bam(process.out.bam[0][1]).getReadsMD5(),
-					file(process.out.metrics[0][1]).readLines()[5..7],
+                    process.out.bam.collect { [it[0], "${file(it[1]).name},readsMD5:${bam(it[1]).getReadsMD5()}"] },
+                    process.out.metrics.collect { [it[0], file(it[1]).readLines()[10..20]] },
 					process.out.recall,
-					file(process.out.gvcf[0][1]).name, // unstable
+					process.out.gvcf.collect { [ it[0], "${file(it[1]).name},variantsMD5:${path(it[1]).vcf.variantsMD5}" ] },
 					process.out.table,
 					process.out.activity_profile,
 					process.out.assembly_regions,
@@ -63,20 +70,30 @@ nextflow_process {
                 """
                 input[0] = [
 				    [ id:'test', single_end:false ], // meta map
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true),
+                    [],
+                    [],
+                    []
 				]
-				input[1] = true
-				input[2] = true
-				input[3] = []
-                input[4] = []
-                input[5] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.elfasta', checkIfExists: true)
-                input[6] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.elsites', checkIfExists: true)
-                input[7] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
-                input[8] = []
-                input[9] = []
-				input[10] = true
-				input[11] = true
-
+				input[1] = [
+                    [ id:'ref_seq'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
+                ] // reference sequences
+                input[2] = [
+                    [ id:'elfasta' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.elfasta', checkIfExists: true)
+                ] // meta2, reference_elfasta
+                input[3] = [
+                    [ id: 'sites' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.elsites', checkIfExists: true)
+                ] // elsites
+				input[4] = true  // haplotypecaller
+				input[5] = false // bqsr
+                input[6] = false // bqsr_tables_only
+				input[7] = true  // get_activity_profile
+				input[8] = true  // get_assembly_regions
                 """
             }
         }

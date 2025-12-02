@@ -1,0 +1,242 @@
+nextflow_workflow {
+
+    name "Test Workflow FASTQ_ALIGN_BWAALN"
+    config "./nextflow.config"
+    script "../main.nf"
+    workflow "FASTQ_ALIGN_BWAALN"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fastq_align_bwaaln"
+    tag "fastq_align_bwaaln"
+
+    tag "bwa"
+    tag "bwa/index"
+    tag "bwa/aln"
+    tag "bwa/samse"
+    tag "bwa/sampe"
+    tag "samtools"
+    tag "samtools/index"
+
+    test("test_fastq_align_bwaaln_singleend") {
+        setup {
+            run("BWA_INDEX") {
+                script "../../../../modules/nf-core/bwa/index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id:'test', single_end:true],
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true)]
+                ])
+                input[1] = BWA_INDEX.out.index
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+    test("test_fastq_align_bwaaln_paired_end") {
+        setup {
+            run("BWA_INDEX") {
+                script "../../../../modules/nf-core/bwa/index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id:'test', single_end:false],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists:true)
+                    ]
+                ])
+                input[1] = BWA_INDEX.out.index
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+    test("test_fastq_align_bwaaln_both") {
+
+        setup {
+            run("BWA_INDEX") {
+                script "../../../../modules/nf-core/bwa/index/main.nf"
+
+                process {
+                    """
+                    input[0] = [
+                        [id:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+
+            workflow {
+                """
+                input[0] = Channel.fromList([
+                    [
+                        [id:'test', single_end:false],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists:true)
+                        ]
+                    ],
+                    [
+                        [id:'test2', single_end:true],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true)
+                        ]
+                    ]
+                ])
+                input[1] = BWA_INDEX.out.index
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+    test("test_fastq_align_bwa_multiref") {
+
+        setup {
+            run("BWA_INDEX") {
+                script "../../../../modules/nf-core/bwa/index/main.nf"
+                process {
+                    """
+                    input[0] = Channel.fromList([
+                        [
+                            [id:'reftest'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
+                        ],
+                        [
+                            [id:'reftest2'],
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
+                        ]
+                    ])
+                    """
+                }
+            }
+        }
+        when {
+
+            workflow {
+                """
+                input[0] = Channel.fromList([
+                    [
+                        [id:'test', single_end:false],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists:true)
+                        ]
+                    ],
+                    [
+                        [id:'test2', single_end:true],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true)
+                        ]
+                    ]
+                ])
+                input[1] = BWA_INDEX.out.index
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+    test("test_fastq_align_bwa_multiref -- stub") {
+        tag "stub"
+        options '-stub'
+        setup {
+            run("BWA_INDEX") {
+                script "../../../../modules/nf-core/bwa/index/main.nf"
+                process {
+                    """
+                    input[0] = Channel.fromList([
+                        [
+                            [id:'reftest'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
+                        ],
+                        [
+                            [id:'reftest2'],
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
+                        ]
+                    ])
+                    """
+                }
+            }
+        }
+        when {
+
+            workflow {
+                """
+                input[0] = Channel.fromList([
+                    [
+                        [id:'test', single_end:false],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists:true)
+                        ]
+                    ],
+                    [
+                        [id:'test2', single_end:true],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true)
+                        ]
+                    ]
+                ])
+                input[1] = BWA_INDEX.out.index
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out,
+                    workflow.out.versions.collect{ path(it).yaml }
+                ).match() }
+            )
+        }
+    }
+}

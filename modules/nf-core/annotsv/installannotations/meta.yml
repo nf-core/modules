@@ -12,15 +12,22 @@ tools:
       documentation: "https://lbgi.fr/AnnotSV/"
       tool_dev_url: "https://github.com/lgmgeo/AnnotSV"
       licence: ["GPL v3"]
+      identifier: biotools:AnnotSV
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - annotations:
-      type: file
-      description: A folder containing the annotations
-      pattern: "AnnotSV_annotations"
+  annotations:
+    - AnnotSV_annotations:
+        type: file
+        description: A folder containing the annotations
+        pattern: "AnnotSV_annotations"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
 authors:
   - "@nvnieuwk"
 maintainers:

@@ -7,43 +7,60 @@ keywords:
   - fastq
 tools:
   - bbmap:
-      description: BBMap is a short read aligner, as well as various other bioinformatic tools.
-      homepage: https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/
-      documentation: https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/
+      description: BBMap is a short read aligner, as well as various other bioinformatic
+        tools.
+      homepage: https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/
+      documentation: https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/
       licence: ["UC-LBL license (see package)"]
+      identifier: biotools:bbmap
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: |
-        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-        respectively.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively.
+        ontologies: []
   - contaminants:
       type: file
       description: |
         Reference files containing adapter and/or contaminant sequences for sequence kmer matching
+      ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: The trimmed/modified fastq reads
-      pattern: "*fastq.gz"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - log:
-      type: file
-      description: Bbduk log file
-      pattern: "*bbduk.log"
+  reads:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fastq.gz":
+          type: file
+          description: The trimmed/modified fastq reads
+          pattern: "*fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: Bbduk log file
+          pattern: "*bbduk.log"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@MGordon09"
 maintainers:

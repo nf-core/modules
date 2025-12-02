@@ -1,22 +1,15 @@
 {
     "test-elprep-filter": {
         "content": [
-            "463ac3b905fbf4ddf113a94dbfa8d69f",
-            [
-                "## METRICS CLASS\tpicard.sam.DuplicationMetrics",
-                "LIBRARY\tUNPAIRED_READS_EXAMINED\tREAD_PAIRS_EXAMINED\tSECONDARY_OR_SUPPLEMENTARY_RDS\tUNMAPPED_READS\tUNPAIRED_READ_DUPLICATES\tREAD_PAIR_DUPLICATES\tREAD_PAIR_OPTICAL_DUPLICATES\tPERCENT_DUPLICATION\tESTIMATED_LIBRARY_SIZE",
-                "Unknown Library\t0\t0\t0\t0\t0\t0\t0\tNaN"
-            ],
             [
                 [
                     {
                         "id": "test",
                         "single_end": false
                     },
-                    "test.recall:md5,291d996c0bb26193df85a0c9d7390073"
+                    "test.bam,readsMD5:463ac3b905fbf4ddf113a94dbfa8d69f"
                 ]
             ],
-            "test.g.vcf.gz",
             [
                 
             ],
@@ -26,7 +19,7 @@
                         "id": "test",
                         "single_end": false
                     },
-                    "test.activity_profile.igv:md5,52f765837ac969cb82c3c75be5608d4f"
+                    "test.recall:md5,9a7921cc49a7a3f6c20e0278eaf3f235"
                 ]
             ],
             [
@@ -35,7 +28,28 @@
                         "id": "test",
                         "single_end": false
                     },
-                    "test.assembly_regions.igv:md5,861fd57e241bd89cebe8f21267fb4c78"
+                    "test.g.vcf.gz,variantsMD5:b74f219f1f3ca2e59d6edfabf503a6a9"
+                ]
+            ],
+            [
+                
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.activity_profile.igv:md5,c4b77c1bebcffd7822cafb8b90f70cde"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.assembly_regions.igv:md5,7ec2070b4d4af26532cffbc1c465ba93"
                 ]
             ],
             [
@@ -46,7 +60,7 @@
             "nf-test": "0.9.0",
             "nextflow": "24.04.4"
         },
-        "timestamp": "2024-09-06T19:53:43.782054"
+        "timestamp": "2024-10-22T11:05:45.927224502"
     },
     "test-elprep-filter-stub": {
         "content": [
@@ -66,16 +80,34 @@
                 
             ],
             [
-                
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.g.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                ]
             ],
             [
                 
             ],
             [
-                
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.activity_profile.igv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ]
             ],
             [
-                
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.assembly_regions.igv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ]
             ],
             [
                 "versions.yml:md5,8193703d0cedd662b76ea48940dac55d"
@@ -85,6 +117,6 @@
             "nf-test": "0.9.0",
             "nextflow": "24.04.4"
         },
-        "timestamp": "2024-09-06T19:56:09.856424"
+        "timestamp": "2024-10-22T10:45:09.343805413"
     }
 }

@@ -1,5 +1,5 @@
 name: pbccs
-description: Pacbio ccs - Generate Higly Accurate Single-Molecule Consensus Reads
+description: Pacbio ccs - Generate Highly Accurate Single-Molecule Consensus Reads
 keywords:
   - ccs
   - pacbio
@@ -7,25 +7,29 @@ keywords:
   - subreads
 tools:
   - pbccs:
-      description: pbccs - Generate Highly Accurate Single-Molecule Consensus Reads (HiFi Reads)
+      description: pbccs - Generate Highly Accurate Single-Molecule Consensus Reads
+        (HiFi Reads)
       homepage: https://github.com/PacificBiosciences/pbbioconda
       documentation: https://ccs.how/
       tool_dev_url: https://github.com/PacificBiosciences/ccs
       licence: ["BSD-3-Clause-Clear"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        id: id of the split file
-  - bam:
-      type: file
-      description: Raw subreads bam
-      pattern: "*.subreads.bam"
-  - pbi:
-      type: file
-      description: Pacbio BAM Index
-      pattern: "*.pbi"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          id: id of the split file
+    - bam:
+        type: file
+        description: Raw subreads bam
+        pattern: "*.subreads.bam"
+        ontologies: []
+    - pbi:
+        type: file
+        description: Pacbio BAM Index
+        pattern: "*.pbi"
+        ontologies: []
   - chunk_num:
       type: integer
       description: BAM part to process
@@ -33,35 +37,71 @@ input:
       type: integer
       description: Total number of bam parts to process
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - bam:
-      type: file
-      description: CCS sequences in bam format
-      pattern: "*.bam"
-  - pbi:
-      type: file
-      description: PacBio Index of CCS sequences
-      pattern: "*.pbi"
-  - report_txt:
-      type: file
-      description: Summary of CCS in txt format
-      pattern: ".txt"
-  - report_json:
-      type: file
-      description: Summary of CCS in txt json
-      pattern: ".json"
-  - metrics:
-      type: file
-      description: Metrics about zmws
-      pattern: "*.json.gz"
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.chunk*.bam":
+          type: file
+          description: CCS sequences in bam format
+          pattern: "*.bam"
+          ontologies: []
+  pbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.chunk*.bam.pbi":
+          type: file
+          description: PacBio Index of CCS sequences
+          pattern: "*.pbi"
+          ontologies: []
+  report_txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.report.txt":
+          type: file
+          description: CCS report in text format
+          pattern: "*.report.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
+  report_json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.report.json":
+          type: file
+          description: CCS report in JSON format
+          pattern: "*.report.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  metrics:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.metrics.json.gz":
+          type: file
+          description: Metrics about zmws
+          pattern: "*.json.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@sguizard"
 maintainers:

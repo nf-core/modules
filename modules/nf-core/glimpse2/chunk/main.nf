@@ -17,8 +17,7 @@ process GLIMPSE2_CHUNK {
         'biocontainers/glimpse-bio:2.0.1--h46b9e50_1' }"
 
     input:
-    tuple val(meta) , path(input), path(input_index), val(region)
-    tuple val(meta2), path(map)
+    tuple val(meta), path(input), path(input_index), val(region), path(map)
     val(model)
 
     output:
@@ -51,9 +50,9 @@ process GLIMPSE2_CHUNK {
 
     stub:
     def prefix    = task.ext.prefix ?: "${meta.id}"
-    def args      = task.ext.args   ?: ""
+
     """
-    touch ${prefix}.txt
+    echo "${meta.id}\t${region}\t0\t0\t0\t0\t0\t0" > ${prefix}.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
