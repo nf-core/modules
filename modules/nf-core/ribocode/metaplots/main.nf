@@ -9,7 +9,7 @@ process RIBOCODE_METAPLOTS {
 
     input:
     tuple val(meta), path(bam)
-    path annotation
+    tuple val(meta2), path(annotation)
 
     output:
     tuple val(meta), path("*config.txt")             , emit: config

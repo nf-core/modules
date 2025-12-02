@@ -1,5 +1,5 @@
 process RIBOCODE_PREPARE {
-    tag "$fasta"
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -8,12 +8,12 @@ process RIBOCODE_PREPARE {
         'biocontainers/ribocode:1.2.15--pyhfa5458b_0' }"
 
     input:
-    path fasta
-    path gtf
+    tuple val(meta), path(fasta)
+    tuple val(meta2), path(gtf)
 
     output:
-    path "annotation"             , emit: annotation
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("annotation"), emit: annotation
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,23 +22,11 @@ process RIBOCODE_PREPARE {
     def args = task.ext.args ?: ''
 
     """
-    # nf-core: ensure FASTA is uncompressed
-    GENOME="$fasta"
-    if [[ "\$GENOME" == *.gz ]]; then
-        gunzip -c "\$GENOME" > genome.fa
-        GENOME="genome.fa"
-    fi
-
-    # Update the GTF
-    GTFupdate \\
-        $gtf  \\
-        > updated.gtf
-
-    # Run prepare_transcripts with uncompressed FASTA
     prepare_transcripts \\
-        -g updated.gtf \\
-        -f "\$GENOME" \\
-        -o annotation
+        -g ${gtf} \\
+        -f ${fasta} \\
+        -o annotation \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

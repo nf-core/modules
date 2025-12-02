@@ -8,14 +8,41 @@ nextflow_process {
     tag "modules_nfcore"
     tag "ribocode"
     tag "ribocode/prepare"
+    tag "ribocode/gtfupdate"
+    tag "gunzip"
+
+    setup {
+        run("GUNZIP") {
+            script "../../../gunzip/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.dna.chromosome.20.fa.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+        run("RIBOCODE_GTFUPDATE") {
+            script "../../gtfupdate/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
 
     test("test_ribocode_prepare") {
 
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.dna.chromosome.20.fa.gz", checkIfExists: true)
-                input[1] = file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)
+                input[0] = GUNZIP.out.gunzip
+                input[1] = RIBOCODE_GTFUPDATE.out.gtf
                 """
             }
         }

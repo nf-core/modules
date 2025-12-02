@@ -27,12 +27,16 @@ input:
         pattern: "*.{bam,cram,sam}"
 
         ontologies: []
-  - annotation:
-      type: directory
-      description: Directory containing RiboCode annotation files from
-        ribocode/prepare
-      pattern: "annotation"
-
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing annotation information
+          e.g. [ id:'genome' ]
+    - annotation:
+        type: directory
+        description: Directory containing RiboCode annotation files from
+          ribocode/prepare
+        pattern: "annotation"
   - - meta3:
         type: map
         description: |

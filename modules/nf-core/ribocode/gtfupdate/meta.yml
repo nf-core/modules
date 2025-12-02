@@ -1,10 +1,11 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
-name: "ribocode_prepare"
-description: Prepare the annotation files for RiboCode ORF calling
+name: "ribocode_gtfupdate"
+description: Update GTF annotation file for RiboCode compatibility
 keywords:
   - Ribo-Seq
   - Ribosome Profiling
-  - ORF calling
+  - GTF
+  - annotation
 tools:
   - "ribocode":
       description: "A package for detecting the actively translated ORFs using ribosome-profiling
@@ -22,33 +23,22 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'test', single_end:false ]`
-    - fasta:
-        type: file
-        description: Reference genome FASTA file (uncompressed)
-        pattern: "*.{fasta,fa,fna}"
-        ontologies: []
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing reference information
-          e.g. `[ id:'genome' ]`
     - gtf:
         type: file
-        description: Reference genome GTF annotation file (uncompressed, updated with ribocode/gtfupdate)
+        description: GTF annotation file to update (uncompressed)
         pattern: "*.{gtf}"
         ontologies: []
 output:
-  annotation:
+  gtf:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-      - annotation:
-          type: directory
-          description: Directory containing RiboCode annotation files
-            (transcripts_cds.txt, transcripts_sequence.fa, transcripts.pickle)
-          pattern: "annotation/"
+      - "*.gtf":
+          type: file
+          description: Updated GTF annotation file
+          pattern: "*_updated.gtf"
   versions:
     - versions.yml:
         type: file

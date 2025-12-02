@@ -27,10 +27,15 @@ input:
         description: Sorted BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
         ontologies: []
-  - annotation:
-      type: directory
-      description: Directory containing annotation files
-      pattern: "annotation"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing annotation information
+          e.g. `[ id:'genome' ]`
+    - annotation:
+        type: directory
+        description: Directory containing annotation files from ribocode/prepare
+        pattern: "annotation"
 
 output:
   config:

@@ -1,4 +1,4 @@
-process RIBOCODE_RIBOCODE {
+process RIBOCODE_GTFUPDATE {
     tag "$meta.id"
     label 'process_single'
 
@@ -8,17 +8,11 @@ process RIBOCODE_RIBOCODE {
         'biocontainers/ribocode:1.2.15--pyhfa5458b_0' }"
 
     input:
-    tuple val(meta), path(bam)
-    tuple val(meta2), path(annotation)
-    tuple val(meta3), path(config)
+    tuple val(meta), path(gtf)
 
     output:
-
-    tuple val(meta), path("*.txt")                 , emit: orf_txt
-    tuple val(meta), path("*_collapsed.txt")       , emit: orf_txt_collapsed
-    tuple val(meta), path("*_ORFs_category.pdf")   , emit: orf_pdf, optional: true
-    tuple val(meta), path("*_psites.hd5")          , emit: psites_hd5, optional: true
-    path "versions.yml"                            , emit: versions
+    tuple val(meta), path("*.gtf"), emit: gtf
+    path "versions.yml"           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,16 +20,16 @@ process RIBOCODE_RIBOCODE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+
     """
-    RiboCode \\
-        -a $annotation \\
-        -c $config \\
-        -o ${prefix} \\
-        $args 2>&1 || test -s ${prefix}.txt
+    GTFupdate \\
+        ${gtf} \\
+        $args \\
+        > ${prefix}_updated.gtf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        RiboCode: \$(RiboCode --version 2>&1)
+        RiboCode: \$(RiboCode --version)
     END_VERSIONS
     """
 
@@ -44,10 +38,7 @@ process RIBOCODE_RIBOCODE {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    touch ${prefix}.txt
-    touch ${prefix}_collapsed.txt
-    touch ${prefix}_ORFs_category.pdf
-    touch ${prefix}_psites.hd5
+    touch ${prefix}_updated.gtf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
