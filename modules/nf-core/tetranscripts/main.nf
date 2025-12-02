@@ -16,8 +16,8 @@ process TETRANSCRIPTS {
 
     output:
     // TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
-    tuple val(meta), path("*.{cntTable}"), emit: countTable
-    tuple val(meta_c), path("*.{R}"), emit: log2fc
+    tuple val(meta), path("*.cntTable"), emit: countTable
+    tuple val(meta_c), path("*.R"), emit: log2fc
     path "versions.yml"           , emit: versions
 
     when:
@@ -37,8 +37,8 @@ process TETRANSCRIPTS {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        tetranscripts: \$(tetranscripts --version)
-    END_VERSIONS
+        tetranscripts: \$(TEtranscripts --version)
+END_VERSIONS
     """
 
     stub:
