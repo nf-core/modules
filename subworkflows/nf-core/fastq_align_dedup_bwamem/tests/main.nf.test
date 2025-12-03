@@ -57,7 +57,6 @@ nextflow_workflow {
                 ])
                 input[3] = BWA_INDEX.out.index
                 input[4] = false // skip_deduplication
-                input[5] = false // use_gpu
                 """
             }
         }
@@ -70,7 +69,7 @@ nextflow_workflow {
                     workflow.out.bai.collect { meta, bai -> file(bai).name },
                     workflow.out.samtools_flagstat,
                     workflow.out.samtools_stats,
-                    workflow.out.samtools_index_stats,
+                    workflow.out.samtools_idxstats,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
                     workflow.out.versions
@@ -86,7 +85,7 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = Channel.of([
-                            [ id:'test', single_end:true ],
+                            [ id:'test', single_end:false ],
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                 ])
@@ -100,7 +99,6 @@ nextflow_workflow {
                 ])
                 input[3] = BWA_INDEX.out.index
                 input[4] = false // skip_deduplication
-                input[5] = false // use_gpu
                 """
             }
         }
@@ -113,7 +111,7 @@ nextflow_workflow {
                     workflow.out.bai.collect { meta, bai -> file(bai).name },
                     workflow.out.samtools_flagstat,
                     workflow.out.samtools_stats,
-                    workflow.out.samtools_index_stats,
+                    workflow.out.samtools_idxstats,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
                     workflow.out.versions
@@ -129,7 +127,7 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = Channel.of([
-                            [ id:'test', single_end:true ],
+                            [ id:'test', single_end:false ],
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                 ])
@@ -143,7 +141,6 @@ nextflow_workflow {
                 ])
                 input[3] = BWA_INDEX.out.index
                 input[4] = true // skip_deduplication
-                input[5] = false // use_gpu
                 """
             }
         }
@@ -156,7 +153,7 @@ nextflow_workflow {
                     workflow.out.bai.collect { meta, bai -> file(bai).name },
                     workflow.out.samtools_flagstat,
                     workflow.out.samtools_stats,
-                    workflow.out.samtools_index_stats,
+                    workflow.out.samtools_idxstats,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
                     workflow.out.versions
@@ -185,7 +182,6 @@ nextflow_workflow {
                 ])
                 input[3] = BWA_INDEX.out.index
                 input[4] = false // skip_deduplication
-                input[5] = false // use_gpu
                 """
             }
         }
