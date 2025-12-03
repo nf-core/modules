@@ -53,8 +53,7 @@ nextflow_process {
                     bam(process.out.bam[0][1]).getReadsMD5(),
                     file(process.out.report[0][1]).readLines().contains("Number of alignments with a unique best hit from the different alignments:\t5009"),
                     process.out.unmapped,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     ).match()
                 }
             )
@@ -92,8 +91,7 @@ nextflow_process {
                     bam(process.out.bam[0][1]).getReadsMD5(),
                     file(process.out.report[0][1]).readLines().contains("Number of alignments with a unique best hit from the different alignments:\t5009"),
                     process.out.unmapped,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     ).match()
                 }
             )
@@ -128,8 +126,7 @@ nextflow_process {
                     bam(process.out.bam[0][1]).getReadsMD5(),
                     file(process.out.report[0][1]).readLines().contains("Number of alignments with a unique best hit from the different alignments:\t5009"),
                     process.out.unmapped,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     ).match()
                 }
             )
@@ -167,8 +164,7 @@ nextflow_process {
                     bam(process.out.bam[0][1]).getReadsMD5(),
                     file(process.out.report[0][1]).readLines().contains("Number of alignments with a unique best hit from the different alignments:\t5009"),
                     process.out.unmapped,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     ).match()
                 }
             )
@@ -203,8 +199,7 @@ nextflow_process {
                     bam(process.out.bam[0][1]).getReadsMD5(),
                     file(process.out.report[0][1]).readLines().contains("Number of alignments with a unique best hit from the different alignments:\t5047"),
                     process.out.unmapped,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     ).match()
                 }
             )
