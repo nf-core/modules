@@ -2,7 +2,7 @@ process BCLCONVERT {
     tag {"$meta.lane" ? "$meta.id"+"."+"$meta.lane" : "$meta.id" }
     label 'process_high'
 
-    container "nf-core/bclconvert:4.4.6"
+    container "nf-core/bclconvert:4.4.6_1"
 
     input:
     tuple val(meta), path(samplesheet), path(run_dir)
