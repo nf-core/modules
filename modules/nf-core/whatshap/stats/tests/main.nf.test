@@ -17,7 +17,7 @@ nextflow_process {
 
                 input[0] = [
                     [ id:'test_sample' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/FAM_snvs_annotated_ranked.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz', checkIfExists: true),
                 ]
                 input[1] = true
                 input[2] = true
@@ -32,11 +32,9 @@ nextflow_process {
 
             assertAll(
                 { assert process.success                                                                 },
-                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions")}).match() },
-                { assert path(process.out.tsv.get(0)[1]).exists()                                        },
-                { assert path(process.out.gtf.get(0)[1]).exists()                                        },
-                { assert path(process.out.block.get(0)[1]).exists()                                      },
-                { assert path(process.out.txt.get(0)[1]).exists()                                        },
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions")},
+                process.out).match()}
+
             )
 
         }
@@ -50,7 +48,7 @@ nextflow_process {
 
                 input[0] = [
                     [ id:'test_sample' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/FAM_snvs_annotated_ranked.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz', checkIfExists: true),
                 ]
                 input[1] = true
                 input[2] = false
@@ -65,8 +63,7 @@ nextflow_process {
 
             assertAll(
                 { assert process.success                                                                 },
-                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions")}).match() },
-                { assert path(process.out.tsv.get(0)[1]).exists()                                        },
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions")}, process.out).match() },
 
             )
 
@@ -74,7 +71,7 @@ nextflow_process {
 
     }
 
-    test("homo_sapiens - vcf - stub") {
+    test("homo_sapiens - vcf -stub") {
 
         options "-stub"
 
@@ -84,7 +81,7 @@ nextflow_process {
 
                 input[0] = [
                     [ id:'test_sample' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/FAM_snvs_annotated_ranked.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz', checkIfExists: true),
                 ]
                 input[1] = true
                 input[2] = true
@@ -98,11 +95,10 @@ nextflow_process {
 
             assertAll(
                 { assert process.success                                                                 },
-                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions")}).match() },
-                { assert path(process.out.tsv.get(0)[1]).exists()                                        },
-                { assert path(process.out.gtf.get(0)[1]).exists()                                        },
-                { assert path(process.out.block.get(0)[1]).exists()                                      },
-                { assert path(process.out.txt.get(0)[1]).exists()                                        },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith("versions")},
+                    process.out
+                ).match() },
             )
 
         }
