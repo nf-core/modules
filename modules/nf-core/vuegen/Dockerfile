@@ -29,7 +29,7 @@ USER appuser
 # Set the working directory
 WORKDIR /home/appuser
 
-# Install TinyTeX for pdf reports 
+# Install TinyTeX for pdf reports
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN perl -mFile::Find /dev/null && \
     wget -qO- "https://yihui.org/tinytex/install-bin-unix.sh" | sh && \
