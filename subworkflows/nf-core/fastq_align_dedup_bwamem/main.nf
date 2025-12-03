@@ -13,6 +13,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
     ch_fasta_index       // channel: [ val(meta), [ fasta index ] ]
     ch_bwamem_index      // channel: [ val(meta), [ bwamem index ] ]
     skip_deduplication   // boolean: whether to deduplicate alignments
+    use_gpu              // boolean: whether to use GPU accelerated alignment
     output_fmt           // string: output format for parabricks fq2bam (e.g., 'bam' or 'cram')
     interval_file        // channel: [ val(meta), [ interval file ] ]
     known_sites          // channel: [ val(meta), [ known sites ] ]
