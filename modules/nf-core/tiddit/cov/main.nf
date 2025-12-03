@@ -4,11 +4,11 @@ process TIDDIT_COV {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/tiddit:3.6.1--py38h24c8ff8_0' :
-        'biocontainers/tiddit:3.6.1--py38h24c8ff8_0' }"
+        'https://depot.galaxyproject.org/singularity/tiddit:3.9.3--py39hff726c5_1' :
+        'biocontainers/tiddit:3.9.3--py39hff726c5_1' }"
 
     input:
-    tuple val(meta), path(input)
+    tuple val(meta), path(input), path(index)
     tuple val(meta2), path(fasta)
 
     output:

@@ -121,9 +121,9 @@ output:
   - multiqc:
       type: file
       description: |
-        Channel containing MultiQC report aggregating results across samples.
-        Structure: [ val(meta), path(multiqc_report.html) ]
-      pattern: "*.html"
+        Channel containing files for MultiQC input (reports, alignment reports, methylation reports).
+        Structure: [ path(files) ]
+      pattern: "*.{html,txt}"
   - versions:
       type: file
       description: |
