@@ -2,8 +2,8 @@
 FROM python:3.12-slim-trixie
 
 
-# Disable manual feedback for apt-get, update package list, install security updates, 
-# and install packages (procps, and system dependencies for tinytex and kaleido). 
+# Disable manual feedback for apt-get, update package list, install security updates,
+# and install packages (procps, and system dependencies for tinytex and kaleido).
 # Then clean up the package list and remove the cache.
 RUN export DEBIAN_FRONTEND=noninteractive && \ 
     apt-get update && \

@@ -17,7 +17,7 @@ process VUEGEN {
 
     script:
     def args = task.ext.args ?: ''
-    """  
+    """
         # Validate quarto_check flag if using a conda environment
         if [[ "${task.conda}" != "null" ]]; then
             QUARTO_CHECK_FLAG="--quarto_checks"
