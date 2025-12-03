@@ -17,7 +17,14 @@ process VUEGEN {
 
     script:
     def args = task.ext.args ?: ''
-    """
+    """  
+        # Validate quarto_check flag if using a conda environment
+        if [[ "${task.conda}" != "null" ]]; then
+            QUARTO_CHECK_FLAG="--quarto_checks"
+        else
+            QUARTO_CHECK_FLAG=""
+        fi
+
         # Execute VueGen based on the input type
         if [ "${input_type}" == "config" ]; then
             echo "Running VueGen with config file: ${input_path}"
