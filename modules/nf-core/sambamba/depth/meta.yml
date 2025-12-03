@@ -32,13 +32,14 @@ input:
         pattern: "*.{bai}"
         ontologies:
           - edam: "http://edamontology.org/format_2572"
-  - - meta:
+  - - meta2:
         type: map
-        description: Groovy Map containing sample information
-    - "*.bed":
+        description: |
+          Groovy Map containing sample information
+    - bed:
         type: file
         description: bed file
-        pattern: "*.bed"
+        pattern: "*.{bed}"
         ontologies:
           - edam: "http://edamontology.org/format_3586" # bed12
   - mode:
@@ -47,7 +48,8 @@ input:
       pattern: "region|window|base"
 output:
   bed:
-    - - meta2:
+  bed:
+    - - meta:
           type: map
           description: Groovy Map containing sample information
       - "*.bed":
