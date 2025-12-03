@@ -18,27 +18,6 @@ process VUEGEN {
     script:
     def args = task.ext.args ?: ''
     """
-        # Set environment variables needed for Quarto rendering
-        # (needed for apptainer/singularity)
-        export XDG_CACHE_HOME="./.xdg_cache_home"
-        export XDG_DATA_HOME="./.xdg_data_home"
-        # Fix Quarto for apptainer: activate conda environment
-        # https://github.com/mahesh-panchal/quarto-docker-singularity-problem
-        # https://github.com/orgs/quarto-dev/discussions/2559#discussioncomment-5947349
-        ENV_QUARTO="\${ENV_QUARTO:-/opt/conda/etc/conda/activate.d/quarto.sh}"
-        set +u
-        if [ -z "\${QUARTO_DENO}" ] && [ -f "\${ENV_QUARTO}" ]; then
-            source "\${ENV_QUARTO}"
-        fi
-        set -u
-
-        # Validate quarto_check flag if using a conda environment
-        if [[ "${task.conda}" != "null" ]]; then
-            QUARTO_CHECK_FLAG="--quarto_checks"
-        else
-            QUARTO_CHECK_FLAG=""
-        fi
-
         # Execute VueGen based on the input type
         if [ "${input_type}" == "config" ]; then
             echo "Running VueGen with config file: ${input_path}"
