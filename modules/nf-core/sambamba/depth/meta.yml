@@ -35,13 +35,13 @@ input:
   - - meta2:
         type: map
         description: |
-          Groovy Map containing sample information
+          Groovy Map containing regions information
     - bed:
         type: file
         description: bed file
         pattern: "*.{bed}"
         ontologies:
-          - edam: "http://edamontology.org/format_3586" # bed12
+          - edam: "http://edamontology.org/format_3003" # BED
   - mode:
       type: string
       description: Analysis mode can be region, window, base
