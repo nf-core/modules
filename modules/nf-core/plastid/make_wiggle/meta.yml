@@ -31,18 +31,13 @@ input:
         pattern: "*.bam"
         ontologies:
           - edam: http://edamontology.org/format_2572 # BAM
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
     - bam_index:
         type: file
         description: Genome BAM index file
         pattern: "*.bai"
         ontologies:
           - edam: http://edamontology.org/format_3327 # BAI
-  - - meta3:
+  - - meta2:
         type: map
         description: |
           Groovy Map containing sample information

@@ -8,8 +8,7 @@ process PLASTID_PSITE {
         'biocontainers/plastid:0.6.1--py39had3e4b6_2' }"
 
     input:
-    tuple val(meta), path(bam)
-    tuple val(meta2), path(bam_index)
+    tuple val(meta), path(bam), path(bam_index)
     path rois_txt
     val min_length
     val max_length

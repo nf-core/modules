@@ -8,9 +8,8 @@ process PLASTID_MAKE_WIGGLE {
         'biocontainers/plastid:0.6.1--py39had3e4b6_2' }"
 
     input:
-    tuple val(meta), path(bam)
-    tuple val(meta2), path(bam_index)
-    tuple val(meta3), path(p_offsets)
+    tuple val(meta), path(bam), path(bam_index)
+    tuple val(meta2), path(p_offsets)
     val min_length
     val output_format
     val fiveprime_variable

@@ -17,19 +17,16 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'SRX11780887' ], // meta map
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam.bai", checkIfExists: true)
                     ]
                 input[1] = [
                     [ id:'SRX11780887' ], // meta map
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam.bai", checkIfExists: true)
-                    ]
-                input[2] = [
-                    [ id:'SRX11780887' ], // meta map
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/plastid/SRX11780887_p_offsets.txt", checkIfExists: true)
                     ]
-                input[3] = 23 // min_length
-                input[4] = 'variable_step' // output_format
-                input[5] = true // fiveprime_variable
+                input[2] = 23 // min_length
+                input[3] = 'variable_step' // output_format
+                input[4] = true // fiveprime_variable
                 """
             }
         }
@@ -52,19 +49,16 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'SRX11780887' ], // meta map
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam.bai", checkIfExists: true)
                     ]
                 input[1] = [
                     [ id:'SRX11780887' ], // meta map
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam.bai", checkIfExists: true)
-                    ]
-                input[2] = [
-                    [ id:'SRX11780887' ], // meta map
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/plastid/SRX11780887_p_offsets.txt", checkIfExists: true)
                     ]
-                input[3] = 23 // min_length
-                input[4] = 'variable_step' // output_format
-                input[5] = true // fiveprime_variable
+                input[2] = 23 // min_length
+                input[3] = 'variable_step' // output_format
+                input[4] = true // fiveprime_variable
                 """
            }
         }
