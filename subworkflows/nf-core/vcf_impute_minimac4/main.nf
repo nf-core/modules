@@ -10,7 +10,7 @@ workflow VCF_IMPUTE_MINIMAC4 {
     ch_input     // channel (mandatory): [ [id, chr], vcf, tbi ]
     ch_panel     // channel (mandatory): [ [panel, chr], vcf, tbi ]
     ch_posfile   // channel (optional) : [ [panel, chr], sites_vcf, sites_index ]
-    ch_chunks    // channel (optional) : [ [panel, chr], chr, start, end ]
+    ch_chunks    // channel (optional) : [ [panel, chr], regionout ]
     ch_map       // channel (optional) : [ [panel, chr], map]
 
     main:
@@ -29,7 +29,7 @@ workflow VCF_IMPUTE_MINIMAC4 {
     }
 
     // Compress reference panel to MSAV format
-    MINIMAC4_COMPRESSREF(ch_panel_branched.vcf.view())
+    MINIMAC4_COMPRESSREF(ch_panel_branched.vcf)
     ch_versions = ch_versions.mix(MINIMAC4_COMPRESSREF.out.versions.first())
 
     ch_panel_msav = MINIMAC4_COMPRESSREF.out.msav
@@ -49,11 +49,7 @@ workflow VCF_IMPUTE_MINIMAC4 {
     // Prepare input channels for MINIMAC4
     ch_minimac4_input = ch_input
         .combine(ch_panel_impute)
-        .map { metaI, target_vcf, target_tbi, metaPC, ref_msav, sites_vcf, sites_index, chr, start, end, map ->
-            def regionout = "${chr}"
-            if (start != [] && end != []) {
-                regionout = "${chr}:${start}-${end}"
-            }
+        .map { metaI, target_vcf, target_tbi, metaPC, ref_msav, sites_vcf, sites_index, regionout, map ->
             [
                 metaPC + metaI + ["regionout": regionout],
                 target_vcf, target_tbi,
@@ -95,6 +91,6 @@ workflow VCF_IMPUTE_MINIMAC4 {
         )
 
     emit:
-    vcf_index  = ch_vcf_index // channel: [ [id, chr, tools], vcf, index ]
+    vcf_index  = ch_vcf_index // channel: [ [id, panel, chr], vcf, index ]
     versions = ch_versions    // channel: [ versions.yml ]
 }
