@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0@sha256:7d24e90a392e88eb56093e4eb325ff883ad609382a55d42f17fd557b997022ca as builder
+FROM mcr.microsoft.com/dotnet/sdk:9.0@sha256:584cdb686f8ff7d2ffd636581b9bba8c9de38df1e751e9275438cddecdfbbcd2 as builder
 
 ADD https://github.com/Illumina/witty.er.git#v0.5.2 /src
 
@@ -6,7 +6,7 @@ WORKDIR /src/Wittyer
 RUN dotnet publish -f net6.0 -r linux-x64 -c Release -o /output \
     && chmod +x /output/Wittyer
 
-FROM mcr.microsoft.com/dotnet/runtime:9.0@sha256:1e5eb0ed94ca96a34a914456db80e48bd1bb7bc3e3c8eda5e2c3d89c153c3081
+FROM mcr.microsoft.com/dotnet/runtime:9.0@sha256:54fb43f9f282a6725e0b6462fe7f5152d9611404af8cffb4613a31f714551078
 
 LABEL git_repository=https://git.illumina.com/DASTE/Ilmn.Das.App.Wittyer.git
 WORKDIR /opt/Wittyer
