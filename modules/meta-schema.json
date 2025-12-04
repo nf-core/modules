@@ -40,17 +40,17 @@
                             "homepage": {
                                 "type": "string",
                                 "description": "Homepage of the tool",
-                                "pattern": "^(http|https)://.*$"
+                                "pattern": "^https?://.*$"
                             },
                             "documentation": {
                                 "type": "string",
                                 "description": "Documentation of the tool",
-                                "pattern": "^(http|https|ftp)://.*$"
+                                "pattern": "^(https?|ftp)://.*$"
                             },
                             "tool_dev_url": {
                                 "type": "string",
                                 "description": "URL of the development version of the tool's documentation",
-                                "pattern": "^(http|https)://.*$"
+                                "pattern": "^https?://.*$"
                             },
                             "doi": {
                                 "description": "DOI of the tool",
@@ -76,17 +76,9 @@
                                 "message": "Licence must be an array of one or more entries, e.g. [\"MIT\"]"
                             },
                             "identifier": {
+                                "type": "string",
                                 "description": "bio.tools identifier of the tool",
-                                "anyOf": [
-                                    {
-                                        "type": "string",
-                                        "pattern": "^biotools:.*$"
-                                    },
-                                    {
-                                        "type": "string",
-                                        "maxLength": 0
-                                    }
-                                ]
+                                "pattern": "^(biotools:.*)?$"
                             }
                         },
                         "required": ["description"],
@@ -127,22 +119,12 @@
             "items": {
                 "oneOf": [
                     {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "$ref": "#/definitions/elementProperties"
-                                }
-                            }
-                        }
+                        "$ref": "#/definitions/channelElement"
                     },
                     {
-                        "type": "object",
-                        "patternProperties": {
-                            ".*": {
-                                "$ref": "#/definitions/elementProperties"
-                            }
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/channelElement"
                         }
                     }
                 ]
@@ -153,30 +135,7 @@
             "description": "Output channels for the module",
             "patternProperties": {
                 ".*": {
-                    "type": "array",
-                    "items": {
-                        "oneOf": [
-                            {
-                                "type": "object",
-                                "patternProperties": {
-                                    ".*": {
-                                        "$ref": "#/definitions/elementProperties"
-                                    }
-                                }
-                            },
-                            {
-                                "type": "array",
-                                "items": {
-                                    "type": "object",
-                                    "patternProperties": {
-                                        ".*": {
-                                            "$ref": "#/definitions/elementProperties"
-                                        }
-                                    }
-                                }
-                            }
-                        ]
-                    }
+                    "$ref": "#/definitions/channelArray"
                 }
             }
         },
@@ -185,30 +144,7 @@
             "description": "Topics of the module",
             "patternProperties": {
                 ".*": {
-                    "type": "array",
-                    "items": {
-                        "oneOf": [
-                            {
-                                "type": "object",
-                                "patternProperties": {
-                                    ".*": {
-                                        "$ref": "#/definitions/elementProperties"
-                                    }
-                                }
-                            },
-                            {
-                                "type": "array",
-                                "items": {
-                                    "type": "object",
-                                    "patternProperties": {
-                                        ".*": {
-                                            "$ref": "#/definitions/elementProperties"
-                                        }
-                                    }
-                                }
-                            }
-                        ]
-                    }
+                    "$ref": "#/definitions/channelArray"
                 }
             }
         },
@@ -266,6 +202,30 @@
         }
     },
     "definitions": {
+        "channelElement": {
+            "type": "object",
+            "patternProperties": {
+                ".*": {
+                    "$ref": "#/definitions/elementProperties"
+                }
+            }
+        },
+        "channelArray": {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "$ref": "#/definitions/channelElement"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/channelElement"
+                        }
+                    }
+                ]
+            }
+        },
         "elementProperties": {
             "type": "object",
             "properties": {
@@ -299,7 +259,7 @@
                         "patternProperties": {
                             ".*": {
                                 "type": "string",
-                                "pattern": "^(http|https)://.*"
+                                "pattern": "^https?://.*"
                             }
                         }
                     }
