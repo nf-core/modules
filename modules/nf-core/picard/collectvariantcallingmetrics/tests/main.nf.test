@@ -43,7 +43,7 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.detail_metrics[0][1]).readLines()[5..7],
                     path(process.out.summary_metrics[0][1]).readLines()[5..7],
-                    process.out.versions                
+                    process.out.versions
                 ).match() }
             )
         }
@@ -120,7 +120,7 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.detail_metrics[0][1]).readLines()[5..7],
                     path(process.out.summary_metrics[0][1]).readLines()[5..7],
-                    process.out.versions                
+                    process.out.versions
                 ).match() }
             )
         }
