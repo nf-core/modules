@@ -20,9 +20,9 @@ nextflow_process {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
                     "chr22:16600000-16800000",
-                    "chr22:16600000-16800000"
+                    "chr22:16600000-16800000",
+                    []
                 ]
-                input[1]= [[ id:'map'],[]]
                 """
             }
         }
@@ -48,10 +48,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
                     "chr22:16600000-16800000",
-                    "chr22:16600000-16800000"
-                ]
-                input[1]= [
-                    [ id:'map'],
+                    "chr22:16600000-16800000",
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.glimpse.map", checkIfExists:true)
                 ]
                 """
@@ -80,9 +77,9 @@ nextflow_process {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
                     "chr22:16600000-16800000",
-                    "chr22:16600000-16800000"
+                    "chr22:16600000-16800000",
+                    []
                 ]
-                input[1]= [[ id:'map'],[]]
                 """
             }
         }
