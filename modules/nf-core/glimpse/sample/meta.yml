@@ -22,8 +22,13 @@ input:
           e.g. [ id:'test', single_end:false ]
     - input:
         type: file
-        description: VCF/BCF file generated using GLIMPSE ligate
+        description: Imputed VCF/BCF file
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+        ontologies: []
+    - index:
+        type: file
+        description: Index file of the input VCF/BCF file.
+        pattern: "*.{vcf.gz.csi,bcf.gz.csi}"
         ontologies: []
 output:
   haplo_sampled:
