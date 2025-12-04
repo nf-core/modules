@@ -37,6 +37,7 @@ process GLIMPSE_CHUNK {
 
     stub:
     def prefix  = task.ext.prefix ?: "${meta.id}"
+
     """
     touch ${prefix}.txt
 

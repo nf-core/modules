@@ -18,7 +18,6 @@ nextflow_workflow {
         when {
             params {
                 outdir = "tests/results"
-                impute_dataset = "https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/"
             }
             workflow {
                 """
@@ -26,11 +25,11 @@ nextflow_workflow {
 
                 ch_panel = Channel.fromList([
                     [[ chr:"chr21"],
-                    file(params.impute_dataset + "panel/chr21/1000GP.chr21.s.norel.vcf.gz", checkIfExists: true),
-                    file(params.impute_dataset + "panel/chr21/1000GP.chr21.s.norel.vcf.gz.csi", checkIfExists: true)],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz.csi", checkIfExists:true)],
                     [[ chr:"chr22"],
-                    file(params.impute_dataset + "panel/chr22/1000GP.chr22.s.norel.vcf.gz", checkIfExists: true),
-                    file(params.impute_dataset + "panel/chr22/1000GP.chr22.s.norel.vcf.gz.csi", checkIfExists: true)]
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true)]
                 ])
                 region = Channel.fromList([
                     [[chr: "chr21", region: "chr21:16600000-16800000"], "chr21:16600000-16800000"],
@@ -39,12 +38,12 @@ nextflow_workflow {
 
                 input_vcf = Channel.fromList([
                     [[ id:'NA12878'], // meta map
-                    file(params.impute_dataset + "individuals/NA12878/NA12878.s.1x.bcf", checkIfExists: true),
-                    file(params.impute_dataset + "individuals/NA12878/NA12878.s.1x.bcf.csi", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists: true),
                     ],
                     [[ id:'NA19401'], // meta map
-                    file(params.impute_dataset + "individuals/NA19401/NA19401.s.1x.bcf", checkIfExists: true),
-                    file(params.impute_dataset + "individuals/NA19401/NA19401.s.1x.bcf.csi", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA19401.chr21_22.1X.glimpse2.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA19401.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists: true),
                     ]
                 ])
                 input_vcf_multiple = input_vcf
@@ -56,10 +55,10 @@ nextflow_workflow {
 
                 ch_map = Channel.fromList([
                     [[ chr: "chr21"],
-                        file(params.impute_dataset + "reference_genome/GRCh38_chr21.glimpse.map", checkIfExists: true)
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.glimpse.map", checkIfExists: true)
                     ],
                     [[ chr: "chr22"],
-                        file(params.impute_dataset + "reference_genome/GRCh38_chr21.glimpse.map", checkIfExists: true)
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.glimpse.map", checkIfExists: true)
                     ]
                 ])
 
@@ -78,13 +77,18 @@ nextflow_workflow {
         }
 
         then {
-            def lines = path(workflow.out.merged_variants.get(0).get(1)).linesGzip.last()
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out.versions).match("versions") },
-                { assert snapshot(workflow.out.chunk_chr).match("chunk_chr") },
-                { assert workflow.out.merged_variants.size() == 4},
-                { assert snapshot(lines).match("merged") }
+                { assert snapshot(
+                    workflow.out.versions,
+                    workflow.out.chunk_chr,
+                    workflow.out.merged_variants.collect{ meta, vcf -> [
+                        meta,
+                        file(vcf).name,
+                        path(vcf).vcf.summary,
+                        path(vcf).vcf.variantsMD5
+                    ]}
+                ).match() }
             )
         }
 
