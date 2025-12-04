@@ -1,80 +1,218 @@
 {
     "Mus musculus - expression table - contrasts + formula + comparison contrast string - no intercept": {
         "content": [
-            [
-                [
-                    {
-                        "id": "treatment_mCherry_hND6",
-                        "variable": "treatment",
-                        "reference": "mCherry",
-                        "target": "hND6",
-                        "blocking_factors": "sample_number",
-                        "formula": "~ 0 + treatment + sample_number",
-                        "comparison": "treatmenthND6 - treatmentmCherry"
-                    },
-                    "treatment_mCherry_hND6.dream.model.txt:md5,46fe9413749f1475edc6985647b0e4e1"
+            {
+                "0": [
+                    [
+                        {
+                            "id": "treatment_mCherry_hND6",
+                            "variable": "treatment",
+                            "reference": "mCherry",
+                            "target": "hND6",
+                            "blocking_factors": "sample_number",
+                            "formula": "~ 0 + treatment + sample_number",
+                            "comparison": "treatmenthND6 - treatmentmCherry"
+                        },
+                        "treatment_mCherry_hND6.dream.results.tsv:md5,ca4a28840d7183358450d30af8055f31"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "treatment_mCherry_hND6",
+                            "variable": "treatment",
+                            "reference": "mCherry",
+                            "target": "hND6",
+                            "blocking_factors": "sample_number",
+                            "formula": "~ 0 + treatment + sample_number",
+                            "comparison": "treatmenthND6 - treatmentmCherry"
+                        },
+                        "treatment_mCherry_hND6.dream.model.txt:md5,46fe9413749f1475edc6985647b0e4e1"
+                    ]
+                ],
+                "2": [
+                    "versions.yml:md5,fc1f26eb2194018e99fc2916332676b7"
+                ],
+                "model": [
+                    [
+                        {
+                            "id": "treatment_mCherry_hND6",
+                            "variable": "treatment",
+                            "reference": "mCherry",
+                            "target": "hND6",
+                            "blocking_factors": "sample_number",
+                            "formula": "~ 0 + treatment + sample_number",
+                            "comparison": "treatmenthND6 - treatmentmCherry"
+                        },
+                        "treatment_mCherry_hND6.dream.model.txt:md5,46fe9413749f1475edc6985647b0e4e1"
+                    ]
+                ],
+                "results": [
+                    [
+                        {
+                            "id": "treatment_mCherry_hND6",
+                            "variable": "treatment",
+                            "reference": "mCherry",
+                            "target": "hND6",
+                            "blocking_factors": "sample_number",
+                            "formula": "~ 0 + treatment + sample_number",
+                            "comparison": "treatmenthND6 - treatmentmCherry"
+                        },
+                        "treatment_mCherry_hND6.dream.results.tsv:md5,ca4a28840d7183358450d30af8055f31"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,fc1f26eb2194018e99fc2916332676b7"
                 ]
-            ],
-            [
-                "versions.yml:md5,fc1f26eb2194018e99fc2916332676b7"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-11-10T16:15:40.192241719"
-    },
-    "RNAseq - Feature Counts - formula + comparison contrast string - interaction": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "genotype_WT_KO_treatment_Control_Treated",
-                        "variable": "genotype",
-                        "reference": "WT",
-                        "target": "KO",
-                        "blocking_factors": "batch",
-                        "formula": "~ genotype * treatment",
-                        "comparison": "genotypeKO.treatmentTreated"
-                    },
-                    "genotype_WT_KO_treatment_Control_Treated.dream.model.txt:md5,e67d5a9c42dd9374b370b6426832d08f"
-                ]
-            ],
-            [
-                "versions.yml:md5,fc1f26eb2194018e99fc2916332676b7"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-11-10T16:14:20.039981065"
-    },
-    "Mus musculus - expression table - contrasts + blocking factors": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "treatment_mCherry_hND6",
-                        "variable": "treatment",
-                        "reference": "mCherry",
-                        "target": "hND6",
-                        "blocking_factors": "sample_number",
-                        "formula": "~ treatment + (1 | sample_number)"
-                    },
-                    "treatment_mCherry_hND6.dream.model.txt:md5,7103206474aa480ffd9cec149263489f"
-                ]
-            ],
-            [
-                "versions.yml:md5,fc1f26eb2194018e99fc2916332676b7"
-            ]
+            }
         ],
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2025-12-04T14:14:21.897449276"
+        "timestamp": "2025-12-04T17:50:54.929209665"
+    },
+    "RNAseq - Feature Counts - formula + comparison contrast string - interaction": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "genotype_WT_KO_treatment_Control_Treated",
+                            "variable": "genotype",
+                            "reference": "WT",
+                            "target": "KO",
+                            "blocking_factors": "batch",
+                            "formula": "~ genotype * treatment",
+                            "comparison": "genotypeKO.treatmentTreated"
+                        },
+                        "genotype_WT_KO_treatment_Control_Treated.dream.results.tsv:md5,8180e02df3cae9c6ecb14fa28f7b3632"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "genotype_WT_KO_treatment_Control_Treated",
+                            "variable": "genotype",
+                            "reference": "WT",
+                            "target": "KO",
+                            "blocking_factors": "batch",
+                            "formula": "~ genotype * treatment",
+                            "comparison": "genotypeKO.treatmentTreated"
+                        },
+                        "genotype_WT_KO_treatment_Control_Treated.dream.model.txt:md5,e67d5a9c42dd9374b370b6426832d08f"
+                    ]
+                ],
+                "2": [
+                    "versions.yml:md5,fc1f26eb2194018e99fc2916332676b7"
+                ],
+                "model": [
+                    [
+                        {
+                            "id": "genotype_WT_KO_treatment_Control_Treated",
+                            "variable": "genotype",
+                            "reference": "WT",
+                            "target": "KO",
+                            "blocking_factors": "batch",
+                            "formula": "~ genotype * treatment",
+                            "comparison": "genotypeKO.treatmentTreated"
+                        },
+                        "genotype_WT_KO_treatment_Control_Treated.dream.model.txt:md5,e67d5a9c42dd9374b370b6426832d08f"
+                    ]
+                ],
+                "results": [
+                    [
+                        {
+                            "id": "genotype_WT_KO_treatment_Control_Treated",
+                            "variable": "genotype",
+                            "reference": "WT",
+                            "target": "KO",
+                            "blocking_factors": "batch",
+                            "formula": "~ genotype * treatment",
+                            "comparison": "genotypeKO.treatmentTreated"
+                        },
+                        "genotype_WT_KO_treatment_Control_Treated.dream.results.tsv:md5,8180e02df3cae9c6ecb14fa28f7b3632"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,fc1f26eb2194018e99fc2916332676b7"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2025-12-04T17:44:28.329484733"
+    },
+    "Mus musculus - expression table - contrasts + blocking factors": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "treatment_mCherry_hND6",
+                            "variable": "treatment",
+                            "reference": "mCherry",
+                            "target": "hND6",
+                            "blocking_factors": "sample_number",
+                            "formula": "~ treatment + (1 | sample_number)"
+                        },
+                        "treatment_mCherry_hND6.dream.results.tsv:md5,a071c19cc86f69a9cea0be82679f99c4"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "treatment_mCherry_hND6",
+                            "variable": "treatment",
+                            "reference": "mCherry",
+                            "target": "hND6",
+                            "blocking_factors": "sample_number",
+                            "formula": "~ treatment + (1 | sample_number)"
+                        },
+                        "treatment_mCherry_hND6.dream.model.txt:md5,7103206474aa480ffd9cec149263489f"
+                    ]
+                ],
+                "2": [
+                    "versions.yml:md5,fc1f26eb2194018e99fc2916332676b7"
+                ],
+                "model": [
+                    [
+                        {
+                            "id": "treatment_mCherry_hND6",
+                            "variable": "treatment",
+                            "reference": "mCherry",
+                            "target": "hND6",
+                            "blocking_factors": "sample_number",
+                            "formula": "~ treatment + (1 | sample_number)"
+                        },
+                        "treatment_mCherry_hND6.dream.model.txt:md5,7103206474aa480ffd9cec149263489f"
+                    ]
+                ],
+                "results": [
+                    [
+                        {
+                            "id": "treatment_mCherry_hND6",
+                            "variable": "treatment",
+                            "reference": "mCherry",
+                            "target": "hND6",
+                            "blocking_factors": "sample_number",
+                            "formula": "~ treatment + (1 | sample_number)"
+                        },
+                        "treatment_mCherry_hND6.dream.results.tsv:md5,a071c19cc86f69a9cea0be82679f99c4"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,fc1f26eb2194018e99fc2916332676b7"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2025-12-04T17:53:17.316722039"
     },
     "Mus musculus - expression table - contrasts + blocking factors stub": {
         "content": [
@@ -147,29 +285,76 @@
     },
     "Mus musculus - expression table - contrasts + formula + weighted comparison contrast string": {
         "content": [
-            [
-                [
-                    {
-                        "id": "treatment_mCherry_hND6",
-                        "variable": "treatment",
-                        "reference": "mCherry",
-                        "target": "hND6",
-                        "blocking_factors": "sample_number",
-                        "formula": "~ 0 + treatment",
-                        "comparison": "2 * treatmenthND6 - treatmentmCherry"
-                    },
-                    "treatment_mCherry_hND6.dream.model.txt:md5,30f74fcf5ad34ef1cc5505b0026963d6"
+            {
+                "0": [
+                    [
+                        {
+                            "id": "treatment_mCherry_hND6",
+                            "variable": "treatment",
+                            "reference": "mCherry",
+                            "target": "hND6",
+                            "blocking_factors": "sample_number",
+                            "formula": "~ 0 + treatment",
+                            "comparison": "2 * treatmenthND6 - treatmentmCherry"
+                        },
+                        "treatment_mCherry_hND6.dream.results.tsv:md5,294735eb52eb9d40cb386a46d8d3f8da"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "treatment_mCherry_hND6",
+                            "variable": "treatment",
+                            "reference": "mCherry",
+                            "target": "hND6",
+                            "blocking_factors": "sample_number",
+                            "formula": "~ 0 + treatment",
+                            "comparison": "2 * treatmenthND6 - treatmentmCherry"
+                        },
+                        "treatment_mCherry_hND6.dream.model.txt:md5,30f74fcf5ad34ef1cc5505b0026963d6"
+                    ]
+                ],
+                "2": [
+                    "versions.yml:md5,fc1f26eb2194018e99fc2916332676b7"
+                ],
+                "model": [
+                    [
+                        {
+                            "id": "treatment_mCherry_hND6",
+                            "variable": "treatment",
+                            "reference": "mCherry",
+                            "target": "hND6",
+                            "blocking_factors": "sample_number",
+                            "formula": "~ 0 + treatment",
+                            "comparison": "2 * treatmenthND6 - treatmentmCherry"
+                        },
+                        "treatment_mCherry_hND6.dream.model.txt:md5,30f74fcf5ad34ef1cc5505b0026963d6"
+                    ]
+                ],
+                "results": [
+                    [
+                        {
+                            "id": "treatment_mCherry_hND6",
+                            "variable": "treatment",
+                            "reference": "mCherry",
+                            "target": "hND6",
+                            "blocking_factors": "sample_number",
+                            "formula": "~ 0 + treatment",
+                            "comparison": "2 * treatmenthND6 - treatmentmCherry"
+                        },
+                        "treatment_mCherry_hND6.dream.results.tsv:md5,294735eb52eb9d40cb386a46d8d3f8da"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,fc1f26eb2194018e99fc2916332676b7"
                 ]
-            ],
-            [
-                "versions.yml:md5,fc1f26eb2194018e99fc2916332676b7"
-            ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-11-10T16:15:20.824781388"
+        "timestamp": "2025-12-04T17:50:37.930174084"
     },
     "Mus musculus - expression table - contrasts + formula + comparison contrast string": {
         "content": [
@@ -185,7 +370,7 @@
                             "formula": "~ treatment",
                             "comparison": "treatmenthND6"
                         },
-                        "treatment_mCherry_hND6.dream.results.tsv:md5,0b9521f3aafdbc7f2df761bdc8b1a1ea"
+                        "treatment_mCherry_hND6.dream.results.tsv:md5,fdcf6049a09cf1939e73ca9854d64751"
                     ]
                 ],
                 "1": [
@@ -230,7 +415,7 @@
                             "formula": "~ treatment",
                             "comparison": "treatmenthND6"
                         },
-                        "treatment_mCherry_hND6.dream.results.tsv:md5,0b9521f3aafdbc7f2df761bdc8b1a1ea"
+                        "treatment_mCherry_hND6.dream.results.tsv:md5,fdcf6049a09cf1939e73ca9854d64751"
                     ]
                 ],
                 "versions": [
@@ -239,9 +424,9 @@
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-04-07T17:45:38.612858235"
+        "timestamp": "2025-12-04T17:46:13.603386139"
     }
 }

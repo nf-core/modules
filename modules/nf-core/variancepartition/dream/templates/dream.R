@@ -80,6 +80,7 @@ opt <- list(
     winsor_tail_p      = "0.05,0.1",              # Winsor tail probabilities for eBayes
     ddf                = "adaptive",              # 'Satterthwaite', 'Kenward-Roger', or 'adaptive'
     reml               = FALSE,
+    round_digits       = NULL,
     formula            = "$formula",              # User-specified formula (e.g. "~ + (1 | sample_number)")
     apply_voom         = FALSE                    # Whether to apply `voomWithDreamWeights`
 )
@@ -106,6 +107,10 @@ opt\$reml         <- as.logical(opt\$reml)
 opt\$p.value      <- as.numeric(opt\$p.value)
 opt\$lfc          <- as.numeric(opt\$lfc)
 opt\$confint      <- as.logical(opt\$confint)
+
+if ( !is.null(opt\$round_digits)){
+  opt\$round_digits <- as.numeric(opt\$round_digits)
+}
 
 # Load metadata
 metadata <- read_delim_flexible(opt\$sample_file, header = TRUE, stringsAsFactors = TRUE)
@@ -193,6 +198,12 @@ if (!is.null(opt\$contrast_string)) {
 
 results\$gene_id <- rownames(results)
 results <- results[, c("gene_id", setdiff(names(results), "gene_id"))]
+
+# Round results if required
+if (!is.null(opt\$round_digits)) {
+    numeric_columns <- vapply(results, is.numeric, logical(1))
+    results[numeric_columns] <- lapply(results[numeric_columns], round, digits = opt\$round_digits)
+}
 
 # Export topTable results
 write.table(results, file = paste(opt\$output_prefix, 'dream.results.tsv', sep = '.'),
