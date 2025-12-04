@@ -35,19 +35,33 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', fasta ]
-      - orfipy_outs/${prefix}.bed:
+      - ${prefix}/${prefix}.bed:
           type: file
-          description: Output BED file containing ORF coordinates
-          pattern: "orfipy_outs/{id}.bed"
+          description: Output BED file containing the coordinates of predicted
+            ORFs
           ontologies:
-            - edam: http://edamontology.org/format_3673 # BED
+            - edam: http://edamontology.org/format_3673 # BED format
+  versions_orfipy:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - orfipy:
+          type: string
+          description: The tool name
+      - orfipy --version | sed 's/.*version //':
+          type: string
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: versions.yml
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - orfipy:
+          type: string
+          description: The tool name
+      - orfipy --version | sed 's/.*version //':
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@khersameesh24"
 maintainers:

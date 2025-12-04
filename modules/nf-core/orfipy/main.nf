@@ -11,8 +11,8 @@ process ORFIPY {
     tuple val(meta), path(infile)
 
     output:
-    tuple val(meta), path("orfipy_outs/${prefix}.bed"), emit: bed
-    path("versions.yml")                              , emit: versions
+    tuple val(meta), path("${prefix}/${prefix}.bed"), emit: bed
+    tuple val("${task.process}"), val('orfipy'), eval("orfipy --version | sed 's/.*version //'"), emit: versions_orfipy, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,29 +24,17 @@ process ORFIPY {
     """
     orfipy \\
         ${infile} \\
-        --outdir orfipy_outs \\
+        --outdir ${prefix} \\
         --bed ${prefix}.bed \\
         --procs ${task.cpus} \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        orfipy: \$(orfipy --version | sed 's/.*version //')
-    END_VERSIONS
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    mkdir -p orfipy_outs/
-    touch orfipy_outs/${prefix}.bed
-
-    touch ${prefix}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        orfipy: \$(orfipy --version | sed 's/.*version //')
-    END_VERSIONS
+    mkdir -p ${prefix}/
+    touch ${prefix}/${prefix}.bed
     """
 }
