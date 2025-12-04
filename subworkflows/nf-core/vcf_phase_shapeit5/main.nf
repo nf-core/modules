@@ -59,7 +59,7 @@ workflow VCF_PHASE_SHAPEIT5 {
         .combine(ch_ref, by: 0)
         .combine(ch_scaffold, by: 0)
         .combine(ch_chunks, by: 0)
-    
+
     ch_parameters.ifEmpty{
         error "ERROR: join operation resulted in an empty channel. Please provide a valid ch_map, ch_ref, ch_scaffold and ch_chunks channel as input (same meta map)."
     }
