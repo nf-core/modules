@@ -10,13 +10,13 @@ workflow MULTIPLE_IMPUTE_GLIMPSE2 {
     take:
     ch_input    // channel (mandatory): [ meta, vcf, csi, infos ]
     ch_ref      // channel (mandatory): [ meta, vcf, csi, region ]
-    ch_map      // channel (optional): [ meta, map ]
-    ch_fasta    // channel  (optional): [ meta, fasta, index ]
+    ch_map      // channel (optional) : [ meta, map ]
+    ch_fasta    // channel (optional) : [ meta, fasta, index ]
     chunk_model // string: model used to chunk the reference panel
 
     main:
 
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     // Chunk reference panel
     ch_ref_map = ch_ref.combine(ch_map, by: 0)
@@ -48,10 +48,10 @@ workflow MULTIPLE_IMPUTE_GLIMPSE2 {
 
     // Phase input files for each reference bin files + indexing
     GLIMPSE2_PHASE ( phase_input, ch_fasta ) // [meta, vcf, index, sample_infos, regionin, regionout, regionindex, ref, ref_index, map], [ meta, fasta, index ]
-    ch_versions = ch_versions.mix( GLIMPSE2_PHASE.out.versions)
+    ch_versions = ch_versions.mix( GLIMPSE2_PHASE.out.versions.first() )
 
     INDEX_PHASE ( GLIMPSE2_PHASE.out.phased_variants )
-    ch_versions = ch_versions.mix( INDEX_PHASE.out.versions )
+    ch_versions = ch_versions.mix( INDEX_PHASE.out.versions.first() )
 
     // Ligate all phased files in one and index it
     ligate_input = GLIMPSE2_PHASE.out.phased_variants
@@ -61,10 +61,10 @@ workflow MULTIPLE_IMPUTE_GLIMPSE2 {
                 .collect(), by: 0 )
 
     GLIMPSE2_LIGATE ( ligate_input )
-    ch_versions = ch_versions.mix( GLIMPSE2_LIGATE.out.versions )
+    ch_versions = ch_versions.mix( GLIMPSE2_LIGATE.out.versions.first() )
 
     INDEX_LIGATE ( GLIMPSE2_LIGATE.out.merged_variants )
-    ch_versions = ch_versions.mix( INDEX_LIGATE.out.versions )
+    ch_versions = ch_versions.mix( INDEX_LIGATE.out.versions.first() )
 
     emit:
     chunk_chr              = GLIMPSE2_CHUNK.out.chunk_chr           // channel: [ val(meta), txt ]

@@ -8,7 +8,7 @@ process GLIMPSE_SAMPLE {
         'biocontainers/glimpse-bio:1.1.1--hce55b13_1' }"
 
     input:
-    tuple val(meta), path(input)
+    tuple val(meta), path(input), path(index)
 
     output:
     tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: haplo_sampled
@@ -38,6 +38,7 @@ process GLIMPSE_SAMPLE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "vcf.gz"
+
     """
     touch ${prefix}.${suffix}
 

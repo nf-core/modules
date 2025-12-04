@@ -22,7 +22,7 @@ process GLIMPSE_LIGATE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = task.ext.suffix ?: "vcf.gz"
     """
-    printf "%s\\n" $input_list | tr -d '[],' > all_files.txt
+    printf "%s\\n" $input_list | tr -d '[],' | sort -V > all_files.txt
 
     GLIMPSE_ligate \\
         $args \\
@@ -31,8 +31,8 @@ process GLIMPSE_LIGATE {
         --output ${prefix}.${suffix}
 
     cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            glimpse: "\$(GLIMPSE_ligate --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
+    "${task.process}":
+        glimpse: "\$(GLIMPSE_ligate --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
     END_VERSIONS
     """
 
