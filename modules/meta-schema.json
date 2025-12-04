@@ -24,18 +24,88 @@
             "uniqueItems": true,
             "minItems": 3
         },
-        "authors": {
+        "tools": {
             "type": "array",
-            "description": "Authors of the module",
+            "description": "Tools used by the module",
             "items": {
-                "type": "string"
-            }
-        },
-        "maintainers": {
-            "type": "array",
-            "description": "Maintainers of the module",
-            "items": {
-                "type": "string"
+                "type": "object",
+                "patternProperties": {
+                    ".*": {
+                        "type": "object",
+                        "properties": {
+                            "description": {
+                                "type": "string",
+                                "description": "Description of the output channel"
+                            },
+                            "homepage": {
+                                "type": "string",
+                                "description": "Homepage of the tool",
+                                "pattern": "^(http|https)://.*$"
+                            },
+                            "documentation": {
+                                "type": "string",
+                                "description": "Documentation of the tool",
+                                "pattern": "^(http|https|ftp)://.*$"
+                            },
+                            "tool_dev_url": {
+                                "type": "string",
+                                "description": "URL of the development version of the tool's documentation",
+                                "pattern": "^(http|https)://.*$"
+                            },
+                            "doi": {
+                                "description": "DOI of the tool",
+                                "anyOf": [
+                                    {
+                                        "type": "string",
+                                        "pattern": "^10\\.\\d{4,9}\\/[^,]+$"
+                                    },
+                                    {
+                                        "type": "string",
+                                        "enum": ["no DOI available"]
+                                    }
+                                ]
+                            },
+                            "licence": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "description": "Licence of the tool",
+                                "minItems": 1,
+                                "uniqueItems": true,
+                                "message": "Licence must be an array of one or more entries, e.g. [\"MIT\"]"
+                            },
+                            "identifier": {
+                                "description": "bio.tools identifier of the tool",
+                                "anyOf": [
+                                    {
+                                        "type": "string",
+                                        "pattern": "^biotools:.*$"
+                                    },
+                                    {
+                                        "type": "string",
+                                        "maxLength": 0
+                                    }
+                                ]
+                            }
+                        },
+                        "required": ["description"],
+                        "anyOf": [
+                            {
+                                "required": ["homepage"]
+                            },
+                            {
+                                "required": ["documentation"]
+                            },
+                            {
+                                "required": ["tool_dev_url"]
+                            },
+                            {
+                                "required": ["doi"]
+                            }
+                        ]
+                    }
+                }
             }
         },
         "extra_args": {
@@ -142,88 +212,18 @@
                 }
             }
         },
-        "tools": {
+        "authors": {
             "type": "array",
-            "description": "Tools used by the module",
+            "description": "Authors of the module",
             "items": {
-                "type": "object",
-                "patternProperties": {
-                    ".*": {
-                        "type": "object",
-                        "properties": {
-                            "description": {
-                                "type": "string",
-                                "description": "Description of the output channel"
-                            },
-                            "homepage": {
-                                "type": "string",
-                                "description": "Homepage of the tool",
-                                "pattern": "^(http|https)://.*$"
-                            },
-                            "documentation": {
-                                "type": "string",
-                                "description": "Documentation of the tool",
-                                "pattern": "^(http|https|ftp)://.*$"
-                            },
-                            "tool_dev_url": {
-                                "type": "string",
-                                "description": "URL of the development version of the tool's documentation",
-                                "pattern": "^(http|https)://.*$"
-                            },
-                            "doi": {
-                                "description": "DOI of the tool",
-                                "anyOf": [
-                                    {
-                                        "type": "string",
-                                        "pattern": "^10\\.\\d{4,9}\\/[^,]+$"
-                                    },
-                                    {
-                                        "type": "string",
-                                        "enum": ["no DOI available"]
-                                    }
-                                ]
-                            },
-                            "licence": {
-                                "type": "array",
-                                "items": {
-                                    "type": "string"
-                                },
-                                "description": "Licence of the tool",
-                                "minItems": 1,
-                                "uniqueItems": true,
-                                "message": "Licence must be an array of one or more entries, e.g. [\"MIT\"]"
-                            },
-                            "identifier": {
-                                "description": "bio.tools identifier of the tool",
-                                "anyOf": [
-                                    {
-                                        "type": "string",
-                                        "pattern": "^biotools:.*$"
-                                    },
-                                    {
-                                        "type": "string",
-                                        "maxLength": 0
-                                    }
-                                ]
-                            }
-                        },
-                        "required": ["description"],
-                        "anyOf": [
-                            {
-                                "required": ["homepage"]
-                            },
-                            {
-                                "required": ["documentation"]
-                            },
-                            {
-                                "required": ["tool_dev_url"]
-                            },
-                            {
-                                "required": ["doi"]
-                            }
-                        ]
-                    }
-                }
+                "type": "string"
+            }
+        },
+        "maintainers": {
+            "type": "array",
+            "description": "Maintainers of the module",
+            "items": {
+                "type": "string"
             }
         }
     },
