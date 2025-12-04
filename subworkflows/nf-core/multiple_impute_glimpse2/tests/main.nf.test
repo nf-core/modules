@@ -24,8 +24,8 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [id:'input_vcf'],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists: true),
                     []
                 ])
                 input[1] = Channel.of([
@@ -63,8 +63,8 @@ nextflow_workflow {
                     .collectFile(name: 'sampleinfos.txt')
                 input[0] = Channel.of([
                     [id:'input_vcf'],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists: true),
                 ]).combine(sample)
                 input[1] = Channel.of([
                     [id:'ref_panel', chr: "22"],
@@ -103,8 +103,8 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                     [id:'input_bam'],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam.bai", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai", checkIfExists: true),
                     []
                 ])
                 input[1] = Channel.of([
@@ -142,8 +142,8 @@ nextflow_workflow {
                 """
                 input[0] = input[0] = Channel.of([
                     [id:'input_bam'],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr22.1X.bam.bai", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai", checkIfExists: true),
                     []
                 ])
                 input[1] = Channel.of([
