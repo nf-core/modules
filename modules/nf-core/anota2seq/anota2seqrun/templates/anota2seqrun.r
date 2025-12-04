@@ -367,6 +367,10 @@ for (analysis in c("translated mRNA", "total mRNA", "translation", "buffering", 
         selContrast = 1
     )
 
+    # prepend column containing gene IDs
+    if (!is.null(opt\$gene_id_col) && !is.null(output))
+        output <- cbind(setNames(data.frame(rownames(output)), opt\$gene_id_col), output)
+
     write.table(
         output,
         file = paste(opt\$output_prefix, sub(' ', '_', analysis), 'anota2seq.results.tsv', sep = '.'),
