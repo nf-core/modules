@@ -39,6 +39,7 @@ nextflow_process {
     then {
         assertAll(
             { assert process.success },
+            { assert path(process.out.results[0][1]).readLines().size() > 10 },
             { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
             { assert path(process.out.results[0][1]).getText().contains("0.8333") },
             { assert path(process.out.results[0][1]).getText().contains("13.5\t21.125\t4.40") },
@@ -97,6 +98,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert path(process.out.results[0][1]).readLines().size() > 10 },
                 { assert path(process.out.results[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
                 { assert path(process.out.results[0][1]).getText().contains("849.6666") },
                 { assert path(process.out.results[0][1]).getText().contains("1050\t549\t3.78") }

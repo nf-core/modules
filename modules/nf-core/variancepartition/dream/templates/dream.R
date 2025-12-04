@@ -178,7 +178,7 @@ if (!is.null(opt\$contrast_string)) {
                    stdev.coef.lim = stdev_coef_lim_vals,
                    trend = opt\$trend, robust = opt\$robust,
                    winsor.tail.p = winsor_tail_p_vals)
-    results <- topTable(fit2,
+    results <- topTable(fit2, number = Inf,
                         adjust.method = opt\$adjust.method,
                         p.value = opt\$p.value, lfc = opt\$lfc, confint = opt\$confint)
 
@@ -186,7 +186,7 @@ if (!is.null(opt\$contrast_string)) {
     coef_name <- paste0(opt\$contrast_variable, opt\$contrast_target)
     cat("Using default contrast matrix:", coef_name, "\n")
 
-    results <- topTable(fitmm, coef = coef_name,
+    results <- topTable(fitmm, coef = coef_name, number = Inf,
                         adjust.method = opt\$adjust.method, p.value = opt\$p.value,
                         lfc = opt\$lfc, confint = opt\$confint)
 }
