@@ -77,7 +77,7 @@ process GLIMPSE2_CONCORDANCE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        glimpse: "\$(GLIMPSE_concordance --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]')"
+        glimpse2: "\$(GLIMPSE2_concordance --help | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
     END_VERSIONS
     """
 }
