@@ -1,7 +1,7 @@
 process VUEGEN {
     label 'process_single'
     conda "${moduleDir}/environment.yml"
-    container "nf-core/vuegen:v0.5.1"
+    container "nf-core/vuegen:0.5.1"
 
     input:
     val input_type
