@@ -108,7 +108,7 @@ opt\$p.value      <- as.numeric(opt\$p.value)
 opt\$lfc          <- as.numeric(opt\$lfc)
 opt\$confint      <- as.logical(opt\$confint)
 
-if ( !is.null(opt\$round_digits)){
+if (!is.null(opt\$round_digits)){
   opt\$round_digits <- as.numeric(opt\$round_digits)
 }
 
