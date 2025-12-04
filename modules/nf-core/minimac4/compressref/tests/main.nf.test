@@ -26,8 +26,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.msav.collect{ file(it[1]).name },
-                    ["versions.yml": path(process.out.versions.get(0)).yaml]
+                    process.out.msav.collect{  meta, path -> [ meta, file(path).name ] },
+                    process.out.versions
                 ).match() }
             )
         }
@@ -53,10 +53,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.msav,
-                    ["versions.yml": path(process.out.versions.get(0)).yaml]
-                ).match() }
+                { assert snapshot(process.out).match() }
             )
         }
 

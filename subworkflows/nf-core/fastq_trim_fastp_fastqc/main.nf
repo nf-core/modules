@@ -44,7 +44,6 @@ workflow FASTQ_TRIM_FASTP_FASTQC {
         )
         ch_fastqc_raw_html = FASTQC_RAW.out.html
         ch_fastqc_raw_zip  = FASTQC_RAW.out.zip
-        ch_versions     = ch_versions.mix(FASTQC_RAW.out.versions.first())
     }
 
     ch_trim_reads        = ch_reads_only
@@ -89,7 +88,6 @@ workflow FASTQ_TRIM_FASTP_FASTQC {
             )
             ch_fastqc_trim_html = FASTQC_TRIM.out.html
             ch_fastqc_trim_zip  = FASTQC_TRIM.out.zip
-            ch_versions      = ch_versions.mix(FASTQC_TRIM.out.versions.first())
         }
     }
 
@@ -106,5 +104,5 @@ workflow FASTQ_TRIM_FASTP_FASTQC {
     fastqc_trim_html = ch_fastqc_trim_html   // channel: [ val(meta), path(html) ]
     fastqc_trim_zip  = ch_fastqc_trim_zip    // channel: [ val(meta), path(zip) ]
 
-    versions = ch_versions.ifEmpty(null) // channel: [ path(versions.yml) ]
+    versions = ch_versions
 }
