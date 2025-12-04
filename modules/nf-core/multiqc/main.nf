@@ -18,7 +18,7 @@ process MULTIQC {
     path "*.html"      , emit: report
     path "*_data"      , emit: data
     path "*_plots"     , optional:true, emit: plots
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('multiqc'), eval('multiqc --version | sed "s/.* //g"'), topic: versions, emit: versions_multiqc
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,11 +42,6 @@ process MULTIQC {
         ${replace} \\
         ${samples} \\
         .
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        multiqc: \$( multiqc --version | sed -e "s/multiqc, version //g" )
-    END_VERSIONS
     """
 
     stub:
@@ -56,9 +51,5 @@ process MULTIQC {
     mkdir multiqc_plots
     touch multiqc_report.html
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        multiqc: \$( multiqc --version | sed -e "s/multiqc, version //g" )
-    END_VERSIONS
     """
 }

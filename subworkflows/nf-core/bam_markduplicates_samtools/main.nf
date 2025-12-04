@@ -26,7 +26,6 @@ workflow BAM_MARKDUPLICATES_SAMTOOLS {
     ch_versions = ch_versions.mix(SAMTOOLS_FIXMATE.out.versions)
 
     SAMTOOLS_SORT ( SAMTOOLS_FIXMATE.out.bam, ch_fasta, '' )
-    ch_versions = ch_versions.mix(SAMTOOLS_SORT.out.versions)
 
     SAMTOOLS_MARKDUP ( SAMTOOLS_SORT.out.bam, ch_fasta )
     ch_versions = ch_versions.mix(SAMTOOLS_MARKDUP.out.versions)
