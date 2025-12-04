@@ -1,11 +1,11 @@
 process WHATSHAP_PHASE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/whatshap:2.8--c3862a4b2ad0f978':
-        'community.wave.seqera.io/library/whatshap:2.8--7fe530bc624a3e5a' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'oras://community.wave.seqera.io/library/whatshap:2.8--c3862a4b2ad0f978'
+        : 'community.wave.seqera.io/library/whatshap:2.8--7fe530bc624a3e5a'}"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
@@ -13,9 +13,9 @@ process WHATSHAP_PHASE {
     tuple val(meta3), path(fasta), path(fai)
 
     output:
-    tuple val(meta), path("*.phased.vcf.gz")    , emit: vcf
+    tuple val(meta), path("*.phased.vcf.gz"), emit: vcf
     tuple val(meta), path("*.phased.vcf.gz.tbi"), emit: tbi
-    path "versions.yml"                         , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,10 +27,10 @@ process WHATSHAP_PHASE {
     whatshap \\
         phase \\
         --output ${prefix}.phased.vcf \\
-        --reference $fasta \\
-        $args \\
-        $vcf \\
-        $bam
+        --reference ${fasta} \\
+        ${args} \\
+        ${vcf} \\
+        ${bam}
 
     bgzip ${prefix}.phased.vcf
     tabix -p vcf ${prefix}.phased.vcf.gz
