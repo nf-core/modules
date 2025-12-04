@@ -320,7 +320,36 @@
     },
     "dream": {
         "content": [
-            "treatment_mCherry_hND6_test_dream.dream.results.tsv",
+            [
+                [
+                    {
+                        "id": "treatment_mCherry_hND6_test",
+                        "variable": "treatment",
+                        "reference": "mCherry",
+                        "target": "hND6",
+                        "blocking_factors": "sample_number",
+                        "formula": "~ treatment + (1 | sample_number)",
+                        "differential_method": "dream"
+                    },
+                    "treatment_mCherry_hND6_test_dream.dream.results.tsv:md5,df0717ddf702543c375c1a5f4eae3fd7"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "treatment_mCherry_hND6_test",
+                        "variable": "treatment",
+                        "reference": "mCherry",
+                        "target": "hND6",
+                        "blocking_factors": "sample_number",
+                        "formula": "~ treatment + (1 | sample_number)",
+                        "differential_method": "dream",
+                        "fc_threshold": 1.5,
+                        "stat_threshold": 0.05
+                    },
+                    "treatment_mCherry_hND6_test_filtered.tsv:md5,4b7b93e839dbe6ef375ab035dc44192b"
+                ]
+            ],
             [
                 [
                     {
@@ -344,7 +373,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2025-12-04T17:57:28.3340112"
+        "timestamp": "2025-12-04T20:16:52.24824433"
     },
     "deseq2 + limma-voom + propd - mouse - basic": {
         "content": [
