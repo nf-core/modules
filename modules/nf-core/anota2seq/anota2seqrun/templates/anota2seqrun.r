@@ -118,6 +118,7 @@ opt <- list(
     sample_id_col = "sample",
     samples_pairing_col = NULL,
     samples_batch_col = NULL,
+    gene_id_col = "gene_id",
     subset_to_contrast_samples = FALSE,
     exclude_samples_col = NULL,
     exclude_samples_values = NULL,
