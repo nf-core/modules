@@ -44,7 +44,7 @@ process WHATSHAP_PHASE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.phased.vcf.gz
+    echo "" | gzip > ${prefix}.phased.vcf.gz
     touch ${prefix}.phased.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
