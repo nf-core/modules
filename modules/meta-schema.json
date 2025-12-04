@@ -225,6 +225,44 @@
             "items": {
                 "type": "string"
             }
+        },
+        "containers": {
+            "type": "object",
+            "description": "Container images for the module",
+            "properties": {
+                "docker": {
+                    "type": "object",
+                    "description": "Docker containers for different architectures",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/container"
+                    }
+                },
+                "singularity": {
+                    "type": "object",
+                    "description": "Singularity containers for different architectures",
+                    "additionalProperties": {
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/container"
+                            },
+                            {
+                                "properties": {
+                                    "name": {
+                                        "pattern": "^oras://.*$"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                },
+                "conda": {
+                    "type": "object",
+                    "description": "Conda lock files for different architectures",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/condaLockFile"
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -268,6 +306,42 @@
                 }
             },
             "required": ["type", "description"]
+        },
+        "container": {
+            "type": "object",
+            "description": "Container information for Docker or Singularity",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Container name/URI"
+                },
+                "https": {
+                    "type": "string",
+                    "description": "HTTPS URL to download the container (only for Singularity)",
+                    "pattern": "^https://.*$"
+                },
+                "build_id": {
+                    "type": "string",
+                    "description": "Build ID of the container"
+                },
+                "scan_id": {
+                    "type": "string",
+                    "description": "Security scan ID of the container (only for Docker)"
+                }
+            },
+            "required": ["name", "build_id"]
+        },
+        "condaLockFile": {
+            "type": "object",
+            "description": "Conda lock file information",
+            "properties": {
+                "lock file": {
+                    "type": "string",
+                    "description": "URL to the conda lock file",
+                    "pattern": "^https://.*$"
+                }
+            },
+            "required": ["lock file"]
         }
     },
     "required": ["name", "description", "keywords", "authors", "output", "tools"]
