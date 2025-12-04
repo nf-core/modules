@@ -56,17 +56,17 @@ output:
       - "echo td2: ${VERSION}":
           type: string
           description: The version of TD2 used
-  topics:
-    - versions:
-        - - process:
-              type: string
-              description: The process the versions were collected from
-          - tool:
-              type: string
-              description: The tool name
-          - version:
-              type: string
-              description: The version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - TD2.Predict:
+          type: string
+          description: The tool name
+      - "echo td2: ${VERSION}":
+          type: string
+          description: The version of TD2 used
 authors:
   - "@khersameesh24"
 maintainers:
