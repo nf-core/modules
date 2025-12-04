@@ -12,13 +12,14 @@ process TD2_PREDICT {
 
     output:
     tuple val(meta), path("${prefix}/*.TD2.{bed,cds,gff3,pep}"), emit: predictions
-    path("versions.yml")                                       , emit: versions
+    tuple val("${task.process}"), val('TD2.Predict'), eval("echo td2: ${VERSION}"), emit: versions_td2, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    VERSION = 'v1.0.6' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
@@ -30,14 +31,10 @@ process TD2_PREDICT {
         ${args}
 
     mv *.TD2.{bed,cds,gff3,pep} ${prefix}/
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        td2: \$(td2 v1.0.6)
-    END_VERSIONS
     """
 
     stub:
+    VERSION = 'v1.0.6' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
@@ -46,10 +43,5 @@ process TD2_PREDICT {
     touch ${prefix}/fakefile.TD2.cds
     touch ${prefix}/fakefile.TD2.gff3
     touch ${prefix}/fakefile.TD2.pep
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        td2: \$(td2 v1.0.6)
-    END_VERSIONS
     """
 }

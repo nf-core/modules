@@ -12,13 +12,14 @@ process TD2_LONGORFS {
 
     output:
     tuple val(meta), path("${prefix}/longest_orfs.{cds,gff3,pep}"), emit: orfs
-    path("versions.yml")                                          , emit: versions
+    tuple val("${task.process}"), val('TD2.LongOrfs'), eval("echo td2: ${VERSION}"), emit: versions_td2, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    VERSION = 'v1.0.6' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
@@ -27,14 +28,10 @@ process TD2_LONGORFS {
     -O ${prefix} \\
     --threads ${task.cpus} \\
     ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        td2: \$(td2 v1.0.6)
-    END_VERSIONS
     """
 
     stub:
+    VERSION = 'v1.0.6' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
@@ -42,10 +39,5 @@ process TD2_LONGORFS {
     touch ${prefix}/longest_orfs.cds
     touch ${prefix}/longest_orfs.gff3
     touch ${prefix}/longest_orfs.pep
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        td2: \$(td2 v1.0.6)
-    END_VERSIONS
     """
 }
