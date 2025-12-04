@@ -84,9 +84,9 @@ output:
   - multiqc:
       type: file
       description: |
-        Channel containing MultiQC report aggregating results across samples.
-        Structure: [ val(meta), path(multiqc_report.html) ]
-      pattern: "*.html"
+        Channel containing files for MultiQC input (metrics, stats, flagstat).
+        Structure: [ path(files) ]
+      pattern: "*.{txt,stats,flagstat}"
   - versions:
       type: file
       description: |
