@@ -58,6 +58,7 @@ process MINIMAC4_IMPUTE {
                     args.contains("--output-format usav")   || args.contains("-O usav")   ? "usav"   :
                     "vcf.gz"
     def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
+
     """
     ${create_cmd} ${prefix}.${extension}
 

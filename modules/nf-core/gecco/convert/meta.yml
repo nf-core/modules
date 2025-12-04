@@ -57,7 +57,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.gff":
+      - ${prefix}/*.gff:
           type: file
           description: |
             GFF3 converted cluster tables containing the position
@@ -71,7 +71,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.region*.gbk":
+      - ${prefix}/*.region*.gbk:
           type: file
           description: |
             Converted and aliased GenBank files so that they can be loaded by BiG-SLiCE
@@ -84,7 +84,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.faa":
+      - ${prefix}/*.faa:
           type: file
           description: |
             Amino-acid FASTA converted GenBank files of all the proteins in a cluster
@@ -97,7 +97,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.fna":
+      - ${prefix}/*.fna:
           type: file
           description: |
             Nucleotide sequence FASTA converted GenBank files from the cluster
