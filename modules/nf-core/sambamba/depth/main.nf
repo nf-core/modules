@@ -50,7 +50,7 @@ process SAMBAMBA_DEPTH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sambamba: \$(sambamba --version)
+        sambamba: \$(echo \$(sambamba --version 2>&1) | awk '{print \$2}' )
     END_VERSIONS
     """
 }
