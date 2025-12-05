@@ -49,7 +49,7 @@ nextflow_process {
                             "Static_Plots.py": path(process.out.output_folder[0] + "/sections/Plots/Static_Plots.py")
                                                 .readLines()[0..3].sort().join('\n').md5()
                         ],
-                        versions: process.out.versions
+                        versions: path(process.out.versions[0]).yaml,
                     ]).match()
                 }
             )
@@ -80,7 +80,7 @@ nextflow_process {
                             "quarto_report.qmd": path(process.out.output_folder[0] + "/quarto_report.qmd")
                                                 .readLines()[0..3].join('\n').md5()
                         ],
-                        versions: process.out.versions
+                        versions: path(process.out.versions[0]).yaml
                     ]).match()
                 }
             )
@@ -111,7 +111,7 @@ nextflow_process {
                             "quarto_report.qmd": path(process.out.output_folder[0] + "/quarto_report.qmd")
                                                     .readLines()[0..3].sort().join('\n').md5()
                         ],
-                        versions: process.out.versions
+                        versions: path(process.out.versions[0]).yaml,
                     ]).match()
                 }
             )
@@ -138,7 +138,7 @@ nextflow_process {
                     assert snapshot(
                         process.out.output_folder.collect { file(it).getName() } +
                         process.out.output_files.collect { file(it).getName() },
-                        versions: process.out.versions
+                        versions: path(process.out.versions[0]).yaml,
                     ).match()
                 }
             )
