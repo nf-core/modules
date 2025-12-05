@@ -1,0 +1,57 @@
+// nf-core modules test plastid
+nextflow_process {
+
+    name "Test Process PLASTID_METAGENE_GENERATE"
+    script "../main.nf"
+    process "PLASTID_METAGENE_GENERATE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "plastid"
+    tag "plastid/metagene_generate"
+
+    test("human chr20 gtf") {
+
+        when {
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)
+                input[1] = 'cds_start'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.rois_txt).match('rois_txt') },
+                { assert snapshot(process.out.rois_bed).match('rois_bed') },
+                { assert snapshot(process.out.versions).match('versions') }
+            )
+        }
+    }
+
+    test("human chr20 gtf -stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)
+                input[1] = 'cds_start'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.rois_txt).match('rois_txt_stub') },
+                { assert snapshot(process.out.rois_bed).match('rois_bed_stub') },
+                { assert snapshot(process.out.versions).match('versions_stub') }
+            )
+        }
+    }
+
+}
