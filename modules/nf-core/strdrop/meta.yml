@@ -1,0 +1,69 @@
+name: stranger
+description: Annotates output files from ExpansionHunter with the pathologic implications
+  of the repeat sizes.
+keywords:
+  - STR
+  - repeat_expansions
+  - annotate
+  - vcf
+tools:
+  - stranger:
+      description: Annotate VCF files with str variants
+      homepage: https://github.com/moonso/stranger
+      documentation: https://github.com/moonso/stranger
+      tool_dev_url: https://github.com/moonso/stranger
+      doi: "10.5281/zenodo.4548873"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: VCF with repeat expansions
+        pattern: "*.{vcf.gz,vcf}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test' ]
+    - variant_catalog:
+        type: file
+        description: json file with repeat expansion sites to genotype
+        pattern: "*.{json}"
+        ontologies:
+          - edam: http://edamontology.org/format_3464 # JSON
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: Annotated VCF file
+          pattern: "*.{vcf.gz}"
+      - "*.vcf.gz":
+          type: map
+          description: Annotated VCF file
+          pattern: "*.{vcf.gz}"
+  tbi:
+    - - meta:
+          type: map
+          description: Annotated VCF file
+          pattern: "*.{vcf.gz}"
+      - "*.vcf.gz.tbi":
+          type: map
+          description: Index of the annotated VCF file
+          pattern: "*.{vcf.gz.tbi}"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@ljmesi"
+maintainers:
+  - "@ljmesi"
