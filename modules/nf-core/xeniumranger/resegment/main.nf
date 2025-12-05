@@ -19,18 +19,25 @@ process XENIUMRANGER_RESEGMENT {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "XENIUMRANGER_RESEGMENT module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args = task.ext.args ?: ""
+    def args = (task.ext.args ?: "").trim()
+    def args_block = args ? "\\\n        ${args}" : ""
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
+    rm -rf "${prefix}"
+
     xeniumranger resegment \\
         --id="XENIUMRANGER_RESEGMENT" \\
         --xenium-bundle="${xenium_bundle}" \\
         --localcores=${task.cpus} \\
-        --localmem=${task.memory.toGiga()} \\
-        ${args}
+        --localmem=${task.memory.toGiga()}${args_block}
 
-    mv XENIUMRANGER_RESEGMENT/outs ${prefix}
+    if [ -d "XENIUMRANGER_RESEGMENT/outs" ]; then
+        rm -rf "${prefix}"
+        mv XENIUMRANGER_RESEGMENT/outs "${prefix}"
+    else
+        mkdir -p "${prefix}"
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -43,10 +50,25 @@ process XENIUMRANGER_RESEGMENT {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "XENIUMRANGER_RESEGMENT module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
+    def args = (task.ext.args ?: "").trim()
+    def args_block = args ? "\\\n        ${args}" : ""
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p "${prefix}"
-    touch "${prefix}/fake_file.txt"
+    rm -rf "${prefix}"
+
+    xeniumranger resegment \\
+        --id="XENIUMRANGER_RESEGMENT" \\
+        --xenium-bundle="${xenium_bundle}" \\
+        --localcores=${task.cpus} \\
+        --localmem=${task.memory.toGiga()}${args_block} \\
+        --dry
+
+    if [ -d "XENIUMRANGER_RESEGMENT/outs" ]; then
+        rm -rf "${prefix}"
+        mv XENIUMRANGER_RESEGMENT/outs "${prefix}"
+    else
+        mkdir -p "${prefix}"
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

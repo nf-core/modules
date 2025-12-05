@@ -29,7 +29,7 @@ nextflow_process {
                 input[0] = Channel.of([
                         [id: "test_xeniumranger_relabel"],
                     ]).combine(UNTAR.out.untar.map { it[1] })
-                input[1] = UNTAR.out.untar.map { it[1] + "/gene_panel.json" }
+                      .map { meta, bundle -> [meta, bundle, bundle + "/gene_panel.json"] }
                 """
             }
         }
@@ -51,7 +51,7 @@ nextflow_process {
                 input[0] = Channel.of([
                         [id: "test_xeniumranger_relabel"],
                     ]).combine(UNTAR.out.untar.map { it[1] })
-                input[1] = UNTAR.out.untar.map { it[1] + "/gene_panel.json" }
+                      .map { meta, bundle -> [meta, bundle, bundle + "/gene_panel.json"] }
                 """
             }
         }

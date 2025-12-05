@@ -5,9 +5,10 @@ process XENIUMRANGER_RENAME {
     container "nf-core/xeniumranger:4.0"
 
     input:
-    tuple val(meta), path(xenium_bundle)
-    val(region_name)
-    val(cassette_name)
+    tuple val(meta), 
+        path(xenium_bundle, stageAs: "bundle/"), 
+        val(region_name), 
+        val(cassette_name)
 
     output:
     tuple val(meta), path("${prefix}"), emit: outs
@@ -21,17 +22,22 @@ process XENIUMRANGER_RENAME {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "XENIUMRANGER_RENAME module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args = task.ext.args ?: ''
+    
+    def args = task.ext.args ?: ""
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    rm -rf "${prefix}"
+
     xeniumranger rename \\
-        --id="${prefix}" \\
+        --id="XENIUMRANGER_RENAME" \\
         --xenium-bundle="${xenium_bundle}" \\
         --region-name="${region_name}" \\
         --cassette-name="${cassette_name}" \\
         --localcores=${task.cpus} \\
         --localmem=${task.memory.toGiga()} \\
         ${args}
+
+    mv XENIUMRANGER_RENAME/outs "${prefix}"
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -45,9 +51,26 @@ process XENIUMRANGER_RENAME {
         error "XENIUMRANGER_RENAME module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     prefix = task.ext.prefix ?: "${meta.id}"
+    args = task.ext.args ?: ""
     """
-    mkdir -p "${prefix}"
-    touch "${prefix}/fake_file.txt"
+    rm -rf "${prefix}"
+
+    xeniumranger rename \\
+        --id="XENIUMRANGER_RENAME" \\
+        --xenium-bundle="${xenium_bundle}" \\
+        --region-name="${region_name}" \\
+        --cassette-name="${cassette_name}" \\
+        --localcores=${task.cpus} \\
+        --localmem=${task.memory.toGiga()} \\
+        ${args} \\
+        --dry
+
+    if [ -d "XENIUMRANGER_RENAME/outs" ]; then
+        mv XENIUMRANGER_RENAME/outs "${prefix}"
+    else
+        mkdir -p "${prefix}"
+        touch "${prefix}/dry_run.txt"
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

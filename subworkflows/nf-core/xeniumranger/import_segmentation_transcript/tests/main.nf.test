@@ -1,0 +1,74 @@
+nextflow_workflow {
+
+    name "Test Workflow XENIUMRANGER_IMPORT_SEGMENTATION_TRANSCRIPT"
+    script "../main.nf"
+    workflow "XENIUMRANGER_IMPORT_SEGMENTATION_TRANSCRIPT"
+    config "./nextflow.config"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "xeniumranger"
+    tag "xeniumranger/import_segmentation_transcript"
+    tag "untar"
+    tag "xeniumranger/import_segmentation"
+
+    setup {
+        run("UNTAR") {
+            script "../../../../../modules/nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id:'test_data'],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialxe/xenium_bundle.tar.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("xeniumranger import_segmentation_transcript - with transcript assignment") {
+        when {
+            workflow {
+                """
+                input[0] = UNTAR.out.untar.map { meta, dir ->
+                     [[id:'test_xeniumranger_transcript'], dir]
+                }
+                input[1] = UNTAR.out.untar.map { meta, dir ->
+                     [[id:'test_xeniumranger_transcript'], dir + "/cells.zarr.zip"]
+                }
+                input[2] = Channel.empty()
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+
+    test("xeniumranger import_segmentation_transcript - stub") {
+        options "-stub"
+        when {
+            workflow {
+                """
+                input[0] = UNTAR.out.untar.map { meta, dir ->
+                     [[id:'test_xeniumranger_transcript'], dir]
+                }
+                input[1] = UNTAR.out.untar.map { meta, dir ->
+                     [[id:'test_xeniumranger_transcript'], dir + "/cells.zarr.zip"]
+                }
+                input[2] = Channel.empty()
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+}
+

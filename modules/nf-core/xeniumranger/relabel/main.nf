@@ -5,8 +5,7 @@ process XENIUMRANGER_RELABEL {
     container "nf-core/xeniumranger:4.0"
 
     input:
-    tuple val(meta), path(xenium_bundle)
-    path(gene_panel)
+    tuple val(meta), path(xenium_bundle), path(gene_panel)
     output:
     tuple val(meta), path("${prefix}"), emit: outs
     path "versions.yml", emit: versions
@@ -19,16 +18,22 @@ process XENIUMRANGER_RELABEL {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "XENIUMRANGER_RELABEL module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args = task.ext.args ?: ''
+    def args = (task.ext.args ?: '').trim()
+    def args_block = args ? "\\\n        ${args}" : ""
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    rm -rf "${prefix}"
+
     xeniumranger relabel \\
         --id="${prefix}" \\
         --xenium-bundle="${xenium_bundle}" \\
         --panel="${gene_panel}" \\
         --localcores=${task.cpus} \\
-        --localmem=${task.memory.toGiga()} \\
-        ${args}
+        --localmem=${task.memory.toGiga()}${args_block}
+
+    if [ ! -d "${prefix}" ]; then
+        mkdir -p "${prefix}"
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -41,10 +46,23 @@ process XENIUMRANGER_RELABEL {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "XENIUMRANGER_RELABEL module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
+    def args = (task.ext.args ?: '').trim()
+    def args_block = args ? "\\\n        ${args}" : ""
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p "${prefix}"
-    touch "${prefix}/fake_file.txt"
+    rm -rf "${prefix}"
+
+    xeniumranger relabel \\
+        --id="${prefix}" \\
+        --xenium-bundle="${xenium_bundle}" \\
+        --panel="${gene_panel}" \\
+        --localcores=${task.cpus} \\
+        --localmem=${task.memory.toGiga()}${args_block} \\
+        --dry
+
+    if [ ! -d "${prefix}" ]; then
+        mkdir -p "${prefix}"
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

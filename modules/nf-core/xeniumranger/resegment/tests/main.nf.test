@@ -33,6 +33,7 @@ nextflow_process {
             }
         }
         then {
+            // xeniumranger doesn't generate deterministic outputs, so we can't use snapshot
             assertAll(
                 { assert process.success },
                 { assert process.out.outs != null },

@@ -1,0 +1,54 @@
+name: xeniumranger_import_segmentation_image
+description: >
+  Helper subworkflow that prepares optional image-based segmentation inputs and
+  executes the `xeniumranger import-segmentation` module.
+keywords:
+  - xenium
+  - import segmentation
+  - nuclei
+  - cells
+modules:
+  - xeniumranger/import-segmentation
+input:
+  - ch_input:
+      description: >
+        Channel emitting tuples `[meta, xenium_bundle, nuclei, cells, coordinate_transform]`.
+        Use empty lists `[]` for optional entries that are not available.
+      structure:
+        - meta:
+            type: map
+            description: Sample metadata, must contain `id`
+        - xenium_bundle:
+            type: directory
+            description: Path to the Xenium bundle to reanalyse
+        - nuclei:
+            type: file
+            optional: true
+            description: Optional nuclei segmentation input (mask or GeoJSON). Use [] if absent.
+        - cells:
+            type: file
+            optional: true
+            description: Optional cell segmentation input. Use [] if absent.
+        - coordinate_transform:
+            type: file
+            optional: true
+            description: Optional image alignment transform CSV. Use [] if absent.
+output:
+  outs:
+    description: Channel of Xenium bundle outputs produced by import-segmentation
+    structure:
+      - meta:
+          type: map
+          description: Sample metadata
+      - "${meta.id}":
+          type: directory
+          description: Output Xenium bundle directory
+  versions:
+    description: Aggregated versions emitted by the module
+    structure:
+      - path:
+          type: file
+          description: `versions.yml`
+maintainers:
+  - "@your_github_handle"
+

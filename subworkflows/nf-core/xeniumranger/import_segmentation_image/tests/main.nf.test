@@ -1,0 +1,71 @@
+nextflow_workflow {
+
+    name "Test Workflow XENIUMRANGER_IMPORT_SEGMENTATION_IMAGE"
+    script "../main.nf"
+    workflow "XENIUMRANGER_IMPORT_SEGMENTATION_IMAGE"
+    config "./nextflow.config"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "xeniumranger"
+    tag "xeniumranger/import_segmentation_image"
+    tag "untar"
+    tag "xeniumranger/import_segmentation"
+
+    setup {
+        run("UNTAR") {
+            script "../../../../../modules/nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id:'test_data'],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialxe/xenium_bundle.tar.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("xeniumranger import_segmentation_image - with nuclei") {
+        when {
+            workflow {
+                """
+                input[0] = UNTAR.out.untar.map { meta, dir -> [[id:'test_xeniumranger_image'], dir] }
+                input[1] = Channel.of('{"type":"FeatureCollection","features":[{"type":"Feature","id":"cell_1","geometry":{"type":"Polygon","coordinates":[[[0,0],[10,0],[10,10],[0,10],[0,0]]]},"properties":{}}]}')
+                    .collectFile(name: 'nuclei.geojson')
+                    .map { file -> [[id:'test_xeniumranger_image'], file] }
+                input[2] = Channel.empty()
+                input[3] = Channel.empty()
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+
+    test("xeniumranger import_segmentation_image - stub") {
+        options "-stub"
+        when {
+            workflow {
+                """
+                input[0] = UNTAR.out.untar.map { meta, dir -> [[id:'test_xeniumranger_image'], dir] }
+                input[1] = Channel.of('{"type":"FeatureCollection","features":[{"type":"Feature","id":"cell_1","geometry":{"type":"Polygon","coordinates":[[[0,0],[10,0],[10,10],[0,10],[0,0]]]},"properties":{}}]}')
+                    .collectFile(name: 'nuclei.geojson')
+                    .map { file -> [[id:'test_xeniumranger_image'], file] }
+                input[2] = Channel.empty()
+                input[3] = Channel.empty()
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+}
