@@ -10,7 +10,7 @@ does not support installing packages on the fly to read-only directories.
 #!/bin/bash
 set -euo pipefail
 
-ORG="quay.io/hf-core"
+ORG="quay.io/nf-core"
 VERSION="v0.5.1"
 
 # 1. Build & push the base image (nextflow version)
