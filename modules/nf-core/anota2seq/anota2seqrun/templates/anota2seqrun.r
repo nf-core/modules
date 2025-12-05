@@ -319,7 +319,7 @@ anota2seqDataSetFromMatrix_args <- list(
 )
 
 if (! is.null(opt\$samples_batch_col)){
-    anota2seqDataSetFromMatrix_args\$batchVec <- samples[rnaseq_samples, opt\$samples_batch_col]
+    anota2seqDataSetFromMatrix_args\$batchVec <- sample.sheet[rnaseq_samples, opt\$samples_batch_col]
 }
 
 ads <- do.call(anota2seqDataSetFromMatrix, anota2seqDataSetFromMatrix_args)
