@@ -7,7 +7,7 @@ process VCF2MAF {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/04/04730c70a408fbee8c4a479832b340ca860113c09787061078a66ac56bd3ab56/data':
-        'https://community.wave.seqera.io/library/ensembl-vep_vcf2maf:795c7ca795a6c63a' }"
+        'community.wave.seqera.io/library/ensembl-vep_vcf2maf:795c7ca795a6c63a' }"
 
     input:
     tuple val(meta), path(vcf) // Use an uncompressed VCF file!
