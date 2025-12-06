@@ -15,7 +15,7 @@ process TRGT_PLOT {
 
     output:
     tuple val(meta), path("*.{png,pdf,svg}"), emit: plot
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('trgt'), eval("trgt --version | sed 's/.* //g'"), emit: versions_trgt, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

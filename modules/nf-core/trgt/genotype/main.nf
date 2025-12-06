@@ -15,8 +15,8 @@ process TRGT_GENOTYPE {
 
     output:
     tuple val(meta), path("*.vcf.gz")      , emit: vcf
-    tuple val(meta), path("*.spanning.bam"), emit: bam     , optional: true
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), path("*.spanning.bam"), emit: bam, optional: true
+    tuple val("${task.process}"), val('trgt'), eval("trgt --version | sed 's/.* //g'"), emit: versions_trgt, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
