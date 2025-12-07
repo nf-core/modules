@@ -1,19 +1,18 @@
 #!/usr/bin/env python3
-import argparse
 import os
+
+# This must execute before decoupler is imported, so the env vars are visible when Numba decides whether to cache
+os.environ["NUMBA_DISABLE_CACHE"] = "1"
+os.environ["NUMBA_CACHE_DIR"] = "./tmp"
+os.environ["MPLCONFIGDIR"] = "./tmp"
+
+import argparse
 import shlex
 import sys
 
-import decoupler as dc
+import decoupler as dc  # noqa: E402
 import matplotlib.pyplot as plt
-import numba
-import pandas as pd
-
-os.environ["NUMBA_CACHE_DIR"] = "./tmp"
-os.environ["MPLCONFIGDIR"] = "./tmp"
-os.environ["NUMBA_DISABLE_CACHE"] = "1"
-
-numba.config.DISABLE_CACHE = True
+import pandas as pd  # noqa: E402
 
 mat = pd.read_csv("${mat}", sep="\t", index_col=0)
 net = pd.read_csv("${net}", sep="\t")
