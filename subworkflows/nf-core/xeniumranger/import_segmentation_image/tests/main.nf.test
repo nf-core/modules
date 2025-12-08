@@ -3,7 +3,6 @@ nextflow_workflow {
     name "Test Workflow XENIUMRANGER_IMPORT_SEGMENTATION_IMAGE"
     script "../main.nf"
     workflow "XENIUMRANGER_IMPORT_SEGMENTATION_IMAGE"
-    config "./nextflow.config"
 
     tag "subworkflows"
     tag "subworkflows_nfcore"
@@ -15,7 +14,7 @@ nextflow_workflow {
 
     setup {
         run("UNTAR") {
-            script "../../../../../modules/nf-core/untar/main.nf"
+            script "modules/nf-core/untar/main.nf"
             process {
                 """
                 input[0] = [
