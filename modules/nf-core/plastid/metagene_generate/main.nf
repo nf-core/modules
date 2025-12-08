@@ -1,5 +1,5 @@
 process PLASTID_METAGENE_GENERATE {
-    tag "$gtf"
+    tag "$annotation"
     label "process_low"
 
     conda "${moduleDir}/environment.yml"
@@ -8,7 +8,7 @@ process PLASTID_METAGENE_GENERATE {
         'biocontainers/plastid:0.6.1--py39had3e4b6_2' }"
 
     input:
-    path gtf
+    path annotation
 
     output:
     path "*_rois.txt"  , emit: rois_txt
@@ -21,7 +21,7 @@ process PLASTID_METAGENE_GENERATE {
     script:
     def args = task.ext.args ?: ''
     """
-    metagene generate "${gtf.baseName}" --annotation_files "$gtf" $args
+    metagene generate "${annotation.baseName}" --annotation_files "$annotation" $args
     sed -i '/^##/d' *_rois.* # remove variable comment header
 
     cat <<-END_VERSIONS > versions.yml
@@ -32,8 +32,8 @@ process PLASTID_METAGENE_GENERATE {
 
     stub:
     """
-    touch ${gtf.baseName}_rois.txt
-    touch ${gtf.baseName}_rois.bed
+    touch ${annotation.baseName}_rois.txt
+    touch ${annotation.baseName}_rois.bed
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

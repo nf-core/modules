@@ -18,12 +18,15 @@ tools:
       identifier: biotools:plastid
 
 input:
-  - gtf:
+  - annotation:
       type: file
-      description: GTF file of reference genome
-      pattern: "*.gtf"
+      description: annotation file of reference genome (BED, bigBed, GTF, GFF3)
+      pattern: "*.{bed,bigbed,gtf,gff3}"
       ontologies:
+        - edam: http://edamontology.org/format_3003 # BED
+        - edam: http://edamontology.org/format_3004 # bigBed
         - edam: http://edamontology.org/format_2306 # GTF
+        - edam: http://edamontology.org/format_1975 # GFF3
 output:
   best_offset:
     - "*_rois.txt":
