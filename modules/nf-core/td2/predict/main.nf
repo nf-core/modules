@@ -12,7 +12,7 @@ process TD2_PREDICT {
 
     output:
     tuple val(meta), path("${prefix}/*.TD2.{bed,cds,gff3,pep}"), emit: predictions
-    tuple val("${task.process}"), val('TD2.Predict'), eval("echo td2: ${VERSION}"), emit: versions_td2, topic: versions
+    tuple val("${task.process}"), val('TD2.Predict'), eval("echo ${VERSION}"), emit: versions_td2, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
