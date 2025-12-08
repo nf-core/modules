@@ -7,10 +7,11 @@ nextflow_workflow {
 
     tag "subworkflows"
     tag "subworkflows_nfcore"
+    tag "subworkflows/xeniumranger/import_segmentation_image"
     tag "xeniumranger"
     tag "xeniumranger/import_segmentation_image"
     tag "untar"
-    tag "xeniumranger/import_segmentation"
+    tag "xeniumranger/import-segmentation"
 
     setup {
         run("UNTAR") {

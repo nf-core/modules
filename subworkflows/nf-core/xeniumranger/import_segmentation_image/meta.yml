@@ -7,8 +7,9 @@ keywords:
   - import segmentation
   - nuclei
   - cells
-modules:
+components:
   - xeniumranger/import-segmentation
+  - xeniumranger/import/segmentation
 input:
   - ch_input:
       description: >
@@ -34,21 +35,22 @@ input:
             optional: true
             description: Optional image alignment transform CSV. Use [] if absent.
 output:
-  outs:
-    description: Channel of Xenium bundle outputs produced by import-segmentation
-    structure:
-      - meta:
-          type: map
-          description: Sample metadata
-      - "${meta.id}":
-          type: directory
-          description: Output Xenium bundle directory
-  versions:
-    description: Aggregated versions emitted by the module
-    structure:
-      - path:
-          type: file
-          description: `versions.yml`
+  - outs:
+      description: Channel of Xenium bundle outputs produced by import-segmentation
+      structure:
+        - meta:
+            type: map
+            description: Sample metadata
+        - "${meta.id}":
+            type: directory
+            description: Output Xenium bundle directory
+  - versions:
+      description: Aggregated versions emitted by the module
+      structure:
+        - path:
+            type: file
+            description: "versions.yml"
+authors:
+  - "@an-altosian"
 maintainers:
-  - "@your_github_handle"
-
+  - "@an-altosian"

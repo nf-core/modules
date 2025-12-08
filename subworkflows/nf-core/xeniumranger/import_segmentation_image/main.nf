@@ -9,7 +9,6 @@ workflow XENIUMRANGER_IMPORT_SEGMENTATION_IMAGE {
     ch_coordinate_transform    // [meta, coordinate_transform] (use [] if absent)
 
     main:
-    ch_versions = channel.empty()
 
     def input = ch_bundle
         .map { meta, bundle -> [meta.id, [meta, bundle]] }
@@ -50,9 +49,8 @@ workflow XENIUMRANGER_IMPORT_SEGMENTATION_IMAGE {
         }
 
     XENIUMRANGER_IMPORT_SEGMENTATION(input)
-    ch_versions = ch_versions.mix(XENIUMRANGER_IMPORT_SEGMENTATION.out.versions)
 
     emit:
     outs     = XENIUMRANGER_IMPORT_SEGMENTATION.out.outs
-    versions = ch_versions
+    versions = XENIUMRANGER_IMPORT_SEGMENTATION.out.versions
 }

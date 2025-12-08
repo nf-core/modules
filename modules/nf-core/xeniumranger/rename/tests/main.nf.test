@@ -13,7 +13,7 @@ nextflow_process {
 
     setup {
             run("UNTAR") {
-                script "../../../untar/main.nf"
+                script "modules/nf-core/untar/main.nf"
                 process {
                     """
                     input[0] = [[], file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialxe/xenium_bundle.tar.gz', checkIfExists: true)]

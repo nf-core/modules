@@ -8,7 +8,6 @@ workflow XENIUMRANGER_IMPORT_SEGMENTATION_TRANSCRIPT {
     ch_viz_polygons          // [meta, viz_polygons]
 
     main:
-    ch_versions = channel.empty()
 
     def input = ch_bundle
         .map { meta, bundle -> [meta.id, meta, bundle] }
@@ -32,10 +31,9 @@ workflow XENIUMRANGER_IMPORT_SEGMENTATION_TRANSCRIPT {
         }
 
     XENIUMRANGER_IMPORT_SEGMENTATION(input)
-    ch_versions = ch_versions.mix(XENIUMRANGER_IMPORT_SEGMENTATION.out.versions)
 
     emit:
     outs     = XENIUMRANGER_IMPORT_SEGMENTATION.out.outs
-    versions = ch_versions
+    versions = XENIUMRANGER_IMPORT_SEGMENTATION.out.versions
 }
 
