@@ -2,13 +2,15 @@ process XENIUMRANGER_RELABEL {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/xeniumranger:4.0"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'docker://nf-core/xeniumranger:4.0' :
+        'nf-core/xeniumranger:4.0' }"
 
     input:
     tuple val(meta), path(xenium_bundle), path(gene_panel)
     output:
     tuple val(meta), path("${prefix}"), emit: outs
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val("xeniumranger"), eval("xeniumranger -V | sed -e 's/xeniumranger-/- /g'"), emit: versions_xeniumranger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,11 +36,6 @@ process XENIUMRANGER_RELABEL {
     if [ ! -d "${prefix}" ]; then
         mkdir -p "${prefix}"
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        xeniumranger: \$(xeniumranger -V | sed -e "s/xeniumranger-/- /g")
-    END_VERSIONS
     """
 
     stub:
@@ -63,10 +60,5 @@ process XENIUMRANGER_RELABEL {
     if [ ! -d "${prefix}" ]; then
         mkdir -p "${prefix}"
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        xeniumranger: \$(xeniumranger -V | sed -e "s/xeniumranger-/- /g")
-    END_VERSIONS
     """
 }

@@ -2,14 +2,16 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/xeniumranger:4.0"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'docker://nf-core/xeniumranger:4.0' :
+        'nf-core/xeniumranger:4.0' }"
 
     input:
     tuple val(meta), path(xenium_bundle, stageAs: "bundle/"), path(transcript_assignment), path(viz_polygons), path(nuclei), path(cells), path(coordinate_transform)
 
     output:
     tuple val(meta), path("${prefix}"), emit: outs
-    tuple val("${task.process}"), val("xeniumranger"), eval("xeniumranger -V | sed -e 's/xeniumranger-/- /g'"), emit: versions, topic: versions
+    tuple val("${task.process}"), val("xeniumranger"), eval("xeniumranger -V | sed -e 's/xeniumranger-/- /g'"), emit: versions_xeniumranger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,7 +34,7 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
         assembled_args = assembled_args.replaceAll("--units=pixels", "--units=microns")
         }
     def args = assembled_args ? assembled_args.join(" \\\n        ") : ""
-    
+
     """
     xeniumranger import-segmentation \\
         --id="${prefix}" \\
@@ -56,7 +58,7 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
     if (viz_polygons) { assembled_args << "--viz-polygons=\"${viz_polygons}\"" }
     if (coordinate_transform) { assembled_args << "--coordinate-transform=\"${coordinate_transform}\"" }
     def args = assembled_args.join(" \\\n        ")
-    
+
     """
     xeniumranger import-segmentation \\
         --id="${prefix}" \\
