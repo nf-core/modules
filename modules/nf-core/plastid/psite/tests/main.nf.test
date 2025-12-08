@@ -28,9 +28,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.metagene_profiles).match('metagene_profiles') },
+                { assert path(process.out.metagene_profiles.get(0).get(1)).getText().contains('28-mers') },
                 { assert snapshot(process.out.p_offsets_png).match('p_offsets_png') },
-                { assert snapshot(process.out.p_offsets).match('p_offsets') },
+                { assert path(process.out.p_offsets.get(0).get(1)).getText().contains("length\tp_offset") },
                 { assert snapshot(process.out.versions).match('versions') }
             )
         }

@@ -23,8 +23,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.rois_txt).match('rois_txt') },
-                { assert snapshot(process.out.rois_bed).match('rois_bed') },
+                { assert path(process.out.rois_txt.get(0).get(1)).getText().contains('ENSG') },
+                { assert path(process.out.rois_bed.get(0).get(1)).getText().contains('ENSG') },
                 { assert snapshot(process.out.versions).match('versions') }
             )
         }

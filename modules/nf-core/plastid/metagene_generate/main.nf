@@ -22,7 +22,6 @@ process PLASTID_METAGENE_GENERATE {
     def args = task.ext.args ?: ''
     """
     metagene generate "${annotation.baseName}" --annotation_files "$annotation" $args
-    sed -i '/^##/d' *_rois.* # remove variable comment header
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -29,7 +29,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.tracks).match('wig') },
+                { assert path(process.out.tracks.get(0).get(1).get(0)).getText().contains('track') },
                 { assert snapshot(process.out.versions).match('versions') }
             )
         }

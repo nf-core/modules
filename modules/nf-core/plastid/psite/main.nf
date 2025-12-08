@@ -30,8 +30,6 @@ process PLASTID_PSITE {
         --count_files "$bam" \\
         $args
 
-    sed -i '/^##/d' *.txt # remove variable comment header
-
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         plastid: 0.6.1

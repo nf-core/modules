@@ -31,8 +31,6 @@ process PLASTID_MAKE_WIGGLE {
         -o "$prefix" \\
         $args
 
-    sed -i '/^##/d' *.wig # remove variable comment header
-
     if [ "$output_format" = "bedgraph" ]; then
         for FILE in *.wig; do
             mv "\$FILE" "\${FILE%.wig}.bedgraph"
