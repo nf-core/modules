@@ -26,7 +26,8 @@ input:
         type: file
         description: Fasta file containing the target transcript sequences
         pattern: "*.{fasta}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
 output:
   orfs:
     - - meta:
@@ -39,7 +40,10 @@ output:
           description: Files containing the longest ORFs predicted from the input
             transcript sequences
           pattern: "${prefix}/longest_orfs.{cds,gff3,pep}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+            - edam: http://edamontology.org/format_1975 # GFF3
+            - edam: http://edamontology.org/format_1960 # Protein FASTA
   versions_td2:
     - - ${task.process}:
           type: string
