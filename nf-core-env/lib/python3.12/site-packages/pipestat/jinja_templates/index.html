@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	{% include "head.html" %}
+
+	<script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
+	<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.css">
+	<!--		<script src="https://unpkg.com/bootstrap-table@1.15.4/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.js"></script>-->
+	<!--		The JavaScript code below should be replaced with the remote one above when the fixed-columns extension is fixed. Monitor these two PRs: https://github.com/wenzhixin/bootstrap-table/pull/4511, https://github.com/wenzhixin/bootstrap-table-fixed-columns/pull/29-->
+	<!--		<link href="https://unpkg.com/bootstrap-table@1.15.4/dist/bootstrap-table.min.css" rel="stylesheet">-->
+	<!--		<script src="https://unpkg.com/bootstrap-table@1.15.4/dist/bootstrap-table.min.js"></script>-->
+	<!--		<script>-->
+	<!--		/**-->
+	<!--		* @author zhixin wen <wenzhixin2010@gmail.com>-->
+	<!--		* @version: v1.0.1-->
+	<!--		*/-->
+
+	<!--		(function ($) {-->
+	<!--		'use strict';-->
+
+	<!--		$.extend($.fn.bootstrapTable.defaults, {-->
+	<!--			fixedColumns: false,-->
+	<!--			fixedNumber: 1-->
+	<!--		});-->
+
+	<!--		$.fn.hasHorizontalScrollBar = function() {-->
+	<!--			return this.get(0) ? this.get(0).scrollWidth > this.innerWidth() : false;-->
+	<!--		};-->
+
+	<!--		var BootstrapTable = $.fn.bootstrapTable.Constructor,-->
+	<!--			_initHeader = BootstrapTable.prototype.initHeader,-->
+	<!--			_initBody = BootstrapTable.prototype.initBody,-->
+	<!--			_resetView = BootstrapTable.prototype.resetView;-->
+
+	<!--		BootstrapTable.prototype.initFixedColumns = function () {-->
+	<!--			this.$fixedHeader = $([-->
+	<!--				'<div class="fixed-table-header-columns">',-->
+	<!--				'<table>',-->
+	<!--				'<thead></thead>',-->
+	<!--				'</table>',-->
+	<!--				'</div>'].join(''));-->
+
+	<!--			this.timeoutHeaderColumns_ = 0;-->
+	<!--			this.$fixedHeader.find('table').attr('class', this.$el.attr('class'));-->
+	<!--			this.$fixedHeaderColumns = this.$fixedHeader.find('thead');-->
+	<!--			this.$tableHeader.before(this.$fixedHeader);-->
+
+	<!--			this.$fixedBody = $([-->
+	<!--				'<div class="fixed-table-body-columns">',-->
+	<!--				'<table>',-->
+	<!--				'<tbody></tbody>',-->
+	<!--				'</table>',-->
+	<!--				'</div>'].join(''));-->
+
+	<!--			this.timeoutBodyColumns_ = 0;-->
+	<!--			this.$fixedBody.find('table').attr('class', this.$el.attr('class'));-->
+	<!--			this.$fixedBodyColumns = this.$fixedBody.find('tbody');-->
+	<!--			this.$tableBody.before(this.$fixedBody);-->
+	<!--		};-->
+
+	<!--		BootstrapTable.prototype.initHeader = function () {-->
+	<!--			_initHeader.apply(this, Array.prototype.slice.apply(arguments));-->
+
+	<!--			if (!this.options.fixedColumns) {-->
+	<!--				return;-->
+	<!--			}-->
+
+	<!--			this.initFixedColumns();-->
+
+	<!--			var that = this, $trs = this.$header.find('tr').clone();-->
+	<!--			$trs.each(function () {-->
+	<!--				$(this).find('th:gt(' + that.options.fixedNumber + ')').remove();-->
+	<!--			});-->
+	<!--			this.$fixedHeaderColumns.html('').append($trs);-->
+	<!--		};-->
+
+	<!--		BootstrapTable.prototype.initBody = function () {-->
+	<!--			_initBody.apply(this, Array.prototype.slice.apply(arguments));-->
+
+	<!--			if (!this.options.fixedColumns) {-->
+	<!--				return;-->
+	<!--			}-->
+
+	<!--			var that = this,-->
+	<!--				rowspan = 0;-->
+
+	<!--			this.$fixedBodyColumns.html('');-->
+	<!--			this.$body.find('> tr[data-index]').each(function () {-->
+	<!--				var $tr = $(this).clone(),-->
+	<!--					$tds = $tr.find('td');-->
+
+	<!--				var dataIndex = $tr.attr("data-index");-->
+	<!--				$tr = $("<tr></tr>");-->
+	<!--				$tr.attr("data-index", dataIndex);-->
+
+	<!--				var end = that.options.fixedNumber;-->
+	<!--				if (rowspan > 0) {-->
+	<!--					&#45;&#45;end;-->
+	<!--					&#45;&#45;rowspan;-->
+	<!--				}-->
+	<!--				for (var i = 0; i < end; i++) {-->
+	<!--					$tr.append($tds.eq(i).clone());-->
+	<!--				}-->
+	<!--				that.$fixedBodyColumns.append($tr);-->
+
+	<!--				if ($tds.eq(0).attr('rowspan')){-->
+	<!--					rowspan = $tds.eq(0).attr('rowspan') - 1;-->
+	<!--				}-->
+	<!--			});-->
+	<!--		};-->
+
+	<!--		BootstrapTable.prototype.resetView = function () {-->
+	<!--			_resetView.apply(this, Array.prototype.slice.apply(arguments));-->
+
+	<!--			if (!this.options.fixedColumns) {-->
+	<!--				return;-->
+	<!--			}-->
+
+	<!--			clearTimeout(this.timeoutHeaderColumns_);-->
+	<!--			this.timeoutHeaderColumns_ = setTimeout($.proxy(this.fitHeaderColumns, this), this.$el.is(':hidden') ? 100 : 0);-->
+
+	<!--			clearTimeout(this.timeoutBodyColumns_);-->
+	<!--			this.timeoutBodyColumns_ = setTimeout($.proxy(this.fitBodyColumns, this), this.$el.is(':hidden') ? 100 : 0);-->
+	<!--		};-->
+
+	<!--		BootstrapTable.prototype.fitHeaderColumns = function () {-->
+	<!--			var that = this,-->
+	<!--				visibleFields = this.getVisibleFields(),-->
+	<!--				headerWidth = 0;-->
+
+	<!--			this.$body.find('tr:first-child:not(.no-records-found) > *').each(function (i) {-->
+	<!--				var $this = $(this),-->
+	<!--					index = i;-->
+
+	<!--				if (i >= that.options.fixedNumber) {-->
+	<!--					return false;-->
+	<!--				}-->
+
+	<!--				if (that.options.detailView && !that.options.cardView) {-->
+	<!--					index = i - 1;-->
+	<!--				}-->
+
+	<!--				that.$fixedHeader.find('th[data-field="' + visibleFields[index] + '"]')-->
+	<!--					.find('.fht-cell').width($this.innerWidth());-->
+	<!--				headerWidth += $this.outerWidth();-->
+	<!--			});-->
+	<!--			this.$fixedHeader.width(headerWidth + 1).show();-->
+	<!--		};-->
+
+	<!--		BootstrapTable.prototype.fitBodyColumns = function () {-->
+	<!--			var that = this,-->
+	<!--				top = -(parseInt(this.$el.css('margin-top')) - 2),-->
+	<!--				height = 0;-->
+
+	<!--			// the fixed height should reduce the scorll-x height-->
+	<!--			if (this.$tableBody.hasHorizontalScrollBar()) {-->
+	<!--				height = this.$tableBody.height() - 18;-->
+	<!--			}-->
+
+	<!--			if (!this.$body.find('> tr[data-index]').length) {-->
+	<!--				this.$fixedBody.hide();-->
+	<!--				return;-->
+	<!--			}-->
+
+	<!--			if (!this.options.height) {-->
+	<!--				top = this.$fixedHeader.height();-->
+	<!--				height = height - top;-->
+	<!--			}-->
+
+	<!--			this.$fixedBody.css({-->
+	<!--				width: this.$fixedHeader.width(),-->
+	<!--				height: height,-->
+	<!--				top: top-->
+	<!--			}).show();-->
+
+	<!--			this.$body.find('> tr').each(function (i) {-->
+	<!--				that.$fixedBody.find('tr:eq(' + i + ')').height($(this).height() - 1);-->
+	<!--			});-->
+
+	<!--			// events-->
+	<!--			this.$tableBody.on('scroll', function () {-->
+	<!--				that.$fixedBody.find('table').css('top', -$(this).scrollTop());-->
+	<!--			});-->
+	<!--			this.$body.find('> tr[data-index]').off('hover').hover(function () {-->
+	<!--				var index = $(this).data('index');-->
+	<!--				that.$fixedBody.find('tr[data-index="' + index + '"]').addClass('hover');-->
+	<!--			}, function () {-->
+	<!--				var index = $(this).data('index');-->
+	<!--				that.$fixedBody.find('tr[data-index="' + index + '"]').removeClass('hover');-->
+	<!--			});-->
+	<!--			this.$fixedBody.find('tr[data-index]').off('hover').hover(function () {-->
+	<!--				var index = $(this).data('index');-->
+	<!--				that.$body.find('tr[data-index="' + index + '"]').addClass('hover');-->
+	<!--			}, function () {-->
+	<!--				var index = $(this).data('index');-->
+	<!--				that.$body.find('> tr[data-index="' + index + '"]').removeClass('hover');-->
+	<!--			});-->
+	<!--		};-->
+
+	<!--		})(jQuery);-->
+<!--	</script>-->
+	<script>
+		$.noConflict();
+		jQuery(function ($) {
+			$('[data-toggle="popover"]').popover();
+			$('#summary-table').on('all.bs.table', function (e, name, args) {
+				$('[data-toggle="popover"]').popover();
+			});
+		});
+	</script>
+	<link
+		href="https://unpkg.com/bootstrap-table@1.15.4/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.css"
+		rel="stylesheet">
+	<title>{{ pipeline_name }} Summary </title>
+	<style>
+		.table td,
+		.table th {
+			padding: 0.3rem !important;
+		}
+
+		.popover {
+			max-width: none;
+		}
+	</style>
+</head>
+{{ navbar }}
+
+<body>
+	<div class="container">
+		<div class="row" style="margin-top: 20px; margin-bottom: 25px;">
+			<div class="col-10">
+				<h3>Results summary</h3>
+				<h4 style="margin-bottom: 0px">Pipeline name: <code>{{ pipeline_name }}</code></h4>
+				{% if amendments is not none %}
+				<h4 style="margin-bottom: 0px;">Amendments: <code>{{ amendments|join(', ') }}</code></h4>
+				{% endif %}
+			</div>
+			<div class="col-2">
+				<ul class="list-group">
+					<li class="list-group-item list-group-item-dark" aria-current="true">Get summary files</li>
+					<a class="list-group-item list-group-item-action {{ 'disabled' if stats_file_path is none }}"
+						href='{{ stats_file_path }}'>Statistics CSV</a>
+					<a class="list-group-item list-group-item-action {{ 'disabled' if objs_file_path is none }}"
+						href='{{ objs_file_path }}'>Objects YAML</a>
+				</ul>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12">
+				<table id="summary-table" data-toggle="table" data-search="true" data-page-size="50"
+					data-pagination="true" data-show-columns="true" data-fixed-columns="true" data-sort-stable="true">
+					<thead class="thead-light">
+						<tr>
+							{% for column in columns %}
+							<th class="text-nowrap text-center" data-sortable="true">{{ column }}</th>
+							{% endfor %}
+						</tr>
+					</thead>
+					<tbody>
+						{% for table_cell_data in table_row_data %}
+						<tr>
+							{% for values in table_cell_data %}
+							{% if values is not string %}
+							<td onclick="location.href='{{ values[0] }}'">
+								<a class="LN1 LN2 LN3 LN4 LN5" href="{{ values[0] }}">{{ values[1] }}</a>
+							</td>
+							{% else %}
+							{% if values|length > 60 %}
+							<td>{{ values|truncate(60,True) }} <a data-html="true" data-toggle="popover"
+									data-placement="top" data-trigger="click" data-content="{{ values }}"
+									href="javascript:void(0)"><i class="fa fa-caret-square-o-right"
+										aria-hidden="true"></i></a></td>
+							{% else %}
+							<td>{{ values }}</td>
+							{% endif %}
+							{% endif %}
+							{% endfor %}
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-3">
+				<div id="chartableColumns" style="margin: 20px;min-width: 350px;">
+					<ul id="plot-cols" class="list-group">
+						<li class="list-group-item list-group-item-dark" aria-current="true">Plot a column</li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-9">
+				<div class="container-fluid">
+					<div id="vegaCharts">
+					</div>
+				</div>
+			</div>
+		</div>
+		{{ project_objects }}
+	</div>
+</body>
+<hr class="featurette-divider">
+<footer class="text-muted">
+	{{ footer }}
+	{% include "footer_index.html" %}
+</footer>
+
+</html>

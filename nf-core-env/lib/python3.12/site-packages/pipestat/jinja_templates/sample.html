@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    {% include "head.html" %}
+    <script>
+        $.noConflict();
+        jQuery(function ($) {
+            $('[data-toggle="popover"]').popover();
+        });
+    </script>
+    <title>Pipestat: {{ sample_name }}</title>
+</head>
+{{ navbar }}
+
+<body>
+    <div class="container">
+        <div class="container-fluid">
+            <h3>Record Identifier: <code>{{ sample_name }}</code></h3>
+            <h4>Pipeline name: <code>{{ pipeline_name }}</code></h4>
+            {% if amendments is not none %}
+            <h4 style="margin-bottom: 0px;">Amendments: <code>{{ amendments|join(', ') }}</code></h4>
+            {% endif %}
+        </div>
+        <div class="container-fluid">
+            <p class="text-left">
+                <button type="button" class='{{ button_class }}' disabled>STATUS: {{ flag }}</button>
+            </p>
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-dark" aria-current="true">
+                    Get files produced by the pipeline run
+                </li>
+                {% for hr_id, hr in highlighted_results.items() %}
+                <a class="list-group-item list-group-item-action" href='{{ hr["path"] }}' role="button">{{ hr["title"]
+                    }}</a>
+                {% endfor %}
+            </ul>
+        </div>
+        <hr>
+        <div class='container-fluid'>
+            <h3>Reported statistics</code></h3>
+            <div class="table-responsive-sm">
+                <table class="table table-sm table-hover table-bordered table-condensed"
+                    style="white-space: nowrap; width: 1%;">
+                    <tbody>
+                        {% for row_name, row_value in sample_stats.items() %}
+                        <tr>
+                            <th>{{ row_name }}</th>
+                            {% if row_value|length > 60 %}
+                            <td class="text">{{ row_value|truncate(60,True) }} <a data-html="true" data-toggle="popover"
+                                    data-placement="top" data-trigger="click" data-content="{{ row_value }}"
+                                    href="javascript:void(0)"><i class="fa fa-caret-square-o-right"
+                                        aria-hidden="true"></i></a></td>
+                            {% else %}
+                            <td class="text">{{ row_value }}</td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class='container-fluid'>
+            {% if links[0] is defined or figures[0] is defined %}
+            <hr>
+            <h3>Reported objects</h3>
+            {% endif %}
+            <!-- Expects a 2 lists of lists: figures and links -->
+            {% if links[0] is defined %}
+            <h5>Links</h5>
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-dark" aria-current="true">Get a reported object for record
+                </li>
+                {% for link in links %}
+                <a class="list-group-item list-group-item-action" href='{{ link[1] }}'>{{ link[0] }}</a>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% if figures[0] is defined %}
+            <h5>Figures</h5>
+            {% for figure in figures %}
+            <figure class="figure">
+                <a href='{{ figure[0] }}'>
+                    <img id="fig" src='{{ figure[2] }}' class="figure-img img-fluid rounded" alt="">
+                </a>
+                <a href='{{ figure[0] }}'>
+                    <figcaption class="figure-caption text-center"><b>Fig.{{ loop.index }} </b><i>{{ figure[1] }}</i>
+                    </figcaption>
+                </a>
+            </figure>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</body>
+<hr class="featurette-divider">
+<footer class="text-muted">
+    {{ footer }}
+</footer>
+
+</html>

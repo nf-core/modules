@@ -1,0 +1,40 @@
+description: refgenie recipe schema
+
+properties:
+  name:
+    type: string
+    pattern: "^\\S*$"
+    description: "name of the recipe with no whitespaces"
+  description:
+    type: string
+    description: "description of the recipe"
+  assets:
+    type: object
+    description: "seek keys to be produced, property names must be different from 'dir'"
+    propertyNames:
+      pattern: "^(?!.*dir$).*$"
+  required_files:
+    type: array
+    items:
+      type: object
+    description: "File-type input to the recipe"
+  required_assets:
+    type: array
+    items:
+      type: object
+    description: "Asset-type input to the recipe"
+  required_parameters:
+    type: array
+    items:
+      type: object
+    description: "Parameter-type input to the recipe"
+  container:
+    type: string
+    pattern: "^\\S*$"
+    description: "Registry path of the container to use"
+  command_list:
+    type: array
+    items:
+      type: string
+    description: "List of commands that create the asset"
+required: [description, assets, required_files, required_assets, required_parameters, command_list]

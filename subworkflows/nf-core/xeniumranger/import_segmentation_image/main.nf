@@ -22,16 +22,16 @@ workflow XENIUMRANGER_IMPORT_SEGMENTATION_IMAGE {
             ch_coordinate_transform.map { meta, transform -> [meta.id, [meta, transform]] }
             , by: 0, remainder: true)
         .map { _id, bundle_entry, nuclei_entry, cells_entry, transform_entry ->
-            
+
             def meta   = bundle_entry[0]
             def bundle = bundle_entry[1]
-            
+
             def meta_n = nuclei_entry ? nuclei_entry[0] : [:]
             def nuclei = nuclei_entry ? nuclei_entry[1] : []
-            
+
             def meta_c = cells_entry ? cells_entry[0] : [:]
             def cells  = cells_entry ? cells_entry[1] : []
-            
+
             def meta_tr = transform_entry ? transform_entry[0] : [:]
             def transform = transform_entry ? transform_entry[1] : []
 
@@ -52,5 +52,5 @@ workflow XENIUMRANGER_IMPORT_SEGMENTATION_IMAGE {
 
     emit:
     outs     = XENIUMRANGER_IMPORT_SEGMENTATION.out.outs
-    versions = XENIUMRANGER_IMPORT_SEGMENTATION.out.versions
+    versions = XENIUMRANGER_IMPORT_SEGMENTATION.out.versions_xeniumranger
 }

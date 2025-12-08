@@ -20,9 +20,9 @@ workflow XENIUMRANGER_IMPORT_SEGMENTATION_TRANSCRIPT {
                 .map { meta, viz_polygons -> [meta.id, meta, viz_polygons] }
             , by:0)
         .map { _id, meta, bundle, meta_t, transcript_assignment, meta_v, viz_polygons -> [
-            meta_t + meta_v + meta, 
-            bundle, 
-            transcript_assignment, 
+            meta_t + meta_v + meta,
+            bundle,
+            transcript_assignment,
             viz_polygons,
             [],
             [],
@@ -34,6 +34,5 @@ workflow XENIUMRANGER_IMPORT_SEGMENTATION_TRANSCRIPT {
 
     emit:
     outs     = XENIUMRANGER_IMPORT_SEGMENTATION.out.outs
-    versions = XENIUMRANGER_IMPORT_SEGMENTATION.out.versions
+    versions = XENIUMRANGER_IMPORT_SEGMENTATION.out.versions_xeniumranger
 }
-

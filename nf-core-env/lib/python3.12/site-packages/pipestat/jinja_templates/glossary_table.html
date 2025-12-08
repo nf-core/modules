@@ -1,0 +1,38 @@
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between">
+            <div class="table-responsive-sm">
+                <table data-toggle="table" data-search="true" data-show-columns="true" data-fixed-columns="true" class="table-sm">
+                <thead class="thead-light">
+                    <tr>
+                        <th class="text-nowrap text-left">Result Identifier</th>
+                        <th class="text-nowrap text-left">Description</th>
+                    </tr>
+                </thead>
+                    <tbody>
+                        {% for element in items %}
+                            {% set i = loop.index - 1 %}
+                            <tr>
+                                <td>
+                                    {{ items[i] }}
+                                </td>
+                                <td>
+                                    {{ descriptions[i] }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <link href="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/bootstrap-table@1.15.3/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.css" rel="stylesheet">
+    <script src="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.15.3/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.js"></script>
+    <script>
+        $(function () {
+            $('[data-toggle="popover"]').popover()
+        })
+    </script>

@@ -1,0 +1,50 @@
+Metadata-Version: 2.4
+Name: peppy
+Version: 0.40.8
+Summary: A python-based project metadata manager for portable encapsulated projects
+Home-page: https://github.com/pepkit/peppy/
+Author: Michal Stolarczyk, Nathan Sheffield, Vince Reuter, Andre Rendeiro, Oleksandr Khoroshevskyi
+License: BSD2
+Keywords: project,metadata,bioinformatics,sequencing,ngs,workflow
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: pandas>=0.24.2
+Requires-Dist: pyyaml
+Requires-Dist: rich>=10.3.0
+Requires-Dist: ubiquerg>=0.6.2
+Requires-Dist: numpy
+Requires-Dist: pephubclient>=0.4.2
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: summary
+
+# peppy python package
+
+![Run pytests](https://github.com/pepkit/peppy/workflows/Run%20pytests/badge.svg)
+[![codecov](https://codecov.io/gh/pepkit/peppy/branch/master/graph/badge.svg)](https://codecov.io/gh/pepkit/peppy)
+[![PEP compatible](https://pepkit.github.io/img/PEP-compatible-green.svg)](https://pep.databio.org)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
+`peppy` is the official python package for reading **Portable Encapsulated Projects** or **PEP**s in Python.
+
+Links to complete documentation:
+
+* Complete documentation and API for the `peppy` python package is at [peppy.databio.org](https://peppy.databio.org).
+* Reference documentation for standard **PEP** format is at [pep.databio.org](https://pep.databio.org/).
+* Example PEPs for testing `peppy` are in the [example_peps repository](https://github.com/pepkit/example_peps).
+* The package [on PyPI](https://pypi.org/project/peppy/).

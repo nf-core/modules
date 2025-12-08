@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+    <head>
+      {% include "head.html" %}
+      <title>{{ pipeline_name }} Status</title>
+    </head>
+    {{ navbar }}
+    <body>
+	<div class="container">
+		<div class="container-fluid">
+			<h3>Status by record</h3>
+		</div>
+			{{ status_table }}
+	</div>
+    </body>
+    <hr class="featurette-divider">
+	<footer class="text-muted">
+        {{ footer }}
+    </footer>
+</html>

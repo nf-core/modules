@@ -1,0 +1,5 @@
+[console_scripts]
+nf-core = nf_core.__main__:run_nf_core
+
+[refgenie.hooks.post_update]
+nf-core-refgenie = nf_core.pipelines.refgenie:update_config

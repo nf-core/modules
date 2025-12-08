@@ -1,0 +1,84 @@
+Metadata-Version: 2.4
+Name: pipestat
+Version: 0.12.2
+Summary: A pipeline results reporter
+Home-page: https://github.com/pepkit/pipestat
+Author: Michal Stolarczyk, Nathan Sheffield
+License: BSD2
+Keywords: project,metadata,bioinformatics,sequencing,ngs,workflow
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: jsonschema
+Requires-Dist: logmuse>=0.2.5
+Requires-Dist: pyyaml
+Requires-Dist: ubiquerg>=0.8.0
+Requires-Dist: yacman>=0.9.3
+Requires-Dist: pandas
+Requires-Dist: eido
+Requires-Dist: jinja2
+Provides-Extra: dbbackend
+Requires-Dist: psycopg>=3.1.13; extra == "dbbackend"
+Requires-Dist: pydantic<3.0.0,>=2.5.3; extra == "dbbackend"
+Requires-Dist: sqlmodel>=0.0.14; extra == "dbbackend"
+Provides-Extra: pipestatreader
+Requires-Dist: fastapi; extra == "pipestatreader"
+Requires-Dist: uvicorn; extra == "pipestatreader"
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: license-file
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: summary
+
+[![PEP compatible](http://pepkit.github.io/img/PEP-compatible-green.svg)](http://pepkit.github.io)
+![Run pytests](https://github.com/pepkit/pipestat/workflows/Run%20pytests/badge.svg)
+[![pypi-badge](https://img.shields.io/pypi/v/pipestat)](https://pypi.org/project/pipestat)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
+
+<img src="https://raw.githubusercontent.com/pepkit/pipestat/master/docs/img/pipestat_logo.svg?sanitize=true" alt="pipestat" height="70"/><br>
+
+Pipestat standardizes reporting of pipeline results. It provides 1) a standard specification for how pipeline outputs should be stored; and 2) an implementation to easily write results to that format from within Python or from the command line. A pipeline author defines all the outputs produced by a pipeline by writing a JSON-schema. The pipeline then uses pipestat to report pipeline outputs as the pipeline runs, either via the Python API or command line interface. The user configures results to be stored either in a [YAML-formatted file](https://yaml.org/spec/1.2/spec.html) or a [PostgreSQL database](https://www.postgresql.org/).
+
+See [Pipestat documentation](https://pep.databio.org/pipestat/) for complete details.
+
+
+## Developer tests
+
+###  Optional Dependencies
+
+Note: to run the pytest suite locally, you will need to install the related requirements:
+
+```bash
+cd pipestat
+
+pip install -r requirements/requirements-test.txt
+
+```
+
+### Database Backend Configuration for Tests
+
+Many of the tests require a postgres database to be set up otherwise many of the tests will skip.
+
+We recommend using docker:
+```bash
+docker run --rm -it --name pipestat_test_db \
+    -e POSTGRES_USER=postgres \
+    -e POSTGRES_PASSWORD=pipestat-password \
+    -e POSTGRES_DB=pipestat-test \
+    -p 5432:5432 \
+    postgres
+```
+

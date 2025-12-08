@@ -47,9 +47,15 @@ output:
   - versions:
       description: Aggregated versions emitted by the module
       structure:
-        - path:
-            type: file
-            description: "versions.yml"
+        - process:
+            type: string
+            description: The process the versions were collected from
+        - tool:
+            type: string
+            description: The tool name
+        - version:
+            type: string
+            description: The command used to generate the version of the tool
 authors:
   - "@an-altosian"
 maintainers:

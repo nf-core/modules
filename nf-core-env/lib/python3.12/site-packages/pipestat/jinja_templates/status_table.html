@@ -1,0 +1,50 @@
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between">
+            <div class="table-responsive-sm">
+                <table data-toggle="table" data-search="true" data-show-columns="true" data-fixed-columns="true" class="table-sm">
+                <thead class="thead-light">
+                    <tr>
+                        <th class="text-nowrap text-center">Record Identifier</th>
+                        <th class="text-nowrap text-center">Status</th>
+                        <th class="text-nowrap text-center">Log file</th>
+                        <th class="text-nowrap text-center">Runtime</th>
+                        <th class="text-nowrap text-center">Peak memory use</th>
+                    </tr>
+                </thead>
+                    <tbody>
+                        {% for element in sample_paths %}
+                            {% set i = loop.index - 1 %}
+                            <tr>
+                                <td>
+                                    <a href="{{ sample_paths[i] }}" target="_top">{{ sample_names[i] }}</a>
+                                </td>
+                                <td style="background-color: {{status_styles[i]}} !important;" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="{{status_descs[i]}}">
+                                    {{ statuses[i] }}
+                                </td>
+                                <td>
+                                    <a href="{{ log_paths[i] }}" target="_top">{{ log_link_names[i] }}</a>
+                                </td>
+                                <td>
+                                    {{ times[i] }}
+                                </td>
+                                <td>
+                                    {{ mems[i] }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <link href="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/bootstrap-table@1.15.3/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.css" rel="stylesheet">
+    <script src="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.15.3/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.js"></script>
+    <script>
+        $(function () {
+            $('[data-toggle="popover"]').popover()
+        })
+    </script>

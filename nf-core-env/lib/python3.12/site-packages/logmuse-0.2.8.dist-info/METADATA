@@ -1,0 +1,28 @@
+Metadata-Version: 2.1
+Name: logmuse
+Version: 0.2.8
+Summary: Logging setup
+Home-page: https://github.com/databio/logmuse/
+Author: Vince Reuter, Nathan Sheffield
+License: BSD-2-Clause
+Keywords: logging,workflow,logger,logs
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: setuptools
+
+# logmuse
+
+[![Build Status](https://github.com/databio/logmuse/actions/workflows/run-pytest.yml/badge.svg?branch=master)](https://github.com/databio/logmuse/actions/workflows/run-pytest.yml/badge.svg?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/vreuter/logmuse/badge.svg?branch=master)](https://coveralls.io/github/vreuter/logmuse?branch=master)
+
+Logmuse is a small logging setup package. The point of logmuse is to make it super simple to add CLI-control of logging to your python CLI tool. It just provides a simple interface so that standard arguments can be passed on to the logger.
+
+It is only useful for CLI tools.
+

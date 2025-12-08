@@ -1,0 +1,3199 @@
+{
+  "$defs": {
+    "ActionsModel": {
+      "additionalProperties": false,
+      "properties": {
+        "assign": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AssignActionModel"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "backport": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BackportActionModel"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "close": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CloseActionModel"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "comment": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CommentActionModel"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "copy": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CopyActionModel"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "delete_head_branch": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DeleteHeadBranchActionModel"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "dismiss_reviews": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DismissReviewsActionModel"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "edit": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EditActionModel"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "github_actions": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GhaActionModel"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "label": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/LabelActionModel"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "merge": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MergeActionModel"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "post_check": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PostCheckActionModel"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "queue": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/QueueActionModel"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "rebase": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RebaseActionModel"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "request_reviews": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RequestReviewsActionModel"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "review": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ReviewActionModel"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "squash": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SquashActionModel"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "update": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/UpdateActionModel"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "title": "Actions",
+      "type": "object"
+    },
+    "AndCondition": {
+      "additionalProperties": false,
+      "properties": {
+        "and": {
+          "$ref": "#/$defs/ListOfRuleConditions"
+        }
+      },
+      "required": [
+        "and"
+      ],
+      "title": "AndCondition",
+      "type": "object"
+    },
+    "AssignActionModel": {
+      "additionalProperties": false,
+      "properties": {
+        "users": {
+          "items": {
+            "description": "A string template using the Jinja2 syntax.",
+            "format": "template",
+            "title": "Template",
+            "type": "string"
+          },
+          "maxItems": 10,
+          "title": "Users",
+          "type": "array"
+        },
+        "add_users": {
+          "items": {
+            "description": "A string template using the Jinja2 syntax.",
+            "format": "template",
+            "title": "Template",
+            "type": "string"
+          },
+          "maxItems": 10,
+          "title": "Add Users",
+          "type": "array"
+        },
+        "remove_users": {
+          "items": {
+            "description": "A string template using the Jinja2 syntax.",
+            "format": "template",
+            "title": "Template",
+            "type": "string"
+          },
+          "maxItems": 40,
+          "title": "Remove Users",
+          "type": "array"
+        }
+      },
+      "title": "AssignActionModel",
+      "type": "object"
+    },
+    "BackportActionModel": {
+      "additionalProperties": false,
+      "properties": {
+        "bot_account": {
+          "anyOf": [
+            {
+              "description": "A string template using the Jinja2 syntax.",
+              "format": "template",
+              "title": "Template",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Mergify can impersonate a GitHub user to copy a pull request. If no `bot_account` is set, Mergify copies the pull request itself.",
+          "title": "Bot Account"
+        },
+        "branches": {
+          "description": "The list of branches the pull request should be copied to.",
+          "items": {
+            "$ref": "#/$defs/BranchName"
+          },
+          "maxItems": 30,
+          "title": "Branches",
+          "type": "array"
+        },
+        "regexes": {
+          "description": "The list of regexes to find branches the pull request should be copied to.",
+          "items": {
+            "format": "regex",
+            "type": "string"
+          },
+          "maxItems": 30,
+          "title": "Regexes",
+          "type": "array"
+        },
+        "ignore_conflicts": {
+          "default": true,
+          "description": "Whether to create the pull requests even if there are conflicts when cherry-picking the commits.",
+          "title": "Ignore Conflicts",
+          "type": "boolean"
+        },
+        "assignees": {
+          "description": "Users to assign the newly created pull request to. As the type is a data type template, you could use, e.g., `{{author}}` to assign the pull request to its original author.",
+          "items": {
+            "description": "A string template using the Jinja2 syntax.",
+            "format": "template",
+            "title": "Template",
+            "type": "string"
+          },
+          "maxItems": 10,
+          "title": "Assignees",
+          "type": "array"
+        },
+        "labels": {
+          "description": "The list of labels to add to the created pull requests.",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 30,
+          "title": "Labels",
+          "type": "array"
+        },
+        "label_conflicts": {
+          "default": "conflicts",
+          "description": "The label to add to the created pull request if it has conflicts and `ignore_conflicts` is set to `true`.",
+          "title": "Label Conflicts",
+          "type": "string"
+        },
+        "title": {
+          "default": "{{ title }} (backport #{{ number }})",
+          "description": "The pull request's title.",
+          "format": "template",
+          "title": "Template",
+          "type": "string"
+        },
+        "body": {
+          "default": "{{ body }}<hr>This is an automatic backport of pull request #{{number}} done by [Mergify](https://mergify.com).\n",
+          "description": "The pull request's body.",
+          "format": "template",
+          "title": "Template",
+          "type": "string"
+        },
+        "report_mode": {
+          "default": [
+            "check"
+          ],
+          "description": "Reporting modes for the action's result. Check will create a check on the pull request, and comment will post a comment on the pull request.",
+          "items": {
+            "enum": [
+              "check",
+              "comment"
+            ],
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Report Mode",
+          "type": "array"
+        },
+        "merge_conflict_style": {
+          "default": "merge",
+          "description": "Style used by git when displaying merge conflicts",
+          "enum": [
+            "merge",
+            "diff3"
+          ],
+          "title": "Merge Conflict Style",
+          "type": "string"
+        }
+      },
+      "title": "BackportActionModel",
+      "type": "object"
+    },
+    "BranchName": {
+      "description": "A Git branch name.",
+      "properties": {},
+      "title": "Branch Name",
+      "type": "string"
+    },
+    "CloseActionModel": {
+      "additionalProperties": false,
+      "properties": {
+        "message": {
+          "default": "This pull request has been automatically closed by Mergify.",
+          "description": "A string template using the Jinja2 syntax.",
+          "format": "template",
+          "title": "Template",
+          "type": "string"
+        }
+      },
+      "title": "CloseActionModel",
+      "type": "object"
+    },
+    "CommandRestrictionsConditionsModel": {
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/AndCondition"
+          },
+          {
+            "$ref": "#/$defs/OrCondition"
+          },
+          {
+            "$ref": "#/$defs/NegationCondition"
+          },
+          {
+            "$ref": "#/$defs/RuleConditionModel"
+          }
+        ]
+      },
+      "maxItems": 500,
+      "title": "List of conditions",
+      "type": "array"
+    },
+    "CommandRestrictionsModel": {
+      "additionalProperties": false,
+      "properties": {
+        "conditions": {
+          "$ref": "#/$defs/CommandRestrictionsConditionsModel"
+        }
+      },
+      "title": "Command Restrictions",
+      "type": "object"
+    },
+    "CommandsRestrictionsRulesModel": {
+      "additionalProperties": false,
+      "properties": {
+        "backport": {
+          "$ref": "#/$defs/CommandRestrictionsModel",
+          "default": {
+            "conditions": [
+              "sender-permission >= write"
+            ]
+          }
+        },
+        "copy": {
+          "$ref": "#/$defs/CommandRestrictionsModel",
+          "default": {
+            "conditions": [
+              "sender-permission >= write"
+            ]
+          }
+        },
+        "dequeue": {
+          "$ref": "#/$defs/CommandRestrictionsModel",
+          "default": {
+            "conditions": [
+              "sender-permission >= write"
+            ]
+          }
+        },
+        "queue": {
+          "$ref": "#/$defs/CommandRestrictionsModel",
+          "default": {
+            "conditions": [
+              "sender-permission >= write"
+            ]
+          }
+        },
+        "rebase": {
+          "$ref": "#/$defs/CommandRestrictionsModel",
+          "default": {
+            "conditions": [
+              {
+                "or": [
+                  "sender-permission >= write",
+                  "sender = {{author}}"
+                ]
+              }
+            ]
+          }
+        },
+        "refresh": {
+          "$ref": "#/$defs/CommandRestrictionsModel",
+          "default": {
+            "conditions": [
+              {
+                "or": [
+                  "sender-permission >= write",
+                  "sender = {{author}}"
+                ]
+              }
+            ]
+          }
+        },
+        "requeue": {
+          "$ref": "#/$defs/CommandRestrictionsModel",
+          "default": {
+            "conditions": [
+              "sender-permission >= write"
+            ]
+          }
+        },
+        "squash": {
+          "$ref": "#/$defs/CommandRestrictionsModel",
+          "default": {
+            "conditions": [
+              {
+                "or": [
+                  "sender-permission >= write",
+                  "sender = {{author}}"
+                ]
+              }
+            ]
+          }
+        },
+        "unqueue": {
+          "$ref": "#/$defs/CommandRestrictionsModel",
+          "default": {
+            "conditions": [
+              "sender-permission >= write"
+            ]
+          }
+        },
+        "update": {
+          "$ref": "#/$defs/CommandRestrictionsModel",
+          "default": {
+            "conditions": [
+              {
+                "or": [
+                  "sender-permission >= write",
+                  "sender = {{author}}"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "title": "CommandsRestrictionsRulesModel",
+      "type": "object"
+    },
+    "CommentActionModel": {
+      "additionalProperties": false,
+      "properties": {
+        "message": {
+          "anyOf": [
+            {
+              "description": "A string template using the Jinja2 syntax.",
+              "format": "template",
+              "title": "Template",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The message to write as a comment.",
+          "title": "Message"
+        },
+        "bot_account": {
+          "anyOf": [
+            {
+              "description": "A string template using the Jinja2 syntax.",
+              "format": "template",
+              "title": "Template",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Mergify can impersonate a GitHub user to comment a pull request. If no `bot_account` is set, Mergify will comment the pull request itself.",
+          "title": "Bot Account"
+        }
+      },
+      "title": "CommentActionModel",
+      "type": "object"
+    },
+    "Commit": {
+      "properties": {
+        "sha": {
+          "title": "Sha",
+          "type": "string"
+        },
+        "parents": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Parents",
+          "type": "array"
+        },
+        "commit_message": {
+          "title": "Commit Message",
+          "type": "string"
+        },
+        "commit_verification_verified": {
+          "description": "Indicates if the commit has been marked as verified by GitHub",
+          "title": "Commit Verification Verified",
+          "type": "boolean"
+        },
+        "author": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Name of the author",
+          "title": "Author"
+        },
+        "committer": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Name of the committer",
+          "title": "Committer"
+        },
+        "date_author": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Date Author"
+        },
+        "date_committer": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Date Committer"
+        },
+        "email_author": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Email Author"
+        },
+        "email_committer": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Email Committer"
+        },
+        "gh_author_login": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "GitHub login of the author",
+          "title": "Gh Author Login"
+        }
+      },
+      "required": [
+        "sha",
+        "parents",
+        "commit_message",
+        "commit_verification_verified",
+        "author",
+        "committer",
+        "date_author",
+        "date_committer",
+        "email_author",
+        "email_committer",
+        "gh_author_login"
+      ],
+      "title": "Commit",
+      "type": "object"
+    },
+    "CommitAuthor": {
+      "properties": {
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Name of the author",
+          "title": "Name"
+        },
+        "email": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Email address of the author",
+          "title": "Email"
+        }
+      },
+      "required": [
+        "name",
+        "email"
+      ],
+      "title": "CommitAuthor",
+      "type": "object"
+    },
+    "CopyActionModel": {
+      "additionalProperties": false,
+      "properties": {
+        "bot_account": {
+          "anyOf": [
+            {
+              "description": "A string template using the Jinja2 syntax.",
+              "format": "template",
+              "title": "Template",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Mergify can impersonate a GitHub user to copy a pull request. If no `bot_account` is set, Mergify copies the pull request itself.",
+          "title": "Bot Account"
+        },
+        "branches": {
+          "description": "The list of branches the pull request should be copied to.",
+          "items": {
+            "$ref": "#/$defs/BranchName"
+          },
+          "maxItems": 30,
+          "title": "Branches",
+          "type": "array"
+        },
+        "regexes": {
+          "description": "The list of regexes to find branches the pull request should be copied to.",
+          "items": {
+            "format": "regex",
+            "type": "string"
+          },
+          "maxItems": 30,
+          "title": "Regexes",
+          "type": "array"
+        },
+        "ignore_conflicts": {
+          "default": true,
+          "description": "Whether to create the pull requests even if there are conflicts when cherry-picking the commits.",
+          "title": "Ignore Conflicts",
+          "type": "boolean"
+        },
+        "assignees": {
+          "description": "Users to assign the newly created pull request to. As the type is a data type template, you could use, e.g., `{{author}}` to assign the pull request to its original author.",
+          "items": {
+            "description": "A string template using the Jinja2 syntax.",
+            "format": "template",
+            "title": "Template",
+            "type": "string"
+          },
+          "maxItems": 10,
+          "title": "Assignees",
+          "type": "array"
+        },
+        "labels": {
+          "description": "The list of labels to add to the created pull requests.",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 30,
+          "title": "Labels",
+          "type": "array"
+        },
+        "label_conflicts": {
+          "default": "conflicts",
+          "description": "The label to add to the created pull request if it has conflicts and `ignore_conflicts` is set to `true`.",
+          "title": "Label Conflicts",
+          "type": "string"
+        },
+        "title": {
+          "default": "{{ title }} (copy #{{ number }})",
+          "description": "The pull request's title.",
+          "format": "template",
+          "title": "Template",
+          "type": "string"
+        },
+        "body": {
+          "default": "{{ body }}<hr>This is an automatic copy of pull request #{{number}} done by [Mergify](https://mergify.com).\n",
+          "description": "The pull request's body.",
+          "format": "template",
+          "title": "Template",
+          "type": "string"
+        },
+        "report_mode": {
+          "default": [
+            "check"
+          ],
+          "description": "Reporting modes for the action's result. Check will create a check on the pull request, and comment will post a comment on the pull request.",
+          "items": {
+            "enum": [
+              "check",
+              "comment"
+            ],
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Report Mode",
+          "type": "array"
+        },
+        "merge_conflict_style": {
+          "default": "merge",
+          "description": "Style used by git when displaying merge conflicts",
+          "enum": [
+            "merge",
+            "diff3"
+          ],
+          "title": "Merge Conflict Style",
+          "type": "string"
+        }
+      },
+      "title": "CopyActionModel",
+      "type": "object"
+    },
+    "DefaultsRulesModel": {
+      "additionalProperties": false,
+      "properties": {
+        "actions": {
+          "$ref": "#/$defs/ActionsModel"
+        },
+        "queue_rule": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/QueueRuleModelForDefaults"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "title": "DefaultsRulesModel",
+      "type": "object"
+    },
+    "DeleteHeadBranchActionModel": {
+      "additionalProperties": false,
+      "properties": {
+        "force": {
+          "default": false,
+          "description": "If set to `true`, the branch will be deleted even if another pull request depends on the head branch. GitHub will therefore close the dependent pull requests.",
+          "title": "Force",
+          "type": "boolean"
+        }
+      },
+      "title": "DeleteHeadBranchActionModel",
+      "type": "object"
+    },
+    "DisabledDict": {
+      "additionalProperties": false,
+      "properties": {
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "reason"
+      ],
+      "title": "DisabledDict",
+      "type": "object"
+    },
+    "DismissReviewsActionModel": {
+      "additionalProperties": false,
+      "properties": {
+        "approved": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 50,
+              "type": "array"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "const": "from_requested_reviewers",
+              "type": "string"
+            }
+          ],
+          "default": true,
+          "description": "If set to `true`, all the approving reviews will be removed when the pull request is updated. If set to `false`, nothing will be done. If set to a list, each item should be the GitHub login of a user whose review will be removed. If set to `from_requested_reviewers`, the list of requested reviewers will be used to get whose review will be removed.",
+          "title": "Approved"
+        },
+        "changes_requested": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 50,
+              "type": "array"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "const": "from_requested_reviewers",
+              "type": "string"
+            }
+          ],
+          "default": true,
+          "description": "If set to `true`, all the reviews requesting changes will be removed when the pull request is updated. If set to false, nothing will be done. If set to a list, each item should be the GitHub login of a user whose review will be removed. If set to `from_requested_reviewers`, the list of requested reviewers will be used to get whose review will be removed.",
+          "title": "Changes Requested"
+        },
+        "message": {
+          "anyOf": [
+            {
+              "description": "A string template using the Jinja2 syntax.",
+              "format": "template",
+              "title": "Template",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Message to use when dismissing reviews.",
+          "title": "Message"
+        },
+        "when": {
+          "default": "synchronize",
+          "description": "If set to `synchronize`, the action will run only if the pull request commits changed. Otherwise, it will run each time the rule matches.",
+          "enum": [
+            "synchronize",
+            "always"
+          ],
+          "title": "When",
+          "type": "string"
+        }
+      },
+      "title": "DismissReviewsActionModel",
+      "type": "object"
+    },
+    "EditActionModel": {
+      "additionalProperties": false,
+      "properties": {
+        "bot_account": {
+          "anyOf": [
+            {
+              "description": "A string template using the Jinja2 syntax.",
+              "format": "template",
+              "title": "Template",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Bot Account"
+        },
+        "draft": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "If the pull request should be a draft (true) or the other way around (false).",
+          "title": "Draft"
+        }
+      },
+      "title": "EditActionModel",
+      "type": "object"
+    },
+    "FileFilters": {
+      "properties": {
+        "include": {
+          "description": "Glob patterns of files to include for this scope. Empty means 'include everything' before exclusions. Examples: ('src/**/*.py', 'Makefile')",
+          "items": {
+            "type": "string"
+          },
+          "title": "Include",
+          "type": "array"
+        },
+        "exclude": {
+          "description": "Glob patterns of files to exclude from this scope. Evaluated after `include` and takes precedence. Examples: ('**/tests/**', '*.md')",
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude",
+          "type": "array"
+        }
+      },
+      "title": "FileFilters",
+      "type": "object"
+    },
+    "GhaActionModel": {
+      "additionalProperties": false,
+      "properties": {
+        "workflow": {
+          "$ref": "#/$defs/GhaActionModelWorkflow"
+        }
+      },
+      "required": [
+        "workflow"
+      ],
+      "title": "GhaActionModel",
+      "type": "object"
+    },
+    "GhaActionModelDispatch": {
+      "additionalProperties": false,
+      "description": "GitHub Actions workflow dispatch",
+      "properties": {
+        "workflow": {
+          "description": "The name of the .yaml GitHub Workflow file with its extension.",
+          "title": "Workflow",
+          "type": "string"
+        },
+        "ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The reference to use when triggering the job. If none is passed, the default repository branch is used.",
+          "title": "Ref"
+        },
+        "inputs": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "description": "A string template using the Jinja2 syntax.",
+                "format": "template",
+                "title": "Template",
+                "type": "string"
+              }
+            ]
+          },
+          "description": "The inputs passed to your workflow execution if any. Values can be either a template, a number or a Boolean.",
+          "maxProperties": 10,
+          "title": "Inputs",
+          "type": "object"
+        }
+      },
+      "required": [
+        "workflow"
+      ],
+      "title": "Workflow Action Dispatch",
+      "type": "object"
+    },
+    "GhaActionModelWorkflow": {
+      "additionalProperties": false,
+      "description": "GitHub Actions workflow action",
+      "properties": {
+        "dispatch": {
+          "description": "The list of workflows to dispatch via the action.",
+          "items": {
+            "$ref": "#/$defs/GhaActionModelDispatch"
+          },
+          "maxItems": 10,
+          "title": "Dispatch",
+          "type": "array"
+        }
+      },
+      "title": "Workflow Action",
+      "type": "object"
+    },
+    "GitHubRepositoryPermission": {
+      "enum": [
+        "none",
+        "read",
+        "triage",
+        "write",
+        "maintain",
+        "admin"
+      ],
+      "title": "GitHubRepositoryPermission",
+      "type": "string"
+    },
+    "LabelActionModel": {
+      "additionalProperties": false,
+      "description": "Add or remove labels on a pull request.",
+      "properties": {
+        "add": {
+          "description": "The list of labels to add.",
+          "items": {
+            "description": "A string template using the Jinja2 syntax.",
+            "format": "template",
+            "title": "Template",
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Add",
+          "type": "array"
+        },
+        "remove": {
+          "description": "The list of labels to remove.",
+          "items": {
+            "description": "A string template using the Jinja2 syntax.",
+            "format": "template",
+            "title": "Template",
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Remove",
+          "type": "array"
+        },
+        "remove_all": {
+          "default": false,
+          "description": "Remove all labels from the pull request.",
+          "title": "Remove All",
+          "type": "boolean"
+        },
+        "toggle": {
+          "description": "Toggle labels in the list based on the conditions. If all the conditions are a success, all the labels in the list will be added, otherwise, they will all be removed.",
+          "items": {
+            "description": "A string template using the Jinja2 syntax.",
+            "format": "template",
+            "title": "Template",
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Toggle",
+          "type": "array"
+        }
+      },
+      "title": "LabelActionModel",
+      "type": "object"
+    },
+    "ListOfRuleConditions": {
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/AndCondition"
+          },
+          {
+            "$ref": "#/$defs/OrCondition"
+          },
+          {
+            "$ref": "#/$defs/NegationCondition"
+          },
+          {
+            "$ref": "#/$defs/RuleConditionModel"
+          }
+        ]
+      },
+      "maxItems": 500,
+      "title": "List of conditions",
+      "type": "array"
+    },
+    "MergeActionModel": {
+      "additionalProperties": false,
+      "properties": {
+        "method": {
+          "anyOf": [
+            {
+              "enum": [
+                "merge",
+                "rebase",
+                "squash",
+                "fast-forward"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Merge method to use. If no value is set, Mergify uses the first authorized method available in the repository configuration.",
+          "title": "Method"
+        },
+        "merge_bot_account": {
+          "anyOf": [
+            {
+              "description": "A string template using the Jinja2 syntax.",
+              "format": "template",
+              "title": "Template",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Mergify can impersonate a GitHub user to merge pull requests. If no `merge_bot_account` is set, Mergify merges the pull request itself. The user account **must** have already been logged in Mergify dashboard once and have **write** or **maintain** permission.",
+          "title": "Merge Bot Account"
+        },
+        "commit_message_template": {
+          "anyOf": [
+            {
+              "description": "A string template using the Jinja2 syntax.",
+              "format": "template",
+              "title": "Template",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Template to use as the commit message when using the merge or squash merge method.",
+          "title": "Commit Message Template"
+        }
+      },
+      "title": "MergeActionModel",
+      "type": "object"
+    },
+    "MergeProtectionRuleConditionsModel": {
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/AndCondition"
+          },
+          {
+            "$ref": "#/$defs/OrCondition"
+          },
+          {
+            "$ref": "#/$defs/NegationCondition"
+          },
+          {
+            "$ref": "#/$defs/RuleConditionModel"
+          }
+        ]
+      },
+      "maxItems": 500,
+      "title": "List of conditions",
+      "type": "array"
+    },
+    "MergeProtectionRuleModel": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The name of the rule",
+          "title": "Name",
+          "type": "string"
+        },
+        "if": {
+          "$ref": "#/$defs/MergeProtectionRuleConditionsModel",
+          "description": "The conditions to check before applying the rule"
+        },
+        "success_conditions": {
+          "$ref": "#/$defs/MergeProtectionRuleConditionsModel",
+          "description": "The conditions to check to validate the rule"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "A description of the rule",
+          "title": "Description"
+        }
+      },
+      "required": [
+        "name",
+        "if",
+        "success_conditions"
+      ],
+      "title": "MergeProtectionRuleModel",
+      "type": "object"
+    },
+    "MergeProtectionRulesModel": {
+      "items": {
+        "$ref": "#/$defs/MergeProtectionRuleModel"
+      },
+      "maxItems": 100,
+      "title": "MergeProtectionRulesModel",
+      "type": "array"
+    },
+    "MergeProtections": {
+      "additionalProperties": false,
+      "properties": {
+        "reporting_method": {
+          "default": "check-runs",
+          "description": "The merge protection reporting method",
+          "enum": [
+            "check-runs",
+            "deployments"
+          ],
+          "title": "Reporting Method",
+          "type": "string"
+        },
+        "post_comment": {
+          "default": true,
+          "description": "Whether to post merge protection status comments on pull requests",
+          "title": "Post Comment",
+          "type": "boolean"
+        }
+      },
+      "title": "MergeProtections",
+      "type": "object"
+    },
+    "MergeQueue": {
+      "additionalProperties": false,
+      "properties": {
+        "max_parallel_checks": {
+          "default": 5,
+          "description": "The maximum number of speculative checks allowed to run at the same time. Setting this value to 1 disables speculative checks.",
+          "maximum": 128,
+          "minimum": 1,
+          "title": "Max Parallel Checks",
+          "type": "integer"
+        },
+        "reset_on_external_merge": {
+          "default": "always",
+          "description": "Defines the behavior of the merge queue when something is merged outside of the queue.\n\"always\": The queue is reset when an external merge is detected. All queued pull requests are re-evaluated to ensure correctness based on the new base branch state.\n\"never\": The queue remains unchanged. It does not reset or re-evaluate based on the external merge.\n",
+          "enum": [
+            "never",
+            "always"
+          ],
+          "title": "Reset On External Merge",
+          "type": "string"
+        },
+        "queued_label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": "queued",
+          "description": "The label to add on pull requests when they are added to the merge queue.",
+          "title": "Queued Label"
+        },
+        "dequeued_label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": "dequeued",
+          "description": "The label to add on pull requests when they are removed from the merge queue.",
+          "title": "Dequeued Label"
+        },
+        "mode": {
+          "default": "serial",
+          "description": "Defines how the merge queue schedules pull requests.\n- `serial`: PRs are tested cumulatively.\n- `parallel`: PRs whose scopes don't overlap are tested in parallel.\n",
+          "enum": [
+            "serial",
+            "parallel"
+          ],
+          "title": "Mode",
+          "type": "string"
+        }
+      },
+      "title": "MergeQueue",
+      "type": "object"
+    },
+    "NegationCondition": {
+      "additionalProperties": false,
+      "properties": {
+        "not": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AndCondition"
+            },
+            {
+              "$ref": "#/$defs/OrCondition"
+            },
+            {
+              "$ref": "#/$defs/RuleConditionModel"
+            }
+          ],
+          "title": "Not"
+        }
+      },
+      "required": [
+        "not"
+      ],
+      "title": "NegationCondition",
+      "type": "object"
+    },
+    "OrCondition": {
+      "additionalProperties": false,
+      "properties": {
+        "or": {
+          "$ref": "#/$defs/ListOfRuleConditions"
+        }
+      },
+      "required": [
+        "or"
+      ],
+      "title": "OrCondition",
+      "type": "object"
+    },
+    "PartitionRuleConditionsModel": {
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/AndCondition"
+          },
+          {
+            "$ref": "#/$defs/OrCondition"
+          },
+          {
+            "$ref": "#/$defs/NegationCondition"
+          },
+          {
+            "$ref": "#/$defs/RuleConditionModel"
+          }
+        ]
+      },
+      "maxItems": 500,
+      "title": "List of conditions",
+      "type": "array"
+    },
+    "PartitionRuleModel": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "Name of the partition",
+          "title": "Name",
+          "type": "string"
+        },
+        "conditions": {
+          "$ref": "#/$defs/PartitionRuleConditionsModel",
+          "description": "List of conditions to determine the partition(s) in which the pull request will be queued. If a pull request matches no partition, it is added to the fallback partition if defined. Otherwise it is added to every partition."
+        },
+        "fallback_partition": {
+          "default": false,
+          "description": "Allow the partition to work as the fallback partition. There can be only one fallback partition.",
+          "title": "Fallback Partition",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "PartitionRuleModel",
+      "type": "object"
+    },
+    "PartitionRulesModel": {
+      "items": {
+        "$ref": "#/$defs/PartitionRuleModel"
+      },
+      "maxItems": 50,
+      "title": "PartitionRulesModel",
+      "type": "array"
+    },
+    "PostCheckActionModel": {
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "default": "'{{ check_rule_name }}'{% if check_status == 'success' %} succeeded{% elif check_status == 'failure' %} failed{% endif %}",
+          "description": "The title of the check.",
+          "format": "template",
+          "title": "Template",
+          "type": "string"
+        },
+        "summary": {
+          "default": "{{ check_conditions }}",
+          "description": "The summary of the check.",
+          "format": "template",
+          "title": "Template",
+          "type": "string"
+        },
+        "success_conditions": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ListOfRuleConditions"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "List of conditions to match to mark the pull request check as succeeded, otherwise, it will be marked as failing. If unset, the conditions from the rule that triggers this action are used."
+        },
+        "neutral_conditions": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ListOfRuleConditions"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "List of conditions to match to mark the pull request check as neutral, otherwise, it will be marked as failing."
+        }
+      },
+      "title": "PostCheckActionModel",
+      "type": "object"
+    },
+    "PriorityRuleConditionsModel": {
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/AndCondition"
+          },
+          {
+            "$ref": "#/$defs/OrCondition"
+          },
+          {
+            "$ref": "#/$defs/NegationCondition"
+          },
+          {
+            "$ref": "#/$defs/RuleConditionModel"
+          }
+        ]
+      },
+      "maxItems": 500,
+      "title": "List of conditions",
+      "type": "array"
+    },
+    "PriorityRuleModel": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "Name of the rule.",
+          "title": "Name",
+          "type": "string"
+        },
+        "conditions": {
+          "$ref": "#/$defs/PriorityRuleConditionsModel",
+          "description": "The list of conditions that needs to match to assign priority to the pull request."
+        },
+        "priority": {
+          "anyOf": [
+            {
+              "enum": [
+                "high",
+                "medium",
+                "low"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "default": "medium",
+          "description": "The priority of the pull request.",
+          "title": "Priority"
+        },
+        "allow_checks_interruption": {
+          "default": true,
+          "description": "Allow interrupting the ongoing checks when the pull request entering the queue has a higher priority than the queued one(s). If set to false, a pull request with higher priority will be inserted just after the pull requests that have checks running.",
+          "title": "Allow Checks Interruption",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name",
+        "conditions"
+      ],
+      "title": "PriorityRuleModel",
+      "type": "object"
+    },
+    "PriorityRulesModel": {
+      "items": {
+        "$ref": "#/$defs/PriorityRuleModel"
+      },
+      "maxItems": 50,
+      "title": "PriorityRulesModel",
+      "type": "array"
+    },
+    "PullRequestAttributes": {
+      "properties": {
+        "draft": {
+          "description": "Whether the pull request is in draft state.",
+          "title": "Draft",
+          "type": "boolean"
+        },
+        "merged": {
+          "description": "Whether the pull request is merged.",
+          "title": "Merged",
+          "type": "boolean"
+        },
+        "mergify-configuration-changed": {
+          "description": "Whether the pull request contains changes in the configuration file.",
+          "title": "Mergify configuration changed",
+          "type": "boolean"
+        },
+        "closed": {
+          "description": "Whether the pull request is closed.",
+          "title": "Closed",
+          "type": "boolean"
+        },
+        "locked": {
+          "description": "Whether the pull request is locked.",
+          "title": "Locked",
+          "type": "boolean"
+        },
+        "linear-history": {
+          "description": "Whether the pull request commits history is linear (no merge commit).",
+          "title": "Linear history",
+          "type": "boolean"
+        },
+        "conflict": {
+          "description": "Whether the pull request is conflicting with its base branch.",
+          "title": "Conflict",
+          "type": "boolean"
+        },
+        "branch-protection-review-decision": {
+          "anyOf": [
+            {
+              "enum": [
+                "APPROVED",
+                "CHANGES_REQUESTED",
+                "REVIEW_REQUIRED"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The review decision. This indicates if `CODEOWNERS` have reviewed the pull request when the `Require Review from Code Owners` branch protection rule is enabled.",
+          "title": "Branch protection review decision"
+        },
+        "number": {
+          "description": "The pull request number.",
+          "minimum": 0,
+          "title": "Number",
+          "type": "integer"
+        },
+        "queue-position": {
+          "description": "The position of the pull request in its queue if queued. The first pull request in the queue has position 0. The value is set to -1 if the pull request is not queued.",
+          "title": "Queue position",
+          "type": "integer"
+        },
+        "author": {
+          "description": "The GitHub user or team login of the author of the pull request.",
+          "title": "Author",
+          "type": "string"
+        },
+        "merged-by": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The GitHub user that merged the pull request.",
+          "title": "Merged by"
+        },
+        "merge-commit-sha": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The merge commit SHA of the pull request returned by GitHub.",
+          "title": "Merge commit sha"
+        },
+        "milestone": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The milestone title associated to the pull request.",
+          "title": "Milestone"
+        },
+        "base": {
+          "description": "The name of the branch the pull request should be pulled into.",
+          "title": "Base",
+          "type": "string"
+        },
+        "head": {
+          "description": "The name of the branch where the pull request changes are implemented.",
+          "title": "Head",
+          "type": "string"
+        },
+        "head-repo-full-name": {
+          "description": "The head branch repository full name (complete version with the organization name).",
+          "title": "Head repo full name",
+          "type": "string"
+        },
+        "title": {
+          "description": "The title of the pull request.",
+          "title": "Title",
+          "type": "string"
+        },
+        "body": {
+          "description": "The content of the pull request description without Markdown/HTML comments.",
+          "title": "Body",
+          "type": "string"
+        },
+        "body-raw": {
+          "description": "The content of the pull request description.",
+          "title": "Body raw",
+          "type": "string"
+        },
+        "repository-name": {
+          "description": "The current repository name (short version without the organization name).",
+          "title": "Repository name",
+          "type": "string"
+        },
+        "repository-full-name": {
+          "description": "The current repository full name (complete version with the organization name).",
+          "title": "Repository full name",
+          "type": "string"
+        },
+        "queue-dequeue-reason": {
+          "anyOf": [
+            {
+              "const": "NONE",
+              "type": "string"
+            },
+            {
+              "const": "PR_MERGED",
+              "type": "string"
+            },
+            {
+              "enum": [
+                "PR_DEQUEUED",
+                "PR_DEQUEUED_FROM_PARTITION",
+                "PR_AHEAD_DEQUEUED",
+                "BATCH_AHEAD_FAILED",
+                "PR_WITH_HIGHER_PRIORITY_QUEUED",
+                "SPECULATIVE_CHECK_NUMBER_REDUCED",
+                "CHECKS_TIMEOUT",
+                "CHECKS_FAILED",
+                "QUEUE_RULE_MISSING",
+                "BASE_BRANCH_MISSING",
+                "BASE_BRANCH_CHANGED",
+                "PR_UNEXPECTEDLY_FAILED_TO_MERGE",
+                "BATCH_MAX_FAILURE_RESOLUTION_ATTEMPTS",
+                "PR_CHECKS_STOPPED_BECAUSE_MERGE_QUEUE_PAUSE",
+                "CONFLICT_WITH_BASE_BRANCH",
+                "CONFLICT_WITH_PULL_AHEAD",
+                "BRANCH_UPDATE_FAILED",
+                "DRAFT_PULL_REQUEST_CHANGED",
+                "PULL_REQUEST_UPDATED",
+                "MERGE_QUEUE_RESET",
+                "INCOMPATIBILITY_WITH_BRANCH_PROTECTIONS",
+                "PR_MANUALLY_MERGED",
+                "DRAFT_PULL_REQUEST_CREATION_FAILED",
+                "CONFIGURATION_CHANGED"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A dequeue code for when a pull request has been disembarked from the merge queue.",
+          "title": "Queue dequeue reason"
+        },
+        "queue-name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The name of the queue containing the pull request.",
+          "title": "Queue name"
+        },
+        "assignee": {
+          "description": "The list of GitHub user or team login that are assigned to the pull request. Team logins are prefixed with the `@` character and must belong to the repository organization.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Assignee",
+          "type": "array"
+        },
+        "label": {
+          "description": "The list of labels of the pull request.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Label",
+          "type": "array"
+        },
+        "review-requested": {
+          "description": "The list of GitHub user or team login that were requested to review the pull request. Team logins are prefixed with the @ character. This only matches reviewers with `admin`, `write` or `maintain` permission on the repository.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Review requested",
+          "type": "array"
+        },
+        "approved-reviews-by": {
+          "description": "The list of GitHub user or team login that approved the pull request. Team logins are prefixed with the `@` character and must belong to the repository organization. This only matches reviewers with `admin`, `write` or `maintain` permission on the repository.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Approved reviews by",
+          "type": "array"
+        },
+        "dismissed-reviews-by": {
+          "description": "The list of GitHub user login that have their review dismissed in the pull request.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Dismissed reviews by",
+          "type": "array"
+        },
+        "changes-requested-reviews-by": {
+          "description": "The list of GitHub user or team login that have requested changes in a review for the pull request.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Changes requested reviews by",
+          "type": "array"
+        },
+        "commented-reviews-by": {
+          "description": "The list of GitHub user that have commented in a review for the pull request. This only matches reviewers with `admin`, `write` or `maintain` permission on the repository.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Commented reviews by",
+          "type": "array"
+        },
+        "check-success": {
+          "description": "The list of checks that successfully passed for the pull request.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Check success",
+          "type": "array"
+        },
+        "check-failure": {
+          "description": "The list of checks that failed for the pull request. Checks that report being cancelled, timed out, and action required are also considered as failures.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Check failure",
+          "type": "array"
+        },
+        "check-neutral": {
+          "description": "The list of checks that are neutral for the pull request. ",
+          "items": {
+            "type": "string"
+          },
+          "title": "Check neutral",
+          "type": "array"
+        },
+        "check-timed-out": {
+          "description": "The list of checks that timed out for the pull request.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Check timed out",
+          "type": "array"
+        },
+        "check-skipped": {
+          "description": "The list of checks that was skipped for the pull request.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Check skipped",
+          "type": "array"
+        },
+        "check-pending": {
+          "description": "The list of checks that are pending for the pull request.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Check pending",
+          "type": "array"
+        },
+        "check": {
+          "description": "The list of checks for that pull request.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Check",
+          "type": "array"
+        },
+        "check-stale": {
+          "description": "The list of checks that are stale for the pull request.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Check stale",
+          "type": "array"
+        },
+        "commits-unverified": {
+          "description": "The list of commit messages that are marked as unverified by GitHub.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Commits unverified",
+          "type": "array"
+        },
+        "deployment-success": {
+          "description": "The list of deployments that successfully passed for the pull request.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Deployment success",
+          "type": "array"
+        },
+        "deployment-failure": {
+          "description": "The list of deployments that failed for the pull request.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Deployment failure",
+          "type": "array"
+        },
+        "review-threads-resolved": {
+          "description": "The list of bodies associated to review threads that are marked as resolved by GitHub.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Review threads resolved",
+          "type": "array"
+        },
+        "review-threads-unresolved": {
+          "description": "The list of bodies associated to review threads that are NOT marked as resolved by GitHub.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Review threads unresolved",
+          "type": "array"
+        },
+        "files": {
+          "description": "The files that are modified, deleted or added by the pull request.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "added-files": {
+          "description": "The files that are added by the pull request.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Added files",
+          "type": "array"
+        },
+        "modified-files": {
+          "description": "The files that are modified by the pull request.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Modified files",
+          "type": "array"
+        },
+        "removed-files": {
+          "description": "The files that are removed by the pull request.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Removed files",
+          "type": "array"
+        },
+        "added-lines": {
+          "description": "The lines that are added by the pull request. Only usable as `#added-lines` for the number of added lines.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Added lines",
+          "type": "array"
+        },
+        "modified-lines": {
+          "description": "The lines that are modified by the pull request. Only usable as `#modified-lines` for the number of modified lines.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Modified lines",
+          "type": "array"
+        },
+        "deleted-lines": {
+          "description": "The lines that are deleted by the pull request. Only usable as `#deleted-lines` for the number of deleted lines.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Deleted lines",
+          "type": "array"
+        },
+        "co-authors": {
+          "description": "The list of co-authors on the pull request (excluding merge commits and bots).",
+          "items": {
+            "$ref": "#/$defs/CommitAuthor"
+          },
+          "title": "Co authors",
+          "type": "array"
+        },
+        "commits-behind": {
+          "description": "The list of commits between the head of the base branch and the base of the pull request. This can only be used with the length operator as `#commits-behind`.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Commits behind",
+          "type": "array"
+        },
+        "depends-on": {
+          "description": "The list of dependencies to other pull request in the format `owner/repo#prnumber`.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Depends on",
+          "type": "array"
+        },
+        "dependabot-dependency-name": {
+          "description": "The dependency-name value included in the Dependabot commit message.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Dependabot dependency name",
+          "type": "array"
+        },
+        "dependabot-dependency-type": {
+          "description": "The dependency-type value included in the Dependabot commit message.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Dependabot dependency type",
+          "type": "array"
+        },
+        "dependabot-update-type": {
+          "description": "The update-type value included in the Dependabot commit message.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Dependabot update type",
+          "type": "array"
+        },
+        "commits": {
+          "description": "The list of commits of the pull request. The index 0 is the first commit, while -1 is the last commit.",
+          "items": {
+            "$ref": "#/$defs/Commit"
+          },
+          "title": "Commits",
+          "type": "array"
+        },
+        "current-datetime": {
+          "description": "The current date and time.",
+          "format": "date-time",
+          "title": "Current datetime",
+          "type": "string"
+        },
+        "updated-at": {
+          "description": "The time the pull request was updated at.",
+          "format": "date-time",
+          "title": "Updated at",
+          "type": "string"
+        },
+        "created-at": {
+          "description": "The time the pull request was created at.",
+          "format": "date-time",
+          "title": "Created at",
+          "type": "string"
+        },
+        "closed-at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The time the pull request was closed at.",
+          "title": "Closed at"
+        },
+        "merged-at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The time the pull request was merged at.",
+          "title": "Merged at"
+        },
+        "queued-at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The time the pull request was queued at for merge.",
+          "title": "Queued at"
+        },
+        "queue-merge-started-at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The time the pull request mergeability checks have started at.",
+          "title": "Queue merge started at"
+        },
+        "schedule": {
+          "description": "The current time will be compared against this schedule to validate this attribute.",
+          "title": "Schedule",
+          "type": "string"
+        },
+        "sender-permission": {
+          "$ref": "#/$defs/GitHubRepositoryPermission",
+          "description": "The permission of the command author.",
+          "title": "Sender permission"
+        },
+        "sender": {
+          "description": "The GitHub login of the command author.",
+          "title": "Sender",
+          "type": "string"
+        },
+        "updates": {
+          "description": "The list of updates done on an opened pull request.",
+          "items": {
+            "$ref": "#/$defs/PullRequestHeadShaHistoryDict"
+          },
+          "title": "Updates",
+          "type": "array"
+        }
+      },
+      "required": [
+        "draft",
+        "merged",
+        "mergify-configuration-changed",
+        "closed",
+        "locked",
+        "linear-history",
+        "conflict",
+        "branch-protection-review-decision",
+        "number",
+        "queue-position",
+        "author",
+        "merged-by",
+        "merge-commit-sha",
+        "milestone",
+        "base",
+        "head",
+        "head-repo-full-name",
+        "title",
+        "body",
+        "body-raw",
+        "repository-name",
+        "repository-full-name",
+        "queue-dequeue-reason",
+        "queue-name",
+        "assignee",
+        "label",
+        "review-requested",
+        "approved-reviews-by",
+        "dismissed-reviews-by",
+        "changes-requested-reviews-by",
+        "commented-reviews-by",
+        "check-success",
+        "check-failure",
+        "check-neutral",
+        "check-timed-out",
+        "check-skipped",
+        "check-pending",
+        "check",
+        "check-stale",
+        "commits-unverified",
+        "deployment-success",
+        "deployment-failure",
+        "review-threads-resolved",
+        "review-threads-unresolved",
+        "files",
+        "added-files",
+        "modified-files",
+        "removed-files",
+        "added-lines",
+        "modified-lines",
+        "deleted-lines",
+        "co-authors",
+        "commits-behind",
+        "depends-on",
+        "dependabot-dependency-name",
+        "dependabot-dependency-type",
+        "dependabot-update-type",
+        "commits",
+        "current-datetime",
+        "updated-at",
+        "created-at",
+        "closed-at",
+        "merged-at",
+        "queued-at",
+        "queue-merge-started-at",
+        "schedule",
+        "sender-permission",
+        "sender",
+        "updates"
+      ],
+      "title": "PullRequestAttributes",
+      "type": "object"
+    },
+    "PullRequestHeadShaHistoryDict": {
+      "properties": {
+        "head-sha": {
+          "title": "Head sha",
+          "type": "string"
+        },
+        "timestamp": {
+          "title": "Timestamp",
+          "type": "string"
+        }
+      },
+      "required": [
+        "head-sha",
+        "timestamp"
+      ],
+      "title": "PullRequestHeadShaHistoryDict",
+      "type": "object"
+    },
+    "PullRequestRuleConditionsModel": {
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/AndCondition"
+          },
+          {
+            "$ref": "#/$defs/OrCondition"
+          },
+          {
+            "$ref": "#/$defs/NegationCondition"
+          },
+          {
+            "$ref": "#/$defs/RuleConditionModel"
+          }
+        ]
+      },
+      "maxItems": 500,
+      "title": "List of conditions",
+      "type": "array"
+    },
+    "PullRequestRuleModel": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "The name of the rule. This is used when reporting information about a rule. It's not possible to have two rules with the same name.",
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "A description of the rule.",
+          "title": "Description"
+        },
+        "disabled": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DisabledDict"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "If the rule is disabled, the reason why it's disabled."
+        },
+        "conditions": {
+          "$ref": "#/$defs/PullRequestRuleConditionsModel",
+          "description": "The conditions that must be met for the rule to be evaluated."
+        },
+        "actions": {
+          "$ref": "#/$defs/ActionsModel",
+          "description": "The actions to perform when the rule matches."
+        }
+      },
+      "required": [
+        "name",
+        "conditions",
+        "actions"
+      ],
+      "title": "Pull Request Rule",
+      "type": "object"
+    },
+    "PullRequestRulesModel": {
+      "items": {
+        "$ref": "#/$defs/PullRequestRuleModel"
+      },
+      "maxItems": 200,
+      "title": "PullRequestRulesModel",
+      "type": "array"
+    },
+    "QueueActionModel": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The name of the queue where the pull request should be added. If no name is set, queue_conditions will be applied instead.",
+          "title": "Name"
+        }
+      },
+      "title": "QueueActionModel",
+      "type": "object"
+    },
+    "QueueRuleMergeConditionsModel": {
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/AndCondition"
+          },
+          {
+            "$ref": "#/$defs/OrCondition"
+          },
+          {
+            "$ref": "#/$defs/NegationCondition"
+          },
+          {
+            "$ref": "#/$defs/RuleConditionModel"
+          }
+        ]
+      },
+      "maxItems": 500,
+      "title": "List of conditions",
+      "type": "array"
+    },
+    "QueueRuleModel": {
+      "additionalProperties": false,
+      "properties": {
+        "queue_conditions": {
+          "$ref": "#/$defs/QueueRuleMergeConditionsModel",
+          "description": "The list of conditions that needs to match to queue the pull request."
+        },
+        "merge_conditions": {
+          "$ref": "#/$defs/QueueRuleMergeConditionsModel",
+          "description": "The list of conditions to match to get the queued pull request merged. In case of draft pull request, the merge conditions for checks are evaluated against the temporary pull request instead of the original one."
+        },
+        "branch_protection_injection_mode": {
+          "default": "queue",
+          "description": "Branch protections conditions injection mode to use.\n\n- `queue` will inject branch protections conditions as required conditions for queuing and merging pull requests.\n- `merge` will inject branch protections conditions as required conditions only for merging pull requests.\n- `none` will disable branch protections. This mode is supported only on queues using a `merge_bot_account` with admin rights.",
+          "enum": [
+            "queue",
+            "merge",
+            "none"
+          ],
+          "title": "Branch Protection Injection Mode",
+          "type": "string"
+        },
+        "batch_size": {
+          "default": 1,
+          "description": "The maximum number of pull requests per speculative check in the queue. Must be between 1 and 128.",
+          "maximum": 128,
+          "minimum": 1,
+          "title": "Batch Size",
+          "type": "integer"
+        },
+        "batch_max_wait_time": {
+          "default": "30 seconds",
+          "description": "The maximum amount of time to wait before creating a batch when the batch is not full.",
+          "format": "duration",
+          "title": "Batch Max Wait Time",
+          "type": "string"
+        },
+        "allow_inplace_checks": {
+          "default": true,
+          "deprecated": true,
+          "description": "Deprecated: this value is computed automatically. In-place checks are enabled only when:\n- `max_parallel_checks == 1`\n- every queue has `batch_size == 1`\n- every queue CI is single-step (no extra `merge_conditions`; either empty or identical to `queue_conditions`)",
+          "title": "Allow Inplace Checks",
+          "type": "boolean"
+        },
+        "checks_timeout": {
+          "anyOf": [
+            {
+              "format": "duration",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The amount of time the merge queue waits for pending checks to return before dequeueing pull requests. This cannot be less than 60 seconds.",
+          "title": "Checks Timeout"
+        },
+        "draft_bot_account": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Mergify can impersonate a GitHub user to create its draft pull requests. If no `draft_bot_account` is set, Mergify creates the draft pull request itself. The user account must have already been logged in Mergify dashboard once and have admin, write or maintain permission.",
+          "title": "Draft Bot Account"
+        },
+        "queue_branch_merge_method": {
+          "anyOf": [
+            {
+              "const": "fast-forward",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "If set to `fast-forward`, Mergify will merge the draft pull request instead of merging the original pull request that has been checked. This only works when `merge_method` is set to `merge`.",
+          "title": "Queue Branch Merge Method"
+        },
+        "queue_branch_prefix": {
+          "default": "mergify/merge-queue/",
+          "description": "Prefix for the merge queue branch name",
+          "format": "template",
+          "title": "Template",
+          "type": "string"
+        },
+        "allow_queue_branch_edit": {
+          "default": false,
+          "description": "When creating a branch for a queue, if the commits of this branch are edited by an entity external to Mergify, Mergify dequeues all pull requests embarked in the branch and report the issue as a failure. If set to `true`, Mergify will allow such modifications and trust the content of the branch. Make sure only Mergify and your external application are allowed to edit these branches.",
+          "title": "Allow Queue Branch Edit",
+          "type": "boolean"
+        },
+        "batch_max_failure_resolution_attempts": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The number of attempts to resolve a batch failure before dequeueing pull requests. By default, Mergify will attempt to resolve a batch failure by splitting the batch multiple times until it finds the root cause of the failure. You can stop this process earlier by limiting the number of resolution attempts. Setting this to 0 will dequeue all the pull requests from a batch when a batch fails.",
+          "title": "Batch Max Failure Resolution Attempts"
+        },
+        "merge_method": {
+          "anyOf": [
+            {
+              "enum": [
+                "merge",
+                "rebase",
+                "squash",
+                "fast-forward"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Merge method to use. If no value is set, Mergify uses the first authorized method available in the repository configuration. `fast-forward` is not supported on draft PR (`max_parallel_checks > 1`, or `batch_size > 1`, or two-step CI).",
+          "title": "Merge Method"
+        },
+        "autosquash": {
+          "default": false,
+          "description": "This option is relevant only if you do in place checks and if you use the `rebase` option of the update_method. It will automatically squash your commits beginning by `squash!`, `fixup!` or `amend!`, just like the option with the same name when doing a `git rebase`.",
+          "title": "Autosquash",
+          "type": "boolean"
+        },
+        "autoqueue": {
+          "default": false,
+          "description": "When set to true, automatically add a pull request to the queue when it matches the queue conditions. When false, the pull request must be manually queued.",
+          "title": "Autoqueue",
+          "type": "boolean"
+        },
+        "update_method": {
+          "anyOf": [
+            {
+              "enum": [
+                "rebase",
+                "merge"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Method to use to update the pull request with its base branch when the check is done in place.\nPossible values:\n\n- `merge` to merge the base branch into the pull request.\n- `rebase` to rebase the pull request against its base branch.\n\nWhen `null`, defaults to `merge` except if `merge_method` is `fast-forward` then it defaults to `rebase.",
+          "title": "Update Method"
+        },
+        "commit_message_template": {
+          "anyOf": [
+            {
+              "description": "A string template using the Jinja2 syntax.",
+              "format": "template",
+              "title": "Template",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Template to use as the commit message when using the merge or squash merge method.",
+          "title": "Commit Message Template"
+        },
+        "merge_bot_account": {
+          "anyOf": [
+            {
+              "description": "A string template using the Jinja2 syntax.",
+              "format": "template",
+              "title": "Template",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Mergify can impersonate a GitHub user to merge pull requests. If no `merge_bot_account` is set, Mergify merges the pull request itself. The user account **must** have already been logged in Mergify dashboard once and have **write** or **maintain** permission.",
+          "title": "Merge Bot Account"
+        },
+        "update_bot_account": {
+          "anyOf": [
+            {
+              "description": "A string template using the Jinja2 syntax.",
+              "format": "template",
+              "title": "Template",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "For certain actions, such as rebasing branches, Mergify has to impersonate a GitHub user. You can specify the account to use with this option. If no `update_bot_account` is set, Mergify picks randomly one of the organization users instead. The user account **must** have already been logged in Mergify dashboard once. This option overrides the value defined in the queue rules section of the configuration.",
+          "title": "Update Bot Account"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "QueueRuleModel",
+      "type": "object"
+    },
+    "QueueRuleModelForDefaults": {
+      "additionalProperties": false,
+      "properties": {
+        "queue_conditions": {
+          "$ref": "#/$defs/QueueRuleMergeConditionsModel",
+          "description": "The list of conditions that needs to match to queue the pull request."
+        },
+        "merge_conditions": {
+          "$ref": "#/$defs/QueueRuleMergeConditionsModel",
+          "description": "The list of conditions to match to get the queued pull request merged. In case of draft pull request, the merge conditions for checks are evaluated against the temporary pull request instead of the original one."
+        },
+        "branch_protection_injection_mode": {
+          "default": "queue",
+          "description": "Branch protections conditions injection mode to use.\n\n- `queue` will inject branch protections conditions as required conditions for queuing and merging pull requests.\n- `merge` will inject branch protections conditions as required conditions only for merging pull requests.\n- `none` will disable branch protections. This mode is supported only on queues using a `merge_bot_account` with admin rights.",
+          "enum": [
+            "queue",
+            "merge",
+            "none"
+          ],
+          "title": "Branch Protection Injection Mode",
+          "type": "string"
+        },
+        "batch_size": {
+          "default": 1,
+          "description": "The maximum number of pull requests per speculative check in the queue. Must be between 1 and 128.",
+          "maximum": 128,
+          "minimum": 1,
+          "title": "Batch Size",
+          "type": "integer"
+        },
+        "batch_max_wait_time": {
+          "default": "30 seconds",
+          "description": "The maximum amount of time to wait before creating a batch when the batch is not full.",
+          "format": "duration",
+          "title": "Batch Max Wait Time",
+          "type": "string"
+        },
+        "allow_inplace_checks": {
+          "default": true,
+          "deprecated": true,
+          "description": "Deprecated: this value is computed automatically. In-place checks are enabled only when:\n- `max_parallel_checks == 1`\n- every queue has `batch_size == 1`\n- every queue CI is single-step (no extra `merge_conditions`; either empty or identical to `queue_conditions`)",
+          "title": "Allow Inplace Checks",
+          "type": "boolean"
+        },
+        "checks_timeout": {
+          "anyOf": [
+            {
+              "format": "duration",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The amount of time the merge queue waits for pending checks to return before dequeueing pull requests. This cannot be less than 60 seconds.",
+          "title": "Checks Timeout"
+        },
+        "draft_bot_account": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Mergify can impersonate a GitHub user to create its draft pull requests. If no `draft_bot_account` is set, Mergify creates the draft pull request itself. The user account must have already been logged in Mergify dashboard once and have admin, write or maintain permission.",
+          "title": "Draft Bot Account"
+        },
+        "queue_branch_merge_method": {
+          "anyOf": [
+            {
+              "const": "fast-forward",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "If set to `fast-forward`, Mergify will merge the draft pull request instead of merging the original pull request that has been checked. This only works when `merge_method` is set to `merge`.",
+          "title": "Queue Branch Merge Method"
+        },
+        "queue_branch_prefix": {
+          "default": "mergify/merge-queue/",
+          "description": "Prefix for the merge queue branch name",
+          "format": "template",
+          "title": "Template",
+          "type": "string"
+        },
+        "allow_queue_branch_edit": {
+          "default": false,
+          "description": "When creating a branch for a queue, if the commits of this branch are edited by an entity external to Mergify, Mergify dequeues all pull requests embarked in the branch and report the issue as a failure. If set to `true`, Mergify will allow such modifications and trust the content of the branch. Make sure only Mergify and your external application are allowed to edit these branches.",
+          "title": "Allow Queue Branch Edit",
+          "type": "boolean"
+        },
+        "batch_max_failure_resolution_attempts": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The number of attempts to resolve a batch failure before dequeueing pull requests. By default, Mergify will attempt to resolve a batch failure by splitting the batch multiple times until it finds the root cause of the failure. You can stop this process earlier by limiting the number of resolution attempts. Setting this to 0 will dequeue all the pull requests from a batch when a batch fails.",
+          "title": "Batch Max Failure Resolution Attempts"
+        },
+        "merge_method": {
+          "anyOf": [
+            {
+              "enum": [
+                "merge",
+                "rebase",
+                "squash",
+                "fast-forward"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Merge method to use. If no value is set, Mergify uses the first authorized method available in the repository configuration. `fast-forward` is not supported on draft PR (`max_parallel_checks > 1`, or `batch_size > 1`, or two-step CI).",
+          "title": "Merge Method"
+        },
+        "autosquash": {
+          "default": false,
+          "description": "This option is relevant only if you do in place checks and if you use the `rebase` option of the update_method. It will automatically squash your commits beginning by `squash!`, `fixup!` or `amend!`, just like the option with the same name when doing a `git rebase`.",
+          "title": "Autosquash",
+          "type": "boolean"
+        },
+        "autoqueue": {
+          "default": false,
+          "description": "When set to true, automatically add a pull request to the queue when it matches the queue conditions. When false, the pull request must be manually queued.",
+          "title": "Autoqueue",
+          "type": "boolean"
+        },
+        "update_method": {
+          "anyOf": [
+            {
+              "enum": [
+                "rebase",
+                "merge"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Method to use to update the pull request with its base branch when the check is done in place.\nPossible values:\n\n- `merge` to merge the base branch into the pull request.\n- `rebase` to rebase the pull request against its base branch.\n\nWhen `null`, defaults to `merge` except if `merge_method` is `fast-forward` then it defaults to `rebase.",
+          "title": "Update Method"
+        },
+        "commit_message_template": {
+          "anyOf": [
+            {
+              "description": "A string template using the Jinja2 syntax.",
+              "format": "template",
+              "title": "Template",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Template to use as the commit message when using the merge or squash merge method.",
+          "title": "Commit Message Template"
+        },
+        "merge_bot_account": {
+          "anyOf": [
+            {
+              "description": "A string template using the Jinja2 syntax.",
+              "format": "template",
+              "title": "Template",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Mergify can impersonate a GitHub user to merge pull requests. If no `merge_bot_account` is set, Mergify merges the pull request itself. The user account **must** have already been logged in Mergify dashboard once and have **write** or **maintain** permission.",
+          "title": "Merge Bot Account"
+        },
+        "update_bot_account": {
+          "anyOf": [
+            {
+              "description": "A string template using the Jinja2 syntax.",
+              "format": "template",
+              "title": "Template",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "For certain actions, such as rebasing branches, Mergify has to impersonate a GitHub user. You can specify the account to use with this option. If no `update_bot_account` is set, Mergify picks randomly one of the organization users instead. The user account **must** have already been logged in Mergify dashboard once. This option overrides the value defined in the queue rules section of the configuration.",
+          "title": "Update Bot Account"
+        }
+      },
+      "title": "QueueRuleModelForDefaults",
+      "type": "object"
+    },
+    "QueueRulesModel": {
+      "items": {
+        "$ref": "#/$defs/QueueRuleModel"
+      },
+      "maxItems": 50,
+      "title": "QueueRulesModel",
+      "type": "array"
+    },
+    "RebaseActionModel": {
+      "additionalProperties": false,
+      "properties": {
+        "bot_account": {
+          "anyOf": [
+            {
+              "description": "A string template using the Jinja2 syntax.",
+              "format": "template",
+              "title": "Template",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "To rebase, Mergify needs to impersonate a GitHub user. You can specify the account to use with this option. If no `bot_account` is set, Mergify picks the pull request author. The user account must have already been logged in Mergify dashboard once.\n\n**Warning:** Due to security on GitHub side, rebase cannot be performed on pull requests created by bot accounts without explicitly setting the `bot_account` impersonation option.",
+          "title": "Bot Account"
+        },
+        "autosquash": {
+          "default": true,
+          "description": "When set to `true`, commits starting with `fixup!`, `squash!` and `amend!` are squashed during the rebase.",
+          "title": "Autosquash",
+          "type": "boolean"
+        }
+      },
+      "title": "RebaseActionModel",
+      "type": "object"
+    },
+    "RequestReviewsActionModel": {
+      "additionalProperties": false,
+      "properties": {
+        "bot_account": {
+          "anyOf": [
+            {
+              "description": "A string template using the Jinja2 syntax.",
+              "format": "template",
+              "title": "Template",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Mergify can impersonate a GitHub user to request a review on a pull request. If no `bot_account` is set, Mergify will request the review itself.",
+          "title": "Bot Account"
+        },
+        "random_count": {
+          "anyOf": [
+            {
+              "maximum": 15,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Pick random users and teams from the provided lists. When `random_count` is specified, `users` and `teams` can be a dictionary where the key is the login and the value is the weight to use. Weight must be between 1 and 15 included.",
+          "title": "Random Count"
+        },
+        "users": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 150,
+              "type": "array"
+            },
+            {
+              "additionalProperties": {
+                "maximum": 65535,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "type": "object"
+            }
+          ],
+          "description": "The usernames to request reviews from.",
+          "title": "Users"
+        },
+        "teams": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 150,
+              "type": "array"
+            },
+            {
+              "additionalProperties": {
+                "maximum": 65535,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "type": "object"
+            }
+          ],
+          "description": "The team names to request reviews from.",
+          "title": "Teams"
+        },
+        "users_from_teams": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 150,
+              "type": "array"
+            },
+            {
+              "additionalProperties": {
+                "maximum": 65535,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "type": "object"
+            }
+          ],
+          "description": "The team names to get the list of users to request reviews from.",
+          "title": "Users From Teams"
+        }
+      },
+      "title": "RequestReviewsActionModel",
+      "type": "object"
+    },
+    "ReviewActionModel": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "default": "APPROVE",
+          "description": "The type of review to post",
+          "enum": [
+            "APPROVE",
+            "REQUEST_CHANGES",
+            "COMMENT"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "message": {
+          "anyOf": [
+            {
+              "description": "A string template using the Jinja2 syntax.",
+              "format": "template",
+              "title": "Template",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The message to post in the review",
+          "title": "Message"
+        },
+        "bot_account": {
+          "anyOf": [
+            {
+              "description": "A string template using the Jinja2 syntax.",
+              "format": "template",
+              "title": "Template",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Mergify can impersonate a GitHub user to review a pull request. If no `bot_account` is set, Mergify will review the pull request itself.",
+          "title": "Bot Account"
+        }
+      },
+      "title": "ReviewActionModel",
+      "type": "object"
+    },
+    "RuleConditionModel": {
+      "description": "Model defining a single rule condition 'leaf of a condition tree'",
+      "title": "RuleConditionModel",
+      "type": "string"
+    },
+    "Scopes": {
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SourceFiles"
+            },
+            {
+              "$ref": "#/$defs/SourceManual"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Where scopes come from. `files` uses file-pattern rules (`gha-mergify-ci-scopes` must have been setup on your pull request); `manual` uses scopes sent via API or `mergify scopes-send`; `None` disables scoping.",
+          "title": "Source"
+        },
+        "merge_queue_scope": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": "merge-queue",
+          "description": "Optional scope name automatically applied to merge queue PRs. Set to `None` to disable.",
+          "title": "Merge Queue Scope"
+        }
+      },
+      "title": "Scopes",
+      "type": "object"
+    },
+    "SourceFiles": {
+      "properties": {
+        "files": {
+          "description": "Mapping of scope name to its file filters. A file belongs to a scope if it matches the scope's `include` patterns and not its `exclude` patterns.",
+          "patternProperties": {
+            "^[A-Za-z0-9_-]+$": {
+              "$ref": "#/$defs/FileFilters"
+            }
+          },
+          "propertyNames": {
+            "minLength": 1
+          },
+          "title": "Files",
+          "type": "object"
+        }
+      },
+      "required": [
+        "files"
+      ],
+      "title": "SourceFiles",
+      "type": "object"
+    },
+    "SourceManual": {
+      "properties": {
+        "manual": {
+          "description": "Scopes are manually sent via API or `mergify scopes-send`",
+          "title": "Manual",
+          "type": "null"
+        }
+      },
+      "required": [
+        "manual"
+      ],
+      "title": "SourceManual",
+      "type": "object"
+    },
+    "SquashActionModel": {
+      "additionalProperties": false,
+      "properties": {
+        "bot_account": {
+          "anyOf": [
+            {
+              "description": "A string template using the Jinja2 syntax.",
+              "format": "template",
+              "title": "Template",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Mergify can impersonate a GitHub user to squash a pull request. If no `bot_account` is set, Mergify will squash the pull request itself",
+          "title": "Bot Account"
+        },
+        "commit_message": {
+          "default": "all-commits",
+          "description": "Defines what commit message to use for the squashed commit if no commit message is defined in the pull request body.\nPossible values are:\n\n- `all-commits` to use the same format as GitHub squashed merge commit.\n- `first-commit` to use the message of the first commit of the pull request.\n- `title+body` means to use the title and body from the pull request itself as the commit message. The pull request number will be added to end of the title.",
+          "enum": [
+            "all-commits",
+            "first-commit",
+            "title+body"
+          ],
+          "title": "Commit Message",
+          "type": "string"
+        }
+      },
+      "title": "SquashActionModel",
+      "type": "object"
+    },
+    "UpdateActionModel": {
+      "additionalProperties": false,
+      "properties": {
+        "bot_account": {
+          "anyOf": [
+            {
+              "description": "A string template using the Jinja2 syntax.",
+              "format": "template",
+              "title": "Template",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Mergify can impersonate a GitHub user to update a pull request. If no `bot_account` is set, Mergify will update the pull request itself.",
+          "title": "Bot Account"
+        }
+      },
+      "title": "UpdateActionModel",
+      "type": "object"
+    }
+  },
+  "title": "MergifyConfigModel",
+  "type": "object",
+  "properties": {
+    "shared": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Shared"
+    },
+    "extends": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Extends"
+    },
+    "defaults": {
+      "$ref": "#/$defs/DefaultsRulesModel"
+    },
+    "scopes": {
+      "$ref": "#/$defs/Scopes"
+    },
+    "commands_restrictions": {
+      "$ref": "#/$defs/CommandsRestrictionsRulesModel"
+    },
+    "pull_request_rules": {
+      "$ref": "#/$defs/PullRequestRulesModel"
+    },
+    "queue_rules": {
+      "$ref": "#/$defs/QueueRulesModel"
+    },
+    "partition_rules": {
+      "$ref": "#/$defs/PartitionRulesModel"
+    },
+    "merge_protections": {
+      "$ref": "#/$defs/MergeProtectionRulesModel"
+    },
+    "priority_rules": {
+      "$ref": "#/$defs/PriorityRulesModel"
+    },
+    "merge_queue": {
+      "$ref": "#/$defs/MergeQueue"
+    },
+    "merge_protections_settings": {
+      "$ref": "#/$defs/MergeProtections"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false
+}

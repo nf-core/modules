@@ -2,9 +2,7 @@ process XENIUMRANGER_RELABEL {
     tag "$meta.id"
     label 'process_high'
 
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'docker://nf-core/xeniumranger:4.0' :
-        'nf-core/xeniumranger:4.0' }"
+    container "nf-core/xeniumranger:4.0"
 
     input:
     tuple val(meta), path(xenium_bundle), path(gene_panel)

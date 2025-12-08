@@ -1,0 +1,20 @@
+description: "Schema for List of ASDs"
+henge_class: "AnnotatedSequenceDigestList"
+recursive: true
+type: array
+items:
+  description: "Schema for an Annotated Sequence Digest; a digested Sequence plus metadata"
+  type: object
+  henge_class: ASD
+  properties:
+    name:
+      type: string
+    length:
+      type: "integer"
+    sequence:
+      description: "Sequence digest"
+      type: string
+  required:
+    - length
+    - name
+    - sequence

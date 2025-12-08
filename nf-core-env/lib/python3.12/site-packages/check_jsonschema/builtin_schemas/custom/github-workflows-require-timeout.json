@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$comment": "A schema which requires that github workflow jobs define job timeouts",
+  "definitions": {
+    "expressionSyntax": {
+      "type": "string",
+      "$comment": "pattern definition taken from schemastore 'github-workflow.json'",
+      "pattern": "^\\$\\{\\{(.|[\r\n])*\\}\\}$"
+    }
+  },
+  "properties": {
+    "jobs": {
+      "$comment": "https://help.github.com/en/github/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobs",
+      "type": "object",
+      "patternProperties": {
+        "^[_a-zA-Z][a-zA-Z0-9_-]*$": {
+          "$comment": "https://help.github.com/en/github/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_id",
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "timeout-minutes": {
+                  "$comment": "https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idtimeout-minutes",
+                  "description": "The maximum number of minutes to let a workflow run before GitHub automatically cancels it. Default: 360",
+                  "default": 360,
+                  "oneOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "$ref": "#/definitions/expressionSyntax"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "runs-on",
+                "timeout-minutes"
+              ],
+              "additionalProperties": true
+            },
+            {
+              "$comment": "https://docs.github.com/en/actions/learn-github-actions/reusing-workflows#calling-a-reusable-workflow",
+              "type": "object",
+              "required": [
+                "uses"
+              ],
+              "additionalProperties": true
+            }
+          ]
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

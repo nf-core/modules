@@ -1,0 +1,7 @@
+reports:
+  {%- if multiqc %}
+  multiqc_report.html:
+    display: "MultiQC HTML report"
+  {%- endif %}
+  samplesheet.csv:
+    display: "Auto-created samplesheet with collated metadata and FASTQ paths"

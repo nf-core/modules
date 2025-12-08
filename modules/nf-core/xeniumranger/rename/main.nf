@@ -5,10 +5,7 @@ process XENIUMRANGER_RENAME {
     container "nf-core/xeniumranger:4.0"
 
     input:
-    tuple val(meta),
-        path(xenium_bundle, stageAs: "bundle/"),
-        val(region_name),
-        val(cassette_name)
+    tuple val(meta), path(xenium_bundle, stageAs: "bundle/"), val(region_name), val(cassette_name)
 
     output:
     tuple val(meta), path("${prefix}"), emit: outs

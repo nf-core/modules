@@ -1,0 +1,42 @@
+{% if is_nfcore -%}
+----------------------------------------------------
+                                        ,--./,-.
+        ___     __   __   __   ___     /,-._.--~\\
+  |\\ | |__  __ /  ` /  \\ |__) |__         }  {
+  | \\| |       \\__, \\__/ |  \\ |___     \\`-._,-`-,
+                                        `._,._,'
+  {{ name }} ${version}
+----------------------------------------------------
+{% endif -%}
+
+Run Name: $runName
+
+<% if (success){
+    out << "## {{ name }} execution completed successfully! ##"
+} else {
+    out << """####################################################
+## {{ name }} execution completed unsuccessfully! ##
+####################################################
+The exit status of the task that caused the workflow execution to fail was: $exitStatus.
+The full error message was:
+
+${errorReport}
+"""
+} %>
+
+
+The workflow was completed at $dateComplete (duration: $duration)
+
+The command used to launch the workflow was as follows:
+
+  $commandLine
+
+
+
+Pipeline Configuration:
+-----------------------
+<% out << summary.collect{ k,v -> " - $k: $v" }.join("\n") %>
+
+--
+{{ name }}
+https://github.com/{{ name }}

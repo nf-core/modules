@@ -1,0 +1,76 @@
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+<script type="text/javascript">
+    var plotDictArray = [];
+    var statsTable = {{ stats_json }}; // Jinja template variable
+    var columns = {{ columns_json }}; // Jinja template variable
+    const sampleNames = Object.keys(statsTable);
+
+    // populate the data container with values from the stats json
+    for (let i in columns){
+        const column = columns[i]
+        if (column === "sample_name") { continue; }
+        plotDictArray[column] = []
+        for (let j in sampleNames){
+            plotDictArray[column][j] = {}
+            plotDictArray[column][j]["sample_name"] = sampleNames[j]
+            plotDictArray[column][j][column] = parseFloat(statsTable[sampleNames[j]][column])
+        }
+    }
+    console.log("plotDictArray: ", plotDictArray);
+
+    // function that creates a barchart with Vega-Lite based on collected data
+    // from the JSON passed to the Jinja2 template
+    function createBarChart(colname){
+      const dispColName = colname.replace("_", " ")
+      const vegaLiteSpec = {
+          $schema: 'https://vega.github.io/schema/vega-lite/v4.json',
+          title: {
+              text: dispColName + " across samples",
+              fontSize: 15
+              },
+          description: 'A bar chart of one column values across samples.',
+          data: {values: plotDictArray[colname]},
+          width: 600,
+          height: 300,
+          mark: 'bar',
+          encoding: {
+            x: {
+                field: 'sample_name',
+                type: 'ordinal',
+                axis: {labelFontSize: 15, titleFontSize: 15},
+                title: "sample name"
+            },
+            y: {
+                field: colname,
+                type: 'quantitative',
+                axis: {labelFontSize: 15, titleFontSize: 15},
+                title: dispColName
+            },
+            tooltip: [
+                {field: "sample_name", type: "nominal", title: "sample name"},
+                {field: colname, type: "quantitative", title: dispColName}
+                ]
+            }
+      };
+      vegaEmbed(
+          el='#vegaCharts',
+          spec=vegaLiteSpec,
+          opt={"downloadFileName": colname + "_by_sample"}
+          );
+    }
+
+    // function that creates the column plotting selection list
+    function displayPlottableColumns(){
+        for(let col in plotDictArray){
+            const displayCol = col.replace("_", " ")
+            $("#plot-cols").append(
+                "<a class='list-group-item list-group-item-action' href='#' onclick='createBarChart(\"" + col + "\");return false;'>" + displayCol + "</a>");
+        }
+    }
+
+    displayPlottableColumns();
+    createBarChart(columns[1]);
+</script>

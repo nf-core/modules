@@ -1,0 +1,40 @@
+{% if links[0] is defined or figures[0] is defined %}
+<div class="row">
+	<div class="col-12">
+		<h3>Project level records</h3>
+	</div>
+</div>
+{% endif %}
+ <div class='container-fluid'>
+            {% if figures[0] is defined %}
+            <h5>Figures</h5>
+            {% for figure in figures %}
+            <figure class="figure">
+                <a href='{{ figure[0] }}'>
+                    <img id="fig" src='{{ figure[2] }}' class="figure-img img-fluid rounded" alt="">
+                </a>
+                <a href='{{ figure[0] }}'>
+                    <figcaption class="figure-caption text-center"><b>Fig.{{ loop.index }} </b><i>{{ figure[1] }}</i>
+                    </figcaption>
+                </a>
+            </figure>
+            {% endfor %}
+            {% endif %}
+ </div>
+{% if links[0] is defined %}
+<div class="row">
+	<div class="col-12">
+		<h5>Links</h5>
+	</div>
+</div>
+<div class="row">
+	<div class="col-12">
+		<!-- the list of links goes here -->
+		<div class="list-group" style="display:inline-block">
+			{% for link in links %}
+			<a href='{{ link[1] }}' class="list-group-item">{{ link[0] }}</a>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+{% endif %}

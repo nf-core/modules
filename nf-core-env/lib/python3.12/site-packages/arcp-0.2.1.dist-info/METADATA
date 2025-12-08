@@ -1,0 +1,201 @@
+Metadata-Version: 2.1
+Name: arcp
+Version: 0.2.1
+Summary: arcp (Archive and Package) URI parser and generator
+Home-page: https://arcp.readthedocs.io/
+Author: Stian Soiland-Reyes
+Author-email: stain@apache.org
+License: Apache License, Version 2.0
+Download-URL: https://github.com/stain/arcp-py/archive/0.1.0.tar.gz
+Keywords: arcp uri url iri archive package
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Topic :: Internet
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: System :: Archiving
+Classifier: Topic :: System :: Archiving :: Packaging
+
+arcp-py
+=======
+
+Create/parse arcp_ (Archive and Package) URIs.
+
+.. image:: https://readthedocs.org/projects/arcp/badge/?version=latest
+  :target: https://arcp.readthedocs.io/en/latest/?badge=latest
+  :alt: Documentation Status
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.1162749.svg
+  :target: https://doi.org/10.5281/zenodo.1162749
+.. image:: https://travis-ci.org/stain/arcp-py.svg?branch=master
+  :target: https://travis-ci.org/stain/arcp-py
+.. image:: https://img.shields.io/pypi/v/arcp.svg?maxAge=86400
+  :target: https://pypi.org/project/arcp/
+.. image:: https://coveralls.io/repos/github/stain/arcp-py/badge.svg?branch=master
+  :target: https://coveralls.io/github/stain/arcp-py?branch=master
+.. image:: https://codecov.io/gh/stain/arcp-py/branch/master/graph/badge.svg
+  :target: https://codecov.io/gh/stain/arcp-py
+
+
+
+
+Introduction
+------------
+
+``arcp`` provides functions for creating arcp_ URIs, 
+which can be used for identifying or parsing hypermedia 
+files packaged in an archive or package, like a ZIP file.
+
+arcp URIs can be used to consume or reference hypermedia resources 
+bundled inside a file archive or an application package, as well as 
+to resolve URIs for archive resources within a programmatic framework.
+
+This URI scheme provides mechanisms to generate a unique base URI 
+to represent the root of the archive, so that relative URI references 
+in a bundled resource can be resolved within the archive without having to extract the archive content on the local file system.
+
+An arcp URI can be used for purposes of isolation (e.g. when consuming 
+multiple archives), security constraints (avoiding “climb out” from the
+archive), or for externally identiyfing sub-resources referenced by
+hypermedia formats.
+
+Examples:
+ - ``arcp://uuid,32a423d6-52ab-47e3-a9cd-54f418a48571/doc.html``
+ - ``arcp://uuid,b7749d0b-0e47-5fc4-999d-f154abe68065/pics/``
+ - ``arcp://ni,sha-256;F-34D4TUeOfG0selz7REKRDo4XePkewPeQYtjL3vQs0/``
+ - ``arcp://name,gallery.example.org/``
+
+The different forms of URI authority_ in arcp URIs can be used depending
+on which uniqueness constraints to apply when addressing an archive.
+See the arcp_ specification (*draft-soilandreyes-arcp*) for details.
+
+Note that this library only provides mechanisms to 
+*generate* and *parse* arcp URIs, and do *not* integrate with any 
+particular archive or URL handling modules like 
+``zipfile`` or ``urllib.request``.
+
+
+License
+-------
+
+© 2018-2020 Stian Soiland-Reyes <https://orcid.org/0000-0001-9842-9718>, The University of Manchester, UK
+
+Licensed under the 
+Apache License, version 2.0 <https://www.apache.org/licenses/LICENSE-2.0>, 
+see the file LICENSE.txt for details.
+
+Contribute
+----------
+
+Source code: <https://github.com/stain/arcp-py>
+
+Feel free to raise a pull request at <https://github.com/stain/arcp-py/pulls>
+or an issue at <https://github.com/stain/arcp-py/issues>.
+
+Submitted contributions are assumed to be covered by section 5 of the Apache License 2.0.
+
+Installing
+----------
+
+You will need Python 2.7, Python 3.4 or later (Recommended: 3.6).
+
+If you have pip_, then the easiest is normally to install from <https://pypi.org/project/arcp/> using::
+
+    pip install arcp
+
+If you want to install manually from this code base, then try::
+
+    python setup.py install
+
+Usage
+------
+
+For full documentation, see <https://arcp.readthedocs.io/> or use ``help(arcp)``
+
+This module provides functions for creating arcp_ URIs, 
+which can be used for identifying or parsing hypermedia 
+files packaged in an archive or package, like a ZIP file:: python
+
+    >>> from arcp import *
+
+    >>> arcp_random()
+    'arcp://uuid,dcd6b1e8-b3a2-43c9-930b-0119cf0dc538/'
+
+    >>> arcp_random("/foaf.ttl", fragment="me")
+    'arcp://uuid,dcd6b1e8-b3a2-43c9-930b-0119cf0dc538/foaf.ttl#me'
+
+    >>> arcp_hash(b"Hello World!", "/folder/")
+    'arcp://ni,sha-256;f4OxZX_x_FO5LcGBSKHWXfwtSx-j1ncoSt3SABJtkGk/folder/'
+
+    >>> arcp_location("http://example.com/data.zip", "/file.txt")
+    'arcp://uuid,b7749d0b-0e47-5fc4-999d-f154abe68065/file.txt'
+
+arcp URLs can be used with ``urllib.parse``, 
+for instance using ``urljoin`` to resolve relative references::
+
+    >>> css = arcp.arcp_name("app.example.com", "css/style.css")
+    >>> urllib.parse.urljoin(css, "../fonts/foo.woff")
+    'arcp://name,app.example.com/fonts/foo.woff'
+
+
+In addition this module provides functions that can be used
+to parse arcp URIs into its constituent fields:: python
+
+    >>> is_arcp_uri("arcp://uuid,b7749d0b-0e47-5fc4-999d-f154abe68065/file.txt")
+    True
+
+    >>> is_arcp_uri("http://example.com/t")
+    False
+
+    >>> u = parse_arcp("arcp://uuid,b7749d0b-0e47-5fc4-999d-f154abe68065/file.txt")
+    ARCPSplitResult(scheme='arcp',prefix='uuid',name='b7749d0b-0e47-5fc4-999d-f154abe68065',
+      uuid='b7749d0b-0e47-5fc4-999d-f154abe68065',path='/file.txt',query='',fragment='')
+
+    >>> u.path
+    '/file.txt'
+    >>> u.prefix
+    'uuid'
+    >>> u.uuid
+    UUID('b7749d0b-0e47-5fc4-999d-f154abe68065')
+    >>> u.uuid.version
+    5
+
+    >>> parse_arcp("arcp://ni,sha-256;f4OxZX_x_FO5LcGBSKHWXfwtSx-j1ncoSt3SABJtkGk/folder/").hash
+    ('sha-256', '7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069')
+
+The object returned from ``parse_arcp`` is similar to 
+``ParseResult`` from ``urlparse``, but contains additional properties 
+``prefix``, ``uuid``, ``ni``, ``hash`` and ``name``, 
+some of which will be ``None`` depending on the arcp prefix.
+
+The function ``arcp.parse.urlparse`` can be imported as an alternative 
+to ``urllib.parse.urlparse``. If the scheme is ``arcp`` then the extra 
+arcp fields like `prefix`, `uuid`, `hash` and `name` are available
+as from `parse_arcp`, otherwise the output is the same as from 
+regular `urlparse`:: python
+
+    >>> from arcp.parse import urlparse
+    >>> urlparse("arcp://ni,sha-256;f4OxZX_x_FO5LcGBSKHWXfwtSx-j1ncoSt3SABJtkGk/folder/soup;sads")
+    ARCPParseResult(scheme='arcp',prefix='ni',
+       name='sha-256;f4OxZX_x_FO5LcGBSKHWXfwtSx-j1ncoSt3SABJtkGk',
+       ni='sha-256;f4OxZX_x_FO5LcGBSKHWXfwtSx-j1ncoSt3SABJtkGk',
+       hash=('sha-256', '7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069',
+       path='/folder/soup;sads',query='',fragment='')
+    >>> urlparse("http://example.com/help?q=a")
+    ParseResult(scheme='http', netloc='example.com', path='/help', params='', 
+      query='q=a', fragment='')
+
+
+
+.. _arcp: https://tools.ietf.org/html/draft-soilandreyes-arcp-03
+.. _pip: https://docs.python.org/3/installing/
+.. _authority: https://tools.ietf.org/id/draft-soilandreyes-arcp-03.html#rfc.section.4.1
+
+

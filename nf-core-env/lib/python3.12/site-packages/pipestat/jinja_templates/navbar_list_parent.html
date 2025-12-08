@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+    <head>
+      {% include "head.html" %}
+      <title>{{pipeline_name}}: {{ header }}</title>
+    </head>
+    {{ navbar }}
+    <body>
+      <div id="top"></div>
+      <div class="container" style="margin-top:20px">
+            <h3>{{ header }}</h3>
+            <div class="list-group" style="display:inline-block">
+                {% for label in labels %}
+                    {% set i = loop.index - 1 %}
+                    <a href='{{ pages[i] }}' class="list-group-item">{{ label }}</a>
+                {% endfor %}
+            </div>
+      </div>
+    </body>
+    <hr class="featurette-divider">
+    <footer class="text-muted">
+        {{ footer }}
+    </footer>
+</html>

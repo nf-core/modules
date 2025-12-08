@@ -9,7 +9,7 @@ process XENIUMRANGER_RESEGMENT {
 
     output:
     tuple val(meta), path("${prefix}"), emit: outs
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val("xeniumranger"), eval("xeniumranger -V | sed -e 's/xeniumranger-/- /g'"), emit: versions_xeniumranger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,11 +38,6 @@ process XENIUMRANGER_RESEGMENT {
     else
         mkdir -p "${prefix}"
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        xeniumranger: \$(xeniumranger -V | sed -e "s/xeniumranger-/- /g")
-    END_VERSIONS
     """
 
     stub:
@@ -69,10 +64,5 @@ process XENIUMRANGER_RESEGMENT {
     else
         mkdir -p "${prefix}"
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        xeniumranger: \$(xeniumranger -V | sed -e "s/xeniumranger-/- /g")
-    END_VERSIONS
     """
 }

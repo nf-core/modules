@@ -1,0 +1,72 @@
+description: "refgenie genome configuration file schema"
+version: "0.4"
+properties:
+  config_version:
+    type: [string, number]
+  genome_folder:
+    type: string
+  remote_url_base:
+    type: string
+  genome_archive_folder:
+    type: string
+  genome_archive_config:
+    type: string
+  genome_servers:
+    type: array
+    items:
+      type: string
+  genomes:
+    additionalProperties: false
+    patternProperties:
+      ^.*$: { "$ref": "#/definitions/genome" }
+
+definitions:
+  genome:
+    type: object
+    properties:
+      genome_description:
+        type: string
+      aliases:
+        type: array
+        items:
+          type: string
+      assets:
+        additionalProperties: false
+        patternProperties:
+          ^.*$: { "$ref": "#/definitions/asset" }
+  asset:
+    type: object
+    properties:
+      my_required_prop:
+        type: integer
+      asset_description:
+        type: string
+      tags:
+        additionalProperties: false
+        patternProperties:
+          ^.*$: { "$ref": "#/definitions/tag" }
+  tag:
+    type: object
+    properties:
+      asset_path:
+        type: string
+      asset_digest:
+        type: string
+      seek_keys:
+        additionalProperties: false
+        patternProperties:
+          ^.*$: { "$ref": "#/definitions/seek_key" }
+      asset_parents:
+        type: array
+        items:
+          type: string
+      asset_children:
+        type: array
+        items:
+          type: string
+  seek_key:
+    type: string
+  relatives:
+    type: array
+    items:
+      type: string

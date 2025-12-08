@@ -1,0 +1,68 @@
+              {% if project_report is not none %}
+                  <li class="nav-item active">
+                    <a class="nav-link" href="{{project_report}}">Linked project report</a>
+                  </li>
+              {% endif %}
+              {% if sample_reports_parent is not none %}
+                  <li class="nav-item active">
+                    <a class="nav-link" href="{{sample_reports_parent}}">Linked sample reports</a>
+                  </li>
+              {% endif %}
+              {% if status_page_name is not none %}
+              <!-- if the status_page_name is not defined, the status page link is omitted -->
+                  <li class="nav-item active">
+                    <a class="nav-link" href="{{status_html_page}}">{{status_page_name}}</a>
+                  </li>
+              {% endif %}
+              {% if glossary_page_name is not none %}
+              <!-- if the glossary_page_name is not defined, the glossary page link is omitted -->
+                  <li class="nav-item active">
+                    <a class="nav-link" href="{{glossary_html_page}}">{{glossary_page_name}}</a>
+                  </li>
+              {% endif %}
+              {% if dropdown_keys_objects is none %}
+              <!-- there is more than 20 objects or 0 -->
+                {% if objects_html_page is not none %}
+                  <li class="nav-item active">
+                    <a class="nav-link" href="{{objects_html_page}}">{{objects_page_name}}</a>
+                  </li>
+                {% endif %}
+              {% else %}
+               <!-- there is less than 20 objects -->
+                <li class="nav-item dropdown active">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{ menu_name_objects }}
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{{ all_objects }}">All objects</a>
+                    <div class="dropdown-divider"></div>
+                    {% for key in dropdown_keys_objects %}
+                      {% set i = loop.index - 1 %}
+                      <a class="dropdown-item" href="{{ objects_html_page[i] }}">{{ key }}</a>
+                    {% endfor %}
+                  </div>
+                </li>
+              {% endif %}
+              {% if sample_names is none %}
+                <!-- there is more than 20 samples or 0 -->
+                {% if samples_html_page is not none %}
+                  <li class="nav-item active">
+                    <a class="nav-link" href="{{samples_html_page}}">{{samples_page_name}}</a>
+                  </li>
+                {% endif %}
+              {% else %}
+                <!-- there is less than 20 samples -->
+                <li class="nav-item dropdown active">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {{menu_name_samples}}
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{{ all_samples }}">All records</a>
+                    <div class="dropdown-divider"></div>
+                    {% for sample_name in sample_names %}
+                      {% set i = loop.index - 1 %}
+                      <a class="dropdown-item" href="{{ samples_html_page[i] }}">{{ sample_name }}</a>
+                    {% endfor %}
+                  </div>
+                </li>
+              {% endif %}

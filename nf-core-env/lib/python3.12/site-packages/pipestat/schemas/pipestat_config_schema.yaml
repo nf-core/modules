@@ -1,0 +1,38 @@
+description: "Pipestat configuration file schema; docs: http://pipestat.databio.org/en/latest/config/"
+properties:
+  name:
+    type: string
+    pattern: "^\\S*$"
+    description: "Namespace identifier with no whitespace"
+  record_identifier:
+    type: string
+    pattern: "^\\S*$"
+    description: "Record identifier with no whitespace"
+  schema_path:
+    type: string
+    description: "Path to a pipestat schema file"
+  results_file_path:
+    type: string
+    description: "Path to a results file for this namespace"
+  database:
+    type: object
+    properties:
+      dialect:
+        type: string
+        enum: ["sqlite", "mysql", "postgresql", "oracle", "mssql"]
+        description: "Dialect names include the identifying name of the SQLAlchemy dialect, a name such as sqlite, mysql, postgresql, oracle, or mssql"
+      name:
+        type: string
+        description: "DB name"
+      user:
+        type: string
+        description: "DB user"
+      password:
+        type: string
+        description: "DB password"
+      host:
+        type: string
+        description: "DB host"
+      port:
+        type: [string, integer]
+        description: "DB port"

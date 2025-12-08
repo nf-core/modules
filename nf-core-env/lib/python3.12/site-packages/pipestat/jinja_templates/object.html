@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	{% include "head.html" %}
+	<title>Pipestat: {{ pipeline_name }} objects</title>
+</head>
+{{ navbar }}
+
+<body>
+	<div id="top"></div>
+	<div class="container">
+		{% if links[0] is defined or figures[0] is defined %}
+		<h3>{{ name }}: <i>{{ desc }}</i></h3>
+		{% else %}
+		<p><b>No objects to display for: <code>{{ name }}</code></b>
+		<p>
+			{% endif %}
+			<!-- Expects a 2 lists of lists: figures and links -->
+			{% if links[0] is defined %}
+		<ul class="list-group">
+			<li class="list-group-item list-group-item-dark" aria-current="true">Get a reported object for record</li>
+			{% for link in links %}
+			<a class="list-group-item list-group-item-action" href='{{ link[1] }}'>{{ link[0] }}</a>
+			{% endfor %}
+		</ul>
+		{% endif %}
+		{% if figures[0] is defined %}
+		<div class='container-fluid'>
+			{% for figure in figures %}
+			<figure class="figure">
+				<a href='{{ figure[0] }}'>
+					<img id="fig" src='{{ figure[2] }}' class="figure-img img-fluid rounded" alt="">
+				</a>
+				<a href='{{ figure[0] }}'>
+					<figcaption class="figure-caption text-center"><b>Fig.{{ loop.index }} </b><i>{{ figure[1] }}</i>
+					</figcaption>
+				</a>
+			</figure>
+			{% endfor %}
+		</div>
+		{% endif %}
+	</div>
+</body>
+<hr class="featurette-divider">
+<footer class="text-muted">
+	{{ footer }}
+</footer>
+
+</html>

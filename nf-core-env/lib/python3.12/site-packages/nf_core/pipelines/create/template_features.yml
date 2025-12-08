@@ -1,0 +1,568 @@
+repository_setup:
+  name: "Repository Setup"
+  features:
+    github:
+      skippable_paths:
+        - ".github"
+        - ".gitattributes"
+      short_description: "Use a GitHub repository."
+      description: "Create a GitHub repository for the pipeline."
+      help_text: |
+        This will create a GitHub repository for the pipeline.
+
+        The repository will include:
+        - Continuous Integration (CI) tests
+        - Issues and pull requests templates
+
+        The initialisation of a git repository is required to use the nf-core/tools.
+        This means that even if you unselect this option, your pipeline will still contain a `.git` directory and `.gitignore` file.
+      linting:
+        files_exist:
+          - ".github/ISSUE_TEMPLATE/bug_report.yml"
+          - ".github/ISSUE_TEMPLATE/feature_request.yml"
+          - ".github/PULL_REQUEST_TEMPLATE.md"
+          - ".github/CONTRIBUTING.md"
+          - ".github/.dockstore.yml"
+        files_unchanged:
+          - ".github/ISSUE_TEMPLATE/bug_report.yml"
+          - ".github/ISSUE_TEMPLATE/config.yml"
+          - ".github/ISSUE_TEMPLATE/feature_request.yml"
+          - ".github/PULL_REQUEST_TEMPLATE.md"
+          - ".github/workflows/branch.yml"
+          - ".github/workflows/linting_comment.yml"
+          - ".github/workflows/linting.yml"
+          - ".github/CONTRIBUTING.md"
+          - ".github/.dockstore.yml"
+        readme:
+          - "nextflow_badge"
+      nfcore_pipelines: False
+      custom_pipelines: True
+      default: True
+
+    github_badges:
+      skippable_paths: False
+      short_description: "Add Github badges"
+      description: "The README.md file of the pipeline will include GitHub badges"
+      help_text: |
+        The pipeline `README.md` will include badges for:
+        * AWS CI Tests
+        * Zenodo DOI
+        * Nextflow
+        * nf-core template version
+        * Conda
+        * Docker
+        * Singularity
+        * Launching on Nextflow Tower
+      linting:
+        readme:
+          - "nextflow_badge"
+          - "nfcore_template_badge"
+      nfcore_pipelines: False
+      custom_pipelines: True
+      default: True
+
+    changelog:
+      skippable_paths:
+        - "CHANGELOG.md"
+      short_description: "Add a changelog"
+      description: "Add a CHANGELOG.md file."
+      help_text: |
+        Having a `CHANGELOG.md` file in the pipeline root directory is useful to track the changes added to each version.
+
+        You can read more information on the recommended format here: https://keepachangelog.com/en/1.0.0/
+      linting:
+        files_exist:
+          - "CHANGELOG.md"
+      nfcore_pipelines: False
+      custom_pipelines: True
+      default: true
+
+    license:
+      skippable_paths:
+        - "LICENSE"
+      short_description: "Add a license File"
+      description: "Add the MIT license file."
+      help_text: |
+        To protect the copyright of the pipeline, you can add a LICENSE file.
+        This option ads the MIT License. You can read the conditions here: https://opensource.org/license/MIT
+      linting:
+        files_exist:
+          - "LICENSE"
+        files_unchanged:
+          - "LICENSE"
+      nfcore_pipelines: False
+      custom_pipelines: True
+      default: true
+
+continuous_integration_testing:
+  name: "Continuous Integration & Testing"
+  features:
+    ci:
+      skippable_paths:
+        - ".github/workflows/"
+      short_description: "Add Github CI tests"
+      description: "The pipeline will include several GitHub actions for Continuous Integration (CI) testing"
+      help_text: |
+        Nf-core provides a set of Continuous Integration (CI) tests for Github.
+        When you open a pull request (PR) on your pipeline repository, these tests will run automatically.
+
+        There are different types of tests:
+        * Linting tests check that your code is formatted correctly and that it adheres to nf-core standards
+            For code linting they will use [prettier](https://prettier.io/).
+        * Pipeline tests run your pipeline on a small dataset to check that it works
+            These tests are run with a small test dataset on GitHub and a larger test dataset on AWS
+        * Marking old issues as stale
+      linting:
+        files_exist:
+          - ".github/workflows/branch.yml"
+          - ".github/workflows/nf-test.yml"
+          - ".github/actions/get-shards/action.yml"
+          - ".github/actions/nf-test/action.yml"
+          - ".github/workflows/linting_comment.yml"
+          - ".github/workflows/linting.yml"
+      nfcore_pipelines: False
+      custom_pipelines: True
+      default: true
+
+    test_config:
+      skippable_paths:
+        - "conf/test.config"
+        - "conf/test_full.config"
+        - ".github/workflows/awsfulltest.yml"
+        - ".github/workflows/awstest.yml"
+        - ".github/workflows/nf-test.yml"
+        - ".github/actions/get-shards/action.yml"
+        - ".github/actions/nf-test/action.yml"
+      short_description: "Add testing profiles"
+      description: "Add two default testing profiles"
+      help_text: |
+        This will add two default testing profiles to run the pipeline with different inputs.
+        You can customise them and add other test profiles.
+
+        These profiles can be used to run the pipeline with a minimal testing dataset with `nextflow run <your_pipeline> -profile test`.
+
+        The pipeline will include two profiles: `test` and `test_full`.
+        In nf-core, we typically use the `test` profile to run the pipeline with a minimal dataset and the `test_full` to run the pipeline with a larger dataset that simulates a real-world scenario.
+      linting:
+        files_exist:
+          - "conf/test.config"
+          - "conf/test_full.config"
+          - ".github/workflows/nf-test.yml"
+          - ".github/actions/get-shards/action.yml"
+          - ".github/actions/nf-test/action.yml"
+        nextflow_config: False
+        files_unchanged:
+          - ".github/CONTRIBUTING.md"
+          - ".github/PULL_REQUEST_TEMPLATE.md"
+      nfcore_pipelines: False
+      custom_pipelines: True
+      default: true
+
+    nf-test:
+      skippable_paths:
+        - ".github/workflows/nf-test.yml"
+        - ".github/actions/get-shards/action.yml"
+        - ".github/actions/nf-test/action.yml"
+        - "nf-test.config"
+        - "tests/default.nf.test"
+        - "tests/.nftignore"
+        - "tests/nextflow.config"
+      short_description: "Add pipeline testing"
+      description: "Add pipeline testing using nf-test"
+      help_text: |
+        This will add pipeline testing with [nf-test](https://www.nf-test.com/).
+
+        Will add and `nf-test.config` file setting up the appropriate configuration to test your pipeline.
+        On top of that, it will also add the Continuous Integration (CI) GitHub actions to run these tests.
+
+        If you skip this feature, you will still be able to test your pipeline with a `test` profile by running the pipeline.
+        But you won't have the automated CI testing.
+        You can add CI by yourself.
+      linting:
+        files_exist:
+          - ".github/workflows/nf-test.yml"
+          - ".github/actions/get-shards/action.yml"
+          - ".github/actions/nf-test/action.yml"
+          - "nf-test.config"
+          - "tests/default.nf.test"
+        nf_test_content: False
+      nfcore_pipelines: False
+      custom_pipelines: True
+      default: true
+
+components_modules:
+  name: "Components & Modules"
+  features:
+    igenomes:
+      skippable_paths:
+        - "conf/igenomes.config"
+        - "conf/igenomes_ignored.config"
+      short_description: "Use reference genomes"
+      description: "The pipeline will be configured to use a copy of the most common reference genome files from iGenomes"
+      help_text: |
+        Nf-core pipelines are configured to use a copy of the most common reference genome files.
+
+        By selecting this option, your pipeline will include a configuration file specifying the paths to these files.
+
+        The required code to use these files will also be included in the template.
+        When the pipeline user provides an appropriate genome key,
+        the pipeline will automatically download the required reference files.
+
+        For more information about reference genomes in nf-core pipelines,
+        see the [nf-core docs](https://nf-co.re/docs/usage/reference_genomes).
+      linting:
+        files_exist:
+          - "conf/igenomes.config"
+          - "conf/igenomes_ignored.config"
+      nfcore_pipelines: True
+      custom_pipelines: True
+      default: true
+
+    modules:
+      skippable_paths:
+        - "conf/base.config"
+        - "conf/modules.config"
+        - "modules.json"
+        - "modules"
+        - "subworkflows"
+      short_description: "Use nf-core components"
+      description: "Include all required files to use nf-core modules and subworkflows"
+      help_text: |
+        It is *recommended* to use this feature if you want to use modules and subworkflows in your pipeline.
+        This will add all required files to use nf-core components or any compatible components from private repos by using `nf-core modules` and `nf-core subworkflows` commands.
+      linting:
+        nfcore_components: False
+        modules_json: False
+        base_config: False
+        modules_config: False
+        files_exist:
+          - "conf/base.config"
+          - "conf/modules.config"
+          - "modules.json"
+        files_unchanged:
+          - ".prettierignore"
+      nfcore_pipelines: False
+      custom_pipelines: True
+      default: true
+
+    multiqc:
+      skippable_paths:
+        - "assets/multiqc_config.yml"
+        - "assets/methods_description_template.yml"
+        - "modules/nf-core/multiqc/"
+      short_description: "Use multiqc"
+      description: "The pipeline will include the MultiQC module which generates an HTML report for quality control."
+      help_text: |
+        MultiQC is a visualization tool that generates a single HTML report summarising all samples in your project. Most of the pipeline quality control results can be visualised in the report and further statistics are available in the report data directory.
+
+        The pipeline will include the MultiQC module and will have special steps which also allow the software versions to be reported in the MultiQC output for future traceability. For more information about how to use MultiQC reports, see http://multiqc.info.
+      linting:
+        files_unchanged:
+          - ".github/CONTRIBUTING.md"
+          - "assets/sendmail_template.txt"
+        files_exist:
+          - "assets/multiqc_config.yml"
+        multiqc_config: False
+      nfcore_pipelines: True
+      custom_pipelines: True
+      default: true
+
+    fastqc:
+      skippable_paths:
+        - "modules/nf-core/fastqc/"
+      short_description: "Use fastqc"
+      description: "The pipeline will include the FastQC module which performs quality control analysis of input FASTQ files."
+      help_text: |
+        FastQC is a tool which provides quality control checks on raw sequencing data.
+        The pipeline will include the FastQC module.
+      nfcore_pipelines: True
+      custom_pipelines: True
+      default: true
+
+    nf_schema:
+      skippable_paths:
+        - "subworkflows/nf-core/utils_nfschema_plugin"
+        - "nextflow_schema.json"
+        - "assets/schema_input.json"
+        - "assets/samplesheet.csv"
+      short_description: "Use nf-schema"
+      description: "Use the nf-schema Nextflow plugin for this pipeline."
+      help_text: |
+        [nf-schema](https://nextflow-io.github.io/nf-schema/latest/) is used to validate input parameters based on a JSON schema.
+        It also provides helper functionality to create help messages, get a summary
+        of changed parameters and validate and convert a samplesheet to a channel.
+      linting:
+        files_exist:
+          - "nextflow_schema.json"
+        schema_params: False
+        schema_lint: False
+        schema_description: False
+        nextflow_config: False
+      nfcore_pipelines: True
+      custom_pipelines: True
+      default: true
+
+configurations:
+  name: "Configurations"
+  features:
+    nf_core_configs:
+      skippable_paths: False
+      short_description: "Add configuration files"
+      description: "The pipeline will include configuration profiles containing custom parameters required to run nf-core pipelines at different institutions"
+      help_text: |
+        Nf-core has a repository with a collection of configuration profiles.
+
+        Those config files define a set of parameters which are specific to compute environments at different Institutions.
+        They can be used within all nf-core pipelines.
+        If you are likely to be running nf-core pipelines regularly it is a good idea to use or create a custom config file for your organisation.
+
+        For more information about nf-core configuration profiles, see the [nf-core/configs repository](https://github.com/nf-core/configs)
+      linting:
+        files_exist:
+          - "conf/igenomes.config"
+        nextflow_config:
+          - "process.cpus"
+          - "process.memory"
+          - "process.time"
+          - "custom_config"
+          - "params.custom_config_version"
+          - "params.custom_config_base"
+        included_configs: False
+      nfcore_pipelines: False
+      custom_pipelines: True
+      default: true
+
+    is_nfcore:
+      skippable_paths:
+        - ".github/ISSUE_TEMPLATE/config"
+        - "CODE_OF_CONDUCT.md"
+        - ".github/workflows/awsfulltest.yml"
+        - ".github/workflows/awstest.yml"
+        - ".github/workflows/release-announcements.yml"
+      short_description: "A custom pipeline which won't be part of the nf-core organisation but be compatible with nf-core/tools."
+      description: ""
+      help_text: ""
+      linting:
+        files_exist:
+          - "CODE_OF_CONDUCT.md"
+          - "assets/nf-core-{{short_name}}_logo_light.png"
+          - "docs/images/nf-core-{{short_name}}_logo_light.png"
+          - "docs/images/nf-core-{{short_name}}_logo_dark.png"
+          - ".github/ISSUE_TEMPLATE/config.yml"
+          - ".github/workflows/awstest.yml"
+          - ".github/workflows/awsfulltest.yml"
+        files_unchanged:
+          - "CODE_OF_CONDUCT.md"
+          - "assets/nf-core-{{short_name}}_logo_light.png"
+          - "docs/images/nf-core-{{short_name}}_logo_light.png"
+          - "docs/images/nf-core-{{short_name}}_logo_dark.png"
+          - ".github/ISSUE_TEMPLATE/bug_report.yml"
+          - ".github/CONTRIBUTING.md"
+          - ".github/PULL_REQUEST_TEMPLATE.md"
+          - "assets/email_template.txt"
+          - "docs/README.md"
+        nextflow_config:
+          - "manifest.name"
+          - "manifest.homePage"
+        multiqc_config:
+          - "report_comment"
+      nfcore_pipelines: False
+      custom_pipelines: False
+      default: true
+
+    seqera_platform:
+      skippable_paths:
+        - "tower.yml"
+      short_description: "Add Seqera Platform output"
+      description: "Add a YAML file to specify which output files to upload when launching a pipeline from the Seqera Platform"
+      help_text: |
+        When launching a pipeline with the Seqera Platform, a `tower.yml` file can be used to add configuration options.
+
+        In the pipeline template, this file is used to specify the output files of you pipeline which will be shown on the reports tab of Seqera Platform.
+        You can extend this file adding any other desired configuration.
+      nfcore_pipelines: False
+      custom_pipelines: True
+      default: true
+
+    gpu:
+      skippable_paths: False
+      short_description: "Use GPU"
+      description: "Add GPU support to the pipeline"
+      help_text: |
+        This will add GPU support to the pipeline. It will add a `use_gpu` parameter to the pipeline.
+        The pipeline will be able to run on GPU-enabled compute environments.
+      nfcore_pipelines: True
+      custom_pipelines: True
+      default: False
+
+development_environments:
+  name: "Development Environments"
+  features:
+    codespaces:
+      skippable_paths:
+        - ".devcontainer/devcontainer.json"
+        - ".devcontainer/setup.sh"
+      short_description: "Include GitHub Codespaces"
+      description: "The pipeline will include a devcontainer configuration for GitHub Codespaces, providing a development environment with nf-core/tools and Nextflow installed."
+      help_text: |
+        The pipeline will include a devcontainer configuration.
+        The devcontainer will create a GitHub Codespaces for Nextflow development with nf-core/tools and Nextflow installed.
+
+        Github Codespaces (https://github.com/features/codespaces) is an online developer environment that runs in your browser, complete with VSCode and a terminal.
+      linting:
+        files_unchanged:
+          - ".github/CONTRIBUTING.md"
+      nfcore_pipelines: False
+      custom_pipelines: True
+      default: true
+
+    vscode:
+      skippable_paths:
+        - ".vscode"
+      short_description: "Render website admonitions in VSCode"
+      description: "Add a VSCode configuration to render website admonitions"
+      help_text: |
+        This will add a VSCode configuration file to render the admonitions in markdown files with the same style as the nf-core website.
+
+        Adds the `.vscode` directory to the pipelinerepository.
+      nfcore_pipelines: False
+      custom_pipelines: True
+      default: true
+
+code_quality:
+  name: "Code Quality"
+  features:
+    code_linters:
+      skippable_paths:
+        - ".pre-commit-config.yaml"
+        - ".prettierignore"
+        - ".prettierrc.yml"
+        - ".github/workflows/fix-linting.yml"
+      short_description: "Use code linters"
+      description: "The pipeline will include code linters and CI tests to lint your code: pre-commit, editor-config and prettier."
+      help_text: |
+        Pipelines include code linters to check the formatting of your code in order to harmonize code styles between developers.
+        Linters will check all non-ignored files, e.g., JSON, YAML, Nextlow or Python files in your repository.
+        The available code linters are:
+
+        - pre-commit (https://pre-commit.com/): used to run all code-linters on every PR and on ever commit if you run `pre-commit install` to install it in your local repository.
+        - prettier (https://github.com/prettier/prettier): enforces a consistent style (indentation, quoting, line length, etc).
+      linting:
+        files_exist:
+          - ".prettierignore"
+          - ".prettierrc.yml"
+      nfcore_pipelines: False
+      custom_pipelines: True
+      default: true
+
+documentation_metadata:
+  name: "Documentation & metadata"
+  features:
+    citations:
+      skippable_paths:
+        - "assets/methods_description_template.yml"
+        - "CITATIONS.md"
+      short_description: "Include citations"
+      description: "Include pipeline tools citations in CITATIONS.md and a method description in the MultiQC report (if enabled)."
+      help_text: |
+        If adding citations, the pipeline template will contain a `CITATIONS.md` file to add the citations of all tools used in the pipeline.
+
+        Additionally, it will include a YAML file (`assets/methods_description_template.yml`) to add a Materials & Methods section describing the tools used in the pieline,
+        and the logics to add this section to the output MultiQC report (if the report is generated).
+      linting:
+        files_exist:
+          - "CITATIONS.md"
+      nfcore_pipelines: False
+      custom_pipelines: True
+      default: true
+
+    documentation:
+      skippable_paths:
+        - "docs"
+      short_description: "Add documentation"
+      description: "Add documentation to the pipeline"
+      help_text: |
+        This will add documentation markdown files where you can describe your pipeline.
+        It includes:
+        - docs/README.md: A README file where you can describe the structure of your documentation.
+        - docs/output.md: A file where you can explain the output generated by the pipeline
+        - docs/usage.md: A file where you can explain the usage of the pipeline and its parameters.
+
+        These files come with an exemplary documentation structure written.
+      linting:
+        files_exist:
+          - "docs/output.md"
+          - "docs/README.md"
+          - "docs/usage.md"
+      nfcore_pipelines: False
+      custom_pipelines: True
+      default: true
+
+    rocrate:
+      skippable_paths:
+        - "ro-crate-metadata.json"
+      short_description: "Add RO-Crate metadata"
+      description: "Add a RO-Crate metadata file to describe the pipeline"
+      help_text: |
+        RO-Crate is a metadata specification to describe research data and software.
+        This will add a `ro-crate-metadata.json` file to describe the pipeline.
+      nfcore_pipelines: False
+      custom_pipelines: True
+      linting:
+        files_warn:
+          - "ro-crate-metadata.json"
+        files_unchanged:
+          - ".prettierignore"
+      default: true
+
+notifications:
+  name: "Notifications"
+  features:
+    email:
+      skippable_paths:
+        - "assets/email_template.html"
+        - "assets/sendmail_template.txt"
+        - "assets/email_template.txt"
+      short_description: "Enable email updates"
+      description: "Enable sending emails on pipeline completion."
+      help_text: |
+        Enable the option of sending an email which will include pipeline execution reports on pipeline completion.
+      linting:
+        files_exist:
+          - "assets/email_template.html"
+          - "assets/sendmail_template.txt"
+          - "assets/email_template.txt"
+        files_unchanged:
+          - ".prettierignore"
+      nfcore_pipelines: False
+      custom_pipelines: True
+      default: true
+
+    adaptivecard:
+      skippable_paths:
+        - "assets/adaptivecard.json"
+      short_description: "Support Microsoft Teams notifications"
+      description: "Enable pipeline status update messages through Microsoft Teams"
+      help_text: |
+        This adds an Adaptive Card. A snippets of user interface.
+        This Adaptive Card is used as a template for pipeline update messages and it is compatible with Microsoft Teams.
+      linting:
+        files_unchanged:
+          - ".prettierignore"
+      nfcore_pipelines: False
+      custom_pipelines: True
+      default: true
+
+    slackreport:
+      skippable_paths:
+        - "assets/slackreport.json"
+      short_description: "Support Slack notifications"
+      description: "Enable pipeline status update messages through Slack"
+      help_text: |
+        This adds an JSON template used as a template for pipeline update messages in Slack.
+      linting:
+        files_unchanged:
+          - ".prettierignore"
+      nfcore_pipelines: False
+      custom_pipelines: True
+      default: true
