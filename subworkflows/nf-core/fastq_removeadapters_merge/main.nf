@@ -1,6 +1,6 @@
 // ok for single end adapter removal
 include { TRIMMOMATIC   } from '../../../modules/nf-core/trimmomatic/main' // both SE and PE
-// include { CUTADAPT      } from '../../../modules/nf-core/cutadapt/main'
+include { CUTADAPT      } from '../../../modules/nf-core/cutadapt/main'    // both SE and PE
 // include { TRIMGALORE    } from '../../../modules/nf-core/trimgalore/main'
 // include { BBMAP_BBDUK   } from '../../../modules/nf-core/bbmap/bbduk/main'
 // // allows merging of paired end reads, but will work for single end reads as well
@@ -15,7 +15,7 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
     take:
     reads                // channel: [ val(meta), [ reads ] ]
     skip_trimmomatic     // boolean
-    // skip_cutadapt        // boolean
+    skip_cutadapt        // boolean
     // skip_trimgalore      // boolean
     // skip_bbduk           // boolean
     // skip_fastp           // boolean
@@ -32,23 +32,25 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
     ch_trimmomatic_trim_log       = channel.empty()
     ch_trimmomatic_out_log        = channel.empty()
     ch_trimmomatic_summary        = channel.empty()
+    ch_cutadapt_log               = channel.empty()
     ch_versions                   = channel.empty()
 
     if (!skip_trimmomatic) {
         TRIMMOMATIC( ch_reads )
-        ch_reads                      = TRIMMOMATIC.out.trimmed_reads // .map { meta, r -> [meta, r] } // TODO remove probably
+        ch_reads                      = TRIMMOMATIC.out.trimmed_reads
         ch_trimmomatic_unpaired_reads = TRIMMOMATIC.out.unpaired_reads
         ch_trimmomatic_trim_log       = TRIMMOMATIC.out.trim_log
         ch_trimmomatic_out_log        = TRIMMOMATIC.out.out_log
         ch_trimmomatic_summary        = TRIMMOMATIC.out.summary
-        ch_versions                   = ch_versions.mix(TRIMMOMATIC.out.versions)
+        ch_versions                   = ch_versions.mix(TRIMMOMATIC.out.versions.first())
     }
 
-//     if (!skip_cutadapt) {
-//         CUTADAPT( ch_reads )
-//         ch_reads = CUTADAPT.out.reads.map { meta, r -> [meta, r] }
-//         ch_versions = ch_versions.mix(CUTADAPT.out.versions)
-//     }
+    if (!skip_cutadapt) {
+        CUTADAPT( ch_reads )
+        ch_reads        = CUTADAPT.out.reads
+        ch_cutadapt_log = CUTADAPT.out.log
+        ch_versions     = ch_versions.mix(CUTADAPT.out.versions.first())
+    }
 
 //     if (!skip_trimgalore) {
 //         TRIMGALORE( ch_reads )
@@ -129,5 +131,6 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
     trimmomatic_trim_log       = ch_trimmomatic_trim_log        // channel: [ val(meta), [ log ] ]
     trimmomatic_out_log        = ch_trimmomatic_out_log         // channel: [ val(meta), [ log ] ]
     trimmomatic_summary        = ch_trimmomatic_summary         // channel: [ val(meta), [ summary ] ]
+    cutadapt_log               = ch_cutadapt_log                // channel: [ val(meta), [ log ] ]
     versions = ch_versions  // channel: [ versions.yml ]
 }

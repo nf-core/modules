@@ -3,13 +3,13 @@ nextflow_workflow {
     name "Test Subworkflow FASTQ_REMOVEADAPTERS_MERGE"
     script "../main.nf"
     workflow "FASTQ_REMOVEADAPTERS_MERGE"
-    // config './nextflow.config'
+    config './nextflow.config'
 
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "subworkflows/fastq_removeadapters_merge"
     tag "trimmomatic"
-    // tag "cutadapt"
+    tag "cutadapt"
     // tag "trimgalore"
     // tag "bbmap"
     // tag "bbmap/bbduk"
@@ -29,7 +29,7 @@ nextflow_workflow {
                 ]
 
                 input[1] = false  // skip_trimmomatic
-                // input[2] = false  // skip_cutadapt
+                input[2] = false  // skip_cutadapt
                 // input[3] = false  // skip_trimgalore
                 // input[4] = false  // skip_bbduk
                 // input[5] = false  // skip_fastp
@@ -46,10 +46,10 @@ nextflow_workflow {
             assert workflow.success
             assert snapshot(
                 workflow.out.reads[0][1],
-                // workflow.out.trimmomatic_unpaired_reads[0][1],
                 workflow.out.trimmomatic_trim_log[0][1],
                 file(workflow.out.trimmomatic_out_log[0][1]).name,
                 workflow.out.trimmomatic_summary[0][1],
+                workflow.out.cutadapt_log[0][1],
                 workflow.out.versions.collect { path(it).yaml }
             ).match()
         }
@@ -69,7 +69,7 @@ nextflow_workflow {
                 ]
 
                 input[1] = false  // skip_trimmomatic
-                // input[2] = false  // skip_cutadapt
+                input[2] = false  // skip_cutadapt
                 // input[3] = false  // skip_trimgalore
                 // input[4] = false  // skip_bbduk
                 // input[5] = false  // skip_fastp
@@ -90,6 +90,7 @@ nextflow_workflow {
                 workflow.out.trimmomatic_trim_log[0][1],
                 file(workflow.out.trimmomatic_out_log[0][1]).name,
                 workflow.out.trimmomatic_summary[0][1],
+                workflow.out.cutadapt_log[0][1],
                 workflow.out.versions.collect { path(it).yaml }
             ).match()
         }
@@ -130,5 +131,37 @@ nextflow_workflow {
     //         )
     //     }
     // }
+
+    test("sarscov2 - fastq - single-end - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+
+                input[1] = false  // skip_trimmomatic
+                input[2] = true   // skip_cutadapt
+                // input[3] = false  // skip_trimgalore
+                // input[4] = false  // skip_bbduk
+                // input[5] = false  // skip_fastp
+                // input[6] = false  // skip_adapterremoval
+                // input[7] = false  // skip_leehom
+                // input[8] = true   // skip_ngmerge
+                // input[9] = false  // do_merge
+                // input[10] = []
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert snapshot(workflow.out).match()
+        }
+    }
 
 }

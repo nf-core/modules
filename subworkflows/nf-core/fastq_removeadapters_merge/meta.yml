@@ -7,9 +7,9 @@ keywords:
   - short reads
   - merge
   - trim
-  - trimmomatic
 components:
   - trimmomatic
+  - cutadapt
 input:
   - ch_reads:
       type: file
@@ -41,6 +41,10 @@ output:
       type: file
       description: trimmomatic summary file of surviving and dropped reads
       pattern: "*.summary"
+  - cutadapt_log:
+      type: file
+      description: cuatadapt log file
+      pattern: "*cutadapt.log"
   - versions:
       type: file
       description: |
