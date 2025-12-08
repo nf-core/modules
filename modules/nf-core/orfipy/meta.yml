@@ -48,6 +48,9 @@ output:
       - orfipy:
           type: string
           description: The tool name
+      - orfipy --version | sed 's/.*version //':
+          type: string
+          description: The command used to generate the version of the tool
 topics:
   versions:
     - - ${task.process}:
