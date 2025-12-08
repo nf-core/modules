@@ -53,33 +53,33 @@ input:
         optional: true
         description: Optional image alignment transform passed to `--coordinate-transform`
 output:
-  - outs:
-      - meta:
+  outs:
+    - - meta:
           type: map
           description: Groovy Map containing sample information e.g. [ id:'test' ]
       - "${prefix}":
           type: directory
           description: Directory containing the output xenium bundle of Xenium Ranger
           pattern: "${prefix}"
-  - versions:
-      - process:
+  versions_xeniumranger:
+    - - "${task.process}":
           type: string
           description: The process the versions were collected from
-      - tool:
+      - xeniumranger:
           type: string
           description: The tool name
-      - version:
+      - "xeniumranger -V | sed -e 's/xeniumranger-/- /g'":
           type: string
           description: The command used to generate the version of the tool
 topics:
   versions:
-    - - process:
+    - - "${task.process}":
           type: string
           description: The process the versions were collected from
-      - tool:
+      - xeniumranger:
           type: string
           description: The tool name
-      - version:
+      - "xeniumranger -V | sed -e 's/xeniumranger-/- /g'":
           type: string
           description: The command used to generate the version of the tool
 authors:
