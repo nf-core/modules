@@ -12,7 +12,7 @@ include { LEEHOM        } from '../../../modules/nf-core/leehom/main'
 // requirs paired end becouse of merging
 include { NGMERGE       } from '../../../modules/nf-core/ngmerge/main'
 
-workflow FASTQ_REMOVE_ADAPTERS_AND_MERGE {
+workflow FASTQ_REMOVEADAPTERS_MERGE {
 
     take:
     reads                    // (meta, reads) - SE or PE
@@ -24,7 +24,7 @@ workflow FASTQ_REMOVE_ADAPTERS_AND_MERGE {
     skip_adapterremoval
     skip_leehom
     skip_ngmerge
-    do_merge     
+    do_merge
     adapters_contaminants
     main:
 
@@ -61,25 +61,25 @@ workflow FASTQ_REMOVE_ADAPTERS_AND_MERGE {
     if (!skip_fastp && !do_merge) {
         ch_current.view { "DEBUG: BEFORE FASTP → $it" }
         FASTP( ch_current.map { meta, r ->  tuple(meta, r, adapters_contaminants)},
-            false,   
-            true,    
-            do_merge)     
+            false,
+            true,
+            do_merge)
         ch_current = FASTP.out.reads.map { meta, r -> [meta, r] }
         ch_versions = ch_versions.mix(FASTP.out.versions)
         ch_current.view { "DEBUG: AFTER FASTP → $it" }
     }
 
-    if (!skip_adapterremoval && !do_merge) { 
-    ADAPTERREMOVAL( ch_current, adapters_contaminants ) 
+    if (!skip_adapterremoval && !do_merge) {
+    ADAPTERREMOVAL( ch_current, adapters_contaminants )
     ch_current.view { "DEBUG: BEFORE ADAPTERREMOVAL → $it" }
          ch_current = ADAPTERREMOVAL.out.paired_truncated
     .mix(ADAPTERREMOVAL.out.singles_truncated)
     .map { tup ->
         def meta  = tup[0]
-        def r = tup[1]      
+        def r = tup[1]
         [meta, r]
-    } 
-         ch_versions = ch_versions.mix(ADAPTERREMOVAL.out.versions) 
+    }
+         ch_versions = ch_versions.mix(ADAPTERREMOVAL.out.versions)
          ch_current.view { "DEBUG: AFTER ADAPTERREMOVAL → $it" }
     }
 
@@ -118,7 +118,7 @@ ch_current = ch_leehom_pe.mix(ch_leehom_se)
     }
 
     emit:
-    
+
     trimmed_reads = ch_current               // channel: [ meta, trimmed_reads ]
     versions = ch_versions                     // channel: [ versions.yml ]
 }
