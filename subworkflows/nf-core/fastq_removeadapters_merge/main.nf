@@ -4,7 +4,7 @@ include { CUTADAPT      } from '../../../modules/nf-core/cutadapt/main'    // bo
 include { TRIMGALORE    } from '../../../modules/nf-core/trimgalore/main'  // both SE and PE
 include { BBMAP_BBDUK   } from '../../../modules/nf-core/bbmap/bbduk/main' // both SE and PE
 // // allows merging of paired end reads, but will work for single end reads as well
-// include { FASTP         } from '../../../modules/nf-core/fastp/main'
+include { FASTP         } from '../../../modules/nf-core/fastp/main'       // both SE and PE + merge
 // include { ADAPTERREMOVAL} from '../../../modules/nf-core/adapterremoval/main'
 // include { LEEHOM        } from '../../../modules/nf-core/leehom/main'
 // // requires paired end because of merging
@@ -13,18 +13,19 @@ include { BBMAP_BBDUK   } from '../../../modules/nf-core/bbmap/bbduk/main' // bo
 workflow FASTQ_REMOVEADAPTERS_MERGE {
 
     take:
-    reads                // channel: [ val(meta), [ reads ] ]
-    skip_trimmomatic     // boolean
-    skip_cutadapt        // boolean
-    skip_trimgalore      // boolean
-    skip_bbduk           // boolean
-    contaminants         // channel: [ reads ]
-    // skip_fastp           // boolean
-    // skip_adapterremoval  // boolean
-    // skip_leehom          // boolean
-    // skip_ngmerge         // boolean
-    // do_merge
-    // adapters_
+    reads                       // channel: [ val(meta), [ reads ] ]
+    skip_trimmomatic            // boolean
+    skip_cutadapt               // boolean
+    skip_trimgalore             // boolean
+    skip_bbduk                  // boolean
+    contaminants                // channel: [ reads ] // fasta, adapters to remove
+    skip_fastp                  // boolean
+    fastp_discard_trimmed_pass  // boolean
+    fastp_save_trimmed_fail     // boolean
+    save_merged                 // boolean
+    // skip_adapterremoval      // boolean
+    // skip_leehom              // boolean
+    // skip_ngmerge             // boolean
 
     main:
 
@@ -39,6 +40,11 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
     ch_trimgalore_html            = channel.empty()
     ch_trimgalore_zip             = channel.empty()
     ch_bbduk_log                  = channel.empty()
+    ch_fastp_json                 = channel.empty()
+    ch_fastp_html                 = channel.empty()
+    ch_fastp_log                  = channel.empty()
+    ch_fastp_reads_fail           = channel.empty()
+    ch_fastp_reads_merged         = channel.empty()
     ch_versions                   = channel.empty()
 
     if (!skip_trimmomatic) {
@@ -75,16 +81,21 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
         ch_versions  = ch_versions.mix(BBMAP_BBDUK.out.versions.first())
     }
 
-//     if (!skip_fastp && !do_merge) {
-//         ch_reads.view { "DEBUG: BEFORE FASTP → $it" }
-//         FASTP( ch_reads.map { meta, r ->  tuple(meta, r, adapters_contaminants)},
-//             false,
-//             true,
-//             do_merge)
-//         ch_reads = FASTP.out.reads.map { meta, r -> [meta, r] }
-//         ch_versions = ch_versions.mix(FASTP.out.versions)
-//         ch_reads.view { "DEBUG: AFTER FASTP → $it" }
-//     }
+    if (!skip_fastp) {
+        FASTP(
+            ch_reads.map { meta, files ->  [ meta, files, contaminants ] },
+            fastp_discard_trimmed_pass,
+            fastp_save_trimmed_fail,
+            save_merged
+        )
+        ch_reads              = FASTP.out.reads
+        ch_fastp_json         = FASTP.out.json
+        ch_fastp_html         = FASTP.out.html
+        ch_fastp_log          = FASTP.out.log
+        ch_fastp_reads_fail   = FASTP.out.reads_fail
+        ch_fastp_reads_merged = FASTP.out.reads_merged
+        ch_versions           = ch_versions.mix(FASTP.out.versions.first())
+    }
 
 //     if (!skip_adapterremoval && !do_merge) {
 //     ADAPTERREMOVAL( ch_reads, adapters_contaminants )
@@ -146,5 +157,10 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
     trimgalore_html            = ch_trimgalore_html             // channel: [ val(meta), [ html ] ]
     trimgalore_zip             = ch_trimgalore_zip              // channel: [ val(meta), [ zip ] ]
     bbduk_log                  = ch_bbduk_log                   // channel: [ val(meta), [ log ] ]
+    fastp_json                 = ch_fastp_json                  // channel: [ val(meta), [ json ] ]
+    fastp_html                 = ch_fastp_html                  // channel: [ val(meta), [ html ] ]
+    fastp_log                  = ch_fastp_log                   // channel: [ val(meta), [ log ] ]
+    fastp_reads_fail           = ch_fastp_reads_fail            // channel: [ val(meta), [ fastq.gz ] ]
+    fastp_reads_merged         = ch_fastp_reads_merged          // channel: [ val(meta), [ fastq.gz ] ]
     versions                   = ch_versions                    // channel: [ versions.yml ]
 }

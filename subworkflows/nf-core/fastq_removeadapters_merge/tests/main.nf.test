@@ -13,7 +13,7 @@ nextflow_workflow {
     tag "trimgalore"
     tag "bbmap"
     tag "bbmap/bbduk"
-    // tag "fastp"
+    tag "fastp"
     // tag "adapterremoval"
     // tag "leehom"
     // tag "ngmerge"
@@ -33,11 +33,13 @@ nextflow_workflow {
                 input[3] = false  // skip_trimgalore
                 input[4] = false  // skip_bbduk
                 input[5] = []     // contaminants
-                // input[6] = false  // skip_fastp
-                // input[7] = false  // skip_adapterremoval
-                // input[8] = false  // skip_leehom
-                // input[9] = true   // skip_ngmerge
-                // input[10] = false  // do_merge
+                input[6] = false  // skip_fastp
+                input[7] = false  // fastp_discard_trimmed_pass
+                input[8] = true   // fastp_save_trimmed_fail
+                input[9] = true   // save_merged
+                // input[10] = false  // skip_adapterremoval
+                // input[11] = false  // skip_leehom
+                // input[12] = true   // skip_ngmerge
                 """
             }
         }
@@ -52,6 +54,10 @@ nextflow_workflow {
                 workflow.out.cutadapt_log[0][1],
                 path(workflow.out.trimgalore_log[0][1]).readLines().size(),
                 path(workflow.out.bbduk_log[0][1]).readLines().size(),
+                workflow.out.fastp_json[0][1],
+                file(workflow.out.fastp_html[0][1]).name,
+                path(workflow.out.fastp_log[0][1]).readLines().size(),
+                workflow.out.fastp_reads_fail[0][1],
                 workflow.out.versions.collect { path(it).yaml }
             ).match()
         }
@@ -75,11 +81,13 @@ nextflow_workflow {
                 input[3] = false  // skip_trimgalore
                 input[4] = false  // skip_bbduk
                 input[5] = []     // contaminants
-                // input[6] = false  // skip_fastp
-                // input[7] = false  // skip_adapterremoval
-                // input[8] = false  // skip_leehom
-                // input[9] = true   // skip_ngmerge
-                // input[10] = false  // do_merge
+                input[6] = false  // skip_fastp
+                input[7] = false  // fastp_discard_trimmed_pass
+                input[8] = true   // fastp_save_trimmed_fail
+                input[9] = true   // save_merged
+                // input[10] = false  // skip_adapterremoval
+                // input[11] = false  // skip_leehom
+                // input[12] = true   // skip_ngmerge
                 """
             }
         }
@@ -96,6 +104,10 @@ nextflow_workflow {
                 path(workflow.out.trimgalore_log[0][1][0]).readLines().size(),
                 path(workflow.out.trimgalore_log[0][1][1]).readLines().size(),
                 path(workflow.out.bbduk_log[0][1]).readLines().size(),
+                workflow.out.fastp_json[0][1],
+                file(workflow.out.fastp_html[0][1]).name,
+                path(workflow.out.fastp_log[0][1]).readLines().size(),
+                workflow.out.fastp_reads_fail[0][1].collect { file(it).name }.sort(),
                 workflow.out.versions.collect { path(it).yaml }
             ).match()
         }
@@ -121,10 +133,12 @@ nextflow_workflow {
     //             input[4] = false  // skip_bbduk
                 // input[5] = []     // contaminants
                 // input[6] = false  // skip_fastp
-                // input[7] = false  // skip_adapterremoval
-                // input[8] = false  // skip_leehom
-                // input[9] = true   // skip_ngmerge
-                // input[10] = false  // do_merge
+                // input[7] = false  // fastp_discard_trimmed_pass
+                // input[8] = true   // fastp_save_trimmed_fail
+                // input[9] = true   // save_merged
+                // input[10] = false  // skip_adapterremoval
+                // input[11] = false  // skip_leehom
+                // input[12] = true   // skip_ngmerge
     //             """
     //         }
     //     }
@@ -154,11 +168,13 @@ nextflow_workflow {
                 input[3] = false  // skip_trimgalore
                 input[4] = false  // skip_bbduk
                 input[5] = []     // contaminants
-                // input[6] = false  // skip_fastp
-                // input[7] = false  // skip_adapterremoval
-                // input[8] = false  // skip_leehom
-                // input[9] = true   // skip_ngmerge
-                // input[10] = false  // do_merge
+                input[6] = false  // skip_fastp
+                input[7] = false  // fastp_discard_trimmed_pass
+                input[8] = true   // fastp_save_trimmed_fail
+                input[9] = true   // save_merged
+                // input[10] = false  // skip_adapterremoval
+                // input[11] = false  // skip_leehom
+                // input[12] = true   // skip_ngmerge
                 """
             }
         }

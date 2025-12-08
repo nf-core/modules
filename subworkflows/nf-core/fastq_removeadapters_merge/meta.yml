@@ -12,6 +12,7 @@ components:
   - cutadapt
   - trimgalore
   - bbmap/bbduk
+  - fastp
 input:
   - ch_reads:
       type: file
@@ -39,7 +40,26 @@ input:
   - contaminants:
       type: file
       description: |
-        Reference files used by bbmap/bbduk, containing adapter and/or contaminant sequences for sequence kmer matching
+        Reference files used by bbmap/bbduk and/or fastp, containing adapter and/or contaminant sequences for removal
+  - skip_fastp:
+      type: boolean
+      description: |
+        If true, skips the fastp process.
+  - fastp_discard_trimmed_pass:
+      type: boolean
+      description: |
+        Specify true to not write any reads that pass trimming thresholds from the fastp process.
+        This can be used to use fastp for the output report only.
+  - fastp_save_trimmed_fail:
+      type: boolean
+      description: |
+        Specify true to save files that failed to pass fastp trimming thresholds
+        ending in `*.fail.fastq.gz`
+  - save_merged:
+      type: boolean
+      description: |
+        Specify true to save all merged reads to a file ending in `*.merged.fastq.gz`
+        Used by fastp
 output:
   - reads:
       type: file
@@ -89,6 +109,26 @@ output:
       type: file
       description: Bbduk log file
       pattern: "*bbduk.log"
+  - fastp_json:
+      type: file
+      description: fastp results in JSON format
+      pattern: "*.json"
+  - fastp_html:
+      type: file
+      description: fastp results in HTML format
+      pattern: "*.html"
+  - fastp_log:
+      type: file
+      description: fastp fastq log file
+      pattern: "*.log"
+  - fastp_reads_fail:
+      type: file
+      description: fastp reads that failed the preprocessing
+      pattern: "*fail.fastq.gz"
+  - fastp_reads_merged:
+      type: file
+      description: fastp reads that were successfully merged
+      pattern: "*.merged.fastq.gz"
   - versions:
       type: file
       description: |

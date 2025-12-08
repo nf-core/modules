@@ -8,7 +8,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "test.fastp.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "1": [
@@ -24,7 +24,47 @@
                     ]
                 ],
                 "11": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.fastp.json:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "12": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.fastp.html:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "13": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.fastp.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "14": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.fail.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "15": [
+                    
+                ],
+                "16": [
                     "versions.yml:md5,2646f5a30c37e118667329e29dab3c56",
+                    "versions.yml:md5,2d5c9b99267e97292e2a581635bd72f7",
                     "versions.yml:md5,bcfe22d952cc3ae0ac5ff685e16fa4a5",
                     "versions.yml:md5,ea028122f5baa3d73d93e46d4eb742fd"
                 ],
@@ -88,13 +128,52 @@
                 "cutadapt_log": [
                     
                 ],
+                "fastp_html": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.fastp.html:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "fastp_json": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.fastp.json:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "fastp_log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.fastp.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "fastp_reads_fail": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.fail.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "fastp_reads_merged": [
+                    
+                ],
                 "reads": [
                     [
                         {
                             "id": "test",
                             "single_end": true
                         },
-                        "test.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "test.fastp.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "trimgalore_html": [
@@ -147,6 +226,7 @@
                 ],
                 "versions": [
                     "versions.yml:md5,2646f5a30c37e118667329e29dab3c56",
+                    "versions.yml:md5,2d5c9b99267e97292e2a581635bd72f7",
                     "versions.yml:md5,bcfe22d952cc3ae0ac5ff685e16fa4a5",
                     "versions.yml:md5,ea028122f5baa3d73d93e46d4eb742fd"
                 ]
@@ -156,13 +236,13 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2025-12-08T19:04:49.308865964"
+        "timestamp": "2025-12-08T19:38:21.971691897"
     },
     "sarscov2 - fastq - paired-end": {
         "content": [
             [
-                "test_1.fastq.gz:md5,d6bc1cc12ca00a83307a4233ab006ab7",
-                "test_2.fastq.gz:md5,81d8c05733feff95655f989143349a0c"
+                "test_1.fastp.fastq.gz:md5,ced67d85f7936c54e13822d3dba061c8",
+                "test_2.fastp.fastq.gz:md5,4d8b08322b9cbaf6258db35726f2c658"
             ],
             [
                 "test.unpaired.trim_1.fastq.gz:md5,f22935d14248bd936af8d5e3c27e72b2",
@@ -175,12 +255,25 @@
             60,
             63,
             21,
+            "test.fastp.json:md5,5cfafac26b0bcec71a2022276904d975",
+            "test.fastp.html",
+            51,
+            [
+                "test.paired.fail.fastq.gz",
+                "test_1.fail.fastq.gz",
+                "test_2.fail.fastq.gz"
+            ],
             [
                 {
                     "FASTQ_REMOVEADAPTERS_MERGE:TRIMGALORE": {
                         "trimgalore": "0.6.10",
                         "cutadapt": 4.9,
                         "pigz": 2.8
+                    }
+                },
+                {
+                    "FASTQ_REMOVEADAPTERS_MERGE:FASTP": {
+                        "fastp": "1.0.1"
                     }
                 },
                 {
@@ -204,23 +297,32 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2025-12-08T19:07:31.612741363"
+        "timestamp": "2025-12-08T19:58:49.88448508"
     },
     "sarscov2 - fastq - single-end": {
         "content": [
-            "test.fastq.gz:md5,827097b00cdc45f16497c19bfa719bf8",
+            "test.fastp.fastq.gz:md5,84aa1ce965cafc4a59aabeb986f1e325",
             "test_trim.log:md5,e4c3f619e9b0e26847f8f3e3d9af319b",
             "test_out.log",
             "test.summary:md5,24c973237557a1439c775ca19a5deaa5",
             "test.cutadapt.log:md5,7cbd396c162d74ec27ae2f88834b5685",
             61,
             21,
+            "test.fastp.json:md5,f1e9b92d4c11419310aee353bf048ec0",
+            "test.fastp.html",
+            32,
+            "test.fail.fastq.gz:md5,3e4aaadb66a5b8fc9b881bf39c227abd",
             [
                 {
                     "FASTQ_REMOVEADAPTERS_MERGE:TRIMGALORE": {
                         "trimgalore": "0.6.10",
                         "cutadapt": 4.9,
                         "pigz": 2.8
+                    }
+                },
+                {
+                    "FASTQ_REMOVEADAPTERS_MERGE:FASTP": {
+                        "fastp": "1.0.1"
                     }
                 },
                 {
@@ -244,6 +346,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2025-12-08T19:07:17.093246038"
+        "timestamp": "2025-12-08T19:48:31.272945778"
     }
 }
