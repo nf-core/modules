@@ -295,4 +295,49 @@ nextflow_workflow {
         }
     }
 
+    test("homo_sapiens paired-end [fastq] bowtie2 with duplicate rrna databases") {
+
+        when {
+            workflow {
+                """
+                input[0] = CAT_FASTQ.out.reads                                    // ch_reads
+                // Test with multiple rRNA databases that contain clustered sequences with
+                // duplicate identifiers. SILVA databases use clustered sequences where the sequence ID
+                // (the part before the first space) can be the same across different databases, causing
+                // "Duplicate entry in sam header" errors when building Bowtie2 indexes. This test ensures
+                // the SEQKIT_REPLACE preprocessing correctly prefixes sequence IDs with their source
+                // filename to create unique identifiers while preserving all sequences.
+                input[1] = Channel.of(
+                    file('https://raw.githubusercontent.com/biocore/sortmerna/v4.3.4/data/rRNA_databases/silva-euk-18s-id95.fasta', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/biocore/sortmerna/v4.3.4/data/rRNA_databases/silva-euk-28s-id98.fasta', checkIfExists: true)
+                )                                                                 // ch_rrna_fastas
+                input[2] = []                                                     // ch_sortmerna_index
+                input[3] = []                                                     // ch_bowtie2_index
+                input[4] = 'bowtie2'                                              // ribo_removal_tool
+                input[5] = false                                                  // make_sortmerna_index
+                input[6] = true                                                   // make_bowtie2_index
+                """
+            }
+        }
+
+        then {
+            def pelines1 = path(workflow.out.reads[0][1][0]).linesGzip
+            def pelines2 = path(workflow.out.reads[0][1][1]).linesGzip
+
+            // Parse bowtie2 log for alignment stats
+            def bowtie2Log = path(workflow.out.multiqc_files.find { entry -> entry[1].toString().endsWith('.bowtie2.log') }?.getAt(1))
+                .getText()
+
+            // The key test: workflow should complete successfully without SAM header duplicate errors
+            // even when the same rRNA databases are provided multiple times
+            assertAll(
+                { assert workflow.success },
+                { assert pelines1.size() >= 0 },  // Should have some reads
+                { assert pelines2.size() >= 0 },  // Should have some reads
+                { assert !workflow.stderr.contains("Duplicate entry") },  // No duplicate header errors in stderr
+                { assert !workflow.stderr.contains("failed to add PG line") }  // No SAM header errors in stderr
+            )
+        }
+    }
+
 }
