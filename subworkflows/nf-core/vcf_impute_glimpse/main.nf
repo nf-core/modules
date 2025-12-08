@@ -33,6 +33,12 @@ workflow VCF_IMPUTE_GLIMPSE {
             .map { meta, it -> [meta, it["RegionIn"], it["RegionOut"]]}
     }
 
+    ch_chunks
+        .filter { _meta, regionin, regionout -> regionin.size() == 0 || regionout.size() == 0 }
+        .subscribe {
+            error "ERROR: ch_chunks channel is empty. Please provide a valid channel or set chunk parameter to true."
+        }
+
     ch_chunks_panel_map = ch_chunks
         .combine(ch_ref, by: 0)
         .combine(ch_map, by: 0)

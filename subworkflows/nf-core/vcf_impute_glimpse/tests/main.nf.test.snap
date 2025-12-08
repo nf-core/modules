@@ -1,87 +1,37 @@
 {
-    "Should run without failures": {
+    "homo_sapiens - vcf no sample, panel vcf region, no chunks, no map, chunking": {
         "content": [
             [
+                "versions.yml:md5,1e9467d8ec6f5df7ce227634ff645d8c",
                 "versions.yml:md5,21a662d09502bd6516ec62b72e4fb182",
                 "versions.yml:md5,227d8e960e4382d8a615e040b874fc27",
-                "versions.yml:md5,4c01309242fd8da3ddbde9fab54aae4c",
-                "versions.yml:md5,7ae4d2b0252f9382dd08d783b7a234d2",
-                "versions.yml:md5,c7bdac5a09390d02a95e5042a2fd133e"
+                "versions.yml:md5,345f62cd80d518de491118eae9686346",
+                "versions.yml:md5,7ae4d2b0252f9382dd08d783b7a234d2"
             ],
             [
                 [
                     {
-                        "id": "NA12878",
-                        "chr": "chr21",
-                        "region": "chr21:16600000-16800000"
+                        "panel": "ref_panel",
+                        "chr": "22"
                     },
-                    "NA12878_chr21:16600000-16800000_chunk.txt:md5,775240b195e782b3b83adf52e0d17089"
-                ],
-                [
-                    {
-                        "id": "NA12878",
-                        "chr": "chr22",
-                        "region": "chr22:16600000-16800000"
-                    },
-                    "NA12878_chr22:16600000-16800000_chunk.txt:md5,7ac5d116bc3357a154946576c21060cd"
-                ],
-                [
-                    {
-                        "id": "NA19401",
-                        "chr": "chr21",
-                        "region": "chr21:16600000-16800000"
-                    },
-                    "NA19401_chr21:16600000-16800000_chunk.txt:md5,775240b195e782b3b83adf52e0d17089"
-                ],
-                [
-                    {
-                        "id": "NA19401",
-                        "chr": "chr22",
-                        "region": "chr22:16600000-16800000"
-                    },
-                    "NA19401_chr22:16600000-16800000_chunk.txt:md5,7ac5d116bc3357a154946576c21060cd"
+                    "chr22:16570065-16609999",
+                    "chr22:16570065-16609999"
                 ]
             ],
             [
                 [
                     {
-                        "id": "NA12878",
-                        "chr": "chr21",
-                        "region": "chr21:16600000-16800000"
+                        "id": "input_vcf",
+                        "panel": "ref_panel",
+                        "chr": "22"
                     },
-                    "NA12878_chr21_null_ligate.vcf.gz",
-                    "VcfFile [chromosomes=[chr21], sampleCount=1, variantCount=211, phased=false, phasedAutodetect=false]",
-                    "66d0bfb31b037fb57d6b56e65b7cd6a7"
-                ],
-                [
-                    {
-                        "id": "NA12878",
-                        "chr": "chr22",
-                        "region": "chr22:16600000-16800000"
-                    },
-                    "NA12878_chr22_null_ligate.vcf.gz",
-                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=266, phased=false, phasedAutodetect=false]",
-                    "58751684e0168ad0485ba3510e0cfd3e"
-                ],
-                [
-                    {
-                        "id": "NA19401",
-                        "chr": "chr21",
-                        "region": "chr21:16600000-16800000"
-                    },
-                    "NA19401_chr21_null_ligate.vcf.gz",
-                    "VcfFile [chromosomes=[chr21], sampleCount=1, variantCount=211, phased=false, phasedAutodetect=false]",
-                    "66d0bfb31b037fb57d6b56e65b7cd6a7"
-                ],
-                [
-                    {
-                        "id": "NA19401",
-                        "chr": "chr22",
-                        "region": "chr22:16600000-16800000"
-                    },
-                    "NA19401_chr22_null_ligate.vcf.gz",
-                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=266, phased=false, phasedAutodetect=false]",
-                    "58751684e0168ad0485ba3510e0cfd3e"
+                    "input_vcf_22_ligate.vcf.gz",
+                    "input_vcf_22_ligate.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=903, phased=false, phasedAutodetect=false]",
+                    [
+                        "NA12878"
+                    ],
+                    "fbe935ae0eb720944813f82e5ad68758"
                 ]
             ]
         ],
@@ -89,6 +39,136 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2025-11-27T11:10:39.309436558"
+        "timestamp": "2025-12-08T18:09:10.422140569"
+    },
+    "homo_sapiens - vcf and sample, panel vcf region, chunks, map, no chunking": {
+        "content": [
+            [
+                "versions.yml:md5,1e9467d8ec6f5df7ce227634ff645d8c",
+                "versions.yml:md5,21a662d09502bd6516ec62b72e4fb182",
+                "versions.yml:md5,345f62cd80d518de491118eae9686346",
+                "versions.yml:md5,7ae4d2b0252f9382dd08d783b7a234d2"
+            ],
+            [
+                [
+                    {
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "chr22:16570065-16597215",
+                    "chr22:16570065-16592216"
+                ],
+                [
+                    {
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "chr22:16587172-16609999",
+                    "chr22:16592229-16609999"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "input_vcf",
+                        "panel": "ref_panel",
+                        "chr": "22"
+                    },
+                    "input_vcf_22_ligate.vcf.gz",
+                    "input_vcf_22_ligate.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=903, phased=false, phasedAutodetect=false]",
+                    [
+                        "NA12878"
+                    ],
+                    "5e2d629c8d0371dc6b5928a32a8bc5c5"
+                ]
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-12-08T18:09:25.165927489"
+    },
+    "homo_sapiens - stub test": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "panel": "ref_panel",
+                            "chr": "22"
+                        },
+                        "chr22:16570065-16597215",
+                        "chr22:16570065-16592216"
+                    ],
+                    [
+                        {
+                            "panel": "ref_panel",
+                            "chr": "22"
+                        },
+                        "chr22:16587172-16609999",
+                        "chr22:16592229-16609999"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "input_vcf",
+                            "panel": "ref_panel",
+                            "chr": "22"
+                        },
+                        "input_vcf_22_ligate.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                        "input_vcf_22_ligate.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    "versions.yml:md5,1e9467d8ec6f5df7ce227634ff645d8c",
+                    "versions.yml:md5,21a662d09502bd6516ec62b72e4fb182",
+                    "versions.yml:md5,345f62cd80d518de491118eae9686346",
+                    "versions.yml:md5,7ae4d2b0252f9382dd08d783b7a234d2"
+                ],
+                "chunk_chr": [
+                    [
+                        {
+                            "panel": "ref_panel",
+                            "chr": "22"
+                        },
+                        "chr22:16570065-16597215",
+                        "chr22:16570065-16592216"
+                    ],
+                    [
+                        {
+                            "panel": "ref_panel",
+                            "chr": "22"
+                        },
+                        "chr22:16587172-16609999",
+                        "chr22:16592229-16609999"
+                    ]
+                ],
+                "vcf_index": [
+                    [
+                        {
+                            "id": "input_vcf",
+                            "panel": "ref_panel",
+                            "chr": "22"
+                        },
+                        "input_vcf_22_ligate.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                        "input_vcf_22_ligate.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,1e9467d8ec6f5df7ce227634ff645d8c",
+                    "versions.yml:md5,21a662d09502bd6516ec62b72e4fb182",
+                    "versions.yml:md5,345f62cd80d518de491118eae9686346",
+                    "versions.yml:md5,7ae4d2b0252f9382dd08d783b7a234d2"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-12-08T17:55:11.448382469"
     }
 }
