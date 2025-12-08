@@ -39,9 +39,9 @@ process TD2_PREDICT {
 
     """
     mkdir -p ${prefix}/
-    touch ${prefix}/fakefile.TD2.bed
-    touch ${prefix}/fakefile.TD2.cds
-    touch ${prefix}/fakefile.TD2.gff3
-    touch ${prefix}/fakefile.TD2.pep
+    touch ${prefix}/${fasta}.TD2.bed
+    touch ${prefix}/${fasta}.TD2.cds
+    touch ${prefix}/${fasta}.TD2.gff3
+    touch ${prefix}/${fasta}.TD2.pep
     """
 }
