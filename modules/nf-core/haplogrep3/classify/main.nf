@@ -11,7 +11,7 @@ process HAPLOGREP3_CLASSIFY {
     tuple val(meta), path(inputfile)
 
     output:
-    tuple val(meta), path("*.txt"), emit: txt
+    tuple val(meta)             , path("*.txt")                                                                           , emit: txt
     tuple val("${task.process}"), val('haplogrep3'), eval("haplogrep3 | sed -n 's/.*Haplogrep 3 \\([0-9.]\\+\\).*/\\1/p'"), emit: versions_haplogrep3, topic: versions
 
     when:
