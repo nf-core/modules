@@ -8,14 +8,24 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test_trimmed.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "test.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "1": [
                     
                 ],
                 "10": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bbduk.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "11": [
                     "versions.yml:md5,2646f5a30c37e118667329e29dab3c56",
+                    "versions.yml:md5,bcfe22d952cc3ae0ac5ff685e16fa4a5",
                     "versions.yml:md5,ea028122f5baa3d73d93e46d4eb742fd"
                 ],
                 "2": [
@@ -66,6 +76,15 @@
                 "9": [
                     
                 ],
+                "bbduk_log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bbduk.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
                 "cutadapt_log": [
                     
                 ],
@@ -75,7 +94,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test_trimmed.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "test.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "trimgalore_html": [
@@ -128,6 +147,7 @@
                 ],
                 "versions": [
                     "versions.yml:md5,2646f5a30c37e118667329e29dab3c56",
+                    "versions.yml:md5,bcfe22d952cc3ae0ac5ff685e16fa4a5",
                     "versions.yml:md5,ea028122f5baa3d73d93e46d4eb742fd"
                 ]
             }
@@ -136,13 +156,13 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2025-12-08T18:27:04.215969504"
+        "timestamp": "2025-12-08T19:04:49.308865964"
     },
     "sarscov2 - fastq - paired-end": {
         "content": [
             [
-                "test_1_val_1.fq.gz:md5,d6bc1cc12ca00a83307a4233ab006ab7",
-                "test_2_val_2.fq.gz:md5,81d8c05733feff95655f989143349a0c"
+                "test_1.fastq.gz:md5,d6bc1cc12ca00a83307a4233ab006ab7",
+                "test_2.fastq.gz:md5,81d8c05733feff95655f989143349a0c"
             ],
             [
                 "test.unpaired.trim_1.fastq.gz:md5,f22935d14248bd936af8d5e3c27e72b2",
@@ -154,12 +174,18 @@
             "test.cutadapt.log:md5,8da32e029f7c4b891930cc656abea887",
             60,
             63,
+            21,
             [
                 {
                     "FASTQ_REMOVEADAPTERS_MERGE:TRIMGALORE": {
                         "trimgalore": "0.6.10",
                         "cutadapt": 4.9,
                         "pigz": 2.8
+                    }
+                },
+                {
+                    "FASTQ_REMOVEADAPTERS_MERGE:BBMAP_BBDUK": {
+                        "bbmap": 39.18
                     }
                 },
                 {
@@ -178,22 +204,28 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2025-12-08T18:46:25.911604926"
+        "timestamp": "2025-12-08T19:07:31.612741363"
     },
     "sarscov2 - fastq - single-end": {
         "content": [
-            "test_trimmed.fq.gz:md5,827097b00cdc45f16497c19bfa719bf8",
+            "test.fastq.gz:md5,827097b00cdc45f16497c19bfa719bf8",
             "test_trim.log:md5,e4c3f619e9b0e26847f8f3e3d9af319b",
             "test_out.log",
             "test.summary:md5,24c973237557a1439c775ca19a5deaa5",
             "test.cutadapt.log:md5,7cbd396c162d74ec27ae2f88834b5685",
             61,
+            21,
             [
                 {
                     "FASTQ_REMOVEADAPTERS_MERGE:TRIMGALORE": {
                         "trimgalore": "0.6.10",
                         "cutadapt": 4.9,
                         "pigz": 2.8
+                    }
+                },
+                {
+                    "FASTQ_REMOVEADAPTERS_MERGE:BBMAP_BBDUK": {
+                        "bbmap": 39.18
                     }
                 },
                 {
@@ -212,6 +244,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2025-12-08T18:45:23.409047165"
+        "timestamp": "2025-12-08T19:07:17.093246038"
     }
 }

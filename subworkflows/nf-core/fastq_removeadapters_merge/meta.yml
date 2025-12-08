@@ -11,6 +11,7 @@ components:
   - trimmomatic
   - cutadapt
   - trimgalore
+  - bbmap/bbduk
 input:
   - ch_reads:
       type: file
@@ -31,6 +32,14 @@ input:
         If true, skips the trimgalore process.
         We suggest running either cutadapt or trimgalore,
         because trimgalore also runs cutadapt in the background.
+  - skip_bbduk:
+      type: boolean
+      description: |
+        If true, skips the bbmap/bbduk process.
+  - contaminants:
+      type: file
+      description: |
+        Reference files used by bbmap/bbduk, containing adapter and/or contaminant sequences for sequence kmer matching
 output:
   - reads:
       type: file
@@ -60,7 +69,7 @@ output:
       type: file
       description: |
         trimgalore log file
-      pattern: "*_{report.txt}"
+      pattern: "*_report.txt"
   - trimgalore_unpaired:
       type: file
       description: |
@@ -70,12 +79,16 @@ output:
       type: file
       description: |
         fastqc HTML output if run with the --fastqc flag.
-      pattern: "*_{fastqc.html}"
+      pattern: "*_fastqc.html"
   - trimgalore_zip:
       type: file
       description: |
         fastqc zip output if run with the --fastqc flag.
-      pattern: "*_{fastqc.zip}"
+      pattern: "*_fastqc.zip"
+  - bbduk_log:
+      type: file
+      description: Bbduk log file
+      pattern: "*bbduk.log"
   - versions:
       type: file
       description: |

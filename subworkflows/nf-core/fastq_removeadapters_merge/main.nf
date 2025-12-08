@@ -2,7 +2,7 @@
 include { TRIMMOMATIC   } from '../../../modules/nf-core/trimmomatic/main' // both SE and PE
 include { CUTADAPT      } from '../../../modules/nf-core/cutadapt/main'    // both SE and PE
 include { TRIMGALORE    } from '../../../modules/nf-core/trimgalore/main'  // both SE and PE
-// include { BBMAP_BBDUK   } from '../../../modules/nf-core/bbmap/bbduk/main'
+include { BBMAP_BBDUK   } from '../../../modules/nf-core/bbmap/bbduk/main' // both SE and PE
 // // allows merging of paired end reads, but will work for single end reads as well
 // include { FASTP         } from '../../../modules/nf-core/fastp/main'
 // include { ADAPTERREMOVAL} from '../../../modules/nf-core/adapterremoval/main'
@@ -17,13 +17,14 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
     skip_trimmomatic     // boolean
     skip_cutadapt        // boolean
     skip_trimgalore      // boolean
-    // skip_bbduk           // boolean
+    skip_bbduk           // boolean
+    contaminants         // channel: [ reads ]
     // skip_fastp           // boolean
     // skip_adapterremoval  // boolean
     // skip_leehom          // boolean
     // skip_ngmerge         // boolean
     // do_merge
-    // adapters_contaminants
+    // adapters_
 
     main:
 
@@ -33,6 +34,11 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
     ch_trimmomatic_out_log        = channel.empty()
     ch_trimmomatic_summary        = channel.empty()
     ch_cutadapt_log               = channel.empty()
+    ch_trimgalore_log             = channel.empty()
+    ch_trimgalore_unpaired        = channel.empty()
+    ch_trimgalore_html            = channel.empty()
+    ch_trimgalore_zip             = channel.empty()
+    ch_bbduk_log                  = channel.empty()
     ch_versions                   = channel.empty()
 
     if (!skip_trimmomatic) {
@@ -62,13 +68,12 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
         ch_versions            = ch_versions.mix(TRIMGALORE.out.versions.first())
     }
 
-//     if (!skip_bbduk) {
-//         ch_reads.view { "DEBUG: BEFORE BBMAP_BBDUK → $it" }
-//         BBMAP_BBDUK( ch_reads, adapters_contaminants )
-//         ch_reads = BBMAP_BBDUK.out.reads.map { meta, r -> [meta, r] }
-//         ch_versions = ch_versions.mix(BBMAP_BBDUK.out.versions)
-//         ch_reads.view { "DEBUG: AFTER BBMAP_BBDUK → $it" }
-//     }
+    if (!skip_bbduk) {
+        BBMAP_BBDUK( ch_reads, contaminants )
+        ch_reads     = BBMAP_BBDUK.out.reads
+        ch_bbduk_log = BBMAP_BBDUK.out.log
+        ch_versions  = ch_versions.mix(BBMAP_BBDUK.out.versions.first())
+    }
 
 //     if (!skip_fastp && !do_merge) {
 //         ch_reads.view { "DEBUG: BEFORE FASTP → $it" }
@@ -140,5 +145,6 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
     trimgalore_unpaired        = ch_trimgalore_unpaired         // channel: [ val(meta), [ fq.gz ] ]
     trimgalore_html            = ch_trimgalore_html             // channel: [ val(meta), [ html ] ]
     trimgalore_zip             = ch_trimgalore_zip              // channel: [ val(meta), [ zip ] ]
+    bbduk_log                  = ch_bbduk_log                   // channel: [ val(meta), [ log ] ]
     versions                   = ch_versions                    // channel: [ versions.yml ]
 }
