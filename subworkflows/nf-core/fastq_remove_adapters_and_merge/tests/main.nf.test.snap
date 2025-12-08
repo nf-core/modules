@@ -1,0 +1,92 @@
+{
+    "sarscov2 - fastq - paired-end, no merging": {
+        "content": [
+            {
+                "0": [
+                    
+                ],
+                "1": [
+                    "versions.yml:md5,2d964cf60309a142f1c9958da875eb54",
+                    "versions.yml:md5,90401b38cbb7e43510ca1a7cbcea3145",
+                    "versions.yml:md5,95732be10dd312717626b93c727886ef",
+                    "versions.yml:md5,aa5ed9a565951378f5d671bfa6b88370",
+                    "versions.yml:md5,b9c8e5d6936d4d2dbc08084d03ee57c8",
+                    "versions.yml:md5,de9c9c39a848b9543456f693e4ca6ad3"
+                ],
+                "trimmed_reads": [
+                    
+                ],
+                "versions": [
+                    "versions.yml:md5,2d964cf60309a142f1c9958da875eb54",
+                    "versions.yml:md5,90401b38cbb7e43510ca1a7cbcea3145",
+                    "versions.yml:md5,95732be10dd312717626b93c727886ef",
+                    "versions.yml:md5,aa5ed9a565951378f5d671bfa6b88370",
+                    "versions.yml:md5,b9c8e5d6936d4d2dbc08084d03ee57c8",
+                    "versions.yml:md5,de9c9c39a848b9543456f693e4ca6ad3"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-12-08T10:34:07.314632994"
+    },
+    "sarscov2 - fastq - single-end": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.fq.gz:md5,6dcea64429b2bcf5e31751f9c8041914"
+                ]
+            ],
+            [
+                {
+                    "FASTQ_REMOVE_ADAPTERS_AND_MERGE:FASTP": {
+                        "fastp": "1.0.1"
+                    }
+                },
+                {
+                    "FASTQ_REMOVE_ADAPTERS_AND_MERGE:TRIMGALORE": {
+                        "trimgalore": "0.6.10",
+                        "cutadapt": 4.9,
+                        "pigz": 2.8
+                    }
+                },
+                {
+                    "FASTQ_REMOVE_ADAPTERS_AND_MERGE:LEEHOM": {
+                        "leehom": "1.2.15"
+                    }
+                },
+                {
+                    "FASTQ_REMOVE_ADAPTERS_AND_MERGE:ADAPTERREMOVAL": {
+                        "adapterremoval": "2.3.2"
+                    }
+                },
+                {
+                    "FASTQ_REMOVE_ADAPTERS_AND_MERGE:TRIMMOMATIC": {
+                        "trimmomatic": 0.39
+                    }
+                },
+                {
+                    "FASTQ_REMOVE_ADAPTERS_AND_MERGE:BBMAP_BBDUK": {
+                        "bbmap": 39.18
+                    }
+                },
+                {
+                    "FASTQ_REMOVE_ADAPTERS_AND_MERGE:CUTADAPT": {
+                        "cutadapt": 5.0
+                    }
+                }
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-12-08T10:33:53.838298621"
+    }
+}

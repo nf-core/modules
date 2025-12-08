@@ -1,0 +1,95 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTQ_REMOVE_ADAPTERS_AND_MERGE"
+    script "../main.nf"
+    workflow "FASTQ_REMOVE_ADAPTERS_AND_MERGE"
+
+    tag "subworkflows"
+    tag "trimmomatic"
+    tag "cutadapt"
+    tag "trimgalore"
+    tag "bbmap/bbduk"
+    tag "fastp"
+    tag "adapterremoval"
+    tag "leehom"
+    tag "ngmerge"
+
+    /**************************************************************
+     *  TEST 1 — SINGLE END
+     **************************************************************/
+    test("sarscov2 - fastq - single-end") {
+        config "./nextflow.config"
+        when {
+            workflow {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+
+                input[1] = false  // skip_trimmomatic
+                input[2] = false  // skip_cutadapt
+                input[3] = false  // skip_trimgalore
+                input[4] = false  // skip_bbduk
+                input[5] = false   // skip_fastp
+                input[6] = false   // skip_adapterremoval
+                input[7] = false   // skip_leehom
+                input[8] = true   // skip_ngmerge
+                input[9] = false  // do_merge
+                input[10] = []
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+
+            assert snapshot(
+                workflow.out.trimmed_reads.sort(),
+                workflow.out.versions.collect { path(it).yaml }.sort()
+            ).match()
+        }
+    }
+
+
+    /**************************************************************
+     *  TEST 2 — PAIRED END
+     **************************************************************/
+    test("sarscov2 - fastq - paired-end, no merging") {
+        config "./nextflow.config"
+        when {            params {
+                samtools_arg = ''
+            }
+            workflow {
+                """
+                input[0] = [
+                    [ id:'test_paired', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+
+                input[1] = false  // skip_trimmomatic
+                input[2] = false  // skip_cutadapt
+                input[3] = false  // skip_trimgalore
+                input[4] = false  // skip_bbduk
+                input[5] = false   // skip_fastp
+                input[6] = false   // skip_adapterremoval
+                input[7] = false   // skip_leehom
+                input[8] = true   // skip_ngmerge
+                input[9] = false  // do_merge
+                input[10] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+
+}
