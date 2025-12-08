@@ -1,44 +1,46 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fastq_removeadapters_merge"
-## TODO nf-core: Add a description of the subworkflow and list keywords
-description: Sort SAM/BAM/CRAM file
+description: Remove adapters and merge reads based on various module choices
 keywords:
-  - sort
-  - bam
-  - sam
-  - cram
-## TODO nf-core: Add a list of the modules and/or subworkflows used in the subworkflow
+  - adapters
+  - removal
+  - short reads
+  - merge
+  - trim
+  - trimmomatic
 components:
-  - samtools/sort
-  - samtools/index
-## TODO nf-core: List all of the channels used as input with a description and their structure
+  - trimmomatic
 input:
-  - ch_bam:
+  - ch_reads:
       type: file
       description: |
-        The input channel containing the BAM/CRAM/SAM files
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.{bam/cram/sam}"
-## TODO nf-core: List all of the channels used as output with a descriptions and their structure
+        List of FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
+        Structure: [ val(meta), [ path(reads) ] ]
+  - skip_trimmomatic:
+      type: boolean
+      description: |
+        If true, skips the trimmomatic process.
 output:
-  - bam:
+  - reads:
       type: file
-      description: |
-        Channel containing BAM files
-        Structure: [ val(meta), path(bam) ]
-      pattern: "*.bam"
-  - bai:
+      description: The trimmed/modified single or paired end fastq reads
+      pattern: "*.fastq.gz"
+  - trimmomatic_unpaired_reads:
       type: file
-      description: |
-        Channel containing indexed BAM (BAI) files
-        Structure: [ val(meta), path(bai) ]
-      pattern: "*.bai"
-  - csi:
+      description: The trimmed/modified unpaired end fastq reads
+      pattern: "*.unpaired.trim_*.fastq.gz"
+  - trimmomatic_trim_log:
       type: file
-      description: |
-        Channel containing CSI files
-        Structure: [ val(meta), path(csi) ]
-      pattern: "*.csi"
+      description: trimmomatic log file, from the trim_log parameter
+      pattern: "*.log"
+  - trimmomatic_out_log:
+      type: file
+      description: log of output from the standard out
+      pattern: "*.log"
+  - trimmomatic_summary:
+      type: file
+      description: trimmomatic summary file of surviving and dropped reads
+      pattern: "*.summary"
   - versions:
       type: file
       description: |
@@ -47,5 +49,7 @@ output:
       pattern: "versions.yml"
 authors:
   - "@kornkv"
+  - "@vagkaratzas"
 maintainers:
   - "@kornkv"
+  - "@vagkaratzas"
