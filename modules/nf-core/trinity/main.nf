@@ -14,7 +14,7 @@ process TRINITY {
     output:
     tuple val(meta), path("*.fa.gz")    , emit: transcript_fasta
     tuple val(meta), path("*.log")      , emit: log
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('trinity'), eval("Trinity --version | grep 'Trinity version' | sed 's/.*Trinity-v//'"), topic: versions, emit: versions_trinity
 
     when:
     task.ext.when == null || task.ext.when
@@ -61,11 +61,6 @@ process TRINITY {
         > ${prefix}.fa.gz
 
     rm ${prefix}_trinity.Trinity.fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trinity: \$(Trinity --version | grep 'Trinity version:' | sed 's/Trinity version: Trinity-//')
-    END_VERSIONS
     """
 
     stub:
@@ -74,10 +69,5 @@ process TRINITY {
     touch ${prefix}.fa
     gzip ${prefix}.fa
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trinity: \$(Trinity --version | grep 'Trinity version:' | sed 's/Trinity version: Trinity-//')
-    END_VERSIONS
     """
 }
