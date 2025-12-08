@@ -67,10 +67,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.phased.vcf.gz":
+      - "*.vcf.gz":
           type: file
           description: Bgzipped phased VCF file
-          pattern: "*.phased.vcf.gz"
+          pattern: "*.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
   tbi:
@@ -79,10 +79,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.phased.vcf.gz.tbi":
+      - "*.vcf.gz.tbi":
           type: file
           description: Phased VCF index file
-          pattern: "*.phased.vcf.gz.tbi"
+          pattern: "*.vcf.gz.tbi"
           ontologies:
             - edam: http://edamontology.org/format_3616 # TBI format
   versions:

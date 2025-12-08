@@ -13,8 +13,8 @@ process WHATSHAP_PHASE {
     tuple val(meta3), path(fasta), path(fai)
 
     output:
-    tuple val(meta), path("*.phased.vcf.gz"), emit: vcf
-    tuple val(meta), path("*.phased.vcf.gz.tbi"), emit: tbi
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
+    tuple val(meta), path("*.vcf.gz.tbi"), emit: tbi
     path "versions.yml", emit: versions
 
     when:
@@ -23,17 +23,21 @@ process WHATSHAP_PHASE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+
+    if ("${vcf}" == "${prefix}.vcf" || "${vcf}" == "${prefix}.vcf.gz") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
     """
     whatshap \\
         phase \\
-        --output ${prefix}.phased.vcf \\
+        --output ${prefix}.vcf \\
         --reference ${fasta} \\
         ${args} \\
         ${vcf} \\
         ${bam}
 
-    bgzip ${prefix}.phased.vcf
-    tabix -p vcf ${prefix}.phased.vcf.gz
+    bgzip ${prefix}.vcf
+    tabix -p vcf ${prefix}.vcf.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -43,9 +47,13 @@ process WHATSHAP_PHASE {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+
+    if ("${vcf}" == "${prefix}.vcf" || "${vcf}" == "${prefix}.vcf.gz") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
     """
-    echo "" | gzip > ${prefix}.phased.vcf.gz
-    touch ${prefix}.phased.vcf.gz.tbi
+    echo "" | gzip > ${prefix}.vcf.gz
+    touch ${prefix}.vcf.gz.tbi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
