@@ -9,7 +9,7 @@ process PLASTID_PSITE {
 
     input:
     tuple val(meta), path(bam), path(bam_index)
-    path rois_txt
+    tuple val(meta2), path(rois_txt)
 
     output:
     tuple val(meta), path("*_metagene_profiles.txt"), emit: metagene_profiles

@@ -8,11 +8,11 @@ process PLASTID_METAGENE_GENERATE {
         'biocontainers/plastid:0.6.1--py39had3e4b6_2' }"
 
     input:
-    path annotation
+    tuple val(meta), path(annotation)
 
     output:
-    path "*_rois.txt"  , emit: rois_txt
-    path "*_rois.bed"  , emit: rois_bed
+    tuple val(meta), path("*_rois.txt"), emit: rois_txt
+    tuple val(meta), path("*_rois.bed"), emit: rois_bed
     path "versions.yml", emit: versions
 
     when:
