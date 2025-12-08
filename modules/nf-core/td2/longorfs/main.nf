@@ -12,7 +12,7 @@ process TD2_LONGORFS {
 
     output:
     tuple val(meta), path("${prefix}/longest_orfs.{cds,gff3,pep}"), emit: orfs
-    tuple val("${task.process}"), val('TD2.LongOrfs'), eval("echo td2: ${VERSION}"), emit: versions_td2, topic: versions
+    tuple val("${task.process}"), val('TD2.LongOrfs'), eval("echo ${VERSION}"), emit: versions_td2, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
