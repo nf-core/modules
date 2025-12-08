@@ -10,6 +10,7 @@ keywords:
 components:
   - trimmomatic
   - cutadapt
+  - trimgalore
 input:
   - ch_reads:
       type: file
@@ -20,6 +21,16 @@ input:
       type: boolean
       description: |
         If true, skips the trimmomatic process.
+  - skip_cutadapt:
+      type: boolean
+      description: |
+        If true, skips the cutadapt process.
+  - skip_trimgalore:
+      type: boolean
+      description: |
+        If true, skips the trimgalore process.
+        We suggest running either cutadapt or trimgalore,
+        because trimgalore also runs cutadapt in the background.
 output:
   - reads:
       type: file
@@ -45,6 +56,26 @@ output:
       type: file
       description: cuatadapt log file
       pattern: "*cutadapt.log"
+  - trimgalore_log:
+      type: file
+      description: |
+        trimgalore log file
+      pattern: "*_{report.txt}"
+  - trimgalore_unpaired:
+      type: file
+      description: |
+        Unpaired trimgalore reads. Activate with the --retain_unpaired flag.
+      pattern: "*unpaired*.fq.gz"
+  - trimgalore_html:
+      type: file
+      description: |
+        fastqc HTML output if run with the --fastqc flag.
+      pattern: "*_{fastqc.html}"
+  - trimgalore_zip:
+      type: file
+      description: |
+        fastqc zip output if run with the --fastqc flag.
+      pattern: "*_{fastqc.zip}"
   - versions:
       type: file
       description: |

@@ -10,7 +10,7 @@ nextflow_workflow {
     tag "subworkflows/fastq_removeadapters_merge"
     tag "trimmomatic"
     tag "cutadapt"
-    // tag "trimgalore"
+    tag "trimgalore"
     // tag "bbmap"
     // tag "bbmap/bbduk"
     // tag "fastp"
@@ -30,7 +30,7 @@ nextflow_workflow {
 
                 input[1] = false  // skip_trimmomatic
                 input[2] = false  // skip_cutadapt
-                // input[3] = false  // skip_trimgalore
+                input[3] = false  // skip_trimgalore
                 // input[4] = false  // skip_bbduk
                 // input[5] = false  // skip_fastp
                 // input[6] = false  // skip_adapterremoval
@@ -50,6 +50,7 @@ nextflow_workflow {
                 file(workflow.out.trimmomatic_out_log[0][1]).name,
                 workflow.out.trimmomatic_summary[0][1],
                 workflow.out.cutadapt_log[0][1],
+                path(workflow.out.trimgalore_log[0][1]).readLines().size(),
                 workflow.out.versions.collect { path(it).yaml }
             ).match()
         }
@@ -70,7 +71,7 @@ nextflow_workflow {
 
                 input[1] = false  // skip_trimmomatic
                 input[2] = false  // skip_cutadapt
-                // input[3] = false  // skip_trimgalore
+                input[3] = false  // skip_trimgalore
                 // input[4] = false  // skip_bbduk
                 // input[5] = false  // skip_fastp
                 // input[6] = false  // skip_adapterremoval
@@ -91,6 +92,8 @@ nextflow_workflow {
                 file(workflow.out.trimmomatic_out_log[0][1]).name,
                 workflow.out.trimmomatic_summary[0][1],
                 workflow.out.cutadapt_log[0][1],
+                path(workflow.out.trimgalore_log[0][1][0]).readLines().size(),
+                path(workflow.out.trimgalore_log[0][1][1]).readLines().size(),
                 workflow.out.versions.collect { path(it).yaml }
             ).match()
         }
@@ -146,7 +149,7 @@ nextflow_workflow {
 
                 input[1] = false  // skip_trimmomatic
                 input[2] = true   // skip_cutadapt
-                // input[3] = false  // skip_trimgalore
+                input[3] = false  // skip_trimgalore
                 // input[4] = false  // skip_bbduk
                 // input[5] = false  // skip_fastp
                 // input[6] = false  // skip_adapterremoval

@@ -1,7 +1,7 @@
 // ok for single end adapter removal
 include { TRIMMOMATIC   } from '../../../modules/nf-core/trimmomatic/main' // both SE and PE
 include { CUTADAPT      } from '../../../modules/nf-core/cutadapt/main'    // both SE and PE
-// include { TRIMGALORE    } from '../../../modules/nf-core/trimgalore/main'
+include { TRIMGALORE    } from '../../../modules/nf-core/trimgalore/main'  // both SE and PE
 // include { BBMAP_BBDUK   } from '../../../modules/nf-core/bbmap/bbduk/main'
 // // allows merging of paired end reads, but will work for single end reads as well
 // include { FASTP         } from '../../../modules/nf-core/fastp/main'
@@ -16,7 +16,7 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
     reads                // channel: [ val(meta), [ reads ] ]
     skip_trimmomatic     // boolean
     skip_cutadapt        // boolean
-    // skip_trimgalore      // boolean
+    skip_trimgalore      // boolean
     // skip_bbduk           // boolean
     // skip_fastp           // boolean
     // skip_adapterremoval  // boolean
@@ -52,11 +52,15 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
         ch_versions     = ch_versions.mix(CUTADAPT.out.versions.first())
     }
 
-//     if (!skip_trimgalore) {
-//         TRIMGALORE( ch_reads )
-//         ch_reads = TRIMGALORE.out.reads.map { meta, r -> [meta, r] }
-//         ch_versions = ch_versions.mix(TRIMGALORE.out.versions)
-//     }
+    if (!skip_trimgalore) {
+        TRIMGALORE( ch_reads )
+        ch_reads               = TRIMGALORE.out.reads
+        ch_trimgalore_log      = TRIMGALORE.out.log
+        ch_trimgalore_unpaired = TRIMGALORE.out.unpaired
+        ch_trimgalore_html     = TRIMGALORE.out.html
+        ch_trimgalore_zip      = TRIMGALORE.out.zip
+        ch_versions            = ch_versions.mix(TRIMGALORE.out.versions.first())
+    }
 
 //     if (!skip_bbduk) {
 //         ch_reads.view { "DEBUG: BEFORE BBMAP_BBDUK → $it" }
@@ -132,5 +136,9 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
     trimmomatic_out_log        = ch_trimmomatic_out_log         // channel: [ val(meta), [ log ] ]
     trimmomatic_summary        = ch_trimmomatic_summary         // channel: [ val(meta), [ summary ] ]
     cutadapt_log               = ch_cutadapt_log                // channel: [ val(meta), [ log ] ]
-    versions = ch_versions  // channel: [ versions.yml ]
+    trimgalore_log             = ch_trimgalore_log              // channel: [ val(meta), [ txt ] ]
+    trimgalore_unpaired        = ch_trimgalore_unpaired         // channel: [ val(meta), [ fq.gz ] ]
+    trimgalore_html            = ch_trimgalore_html             // channel: [ val(meta), [ html ] ]
+    trimgalore_zip             = ch_trimgalore_zip              // channel: [ val(meta), [ zip ] ]
+    versions                   = ch_versions                    // channel: [ versions.yml ]
 }
