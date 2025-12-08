@@ -11,7 +11,7 @@ process TD2_PREDICT {
     tuple val(meta), path(fasta), path(orfs_dir, stageAs: 'orfs')
 
     output:
-    tuple val(meta), path("${prefix}/*.TD2.{bed,cds,gff3,pep}"), emit: predictions
+    tuple val(meta), path("${prefix}/*.TD2.{bed,cds,gff3,pep}")        , emit: predictions
     tuple val("${task.process}"), val('TD2.Predict'), eval("echo ${VERSION}"), emit: versions_td2, topic: versions
 
     when:

@@ -47,9 +47,9 @@ output:
       - TD2.LongOrfs:
           type: string
           description: The tool name
-      - "echo ${VERSION}":
+      - echo ${VERSION}:
           type: string
-          description: The version of TD2 used
+          description: The tool version
 topics:
   versions:
     - - ${task.process}:
@@ -58,9 +58,9 @@ topics:
       - TD2.LongOrfs:
           type: string
           description: The tool name
-      - "${VERSION}":
+      - echo ${VERSION}:
           type: string
-          description: The version of TD2 used
+          description: The tool version
 authors:
   - "@khersameesh24"
 maintainers:

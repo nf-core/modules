@@ -25,7 +25,7 @@ input:
     - fasta:
         type: file
         description: Transcripts fasta file
-        pattern: "*.{fasta}"
+        pattern: "*.fasta"
         ontologies: []
     - orfs_dir:
         type: file
@@ -53,9 +53,9 @@ output:
       - TD2.Predict:
           type: string
           description: The tool name
-      - "echo td2: ${VERSION}":
+      - echo ${VERSION}:
           type: string
-          description: The version of TD2 used
+          description: The tool version
 topics:
   versions:
     - - ${task.process}:
@@ -64,9 +64,9 @@ topics:
       - TD2.Predict:
           type: string
           description: The tool name
-      - "echo td2: ${VERSION}":
+      - echo ${VERSION}:
           type: string
-          description: The version of TD2 used
+          description: The tool version
 authors:
   - "@khersameesh24"
 maintainers:
