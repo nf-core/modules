@@ -5,14 +5,14 @@ process XENIUMRANGER_RENAME {
     container "nf-core/xeniumranger:4.0"
 
     input:
-    tuple val(meta), 
-        path(xenium_bundle, stageAs: "bundle/"), 
-        val(region_name), 
+    tuple val(meta),
+        path(xenium_bundle, stageAs: "bundle/"),
+        val(region_name),
         val(cassette_name)
 
     output:
     tuple val(meta), path("${prefix}"), emit: outs
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val("xeniumranger"), eval("xeniumranger -V | sed -e 's/xeniumranger-/- /g'"), emit: versions_xeniumranger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,7 +22,7 @@ process XENIUMRANGER_RENAME {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "XENIUMRANGER_RENAME module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    
+
     def args = task.ext.args ?: ""
     prefix = task.ext.prefix ?: "${meta.id}"
     """
@@ -38,11 +38,6 @@ process XENIUMRANGER_RENAME {
         ${args}
 
     mv XENIUMRANGER_RENAME/outs "${prefix}"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        xeniumranger: \$(xeniumranger -V | sed -e "s/xeniumranger-/- /g")
-    END_VERSIONS
     """
 
     stub:
@@ -71,10 +66,5 @@ process XENIUMRANGER_RENAME {
         mkdir -p "${prefix}"
         touch "${prefix}/dry_run.txt"
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        xeniumranger: \$(xeniumranger -V | sed -e "s/xeniumranger-/- /g")
-    END_VERSIONS
     """
 }
