@@ -10,10 +10,6 @@ process PLASTID_PSITE {
     input:
     tuple val(meta), path(bam), path(bam_index)
     path rois_txt
-    val min_length
-    val max_length
-    val require_upstream
-    val default_offset
 
     output:
     tuple val(meta), path("*_metagene_profiles.txt"), emit: metagene_profiles
@@ -27,14 +23,11 @@ process PLASTID_PSITE {
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
     def args = task.ext.args ?: ""
-    if (require_upstream) args += "--require_upstream"
     """
     psite \
         "$rois_txt" \\
         "$prefix" \\
-        --min_length "$min_length" --max_length "$max_length" \\
         --count_files "$bam" \\
-        --default "$default_offset" \\
         $args
 
     sed -i '/^##/d' *.txt # remove variable comment header

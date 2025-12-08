@@ -21,10 +21,6 @@ nextflow_process {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam.bai", checkIfExists: true)
                     ]
                 input[1] = file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/plastid/Homo_sapiens.GRCh38.111_chr20_rois.txt", checkIfExists: true)
-                input[2] = 23 // min_length
-                input[3] = 35 // max_length
-                input[4] = true // require_upstream
-                input[5] = 12 // default_offset
                 """
             }
         }
@@ -53,10 +49,6 @@ nextflow_process {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887_chr20.bam.bai", checkIfExists: true)
                     ]
                 input[1] = file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/plastid/Homo_sapiens.GRCh38.111_chr20_rois.txt", checkIfExists: true)
-                input[2] = 23 // min_length
-                input[3] = 35 // max_length
-                input[4] = true // require_upstream
-                input[5] = 12 // default_offset
                 """
             }
         }

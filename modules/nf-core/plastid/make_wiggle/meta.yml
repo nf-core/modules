@@ -42,17 +42,9 @@ input:
         description: Selected p-site offset for each read length (output from plastid_psites)
         pattern: "*_p_offsets.txt"
         ontologies: []
-  - min_length:
-      type: integer
-      description: Minimum length of reads to consider
   - output_format:
       type: string
       description: `variable_step` or `bedgraph`
-  - fiveprime_variable:
-      type: boolean
-      description: |
-        Map read alignment to a variable offset from 5' position of read, with
-        offset determined by read length
 output:
   tracks:
     - - meta:

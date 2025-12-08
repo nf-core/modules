@@ -16,7 +16,6 @@ nextflow_process {
             process {
                 """
                 input[0] = file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)
-                input[1] = 'cds_start'
                 """
             }
         }
@@ -39,7 +38,6 @@ nextflow_process {
             process {
                 """
                 input[0] = file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf", checkIfExists: true)
-                input[1] = 'cds_start'
                 """
             }
         }

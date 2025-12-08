@@ -9,9 +9,7 @@ process PLASTID_MAKE_WIGGLE {
 
     input:
     tuple val(meta), path(bam), path(bam_index), path(p_offsets)
-    val min_length
     val output_format
-    val fiveprime_variable
 
     output:
     tuple val(meta), path("*.{wig,bedgraph}"), emit: tracks
@@ -24,14 +22,12 @@ process PLASTID_MAKE_WIGGLE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def extension = output_format == "bedgraph" ? "bedgraph" : "wig"
     def args = task.ext.args ?: ""
-    if (fiveprime_variable) args += "--fiveprime_variable"
     """
     make_wiggle \\
         --count_files "$bam" \\
         --offset "$p_offsets" \\
-        --min_length "$min_length" \\
+        --fiveprime_variable \\
         --output_format "$output_format" \\
-        --verbose \\
         -o "$prefix" \\
         $args
 

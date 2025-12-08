@@ -9,7 +9,6 @@ process PLASTID_METAGENE_GENERATE {
 
     input:
     path gtf
-    val landmark
 
     output:
     path "*_rois.txt"  , emit: rois_txt
@@ -22,7 +21,7 @@ process PLASTID_METAGENE_GENERATE {
     script:
     def args = task.ext.args ?: ''
     """
-    metagene generate "${gtf.baseName}" --landmark "$landmark" --annotation_files "$gtf" $args
+    metagene generate "${gtf.baseName}" --annotation_files "$gtf" $args
     sed -i '/^##/d' *_rois.* # remove variable comment header
 
     cat <<-END_VERSIONS > versions.yml
