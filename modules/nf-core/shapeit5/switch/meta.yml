@@ -42,11 +42,6 @@ input:
           Pedigree information in the following format: offspring father mother.
         pattern: "*.{txt, tsv}"
         ontologies: []
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
     - truth:
         type: file
         description: Validation dataset called at the same positions as the imputed
@@ -58,11 +53,6 @@ input:
         description: Index file of the truth VCF/BCF file.
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
         ontologies: []
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
     - freq:
         type: file
         description: File containing allele frequencies at each site.
