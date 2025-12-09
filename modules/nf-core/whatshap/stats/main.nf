@@ -13,13 +13,11 @@ process WHATSHAP_STATS {
     val(include_tsv_output)    // value:   [ true | false ]
     val(include_gtf_output)    // value:   [ true | false ]
     val(inlude_block_output)   // value:   [ true | false ]
-    val(include_log_output)    // value:   [ true | false ]
 
     output:
     tuple val(meta), path("${prefix}.tsv"),                                    emit: tsv,   optional: true
     tuple val(meta), path("${prefix}.gtf"),                                    emit: gtf,   optional: true
     tuple val(meta), path("${prefix}.txt"),                                    emit: block, optional: true
-    tuple val(meta), path("${prefix}.log"),                                    emit: log,   optional: true
     tuple val("${task.process}"), val('whatshap'), eval("whatshap --version"), emit: versions_whatshap, topic: versions
 
     when:
@@ -32,7 +30,6 @@ process WHATSHAP_STATS {
     def output_tsv   = include_tsv_output  ? "--tsv ${prefix}.tsv"              : ''
     def output_gtf   = include_gtf_output  ? "--gtf ${prefix}.gtf"              : ''
     def output_block = inlude_block_output ? "--block-list ${prefix}.txt" : ''
-    def output_log   = include_log_output  ? "> ${prefix}.log"                  : ''
     """
     whatshap stats \\
         $args \\
@@ -40,22 +37,20 @@ process WHATSHAP_STATS {
         $output_gtf \\
         $output_block \\
         $vcf \\
-        $output_log
+        | tee ${prefix}.log
     """
 
     stub:
     def args            = task.ext.args       ?: ''
     prefix              = task.ext.prefix     ?: "${meta.id}"
-    def tsv_touch_cmd   = include_tsv_output  ? "--tsv ${prefix}.tsv" : ''
+    def tsv_touch_cmd   = include_tsv_output  ? "touch ${prefix}.tsv" : ''
     def gtf_touch_cmd   = include_gtf_output  ? "touch ${prefix}.gtf" : ''
     def block_touch_cmd = inlude_block_output ? "touch ${prefix}.txt" : ''
-    def log_touch_cmd   = include_log_output  ? "touch ${prefix}.log" : ''
     """
     echo $args
 
     $tsv_touch_cmd
     $gtf_touch_cmd
     $block_touch_cmd
-    $log_touch_cmd
     """
 }
