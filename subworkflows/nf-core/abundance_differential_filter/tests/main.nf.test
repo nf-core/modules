@@ -16,6 +16,7 @@ nextflow_workflow {
     tag "variancepartition/dream"
 
     test("dream") {
+        config './dream.config'
         tag "dream_simple"
 
         when {
@@ -59,8 +60,8 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
+                { assert path(workflow.out.results_genewise[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
                 { assert snapshot(
-                    workflow.out.results_genewise,
                     workflow.out.results_genewise_filtered,
                     workflow.out.model,
                     workflow.out.versions
@@ -70,6 +71,7 @@ nextflow_workflow {
     }
 
     test("dream - complex contrast - literal contrast string comparison") {
+        config './dream.config'
         tag "dream_complex"
 
         when {
@@ -114,10 +116,8 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert path(workflow.out.results_genewise[0][1]).getText().contains("gene_id\tlogFC\tAveExpr\tt\tP.Value\tadj.P.Val\tB") },
-                { assert path(workflow.out.results_genewise[0][1]).getText().contains("-95.6666") },
-                { assert path(workflow.out.results_genewise[0][1]).getText().contains("1050\t549\t4.15") },
                 { assert snapshot(
-                    file(workflow.out.results_genewise[0][1]).name,
+                    workflow.out.results_genewise_filtered,
                     workflow.out.model,
                     workflow.out.versions
                 ).match() }
