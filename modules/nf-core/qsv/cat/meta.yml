@@ -31,11 +31,13 @@ input:
       pattern: "^(rows|columns|rowskey)$"
   - out_format:
       type: string
-      description: Output format (.csv for comma delimiter, .ssv for semicolon, and .tsv or .tab for tab)
+      description: Output format (.csv for comma delimiter, .ssv for semicolon,
+        and .tsv or .tab for tab)
       pattern: "^(csv|ssv|tsv|tab)$"
   - skip_input_format_check:
       type: boolean
-      description: Skip input format check (by default QSV checks input format based on file extension)
+      description: Skip input format check (by default QSV checks input format
+        based on file extension)
 output:
   csv:
     - - meta:
@@ -50,7 +52,7 @@ output:
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
             - edam: http://edamontology.org/format_3475 # TSV
-  versions_qsv: &versions
+  versions_qsv:
     - - ${task.process}:
           type: string
           description: The name of the process
@@ -61,7 +63,16 @@ output:
           type: eval
           description: The expression to obtain the version of the tool
 topics:
-  versions: *versions
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - qsv:
+          type: string
+          description: The name of the tool
+      - "qsv --version | cut -d' ' -f2 | cut -d'-' -f1":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@dialvarezs"
 maintainers:

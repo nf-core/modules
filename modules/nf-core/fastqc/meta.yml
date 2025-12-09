@@ -60,9 +60,10 @@ output:
       - fastqc:
           type: string
           description: The tool name
-      - fastqc --version | sed "/FastQC v/!d; s/.*v//:
-          type: string
-          description: The command used to generate the version of the tool
+      - fastqc --version | sed "/FastQC v/!d; s/.*v//":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -71,9 +72,10 @@ topics:
       - fastqc:
           type: string
           description: The tool name
-      - fastqc --version | sed "/FastQC v/!d; s/.*v//:
-          type: string
-          description: The command used to generate the version of the tool
+      - fastqc --version | sed "/FastQC v/!d; s/.*v//":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@drpatelh"
   - "@grst"

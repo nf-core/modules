@@ -71,9 +71,10 @@ output:
       - bgzip:
           type: string
           description: The tool name
-      - bgzip --version | head -1 | sed "s/bgzip (htslib:
+      - bgzip --version | head -1 | sed "s/bgzip (htslib) //":
           type: eval
-          description: The tool version
+          description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -91,8 +92,9 @@ topics:
       - bgzip:
           type: string
           description: The tool name
-      - bgzip --version | head -1 | sed "s/bgzip (htslib:
+      - bgzip --version | head -1 | sed "s/bgzip (htslib) //":
           type: eval
-          description: The tool version
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@nvnieuwk"
