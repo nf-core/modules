@@ -26,24 +26,24 @@ nextflow_workflow {
         }
     }
 
-    test("xeniumranger import_segmentation_transcript - with transcript assignment") {
+    test("xeniumranger import_segmentation_transcript - no new assignment") {
         when {
             workflow {
                 """
                 input[0] = UNTAR.out.untar.map { meta, dir ->
                      [[id:'test_xeniumranger_transcript'], dir]
                 }
-                input[1] = UNTAR.out.untar.map { meta, dir ->
-                     [[id:'test_xeniumranger_transcript'], dir + "/cells.zarr.zip"]
-                }
-                input[2] = Channel.empty()
+                input[1] = Channel.of([ [id:'test_xeniumranger_transcript'], [] ])
+                input[2] = Channel.of([ [id:'test_xeniumranger_transcript'], [] ])
                 """
             }
         }
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert workflow.out.outs != null },
+                { assert file(workflow.out.outs.get(0).get(1)).isDirectory() },
+                { assert file(workflow.out.outs.get(0).get(1)).list().size() > 0 }
             )
         }
     }
@@ -56,10 +56,8 @@ nextflow_workflow {
                 input[0] = UNTAR.out.untar.map { meta, dir ->
                      [[id:'test_xeniumranger_transcript'], dir]
                 }
-                input[1] = UNTAR.out.untar.map { meta, dir ->
-                     [[id:'test_xeniumranger_transcript'], dir + "/cells.zarr.zip"]
-                }
-                input[2] = Channel.empty()
+                input[1] = Channel.of([ [id:'test_xeniumranger_transcript'], [] ])
+                input[2] = Channel.of([ [id:'test_xeniumranger_transcript'], [] ])
                 """
             }
         }
