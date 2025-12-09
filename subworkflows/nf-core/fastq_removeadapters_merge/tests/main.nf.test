@@ -15,7 +15,7 @@ nextflow_workflow {
     tag "bbmap/bbduk"
     tag "fastp"
     tag "adapterremoval"
-    // tag "leehom"
+    tag "leehom"
     // tag "ngmerge"
 
     test("sarscov2 - fastq - single-end") {
@@ -43,7 +43,7 @@ nextflow_workflow {
                 input[9]  = params.save_merged
                 input[10] = false               // skip_adapterremoval
                 input[11] = []                  // text adapters
-                // input[12] = false         // skip_leehom
+                input[12] = false               // skip_leehom
                 // input[13] = true          // skip_ngmerge
                 """
             }
@@ -52,15 +52,14 @@ nextflow_workflow {
         then {
             assert workflow.success
             assert snapshot(
-                workflow.out.reads[0][1],
+                workflow.out.reads[0][1]
+                workflow.out.discarded_reads[0][1].collect { file(it).name }.sort(),
                 workflow.out.trimmomatic_trim_log[0][1],
                 workflow.out.trimmomatic_summary[0][1],
                 path(workflow.out.trimgalore_log[0][1]).readLines().size(),
                 file(workflow.out.fastp_html[0][1]).name,
                 path(workflow.out.fastp_log[0][1]).readLines().size(),
-                workflow.out.fastp_reads_fail[0][1],
-                file(workflow.out.adapterremoval_discarded[0][1]).name,
-                file(workflow.out.multiqc_files[0][1]).name,
+                workflow.out.multiqc_files[0][1].collect { file(it).name }.sort(),
                 workflow.out.versions.collect { path(it).yaml }
             ).match()
         }
@@ -94,7 +93,7 @@ nextflow_workflow {
                 input[9]  = params.save_merged
                 input[10] = false               // skip_adapterremoval
                 input[11] = []                  // text adapters
-                // input[12] = false         // skip_leehom
+                input[12] = false               // skip_leehom
                 // input[13] = true          // skip_ngmerge
                 """
             }
@@ -104,17 +103,16 @@ nextflow_workflow {
             assert workflow.success
             assert snapshot(
                 workflow.out.reads[0][1],
-                workflow.out.merged_reads[0][1], // merged reads
-                workflow.out.trimmomatic_unpaired_reads[0][1],
+                workflow.out.merged_reads[0][1],
+                workflow.out.discarded_reads[0][1].collect { file(it).name }.sort(),
                 workflow.out.trimmomatic_trim_log[0][1],
                 workflow.out.trimmomatic_summary[0][1],
                 path(workflow.out.trimgalore_log[0][1][0]).readLines().size(),
                 path(workflow.out.trimgalore_log[0][1][1]).readLines().size(),
                 file(workflow.out.fastp_html[0][1]).name,
                 path(workflow.out.fastp_log[0][1]).readLines().size(),
-                workflow.out.fastp_reads_fail[0][1].collect { file(it).name }.sort(),
-                file(workflow.out.adapterremoval_discarded[0][1]).name,
-                file(workflow.out.multiqc_files[0][1]).name,
+                // file(workflow.out.multiqc_files[0][1]).name,
+                workflow.out.multiqc_files[0][1].collect { file(it).name }.sort(),
                 workflow.out.versions.collect { path(it).yaml }
             ).match()
         }
@@ -186,7 +184,7 @@ nextflow_workflow {
                 input[9]  = params.save_merged
                 input[10] = false               // skip_adapterremoval
                 input[11] = []                  // text adapters
-                // input[12] = false         // skip_leehom
+                input[12] = false               // skip_leehom
                 // input[13] = true          // skip_ngmerge
                 """
             }

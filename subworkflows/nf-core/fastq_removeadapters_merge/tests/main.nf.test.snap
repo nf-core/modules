@@ -8,7 +8,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test.truncated.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "test.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "1": [
@@ -48,6 +48,7 @@
                     "versions.yml:md5,2646f5a30c37e118667329e29dab3c56",
                     "versions.yml:md5,2d5c9b99267e97292e2a581635bd72f7",
                     "versions.yml:md5,aa418419664a944b74696ee0e9ef1c7a",
+                    "versions.yml:md5,ba074f9db361b3f8d0a8cc93c3907a91",
                     "versions.yml:md5,bcfe22d952cc3ae0ac5ff685e16fa4a5",
                     "versions.yml:md5,ea028122f5baa3d73d93e46d4eb742fd"
                 ],
@@ -207,7 +208,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test.truncated.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "test.fq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "trimgalore_html": [
@@ -253,6 +254,7 @@
                     "versions.yml:md5,2646f5a30c37e118667329e29dab3c56",
                     "versions.yml:md5,2d5c9b99267e97292e2a581635bd72f7",
                     "versions.yml:md5,aa418419664a944b74696ee0e9ef1c7a",
+                    "versions.yml:md5,ba074f9db361b3f8d0a8cc93c3907a91",
                     "versions.yml:md5,bcfe22d952cc3ae0ac5ff685e16fa4a5",
                     "versions.yml:md5,ea028122f5baa3d73d93e46d4eb742fd"
                 ]
@@ -262,18 +264,15 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2025-12-09T11:14:22.599187687"
+        "timestamp": "2025-12-09T11:41:19.665287439"
     },
     "sarscov2 - fastq - paired-end": {
         "content": [
-            [
-                "test.pair1.truncated.fastq.gz:md5,b2f0ff871e44ccb66bb948524503d4d3",
-                "test.pair2.truncated.fastq.gz:md5,3a13402b3f1ac1462d10da45c9829444"
-            ],
+            "test.fq.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
             "test.collapsed.fastq.gz:md5,909e9abf6cdfcd32508582dc2768854a",
             [
-                "test.unpaired.trim_1.fastq.gz:md5,f22935d14248bd936af8d5e3c27e72b2",
-                "test.unpaired.trim_2.fastq.gz:md5,ce0d8e849e4677a186cd0566b2a6ea15"
+                "test.unpaired.trim_1.fastq.gz",
+                "test.unpaired.trim_2.fastq.gz"
             ],
             "test_trim.log:md5,9629761761a34576b3484bf4174f681f",
             "test.summary:md5,9698e5e5c060bbe64588998fe35f8d71",
@@ -282,12 +281,148 @@
             "test.fastp.html",
             51,
             [
-                "test.paired.fail.fastq.gz",
-                "test_1.fail.fastq.gz",
-                "test_2.fail.fastq.gz"
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "-",
+                ".",
+                ".",
+                ".",
+                "0",
+                "0",
+                "1",
+                "1",
+                "1",
+                "1",
+                "2",
+                "2",
+                "2",
+                "2",
+                "2",
+                "3",
+                "3",
+                "3",
+                "3",
+                "3",
+                "4",
+                "4",
+                "4",
+                "4",
+                "5",
+                "5",
+                "6",
+                "6",
+                "6",
+                "6",
+                "6",
+                "6",
+                "6",
+                "7",
+                "7",
+                "7",
+                "7",
+                "8",
+                "9",
+                "9",
+                "9",
+                "9",
+                "9",
+                "D",
+                "P",
+                "a",
+                "b",
+                "b",
+                "b",
+                "b",
+                "b",
+                "b",
+                "c",
+                "c",
+                "c",
+                "c",
+                "c",
+                "c",
+                "d",
+                "d",
+                "d",
+                "d",
+                "d",
+                "d",
+                "e",
+                "e",
+                "e",
+                "e",
+                "e",
+                "e",
+                "e",
+                "e",
+                "e",
+                "e",
+                "e",
+                "e",
+                "e",
+                "e",
+                "e",
+                "f",
+                "f",
+                "f",
+                "f",
+                "f",
+                "f",
+                "g",
+                "g",
+                "h",
+                "i",
+                "j",
+                "k",
+                "k",
+                "k",
+                "l",
+                "l",
+                "l",
+                "m",
+                "m",
+                "n",
+                "n",
+                "o",
+                "o",
+                "o",
+                "o",
+                "o",
+                "o",
+                "p",
+                "r",
+                "r",
+                "s",
+                "s",
+                "s",
+                "s",
+                "s",
+                "s",
+                "s",
+                "s",
+                "t",
+                "t",
+                "t",
+                "t",
+                "t",
+                "t",
+                "t",
+                "t",
+                "u",
+                "u",
+                "v",
+                "w"
             ],
-            "test.discarded.fastq.gz",
-            "test.bbduk.log",
             [
                 {
                     "FASTQ_REMOVEADAPTERS_MERGE:ADAPTERREMOVAL_PE": {
@@ -304,6 +439,11 @@
                 {
                     "FASTQ_REMOVEADAPTERS_MERGE:FASTP": {
                         "fastp": "1.0.1"
+                    }
+                },
+                {
+                    "FASTQ_REMOVEADAPTERS_MERGE:LEEHOM": {
+                        "leehom": "1.2.15"
                     }
                 },
                 {
@@ -327,11 +467,11 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2025-12-09T11:28:02.942964155"
+        "timestamp": "2025-12-09T12:28:47.421847042"
     },
     "sarscov2 - fastq - single-end": {
         "content": [
-            "test.truncated.fastq.gz:md5,151f9ca2bfb8c52579884fa7c4d6d9f9",
+            "test.fq.gz:md5,6dcea64429b2bcf5e31751f9c8041914",
             "test_trim.log:md5,e4c3f619e9b0e26847f8f3e3d9af319b",
             "test.summary:md5,24c973237557a1439c775ca19a5deaa5",
             61,
@@ -359,6 +499,11 @@
                     }
                 },
                 {
+                    "FASTQ_REMOVEADAPTERS_MERGE:LEEHOM": {
+                        "leehom": "1.2.15"
+                    }
+                },
+                {
                     "FASTQ_REMOVEADAPTERS_MERGE:BBMAP_BBDUK": {
                         "bbmap": 39.18
                     }
@@ -379,6 +524,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2025-12-09T11:27:46.873445297"
+        "timestamp": "2025-12-09T11:45:54.756719727"
     }
 }

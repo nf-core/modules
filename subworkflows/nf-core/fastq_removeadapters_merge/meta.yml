@@ -70,6 +70,10 @@ input:
       description: Optional text file containing list of adapters to look for for removal
         with one adapter per line. Otherwise will look for default adapters (see AdapterRemoval
         man page), or can be modified to remove user-specified adapters via ext.args.
+  - skip_leehom:
+      type: boolean
+      description: |
+        If true, skips the leehom process.
 output:
   - reads:
       type: file
@@ -81,10 +85,11 @@ output:
         The trimmed/modified fastq reads merged into a single file.
         Only meaningful for paired-end reads.
       pattern: "*.fastq.gz"
-  - trimmomatic_unpaired_reads:
+  - discarded_reads:
       type: file
-      description: The trimmed/modified unpaired end fastq reads
-      pattern: "*.unpaired.trim_*.fastq.gz"
+      description: |
+        All files containing discarded reads throughout the steps.
+      pattern: "*.fastq.gz"
   - trimmomatic_trim_log:
       type: file
       description: trimmomatic log file, from the trim_log parameter
@@ -98,11 +103,6 @@ output:
       description: |
         trimgalore log file
       pattern: "*_report.txt"
-  - trimgalore_unpaired:
-      type: file
-      description: |
-        Unpaired trimgalore reads. Activate with the --retain_unpaired flag.
-      pattern: "*unpaired*.fq.gz"
   - trimgalore_html:
       type: file
       description: |
@@ -121,16 +121,6 @@ output:
       type: file
       description: fastp fastq log file
       pattern: "*.log"
-  - fastp_reads_fail:
-      type: file
-      description: fastp reads that failed the preprocessing
-      pattern: "*fail.fastq.gz"
-  - adapterremoval_discarded:
-      type: file
-      description: |
-        Adapter trimmed FastQ files of reads that did not pass filtering
-        thresholds.
-      pattern: "*.discarded.fastq.gz"
   - adapterremoval_paired_interleaved:
       type: file
       description: |
