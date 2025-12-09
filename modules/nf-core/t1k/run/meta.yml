@@ -1,0 +1,81 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+# # TODO nf-core: Add a description of the module and list keywords
+name: "t1k_run"
+description: write your description here
+keywords:
+  - polymorphic
+  - genes
+  - HLA
+  - Kir
+tools:
+  ## TODO nf-core: Add a description and other details for the software below
+  - "t1k":
+      description: "T1K is a versatile methods to genotype highly polymorphic genes
+        (e.g. KIR, HLA) with RNA-seq, WGS or WES data."
+      homepage: "https://github.com/mourisl/T1K/blob/v1.0.8/README.md"
+      documentation: "https://github.com/mourisl/T1K/blob/v1.0.8/README.md"
+      tool_dev_url: "https://github.com/mourisl/T1K"
+      doi: "10.1101/gr.277585.122"
+      licence: ["MIT"]
+
+input:
+  ### TODO nf-core: Add a description of all of the variables used as input
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Sorted BAM or FASTQ(s) files file
+        pattern: "*.{bam,fastq}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_2573" # FASTQ
+  - - meta:
+        type: map
+        description: Reference fasta file
+        pattern: 
+
+output:
+  ### TODO nf-core: Add a description of all of the variables used as output
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bam":
+          type: file
+          description: Sorted BAM/CRAM/SAM file
+          pattern: "*.{bam,cram,sam}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+            - edam: "http://edamontology.org/format_2573" # CRAM
+            - edam: "http://edamontology.org/format_3462" # SAM
+  versions_t1k:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "t1k":
+          type: string
+          description: The name of the tool
+      - "t1k --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - t1k:
+          type: string
+          description: The name of the tool
+      - t1k --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@georgiakes"
+maintainers:
+  - "@georgiakes"
