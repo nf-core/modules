@@ -12,6 +12,7 @@ components:
   - cutadapt
   - trimgalore
   - bbmap/bbduk
+  - leehom
   - fastp
   - adapterremoval
 input:
@@ -42,6 +43,10 @@ input:
       type: file
       description: |
         Reference files used by bbmap/bbduk and/or fastp, containing adapter and/or contaminant sequences for removal
+  - skip_leehom:
+      type: boolean
+      description: |
+        If true, skips the leehom process.
   - skip_fastp:
       type: boolean
       description: |
@@ -70,10 +75,6 @@ input:
       description: Optional text file containing list of adapters to look for for removal
         with one adapter per line. Otherwise will look for default adapters (see AdapterRemoval
         man page), or can be modified to remove user-specified adapters via ext.args.
-  - skip_leehom:
-      type: boolean
-      description: |
-        If true, skips the leehom process.
 output:
   - reads:
       type: file

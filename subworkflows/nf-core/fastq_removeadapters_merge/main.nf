@@ -3,11 +3,12 @@ include { TRIMMOMATIC                         } from '../../../modules/nf-core/t
 include { CUTADAPT                            } from '../../../modules/nf-core/cutadapt/main'    // both SE and PE
 include { TRIMGALORE                          } from '../../../modules/nf-core/trimgalore/main'  // both SE and PE
 include { BBMAP_BBDUK                         } from '../../../modules/nf-core/bbmap/bbduk/main' // both SE and PE
+include { LEEHOM                              } from '../../../modules/nf-core/leehom/main'      // both SE and PE
 // // allows merging of paired end reads, but will work for single end reads as well
 include { FASTP                               } from '../../../modules/nf-core/fastp/main'       // both SE and PE + merge
 include { ADAPTERREMOVAL as ADAPTERREMOVAL_SE } from '../../../modules/nf-core/adapterremoval/main' // both SE and PE + merge
 include { ADAPTERREMOVAL as ADAPTERREMOVAL_PE } from '../../../modules/nf-core/adapterremoval/main'
-include { LEEHOM                              } from '../../../modules/nf-core/leehom/main'
+
 // // requires paired end because of merging
 // include { NGMERGE       } from '../../../modules/nf-core/ngmerge/main'
 
@@ -20,13 +21,13 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
     skip_trimgalore             // boolean
     skip_bbduk                  // boolean
     contaminants                // channel: [ reads ] // fasta, adapters to remove
+    skip_leehom                 // boolean
     skip_fastp                  // boolean
     fastp_discard_trimmed_pass  // boolean
     fastp_save_trimmed_fail     // boolean
     save_merged                 // boolean
     skip_adapterremoval         // boolean
     text_adapters               // channel: [ txt ] // adapters to remove, in adapterremoval text format
-    skip_leehom                 // boolean
     // skip_ngmerge             // boolean
 
     main:
@@ -79,6 +80,24 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
         ch_multiqc_files = ch_multiqc_files.mix(BBMAP_BBDUK.out.log)
     }
 
+    if (!skip_leehom) {
+        LEEHOM(ch_reads)
+
+        ch_reads = LEEHOM.out.fq_pass
+            .join(LEEHOM.out.unmerged_r1_fq_pass, by: 0, remainder: true)
+            .join(LEEHOM.out.unmerged_r2_fq_pass, by: 0, remainder: true)
+            .map { meta, single, r1, r2 ->
+                if (meta.single_end) {
+                    return [meta, single]
+                } else {
+                    return [meta, [r1, r2]]
+                }
+            }
+        ch_discarded_reads = ch_discarded_reads.mix(LEEHOM.out.fq_fail, LEEHOM.out.unmerged_r1_fq_fail, LEEHOM.out.unmerged_r2_fq_fail)
+        ch_versions        = ch_versions.mix(LEEHOM.out.versions.first())
+        ch_multiqc_files   = ch_multiqc_files.mix(LEEHOM.out.log)
+    }
+
     if (!skip_fastp) {
         FASTP(
             ch_reads.map { meta, files ->  [ meta, files, contaminants ] },
@@ -117,58 +136,6 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
         ch_versions                           = ch_versions.mix(ADAPTERREMOVAL_SE.out.versions.first(), ADAPTERREMOVAL_PE.out.versions.first())
         ch_multiqc_files                      = ch_multiqc_files.mix(ADAPTERREMOVAL_PE.out.settings, ADAPTERREMOVAL_SE.out.settings)
     }
-
-    if (!skip_leehom) {
-        LEEHOM(ch_reads)
-
-        ch_reads = LEEHOM.out.fq_pass
-            .join(LEEHOM.out.unmerged_r1_fq_pass, by: 0, remainder: true)
-            .join(LEEHOM.out.unmerged_r2_fq_pass, by: 0, remainder: true)
-            .map { meta, single, r1, r2 ->
-                if (meta.single_end) {
-                    return [meta, single]
-                } else {
-                    return [meta, [r1, r2]]
-                }
-            }
-        ch_discarded_reads = ch_discarded_reads.mix(LEEHOM.out.fq_fail, LEEHOM.out.unmerged_r1_fq_fail, LEEHOM.out.unmerged_r2_fq_fail)
-        ch_versions        = ch_versions.mix(LEEHOM.out.versions.first())
-        ch_multiqc_files   = ch_multiqc_files.mix(LEEHOM.out.log)
-    }
-
-//     if (!skip_leehom && !do_merge) {
-//         ch_reads.view { "DEBUG: BEFORE LEEHOM → $it" }
-//         ch_leehom_input = ch_reads.map { meta, r ->
-//         if (meta.single_end)
-//             return [meta, r]
-//         else
-//             return [meta, [reads[0], reads[1]]]
-//     }
-
-//     LEEHOM(ch_leehom_input)
-
-//         ch_leehom_pe =
-//     LEEHOM.out.unmerged_r1_fq_pass
-//         .combine(LEEHOM.out.unmerged_r2_fq_pass)
-//         .map { left, right ->
-//             def meta = left[0]
-//             def r1   = left[1]
-//             def r2   = right[1]
-//             [meta, [r1, r2]]
-//         }
-//         .filter { meta, r -> !meta.single_end }  // only PE
-
-// // ---- SE OUTPUT ----
-// ch_leehom_se =
-//     LEEHOM.out.fq_pass
-//         .filter { meta, r -> meta.single_end }
-//         .map { meta, r -> [meta, r] }
-
-// // ---- MERGE CHANNELS ----
-// ch_reads = ch_leehom_pe.mix(ch_leehom_se)
-
-//         ch_versions = ch_versions.mix(LEEHOM.out.versions)
-//     }
 
     emit:
     reads                              = ch_reads                               // channel: [ val(meta), [ fastq.gz ] ]

@@ -13,9 +13,9 @@ nextflow_workflow {
     tag "trimgalore"
     tag "bbmap"
     tag "bbmap/bbduk"
+    tag "leehom"
     tag "fastp"
     tag "adapterremoval"
-    tag "leehom"
     // tag "ngmerge"
 
     test("sarscov2 - fastq - single-end") {
@@ -37,13 +37,13 @@ nextflow_workflow {
                 input[3]  = false               // skip_trimgalore
                 input[4]  = false               // skip_bbduk
                 input[5]  = []                  // contaminants
-                input[6]  = false               // skip_fastp
-                input[7]  = false               // fastp_discard_trimmed_pass
-                input[8]  = true                // fastp_save_trimmed_fail
-                input[9]  = params.save_merged
-                input[10] = false               // skip_adapterremoval
-                input[11] = []                  // text adapters
-                input[12] = false               // skip_leehom
+                input[6]  = false               // skip_leehom
+                input[7]  = false               // skip_fastp
+                input[8]  = false               // fastp_discard_trimmed_pass
+                input[9]  = true                // fastp_save_trimmed_fail
+                input[10] = params.save_merged
+                input[11] = false               // skip_adapterremoval
+                input[12] = []                  // text adapters
                 // input[13] = true          // skip_ngmerge
                 """
             }
@@ -87,13 +87,13 @@ nextflow_workflow {
                 input[3]  = false               // skip_trimgalore
                 input[4]  = false               // skip_bbduk
                 input[5]  = []                  // contaminants
-                input[6]  = false               // skip_fastp
-                input[7]  = false               // fastp_discard_trimmed_pass
-                input[8]  = true                // fastp_save_trimmed_fail
-                input[9]  = params.save_merged
-                input[10] = false               // skip_adapterremoval
-                input[11] = []                  // text adapters
-                input[12] = false               // skip_leehom
+                input[6]  = false               // skip_leehom
+                input[7]  = false               // skip_fastp
+                input[8]  = false               // fastp_discard_trimmed_pass
+                input[9]  = true                // fastp_save_trimmed_fail
+                input[10] = params.save_merged
+                input[11] = false               // skip_adapterremoval
+                input[12] = []                  // text adapters
                 // input[13] = true          // skip_ngmerge
                 """
             }
@@ -136,13 +136,14 @@ nextflow_workflow {
     // //             input[3] = false  // skip_trimgalore
     // //             input[4] = false  // skip_bbduk
     //             // input[5] = []     // contaminants
-    //             // input[6] = false  // skip_fastp
-    //             // input[7] = false  // fastp_discard_trimmed_pass
-    //             // input[8] = true   // fastp_save_trimmed_fail
-    //             // input[9] = true   // save_merged
-    //             // input[10] = false  // skip_adapterremoval
-    //             // input[11] = false  // skip_leehom
-    //             // input[12] = true   // skip_ngmerge
+    //             input[6]  = false               // skip_leehom
+                // input[7]  = false               // skip_fastp
+                // input[8]  = false               // fastp_discard_trimmed_pass
+                // input[9]  = true                // fastp_save_trimmed_fail
+                // input[10] = params.save_merged
+                // input[11] = false               // skip_adapterremoval
+                // input[12] = []                  // text adapters
+                // // input[13] = true          // skip_ngmerge
     // //             """
     // //         }
     // //     }
@@ -177,13 +178,13 @@ nextflow_workflow {
                 input[3]  = false               // skip_trimgalore
                 input[4]  = false               // skip_bbduk
                 input[5]  = []                  // contaminants
-                input[6]  = false               // skip_fastp
-                input[7]  = false               // fastp_discard_trimmed_pass
-                input[8]  = true                // fastp_save_trimmed_fail
-                input[9]  = params.save_merged
-                input[10] = false               // skip_adapterremoval
-                input[11] = []                  // text adapters
-                input[12] = false               // skip_leehom
+                input[6]  = false               // skip_leehom
+                input[7]  = false               // skip_fastp
+                input[8]  = false               // fastp_discard_trimmed_pass
+                input[9]  = true                // fastp_save_trimmed_fail
+                input[10] = params.save_merged
+                input[11] = false               // skip_adapterremoval
+                input[12] = []                  // text adapters
                 // input[13] = true          // skip_ngmerge
                 """
             }
