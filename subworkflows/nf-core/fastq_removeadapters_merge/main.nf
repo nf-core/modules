@@ -48,7 +48,7 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
     if (!skip_trimmomatic) {
         TRIMMOMATIC( ch_reads )
         ch_reads                      = TRIMMOMATIC.out.trimmed_reads
-        ch_discarded_reads            = ch_discarded_reads.mix(TRIMMOMATIC.out.unpaired_reads)
+        ch_discarded_reads            = ch_discarded_reads.mix(TRIMMOMATIC.out.unpaired_reads.transpose()) // .transpose() because paired reads have 2 unpaired files in an array
         ch_trimmomatic_trim_log       = TRIMMOMATIC.out.trim_log
         ch_trimmomatic_summary        = TRIMMOMATIC.out.summary
         ch_versions                   = ch_versions.mix(TRIMMOMATIC.out.versions.first())
@@ -88,7 +88,7 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
         )
         ch_reads              = FASTP.out.reads
         ch_merged_reads       = FASTP.out.reads_merged
-        ch_discarded_reads    = ch_discarded_reads.mix(FASTP.out.reads_fail)
+        ch_discarded_reads    = ch_discarded_reads.mix(FASTP.out.reads_fail.transpose()) // .transpose() because paired reads have 3 fail files in an array
         ch_fastp_html         = FASTP.out.html
         ch_fastp_log          = FASTP.out.log
         ch_versions           = ch_versions.mix(FASTP.out.versions.first())
