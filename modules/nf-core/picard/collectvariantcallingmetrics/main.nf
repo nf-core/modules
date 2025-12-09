@@ -8,13 +8,10 @@ process PICARD_COLLECTVARIANTCALLINGMETRICS {
         : 'biocontainers/picard:3.4.0--hdfd78af_0'}"
 
     input:
-    tuple val(meta), path(vcf), path(index), path(intervals_file)
-    tuple val(meta2), path(fasta)
-    tuple val(meta3), path(dict)
-    tuple val(meta4), path(dbsnp), path(dbsnp_index)
+    tuple val(meta), path(vcf), path(index), path(intervals_file), path(fasta), path(dict), path(dbsnp), path(dbsnp_index)
 
     output:
-    tuple val(meta), path("*.variant_calling_detail_metrics"), emit: detail_metrics
+    tuple val(meta), path("*.variant_calling_detail_metrics"),  emit: detail_metrics
     tuple val(meta), path("*.variant_calling_summary_metrics"), emit: summary_metrics
     path "versions.yml", emit: versions
 
