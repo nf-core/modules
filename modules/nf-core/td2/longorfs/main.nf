@@ -19,7 +19,7 @@ process TD2_LONGORFS {
 
     script:
     def args = task.ext.args ?: ''
-    VERSION = 'v1.0.6' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    VERSION = '1.0.6' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
