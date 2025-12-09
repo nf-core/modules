@@ -16,7 +16,6 @@ nextflow_workflow {
     tag "leehom"
     tag "fastp"
     tag "adapterremoval"
-    // tag "ngmerge"
 
     test("sarscov2 - fastq - single-end") {
         config "./nextflow_SE.config"
@@ -44,7 +43,6 @@ nextflow_workflow {
                 input[10] = params.save_merged
                 input[11] = false               // skip_adapterremoval
                 input[12] = []                  // text adapters
-                // input[13] = true          // skip_ngmerge
                 """
             }
         }
@@ -94,7 +92,6 @@ nextflow_workflow {
                 input[10] = params.save_merged
                 input[11] = false               // skip_adapterremoval
                 input[12] = []                  // text adapters
-                // input[13] = true          // skip_ngmerge
                 """
             }
         }
@@ -143,7 +140,7 @@ nextflow_workflow {
                 // input[10] = params.save_merged
                 // input[11] = false               // skip_adapterremoval
                 // input[12] = []                  // text adapters
-                // // input[13] = true          // skip_ngmerge
+               //  input[13] = false               // skip_ngmerge
     // //             """
     // //         }
     // //     }
@@ -185,7 +182,6 @@ nextflow_workflow {
                 input[10] = params.save_merged
                 input[11] = false               // skip_adapterremoval
                 input[12] = []                  // text adapters
-                // input[13] = true          // skip_ngmerge
                 """
             }
         }

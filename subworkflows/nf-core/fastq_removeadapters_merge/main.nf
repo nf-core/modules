@@ -1,16 +1,13 @@
-// ok for single end adapter removal
-include { TRIMMOMATIC                         } from '../../../modules/nf-core/trimmomatic/main' // both SE and PE
-include { CUTADAPT                            } from '../../../modules/nf-core/cutadapt/main'    // both SE and PE
-include { TRIMGALORE                          } from '../../../modules/nf-core/trimgalore/main'  // both SE and PE
-include { BBMAP_BBDUK                         } from '../../../modules/nf-core/bbmap/bbduk/main' // both SE and PE
-include { LEEHOM                              } from '../../../modules/nf-core/leehom/main'      // both SE and PE
-// // allows merging of paired end reads, but will work for single end reads as well
-include { FASTP                               } from '../../../modules/nf-core/fastp/main'       // both SE and PE + merge
-include { ADAPTERREMOVAL as ADAPTERREMOVAL_SE } from '../../../modules/nf-core/adapterremoval/main' // both SE and PE + merge
+// both SE and PE
+include { TRIMMOMATIC                         } from '../../../modules/nf-core/trimmomatic/main'
+include { CUTADAPT                            } from '../../../modules/nf-core/cutadapt/main'
+include { TRIMGALORE                          } from '../../../modules/nf-core/trimgalore/main'
+include { BBMAP_BBDUK                         } from '../../../modules/nf-core/bbmap/bbduk/main'
+include { LEEHOM                              } from '../../../modules/nf-core/leehom/main'
+// both SE and PE, plus merging
+include { FASTP                               } from '../../../modules/nf-core/fastp/main'
+include { ADAPTERREMOVAL as ADAPTERREMOVAL_SE } from '../../../modules/nf-core/adapterremoval/main'
 include { ADAPTERREMOVAL as ADAPTERREMOVAL_PE } from '../../../modules/nf-core/adapterremoval/main'
-
-// // requires paired end because of merging
-// include { NGMERGE       } from '../../../modules/nf-core/ngmerge/main'
 
 workflow FASTQ_REMOVEADAPTERS_MERGE {
 
@@ -28,7 +25,6 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
     save_merged                 // boolean
     skip_adapterremoval         // boolean
     text_adapters               // channel: [ txt ] // adapters to remove, in adapterremoval text format
-    // skip_ngmerge             // boolean
 
     main:
 
@@ -81,7 +77,7 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
     }
 
     if (!skip_leehom) {
-        LEEHOM(ch_reads)
+        LEEHOM( ch_reads )
 
         ch_reads = LEEHOM.out.fq_pass
             .join(LEEHOM.out.unmerged_r1_fq_pass, by: 0, remainder: true)
@@ -121,8 +117,8 @@ workflow FASTQ_REMOVEADAPTERS_MERGE {
                 paired: !meta.single_end
             }
 
-        ADAPTERREMOVAL_SE(ch_adapterremoval_in.single, text_adapters)
-        ADAPTERREMOVAL_PE(ch_adapterremoval_in.paired, text_adapters)
+        ADAPTERREMOVAL_SE( ch_adapterremoval_in.single, text_adapters )
+        ADAPTERREMOVAL_PE( ch_adapterremoval_in.paired, text_adapters )
 
         ch_reads        = ADAPTERREMOVAL_SE.out.singles_truncated.mix(ADAPTERREMOVAL_PE.out.paired_truncated)
         ch_merged_reads = ADAPTERREMOVAL_SE.out.collapsed
