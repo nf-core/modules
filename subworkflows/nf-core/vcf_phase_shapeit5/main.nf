@@ -82,7 +82,7 @@ workflow VCF_PHASE_SHAPEIT5 {
     ch_ligate_input = SHAPEIT5_PHASECOMMON.out.phased_variant
         .join(
             BCFTOOLS_INDEX_1.out.csi
-                .mix(BCFTOOLS_INDEX_1.out.tbi).view(),
+                .mix(BCFTOOLS_INDEX_1.out.tbi),
             failOnMismatch:true, failOnDuplicate:true
         )
         .map{ meta, vcf, index ->
