@@ -18,7 +18,7 @@ process WHATSHAP_STATS {
     tuple val(meta), path("${prefix}.tsv"),                                    emit: tsv,   optional: true
     tuple val(meta), path("${prefix}.gtf"),                                    emit: gtf,   optional: true
     tuple val(meta), path("${prefix}.txt"),                                    emit: block, optional: true
-    tuple val(meta), path("${prefix}.log"),                                    emit: log,   optional: true
+    tuple val(meta), path("${prefix}.log"),                                    emit: log
     tuple val("${task.process}"), val('whatshap'), eval("whatshap --version"), emit: versions_whatshap, topic: versions
 
     when:
