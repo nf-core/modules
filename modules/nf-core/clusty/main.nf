@@ -11,7 +11,6 @@ process CLUSTY {
     input:
     tuple val(meta), path(distances)
     tuple val(meta2), path(objects)
-    val algorithm
 
     output:
     tuple val(meta), path("*.tsv"), emit: assignments
