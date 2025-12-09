@@ -114,45 +114,55 @@ nextflow_workflow {
         }
     }
 
-    // // test("sarscov2 - fastq - paired-end, no merging") {
-    // //     when {            params {
-    // //             samtools_arg = ''
-    // //         }
-    // //         workflow {
-    // //             """
-    // //             input[0] = [
-    // //                 [ id:'test_paired', single_end:false ],
-    // //                 [
-    // //                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-    // //                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
-    // //                 ]
-    // //             ]
+    test("sarscov2 - fastq - paired-end - no-merge") {
+        config "./nextflow_PE.config"
+        when {
+            params {
+                save_merged = false
+                adapterremoval_args = save_merged ? "--collapse" : ""
+            }
+            workflow {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
 
-    // //             input[1] = false  // skip_trimmomatic
-    // //             input[2] = false  // skip_cutadapt
-    // //             input[3] = false  // skip_trimgalore
-    // //             input[4] = false  // skip_bbduk
-    //             // input[5] = []     // contaminants
-    //             input[6]  = false               // skip_leehom
-                // input[7]  = false               // skip_fastp
-                // input[8]  = false               // fastp_discard_trimmed_pass
-                // input[9]  = true                // fastp_save_trimmed_fail
-                // input[10] = params.save_merged
-                // input[11] = false               // skip_adapterremoval
-                // input[12] = []                  // text adapters
-               //  input[13] = false               // skip_ngmerge
-    // //             """
-    // //         }
-    // //     }
+                input[1]  = false               // skip_trimmomatic
+                input[2]  = false               // skip_cutadapt
+                input[3]  = false               // skip_trimgalore
+                input[4]  = false               // skip_bbduk
+                input[5]  = []                  // contaminants
+                input[6]  = false               // skip_leehom
+                input[7]  = false               // skip_fastp
+                input[8]  = false               // fastp_discard_trimmed_pass
+                input[9]  = true                // fastp_save_trimmed_fail
+                input[10] = params.save_merged
+                input[11] = false               // skip_adapterremoval
+                input[12] = []                  // text adapters
+                """
+            }
+        }
 
-    // //     then {
-    // //         assertAll(
-    // //             { assert workflow.success },
-    // // workflow.out.adapterremoval_collapsed[0][1],
-    // //             { assert snapshot(workflow.out).match() }
-    // //         )
-    // //     }
-    // // }
+        then {
+            assert workflow.success
+            assert snapshot(
+                workflow.out.reads[0][1],
+                workflow.out.discarded_reads.collect { file(it[1]).name },
+                workflow.out.trimmomatic_trim_log[0][1],
+                workflow.out.trimmomatic_summary[0][1],
+                path(workflow.out.trimgalore_log[0][1][0]).readLines().size(),
+                path(workflow.out.trimgalore_log[0][1][1]).readLines().size(),
+                file(workflow.out.fastp_html[0][1]).name,
+                path(workflow.out.fastp_log[0][1]).readLines().size(),
+                workflow.out.multiqc_files.collect { file(it[1]).name },
+                workflow.out.versions.collect { path(it).yaml }
+            ).match()
+        }
+    }
 
     test("sarscov2 - fastq - single-end - stub") {
 
