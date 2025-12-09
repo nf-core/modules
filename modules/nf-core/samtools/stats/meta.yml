@@ -62,21 +62,22 @@ output:
       - samtools:
           type: string
           description: Name of the tool
-      - samtools version | sed "1!d;s/.* //:
-          type: string
-          description: The command used to generate the version of the tool
+      - samtools version | sed "1!d;s/.* //":
+          type: eval
+          description: The expression to obtain the version of the tool
 
 topics:
   versions:
     - - ${task.process}:
           type: string
-          description: The process the versions were collected from
+          description: Name of the process
       - samtools:
           type: string
-          description: The tool name
-      - samtools version | sed "1!d;s/.* //:
-          type: string
-          description: The command used to generate the version of the tool
+          description: Name of the tool
+      - samtools version | sed "1!d;s/.* //":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@drpatelh"
   - "@FriederikeHanssen"
