@@ -2,6 +2,7 @@ process PLASTID_MAKE_WIGGLE {
     tag "$meta.id"
     label "process_single"
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/plastid:0.6.1--py39had3e4b6_2':
@@ -22,6 +23,7 @@ process PLASTID_MAKE_WIGGLE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def extension = output_format == "bedgraph" ? "bedgraph" : "wig"
     def args = task.ext.args ?: ""
+    def VERSION = "0.6.1" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     make_wiggle \\
         --count_files "$bam" \\
@@ -39,20 +41,21 @@ process PLASTID_MAKE_WIGGLE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        plastid: 0.6.1
+        plastid: $VERSION
     END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     def extension = output_format == "bedgraph" ? "bedgraph" : "wig"
+    def VERSION = "0.6.1" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}_fw.$extension
     touch ${prefix}_rc.$extension
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        plastid: 0.6.1
+        plastid: $VERSION
     END_VERSIONS
     """
 }
