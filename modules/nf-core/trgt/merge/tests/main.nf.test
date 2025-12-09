@@ -95,7 +95,7 @@ nextflow_process {
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     path(process.out.vcf.get(0).get(1)).vcf.sampleCount,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }
@@ -120,7 +120,7 @@ nextflow_process {
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     path(process.out.vcf.get(0).get(1)).vcf.sampleCount,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }
@@ -165,7 +165,7 @@ nextflow_process {
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     path(process.out.vcf.get(0).get(1)).vcf.sampleCount,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
         }
@@ -187,7 +187,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
             )
         }
     }
