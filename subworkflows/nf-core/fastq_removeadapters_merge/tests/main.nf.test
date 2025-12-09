@@ -14,13 +14,17 @@ nextflow_workflow {
     tag "bbmap"
     tag "bbmap/bbduk"
     tag "fastp"
-    // tag "adapterremoval"
+    tag "adapterremoval"
     // tag "leehom"
     // tag "ngmerge"
 
     test("sarscov2 - fastq - single-end") {
         config "./nextflow_SE.config"
         when {
+            params {
+                save_merged = false
+                adapterremoval_args = save_merged ? "--collapse" : ""
+            }
             workflow {
                 """
                 input[0] = [
@@ -28,18 +32,19 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ]
 
-                input[1] = false  // skip_trimmomatic
-                input[2] = false  // skip_cutadapt
-                input[3] = false  // skip_trimgalore
-                input[4] = false  // skip_bbduk
-                input[5] = []     // contaminants
-                input[6] = false  // skip_fastp
-                input[7] = false  // fastp_discard_trimmed_pass
-                input[8] = true   // fastp_save_trimmed_fail
-                input[9] = true   // save_merged
-                // input[10] = false  // skip_adapterremoval
-                // input[11] = false  // skip_leehom
-                // input[12] = true   // skip_ngmerge
+                input[1]  = false               // skip_trimmomatic
+                input[2]  = false               // skip_cutadapt
+                input[3]  = false               // skip_trimgalore
+                input[4]  = false               // skip_bbduk
+                input[5]  = []                  // contaminants
+                input[6]  = false               // skip_fastp
+                input[7]  = false               // fastp_discard_trimmed_pass
+                input[8]  = true                // fastp_save_trimmed_fail
+                input[9]  = params.save_merged
+                input[10] = false               // skip_adapterremoval
+                input[11] = []                  // text adapters
+                // input[12] = false         // skip_leehom
+                // input[13] = true          // skip_ngmerge
                 """
             }
         }
@@ -49,15 +54,13 @@ nextflow_workflow {
             assert snapshot(
                 workflow.out.reads[0][1],
                 workflow.out.trimmomatic_trim_log[0][1],
-                file(workflow.out.trimmomatic_out_log[0][1]).name,
                 workflow.out.trimmomatic_summary[0][1],
-                workflow.out.cutadapt_log[0][1],
                 path(workflow.out.trimgalore_log[0][1]).readLines().size(),
-                path(workflow.out.bbduk_log[0][1]).readLines().size(),
-                workflow.out.fastp_json[0][1],
                 file(workflow.out.fastp_html[0][1]).name,
                 path(workflow.out.fastp_log[0][1]).readLines().size(),
                 workflow.out.fastp_reads_fail[0][1],
+                file(workflow.out.adapterremoval_discarded[0][1]).name,
+                file(workflow.out.multiqc_files[0][1]).name,
                 workflow.out.versions.collect { path(it).yaml }
             ).match()
         }
@@ -66,6 +69,10 @@ nextflow_workflow {
     test("sarscov2 - fastq - paired-end") {
         config "./nextflow_PE.config"
         when {
+            params {
+                save_merged = true
+                adapterremoval_args = save_merged ? "--collapse" : ""
+            }
             workflow {
                 """
                 input[0] = [
@@ -76,18 +83,19 @@ nextflow_workflow {
                     ]
                 ]
 
-                input[1] = false  // skip_trimmomatic
-                input[2] = false  // skip_cutadapt
-                input[3] = false  // skip_trimgalore
-                input[4] = false  // skip_bbduk
-                input[5] = []     // contaminants
-                input[6] = false  // skip_fastp
-                input[7] = false  // fastp_discard_trimmed_pass
-                input[8] = true   // fastp_save_trimmed_fail
-                input[9] = true   // save_merged
-                // input[10] = false  // skip_adapterremoval
-                // input[11] = false  // skip_leehom
-                // input[12] = true   // skip_ngmerge
+                input[1]  = false               // skip_trimmomatic
+                input[2]  = false               // skip_cutadapt
+                input[3]  = false               // skip_trimgalore
+                input[4]  = false               // skip_bbduk
+                input[5]  = []                  // contaminants
+                input[6]  = false               // skip_fastp
+                input[7]  = false               // fastp_discard_trimmed_pass
+                input[8]  = true                // fastp_save_trimmed_fail
+                input[9]  = params.save_merged
+                input[10] = false               // skip_adapterremoval
+                input[11] = []                  // text adapters
+                // input[12] = false         // skip_leehom
+                // input[13] = true          // skip_ngmerge
                 """
             }
         }
@@ -96,18 +104,17 @@ nextflow_workflow {
             assert workflow.success
             assert snapshot(
                 workflow.out.reads[0][1],
+                workflow.out.merged_reads[0][1], // merged reads
                 workflow.out.trimmomatic_unpaired_reads[0][1],
                 workflow.out.trimmomatic_trim_log[0][1],
-                file(workflow.out.trimmomatic_out_log[0][1]).name,
                 workflow.out.trimmomatic_summary[0][1],
-                workflow.out.cutadapt_log[0][1],
                 path(workflow.out.trimgalore_log[0][1][0]).readLines().size(),
                 path(workflow.out.trimgalore_log[0][1][1]).readLines().size(),
-                path(workflow.out.bbduk_log[0][1]).readLines().size(),
-                workflow.out.fastp_json[0][1],
                 file(workflow.out.fastp_html[0][1]).name,
                 path(workflow.out.fastp_log[0][1]).readLines().size(),
                 workflow.out.fastp_reads_fail[0][1].collect { file(it).name }.sort(),
+                file(workflow.out.adapterremoval_discarded[0][1]).name,
+                file(workflow.out.multiqc_files[0][1]).name,
                 workflow.out.versions.collect { path(it).yaml }
             ).match()
         }
@@ -146,6 +153,7 @@ nextflow_workflow {
     //     then {
     //         assertAll(
     //             { assert workflow.success },
+    // workflow.out.adapterremoval_collapsed[0][1],
     //             { assert snapshot(workflow.out).match() }
     //         )
     //     }
@@ -156,6 +164,10 @@ nextflow_workflow {
         options "-stub"
 
         when {
+            params {
+                save_merged = false
+                adapterremoval_args = save_merged ? "--collapse" : ""
+            }
             workflow {
                 """
                 input[0] = [
@@ -163,18 +175,19 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ]
 
-                input[1] = false  // skip_trimmomatic
-                input[2] = true   // skip_cutadapt
-                input[3] = false  // skip_trimgalore
-                input[4] = false  // skip_bbduk
-                input[5] = []     // contaminants
-                input[6] = false  // skip_fastp
-                input[7] = false  // fastp_discard_trimmed_pass
-                input[8] = true   // fastp_save_trimmed_fail
-                input[9] = true   // save_merged
-                // input[10] = false  // skip_adapterremoval
-                // input[11] = false  // skip_leehom
-                // input[12] = true   // skip_ngmerge
+                input[1]  = false               // skip_trimmomatic
+                input[2]  = true                // skip_cutadapt
+                input[3]  = false               // skip_trimgalore
+                input[4]  = false               // skip_bbduk
+                input[5]  = []                  // contaminants
+                input[6]  = false               // skip_fastp
+                input[7]  = false               // fastp_discard_trimmed_pass
+                input[8]  = true                // fastp_save_trimmed_fail
+                input[9]  = params.save_merged
+                input[10] = false               // skip_adapterremoval
+                input[11] = []                  // text adapters
+                // input[12] = false         // skip_leehom
+                // input[13] = true          // skip_ngmerge
                 """
             }
         }

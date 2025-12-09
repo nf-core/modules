@@ -13,6 +13,7 @@ components:
   - trimgalore
   - bbmap/bbduk
   - fastp
+  - adapterremoval
 input:
   - ch_reads:
       type: file
@@ -60,10 +61,25 @@ input:
       description: |
         Specify true to save all merged reads to a file ending in `*.merged.fastq.gz`
         Used by fastp
+  - skip_adapterremoval:
+      type: boolean
+      description: |
+        If true, skips the adapterremoval process.
+  - text_adapters:
+      type: file
+      description: Optional text file containing list of adapters to look for for removal
+        with one adapter per line. Otherwise will look for default adapters (see AdapterRemoval
+        man page), or can be modified to remove user-specified adapters via ext.args.
 output:
   - reads:
       type: file
       description: The trimmed/modified single or paired end fastq reads
+      pattern: "*.fastq.gz"
+  - merged_reads:
+      type: file
+      description: |
+        The trimmed/modified fastq reads merged into a single file.
+        Only meaningful for paired-end reads.
       pattern: "*.fastq.gz"
   - trimmomatic_unpaired_reads:
       type: file
@@ -73,18 +89,10 @@ output:
       type: file
       description: trimmomatic log file, from the trim_log parameter
       pattern: "*.log"
-  - trimmomatic_out_log:
-      type: file
-      description: log of output from the standard out
-      pattern: "*.log"
   - trimmomatic_summary:
       type: file
       description: trimmomatic summary file of surviving and dropped reads
       pattern: "*.summary"
-  - cutadapt_log:
-      type: file
-      description: cuatadapt log file
-      pattern: "*cutadapt.log"
   - trimgalore_log:
       type: file
       description: |
@@ -105,14 +113,6 @@ output:
       description: |
         fastqc zip output if run with the --fastqc flag.
       pattern: "*_fastqc.zip"
-  - bbduk_log:
-      type: file
-      description: Bbduk log file
-      pattern: "*bbduk.log"
-  - fastp_json:
-      type: file
-      description: fastp results in JSON format
-      pattern: "*.json"
   - fastp_html:
       type: file
       description: fastp results in HTML format
@@ -125,16 +125,26 @@ output:
       type: file
       description: fastp reads that failed the preprocessing
       pattern: "*fail.fastq.gz"
-  - fastp_reads_merged:
+  - adapterremoval_discarded:
       type: file
-      description: fastp reads that were successfully merged
-      pattern: "*.merged.fastq.gz"
+      description: |
+        Adapter trimmed FastQ files of reads that did not pass filtering
+        thresholds.
+      pattern: "*.discarded.fastq.gz"
+  - adapterremoval_paired_interleaved:
+      type: file
+      description: |
+        Write paired-end reads to a single file, interleaving mate 1 and mate 2 reads
+      pattern: "*.paired.fastq.gz"
   - versions:
       type: file
       description: |
         File containing software versions
         Structure: [ path(versions.yml) ]
       pattern: "versions.yml"
+  - multiqc_files:
+      type: file
+      description: MultiQC-compatible output files from tools used in preprocessing
 authors:
   - "@kornkv"
   - "@vagkaratzas"
