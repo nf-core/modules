@@ -3,22 +3,22 @@ include { SEQKIT_SEQ            } from '../../../modules/nf-core/seqkit/seq/main
 include { SEQKIT_REPLACE        } from '../../../modules/nf-core/seqkit/replace/main'
 include { SEQKIT_RMDUP          } from '../../../modules/nf-core/seqkit/rmdup/main'
 
-workflow FASTQ_PREPROCESS {
+workflow FASTQ_PREPROCESS_SEQKIT {
 
     take:
-    ch_reads              // channel: [ val(meta), [ fastq ] ]
-    skip_seqkit_sana_pair // boolean
-    skip_seqkit_seq       // boolean
-    skip_seqkit_replace   // boolean
-    skip_seqkit_rmdup     // boolean
+    ch_reads               // channel: [ val(meta), [ fastq ] ]
+    skip_seqkit_sana_pair  // boolean
+    skip_seqkit_seq        // boolean
+    skip_seqkit_replace    // boolean
+    skip_seqkit_rmdup      // boolean
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     if (!skip_seqkit_sana_pair) {
         FASTQ_SANITISE_SEQKIT( ch_reads )
-        ch_reads        = FASTQ_SANITISE_SEQKIT.out.reads
-        ch_versions     = ch_versions.mix(FASTQ_SANITISE_SEQKIT.out.versions.first())
+        ch_reads    = FASTQ_SANITISE_SEQKIT.out.reads
+        ch_versions = ch_versions.mix(FASTQ_SANITISE_SEQKIT.out.versions)
     }
 
     // Split paired-end reads and add strandedness to meta
@@ -75,7 +75,6 @@ workflow FASTQ_PREPROCESS {
         }
 
     emit:
-    reads    = ch_reads    // channel: [ val(meta), [ fastq ] ]
-    versions = ch_versions // channel: [ versions.yml ]
-
+    reads    = ch_reads     // channel: [ val(meta), [ fastq ] ]
+    versions = ch_versions  // channel: [ versions.yml ]
 }
