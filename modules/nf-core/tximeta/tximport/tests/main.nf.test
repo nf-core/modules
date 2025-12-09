@@ -134,35 +134,6 @@ nextflow_process {
 
         options "-stub"
 
-        setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of([
-                        [ id:'test'], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/kallisto_results.tar.gz', checkIfExists: true)
-                    ])
-                    """
-                }
-            }
-            run("CUSTOM_TX2GENE") {
-                script "../../../custom/tx2gene/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of([
-                        [ id:'test'], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/genome_gfp.gtf', checkIfExists: true)
-                    ])
-                    input[1] = UNTAR.out.untar.map { meta, dir -> [ meta, dir.listFiles().collect() ] }
-                    input[2] = 'kallisto'
-                    input[3] = 'gene_id'
-                    input[4] = 'gene_name'
-                    """
-                }
-            }
-        }
-
         when {
             process {
                 """
