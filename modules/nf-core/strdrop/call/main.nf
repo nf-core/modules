@@ -25,7 +25,7 @@ process STRDROP_CALL {
     def training_set = training_set_json ? "--training-set ${training_set_json}" : '--training-set ./input'
 
     if (training_set_json && training_set_vcfs) {
-        error("Please provide only one of 'training_set_json' or 'training_set_dir' as training set input.")
+        error("Please provide only one of 'training_set_json' or 'training_set_vcfs' as training set input.")
     }
     """
     strdrop \\
@@ -41,7 +41,7 @@ process STRDROP_CALL {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     if (training_set_json && training_set_vcfs) {
-        error("Please provide only one of 'training_set_json' or 'training_set_dir' as training set input.")
+        error("Please provide only one of 'training_set_json' or 'training_set_vcfs' as training set input.")
     }
     """
     echo $args
