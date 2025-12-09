@@ -13,13 +13,13 @@ process WHATSHAP_STATS {
     val(include_tsv_output)    // value:   [ true | false ]
     val(include_gtf_output)    // value:   [ true | false ]
     val(inlude_block_output)   // value:   [ true | false ]
-    val(include_txt_output)    // value:   [ true | false ]
+    val(include_log_output)    // value:   [ true | false ]
 
     output:
-    tuple val(meta), path("${prefix}.tsv"),                         emit: tsv,   optional: true
-    tuple val(meta), path("${prefix}.gtf"),                         emit: gtf,   optional: true
-    tuple val(meta), path("${prefix}_block.txt"),                   emit: block, optional: true
-    tuple val(meta), path("${prefix}.txt"),                         emit: txt,   optional: true
+    tuple val(meta), path("${prefix}.tsv"),                                    emit: tsv,   optional: true
+    tuple val(meta), path("${prefix}.gtf"),                                    emit: gtf,   optional: true
+    tuple val(meta), path("${prefix}.txt"),                                    emit: block, optional: true
+    tuple val(meta), path("${prefix}.log"),                                    emit: log,   optional: true
     tuple val("${task.process}"), val('whatshap'), eval("whatshap --version"), emit: versions_whatshap, topic: versions
 
     when:
@@ -31,8 +31,8 @@ process WHATSHAP_STATS {
 
     def output_tsv   = include_tsv_output  ? "--tsv ${prefix}.tsv"              : ''
     def output_gtf   = include_gtf_output  ? "--gtf ${prefix}.gtf"              : ''
-    def output_block = inlude_block_output ? "--block-list ${prefix}_block.txt" : ''
-    def output_txt   = include_txt_output  ? "> ${prefix}.txt"                  : ''
+    def output_block = inlude_block_output ? "--block-list ${prefix}.txt" : ''
+    def output_log   = include_log_output  ? "> ${prefix}.log"                  : ''
     """
     whatshap stats \\
         $args \\
@@ -40,7 +40,7 @@ process WHATSHAP_STATS {
         $output_gtf \\
         $output_block \\
         $vcf \\
-        $output_txt \\
+        $output_log
     """
 
     stub:
@@ -48,12 +48,12 @@ process WHATSHAP_STATS {
     prefix           = task.ext.prefix     ?: "${meta.id}"
     def output_tsv   = include_tsv_output  ? "--tsv ${prefix}.tsv" : ''
     def output_gtf   = include_gtf_output  ? "--gtf ${prefix}.gtf" : ''
-    def output_block = inlude_block_output ? "--block-list ${prefix}_block.txt" : ''
-    def output_txt   = include_txt_output  ? "> ${prefix}.txt" : ''
+    def output_block = inlude_block_output ? "--block-list ${prefix}.txt" : ''
+    def output_log   = include_log_output  ? "> ${prefix}.log" : ''
     """
     touch ${prefix}.tsv
     touch ${prefix}.gtf
-    touch ${prefix}_block.txt
     touch ${prefix}.txt
+    touch ${prefix}.log
     """
 }
