@@ -44,10 +44,8 @@ workflow BAM_VCF_IMPUTE_GLIMPSE2 {
     }
 
     ch_chunks
-        .filter { _meta, regionin, regionout -> regionin.size() == 0 || regionout.size() == 0 }
-        .subscribe {
-            error "ERROR: ch_chunks channel is empty. Please provide a valid channel or set chunk parameter to true."
-        }
+        .filter { _meta, regionin, regionout -> regionin.size() > 0 && regionout.size() > 0 }
+        .ifEmpty { error "ERROR: ch_chunks channel is empty. Please provide a valid channel or set chunk parameter to true." }
 
     if ( splitreference == true ) {
         // Split reference panel in bin files
