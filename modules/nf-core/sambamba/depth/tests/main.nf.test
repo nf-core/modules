@@ -20,7 +20,8 @@ nextflow_process {
                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
                 ]
-                input[1] = 'base'
+                input[1] = [[], []]
+                input[2] = 'base'
 
                 """
             }
@@ -34,6 +35,33 @@ nextflow_process {
         }
     }
 
+    test("test-sambamba-depth-with-region-bed") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                [ id:'test', single_end:false ], // meta map
+                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[1] = [
+                [ id:'test2' ], // meta2 map
+                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
+                ]
+                input[2] = 'region'
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
 
     test("test-sambamba-depth-stub") {
 
@@ -47,7 +75,8 @@ nextflow_process {
                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
                 ]
-                input[1] = 'base'
+                input[1] = [[], []]
+                input[2] = 'base'
 
                 """
             }
