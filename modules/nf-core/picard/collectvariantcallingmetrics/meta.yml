@@ -35,32 +35,16 @@ input:
         type: file
         description: Optional BED file specifying target intervals
         pattern: "*.{bed,bed.gz,intervals_list}"
-
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing reference information
-          e.g. `[ id:'genome' ]`
     - fasta:
         type: file
         description: Reference sequence file
         pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_1929" # FASTA
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing reference information
-          e.g. `[ id:'genome' ]`
     - dict:
         type: file
         description: Reference sequence dictionary file
         pattern: "*.{dict}"
-  - - meta4:
-        type: map
-        description: |
-          Groovy Map containing dbSNP information
-          e.g. `[ id:'dbsnp' ]`
     - dbsnp:
         type: file
         description: Reference dbSNP file in dbSNP or VCF format
