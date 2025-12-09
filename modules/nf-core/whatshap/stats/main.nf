@@ -16,10 +16,10 @@ process WHATSHAP_STATS {
     val(include_txt_output)    // value:   [ true | false ]
 
     output:
-    tuple val(meta), path("${prefix}_whap_stats.tsv"),                         emit: tsv,   optional: true
-    tuple val(meta), path("${prefix}_whap_stats.gtf"),                         emit: gtf,   optional: true
-    tuple val(meta), path("${prefix}_whap_stats_block.txt"),                   emit: block, optional: true
-    tuple val(meta), path("${prefix}_whap_stats.txt"),                         emit: txt,   optional: true
+    tuple val(meta), path("${prefix}.tsv"),                         emit: tsv,   optional: true
+    tuple val(meta), path("${prefix}.gtf"),                         emit: gtf,   optional: true
+    tuple val(meta), path("${prefix}_block.txt"),                   emit: block, optional: true
+    tuple val(meta), path("${prefix}.txt"),                         emit: txt,   optional: true
     tuple val("${task.process}"), val('whatshap'), eval("whatshap --version"), emit: versions_whatshap, topic: versions
 
     when:
@@ -29,10 +29,10 @@ process WHATSHAP_STATS {
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
 
-    def output_tsv   = include_tsv_output  ? "--tsv ${prefix}_whap_stats.tsv"              : ''
-    def output_gtf   = include_gtf_output  ? "--gtf ${prefix}_whap_stats.gtf"              : ''
-    def output_block = inlude_block_output ? "--block-list ${prefix}_whap_stats_block.txt" : ''
-    def output_txt   = include_txt_output  ? "> ${prefix}_whap_stats.txt"                  : ''
+    def output_tsv   = include_tsv_output  ? "--tsv ${prefix}.tsv"              : ''
+    def output_gtf   = include_gtf_output  ? "--gtf ${prefix}.gtf"              : ''
+    def output_block = inlude_block_output ? "--block-list ${prefix}_block.txt" : ''
+    def output_txt   = include_txt_output  ? "> ${prefix}.txt"                  : ''
     """
     whatshap stats \\
         $args \\
@@ -46,14 +46,14 @@ process WHATSHAP_STATS {
     stub:
     def args         = task.ext.args       ?: ''
     prefix           = task.ext.prefix     ?: "${meta.id}"
-    def output_tsv   = include_tsv_output  ? "--tsv ${prefix}_whap_stats.tsv" : ''
-    def output_gtf   = include_gtf_output  ? "--gtf ${prefix}_whap_stats.gtf" : ''
-    def output_block = inlude_block_output ? "--block-list ${prefix}_whap_stats_block.txt" : ''
-    def output_txt   = include_txt_output  ? "> ${prefix}_whap_stats.txt" : ''
+    def output_tsv   = include_tsv_output  ? "--tsv ${prefix}.tsv" : ''
+    def output_gtf   = include_gtf_output  ? "--gtf ${prefix}.gtf" : ''
+    def output_block = inlude_block_output ? "--block-list ${prefix}_block.txt" : ''
+    def output_txt   = include_txt_output  ? "> ${prefix}.txt" : ''
     """
-    touch ${prefix}_whap_stats.tsv
-    touch ${prefix}_whap_stats.gtf
-    touch ${prefix}_whap_stats_block.txt
-    touch ${prefix}_whap_stats.txt
+    touch ${prefix}.tsv
+    touch ${prefix}.gtf
+    touch ${prefix}_block.txt
+    touch ${prefix}.txt
     """
 }
