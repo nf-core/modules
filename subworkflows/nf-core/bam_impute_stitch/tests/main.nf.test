@@ -16,7 +16,7 @@ nextflow_workflow {
     tag "glimpse2"
     tag "glimpse2/ligate"
 
-    test("Impute with stitch one individual, no renaming, posfile, no chunks, no map, no fasta") {
+    test("Impute with stitch one individual, no renaming, posfile, no chunks whole chromosome, no map, no fasta") {
         when {
             workflow {
                 """
@@ -183,8 +183,8 @@ nextflow_workflow {
                 bamname = Channel.of("MySample1").collectFile(name: 'bamname.txt', newLine: true)
                 ch_samples = channel.of([
                     [id: "allid"],
-                    file(params.pipelines_testdata_base_path + "hum_data/individuals/NA12878/NA12878.s.bam", checkIfExist:true),
-                    file(params.pipelines_testdata_base_path + "hum_data/individuals/NA12878/NA12878.s.bam.bai", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam", checkIfExist:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai", checkIfExist:true)
                 ])
                 input[0] = ch_samples.combine(bampath).combine(bamname) // input
                 input[1] = channel.of(
@@ -212,6 +212,37 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.failed },
                 { assert workflow.errorMessage.contains("ERROR: join operation resulted in an empty channel. Please provide a valid ch_chunks and ch_map channel as input.") }
+            )
+        }
+    }
+
+    test("homo_sapiens - error no chromosome provided - stub") {
+        options "-stub"
+        when {
+            workflow {
+                """
+                bampath = Channel.of("NA12878.chr21_22.1X.bam").collectFile(name: 'bampath.txt', newLine: true)
+                bamname = Channel.of("MySample1").collectFile(name: 'bamname.txt', newLine: true)
+                ch_samples = channel.of([
+                    [id: "allid"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam", checkIfExist:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai", checkIfExist:true)
+                ])
+                input[0] = ch_samples.combine(bampath).combine(bamname) // input
+                input[1] = channel.of([[id: "1000GP", chr: "chr22"], []]) // posfile
+                input[2] = channel.of([[chr: "chr22", id: "1000GP"], [], [], []]) // Empty chunks
+                input[3] = Channel.of([[id: "1000GP", chr: "chr22"], []],) // map
+                input[4] = channel.of([ [id: "GRCh38"], [], [] ]).collect()
+                input[5] = 2
+                input[6] = 100
+                input[7] = 1
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.failed },
+                { assert workflow.errorMessage.contains("ERROR: chromosome is not provided in ch_chunks.") }
             )
         }
     }

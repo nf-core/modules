@@ -32,6 +32,9 @@ workflow BAM_IMPUTE_STITCH {
         .combine(ch_parameters)
         .map{
             metaI, bam, bai, bampath, bamname, metaPC, posfile, gmap, chr, start, end ->
+            if (!chr) {
+                error "ERROR: chromosome is not provided in ch_chunks."
+            }
             def regionout = "${chr}"
             if (start != [] && end != []) {
                 regionout = "${chr}:${start}-${end}"
