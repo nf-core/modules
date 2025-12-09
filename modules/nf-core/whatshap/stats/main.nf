@@ -44,16 +44,18 @@ process WHATSHAP_STATS {
     """
 
     stub:
-    def args         = task.ext.args       ?: ''
-    prefix           = task.ext.prefix     ?: "${meta.id}"
-    def output_tsv   = include_tsv_output  ? "--tsv ${prefix}.tsv" : ''
-    def output_gtf   = include_gtf_output  ? "--gtf ${prefix}.gtf" : ''
-    def output_block = inlude_block_output ? "--block-list ${prefix}.txt" : ''
-    def output_log   = include_log_output  ? "> ${prefix}.log" : ''
+    def args            = task.ext.args       ?: ''
+    prefix              = task.ext.prefix     ?: "${meta.id}"
+    def tsv_touch_cmd   = include_tsv_output  ? "--tsv ${prefix}.tsv" : ''
+    def gtf_touch_cmd   = include_gtf_output  ? "touch ${prefix}.gtf" : ''
+    def block_touch_cmd = inlude_block_output ? "touch ${prefix}.txt" : ''
+    def log_touch_cmd   = include_log_output  ? "touch ${prefix}.log" : ''
     """
-    touch ${prefix}.tsv
-    touch ${prefix}.gtf
-    touch ${prefix}.txt
-    touch ${prefix}.log
+    echo $args
+
+    $tsv_touch_cmd
+    $gtf_touch_cmd
+    $block_touch_cmd
+    $log_touch_cmd
     """
 }
