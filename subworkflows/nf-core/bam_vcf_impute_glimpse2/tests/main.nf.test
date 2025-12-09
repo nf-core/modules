@@ -265,9 +265,9 @@ nextflow_workflow {
                     [[panel: 'ref_panel', chr: "21"], "chr21:16587172-16609999", "chr21:16592229-16609999"]
                 ) // chunks
                 input[3] = Channel.of([
-                    [panel: 'ref_panel', chr: "22"], file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.glimpse.map", checkIfExist:true)
+                    [panel: 'ref_panel', chr: "22"], file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.glimpse.map", checkIfExists:true)
                 ],[
-                    [panel: 'ref_panel', chr: "21"], file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.glimpse.map", checkIfExist:true)
+                    [panel: 'ref_panel', chr: "21"], file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.glimpse.map", checkIfExists:true)
                 ]) // map
                 input[4] = Channel.of([
                     [id_genome:'ref_fasta'], [], []
