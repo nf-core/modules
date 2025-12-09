@@ -20,10 +20,8 @@ workflow VCF_IMPUTE_GLIMPSE {
     if ( chunk == true ){
         // Error if pre-defined chunks are provided when chunking is activated
         ch_chunks
-            .filter { _meta, regionin, regionout -> regionin.size() > 0 || regionout.size() > 0 }
-            .subscribe {
-                error "ERROR: Cannot provide pre-defined chunks (regionin) when chunk=true. Please either set chunk=false to use provided chunks, or remove input chunks to enable automatic chunking."
-            }
+            .filter { _meta, regionin, regionout -> regionin.size() == 0 && regionout.size() == 0 }
+            .ifEmpty { error "ERROR: Cannot provide pre-defined chunks (regionin) when chunk=true. Please either set chunk=false to use provided chunks, or remove input chunks to enable automatic chunking." }
 
         GLIMPSE_CHUNK ( ch_ref )
         ch_versions = ch_versions.mix( GLIMPSE_CHUNK.out.versions.first() )
@@ -34,10 +32,8 @@ workflow VCF_IMPUTE_GLIMPSE {
     }
 
     ch_chunks
-        .filter { _meta, regionin, regionout -> regionin.size() == 0 || regionout.size() == 0 }
-        .subscribe {
-            error "ERROR: ch_chunks channel is empty. Please provide a valid channel or set chunk parameter to true."
-        }
+        .filter { _meta, regionin, regionout -> regionin.size() > 0 && regionout.size() > 0 }
+        .ifEmpty { error "ERROR: ch_chunks channel is empty. Please provide a valid channel or set chunk parameter to true." }
 
     ch_chunks_panel_map = ch_chunks
         .combine(ch_ref, by: 0)
