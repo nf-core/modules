@@ -18,6 +18,7 @@ process WHATSHAP_STATS {
     tuple val(meta), path("${prefix}.tsv"),                                    emit: tsv,   optional: true
     tuple val(meta), path("${prefix}.gtf"),                                    emit: gtf,   optional: true
     tuple val(meta), path("${prefix}.txt"),                                    emit: block, optional: true
+    tuple val(meta), path("${prefix}.log"),                                    emit: log,   optional: true
     tuple val("${task.process}"), val('whatshap'), eval("whatshap --version"), emit: versions_whatshap, topic: versions
 
     when:
@@ -46,11 +47,13 @@ process WHATSHAP_STATS {
     def tsv_touch_cmd   = include_tsv_output  ? "touch ${prefix}.tsv" : ''
     def gtf_touch_cmd   = include_gtf_output  ? "touch ${prefix}.gtf" : ''
     def block_touch_cmd = inlude_block_output ? "touch ${prefix}.txt" : ''
+    def log_touch_cmd   = "touch ${prefix}.log"
     """
     echo $args
 
     $tsv_touch_cmd
     $gtf_touch_cmd
     $block_touch_cmd
+    $log_touch_cmd
     """
 }

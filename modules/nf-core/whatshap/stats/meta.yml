@@ -72,6 +72,16 @@ output:
           type: file
           description: Whatshap stats block list output
           pattern: "*.txt"
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}.log:
+          type: file
+          description: Whatshap stats output in TXT format
+          pattern: "*.log"
   versions_whatshap:
     - - ${task.process}:
           type: string
