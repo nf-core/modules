@@ -25,7 +25,7 @@ process MINIMAC4_COMPRESSREF {
         --compress-reference $ref\\
         $args \\
         --threads $task.cpus \\
-        -o ${prefix}.msav \\
+        -o ${prefix}.msav
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -34,7 +34,6 @@ process MINIMAC4_COMPRESSREF {
     """
 
     stub:
-    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.msav

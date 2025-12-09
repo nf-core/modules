@@ -34,7 +34,6 @@ workflow VCF_ANNOTATE_ENSEMBLVEP {
 
     // Gather versions of all tools used
     ch_versions = ch_versions.mix(ENSEMBLVEP_VEP.out.versions)
-    ch_versions = ch_versions.mix(TABIX_TABIX.out.versions)
 
     emit:
     vcf_tbi  = ch_vcf_tbi // channel: [ val(meta), path(vcf), path(tbi) ]

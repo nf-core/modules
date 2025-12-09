@@ -9,6 +9,7 @@ process SAMBAMBA_DEPTH {
 
     input:
     tuple val(meta), path(bam), path(bai)
+    tuple val(meta2), path(bed)
     val(mode)
 
     output:
@@ -24,11 +25,13 @@ process SAMBAMBA_DEPTH {
     if (!['region','window','base'].contains(mode)) {
         error "Mode needs to be one of: region, window, base"
     }
+    def bed_arg = bed ? "--regions ${bed}" : ''
 
     """
     sambamba \\
         depth \\
         $mode \\
+        $bed_arg \\
         $args \\
         -t $task.cpus \\
         -o ${prefix}.bed \\
@@ -47,7 +50,7 @@ process SAMBAMBA_DEPTH {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        sambamba: \$(sambamba --version)
+        sambamba: \$(echo \$(sambamba --version 2>&1) | awk '{print \$2}' )
     END_VERSIONS
     """
 }

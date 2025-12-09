@@ -53,13 +53,27 @@ output:
           description: FastQC report archive
           pattern: "*_{fastqc.zip}"
           ontologies: []
+  versions_fastqc:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fastqc:
+          type: string
+          description: The tool name
+      - fastqc --version | sed "/FastQC v/!d; s/.*v//:
+          type: string
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fastqc:
+          type: string
+          description: The tool name
+      - fastqc --version | sed "/FastQC v/!d; s/.*v//:
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@drpatelh"
   - "@grst"

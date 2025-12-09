@@ -18,9 +18,7 @@ process SHAPEIT5_PHASERARE {
         'biocontainers/shapeit5:5.1.1--hb60d31d_0' }"
 
     input:
-        tuple val(meta) , path(input)    , path(input_index)    , path(pedigree), val(input_region)
-        tuple val(meta2), path(scaffold) , path(scaffold_index) , val(scaffold_region)
-        tuple val(meta3), path(map)
+        tuple val(meta), path(input), path(input_index), path(pedigree), val(input_region), path(scaffold), path(scaffold_index), val(scaffold_region), path(map)
 
     output:
         tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: phased_variant
@@ -54,7 +52,7 @@ process SHAPEIT5_PHASERARE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        shapeit5: "\$(SHAPEIT5_phase_rare | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
+        shapeit5: "\$(SHAPEIT5_phase_rare | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -n 1)"
     END_VERSIONS
     """
 
@@ -67,7 +65,7 @@ process SHAPEIT5_PHASERARE {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        shapeit5: "\$(SHAPEIT5_phase_rare | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
+        shapeit5: "\$(SHAPEIT5_phase_rare | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -n 1)"
     END_VERSIONS
     """
 }
