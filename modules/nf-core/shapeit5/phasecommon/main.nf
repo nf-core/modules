@@ -11,8 +11,8 @@ process SHAPEIT5_PHASECOMMON {
         tuple val(meta), path(input), path(input_index), path(pedigree), val(region), path(reference), path(reference_index), path(scaffold), path(scaffold_index), path(map)
 
     output:
-        tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: phased_variant
-        path "versions.yml"                               , emit: versions
+        tuple val(meta), path("*.{bcf,graph,bh}"), emit: phased_variant
+        path "versions.yml"                      , emit: versions
 
     when:
         task.ext.when == null || task.ext.when
@@ -21,10 +21,10 @@ process SHAPEIT5_PHASECOMMON {
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def extension = args.contains("--output-format bcf") ? "bcf"     :
-                args.contains("--output-format graph") ? "graph" :
-                args.contains("--output-format bh") ? "bh"       :
-                "bcf"
+    def extension = args.contains("--output-format bcf")   ? "bcf"   :
+                    args.contains("--output-format graph") ? "graph" :
+                    args.contains("--output-format bh")    ? "bh"    :
+                    "bcf"
 
     if ("$input" == "${prefix}.${extension}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
@@ -52,7 +52,8 @@ process SHAPEIT5_PHASECOMMON {
     """
 
     stub:
-    def prefix     = task.ext.prefix        ?: "${meta.id}"
+    def args      = task.ext.args   ?: ''
+    def prefix    = task.ext.prefix ?: "${meta.id}"
     def extension = args.contains("--output-format bcf")   ? "bcf"   :
                     args.contains("--output-format graph") ? "graph" :
                     args.contains("--output-format bh")    ? "bh"    :

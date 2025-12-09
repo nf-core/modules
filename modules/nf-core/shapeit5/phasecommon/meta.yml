@@ -77,10 +77,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.{vcf,bcf,vcf.gz,bcf.gz}":
+      - "*.{bcf,graph,bh}":
           type: file
-          description: Phased variant dataset in VCF/BCF format.
-          pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+          description: Phased variant dataset in BCF, GRAPH or XCF binary format.
+          pattern: "*.{bcf,graph,bh}"
           ontologies: []
   versions:
     - versions.yml:
