@@ -15,7 +15,7 @@ tools:
       homepage: "https://github.com/joshuagryphon/plastid"
       documentation: "https://plastid.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/joshuagryphon/plastid"
-      doi: "http://dx.doi.org/10.1186/s12864-016-3278-x"
+      doi: "10.1186/s12864-016-3278-x"
       licence: ["BSD-3-clause"]
       identifier: biotools:plastid
 
@@ -44,7 +44,8 @@ input:
         ontologies: []
   - output_format:
       type: string
-      description: `variable_step` or `bedgraph`
+      description: |
+        `variable_step` or `bedgraph`
 output:
   tracks:
     - - meta:
@@ -52,10 +53,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.${extension}":
+      - "*.{wig,bedgraph}":
           type: file
           description: wig/bedgraph tracks for forward and reverse strands
-          pattern: "*.${extension}"
+          pattern: "*.{wig,bedgraph}"
           ontologies:
             - edam: http://edamontology.org/format_3005 # wig
             - edam: http://edamontology.org/format_3583 # bedgraph
