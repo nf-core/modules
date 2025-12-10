@@ -4,8 +4,6 @@ include { GLIMPSE2_LIGATE                    } from '../../../modules/nf-core/gl
 include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_1 } from '../../../modules/nf-core/bcftools/index'
 include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_2 } from '../../../modules/nf-core/bcftools/index'
 
-
-
 workflow VCF_IMPUTE_BEAGLE5 {
 
     take:
@@ -15,7 +13,6 @@ workflow VCF_IMPUTE_BEAGLE5 {
     ch_map    // channel (optional) : [ [chr], map]
 
     main:
-    
     ch_versions = channel.empty()
 
     // Branch input files based on format
@@ -26,7 +23,7 @@ workflow VCF_IMPUTE_BEAGLE5 {
             other: true
         }
         .set { ch_input_branched }
-    
+
     ch_input_branched.other.map{
         error "ERROR: ch_input files must be in VCF or BCF format."
     }
