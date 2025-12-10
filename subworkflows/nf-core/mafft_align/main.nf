@@ -10,7 +10,6 @@ workflow MAFFT_ALIGN {
     MAFFT_ALIGN_MODULE ( ch_fasta, [[], []], [[], []], [[], []], [[], []], [[], []], [] )
 
     emit:
-    // TODO nf-core: edit emitted channels
     alignment = MAFFT_ALIGN_MODULE.out.fas      // channel: [ val(meta), *.fas ]
     versions  = MAFFT_ALIGN_MODULE.out.versions // channel: [ versions.yml ]
 }
