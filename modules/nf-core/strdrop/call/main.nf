@@ -20,8 +20,8 @@ process STRDROP_CALL {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args         = task.ext.args ?: ''
+    def prefix       = task.ext.prefix ?: "${meta.id}"
     def training_set = training_set_json ? "--training-set ${training_set_json}" : '--training-set ./input'
 
     if (training_set_json && training_set_vcfs) {
@@ -37,7 +37,7 @@ process STRDROP_CALL {
     """
 
     stub:
-    def args = task.ext.args ?: ''
+    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     if (training_set_json && training_set_vcfs) {
