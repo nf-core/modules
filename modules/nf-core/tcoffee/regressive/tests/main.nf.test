@@ -13,8 +13,6 @@ nextflow_process {
 
     test("align_sequence - compressed - seatoxin") {
 
-        config "./sequence.config"
-
         when {
             process {
                 """
@@ -39,8 +37,6 @@ nextflow_process {
 
     test("align_sequence - uncompressed - seatoxin") {
 
-        config "./sequence.config"
-
         when {
             process {
                 """
@@ -64,8 +60,6 @@ nextflow_process {
     }
 
     test("align_with_guide_tree - uncompressed - seatoxin") {
-
-        config "./tree.config"
 
         setup {
 
@@ -107,8 +101,7 @@ nextflow_process {
 
     test("align_sequence - uncompressed - seatoxin - stub") {
         options "-stub"
-        config "./sequence.config"
-
+        
         when {
             process {
                 """
