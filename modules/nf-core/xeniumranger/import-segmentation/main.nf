@@ -43,7 +43,7 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
     } else if (units) {
         assembled_args << "--units=\"${units}\""
     }
-    
+
     def args = assembled_args ? assembled_args.join(" \\\n        ") : ""
 
     """
