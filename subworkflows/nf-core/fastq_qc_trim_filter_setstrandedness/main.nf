@@ -148,8 +148,6 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         ch_fastq.multiple
     ).reads.mix(ch_fastq.single).set { ch_filtered_reads }
 
-    ch_versions = ch_versions.mix(CAT_FASTQ.out.versions.first())
-
     //
     // MODULE: Lint FastQ files
     //
