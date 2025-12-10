@@ -39,13 +39,16 @@ input:
           - edam: http://edamontology.org/format_3327 # BAI
     - p_offsets:
         type: file
-        description: Selected p-site offset for each read length (output from plastid_psites)
+        description: |
+          Selected p-site offset for each read length (output from plastid_psite).
+          Required when mapping_rule is 'fiveprime_variable', otherwise pass empty list [].
         pattern: "*_p_offsets.txt"
         ontologies: []
-  - output_format:
-      type: string
-      description: |
-        `variable_step` or `bedgraph`
+  - - mapping_rule:
+        type: string
+        description: |
+          Read mapping rule. Use 'fiveprime_variable' with p_offsets file to map reads to P-sites.
+        enum: ['fiveprime', 'threeprime', 'center', 'fiveprime_variable']
 output:
   tracks:
     - - meta:
