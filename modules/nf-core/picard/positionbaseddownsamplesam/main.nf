@@ -13,7 +13,7 @@ process PICARD_POSITIONBASEDDOWNSAMPLESAM {
     output:
     tuple val(meta), path("*.ds*.bam")        , emit: bam
     tuple val(meta), path("*.ds*.bai")        , emit: bai, optional:true
-    tuple val(meta), env(ACTUAL_NUM_READS)    , emit: num_reads, optional:true
+    tuple val(meta), env("ACTUAL_NUM_READS")  , emit: num_reads, optional:true
     path  "versions.yml"                      , emit: versions
 
     when:

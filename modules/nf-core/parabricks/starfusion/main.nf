@@ -37,8 +37,8 @@ process PARABRICKS_STARFUSION {
         ${num_gpus} \\
         ${args}
 
-    mv ${prefix}_starfusion/fusion_predictions.tsv . 
-    mv ${prefix}_starfusion/fusion_predictions.abridged.tsv . 
+    mv ${prefix}_starfusion/fusion_predictions.tsv .
+    mv ${prefix}_starfusion/fusion_predictions.abridged.tsv .
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -54,7 +54,7 @@ process PARABRICKS_STARFUSION {
     """
     touch fusion_predictions.tsv
     touch fusion_predictions.abridged.tsv
-    
+
     # Capture the full version output once and store it in a variable
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -36,7 +36,8 @@ process PICARD_SORTSAM {
         -Xmx${avail_mem}M \\
         --INPUT $bam \\
         --OUTPUT ${prefix}.bam \\
-        --SORT_ORDER $sort_order
+        --SORT_ORDER $sort_order \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

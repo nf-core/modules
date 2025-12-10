@@ -29,7 +29,9 @@ def ch_bam = """Channel.of([
 
 def ch_params = """Channel.of([
     ${pathgenome}dbsnp_138.hg38.first_10_biallelic_sites.tsv', checkIfExists: true),
-    [], [], 'chr21', 2, 1
+    [],
+    ${pathgenome}genome.GRCh38.stitch.chr21.txt.gz', checkIfExists: true),
+    [], 'chr21', 8522360, 8522670, 2, 1
 ])"""
 
 // reference genome
@@ -54,10 +56,9 @@ nextflow_process {
     config "./nextflow.config"
 
     test("test_no_seed") {
-
         when {
             params {
-                stitch_args2 = "--chrStart 8522360 --chrEnd 8522670"
+                stitch_args2 = ""
             }
 
             process {
@@ -85,9 +86,14 @@ nextflow_process {
                     process.out.input.collect{ file(it[1]).listFiles().sort().name },
                     process.out.rdata.collect{ file(it[1]).listFiles().sort().name },
                     process.out.plots.collect{ file(it[1]).listFiles().sort().name },
-                    process.out.vcf.collect{ file(it[1]).name },
-                    process.out.versions,
-                    process.out.vcf.collect{ path(it[1]).vcf.header.getGenotypeSamples().sort() }
+                    process.out.vcf.collect{ meta, vcf -> [
+                        meta,
+                        file(vcf).name,
+                        path(vcf).vcf.header.getGenotypeSamples().sort(),
+                        path(vcf).vcf.summary,
+                        path(vcf).vcf.variantsMD5
+                    ]},
+                    process.out.versions
                 ).match() }
             )
         }
@@ -96,7 +102,7 @@ nextflow_process {
     test("test_with_seed") {
         when {
             params {
-                stitch_args2 = "--chrStart 8522360 --chrEnd 8522670 --output_format bgen"
+                stitch_args2 = "--output_format bgen"
             }
             process {
                 """
@@ -134,7 +140,7 @@ nextflow_process {
             run ("STITCH", alias: "STITCH_GENERATE_INPUTS") {
                 script "../main.nf"
                 params {
-                    stitch_args2 = "--chrStart 8522360 --chrEnd 8522670 --generateInputOnly TRUE"
+                    stitch_args2 = "--generateInputOnly TRUE"
                 }
                 process {
                 """
@@ -156,7 +162,7 @@ nextflow_process {
 
         when {
             params {
-                stitch_args2 = "--chrStart 8522360 --chrEnd 8522670 --regenerateInputWithDefaultValues TRUE"
+                stitch_args2 = "--regenerateInputWithDefaultValues TRUE"
             }
             process {
                 """
@@ -164,8 +170,8 @@ nextflow_process {
                     .join ( STITCH_GENERATE_INPUTS.out.rdata )
                     .combine( $ch_params )
                     .map {
-                        meta, target, rdata, positions, _emptytarget, _emptyrdata, chr, k, nGen  ->
-                        [ meta, [], [], [], [], positions, target, rdata, chr, k, nGen ]
+                        meta, target, rdata, positions, _emptytarget, genetic_map, _emptyrdata, chr, start, end, k, nGen  ->
+                        [ meta, [], [], [], [], positions, target, genetic_map, rdata, chr, start, end, k, nGen ]
                     }
                 input[1] = [[id: null], [], []]
                 input[2] = $seed
@@ -180,10 +186,14 @@ nextflow_process {
                     process.out.input.collect{ file(it[1]).listFiles().sort().name },
                     process.out.rdata.collect{ file(it[1]).listFiles().sort().name },
                     process.out.plots.collect{ file(it[1]).listFiles().sort().name },
-                    process.out.vcf.collect{ file(it[1]).name },
                     process.out.versions,
-                    process.out.vcf.collect{ path(it[1]).vcf.header.getGenotypeSamples().sort() },
-                    process.out.vcf.collect{ path(it[1]).vcf.variantsMD5 }
+                    process.out.vcf.collect{ meta, vcf -> [
+                        meta,
+                        file(vcf).name,
+                        path(vcf).vcf.header.getGenotypeSamples().sort(),
+                        path(vcf).vcf.summary,
+                        path(vcf).vcf.variantsMD5
+                    ]}
                 ).match() }
             )
         }
@@ -192,7 +202,7 @@ nextflow_process {
     test("test_with_bam") {
         when {
             params {
-                stitch_args2 = "--chrStart 8522360 --chrEnd 8522670"
+                stitch_args2 = ""
             }
             process {
                 """
@@ -217,10 +227,14 @@ nextflow_process {
                     process.out.input.collect{ file(it[1]).listFiles().sort().name },
                     process.out.rdata.collect{ file(it[1]).listFiles().sort().name },
                     process.out.plots.collect{ file(it[1]).listFiles().sort().name },
-                    process.out.vcf.collect{ file(it[1]).name },
                     process.out.versions,
-                    process.out.vcf.collect{ path(it[1]).vcf.header.getGenotypeSamples().sort() },
-                    process.out.vcf.collect{ path(it[1]).vcf.variantsMD5 }
+                    process.out.vcf.collect{ meta, vcf -> [
+                        meta,
+                        file(vcf).name,
+                        path(vcf).vcf.header.getGenotypeSamples().sort(),
+                        path(vcf).vcf.summary,
+                        path(vcf).vcf.variantsMD5
+                    ]},
                 ).match() }
             )
         }
@@ -229,8 +243,9 @@ nextflow_process {
     test("test_with_bam and renaming") {
         when {
             params {
-                stitch_args2 = "--chrStart 8522360 --chrEnd 8522670"
+                stitch_args2 = ""
             }
+
             process {
                 """
                 filelist = Channel.of(
@@ -258,22 +273,26 @@ nextflow_process {
                     process.out.input.collect{ file(it[1]).listFiles().sort().name },
                     process.out.rdata.collect{ file(it[1]).listFiles().sort().name },
                     process.out.plots.collect{ file(it[1]).listFiles().sort().name },
-                    process.out.vcf.collect{ file(it[1]).name },
                     process.out.versions,
-                    process.out.vcf.collect{ path(it[1]).vcf.header.getGenotypeSamples().sort() },
-                    process.out.vcf.collect{ path(it[1]).vcf.variantsMD5 }
+                    process.out.vcf.collect{ meta, vcf -> [
+                        meta,
+                        file(vcf).name,
+                        path(vcf).vcf.header.getGenotypeSamples().sort(),
+                        path(vcf).vcf.summary,
+                        path(vcf).vcf.variantsMD5
+                    ]},
                 ).match() }
             )
         }
     }
 
     test("test_with_bam - bgen - stub") {
-    
-       options "-stub"
-    
+
+        options "-stub"
+
         when {
             params {
-                stitch_args2 = "--chrStart 8522360 --chrEnd 8522670 --output_format bgen"
+                stitch_args2 = "--output_format bgen"
             }
             process {
                 """
@@ -289,7 +308,7 @@ nextflow_process {
                     .combine( filelist )
                     .combine( samplename )
                     .combine( $ch_params )
-                input[1] = $ch_ref
+                input[1] = [[id: null], [], []]
                 input[2] = $seed
                 """
             }
@@ -304,13 +323,12 @@ nextflow_process {
     }
 
     test("test_with_bam - vcf - stub") {
-    
-       options "-stub"
-       
+        options "-stub"
         when {
             params {
-                stitch_args2 = "--chrStart 8522360 --chrEnd 8522670"
+                stitch_args2 = ""
             }
+
             process {
                 """
                 filelist = Channel.of(
@@ -325,7 +343,7 @@ nextflow_process {
                     .combine( filelist )
                     .combine( samplename )
                     .combine( $ch_params )
-                input[1] = $ch_ref
+                input[1] = [[id: null], [], []]
                 input[2] = $seed
                 """
             }

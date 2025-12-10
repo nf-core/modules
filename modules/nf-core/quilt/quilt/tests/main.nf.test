@@ -80,7 +80,11 @@ nextflow_process {
                 .combine(GAWK_POSFILE.out.output.map{ it[1] })
                 .combine(GAWK_NAME.out.output.map{ it[1] })
                 .combine(Channel.of([[], "chr22", "16570000", "16610000", "100", "10000", []]))
-                input[1] = [[id: 'GRCh38'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
+                input[1] = [
+                    [id: 'GRCh38'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -117,7 +121,11 @@ nextflow_process {
                     [], [], [], [], [], [], [], [],
                     [], "chr22", "16570000", "16610000", "100", "10000", []
                 ])
-                input[1] = [[id: 'GRCh38'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
+                input[1] = [
+                    [id: 'GRCh38'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -157,7 +165,7 @@ nextflow_process {
                     "chr22", "16570000", "16610000", "100", "10000",
                     []
                 ]
-                input[1] = [[id: null], []]
+                input[1] = [[id: null], [], []]
                 """
             }
         }
@@ -208,7 +216,7 @@ nextflow_process {
                 ]))
 
                 input[0] = ch_input
-                input[1] = [[id: null], []]
+                input[1] = [[id: null], [], []]
                 """
             }
         }

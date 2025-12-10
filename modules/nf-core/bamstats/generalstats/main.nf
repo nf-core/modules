@@ -1,10 +1,10 @@
 process BAMSTATS_GENERALSTATS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
-    conda "bioconda::bamstats=0.3.5"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bamstats:0.3.5--he881be0_0':
-        'biocontainers/bamstats:0.3.5--he881be0_0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/bamstats:0.3.5--he881be0_0'
+        : 'biocontainers/bamstats:0.3.5--he881be0_0'}"
 
     input:
     tuple val(meta), path(bam)
@@ -24,9 +24,9 @@ process BAMSTATS_GENERALSTATS {
     //  -u, --uniq outputs genomic coverage statistics for uniqely mapped reads
     """
     bamstats \\
-        -i $bam \\
-        $args \\
-        -c $task.cpus \\
+        -i ${bam} \\
+        ${args} \\
+        -c ${task.cpus} \\
         -o ${prefix}.json
     """
 

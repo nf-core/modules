@@ -12,8 +12,8 @@ process PROSEG {
     val mode
     tuple val(transcript_metadata_fmt), val(cell_metadata_fmt), val(expected_counts_fmt)
 
-    output: 
-    tuple val(meta), path("*transcript-metadata.{csv,csv.gz,parquet}", arity: '1'), emit: transcript_metadata 
+    output:
+    tuple val(meta), path("*transcript-metadata.{csv,csv.gz,parquet}", arity: '1'), emit: transcript_metadata
     tuple val(meta), path("*cell-polygons.geojson.gz"                , arity: '1'), emit: cell_polygons
     tuple val(meta), path("*cell-metadata.{csv,csv.gz,parquet}"      , arity: '1'), emit: cell_metadata
     tuple val(meta), path("*cell-polygons-layers.geojson.gz"         , arity: '1'), emit: cell_polygons_layers

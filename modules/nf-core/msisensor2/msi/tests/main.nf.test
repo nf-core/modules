@@ -36,7 +36,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test_msisensor2.hg19.bam.bai',checkIfExists:true),
                     ]
                 input[1] = UNTAR.out.untar
-                
+
                 """
             }
         }

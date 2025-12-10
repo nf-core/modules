@@ -44,7 +44,7 @@ process MODKIT_REPAIR {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo ${args}
-    
+
     touch ${prefix}.bam
     touch ${prefix}.log
 

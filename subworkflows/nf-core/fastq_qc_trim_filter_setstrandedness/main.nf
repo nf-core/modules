@@ -1,15 +1,13 @@
-include { BBMAP_BBSPLIT                      } from '../../../modules/nf-core/bbmap/bbsplit'
-include { CAT_FASTQ                          } from '../../../modules/nf-core/cat/fastq/main'
-include { SORTMERNA                          } from '../../../modules/nf-core/sortmerna/main'
-include { SORTMERNA as SORTMERNA_INDEX       } from '../../../modules/nf-core/sortmerna/main'
-include { FQ_LINT                            } from '../../../modules/nf-core/fq/lint/main'
-include { FQ_LINT as FQ_LINT_AFTER_TRIMMING  } from '../../../modules/nf-core/fq/lint/main'
-include { FQ_LINT as FQ_LINT_AFTER_BBSPLIT   } from '../../../modules/nf-core/fq/lint/main'
-include { FQ_LINT as FQ_LINT_AFTER_SORTMERNA } from '../../../modules/nf-core/fq/lint/main'
-
-include { FASTQ_SUBSAMPLE_FQ_SALMON          } from '../fastq_subsample_fq_salmon'
-include { FASTQ_FASTQC_UMITOOLS_TRIMGALORE   } from '../fastq_fastqc_umitools_trimgalore'
-include { FASTQ_FASTQC_UMITOOLS_FASTP        } from '../fastq_fastqc_umitools_fastp'
+include { BBMAP_BBSPLIT                         } from '../../../modules/nf-core/bbmap/bbsplit'
+include { CAT_FASTQ                             } from '../../../modules/nf-core/cat/fastq/main'
+include { FQ_LINT                               } from '../../../modules/nf-core/fq/lint/main'
+include { FQ_LINT as FQ_LINT_AFTER_TRIMMING     } from '../../../modules/nf-core/fq/lint/main'
+include { FQ_LINT as FQ_LINT_AFTER_BBSPLIT      } from '../../../modules/nf-core/fq/lint/main'
+include { FQ_LINT as FQ_LINT_AFTER_RIBO_REMOVAL } from '../../../modules/nf-core/fq/lint/main'
+include { FASTQ_REMOVE_RRNA                     } from '../fastq_remove_rrna'
+include { FASTQ_SUBSAMPLE_FQ_SALMON             } from '../fastq_subsample_fq_salmon'
+include { FASTQ_FASTQC_UMITOOLS_TRIMGALORE      } from '../fastq_fastqc_umitools_trimgalore'
+include { FASTQ_FASTQC_UMITOOLS_FASTP           } from '../fastq_fastqc_umitools_fastp'
 
 //
 // Function to determine library type by comparing type counts.
@@ -85,30 +83,46 @@ def multiqcTsvFromList(tsv_data, header) {
 
 workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     take:
+    // Input channels
     ch_reads             // channel: [ val(meta), [ reads ] ]
     ch_fasta             // channel: /path/to/genome.fasta
     ch_transcript_fasta  // channel: /path/to/transcript.fasta
     ch_gtf               // channel: /path/to/genome.gtf
     ch_salmon_index      // channel: /path/to/salmon/index/ (optional)
     ch_sortmerna_index   // channel: /path/to/sortmerna/index/ (optional)
+    ch_bowtie2_index     // channel: /path/to/bowtie2/index/ (optional)
     ch_bbsplit_index     // channel: /path/to/bbsplit/index/ (optional)
-    ch_rrna_fastas       // channel: one or more fasta files containing rrna sequences to be passed to SortMeRNA (optional)
+    ch_rrna_fastas       // channel: one or more fasta files containing rrna sequences to be passed to SortMeRNA/Bowtie2 (optional)
+
+    // Skip options
     skip_bbsplit         // boolean: Skip BBSplit for removal of non-reference genome reads.
     skip_fastqc          // boolean: true/false
     skip_trimming        // boolean: true/false
     skip_umi_extract     // boolean: true/false
+    skip_linting         // boolean: true/false
+
+    // Index generation
     make_salmon_index    // boolean: Whether to create salmon index before running salmon quant
     make_sortmerna_index // boolean: Whether to create a sortmerna index before running sortmerna
+    make_bowtie2_index   // boolean: Whether to create a bowtie2 index before running bowtie2
+
+    // Trimming options
     trimmer              // string (enum): 'fastp' or 'trimgalore'
     min_trimmed_reads    // integer: > 0
     save_trimmed         // boolean: true/false
-    remove_ribo_rna      // boolean: true/false: whether to run sortmerna to remove rrnas
+    fastp_merge          // boolean: true/false: whether to stitch paired end reads together in FASTP output
+
+    // rRNA removal options
+    remove_ribo_rna           // boolean: true/false: whether to remove rRNA
+    ribo_removal_tool         // string (enum): 'sortmerna', 'ribodetector', or 'bowtie2'
+
+    // UMI options
     with_umi             // boolean: true/false: Enable UMI-based read deduplication.
     umi_discard_read     // integer: 0, 1 or 2
+
+    // Strandedness thresholds
     stranded_threshold   // float: The fraction of stranded reads that must be assigned to a strandedness for confident assignment. Must be at least 0.5
     unstranded_threshold // float: The difference in fraction of stranded reads assigned to 'forward' and 'reverse' below which a sample is classified as 'unstranded'
-    skip_linting         // boolean: true/false
-    fastp_merge          // boolean: true/false: whether to stitch paired end reads together in FASTP output
 
     main:
 
@@ -256,40 +270,29 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     }
 
     //
-    // MODULE: Remove ribosomal RNA reads
+    // SUBWORKFLOW: Remove ribosomal RNA reads
     //
     if (remove_ribo_rna) {
-        ch_sortmerna_fastas = ch_rrna_fastas
-            .collect()
-            .map { ['rrna_refs', it] }
-
-        if (make_sortmerna_index) {
-            SORTMERNA_INDEX(
-                [[], []],
-                ch_sortmerna_fastas,
-                [[], []],
-            )
-            ch_sortmerna_index = SORTMERNA_INDEX.out.index.first()
-        }
-
-        SORTMERNA(
+        FASTQ_REMOVE_RRNA(
             ch_filtered_reads,
-            ch_sortmerna_fastas,
+            ch_rrna_fastas,
             ch_sortmerna_index,
+            ch_bowtie2_index,
+            ribo_removal_tool,
+            make_sortmerna_index,
+            make_bowtie2_index,
         )
 
-        SORTMERNA.out.reads.set { ch_filtered_reads }
-
-        ch_multiqc_files = ch_multiqc_files.mix(SORTMERNA.out.log)
-
-        ch_versions = ch_versions.mix(SORTMERNA.out.versions.first())
+        ch_filtered_reads = FASTQ_REMOVE_RRNA.out.reads
+        ch_multiqc_files = ch_multiqc_files.mix(FASTQ_REMOVE_RRNA.out.multiqc_files)
+        ch_versions = ch_versions.mix(FASTQ_REMOVE_RRNA.out.versions)
 
         if (!skip_linting) {
-            FQ_LINT_AFTER_SORTMERNA(
+            FQ_LINT_AFTER_RIBO_REMOVAL(
                 ch_filtered_reads
             )
-            ch_lint_log = ch_lint_log.mix(FQ_LINT_AFTER_SORTMERNA.out.lint)
-            ch_filtered_reads = ch_filtered_reads.join(FQ_LINT_AFTER_SORTMERNA.out.lint.map { it[0] })
+            ch_lint_log = ch_lint_log.mix(FQ_LINT_AFTER_RIBO_REMOVAL.out.lint)
+            ch_filtered_reads = ch_filtered_reads.join(FQ_LINT_AFTER_RIBO_REMOVAL.out.lint.map { it[0] })
         }
     }
 

@@ -22,7 +22,7 @@ workflow VCF_ANNOTATE_SNPEFF {
     ch_versions = ch_versions.mix(TABIX_BGZIPTABIX.out.versions)
 
     emit:
-    vcf_tbi   = TABIX_BGZIPTABIX.out.gz_tbi // channel: [ val(meta), path(vcf), path(tbi) ]
+    vcf_tbi   = TABIX_BGZIPTABIX.out.gz_index // channel: [ val(meta), path(vcf), path(tbi) ]
     reports   = SNPEFF_SNPEFF.out.report // channel: [ path(html) ]
     summary   = SNPEFF_SNPEFF.out.summary_html // channel: [ path(html) ]
     genes_txt = SNPEFF_SNPEFF.out.genes_txt // channel: [ path(genes.txt) ]

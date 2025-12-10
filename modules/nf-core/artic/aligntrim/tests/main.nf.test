@@ -12,7 +12,7 @@ nextflow_process {
     test("sarscov2 - paired_bam") {
         when {
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'test'],
 				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/sars-cov-2_v3.0.0_paired.bam', checkIfExists: true),
@@ -41,7 +41,7 @@ nextflow_process {
     test("sarscov2 - unpaired_bam") {
         when {
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'test'],
 				    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/bam/sars-cov-2_v5.3.2.bam', checkIfExists: true),
@@ -70,7 +70,7 @@ nextflow_process {
     test("sarscov2 - unpaired_bam_sort") {
         when {
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'test'],
 				    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/bam/test.sorted.bam', checkIfExists: true),
@@ -94,7 +94,7 @@ nextflow_process {
                 }
             )
         }
-    }    
+    }
 
     test("sarscov2 - paired_bam - stub") {
 
@@ -102,7 +102,7 @@ nextflow_process {
 
         when {
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'test'],
 				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/sars-cov-2_v3.0.0_paired.bam', checkIfExists: true),

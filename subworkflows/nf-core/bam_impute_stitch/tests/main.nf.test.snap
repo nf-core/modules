@@ -1,0 +1,199 @@
+{
+    "Impute with stitch one individual, no renaming, posfile, no chunks whole chromosome, no map, no fasta": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "allid",
+                        "chr": "chr22"
+                    },
+                    "allid_chr22.ligate.vcf.gz",
+                    "allid_chr22.ligate.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=903, phased=false, phasedAutodetect=false]",
+                    [
+                        "NA12878"
+                    ],
+                    "66e98feeab1ad12088f1b84a60e6819a"
+                ]
+            ],
+            [
+                "versions.yml:md5,597985efae796d9efe8b1005c4b0bb18",
+                "versions.yml:md5,8b0020b997bad45e9e3cf0d9b868a3b2",
+                "versions.yml:md5,c32cdf9d543fe0fe8f0cfeade5ceade2",
+                "versions.yml:md5,d9282aba3ae921597b3a7387e17e220d"
+            ],
+            [
+                {
+                    "BAM_IMPUTE_STITCH:BCFTOOLS_INDEX_2": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "BAM_IMPUTE_STITCH:STITCH": {
+                        "r-base": "4.4.2",
+                        "r-stitch": "1.7.3"
+                    }
+                },
+                {
+                    "BAM_IMPUTE_STITCH:GLIMPSE2_LIGATE": {
+                        "glimpse2": "2.0.0"
+                    }
+                },
+                {
+                    "BAM_IMPUTE_STITCH:BCFTOOLS_INDEX_1": {
+                        "bcftools": 1.22
+                    }
+                }
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-11-27T09:22:32.971453937"
+    },
+    "homo_sapiens - empty channels - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "allid",
+                            "chr": "chr21"
+                        },
+                        "allid_chr21.ligate.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                        "allid_chr21.ligate.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ],
+                    [
+                        {
+                            "id": "allid",
+                            "chr": "chr22"
+                        },
+                        "allid_chr22.ligate.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                        "allid_chr22.ligate.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    "versions.yml:md5,597985efae796d9efe8b1005c4b0bb18",
+                    "versions.yml:md5,8b0020b997bad45e9e3cf0d9b868a3b2",
+                    "versions.yml:md5,c32cdf9d543fe0fe8f0cfeade5ceade2",
+                    "versions.yml:md5,d9282aba3ae921597b3a7387e17e220d"
+                ],
+                "vcf_index": [
+                    [
+                        {
+                            "id": "allid",
+                            "chr": "chr21"
+                        },
+                        "allid_chr21.ligate.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                        "allid_chr21.ligate.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ],
+                    [
+                        {
+                            "id": "allid",
+                            "chr": "chr22"
+                        },
+                        "allid_chr22.ligate.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                        "allid_chr22.ligate.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,597985efae796d9efe8b1005c4b0bb18",
+                    "versions.yml:md5,8b0020b997bad45e9e3cf0d9b868a3b2",
+                    "versions.yml:md5,c32cdf9d543fe0fe8f0cfeade5ceade2",
+                    "versions.yml:md5,d9282aba3ae921597b3a7387e17e220d"
+                ]
+            },
+            [
+                {
+                    "BAM_IMPUTE_STITCH:BCFTOOLS_INDEX_2": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "BAM_IMPUTE_STITCH:STITCH": {
+                        "r-base": "4.4.2",
+                        "r-stitch": "1.7.3"
+                    }
+                },
+                {
+                    "BAM_IMPUTE_STITCH:GLIMPSE2_LIGATE": {
+                        "glimpse2": "2.0.0"
+                    }
+                },
+                {
+                    "BAM_IMPUTE_STITCH:BCFTOOLS_INDEX_1": {
+                        "bcftools": 1.22
+                    }
+                }
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-11-21T22:32:30.735092649"
+    },
+    "Impute with stitch two individual bam, renaming, posfile, chunks, map, no fasta": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "allid",
+                        "chr": "chr21"
+                    },
+                    "allid_chr21.ligate.vcf.gz",
+                    "allid_chr21.ligate.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr21], sampleCount=2, variantCount=836, phased=false, phasedAutodetect=false]",
+                    [
+                        "MySample1",
+                        "MySample2"
+                    ],
+                    "1604c8f19d69344cc6f8fe8f17a209d7"
+                ],
+                [
+                    {
+                        "id": "allid",
+                        "chr": "chr22"
+                    },
+                    "allid_chr22.ligate.vcf.gz",
+                    "allid_chr22.ligate.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr22], sampleCount=2, variantCount=903, phased=false, phasedAutodetect=false]",
+                    [
+                        "MySample1",
+                        "MySample2"
+                    ],
+                    "88ee8bbae9712d3f791f3df2c3eb0ab3"
+                ]
+            ],
+            [
+                {
+                    "BAM_IMPUTE_STITCH:BCFTOOLS_INDEX_2": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
+                    "BAM_IMPUTE_STITCH:STITCH": {
+                        "r-base": "4.4.2",
+                        "r-stitch": "1.7.3"
+                    }
+                },
+                {
+                    "BAM_IMPUTE_STITCH:GLIMPSE2_LIGATE": {
+                        "glimpse2": "2.0.0"
+                    }
+                },
+                {
+                    "BAM_IMPUTE_STITCH:BCFTOOLS_INDEX_1": {
+                        "bcftools": 1.22
+                    }
+                }
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2025-11-27T10:28:44.112173975"
+    }
+}

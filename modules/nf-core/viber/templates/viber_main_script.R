@@ -70,8 +70,8 @@ input_tab = joint_table %>%
 ## Convert the input table into longer format
 reads_data = input_tab %>%
   dplyr::select(chr, from, ref, alt, NV, DP, VAF, sample_id,driver_label,is_driver) %>%
-  dplyr::rename(gene=driver_label) %>% 
-  dplyr::rename(driver=is_driver) %>% 
+  dplyr::rename(gene=driver_label) %>%
+  dplyr::rename(driver=is_driver) %>%
   tidyr::pivot_wider(names_from="sample_id",
                      values_from=c("NV","DP","VAF"), names_sep=".",values_fill=0)
 

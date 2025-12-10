@@ -49,7 +49,7 @@ process PICRUST2_PIPELINE {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo ${args}
-    
+
     mkdir -p ${prefix}
     touch ${prefix}/bac_reduced.tre
     echo '' | gzip -c > ${prefix}_metagenome_EC_abundances.tsv.gz
