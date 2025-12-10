@@ -18,7 +18,8 @@ process MULTIQC {
     path "*.html"      , emit: report
     path "*_data"      , emit: data
     path "*_plots"     , optional:true, emit: plots
-    tuple val("${task.process}"), val('multiqc'), eval('multiqc --version | sed "s/.* //g"'), topic: versions, emit: versions_multiqc
+    tuple val("${task.process}"), val('multiqc'), eval('multiqc --version | sed "s/.* //g"'), emit: versions
+    // MultiQC should not push its versions to the `versions` topic. Its input depends on the versions topic to be resolved thus outputting to the topic will let the pipeline hang forever
 
     when:
     task.ext.when == null || task.ext.when
@@ -50,6 +51,5 @@ process MULTIQC {
     touch multiqc_data/.stub
     mkdir multiqc_plots
     touch multiqc_report.html
-
     """
 }
