@@ -38,10 +38,5 @@ process RSEQC_SPLITBAM {
     touch ${prefix}.in.bam
     touch ${prefix}.ex.bam
     touch ${prefix}.junk.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rseqc: \$(split_bam.py --version 2>&1 | sed 's/split_bam.py //; s/ .*\$//')
-    END_VERSIONS
     """
 }
