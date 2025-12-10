@@ -54,16 +54,18 @@ output:
           description: The command used to generate the version of the tool
 topics:
   versions:
-    - - ${task.process}:
+    - - "${task.process}":
           type: string
           description: The process the versions were collected from
       - xeniumranger:
           type: string
           description: The tool name
-      - xeniumranger -V | sed -e 's/xeniumranger-/- /g':
+      - "xeniumranger -V | sed -e 's/xeniumranger-/- /g'":
           type: string
           description: The command used to generate the version of the tool
 authors:
   - "@khersameesh24"
+  - "@dongzehe"
 maintainers:
   - "@khersameesh24"
+  - "@dongzehe"
