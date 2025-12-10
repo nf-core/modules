@@ -16,9 +16,10 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end: false ], // meta map
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai", checkIfExists: true)
                 ])
-                input[1] = Channel.of(file(params.modules_testdata_base_path + "genomics/sarscov2/genome/bed/test.bed", checkIfExists: true))
+                input[1] = Channel.of(file(params.modules_testdata_base_path + "genomics/sarscov2/genome/bed/test.bed12", checkIfExists: true))
                 """
             }
         }
@@ -26,10 +27,16 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.rscript.get(0).get(1) ==~ ".*/test.junction_plot.r" },
-                { assert process.out.xls.get(0).get(1) ==~ ".*/test.junction.xls" },
-                { assert snapshot(process.out.log).match("log") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(
+                    file(process.out.pdf[0][1]).name,
+                    file(process.out.events_pdf[0][1]).name,
+                    process.out.log,
+                    process.out.bed,
+                    process.out.interact_bed,
+                    process.out.rscript,
+                    process.out.xls,
+                    process.out.versions_rseqc
+                ).match() }
             )
         }
     }
@@ -43,9 +50,10 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [ id:'test', single_end: false ], // meta map
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai", checkIfExists: true)
                 ])
-                input[1] = Channel.of(file(params.modules_testdata_base_path + "genomics/sarscov2/genome/bed/test.bed", checkIfExists: true))
+                input[1] = Channel.of(file(params.modules_testdata_base_path + "genomics/sarscov2/genome/bed/test.bed12", checkIfExists: true))
                 """
             }
         }
