@@ -49,7 +49,7 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
         --localcores=${task.cpus} \\
         --localmem=${task.memory.toGiga()} \\
         ${args}
-    
+
     rm -rf "${prefix}"
     mv XENIUMRANGER_IMPORT_SEGMENTATION/outs "${prefix}"
     """

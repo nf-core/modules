@@ -66,19 +66,19 @@ output:
     - - meta:
           type: map
           description: Groovy Map containing sample information e.g. [ id:'test' ]
-      - "${prefix}":
+      - ${prefix}:
           type: directory
           description: Directory containing the output xenium bundle of Xenium
             Ranger
           pattern: "${prefix}"
   versions_xeniumranger:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The process the versions were collected from
       - xeniumranger:
           type: string
           description: The tool name
-      - "xeniumranger -V | sed -e 's/xeniumranger-/- /g'":
+      - xeniumranger -V | sed -e 's/xeniumranger-/- /g':
           type: string
           description: The command used to generate the version of the tool
 topics:

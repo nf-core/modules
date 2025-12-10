@@ -27,13 +27,13 @@ nextflow_process {
             process {
                 """
                 input[0] = UNZIP.out.unzipped_archive
-                    .map { _, bundle -> 
+                    .map { _, bundle ->
                         [
                             [id: "test_xeniumranger_rename"],
                             bundle,
                             "test_region",
                             "test_cassette"
-                        ] 
+                        ]
                     }
                 """
             }
@@ -61,13 +61,13 @@ nextflow_process {
             process {
                 """
                 input[0] = UNZIP.out.unzipped_archive
-                    .map { meta, bundle -> 
+                    .map { meta, bundle ->
                         [
                             [id: "test_xeniumranger_rename"],
                             bundle,
                             "test_region",
                             "test_cassette"
-                        ] 
+                        ]
                     }
                 """
             }

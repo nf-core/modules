@@ -21,7 +21,7 @@ nextflow_process {
                 input[0] = [[], file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialxe/Xenium_V1_Protein_Human_Kidney_tiny_outs.zip', checkIfExists: true)]
                 """
             }
-        }        
+        }
     }
 
     test("xeniumranger relabel") {

@@ -9,7 +9,7 @@ process XENIUMRANGER_RESEGMENT {
 
     output:
     tuple val(meta), path("${prefix}"), emit: outs
-    tuple val("${task.process}"), val("xeniumranger"), eval("xeniumranger -V | sed -e 's/xeniumranger-/- /g'"), emit: versions_xeniumranger, topic: versions
+    tuple val("${task.process}"), val("xeniumranger"), eval("xeniumranger -V | sed -e 's/xeniumranger-/- /g'"), emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,7 +20,7 @@ process XENIUMRANGER_RESEGMENT {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "XENIUMRANGER_RESEGMENT module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    
+
     prefix = task.ext.prefix ?: "${meta.id}"
     def args = task.ext.args ?: ""
 
