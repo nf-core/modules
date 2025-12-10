@@ -14,6 +14,7 @@ process TRGT_MERGE {
 
     output:
     tuple val(meta), path("*.{vcf,vcf.gz,bcf,bcf.gz}"), emit: vcf
+    tuple val(meta), path("*.{tbi,csi}")              , emit: index, optional: true
     tuple val("${task.process}"), val('trgt'), eval("trgt --version | sed 's/.* //g'"), emit: versions_trgt, topic: versions
 
     when:
@@ -32,15 +33,11 @@ process TRGT_MERGE {
 
     """
     trgt merge \\
+        --threads ${task.cpus} \\
         $args \\
         $reference \\
         $output \\
         --vcf ${vcfs}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trgt: \$(trgt --version |& sed '1!d ; s/trgt //')
-    END_VERSIONS
     """
 
     stub:
@@ -52,12 +49,10 @@ process TRGT_MERGE {
                     args.contains("--output-type v") || args.contains("-Ov") ? "vcf" :
                     "vcf"
     def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
+    def index_type = extension == "vcf.gz" ? "tbi" : extension == "bcf.gz" ? "csi" : ''
+    def create_index = args.contains("--write-index") && extension.endsWith(".gz") ? "touch ${prefix}.${extension}.${index_type}" : ''
     """
     $create_cmd ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trgt: \$(trgt --version |& sed '1!d ; s/trgt //')
-    END_VERSIONS
+    $create_index
     """
 }
