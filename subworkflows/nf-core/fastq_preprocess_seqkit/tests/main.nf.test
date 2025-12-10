@@ -1,14 +1,14 @@
 nextflow_workflow {
 
-    name "Test Subworkflow FASTQ_PREPROCESS"
+    name "Test Subworkflow FASTQ_PREPROCESS_SEQKIT"
     script "../main.nf"
-    workflow "FASTQ_PREPROCESS"
+    workflow "FASTQ_PREPROCESS_SEQKIT"
     config './nextflow.config'
 
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "subworkflows/fastq_sanitise_seqkit"
-    tag "subworkflows/fastq_preprocess"
+    tag "subworkflows/fastq_preprocess_seqkit"
     tag "seqkit"
     tag "seqkit/sana"
     tag "seqkit/pair"
