@@ -9,7 +9,7 @@ nextflow_process {
     tag "cat"
     tag "cat/cat"
 
-    test("sarscov2 - genome - name conflict") {
+    test("sarscov2 - genome - error: name conflict") {
         when {
             process {
                 """
