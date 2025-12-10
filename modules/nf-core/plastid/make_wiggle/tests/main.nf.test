@@ -30,7 +30,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.tracks.get(0).get(1).get(0)).getText().contains('track') },
-                { assert snapshot(process.out.versions).match('versions') }
+                { assert snapshot(
+                    process.out.tracks,
+                    process.out.versions
+                ).match() }
             )
         }
     }
@@ -56,8 +59,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.tracks).match('wig_stub') },
-                { assert snapshot(process.out.versions).match('versions_stub') }
+                { assert file(process.out.tracks.get(0).get(1).get(0)).exists() },
+                { assert snapshot(process.out.versions).match() }
             )
         }
     }

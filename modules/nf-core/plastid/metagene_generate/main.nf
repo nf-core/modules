@@ -23,7 +23,10 @@ process PLASTID_METAGENE_GENERATE {
     def args = task.ext.args ?: ''
     def VERSION = "0.6.1" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    metagene generate "${annotation.baseName}" --annotation_files "$annotation" $args
+    metagene generate \\
+        "${annotation.baseName}" \\
+        --annotation_files "$annotation" \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

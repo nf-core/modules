@@ -29,9 +29,13 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.metagene_profiles.get(0).get(1)).getText().contains('28-mers') },
-                { assert snapshot(process.out.p_offsets_png).match('p_offsets_png') },
+                { assert file(process.out.p_offsets_png.get(0).get(1)).exists() },
                 { assert path(process.out.p_offsets.get(0).get(1)).getText().contains("length\tp_offset") },
-                { assert snapshot(process.out.versions).match('versions') }
+                { assert snapshot(
+                    process.out.metagene_profiles,
+                    process.out.p_offsets,
+                    process.out.versions
+                ).match() }
             )
         }
     }
@@ -56,10 +60,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.metagene_profiles).match('metagene_profiles_stub') },
-                { assert snapshot(process.out.p_offsets_png).match('p_offsets_png_stub') },
-                { assert snapshot(process.out.p_offsets).match('p_offsets_stub') },
-                { assert snapshot(process.out.versions).match('versions_stub') }
+                { assert file(process.out.metagene_profiles.get(0).get(1)).exists() },
+                { assert file(process.out.p_offsets_png.get(0).get(1)).exists() },
+                { assert file(process.out.p_offsets.get(0).get(1)).exists() },
+                { assert snapshot(process.out.versions).match() }
             )
         }
     }

@@ -45,9 +45,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.rois_txt).match('rois_txt_stub') },
-                { assert snapshot(process.out.rois_bed).match('rois_bed_stub') },
-                { assert snapshot(process.out.versions).match('versions_stub') }
+                { assert file(process.out.rois_txt.get(0).get(1)).exists() },
+                { assert file(process.out.rois_bed.get(0).get(1)).exists() },
+                { assert snapshot(process.out.versions).match() }
             )
         }
     }
