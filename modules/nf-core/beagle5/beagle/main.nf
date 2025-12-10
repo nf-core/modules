@@ -8,7 +8,7 @@ process BEAGLE5_BEAGLE {
         'biocontainers/beagle:5.5_27Feb25.75f--hdfd78af_0' }"
 
     input:
-    tuple val(meta), path(vcf), path(vcf_index), path(refpanel), path(refpanel_index), path(genmap), path(exclsamples), path(exclmarkers)
+    tuple val(meta), path(vcf), path(vcf_index), path(refpanel), path(refpanel_index), path(genmap), path(exclsamples), path(exclmarkers), val(region)
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
@@ -22,7 +22,8 @@ process BEAGLE5_BEAGLE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}.bglout"
     def ref_command = refpanel ? "ref=$refpanel" : ""
-    def map_command = genmap ? "map=$genmap" : ""
+    def map_command = genmap   ? "map=$genmap"   : ""
+    def region_cmd  = region   ? "chrom=$region" : ""
     def excludesamples_command = exclsamples ? "excludesamples=$exclsamples" : ""
     def excludemarkers_command = exclmarkers ? "excludemarkers=$exclmarkers" : ""
 
@@ -40,8 +41,9 @@ process BEAGLE5_BEAGLE {
         $args \\
         ${ref_command} \\
         ${map_command} \\
+        ${region_cmd} \\
         ${excludesamples_command} \\
-        ${excludemarkers_command} \\
+        ${excludemarkers_command}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
