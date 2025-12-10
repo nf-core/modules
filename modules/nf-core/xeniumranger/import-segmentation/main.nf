@@ -27,7 +27,7 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
     // transcript_assignment and viz_polygons are for transcript assignment results
     // they are mutually exclusive
     if ((nuclei || cells) && (transcript_assignment || viz_polygons)) {
-        error "--nuclei and -cells are for image segmentation results, which are mutually exclusive with --transcript-assignment and --viz-polygons for transcript assignment results. Please use only one of them."
+        error "--nuclei and --cells are for image segmentation results, which are mutually exclusive with --transcript-assignment and --viz-polygons for transcript assignment results. Please use only one of them."
     }
 
     def assembled_args = []
