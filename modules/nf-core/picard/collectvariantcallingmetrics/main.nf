@@ -1,6 +1,6 @@
 process PICARD_COLLECTVARIANTCALLINGMETRICS {
     tag "${meta.id}"
-    label 'process_single'
+    label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
@@ -36,6 +36,7 @@ process PICARD_COLLECTVARIANTCALLINGMETRICS {
         -Xmx${avail_mem}M \\
         CollectVariantCallingMetrics \\
         ${args} \\
+        --THREAD_COUNT ${task.cpus} \\
         --INPUT ${vcf} \\
         --OUTPUT ${prefix} \\
         --DBSNP ${dbsnp} \\
