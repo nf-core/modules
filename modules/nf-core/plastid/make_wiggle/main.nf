@@ -10,30 +10,33 @@ process PLASTID_MAKE_WIGGLE {
 
     input:
     tuple val(meta), path(bam), path(bam_index), path(p_offsets)
-    val output_format
+    val(mapping_rule)
 
     output:
     tuple val(meta), path("*.{wig,bedgraph}"), emit: tracks
-    path "versions.yml", emit: versions
+    path "versions.yml"                      , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+    if (mapping_rule == 'fiveprime_variable' && !p_offsets) {
+        error "p_offsets file is required when using mapping_rule 'fiveprime_variable'"
+    }
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def extension = output_format == "bedgraph" ? "bedgraph" : "wig"
     def args = task.ext.args ?: ""
+    def offset_arg = mapping_rule == 'fiveprime_variable' ? "--offset $p_offsets" : ""
+    def extension = args.contains('--output_format bedgraph') ? "bedgraph" : "wig"
     def VERSION = "0.6.1" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     make_wiggle \\
         --count_files "$bam" \\
-        --offset "$p_offsets" \\
-        --fiveprime_variable \\
-        --output_format "$output_format" \\
+        $offset_arg \\
+        --${mapping_rule} \\
         -o "$prefix" \\
         $args
 
-    if [ "$output_format" = "bedgraph" ]; then
+    if [ "$extension" = "bedgraph" ]; then
         for FILE in *.wig; do
             mv "\$FILE" "\${FILE%.wig}.bedgraph"
         done
@@ -46,12 +49,16 @@ process PLASTID_MAKE_WIGGLE {
     """
 
     stub:
+    if (mapping_rule == 'fiveprime_variable' && !p_offsets) {
+        error "p_offsets file is required when using mapping_rule 'fiveprime_variable'"
+    }
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def extension = output_format == "bedgraph" ? "bedgraph" : "wig"
+    def args = task.ext.args ?: ""
+    def extension = args.contains('--output_format bedgraph') ? "bedgraph" : "wig"
     def VERSION = "0.6.1" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    touch ${prefix}_fw.$extension
-    touch ${prefix}_rc.$extension
+    touch ${prefix}_fw.${extension}
+    touch ${prefix}_rc.${extension}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
