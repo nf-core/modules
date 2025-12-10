@@ -4,15 +4,15 @@ process CAT_CAT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pigz:2.3.4' :
-        'biocontainers/pigz:2.3.4' }"
+        'https://depot.galaxyproject.org/singularity/pigz:2.8' :
+        'biocontainers/pigz:2.8' }"
 
     input:
     tuple val(meta), path(files_in)
 
     output:
     tuple val(meta), path("${prefix}"), emit: file_out
-    path "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val("pigz"), eval("pigz --version 2>&1 | sed 's/pigz //g'"),  topic: versions, emit: versions_cat
 
     when:
     task.ext.when == null || task.ext.when
