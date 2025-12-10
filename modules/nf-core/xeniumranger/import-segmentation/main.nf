@@ -5,7 +5,7 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
     container "nf-core/xeniumranger:4.0"
 
     input:
-    tuple val(meta), path(xenium_bundle, stageAs: "bundle/"), path(transcript_assignment), path(viz_polygons), path(nuclei), path(cells), path(coordinate_transform)
+    tuple val(meta), path(xenium_bundle, stageAs: "bundle/"), path(transcript_assignment), path(viz_polygons), path(nuclei), path(cells), path(coordinate_transform), val(units)
 
     output:
     tuple val(meta), path("${prefix}"), emit: outs
@@ -38,8 +38,12 @@ process XENIUMRANGER_IMPORT_SEGMENTATION {
     if (viz_polygons) { assembled_args << "--viz-polygons=\"${viz_polygons}\"" }
     if (coordinate_transform) {
         assembled_args << "--coordinate-transform=\"${coordinate_transform}\""
-        assembled_args = assembled_args.collect { it.replaceAll(/--units=("|'|)pixels\1/, "--units=microns") }
-        }
+        // if coordinate_transform is provided, units must be microns
+        assembled_args << "--units=\"microns\""
+    } else if (units) {
+        assembled_args << "--units=\"${units}\""
+    }
+    
     def args = assembled_args ? assembled_args.join(" \\\n        ") : ""
 
     """
