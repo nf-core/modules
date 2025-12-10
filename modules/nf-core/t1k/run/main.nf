@@ -9,11 +9,7 @@ process T1K_RUN {
         'community.wave.seqera.io/library/t1k:1.0.8--e73a2a3c3d836a4a' }"
 
     input:
-    tuple val(meta) , path(input)
-    tuple val(meta2), path(fasta)
-    tuple val(meta3), path(cordinates)
-    tuple val(meta4), path(barcodes)
-    tuple val(meta5), path(barcodewhitelist)
+    tuple val(meta) , path(input), path(fasta), path(cordinates), path(barcodes), path(barcodewhitelist)
 
 
     output:
