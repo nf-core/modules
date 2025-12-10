@@ -1,0 +1,111 @@
+name: rseqc_splitbam
+description: Split BAM file based on gene list in BED format
+keywords:
+  - bam
+  - split
+  - rnaseq
+  - quality control
+tools:
+  - "rseqc":
+      description: |
+        RSeQC package provides a number of useful modules that can comprehensively evaluate
+        high throughput sequence data especially RNA-seq data.
+      homepage: "http://rseqc.sourceforge.net/"
+      documentation: "http://rseqc.sourceforge.net/"
+      tool_dev_url: "https://github.com/MonashBioinformaticsPlatform/RSeQC"
+      doi: "10.1093/bioinformatics/bts356"
+      licence: ["GPL-3.0-or-later"]
+      identifier: biotools:rseqc
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Sorted BAM file
+        pattern: "*.{bam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.{bai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327" # BAI
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'reference' ]`
+    - bed:
+        type: file
+        description: Gene list in BED format to split the BAM by
+        pattern: "*.{bed}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+
+output:
+  in_bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.in.bam":
+          type: file
+          description: BAM file containing reads that mapped to the gene list
+          pattern: "*.in.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+  ex_bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.ex.bam":
+          type: file
+          description: BAM file containing reads that did not map to the gene list
+          pattern: "*.ex.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+  junk_bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.junk.bam":
+          type: file
+          description: BAM file containing QC failed or unmapped reads
+          pattern: "*.junk.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+  versions_rseqc:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - rseqc:
+          type: string
+          description: The tool name
+      - split_bam.py --version | sed "s/split_bam.py //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - rseqc:
+          type: string
+          description: The tool name
+      - split_bam.py --version | sed "s/split_bam.py //":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@rhassaine"
+maintainers:
+  - "@rhassaine"
