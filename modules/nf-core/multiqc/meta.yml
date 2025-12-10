@@ -80,9 +80,10 @@ output:
       - multiqc:
           type: string
           description: The tool name
-      - multiqc --version | sed "s/.* //g:
-          type: string
-          description: The command used to generate the version of the tool
+      - multiqc --version | sed "s/.* //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -91,9 +92,10 @@ topics:
       - multiqc:
           type: string
           description: The tool name
-      - multiqc --version | sed "s/.* //g:
-          type: string
-          description: The command used to generate the version of the tool
+      - multiqc --version | sed "s/.* //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@abhi18av"
   - "@bunop"
