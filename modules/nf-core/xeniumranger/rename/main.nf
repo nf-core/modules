@@ -15,6 +15,7 @@ process XENIUMRANGER_RENAME {
     task.ext.when == null || task.ext.when
 
     script:
+
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "XENIUMRANGER_RENAME module does not support Conda. Please use Docker / Singularity / Podman instead."
@@ -22,6 +23,7 @@ process XENIUMRANGER_RENAME {
 
     def args = task.ext.args ?: ""
     prefix = task.ext.prefix ?: "${meta.id}"
+    
     """
     rm -rf "${prefix}"
 
@@ -38,30 +40,11 @@ process XENIUMRANGER_RENAME {
     """
 
     stub:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "XENIUMRANGER_RENAME module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
+
     prefix = task.ext.prefix ?: "${meta.id}"
-    args = task.ext.args ?: ""
+
     """
-    rm -rf "${prefix}"
-
-    xeniumranger rename \\
-        --id="XENIUMRANGER_RENAME" \\
-        --xenium-bundle="${xenium_bundle}" \\
-        --region-name="${region_name}" \\
-        --cassette-name="${cassette_name}" \\
-        --localcores=${task.cpus} \\
-        --localmem=${task.memory.toGiga()} \\
-        ${args} \\
-        --dry
-
-    if [ -d "XENIUMRANGER_RENAME/outs" ]; then
-        mv XENIUMRANGER_RENAME/outs "${prefix}"
-    else
-        mkdir -p "${prefix}"
-        touch "${prefix}/dry_run.txt"
-    fi
+    mkdir -p "${prefix}"
+    touch "${prefix}/experiment.xenium"
     """
 }

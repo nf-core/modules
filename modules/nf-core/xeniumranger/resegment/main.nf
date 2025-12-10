@@ -15,54 +15,31 @@ process XENIUMRANGER_RESEGMENT {
     task.ext.when == null || task.ext.when
 
     script:
+
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "XENIUMRANGER_RESEGMENT module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args = (task.ext.args ?: "").trim()
-    def args_block = args ? "\\\n        ${args}" : ""
+    
     prefix = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ""
 
     """
-    rm -rf "${prefix}"
-
     xeniumranger resegment \\
         --id="XENIUMRANGER_RESEGMENT" \\
         --xenium-bundle="${xenium_bundle}" \\
         --localcores=${task.cpus} \\
-        --localmem=${task.memory.toGiga()}${args_block}
+        --localmem=${task.memory.toGiga()} \\
+        ${args}
 
-    if [ -d "XENIUMRANGER_RESEGMENT/outs" ]; then
-        rm -rf "${prefix}"
-        mv XENIUMRANGER_RESEGMENT/outs "${prefix}"
-    else
-        mkdir -p "${prefix}"
-    fi
+    rm -rf "${prefix}"
+    mv XENIUMRANGER_RESEGMENT/outs "${prefix}"
     """
 
     stub:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "XENIUMRANGER_RESEGMENT module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-    def args = (task.ext.args ?: "").trim()
-    def args_block = args ? "\\\n        ${args}" : ""
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    rm -rf "${prefix}"
-
-    xeniumranger resegment \\
-        --id="XENIUMRANGER_RESEGMENT" \\
-        --xenium-bundle="${xenium_bundle}" \\
-        --localcores=${task.cpus} \\
-        --localmem=${task.memory.toGiga()}${args_block} \\
-        --dry
-
-    if [ -d "XENIUMRANGER_RESEGMENT/outs" ]; then
-        rm -rf "${prefix}"
-        mv XENIUMRANGER_RESEGMENT/outs "${prefix}"
-    else
-        mkdir -p "${prefix}"
-    fi
+    mkdir -p "${prefix}"
+    touch "${prefix}/experiment.xenium"
     """
 }

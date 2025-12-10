@@ -5,7 +5,8 @@ process XENIUMRANGER_RELABEL {
     container "nf-core/xeniumranger:4.0"
 
     input:
-    tuple val(meta), path(xenium_bundle), path(gene_panel)
+    tuple val(meta), path(xenium_bundle, stageAs: "bundle/"), path(panel)
+
     output:
     tuple val(meta), path("${prefix}"), emit: outs
     tuple val("${task.process}"), val("xeniumranger"), eval("xeniumranger -V | sed -e 's/xeniumranger-/- /g'"), emit: versions_xeniumranger, topic: versions
@@ -14,49 +15,33 @@ process XENIUMRANGER_RELABEL {
     task.ext.when == null || task.ext.when
 
     script:
+
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "XENIUMRANGER_RELABEL module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def args = (task.ext.args ?: '').trim()
-    def args_block = args ? "\\\n        ${args}" : ""
+
     prefix = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ""
+
     """
-    rm -rf "${prefix}"
-
     xeniumranger relabel \\
-        --id="${prefix}" \\
+        --id="XENIUMRANGER_RELABEL" \\
         --xenium-bundle="${xenium_bundle}" \\
-        --panel="${gene_panel}" \\
+        --panel="${panel}" \\
         --localcores=${task.cpus} \\
-        --localmem=${task.memory.toGiga()}${args_block}
+        --localmem=${task.memory.toGiga()} \\
+        ${args}
 
-    if [ ! -d "${prefix}" ]; then
-        mkdir -p "${prefix}"
-    fi
+    rm -rf "${prefix}"
+    mv XENIUMRANGER_RELABEL/outs "${prefix}"
     """
 
     stub:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "XENIUMRANGER_RELABEL module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-    def args = (task.ext.args ?: '').trim()
-    def args_block = args ? "\\\n        ${args}" : ""
     prefix = task.ext.prefix ?: "${meta.id}"
+
     """
-    rm -rf "${prefix}"
-
-    xeniumranger relabel \\
-        --id="${prefix}" \\
-        --xenium-bundle="${xenium_bundle}" \\
-        --panel="${gene_panel}" \\
-        --localcores=${task.cpus} \\
-        --localmem=${task.memory.toGiga()}${args_block} \\
-        --dry
-
-    if [ ! -d "${prefix}" ]; then
-        mkdir -p "${prefix}"
-    fi
+    mkdir -p "${prefix}"
+    touch "${prefix}/experiment.xenium"
     """
 }

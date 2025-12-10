@@ -9,27 +9,33 @@ nextflow_process {
     tag "modules_nfcore"
     tag "xeniumranger"
     tag "xeniumranger/relabel"
-    tag "untar"
+    tag "unzip"
+
 
     setup {
-            run("UNTAR") {
-                script "modules/nf-core/untar/main.nf"
-                process {
-                    """
-                    input[0] = [[], file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialxe/xenium_bundle.tar.gz', checkIfExists: true)]
-                    """
-                }
+
+        run("UNZIP") {
+            script "modules/nf-core/unzip/main.nf"
+            process {
+                """
+                input[0] = [[], file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialxe/Xenium_V1_Protein_Human_Kidney_tiny_outs.zip', checkIfExists: true)]
+                """
             }
+        }        
     }
 
     test("xeniumranger relabel") {
         when {
             process {
                 """
-                input[0] = Channel.of([
-                        [id: "test_xeniumranger_relabel"],
-                    ]).combine(UNTAR.out.untar.map { it[1] })
-                      .map { meta, bundle -> [meta, bundle, bundle + "/gene_panel.json"] }
+                input[0] = UNZIP.out.unzipped_archive
+                    .map { _, bundle ->
+                        [
+                            [id: "test_xeniumranger_relabel"],
+                            bundle,
+                            bundle + "/gene_panel.json"
+                        ]
+                    }
                 """
             }
         }
@@ -48,10 +54,14 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([
-                        [id: "test_xeniumranger_relabel"],
-                    ]).combine(UNTAR.out.untar.map { it[1] })
-                      .map { meta, bundle -> [meta, bundle, bundle + "/gene_panel.json"] }
+                input[0] = UNZIP.out.unzipped_archive
+                    .map { _, bundle ->
+                        [
+                            [id: "test_xeniumranger_relabel"],
+                            bundle,
+                            bundle + "/gene_panel.json"
+                        ]
+                    }
                 """
             }
         }
