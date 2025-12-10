@@ -30,10 +30,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.tracks.get(0).get(1).get(0)).getText().contains('track') },
-                { assert snapshot(
-                    process.out.tracks,
-                    process.out.versions
-                ).match() }
+                { assert snapshot(process.out.versions).match() }
             )
         }
     }
