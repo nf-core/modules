@@ -34,13 +34,29 @@ output:
           description: Merged fastq file
           pattern: "*.{merged.fastq.gz}"
           ontologies: []
+  versions_cat:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - cat:
+          type: string
+          description: The tool name
+      - cat --version 2>&1 | head -n 1 | sed 's/^.*coreutils) //; s/ .*\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - cat:
+          type: string
+          description: The tool name
+      - cat --version 2>&1 | head -n 1 | sed 's/^.*coreutils) //; s/ .*\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@joseespinosa"
   - "@drpatelh"
