@@ -50,7 +50,8 @@ nextflow_process {
                 { assert file(process.out.outs.get(0).get(1) + "/transcripts.parquet").exists() },
                 { assert file(process.out.outs.get(0).get(1) + "/transcripts.zarr.zip").exists() },
                 { assert file(process.out.outs.get(0).get(1) + "/analysis.zarr.zip").exists() },
-                { assert file(process.out.outs.get(0).get(1) + "/cell_feature_matrix.zarr.zip").exists() }
+                { assert file(process.out.outs.get(0).get(1) + "/cell_feature_matrix.zarr.zip").exists() },
+                { assert snapshot(process.out.versions_xeniumranger).match()},
             )
         }
     }

@@ -51,7 +51,8 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.outs != null },
                 { assert file(process.out.outs.get(0).get(1)).isDirectory() },
-                { assert file(process.out.outs.get(0).get(1)).list().size() > 0 }
+                { assert file(process.out.outs.get(0).get(1)).list().size() > 0 },
+                { assert snapshot(process.out.versions_xeniumranger).match()},
             )
         }
     }

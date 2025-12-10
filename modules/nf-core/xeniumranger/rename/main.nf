@@ -9,7 +9,7 @@ process XENIUMRANGER_RENAME {
 
     output:
     tuple val(meta), path("${prefix}"), emit: outs
-    tuple val("${task.process}"), val("xeniumranger"), eval("xeniumranger -V | sed -e 's/xeniumranger-/- /g'"), emit: versions_xeniumranger, topic: versions
+    tuple val("${task.process}"), val("xeniumranger"), eval("xeniumranger -V | sed -e 's/.*xenium-//'"), emit: versions_xeniumranger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

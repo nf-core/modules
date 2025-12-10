@@ -49,7 +49,7 @@ output:
       - xeniumranger:
           type: string
           description: The tool name
-      - "xeniumranger -V | sed -e 's/xeniumranger-/- /g'":
+      - "xeniumranger -V | sed -e 's/.*xenium-//'":
           type: string
           description: The command used to generate the version of the tool
 topics:
@@ -60,7 +60,7 @@ topics:
       - xeniumranger:
           type: string
           description: The tool name
-      - "xeniumranger -V | sed -e 's/xeniumranger-/- /g'":
+      - "xeniumranger -V | sed -e 's/.*xenium-//'":
           type: string
           description: The command used to generate the version of the tool
 authors:
