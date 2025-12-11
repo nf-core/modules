@@ -1,6 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fastq_align_dedup_bwamem"
-description: Performs alignment of DNA or TAPS-treated reads using bwamem or parabricks/fq2bam, sort and deduplicate
+description: Performs alignment of DNA or TAPS-treated reads using bwamem or
+  parabricks/fq2bam, sort and deduplicate
 keywords:
   - bwamem
   - alignment
@@ -104,12 +105,6 @@ output:
         Channel containing files for MultiQC input (metrics, stats, flagstat, idxstats).
         Structure: [ path(file) ]
       pattern: "*{.txt,.stats,.flagstat,.idxstats}"
-  - versions:
-      type: file
-      description: |
-        File containing software versions
-        Structure: [ path(versions.yml) ]
-      pattern: "versions.yml"
 authors:
   - "@eduard-watchmaker"
 maintainers:
