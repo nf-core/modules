@@ -13,6 +13,7 @@ tools:
       doi: 10.14806/ej.17.1.200
       licence: ["MIT"]
       identifier: biotools:cutadapt
+
 input:
   - - meta:
         type: map
@@ -24,7 +25,9 @@ input:
         description: |
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
-        ontologies: []
+        pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1930" # FASTQ
 output:
   reads:
     - - meta:
@@ -37,6 +40,7 @@ output:
           description: The trimmed/modified fastq reads
           pattern: "*fastq.gz"
           ontologies:
+            - edam: "http://edamontology.org/format_1930" # FASTQ
             - edam: http://edamontology.org/format_3989 # GZIP format
   log:
     - - meta:
@@ -48,14 +52,31 @@ output:
           type: file
           description: cuatadapt log file
           pattern: "*cutadapt.log"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Textual format
+  versions_cutadapt:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cutadapt:
+          type: string
+          description: The name of the tool
+      - cutadapt --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cutadapt:
+          type: string
+          description: The name of the tool
+      - cutadapt --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@drpatelh"
   - "@kevinmenden"
