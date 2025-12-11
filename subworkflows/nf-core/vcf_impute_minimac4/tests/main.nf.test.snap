@@ -22,10 +22,10 @@
                 ],
                 "1": [
                     "versions.yml:md5,373fe12da367d3891473f487a9536d04",
+                    "versions.yml:md5,8a6808c992b87d05442e61783f97b72e",
                     "versions.yml:md5,a4842af8fedc3522b989d4ee28f08d80",
                     "versions.yml:md5,c4f18dd6f40ed9d3800cf2343ea37718",
-                    "versions.yml:md5,c973327c440ac43a279155f7c78f758c",
-                    "versions.yml:md5,e4a5385750692998068c944b99976f4e"
+                    "versions.yml:md5,d338622357eb167be72947a2d0cb1f43"
                 ],
                 "vcf_index": [
                     [
@@ -47,16 +47,21 @@
                 ],
                 "versions": [
                     "versions.yml:md5,373fe12da367d3891473f487a9536d04",
+                    "versions.yml:md5,8a6808c992b87d05442e61783f97b72e",
                     "versions.yml:md5,a4842af8fedc3522b989d4ee28f08d80",
                     "versions.yml:md5,c4f18dd6f40ed9d3800cf2343ea37718",
-                    "versions.yml:md5,c973327c440ac43a279155f7c78f758c",
-                    "versions.yml:md5,e4a5385750692998068c944b99976f4e"
+                    "versions.yml:md5,d338622357eb167be72947a2d0cb1f43"
                 ]
             },
             [
                 {
                     "VCF_IMPUTE_MINIMAC4:MINIMAC4_COMPRESSREF": {
                         "minimac4": "4.1.6"
+                    }
+                },
+                {
+                    "VCF_IMPUTE_MINIMAC4:BCFTOOLS_INDEX_LIGATE": {
+                        "bcftools": 1.22
                     }
                 },
                 {
@@ -70,12 +75,7 @@
                     }
                 },
                 {
-                    "VCF_IMPUTE_MINIMAC4:BCFTOOLS_INDEX_2": {
-                        "bcftools": 1.22
-                    }
-                },
-                {
-                    "VCF_IMPUTE_MINIMAC4:BCFTOOLS_INDEX_1": {
+                    "VCF_IMPUTE_MINIMAC4:BCFTOOLS_INDEX_PHASE": {
                         "bcftools": 1.22
                     }
                 }
@@ -85,7 +85,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2025-12-04T15:43:11.308656267"
+        "timestamp": "2025-12-11T11:59:53.921713709"
     },
     "Impute with minimac4 one vcf no map, no posfile, no chunks, panel as vcf": {
         "content": [
@@ -106,15 +106,20 @@
             ],
             [
                 "versions.yml:md5,373fe12da367d3891473f487a9536d04",
+                "versions.yml:md5,8a6808c992b87d05442e61783f97b72e",
                 "versions.yml:md5,a4842af8fedc3522b989d4ee28f08d80",
                 "versions.yml:md5,c4f18dd6f40ed9d3800cf2343ea37718",
-                "versions.yml:md5,c973327c440ac43a279155f7c78f758c",
-                "versions.yml:md5,e4a5385750692998068c944b99976f4e"
+                "versions.yml:md5,d338622357eb167be72947a2d0cb1f43"
             ],
             [
                 {
                     "VCF_IMPUTE_MINIMAC4:MINIMAC4_COMPRESSREF": {
                         "minimac4": "4.1.6"
+                    }
+                },
+                {
+                    "VCF_IMPUTE_MINIMAC4:BCFTOOLS_INDEX_LIGATE": {
+                        "bcftools": 1.22
                     }
                 },
                 {
@@ -128,12 +133,7 @@
                     }
                 },
                 {
-                    "VCF_IMPUTE_MINIMAC4:BCFTOOLS_INDEX_2": {
-                        "bcftools": 1.22
-                    }
-                },
-                {
-                    "VCF_IMPUTE_MINIMAC4:BCFTOOLS_INDEX_1": {
+                    "VCF_IMPUTE_MINIMAC4:BCFTOOLS_INDEX_PHASE": {
                         "bcftools": 1.22
                     }
                 }
@@ -143,7 +143,7 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2025-12-04T15:42:40.880959591"
+        "timestamp": "2025-12-11T11:59:14.937389499"
     },
     "Impute with minimac4 one vcf with map, posfile, chunks, panel as vcf": {
         "content": [
@@ -182,6 +182,11 @@
                     }
                 },
                 {
+                    "VCF_IMPUTE_MINIMAC4:BCFTOOLS_INDEX_LIGATE": {
+                        "bcftools": 1.22
+                    }
+                },
+                {
                     "VCF_IMPUTE_MINIMAC4:MINIMAC4_IMPUTE": {
                         "minimac4": "4.1.6"
                     }
@@ -192,12 +197,7 @@
                     }
                 },
                 {
-                    "VCF_IMPUTE_MINIMAC4:BCFTOOLS_INDEX_2": {
-                        "bcftools": 1.22
-                    }
-                },
-                {
-                    "VCF_IMPUTE_MINIMAC4:BCFTOOLS_INDEX_1": {
+                    "VCF_IMPUTE_MINIMAC4:BCFTOOLS_INDEX_PHASE": {
                         "bcftools": 1.22
                     }
                 }
@@ -207,6 +207,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.0"
         },
-        "timestamp": "2025-12-04T15:42:56.289368627"
+        "timestamp": "2025-12-11T11:59:37.554479908"
     }
 }
