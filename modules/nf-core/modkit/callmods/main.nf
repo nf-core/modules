@@ -4,8 +4,8 @@ process MODKIT_CALLMODS {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/ont-modkit:0.5.0--hcdda2d0_2'
-        : 'biocontainers/ont-modkit:0.5.0--hcdda2d0_2'}"
+        ? 'https://depot.galaxyproject.org/singularity/ont-modkit:0.6.0--hcdda2d0_0'
+        : 'biocontainers/ont-modkit:0.6.0--hcdda2d0_0'}"
 
     input:
     tuple val(meta), path(bam)
